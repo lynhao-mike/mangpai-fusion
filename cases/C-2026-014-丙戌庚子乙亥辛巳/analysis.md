@@ -231,7 +231,7 @@
 
 ## 七、对外输出
 
-→ 见 `reports/C-2026-014-report.md`
+→ 见 `reports/C-2026-014-丙戌庚子乙亥辛巳-report.md`
 
 ---
 
