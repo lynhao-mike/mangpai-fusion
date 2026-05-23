@@ -13,9 +13,9 @@
 | 01 | [01-input-schema](./01-input-schema.md) | ✅ W1.2 已交付 | 命主输入严格 schema（问真 APP 字段映射） |
 | 02 | [02-predicate-library](./02-predicate-library.md) | ✅ W1.2 已交付 | 65 个 Python 谓词函数签名（共用底层） |
 | 03 | [03-findings-schema](./03-findings-schema.md) | ✅ W1.2 已交付 | EnergyFindings / PictureFindings / GateResult / SupportFindings JSON Schema |
-| 04 | 04-gate-protocol.md | ⏳ W1.3 待写 | 应期三层门接口 + 6 触发判定 |
-| 05 | 05-rule-lifecycle.md | ⏳ W1.3 待写 | 规律生命周期状态机 + Beta 算法实现 |
-| 06 | 06-confidence-model.md | ⏳ W1.3 待写 | 双轨置信度（★+%）→ Beta 分布的精确公式 |
+| 04 | [04-gate-protocol](./04-gate-protocol.md) | ✅ W1.3 已交付 | 应期三层门接口 + 6 触发判定 + 12 道门 |
+| 05 | [05-rule-lifecycle](./05-rule-lifecycle.md) | ✅ W1.3 已交付 | 规律生命周期 5 状态机 + Beta + 3 次降级缓冲 |
+| 06 | [06-confidence-model](./06-confidence-model.md) | ✅ W1.3 已交付 | 双轨置信度精确公式 + 联立聚合 + gate 限顶 |
 | 07 | 07-pipeline-flow.md | ⏳ W1.4 待写 | W1-W4 流水线数据流的精确定义 |
 | 08 | 08-agent-handoff.md | ⏳ W1.4 待写 | 8 个 agent 的契约边界 + 集成日流程 |
 | 09 | [09-naming-convention](./09-naming-convention.md) | ✅ W1.1 已交付 | 文件命名规范 + 旧案重命名清单 |
@@ -28,7 +28,7 @@
 |---|---|---|
 | **W1.1** | Day 1（已完成） | 00 + 09 + 本 README → 让架构师/User 审整体方向 |
 | **W1.2** | Day 2-3（已完成） | 01 + 02 + 03 → 输入/谓词/Findings 定义 |
-| **W1.3** | Day 4-5 | 04 + 05 + 06 → 应期/生命周期/置信度算法 |
+| **W1.3** | Day 4-5（已完成） | 04 + 05 + 06 → 应期/生命周期/置信度算法 |
 | **W1.4** | Day 6-7 | 07 + 08 → 流水线 + agent 边界，**冻结契约** |
 | **W2 起** | Day 8+ | 8 个 agent 各自分支启动 |
 
