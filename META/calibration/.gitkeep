@@ -1,0 +1,7 @@
+# 占位符：Track-G 的快照存放点
+#
+# 每次 tools/feedback_loop.ingest_feedback() 都会同步落一个快照：
+#   META/calibration/{YYYY-MM-DD}-after-{case_id}.snapshot.yaml
+# 用于"一键回滚到本次 ingest 前"。
+#
+# 详见 engine/contracts/05-rule-lifecycle § 八。
