@@ -9,9 +9,9 @@
     palace      - 10 个宫位/十神函数                 (Track-B)
     cycles      - 9 个大运流年函数                   (Track-C)
     tou_cang    - 5 个透藏关系函数                   (Track-C)
-    shensha     - 5 个神煞辅助函数                   (Track-D, 待写)
+    shensha     - 5 个神煞辅助函数 + 2 辅助          (Track-D)
 
-合计：11+8+11+6+10+9+5 = 60 函数（已交付）+ 5 函数（Track-D 待写）= 65
+合计：11+8+11+6+10+9+5+5 = 65 函数（Track-A~D 全部已交付）
 （与 02-predicate-library.md § 五 清点一致）
 """
 from engine.predicates.types import (  # noqa: F401
@@ -127,6 +127,17 @@ from engine.predicates.tou_cang import (  # noqa: F401
     is_tou_at,
 )
 
+# Track-D 追加：shensha.py（5 函数 + 2 辅助）
+from engine.predicates.shensha import (  # noqa: F401
+    has_shensha,
+    get_shensha_at,
+    is_taichi,
+    is_jinyu,
+    is_huagai,
+    get_all_shensha_names,
+    has_any_shensha,
+)
+
 __all__ = [
     # types
     "Gan", "Zhi", "Wuxing", "YinYang", "ChangshengStatus", "Shishen", "PalaceName",
@@ -158,4 +169,8 @@ __all__ = [
     "is_in_dayun_transition", "get_adjacent_dayun",
     # tou_cang (Track-C)
     "is_tou", "is_canggan", "tou_chu", "get_all_tou_chars", "is_tou_at",
+    # shensha (Track-D)
+    "has_shensha", "get_shensha_at",
+    "is_taichi", "is_jinyu", "is_huagai",
+    "get_all_shensha_names", "has_any_shensha",
 ]
