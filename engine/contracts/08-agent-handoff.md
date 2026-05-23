@@ -23,7 +23,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-A` |
+| 分支 | `v1.2-track-A` |
 | **可写区** | `engine/energy/` · `engine/predicates/`（ganzhi/wuxing/relations/strength 四个文件）· `theory/raw/duan/promoted/` |
 | **只读区** | 所有 contracts/ · 其他 engine/ 子目录 · cases/ · reports/ |
 | **交付物** | `evaluate_energy(parsed) → EnergyFindings` 完整实现 |
@@ -35,7 +35,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-B` |
+| 分支 | `v1.2-track-B` |
 | **可写区** | `engine/picture/` · `theory/raw/yang/promoted/` |
 | **只读区** | 所有 contracts/ · engine/energy/（只读调用）· cases/ · reports/ |
 | **交付物** | `match_picture(energy, parsed) → PictureFindings` 完整实现 |
@@ -47,7 +47,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-C` |
+| 分支 | `v1.2-track-C` |
 | **可写区** | `engine/yingqi/` · `engine/predicates/cycles.py` · `engine/predicates/tou_cang.py` · `theory/raw/ren/promoted/` |
 | **只读区** | 所有 contracts/ · engine/energy/ · engine/picture/（只读调用） |
 | **交付物** | `gate_yingqi(...)` 完整实现 + 6 触发 + 12 道门 |
@@ -58,7 +58,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-D` |
+| 分支 | `v1.2-track-D` |
 | **可写区** | `engine/pangzheng/` · `engine/predicates/shensha.py` · `theory/raw/gao/promoted/` |
 | **只读区** | 所有 contracts/ · 其他 engine/ |
 | **交付物** | `support_with_shensha(...)` 完整实现 |
@@ -69,7 +69,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-E` |
+| 分支 | `v1.2-track-E` |
 | **可写区** | `tools/preflight.py` · `tools/output_linter.py` · `tools/three_layer_check.py` · `engine/mechanical-rules.yaml` · `.kiro/steering/pre-output-checklist.md` |
 | **只读区** | 所有 contracts/ · engine/ 其他 |
 | **交付物** | 3 个 Python 脚本 + 1 YAML + 1 steering MD |
@@ -80,7 +80,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-F` |
+| 分支 | `v1.2-track-F` |
 | **可写区** | `templates/report-v1.2.md` · `tools/render_report.py` |
 | **只读区** | 所有 contracts/ · engine/ · 旧 templates/ |
 | **交付物** | mock findings → 1 份 sample 报告（lint 通过） |
@@ -91,7 +91,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-G` |
+| 分支 | `v1.2-track-G` |
 | **可写区** | `tools/feedback_loop.py` · `tools/rule_lifecycle.py` · `tools/drift_detect.py` · `tools/cross_school_scan.py` · `tools/extract_predictions.py` · `engine/calibration.yaml` · `META/iteration-log.md` |
 | **只读区** | 所有 contracts/ · engine/ 其他 · theory/ 的 index.yaml（**写权限** 仅限 status/hits/misses 字段） |
 | **交付物** | 用 C-2026-001 失验数据回放 → 输出正确 diff 报告 |
@@ -102,7 +102,7 @@
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-build/track-H` |
+| 分支 | `v1.2-track-H` |
 | **可写区** | `tests/` · `tests/fixtures/` · `tests/regression_baseline.yaml` |
 | **只读区** | 所有 contracts/ · cases/ · reports/（用作 fixture 来源） |
 | **交付物** | pytest 一键跑通 + 6 项量化基准定义 |
@@ -116,14 +116,14 @@
 ```
 main (v1.0 冻结)
   └── v1.2-build (长枝)
-        ├── v1.2-build/track-A (段派引擎)
-        ├── v1.2-build/track-B (杨派引擎)
-        ├── v1.2-build/track-C (任派引擎)
-        ├── v1.2-build/track-D (高派引擎)
-        ├── v1.2-build/track-E (兜底护栏)
-        ├── v1.2-build/track-F (报告渲染)
-        ├── v1.2-build/track-G (自迭代)
-        └── v1.2-build/track-H (测试)
+        ├── v1.2-track-A (段派引擎)
+        ├── v1.2-track-B (杨派引擎)
+        ├── v1.2-track-C (任派引擎)
+        ├── v1.2-track-D (高派引擎)
+        ├── v1.2-track-E (兜底护栏)
+        ├── v1.2-track-F (报告渲染)
+        ├── v1.2-track-G (自迭代)
+        └── v1.2-track-H (测试)
 ```
 
 **merge 方向**：各 track → v1.2-build（PR + review）→ 最终 v1.2-build → main（v1.2 发布）
