@@ -1,0 +1,103 @@
+# v5.0 三维引擎 · Three-Dimensional Engine
+# 定义 D1/D2/D3 三个并行分析维度，替代旧 Step2-Step6 的线性流
+# version: 5.0
+# created: 2026-05-21
+# status: active
+#
+# AI执行摘要（5行人话）：
+# 1. 三维=三个专家同时看同一个八字，各出结论
+# 2. D1(M1段)回答"什么级别"，D2(M2杨)回答"什么画面"，D3(M3任)回答"是不是/什么时候"
+# 3. 每个关键组合(合/冲/刑/穿/制/化/墓)都要过三维交叉验证
+# 4. 三家结论叠加=立体判断：级别+细节+时间
+# 5. 矛盾时查CF-*裁定或入rule-conflicts
+
+dimensions:
+
+  D1-定性:
+    owner: M1
+    owner_name: 段建业理法层
+    core_question: "什么级别？什么类型？"
+    philosophical_basis: "命理的物理学——一切归于能量转化效率"
+    tools:
+      - "六大签字概念（宾主/体用/做功/贼神捕神/势与党/制法）"
+      - "16格局判定（8正格+8变格）"
+      - "L0-L5层次定级"
+      - "做功效率计量（1层=百万/2层=千万/3层=亿/4层=百亿）"
+      - "5大结构类型（去用/化用/泄用/合用/无用）"
+      - "过河拆桥/多层做功识别"
+      - "应期3法则（大限/出现/引动）— D1也参与应期粗窗口"
+    files_to_load:
+      always: [modules/m1/m1-foundation.md]
+      on_demand: [modules/m1/m1-patterns.md, modules/m1/m1-timing.md, modules/m1/m1-practice.md]
+    output_schema:
+      level: "L0-L5"
+      structure_type: "去用/化用/泄用/合用/无用"
+      primary_function: "X制/合/化Y → 换取Z"
+      efficiency: "高/中/低"
+      energy: "单五行/双五行/三五行党"
+
+  D2-定事:
+    owner: M2
+    owner_name: 杨清娟象法层
+    core_question: "具体什么画面？什么人？什么事？怎么改？"
+    philosophical_basis: "命理的社会学——一切归于人际关系画面"
+    tools:
+      - "五步算命法（家里找→出处→取法→皇粮民营→天地一气）"
+      - "天干五合体系（化合3状态：化成/合绊/搅局）"
+      - "十神暗引（5组公式：显象→暗引→真实背景）"
+      - "食神归属论（谁生的财谁说了算）"
+      - "活死五行（活木/死木/活金/寒金…→行业定位）"
+      - "反生反克（金多水浊/水多木漂/木多火塞/火多土焦/土多金埋）"
+      - "调候改运6维（颜色/方位/数字/文化/食物/贵人）"
+      - "财富7等排序"
+      - "官命9种取法"
+      - "气数犹在/已尽（D2也参与应期持续度判断）"
+    files_to_load:
+      always: [modules/m2/m2-five-steps.md]
+      on_demand: [modules/m2/m2-imagery.md, modules/m2/m2-shishen.md, modules/m2/m2-marriage.md, modules/m2/m2-disaster.md, modules/m2/m2-tuning.md]
+    output_schema:
+      picture: "具体画面描述"
+      people: "涉及什么人/什么关系"
+      career_direction: "职业方向"
+      wealth_rank: "7等中的哪等"
+      remediation: "调候改运方案(6维)"
+
+  D3-定时:
+    owner: M3
+    owner_name: 任付红十八道法门
+    core_question: "是不是？什么时候？能持续多久？"
+    philosophical_basis: "命理的工程手册——一切归于操作检查清单"
+    tools:
+      - "十八道法门完整checklist"
+      - "应期6触发器（本字到/伏吟/合冲引动/墓库开闭/藏干透出/倒象成立）"
+      - "三层叠加铁律（原局有+大运到位+流年引爆=必应）"
+      - "十排歌诀（铁口断速查：父母歌/寿元歌/牢役歌/婚姻歌/子女歌/职业歌）"
+      - "十二道门（动门/格局门/天地门/统领门/墓库门/夹拱门/旬空门/鸳鸯门/寿元门/伤残门/牢灾门）"
+      - "穿的不可调和性"
+      - "倒象=必凶判定"
+    files_to_load:
+      always: [modules/m3/m3-foundation.md]
+      on_demand: [modules/m3/m3-tools.md, modules/m3/m3-mechanics.md]
+    output_schema:
+      is_or_not: "铁口断：是/否/待定"
+      trigger_year: "精确应期年份"
+      trigger_type: "6触发中的哪种"
+      three_layers:
+        原局: "✓/✗"
+        大运: "✓/✗"
+        流年: "✓/✗"
+      duration: "持续多久"
+
+# 交叉验证区规则
+cross_validation:
+  trigger: "每个关键组合（合/冲/刑/穿/制/化/墓/库）都必须过交叉验证"
+  process:
+    - "Step 1: D1视角 → 这个组合是什么做功方式？效率？能量级别？"
+    - "Step 2: D2视角 → 这个组合产生什么画面？对应什么人/事？暗引什么？"
+    - "Step 3: D3视角 → 这个组合属于14法中哪种？何时激活？三层叠加齐备？"
+    - "Step 4: 比对 → 一致=★★★★★ / 两家同指=★★★★ / 互补=拼图 / 矛盾=查CF"
+  result_handling:
+    三家一致: "confidence +0.5，进铁口断区"
+    两家同指一家不反对: "★★★★ 高置信"
+    各说各不矛盾: "合并为立体结论（级别+画面+时间）"
+    真矛盾: "查CF-*裁定 → 无CF → 降级★★★ + 入rule-conflicts.md"

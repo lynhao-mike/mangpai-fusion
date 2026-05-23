@@ -1,0 +1,234 @@
+# engine/domain-weights.yaml · 9 大领域 × 4 派 lead/co/audit 权重矩阵
+# v1.0 · 2026-05-23
+#
+# 用途：决定每个领域中哪一派是 lead，冲突仲裁时按权重决胜
+# 调用：engine/arbitration.md → 冲突场景 → 查本表 → 决定胜方
+# 维护：每年 review 一次，或当某派在某领域累计失验 ≥ 5 例时调整
+
+version: "1.0"
+
+# ============================================================
+# 权重定义
+# ============================================================
+weight_levels:
+  lead:
+    value: 1.0
+    label: 主导
+    description: 该领域的最高权威，结论冲突时胜出
+  
+  co_lead:
+    value: 0.8
+    label: 副导
+    description: 该领域的第二权威，常作为 lead 的补强或交叉验证
+  
+  contributor:
+    value: 0.6
+    label: 贡献者
+    description: 该领域有可用规律但非主导，作为参考意见
+  
+  audit:
+    value: 0.4
+    label: 审计
+    description: 该领域规律稀少但仍可参与仲裁（最低权重）
+
+# ============================================================
+# 9 大领域 × 4 派 权重矩阵
+# ============================================================
+domains:
+  
+  # 1. 格局定性
+  geju:
+    name_zh: 格局定性
+    description: 格局成立 / 清浊高低 / 8 大正格 / 变格识别
+    weights:
+      duan: lead          # 段派最强（4 层签字律 + 反局体系）
+      gao: co_lead        # 高派（清浊判 + 32 字诀）
+      yang: contributor   # 杨派（完整性原则）
+      ren: audit          # 任派（10 大格局粗判）
+    rationale: |
+      段派的格局判定颗粒度最细（L0-L5 + 4 层签字 + 风火集），
+      高派以"清纯浊杂"和"先天本元诀"补强，
+      杨派和任派在格局判定上相对粗略。
+  
+  # 2. 富贵层级
+  fugui:
+    name_zh: 富贵层级
+    description: 富贵程度的量化 / 财富等级 / 官运层级
+    weights:
+      duan: lead          # 段派 L0-L5 体系
+      gao: co_lead        # 高派词馆学堂 + 神煞贵格
+      yang: contributor
+      ren: audit
+    rationale: |
+      段派 L0-L5 6 档量化是行业最细，
+      高派"词馆+学堂"对官运 / 学历精确到 985 / 211 / C9 级，
+      二者形成"层级（段）+ 等级（高）"双轴最强。
+  
+  # 3. 婚姻情感
+  hunyin:
+    name_zh: 婚姻情感
+    description: 婚姻成立 / 婚期 / 配偶画像 / 婚后状态 / 桃花
+    weights:
+      yang: lead          # 杨派婚姻规律最丰富
+      duan: co_lead       # 段派宾主感应
+      gao: contributor    # 高派阳包阴 / 桃花归宫
+      ren: contributor    # 任派婚期触发
+    rationale: |
+      杨派的"人来印来 6 条"+"已婚态官杀混杂分流"+"克妻克夫口诀"
+      在婚姻领域规律密度最高，
+      段派宾主感应是底层支撑，
+      高派和任派各有独门补充。
+  
+  # 4. 应期推断
+  yingqi:
+    name_zh: 应期推断
+    description: 大运流年应期 / 具体事件年月 / 触发机制
+    weights:
+      ren: lead           # 任派 18 道 + 6 触发应期最强
+      gao: co_lead        # 高派应期六法 + 大运流年三层
+      duan: contributor   # 段派应期签字
+      yang: contributor   # 杨派人来印来 / 换象
+    rationale: |
+      任派"原局-大运-流年"三层叠加 + 6 触发是应期判定最系统的体系，
+      高派应期六法（合/生/制/墓/送/伏吟）作为机制层补强，
+      段派和杨派各有独到但完整度不及。
+  
+  # 5. 神煞应用
+  shensha:
+    name_zh: 神煞应用
+    description: 神煞贵神 / 凶神 / 神煞与十神交叉应用
+    weights:
+      gao: lead           # 高派《盲派神煞应用宝典》最强
+      ren: co_lead        # 任派 18 道含神煞法门
+      yang: contributor   # 杨派华盖咸池
+      duan: audit         # 段派较少用神煞
+    rationale: |
+      高派的《盲派神煞应用宝典》是 4 派中神煞最完整的体系，
+      包含词馆 / 学堂 / 天乙 / 金舆 / 文昌 / 文曲 / 德秀等多重组合，
+      其他派别多为零散使用。
+  
+  # 6. 调候改运
+  tiaohou:
+    name_zh: 调候改运
+    description: 寒暖燥湿调候 / 主动改运方法 / 风水补救
+    weights:
+      yang: lead          # 杨派调候改运体系（独家）
+      gao: co_lead        # 高派寒暖转化
+      ren: contributor    # 任派阴阳法门
+      duan: audit         # 段派较少涉及
+    rationale: |
+      杨派是 4 派中**唯一**给出主动调运方法论的派别，
+      高派"寒暖转化铁律"作为底层理论支撑，
+      段派较少涉及调候话题。
+  
+  # 7. 健康灾厄
+  jiankang:
+    name_zh: 健康灾厄
+    description: 疾病预测 / 车祸 / 生死关 / 健康整体
+    weights:
+      gao: lead           # 高派《车祸婚姻篇》+《车祸篇》
+      yang: co_lead       # 杨派六穿医学断 / 三刑系统
+      ren: contributor    # 任派应期触发
+      duan: audit
+    rationale: |
+      高派对车祸 / 灾厄有完整的 9-85 页专题体系，
+      杨派的六穿医学断把 6 种穿映射到具体器官疾病，
+      二者结合是 4 派中健康判定最强的组合。
+  
+  # 8. 子女学业
+  jiaoyu:
+    name_zh: 子女学业
+    description: 学历层级 / 子女成长 / 才能判定
+    weights:
+      yang: lead          # 杨派学历 14 条 + 子女宫
+      gao: co_lead        # 高派词馆 / 学堂 / 神煞
+      ren: contributor    # 任派十神组合
+      duan: audit
+    rationale: |
+      杨派学历看法 14 条提供清晰判定公式，
+      高派词馆 / 学堂 / 德秀对顶级学历有专属神煞，
+      二者结合可精确到 985 / C9 级别。
+  
+  # 9. 财运事业
+  caiyun:
+    name_zh: 财运事业
+    description: 财富等级 / 事业方向 / 行业 / 进财方式
+    weights:
+      duan: lead          # 段派富贵 L0-L5 + 财官层级
+      gao: co_lead        # 高派财运篇 + 财运事业断法 105 页
+      yang: contributor   # 杨派承载论
+      ren: contributor    # 任派 18 道法门财门
+    rationale: |
+      段派 L0-L5 是财富等级最细量化，
+      高派 105 页财运事业断法是 4 派中财运专题最长的，
+      二者形成"等级（段）+ 路径（高）"主轴。
+  
+  # 10. 六亲画像（额外，不在原 9 大领域）
+  liuqin:
+    name_zh: 六亲画像
+    description: 父母 / 兄弟 / 子女 / 配偶画像
+    weights:
+      yang: lead          # 杨派 9 要素 + 家里家外
+      duan: co_lead       # 段派宫位象 + 主宾
+      gao: contributor    # 高派宫位法
+      ren: contributor    # 任派 6 类宫位
+    rationale: |
+      杨派的"家里家外+追根溯源"对六亲画像最具象，
+      段派宫位 + 主宾提供结构性框架。
+
+# ============================================================
+# 全局领域排名汇总
+# ============================================================
+domain_lead_summary:
+  duan: [geju, fugui, caiyun]                    # 3 个领域 lead
+  yang: [hunyin, tiaohou, jiaoyu, liuqin]         # 4 个领域 lead
+  gao:  [shensha, jiankang]                       # 2 个领域 lead
+  ren:  [yingqi]                                  # 1 个领域 lead
+
+# 注：每派 lead 数量与擅长领域呼应：
+# 杨派擅长"画面与人生轨迹"（4 个 lead）
+# 段派擅长"格局与层级量化"（3 个 lead）
+# 高派擅长"神煞与灾厄"（2 个 lead）
+# 任派擅长"应期触发"（1 个 lead，但应期是所有领域的时间维度）
+
+# ============================================================
+# 应用规则
+# ============================================================
+application_rules:
+  
+  - rule: 冲突场景查本表
+    description: |
+      当多派对同一现象给出相反结论时，按本表权重决胜。
+      调用：engine/arbitration.md → 冲突解析 → 查 domain_weights[topic] → 取 lead
+  
+  - rule: 联立加权时引用 lead
+    description: |
+      互补层规律输出时，应主动呈现该领域 lead 派的判断结论。
+      格式：[xx 派主导] {结论}（其余 X 派同向：...）
+  
+  - rule: lead 派失验后降权
+    description: |
+      如某派在某领域累计失验 ≥ 5 例（hit_rate < 33%），
+      该派在该领域降级（lead → co_lead 或 contributor）
+      此操作必须人工 review 后执行
+  
+  - rule: 跨领域联合判断
+    description: |
+      复合事件（如"婚后财运"）涉及多领域，
+      按主领域 lead 决定，副领域作补充。
+      例：婚后财运 → 婚姻 lead = yang，副 = caiyun lead duan，
+         结论 = 杨派主导画面 + 段派补充层级
+
+# ============================================================
+# 元数据
+# ============================================================
+metadata:
+  version: "1.0"
+  reviewed_by: "[待人工审核]"
+  rationale_source: "盲派 4 派擅长领域的实战共识"
+  last_review: 2026-05-23
+  review_cycle: 1_year
+  
+  # 权重调整历史
+  history:
+    - 2026-05-23: 初始版本，基于 4 派教学大纲与既有应验记录确定

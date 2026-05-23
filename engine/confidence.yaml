@@ -1,0 +1,362 @@
+# engine/confidence.yaml · 双轨制置信度引擎
+# v1.0 · 2026-05-23
+#
+# 用途：每条断语必跑此引擎，输出 ★ 等级 + 百分比
+# 调用：analyst.md → 推断每条结论时调用 → 输出双轨制置信度
+# 维护：详见 META/calibration-methodology.md
+
+version: "1.0"
+
+# ============================================================
+# 一、组成公式
+# ============================================================
+formula:
+  description: |
+    final_score (0-100) = α × static_score + β × dynamic_score
+    
+    动态分采样保护：当 hit_count + miss_count < 3 时，dynamic_score 不可信
+                    → final_score = static_score (暂用静态分)
+  
+  weights:
+    alpha_static: 0.4    # 静态权重（理论强度）
+    beta_dynamic: 0.6    # 动态权重（应验权重）—— 实战命中率优先
+  
+  rationale: |
+    用户偏好"宁慢不假"。因此动态分（实战）权重高于静态分（纸面理论）。
+    实战 3 例以下时退回静态分，避免单例污染。
+
+# ============================================================
+# 二、静态分计算（static_score）
+# ============================================================
+static_score:
+  
+  # 基线分：根据规律所属层级决定
+  base_by_layer:
+    consensus: 80         # 共识层（4 派全认可）
+    complementary: 65     # 互补层（2-3 派同向）
+    exclusive: 50         # 独门层（单派独有）
+  
+  # 跨派支持加分（互补层基础上 + 独门规律有同向佐证时）
+  cross_school_bonus:
+    one_supporting: 8     # 1 条同向支持 +8
+    two_supporting: 12    # 2 条同向支持 +12
+    three_or_more: 15     # 3+ 条同向支持 +15（封顶）
+  
+  # 调整因子（adjustment）：-15 ~ +15
+  adjustments:
+    
+    # 来源权威性
+    - factor: source_authority
+      values:
+        master_lecture: +5     # 大师亲口讲义
+        published_book: +3     # 正式出版书籍
+        student_notes: 0       # 学员笔记（中性）
+        forum_post: -3         # 论坛帖子
+    
+    # 规律确定性
+    - factor: determinism
+      values:
+        quantified: +5         # 给出量化条件（如"≥3透"）
+        clear_anchor: +3       # 触发条件明确
+        fuzzy_or: -5           # "或"、"大约" 等模糊表述
+        contradicts_basics: -10 # 与基础理论冲突
+    
+    # 应期具体度
+    - factor: timing_specificity
+      values:
+        with_year_month: +5    # 给出具体年月窗口
+        with_year: +3          # 给出年份
+        no_timing: 0           # 不涉及应期
+    
+    # 古籍佐证
+    - factor: classical_corroboration
+      values:
+        multiple_sources: +10  # 4 派外古籍亦有印证
+        single_source: +5      # 单一古籍佐证
+        none: 0
+
+  # 最终计算公式
+  formula: |
+    static_score = base_by_layer[layer]
+                 + cross_school_bonus[len(cross_school)]
+                 + Σ adjustments[applicable_factors]
+    
+    封顶 100，封底 0
+
+# ============================================================
+# 三、动态分计算（dynamic_score）
+# ============================================================
+dynamic_score:
+  
+  # 命中率
+  hit_rate_formula: hit_count / (hit_count + miss_count)
+  
+  # 样本量置信因子
+  confidence_factor:
+    sample_3:  0.70    # 3 例样本，命中率乘以 0.70
+    sample_5:  0.85    # 5 例样本
+    sample_8:  0.95    # 8 例样本
+    sample_10_plus: 1.00  # 10+ 例样本
+  
+  # 计算公式
+  formula: |
+    dynamic_score = hit_rate × 100 × confidence_factor[sample_size]
+    
+    例：hit_count=4, miss_count=1
+        sample_size=5, hit_rate=0.80
+        dynamic_score = 0.80 × 100 × 0.85 = 68.0
+
+  # 自报数据降权
+  self_reported_penalty:
+    apply_when: 反馈来自命主自报且未经客观验证
+    multiplier: 0.8
+    rationale: 命主主观感受可能掺杂期望偏差，需打折
+
+# ============================================================
+# 四、★ 等级映射
+# ============================================================
+star_mapping:
+  - score_min: 90
+    score_max: 100
+    star: 5
+    label: ★★★★★
+    name: 铁断
+    color: gold
+    output_action: 直接给出确定结论，无需保留措辞
+  
+  - score_min: 80
+    score_max: 89
+    star: 4
+    label: ★★★★
+    name: 高置信
+    color: green
+    output_action: 给出明确结论，可加"高度疑似"措辞
+  
+  - score_min: 65
+    score_max: 79
+    star: 3
+    label: ★★★
+    name: 中置信
+    color: blue
+    output_action: 给出倾向性结论，需向命主求证
+  
+  - score_min: 50
+    score_max: 64
+    star: 2
+    label: ★★
+    name: 倾向性
+    color: yellow
+    output_action: 标记为"可能" + 列出反向可能性
+  
+  - score_min: 0
+    score_max: 49
+    star: 1
+    label: ★
+    name: 存疑
+    color: red
+    output_action: 不输出结论 / 仅作参考线索
+
+# ============================================================
+# 五、跨派联立加权（多派同向场景）
+# ============================================================
+joint_aggregation:
+  
+  # 公式
+  formula: |
+    joint_score = max(scores) + Σ (其余派 score × 0.15)
+    封顶 100
+  
+  # 工作示例
+  examples:
+    
+    - case: "婚期判定，3 派同向"
+      input:
+        - school: yang
+          rule: M2-Y-064
+          score: 80
+        - school: ren
+          rule: M3-R-031
+          score: 78
+        - school: duan
+          rule: M1-D-XXX
+          score: 75
+      calculation: |
+        joint_score = max(80, 78, 75) + 78×0.15 + 75×0.15
+                    = 80 + 11.7 + 11.25
+                    = 102.95 → 封顶 100
+      output: ★★★★★ (100%)
+      note: 3 派同向 → 单派 ★★★★ 升至联立 ★★★★★
+    
+    - case: "学历预测，2 派同向 + 1 派独门加分"
+      input:
+        - school: yang
+          rule: M2-Y-070
+          score: 78
+        - school: gao
+          rule: G-BD-001  # 词馆神煞独门
+          score: 75
+          is_exclusive: true
+      calculation: |
+        joint_score = max(78, 75) + 75×0.15 + exclusive_bonus(5)
+                    = 78 + 11.25 + 5
+                    = 94.25
+      output: ★★★★★ (94%)
+  
+  # 独门加分
+  exclusive_bonus:
+    when: 同向派别中包含某派独门规律
+    bonus: 5
+    rationale: 独门规律的存在意味着该派对该现象有"非常具体"的把握，可加分
+  
+  # 派别支持数门槛
+  thresholds:
+    must_have_at_least_two_schools: false  # 1 派也可输出，但置信度按单派计算
+    upgrade_to_consensus: 4                 # 4 派齐全且历史 ≥80% → 升入共识层
+
+# ============================================================
+# 六、冲突场景置信度
+# ============================================================
+conflict_resolution:
+  
+  # 公式
+  formula: |
+    winner_score = winner.static × winner.domain_weight - loser.static × 0.3
+    loser_score  = loser.static × 0.6
+    
+    输出时：胜出方按 winner_score 计算 ★+%
+            败出方在报告中显式提示，按 loser_score 标注降权
+  
+  # 工作示例
+  example:
+    case: "婚姻领域冲突，杨派 vs 高派"
+    input:
+      yang_position: 不破婚
+      yang_score: 85
+      yang_domain_weight: 1.0  # 婚姻领域杨派 lead = 1.0
+      gao_position: 婚姻多变
+      gao_score: 78
+      gao_domain_weight: 0.6   # 婚姻领域高派 audit = 0.6
+    
+    calculation: |
+      winner (yang):
+        winner_score = 85 × 1.0 - 78 × 0.3 = 85 - 23.4 = 61.6 → ★★★ (62%)
+      
+      loser (gao):
+        loser_score = 78 × 0.6 = 46.8 → ★ (47%)
+    
+    output: |
+      [杨派主导] 不破婚 ★★★ (62%)
+      
+      [高派持反对意见] 婚姻多变 ★ (47%) - 权重低于本结论
+      原因：婚姻领域杨派 lead，高派 audit；
+            高派 G-LF-022 阳包阴 = 多变信号被领域权重降权
+
+# ============================================================
+# 七、防作弊保护
+# ============================================================
+anti_cheat:
+  
+  - rule: 单案例最多算 1 个样本
+    description: |
+      同一案例的反馈 = 1 个样本（不论涉及多少条规律的多少次断验）
+      避免单案例命主特别配合导致规律虚假晋级
+  
+  - rule: 小样本不参与动态分
+    description: |
+      单条规律 sample_size < 3 时，dynamic_score 暂不参与，使用 static_score
+  
+  - rule: 自报 vs 客观证据
+    description: |
+      命主自报数据应用 self_reported_penalty (× 0.8)
+      客观证据（医院诊断书 / 公开资料 / 政府证书）按全权重计算
+  
+  - rule: 大跳级人工 review
+    description: |
+      star 一次跳 2 级（如 ★★ → ★★★★）必须人工 review，
+      避免极端样本或恶意反馈污染规律置信度
+  
+  - rule: 派别同源问题
+    description: |
+      如某条互补规律的 cross_school 都来自相似学派（如杨派+任派同源）→
+      cross_school_bonus 打 0.7 折扣
+
+# ============================================================
+# 八、升降级触发器
+# ============================================================
+status_transitions:
+  
+  - from: candidate
+    to: promoted
+    condition: sample ≥ 3 且 hit_rate ≥ 0.66
+    action: |
+      - 更新 status: promoted
+      - 写入 META/rule-changelog.md
+      - 如所有 4 派均 promoted 且为 cross_school 关系 → 升入 mapping/consensus.md
+  
+  - from: any
+    to: retired
+    condition: sample ≥ 3 且 hit_rate ≤ 0.33
+    action: |
+      - 更新 status: retired
+      - 该规律不再在分析中使用
+      - 写入 META/rule-changelog.md 含失验案例 ID
+  
+  - from: promoted
+    to: candidate
+    condition: 暴露严重冲突 / 命中率从 ≥0.66 跌至 0.33-0.66
+    action: |
+      - 降回 candidate 观察
+      - 触发人工 review
+  
+  - from: any
+    to: frozen
+    condition: 用户审定为不适用 / 来源不可追溯
+    action: |
+      - status: frozen
+      - 不参与任何分析
+      - 待人工核查后再判断
+
+# ============================================================
+# 九、输出格式硬约束
+# ============================================================
+output_format:
+  
+  required_fields_per_assertion:
+    - schools_label: "[派别1+派别2+...]"  # 必带方括号
+    - assertion_text: "结论文字"
+    - star: "★★★★ 等"
+    - percent: "(X%)"
+    - rule_ids: "（规律 ID 列表，可折叠）"
+  
+  required_pattern: "[{schools}] {assertion} {star} ({percent}%)"
+  
+  examples:
+    - "[段+杨+任] 2018 戊戌年婚期 ★★★★★ (92%)"
+    - "[杨派独门] 人来印来 → 配偶星到 ★★★★ (82%)"
+    - "[高派独门] 词馆 + 学堂 = 985 院校 ★★★★ (85%)"
+    - "[杨主导/高反对] 不破婚 ★★★ (62%) - 高派持反对意见 ★ (47%)"
+  
+  forbidden:
+    - 仅给出结论不带置信度  # 例：单独说 "婚期 2018"
+    - 给百分比但不给 ★      # 双轨缺一不可
+    - 隐瞒派别归属          # 例：直接说"古法判定"
+    - 不给规律 ID（必要时） # 用户应能追溯到 4 派规律来源
+
+# ============================================================
+# 十、置信度元数据
+# ============================================================
+metadata:
+  algorithm_version: "1.0"
+  designed_for: "盲派四派融合系统 mangpai-fusion"
+  inspired_by:
+    - "META/calibration-methodology.md"
+    - "lynhao-mike/gufamangpai · evidence-aggregator.yaml"
+    - "lynhao-mike/Mang.pai · calibration-log.md"
+  
+  user_preferences:
+    - 双轨制（★ + 百分比）双轨缺一不可
+    - 实战权重优先于纸面理论
+    - 显式标注派别归属
+    - 不可隐瞒冲突
+  
+  next_review: 2026-08-23  # 3 个月后复盘公式

@@ -1,0 +1,109 @@
+# v5.0 策略选择器 · Strategy Selector
+# 根据用户问题类型选择最优分析策略，替代旧 analysis-flow.md 的固定7步
+# version: 5.0
+# created: 2026-05-21
+# status: active
+# 
+# AI执行摘要（5行人话）：
+# 1. 收到问题后先匹配关键词→选策略A/B/C
+# 2. 策略A=谁对这问题最有力谁先说；策略B=三家全扫；策略C=精推时间
+# 3. 每个策略都有 lead/verify/supplement 三角色
+# 4. 执行完三维引擎后→进证据聚合器→进输出适配器
+# 5. 默认无明确问题=策略B全面画像
+
+default_strategy: B
+
+strategies:
+
+  A-问题驱动:
+    name: 问题驱动
+    description: |
+      用户问具体问题时，匹配三家中谁对该问题有最直接的规则，
+      该家先做"快判"（主导），另两家做"交叉验证"（辅助）。
+      核心：灵活切换主导权，谁对该问题最有力谁先说话。
+    trigger_keywords: [婚姻, 财运, 事业, 健康, 学历, 六亲, 牢狱, 车祸, 子女, 调候改运, 感情, 配偶, 升迁, 跳槽, 投资, 发财, 病, 灾, 父母, 兄弟, 考试, 官司]
+    token_budget:
+      estimated_tokens: "≤15k（base_load ~3k + lead_full ~6k + topic ~3k + verify_minimal ~3k）"
+      warning_threshold: 20000
+    context_budget:
+      mode: minimal_pack
+      minimal_pack_ref: "skill-pack-routes.yaml → strategy_A_minimal"
+      always_load_tokens: "~8,800"
+      on_demand_tokens: "~2,000-4,600（按lead维度选1）"
+      instruction: "上下文<30k时自动降级为minimal_pack，只加载lead维度foundation+1 topic"
+    flow:
+      - "1. 匹配问题类型 → 确定主导维度(lead)"
+      - "2. 主导维度快判（产出核心结论+推理链）"
+      - "3. 验证维度交叉检查（确认/否定/补充）"
+      - "4. 补充维度填充画面/时间/细节"
+      - "5. 证据聚合器 → 分层结论（★级标注）"
+      - "6. 输出适配器 → 专题聚焦模式"
+    dimension_routing:
+      婚姻:     { lead: D1, verify: D3, supplement: D2 }
+      财运:     { lead: D1, verify: D2, supplement: D3 }
+      事业:     { lead: D2, verify: D1, supplement: D3 }
+      健康:     { lead: D3, verify: D1, supplement: D2 }
+      应期:     { lead: D3, verify: D1, supplement: D2 }
+      学历:     { lead: D1, verify: D2, supplement: D3 }
+      六亲:     { lead: D2, verify: D1, supplement: D3 }
+      牢狱:     { lead: D3, verify: D1, supplement: D2 }
+      车祸:     { lead: D3, verify: D1, supplement: D2 }
+      调候改运: { lead: D2, verify: D1, supplement: D3 }
+      子女:     { lead: D1, verify: D3, supplement: D2 }
+
+  B-全面画像:
+    name: 全面画像
+    description: |
+      全面分析时，三维引擎按"D1骨架 → D3铁口弹药 → D2画面改运"顺序全扫，
+      最后汇总聚合，按用户关心维度组织输出。
+      核心：不遗漏，全扫后聚合。
+    trigger_keywords: [全面, 综合, 完整, 帮我看看, 全面分析, 全面看, 整体看]
+    token_budget:
+      estimated_tokens: "~65-80k（D1_full+D2_full+D3_full+topics_all）"
+      warning_threshold: 50000
+      note: "⚠️ 策略B接近上下文窗口上限。若上下文紧张，建议改用策略A问题驱动。"
+    flow:
+      - "1. D1全面扫描（宾主→体用→做功→势→格局→L0-L5）= 骨架"
+      - "2. D3十八道法门checklist全过 = 细节+铁口弹药"
+      - "3. D2五步法+暗引+活死五行+调候 = 画面+改运"
+      - "4. 三家结论汇总 → 证据聚合器 → 冲突仲裁"
+      - "5. 输出适配器 → 全面画像模式"
+
+  C-应期精推:
+    name: 应期精推
+    description: |
+      针对"什么时候"类问题，三维引擎按"粗窗口 → 精确定位 → 持续度"串行精推。
+      核心：时间轴为主线，三家协同定位精确年份。
+    trigger_keywords: [什么时候, 今年, 明年, 几岁, 哪年, 流年, 大运, 运势, 近几年, 未来]
+    token_budget:
+      estimated_tokens: "≤12k（base_load ~3k + D3_full ~5k + D1_minimal ~2k + D2_minimal ~2k）"
+      warning_threshold: 20000
+    context_budget:
+      mode: minimal_pack
+      minimal_pack_ref: "skill-pack-routes.yaml → strategy_C_minimal"
+      always_load_tokens: "~12,500"
+      on_demand_tokens: "~868（仅大限交接场景）"
+      instruction: "策略C天然最轻量，always_load即可完成应期精推，不需要D2文件"
+    flow:
+      - "1. D1应期3法则（大限/出现/引动）→ 定粗窗口"
+      - "2. D3应期6触发+三层叠加 → 精确到年"
+      - "3. D2气数+缘分 → 判持续多久"
+      - "4. 三家同指=铁口 / 两家=高置信 / 一家=观察"
+      - "5. 输出适配器 → 应期时间线模式"
+
+# 主导权切换的逻辑依据
+routing_rationale:
+  婚姻_D1主导: "婚姻核心=宫主星辅结构判定，M1有5种合法+宫星体系"
+  事业_D2主导: "事业核心=干什么/怎么取的画面，M2五步法直接定位职业方向"
+  健康_D3主导: "健康核心=阴阳寒热定纲+作用方式定急慢，M3有最系统纲领"
+  财运_D1主导: "财运核心=做功效率+能量转化，M1的L0-L5+做功层计量最精确"
+  应期_D3主导: "应期核心=三层叠加+6触发，M3有最完整的应期操作手册"
+  学历_D1主导: "学历核心=三星法(官杀/印/食伤)有无做功，M1印做功判定最精确"
+  六亲_D2主导: "六亲核心=十神画面+关系定位，M2暗引体系最能描绘人物"
+  牢狱车祸_D3主导: "灾厄核心=是不是+什么时候，M3有完整的伤残门/牢灾门"
+  调候改运_D2主导: "改运核心=颜色/方位/数字/食物/文化，M2独有调候改运6维体系"
+
+# 策略匹配失败时的默认行为
+fallback:
+  no_keyword_match: "走策略B全面画像"
+  multiple_keywords: "取第一个匹配的问题类型走策略A，其余在Step6专题中补充"
