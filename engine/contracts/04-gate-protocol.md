@@ -1,497 +1,264 @@
-# 应期门协议 · 04-gate-protocol
+# 04 · 应期三层门契约 · 04-gate-protocol
 
-> **本文规定 D3 任派应期三层门的接口与判定细节。**
-> 这是 v1.2 的"灵魂条款"——三层齐备才下铁口断。
+> **本文是 Track-C 的"宪法"。所有 Track-C 子模块（gate/threelayer/chufa/menshu/keys）必须遵守此文档。**
+> 后续 Track 修改本契约前需 PR 通知。
 
-最后更新：2026-05-23（W1.3）
-版本：v1.2.0
-依赖：03-findings-schema（GateResult 结构定义在那里）
-
----
-
-## 一、设计起源
-
-v1.0 失验复盘：
-
-| 案例 | 失验 | 根因 |
-|---|---|---|
-| C-2026-001 | 婚期 2013 → 实际 2005，差 8 年 | 应期判定只看流年单层引动，未校验"原局有夫宫被动 + 大运到位" |
-| C-2026-002 | "婚姻极坎坷不婚" → 23 岁稳定 20 年 | 杨派"五凶煞=婚凶"被当机械铁断，未做应期三层校验 |
-
-v1.2 的解药：**应期判定必须三层齐备 → 才允许 ★★★★★**。
+最后更新：2026-05-23（W2 · Track-C 实施同步交付）
+版本：v1.2.0-track-C
+适用分支：`main`（v1.2-build 已合并 main，新工作直推 main）
+状态：⚠️ **实施同步契约** —— 本文件由 Track-C 在交付实现的同时撰写。
+W1.3 阶段并未提前交付 02/03/04/06/07/08 这 6 份契约（仅 00/09 已交付），
+Track-C 因此采取"以代码为锚定，文档化既定接口"的方式补齐 04。
 
 ---
 
-## 二、Gate API（D3 引擎入口）
+## 一、设计原则（v1.2 灵魂条款）
 
-```python
-# engine/yingqi/gate.py
-def gate_yingqi(
-    year: int,
-    candidate_event: str,
-    domain: Literal["婚姻","事业","财运","健康","学业","六亲","其他"],
-    energy: EnergyFindings,
-    picture: PictureFindings,
-    parsed: ParsedInput,
-) -> GateResult:
-    """
-    对单个候选事件做三层应期 gate 判定。
-
-    返回 GateResult，其中 passed_layers ∈ [0, 3]：
-        0 → 不输出（candidate_event 被丢弃）
-        1 → confidence.star 最多 ★★★
-        2 → confidence.star 最多 ★★★★
-        3 → confidence.star 可达 ★★★★★
-    """
+```
+原局有 + 大运到位 + 流年引爆 = 三层齐备 → 铁口断 ★★★★★
 ```
 
+任派十八道法门核心心法 §M3-R-003：
+- **原局**定层次（命中可能性）
+- **大运**定吉凶（窗口启闭）
+- **流年**定应期（具体引爆点）
+
+**强约束**：任何 ★★★★★ 应期断语必须 `passed_layers == 3`。
+否则星级被强制降级（见 § 八 置信度公式）。
 
 ---
 
-## 三、L1 · 原局有（layer1_check）
+## 二、模块结构
 
-> **本质**：候选事件对应的"关键字"是否在原局四柱（含藏干）中存在。
-
-### 3.1 关键字映射表（domain → key chars）
-
-```yaml
-婚姻:
-  primary:
-    - 配偶星（男命：正/偏财；女命：正官/七杀）的天干
-    - 婚宫支（日支）
-  secondary:
-    - 配偶星藏干所在地支
-    - 月柱地支（杨派：父母给的婚配格局）
-
-事业:
-  primary:
-    - 官杀星天干（无官杀以食伤为业）
-    - 用神（D1 EnergyFindings.tiyong.purpose）
-  secondary:
-    - 官星藏干位置
-    - 月令（事业宫主要是月柱）
-
-财运:
-  primary:
-    - 财星天干
-    - D1 EnergyFindings.tiyong.purpose 中财类字
-  secondary:
-    - 财库（辰戌丑未中藏财）
-    - 食伤生财链上的字
-
-健康:
-  primary:
-    - 日干本身（太弱/太旺都是病根）
-    - 受刑冲穿破最重的支
-  secondary:
-    - 神煞（白虎/羊刃/灾煞）所挂柱
-
-学业:
-  primary:
-    - 印星天干
-    - 食伤天干（理科/才华）
-  secondary:
-    - 词馆/学堂/文昌神煞所挂柱
-
-六亲:
-  primary:
-    - 父：偏财；母：正印；兄弟：比肩；子女：食伤(女)/官杀(男)
-  secondary:
-    - 各六亲对应宫位：年=父母 / 月=兄弟 / 日=配偶 / 时=子女
-
-其他:
-  primary: [日干, 用神]
-  secondary: []
 ```
-
-### 3.2 L1 判定逻辑
-
-```python
-def layer1_check(
-    domain: str, parsed: ParsedInput, energy: EnergyFindings
-) -> LayerCheck:
-    keys_primary = get_primary_keys(domain, parsed.bazi, energy)
-    keys_secondary = get_secondary_keys(domain, parsed.bazi, energy)
-
-    found = []
-    for k in keys_primary:
-        if is_in_palace(k, parsed.bazi, palace="any") or is_canggan(k, parsed.bazi):
-            found.append(k)
-
-    if len(found) >= 1:
-        return LayerCheck(layer="L1_原局有", passed=True,
-                          evidence_chars=found, rationale=f"原局存在关键字: {found}")
-    # 退而求其次：secondary
-    for k in keys_secondary:
-        if is_in_palace(k, parsed.bazi, palace="any") or is_canggan(k, parsed.bazi):
-            return LayerCheck(layer="L1_原局有", passed=True,
-                              evidence_chars=[k], rationale=f"原局存在次级关键字 {k}")
-
-    return LayerCheck(layer="L1_原局有", passed=False,
-                      evidence_chars=[], rationale="原局未见 domain 关键字")
+engine/yingqi/
+├── __init__.py          gate_yingqi 唯一对外入口（lazy import）
+├── types.py             GateResult / LayerCheck / TriggerEvent / Door
+├── keys.py              domain → 关键字映射（primary / secondary / required_dayun）
+├── threelayer.py        layer1_check / layer2_check / layer3_check
+├── chufa.py             6 触发引擎 + pick_primary_trigger
+├── menshu.py            12 道门分类（核心 6 已实现）
+└── gate.py              gate_yingqi 主入口（含上游一致性 + 置信度）
 ```
-
-**特殊豁免**：当 `domain == "婚姻"` 且**配偶星完全不见原局**（含藏干），`L1` 仍允许 passed=True 但 rationale 标记 "无星借宫"，由 D2 PictureFindings.marriage_picture 提供配偶画像。这是杨派"无官借伤、无财借食"的体现。
 
 ---
 
-## 四、L2 · 大运到位（layer2_check）
+## 三、domain 关键字映射
 
-> **本质**：当前年份所在大运（含正在过渡的相邻大运）是否提供了"必需触发字"。
+| domain | primary 十神 | 主位字 | 备注 |
+|---|---|---|---|
+| 婚姻 | 男:正/偏财，女:正官/七杀 | 日支 | 男无财→食伤；女无官→财/印 |
+| 事业 | 正官/七杀/正印/偏印 | — | 食伤 + 财 为 secondary |
+| 财运 | 正/偏财，食神/伤官 | — | 官杀（统）为 secondary |
+| 健康 | 正/偏印 + 日主 + 日支 + 禄 | 日干 + 日支 | 食神（寿星）为 secondary |
+| 学业 | 正/偏印，食神/伤官 | — | 官杀 + 财 为 secondary |
+| 六亲 | 按 sub_domain 分流 | 对应宫位 | 父=偏财年柱；母=正印月柱；兄弟=比劫月支；子女=男:官杀 女:食伤 时柱 |
+| 其他 | 空 | — | 不强制约束 |
 
-### 4.1 必需触发字定义
+`get_primary_keys / get_secondary_keys / get_required_dayun_chars` 三个函数对外。
 
-| domain | 必需大运字（满足任一） |
+---
+
+## 四、6 触发判定（§M3-R-031）
+
+| ID | 触发名 | detect_* 函数 | 强度模式 |
+|---|---|---|---|
+| T1 | 本字到 | `detect_benzi_dao` | `0.4 + 0.2×匹配数` |
+| T2 | 伏吟引动 | `detect_fuyin` | `0.7`（柱级伏吟） |
+| T3 | 合冲引动 | `detect_hechong` | `0.5 + 0.15×匹配数` |
+| T4 | 墓库开闭 | `detect_muku` | `0.6 + 0.15×匹配数`（仅库内含 key 才触发） |
+| T5 | 藏干透出 | `detect_canggan_tou` | `0.55 + 0.15×匹配数` |
+| T6 | 倒象成立 | `detect_daoxiang` | `0.95`（凶应铁律） |
+
+`detect_all_triggers(parsed, year, primary_keys, yong_shen_chars) -> list[TriggerEvent]`
+
+### 4.1 倒象（任派核心铁律）
+
+倒象 = 用神受到"又生又克又合冲"矛盾作用。
+
+Track-C 实现按"baseline vs active 增量"判定（避免对原局多重作用强的命过敏）：
+
+| 条件 | 含义 |
 |---|---|
-| 婚姻 | 配偶星天干 / 婚宫支三合三会六合 / 桃花引动字 |
-| 事业 | 官杀字 / 印动字 / 用神到位 |
-| 财运 | 财星 / 财库 / 食伤生财链触发字 |
-| 健康 | 受刑冲穿的字 / 食神/枭神（伤食对冲） |
-| 学业 | 印星 / 文昌 / 词馆字 |
-| 六亲 | 对应六亲星 / 对应宫位被引动 |
+| A | 大运/流年新增 ≥ 2 种关系类型 + 生克合三态齐 + 累计 ≥ 4 种 |
+| B | 大运/流年新增类型含凶煞（冲/穿/刑/克）+ 累计 ≥ 4 种 |
+| C | 大运/流年新增作用次数 ≥ 4 (兜底) |
 
-### 4.2 L2 判定逻辑
+满足任一条件 → 倒象成立 → `is_xiong=True`。
 
-```python
-def layer2_check(
-    year: int, domain: str, energy: EnergyFindings, parsed: ParsedInput
-) -> LayerCheck:
-    dayun_step = get_dayun_at_year(parsed.dayun, parsed.birth["公历年"], year)
-    needed_chars = get_required_dayun_chars(domain, energy, parsed)
+### 4.2 主触发优先级
 
-    # 当前大运
-    current = dayun_step.干支
-    found_in_current = [c for c in needed_chars if c in (current.gan, current.zhi)]
+`pick_primary_trigger(triggers, domain)` 按以下优先级返回单一主触发：
 
-    # 过渡期：当前年距大运起讫年 ±1 年内，相邻大运字也算
-    transition = is_in_dayun_transition(year, dayun_step, threshold_years=1)
-    found_in_adjacent = []
-    if transition:
-        adjacent = get_adjacent_dayun(parsed.dayun, dayun_step)
-        if adjacent:
-            found_in_adjacent = [
-                c for c in needed_chars
-                if c in (adjacent.干支.gan, adjacent.干支.zhi)
-            ]
+1. 倒象成立  ← 最高（凶应必报）
+2. 墓库开闭
+3. 合冲引动
+4. 藏干透出
+5. 本字到
+6. 伏吟引动
 
-    all_found = found_in_current + found_in_adjacent
-    if all_found:
-        return LayerCheck(
-            layer="L2_大运到位", passed=True, evidence_chars=all_found,
-            rationale=f"大运{current}{'(过渡期)' if transition else ''}提供必需字: {all_found}"
-        )
-    return LayerCheck(
-        layer="L2_大运到位", passed=False, evidence_chars=[],
-        rationale=f"大运{current}未提供 domain 必需字"
-    )
-```
-
-**过渡期惩罚**：在 `passed_layers` 计算时，若 L2 仅靠过渡期字通过，最终 `confidence.star` 强制再 -1（独立于变异度惩罚）。
-
+同优先级按 strength 倒序。
 
 ---
 
-## 五、L3 · 流年引爆（layer3_check）
+## 五、12 道门分类（§M3 §16）
 
-> **本质**：流年是否对原局/大运的关键字构成 6 触发之一。
+任派理论列 13 道门（动/格局/天地/十天/十二地/统领/墓库/夹拱/旬空/鸳鸯/寿元/伤残/牢灾）。
+Track-C MVP 实现核心 6 个 + "未分类"兜底：
 
-### 5.1 6 触发完整判定（任派 §17）
-
-```python
-def layer3_check(
-    year: int, domain: str, energy: EnergyFindings,
-    picture: PictureFindings, parsed: ParsedInput
-) -> tuple[LayerCheck, list[TriggerEvent], Optional[TriggerEvent]]:
-    liunian = liunian_ganzhi(year)
-    triggers: list[TriggerEvent] = []
-
-    # 触发 1：本字到（流年地支 = 原局某关键字）
-    target_keys = get_primary_keys(domain, parsed.bazi, energy) + \
-                  get_secondary_keys(domain, parsed.bazi, energy)
-    for k in target_keys:
-        if liunian.zhi == k or liunian.gan == k:
-            triggers.append(TriggerEvent(
-                type="本字到",
-                description=f"流年{liunian}的{k}字 = 原局关键字",
-                target_chars=[k]))
-
-    # 触发 2：伏吟（流年柱 = 原局某柱）
-    for palace in ["年柱","月柱","日柱","时柱"]:
-        pillar: GanZhi = get_palace(parsed.bazi, palace)
-        if liunian == pillar:
-            triggers.append(TriggerEvent(
-                type="伏吟",
-                description=f"流年{liunian}与{palace}伏吟",
-                target_chars=[liunian.gan, liunian.zhi]))
-
-    # 触发 3：合冲引动（流年合/冲原局某柱地支）
-    for palace_zhi in ["年支","月支","日支","时支"]:
-        zhi = get_palace(parsed.bazi, palace_zhi)
-        if zhi_liuhe(liunian.zhi, zhi) or zhi_chong(liunian.zhi, zhi) \
-           or zhi_xing(liunian.zhi, zhi) or zhi_chuan(liunian.zhi, zhi):
-            triggers.append(TriggerEvent(
-                type="合冲引动",
-                description=f"流年{liunian.zhi}与{palace_zhi}({zhi})合/冲/刑/穿",
-                target_chars=[liunian.zhi, zhi]))
-
-    # 触发 4：墓库开闭（流年地支为墓库 + 当年大运构成开/冲）
-    if liunian.zhi in ["辰","戌","丑","未"]:
-        dayun_step = get_dayun_at_year(parsed.dayun, parsed.birth["公历年"], year)
-        if zhi_chong(liunian.zhi, dayun_step.干支.zhi):
-            triggers.append(TriggerEvent(
-                type="墓库开闭",
-                description=f"流年{liunian.zhi}墓库被大运{dayun_step.干支.zhi}冲开",
-                target_chars=[liunian.zhi]))
-
-    # 触发 5：藏干透出（流年天干 = 原局某支藏干）
-    for palace_zhi in ["年支","月支","日支","时支"]:
-        zhi = get_palace(parsed.bazi, palace_zhi)
-        cangs = get_canggan(zhi)
-        if any(c.gan == liunian.gan for c in cangs):
-            triggers.append(TriggerEvent(
-                type="藏干透出",
-                description=f"流年透出原局{palace_zhi}({zhi})藏干{liunian.gan}",
-                target_chars=[liunian.gan]))
-
-    # 触发 6：倒象成立（关键字同时被合+冲+刑/克 → 必凶）
-    inverted = check_daoxiang(liunian, energy.tiyong.purpose, parsed.bazi)
-    if inverted:
-        triggers.append(TriggerEvent(
-            type="倒象成立",
-            description=f"用神{inverted.target}同时被{inverted.relations}, 倒象=必凶",
-            target_chars=inverted.related_chars))
-
-    primary = pick_primary_trigger(triggers, domain)
-    passed = len(triggers) > 0
-    return (LayerCheck(layer="L3_流年引爆", passed=passed,
-                      evidence_chars=[t.target_chars for t in triggers],
-                      rationale=f"{len(triggers)} 个触发: {[t.type for t in triggers]}"),
-            triggers, primary)
-```
-
-### 5.2 6 触发的优先级（同年多触发时取主导）
-
-```
-优先级（高→低）：
-  倒象成立 (必凶)        ← 强信号，凶性优先
-  伏吟                   ← 第二强
-  本字到 + 合冲引动      ← 双触发等价
-  墓库开闭               ← 中等
-  藏干透出               ← 中等
-  单合/单冲              ← 弱（在合冲引动里已统计）
-```
-
-`pick_primary_trigger()` 按此优先级返回 `primary_trigger`。
-
----
-
-## 六、综合判定 + 12 道门归属
-
-```python
-def gate_yingqi(year, candidate_event, domain, energy, picture, parsed) -> GateResult:
-    l1 = layer1_check(domain, parsed, energy)
-    l2 = layer2_check(year, domain, energy, parsed)
-    l3, triggers, primary = layer3_check(year, domain, energy, picture, parsed)
-
-    passed_layers = sum([l1.passed, l2.passed, l3.passed])
-
-    # 上游约束校验
-    energy_consistent = check_against_energy(candidate_event, domain, energy)
-    picture_consistent = check_against_picture(candidate_event, domain, picture, year)
-    if not picture_consistent:
-        # 例：D2 marriage_picture.初婚年龄=23, 不能在 35 岁判"初婚"
-        passed_layers = min(passed_layers, 1)
-
-    # 12 道门归属
-    door = classify_into_12_doors(triggers, domain, energy, picture, parsed)
-
-    # 置信度（详见 06-confidence-model）
-    confidence = compute_yingqi_confidence(
-        passed_layers=passed_layers,
-        triggers=triggers,
-        l2_via_transition=l2_uses_transition(l2),
-        upstream_consistent=energy_consistent and picture_consistent,
-    )
-
-    return GateResult(
-        year=year, candidate_event=candidate_event, domain=domain,
-        layer1=l1, layer2=l2, layer3=l3, passed_layers=passed_layers,
-        triggers=triggers, primary_trigger=primary, door=door,
-        confidence=confidence,
-        energy_consistent=energy_consistent, picture_consistent=picture_consistent,
-        evidence=collect_evidence(l1, l2, l3, triggers),
-        upstream_energy_hash=findings_hash(energy),
-        upstream_picture_hash=findings_hash(picture),
-    )
-```
-
-### 6.1 12 道门分类规则（任派 §16）
-
-```yaml
-动门:
-  trigger: 流年合冲引动且引动到关键宫位
-  domains: [婚姻, 事业, 财运, 健康]
-
-格局门:
-  trigger: 流年破坏或成全原局格局
-  domains: [事业, 财运]
-
-天地门:
-  trigger: 流年天干地支同时引动同一柱
-  domains: [全]
-
-统领门:
-  trigger: 财统官 / 官统财 / 杀统财 等层次跃升
-  domains: [事业, 财运]
-
-墓库门:
-  trigger: 触发=墓库开闭
-  domains: [财运, 六亲, 健康]
-
-夹拱门:
-  trigger: 流年与原局形成夹/拱配置
-  domains: [事业, 婚姻]
-
-旬空门:
-  trigger: 关键字落入年柱旬空
-  domains: [六亲, 财运]
-
-鸳鸯门:
-  trigger: 配偶星与日干形成五合 + 流年引动
-  domains: [婚姻]
-
-寿元门:
-  trigger: 日干被严重克泄 + 流年填实
-  domains: [健康, 寿命]
-
-伤残门:
-  trigger: 刑冲落在身宫 + 神煞(羊刃/血刃/白虎)
-  domains: [健康, 灾厄]
-
-牢灾门:
-  trigger: 七杀+羊刃+刑冲在年/月柱
-  domains: [灾厄, 牢狱]
-```
-
----
-
-## 七、置信度等级映射（与 03-findings-schema § 七 一致）
-
-```python
-def confidence_ceiling_by_passed_layers(passed: int) -> int:
-    """根据 passed_layers 给出 ★ 上限"""
-    return {0: 0, 1: 3, 2: 4, 3: 5}[passed]
-```
-
-最终 `confidence.star = min(规律置信度上限, 三层 gate 上限) - 变异度惩罚 - 过渡期惩罚`。
-
-详见 `06-confidence-model.md`。
-
-
----
-
-## 八、回放：用三层门复核 C-2026-001 婚期
-
-> 验证 v1.2 三层门是否能修正 v1.0 的失验。
-
-**命盘**：庚申·戊寅·壬子·辛丑（壬日干，男）
-**v1.0 预测**：婚期 2013 → **实际 2005 结婚**
-
-### 8.1 v1.0 旧逻辑（无 gate）
-
-仅看：2013 癸巳，杨派"流年与日支构合" + 任派"流年引动夫宫" → 综合 ★★★★ → 输出。
-
-### 8.2 v1.2 新逻辑（三层 gate）
-
-#### 候选 A：2005 乙酉
-- **L1 原局有**：日支子（婚宫）✓ 配偶星正财（丁/T-paste 看丙丁）藏在月支寅 ✓ → **PASS**
-- **L2 大运到位**：2005 在 18-27 岁庚辰运，辰=配偶星正财库的对冲字 ✓ → **PASS**
-- **L3 流年引爆**：乙酉，酉与日支子无合无冲 ✗ ；但酉与年支申合 → 触发 3 合冲引动 ✓ → **PASS**
-- `passed_layers = 3` → 允许 ★★★★★
-
-#### 候选 B：2013 癸巳
-- **L1 原局有**：✓
-- **L2 大运到位**：2013 在 28-37 岁辛巳运，辛巳本运 ✓
-- **L3 流年引爆**：癸巳，巳冲日柱时柱无关；与原局申支合（巳申合水）→ 触发 3 ✓
-- `passed_layers = 3` → 也允许 ★★★★★
-
-**问题**：两个候选都过门。
-
-### 8.3 真正的修正：D2 PictureFindings 上游约束
-
-D2 杨派 picture_matcher 在跑五步法时，会标记：
-
-```yaml
-picture.marriage_picture:
-  初婚最佳窗口: [22, 28]    # 由 D2 计算（杨派"印来了+人来了"）
-  早婚信号: 强               # D1 EnergyFindings 配偶星贴身 + 大运早期到位
-```
-
-D3 在做 picture_consistent 检查时：
-- 2005 ∈ [22, 28] 窗口 ✓
-- 2013 不在 [22, 28] 窗口 ✗ → `picture_consistent = False` → `passed_layers = min(3, 1) = 1`
-
-**结论**：v1.2 在 D2 D3 的联合约束下，2005 ★★★★★，2013 ★★★。
-**主输出**：2005，与实际一致。
-
-### 8.4 这就是"三层门 + 上游约束"的力量
-
-不仅是 D3 自检，还要：D1 给级别约束、D2 给画面约束、D3 才在画面允许的窗口里搜索应期。
-
-**v1.0 失败的根因**：让 D3 自由搜索全时间轴，没有 D2 给的"早婚窗口"。
-
----
-
-## 九、Domain-specific 注意事项
-
-### 9.1 婚姻 Gate
-- L1 配偶星缺则启用"无星借宫"豁免
-- L3 必须含至少 1 个 `合冲引动` 或 `本字到` 或 `鸳鸯门`触发
-- **picture_consistent 严校**（婚期窗口）
-
-### 9.2 健康 Gate
-- L1 优先看刑冲穿最重的支
-- L3 倒象成立 = 直接 ★★★★★（任派"倒象=必凶"硬规律 MR-006）
-- D4 高派的 health_findings.risk_years 作为额外加权（不算独立层）
-
-### 9.3 财运 Gate
-- L2 必须含财库相关字（辰戌丑未中含财方算）
-- 统领门触发 = 层次跃升（如打工→老板）
-
-### 9.4 事业 Gate
-- L2 官星动 + L3 官星到 = 标准升迁
-- L3 含"统领门" = 跨层级跃升
-
----
-
-## 十、回归测试要求
-
-`tests/yingqi/test_gate_replays.py` 必须包含：
-
-| 测试 | 输入 | 期望输出 |
+| 道门 | 触发条件 | 实现状态 |
 |---|---|---|
-| C-2026-001 真婚期 | year=2005, domain=婚姻 | passed_layers=3, ★★★★★ |
-| C-2026-001 旧错婚期 | year=2013, domain=婚姻 | passed_layers≤1（被 picture_consistent 拒）, ★★★ |
-| C-2026-002 真婚期 | year=2005, domain=婚姻 | passed_layers≥2, ★★★★+ |
-| C-2026-001 母亡 | year=2020, domain=六亲 | passed_layers=3, ★★★★★ |
-| C-2026-001 提副科 | year=2020, domain=事业 | passed_layers=3, ★★★★★ |
+| 寿元门 | health domain + 倒象 / 主位被冲 | ✅ |
+| 牢灾门 | 食伤官杀两敌 + 倒象 (career/health/其他) | ✅ |
+| 鸳鸯门 | 婚姻 domain + 触发涉及妻/夫宫或配偶星 | ✅ |
+| 统领门 | 财官同现 + 触发涉及财/官 (career/wealth) | ✅ |
+| 墓库门 | 墓库开闭触发 | ✅ |
+| 动门 | 主位被引动 / ≥2 触发齐发 (兜底) | ✅ |
+| 格局门 | 格局成立 → 由 Track-A energy 评估 | 🟡 留口 |
+| 天地门 | 字打通天地之气 | ⏳ 后续 |
+| 十天门/十二地门 | 干支专门 | ⏳ 后续 |
+| 夹拱门 | 拱禄拱贵 + 大运/流年补足 | ⏳ 后续 |
+| 旬空门 | 空亡引动 | ⏳ 后续（Track-D 旁证） |
+| 伤残门 | 日干根坏 / 印枭重重 + 食神运 | ⏳ 后续（Track-D 旁证） |
 
-每条 fail 都让 v1.2 不达 §I 发布门槛。
+`classify_into_12_doors(parsed, domain, triggers, energy, picture) -> Optional[Door]`
+
+优先级（按任务说明 § 阶段 2）：寿元/牢灾 > 鸳鸯/统领 > 墓库/动门。
 
 ---
 
-## 十一、版本演进
+## 六、上游一致性硬约束
 
-| 版本 | 变更 |
+`gate_yingqi` 在 L1/L2/L3 后必须运行两个一致性检查：
+
+### 6.1 check_against_energy
+
+| 输入 | 检查 |
 |---|---|
-| 1.2.0 | 初版，三层门 + 6 触发 + 12 道门 + 上游约束 |
+| `EnergyFindings.{domain}_capable=False` AND candidate_event 是"成立性事件"（结婚/升迁/录取等） | 返回 `(False, [reason])` |
+| 否则 | `(True, ...)` |
 
-新增 trigger 类型 / 新增 door 类型必须：
-1. PR 标记 `[GATE]`
-2. 提供至少 1 个真实案例验证
-3. 整合 agent 批准
-4. tests/yingqi/ 新增对应单测
+不一致 → `passed_layers = min(passed_layers, 2)`。
+
+### 6.2 check_against_picture（修复 G2 的关键）
+
+| 输入 | 检查 |
+|---|---|
+| domain="婚姻" AND candidate_event 是结婚类 AND age ∉ best_window AND age ∉ secondary_window | `(False, [reason])` |
+| domain="学业" AND is_edu AND age ∉ key_year_window | `(False, [reason])` |
+| domain="事业" AND age ∉ rising_windows | `(True, ...)` （事业不强制，仅作次佳标注） |
+
+不一致 → `passed_layers = min(passed_layers, 1)`。
+
+**这是 G2 圣杯（C-2026-001-庚申戊寅壬子辛丑 婚期偏差 8 年）的修复机制**：
+即使三层判定都过，picture 给出的婚窗 [23, 28] 之外的年份仍被强制钳到 ≤ 1 层。
 
 ---
 
-**契约结束。下一份请阅读 `05-rule-lifecycle.md`（W1.3 第 2 份）。**
+## 七、GateResult schema（03 § 七）
+
+```python
+@dataclass
+class GateResult:
+    schema_version: str
+    year: int
+    candidate_event: str
+    domain: str
+
+    layer1: Optional[LayerCheck]    # 原局
+    layer2: Optional[LayerCheck]    # 大运
+    layer3: Optional[LayerCheck]    # 流年
+    passed_layers: int              # 0..3
+
+    triggers: list[TriggerEvent]
+    primary_trigger: Optional[TriggerEvent]
+    door: Optional[Door]
+
+    energy_consistent: bool
+    picture_consistent: bool
+    consistency_reasons: list[str]
+
+    confidence: float               # 0.0 - 1.0
+    star: int                       # 1 - 5
+    is_xiong: bool
+
+    upstream_energy_hash: str
+    upstream_picture_hash: str
+    rule_ids: list[str]
+    summary: str
+```
+
+序列化：`to_dict()` / `from_dict()` / `hash()`（16 位 MD5 截断）。
+
+---
+
+## 八、置信度公式（W3 应期专用）
+
+`compute_yingqi_confidence(passed_layers, triggers, primary_trigger, is_xiong, energy_consistent, picture_consistent) -> (conf, star)`
+
+```
+conf = passed_layers × 0.25
+     + primary_trigger.strength × 0.20
+     + (energy_consistent ? 0.05 : 0)
+     + (picture_consistent ? 0.05 : 0)
+     + (is_xiong ? 0.10 : 0)
+
+cap = 0.85 if passed_layers < 3 else 1.00
+conf = min(conf, cap)
+
+star (按 confidence.yaml):
+  ≥ 0.90 → 5    ≥ 0.80 → 4    ≥ 0.65 → 3
+  ≥ 0.50 → 2    < 0.50 → 1
+
+★ 强约束（任意一条触发即降级）:
+  passed_layers <  3 → star ≤ 4
+  passed_layers <= 1 → star ≤ 3
+  passed_layers == 0 → star ≤ 2
+```
+
+---
+
+## 九、对外契约（其他 Track 必读）
+
+### 9.1 Track-A 段派 D1 提供
+- `EnergyFindings.{marriage,career,wealth,health,education}_capable: bool`
+- `EnergyFindings.domain_yong_shen[domain]: list[str]`
+- `EnergyFindings.upstream_hash: str`
+
+Track-C 在 L1 时使用 capable 标志降级；用 yong_shen 增强 keys。
+
+### 9.2 Track-B 杨派 D2 提供
+- `PictureFindings.marriage_picture.best_window: tuple[int, int]`
+- `PictureFindings.marriage_picture.secondary_window: Optional[tuple[int, int]]`
+- `PictureFindings.education_picture.key_year_window: Optional[tuple[int, int]]`
+- `PictureFindings.career_picture.rising_windows: list[tuple[int, int]]`
+- `PictureFindings.upstream_hash: str`
+
+Track-C 用窗口实现 picture_consistent 硬约束。
+
+### 9.3 Track-D 高派 D4 旁证
+Track-C 不直接消费 SupportFindings，但 Track-D 可用 GateResult 作为
+"是否触发某神煞专项"的输入（如倒象 + 天罗地网 = 婚姻血光）。
+
+### 9.4 Track-F 报告渲染
+GateResult 有 `summary` 字段（一行人类可读总结）和完整结构化数据。
+Track-F 应优先用 `rule_ids` 输出 trace_id，`summary` 作 fallback。
+
+### 9.5 Track-G 自迭代
+GateResult 的 `hash()` 提供稳定 trace_id。
+反馈系统应按 `(year, domain, candidate_event, passed_layers)` 建索引，
+对失验案例 rerun gate_yingqi 验证是否上下游修改改善了判定。
+
+---
+
+## 十、修改流程
+
+修改本契约 = PR 到 main，title 前缀 `[CONTRACT-04]`。
+若改动以下任一字段，必须通知所有运行中的 agent：
+- GateResult 的 `passed_layers` 语义
+- TRIGGER_TYPES 顺序
+- `compute_yingqi_confidence` 公式
+
+---
+
+**04-gate-protocol 契约结束。下一份 02/03/05/06/07/08 由后续 Track 补齐。**
