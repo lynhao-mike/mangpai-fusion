@@ -1,0 +1,65 @@
+# engine/calibration.yaml · v1.2 自迭代引擎阈值与开关
+#
+# 落地契约：
+#   05-rule-lifecycle § 九（紧急回滚开关 + 全部阈值）
+#   06-confidence-model § 二（变异度惩罚阈值）
+#   决策 E（Beta 分布 + variance > 0.15 → -1★）
+#   决策 G（confirmed 累计 3 次失验 → flagged_for_review）
+#   决策 K（每 10 案触发一次跨派扫描）
+#
+# 任何阈值修改 → 必须 PR + 影响评估 + 触发回归测试。
+# 这是 Track-G "自迭代引擎"的全局配置，所有 tools/feedback_loop / rule_lifecycle
+# / drift_detect / cross_school_scan / extract_predictions 启动时都从此文件读阈值。
+
+schema_version: "1.2.0"
+
+# ----------------------------------------------------------------
+# 紧急回滚开关
+# ----------------------------------------------------------------
+# 设 true → ingest_feedback() 静默跳过所有 hits/misses/status 更新；
+# 状态机锁定，仅写 META/iteration-log.md 标记 "FROZEN"。
+# 用于线上事故时止血，事故修复后再设回 false。
+freeze_iteration: false
+
+# ----------------------------------------------------------------
+# 升级阈值（auto，决策 F）
+# ----------------------------------------------------------------
+# proposed → candidate
+candidate_min_hits: 1
+candidate_min_rate: 0.50
+
+# candidate → confirmed
+confirmed_min_n: 5
+confirmed_min_rate: 0.70
+
+# ----------------------------------------------------------------
+# 降级阈值（auto + 缓冲，决策 G）
+# ----------------------------------------------------------------
+# confirmed → flagged_for_review：自从 confirmed 起累计失验 ≥ N 次
+confirmed_demote_misses: 3
+
+# flagged_for_review → deprecated：自从 flagged 起再失验 ≥ N 次
+flagged_demote_misses: 1
+
+# ----------------------------------------------------------------
+# 漂移检测（drift_detect.py，05 § 五·3）
+# ----------------------------------------------------------------
+drift_window_size: 5    # 滑动窗大小（recent_5 长度）
+drift_min_n: 8          # 必须累计样本 ≥ 8 才启用漂移检测
+drift_min_rate: 0.50    # 滑动窗 hit_rate < 此值 → flagged_for_review
+
+# ----------------------------------------------------------------
+# Beta 变异度惩罚（决策 E，06 § 二）
+# ----------------------------------------------------------------
+# variance > variance_threshold → base_star -= 1（不低于 1）
+variance_threshold: 0.15
+
+# ----------------------------------------------------------------
+# 跨派扫描（决策 K，05 § 十一）
+# ----------------------------------------------------------------
+# case_count % cross_school_every_n_cases == 0 时触发
+cross_school_every_n_cases: 10
+
+# 跨派扫描的"系统性偏差"阈值
+cross_school_gap_threshold: 0.30   # max_school - min_school 的 hit_rate 差距
+cross_school_min_window: 10        # 至少累计 10 案才启用
