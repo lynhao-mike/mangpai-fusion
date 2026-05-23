@@ -77,8 +77,10 @@ def test_G1_three_cases_core_hit_rate(
 
     阻塞条件：依赖 D2（杨派画面）+ D3（任派应期）联合给出新铁断。
     """
-    if not (_engine_b_available() and _engine_c_available()):
-        pytest.skip("等待 Track-B (D2 杨派) + Track-C (D3 任派) 引擎落地")
+    if not _engine_b_available():
+        pytest.skip("等待 Track-B (D2 杨派) 引擎落地")
+    if not _engine_c_available():
+        pytest.skip("等待 Track-C (D3 任派) 引擎落地（B 已就绪）")
 
     g1_gate = next(g for g in regression_baseline["gates"] if g["id"] == "G1")
     v1_0_value = int(v1_0_baseline["total_core_iron_correct"])
@@ -112,8 +114,10 @@ def test_G2_marriage_year_error_le_3(
       D3 yingqi_gate(2013, 婚姻) → picture_consistent=False → ★≤3
       最终输出主婚期年应在 2002-2008 范围。
     """
-    if not (_engine_b_available() and _engine_c_available()):
-        pytest.skip("等待 Track-B + Track-C 引擎落地（04 § 八 圣杯测试）")
+    if not _engine_b_available():
+        pytest.skip("等待 Track-B (D2 杨派) 引擎落地（04 § 八 圣杯测试）")
+    if not _engine_c_available():
+        pytest.skip("等待 Track-C (D3 任派) 引擎落地（B 已就绪，圣杯仍待 C）")
 
     truth = feedback_truth["C-2026-001-庚申戊寅壬子辛丑"]
     actual_year = int(truth["marriage_year_actual"])     # 2005
@@ -159,8 +163,10 @@ def test_G3_case_002_marriage_failed_count_le_1(
     v1.0 失误：把"五凶煞=婚凶"当机械铁断。
     v1.2 修复：mechanical-rules.yaml 黑名单 XF-002（Track-E 已落地）。
     """
-    if not (_engine_b_available() and _engine_c_available()):
-        pytest.skip("等待 Track-B + Track-C 引擎落地")
+    if not _engine_b_available():
+        pytest.skip("等待 Track-B (D2 杨派) 引擎落地")
+    if not _engine_c_available():
+        pytest.skip("等待 Track-C (D3 任派) 引擎落地（B 已就绪）")
 
     v1_0_value = int(v1_0_baseline["marriage_failed_count_max"])
     assert v1_0_value == 4
@@ -188,8 +194,10 @@ def test_G4_case_014_education_overshot_zero(
     v1.0 失误：高派"词馆+天乙×2 = 985 顶配"过于乐观。
     v1.2 修复：D4 旁证 boost 上限 ≤ 0.10，由 D2"印独生身=一本以上"主导。
     """
-    if not (_engine_b_available() and _engine_d_available()):
-        pytest.skip("等待 Track-B (D2 杨派) + Track-D (D4 高派旁证) 落地")
+    if not _engine_b_available():
+        pytest.skip("等待 Track-B (D2 杨派) 引擎落地")
+    if not _engine_d_available():
+        pytest.skip("等待 Track-D (D4 高派旁证) 引擎落地（B 已就绪）")
 
     v1_0_value = int(v1_0_baseline["education_overshot_levels_max"])
     assert v1_0_value == 1

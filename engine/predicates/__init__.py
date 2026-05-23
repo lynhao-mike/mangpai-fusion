@@ -89,6 +89,20 @@ from engine.predicates.strength import (  # noqa: F401
     calc_gan_strength,
 )
 
+# Track-B 追加：palace.py（10 函数）
+from engine.predicates.palace import (  # noqa: F401
+    find_shishen_in_bazi,
+    get_palace,
+    get_shishen,
+    is_in_palace,
+    is_pianyin,
+    is_piancai,
+    is_qisha,
+    is_zhengcai,
+    is_zhengguan,
+    is_zhengyin,
+)
+
 __all__ = [
     # types
     "Gan", "Zhi", "Wuxing", "YinYang", "ChangshengStatus", "Shishen", "PalaceName",
@@ -108,4 +122,8 @@ __all__ = [
     # strength
     "get_changsheng", "is_dejin", "is_dishi", "is_dewang",
     "calc_wuxing_strength", "calc_gan_strength",
+    # palace (Track-B)
+    "get_palace", "is_in_palace", "get_shishen",
+    "is_zhengyin", "is_pianyin", "is_zhengcai", "is_piancai",
+    "is_zhengguan", "is_qisha", "find_shishen_in_bazi",
 ]
