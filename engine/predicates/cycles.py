@@ -1,340 +1,441 @@
-"""engine.predicates.cycles · 大运流年谓词
+"""engine/predicates/cycles.py · v1.2 大运流年谓词（9 函数）
 
-按契约 02 § 4.5 实现 9 个函数。所有应期判定的基础。
+实现 02-predicate-library.md § 4.5 全部 9 个函数。
 
-注：契约 02 文档尚未交付（仅 00/09 已写）；本实现按任务说明 §阶段 1 与
-m3-mechanics §17/§18 的语义建模，命名与签名向 02 契约靠齐。
+所有判定都是纯函数：相同输入 → 相同输出，无副作用。
+
+公元 4 年 = 甲子年（与现代万年历一致；1984=甲子是 1984-4=1980 整 60 倍数验证）。
+
+作者：Track-C
 """
-
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Union
 
-from .ganzhi import year_to_ganzhi, get_canggan
-from .relations import (
-    is_gan_he,
-    is_zhi_liuhe,
-    is_zhi_chong,
-    is_banhe,
-    gan_relations,
-    all_zhi_relations,
+from engine.predicates.types import (
+    Bazi,
+    Dayun,
+    DayunStep,
+    Gan,
+    GanZhi,
+    PalaceName,
+    Wuxing,
+    Zhi,
+    GAN_LIST,
+    ZHI_LIST,
 )
-from .types import Bazi, Dayun, ParsedInput
+from engine.predicates.relations import (
+    zhi_chong,
+    zhi_chuan,
+    zhi_liuhe,
+    zhi_sanhe,
+    zhi_xing,
+    gan_he,
+)
 
 
 # ============================================================
-# 1) get_dayun_at_age / get_dayun_at_year
+# 1. get_dayun_at_age
 # ============================================================
 
+def get_dayun_at_age(dayun: Dayun, age: int) -> DayunStep:
+    """指定虚岁所在大运步。
 
-def get_dayun_at_age(parsed: ParsedInput, age: int) -> Optional[Dayun]:
-    """命主 age 岁时所在的大运。无（含起运前）则返回 None。"""
-    for dy in parsed.dayun_list:
-        if dy.covers_age(age):
-            return dy
+    起运前（age < dayun.起运岁）抛 ValueError。
+    末步之后用最后一步（"超过排布范围则按最后一运处理"，避免下游崩）。
+    """
+    if not dayun.排布:
+        raise ValueError("Dayun.排布 为空")
+    if age < int(dayun.起运岁):
+        raise ValueError(
+            f"年龄 {age} < 起运岁 {dayun.起运岁}，尚未交运"
+        )
+    for step in dayun.排布:
+        if step.起岁 <= age <= step.止岁:
+            return step
+    # 超过最后一步 → 用最后一步
+    return dayun.排布[-1]
+
+
+# ============================================================
+# 2. get_dayun_at_year
+# ============================================================
+
+def get_dayun_at_year(
+    dayun: Dayun, birth_year: int, target_year: int
+) -> DayunStep:
+    """指定公历年所在大运步。
+
+    优先按 DayunStep.起讫年 区间 [start, end) 匹配（这是 fixtures/cases.py
+    构造时的真值）。若区间不足则退到 age 法 fallback。
+    """
+    if not dayun.排布:
+        raise ValueError("Dayun.排布 为空")
+
+    # 优先：起讫年区间
+    for step in dayun.排布:
+        if step.起讫年[0] <= target_year < step.起讫年[1]:
+            return step
+
+    # Fallback：用年龄法
+    age = target_year - birth_year
+    if age < int(dayun.起运岁):
+        # 起运前
+        raise ValueError(
+            f"目标年 {target_year} 早于起运年 "
+            f"({birth_year}+{dayun.起运岁:.1f}) → 尚未交运"
+        )
+    if target_year >= dayun.排布[-1].起讫年[1]:
+        return dayun.排布[-1]
+    return get_dayun_at_age(dayun, age)
+
+
+# ============================================================
+# 3. liunian_ganzhi
+# ============================================================
+
+def liunian_ganzhi(year: int) -> GanZhi:
+    """公历年份的流年干支。
+
+    公元 4 年 = 甲子年。年份 → 干支 = 60 甲子循环。
+
+    验证锚点（与万年历一致）：
+        1980 = 庚申     1984 = 甲子     2005 = 乙酉
+        2013 = 癸巳     2020 = 庚子     2024 = 甲辰
+    """
+    offset = (year - 4) % 60
+    if offset < 0:
+        offset += 60
+    gan_idx = offset % 10
+    zhi_idx = offset % 12
+    return GanZhi(gan=GAN_LIST[gan_idx], zhi=ZHI_LIST[zhi_idx])
+
+
+# ============================================================
+# 4. is_dayun_zhi_chong_bazi
+# ============================================================
+
+def is_dayun_zhi_chong_bazi(
+    dayun_step: DayunStep, bazi: Bazi
+) -> list[PalaceName]:
+    """大运地支冲八字哪些柱地支。
+
+    返回被冲的支位名列表（"年支" / "月支" / "日支" / "时支"）。
+    """
+    out: list[PalaceName] = []
+    dy_zhi = dayun_step.干支.zhi
+    for name, zhi in bazi.all_zhis():
+        if zhi_chong(dy_zhi, zhi):
+            out.append(name)  # type: ignore[arg-type]
+    return out
+
+
+# ============================================================
+# 5. is_liunian_with_dayun_he
+# ============================================================
+
+def is_liunian_with_dayun_he(
+    year: int, dayun_step: DayunStep
+) -> Optional[Wuxing]:
+    """流年与大运是否构成合（六合 / 三合半合 / 天干五合化神）。
+
+    判定优先级：
+        1. 地支六合（化神 = liuhe 化神）
+        2. 地支三合（与大运地支 + 任一中神相邻 → 半合）
+        3. 天干五合（化神）
+    """
+    ln = liunian_ganzhi(year)
+
+    # 1) 地支六合
+    h = zhi_liuhe(ln.zhi, dayun_step.干支.zhi)
+    if h is not None:
+        return h
+
+    # 2) 三合半合（必须含三合中神）
+    h2 = zhi_sanhe([ln.zhi, dayun_step.干支.zhi])
+    if h2 is not None:
+        return h2
+
+    # 3) 天干五合（取化神，不论是否化成）
+    gan_he_result = gan_he(ln.gan, dayun_step.干支.gan)
+    if gan_he_result is not None:
+        return gan_he_result[0]  # 化神
+
     return None
 
 
-def get_dayun_at_year(parsed: ParsedInput, year: int) -> Optional[Dayun]:
-    """命主在 year 公历年所在的大运。"""
-    for dy in parsed.dayun_list:
-        if dy.covers_year(year):
-            return dy
+# ============================================================
+# 6. is_liunian_with_bazi_he
+# ============================================================
+
+def is_liunian_with_bazi_he(
+    year: int, bazi: Bazi
+) -> list[tuple[PalaceName, Wuxing]]:
+    """流年与八字哪些柱合，返回 [(柱名, 化神), ...]。
+
+    扫描方式：
+        - 流年地支 vs 4 个地支柱 → 六合 / 半三合
+        - 流年天干 vs 4 个天干柱 → 五合（取化神）
+        返回所有命中。
+    """
+    ln = liunian_ganzhi(year)
+    out: list[tuple[PalaceName, Wuxing]] = []
+
+    # 地支侧
+    for name, zhi in bazi.all_zhis():
+        h = zhi_liuhe(ln.zhi, zhi)
+        if h is not None:
+            out.append((name, h))  # type: ignore[arg-type]
+            continue
+        h2 = zhi_sanhe([ln.zhi, zhi])
+        if h2 is not None:
+            out.append((name, h2))  # type: ignore[arg-type]
+
+    # 天干侧
+    pillar_palace = {
+        "年柱": "年柱", "月柱": "月柱",
+        "日柱": "日柱", "时柱": "时柱",
+    }
+    for name, gan in bazi.all_gans():
+        gh = gan_he(ln.gan, gan)
+        if gh is not None:
+            palace_name: PalaceName = pillar_palace[name]  # type: ignore[assignment]
+            out.append((palace_name, gh[0]))
+
+    return out
+
+
+# ============================================================
+# 7. is_liunian_chong_bazi
+# ============================================================
+
+def is_liunian_chong_bazi(year: int, bazi: Bazi) -> list[PalaceName]:
+    """流年地支冲八字哪些柱地支。"""
+    ln = liunian_ganzhi(year)
+    out: list[PalaceName] = []
+    for name, zhi in bazi.all_zhis():
+        if zhi_chong(ln.zhi, zhi):
+            out.append(name)  # type: ignore[arg-type]
+    return out
+
+
+# ============================================================
+# 8. is_liunian_yingdong_bazi_zi
+# ============================================================
+
+def is_liunian_yingdong_bazi_zi(
+    year: int, target_char: Union[Gan, Zhi], bazi: Bazi
+) -> bool:
+    """流年是否引动八字中的 target_char。
+
+    引动 = 流年的天干或地支与 target_char 形成以下任一关系：
+        - 同字（"本字到"）
+        - 天干合 / 天干同字
+        - 地支六合 / 三合半合 / 冲 / 刑 / 穿
+    target_char 不必出现在原局；只要流年带来或与之形成关系即算引动。
+
+    注意：此函数对 04 § 5 触发引擎的"本字到"和"合冲引动"提供基础。
+    """
+    ln = liunian_ganzhi(year)
+
+    # 是天干？
+    if target_char in GAN_LIST:
+        # 流年带本字
+        if ln.gan == target_char:
+            return True
+        # 天干合
+        if gan_he(ln.gan, target_char) is not None:  # type: ignore[arg-type]
+            return True
+        return False
+
+    # 是地支
+    if target_char in ZHI_LIST:
+        # 流年带本字
+        if ln.zhi == target_char:
+            return True
+        # 六合
+        if zhi_liuhe(ln.zhi, target_char) is not None:  # type: ignore[arg-type]
+            return True
+        # 三合半合（流年与 target 是同三合局的两支）
+        if zhi_sanhe([ln.zhi, target_char]) is not None:  # type: ignore[arg-type]
+            return True
+        # 冲
+        if zhi_chong(ln.zhi, target_char):  # type: ignore[arg-type]
+            return True
+        # 刑（任一刑式）
+        if zhi_xing(ln.zhi, target_char) is not None:  # type: ignore[arg-type]
+            return True
+        # 穿
+        if zhi_chuan(ln.zhi, target_char):  # type: ignore[arg-type]
+            return True
+        return False
+
+    raise ValueError(f"target_char 必须是干或支: {target_char!r}")
+
+
+# ============================================================
+# 9. find_year_when_zhi_appears
+# ============================================================
+
+def find_year_when_zhi_appears(
+    start: int, end: int, target_zhi: Zhi
+) -> list[int]:
+    """[start, end] 闭区间内流年地支等于 target_zhi 的所有年份。
+
+    每 12 年循环一次，返回升序列表。
+    """
+    if target_zhi not in ZHI_LIST:
+        raise ValueError(f"非法地支: {target_zhi!r}")
+    if start > end:
+        return []
+    out: list[int] = []
+    for y in range(start, end + 1):
+        if liunian_ganzhi(y).zhi == target_zhi:
+            out.append(y)
+    return out
+
+
+# ============================================================
+# 辅助：过渡期判定（04 § 4.2 layer2_check 使用，不在契约 9 函数内）
+# ============================================================
+
+def is_in_dayun_transition(
+    year: int, dayun_step: DayunStep, threshold_years: int = 1
+) -> bool:
+    """该年是否处于大运过渡期（距起讫年端 ±threshold_years）。
+
+    rationale: 04-gate § 4.2 "过渡期惩罚"——L2 仅靠相邻大运字通过时降 1 ★。
+    """
+    start_y, end_y = dayun_step.起讫年
+    # 距起年 ≤ threshold 或距讫年 ≤ threshold
+    return (
+        abs(year - start_y) <= threshold_years
+        or abs(year - (end_y - 1)) <= threshold_years
+    )
+
+
+def get_adjacent_dayun(
+    dayun: Dayun, current: DayunStep
+) -> Optional[DayunStep]:
+    """取相邻大运（优先取下一步；若 current 是末步取上一步）。"""
+    try:
+        idx = dayun.排布.index(current)
+    except ValueError:
+        return None
+    if idx + 1 < len(dayun.排布):
+        return dayun.排布[idx + 1]
+    if idx - 1 >= 0:
+        return dayun.排布[idx - 1]
     return None
-
-
-# ============================================================
-# 2) liunian_ganzhi
-# ============================================================
-
-
-def liunian_ganzhi(year: int) -> tuple[str, str]:
-    """公历年份 → 流年干支。
-
-    >>> liunian_ganzhi(2005)
-    ('乙', '酉')
-    >>> liunian_ganzhi(2013)
-    ('癸', '巳')
-    >>> liunian_ganzhi(2024)
-    ('甲', '辰')
-    """
-    return year_to_ganzhi(year)
-
-
-# ============================================================
-# 3) is_dayun_zhi_chong_bazi
-# ============================================================
-
-
-def is_dayun_zhi_chong_bazi(parsed: ParsedInput, year: int) -> dict:
-    """大运地支与原局四柱地支的冲关系列表。
-
-    返回 dict:
-        {
-            "is_chong": True/False,
-            "chong_with": ["申"...],     # 大运地支与原局哪些字相冲
-            "dayun_zhi": "辰",
-        }
-    """
-    dy = get_dayun_at_year(parsed, year)
-    if dy is None:
-        return {"is_chong": False, "chong_with": [], "dayun_zhi": ""}
-    dyz = dy.zhi
-    chong_targets: list[str] = []
-    for z in parsed.bazi.all_zhis():
-        if is_zhi_chong(dyz, z):
-            chong_targets.append(z)
-    return {
-        "is_chong": bool(chong_targets),
-        "chong_with": chong_targets,
-        "dayun_zhi": dyz,
-    }
-
-
-# ============================================================
-# 4) is_liunian_with_dayun_he
-# ============================================================
-
-
-def is_liunian_with_dayun_he(parsed: ParsedInput, year: int) -> dict:
-    """流年与大运的合关系（天干合 / 地支合 / 半合）。"""
-    dy = get_dayun_at_year(parsed, year)
-    if dy is None:
-        return {"gan_he": False, "zhi_liuhe": False, "zhi_banhe": False}
-    ln_g, ln_z = liunian_ganzhi(year)
-    return {
-        "gan_he": is_gan_he(dy.gan, ln_g),
-        "zhi_liuhe": is_zhi_liuhe(dy.zhi, ln_z),
-        "zhi_banhe": is_banhe(dy.zhi, ln_z),
-    }
-
-
-# ============================================================
-# 5) is_liunian_with_bazi_he
-# ============================================================
-
-
-def is_liunian_with_bazi_he(parsed: ParsedInput, year: int) -> dict:
-    """流年与原局四柱的合关系。
-
-    返回所有合点（天干合或地支合）。
-    """
-    ln_g, ln_z = liunian_ganzhi(year)
-    gan_he_with: list[str] = []
-    zhi_he_with: list[str] = []
-    for g in parsed.bazi.all_gans():
-        if is_gan_he(ln_g, g):
-            gan_he_with.append(g)
-    for z in parsed.bazi.all_zhis():
-        if is_zhi_liuhe(ln_z, z):
-            zhi_he_with.append(z)
-    return {
-        "any_he": bool(gan_he_with or zhi_he_with),
-        "gan_he_with": gan_he_with,
-        "zhi_he_with": zhi_he_with,
-    }
-
-
-# ============================================================
-# 6) is_liunian_chong_bazi
-# ============================================================
-
-
-def is_liunian_chong_bazi(parsed: ParsedInput, year: int) -> dict:
-    """流年地支冲原局四柱地支。"""
-    _, ln_z = liunian_ganzhi(year)
-    chong_with: list[str] = []
-    for z in parsed.bazi.all_zhis():
-        if is_zhi_chong(ln_z, z):
-            chong_with.append(z)
-    return {
-        "is_chong": bool(chong_with),
-        "chong_with": chong_with,
-        "liunian_zhi": ln_z,
-    }
-
-
-# ============================================================
-# 7) is_liunian_yingdong_bazi_zi
-# ============================================================
-# 引动 = 原局某字（含天干/地支/藏干）以本字、合、冲、刑、穿、伏吟之一被流年触发
-# 这是判断"原局之事是否被流年点亮"的兜底函数
-
-
-def is_liunian_yingdong_bazi_zi(parsed: ParsedInput, year: int, target_char: str) -> dict:
-    """流年是否引动原局的某个字 target_char。
-
-    引动方式：
-      A) 流年带来 target_char 本字（liunian.gan == target 或 liunian.zhi == target）
-      B) 流年与 target_char 形成合 / 冲 / 刑 / 穿 / 暗合 / 半合
-      C) target_char 是某地支的藏干，且流年带出该地支或天干透出 target
-
-    返回 {"yingdong": bool, "ways": [...], "explain": str}
-    """
-    if target_char not in parsed.bazi.all_chars():
-        # 也许 target 是某地支的藏干，先检查
-        is_canggan = False
-        for z in parsed.bazi.all_zhis():
-            if target_char in get_canggan(z):
-                is_canggan = True
-                break
-        if not is_canggan:
-            return {"yingdong": False, "ways": [], "explain": "target 不在原局"}
-
-    ln_g, ln_z = liunian_ganzhi(year)
-    ways: list[str] = []
-
-    # A) 本字到
-    if ln_g == target_char or ln_z == target_char:
-        ways.append("本字到")
-
-    # B) 形成关系
-    # 流年干 vs target（若 target 是天干）
-    if target_char in "甲乙丙丁戊己庚辛壬癸":
-        rels = gan_relations(ln_g, target_char)
-        for r in rels:
-            ways.append(f"天干{r}")
-    # 流年支 vs target（若 target 是地支）
-    if target_char in "子丑寅卯辰巳午未申酉戌亥":
-        rels = all_zhi_relations(ln_z, target_char)
-        for r in rels:
-            ways.append(f"地支{r}")
-
-    return {
-        "yingdong": bool(ways),
-        "ways": ways,
-        "explain": "; ".join(ways) if ways else "未引动",
-    }
-
-
-# ============================================================
-# 8) find_year_when_zhi_appears
-# ============================================================
-
-
-def find_year_when_zhi_appears(start: int, end: int, target_zhi: str) -> list[int]:
-    """在 [start, end] 闭区间内，找流年地支为 target_zhi 的所有年份。"""
-    result: list[int] = []
-    for y in range(start, end + 1):
-        _, z = liunian_ganzhi(y)
-        if z == target_zhi:
-            result.append(y)
-    return result
-
-
-def find_year_when_gan_appears(start: int, end: int, target_gan: str) -> list[int]:
-    """同上，按天干。"""
-    result: list[int] = []
-    for y in range(start, end + 1):
-        g, _ = liunian_ganzhi(y)
-        if g == target_gan:
-            result.append(y)
-    return result
-
-
-# ============================================================
-# 9) is_dayun_in_transition
-# ============================================================
-# 任务说明 §阶段 2 §threelayer：L2 必须含过渡期判定 ——
-# 当前年距大运起讫 ±1 年内，相邻大运字也算
-
-
-def get_transition_dayun_chars(parsed: ParsedInput, year: int) -> list[str]:
-    """取 year 所在大运 + 过渡期内的相邻大运的所有字。
-
-    过渡期 = 与当前大运起讫 ±1 年距离内。
-    """
-    chars: list[str] = []
-    cur = get_dayun_at_year(parsed, year)
-    if cur is None:
-        return chars
-    chars.extend([cur.gan, cur.zhi])
-
-    # 找前一个 / 后一个大运
-    idx = None
-    for i, dy in enumerate(parsed.dayun_list):
-        if dy is cur:
-            idx = i
-            break
-    if idx is None:
-        return chars
-
-    # 过渡期：year 距 cur.start_year 或 cur.end_year - 1 都 ≤ 1
-    if year - cur.start_year <= 1 and idx > 0:
-        prev = parsed.dayun_list[idx - 1]
-        chars.extend([prev.gan, prev.zhi])
-    if cur.end_year - 1 - year <= 1 and idx < len(parsed.dayun_list) - 1:
-        nxt = parsed.dayun_list[idx + 1]
-        chars.extend([nxt.gan, nxt.zhi])
-    return chars
 
 
 # ============================================================
 # smoke test
 # ============================================================
 
-
 def _smoke() -> None:
-    from .types import Bazi, Pillar, Dayun, ParsedInput
-
-    # C-2026-001 命主 1：庚申戊寅壬子辛丑，1980 生
-    bz = Bazi.parse("庚申", "戊寅", "壬子", "辛丑")
-    dayuns = [
-        Dayun(Pillar.parse("己卯"), 8, 18, 1988, 1998),
-        Dayun(Pillar.parse("庚辰"), 18, 28, 1998, 2008),
-        Dayun(Pillar.parse("辛巳"), 28, 38, 2008, 2018),
-        Dayun(Pillar.parse("壬午"), 38, 48, 2018, 2028),
+    # 1) liunian_ganzhi 锚点
+    anchors = [
+        (1980, "庚", "申"),
+        (1982, "壬", "戌"),
+        (1984, "甲", "子"),  # 60 甲子起点
+        (2005, "乙", "酉"),
+        (2006, "丙", "戌"),
+        (2013, "癸", "巳"),
+        (2020, "庚", "子"),
+        (2024, "甲", "辰"),
+        (2026, "丙", "午"),
     ]
-    pi = ParsedInput(gender="男", birth_year=1980, bazi=bz, dayun_list=dayuns)
+    for y, expg, expz in anchors:
+        gz = liunian_ganzhi(y)
+        assert gz.gan == expg and gz.zhi == expz, \
+            f"liunian_ganzhi({y}) = {gz} expected {expg}{expz}"
+    print("[OK] liunian_ganzhi 9 个锚点全过")
 
-    # 流年干支
-    assert liunian_ganzhi(2005) == ("乙", "酉")
-    assert liunian_ganzhi(2013) == ("癸", "巳")
+    # 2) Build C-001 dayun for further tests
+    from engine.predicates.types import GanZhi, DayunStep
+    paibu = [
+        DayunStep(序号=1, 干支=GanZhi("己", "卯"), 起岁=8,  止岁=17, 起讫年=(1988, 1998)),
+        DayunStep(序号=2, 干支=GanZhi("庚", "辰"), 起岁=18, 止岁=27, 起讫年=(1998, 2008)),
+        DayunStep(序号=3, 干支=GanZhi("辛", "巳"), 起岁=28, 止岁=37, 起讫年=(2008, 2018)),
+        DayunStep(序号=4, 干支=GanZhi("壬", "午"), 起岁=38, 止岁=47, 起讫年=(2018, 2028)),
+        DayunStep(序号=5, 干支=GanZhi("癸", "未"), 起岁=48, 止岁=57, 起讫年=(2028, 2038)),
+    ]
+    dy = Dayun(起运岁=8.5, 起运年=1988, 顺逆="顺", 排布=paibu)
 
-    # 大运定位
-    dy_2005 = get_dayun_at_year(pi, 2005)
-    assert dy_2005 is not None and dy_2005.gan == "庚" and dy_2005.zhi == "辰"
-    dy_2013 = get_dayun_at_year(pi, 2013)
-    assert dy_2013 is not None and dy_2013.gan == "辛" and dy_2013.zhi == "巳"
+    # 3) get_dayun_at_age
+    assert get_dayun_at_age(dy, 25).干支 == GanZhi("庚", "辰")
+    assert get_dayun_at_age(dy, 33).干支 == GanZhi("辛", "巳")
+    try:
+        get_dayun_at_age(dy, 5)
+        raise AssertionError("起运前应 raise")
+    except ValueError:
+        pass
 
-    # 大运冲原局
-    chk = is_dayun_zhi_chong_bazi(pi, 2018)  # 壬午冲子
-    assert chk["is_chong"] is True
-    assert "子" in chk["chong_with"]
+    # 4) get_dayun_at_year
+    assert get_dayun_at_year(dy, 1980, 2005).干支 == GanZhi("庚", "辰")
+    assert get_dayun_at_year(dy, 1980, 2013).干支 == GanZhi("辛", "巳")
+    assert get_dayun_at_year(dy, 1980, 2020).干支 == GanZhi("壬", "午")
 
-    # 流年合大运
-    chk = is_liunian_with_dayun_he(pi, 2005)  # 乙酉 vs 庚辰：乙庚合 + 辰酉合
-    assert chk["gan_he"] is True
-    assert chk["zhi_liuhe"] is True
+    # 5) C-001 bazi 构造
+    from engine.predicates.types import _default_canggan_for
+    bazi = Bazi(
+        年柱=GanZhi("庚", "申"),
+        月柱=GanZhi("戊", "寅"),
+        日柱=GanZhi("壬", "子"),
+        时柱=GanZhi("辛", "丑"),
+    )
+    bazi.藏干 = _default_canggan_for(bazi)
 
-    # 流年合原局
-    chk = is_liunian_with_bazi_he(pi, 2005)  # 乙酉
-    # 乙合庚（年干）→ True
-    assert "庚" in chk["gan_he_with"]
+    # 6) is_dayun_zhi_chong_bazi
+    # 大运壬午(38-47岁=2018-2028) → 午冲子（日支）
+    chongs = is_dayun_zhi_chong_bazi(paibu[3], bazi)
+    assert "日支" in chongs, f"壬午冲子应在日支: {chongs}"
 
-    # 流年冲原局
-    chk = is_liunian_chong_bazi(pi, 2026)  # 丙午 → 午冲子
-    assert chk["is_chong"] is True
-    assert "子" in chk["chong_with"]
+    # 7) is_liunian_with_dayun_he
+    # 2005 乙酉 vs 庚辰 → 乙庚合(化金) + 辰酉合(化金) → 任一返回金
+    h = is_liunian_with_dayun_he(2005, paibu[1])
+    assert h == "金", f"2005 乙酉 + 庚辰 应化金: {h}"
 
-    # 引动：流年 2026 是否引动原局的"子"
-    chk = is_liunian_yingdong_bazi_zi(pi, 2026, "子")
-    assert chk["yingdong"] is True
-    assert any("冲" in w for w in chk["ways"])
+    # 8) is_liunian_with_bazi_he
+    # 2005 乙酉 → 乙合年干庚(化金) + 酉合时支辰? 时支=丑 不合 → 仅年柱
+    he_list = is_liunian_with_bazi_he(2005, bazi)
+    palaces = [p for p, _ in he_list]
+    assert "年柱" in palaces, f"2005 乙合年干庚应在年柱: {he_list}"
 
-    # 找流年
+    # 9) is_liunian_chong_bazi
+    # 2026 丙午 → 午冲日支子
+    chongs = is_liunian_chong_bazi(2026, bazi)
+    assert "日支" in chongs, f"2026 午冲子: {chongs}"
+
+    # 10) is_liunian_yingdong_bazi_zi
+    # 2005 乙酉 → 引动 庚（年干, 乙庚合）
+    assert is_liunian_yingdong_bazi_zi(2005, "庚", bazi)
+    # 2005 乙酉 → 引动 子？酉与子无关
+    assert not is_liunian_yingdong_bazi_zi(2005, "子", bazi)
+    # 2005 乙酉 → 引动 申（年支, 申子半合 vs 酉？酉与申无合冲）→ False
+    assert not is_liunian_yingdong_bazi_zi(2005, "申", bazi)
+    # 2026 丙午 → 引动 子（午冲子）
+    assert is_liunian_yingdong_bazi_zi(2026, "子", bazi)
+    # 2024 甲辰 → 引动 子（申子辰三合）
+    assert is_liunian_yingdong_bazi_zi(2024, "子", bazi)
+
+    # 11) find_year_when_zhi_appears
     years = find_year_when_zhi_appears(2000, 2030, "辰")
-    assert 2024 in years  # 甲辰年
-    assert 2012 in years  # 壬辰年
+    assert 2024 in years and 2012 in years, f"2024/2012 应是辰年: {years}"
+    assert len(years) == 3, f"2000-2030 间应有 3 个辰年: {years}"  # 2000,2012,2024
 
-    # 过渡期
-    # 2017 在辛巳运（2008-2018）末年 → 应含 壬午（下一运）
-    chars = get_transition_dayun_chars(pi, 2017)
-    assert "辛" in chars and "巳" in chars
-    assert "壬" in chars and "午" in chars  # 进入过渡
+    # 12) 过渡期辅助
+    # 2017 在辛巳运(2008-2018)末年(2017 距讫年 2018 = 1) → 过渡期
+    assert is_in_dayun_transition(2017, paibu[2], threshold_years=1)
+    # 2010 在辛巳运中段 → 不过渡
+    assert not is_in_dayun_transition(2010, paibu[2], threshold_years=1)
+    # 相邻大运
+    adj = get_adjacent_dayun(dy, paibu[2])
+    assert adj == paibu[3]
 
-    print("predicates.cycles smoke OK")
+    print("[OK] cycles smoke：9 函数 + 2 辅助全过")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     _smoke()

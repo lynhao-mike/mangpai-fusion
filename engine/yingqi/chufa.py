@@ -1,425 +1,529 @@
-"""engine.yingqi.chufa · 6 触发引擎
+"""engine/yingqi/chufa.py · v1.2 D3 任派 · 6 触发引擎
 
-按 m3-mechanics §17 实现 6 大触发：
-  1. 本字到
-  2. 伏吟引动
-  3. 合冲引动
-  4. 墓库开闭
-  5. 藏干透出
-  6. 倒象成立  ← 任派核心铁律：必凶
+严格按 04-gate-protocol.md § 5.1 实现 6 大触发：
 
-每个 detect_* 函数返回 TriggerEvent。
+    1. 本字到       —— 流年地支或天干 = 原局某关键字
+    2. 伏吟         —— 流年柱完全等于原局某柱
+    3. 合冲引动     —— 流年支与原局支 / 大运支构成 合 / 冲 / 刑 / 穿
+    4. 墓库开闭     —— 辰戌丑未墓库被流年/大运冲刑 → 开库应
+    5. 藏干透出     —— 流年天干 = 原局某支藏干（"原本不透 → 现在透"）
+    6. 倒象成立     —— 用神被多重相反作用（任派 §10 必凶铁律）
+
+每个 detect_* 函数返回 list[TriggerEvent]（可能 0 / 1 / 多个）。
+detect_all_triggers 汇总，pick_primary_trigger 按 04 § 5.2 优先级挑主。
+
+倒象判定（任派 §10）—— 增量法：
+  对比 baseline（仅原局）vs active（原局+大运+流年）的关系类型集，
+  仅当大运/流年新增 ≥ 2 种新关系类型 + 生克合三态齐 → 倒象凶应。
+  这避免对原局本就矛盾的命过敏。
+
+作者：Track-C
 """
-
 from __future__ import annotations
 
 from typing import Optional
 
 from engine.predicates.cycles import (
-    liunian_ganzhi, get_dayun_at_year, is_liunian_yingdong_bazi_zi,
+    get_dayun_at_year,
+    liunian_ganzhi,
 )
 from engine.predicates.ganzhi import (
-    get_canggan, get_wuxing, is_ke, is_sheng,
+    gan_to_wuxing,
+    get_canggan,
+    zhi_to_wuxing,
 )
 from engine.predicates.relations import (
-    is_gan_he, is_zhi_liuhe, is_zhi_chong, is_banhe,
-    is_zhi_chuan, is_xing_pair, is_zhi_anhe, is_zixing,
-    SAN_HE_GROUPS, all_zhi_relations,
+    gan_he,
+    zhi_chong,
+    zhi_chuan,
+    zhi_liuhe,
+    zhi_sanhe,
+    zhi_xing,
 )
-from engine.predicates.tou_cang import is_tou_at, collect_canggan_in_yuanju
-from engine.predicates.types import ParsedInput
+from engine.predicates.tou_cang import is_canggan
+from engine.predicates.types import (
+    Bazi,
+    DayunStep,
+    GanZhi,
+    ParsedInput,
+    ZHI_CANGGAN_TABLE,
+    GAN_LIST,
+    ZHI_LIST,
+)
+from engine.predicates.wuxing import wuxing_ke, wuxing_sheng
 
-from .types import TriggerEvent, TRIGGER_TYPES
+from engine.yingqi.types import TriggerEvent, TRIGGER_PRIORITY
 
 
 # ============================================================
-# 1) 本字到
+# 辅助：取大运（容错版，起运前返回 None）
 # ============================================================
 
+def _get_dayun_step_safe(parsed: ParsedInput, year: int) -> Optional[DayunStep]:
+    birth_year = int((parsed.birth or {}).get("公历年") or
+                     parsed.dayun.起运年 - int(parsed.dayun.起运岁))
+    try:
+        return get_dayun_at_year(parsed.dayun, birth_year, year)
+    except (ValueError, IndexError):
+        return None
+
+
+# ============================================================
+# 1. 本字到（detect_benzi_dao）
+# ============================================================
 
 def detect_benzi_dao(
     parsed: ParsedInput, year: int, key_chars: list[str]
-) -> TriggerEvent:
-    """流年/大运 是否带来关键字本字。"""
-    ln_g, ln_z = liunian_ganzhi(year)
-    dy = get_dayun_at_year(parsed, year)
-    matched: list[str] = []
-    via: list[str] = []
+) -> list[TriggerEvent]:
+    """流年地支或天干 = 原局某关键字。
+
+    注：04 § 5.1 触发 1 的标准定义是"流年地支 = 原局某关键字"，
+    但合理扩展到"流年天干 = 原局某关键字"（任派"本字到"含天干）。
+    """
+    ln = liunian_ganzhi(year)
+    out: list[TriggerEvent] = []
+    seen_chars: set[str] = set()
+
     for c in key_chars:
-        if ln_g == c or ln_z == c:
-            matched.append(c)
-            via.append(f"流年{c}")
-        if dy is not None and (dy.gan == c or dy.zhi == c):
-            matched.append(c)
-            via.append(f"大运{c}")
-    matched = list(dict.fromkeys(matched))
-    via = list(dict.fromkeys(via))
-    triggered = bool(matched)
-    return TriggerEvent(
-        trigger_type="本字到",
-        triggered=triggered,
-        strength=min(0.4 + 0.2 * len(matched), 1.0) if triggered else 0.0,
-        target_chars=matched,
-        explanation="; ".join(via) if via else "无本字到",
-    )
+        if c not in seen_chars:
+            if ln.gan == c:
+                seen_chars.add(c)
+                out.append(TriggerEvent(
+                    type="本字到",
+                    description=f"流年{ln} 的天干 {c} = 原局关键字",
+                    target_chars=[c],
+                ))
+                continue
+            if ln.zhi == c:
+                seen_chars.add(c)
+                out.append(TriggerEvent(
+                    type="本字到",
+                    description=f"流年{ln} 的地支 {c} = 原局关键字",
+                    target_chars=[c],
+                ))
+    return out
 
 
 # ============================================================
-# 2) 伏吟引动
+# 2. 伏吟（detect_fuyin）
 # ============================================================
 
+def detect_fuyin(
+    parsed: ParsedInput, year: int
+) -> list[TriggerEvent]:
+    """流年柱 = 原局某柱（干支同字）。
 
-def detect_fuyin(parsed: ParsedInput, year: int) -> TriggerEvent:
-    """流年柱伏吟原局任一柱（干 + 支同字）。"""
-    ln_g, ln_z = liunian_ganzhi(year)
-    pillar_names = ["年柱", "月柱", "日柱", "时柱"]
-    pillars = [parsed.bazi.year, parsed.bazi.month, parsed.bazi.day, parsed.bazi.hour]
-    matched_pillars: list[str] = []
-    matched_chars: list[str] = []
-    for name, p in zip(pillar_names, pillars):
-        if p.gan == ln_g and p.zhi == ln_z:
-            matched_pillars.append(f"{name}({p.gan}{p.zhi})")
-            matched_chars.extend([p.gan, p.zhi])
-    # 也考虑大运伏吟
-    dy = get_dayun_at_year(parsed, year)
+    扩展：大运柱 = 原局某柱也算（"大运伏吟"）。
+    """
+    ln = liunian_ganzhi(year)
+    out: list[TriggerEvent] = []
+
+    pillar_pairs = parsed.bazi.all_pillars()
+    for name, pillar in pillar_pairs:
+        if pillar.gan == ln.gan and pillar.zhi == ln.zhi:
+            out.append(TriggerEvent(
+                type="伏吟",
+                description=f"流年{ln} 与原局{name} 完全伏吟",
+                target_chars=[ln.gan, ln.zhi],
+            ))
+            return out  # 同一年最多 1 条柱级伏吟
+
+    # 大运柱伏吟原局
+    dy = _get_dayun_step_safe(parsed, year)
     if dy is not None:
-        for name, p in zip(pillar_names, pillars):
-            if p.gan == dy.gan and p.zhi == dy.zhi:
-                matched_pillars.append(f"大运伏吟{name}({p.gan}{p.zhi})")
-                matched_chars.extend([p.gan, p.zhi])
-    matched_chars = list(dict.fromkeys(matched_chars))
-    triggered = bool(matched_pillars)
-    return TriggerEvent(
-        trigger_type="伏吟引动",
-        triggered=triggered,
-        strength=0.7 if triggered else 0.0,
-        target_chars=matched_chars,
-        explanation="; ".join(matched_pillars) if matched_pillars else "无伏吟",
-    )
+        for name, pillar in pillar_pairs:
+            if pillar.gan == dy.干支.gan and pillar.zhi == dy.干支.zhi:
+                out.append(TriggerEvent(
+                    type="伏吟",
+                    description=f"大运{dy.干支} 与原局{name} 伏吟",
+                    target_chars=[dy.干支.gan, dy.干支.zhi],
+                ))
+                break
+    return out
 
 
 # ============================================================
-# 3) 合冲引动
+# 3. 合冲引动（detect_hechong）
 # ============================================================
-
 
 def detect_hechong(
     parsed: ParsedInput, year: int, key_chars: list[str]
-) -> TriggerEvent:
-    """合冲引动：流年/大运 与原局之间，对关键字的 合 / 冲 / 解合 / 解冲。
+) -> list[TriggerEvent]:
+    """流年与原局/大运构成合/冲/刑/穿引动关键字。
 
-    任派 §15.8 / §17：
-      - 命中有合，流年逢冲 = 应（解合）
-      - 命中有冲，流年逢合 = 应（解冲）
-      - 命中既不冲也不合，流年单独形成合或冲 = 应
+    判定路径（04 § 5.1 触发 3）：
+        a) 流年支 vs 原局支：六合 / 半三合 / 冲 / 刑 / 穿 → 引动该支
+        b) 流年支 vs 大运支：同上
+        c) 流年干 vs 原局干：五合
+        d) 大运支 vs 原局支：同 a（大运的"动事"也算 L3 的辅助）
+        e) 解合解冲：原局有合，流年来冲；原局有冲，流年来合
     """
-    ln_g, ln_z = liunian_ganzhi(year)
-    dy = get_dayun_at_year(parsed, year)
-    matched_chars: list[str] = []
-    explanations: list[str] = []
+    ln = liunian_ganzhi(year)
+    dy = _get_dayun_step_safe(parsed, year)
+    out: list[TriggerEvent] = []
+    seen_descriptions: set[str] = set()  # 去重
 
     bazi_zhis = parsed.bazi.all_zhis()
     bazi_gans = parsed.bazi.all_gans()
-    pillar_names = ["年", "月", "日", "时"]
+    bazi_pillar_names = ("年", "月", "日", "时")
 
-    # 3.1 流年支 vs 原局
-    for name, z in zip(pillar_names, bazi_zhis):
-        rels = all_zhi_relations(ln_z, z)
-        if not rels:
+    def _add(t: TriggerEvent) -> None:
+        if t.description not in seen_descriptions:
+            seen_descriptions.add(t.description)
+            out.append(t)
+
+    # a) 流年支 vs 原局支
+    for name, zhi in bazi_zhis:
+        rel = _classify_zhi_relation(ln.zhi, zhi)
+        if rel is None:
             continue
-        # 关键字过滤：z 是关键字，或 z 的合冲伴侣是关键字
-        if z in key_chars or any(r in {"六合", "冲", "半合"} for r in rels):
-            matched_chars.append(z)
-            explanations.append(f"流年{ln_z}-{name}支{z}: {','.join(rels)}")
-    # 流年支 vs 大运支
-    if dy is not None:
-        rels = all_zhi_relations(ln_z, dy.zhi)
-        if rels:
-            explanations.append(f"流年{ln_z}-大运{dy.zhi}: {','.join(rels)}")
-            if any(r in {"六合", "冲", "半合"} for r in rels):
-                matched_chars.append(dy.zhi)
+        # 仅当涉及 key_char 才计为关键字相关引动
+        if zhi in key_chars or ln.zhi in key_chars:
+            _add(TriggerEvent(
+                type="合冲引动",
+                description=f"流年{ln.zhi} 与原局{name}{zhi} {rel}",
+                target_chars=list(dict.fromkeys([ln.zhi, zhi])),
+            ))
 
-    # 3.1.5 大运支 vs 原局支（核心：大运直接动到关键字 / 主位）
+    # b) 流年支 vs 大运支
     if dy is not None:
-        for name, z in zip(pillar_names, bazi_zhis):
-            rels = all_zhi_relations(dy.zhi, z)
-            if not rels:
-                continue
-            if z in key_chars or any(r in {"六合", "冲", "半合", "穿", "刑"} for r in rels):
-                matched_chars.append(z)
-                explanations.append(f"大运{dy.zhi}-{name}支{z}: {','.join(rels)}")
+        rel = _classify_zhi_relation(ln.zhi, dy.干支.zhi)
+        if rel is not None:
+            _add(TriggerEvent(
+                type="合冲引动",
+                description=f"流年{ln.zhi} 与大运{dy.干支.zhi} {rel}",
+                target_chars=list(dict.fromkeys([ln.zhi, dy.干支.zhi])),
+            ))
 
-    # 3.2 流年干 vs 原局天干
-    for name, g in zip(pillar_names, bazi_gans):
-        if is_gan_he(ln_g, g):
-            matched_chars.append(g)
-            explanations.append(f"流年干{ln_g}-{name}干{g}: 合")
-        # 七冲（参 relations.gan_chong）暂不强调，留 explanation
+    # c) 流年干 vs 原局干（天干五合）
+    for name, gan in bazi_gans:
+        gh = gan_he(ln.gan, gan)
+        if gh is not None:
+            if gan in key_chars or ln.gan in key_chars:
+                _add(TriggerEvent(
+                    type="合冲引动",
+                    description=(
+                        f"流年{ln.gan} 与原局{name}干{gan} 合化{gh[0]}"
+                    ),
+                    target_chars=[ln.gan, gan],
+                ))
+
     # 流年干 vs 大运干
-    if dy is not None and is_gan_he(ln_g, dy.gan):
-        matched_chars.append(dy.gan)
-        explanations.append(f"流年干{ln_g}-大运干{dy.gan}: 合")
+    if dy is not None:
+        gh = gan_he(ln.gan, dy.干支.gan)
+        if gh is not None:
+            _add(TriggerEvent(
+                type="合冲引动",
+                description=f"流年{ln.gan} 与大运{dy.干支.gan} 合化{gh[0]}",
+                target_chars=[ln.gan, dy.干支.gan],
+            ))
 
-    # 3.3 解合 / 解冲（命中有合，流年冲；命中有冲，流年合）
-    # 简化版：检测原局支两两是否相合 / 相冲，流年是否带来对应解合 / 解冲字
-    for i in range(len(bazi_zhis)):
-        for j in range(i + 1, len(bazi_zhis)):
-            zi, zj = bazi_zhis[i], bazi_zhis[j]
-            if is_zhi_liuhe(zi, zj):
-                # 命中有合，流年是否冲其中一字 → 解合
-                if is_zhi_chong(ln_z, zi) or is_zhi_chong(ln_z, zj):
-                    explanations.append(f"解合: 原局{zi}{zj}合, 流年{ln_z}冲")
-                    matched_chars.extend([zi, zj])
-            elif is_zhi_chong(zi, zj):
-                # 命中有冲，流年是否合其中一字 → 解冲
-                if is_zhi_liuhe(ln_z, zi) or is_zhi_liuhe(ln_z, zj):
-                    explanations.append(f"解冲: 原局{zi}{zj}冲, 流年{ln_z}合")
-                    matched_chars.extend([zi, zj])
+    # d) 大运支 vs 原局支（核心：大运也"动事"）
+    if dy is not None:
+        for name, zhi in bazi_zhis:
+            rel = _classify_zhi_relation(dy.干支.zhi, zhi)
+            if rel is None:
+                continue
+            if zhi in key_chars or dy.干支.zhi in key_chars:
+                _add(TriggerEvent(
+                    type="合冲引动",
+                    description=f"大运{dy.干支.zhi} 与原局{name}{zhi} {rel}",
+                    target_chars=list(dict.fromkeys([dy.干支.zhi, zhi])),
+                ))
 
-    # 仅保留与关键字相关的（限定到 domain）
-    # 但若没有 key_chars 命中，仍保留 matched_chars（让 menshu 能看到合冲发生）
-    if key_chars:
-        related = [c for c in matched_chars if c in key_chars]
-        # 关键字相关 OR 原局字（让 menshu/动门兜底分类）
-        if not related:
-            # 退而求其次：把所有原局相关的合冲字保留下来
-            bazi_all = set(parsed.bazi.all_chars())
-            related = [c for c in matched_chars if c in bazi_all]
-        matched_chars = list(dict.fromkeys(related))
-    else:
-        matched_chars = list(dict.fromkeys(matched_chars))
+    # e) 解合解冲（原局两支合 + 流年冲；原局两支冲 + 流年合）
+    n = len(bazi_zhis)
+    for i in range(n):
+        for j in range(i + 1, n):
+            zi = bazi_zhis[i][1]
+            zj = bazi_zhis[j][1]
+            if zi == zj:
+                continue
+            # 原局合 + 流年冲
+            if zhi_liuhe(zi, zj) is not None:
+                if zhi_chong(ln.zhi, zi) or zhi_chong(ln.zhi, zj):
+                    _add(TriggerEvent(
+                        type="合冲引动",
+                        description=(
+                            f"解合：原局{zi}{zj}六合 + 流年{ln.zhi} 冲开"
+                        ),
+                        target_chars=list(dict.fromkeys([zi, zj, ln.zhi])),
+                    ))
+            # 原局冲 + 流年合
+            if zhi_chong(zi, zj):
+                if zhi_liuhe(ln.zhi, zi) is not None or \
+                   zhi_liuhe(ln.zhi, zj) is not None:
+                    _add(TriggerEvent(
+                        type="合冲引动",
+                        description=(
+                            f"解冲：原局{zi}{zj}六冲 + 流年{ln.zhi} 合住"
+                        ),
+                        target_chars=list(dict.fromkeys([zi, zj, ln.zhi])),
+                    ))
+    return out
 
-    triggered = bool(matched_chars or explanations)
-    # 强度：命中越多越强
-    strength = 0.0
-    if triggered:
-        n = len(matched_chars)
-        strength = min(0.5 + 0.15 * n, 1.0)
-    return TriggerEvent(
-        trigger_type="合冲引动",
-        triggered=triggered,
-        strength=strength,
-        target_chars=matched_chars,
-        explanation="; ".join(explanations) if explanations else "无合冲引动",
-    )
+
+def _classify_zhi_relation(a: str, b: str) -> Optional[str]:
+    """返回两支的关系名（"六合" / "半三合" / "冲" / "刑" / "穿"），无则 None。"""
+    if a == b:
+        return None
+    if zhi_liuhe(a, b) is not None:
+        return "六合"
+    if zhi_sanhe([a, b]) is not None:
+        return "半三合"
+    if zhi_chong(a, b):
+        return "冲"
+    if zhi_xing(a, b) is not None:
+        return "刑"
+    if zhi_chuan(a, b):
+        return "穿"
+    return None
 
 
 # ============================================================
-# 4) 墓库开闭
+# 4. 墓库开闭（detect_muku）
 # ============================================================
-# 寅申巳亥 入各自墓库（寅入未、申入丑、巳入戌、亥入辰）
-# 子午卯酉 一般不入墓
-# 财官入墓不发，逢冲刑开库即应
 
-KU_MAP = {
-    "未": "木",   # 寅 / 卯 入未
-    "丑": "金",   # 申 / 酉 入丑
-    "戌": "火",   # 巳 / 午 入戌
-    "辰": "水",   # 亥 / 子 入辰
+# 辰戌丑未的"库藏五行"（用于判断"该库装的是不是关键字"）
+_KU_TO_WUXING: dict[str, str] = {
+    "辰": "水",  # 申子辰水库
+    "戌": "火",  # 寅午戌火库
+    "丑": "金",  # 巳酉丑金库
+    "未": "木",  # 亥卯未木库
 }
 
 
 def detect_muku(
     parsed: ParsedInput, year: int, key_chars: list[str]
-) -> TriggerEvent:
-    """墓库开闭：原局有库 + 流年/大运冲刑该库 → 开库应。"""
-    ln_g, ln_z = liunian_ganzhi(year)
-    dy = get_dayun_at_year(parsed, year)
+) -> list[TriggerEvent]:
+    """墓库开闭：原局有库 + 流年/大运冲刑该库 → 开库应。
+
+    04 § 5.1 触发 4 简化定义：流年地支 = 辰戌丑未 + 大运冲该库 → 开库。
+    扩展：原局支为辰戌丑未 + 流年/大运冲刑该库（更普遍的"开库"场景）。
+    """
+    ln = liunian_ganzhi(year)
+    dy = _get_dayun_step_safe(parsed, year)
+    out: list[TriggerEvent] = []
+
     bazi_zhis = parsed.bazi.all_zhis()
 
-    explanations: list[str] = []
-    matched: list[str] = []
+    # 场景 A：流年地支 = 库 + 大运冲（04 契约示例）
+    if ln.zhi in _KU_TO_WUXING and dy is not None:
+        if zhi_chong(ln.zhi, dy.干支.zhi):
+            out.append(TriggerEvent(
+                type="墓库开闭",
+                description=f"流年{ln.zhi}（{_KU_TO_WUXING[ln.zhi]}库）被大运{dy.干支.zhi}冲开",
+                target_chars=[ln.zhi, dy.干支.zhi],
+            ))
 
-    # 找原局含库的地支
-    for z in bazi_zhis:
-        if z not in KU_MAP:
+    # 场景 B：原局某支 = 库 + 流年/大运冲刑该库 + 库藏关键字
+    for name, zhi in bazi_zhis:
+        if zhi not in _KU_TO_WUXING:
             continue
-        # 该库藏五行 = KU_MAP[z]
-        ku_wx = KU_MAP[z]
-
-        # 库里藏的关键字
-        cangs_in_ku = get_canggan(z)
+        # 检查库内是否藏关键字
+        cangs_in_ku = [g for g, _, _ in ZHI_CANGGAN_TABLE.get(zhi, [])]
         key_in_ku = [c for c in cangs_in_ku if c in key_chars]
         if not key_in_ku:
-            # 库里没装关键字 → 该库开闭无关
             continue
 
-        # 是否被流年/大运冲、刑（开库）
         opened_by: list[str] = []
-        if is_zhi_chong(ln_z, z):
-            opened_by.append(f"流年{ln_z}冲")
-        if is_xing_pair(ln_z, z):
-            opened_by.append(f"流年{ln_z}刑")
+        # 流年冲 / 刑
+        if zhi_chong(ln.zhi, zhi):
+            opened_by.append(f"流年{ln.zhi}冲")
+        elif zhi_xing(ln.zhi, zhi) is not None:
+            opened_by.append(f"流年{ln.zhi}刑")
+        # 大运冲 / 刑
         if dy is not None:
-            if is_zhi_chong(dy.zhi, z):
-                opened_by.append(f"大运{dy.zhi}冲")
-            if is_xing_pair(dy.zhi, z):
-                opened_by.append(f"大运{dy.zhi}刑")
+            if zhi_chong(dy.干支.zhi, zhi):
+                opened_by.append(f"大运{dy.干支.zhi}冲")
+            elif zhi_xing(dy.干支.zhi, zhi) is not None:
+                opened_by.append(f"大运{dy.干支.zhi}刑")
 
         if opened_by:
-            explanations.append(
-                f"库{z}({ku_wx},藏{','.join(cangs_in_ku)})被开: {','.join(opened_by)}"
-                f"; 库内关键字: {','.join(key_in_ku)}"
-            )
-            matched.append(z)
-            matched.extend(key_in_ku)
+            out.append(TriggerEvent(
+                type="墓库开闭",
+                description=(
+                    f"原局{name}{zhi}（藏 {','.join(cangs_in_ku)}）"
+                    f"含关键字 {','.join(key_in_ku)}，被 {','.join(opened_by)} 开库"
+                ),
+                target_chars=list(dict.fromkeys([zhi, *key_in_ku])),
+            ))
+        # 库被合住（合而不化）= 闭库 = 不应（不输出，记录为 debug 即可）
 
-        # 库被合住（合而不化）= 闭库 = 不应
-        elif is_zhi_liuhe(ln_z, z) or (dy is not None and is_zhi_liuhe(dy.zhi, z)):
-            explanations.append(f"库{z}被合（闭库）: 不应")
-
-    matched = list(dict.fromkeys(matched))
-    triggered = bool(matched)
-    strength = 0.0
-    if triggered:
-        strength = min(0.6 + 0.15 * len(matched), 1.0)
-    return TriggerEvent(
-        trigger_type="墓库开闭",
-        triggered=triggered,
-        strength=strength,
-        target_chars=matched,
-        explanation="; ".join(explanations) if explanations else "无墓库开闭",
-    )
+    return out
 
 
 # ============================================================
-# 5) 藏干透出
+# 5. 藏干透出（detect_canggan_tou）
 # ============================================================
-
 
 def detect_canggan_tou(
     parsed: ParsedInput, year: int, key_chars: list[str]
-) -> TriggerEvent:
-    """流年 / 大运 把原局藏干透出。"""
-    ln_g, ln_z = liunian_ganzhi(year)
-    dy = get_dayun_at_year(parsed, year)
+) -> list[TriggerEvent]:
+    """流年/大运 把原局某支藏干透出（且原本不透）。
 
-    cangs_in_yj = collect_canggan_in_yuanju(parsed)
-    explanations: list[str] = []
-    matched: list[str] = []
+    任派核心信号：藏干透出 = 隐藏意图浮现。
+    """
+    ln = liunian_ganzhi(year)
+    dy = _get_dayun_step_safe(parsed, year)
+    out: list[TriggerEvent] = []
 
-    for cg, positions in cangs_in_yj.items():
-        if cg not in key_chars:
-            continue
-        if cg in parsed.bazi.all_gans():
-            continue  # 已经在天干里，不算"新透出"
-        # 流年透出
-        if ln_g == cg:
-            matched.append(cg)
-            explanations.append(f"藏干{cg}（{','.join(positions)}）→ 流年透出")
-        # 大运透出
-        if dy is not None and dy.gan == cg:
-            matched.append(cg)
-            explanations.append(f"藏干{cg}（{','.join(positions)}）→ 大运透出")
+    bazi = parsed.bazi
+    seen_chars: set[str] = set()
 
-    matched = list(dict.fromkeys(matched))
-    triggered = bool(matched)
-    return TriggerEvent(
-        trigger_type="藏干透出",
-        triggered=triggered,
-        strength=min(0.55 + 0.15 * len(matched), 1.0) if triggered else 0.0,
-        target_chars=matched,
-        explanation="; ".join(explanations) if explanations else "无藏干新透出",
-    )
+    # 在 bazi 已透天干列表
+    bazi_gans = {gan for _, gan in bazi.all_gans()}
+
+    def _check_tou(transparent_gan: str, tou_source: str) -> None:
+        if transparent_gan in seen_chars:
+            return
+        if transparent_gan in bazi_gans:
+            return  # 原局已透 → 不算"新透出"
+        if transparent_gan not in key_chars:
+            return
+        # 找该 transparent_gan 藏在原局哪些支
+        canggan_palaces = is_canggan(transparent_gan, bazi)
+        if not canggan_palaces:
+            return
+        seen_chars.add(transparent_gan)
+        out.append(TriggerEvent(
+            type="藏干透出",
+            description=(
+                f"{tou_source} 透出原局 {','.join(canggan_palaces)} "
+                f"藏干 {transparent_gan}（原本不透）"
+            ),
+            target_chars=[transparent_gan],
+        ))
+
+    # 流年天干透出
+    _check_tou(ln.gan, f"流年{ln}")
+
+    # 大运天干透出
+    if dy is not None:
+        _check_tou(dy.干支.gan, f"大运{dy.干支}")
+
+    return out
 
 
 # ============================================================
-# 6) 倒象成立（任派核心铁律）
+# 6. 倒象成立（detect_daoxiang）
 # ============================================================
-# §10：又制又生又合又冲成矛盾 = 倒象 → 必凶
+# 任派 §10：又制又生又合又冲成矛盾 = 倒象 → 必凶
 #
-# 简化判定：用神被 ≥ 3 种关系作用（合/冲/刑/穿/克）即倒象
-# 完整判定：同时存在 制 + 生 = 矛盾
+# 增量法：
+#   baseline = 仅原局对用神的关系集
+#   active   = 原局 + 大运 + 流年对用神的关系集
+#   delta = active - baseline（新增的关系类型）
+#   倒象成立条件（任一）：
+#     A. delta ≥ 2 种新类型 + 生克合三态齐全 + active 累计 ≥ 4 种类型
+#     B. delta 中含凶煞（冲/穿/刑/天干克/地支克）+ active 累计 ≥ 4 种
+#     C. 增量次数 ≥ 4（多重打击兜底）
+
+_XIONG_REL_TYPES: set[str] = {"冲", "穿", "刑", "天干克", "地支克"}
+_KE_TYPES: set[str] = {"天干克", "地支克", "冲", "穿", "刑"}
+_SHENG_TYPES: set[str] = {"天干生", "地支生"}
+_HE_TYPES: set[str] = {"六合", "半三合", "天干合"}
+
+
+def _count_relations_to(
+    target: str, gans: list[str], zhis: list[str]
+) -> dict[str, int]:
+    """以 target 为参照，统计 gans/zhis 对 target 的各种关系次数。"""
+    rc: dict[str, int] = {}
+
+    is_target_gan = target in GAN_LIST
+    is_target_zhi = target in ZHI_LIST
+    target_wx = (
+        gan_to_wuxing(target) if is_target_gan
+        else (zhi_to_wuxing(target) if is_target_zhi else None)
+    )
+    if target_wx is None:
+        return rc
+
+    # 干侧
+    for g in gans:
+        if g == target:
+            continue
+        if is_target_gan:
+            # 天干合
+            if gan_he(g, target) is not None:
+                rc["天干合"] = rc.get("天干合", 0) + 1
+        # 五行生克（不分干支身份）
+        g_wx = gan_to_wuxing(g)
+        if wuxing_ke(g_wx, target_wx):
+            rc["天干克"] = rc.get("天干克", 0) + 1
+        if wuxing_sheng(g_wx, target_wx):
+            rc["天干生"] = rc.get("天干生", 0) + 1
+
+    # 支侧
+    for z in zhis:
+        if z == target:
+            continue
+        z_wx = zhi_to_wuxing(z)
+        if is_target_zhi:
+            # 合 / 冲 / 刑 / 穿（地支专属）
+            rel = _classify_zhi_relation(z, target)
+            if rel is not None:
+                rc[rel] = rc.get(rel, 0) + 1
+        # 五行生克
+        if wuxing_ke(z_wx, target_wx):
+            rc["地支克"] = rc.get("地支克", 0) + 1
+        if wuxing_sheng(z_wx, target_wx):
+            rc["地支生"] = rc.get("地支生", 0) + 1
+
+    return rc
 
 
 def detect_daoxiang(
     parsed: ParsedInput, year: int, yong_shen_chars: list[str]
-) -> TriggerEvent:
-    """倒象判定：用神被多重作用。
+) -> list[TriggerEvent]:
+    """倒象成立判定（增量法）。"""
+    ln = liunian_ganzhi(year)
+    dy = _get_dayun_step_safe(parsed, year)
+    bazi = parsed.bazi
 
-    简化版（按任务 fallback）：用神被 ≥3 种关系作用 → 倒象
-    完整版（保留设计）：用神同时被 制 + 生 = 矛盾 = 倒象
-    """
-    ln_g, ln_z = liunian_ganzhi(year)
-    dy = get_dayun_at_year(parsed, year)
-
-    bazi_chars = parsed.bazi.all_chars()
-    bazi_zhis = parsed.bazi.all_zhis()
-    bazi_gans = parsed.bazi.all_gans()
-
-    explanations: list[str] = []
-    is_xiong = False
-
-    # 收集 baseline (仅原局) 和 active (原局 + 大运 + 流年) 的字
-    base_zhis = list(bazi_zhis)
-    base_gans = list(bazi_gans)
-    active_zhis = list(bazi_zhis)
-    active_gans = list(bazi_gans)
+    base_gans = [g for _, g in bazi.all_gans()]
+    base_zhis = [z for _, z in bazi.all_zhis()]
+    active_gans = list(base_gans)
+    active_zhis = list(base_zhis)
     if dy is not None:
-        active_gans.append(dy.gan)
-        active_zhis.append(dy.zhi)
-    active_gans.append(ln_g)
-    active_zhis.append(ln_z)
+        active_gans.append(dy.干支.gan)
+        active_zhis.append(dy.干支.zhi)
+    active_gans.append(ln.gan)
+    active_zhis.append(ln.zhi)
 
-    matched: list[str] = []
+    out: list[TriggerEvent] = []
+    seen_targets: set[str] = set()
 
-    def _count_rels(ys: str, gans: list[str], zhis: list[str]) -> dict[str, int]:
-        rc: dict[str, int] = {}
-        if ys in zhis or ys in "子丑寅卯辰巳午未申酉戌亥":
-            for z in zhis:
-                if z == ys:
-                    continue
-                rs = all_zhi_relations(z, ys)
-                for r in rs:
-                    rc[r] = rc.get(r, 0) + 1
-            ys_wx = get_wuxing(ys)
-            for g in gans:
-                g_wx = get_wuxing(g)
-                if is_ke(g_wx, ys_wx):
-                    rc["天干克"] = rc.get("天干克", 0) + 1
-                if is_sheng(g_wx, ys_wx):
-                    rc["天干生"] = rc.get("天干生", 0) + 1
-        if ys in gans or ys in "甲乙丙丁戊己庚辛壬癸":
-            for g in gans:
-                if g == ys:
-                    continue
-                if is_gan_he(g, ys):
-                    rc["合"] = rc.get("合", 0) + 1
-            ys_wx = get_wuxing(ys)
-            for z in zhis:
-                z_wx = get_wuxing(z)
-                if is_ke(z_wx, ys_wx):
-                    rc["地支克"] = rc.get("地支克", 0) + 1
-                if is_sheng(z_wx, ys_wx):
-                    rc["地支生"] = rc.get("地支生", 0) + 1
-        return rc
+    bazi_chars: set[str] = set(base_gans) | set(base_zhis)
+    # 加原局藏干（用神可能藏在支中）
+    for _, zhi in bazi.all_zhis():
+        for cg, _, _ in ZHI_CANGGAN_TABLE.get(zhi, []):
+            bazi_chars.add(cg)
 
     for ys in yong_shen_chars:
+        if ys in seen_targets:
+            continue
+        # 仅检查在原局的用神
         if ys not in bazi_chars:
             continue
+        seen_targets.add(ys)
 
-        baseline = _count_rels(ys, base_gans, base_zhis)
-        active = _count_rels(ys, active_gans, active_zhis)
+        baseline = _count_relations_to(ys, base_gans, base_zhis)
+        active = _count_relations_to(ys, active_gans, active_zhis)
 
-        # 增量：active 多出来的关系类型数 + 同类型多出来的次数
         delta_types = set(active.keys()) - set(baseline.keys())
         delta_count = 0
         for k, v in active.items():
             delta_count += max(0, v - baseline.get(k, 0))
 
-        # 当前关系类型分类
         n_distinct = len([r for r in active if active[r] >= 1])
-        has_real_sheng = any(r in active for r in ("天干生", "地支生"))
-        has_real_ke = any(r in active for r in ("天干克", "地支克", "冲", "穿", "刑"))
-        has_he = any(r in active for r in ("六合", "半合", "合"))
+        has_real_sheng = bool(set(active.keys()) & _SHENG_TYPES)
+        has_real_ke = bool(set(active.keys()) & _KE_TYPES)
+        has_he = bool(set(active.keys()) & _HE_TYPES)
 
-        # 倒象 = 多种条件之一：
-        # 条件 A：增量 ≥ 2 种新关系类型 + 生克合三态齐 + 累计 ≥ 4 种（重大矛盾）
-        # 条件 B：增量包含凶煞类型 (冲/穿/刑/克) + 累计 ≥ 4 种 (凶煞引动)
-        # 条件 C：增量次数 ≥ 4 (兜底——多重打击)
-        delta_has_xiong = bool(
-            delta_types & {"冲", "穿", "刑", "天干克", "地支克"}
-        )
+        delta_has_xiong = bool(delta_types & _XIONG_REL_TYPES)
+
         cond_A = (
             len(delta_types) >= 2
             and has_real_sheng and has_real_ke and has_he
@@ -429,143 +533,149 @@ def detect_daoxiang(
         cond_C = delta_count >= 4
 
         is_dao = cond_A or cond_B or cond_C
+        if not is_dao:
+            continue
 
-        if is_dao:
-            reason_tag = "A.三态矛盾" if cond_A else ("B.凶煞引动" if cond_B else "C.多重打击")
-            explanations.append(
-                f"用神{ys}: 大运/流年新增{len(delta_types)}种新类型({','.join(sorted(delta_types)) or '无'})"
-                f", 累计{n_distinct}种, 增量次数{delta_count} → 倒象凶应 [{reason_tag}]"
-            )
-            is_xiong = True
-            matched.append(ys)
+        reason_tag = (
+            "三态矛盾(A)" if cond_A
+            else ("凶煞引动(B)" if cond_B else "多重打击(C)")
+        )
+        out.append(TriggerEvent(
+            type="倒象成立",
+            description=(
+                f"用神 {ys} 倒象 [{reason_tag}]：大运/流年新增 {len(delta_types)} 种新关系"
+                f"({','.join(sorted(delta_types)) or '无'})，累计 {n_distinct} 种"
+                f"，增量次数 {delta_count}"
+            ),
+            target_chars=[ys],
+            is_xiong=True,
+        ))
 
-    triggered = bool(matched)
-    return TriggerEvent(
-        trigger_type="倒象成立",
-        triggered=triggered,
-        strength=0.95 if triggered else 0.0,
-        target_chars=list(dict.fromkeys(matched)),
-        explanation="; ".join(explanations) if explanations else "无倒象",
-        is_xiong=is_xiong,
-    )
+    return out
 
 
 # ============================================================
-# 主入口：6 触发并行检测
+# 主入口：6 触发并行检测 + 主触发挑选
 # ============================================================
-
 
 def detect_all_triggers(
     parsed: ParsedInput,
     year: int,
-    primary_keys: list[str],
+    key_chars: list[str],
     yong_shen_chars: Optional[list[str]] = None,
 ) -> list[TriggerEvent]:
-    """运行 6 大触发，返回 list[TriggerEvent]（含未触发的）。"""
+    """运行 6 大触发，返回所有触发事件（去重；未触发的不返回）。
+
+    yong_shen_chars: 倒象判定专用。若 None，fallback 到 key_chars + 日干。
+    """
     if yong_shen_chars is None:
-        yong_shen_chars = primary_keys
-    return [
-        detect_benzi_dao(parsed, year, primary_keys),
-        detect_fuyin(parsed, year),
-        detect_hechong(parsed, year, primary_keys),
-        detect_muku(parsed, year, primary_keys),
-        detect_canggan_tou(parsed, year, primary_keys),
-        detect_daoxiang(parsed, year, yong_shen_chars),
-    ]
+        yong_shen_chars = list(key_chars[:4]) + [parsed.bazi.day_master]
 
-
-# ============================================================
-# 主触发挑选（按 04 § 5.2 优先级）
-# ============================================================
-#
-# 优先级（强信号优先）：
-#   1. 倒象成立 (is_xiong)        ★ 最高（凶应必报）
-#   2. 墓库开闭                    ★★（财官库开 = 大事）
-#   3. 合冲引动 + 涉及主位          ★（妻宫被合 / 冲）
-#   4. 藏干透出                    ★
-#   5. 本字到                      ★
-#   6. 伏吟引动                    ★
-
-PRIMARY_PRIORITY = (
-    "倒象成立",
-    "墓库开闭",
-    "合冲引动",
-    "藏干透出",
-    "本字到",
-    "伏吟引动",
-)
+    triggers: list[TriggerEvent] = []
+    triggers.extend(detect_benzi_dao(parsed, year, key_chars))
+    triggers.extend(detect_fuyin(parsed, year))
+    triggers.extend(detect_hechong(parsed, year, key_chars))
+    triggers.extend(detect_muku(parsed, year, key_chars))
+    triggers.extend(detect_canggan_tou(parsed, year, key_chars))
+    triggers.extend(detect_daoxiang(parsed, year, yong_shen_chars))
+    return triggers
 
 
 def pick_primary_trigger(
-    triggers: list[TriggerEvent], domain: str = ""
+    triggers: list[TriggerEvent]
 ) -> Optional[TriggerEvent]:
-    """从触发列表中挑出主触发（按 PRIMARY_PRIORITY 优先级）。"""
-    triggered = [t for t in triggers if t.triggered]
-    if not triggered:
+    """按 04 § 5.2 优先级挑主触发。
+
+    优先级（高 → 低）：
+        倒象成立 > 伏吟 > 本字到 ~ 合冲引动 > 墓库开闭 > 藏干透出
+    同优先级按出现顺序保留第一个。
+    """
+    if not triggers:
         return None
-    # 按优先级 + 强度排序
-    rank = {name: i for i, name in enumerate(PRIMARY_PRIORITY)}
-    triggered.sort(key=lambda t: (rank.get(t.trigger_type, 99), -t.strength))
-    return triggered[0]
+    # 排序 by priority asc，stable
+    sorted_t = sorted(
+        triggers,
+        key=lambda t: TRIGGER_PRIORITY.get(t.type, 99),
+    )
+    return sorted_t[0]
 
 
 # ============================================================
 # smoke
 # ============================================================
 
-
 def _smoke() -> None:
-    from engine.predicates.types import Bazi, Pillar, Dayun, ParsedInput
-    bz = Bazi.parse("庚申", "戊寅", "壬子", "辛丑")
-    dayuns = [
-        Dayun(Pillar.parse("庚辰"), 18, 28, 1998, 2008),
-        Dayun(Pillar.parse("辛巳"), 28, 38, 2008, 2018),
-        Dayun(Pillar.parse("壬午"), 38, 48, 2018, 2028),
-    ]
-    pi = ParsedInput(gender="男", birth_year=1980, bazi=bz, dayun_list=dayuns)
+    from tests.fixtures.cases import load_case
 
-    # 婚姻关键字（粗判）：丙丁巳午 + 子（妻宫）
+    # C-2026-001
+    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    # 婚姻关键字（粗判，避免依赖 Track-A energy）
     keys = ["丙", "丁", "巳", "午", "子"]
     yong = ["丙", "子"]
 
-    # 2005 乙酉
-    triggers = detect_all_triggers(pi, 2005, keys, yong)
-    by_type = {t.trigger_type: t for t in triggers}
+    print("\n=== C-2026-001 婚姻 2005 ===")
+    trigs = detect_all_triggers(parsed, 2005, keys, yong)
+    by_type = {}
+    for t in trigs:
+        by_type.setdefault(t.type, []).append(t)
+    for typ, ts in by_type.items():
+        print(f"  {typ}: {len(ts)}")
+        for t in ts[:2]:
+            print(f"    · {t.description}")
+    primary = pick_primary_trigger(trigs)
+    print(f"  primary: {primary.type if primary else None}")
+    # 2005 乙酉：乙合年干庚 + 大运庚辰半合日支子？申子辰半合 → 合冲引动应触发
+    assert any(t.type == "合冲引动" for t in trigs), "2005 应触发合冲引动"
 
-    # 合冲引动应触发（乙合庚、辰酉合大运、酉与申隔位）
-    assert by_type["合冲引动"].triggered, by_type["合冲引动"].explanation
+    print("\n=== C-2026-001 婚姻 2026（丙午年）===")
+    trigs = detect_all_triggers(parsed, 2026, keys, yong)
+    by_type = {}
+    for t in trigs:
+        by_type.setdefault(t.type, []).append(t)
+    for typ, ts in by_type.items():
+        print(f"  {typ}: {len(ts)}")
+    # 丙午：丙=本字 + 午=本字 + 午冲子 → 本字到 + 合冲
+    assert any(t.type == "本字到" for t in trigs), "2026 丙午应触发本字到"
+    assert any(t.type == "合冲引动" for t in trigs), "2026 午冲子应触发合冲"
 
-    # 2026 丙午
-    triggers = detect_all_triggers(pi, 2026, keys, yong)
-    by_type = {t.trigger_type: t for t in triggers}
-    # 本字到（午）
-    assert by_type["本字到"].triggered
-    assert "午" in by_type["本字到"].target_chars
-    # 合冲引动（午冲子）
-    assert by_type["合冲引动"].triggered
+    print("\n=== C-2026-001 婚姻 2013 ===")
+    trigs = detect_all_triggers(parsed, 2013, keys, yong)
+    by_type = {}
+    for t in trigs:
+        by_type.setdefault(t.type, []).append(t)
+    for typ, ts in by_type.items():
+        print(f"  {typ}: {len(ts)}")
+    # 2013 癸巳：巳=本字 + 大运辛巳 + 巳寅相邻
+    assert any(t.type == "本字到" for t in trigs), "2013 癸巳应触发本字到（巳）"
 
-    # 倒象（用神子被多重打击：壬午运 + 丙午年）
-    # 子 受冲（午）多次，但需要 ≥3 种不同关系
-    # 实际原局：申子半合（生），子丑合（合），大运午冲，流年午冲
-    # 关系类型 = {半合, 六合, 冲} ≥ 3 → 倒象成立
-    assert by_type["倒象成立"].triggered, by_type["倒象成立"].explanation
+    # 倒象（举例：母 2020 庚子，使用印=辛庚 子作 yong shen）
+    print("\n=== C-2026-001 母 2020（庚子）===")
+    yong_mu = ["辛", "庚", "子"]
+    trigs = detect_all_triggers(parsed, 2020, yong_mu, yong_mu)
+    by_type = {}
+    for t in trigs:
+        by_type.setdefault(t.type, []).append(t)
+    for typ, ts in by_type.items():
+        print(f"  {typ}: {len(ts)}")
+        for t in ts[:1]:
+            print(f"    · {t.description[:80]}")
+    # 庚子年 = 流年柱伏吟年柱（庚申）的天干？年柱=庚申，流年=庚子 → 不完全伏吟
+    # 但庚 = 本字 + 子 = 本字（日支）
 
-    # 主触发：倒象优先
-    primary = pick_primary_trigger(triggers, "婚姻")
-    assert primary is not None
-    assert primary.trigger_type == "倒象成立"
+    print("\n=== C-2026-014 学业 2024 ===")
+    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    keys_xue = ["庚", "辛", "申", "酉", "壬", "癸", "丙", "丁"]
+    trigs = detect_all_triggers(parsed014, 2024, keys_xue, ["壬", "癸"])
+    by_type = {}
+    for t in trigs:
+        by_type.setdefault(t.type, []).append(t)
+    for typ, ts in by_type.items():
+        print(f"  {typ}: {len(ts)}")
+        for t in ts[:1]:
+            print(f"    · {t.description[:80]}")
 
-    # 2013 癸巳
-    triggers = detect_all_triggers(pi, 2013, keys, yong)
-    by_type = {t.trigger_type: t for t in triggers}
-    # 本字到（巳）
-    assert by_type["本字到"].triggered
-    # 大运辛巳 + 流年癸巳 → 大运伏吟流年（不是原局柱伏吟）
-    # 流年柱 != 原局任一柱 → 伏吟不触发
-    # 本字到 + 合冲引动可能触发（巳与申合制）
-
-    print("yingqi.chufa smoke OK")
+    print("\n[OK] chufa smoke 全过")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     _smoke()

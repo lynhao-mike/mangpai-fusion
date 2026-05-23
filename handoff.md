@@ -1,165 +1,140 @@
-# Kiro 接管交接文档
+# v1.2 重构 Handoff · 2026-05-23
 
-> 当任何 Kiro 实例接管本仓库时，先读本文件，再读 `.kiro/skills/BOOT.md`。
-
-最后更新：2026-05-23 · v1.0 首发
+> 本文记录当前 session 工作终止时的精确状态，供下一个 agent/session 无损接续。
 
 ---
 
-## 一、本仓库是什么
+## 一、已完成交付
 
-`mangpai-fusion` = **盲派四派融合八字分析系统 v1.0**，整合：
-- 高德臣（盲派宗派）261 条规律
-- 段建业（盲派宗派）290 条规律
-- 杨清娟（盲派宗派）163 条规律
-- 任付红（盲派宗派）200 条规律
-- **合计 914 条规律全量索引**
-
----
-
-## 二、用户角色与目标
-
-- **用户**：专业命理师
-- **使用工具**：问真八字 APP 排盘
-- **核心需求**：
-  1. 八字录入仓库 → AI 给出 4 派融合分析
-  2. AI 必须明确标注**派别归属 + 双轨置信度（★+%）**
-  3. 命主反馈应验/失验 → 自动校准引擎重算命中率
-  4. 多派定一派 = 高置信
-  5. 单派独门但实战应验高 = 显式提示
+| Track | PR | 状态 | 关键文件 |
+|---|---|---|---|
+| A 段派 D1 | #8 | ✅ 已合 v1.2-build | engine/energy/ |
+| B 杨派 D2 | #11 | ✅ 已合 v1.2-build | engine/picture/ |
+| C 任派 D3 | #13 | ✅ 已合 v1.2-build | engine/yingqi/ + engine/predicates/{cycles,tou_cang}.py |
+| D 高派 D4 | #14 | 🟡 **冲突已修复，可合并** | engine/pangzheng/ + engine/predicates/shensha.py |
+| E 兜底护栏 | (v1.2-build 内) | ✅ | tools/{preflight,output_linter,three_layer_check}.py |
+| G 自迭代 | #9 | ✅ 已合 | tools/{feedback_loop,rule_lifecycle,drift_detect}.py |
+| H 测试基准 | #10 | ✅ 已合 | tests/{fixtures,regression}/ |
+| decisions | #15 | 🟢 **新建，可合并** | engine/contracts/decisions-locked.md |
 
 ---
 
-## 三、上下文文件优先级
+## 二、待合并 PR（按顺序 merge）
 
-启动后必读（按顺序）：
-1. `STATUS.md` ← 当前进度（v1.0 已可投入实战）
-2. `.kiro/skills/BOOT.md` ← 最小启动协议
-3. `.kiro/skills/analyst.md` ← **主分析器**（最重要！10 步法 + 8 铁律）
-4. `theory/SCHEMA.md` ← 规律 schema
-5. `engine/confidence.yaml` ← 双轨置信度算法
-6. `engine/domain-weights.yaml` ← 4 派领域权重
-7. `engine/arbitration.md` ← 仲裁规则（20 条 CF）
-8. `mapping/INDEX.md` ← 跨派映射总览
-9. `templates/input-from-wenzhen.md` ← 输入规范
-10. `templates/report.md` ← 输出规范
+1. **PR #14** (v1.2-track-D) → v1.2-build
+   - 已 force-push 含 merge commit `da8e174`，模拟 GitHub merge "went well"
+   - 直接点 Merge 即可
 
-实战时按需加载：
-- `theory/{gao,duan,yang,ren}/index.yaml`：4 派结构化规律库
-- `mapping/{consensus,complementary,exclusive,conflicts}.md`：跨派映射
-- `cases/cases-index.md`：历史案例索引（用于回顾相似命例）
-- `META/rule-changelog.md`：规律变更日志
+2. **PR #15** (v1.2-decisions-lock) → v1.2-build
+   - 无冲突，1 个文件（decisions-locked.md）
 
 ---
 
-## 四、来源仓库
+## 三、未完成 · 下一步
 
-本仓库的 4 派理论来源于：
-- `lynhao-mike/Mang.pai` ← 高派理论（迁入 sources/gao/ + theory/raw/gao/）
-- `lynhao-mike/gufamangpai` ← 段+杨+任 三派理论（迁入 sources/{duan,yang,ren}/）
+### #2 启动 Track-F（报告渲染器）
 
-详细映射见 `META/source-trace.md`。
+**分支**：从 v1.2-build（合并 #14/#15 后）切 `v1.2-track-F`
+
+**需要交付的文件**：
+- `templates/report-v1.2.md` — 三段式报告模板
+- `tools/render_report.py` — 渲染主入口
+  - 输入：EnergyFindings + PictureFindings + GateResult + SupportFindings + ParsedInput
+  - 输出：三段式 Markdown 报告
+  - 三段 = 铁断段（三层齐的 ★★★★★ 断语）+ 画像段（画像版描述）+ 应期段（应期时间轴）
+  - AI 润色边界（决策 D）：仅"画像版"段允许 AI 润色，必须标 `[AI-polish]`
+  - trace_id 全覆盖（解决 G5）：每条断语含 `evidence.rule_id` 链
+- `tests/track_f_smoke/test_f_render.py` — 验收测试
+
+**验收标准（08 § 六 Track-F 行）**：
+- F-001: mock findings 生成 1 份 sample 报告，结构通过 output_linter
+- F-002: 报告含 trace_id 覆盖率 = 100%
+- F-003: 铁断段只含 passed_layers=3 的断语
+
+### #3 W3 集成日（G1/G2/G3/G4 regression 接入）
+
+**分支**：从 v1.2-build 切 `v1.2-w3-integration`
+
+**需要做的**：
+- `tests/regression/test_v1_2_vs_v1_0.py` 中有 4 个 TODO 占位（v1_2_value = -1）
+- 接入方式：
+  ```python
+  # G1: 
+  from engine.yingqi import gate_yingqi
+  from engine.energy.evaluator import evaluate_energy
+  from engine.picture.matcher import match_picture
+  # 对 3 个真实案例的 ground truth 事件 逐年跑 gate_yingqi，
+  # 统计 passed_layers=3 且 star>=4 的命中数 = v1_2_value
+
+  # G2:
+  # 找 C-001 婚姻在 [2002,2013] 中最强的应期年，与 2005 的距离 = error
+  # v1_2_value = error
+
+  # G4:
+  # 对 C-014 教育预测，比对 D2 level-scales 判定层级 vs 实际层级
+  # overshot = 0 则 v1_2_value = 0
+  ```
+- 从 Track-C 的 `tests/track_c_smoke/test_c_gate.py::test_G2_holy_grail_c001_vs_c002` 可复制 G2 逻辑
+
+**验收**：
+- G1 不再 skip/fail
+- G2 不再 skip/fail（应 PASS，误差 0 年）
+- G4 不再 skip/fail（需 D2 + D4 联合判定学历层级）
 
 ---
 
-## 五、强约束（绝不打破）
+## 四、决策面板（已锁定）
 
-1. **置信度必须双轨制**：每条断语必须给出 `★ 等级 + 百分比`
-2. **派别必须明示**：每条断语必须标注 `[派别]` 来源
-3. **应期必须可证伪**：所有应期断语必须给出具体年份/月份
-4. **共识 vs 独门必须区分**：
-   - ≥2 派同向 → 标注"共识"
-   - 单派 → 标注"X派独门，置信度依赖 hit_rate"
-5. **反馈回流必须实时**：用户每次提供反馈，必须更新对应规律的 `hit_count/miss_count`
-6. **永远不替命主决策**：本系统是辅助工具，不替代命理师本人的判断
-7. **冲突必须显式呈现**：派别冲突不可隐瞒（详见 `engine/arbitration.md`）
-8. **报告与案例同步 commit**：reports/ 与 cases/ 必须同时归档（强制约束）
+详见 `engine/contracts/decisions-locked.md`（PR #15）。
+
+核心红线：
+- **B**: 判定逻辑全纯 Python，YAML 仅 metadata/阈值
+- **E**: 现用线性加权，≥30 反馈后由 Track-G 自动切 Beta
+- **H**: v1.2 期间 PR-based，发布后恢复直推 main
 
 ---
 
-## 六、典型工作流
-
-### 6.1 单案例分析流程
+## 五、分支地图
 
 ```
-用户：[贴入按 templates/input-from-wenzhen.md 格式的八字 + 分析重点]
-     ↓
-Kiro:  1. 复述八字确认
-       2. 询问已知信息（婚姻状态/重大事件等）
-       3. 加载 .kiro/skills/strategy.yaml 路由策略 A/B/C
-       4. 加载 engine/domain-weights.yaml 取 lead 派
-       5. 4 派并行查询（theory/{gao,duan,yang,ren}/）
-       6. 共识层匹配 → 互补层联立 → 独门补充 → 冲突仲裁
-       7. 应期 4 模型交叉
-       8. 按 templates/report.md 输出双轨置信度报告
-       9. 同步生成 cases/C-YYYY-NNN/{input.md, analysis.md, feedback.md, lessons.md} + reports/C-YYYY-NNN-report.md
-       10. **自动归档**（不再询问，按 .kiro/steering/auto-archive.md v1.0 协议）
-     ↓
-命主反馈应验/失验
-     ↓
-Kiro:  填入 cases/C-YYYY-NNN/feedback.md
-       触发 python3 tools/calibrate.py --case C-YYYY-NNN
-     ↓
-自动校准:
-- 更新 theory/{school}/index.yaml 的 hit/miss/score/star
-- 触发升降级（candidate → promoted / promoted → retired）
-- 写入 META/rule-changelog.md
-- 同步更新 mapping/ 文件
-- 生成 cases/C-YYYY-NNN/calibration-report.md
+main (v1.0 + Track-C commit 52d9a9a, 不影响 v1.2-build 工作)
+ └── v1.2-build (远端 69f2d77, 含 A/B/C/E/G/H)
+      ├── v1.2-track-D (da8e174, PR #14 待合)
+      ├── v1.2-decisions-lock (bbd7d69, PR #15 待合)
+      ├── v1.2-track-F (未创建，下一步)
+      └── v1.2-w3-integration (未创建，#3)
 ```
 
-### 6.2 当用户问"如何使用"时
+---
 
-直接给出：
-> 「请按 `templates/input-from-wenzhen.md` 模板把您的八字（从问真八字 APP 复制）整理后贴给我，并在末尾说明您想问的核心问题。我会按 4 派融合策略给您一份双轨置信度的专业分析报告。」
+## 六、pytest 全量状态（基于 v1.2-track-D 合并后）
+
+```
+62 passed, 2 xfailed
+3 failed (G1/G2/G4 regression TODO 占位 — 待 #3 W3 集成接入)
+```
+
+Track-C 本地验收 10/10 PASS
+Track-D 本地验收 9/9 PASS
+G2 圣杯端到端 PASS（2005 三层 ★5 / 2013 一层 ★2）
 
 ---
 
-## 七、当前状态
+## 七、关键文件引用
 
-详见 `STATUS.md`。
-
-简要：
-- v1.0 已可投入实战
-- 0 个案例归档（等待第 1 案）
-- 914 条规律全部索引
-- 16 组共识 + 22 组互补 + 200 条独门 + 4 个冲突登记
-
----
-
-## 八、不要做的事
-
-1. ❌ 不要为了取悦用户而虚增置信度
-2. ❌ 不要为了避免冲突而隐瞒派别分歧
-3. ❌ 不要给出无可证伪的应期（"未来某年"）
-4. ❌ 不要单独使用某一派理论（必须 4 派融合）
-5. ❌ 不要在没有共识/互补/独门标记的情况下给结论
-6. ❌ 不要给医疗/法律/重大决策的专业建议
-7. ❌ 不要直接修改 hit_count（必须通过 calibrate.py）
-8. ✅ **直接 push 到 main 分支**（用户全局规则：不开新分支、不创建 PR）
+| 用途 | 路径 |
+|---|---|
+| Track-C 入口 | `engine/yingqi/gate.py :: gate_yingqi()` |
+| Track-D 入口 | `engine/pangzheng/pangzheng.py :: support_with_shensha()` |
+| Track-A 入口 | `engine/energy/evaluator.py :: evaluate_energy()` |
+| Track-B 入口 | `engine/picture/matcher.py :: match_picture()` |
+| 案例加载 | `tests/fixtures/cases.py :: load_case(case_id)` |
+| 神煞加载 | `engine/pangzheng/loader.py :: attach_shensha(parsed)` |
+| 三层校验 | `tools/three_layer_check.py :: check_yingqi(gate_result)` |
+| 10 份契约 | `engine/contracts/00~09-*.md` |
+| 决策锁定 | `engine/contracts/decisions-locked.md` |
 
 ---
 
-## 九、给后续接管者的话
-
-- 本仓库追求"宁慢不假"，前期工程量大但置信度优先
-- 不要为了快速给出结论而绕过仲裁引擎
-- 不要为了避免冲突而隐瞒派别分歧——分歧本身是命主信息的一部分
-- 每个案例都是一次理论校准，反馈回流是命脉
-- v1.0 是基础版本，等积累 ≥ 10 个案例后会自动浮现需要改进的地方
-
-如有疑问优先看：
-- `STATUS.md` 看进度
-- `META/rule-changelog.md` 看变更
-- `cases/cases-index.md` 看案例
-- `mapping/INDEX.md` 看跨派映射
-
----
-
-## 十、版本历史
-
-| 版本 | 日期 | 里程碑 |
-|---|---|---|
-| v0.1.0-bootstrap | 2026-05-23 | M1 仓库骨架 + schema |
-| v0.5.0 | 2026-05-23 | M2-M5 4 派理论完整入库 + 引擎 |
-| **v1.0.0** | **2026-05-23** | **M7 完成 · 首发可用版本** |
+**本 handoff 由 Track-C/D agent 于 2026-05-23 session 末写入。**
+**下一个 session 优先合并 PR #14 + #15，然后启动 Track-F。**

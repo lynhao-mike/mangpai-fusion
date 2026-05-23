@@ -1,7 +1,46 @@
-"""engine.picture · D2 杨派画面合拍引擎（Track-B 领地）
+"""engine/picture · v1.2 D2 杨派画面合拍引擎
 
-⚠️ Track-B 尚未交付。本目录只提供 Track-C 必需的上游存根（types.py），
-   保证 Track-C 的接口契约对齐。Track-B 完整实现时应：
-   1. 保持 PictureFindings 与 MarriagePicture 的核心字段（向后兼容）
-   2. 在此基础上扩展更多结构（五步法、五合判别、暗引五公式、财富 7 等）
+杨清娟派"画面合拍器"——把 D1（段派）给的"能量级别"具象化为
+"什么人/什么事"的画面。
+
+入口：``match_picture(energy, parsed) → PictureFindings``
+
+子模块：
+    types       - PictureFindings + 子结构 + JSON 序列化
+    matcher     - match_picture 主入口（编排 + 上游约束校验）
+    wubu        - 五步算命法
+    wuhe        - 天干五合（化成 / 合绊 / 搅局）
+    anyin       - 十神暗引 5 公式
+    caifu       - 财富 7 等 + 官命 9 取
+    marriage    - 婚姻画像 + 初婚最佳窗口（修复 G2 关键）
+    tiaohou     - 调候改运 6 维
+
+作者：Track-B
 """
+from engine.picture.types import (  # noqa: F401
+    AnyinResult,
+    CaifuRanking,
+    GuanmingQufa,
+    PictureFindings,
+    WubuStep,
+    WuheRelation,
+)
+
+
+def __getattr__(name: str):
+    """Lazy import for ``match_picture`` to avoid circular import during W2 dev."""
+    if name == "match_picture":
+        from engine.picture.matcher import match_picture as _match_picture
+        return _match_picture
+    raise AttributeError(f"module 'engine.picture' has no attribute {name!r}")
+
+
+__all__ = [
+    "match_picture",
+    "PictureFindings",
+    "WubuStep",
+    "WuheRelation",
+    "AnyinResult",
+    "CaifuRanking",
+    "GuanmingQufa",
+]

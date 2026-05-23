@@ -1,0 +1,733 @@
+"""tools/output_linter.py · 兜底护栏 #2 · 输出格式 + 黑名单校验
+
+实现 07-pipeline-flow.md § 八 的 11 项检查 +
+06-confidence-model.md § 七/§ 十 的禁忌清单。
+
+支持两种输入：
+  1. AnalysisOutput dataclass / dict（结构化）
+  2. 一段 Markdown 文本（从 reports/*.md 中抽取断语后逐条校验）
+
+输出 LintResult，含 errors + warnings + per-conclusion 详情。
+
+依赖：标准库 + PyYAML（用于加载 mechanical-rules.yaml 黑名单）
+版本：v1.2.0
+作者：Track-E
+"""
+from __future__ import annotations
+
+import dataclasses
+import re
+import sys
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+from typing import Any, Iterable, Literal, Optional, Union
+
+try:
+    import yaml  # type: ignore
+except ImportError as e:  # pragma: no cover
+    raise SystemExit(
+        "output_linter.py 需要 PyYAML，请运行: pip install pyyaml"
+    ) from e
+
+
+# ============================================================
+# 一、常量 / 区间表（与 06-confidence-model § 二 保持双向唯一）
+# ============================================================
+
+# ★ 区间表（左闭右闭百分比）
+STAR_RANGES: dict[int, tuple[int, int]] = {
+    1: (0, 39),
+    2: (40, 54),
+    3: (55, 69),
+    4: (70, 84),
+    5: (85, 100),
+}
+
+VALID_SCHOOL_TAGS: set[str] = {"段", "杨", "任", "高", "共识", "互补", "独门", "冲突仲裁", "冲突"}
+
+# 派别标签匹配：[...]，正文内任意字符；事后再用 VALID_SCHOOL_TAGS 过滤
+SCHOOL_TAG_RE = re.compile(r"\[([^\]\n]{1,80})\]")
+
+# ★N (XX%) 匹配，兼容三种写法（中英括号兼容、半全角数字、连写 ★）
+# 1) ★3 (60%)        digit-form
+# 2) ★★★ (60%)       repeat-form (1-5 stars)
+STAR_PCT_RE_DIGIT = re.compile(
+    r"★([1-5１-５])\s*[（(]\s*(\d{1,3})\s*%\s*[)）]"
+)
+STAR_PCT_RE_REPEAT = re.compile(
+    r"(★{1,5})(?!\d)\s*[（(]\s*(\d{1,3})\s*%\s*[)）]"
+)
+STAR_PCT_RE = STAR_PCT_RE_DIGIT  # 旧名保留，外部用 parse_star_pct
+STAR_ONLY_RE = re.compile(r"★([1-5])(?!\s*[（(]\s*\d)")
+PCT_ONLY_RE = re.compile(r"(?<!★)\b(\d{1,3})%")
+
+DEFAULT_RULES_YAML: Path = (
+    Path(__file__).resolve().parent.parent / "engine" / "mechanical-rules.yaml"
+)
+
+
+# ============================================================
+# 二、数据结构
+# ============================================================
+
+class Severity(str, Enum):
+    ERROR = "ERROR"     # 阻塞输出
+    WARNING = "WARN"    # 仅警告 / 降级
+    INFO = "INFO"
+
+
+@dataclass
+class LintIssue:
+    severity: Severity
+    code: str           # "E1" / "W7" 等，对应 § 八 检查表
+    message: str
+    location: Optional[str] = None    # conclusion_id 或行号
+    suggestion: Optional[str] = None
+
+
+@dataclass
+class LintResult:
+    passed: bool        # 无 ERROR 即 True
+    issues: list[LintIssue] = field(default_factory=list)
+
+    @property
+    def errors(self) -> list[LintIssue]:
+        return [i for i in self.issues if i.severity == Severity.ERROR]
+
+    @property
+    def warnings(self) -> list[LintIssue]:
+        return [i for i in self.issues if i.severity == Severity.WARNING]
+
+    def add(
+        self,
+        severity: Severity,
+        code: str,
+        message: str,
+        location: Optional[str] = None,
+        suggestion: Optional[str] = None,
+    ) -> None:
+        self.issues.append(LintIssue(
+            severity=severity, code=code, message=message,
+            location=location, suggestion=suggestion,
+        ))
+        if severity == Severity.ERROR:
+            self.passed = False
+
+    def format(self) -> str:  # pragma: no cover
+        lines: list[str] = []
+        for i in self.issues:
+            head = f"[{i.severity.value} {i.code}]"
+            loc = f" @ {i.location}" if i.location else ""
+            lines.append(f"{head}{loc} {i.message}")
+            if i.suggestion:
+                lines.append(f"    → 建议: {i.suggestion}")
+        if not lines:
+            lines.append("[OK] linter passed (0 issue)")
+        return "\n".join(lines)
+
+
+# ============================================================
+# 三、规则加载（mechanical-rules.yaml）
+# ============================================================
+
+@dataclass
+class _RulesData:
+    """从 mechanical-rules.yaml 加载的精简结构。"""
+    blacklist_ids: set[str]                          # {"XF-001", ...}
+    blacklist_aliases: dict[str, str]                # alias_lower → XF-id
+    blacklist_blocked_outputs: dict[str, set[str]]   # XF-id → {domain1, ...}
+    forbidden_hard: list[tuple[str, str]]            # [(phrase, reason), ...]
+    forbidden_soft: list[tuple[str, str]]
+    rule_ids: set[str]                               # {"MR-001", ...}
+
+
+def load_rules(yaml_path: Optional[Path] = None) -> _RulesData:
+    p = Path(yaml_path) if yaml_path else DEFAULT_RULES_YAML
+    if not p.exists():
+        # 缺失 yaml = 仅做结构性 lint，黑名单功能降级
+        return _RulesData(
+            blacklist_ids=set(),
+            blacklist_aliases={},
+            blacklist_blocked_outputs={},
+            forbidden_hard=[],
+            forbidden_soft=[],
+            rule_ids=set(),
+        )
+    data = yaml.safe_load(p.read_text(encoding="utf-8"))
+    bl: list[dict[str, Any]] = data.get("blacklist") or []
+    bl_ids: set[str] = set()
+    bl_aliases: dict[str, str] = {}
+    bl_blocked: dict[str, set[str]] = {}
+    for b in bl:
+        bid = str(b["id"])
+        bl_ids.add(bid)
+        bl_aliases[str(b.get("pattern", "")).strip().lower()] = bid
+        for al in b.get("aliases") or []:
+            bl_aliases[str(al).strip().lower()] = bid
+        bl_blocked[bid] = set(b.get("blocked_in_outputs") or [])
+
+    fp = data.get("forbidden_phrases") or {}
+    hard = [(str(x["phrase"]), str(x.get("reason", ""))) for x in (fp.get("hard") or []) if isinstance(x, dict)]
+    soft = [(str(x["phrase"]), str(x.get("reason", ""))) for x in (fp.get("soft") or []) if isinstance(x, dict)]
+
+    rules = data.get("rules") or []
+    rule_ids = {str(r["id"]) for r in rules if "id" in r}
+
+    return _RulesData(
+        blacklist_ids=bl_ids,
+        blacklist_aliases=bl_aliases,
+        blacklist_blocked_outputs=bl_blocked,
+        forbidden_hard=hard,
+        forbidden_soft=soft,
+        rule_ids=rule_ids,
+    )
+
+
+# ============================================================
+# 四、工具：★(%)/标签 正规化 + 区间一致性
+# ============================================================
+
+_STAR_FULLWIDTH_MAP = str.maketrans({
+    "１": "1", "２": "2", "３": "3", "４": "4", "５": "5",
+})
+
+
+def parse_star_pct(text: str) -> Optional[tuple[int, int]]:
+    """从字符串中抽取首个 ★N (XX%) 或 ★★★ (XX%) 组合。返回 (star, pct) 或 None。
+
+    支持两种写法（v1.2 spec + v1.0/v2 实际报告）：
+      - ``★3 (60%)``     digit-form
+      - ``★★★ (60%)``    repeat-form
+    """
+    m = STAR_PCT_RE_DIGIT.search(text)
+    if m:
+        star_raw = m.group(1).translate(_STAR_FULLWIDTH_MAP)
+        return int(star_raw), int(m.group(2))
+    m = STAR_PCT_RE_REPEAT.search(text)
+    if m:
+        star = len(m.group(1))
+        return star, int(m.group(2))
+    return None
+
+
+def is_star_pct_consistent(star: int, pct: int) -> bool:
+    if star not in STAR_RANGES:
+        return False
+    lo, hi = STAR_RANGES[star]
+    return lo <= pct <= hi
+
+
+def expected_star_for_pct(pct: int) -> int:
+    """给定 % 反推应该是 ★几（用于报错建议）"""
+    for s in (5, 4, 3, 2, 1):
+        lo, hi = STAR_RANGES[s]
+        if lo <= pct <= hi:
+            return s
+    return 1
+
+
+def expected_pct_range(star: int) -> tuple[int, int]:
+    return STAR_RANGES.get(star, (0, 100))
+
+
+# ============================================================
+# 五、Conclusion 抽取（从 dict 或 markdown）
+# ============================================================
+
+@dataclass
+class _Conclusion:
+    """统一表示报告中一条断语，便于逐条 lint。"""
+    raw_text: str                          # 原始字符串
+    statement: Optional[str] = None        # 断语正文
+    star: Optional[int] = None
+    pct: Optional[int] = None
+    school_tags: list[str] = field(default_factory=list)
+    domain: Optional[str] = None
+    yingqi_year: Optional[int] = None
+    falsifiable: Optional[str] = None
+    passed_layers: Optional[int] = None
+    evidence_count: int = 0
+    location: Optional[str] = None
+    is_yingqi: bool = False                # 是否为应期断语
+
+
+def _conclusion_from_dict(d: dict[str, Any], idx: int) -> _Conclusion:
+    """把 FinalConclusion / GateResult dict 转为 _Conclusion。"""
+    conf = d.get("confidence") or {}
+    star = conf.get("star")
+    pct = conf.get("percent")
+    if isinstance(pct, float) and 0.0 <= pct <= 1.0:
+        pct = int(round(pct * 100))
+    elif isinstance(pct, (int, float)):
+        pct = int(pct)
+    else:
+        pct = None
+    school_tags: list[str] = []
+    if "layer" in d:
+        school_tags.append(str(d["layer"]))
+    if "school" in d:
+        school_tags.append(str(d["school"]))
+    for s in (d.get("contributing_schools") or []):
+        school_tags.append(str(s))
+    evidence = d.get("evidence") or []
+    domain = d.get("domain")
+    yq = d.get("yingqi_year")
+    is_yq = bool(yq) or (domain == "应期") or ("year" in d and "candidate_event" in d)
+    if "year" in d and yq is None:
+        yq = d.get("year")
+    falsifiable = d.get("falsifiable")
+    passed_layers = d.get("passed_layers")
+    if passed_layers is None and conf:
+        passed_layers = conf.get("passed_layers")
+
+    statement = d.get("statement") or d.get("candidate_event") or d.get("description")
+
+    return _Conclusion(
+        raw_text=str(d),
+        statement=statement,
+        star=int(star) if isinstance(star, int) else None,
+        pct=pct,
+        school_tags=[t for t in school_tags if t],
+        domain=str(domain) if domain else None,
+        yingqi_year=int(yq) if isinstance(yq, int) else None,
+        falsifiable=str(falsifiable) if falsifiable else None,
+        passed_layers=int(passed_layers) if isinstance(passed_layers, int) else None,
+        evidence_count=len(evidence),
+        location=d.get("conclusion_id") or f"conclusion[{idx}]",
+        is_yingqi=is_yq,
+    )
+
+
+# Markdown 抽取：每个含 ★ 的"行"+ 紧跟的 bullet/缩进行 视为 1 条断语 block
+# 支持 ★N 与 ★★★...★ 两种写法
+_BLOCK_HEAD_RE = re.compile(r"★(?:[1-5１-５]|★{0,4})\s*[（(]\s*\d")
+# 行内挖出"应期: YYYY 年" 或 "应期年: YYYY"
+_YQ_YEAR_RE = re.compile(r"应期[年:：]?\s*[:：]?\s*(\d{4})")
+_YQ_YEAR_INLINE_RE = re.compile(r"(\d{4})\s*年")
+_FALSIFIABLE_RE = re.compile(r"(证伪|falsifiable)\s*[:：]\s*(.+?)(?:[\n。；]|$)")
+_PASSED_LAYERS_RE = re.compile(
+    r"(?:passed_layers|三层\s*gate|应期门)\s*[=:：]\s*(\d)",
+    re.IGNORECASE,
+)
+_EVIDENCE_TOKEN_RE = re.compile(
+    r"\b(?:M[123]-[A-Z]-\d+|MR-\d+|XF-\d+|G-[A-Z0-9]+-\d+)\b"
+)
+
+
+def _extract_school_tags(text: str) -> list[str]:
+    """从 [....] 区块中按分隔符拆出 token，返回所有命中 VALID_SCHOOL_TAGS 的。"""
+    tags: list[str] = []
+    for m in SCHOOL_TAG_RE.finditer(text):
+        body = m.group(1)
+        for tok in re.split(r"[+/、，·\s派一致主辅胜负4-]+", body):
+            tok = tok.strip()
+            if tok in VALID_SCHOOL_TAGS:
+                tags.append(tok)
+    return tags
+
+
+def _conclusion_from_md_line(line: str, lineno: int) -> _Conclusion:
+    sp = parse_star_pct(line)
+    star = sp[0] if sp else None
+    pct = sp[1] if sp else None
+    tags = _extract_school_tags(line)
+    yq = None
+    m1 = _YQ_YEAR_RE.search(line)
+    if m1:
+        yq = int(m1.group(1))
+    fals_m = _FALSIFIABLE_RE.search(line)
+    fals = fals_m.group(2).strip() if fals_m else None
+    pl_m = _PASSED_LAYERS_RE.search(line)
+    pl = int(pl_m.group(1)) if pl_m else None
+    is_yq = (yq is not None) or any(
+        kw in line for kw in ("应期", "婚期", "升迁年", "流年")
+    )
+    if is_yq and yq is None:
+        m2 = _YQ_YEAR_INLINE_RE.search(line)
+        if m2:
+            yq = int(m2.group(1))
+    evidence_count = len(_EVIDENCE_TOKEN_RE.findall(line))
+    return _Conclusion(
+        raw_text=line.strip(),
+        statement=line.strip(),
+        star=star,
+        pct=pct,
+        school_tags=tags,
+        domain=None,
+        yingqi_year=yq,
+        falsifiable=fals,
+        passed_layers=pl,
+        evidence_count=evidence_count,
+        location=f"line:{lineno}",
+        is_yingqi=is_yq,
+    )
+
+
+def extract_conclusions_from_md(md: str) -> list[_Conclusion]:
+    """把含 ★N (XX%) 的行 + 其紧跟的 bullet/缩进行 视为一条断语 block。
+
+    block 结束条件：
+      - 遇到下一个含 ★ 的行
+      - 遇到下两个连续空行
+      - 遇到 markdown header (^# / ^##)
+    """
+    lines = md.splitlines()
+    out: list[_Conclusion] = []
+    i = 0
+    while i < len(lines):
+        if _BLOCK_HEAD_RE.search(lines[i]):
+            head_lineno = i + 1
+            block_lines = [lines[i]]
+            j = i + 1
+            blank_streak = 0
+            while j < len(lines):
+                ln = lines[j]
+                if _BLOCK_HEAD_RE.search(ln):
+                    break
+                if re.match(r"^\s*$", ln):
+                    blank_streak += 1
+                    if blank_streak >= 2:
+                        break
+                    j += 1
+                    continue
+                blank_streak = 0
+                if re.match(r"^#{1,6}\s", ln):
+                    break
+                # 续行：bullet (- / * / 数字.) 或 缩进或 inline continuation
+                if re.match(r"^\s*([\-*•]|\d+\.|\u2014|\u2192|→|>)", ln) or ln.startswith("    ") or ln.startswith("\t"):
+                    block_lines.append(ln)
+                    j += 1
+                    continue
+                # 非 bullet 缩进 + 非空 = 散文段，归入 block 但限制 1 行
+                if len(block_lines) <= 4:
+                    block_lines.append(ln)
+                    j += 1
+                    continue
+                break
+            block_text = "\n".join(block_lines)
+            out.append(_conclusion_from_md_line(block_text, head_lineno))
+            i = j
+        else:
+            i += 1
+    return out
+
+
+# ============================================================
+# 六、主接口：lint()
+# ============================================================
+
+InputType = Union[dict[str, Any], str, "AnalysisOutputProto"]
+
+
+class AnalysisOutputProto:  # pragma: no cover
+    """duck-type protocol：任何含 final_conclusions / gate_results 的 dataclass 都可。"""
+    final_conclusions: list[Any]
+    gate_results: list[Any]
+
+
+def _analysis_to_dict(obj: Any) -> dict[str, Any]:
+    """支持 dataclass / dict / 自定义 dataclass。"""
+    if isinstance(obj, dict):
+        return obj
+    if dataclasses.is_dataclass(obj):
+        return dataclasses.asdict(obj)
+    # 兜底：尝试 vars()
+    if hasattr(obj, "__dict__"):
+        return dict(vars(obj))
+    raise TypeError(f"不支持的 lint 输入类型: {type(obj).__name__}")
+
+
+def lint(
+    analysis_output: InputType,
+    rules_yaml: Optional[Path] = None,
+) -> LintResult:
+    """主入口：对 dict / dataclass / markdown 文本执行 11 项 + 禁忌清单检查。"""
+    rules = load_rules(rules_yaml)
+    res = LintResult(passed=True)
+
+    conclusions: list[_Conclusion]
+    full_text: str
+
+    if isinstance(analysis_output, str):
+        # markdown 模式
+        full_text = analysis_output
+        conclusions = extract_conclusions_from_md(full_text)
+        # E11 总数检查
+        if len(conclusions) < 5:
+            res.add(
+                Severity.WARNING, "W11",
+                f"断语总数 {len(conclusions)} < 5（策略 B 最少建议）",
+            )
+        _lint_global_text(full_text, rules, res)
+    else:
+        d = _analysis_to_dict(analysis_output)
+        full_text = ""
+        conclusions = []
+        for i, c in enumerate(d.get("final_conclusions") or []):
+            if isinstance(c, dict):
+                conclusions.append(_conclusion_from_dict(c, i))
+        for i, g in enumerate(d.get("gate_results") or []):
+            if isinstance(g, dict):
+                co = _conclusion_from_dict(g, len(conclusions))
+                co.is_yingqi = True
+                conclusions.append(co)
+        if len(conclusions) < 5:
+            res.add(
+                Severity.WARNING, "W11",
+                f"conclusion 总数 {len(conclusions)} < 5（策略 B 最少建议）",
+            )
+        _lint_dataclass_global(d, res)
+
+    # 逐条 lint
+    for c in conclusions:
+        _lint_one_conclusion(c, rules, res)
+
+    return res
+
+
+# ============================================================
+# 七、单条 lint：11 项检查 + 黑名单 + 禁忌词
+# ============================================================
+
+def _lint_one_conclusion(
+    c: _Conclusion,
+    rules: _RulesData,
+    res: LintResult,
+) -> None:
+    loc = c.location
+
+    # E1：★(XX%) 区间一致
+    if c.star is None or c.pct is None:
+        res.add(
+            Severity.ERROR, "E1",
+            f"未发现 ★N (XX%) 双轨置信度",
+            location=loc,
+            suggestion="补 ★N (XX%)，且区间一致（参考 06-confidence § 二）",
+        )
+    else:
+        if not is_star_pct_consistent(c.star, c.pct):
+            lo, hi = expected_pct_range(c.star)
+            res.add(
+                Severity.ERROR, "E1",
+                f"★{c.star} 与 {c.pct}% 不匹配，应在 [{lo}, {hi}]",
+                location=loc,
+                suggestion=f"调整为 ★{expected_star_for_pct(c.pct)} ({c.pct}%) "
+                           f"或 ★{c.star} ({lo}-{hi}%)",
+            )
+
+    # E2：派别标签
+    if not c.school_tags:
+        res.add(
+            Severity.ERROR, "E2",
+            "未含派别标签 [段/杨/任/高/共识/互补/独门/冲突仲裁]",
+            location=loc,
+            suggestion="开头加 [共识] 或 [杨主+段辅] 类标签",
+        )
+
+    # E3：evidence 链
+    if c.evidence_count == 0:
+        res.add(
+            Severity.ERROR, "E3",
+            "缺 evidence 链（未引用任何 MR/M1/M2/M3/G/XF 编号）",
+            location=loc,
+            suggestion="补充 e.g. M2-Y-091, M3-R-018 等规律编号",
+        )
+
+    # E4 / E5：应期 → yingqi_year + falsifiable
+    if c.is_yingqi:
+        if c.yingqi_year is None:
+            res.add(
+                Severity.ERROR, "E4",
+                "应期断语缺 yingqi_year（未给具体年份）",
+                location=loc,
+                suggestion="补 '应期: YYYY 年' 或 yingqi_year 字段",
+            )
+        if not c.falsifiable:
+            res.add(
+                Severity.ERROR, "E5",
+                "应期断语缺 falsifiable（无证伪条件）",
+                location=loc,
+                suggestion="补 '证伪: 若 YYYY 年未发生 XX 则失验'",
+            )
+
+    # E6：★★★★★ 必须 passed_layers == 3
+    if c.is_yingqi and c.star == 5:
+        if c.passed_layers is None:
+            res.add(
+                Severity.WARNING, "W6",
+                "★★★★★ 应期未声明 passed_layers，无法验证三层 gate",
+                location=loc,
+            )
+        elif c.passed_layers != 3:
+            res.add(
+                Severity.ERROR, "E6",
+                f"★★★★★ 应期但 passed_layers={c.passed_layers}（必须=3）",
+                location=loc,
+                suggestion="降级为 ★★★★ 或补全三层证据",
+            )
+
+    # E10：黑名单规律拦截
+    text_lower = (c.statement or c.raw_text or "").lower()
+    for bid in rules.blacklist_ids:
+        if bid.lower() in text_lower:
+            res.add(
+                Severity.ERROR, "E10",
+                f"引用了黑名单规律 {bid}",
+                location=loc,
+                suggestion=f"参考 mechanical-rules.yaml 的 {bid}.replacement_rules",
+            )
+    for alias_lower, bid in rules.blacklist_aliases.items():
+        if not alias_lower:
+            continue
+        if alias_lower in text_lower:
+            res.add(
+                Severity.ERROR, "E10",
+                f"使用了黑名单规律 {bid} 的别名「{alias_lower}」",
+                location=loc,
+                suggestion=f"该规律已废弃，参考 {bid}.replacement_rules",
+            )
+
+    # E7：禁忌词（hard）
+    raw = c.raw_text or ""
+    for ph, reason in rules.forbidden_hard:
+        if ph and ph in raw:
+            res.add(
+                Severity.ERROR, "E7",
+                f"含禁忌词「{ph}」：{reason}",
+                location=loc,
+            )
+    # W7：软禁忌词
+    for ph, reason in rules.forbidden_soft:
+        if ph and ph in raw:
+            res.add(
+                Severity.WARNING, "W7",
+                f"含被禁措辞「{ph}」: {reason}",
+                location=loc,
+                suggestion="改用具体年份 / 概率化（★/%）",
+            )
+
+
+# ============================================================
+# 八、全局检查（dataclass 模式）
+# ============================================================
+
+def _lint_dataclass_global(
+    d: dict[str, Any], res: LintResult
+) -> None:
+    """检查 upstream_hash 一致 + energy/picture 一致性等"""
+    energy = d.get("energy") or {}
+    picture = d.get("picture") or {}
+    gates = d.get("gate_results") or []
+
+    # E9：upstream_hash 链
+    if isinstance(picture, dict):
+        eh = picture.get("upstream_hash")
+        # 我们不实际重算 hash（代价太大），仅检查存在
+        if eh is None:
+            res.add(
+                Severity.ERROR, "E9",
+                "PictureFindings 缺 upstream_hash（无法证明与 D1 同版本）",
+            )
+
+    # E8：energy_consistent / picture_consistent
+    if isinstance(picture, dict) and picture.get("energy_consistent") is False:
+        res.add(
+            Severity.WARNING, "W8",
+            f"PictureFindings.energy_consistent=False, "
+            f"violations={picture.get('energy_violations')}",
+        )
+    for gi, g in enumerate(gates):
+        if not isinstance(g, dict):
+            continue
+        if g.get("energy_consistent") is False:
+            res.add(
+                Severity.WARNING, "W8",
+                f"GateResult[{gi}].energy_consistent=False",
+            )
+        if g.get("picture_consistent") is False:
+            res.add(
+                Severity.WARNING, "W8",
+                f"GateResult[{gi}].picture_consistent=False",
+            )
+
+
+def _lint_global_text(
+    md: str, rules: _RulesData, res: LintResult,
+) -> None:
+    """对 markdown 报告全文做全局禁忌词扫描（不挂在某条 conclusion）"""
+    for ph, reason in rules.forbidden_hard:
+        if ph and ph in md:
+            res.add(Severity.ERROR, "E7", f"全文含禁忌词「{ph}」: {reason}")
+    # 软词扫描已在每条 conclusion 中做；全局只补"未在 ★ 行中出现的散文段"
+    # 简单计数 → 若在非 ★ 行也出现，仍报 W7
+    for ph, reason in rules.forbidden_soft:
+        if ph and ph in md:
+            count = md.count(ph)
+            res.add(
+                Severity.WARNING, "W7",
+                f"全文出现被禁措辞「{ph}」共 {count} 次：{reason}",
+            )
+
+
+# ============================================================
+# 九、smoke test
+# ============================================================
+
+_SMOKE_GOOD = """\
+## 报告示例
+
+[共识 · 4 派一致] 命主从公门入仕 ★4 (82%)
+- 来源：M1-D-001 / M2-Y-091 / G-XX-005 / M3-R-018
+- 证伪：若 65 岁前未在公门体制内 → 失验
+- 应期: 2020 年（passed_layers=3）
+
+[共识] 财运 L2-L3 顶 ★4 (80%)
+- 来源：M1-D-142, MR-002
+- 证伪：若 60 岁仍年薪不到 30 万 → 失验
+
+[杨派] 妻家有靠山 ★4 (78%)
+- 来源：M2-Y-035
+- 证伪：若配偶家庭普通 → 失验
+
+[共识] 2020 母逝 + 提副科 ★5 (90%)
+- 来源：M3-R-018, M1-D-200
+- 应期: 2020 年（passed_layers=3）
+- 证伪：若 2020 母健在且未提拔 → 失验
+
+[互补] 长寿型 ★3 (62%)
+- 来源：M1-D-308, MR-002
+- 证伪：未达 80 岁 → 失验
+"""
+
+_SMOKE_BAD_RANGE = "[共识] 婚姻坎坷 ★5 (50%) 来源：M2-Y-073"
+_SMOKE_BAD_BLACKLIST = "[杨派] 五凶煞=婚凶 婚姻坎坷 ★4 (75%) 来源：M2-Y-073"
+_SMOKE_BAD_FORBIDDEN = "[共识] 未来某年可能必然有大事 ★3 (60%) 来源：M3-R-001"
+
+
+def _smoke() -> None:
+    print("---- 1. lint good markdown ----")
+    r = lint(_SMOKE_GOOD)
+    print(r.format())
+    print()
+    print("---- 2. lint bad range ----")
+    r = lint(_SMOKE_BAD_RANGE)
+    print(r.format())
+    print()
+    print("---- 3. lint blacklist ----")
+    r = lint(_SMOKE_BAD_BLACKLIST)
+    print(r.format())
+    print()
+    print("---- 4. lint forbidden phrase ----")
+    r = lint(_SMOKE_BAD_FORBIDDEN)
+    print(r.format())
+
+
+if __name__ == "__main__":  # pragma: no cover
+    if len(sys.argv) >= 2:
+        text = Path(sys.argv[1]).read_text(encoding="utf-8")
+        r = lint(text)
+        print(r.format())
+        sys.exit(0 if r.passed else 1)
+    else:
+        _smoke()

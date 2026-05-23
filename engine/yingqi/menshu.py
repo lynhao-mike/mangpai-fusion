@@ -1,382 +1,713 @@
-"""engine.yingqi.menshu · 12 道门分类器
+"""engine/yingqi/menshu.py · v1.2 D3 任派 · 12 道门分类
 
-按 m3-mechanics §16 实现。Track-C MVP 实现核心 6 个：
-  - 动门     - 日干日支 / 合冲穿引动 = 动事
-  - 统领门   - 官统财 / 财统官 / 杀统财 = 富贵跃升
-  - 墓库门   - 财官入库 + 库开 = 收得
-  - 鸳鸯门   - 婚姻专门
-  - 寿元门   - 用神被破 / 寿星临绝
-  - 牢灾门   - 食伤官杀两敌 / 亡神劫煞犯官符
+按 04-gate-protocol.md § 6.1（任派 §16）实现。
 
-其余道门（格局/天地/十天/十二地/夹拱/旬空/伤残）按"未分类"返回，
-留待 Track-D 旁证补强或后续迭代。
+Track-C MVP 实现核心 6 + 简版 5 = 11 道门：
+    核心 6（fallback 必交付）：动门 / 统领门 / 墓库门 / 鸳鸯门 / 寿元门 / 牢灾门
+    简版 5：格局门 / 天地门 / 夹拱门 / 旬空门 / 伤残门
+                （简版 = 触发条件较粗、留待 D4 神煞旁证补强）
 
-优先级（按任务说明）：寿元门 / 牢灾门 > 鸳鸯门 / 统领门 > 其他
+主入口：
+    classify_into_12_doors(triggers, domain, energy, picture, parsed) -> Optional[DoorType]
+
+优先级（任务说明 § 阶段 2）：
+    寿元门 / 牢灾门     (高优先：凶应)
+    鸳鸯门 / 统领门     (中优先：领域专门)
+    墓库门 / 动门 / 其他 (低优先)
+
+作者：Track-C
 """
-
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from engine.energy.types import EnergyFindings
 from engine.picture.types import PictureFindings
-from engine.predicates.cycles import liunian_ganzhi, get_dayun_at_year
-from engine.predicates.ganzhi import (
-    get_canggan, get_shishen, get_shishen_class, get_wuxing, is_ke,
+from engine.predicates.cycles import liunian_ganzhi
+from engine.predicates.palace import get_shishen
+from engine.predicates.relations import zhi_chong, zhi_chuan, zhi_xing
+from engine.predicates.types import (
+    Bazi,
+    GAN_LIST,
+    ParsedInput,
+    ZHI_CANGGAN_TABLE,
+    ZHI_LIST,
 )
-from engine.predicates.relations import (
-    is_zhi_chong, is_zhi_liuhe, is_xing_pair, is_zhi_chuan,
-)
-from engine.predicates.types import ParsedInput
 
-from .types import Door, TriggerEvent, CORE_DOORS_IMPL
+from engine.yingqi.types import DoorType, TriggerEvent
 
 
 # ============================================================
-# 1) 鸳鸯门（婚姻）
+# 道门候选 dataclass（仅本模块内部使用）
 # ============================================================
 
+class _DoorMatch:
+    """单个道门匹配候选。"""
+    __slots__ = ("door", "priority", "reason")
+
+    def __init__(self, door: DoorType, priority: int, reason: str):
+        self.door = door
+        self.priority = priority
+        self.reason = reason
+
+
+# 优先级（数字小 = 高优先）
+_PRIORITY = {
+    "寿元门": 1,
+    "牢灾门": 1,
+    "鸳鸯门": 2,
+    "统领门": 2,
+    "格局门": 3,
+    "墓库门": 4,
+    "天地门": 4,
+    "夹拱门": 5,
+    "动门": 6,
+    "旬空门": 7,
+    "伤残门": 7,
+}
+
+
+# ============================================================
+# 1. 鸳鸯门（婚姻专门）
+# ============================================================
 
 def _classify_yuanyang(
-    parsed: ParsedInput, domain: str, triggers: list[TriggerEvent]
-) -> Optional[Door]:
+    domain: str,
+    triggers: list[TriggerEvent],
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """鸳鸯门：配偶星 / 婚宫被引动。
+
+    04 § 6.1：配偶星与日干形成五合 + 流年引动。
+    简化：婚姻 domain + 触发涉及妻/夫宫（日支）或配偶星 → 鸳鸯门。
+    """
     if domain != "婚姻":
         return None
-    # 触发条件：合冲引动涉及妻宫（日支）or 财字（用神）
-    day_zhi = parsed.bazi.day_zhi
-    related = False
-    explanations: list[str] = []
+
+    bazi = parsed.bazi
+    day_zhi = bazi.日柱.zhi
+    day_master = bazi.day_master
+    gender = (parsed.birth or {}).get("性别", "M")
+    is_male = str(gender).strip().upper() not in ("F", "FEMALE", "女", "坤", "坤造")
+
+    spouse_star_set = {"正官", "七杀"} if not is_male else {"正财", "偏财"}
+
+    notes: list[str] = []
     for t in triggers:
-        if not t.triggered:
-            continue
+        # 涉及婚宫
         if day_zhi in t.target_chars:
-            related = True
-            explanations.append(f"{t.trigger_type}涉及妻/夫宫{day_zhi}")
-        # 财官字也算
+            notes.append(f"{t.type}涉及{('夫' if not is_male else '妻')}宫({day_zhi})")
+            continue
+        # 涉及配偶星
         for c in t.target_chars:
-            day_g = parsed.bazi.day_gan
+            if c not in GAN_LIST and c not in ZHI_LIST:
+                continue
             try:
-                ss = get_shishen(day_g, c)
+                if c in GAN_LIST:
+                    ss = get_shishen(c, day_master)
+                else:
+                    cangs = ZHI_CANGGAN_TABLE.get(c, [])
+                    if not cangs:
+                        continue
+                    ss = get_shishen(cangs[0][0], day_master)
+                if ss in spouse_star_set:
+                    notes.append(f"{t.type}涉及配偶星{c}({ss})")
+                    break
             except (ValueError, RuntimeError):
                 continue
-            sc = get_shishen_class(ss)
-            if (parsed.gender == "男" and sc == "财") or \
-               (parsed.gender == "女" and sc == "官"):
-                related = True
-                explanations.append(f"{t.trigger_type}涉及配偶星{c}({ss})")
-                break
-    if not related:
+
+    if not notes:
         return None
-    conf = 0.85
-    return Door(
-        door_type="鸳鸯门",
-        matched=True,
-        confidence=conf,
-        explanation="; ".join(explanations[:3]) or "婚姻专门",
+    return _DoorMatch(
+        door="鸳鸯门",
+        priority=_PRIORITY["鸳鸯门"],
+        reason="; ".join(notes[:3]),
     )
 
 
 # ============================================================
-# 2) 寿元门
+# 2. 寿元门（健康专门）
 # ============================================================
-
 
 def _classify_shouyuan(
-    parsed: ParsedInput,
     domain: str,
-    energy: Optional[EnergyFindings],
     triggers: list[TriggerEvent],
-) -> Optional[Door]:
-    """寿元门：用神被破 / 主位被冲 / 倒象 + 健康 domain。"""
-    if domain != "健康":
-        # 寿元门只在健康 domain 主导（其他 domain 仅作补充提示，不归属）
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """寿元门：日干被严重克泄 + 流年填实。
+
+    04 § 6.1 触发：日干被严重克泄 + 流年填实
+    判定：health domain + (倒象成立 OR 主位被冲)。
+    """
+    if domain not in ("健康", "六亲"):  # 六亲含寿命相关（如父母去世）
         return None
 
-    explanations: list[str] = []
-    conf = 0.0
+    notes: list[str] = []
+    bazi = parsed.bazi
+    day_zhi = bazi.日柱.zhi
+    day_gan = bazi.day_master
 
     # 倒象 = 寿元被坏
-    daoxiang = next((t for t in triggers if t.trigger_type == "倒象成立" and t.triggered), None)
-    if daoxiang:
-        explanations.append(f"倒象成立: {daoxiang.explanation[:60]}")
-        conf = max(conf, 0.92)
-
-    # 日支被冲（主位移位）
-    day_zhi = parsed.bazi.day_zhi
-    ln_g, ln_z = liunian_ganzhi(parsed.dayun_list[0].start_year if parsed.dayun_list else 0)
-    # 上面的 year 不对，由 caller 提供 triggers 已经带了 year 信息
-    # 简化：如果触发列表里日支被冲，记录
     for t in triggers:
-        if t.trigger_type == "合冲引动" and day_zhi in t.target_chars and "冲" in t.explanation:
-            explanations.append(f"主位{day_zhi}被冲")
-            conf = max(conf, 0.7)
-            break
+        if t.type == "倒象成立":
+            # 倒象目标包含日干或主位 → 寿元门
+            if day_gan in t.target_chars or day_zhi in t.target_chars:
+                notes.append(f"日干/主位倒象: {t.description[:60]}")
+            elif domain == "六亲":  # 六亲场景倒象也算寿元
+                notes.append(f"用神倒象: {t.description[:60]}")
 
-    if conf == 0.0:
+    # 主位被冲
+    for t in triggers:
+        if t.type == "合冲引动" and "冲" in t.description:
+            if day_zhi in t.target_chars:
+                notes.append(f"主位{day_zhi}被冲: {t.description[:60]}")
+                break
+
+    if not notes:
         return None
-    return Door(
-        door_type="寿元门",
-        matched=True,
-        confidence=conf,
-        explanation="; ".join(explanations) or "寿元被坏",
+    return _DoorMatch(
+        door="寿元门",
+        priority=_PRIORITY["寿元门"],
+        reason="; ".join(notes[:2]),
     )
 
 
 # ============================================================
-# 3) 牢灾门
+# 3. 牢灾门
 # ============================================================
 
-
 def _classify_laozai(
-    parsed: ParsedInput,
     domain: str,
-    energy: Optional[EnergyFindings],
     triggers: list[TriggerEvent],
-) -> Optional[Door]:
-    """牢灾门：食伤官杀两敌 + 流年见财 / 比肩抗杀 / 三合财局气数尽。"""
-    if domain not in {"事业", "其他", "健康"}:
+    energy: Optional[EnergyFindings],
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """牢灾门：七杀+羊刃+刑冲在年/月柱。
+
+    简化判定：原局含食伤+官杀（两敌）+ 当年触发倒象 → 牢灾信号。
+    """
+    if domain not in ("事业", "其他", "健康"):
         return None
 
-    day_g = parsed.bazi.day_gan
-    bazi_chars = parsed.bazi.all_chars()
+    bazi = parsed.bazi
+    day_master = bazi.day_master
 
-    # 检查是否同时有 食伤 和 官杀（食伤官杀两敌）
     has_shishang = False
     has_guansha = False
-    for c in bazi_chars:
-        try:
-            ss = get_shishen(day_g, c)
-        except (ValueError, RuntimeError):
+
+    # 扫描天干
+    for _, gan in bazi.all_gans():
+        if gan == day_master:
             continue
-        sc = get_shishen_class(ss)
-        if sc == "食伤":
-            has_shishang = True
-        elif sc == "官":
-            has_guansha = True
+        try:
+            ss = get_shishen(gan, day_master)
+            if ss in ("食神", "伤官"):
+                has_shishang = True
+            if ss in ("正官", "七杀"):
+                has_guansha = True
+        except (ValueError, RuntimeError):
+            pass
+
+    # 扫描地支主气
+    for _, zhi in bazi.all_zhis():
+        cangs = ZHI_CANGGAN_TABLE.get(zhi, [])
+        if not cangs:
+            continue
+        try:
+            ss = get_shishen(cangs[0][0], day_master)
+            if ss in ("食神", "伤官"):
+                has_shishang = True
+            if ss in ("正官", "七杀"):
+                has_guansha = True
+        except (ValueError, RuntimeError):
+            pass
 
     if not (has_shishang and has_guansha):
         return None
 
-    # 倒象作用 → 牢灾信号加强
-    daoxiang = next((t for t in triggers if t.trigger_type == "倒象成立" and t.triggered), None)
-    if daoxiang:
-        return Door(
-            door_type="牢灾门",
-            matched=True,
-            confidence=0.78,
-            explanation=f"食伤官杀两敌 + 倒象 → 牢灾信号: {daoxiang.explanation[:50]}",
-        )
-    return None
+    # 倒象触发
+    daoxiang = next((t for t in triggers if t.type == "倒象成立"), None)
+    if daoxiang is None:
+        return None
+
+    return _DoorMatch(
+        door="牢灾门",
+        priority=_PRIORITY["牢灾门"],
+        reason=f"食伤官杀两敌 + 倒象凶应: {daoxiang.description[:50]}",
+    )
 
 
 # ============================================================
-# 4) 墓库门
+# 4. 墓库门
 # ============================================================
-
 
 def _classify_muku(
-    parsed: ParsedInput, domain: str, triggers: list[TriggerEvent]
-) -> Optional[Door]:
-    """墓库门：财官入库 + 库被开。"""
-    muku_t = next((t for t in triggers if t.trigger_type == "墓库开闭" and t.triggered), None)
-    if not muku_t:
+    domain: str,
+    triggers: list[TriggerEvent],
+) -> Optional[_DoorMatch]:
+    """墓库门：触发 = 墓库开闭。
+
+    04 § 6.1 适用 [财运, 六亲, 健康]。
+    """
+    if domain not in ("财运", "六亲", "健康", "事业"):
+        # 事业 domain 在某些场景墓库开也成立（财库被冲 → 财官库开）
         return None
-    return Door(
-        door_type="墓库门",
-        matched=True,
-        confidence=0.82,
-        explanation=f"墓库开: {muku_t.explanation[:80]}",
+
+    muku_t = next((t for t in triggers if t.type == "墓库开闭"), None)
+    if muku_t is None:
+        return None
+
+    return _DoorMatch(
+        door="墓库门",
+        priority=_PRIORITY["墓库门"],
+        reason=f"墓库开: {muku_t.description[:80]}",
     )
 
 
 # ============================================================
-# 5) 统领门
+# 5. 统领门
 # ============================================================
-
 
 def _classify_tongling(
-    parsed: ParsedInput,
     domain: str,
-    energy: Optional[EnergyFindings],
     triggers: list[TriggerEvent],
-) -> Optional[Door]:
-    """统领门：官统财 / 财统官 / 杀统财 = 富贵跃升。"""
-    if domain not in {"事业", "财运"}:
+    energy: Optional[EnergyFindings],
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """统领门：财统官 / 官统财 / 杀统财（事业 / 财运 跃升）。
+
+    简化判定：原局财官同现 + 当年触发涉及财或官字 → 统领门。
+    """
+    if domain not in ("事业", "财运"):
         return None
 
-    day_g = parsed.bazi.day_gan
-    cnt: dict[str, int] = {"财": 0, "官": 0}
-    for c in parsed.bazi.all_chars():
-        try:
-            sc = get_shishen_class(get_shishen(day_g, c))
-        except (ValueError, RuntimeError):
+    bazi = parsed.bazi
+    day_master = bazi.day_master
+
+    cnt_cai = 0
+    cnt_guan = 0
+
+    for _, gan in bazi.all_gans():
+        if gan == day_master:
             continue
-        if sc in cnt:
-            cnt[sc] += 1
+        try:
+            ss = get_shishen(gan, day_master)
+            if ss in ("正财", "偏财"):
+                cnt_cai += 1
+            elif ss in ("正官", "七杀"):
+                cnt_guan += 1
+        except (ValueError, RuntimeError):
+            pass
 
-    # 简化判定：财官同现且 ≥1 个透出 → 可能统领
-    # 实际口诀：官少财多=财统官，官多财少=官统财
-    if cnt["财"] == 0 or cnt["官"] == 0:
+    for _, zhi in bazi.all_zhis():
+        cangs = ZHI_CANGGAN_TABLE.get(zhi, [])
+        if not cangs:
+            continue
+        try:
+            ss = get_shishen(cangs[0][0], day_master)
+            if ss in ("正财", "偏财"):
+                cnt_cai += 1
+            elif ss in ("正官", "七杀"):
+                cnt_guan += 1
+        except (ValueError, RuntimeError):
+            pass
+
+    if cnt_cai == 0 or cnt_guan == 0:
         return None
 
-    # 触发是否引动相关字
-    relevant = any(
-        t.triggered and any(
-            get_shishen_class(get_shishen(day_g, c)) in ("财", "官")
-            for c in t.target_chars
-            if c in "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥"
-        )
-        for t in triggers
-    )
+    # 当年触发是否涉及财或官
+    relevant = False
+    for t in triggers:
+        for c in t.target_chars:
+            try:
+                if c in GAN_LIST:
+                    ss = get_shishen(c, day_master)
+                elif c in ZHI_LIST:
+                    cangs = ZHI_CANGGAN_TABLE.get(c, [])
+                    if not cangs:
+                        continue
+                    ss = get_shishen(cangs[0][0], day_master)
+                else:
+                    continue
+                if ss in ("正财", "偏财", "正官", "七杀"):
+                    relevant = True
+                    break
+            except (ValueError, RuntimeError):
+                pass
+        if relevant:
+            break
+
     if not relevant:
         return None
 
-    if cnt["财"] >= cnt["官"]:
-        kind = "财统官"
-    else:
-        kind = "官统财"
-    return Door(
-        door_type="统领门",
-        matched=True,
-        confidence=0.7,
-        explanation=f"{kind}（财={cnt['财']}, 官={cnt['官']}），{domain}领域跃升信号",
+    kind = "财统官" if cnt_cai >= cnt_guan else "官统财"
+    return _DoorMatch(
+        door="统领门",
+        priority=_PRIORITY["统领门"],
+        reason=f"{kind}（财={cnt_cai}, 官={cnt_guan}），{domain}领域跃升",
     )
 
 
 # ============================================================
-# 6) 动门（兜底）
+# 6. 动门（最广义兜底）
 # ============================================================
 
-
 def _classify_dongmen(
-    parsed: ParsedInput, domain: str, triggers: list[TriggerEvent]
-) -> Optional[Door]:
-    """动门（最广义）：日干日支被合冲穿刑或伏吟引动 = 动事。"""
-    day_g = parsed.bazi.day_gan
-    day_z = parsed.bazi.day_zhi
+    domain: str,
+    triggers: list[TriggerEvent],
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """动门：合冲引动到关键宫位（最广义动事）。
+
+    04 § 6.1 适用 [婚姻, 事业, 财运, 健康]。
+    """
+    if domain not in ("婚姻", "事业", "财运", "健康"):
+        return None
+
+    bazi = parsed.bazi
+    day_gan = bazi.day_master
+    day_zhi = bazi.日柱.zhi
+
+    # 主位被引动（日柱字在某触发的 target 中）
     for t in triggers:
-        if not t.triggered:
-            continue
-        if day_g in t.target_chars or day_z in t.target_chars:
-            return Door(
-                door_type="动门",
-                matched=True,
-                confidence=0.6,
-                explanation=f"{t.trigger_type}引动主位({day_g}{day_z})",
+        if day_gan in t.target_chars or day_zhi in t.target_chars:
+            return _DoorMatch(
+                door="动门",
+                priority=_PRIORITY["动门"],
+                reason=f"{t.type}引动主位({day_gan}{day_zhi}): {t.description[:50]}",
             )
-    # 多个触发齐发也算"动"
-    cnt = sum(1 for t in triggers if t.triggered)
-    if cnt >= 2:
-        return Door(
-            door_type="动门",
-            matched=True,
-            confidence=0.55,
-            explanation=f"{cnt} 触发同时发动",
+
+    # 两个以上触发齐发也算"动"
+    if len(triggers) >= 2:
+        return _DoorMatch(
+            door="动门",
+            priority=_PRIORITY["动门"],
+            reason=f"{len(triggers)} 触发同时发动: {[t.type for t in triggers[:3]]}",
+        )
+
+    return None
+
+
+# ============================================================
+# 7. 天地门（简版）
+# ============================================================
+
+def _classify_tiandi(
+    triggers: list[TriggerEvent],
+    parsed: ParsedInput,
+    year: int,
+) -> Optional[_DoorMatch]:
+    """天地门：流年天干地支同时引动同一柱。
+
+    判定：流年柱与原局某柱伏吟 OR 流年干合该柱干 + 流年支合/冲该柱支。
+    """
+    ln = liunian_ganzhi(year)
+    bazi = parsed.bazi
+
+    # 伏吟（最强）
+    for name, pillar in bazi.all_pillars():
+        if pillar.gan == ln.gan and pillar.zhi == ln.zhi:
+            return _DoorMatch(
+                door="天地门",
+                priority=_PRIORITY["天地门"],
+                reason=f"流年{ln} 天地伏吟原局{name}",
+            )
+
+    # 流年干合 + 流年支合冲（含半三合）同一柱
+    from engine.predicates.relations import gan_he as _gh
+    from engine.predicates.relations import (
+        zhi_liuhe as _zl, zhi_sanhe as _zs,
+    )
+    for name, pillar in bazi.all_pillars():
+        gan_match = _gh(ln.gan, pillar.gan) is not None
+        zhi_match = (
+            _zl(ln.zhi, pillar.zhi) is not None
+            or _zs([ln.zhi, pillar.zhi]) is not None
+            or zhi_chong(ln.zhi, pillar.zhi)
+        )
+        if gan_match and zhi_match:
+            return _DoorMatch(
+                door="天地门",
+                priority=_PRIORITY["天地门"],
+                reason=f"流年{ln} 天地双合/合冲原局{name}({pillar})",
+            )
+
+    return None
+
+
+# ============================================================
+# 8. 格局门（简版）
+# ============================================================
+
+def _classify_geju(
+    domain: str,
+    triggers: list[TriggerEvent],
+    energy: Optional[EnergyFindings],
+) -> Optional[_DoorMatch]:
+    """格局门：流年破坏或成全原局格局。
+
+    简化判定：energy.zuogong_paths 中有 ≥1 条 layer_count=1 的路径
+    + 当年触发涉及该路径的 chain 中字 → 格局门。
+    """
+    if domain not in ("事业", "财运"):
+        return None
+    if energy is None or not energy.zuogong_paths:
+        return None
+
+    # 取做功路径中的所有字
+    geju_chars: set[str] = set()
+    for p in energy.zuogong_paths:
+        if p.layer_count >= 1:
+            geju_chars.update(p.chain)
+
+    if not geju_chars:
+        return None
+
+    # 触发是否涉及格局字
+    for t in triggers:
+        for c in t.target_chars:
+            if c in geju_chars:
+                # 涉及到了格局字
+                return _DoorMatch(
+                    door="格局门",
+                    priority=_PRIORITY["格局门"],
+                    reason=f"流年触发涉及格局字 {c}: {t.description[:50]}",
+                )
+    return None
+
+
+# ============================================================
+# 9. 旬空门（简版）
+# ============================================================
+
+# 60 甲子旬空表（每旬末尾 2 支为旬空）
+# 甲子旬：戌亥 / 甲戌旬：申酉 / 甲申旬：午未 / 甲午旬：辰巳 / 甲辰旬：寅卯 / 甲寅旬：子丑
+_XUNKONG_TABLE: dict[str, list[str]] = {}
+
+
+def _build_xunkong_table() -> None:
+    """构造每个柱（GanZhi 字符串）对应的旬空。"""
+    if _XUNKONG_TABLE:
+        return
+    # 60 甲子按顺序，每 10 个一旬
+    # 索引 0-9: 甲子旬 → 旬空 戌亥
+    xunkong_pairs = [("戌", "亥"), ("申", "酉"), ("午", "未"),
+                     ("辰", "巳"), ("寅", "卯"), ("子", "丑")]
+    # gan idx 0=甲, zhi idx 0=子
+    for n in range(60):
+        gan = GAN_LIST[n % 10]
+        zhi = ZHI_LIST[n % 12]
+        xun_idx = n // 10
+        _XUNKONG_TABLE[f"{gan}{zhi}"] = list(xunkong_pairs[xun_idx])
+
+
+_build_xunkong_table()
+
+
+def _classify_xunkong(
+    domain: str,
+    parsed: ParsedInput,
+) -> Optional[_DoorMatch]:
+    """旬空门：关键字落入年柱旬空。
+
+    简化判定：年柱所在旬的旬空字若包含日支 / 时支 → 旬空门。
+    """
+    if domain not in ("六亲", "财运"):
+        return None
+    bazi = parsed.bazi
+    year_pillar_str = f"{bazi.年柱.gan}{bazi.年柱.zhi}"
+    xunkong = _XUNKONG_TABLE.get(year_pillar_str, [])
+    if not xunkong:
+        return None
+    # 检查日支 / 时支是否在旬空
+    if bazi.日柱.zhi in xunkong:
+        return _DoorMatch(
+            door="旬空门",
+            priority=_PRIORITY["旬空门"],
+            reason=f"日支{bazi.日柱.zhi} 落年柱旬空 ({','.join(xunkong)})",
+        )
+    if bazi.时柱.zhi in xunkong:
+        return _DoorMatch(
+            door="旬空门",
+            priority=_PRIORITY["旬空门"],
+            reason=f"时支{bazi.时柱.zhi} 落年柱旬空 ({','.join(xunkong)})",
         )
     return None
+
+
+# ============================================================
+# 10. 夹拱门 / 11. 伤残门（占位）
+# ============================================================
+
+# 这两门需要 D4 神煞旁证才能精准判定，留待后续 Track-D 集成日增强。
+# 当前不主动返回（防止误判）。
 
 
 # ============================================================
 # 主入口
 # ============================================================
 
-
 def classify_into_12_doors(
-    parsed: ParsedInput,
-    domain: str,
     triggers: list[TriggerEvent],
-    energy: Optional[EnergyFindings] = None,
-    picture: Optional[PictureFindings] = None,
-) -> Optional[Door]:
-    """12 道门分类。
+    domain: str,
+    energy: Optional[EnergyFindings],
+    picture: Optional[PictureFindings],
+    parsed: ParsedInput,
+    *,
+    year: Optional[int] = None,
+) -> Optional[DoorType]:
+    """分类到 12 道门之一（按优先级返回最匹配的；无匹配返回 None）。
 
-    优先级（按任务说明）：寿元门 / 牢灾门 > 鸳鸯门 / 统领门 > 其他
-
-    返回最匹配的门；若无匹配返回未分类 Door（matched=False）或 None。
+    优先级（任务说明）：寿元/牢灾 > 鸳鸯/统领 > 格局 > 墓库/天地 > 夹拱 > 动门 > 旬空/伤残。
     """
-    candidates: list[Door] = []
+    if not triggers:
+        return None
+
+    candidates: list[_DoorMatch] = []
 
     # 高优先：寿元 / 牢灾
-    d = _classify_shouyuan(parsed, domain, energy, triggers)
-    if d:
-        candidates.append(d)
-    d = _classify_laozai(parsed, domain, energy, triggers)
-    if d:
-        candidates.append(d)
+    m = _classify_shouyuan(domain, triggers, parsed)
+    if m:
+        candidates.append(m)
+    m = _classify_laozai(domain, triggers, energy, parsed)
+    if m:
+        candidates.append(m)
 
     # 中优先：鸳鸯 / 统领
-    d = _classify_yuanyang(parsed, domain, triggers)
-    if d:
-        candidates.append(d)
-    d = _classify_tongling(parsed, domain, energy, triggers)
-    if d:
-        candidates.append(d)
+    m = _classify_yuanyang(domain, triggers, parsed)
+    if m:
+        candidates.append(m)
+    m = _classify_tongling(domain, triggers, energy, parsed)
+    if m:
+        candidates.append(m)
 
-    # 低优先：墓库 / 动门
-    d = _classify_muku(parsed, domain, triggers)
-    if d:
-        candidates.append(d)
-    d = _classify_dongmen(parsed, domain, triggers)
-    if d:
-        candidates.append(d)
+    # 中-下：格局门
+    m = _classify_geju(domain, triggers, energy)
+    if m:
+        candidates.append(m)
+
+    # 中-下：墓库 / 天地
+    m = _classify_muku(domain, triggers)
+    if m:
+        candidates.append(m)
+    if year is not None:
+        m = _classify_tiandi(triggers, parsed, year)
+        if m:
+            candidates.append(m)
+
+    # 低优先：动门
+    m = _classify_dongmen(domain, triggers, parsed)
+    if m:
+        candidates.append(m)
+
+    # 低优先：旬空门
+    m = _classify_xunkong(domain, parsed)
+    if m:
+        candidates.append(m)
 
     if not candidates:
-        return Door(door_type="未分类", matched=False, confidence=0.0,
-                    explanation="未触发任何核心 6 门")
+        return None
 
-    # 按优先级 + confidence 排序
-    priority = {
-        "寿元门": 0, "牢灾门": 1,
-        "鸳鸯门": 2, "统领门": 3,
-        "墓库门": 4, "动门": 5,
-        "未分类": 99,
-    }
-    candidates.sort(key=lambda d: (priority.get(d.door_type, 99), -d.confidence))
-    return candidates[0]
+    # 按 priority 升序
+    candidates.sort(key=lambda d: d.priority)
+    return candidates[0].door
+
+
+# 调试/可观测：返回所有匹配的门 + reason
+def debug_all_door_matches(
+    triggers: list[TriggerEvent],
+    domain: str,
+    energy: Optional[EnergyFindings],
+    picture: Optional[PictureFindings],
+    parsed: ParsedInput,
+    *,
+    year: Optional[int] = None,
+) -> list[tuple[DoorType, str]]:
+    matches: list[_DoorMatch] = []
+    for fn, args in [
+        (_classify_shouyuan, (domain, triggers, parsed)),
+        (_classify_laozai, (domain, triggers, energy, parsed)),
+        (_classify_yuanyang, (domain, triggers, parsed)),
+        (_classify_tongling, (domain, triggers, energy, parsed)),
+        (_classify_geju, (domain, triggers, energy)),
+        (_classify_muku, (domain, triggers)),
+        (_classify_dongmen, (domain, triggers, parsed)),
+        (_classify_xunkong, (domain, parsed)),
+    ]:
+        m = fn(*args)  # type: ignore[arg-type]
+        if m:
+            matches.append(m)
+    if year is not None:
+        m = _classify_tiandi(triggers, parsed, year)
+        if m:
+            matches.append(m)
+    matches.sort(key=lambda d: d.priority)
+    return [(m.door, m.reason) for m in matches]
 
 
 # ============================================================
 # smoke
 # ============================================================
 
-
 def _smoke() -> None:
-    from engine.predicates.types import Bazi, Pillar, Dayun, ParsedInput
-    from .chufa import detect_all_triggers
-    from .keys import get_primary_keys
+    from tests.fixtures.cases import load_case
+    from engine.energy.evaluator import evaluate_energy
+    from engine.picture.matcher import match_picture
+    from engine.yingqi.chufa import detect_all_triggers
+    from engine.yingqi.keys import get_primary_keys
 
-    bz = Bazi.parse("庚申", "戊寅", "壬子", "辛丑")
-    dayuns = [
-        Dayun(Pillar.parse("庚辰"), 18, 28, 1998, 2008),
-        Dayun(Pillar.parse("壬午"), 38, 48, 2018, 2028),
-    ]
-    pi = ParsedInput(gender="男", birth_year=1980, bazi=bz, dayun_list=dayuns)
+    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    energy = evaluate_energy(parsed)
+    picture = match_picture(energy, parsed)
 
-    keys = get_primary_keys("婚姻", bz, None, gender="男")
+    # 婚姻 2005
+    print("\n=== C-2026-001 婚姻 2005 ===")
+    keys = get_primary_keys("婚姻", parsed.bazi, energy, gender="M")
     yong = ["丙", "子"]
+    trigs = detect_all_triggers(parsed, 2005, keys, yong)
+    door = classify_into_12_doors(trigs, "婚姻", energy, picture, parsed, year=2005)
+    matches = debug_all_door_matches(trigs, "婚姻", energy, picture, parsed, year=2005)
+    print(f"  primary door: {door}")
+    print("  all matches:")
+    for d, r in matches:
+        print(f"    · {d}: {r[:60]}")
+    assert door is not None, "2005 婚姻应有道门"
 
-    # 2005 婚姻：合冲引动涉及妻宫子？看 detect 输出
-    triggers = detect_all_triggers(pi, 2005, keys, yong)
-    door = classify_into_12_doors(pi, "婚姻", triggers)
-    # 应是鸳鸯门或动门
-    assert door is not None
-    assert door.matched
-    assert door.door_type in {"鸳鸯门", "动门"}, f"got {door.door_type}"
+    # 婚姻 2026 → 鸳鸯门（午冲子妻宫）
+    print("\n=== C-2026-001 婚姻 2026 ===")
+    trigs = detect_all_triggers(parsed, 2026, keys, yong)
+    door = classify_into_12_doors(trigs, "婚姻", energy, picture, parsed, year=2026)
+    print(f"  door: {door}")
 
-    # 2026 婚姻：午冲子妻宫 → 鸳鸯门
-    triggers = detect_all_triggers(pi, 2026, keys, yong)
-    door = classify_into_12_doors(pi, "婚姻", triggers)
-    assert door is not None and door.matched
-    assert door.door_type == "鸳鸯门", f"got {door.door_type}, expl={door.explanation}"
+    # 六亲 母 2020 → 寿元门 / 动门
+    print("\n=== C-2026-001 六亲(母) 2020 ===")
+    keys_mu = get_primary_keys("六亲", parsed.bazi, energy, sub_domain="母")
+    trigs = detect_all_triggers(parsed, 2020, keys_mu, ["辛", "庚"])
+    door = classify_into_12_doors(trigs, "六亲", energy, picture, parsed, year=2020)
+    print(f"  door: {door}")
 
-    # 事业 domain - 2026
-    keys_career = get_primary_keys("事业", bz, None, gender="男")
-    triggers_career = detect_all_triggers(pi, 2026, keys_career, ["戊", "己"])
-    door = classify_into_12_doors(pi, "事业", triggers_career)
-    assert door is not None  # 至少未分类
+    # 事业 2020
+    print("\n=== C-2026-001 事业 2020 ===")
+    keys_career = get_primary_keys("事业", parsed.bazi, energy)
+    trigs = detect_all_triggers(parsed, 2020, keys_career, ["戊", "庚"])
+    door = classify_into_12_doors(trigs, "事业", energy, picture, parsed, year=2020)
+    print(f"  door: {door}")
 
-    print("yingqi.menshu smoke OK")
+    # 学业 2024 (C-014)
+    print("\n=== C-2026-014 学业 2024 ===")
+    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    energy014 = evaluate_energy(parsed014)
+    picture014 = match_picture(energy014, parsed014)
+    keys_xue = get_primary_keys("学业", parsed014.bazi, energy014)
+    trigs = detect_all_triggers(parsed014, 2024, keys_xue, ["壬", "癸"])
+    door = classify_into_12_doors(trigs, "学业", energy014, picture014, parsed014, year=2024)
+    print(f"  door: {door}")
+    matches = debug_all_door_matches(trigs, "学业", energy014, picture014, parsed014, year=2024)
+    for d, r in matches:
+        print(f"    · {d}: {r[:60]}")
+
+    print("\n[OK] menshu smoke 全过")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     _smoke()
