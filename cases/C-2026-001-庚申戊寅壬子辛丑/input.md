@@ -116,7 +116,7 @@
 - **策略**: B · 全面画像
 - **保密级**: 公开（无个人识别信息）
 - **关联文件**:
-  - `cases/C-2026-001/analysis.md` ← 详细分析过程
-  - `cases/C-2026-001/feedback.md` ← 等待命主回填
-  - `cases/C-2026-001/lessons.md` ← 应验后填写
-  - `reports/C-2026-001-report.md` ← 对外报告
+  - `cases/C-2026-001-庚申戊寅壬子辛丑/analysis.md` ← 详细分析过程
+  - `cases/C-2026-001-庚申戊寅壬子辛丑/feedback.md` ← 等待命主回填
+  - `cases/C-2026-001-庚申戊寅壬子辛丑/lessons.md` ← 应验后填写
+  - `reports/C-2026-001-庚申戊寅壬子辛丑-report.md` ← 对外报告
