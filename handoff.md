@@ -92,7 +92,8 @@ Kiro:  1. 复述八字确认
        6. 共识层匹配 → 互补层联立 → 独门补充 → 冲突仲裁
        7. 应期 4 模型交叉
        8. 按 templates/report.md 输出双轨置信度报告
-       9. 同步生成 cases/C-YYYY-NNN/{input.md, analysis.md} + reports/C-YYYY-NNN-report.md
+       9. 同步生成 cases/C-YYYY-NNN/{input.md, analysis.md, feedback.md, lessons.md} + reports/C-YYYY-NNN-report.md
+       10. **自动归档**（不再询问，按 .kiro/steering/auto-archive.md v1.0 协议）
      ↓
 命主反馈应验/失验
      ↓
@@ -135,7 +136,7 @@ Kiro:  填入 cases/C-YYYY-NNN/feedback.md
 5. ❌ 不要在没有共识/互补/独门标记的情况下给结论
 6. ❌ 不要给医疗/法律/重大决策的专业建议
 7. ❌ 不要直接修改 hit_count（必须通过 calibrate.py）
-8. ❌ 不要 push 到 main 分支（请 push 到 feature 分支）
+8. ✅ **直接 push 到 main 分支**（用户全局规则：不开新分支、不创建 PR）
 
 ---
 
