@@ -10,9 +10,9 @@
 | 编号 | 文件 | 状态 | 摘要 |
 |---|---|---|---|
 | 00 | [OVERVIEW](./00-OVERVIEW.md) | ✅ W1.1 已交付 | 架构总览 + 数据流 + 决策摘要 + 8 agent 矩阵 |
-| 01 | 01-input-schema.md | ⏳ W1.2 待写 | 命主输入严格 schema（问真 APP 字段映射） |
-| 02 | 02-predicate-library.md | ⏳ W1.2 待写 | 60 个 Python 谓词函数签名（共用底层） |
-| 03 | 03-findings-schema.md | ⏳ W1.2 待写 | EnergyFindings / PictureFindings / GateResult / SupportFindings JSON Schema |
+| 01 | [01-input-schema](./01-input-schema.md) | ✅ W1.2 已交付 | 命主输入严格 schema（问真 APP 字段映射） |
+| 02 | [02-predicate-library](./02-predicate-library.md) | ✅ W1.2 已交付 | 65 个 Python 谓词函数签名（共用底层） |
+| 03 | [03-findings-schema](./03-findings-schema.md) | ✅ W1.2 已交付 | EnergyFindings / PictureFindings / GateResult / SupportFindings JSON Schema |
 | 04 | 04-gate-protocol.md | ⏳ W1.3 待写 | 应期三层门接口 + 6 触发判定 |
 | 05 | 05-rule-lifecycle.md | ⏳ W1.3 待写 | 规律生命周期状态机 + Beta 算法实现 |
 | 06 | 06-confidence-model.md | ⏳ W1.3 待写 | 双轨置信度（★+%）→ Beta 分布的精确公式 |
@@ -27,7 +27,7 @@
 | 子阶段 | 工作日 | 交付 |
 |---|---|---|
 | **W1.1** | Day 1（已完成） | 00 + 09 + 本 README → 让架构师/User 审整体方向 |
-| **W1.2** | Day 2-3 | 01 + 02 + 03 → 输入/谓词/Findings 定义 |
+| **W1.2** | Day 2-3（已完成） | 01 + 02 + 03 → 输入/谓词/Findings 定义 |
 | **W1.3** | Day 4-5 | 04 + 05 + 06 → 应期/生命周期/置信度算法 |
 | **W1.4** | Day 6-7 | 07 + 08 → 流水线 + agent 边界，**冻结契约** |
 | **W2 起** | Day 8+ | 8 个 agent 各自分支启动 |
