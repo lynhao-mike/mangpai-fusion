@@ -1,16 +1,18 @@
 """engine/predicates · v1.2 共用谓词原子库
 
-Track-A 交付的 35 个谓词函数。其余 30 个（palace/cycles/tou_cang/shensha）
-分别归 Track-B/C/D agent，本目录只占位。
+模块归属（按契约 02 + 08 § 二）：
+    types       - 共用类型 + 常量表 + 适配器        (Track-A)
+    ganzhi      - 11 个干支基础函数                  (Track-A)
+    wuxing      - 8 个五行关系函数                   (Track-A)
+    relations   - 11 个合冲刑穿破函数                (Track-A)
+    strength    - 6 个旺衰判定函数                   (Track-A)
+    palace      - 10 个宫位/十神函数                 (Track-B)
+    cycles      - 9 个大运流年函数                   (Track-C)
+    tou_cang    - 5 个透藏关系函数                   (Track-C)
+    shensha     - 5 个神煞辅助函数 + 2 辅助          (Track-D)
 
-四个核心模块（Track-A 全实现）：
-    types       - 共用类型 + 常量表 + 适配器
-    ganzhi      - 11 个干支基础函数
-    wuxing      - 8 个五行关系函数
-    relations   - 11 个合冲刑穿破函数
-    strength    - 6 个旺衰判定函数
-
-合计：11+8+11+6 = 36 函数（含适配器 adapt_bazi/adapt_dayun/adapt_parsed）
+合计：11+8+11+6+10+9+5+5 = 65 函数（Track-A~D 全部已交付）
+（与 02-predicate-library.md § 五 清点一致）
 """
 from engine.predicates.types import (  # noqa: F401
     GAN_LIST,
@@ -103,6 +105,28 @@ from engine.predicates.palace import (  # noqa: F401
     is_zhengyin,
 )
 
+# Track-C 追加：cycles.py（9 函数）+ tou_cang.py（5 函数）
+from engine.predicates.cycles import (  # noqa: F401
+    get_dayun_at_age,
+    get_dayun_at_year,
+    liunian_ganzhi,
+    is_dayun_zhi_chong_bazi,
+    is_liunian_with_dayun_he,
+    is_liunian_with_bazi_he,
+    is_liunian_chong_bazi,
+    is_liunian_yingdong_bazi_zi,
+    find_year_when_zhi_appears,
+    is_in_dayun_transition,  # 04 § 4.2 辅助
+    get_adjacent_dayun,       # 04 § 4.2 辅助
+)
+from engine.predicates.tou_cang import (  # noqa: F401
+    is_tou,
+    is_canggan,
+    tou_chu,
+    get_all_tou_chars,
+    is_tou_at,
+)
+
 # Track-D 追加：shensha.py（5 函数 + 2 辅助）
 from engine.predicates.shensha import (  # noqa: F401
     has_shensha,
@@ -137,6 +161,14 @@ __all__ = [
     "get_palace", "is_in_palace", "get_shishen",
     "is_zhengyin", "is_pianyin", "is_zhengcai", "is_piancai",
     "is_zhengguan", "is_qisha", "find_shishen_in_bazi",
+    # cycles (Track-C)
+    "get_dayun_at_age", "get_dayun_at_year", "liunian_ganzhi",
+    "is_dayun_zhi_chong_bazi", "is_liunian_with_dayun_he",
+    "is_liunian_with_bazi_he", "is_liunian_chong_bazi",
+    "is_liunian_yingdong_bazi_zi", "find_year_when_zhi_appears",
+    "is_in_dayun_transition", "get_adjacent_dayun",
+    # tou_cang (Track-C)
+    "is_tou", "is_canggan", "tou_chu", "get_all_tou_chars", "is_tou_at",
     # shensha (Track-D)
     "has_shensha", "get_shensha_at",
     "is_taichi", "is_jinyu", "is_huagai",
