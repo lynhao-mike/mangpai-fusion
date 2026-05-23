@@ -239,7 +239,7 @@ tools/
 | **D · 高派 D4** | `engine/pangzheng/`<br>`theory/gao/promoted/` | S0 + 神煞输入 | `support_with_shensha()` + 健康专项 | 3 个回归测试通过 |
 | **E · 兜底护栏** | `tools/preflight.py`<br>`tools/output_linter.py`<br>`tools/three_layer_check.py`<br>`engine/mechanical-rules.yaml` | 全部只读 | 3 个脚本 + 1 yaml + checklist | 8 条铁律的负向测试 |
 | **F · 报告渲染** | `templates/report-v1.2.md`<br>`tools/render_report.py` | S0 + A/B/C/D Findings schema | mock findings → sample 报告 | linter 通过 |
-| **G · 自迭代** | `tools/feedback_loop.py`<br>`tools/rule_lifecycle.py`<br>`tools/drift_detect.py`<br>`tools/cross_school_scan.py`<br>`engine/calibration.yaml`<br>`META/iteration-log.md`<br>`tools/extract_predictions.py` | 全部只读 + theory/index.yaml 写权限 | 用 C-2026-001/002/014 失验数据回放 | 输出正确 diff 报告 |
+| **G · 自迭代** | `tools/feedback_loop.py`<br>`tools/rule_lifecycle.py`<br>`tools/drift_detect.py`<br>`tools/cross_school_scan.py`<br>`engine/calibration.yaml`<br>`META/iteration-log.md`<br>`tools/extract_predictions.py` | 全部只读 + theory/index.yaml 写权限 | 用 C-2026-001-庚申戊寅壬子辛丑/002/014 失验数据回放 | 输出正确 diff 报告 |
 | **H · 测试夹具** | `tests/`<br>`tests/fixtures/`<br>`tests/regression_baseline.yaml` | 全部只读 | 14 案 fixture + 6 项量化基准 | pytest 一键跑通 |
 
 ---
@@ -251,9 +251,9 @@ tools/
 | 指标 | v1.0 基线 | v1.2 必须 |
 |---|---|---|
 | 三个真实案例（001/002/014）的核心断语命中率 | 当前命中数据 | ≥ v1.0 + 1 条 |
-| 婚期误差（C-2026-001） | 8 年 | ≤ 3 年 |
-| 婚姻定性失验数（C-2026-002） | 4 条 | ≤ 1 条 |
-| 学历过判档数（C-2026-014） | +1 档 | 0 档 |
+| 婚期误差（C-2026-001-庚申戊寅壬子辛丑） | 8 年 | ≤ 3 年 |
+| 婚姻定性失验数（C-2026-002-壬戌庚戌戊辰丙辰） | 4 条 | ≤ 1 条 |
+| 学历过判档数（C-2026-014-丙戌庚子乙亥辛巳） | +1 档 | 0 档 |
 | 平均断语 trace_id 覆盖率 | 0%（手写） | 100%（自动） |
 | ★★★★★ 断语三层 gate 通过率 | 0%（无 gate） | 100% |
 
