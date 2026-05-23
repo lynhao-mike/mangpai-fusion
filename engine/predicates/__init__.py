@@ -103,6 +103,17 @@ from engine.predicates.palace import (  # noqa: F401
     is_zhengyin,
 )
 
+# Track-D 追加：shensha.py（5 函数 + 2 辅助）
+from engine.predicates.shensha import (  # noqa: F401
+    has_shensha,
+    get_shensha_at,
+    is_taichi,
+    is_jinyu,
+    is_huagai,
+    get_all_shensha_names,
+    has_any_shensha,
+)
+
 __all__ = [
     # types
     "Gan", "Zhi", "Wuxing", "YinYang", "ChangshengStatus", "Shishen", "PalaceName",
@@ -126,4 +137,8 @@ __all__ = [
     "get_palace", "is_in_palace", "get_shishen",
     "is_zhengyin", "is_pianyin", "is_zhengcai", "is_piancai",
     "is_zhengguan", "is_qisha", "find_shishen_in_bazi",
+    # shensha (Track-D)
+    "has_shensha", "get_shensha_at",
+    "is_taichi", "is_jinyu", "is_huagai",
+    "get_all_shensha_names", "has_any_shensha",
 ]
