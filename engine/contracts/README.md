@@ -13,7 +13,7 @@
 | 01 | 01-input-schema.md | ⏳ W1.2 待写 | 命主输入严格 schema（问真 APP 字段映射） |
 | 02 | 02-predicate-library.md | ⏳ W1.2 待写 | 60 个 Python 谓词函数签名（共用底层） |
 | 03 | 03-findings-schema.md | ⏳ W1.2 待写 | EnergyFindings / PictureFindings / GateResult / SupportFindings JSON Schema |
-| 04 | 04-gate-protocol.md | ⏳ W1.3 待写 | 应期三层门接口 + 6 触发判定 |
+| 04 | [04-gate-protocol](./04-gate-protocol.md) | ✅ W2 已交付（Track-C 同步） | 应期三层门接口 + 6 触发判定 |
 | 05 | 05-rule-lifecycle.md | ⏳ W1.3 待写 | 规律生命周期状态机 + Beta 算法实现 |
 | 06 | 06-confidence-model.md | ⏳ W1.3 待写 | 双轨置信度（★+%）→ Beta 分布的精确公式 |
 | 07 | 07-pipeline-flow.md | ⏳ W1.4 待写 | W1-W4 流水线数据流的精确定义 |
