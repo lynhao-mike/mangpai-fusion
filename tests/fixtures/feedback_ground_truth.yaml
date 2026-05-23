@@ -1,0 +1,315 @@
+# ============================================================
+# tests/fixtures/feedback_ground_truth.yaml
+# ============================================================
+# 3 个真实失验案例的 ground truth（从 cases/C-XXX/feedback.md 提取）。
+#
+# v1.2 发布门槛核心数据（决策 I 量化）：
+#   - C-2026-001：婚期 + 学历 + 婚姻定性 共 7+8 项
+#   - C-2026-002：婚姻完全失验（夫妻互验失败 = 整个婚姻模型需要重建）
+#   - C-2026-014：学历高估一档（少年命，可短期回测）
+#
+# 每条 verdict 字段：
+#   conclusion_id    : 该结论在 v1.0 报告中的标识或描述
+#   domain           : 婚姻 / 学历 / 职业 / 财运 / 健康 / 应期 / 其他
+#   expected         : v1.0 预测内容（自然语言）
+#   actual           : 命主反馈实际内容
+#   verdict          : hit / miss / partial / suspended
+#   related_rules    : 涉及的规律 ID（M1-D-* / M2-Y-* / G-* / MR-*）
+#   notes            : 额外说明（误差、教训、仲裁修正等）
+#
+# 由 Track-H 维护（08-agent-handoff § 二 H 列）
+# 来源契约：00-OVERVIEW § 八 v1.2 发布门槛
+#
+# 修改本文件的影响：
+#   - tests/regression/test_v1_2_vs_v1_0.py 全部 G1-G4 测试以此为输入
+#   - 任何修改必须保留来自 feedback.md 的真实数据，不允许臆造
+# ============================================================
+
+schema_version: "1.2.0"
+last_updated: "2026-05-23"
+source_files:
+  - cases/C-2026-001-庚申戊寅壬子辛丑/feedback.md
+  - cases/C-2026-002-壬戌庚戌戊辰丙辰/feedback.md
+  - cases/C-2026-014-丙戌庚子乙亥辛巳/feedback.md
+
+# ------------------------------------------------------------
+# C-2026-001 · 庚申·戊寅·壬子·辛丑（男 1980-02-09）
+# ------------------------------------------------------------
+# v1.0 定性应验率 71%（5/7） / 含部分应验 86%（6/7）
+# v1.0 应期有效应验率 50%（4/8） / 含部分应验 63%（5/8）
+# 婚期误差：v1.0 预测 2013，实际 2005，差 8 年（v1.2 G2 门槛要求 ≤ 3）
+# ------------------------------------------------------------
+
+C-2026-001-庚申戊寅壬子辛丑:
+  case_label: "C-2026-001 · 男 1980-02 · 庚申戊寅壬子辛丑"
+
+  # 7 项定性结论
+  qualitative_verdicts:
+    - conclusion_id: "学历_211/985"
+      domain: 学历
+      expected: "本科以上 / 211/985 重点本科"
+      actual: "二本（普通本科）"
+      verdict: partial
+      related_rules: [M1-D-241, M2-Y-070]
+      notes: "方向对（本科）但层级高估一档"
+
+    - conclusion_id: "婚姻_波折多婚"
+      domain: 婚姻
+      expected: "婚姻波折显著 / 晚婚 / 多婚"
+      actual: "2005 年 25 岁结婚，至今稳定 20 年+，无离异多婚"
+      verdict: miss
+      related_rules: [M2-Y-068, M2-Y-073, XF-002]
+      notes: "杨派五凶煞=婚凶完全失验，仲裁修正后高派金舆嫁贵胜出"
+
+    - conclusion_id: "财运_L2-L3中产"
+      domain: 财运
+      expected: "L2-L3 中产/中层"
+      actual: "事业编 → 副科 → 正科（路桥总经理），典型 L2-L3"
+      verdict: hit
+      related_rules: [M1-D-142]
+
+    - conclusion_id: "健康_壬午运突发"
+      domain: 健康
+      expected: "壬午运有突发风险"
+      actual: "命主未提及健康问题"
+      verdict: suspended
+      related_rules: [G-S-099]
+
+    - conclusion_id: "职业_公门国企"
+      domain: 职业
+      expected: "公门 / 教育 / 文化 / 国企"
+      actual: "事业编 → 政府办 → 路桥国企总经理（正科）"
+      verdict: hit
+      related_rules: [M1-D-142, M2-Y-031]
+      notes: "铁应验，段派 + 杨派一致"
+
+    - conclusion_id: "妻形象_公职强势"
+      domain: 婚姻
+      expected: "公职 / 规矩 / 强势"
+      actual: "岳父局长，妻方主导，丈夫仗女方条件提拔"
+      verdict: hit
+      related_rules: [M2-Y-031]
+      notes: "杨派独门铁应验"
+
+    - conclusion_id: "晚景_配偶福贵"
+      domain: 婚姻
+      expected: "晚景配偶福贵（高派独门，争议）"
+      actual: "金舆嫁贵教科书案例：岳父局长 + 在女方房里结婚"
+      verdict: hit
+      related_rules: [G-S-008]
+      notes: "高派 ★ 独门规律铁应验，本案高派 MVP"
+
+  # 8 项应期回测
+  yingqi_verdicts:
+    - year: 1998
+      ganzhi: 戊寅
+      expected: "高考/学业关键"
+      actual: "1998 年高考考入二本"
+      verdict: hit
+    - year: 2002
+      ganzhi: 壬午
+      expected: "求学末期/就业"
+      actual: "约 2002-2003 毕业 + 进入事业编"
+      verdict: hit
+    - year: 2008
+      ganzhi: 戊子
+      expected: "工作变动"
+      actual: "命主未明确提及"
+      verdict: suspended
+    - year: 2010
+      ganzhi: 庚寅
+      expected: "学业升级/婚恋开始"
+      actual: "2005 已婚，2010 无婚恋/学业变化"
+      verdict: miss
+    - year: 2013
+      ganzhi: 癸巳
+      expected: "大概率初婚"
+      actual: "实际 2005 年已婚，差 8 年"
+      verdict: miss
+      notes: "★★★ G2 门槛核心：婚期误差 8 年"
+    - year: 2014
+      ganzhi: 甲午
+      expected: "婚动/子动"
+      actual: "2006 已有子，2014 无婚子变动"
+      verdict: miss
+    - year: 2020
+      ganzhi: 庚子
+      expected: "印动（学习/母亲/置业）"
+      actual: "母亲正月去世 + 提拔副科（双重印动）"
+      verdict: hit
+      notes: "铁应验，任派 MVP"
+    - year: 2025
+      ganzhi: 乙巳
+      expected: "财/事业拐点"
+      actual: "2025 年提正科去路桥当总经理"
+      verdict: hit
+      notes: "铁应验"
+
+  # 核心铁断 + 失验汇总（用于 G1 计算 v1.0 baseline）
+  core_iron_correct: 5     # 公门/财L2/妻贵/2020印动/2025事业拐点
+  core_iron_wrong: 2       # 婚凶/婚期8年差
+  qualitative_hit_rate: 0.86    # 6/7 含部分（5+1×0.5/7×?） 用 cases-index 数据
+  yingqi_hit_rate: 0.63         # 5/8 含部分
+  marriage_year_predicted: 2013
+  marriage_year_actual: 2005
+  marriage_year_error_years: 8
+
+# ------------------------------------------------------------
+# C-2026-002 · 壬戌·庚戌·戊辰·丙辰（女 1982-10-12，C-001 配偶）
+# ------------------------------------------------------------
+# 婚姻完全失验：v1.0 预测"极坎坷/不婚"，实际 23 岁稳定 20 年
+# G3 门槛：婚姻定性失验数 ≤ 1
+# ------------------------------------------------------------
+
+C-2026-002-壬戌庚戌戊辰丙辰:
+  case_label: "C-2026-002 · 女 1982-10 · 壬戌庚戌戊辰丙辰（C-001 之妻）"
+
+  qualitative_verdicts:
+    - conclusion_id: "婚姻_极坎坷不婚"
+      domain: 婚姻
+      expected: "极坎坷 / 晚婚 / 不婚 ★★★★ 86%"
+      actual: "2005 年 23 岁初婚，稳定 20 年+"
+      verdict: miss
+      related_rules: [M2-Y-068, M2-Y-073, MR-005]
+      notes: "★★ 完全失验。辰戌冲夫宫+官被埋 ≠ 不婚，= 强势女方主导婚姻"
+
+    - conclusion_id: "婚期_42-52岁"
+      domain: 婚姻
+      expected: "婚期推测 42-52 岁"
+      actual: "23 岁已婚"
+      verdict: miss
+      related_rules: [M3-R-022]
+      notes: "婚期推算严重错误，差近 20 年"
+
+    - conclusion_id: "婚姻_华盖玄学命"
+      domain: 婚姻
+      expected: "华盖太极 = 玄学命 / 孤独"
+      actual: "卫健局公务员，无玄学背景，婚姻正常"
+      verdict: miss
+      related_rules: [G-S-012]
+      notes: "华盖×2 ≠ 不婚，可能仅精神层面"
+
+    - conclusion_id: "婚期与丈夫不一致"
+      domain: 婚姻
+      expected: "v1.0 不预测早婚 / 双盘合婚未交叉验证"
+      actual: "夫妻双方双盘均失验早婚 → 系统性错误"
+      verdict: miss
+      related_rules: []
+      notes: "C-001 + C-002 双盘交叉验证失败，是 v1.2 双盘协同的核心修复目标"
+
+    - conclusion_id: "财运_L1-L2普通"
+      domain: 财运
+      expected: "L1-L2 普通 / 小康"
+      actual: "父亲局长 + 丈夫正科 + 自身事业编 = 实际 L2 小康"
+      verdict: partial
+      related_rules: [M1-D-142]
+      notes: "方向对，但低估了家庭资源贡献"
+
+    - conclusion_id: "学历_大专本科"
+      domain: 学历
+      expected: "大专 / 本科"
+      actual: "事业单位入职要求 → 大概率本科/大专"
+      verdict: partial
+      related_rules: [M2-Y-070]
+
+    - conclusion_id: "职业_手工技术服务玄学"
+      domain: 职业
+      expected: "手工 / 技术 / 服务 / 玄学"
+      actual: "县级卫健局事业单位"
+      verdict: partial
+      related_rules: [M1-D-142]
+      notes: "服务方向对（卫生健康=服务），但手工/玄学方向错"
+
+  # 婚姻方面的失验集中度（G3 关键指标）
+  marriage_failed_count: 4    # 极坎坷/婚期/华盖/双盘交叉
+  qualitative_hit_rate: 0.43  # 3/7（部分按 0.5 计）
+  marriage_predicted: "极坎坷不婚"
+  marriage_actual: "23 岁稳定 20 年+"
+
+# ------------------------------------------------------------
+# C-2026-014 · 丙戌·庚子·乙亥·辛巳（男 2006-12-12，C-001/002 之子）
+# ------------------------------------------------------------
+# 学历高估一档：v1.0 预测 985/211，实际南京审计大学（一本）
+# G4 门槛：学历过判档数 = 0
+# ------------------------------------------------------------
+
+C-2026-014-丙戌庚子乙亥辛巳:
+  case_label: "C-2026-014 · 男 2006-12 · 丙戌庚子乙亥辛巳（C-001/002 之子）"
+
+  qualitative_verdicts:
+    - conclusion_id: "学历_985/211重点本科"
+      domain: 学历
+      expected: "学历高级·上等（985/211 重点本科） ★★★★ 84%"
+      actual: "南京审计大学（一本，非 211/985）"
+      verdict: partial
+      related_rules: [M1-D-241, M2-Y-070, G-BD-001]
+      notes: "方向对（本科+学业优势）但层级高估一档"
+
+    - conclusion_id: "学历_词馆=985顶配"
+      domain: 学历
+      expected: "高派词馆+天乙×2 = 985 顶配 ★★★★ 78%"
+      actual: "一本特色校"
+      verdict: miss
+      related_rules: [G-BD-001]
+      notes: "词馆≠985，高派神煞定学历过于乐观，CFL-C014-002 仲裁修正"
+
+    - conclusion_id: "学历_印独生身一本以上"
+      domain: 学历
+      expected: "杨派印独生身 = 一本以上 M2-Y-070 ★★★★ 78%"
+      actual: "一本"
+      verdict: hit
+      related_rules: [M2-Y-070]
+      notes: "杨派精确命中，升格为学历首选锚点"
+
+    - conclusion_id: "学历_官印学历三星"
+      domain: 学历
+      expected: "段派官印相生 = 学历三星之首 M1-D-241 ★★★★ 80%"
+      actual: "一本"
+      verdict: partial
+      related_rules: [M1-D-241]
+
+    - conclusion_id: "职业_体制内专业技术"
+      domain: 职业
+      expected: "体制内 / 专业技术（医/法/工程/学术） ★★★★ 82%"
+      actual: "审计专业 → 审计署 / 会计所 / 国企财务（典型专业技术+体制内）"
+      verdict: hit
+      related_rules: [M1-D-142]
+
+    - conclusion_id: "应期_2026丙午高考"
+      domain: 应期
+      expected: "2026 丙午 = 高考/重大学业事件 ★★★★ 82%"
+      actual: "2024 高考"
+      verdict: miss
+      related_rules: [M3-R-002]
+      notes: "学制推算错误：2006.12 生 → 2024 年 17.5 岁高考（正常学制）"
+
+    - conclusion_id: "驿马_奔波流动"
+      domain: 其他
+      expected: "驿马发动 = 奔波 / 流动性强 ★★★★ 82%"
+      actual: "沧州 → 天津 → 南京 = 3 地流动"
+      verdict: hit
+      related_rules: [G-S-101]
+
+    - conclusion_id: "调候_有底气"
+      domain: 其他
+      expected: "调候得位 = 命局有'活'底气 ★★★★★ 85%"
+      actual: "家庭能策划高考移民 + 跨省求学"
+      verdict: partial
+
+    - conclusion_id: "壬寅运_学业巅峰"
+      domain: 应期
+      expected: "壬寅运（2025-2035）= 学业巅峰大运"
+      actual: "2024 入学 → 壬寅运初期开始"
+      verdict: hit
+
+    - conclusion_id: "词馆=学术学历"
+      domain: 学历
+      expected: "词馆+天医+国印 = 学术/医学/法律 ★★★★ 78%"
+      actual: "审计（财经类）"
+      verdict: partial
+
+  # 学历过判档数（G4 关键指标）
+  education_predicted: "985/211 重点本科"
+  education_actual: "南京审计大学（一本）"
+  education_overshot_levels: 1   # 高估一档（985 → 一本 = 跨过 211 一档）
+  qualitative_hit_rate: 0.60     # 4×1 + 4×0.5 / 10 = 6/10

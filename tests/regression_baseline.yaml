@@ -1,0 +1,125 @@
+# ============================================================
+# tests/regression_baseline.yaml
+# ============================================================
+# v1.2 发布门槛（决策 I 量化）—— 6 项必须严格优于 v1.0 的指标。
+#
+# 出处：engine/contracts/00-OVERVIEW.md § 八
+#
+# 通过条件：
+#   pass_threshold = "6 项中 >= 5 项达成"
+#   即 v1.2 必须严格优于 v1.0 6 项指标中的至少 5 项才能发布。
+#
+# 测试代码：tests/regression/test_v1_2_vs_v1_0.py
+# 输入：
+#   - tests/fixtures/v1_0_baseline.yaml （v1.0 实绩）
+#   - tests/fixtures/feedback_ground_truth.yaml （3 真实案例 ground truth）
+#   - 引擎实际运行结果（W3 集成日时再接入）
+#
+# 维护方：Track-H
+# ============================================================
+
+schema_version: "1.2.0"
+target_release: "v1.2.0"
+spec_source: "engine/contracts/00-OVERVIEW.md § 八"
+
+# ------------------------------------------------------------
+# 6 项门槛
+# ------------------------------------------------------------
+gates:
+
+  - id: G1
+    name: 三案核心断语命中率
+    metric: total_core_iron_correct
+    v1_0:
+      value: 5
+      source: "tests/fixtures/v1_0_baseline.yaml total_core_iron_correct"
+    v1_2_must_achieve: ">= v1.0 + 1"
+    severity: must
+    blocked_until_engine: ["B", "C"]    # 等 D2/D3 引擎落地才能算
+    rationale: |
+      v1.0 在三个真实案例（001/002/014）合计 5 条铁应验。
+      v1.2 必须至少 6 条铁应验（在不增加新失验的前提下多命中至少 1 条）。
+
+  - id: G2
+    name: C-2026-001 婚期误差
+    metric: marriage_year_error_years
+    v1_0:
+      value: 8
+      source: "C-2026-001 feedback.md 婚期 2013 → 实际 2005"
+    v1_2_must_achieve: "<= 3"
+    severity: must
+    blocked_until_engine: ["B", "C"]    # 需要 D2 marriage_picture + D3 yingqi_gate
+    rationale: |
+      04-gate-protocol § 八 圣杯测试。
+      v1.2 三层 gate + D2 picture_consistent 必须把 C-001 婚期推到 2005±3 年内。
+
+  - id: G3
+    name: C-2026-002 婚姻定性失验数
+    metric: marriage_failed_count
+    v1_0:
+      value: 4
+      source: "C-2026-002 feedback.md 4 条婚姻预测失验"
+    v1_2_must_achieve: "<= 1"
+    severity: must
+    blocked_until_engine: ["B", "C"]    # 需要 D2 marriage_picture + 双盘协同
+    rationale: |
+      v1.0 把"五凶煞=婚凶"当机械铁断。v1.2 必须取消此机械铁断（黑名单 XF-002）
+      并要求 D2 + D3 联合校验，把 C-002 的婚姻失验降到 ≤ 1 条。
+
+  - id: G4
+    name: C-2026-014 学历过判档数
+    metric: education_overshot_levels
+    v1_0:
+      value: 1
+      source: "C-2026-014 feedback.md 985/211 → 一本（高估一档）"
+    v1_2_must_achieve: "= 0"
+    severity: must
+    blocked_until_engine: ["B", "D"]    # 需要 D4 高派 + D2 杨派
+    rationale: |
+      v1.0 高派"词馆=985"过于乐观。v1.2 D4 旁证 boost 上限收紧（<=0.10），
+      由 D2 杨派"印独生身=一本以上"主导。
+
+  - id: G5
+    name: 平均断语 trace_id 覆盖率
+    metric: trace_id_coverage_rate
+    v1_0:
+      value: 0.0
+      source: "v1.0 手写 markdown 报告无 trace_id 字段"
+    v1_2_must_achieve: "= 1.0"
+    severity: must
+    blocked_until_engine: []    # 现在就能跑（structural）
+    rationale: |
+      03-findings-schema § 三 强制每条 finding 含 evidence: list[Evidence]
+      （含 trace_id）。v1.2 一旦 mock AnalysisOutput 出来就该 100% 覆盖。
+
+  - id: G6
+    name: ★★★★★ 断语三层 gate 通过率
+    metric: three_layer_gate_pass_rate
+    v1_0:
+      value: 0.0
+      source: "v1.0 无 gate 概念"
+    v1_2_must_achieve: "= 1.0"
+    severity: must
+    blocked_until_engine: []    # structural：linter 已可校验
+    rationale: |
+      04-gate-protocol § 七 + tools/three_layer_check.py 已就位（Track-E）。
+      v1.2 mock 报告的 ★★★★★ 断语必须 100% 满足 passed_layers=3。
+
+# ------------------------------------------------------------
+# 通过判定
+# ------------------------------------------------------------
+pass_criteria:
+  rule: "6 项中 >= 5 项达成"
+  achievable_at_w2: ["G5", "G6"]    # W2 阶段 H agent 单独可以验证（用 mock）
+  achievable_at_w3: ["G1", "G2", "G3", "G4"]    # 等 B/C/D 集成日才能跑
+
+# ------------------------------------------------------------
+# 状态摘要（每次 W3/W4 集成日更新）
+# ------------------------------------------------------------
+current_status:
+  date: "2026-05-23"
+  phase: "W2"
+  comments: |
+    Track-H 在 W2 阶段建立 6 项门槛框架。
+    G5/G6 现在可跑（structural，依赖 mock AnalysisOutput）。
+    G1-G4 等 W3 集成日 B/C/D 引擎到位后由集成 agent 跑。

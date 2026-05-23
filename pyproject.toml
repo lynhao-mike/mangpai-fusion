@@ -1,0 +1,30 @@
+# ============================================================
+# pyproject.toml · v1.2 最小 pytest 配置
+# ============================================================
+# Track-H 在 W2 阶段建立的 pytest 最小配置。
+# 仅含 [tool.pytest.ini_options]，不引入 build system 配置（v1.2 暂不打包）。
+# ============================================================
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--tb=short",
+]
+markers = [
+    "regression: 整合回归测试（Track-H 维护）",
+    "smoke: 各 track 自带 smoke",
+    "v1_2_gate: v1.2 发布门槛断言（决策 I）",
+    "needs_engine_b: 需要 Track-B（杨派 D2）实现",
+    "needs_engine_c: 需要 Track-C（任派 D3）实现",
+    "needs_engine_d: 需要 Track-D（高派 D4）实现",
+]
+filterwarnings = [
+    # tools/feedback_loop.py 的 docstring 含 \d，是 docstring 而非 regex
+    "ignore::DeprecationWarning:tools.feedback_loop",
+]
