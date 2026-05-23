@@ -1,0 +1,286 @@
+# engine/mechanical-rules.yaml
+#
+# v1.2 机械铁断 + 黑名单（机器可读版）
+# ---------------------------------------------------------------
+# 来源：engine/mechanical-rules.md v1.0（手写表格） → 升级为 YAML
+# 维护者：Track-E 兜底护栏 agent
+# 消费者：tools/output_linter.py · tools/three_layer_check.py
+#
+# 三类规则：
+#   - requirement   ：必须满足的硬约束（如 MR-005 婚期三联检）
+#   - blacklist     ：已失验的"伪规律"，禁止任何报告引用
+#   - soft_warning  ：边界提醒（不阻塞，但 linter 标记 warning）
+#
+# 调用谓词时使用 02-predicate-library.md 的函数名 + $变量。
+# 占位变量约定：
+#   $bazi, $dayun, $year, $domain, $day_master,
+#   $caixing  （命主财星天干）
+#   $hunyin_zhi（命主婚宫支：日支）
+#   $shishen_X（X 为十神名）
+# ---------------------------------------------------------------
+
+schema_version: 1.2.0
+source: engine/mechanical-rules.md v1.0
+upgraded_at: 2026-05-23
+upgraded_by: track-E
+notes: |
+  本文件机器可读，校验 / 仲裁的最终事实源在此。
+  原 .md 文件保留为命理师可读注释版（双轨同步，不冲突）。
+
+# =================================================================
+# 一、机械铁断（requirement）
+# =================================================================
+rules:
+
+  - id: MR-001
+    name: 月柱印星伏吟 → 母亲婚姻反复
+    type: requirement
+    schools: [杨, 段]
+    domains: [六亲, 婚姻]
+    description: |
+      月柱为母亲宫位，月柱印星与年/日柱同支构成伏吟时，
+      母亲感情/婚姻反复（多次婚配概率高）。
+    condition:
+      - predicate: has_yin_in_palace
+        args: ["月柱", "$bazi"]
+      - predicate: is_fuyin_with_palace
+        args: ["月柱", ["年柱", "日柱"], "$bazi"]
+    action:
+      yield_finding:
+        domain: 六亲
+        statement: "母亲感情反复（多婚倾向）"
+        confidence_floor: 0.85
+        confidence_ceiling: 0.95
+    confidence_floor: 0.85
+    star_ceiling: 5
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 命主询问母亲是否再婚，可直接证伪
+
+  - id: MR-002
+    name: 命局土极旺 → 肤色偏暗
+    type: requirement
+    schools: [高]
+    domains: [体貌]
+    description: |
+      八字五行中土的本气+中气合计 ≥ 55%，肤色偏黄/偏暗/偏黑。
+      火金不极旺时才适用（否则被中和）。
+    condition:
+      - predicate: wuxing_strength_at_least
+        args: ["土", 0.55, "$bazi"]
+      - predicate: wuxing_strength_at_most
+        args: ["火", 0.30, "$bazi"]
+      - predicate: wuxing_strength_at_most
+        args: ["金", 0.30, "$bazi"]
+    action:
+      yield_finding:
+        domain: 体貌
+        statement: "肤色偏暗"
+        confidence_floor: 0.85
+    confidence_floor: 0.85
+    star_ceiling: 5
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 见到本人即可直接证伪
+
+  - id: MR-003
+    name: 丙日主+食伤透干 → 大眼·嘴大·开朗外向
+    type: requirement
+    schools: [高, 杨]
+    domains: [体貌, 性格]
+    description: |
+      丙火日主主明目（大眼有神）；
+      食神或伤官天干透出（非全藏）→ 嘴阔善言；
+      木火通明 → 阳气直 → 性格开朗外向。
+    condition:
+      - predicate: day_master_is
+        args: ["丙", "$bazi"]
+      - predicate: shishen_tou
+        args: [["食神", "伤官"], "$bazi"]
+    action:
+      yield_finding:
+        domain: 体貌
+        statement: "大眼/嘴大/开朗外向"
+        confidence_floor: 0.85
+    confidence_floor: 0.85
+    star_ceiling: 5
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 见到本人即可证伪
+
+  - id: MR-004
+    name: 空亡支被流年冲实 → 应期前移
+    type: requirement
+    schools: [任]
+    domains: [应期]
+    description: |
+      命局某支位空亡（如时支空亡=子女宫空），不必然意味着"晚发生"或"不发生"——
+      只要流年地支与该空亡支构成六冲或填实，对应宫位事件即可应期。
+      → 严禁单凭"空亡=晚/无"下断。
+    condition:
+      - predicate: zhi_in_xunkong
+        args: ["$target_zhi", "$bazi"]
+      - predicate: liunian_chong_or_tianshi
+        args: ["$year", "$target_zhi"]
+    action:
+      yield_yingqi:
+        domain: "$domain"
+        year: "$year"
+        confidence_floor: 0.85
+    confidence_floor: 0.85
+    star_ceiling: 5
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 命主回填具体年份事件
+
+  - id: MR-005
+    name: 财动婚动联检（坤造婚期）
+    type: requirement
+    schools: [任]
+    domains: [婚姻, 应期]
+    description: |
+      坤造婚期判定的"三项联检"中的"财动婚动"项。
+      流年财星透干并旺 = 婚动信号之一。
+      最终判婚期年必须三项中至少 2 项满足：
+        (a) 官杀格局动；(b) 财动婚动；(c) 空亡冲实
+    condition:
+      - predicate: gender_is
+        args: ["F", "$birth"]
+      - predicate: liunian_gan_is_caixing
+        args: ["$year", "$caixing"]
+      - predicate: liunian_caixing_not_seriously_kepa
+        args: ["$year", "$bazi"]
+    coupled_with: [MR-004, MR-008-guansha-dong] # 三项联检
+    require_n_of: 2  # 三项中至少 2 项
+    action:
+      yield_yingqi:
+        domain: 婚姻
+        year: "$year"
+        confidence_floor: 0.85
+    confidence_floor: 0.85
+    star_ceiling: 5
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 命主回填实际婚姻年份
+
+  - id: MR-006
+    name: 年柱壬申驿马 → 配偶含流动/远方/军职属性
+    type: requirement
+    schools: [杨]
+    domains: [婚姻, 配偶]
+    description: |
+      年柱地支为驿马支（申子辰生人见寅；寅午戌见申；亥卯未见巳；巳酉丑见亥），
+      首任配偶含流动/远方属性；
+      若驿马 = 申金 → 兼带军警金属类。
+    condition:
+      - predicate: nianzhu_zhi_is_yima
+        args: ["$bazi"]
+    excludes:
+      - predicate: yima_zhi_he_zhu
+        args: ["$bazi"]   # 驿马被合住则不适用
+    action:
+      yield_finding:
+        domain: 配偶
+        statement: "首任配偶含流动/远方/军警属性"
+        confidence_floor: 0.70
+        confidence_ceiling: 0.85
+    confidence_floor: 0.70
+    star_ceiling: 4   # 注意：本条只到 ★★★★，因 v1.0 给的就是 85%
+    application_case: C-2026-013-壬申甲辰丙辰己丑
+    falsifiable: 命主回填首任配偶背景
+
+# =================================================================
+# 二、黑名单（blacklist）—— 已失验，禁止以铁断引用
+# =================================================================
+blacklist:
+
+  - id: XF-001
+    pattern: "正官藏不透 → 晚婚铁律"
+    aliases:
+      - "正官藏不透→必晚婚"
+      - "官藏=晚婚"
+      - "三藏不透必晚婚"
+    schools_originally_blamed: [杨]
+    rejected_in_cases:
+      - C-2026-013-壬申甲辰丙辰己丑
+    reason: |
+      命主 29 岁首婚（本应"35-41 岁黄金婚期"），完全失验。
+      官藏不透 ≠ 晚婚，仅代表"缘分迂回"。
+      未联合财动婚动+空亡冲实做三项联检即下铁口断 = 错误使用机械铁断。
+    blocked_in_outputs:
+      - 婚姻
+      - 应期
+    replacement_rules:
+      - MR-004
+      - MR-005
+
+  - id: XF-002
+    pattern: "五凶煞=婚凶"
+    aliases:
+      - "五凶煞必婚凶"
+      - "孤鸾煞+羊刃+红艳+童子=必离"
+      - "凶煞集齐=婚姻坎坷"
+    schools_originally_blamed: [杨]
+    rejected_in_cases:
+      - C-2026-002-壬戌庚戌戊辰丙辰
+      - C-2026-001-庚申戊寅壬子辛丑
+    reason: |
+      C-2026-001 实际 23 岁结婚稳定 20+ 年；
+      C-2026-002 同样 23 岁稳定婚姻。
+      "孤鸾/羊刃/红艳/童子/华盖=必凶" 在两案都失验。
+      神煞旁证不能升级为铁断；必须由 D2 婚姻画像 + D3 三层 gate 共同决定。
+    blocked_in_outputs:
+      - 婚姻
+    replacement_rules:
+      - MR-004
+      - MR-005
+
+  - id: XF-003
+    pattern: "空亡=晚发或不发"
+    aliases:
+      - "空亡=不应"
+      - "宫位空亡=该宫无事"
+    schools_originally_blamed: [任]   # 误用任派
+    rejected_in_cases:
+      - C-2026-013-壬申甲辰丙辰己丑
+    reason: |
+      空亡需"填实/冲动"才被激活（参考 MR-004）。
+      以"空亡=晚/无"直接下铁口断 = 跳过流年冲实分析。
+    blocked_in_outputs:
+      - 应期
+      - 子女
+      - 六亲
+    replacement_rules:
+      - MR-004
+
+# =================================================================
+# 三、被禁措辞（output_linter 词级拦截）
+# =================================================================
+forbidden_phrases:
+  hard:    # 一律拒绝（FAIL）
+    # 注：故意省略，避免与 soft 重叠时双报错。下列若需阻塞请挪入 hard。
+    []
+  soft:    # 警告 + 降级一星（WARNING）
+    - { phrase: "未来某年", reason: "应期不可指代不明确年份，必须给具体年份" }
+    - { phrase: "可能",     reason: "概率化措辞应统一用 ★/% 表达" }
+    - { phrase: "一定",     reason: "绝对化措辞，仅 MR 铁断+三层 gate=3 才允许" }
+    - { phrase: "肯定",     reason: "同 一定" }
+    - { phrase: "必然",     reason: "同 一定" }
+    - { phrase: "绝对",     reason: "同 一定" }
+
+# =================================================================
+# 四、双向同步指引（与 .md 命理师版的关系）
+# =================================================================
+sync_with_md: engine/mechanical-rules.md
+sync_invariants:
+  - 本 yaml 中 rules 数量 == .md 第二节铁断数
+  - 本 yaml 中 blacklist 数量 == .md 第三节黑名单数
+  - 升降级流程见 engine/contracts/05-rule-lifecycle.md
+
+# =================================================================
+# 五、版本历史
+# =================================================================
+versions:
+  - version: 1.2.0
+    date: 2026-05-23
+    track: track-E
+    changes:
+      - 从 mechanical-rules.md v1.0 升级为 YAML
+      - 新增 XF-002（五凶煞=婚凶）黑名单 — 由 C-2026-001 + C-2026-002 双案失验抽取
+      - 新增 XF-003（空亡=晚/无）黑名单 — 强化 MR-004 的对偶约束
+      - 新增 forbidden_phrases 段 — output_linter 词级拦截源
