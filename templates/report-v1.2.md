@@ -6,39 +6,57 @@
 **分析日期**：{{ analysis_date }}  
 **引擎**：mangpai-fusion v1.2 · 四派融合  
 
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║          AI 润色边界声明（决策 D · 永久锁定）             ║
+  ╠══════════════════════════════════════════════════════════╣
+  ║  §A ~ §G  铁断段 / 应期段：引擎自动生成，禁止 AI 修改。  ║
+  ║           ★N (X%)、evidence 编号、证伪条件不可更改。      ║
+  ║  §H       画像段：唯一允许 AI 润色的区段，须标 [AI-polish]║
+  ╚══════════════════════════════════════════════════════════╝
+-->
+
 ---
+
+<!-- ██ 铁断区开始 ██  §A–§G  禁止 AI 修改 ██ -->
 
 ## 一、能量层级（§A · D1 段派）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
+<!-- §A-START: 铁断段，禁止 AI 修改 -->
 
 **做功层数**：{{ layer_count }} 层  
 **财富天花板**：{{ wealth_ceiling }}  
 **整体能量**：{{ energy_ordinal }} ({{ energy_score_pct }}%)  
-<!-- 段派 D1 整体置信度 {{ energy_star }}★ {{ energy_pct }}% -->  
+<!-- 段派 D1 置信度：{{ energy_star }}星 / {{ energy_pct }}% -->
 
 ### 做功路径
+
 {% for path in zuogong_paths %}
 **[段派]** {{ path.description }}（强度：{{ path.strength_ordinal }}，层数：{{ path.layer_count }}）  ★{{ path.star }} ({{ path.pct }}%)  
 来源：{{ path.rule_id }}(段)  
-证伪：{{ path.falsifiable }}  
+证伪：{{ path.falsifiable }}
 
 {% endfor %}
+
 ### 体用结构
+
 {{ tiyong_summary }}
+
+<!-- §A-END -->
 
 ---
 
 ## 二、画面细节（§B · D2 杨派）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
+<!-- §B-START: 铁断段，禁止 AI 修改 -->
 
 **财富等级**：{{ caifu_type }}（第 {{ caifu_rank }} 等）  
 **官命取法**：{{ guanming_type }}（第 {{ guanming_rank }} 取）  
 **行业方向**：{{ industry_pointers_str }}  
-<!-- 杨派 D2 整体置信度 {{ picture_star }}★ {{ picture_pct }}% -->  
+<!-- 杨派 D2 置信度：{{ picture_star }}星 / {{ picture_pct }}% -->
 
 ### 五步法结果
+
 {% for step in wubu_steps %}
 **第 {{ step.step }} 步 · {{ step.name }}**：{{ step.finding }}  
 来源：{% for e in step.evidence %}{{ e.rule_id }}({{ e.school }}) {% endfor %}
@@ -46,6 +64,7 @@
 {% endfor %}
 
 ### 婚姻画像
+
 {% if marriage_picture %}
 - 初婚最佳窗口：{{ marriage_window_str }}  
 - {{ marriage_picture_extra }}  
@@ -53,12 +72,18 @@
 - 婚姻画像待补充  
 {% endif %}
 
+<!-- §B-END -->
+
 ---
 
 ## 三、应期总表（§C · D3 任派）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
-<!-- 规则：passed_layers=3 → ★★★★★；=2 → ★★★★；=1 → ★★★ -->
+<!-- §C-START: 铁断段，禁止 AI 修改 -->
+<!-- 三层惩罚规则（04 § 七 · 不可违反）：
+     passed_layers=3 → ★ 上限 5（铁口断）
+     passed_layers=2 → ★ 上限 4
+     passed_layers=1 → ★ 上限 3
+     passed_layers=0 → 不输出 -->
 
 {% if gate_results %}
 | 年份 | 流年 | 大运 | 候选事件 | 领域 | 三层 | 道门 | 置信度 | 主触发 | 来源 |
@@ -67,7 +92,7 @@
 | {{ g.year }} | {{ g.liunian }} | {{ g.dayun_str }} | {{ g.candidate_event }} | {{ g.domain }} | {{ g.layers_icon }} | {{ g.door }} | {{ g.star }}星/{{ g.pct }}% | {{ g.primary_trigger_type }} | {{ g.evidence_str }} |
 {% endfor %}
 
-### 铁口断语（passed_layers = 3）
+### 铁口断语（passed_layers = 3 · 三层齐备）
 
 {% for g in iron_gates %}
 **[任派]** {{ g.year }}年 {{ g.domain }}·{{ g.candidate_event }}（三层齐备）  ★{{ g.star }} ({{ g.pct }}%)  
@@ -87,11 +112,13 @@
 > 本次未运行应期扫描（gate_results 为空）。
 {% endif %}
 
+<!-- §C-END -->
+
 ---
 
 ## 四、旁证补强（§D · D4 高派）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
+<!-- §D-START: 铁断段，禁止 AI 修改 -->
 
 {% if support %}
 **高派旁证置信度**：★{{ support_star }} ({{ support_pct }}%)  
@@ -120,18 +147,20 @@ boost +{{ support_edu_boost_pct }}%
 > D4 高派旁证未运行（Track-D 未合入或 shensha 为空）。
 {% endif %}
 
+<!-- §D-END -->
+
 ---
 
 ## 五、立体合并（§E）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
+<!-- §E-START: 铁断段，禁止 AI 修改 -->
 
 ### 5.1 共识层断语
 
 {% for c in consensus_conclusions %}
 **[共识·{{ c.schools_str }}]** {{ c.statement }} ★{{ c.star }} ({{ c.pct }}%)  
 来源：{{ c.evidence_str }}  
-证伪：{{ c.falsifiable }}  
+证伪：{{ c.falsifiable }}
 
 {% endfor %}
 {% if not consensus_conclusions %}
@@ -143,15 +172,17 @@ boost +{{ support_edu_boost_pct }}%
 {% for c in complementary_conclusions %}
 **[互补·{{ c.schools_str }}]** {{ c.statement }} ★{{ c.star }} ({{ c.pct }}%)  
 来源：{{ c.evidence_str }}  
-证伪：{{ c.falsifiable }}  
+证伪：{{ c.falsifiable }}
 
 {% endfor %}
+
+<!-- §E-END -->
 
 ---
 
 ## 六、风险提示（§G）
 
-<!-- 铁断段：引擎生成，不可 AI 修改 -->
+<!-- §G-START: 铁断段，禁止 AI 修改 -->
 
 - ⚠️ 应期误差 ±3 个月（流年精度），大运过渡期（前后 1 年）置信度降 ★  
 - ⚠️ 三层 gate 是铁口断的**必要条件**：passed_layers < 3 的应期仅供参考  
@@ -160,15 +191,27 @@ boost +{{ support_edu_boost_pct }}%
 {% endif %}
 - ⚠️ 本系统不替代命主决策；涉医疗/法律/婚姻重大决策请咨询专业人士  
 
+<!-- §G-END -->
+
+<!-- ██ 铁断区结束 ██  §A–§G  以上内容禁止 AI 修改 ██ -->
+
 ---
 
 ## 七、命主画像版（§H · AI 润色允许段）
 
-<!-- [AI-polish] 此段允许 AI 润色（仅文字表达，不得改变 ★/% 数值和 evidence 链） -->
+<!-- §H-START: AI 润色段 [AI-polish] 开始 -->
+<!-- [AI-polish] 本段允许 AI 润色文字表达。
+     约束：
+       1. 不得修改任何 ★N (X%) 数值
+       2. 不得修改 evidence 编号（MR-*/M1-*/M2-*/M3-*/GP-*）
+       3. 不得修改证伪条件
+       4. 不得添加 §A–§G 中不存在的结论
+       5. 润色后的段落开头必须保留 [AI-polish] 标记 -->
 
 {{ portrait_block }}
 
-<!-- [AI-polish] 以上 § H 段为 AI 润色区间结束 -->
+<!-- §H-END: AI 润色段结束 -->
+<!-- [AI-polish] §H 润色区间已结束，以下内容禁止修改 -->
 
 ---
 

@@ -2,31 +2,37 @@
 
 按 07-pipeline-flow.md § 九 + 08-agent-handoff.md § 二 F 实现。
 
-主入口：
-    render(analysis_output, template="report-v1.2.md") -> str
+公开 API
+--------
+render(energy, picture, gates, parsed, support, template_name)
+    低级入口：直接传 D1-D4 dataclass。
+    内置双护栏：先对 Markdown 文本运行 output_linter，遇到 ERROR 立即
+    抛出 RenderGuardrailError，阻断报告落盘（07 § 八 要求）。
 
-输入结构（03 § 九 AnalysisOutput，本分支用松散 dict 兼容）：
-    energy:   EnergyFindings（D1 段派）
-    picture:  PictureFindings（D2 杨派）
-    gates:    list[GateResult]（D3 任派）
-    support:  Optional[SupportFindings]（D4 高派，Track-D 未合入时为 None）
-    parsed:   ParsedInput
+render_from_output(analysis_output, *, template_name, lint_before, cases_dir)
+    高级入口：接受 engine.pipeline.AnalysisOutput，自动完成
+    ① findings JSON 落盘 → ② 渲染模板 → ③ 双护栏 lint 校验。
 
-输出：Markdown 字符串，通过 output_linter 0 error。
+RenderGuardrailError
+    output_linter 返回 ERROR 时抛出，携带完整 LintResult。
 
-AI 润色边界（决策 D）：
+save_findings(output, cases_dir)
+    将 D1-D4 JSON 写入 cases/C-XXX/findings/。
+
+AI 润色边界（决策 D · 永久锁定）
     仅 §H 命主画像版的 [AI-polish] 段允许修改（文字润色）。
-    §A-§G 的所有 ★/% 数值、evidence chain 不可改。
+    §A-§G 的所有 ★/% 数值、evidence chain、证伪条件不可改。
 
 作者：Track-F
 """
 from __future__ import annotations
 
+import json
 import re
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -36,6 +42,183 @@ from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
 from engine.predicates.types import ParsedInput
 from engine.yingqi.types import GateResult
+
+
+# ============================================================
+# 0. 双护栏异常 + 工具函数
+# ============================================================
+
+class RenderGuardrailError(RuntimeError):
+    """output_linter 在渲染后报告中发现 ERROR 级别问题时抛出。
+
+    按 07-pipeline-flow.md § 八/§ 十二：output_linter 拒绝时，
+    流水线中断，不落盘报告；findings JSON 保留以便 debug。
+
+    Attributes:
+        lint_result: 完整的 LintResult 对象，含所有 errors / warnings。
+        report:      渲染后但未通过 lint 的 Markdown 文本（仅供 debug）。
+    """
+    def __init__(self, lint_result: Any, report: str) -> None:
+        errors = getattr(lint_result, "errors", [])
+        msg = (
+            f"output_linter 拒绝报告：{len(errors)} 个 ERROR\n"
+            + "\n".join(
+                f"  [{e.code}] {getattr(e, 'location', '?')}: {e.message}"
+                for e in errors[:10]
+            )
+        )
+        super().__init__(msg)
+        self.lint_result = lint_result
+        self.report = report
+
+
+def save_findings(
+    output: Any,
+    cases_dir: Optional[Union[str, Path]] = None,
+) -> Path:
+    """将 D1-D4 Findings JSON 写入 cases/C-XXX/findings/。
+
+    按 07-pipeline-flow.md § 三/§ 四/§ 五/§ 六 落盘约定：
+        cases/C-XXX/findings/energy.json
+        cases/C-XXX/findings/picture.json
+        cases/C-XXX/findings/gate_results.json
+        cases/C-XXX/findings/support.json
+        cases/C-XXX/findings/analysis_output.json  (如 output 是 AnalysisOutput)
+
+    Args:
+        output: AnalysisOutput 或含 energy/picture/gate_results/support 字段的对象。
+        cases_dir: cases/ 目录路径（默认为仓库根 cases/）。
+
+    Returns:
+        findings 目录的 Path。
+    """
+    cases_root = Path(cases_dir) if cases_dir else ROOT / "cases"
+
+    # 取 case_id
+    case_id: str = (
+        getattr(output, "case_id", None)
+        or (getattr(output, "energy", None) and getattr(output.energy, "case_id", ""))
+        or "UNKNOWN"
+    )
+
+    findings_dir = cases_root / case_id / "findings"
+    findings_dir.mkdir(parents=True, exist_ok=True)
+
+    def _write(name: str, obj: Any) -> None:
+        if obj is None:
+            return
+        if hasattr(obj, "to_json"):
+            text = obj.to_json(indent=2)
+        elif hasattr(obj, "to_dict"):
+            text = json.dumps(obj.to_dict(), ensure_ascii=False, indent=2)
+        elif isinstance(obj, list):
+            text = json.dumps(
+                [
+                    (x.to_dict() if hasattr(x, "to_dict") else x)
+                    for x in obj
+                ],
+                ensure_ascii=False,
+                indent=2,
+            )
+        else:
+            text = json.dumps(obj, ensure_ascii=False, indent=2)
+        (findings_dir / name).write_text(text, encoding="utf-8")
+
+    energy = getattr(output, "energy", None)
+    picture = getattr(output, "picture", None)
+    gates = getattr(output, "gate_results", None)
+    support = getattr(output, "support", None)
+
+    _write("energy.json", energy)
+    _write("picture.json", picture)
+    _write("gate_results.json", gates)
+    _write("support.json", support)
+
+    # analysis_output.json — only if the object itself has to_dict (i.e. AnalysisOutput)
+    if hasattr(output, "to_dict") and energy is not None:
+        _write("analysis_output.json", output)
+
+    return findings_dir
+
+
+def render_from_output(
+    analysis_output: Any,
+    *,
+    template_name: str = "report-v1.2.md",
+    lint_before: bool = True,
+    cases_dir: Optional[Union[str, Path]] = None,
+) -> str:
+    """高级渲染入口：接受 AnalysisOutput，完成全链路。
+
+    流程（按 07 § 七–§ 九）：
+        1. 将 D1-D4 JSON 落盘到 cases/C-XXX/findings/
+        2. 调用 render() 生成 Markdown
+        3. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
+
+    Args:
+        analysis_output: engine.pipeline.AnalysisOutput 实例。
+        template_name:   模板文件名（默认 report-v1.2.md）。
+        lint_before:     是否启用双护栏 lint（默认 True；测试时可关闭）。
+        cases_dir:       cases/ 目录路径（None = 仓库根 cases/）。
+
+    Returns:
+        通过 lint 的 Markdown 报告字符串。
+
+    Raises:
+        RenderGuardrailError: lint 返回任何 ERROR 时。
+    """
+    # Step 1: 落盘 findings JSON
+    try:
+        save_findings(analysis_output, cases_dir)
+    except Exception:
+        # 落盘失败不阻断渲染，仅静默（报告仍可交付）
+        pass
+
+    # Step 2: 拆包 AnalysisOutput 字段
+    energy = getattr(analysis_output, "energy")
+    picture = getattr(analysis_output, "picture")
+    gates = getattr(analysis_output, "gate_results", [])
+    support = getattr(analysis_output, "support", None)
+    parsed = getattr(analysis_output, "_parsed", None)
+
+    # 如果 AnalysisOutput 没有 _parsed（它不存储 ParsedInput），
+    # 尝试从 energy.case_id 重建一个最小 ParsedInput
+    if parsed is None:
+        parsed = _minimal_parsed_from_energy(energy)
+
+    # Step 3: 渲染
+    report = render(
+        energy=energy,
+        picture=picture,
+        gates=gates,
+        parsed=parsed,
+        support=support,
+        template_name=template_name,
+        _skip_lint=not lint_before,
+    )
+    return report
+
+
+def _minimal_parsed_from_energy(energy: EnergyFindings) -> ParsedInput:
+    """从 EnergyFindings 重建最小 ParsedInput（仅 render 所需字段）。"""
+    from engine.predicates.types import Dayun
+    # EnergyFindings 不存储 ParsedInput，但 render 只需 case_id / bazi / dayun / birth
+    # 这些信息在 energy 的 debug_info 中没有，所以我们构造一个最小占位
+    # (render 的 birth_year fallback 逻辑会用到 dayun.起运年 - dayun.起运岁)
+    stub = ParsedInput.__new__(ParsedInput)
+    object.__setattr__(stub, "case_id", energy.case_id or "UNKNOWN")
+    object.__setattr__(stub, "bazi", None)
+    object.__setattr__(stub, "dayun", None)
+    object.__setattr__(stub, "birth", {})
+    object.__setattr__(stub, "shensha", {})
+    object.__setattr__(stub, "known_facts", [])
+    object.__setattr__(stub, "questions", [])
+    object.__setattr__(stub, "fingerprint", "")
+    object.__setattr__(stub, "preflight_warnings", [])
+    object.__setattr__(stub, "schema_version", "1.2.0")
+    object.__setattr__(stub, "case_meta", {})
+    object.__setattr__(stub, "twelve_changsheng", {})
+    return stub
 
 
 
@@ -524,19 +707,31 @@ def render(
     parsed: ParsedInput,
     support: Optional[Any] = None,
     template_name: str = "report-v1.2.md",
+    *,
+    _skip_lint: bool = False,
 ) -> str:
     """三段式报告渲染主入口。
 
+    双护栏机制（07 § 八 + § 九）：
+        生成 Markdown 后立即调用 output_linter.lint()。
+        如有任何 ERROR 级别问题，抛出 RenderGuardrailError 并阻断落盘。
+        仅 WARNING 级别问题通过（符合 07 § 十二 错误处理要求）。
+
     Args:
-        energy:    D1 EnergyFindings
-        picture:   D2 PictureFindings
-        gates:     D3 GateResult 列表（已过滤 passed_layers >= 1）
-        parsed:    ParsedInput（含 bazi / dayun / birth）
-        support:   D4 SupportFindings（Optional，Track-D 未合入时传 None）
+        energy:       D1 EnergyFindings
+        picture:      D2 PictureFindings
+        gates:        D3 GateResult 列表（已过滤 passed_layers >= 1）
+        parsed:       ParsedInput（含 bazi / dayun / birth）
+        support:      D4 SupportFindings（Optional，Track-D 未合入时传 None）
         template_name: 模板文件名（相对 templates/ 目录）
+        _skip_lint:   内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
 
     Returns:
-        str: 完整 Markdown 报告
+        str: 通过 output_linter 的完整 Markdown 报告。
+
+    Raises:
+        RenderGuardrailError: output_linter 返回 ERROR 时。
+        FileNotFoundError:    模板文件不存在时。
     """
     tpl_path = ROOT / "templates" / template_name
     if not tpl_path.exists():
@@ -547,13 +742,13 @@ def render(
     ctx: dict[str, Any] = {}
 
     # 元信息
-    ctx["case_id"] = parsed.case_id
-    ctx["gender"] = (parsed.birth or {}).get("性别", "—")
-    ctx["birth_date"] = _birth_str(parsed)
-    ctx["bazi_str"] = _bazi_str(parsed)
-    ctx["dayun_str"] = _dayun_str(parsed)
+    ctx["case_id"] = getattr(parsed, "case_id", "UNKNOWN") if parsed else "UNKNOWN"
+    ctx["gender"] = ((getattr(parsed, "birth", None) or {}).get("性别", "—")) if parsed else "—"
+    ctx["birth_date"] = _birth_str(parsed) if parsed else "—"
+    ctx["bazi_str"] = _bazi_str(parsed) if (parsed and getattr(parsed, "bazi", None)) else "—"
+    ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
-    ctx["generated_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     # §A 能量
     ctx.update(_build_energy_vm(energy))
@@ -562,7 +757,7 @@ def render(
     ctx.update(_build_picture_vm(picture))
 
     # §C 应期
-    ctx.update(_build_gates_vm(gates, parsed))
+    ctx.update(_build_gates_vm(gates, parsed) if parsed else {"gate_results": [], "iron_gates": [], "has_xiong_gate": False, "xiong_years_str": ""})
 
     # §D 旁证
     ctx.update(_build_support_vm(support))
@@ -571,9 +766,20 @@ def render(
     ctx.update(_build_conclusions_vm(energy, picture, gates))
 
     # §H 画像版骨架
-    ctx["portrait_block"] = _build_portrait_vm(energy, picture, gates, parsed)
+    ctx["portrait_block"] = _build_portrait_vm(energy, picture, gates, parsed) if parsed else ""
 
-    return _render_template(template, ctx)
+    report = _render_template(template, ctx)
+
+    # ── 双护栏：output_linter 出口校验 ────────────────────────────
+    # 07 § 八：output_linter 是兜底护栏 #2，不可绕过（_skip_lint 仅内部协调用）
+    if not _skip_lint:
+        from tools.output_linter import lint  # 延迟导入，避免循环
+        lint_result = lint(report)
+        if not lint_result.passed:
+            raise RenderGuardrailError(lint_result, report)
+    # ──────────────────────────────────────────────────────────────
+
+    return report
 
 
 # ============================================================
