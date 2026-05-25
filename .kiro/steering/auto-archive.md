@@ -79,7 +79,7 @@ fingerprint = $(echo -n "M|YYYY-MM-DD HH:MM" | md5sum | cut -c1-12)
 | 既有约束 | 本协议升级 |
 |---|---|
 | 二者必须同一次 commit 提交 | ✅ 保持 + 新增"自动执行不询问" |
-| `analyst.md` Step 10 输出报告 | ✅ Step 11 自动归档（不再 BOOT.md 第 7 条"询问是否归档"） |
+| `analyst.md` Stage 4 RENDER 落盘 + Stage 5 DELIVER 后 | ✅ 自动归档同一回合（不再 BOOT.md "询问归档"） |
 
 `.kiro/skills/BOOT.md` §五「开始工作」第 7 条「询问用户是否要归档为案例」**已废止**——默认归档，不询问。
 

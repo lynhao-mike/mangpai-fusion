@@ -110,7 +110,7 @@ pytest tests/regression/test_v1_2_vs_v1_0.py -v        # 仅发布门槛
 
 | 优先级 | 议题 | 入口 |
 |---|---|---|
-| P1 | 把 `.kiro/skills/analyst.md` 改造为 `engine/pipeline.run_pipeline()` 的编排层 | `.kiro/skills/analyst.md` 仍是 v1.0 LLM 解释执行 |
+| ~~P1~~ ✅ | ~~把 `.kiro/skills/analyst.md` 改造为 `engine/pipeline.run_pipeline()` 的编排层~~ | 已完成（v1.2.0 编排器，2026-05-25） |
 | P2 | 反馈样本累积到 ≥ 30 后，触发 Beta 分布置信度切换（决策 E） | `tools/rule_lifecycle.py` 已实现 Beta，等数据 |
 | P2 | 加轻量 metrics：每步落盘 `cases/C-XXX/findings/timing.json`，超 60s 告警 | `engine/pipeline.py` |
 | P3 | 命宫长生诀自动算法、问真 APP input.md 直接解析 | v1.0 ROADMAP 遗留 |

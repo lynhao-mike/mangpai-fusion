@@ -68,7 +68,6 @@
 - ❌ 神煞自动识别（依赖问真 APP 提供，决策 A 锁定外算）
 - ❌ 自动排盘（用户必须先用问真 APP 排好）
 - ❌ 八字指纹相似案检索（指纹区已就位，检索器待建）
-- ❌ `.kiro/skills/analyst.md` 仍是 v1.0 LLM 解释入口，未编排到 v1.2 流水线
 - ❌ 反馈样本不足 30 → 置信度公式仍走线性加权，未切 Beta（决策 E 阈值）
 - ❌ 中医五运六气整合 / 风水堪舆整合
 
@@ -131,7 +130,7 @@
 2. 累积新案例反馈数据（目标 ≥ 30 反馈样本，触发置信度公式 Beta 切换）
 
 短期（1-3 个月）：
-- 把 `.kiro/skills/analyst.md` 改为 `engine/pipeline.run_pipeline()` 的编排层（结束双轨长期共存）
+- ✅ 已完成：把 `.kiro/skills/analyst.md` 改为 `engine/pipeline.run_pipeline()` 的编排层（v1.2.0 编排器，2026-05-25）
 - 加轻量 metrics（每步落盘 timing.json，超 60s 告警）
 - 一次性审查 `engine/mechanical-rules.yaml`，把"含判定语义"字段挪到 Python（彻底落地决策 B）
 

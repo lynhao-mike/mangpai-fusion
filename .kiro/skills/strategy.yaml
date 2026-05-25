@@ -1,13 +1,17 @@
 # strategy.yaml · 策略选择器
-# v1.0 · 2026-05-23
+# v1.0 · 2026-05-23（v1.2 角色降级：仅作输入侧重提示）
 #
-# 用途：根据用户问题类型，路由到不同的分析策略
-# 调用：analyst.md Step 2 → 加载本文件 → 决定走哪个策略
+# v1.2 起本文件**不再驱动分析逻辑**。
+# 一切判定（D1-D4 + integrate）由 engine/pipeline.run_pipeline() 在 Python 中执行。
+# 本文件保留作为 .kiro/skills/analyst.md 的：
+#   - Stage 1 INTAKE：决定优先追问哪些 known_facts
+#   - Stage 5 DELIVER：决定 reports/* 中各领域呈现详略
+# 即 strategy.yaml 提供**呈现侧重**而非**分析路由**。
 #
 # 三种策略：
-#   A · 问题驱动 = 命主有具体问题，单领域深推
-#   B · 全面画像 = 命主想整体了解，9 大领域全跑
-#   C · 应期精推 = 命主问某具体年份吉凶
+#   A · 问题驱动 = 命主有具体问题 → Stage 5 聚焦该领域呈现
+#   B · 全面画像 = 命主想整体了解 → Stage 5 平铺 9 大领域
+#   C · 应期精推 = 命主问某具体年份 → Stage 1 重点收集目标年份相关 known_facts
 
 version: "1.0"
 
@@ -30,7 +34,7 @@ strategy_a:
   
   process:
     step_1: 识别核心问题领域（婚/财/官/学/健/子等）
-    step_2: 查 engine/domain-weights.yaml 取得 lead 派
+    step_2: 查 engine/domain-weights.yaml 取得 lead 派  # v1.2: 降级为输入侧重提示，不驱动分析
     step_3: 4 派对该领域分别查询
     step_4: 共识层 → 互补层 → 独门层 → 冲突仲裁
     step_5: 输出聚焦于该领域的报告
@@ -136,7 +140,7 @@ strategy_c:
 # ============================================================
 auto_routing:
   description: |
-    主分析器在 Step 2 自动判断走哪个策略。
+    主分析器在 Step 2 自动判断走哪个策略。  # v1.2: 由 analyst.md Stage 1 INTAKE 用作输入侧重提示
     判断逻辑（优先级从高到低）：
   
   rules:
