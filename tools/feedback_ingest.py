@@ -109,6 +109,7 @@ class IngestResult:
     feedback_completed_count: int = 0          # 本次写入后的总完成反馈案数
     iteration_seq: int = 0                     # 当前迭代序号（每 10 完成案 +1）
     iteration_triggered: bool = False          # 本次是否达到 10 案整数倍
+    iteration_report_path: Optional[str] = None  # v1.3 D8：自动触发的迭代报告路径
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -120,6 +121,7 @@ class IngestResult:
             "feedback_completed_count": self.feedback_completed_count,
             "iteration_seq": self.iteration_seq,
             "iteration_triggered": self.iteration_triggered,
+            "iteration_report_path": self.iteration_report_path,
             "iteration_diff": self.iteration_diff.to_dict() if self.iteration_diff else None,
         }
 
@@ -382,6 +384,21 @@ def _bump_state(result: IngestResult, case_id: str) -> None:
     result.feedback_completed_count = state.feedback_completed_count
     state.save()
 
+    # v1.3 D8：完成反馈案达 10 整数倍 → 自动触发迭代调度
+    # 失败不阻塞 ingest 主流程（warn-only），命理师仍能继续摄入下一案
+    if result.iteration_triggered:
+        try:
+            from tools.iteration_report import run_iteration
+            ir = run_iteration(seq=result.iteration_seq, dry_run=False)
+            if ir.report_path:
+                result.iteration_report_path = str(ir.report_path)
+        except Exception as exc:  # noqa: BLE001
+            # 把异常打到 iteration_diff.notes（如果存在），不抛
+            if result.iteration_diff is not None:
+                result.iteration_diff.notes.append(
+                    f"[D8 warn-only] iteration_report 触发失败：{exc!r}"
+                )
+
 
 # ============================================================
 # 六、CLI
@@ -404,8 +421,12 @@ def _print_human(result: IngestResult) -> None:
     print(f"  累计完成反馈案: {result.feedback_completed_count}")
     print(f"  当前迭代序号 (iteration_seq): {result.iteration_seq:03d}")
     if result.iteration_triggered:
-        print("\n  ★★ 已达 10 案整数倍 → 应触发 iteration_report ★★")
-        print(f"     输出文件（待 W3 实现）: META/iteration-report-{result.iteration_seq:03d}.md")
+        print("\n  ★★ 已达 10 案整数倍 → iteration_report 已自动触发 ★★")
+        if result.iteration_report_path:
+            print(f"     📄 报告: {result.iteration_report_path}")
+        else:
+            print(f"     ⚠️ 报告写入失败，详见 iteration_diff.notes")
+            print(f"     预期路径: META/iteration-report-{result.iteration_seq:03d}.md")
 
 
 def main(argv: Optional[list[str]] = None) -> int:
