@@ -7,22 +7,32 @@
 - CrossSchoolConflict — 跨派冲突显式登记
 - AnalysisOutput    — 完整分析输出（render_report 直接消费）
 - integrate()       — 合并 D1-D4 → AnalysisOutput
-- run_pipeline()    — 端到端编排：parsed → AnalysisOutput
+- run_pipeline()    — W1-W4 + integrate 编排：parsed → AnalysisOutput
+- run_pipeline_e2e()— 端到端 8 步编排（preflight → 渲染 → 自迭代），含耗时埋点
+- PipelineTiming    — 轻量级耗时记录器（仅依赖 stdlib time）
 
 设计原则：
 - 纯函数：输入 dataclass → 输出 dataclass（不修改入参）
 - 每条 FinalConclusion 的 evidence 链保证 100% trace_id 覆盖
 - upstream_hash 校验贯穿全链路，任何失配立即中断
+- 性能监控埋点仅依赖 stdlib (time / logging / warnings)，不引入第三方
+  监控框架；端到端 60s 阈值仅做"软护栏"——超阈值发出醒目警告，不阻断主业务落盘
 
-作者：整合 agent (W3+)
+作者：整合 agent (W3+) · v1.2.1 性能监控（DevOps）
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import logging
+import sys
+import time
+import warnings
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
-from typing import Any, Literal, Optional
+from pathlib import Path
+from typing import Any, Iterator, Literal, Optional, Union
 
 from engine.energy.evaluator import evaluate_energy
 from engine.energy.types import (
@@ -38,6 +48,231 @@ from engine.picture.types import PictureFindings
 from engine.predicates.types import ParsedInput
 from engine.yingqi.gate import gate_yingqi
 from engine.yingqi.types import GateResult
+
+
+# ============================================================
+# 〇、性能监控 · PipelineTiming（v1.2.1 DevOps 埋点）
+# ============================================================
+#
+# 设计目标（与 07-pipeline-flow.md § 十三 性能约束对齐）：
+#   - 端到端 < 60s（不含 AI polish）
+#   - 仅依赖 stdlib：time.perf_counter / logging / warnings
+#   - 单一 JSON 制品 cases/C-XXX/findings/timing.json
+#   - 超阈值仅发"醒目警告"，不阻断 findings 落盘（软护栏）
+#
+# 8 个核心步骤命名（与 07-pipeline-flow 各 § 一致）：
+#   preflight → energy(W1) → picture(W2) → yingqi(W3)
+#   → pangzheng(W4) → integrate → render → self_iter
+
+logger = logging.getLogger(__name__)
+
+#: 端到端总耗时阈值（秒）。超过即触发护栏警告。
+PIPELINE_THRESHOLD_SECONDS: float = 60.0
+
+#: 8 个核心步骤的规范名称（顺序即流水线执行顺序）。
+PIPELINE_STEP_NAMES: tuple[str, ...] = (
+    "preflight",   # 兜底护栏 #1：input.md → ParsedInput
+    "energy",      # W1 D1 段派
+    "picture",     # W2 D2 杨派
+    "yingqi",      # W3 D3 任派
+    "pangzheng",   # W4 D4 高派
+    "integrate",   # D1-D4 → AnalysisOutput
+    "render",      # tools/render_report.render_from_output
+    "self_iter",   # tools/feedback_loop.ingest_feedback（自迭代）
+)
+
+
+@dataclass
+class StepTiming:
+    """单步耗时记录。"""
+    name: str
+    seconds: float
+    started_at: str  # ISO 8601 UTC，含微秒
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "seconds": self.seconds,
+            "started_at": self.started_at,
+        }
+
+
+class PipelineTiming:
+    """轻量级流水线耗时记录器（仅依赖 stdlib time）。
+
+    用法 1（被 run_pipeline 内部使用）::
+
+        timing = PipelineTiming()
+        with timing.step("energy"):
+            energy = evaluate_energy(parsed)
+        ...
+        timing.write_to(findings_dir, case_id=case_id)
+        timing.check_threshold()  # 超 60s 时打印 [PERF WARN]
+
+    用法 2（外层 e2e 注入复用，避免双重计时器）::
+
+        timing = PipelineTiming()
+        with timing.step("preflight"):
+            parsed = preflight.parse(path)
+        run_pipeline(parsed, timing=timing, write_findings=False)
+        # 所有 8 步累加在同一个 timing 上
+    """
+
+    def __init__(self, threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS) -> None:
+        self.threshold_seconds: float = float(threshold_seconds)
+        self.records: list[StepTiming] = []
+        self._created_at: float = time.perf_counter()
+
+    @contextmanager
+    def step(self, name: str) -> Iterator["PipelineTiming"]:
+        """精准计时一个步骤；异常也会落账（finally 块）。"""
+        started_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        t0 = time.perf_counter()
+        try:
+            yield self
+        finally:
+            dt = time.perf_counter() - t0
+            self.records.append(StepTiming(
+                name=name,
+                seconds=round(dt, 4),
+                started_at=started_at,
+            ))
+
+    @property
+    def total_seconds(self) -> float:
+        """所有已记录步骤的耗时之和（秒）。"""
+        return round(sum(r.seconds for r in self.records), 4)
+
+    @property
+    def exceeded_threshold(self) -> bool:
+        return self.total_seconds > self.threshold_seconds
+
+    def steps_map(self) -> dict[str, float]:
+        """按步骤名汇总（同名重复出现时累加，例如 yingqi 多次循环计时）。"""
+        out: dict[str, float] = {}
+        for r in self.records:
+            out[r.name] = round(out.get(r.name, 0.0) + r.seconds, 4)
+        return out
+
+    def to_dict(self, *, case_id: str = "") -> dict[str, Any]:
+        return {
+            "case_id": case_id,
+            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "pipeline_version": "1.2.1",
+            "threshold_seconds": self.threshold_seconds,
+            "total_seconds": self.total_seconds,
+            "exceeded_threshold": self.exceeded_threshold,
+            "step_names": list(PIPELINE_STEP_NAMES),
+            "steps": self.steps_map(),
+            "step_details": [r.to_dict() for r in self.records],
+        }
+
+    def write_to(
+        self,
+        findings_dir: Union[str, Path],
+        *,
+        case_id: str = "",
+    ) -> Path:
+        """落盘 timing.json 到 findings/ 目录。"""
+        findings_dir = Path(findings_dir)
+        findings_dir.mkdir(parents=True, exist_ok=True)
+        path = findings_dir / "timing.json"
+        path.write_text(
+            json.dumps(self.to_dict(case_id=case_id), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return path
+
+    def check_threshold(self) -> Optional[str]:
+        """护栏断言：若总耗时超过阈值，发出醒目警告。
+
+        - 终端：在 stderr 上用 "!!!" 边框打印（命令行肉眼可见）
+        - 日志：``logger.warning(...)``
+        - Python warning：``warnings.warn(..., RuntimeWarning)``
+          （便于 pytest / capsys / -W error 捕获）
+
+        **不抛异常、不阻断主业务**——这是软护栏，仅作可见性提醒。
+
+        Returns:
+            超阈值时返回警告文本；未超返回 None。
+        """
+        if not self.exceeded_threshold:
+            return None
+        per_step = ", ".join(
+            f"{r.name}={r.seconds:.2f}s" for r in self.records
+        ) or "<no steps recorded>"
+        msg = (
+            f"Pipeline total {self.total_seconds:.2f}s exceeded threshold "
+            f"{self.threshold_seconds:.2f}s. Per-step: {per_step}"
+        )
+        bar = "!" * 70
+        print(f"\n{bar}", file=sys.stderr)
+        print(f"[PERF WARN] {msg}", file=sys.stderr)
+        print(f"{bar}\n", file=sys.stderr)
+        logger.warning("[PERF WARN] %s", msg)
+        warnings.warn(msg, RuntimeWarning, stacklevel=2)
+        return msg
+
+
+# ============================================================
+# 〇·下、轻量级 findings 落盘工具
+# ============================================================
+
+def _save_findings(
+    output: "AnalysisOutput",
+    *,
+    cases_dir: Optional[Union[str, Path]] = None,
+) -> Path:
+    """把 D1-D4 + AnalysisOutput 落盘到 cases/C-XXX/findings/。
+
+    与 ``tools/render_report.save_findings`` 等价的轻量副本——独立放在 engine
+    层，避免 engine→tools 的分层倒置（pipeline.py 不允许 import tools.*）。
+
+    写入文件：
+        - energy.json
+        - picture.json
+        - gate_results.json
+        - support.json
+        - analysis_output.json
+
+    Returns:
+        findings/ 目录路径。
+    """
+    if cases_dir is None:
+        cases_dir = Path(__file__).resolve().parent.parent / "cases"
+    cases_root = Path(cases_dir)
+
+    case_id = (output.case_id or "UNKNOWN").strip() or "UNKNOWN"
+    findings_dir = cases_root / case_id / "findings"
+    findings_dir.mkdir(parents=True, exist_ok=True)
+
+    def _dump(obj: Any) -> str:
+        if obj is None:
+            return "null"
+        if hasattr(obj, "to_json"):
+            return obj.to_json(indent=2)
+        if hasattr(obj, "to_dict"):
+            return json.dumps(obj.to_dict(), ensure_ascii=False, indent=2)
+        if isinstance(obj, list):
+            return json.dumps(
+                [(x.to_dict() if hasattr(x, "to_dict") else x) for x in obj],
+                ensure_ascii=False,
+                indent=2,
+            )
+        return json.dumps(obj, ensure_ascii=False, indent=2)
+
+    (findings_dir / "energy.json").write_text(
+        _dump(output.energy), encoding="utf-8")
+    (findings_dir / "picture.json").write_text(
+        _dump(output.picture), encoding="utf-8")
+    (findings_dir / "gate_results.json").write_text(
+        _dump(output.gate_results), encoding="utf-8")
+    (findings_dir / "support.json").write_text(
+        _dump(output.support), encoding="utf-8")
+    (findings_dir / "analysis_output.json").write_text(
+        _dump(output), encoding="utf-8")
+
+    return findings_dir
 
 
 # ============================================================
@@ -509,43 +744,198 @@ def integrate(
 
 
 # ============================================================
-# 六、run_pipeline() — 端到端编排
+# 六、run_pipeline() — W1-W4 + integrate 编排
 # ============================================================
 
-def run_pipeline(parsed: ParsedInput) -> AnalysisOutput:
-    """v1.2 流水线端到端编排。
+def run_pipeline(
+    parsed: ParsedInput,
+    *,
+    cases_dir: Optional[Union[str, Path]] = None,
+    write_findings: bool = True,
+    timing: Optional[PipelineTiming] = None,
+    threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
+) -> AnalysisOutput:
+    """v1.2 流水线编排：parsed → AnalysisOutput（W1-W4 + integrate）。
 
     输入：ParsedInput（preflight 解析后）
-    输出：AnalysisOutput（含完整 trace_id 链 + hash 链校验）
+    输出：AnalysisOutput（含完整 trace_id 链 + hash 链校验 + ``timing`` 属性）
 
-    流程：
-        1. D1 evaluate_energy(parsed)
-        2. D2 match_picture(energy, parsed)
-        3. D3 gate_yingqi(year, event, domain, ...) × N 候选事件
-        4. D4 support_with_shensha(parsed, energy, picture, gates)
-        5. integrate(energy, picture, gates, support, parsed)
+    流程（每步前后均含耗时埋点）：
+        Step 2 [energy]    evaluate_energy(parsed)
+        Step 3 [picture]   match_picture(energy, parsed)
+        Step 4 [yingqi]    gate_yingqi(...) × N 候选事件
+        Step 5 [pangzheng] support_with_shensha(parsed, energy, picture, gates)
+        Step 6 [integrate] integrate(...)
+
+    （Step 1 preflight / Step 7 render / Step 8 self_iter 由 ``run_pipeline_e2e``
+    负责，本函数仅负责中间 5 步。如外层 ``timing`` 注入则共享同一个计时器。）
+
+    Args:
+        parsed:            ParsedInput（preflight 已通过）。
+        cases_dir:         cases/ 根目录（None=仓库根 cases/）。
+        write_findings:    是否落盘 D1-D4 + analysis_output.json + timing.json。
+                           外层 e2e 会在所有 8 步完成后统一落盘，因此 e2e 调用本
+                           函数时传 ``False``。
+        timing:            外层注入的 PipelineTiming；为 None 时本函数自建一个。
+        threshold_seconds: 耗时护栏阈值（秒），仅在自建 timing 时生效。
+
+    Returns:
+        AnalysisOutput；附带 ``output.timing`` 引用本次运行的 PipelineTiming。
     """
-    # Step 1: D1 段派
-    energy = evaluate_energy(parsed)
+    own_timing = timing is None
+    if timing is None:
+        timing = PipelineTiming(threshold_seconds=threshold_seconds)
 
-    # Step 2: D2 杨派
-    picture = match_picture(energy, parsed)
+    # Step 2: D1 段派
+    with timing.step("energy"):
+        energy = evaluate_energy(parsed)
 
-    # Step 3: D3 任派 — 从 known_facts 生成候选事件
-    gate_results: list[GateResult] = []
-    candidates = _extract_candidates(parsed)
-    for year, event, domain in candidates:
-        gr = gate_yingqi(year, event, domain, energy, picture, parsed)
-        if gr.passed_layers >= 1:
-            gate_results.append(gr)
+    # Step 3: D2 杨派
+    with timing.step("picture"):
+        picture = match_picture(energy, parsed)
 
-    # Step 4: D4 高派
-    support = support_with_shensha(parsed, energy, picture, gate_results)
+    # Step 4: D3 任派 — 从 known_facts 生成候选事件
+    with timing.step("yingqi"):
+        gate_results: list[GateResult] = []
+        candidates = _extract_candidates(parsed)
+        for year, event, domain in candidates:
+            gr = gate_yingqi(year, event, domain, energy, picture, parsed)
+            if gr.passed_layers >= 1:
+                gate_results.append(gr)
 
-    # Step 5: 整合
-    output = integrate(energy, picture, gate_results, support, parsed)
+    # Step 5: D4 高派
+    with timing.step("pangzheng"):
+        support = support_with_shensha(parsed, energy, picture, gate_results)
+
+    # Step 6: 整合
+    with timing.step("integrate"):
+        output = integrate(energy, picture, gate_results, support, parsed)
+
+    # 把 timing 引用挂到 output 上（dataclass 非 frozen → 可动态附加）。
+    # 注意：to_dict/to_json 仅序列化声明字段，timing 不会泄漏进 JSON 制品。
+    object.__setattr__(output, "timing", timing)
+
+    # 落盘 findings + timing.json（e2e 模式下 write_findings=False，由 e2e 兜底）
+    if write_findings:
+        try:
+            findings_dir = _save_findings(output, cases_dir=cases_dir)
+            timing.write_to(findings_dir, case_id=output.case_id)
+        except Exception as e:  # noqa: BLE001 — 落盘失败不阻断业务
+            logger.warning("findings 落盘失败：%s", e)
+
+    # 仅当本函数自建 timing（独立调用）时立即触发护栏；外层 e2e 注入时由 e2e
+    # 在 8 步全部完成后统一调用 check_threshold()，避免重复警告 & 中间态误报。
+    if own_timing:
+        timing.check_threshold()
 
     return output
+
+
+# ============================================================
+# 七、run_pipeline_e2e() — 端到端 8 步编排（preflight → 自迭代）
+# ============================================================
+
+def run_pipeline_e2e(
+    input_md_path: Union[str, Path],
+    *,
+    cases_dir: Optional[Union[str, Path]] = None,
+    cases_index_path: Optional[Union[str, Path]] = None,
+    do_render: bool = False,
+    do_self_iter: bool = False,
+    template_name: str = "report-v1.2.md",
+    threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
+) -> tuple[AnalysisOutput, PipelineTiming]:
+    """端到端 8 步编排（v1.2.1 性能监控版）。
+
+    8 个步骤每步前后均含 ``time.perf_counter()`` 埋点，最终落盘
+    ``cases/C-XXX/findings/timing.json``。总耗时超过 ``threshold_seconds``
+    时输出醒目警告（[PERF WARN]），但**不阻断** findings/报告落盘。
+
+    Steps:
+        1. preflight   — tools/preflight.parse(input_md_path) → ParsedInput
+        2. energy      — D1 段派
+        3. picture     — D2 杨派
+        4. yingqi      — D3 任派
+        5. pangzheng   — D4 高派
+        6. integrate   — D1-D4 → AnalysisOutput
+        7. render      — tools/render_report.render_from_output（do_render=True 时）
+        8. self_iter   — tools/feedback_loop.ingest_feedback（do_self_iter=True 时）
+
+    Args:
+        input_md_path:     cases/C-XXX/input.md 路径。
+        cases_dir:         cases/ 根目录（None=仓库根 cases/）。
+        cases_index_path:  cases-index.md 路径，传给 preflight 做指纹防重。
+        do_render:         是否调用 render_report 渲染 Markdown 报告。
+        do_self_iter:      是否调用 feedback_loop 自迭代。
+        template_name:     渲染模板（默认 report-v1.2.md）。
+        threshold_seconds: 端到端总耗时阈值（默认 60s）。
+
+    Returns:
+        ``(AnalysisOutput, PipelineTiming)``。
+
+    Note:
+        Step 1/7/8 任一异常时仅记录耗时 + 日志，不会让上游业务失败——
+        这与 contracts/07-pipeline-flow § 十二 错误处理表保持一致。
+    """
+    timing = PipelineTiming(threshold_seconds=threshold_seconds)
+
+    # Step 1: preflight
+    parsed: Optional[ParsedInput] = None
+    with timing.step("preflight"):
+        # 延迟导入：避免 engine 启动时强依赖 tools/PyYAML
+        from tools.preflight import parse as preflight_parse
+        from engine.predicates.types import adapt_parsed
+        parsed_raw = preflight_parse(
+            Path(input_md_path),
+            Path(cases_index_path) if cases_index_path else None,
+        )
+        parsed = adapt_parsed(parsed_raw)
+
+    # Steps 2-6: energy / picture / yingqi / pangzheng / integrate
+    # write_findings=False —— 我们在 8 步全部完成后统一落盘
+    output = run_pipeline(
+        parsed,
+        cases_dir=cases_dir,
+        write_findings=False,
+        timing=timing,
+        threshold_seconds=threshold_seconds,
+    )
+
+    # Step 7: render（可选）
+    if do_render:
+        with timing.step("render"):
+            try:
+                from tools.render_report import render_from_output
+                report_md = render_from_output(
+                    output,
+                    template_name=template_name,
+                    cases_dir=cases_dir,
+                )
+                # 不写入 to_dict 的字段，仅作返回时附带；真正的落盘由 render_report 内部完成
+                object.__setattr__(output, "report_md", report_md)
+            except Exception as e:  # noqa: BLE001
+                logger.warning("render 步骤失败（不阻断）：%s", e)
+
+    # Step 8: 自迭代（可选）
+    if do_self_iter:
+        with timing.step("self_iter"):
+            try:
+                from tools.feedback_loop import ingest_feedback
+                ingest_feedback(output.case_id)
+            except Exception as e:  # noqa: BLE001
+                logger.warning("self_iter 步骤失败（不阻断）：%s", e)
+
+    # 统一落盘 findings + timing.json（即便 render/self_iter 失败也照常落）
+    try:
+        findings_dir = _save_findings(output, cases_dir=cases_dir)
+        timing.write_to(findings_dir, case_id=output.case_id)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("findings 落盘失败：%s", e)
+
+    # 护栏断言：超 60s 仅警告、不阻断
+    timing.check_threshold()
+
+    return output, timing
 
 
 def _extract_candidates(
