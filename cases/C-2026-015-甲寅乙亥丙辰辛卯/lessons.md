@@ -107,7 +107,15 @@
 
 - **状态**：⚪ 工程 lessons 已沉淀（PR #31）+ 命理 lessons 占位
 - **下次更新**：known_facts 反馈到位后填 § 二
-- **附属 follow-up issues**：
-  - 起运年公式（Lesson E2）
-  - PyYAML vendoring（Lesson E3）
-  - cases/ 契约漂移（Lesson E4）
+- **附属 follow-up issues**（F1-F4 工程层 · F5-F9 用户需求驱动）：
+  - **F1** 起运年公式（Lesson E2）· 优先级 🟢 低
+  - **F2** PyYAML vendoring（Lesson E3）· 优先级 🟢 低
+  - **F3** cases/ 契约漂移 · render 自动产出 analysis/feedback/lessons（Lesson E4）· 优先级 🟢 低
+  - **F4** preflight 起运岁公式重构（与 F1 联动）· 优先级 🟢 低
+  - **F5** 15 层富贵分级映射（学业/事业/婚姻/财富/官命 五维）· 优先级 🔴 高
+  - **F6** 流年回溯段（过去 N 年自动扫描 + 报告新增 §C′）· 优先级 🔴 高
+  - **F7** 婚姻画像年龄过滤（命主超窗口时降级为参考信息）· 优先级 🟡 中
+  - **F8** 命局核心结构总览段（§A 前置 §0）· 优先级 🟡 中
+  - **F9** 大运全表展示（当前只显示前 4 个）· 优先级 🟡 中
+
+> F5-F9 已在 portrait-v2.md 中以**手工综合**方式临时实现。工程化由 PR #32 跟进。
