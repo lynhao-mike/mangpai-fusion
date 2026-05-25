@@ -1,159 +1,187 @@
-# v1.2 重构 Handoff · 2026-05-25
+# v1.3 重构 Handoff · 2026-05-25
 
-> 本文记录 v1.2 重构在 main 分支落定后的状态，供下一个 session/agent 无损接续。
-> 取代 2026-05-23 旧版（W2 末快照，已完全过期）。
-
----
-
-## 一、v1.2 当前状态：发布候选已就绪
-
-**版本**：`VERSION` = `1.2.0`
-**主分支**：`main`，HEAD = `5aa37ff` (PR #18 合并点)
-**v1.2 整体**：通过 PR #12 squash 入 `main`（2026-05-24）
-
-### 发布门槛（决策 I · G1-G6）全部达成
-
-| 指标 | v1.0 基线 | v1.2 限值 | v1.2 实测 | 状态 |
-|---|---|---|---|---|
-| G1 三案核心铁断命中 | 5 | ≥ v1.0 + 1 | **7** | ✅ |
-| G2 C-001 婚期误差 | 8 年 | ≤ 3 年 | **0 年** | ✅ |
-| G3 C-002 婚姻失验数 | 4 | ≤ 1 | **0** | ✅ |
-| G4 C-014 学历过判档数 | 1 | = 0 | **0** | ✅ |
-| G5 trace_id 覆盖率 | 0% | 100% | **100%** | ✅ |
-| G6 ★5 三层 gate 通过率 | 0% | 100% | **100%** | ✅ |
-
-6/6 全部 PASS，远超"≥5/6"红线。落地于 PR #17（W3 集成日）。
-
-### pytest 全量
-
-```
-tests/regression/test_v1_2_vs_v1_0.py        7 passed   ← 发布门槛
-tests/                                       69 passed / 2 xfailed
-```
-
-xfailed 两项均为 A-003 严格层数计数已知偏高（`engine/contracts/08-agent-handoff.md § 六 A-003`），不阻塞发布。
+> 本文记录 v1.3 自迭代闭环落地后的状态，供下一个 session/agent 无损接续。
+> 取代 v1.2 旧版。
 
 ---
 
-## 二、已完成交付（按 PR 顺序）
+## 一、当前状态：W4 验收进行中
 
-| PR | 标题 | 合并时间 | 关键产出 |
-|---|---|---|---|
-| #5 | v1.2 W1.1 contracts 00 + 09 | 2026-05-23 | `engine/contracts/00-OVERVIEW.md`、`09-naming-convention.md` |
-| #6 | rename: 10 旧案加干支 | 2026-05-23 | `cases/C-2026-NNN-{干支}/` |
-| #7 | track-E 兜底护栏 5 件套 | 2026-05-23 | `tools/{preflight,output_linter,three_layer_check}.py` + `engine/mechanical-rules.yaml` |
-| #8 | track-A 段派 D1 能量引擎 | 2026-05-23 | `engine/energy/` + `engine/predicates/{ganzhi,wuxing,relations,strength}.py` |
-| #9 | track-G 自迭代引擎 | 2026-05-23 | `tools/{feedback_loop,rule_lifecycle,drift_detect,cross_school_scan,extract_predictions}.py` |
-| #10 | track-H 测试夹具 + 回归基准 | 2026-05-23 | `tests/{fixtures,regression}/` + `pyproject.toml` |
-| #11 | track-B 杨派 D2 画面合拍 | 2026-05-23 | `engine/picture/` + `engine/predicates/palace.py` |
-| #13 | track-C 任派 D3 应期三层门 | 2026-05-23 | `engine/yingqi/` + `engine/predicates/{cycles,tou_cang}.py` |
-| #14 | track-D 高派 D4 旁证引擎 | 2026-05-23 | `engine/pangzheng/` + `engine/predicates/shensha.py` |
-| #15 | [DECISION] 决策面板永久锁定 | 2026-05-23 | `engine/contracts/decisions-locked.md`（13 项 A-M）|
-| #16 | track-F 三段式报告渲染器 | 2026-05-23 | `tools/render_report.py` + `templates/report-v1.2.md` |
-| #17 | W3 集成日：G1-G6 全 PASS | 2026-05-23 | 把 `gate_yingqi`/`support_with_shensha` 接入 `tests/regression/test_v1_2_vs_v1_0.py` |
-| #12 | V1.2 build → main | 2026-05-24 | squash 合并 v1.2-build 整支到 main |
-| #18 | docs: v1.0→v1.2 architecture review | 2026-05-25 | `plans/architecture-review.md` |
+**版本**：`VERSION` = `1.2.0`（待改为 `1.3.0`）
+**主分支**：`main`，HEAD = `5eb1dfe`（W3 已合并）
+**工作分支**：`feat/v1.3-w4-acceptance`（本地已建，未 push，有未提交文件）
+**工作目录**：`/projects/sandbox/mangpai-fusion`
 
----
+### W1-W3 已合并 main
 
-## 三、当前工作区拓扑
-
-```
-engine/
-├── contracts/              10 份契约 + decisions-locked.md（已冻结）
-├── predicates/             36 个共用谓词（ganzhi/wuxing/relations/palace/cycles/tou_cang/strength/shensha）
-├── energy/                 D1 段派能量引擎（evaluate_energy）
-├── picture/                D2 杨派画面合拍引擎（match_picture）
-├── yingqi/                 D3 任派应期三层门（gate_yingqi）+ 6 触发 + 12 道门
-├── pangzheng/              D4 高派旁证引擎（support_with_shensha）+ 26 神煞规则
-├── pipeline.py             v1.2 流水线主入口
-├── confidence.yaml         置信度阈值（v1.0 双轨制）
-├── domain-weights.yaml     领域权重（v1.0 仲裁兜底）
-├── mechanical-rules.yaml   黑名单 + 禁忌词（linter 加载）
-├── calibration.yaml        自迭代阈值 + freeze_iteration 紧急开关
-└── arbitration.md          v1.0 仲裁宪法（保留作为 v1.2 兜底）
-
-tools/
-├── preflight.py / output_linter.py / three_layer_check.py    护栏 3 件套
-├── feedback_loop.py / rule_lifecycle.py / drift_detect.py    自迭代闭环
-├── cross_school_scan.py / extract_predictions.py             跨派扫描 + 预测封存
-├── render_report.py                                          v1.2 三段式渲染
-└── calibrate.py / build_indexes.py                           v1.0 工具（保留）
-
-tests/
-├── conftest.py             sys.path + 全局 fixture（依赖 PyYAML）
-├── fixtures/               cases.py + ground truth + v1.0 baseline
-├── regression/             test_a_energy / test_e_guardrails / test_g_iteration / test_v1_2_vs_v1_0
-├── track_a..g_smoke/       各 Track 自带 smoke
-└── regression_baseline.yaml  G1-G6 量化指标定义
-```
-
----
-
-## 四、运行环境约定
-
-- **Python**：3.10 / 3.11 / 3.13 任一均可（v1.2 代码无版本特性依赖）
-- **依赖**：`pip install -r requirements-dev.txt` 安装 `pytest>=7.0,<9.0`、`PyYAML>=6.0`
-- **沙箱注意**：若在 `INTEGRATIONS_ONLY` 网络隔离环境（无 PyPI 访问）跑测试，需手工把 PyYAML wheel 放进 site-packages，或临时 vendoring。这是环境约束，不是仓库职责。
-
-```bash
-pip install -r requirements-dev.txt
-pytest tests/                                          # 全量
-pytest tests/regression/test_v1_2_vs_v1_0.py -v        # 仅发布门槛
-```
-
----
-
-## 五、未完成 · 下一步建议
-
-按 `plans/architecture-review.md § 八` 的演进路径，v1.3+ 候选议题：
-
-| 优先级 | 议题 | 入口 |
+| PR | 内容 | 关键产出 |
 |---|---|---|
-| ~~P1~~ ✅ | ~~把 `.kiro/skills/analyst.md` 改造为 `engine/pipeline.run_pipeline()` 的编排层~~ | 已完成（v1.2.0 编排器，2026-05-25） |
-| P2 | 反馈样本累积到 ≥ 30 后，触发 Beta 分布置信度切换（决策 E） | `tools/rule_lifecycle.py` 已实现 Beta，等数据 |
-| P2 | 加轻量 metrics：每步落盘 `cases/C-XXX/findings/timing.json`，超 60s 告警 | `engine/pipeline.py` |
-| P3 | 命宫长生诀自动算法、问真 APP input.md 直接解析 | v1.0 ROADMAP 遗留 |
-| P3 | 八字指纹相似案检索 | `cases/cases-index.md` 指纹区已就位 |
+| #26 | 架构方案 D1-D8 锁定 | `plans/architecture-v1.3.md` |
+| #27 | W1: D1+D2+D5 | statement_id / 双版报告 / feedback_ingest |
+| #28 | W2: D6+D7 | batch_intake / batch_review / late_feedback / event_signature |
+| #29 | W3: D3+D4+D8 | boundary_miner / veto_miner / iteration_report / 自动触发接入 |
 
-详细建议见 `plans/architecture-review.md § 八`（5 条具体建议）。
+### W4 当前进度
 
----
-
-## 六、决策红线（已锁定，修改需 [DECISION] PR）
-
-详见 `engine/contracts/decisions-locked.md`（PR #15）。要点：
-
-- **B**：判定逻辑全纯 Python，YAML 仅 metadata / 阈值
-- **D**：引擎产骨架 + AI 仅润色"画像段"（必须标 `[AI-polish]`）
-- **E**：现用线性加权，≥ 30 反馈后 Track-G 自动切 Beta
-- **F**：升级自动 / 降级人工
-- **G**：累计 3 次失验降级
-- **H**：v1.2 期间 PR-based，发布后恢复直推 main
-- **I**：发布门槛 G1-G6 严格优于 v1.0
-- **K**：每 10 案触发 `cross_school_scan`
-
----
-
-## 七、关键入口速查
-
-| 用途 | 路径 |
+| 任务 | 状态 |
 |---|---|
-| v1.2 流水线主入口 | `engine/pipeline.py :: run_pipeline()` |
-| D1 段派能量 | `engine/energy/evaluator.py :: evaluate_energy(parsed)` |
-| D2 杨派画面 | `engine/picture/matcher.py :: match_picture(energy, parsed)` |
-| D3 任派应期 | `engine/yingqi/gate.py :: gate_yingqi(...)` |
-| D4 高派旁证 | `engine/pangzheng/pangzheng.py :: support_with_shensha(...)` |
-| 神煞外算注入 | `engine/pangzheng/loader.py :: attach_shensha(parsed)` |
-| 报告渲染 | `tools/render_report.py :: render(energy, picture, gates, parsed, support)` |
-| 案例加载 | `tests/fixtures/cases.py :: load_case(case_id)` |
-| 三层校验 | `tools/three_layer_check.py :: check_yingqi(gate_result)` |
-| 反馈回流 | `tools/feedback_loop.py :: ingest_feedback(case_id)` |
-| 10 份契约 | `engine/contracts/00..09-*.md` |
-| 决策锁定 | `engine/contracts/decisions-locked.md` |
-| 架构评审 | `plans/architecture-review.md`（2026-05-25） |
+| 测试文件 5 个已建（syntax OK） | ✅ |
+| H1 sid 稳定性 stdlib smoke | ✅ PASS |
+| **H2 双版差分** | 🟡 **暴露 _render_template 嵌套 if bug** |
+| H3 解析正确率 | ✅ 逻辑已验证（W1 /tmp 测试全 PASS） |
+| H6 完整闭环 | ✅ 逻辑已验证（W3 /tmp 测试全 PASS） |
+| 修 bug + 全量重跑 | 🔜 |
+| VERSION → 1.3.0 + STATUS.md | 🔜 |
+| commit + push + PR + merge + tag | 🔜 |
 
 ---
 
-**本 handoff 由 v1.2 收尾 session 于 2026-05-25 写入。**
-**v1.2 发布候选就绪，main 分支即可作为 v1.2.0 发布点。**
+## 二、必须修的 Bug
+
+### `_render_template` 嵌套 {% if %} 错配
+
+**文件**：`tools/render_report.py` 约 L771-815（`_render_template` 函数 step 2 + step 3）
+
+**根因**：非贪婪正则 `(.*?)` 遇嵌套 if 时，外层 if 的 body 被截断到内层的第一个 endif。
+
+```
+{% if gate_results %}          ← 外层 start
+  ...
+  {% if is_master %}反馈：[S-001] [ ]{% endif %}  ← 内层完整
+  ...
+{% endif %}                    ← 外层 end（但正则把内层 endif 当成外层的）
+```
+
+**现象**：client 模式（`is_master=False`）下泄漏 1 个反馈位（本应被 `{% if is_master %}` 隐藏）。
+
+**修复方案**：把单次 `re.sub` 改为**内层优先 + while 循环**：
+
+```python
+# 关键：正则 body 中加负前瞻 (?:(?!\{%\s*if\b).)*?
+# 确保匹配的 body 中不含嵌套 {% if %}，这样 endif 一定配对最内层
+_if_not_inner = re.compile(
+    r"\{%\s*if\s+not\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+    re.DOTALL,
+)
+_if_inner = re.compile(
+    r"\{%\s*if\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+    re.DOTALL,
+)
+
+changed = True
+while changed:
+    changed = False
+    def _expand_if_not(m):
+        nonlocal changed; changed = True
+        return m.group(2) if not ctx.get(m.group(1)) else ""
+    out = _if_not_inner.sub(_expand_if_not, out)
+    def _expand_if(m):
+        nonlocal changed; changed = True
+        return m.group(2) if ctx.get(m.group(1)) else ""
+    out = _if_inner.sub(_expand_if, out)
+```
+
+**验证**：
+```bash
+# 修完后跑
+python3 -c "
+import sys, json, types, pathlib, re
+# ... 桩 yaml ...
+from tools.render_report import _render_template
+tpl = pathlib.Path('templates/report-v1.3.md').read_text(encoding='utf-8')
+ctx = {..., 'is_master': False, 'is_client': True, ...}  # client 模式
+out = _render_template(tpl, ctx)
+fb_re = re.compile(r'\[S-[\w-]+\]\s*\[\s*\]')
+assert len(fb_re.findall(out)) == 0, 'client 不应有反馈位'
+print('H2 fix verified')
+"
+```
+
+---
+
+## 三、W4 已建测试文件清单
+
+| 文件 | H 指标 | 测试内容 |
+|---|---|---|
+| `tests/v1_3_acceptance/__init__.py` | — | 说明文档 |
+| `tests/v1_3_acceptance/conftest.py` | — | Mock fixtures（MockEnergy/MockPicture/MockGate/MockParsed） |
+| `tests/v1_3_acceptance/test_h1_statement_id_stable.py` | H1 | 5 次重跑 sid 一致 / 格式 / 跨案不撞 / 排序无关 / 集合变 ID 变 |
+| `tests/v1_3_acceptance/test_h2_dual_variant.py` | H2 | master 有反馈位 / client 无 / client ★≤3 过滤 / master 保留弱项 / sid 子集关系 |
+| `tests/v1_3_acceptance/test_h3_feedback_parsing.py` | H3 | 100 样本正确率≥99% / ?/skip→no_data / 重复取最后 / fanout 决断力优先 |
+| `tests/v1_3_acceptance/test_h6_full_loop.py` | H6 | 10 案触发 / 异常 warn-only / 20 案 seq=2 / 重复不计数 |
+
+pytest marker：`v1_3_acceptance`（已注册到 `pyproject.toml`）
+
+---
+
+## 四、v1.3 新增工具速查
+
+| 工具 | 路径 | CLI |
+|---|---|---|
+| 结构化反馈摄入 | `tools/feedback_ingest.py` | `python3 -m tools.feedback_ingest C-XXXX` |
+| 批量入库 | `tools/batch_intake.py` | `python3 -m tools.batch_intake` |
+| 批量复盘 | `tools/batch_review.py` | `python3 -m tools.batch_review` |
+| 应期延迟反馈 | `tools/late_feedback.py` | `python3 -m tools.late_feedback C-XXX --year 2027 --event marriage --hit yes` |
+| 边界自动挖掘 | `tools/boundary_miner.py` | `python3 -m tools.boundary_miner [rule_id]` |
+| 候选否决兜底 | `tools/veto_miner.py` | `python3 -m tools.veto_miner [rule_id]` |
+| 迭代报告调度 | `tools/iteration_report.py` | `python3 -m tools.iteration_report [--seq N]` |
+
+---
+
+## 五、v1.3 新增模板 + 数据文件
+
+| 文件 | 用途 |
+|---|---|
+| `templates/report-v1.3.md` | v1.3 双版报告模板（{% if is_master %} 控制反馈位） |
+| `META/iteration-state.json` | D8 反馈完成案计数器 |
+| `cases/_TEMPLATE/feedback.md` | v1.3 反馈模板（报告即反馈表） |
+| `plans/architecture-v1.3.md` | D1-D8 决策面板完整文档 |
+
+---
+
+## 六、v1.3 决策面板速查（D1-D8 锁定）
+
+| # | 决策 | 锁定值 |
+|---|---|---|
+| D1 | statement_id | `S-{case_seq}-{sha256(sorted_rule_ids)[:6]}` |
+| D2 | 双版输出 | master 含反馈位 + 弱项；client 仅 ★4+ |
+| D3 | boundary_miner | ≥5 miss + p<0.1 + lift≥2 + 回放验证 hit_rate 升 |
+| D4 | veto_miner | ≥5 miss + n≥10 + posterior<40% + boundary 空 → flagged_for_review |
+| D5 | 过后反馈 | [y]/[n]/[?]/[skip]；? 入库不计数 |
+| D6 | 批量工作流 | batch_intake（inbox→pipeline）+ batch_review（pending→ingest） |
+| D7 | 应期延迟 | ±1 年窗口；hit=1.0/0.5；统计独立隔离不污染画像 |
+| D8 | 自迭代触发 | 每 10 **完成反馈案**（非入库）→ iteration_report |
+
+---
+
+## 七、沙箱约束提醒
+
+- **无外网**（INTEGRATIONS_ONLY）→ pip install 全部失败
+- **无 PyYAML** → 测试必须桩 yaml 模块（`sys.modules["yaml"] = fake_yaml`）
+- **无 pytest** → 正式 pytest 跑不了；用 `/tmp/test_*.py` stdlib 脚本验证
+- **git push** → 用 `mcp_sandbox_github_push_to_remote`（需参数：path, owner, repository_name, remote_branch_name）
+- **PR 创建** → 用 `mcp_sandbox_github_create_pull_request`
+
+---
+
+## 八、新开对话的第一条指令
+
+```
+继续 W4 验收。当前分支 feat/v1.3-w4-acceptance（本地未 push）。
+
+待办：
+1. 修 tools/render_report.py _render_template 嵌套 if bug（handoff.md § 二 有完整方案）
+2. 验证 H2 修复（client 反馈位 = 0）
+3. 跑 H1+H2+H3+H6 全 PASS（stdlib smoke）
+4. VERSION → 1.3.0 + STATUS.md 加 M10
+5. commit + push + PR + 合 main + 打 tag v1.3.0
+
+仓库：lynhao-mike/mangpai-fusion
+分支：feat/v1.3-w4-acceptance
+工作目录：/projects/sandbox/mangpai-fusion
+```
+
+---
+
+**本 handoff 由 v1.3 W4 session 于 2026-05-25 写入。**
+**W1-W3 已全部合并 main。W4 待修 1 个 bug + 验收 + tag。**

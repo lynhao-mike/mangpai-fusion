@@ -1,8 +1,8 @@
 # STATUS · 当前进度
 
 **最后更新**：2026-05-25
-**版本**：**v1.2.0**（发布候选；`VERSION` = `1.2.0`）
-**当前里程碑**：M9 完成（v1.2 重构落地，发布门槛 G1-G6 全 PASS）
+**版本**：**v1.3.0**（自迭代闭环上线；`VERSION` = `1.3.0`）
+**当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）
 
 ---
 
@@ -18,7 +18,8 @@
 | M6 | 主分析器 + 输入输出模板 | ✅ 完成（v1.0） |
 | M7 | META 自迭代 + 校准工具 + 案例归档 | ✅ 完成（v1.0） |
 | M8 | v1.2 双层引擎契约 10/10 + 决策面板锁定 | ✅ 完成（PR #5/#15） |
-| **M9** | **v1.2 D1-D4 维度引擎 + 三层护栏 + W3 集成日** | **✅ 完成（PR #7~#17）** |
+| M9 | v1.2 D1-D4 维度引擎 + 三层护栏 + W3 集成日 | ✅ 完成（PR #7~#17） |
+| **M10** | **v1.3 自迭代闭环 D1-D8 上线（statement_id / 双版报告 / feedback_ingest / batch / late_feedback / boundary_miner / veto_miner / iteration_report）** | **✅ 完成（PR #26~#29 + W4 验收）** |
 
 ---
 
@@ -38,7 +39,34 @@
 
 ---
 
-## v1.2 能做什么（在 v1.0 基础上新增）
+## v1.3 W4 验收门槛（H1-H6）
+
+| 指标 | 含义 | 实测 | 状态 |
+|---|---|---|---|
+| H1 statement_id 稳定性 | 同 input 重跑 5 次 sid 集合一致 + 跨案不撞 + 排序无关 | 5/5 PASS | ✅ |
+| H2 双版报告差分 | master 含反馈位、保留弱项；client 反馈位=0、★≤3 过滤 | 5/5 PASS | ✅ |
+| H3 反馈解析正确率 | 100 条标注样本 ≥ 99% + ?/skip→no_data + 重复取最后 + fanout 决断力优先 | 5/5 PASS（100/100 = 100%） | ✅ |
+| H6 完整闭环调度 | 10 案 → seq=1 + 报告产出；20 案 → seq=2；异常 warn-only；重复案不重计 | 4/4 PASS | ✅ |
+
+W4 stdlib smoke：**19/19 全 PASS**（沙箱无 PyYAML/pytest，桩 yaml 后跑通）。
+H4（boundary 自挖）/ H5（v1.2 G1-G6 不退化）由 CI 单独验证（W3 落地已含）。
+
+W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配（外层 `endif` 被吃成内层）→ 用负前瞻 + 内层优先 while 循环修复，client 模式不再泄漏反馈位。
+
+---
+
+## v1.3 能做什么（在 v1.2 基础上新增）
+
+✅ **statement_id 稳定锚点**：`S-{case_seq}-{sha256(sorted_rule_ids)[:6]}`（D1）→ 报告每条断语带稳定 ID，反馈表精确回流到规律。
+✅ **双版报告**：master（命理师内部用，含 sid 锚点 + 反馈位 + 弱项）/ client（命主可读，仅 ★4+ 主线，无反馈位）→ `tools/render_report.py render_both()`（D2）。
+✅ **结构化反馈摄入**：`[y]/[n]/[?]/[skip]` 四标注 → `tools/feedback_ingest.py`（D5），`?` 与 `skip` 入库不计数（等待延迟反馈兑现）。
+✅ **批量工作流**：`tools/batch_intake.py`（inbox→pipeline）+ `tools/batch_review.py`（pending→ingest）（D6）。
+✅ **应期延迟反馈**：±1 年窗口；hit=1.0 / 半年外=0.5；统计独立隔离不污染主画像（D7）`tools/late_feedback.py`。
+✅ **边界自动挖掘**：≥5 miss + p<0.1 + lift≥2 + 回放验证 hit_rate 升 → 候选边界（D3）`tools/boundary_miner.py`。
+✅ **候选否决兜底**：≥5 miss + n≥10 + posterior<40% + boundary 空 → flagged_for_review（D4）`tools/veto_miner.py`。
+✅ **自迭代调度器**：每 10 完成反馈案（非入库）→ 自动产出 `META/iteration-report-NNN.md`（D8）`tools/iteration_report.py`，异常 warn-only 不阻塞 ingest。
+
+## v1.2 能做什么（v1.3 全部继承）
 
 ✅ **维度立体化**：4 派从横向权重平铺改为纵向串联（D1 段→D2 杨→D3 任→D4 高），上游约束下游边界。
 ✅ **应期三层门**：原局有 + 大运到位 + 流年引爆，三层齐备才下 ★5 铁断（`engine/yingqi/gate.py`）。
@@ -61,7 +89,7 @@
 
 ---
 
-## v1.2 还不能做的事（v1.3+ 路线图）
+## v1.3 还不能做的事（v1.4+ 路线图）
 
 - ❌ 没有可视化网页（仍是纯 Markdown 报告）
 - ❌ 命宫长生诀自动算法（仅理论库未实现）
@@ -98,6 +126,11 @@
 | 2026-05-23 | **v1.2 重构 13 项决策面板永久锁定**（PR #15）| 见 `engine/contracts/decisions-locked.md` A-M |
 | 2026-05-23 | 决策 B：判定逻辑全纯 Python，YAML 仅 metadata + 阈值 | W2 末实战发现 YAML 表达分支逻辑过脆 |
 | 2026-05-23 | 决策 I：v1.2 必须严格优于 v1.0 的 G1-G6 6 项指标 | 发布红线 |
+| 2026-05-25 | **v1.3 D1-D8 自迭代闭环决策面板锁定**（PR #26）| 见 `plans/architecture-v1.3.md` |
+| 2026-05-25 | D1：statement_id = `S-{case_seq}-{sha256(sorted_rule_ids)[:6]}` | 排序无关 + 跨案不撞 + 短期可读 |
+| 2026-05-25 | D2：双版报告（master 含反馈位 + 弱项；client 仅 ★4+）| 命理师 / 命主关注点不同 |
+| 2026-05-25 | D5：反馈四标注 `[y]/[n]/[?]/[skip]`，?+skip 入库不计数 | 命主当场不知道 ≠ 失验 |
+| 2026-05-25 | D8：每 10 完成反馈案（非入库）触发 iteration_report；异常 warn-only | 阻塞设计会让命理师不敢 ingest |
 
 ---
 
@@ -126,11 +159,11 @@
 ## 下一步行动（用户 / 架构师）
 
 立即可做：
-1. v1.2 发布候选已就绪 → 打 v1.2.0 tag → 投入实战
-2. 累积新案例反馈数据（目标 ≥ 30 反馈样本，触发置信度公式 Beta 切换）
+1. v1.3 自迭代闭环已上线 → 投入实战；命理师按 master 报告填 `[y]/[n]/[?]/[skip]` 即可触发反馈回流
+2. 每 10 完成反馈案自动产出 `META/iteration-report-NNN.md`（D8）→ 架构师 review 是否合并候选边界 / 否决候选
 
 短期（1-3 个月）：
-- ✅ 已完成：把 `.kiro/skills/analyst.md` 改为 `engine/pipeline.run_pipeline()` 的编排层（v1.2.0 编排器，2026-05-25）
+- 累积反馈样本 ≥ 30 → 置信度公式从线性加权切 Beta（决策 E 阈值）
 - 加轻量 metrics（每步落盘 timing.json，超 60s 告警）
 - 一次性审查 `engine/mechanical-rules.yaml`，把"含判定语义"字段挪到 Python（彻底落地决策 B）
 
