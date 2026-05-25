@@ -62,6 +62,7 @@ class PredictionDraft:
     falsifiable: str
     source: str            # "report" / "analysis_output"
     raw_line: str = ""
+    event_signature: str = "unknown"  # v1.3 D7：标准化事件签名（marriage/promotion/...）
 
     def fingerprint(self) -> str:
         h = hashlib.md5()
@@ -73,8 +74,11 @@ class PredictionDraft:
     def event_slug(self) -> str:
         """事件名 slug，进文件名。
 
-        简单策略：取断语前 12 个非标点中文字符；若全英文则保留前 24 字符。
+        v1.3 D7：优先使用标准化 event_signature（如 ``marriage`` / ``promotion``），
+        无识别时退回原启发式（断语前 12 字符）。
         """
+        if self.event_signature and self.event_signature != "unknown":
+            return self.event_signature
         text = self.statement
         # 去 markdown / 标点
         text = re.sub(r"[★*_`#\[\](){}|/\\,.:;!?'\"\s—\-]+", "", text)
@@ -83,6 +87,74 @@ class PredictionDraft:
         if len(text) > 12:
             text = text[:12]
         return text
+
+
+# ============================================================
+# v1.3 D7：事件签名识别
+# ============================================================
+#
+# 把命理断语里描述的事件归类到一个标准化的英文短词，
+# 用于 ``tools/late_feedback`` 在延迟反馈阶段进行 (year, event) 匹配。
+#
+# 设计原则：
+#   - 关键词粗粒度即可——事件签名只用于"找到对应预测"，
+#     不影响应期窗口判定（窗口由 yingqi_year ±1 控制）。
+#   - 一条断语只应匹配最多 1 个签名，按下面顺序优先级取首匹配。
+#
+# 决策（2026-05-25 锁定）：跨派事件类型枚举如下，
+# 后续如发现遗漏类别可追加，但**不要**修改已有键名（PRED frontmatter 会引用）。
+EVENT_SIGNATURE_PATTERNS: list[tuple[str, list[str]]] = [
+    # 婚姻类
+    ("divorce",      ["离婚", "分居", "婚变", "丧偶", "克妻", "克夫"]),
+    ("marriage",     ["结婚", "成婚", "嫁娶", "领证", "婚配", "成家", "婚期"]),
+    # 子女类
+    ("childbirth",   ["生育", "怀孕", "添丁", "得子", "得女", "生子", "生女", "产子"]),
+    # 健康类（顺序：death 必须在 illness 之前，避免 "亡" 被 "病亡" 拦截）
+    ("death",        ["去世", "亡故", "身亡", "病逝", "病亡", "离世", "死亡", "故去", "丧"]),
+    ("accident",     ["车祸", "外伤", "意外", "受伤", "横祸", "交通事故"]),
+    ("illness",      ["重病", "大病", "手术", "住院", "癌症", "中风", "脑梗", "心梗"]),
+    # 事业类
+    ("promotion",    ["升职", "升迁", "晋升", "升副科", "升处", "升正", "高升", "提拔"]),
+    ("demotion",     ["降职", "撤职", "下台", "贬", "免职"]),
+    ("career_change",["跳槽", "转行", "创业", "下海", "离职", "辞职", "调岗"]),
+    # 学业类
+    ("exam_pass",    ["高考", "中举", "录取", "考上", "上大学", "考研", "考博", "中状元"]),
+    # 财运类
+    ("wealth_gain",  ["发财", "暴富", "中奖", "横财", "巨富", "进财"]),
+    ("wealth_loss",  ["破财", "亏损", "倒闭", "破产", "亏空"]),
+    # 法律 / 出行
+    ("legal_trouble",["官司", "牢狱", "拘留", "诉讼", "坐牢"]),
+    ("emigration",   ["出国", "移民", "出洋", "远行", "海外"]),
+]
+
+
+def detect_event_signature(text: str, domain: Optional[str] = None) -> str:
+    """从断语文本中识别标准化事件签名。
+
+    返回 EVENT_SIGNATURE_PATTERNS 中的某个键，或 ``"unknown"``。
+
+    匹配顺序与 PATTERNS 列表一致（divorce 先于 marriage，death 先于 illness）。
+    """
+    if not text:
+        return "unknown"
+    for sig, keywords in EVENT_SIGNATURE_PATTERNS:
+        for kw in keywords:
+            if kw in text:
+                return sig
+    # 无关键词命中时，按 domain 给出兜底分类（仍属 unknown 但带 domain 提示）
+    if domain == "婚姻":
+        return "marriage_or_divorce"
+    if domain == "学业":
+        return "education_event"
+    if domain == "事业":
+        return "career_event"
+    if domain == "财运":
+        return "wealth_event"
+    if domain == "健康":
+        return "health_event"
+    if domain == "六亲":
+        return "family_event"
+    return "unknown"
 
 
 # ============================================================
@@ -143,17 +215,20 @@ def extract_from_analysis_output(case_dir: pathlib.Path) -> list[PredictionDraft
             continue
         if c.get("yingqi_year") is None:
             continue
+        statement = str(c.get("statement", ""))
+        domain = c.get("domain")
         out.append(PredictionDraft(
             case_id=case_id,
             case_ganzhi=ganzhi,
             yingqi_year=int(c["yingqi_year"]),
-            statement=str(c.get("statement", "")),
+            statement=statement,
             confidence_star=int(conf.get("star", 0)),
             confidence_percent=int(round(float(conf.get("percent", 0)) * 100)),
             schools=list(c.get("contributing_schools", [])),
-            domain=c.get("domain"),
+            domain=domain,
             falsifiable=str(c.get("falsifiable", "")),
             source="analysis_output",
+            event_signature=detect_event_signature(statement, domain),
         ))
 
     # 次级：直接 gate_results 里 ★★★★+
@@ -161,17 +236,21 @@ def extract_from_analysis_output(case_dir: pathlib.Path) -> list[PredictionDraft
         conf = g.get("confidence") or {}
         if int(conf.get("star", 0)) < 4:
             continue
+        candidate_event = g.get("candidate_event", "")
+        domain = g.get("domain")
+        statement = f"{candidate_event}（{domain or ''}）"
         out.append(PredictionDraft(
             case_id=case_id,
             case_ganzhi=ganzhi,
             yingqi_year=int(g["year"]),
-            statement=f"{g.get('candidate_event','')}（{g.get('domain','')}）",
+            statement=statement,
             confidence_star=int(conf.get("star", 0)),
             confidence_percent=int(round(float(conf.get("percent", 0)) * 100)),
             schools=["任"],
-            domain=g.get("domain"),
-            falsifiable=f"若 {g['year']} 年内未发生 {g.get('candidate_event','')} → 失验",
+            domain=domain,
+            falsifiable=f"若 {g['year']} 年内未发生 {candidate_event} → 失验",
             source="analysis_output",
+            event_signature=detect_event_signature(candidate_event, domain),
         ))
     return out
 
@@ -269,6 +348,7 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
 
             falsifiable = f"若 {year} 年内未发生 {domain or '所述事件'} → 失验"
 
+            event_sig = detect_event_signature(line, domain)
             draft = PredictionDraft(
                 case_id=case_id,
                 case_ganzhi=ganzhi,
@@ -281,6 +361,7 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
                 falsifiable=falsifiable,
                 source="report",
                 raw_line=line.strip(),
+                event_signature=event_sig,
             )
             fp = draft.fingerprint()
             if fp in seen:
@@ -324,6 +405,8 @@ def _draft_to_markdown(d: PredictionDraft, *, seq: int) -> str:
         "case_ganzhi": d.case_ganzhi,
         "yingqi_year": d.yingqi_year,
         "domain": d.domain or "未分类",
+        "event_signature": d.event_signature,  # v1.3 D7：标准化事件签名
+        "yingqi_window": [d.yingqi_year - 1, d.yingqi_year + 1],  # late_feedback 匹配窗口
         "schools": d.schools,
         "confidence": {
             "star": d.confidence_star,
