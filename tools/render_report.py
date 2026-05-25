@@ -27,12 +27,13 @@ AI 润色边界（决策 D · 永久锁定）
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -144,7 +145,8 @@ def save_findings(
 def render_from_output(
     analysis_output: Any,
     *,
-    template_name: str = "report-v1.2.md",
+    template_name: Optional[str] = None,
+    variant: Literal["master", "client", "v1.2"] = "master",
     lint_before: bool = True,
     cases_dir: Optional[Union[str, Path]] = None,
 ) -> str:
@@ -152,12 +154,14 @@ def render_from_output(
 
     流程（按 07 § 七–§ 九）：
         1. 将 D1-D4 JSON 落盘到 cases/C-XXX/findings/
-        2. 调用 render() 生成 Markdown
-        3. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
+        2. 调用 render() 生成 Markdown（按 variant 选模板）
+        3. v1.3 D1：落盘 cases/C-XXX/statement_index.json（statement_id → 元信息）
+        4. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
 
     Args:
         analysis_output: engine.pipeline.AnalysisOutput 实例。
-        template_name:   模板文件名（默认 report-v1.2.md）。
+        template_name:   显式模板文件名；None → 按 variant 选默认。
+        variant:         v1.3 D2 — "master" | "client" | "v1.2"
         lint_before:     是否启用双护栏 lint（默认 True；测试时可关闭）。
         cases_dir:       cases/ 目录路径（None = 仓库根 cases/）。
 
@@ -186,7 +190,8 @@ def render_from_output(
     if parsed is None:
         parsed = _minimal_parsed_from_energy(energy)
 
-    # Step 3: 渲染
+    # Step 3: 渲染（捕获 ctx 用于落盘 statement_index）
+    captured_ctx: dict = {}
     report = render(
         energy=energy,
         picture=picture,
@@ -194,9 +199,53 @@ def render_from_output(
         parsed=parsed,
         support=support,
         template_name=template_name,
+        variant=variant,
         _skip_lint=not lint_before,
+        _capture_ctx_to=captured_ctx,
     )
+
+    # Step 4: v1.3 D1 — 落盘 statement_index.json
+    case_id = (
+        getattr(analysis_output, "case_id", None)
+        or getattr(getattr(analysis_output, "energy", None), "case_id", None)
+        or "UNKNOWN"
+    )
+    try:
+        cases_root = Path(cases_dir) if cases_dir else ROOT / "cases"
+        idx_dir = cases_root / case_id
+        idx_dir.mkdir(parents=True, exist_ok=True)
+        idx = _build_statement_index(captured_ctx, case_id)
+        (idx_dir / "statement_index.json").write_text(
+            json.dumps(idx, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception:
+        # statement_index 落盘失败不阻断报告交付（仅丢失 D5 反馈精确度）
+        pass
+
     return report
+
+
+def render_both(
+    analysis_output: Any,
+    *,
+    lint_before: bool = True,
+    cases_dir: Optional[Union[str, Path]] = None,
+) -> dict[str, str]:
+    """v1.3 D2 便捷工具：同时产出 master + client 两版。
+
+    Returns:
+        {"master": str, "client": str}
+    """
+    return {
+        v: render_from_output(
+            analysis_output,
+            variant=v,  # type: ignore[arg-type]
+            lint_before=lint_before,
+            cases_dir=cases_dir,
+        )
+        for v in ("master", "client")
+    }
 
 
 def _minimal_parsed_from_energy(energy: EnergyFindings) -> ParsedInput:
@@ -228,6 +277,36 @@ def _minimal_parsed_from_energy(energy: EnergyFindings) -> ParsedInput:
 
 STAR_ICONS = {True: "✓", False: "✗"}
 LAYER_ICONS = {True: "✓", False: "✗"}
+
+
+# ============================================================
+# 1.5 statement_id 计算（v1.3 D1）
+# ============================================================
+
+def _compute_statement_id(case_id: str, rule_ids: list[str]) -> str:
+    """v1.3 D1：稳定的断语 ID。
+
+    形式：``S-{short_case}-{trace_hash[:6]}``
+
+    - ``short_case``：从 case_id 提取序号段，例如 ``C-2026-001-庚申...`` → ``001``。
+      取不到序号段时退化为 case_id 前 6 字符。
+    - ``trace_hash``：``sha256(short_case + "|" + sorted_rule_ids_joined)[:6]``，
+      保证同一案多次重跑、相同 evidence 集合 → 同一 statement_id（D1 决策）。
+
+    应期类断语应在 rule_ids 中追加 ``"YEAR-{year}"`` 标记，避免不同年份
+    相同 evidence 集合产生 ID 碰撞。
+    """
+    parts = case_id.split("-") if case_id else []
+    if len(parts) >= 3 and parts[2].isdigit():
+        short_case = parts[2]
+    elif case_id:
+        short_case = case_id[:6].replace("/", "_")
+    else:
+        short_case = "UNK"
+    sorted_ids = sorted({r for r in (rule_ids or []) if r}) or ["NONE"]
+    payload = f"{short_case}|{','.join(sorted_ids)}"
+    h = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:6]
+    return f"S-{short_case}-{h}"
 
 
 def _star_pct(conf) -> tuple[int, int]:
@@ -297,13 +376,18 @@ def _build_energy_vm(energy: EnergyFindings) -> dict:
         s_mag = getattr(p, "strength", None)
         ev_list = _evidence_list(p)
         rule_id = ev_list[0]["rule_id"] if ev_list else "M1-D-001"
+        rule_ids = [e["rule_id"] for e in ev_list] or [rule_id]
+        sid = _compute_statement_id(energy.case_id, rule_ids)
         zuogong.append({
+            "statement_id": sid,
             "rule_id": rule_id,
             "description": getattr(p, "description", ""),
             "strength_ordinal": getattr(s_mag, "ordinal", "?") if s_mag else "?",
             "layer_count": getattr(p, "layer_count", 0),
             "star": p_star,
             "pct": p_pct,
+            "evidence": ev_list,
+            "evidence_str": " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or rule_id,
             "falsifiable": f"若命主最终财富层级低于{energy.wealth_ceiling}则该路径失验",
         })
 
@@ -395,7 +479,14 @@ def _build_gates_vm(gates: list[GateResult], parsed: ParsedInput) -> dict:
 
         ev_list = _evidence_list(g)
         ev_str = " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or "MR-LAYER3(任)"
+        rule_ids = [e["rule_id"] for e in ev_list] or ["MR-LAYER3"]
+        # 应期断语 statement_id 必须把 year 也纳入 hash，否则不同年份相同 evidence 会撞 ID
+        sid = _compute_statement_id(
+            getattr(parsed, "case_id", "") or "",
+            rule_ids + [f"YEAR-{g.year}"],
+        )
         row = {
+            "statement_id": sid,
             "year": g.year,
             "liunian": liunian_str,
             "dayun_str": dayun_str,
@@ -431,8 +522,11 @@ def _build_gates_vm(gates: list[GateResult], parsed: ParsedInput) -> dict:
     }
 
 
-def _build_support_vm(support: Optional[Any]) -> dict:
-    """§D 旁证视图（Track-D 未合入时 support=None）。"""
+def _build_support_vm(support: Optional[Any], case_id: str = "") -> dict:
+    """§D 旁证视图（Track-D 未合入时 support=None）。
+
+    v1.3 D1：每条 boost / health 项挂 statement_id。
+    """
     if support is None:
         return {"support": False}
 
@@ -444,9 +538,13 @@ def _build_support_vm(support: Optional[Any]) -> dict:
         boost = getattr(s, "boost", 0)
         palaces = getattr(s, "palaces", [])
         contrib = getattr(s, "contribution", "")
+        rule_id = f"GP-{rule}"
+        sid = _compute_statement_id(case_id, [rule_id])
         marriage_boosts.append({
+            "statement_id": sid,
             "name": rule,
-            "rule_id": f"GP-{rule}",
+            "rule_id": rule_id,
+            "evidence": [{"rule_id": rule_id, "school": "高", "description": contrib}],
             "palaces_str": "、".join(palaces),
             "contribution": contrib,
             "boost_pct": int(boost * 100),
@@ -472,11 +570,17 @@ def _build_support_vm(support: Optional[Any]) -> dict:
     health_rows = []
     for h in hf:
         rl = getattr(h, "risk_level", None)
+        ev_list = _evidence_list(h)
+        rule_ids = [e["rule_id"] for e in ev_list] or [f"GH-{getattr(h, 'organ', 'X')}"]
+        sid = _compute_statement_id(case_id, rule_ids)
         health_rows.append({
+            "statement_id": sid,
             "organ": getattr(h, "organ", ""),
             "risk_ordinal": getattr(rl, "ordinal", "弱") if rl else "弱",
             "rationale": getattr(h, "rationale", ""),
-            "evidence": _evidence_list(h),
+            "evidence": ev_list,
+            # 给 health 行用，画像/应期等看 evidence 即可；这里 evidence_str 方便模板
+            "evidence_str": " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or rule_ids[0],
         })
 
     return {
@@ -497,7 +601,11 @@ def _build_conclusions_vm(
     picture: PictureFindings,
     gates: list[GateResult],
 ) -> dict:
-    """§E 立体合并：从上游 evidence 中提炼共识/互补断语。"""
+    """§E 立体合并：从上游 evidence 中提炼共识/互补断语。
+
+    v1.3 D1：每条断语挂 statement_id（基于 case_id + 支撑 rule_ids 集合）。
+    """
+    case_id = energy.case_id or ""
     consensus = []
     complementary = []
 
@@ -506,7 +614,9 @@ def _build_conclusions_vm(
         star, pct = _star_pct(getattr(ev, "confidence", None))
         if star >= 4:
             ev_str = f"{ev.rule_id}({ev.school})"
+            sid = _compute_statement_id(case_id, [ev.rule_id])
             consensus.append({
+                "statement_id": sid,
                 "statement": ev.description,
                 "schools_str": f"{ev.school}派",
                 "star": star,
@@ -522,7 +632,9 @@ def _build_conclusions_vm(
         star, pct = _star_pct(getattr(ev, "confidence", None))
         if star >= 3:
             ev_str = f"{ev.rule_id}({ev.school})"
+            sid = _compute_statement_id(case_id, [ev.rule_id])
             complementary.append({
+                "statement_id": sid,
                 "statement": ev.description,
                 "schools_str": f"{ev.school}派",
                 "star": star,
@@ -539,11 +651,16 @@ def _build_conclusions_vm(
             star, pct = _star_pct(g.confidence)
             ev_list = _evidence_list(g)
             ev_str = " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or "MR-LAYER3(任)"
+            rule_ids = [e["rule_id"] for e in ev_list] or ["MR-LAYER3"]
+            sid = _compute_statement_id(case_id, rule_ids + [f"YEAR-{g.year}"])
             complementary.append({
+                "statement_id": sid,
                 "statement": f"{g.year} 年 {g.domain} · {g.candidate_event}（三层齐备）",
                 "schools_str": "任派",
                 "star": star,
                 "pct": pct,
+                "year": g.year,
+                "domain": g.domain,
                 "evidence": ev_list,
                 "evidence_str": ev_str,
                 "falsifiable": f"若 {g.year} 年上述事件未发生 → 失验",
@@ -599,9 +716,57 @@ def _build_portrait_vm(
 
 
 
+def _build_statement_index(ctx: dict, case_id: str) -> dict:
+    """v1.3 D1：从已构建的 ctx 中收集所有 statement_id → 元信息映射。
+
+    供 D5 feedback_ingest 反向查找：拿到反馈中的 statement_id → fanout 到
+    支撑该断语的 rule_id 列表。
+    """
+    SECTIONS = {
+        "zuogong_paths": "energy",
+        "consensus_conclusions": "consensus",
+        "complementary_conclusions": "complementary",
+        "iron_gates": "yingqi",
+        "support_marriage_boosts": "support_marriage",
+        "support_health": "support_health",
+    }
+    idx: dict = {}
+    for key, section in SECTIONS.items():
+        for item in ctx.get(key, []) or []:
+            sid = item.get("statement_id")
+            if not sid:
+                continue
+            stmt = (
+                item.get("statement")
+                or item.get("description")
+                or item.get("candidate_event")
+                or item.get("name")
+                or ""
+            )
+            rule_ids = [e["rule_id"] for e in item.get("evidence", []) if "rule_id" in e]
+            if not rule_ids and item.get("rule_id"):
+                rule_ids = [item["rule_id"]]
+            idx[sid] = {
+                "section": section,
+                "statement": str(stmt)[:240],
+                "rule_ids": rule_ids,
+                "star": item.get("star", 0),
+                "schools_str": item.get("schools_str", ""),
+                "domain": item.get("domain", ""),
+                "year": item.get("year"),
+            }
+    return {
+        "case_id": case_id,
+        "engine_version": "1.3.0",
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "statements": idx,
+    }
+
+
 # ============================================================
 # 二、模板填充（极简 Jinja2-like 渲染，无需额外依赖）
 # ============================================================
+
 
 def _render_template(template: str, ctx: dict) -> str:
     """极简模板渲染：
@@ -706,11 +871,21 @@ def render(
     gates: list[GateResult],
     parsed: ParsedInput,
     support: Optional[Any] = None,
-    template_name: str = "report-v1.2.md",
+    template_name: Optional[str] = None,
+    variant: Literal["master", "client", "v1.2"] = "master",
     *,
     _skip_lint: bool = False,
+    _capture_ctx_to: Optional[dict] = None,
 ) -> str:
     """三段式报告渲染主入口。
+
+    v1.3 D2：双版输出
+      - variant="master"  → templates/report-v1.3.md，带 statement_id 锚点 + [ ] 反馈位
+      - variant="client"  → templates/report-v1.3.md，关闭 is_master 标志，并在 ctx
+        预过滤 ★≤3 的弱项断语；命主可读版
+      - variant="v1.2"    → templates/report-v1.2.md，向下兼容旧调用
+
+    v1.3 D1：每条断语挂 statement_id（位于 ViewModel 项的 ``statement_id`` 字段）。
 
     双护栏机制（07 § 八 + § 九）：
         生成 Markdown 后立即调用 output_linter.lint()。
@@ -718,13 +893,16 @@ def render(
         仅 WARNING 级别问题通过（符合 07 § 十二 错误处理要求）。
 
     Args:
-        energy:       D1 EnergyFindings
-        picture:      D2 PictureFindings
-        gates:        D3 GateResult 列表（已过滤 passed_layers >= 1）
-        parsed:       ParsedInput（含 bazi / dayun / birth）
-        support:      D4 SupportFindings（Optional，Track-D 未合入时传 None）
-        template_name: 模板文件名（相对 templates/ 目录）
-        _skip_lint:   内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
+        energy:        D1 EnergyFindings
+        picture:       D2 PictureFindings
+        gates:         D3 GateResult 列表（已过滤 passed_layers >= 1）
+        parsed:        ParsedInput（含 bazi / dayun / birth）
+        support:       D4 SupportFindings（Optional，Track-D 未合入时传 None）
+        template_name: 显式指定模板文件名；不指定则按 variant 选默认。
+        variant:       "master" | "client" | "v1.2"
+        _skip_lint:    内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
+        _capture_ctx_to: 内部协调用：若传入 dict，则把构建好的 ctx 复制进去
+                       （供 render_from_output 落盘 statement_index.json 使用）。
 
     Returns:
         str: 通过 output_linter 的完整 Markdown 报告。
@@ -733,6 +911,12 @@ def render(
         RenderGuardrailError: output_linter 返回 ERROR 时。
         FileNotFoundError:    模板文件不存在时。
     """
+    # 选模板：显式 template_name 优先；否则按 variant 选默认
+    if template_name is None:
+        if variant == "v1.2":
+            template_name = "report-v1.2.md"
+        else:
+            template_name = "report-v1.3.md"
     tpl_path = ROOT / "templates" / template_name
     if not tpl_path.exists():
         raise FileNotFoundError(f"模板文件不存在: {tpl_path}")
@@ -749,6 +933,10 @@ def render(
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
     ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # v1.3 variant 标志（模板用 {% if is_master %} ... {% endif %} 控制反馈位）
+    ctx["variant"] = variant
+    ctx["is_master"] = (variant == "master")
+    ctx["is_client"] = (variant == "client")
 
     # §A 能量
     ctx.update(_build_energy_vm(energy))
@@ -760,13 +948,27 @@ def render(
     ctx.update(_build_gates_vm(gates, parsed) if parsed else {"gate_results": [], "iron_gates": [], "has_xiong_gate": False, "xiong_years_str": ""})
 
     # §D 旁证
-    ctx.update(_build_support_vm(support))
+    ctx.update(_build_support_vm(support, case_id=ctx["case_id"]))
 
     # §E 立体合并
     ctx.update(_build_conclusions_vm(energy, picture, gates))
 
     # §H 画像版骨架
     ctx["portrait_block"] = _build_portrait_vm(energy, picture, gates, parsed) if parsed else ""
+
+    # ── v1.3 D2：client 版预过滤（剔除 ★≤3 的弱项断语）──────────
+    if variant == "client":
+        ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
+        ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
+        ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
+        ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
+        ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
+        ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
+
+    # 把构建好的 ctx 暴露给调用方（供 render_from_output 落盘 statement_index.json）
+    if _capture_ctx_to is not None:
+        _capture_ctx_to.clear()
+        _capture_ctx_to.update(ctx)
 
     report = _render_template(template, ctx)
 

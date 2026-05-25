@@ -406,6 +406,20 @@ class RuleUpdate:
 
 
 @dataclass
+class VerdictContext:
+    """v1.3 D5：规律级 verdict 的上下文，用于 IterationDiff 记录。
+
+    两条路径都用这个数据类喂给 ``_apply_rule_verdicts``：
+      - 启发式路径（v1.0）：从 ``AnalysisConclusion`` 转换而来
+      - 结构化路径（v1.3，``feedback_ingest.py``）：直接从 statement_index.json 反查
+    """
+    section: str = ""
+    year: Optional[int] = None
+    domain: str = ""
+    statement_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
 class IterationDiff:
     case_id: str
     ts: str                                     # ISO datetime
@@ -587,64 +601,47 @@ def write_snapshot(diff: IterationDiff) -> pathlib.Path:
 # 八、ingest_feedback 主函数
 # ============================================================
 
-def ingest_feedback(
+def _apply_rule_verdicts(
     case_id: str,
+    rule_verdicts: dict[str, tuple[Verdict, VerdictContext]],
     *,
-    cfg: Optional[LifecycleConfig] = None,
-    today: Optional[str] = None,
+    cfg: LifecycleConfig,
+    today: str,
     dry_run: bool = False,
 ) -> IterationDiff:
-    """05 § 七 主循环。
+    """v1.3 D5 内部接口：把 rule-level verdicts 应用到规律 yaml 上。
 
-    Parameters
-    ----------
-    case_id : str
-        案例 ID，如 "C-2026-001-庚申戊寅壬子辛丑"。也接受前缀 "C-2026-001"。
-    cfg : LifecycleConfig
-        可选，默认从 engine/calibration.yaml 加载。
-    today : str
-        ISO 日期；测试用。
-    dry_run : bool
-        若 True，不落盘 yaml / iteration-log / snapshot。
+    职责（05 § 七 主循环的核心步骤）：
+        ③ 顺 rule_id 找规律 → 更新 hits/misses + recent_5
+        ④ Beta 重算 confidence_cache
+        ⑤ 跑升降级 + 漂移检测
+        ⑥ save_rule()
+        ⑨ case_count % 10 == 0 → 触发 cross_school_scan
+
+    **不**做日志/快照落盘——caller（``ingest_feedback`` 或 ``feedback_ingest``）
+    决定是否写 ``iteration-log.md`` 和 ``calibration/.snapshot.yaml``。
+
+    Args:
+        case_id:        完整 case_id（如 ``C-2026-001-庚申戊寅壬子辛丑``）
+        rule_verdicts:  ``{"M2-Y-068": ("hit", VerdictContext(...)), ...}``
+                        每条 verdict 已经在调用方做过决断力优先级合并
+                        （miss > hit > abstain > no_data）
+        cfg:            LifecycleConfig
+        today:          ISO 日期串（用于规律状态变更登记）
+        dry_run:        True 则不调 save_rule
+
+    Returns:
+        IterationDiff（含 case_count、rule_updates、status_changes、cross_school_triggered）
     """
-    cfg = cfg or LifecycleConfig.from_yaml()
-    today = today or _dt.date.today().isoformat()
     ts = _dt.datetime.now().isoformat(timespec="seconds")
     diff = IterationDiff(case_id=case_id, ts=ts, case_count=total_case_count())
 
     if cfg.freeze_iteration:
         diff.frozen = True
         diff.notes.append("freeze_iteration=true，全部更新被静默跳过")
-        if not dry_run:
-            append_iteration_log(diff)
-            write_snapshot(diff)
         return diff
 
-    case_dir = find_case_dir(case_id)
-    full_case_id = case_dir.name  # 用完整名（含干支）
-    diff.case_id = full_case_id
-
-    feedback_rows = parse_feedback_md(case_dir / "feedback.md")
-    conclusions = parse_analysis_md(case_dir / "analysis.md")
-
-    if not feedback_rows:
-        diff.notes.append("feedback.md 中未检出含应验标记的表格行")
-    if not conclusions:
-        diff.notes.append("analysis.md 中未检出任何含规律 ID 的结论段")
-
-    # 用集合去重 rule_id（同一规律即使被多条 conclusion 引用也只记一次 hit/miss/abstain）
-    # → 但要保留 verdict 的最 "决断" 选择
-    rule_to_verdict: dict[str, tuple[Verdict, AnalysisConclusion]] = {}
-    priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
-    for c in conclusions:
-        v = match_verdict(c, feedback_rows)
-        for rid in c.rule_ids:
-            existing = rule_to_verdict.get(rid)
-            if existing is None or priority[v] < priority[existing[0]]:
-                rule_to_verdict[rid] = (v, c)
-
-    # 为每条 rule 应用更新
-    for rid, (verdict, conclusion) in rule_to_verdict.items():
+    for rid, (verdict, vctx) in rule_verdicts.items():
         try:
             rule = load_rule(rid)
         except RuleNotFoundError:
@@ -653,43 +650,47 @@ def ingest_feedback(
 
         hits_before = rule.hits
         misses_before = rule.misses
-        # 旧置信度（用于 diff 记录）
         old_conf = rule.confidence_cache or rule.recompute_confidence(
             variance_threshold=cfg.variance_threshold
         )
         old_status = rule.status
 
+        # 备注：v1.3 路径会把 statement_ids 也写入 note，便于反查
+        sid_str = (
+            f" | sids={','.join(vctx.statement_ids[:3])}"
+            if vctx.statement_ids else ""
+        )
+        note = f"{vctx.section} | {vctx.domain}{sid_str}".strip(" |")
+
         if verdict == "hit":
             rule.hits += 1
             rule.update_recent_window(True, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
-                case_id=full_case_id,
-                year=conclusion.yingqi_year,
+                case_id=case_id,
+                year=vctx.year,
                 hit=True,
                 evidence_chain=[rid],
-                note=f"{conclusion.section} | {conclusion.domain or ''}",
+                note=note,
             ))
         elif verdict == "miss":
             rule.misses += 1
             rule.update_recent_window(False, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
-                case_id=full_case_id,
-                year=conclusion.yingqi_year,
+                case_id=case_id,
+                year=vctx.year,
                 hit=False,
                 evidence_chain=[rid],
-                note=f"{conclusion.section} | {conclusion.domain or ''}",
+                note=note,
             ))
         elif verdict == "abstain":
             rule.abstained += 1
-            # 不动 hits / misses 也不动 recent_5
         else:
             # no_data → 跳过完全
             continue
 
-        # 重算置信度
         new_conf = rule.recompute_confidence(variance_threshold=cfg.variance_threshold)
 
-        # 升降级 + 漂移（顺序：先升级，再降级，再漂移；最先匹配的生效）
+        # 升降级 + 漂移
         new_status: Optional[RuleStatus] = None
         reason = ""
         up = maybe_upgrade(rule, cfg=cfg)
@@ -710,7 +711,7 @@ def ingest_feedback(
                 reason = f"drift detected (recent_{cfg.drift_window_size} hit_rate={rate:.0%})"
 
         if new_status is not None and new_status != rule.status:
-            apply_status_change(rule, new_status, case_id=full_case_id, reason=reason, today=today)
+            apply_status_change(rule, new_status, case_id=case_id, reason=reason, today=today)
             diff.status_changes.append((rule.id, old_status, new_status, reason))
 
         diff.rule_updates.append(RuleUpdate(
@@ -727,13 +728,13 @@ def ingest_feedback(
             status_before=old_status,
             status_after=rule.status,
             verdict=verdict,
-            note=conclusion.section,
+            note=vctx.section,
         ))
 
         if not dry_run:
             save_rule(rule)
 
-    # 跨派扫描 trigger
+    # cross_school_scan trigger（每 N 案）
     if (
         diff.case_count > 0
         and cfg.cross_school_every_n_cases > 0
@@ -743,11 +744,87 @@ def ingest_feedback(
         if not dry_run:
             try:
                 from tools.cross_school_scan import cross_school_scan
-                cross_school_scan(triggered_by=full_case_id)
+                cross_school_scan(triggered_by=case_id)
             except Exception as exc:  # pragma: no cover
                 diff.notes.append(f"cross_school_scan 失败: {exc!r}")
 
-    # 落盘
+    return diff
+
+
+# ============================================================
+# 八、ingest_feedback 主函数
+# ============================================================
+
+def ingest_feedback(
+    case_id: str,
+    *,
+    cfg: Optional[LifecycleConfig] = None,
+    today: Optional[str] = None,
+    dry_run: bool = False,
+) -> IterationDiff:
+    """05 § 七 主循环（v1.0 启发式入口，向下兼容）。
+
+    v1.3 D5 重构：把核心 rule-level 应用逻辑抽到 ``_apply_rule_verdicts``，
+    本函数仅负责 v1.0 启发式解析（``parse_feedback_md`` + ``parse_analysis_md``）
+    + 日志/快照落盘。新格式的结构化反馈走 ``tools/feedback_ingest.py``。
+
+    Parameters
+    ----------
+    case_id : str
+        案例 ID，如 "C-2026-001-庚申戊寅壬子辛丑"。也接受前缀 "C-2026-001"。
+    cfg : LifecycleConfig
+        可选，默认从 engine/calibration.yaml 加载。
+    today : str
+        ISO 日期；测试用。
+    dry_run : bool
+        若 True，不落盘 yaml / iteration-log / snapshot。
+    """
+    cfg = cfg or LifecycleConfig.from_yaml()
+    today = today or _dt.date.today().isoformat()
+
+    case_dir = find_case_dir(case_id)
+    full_case_id = case_dir.name
+
+    if cfg.freeze_iteration:
+        # 走快速通道，与原行为一致：写一条空 diff + 落 snapshot
+        ts = _dt.datetime.now().isoformat(timespec="seconds")
+        diff = IterationDiff(case_id=full_case_id, ts=ts, case_count=total_case_count())
+        diff.frozen = True
+        diff.notes.append("freeze_iteration=true，全部更新被静默跳过")
+        if not dry_run:
+            append_iteration_log(diff)
+            write_snapshot(diff)
+        return diff
+
+    feedback_rows = parse_feedback_md(case_dir / "feedback.md")
+    conclusions = parse_analysis_md(case_dir / "analysis.md")
+
+    # 启发式：build rule_verdicts
+    rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
+    priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
+    for c in conclusions:
+        v = match_verdict(c, feedback_rows)
+        for rid in c.rule_ids:
+            existing = rule_verdicts.get(rid)
+            vctx = VerdictContext(
+                section=c.section,
+                year=c.yingqi_year,
+                domain=c.domain or "",
+                statement_ids=[],  # v1.0 启发式路径无 statement_id
+            )
+            if existing is None or priority[v] < priority[existing[0]]:
+                rule_verdicts[rid] = (v, vctx)
+
+    diff = _apply_rule_verdicts(
+        full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
+    )
+
+    # notes
+    if not feedback_rows:
+        diff.notes.append("feedback.md 中未检出含应验标记的表格行")
+    if not conclusions:
+        diff.notes.append("analysis.md 中未检出任何含规律 ID 的结论段")
+
     if not dry_run:
         append_iteration_log(diff)
         write_snapshot(diff)
