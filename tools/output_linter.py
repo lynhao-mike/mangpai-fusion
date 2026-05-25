@@ -311,7 +311,7 @@ _PASSED_LAYERS_RE = re.compile(
     re.IGNORECASE,
 )
 _EVIDENCE_TOKEN_RE = re.compile(
-    r"\b(?:M[123]-[A-Z]-\d+|MR-\d+|XF-\d+|G-[A-Z0-9]+-\d+)\b"
+    r"\b(?:M[123]-[A-Z]-\d+|MR-\d+|XF-\d+|G-[A-Z0-9]+-\d+|GP-[A-Z0-9\u4e00-\u9fff_]+(?:-[A-Z0-9\u4e00-\u9fff_]+)*)\b"
 )
 
 

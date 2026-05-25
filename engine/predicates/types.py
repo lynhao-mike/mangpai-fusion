@@ -395,7 +395,7 @@ def adapt_parsed(obj: object) -> ParsedInput:
         for key, items in pf_canggan.items():
             cangs: list[Canggan] = []
             for it in items:
-                gan = getattr(it, "gan", None) or it.get("gan") if isinstance(it, dict) else None
+                gan = getattr(it, "gan", None) or (it.get("gan") if isinstance(it, dict) else None)
                 typ = getattr(it, "type", None) or (it.get("type") if isinstance(it, dict) else None)
                 li = getattr(it, "li_liang", None)
                 if li is None and isinstance(it, dict):
