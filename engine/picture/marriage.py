@@ -81,6 +81,86 @@ def _get_spouse_star_shishens(gender: str) -> tuple[Shishen, Shishen]:
     return ("正财", "偏财")
 
 
+# ============================================================
+# F7 · 婚姻画像年龄过滤
+# ============================================================
+
+def _compute_age_status(
+    parsed: ParsedInput,
+    window: tuple[int, int],
+    *,
+    current_year: int = 2026,
+) -> dict:
+    """根据命主当前年龄 vs 婚姻窗口，返回 age_status dict。
+
+    语义：
+      - "未到": current_age < window_lo - 2
+      - "临近": window_lo - 2 <= age < window_lo
+      - "在窗口": window_lo <= age <= window_hi
+      - "刚过": window_hi < age <= window_hi + 5
+      - "已过": age > window_hi + 5  (≥ 5 年远超窗口 → 应降级展示)
+
+    返回 dict:
+      - status: 上述 5 字符串之一
+      - current_age: int
+      - years_past: int (>=0; 仅在"已过"时有意义)
+      - warning: str (展示用提示)
+      - downgrade: bool (True 时 render 应把婚姻窗口从主断语降级为参考)
+    """
+    try:
+        gongli = (parsed.birth or {}).get("公历", "1980-01-01")
+        birth_year = int(str(gongli).split("-")[0])
+    except Exception:
+        birth_year = 1980
+    age = current_year - birth_year
+    lo, hi = int(window[0]), int(window[1])
+
+    if age < lo - 2:
+        return {
+            "status": "未到",
+            "current_age": age,
+            "years_past": 0,
+            "warning": "",
+            "downgrade": False,
+        }
+    if age < lo:
+        return {
+            "status": "临近",
+            "current_age": age,
+            "years_past": 0,
+            "warning": f"距窗口起点还有 {lo - age} 年",
+            "downgrade": False,
+        }
+    if age <= hi:
+        return {
+            "status": "在窗口",
+            "current_age": age,
+            "years_past": 0,
+            "warning": f"当前在初婚窗口内（{lo}-{hi} 岁）",
+            "downgrade": False,
+        }
+    years_past = age - hi
+    if years_past <= 5:
+        return {
+            "status": "刚过",
+            "current_age": age,
+            "years_past": years_past,
+            "warning": f"已过初婚最佳窗口 {years_past} 年（窗口 {lo}-{hi} 岁）",
+            "downgrade": False,
+        }
+    return {
+        "status": "已过",
+        "current_age": age,
+        "years_past": years_past,
+        "warning": (
+            f"⚠️ 命主当前 {age} 岁 · 已过初婚最佳窗口 {years_past} 年"
+            f"（窗口 {lo}-{hi} 岁）。本断语对当前命主已无指导意义，"
+            f"应作参考信号；若实际未婚，关注后续大运的财官启动期。"
+        ),
+        "downgrade": True,
+    }
+
+
 def _spouse_palace_locations(
     bazi: Bazi, gender: str,
 ) -> list[tuple[PalaceName, str, Shishen]]:
@@ -473,6 +553,7 @@ def build_marriage_picture(
         "婚姻稳定度": stability,
         "早婚信号": early_signal,
         "晚婚信号": late_signal,
+        "age_status": _compute_age_status(parsed, window),
         "evidence": evidence,
         "_debug": {
             "gender": gender,

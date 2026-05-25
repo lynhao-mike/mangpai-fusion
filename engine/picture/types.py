@@ -29,6 +29,7 @@ from engine.predicates.types import (
     Wuxing,
     Zhi,
 )
+from engine.picture.wealth_15tier import Wealth15Tier  # F5
 
 
 # ============================================================
@@ -279,6 +280,9 @@ class PictureFindings:
     #   "文化": str / "食物": list[str] / "贵人": str
     tiaohou_advice: Optional[dict] = None
 
+    # ========== F5 · 15 层富贵分级（学/职/婚/财/官 五维）==========
+    wealth_15tier: Optional[Wealth15Tier] = None
+
     # ========== 上游约束验证 ==========
     energy_consistent: bool = True
     energy_violations: list[str] = field(default_factory=list)
@@ -312,6 +316,7 @@ class PictureFindings:
             "industry_pointers": list(self.industry_pointers),
             "marriage_picture": _marriage_to_dict(self.marriage_picture),
             "tiaohou_advice": dict(self.tiaohou_advice) if self.tiaohou_advice else None,
+            "wealth_15tier": self.wealth_15tier.to_dict() if self.wealth_15tier else None,
             "energy_consistent": self.energy_consistent,
             "energy_violations": list(self.energy_violations),
             "confidence": self.confidence.to_dict() if self.confidence else None,
@@ -331,6 +336,7 @@ class PictureFindings:
             industry_pointers=list(d.get("industry_pointers", [])),
             marriage_picture=_marriage_from_dict(d.get("marriage_picture")),
             tiaohou_advice=dict(d["tiaohou_advice"]) if d.get("tiaohou_advice") else None,
+            wealth_15tier=Wealth15Tier.from_dict(d["wealth_15tier"]) if d.get("wealth_15tier") else None,
             energy_consistent=bool(d.get("energy_consistent", True)),
             energy_violations=list(d.get("energy_violations", [])),
             confidence=Confidence.from_dict(d["confidence"]) if d.get("confidence") else None,

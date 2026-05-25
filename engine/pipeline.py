@@ -401,6 +401,18 @@ class CrossSchoolConflict:
 # 三、AnalysisOutput（03 § 九 · render_report 直接消费）
 # ============================================================
 
+
+def _load_retrospective(d: Any) -> Optional[Any]:
+    """延迟导入 + 容错的 RetrospectiveReport 反序列化。"""
+    if not d:
+        return None
+    try:
+        from engine.yingqi.retrospective import RetrospectiveReport
+        return RetrospectiveReport.from_dict(d)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 @dataclass
 class AnalysisOutput:
     """完整分析输出。
@@ -439,6 +451,9 @@ class AnalysisOutput:
     hash_chain_valid: bool = True
     hash_chain_notes: list[str] = field(default_factory=list)
 
+    # F6 · 流年回溯（不参与 hash 链；run_pipeline 注入）
+    retrospective: Optional[Any] = None  # RetrospectiveReport（避免循环导入）
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
@@ -460,6 +475,12 @@ class AnalysisOutput:
             "layer_summary": dict(self.layer_summary),
             "hash_chain_valid": self.hash_chain_valid,
             "hash_chain_notes": list(self.hash_chain_notes),
+            "retrospective": (
+                self.retrospective.to_dict()
+                if self.retrospective is not None
+                and hasattr(self.retrospective, "to_dict")
+                else None
+            ),
         }
 
     @classmethod
@@ -488,6 +509,7 @@ class AnalysisOutput:
             generated_at=d.get("generated_at", ""),
             hash_chain_valid=bool(d.get("hash_chain_valid", True)),
             hash_chain_notes=list(d.get("hash_chain_notes", [])),
+            retrospective=_load_retrospective(d.get("retrospective")),
         )
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:
@@ -810,6 +832,16 @@ def run_pipeline(
     # Step 6: 整合
     with timing.step("integrate"):
         output = integrate(energy, picture, gate_results, support, parsed)
+
+    # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output
+    try:
+        from datetime import datetime as _dt
+        from engine.yingqi.retrospective import scan_retrospective
+        retrospective = scan_retrospective(parsed, current_year=_dt.now().year)
+        object.__setattr__(output, "retrospective", retrospective)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("retrospective scan 失败：%s", e)
+        object.__setattr__(output, "retrospective", None)
 
     # 把 timing 引用挂到 output 上（dataclass 非 frozen → 可动态附加）。
     # 注意：to_dict/to_json 仅序列化声明字段，timing 不会泄漏进 JSON 制品。

@@ -348,6 +348,14 @@ def match_picture(
             sample_n=findings.confidence.sample_n,
         )
 
+    # ---- 11. F5 · 计算 15 层富贵分级（学/职/婚/财/官 五维）----
+    try:
+        from engine.picture.wealth_15tier import compute_wealth_15tier
+        findings.wealth_15tier = compute_wealth_15tier(energy, findings)
+    except Exception as e:  # noqa: BLE001
+        # 不阻断主流程：失败时 wealth_15tier 留 None
+        findings.debug_info["wealth_15tier_error"] = str(e)
+
     return findings
 
 

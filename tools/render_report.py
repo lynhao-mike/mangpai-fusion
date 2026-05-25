@@ -184,6 +184,7 @@ def render_from_output(
     gates = getattr(analysis_output, "gate_results", [])
     support = getattr(analysis_output, "support", None)
     final_conclusions = getattr(analysis_output, "final_conclusions", None) or []
+    retrospective = getattr(analysis_output, "retrospective", None)
     parsed = getattr(analysis_output, "_parsed", None)
 
     # 如果 AnalysisOutput 没有 _parsed（它不存储 ParsedInput），
@@ -200,6 +201,7 @@ def render_from_output(
         parsed=parsed,
         support=support,
         final_conclusions=final_conclusions,
+        retrospective=retrospective,
         template_name=template_name,
         variant=variant,
         _skip_lint=not lint_before,
@@ -364,6 +366,158 @@ def _bazi_str(parsed: ParsedInput) -> str:
     return f"{b.年柱}{b.月柱}{b.日柱}{b.时柱}"
 
 
+def _dayun_full_table(parsed: ParsedInput) -> list[dict]:
+    """F9 · 全 9 步大运表（含当前标记）。
+
+    行：[{seq, ganzhi, age_range, year_range, is_current}]
+    """
+    out: list[dict] = []
+    try:
+        steps = parsed.dayun.排布
+        if not steps:
+            return out
+        # 当前年龄
+        try:
+            birth_year = int((parsed.birth or {}).get("公历", "1980-01-01").split("-")[0])
+        except Exception:
+            birth_year = 1980
+        from datetime import datetime as _dt
+        current_year = _dt.now().year
+        current_age = current_year - birth_year
+        for s in steps:
+            is_current = (s.起岁 <= current_age <= s.止岁)
+            out.append({
+                "seq": s.序号,
+                "ganzhi": str(s.干支),
+                "age_range": f"{s.起岁}-{s.止岁}",
+                "year_range": f"{s.起讫年[0]}-{s.起讫年[1] - 1}",
+                "is_current": is_current,
+                "marker": "← 当前" if is_current else "",
+            })
+    except Exception:
+        pass
+    return out
+
+
+def _build_section_zero_vm(
+    energy: EnergyFindings,
+    picture: PictureFindings,
+    parsed: ParsedInput,
+) -> dict:
+    """F8 · §0 命局核心结构总览。"""
+    if not parsed or not parsed.bazi:
+        return {"section_zero": False}
+    b = parsed.bazi
+    # 4 柱 + 干十神 + 主气 + 长生
+    pillars = [
+        {"name": "年", "gan": b.年柱.gan, "zhi": b.年柱.zhi},
+        {"name": "月", "gan": b.月柱.gan, "zhi": b.月柱.zhi},
+        {"name": "日", "gan": b.日柱.gan, "zhi": b.日柱.zhi, "is_master": True},
+        {"name": "时", "gan": b.时柱.gan, "zhi": b.时柱.zhi},
+    ]
+    # 体用结构
+    ty = energy.tiyong if energy and energy.tiyong else None
+    body_str = "、".join(f"{x.char}({x.role})" for x in ty.body) if ty and ty.body else "—"
+    purpose_str = "、".join(f"{x.char}({x.role})" for x in ty.purpose) if ty and ty.purpose else "—"
+    # 暗引 brief
+    anyin_brief = ""
+    if picture and picture.anyin_results:
+        items = [f"{a.formula}({a.real_meaning})" for a in picture.anyin_results[:3]]
+        anyin_brief = "、".join(items)
+    # 神煞 brief（来自 parsed.shensha）
+    shensha_brief = ""
+    if parsed and getattr(parsed, "shensha", None):
+        s = parsed.shensha or {}
+        items = []
+        for k in ("年柱", "月柱", "日柱", "时柱"):
+            v = s.get(k) or []
+            if v:
+                items.append(f"{k}: {'·'.join(v[:5])}")
+        shensha_brief = "  ｜  ".join(items[:4])
+    return {
+        "section_zero": True,
+        "sz_pillars": pillars,
+        "sz_day_master": b.日柱.gan,
+        "sz_yueling": b.月柱.zhi,
+        "sz_body_str": body_str,
+        "sz_purpose_str": purpose_str,
+        "sz_layer_count": getattr(energy, "layer_count", 0),
+        "sz_wealth_ceiling": getattr(energy, "wealth_ceiling", "—"),
+        "sz_anyin_brief": anyin_brief or "—",
+        "sz_shensha_brief": shensha_brief or "—",
+    }
+
+
+def _build_15tier_vm(picture: PictureFindings) -> dict:
+    """F5 · §B.6 15 层五维定位。"""
+    w = getattr(picture, "wealth_15tier", None) if picture else None
+    if not w:
+        return {"has_15tier": False}
+    domains = []
+    for key, label in [
+        ("xueye", "学业"), ("shiye", "事业"), ("hunyin", "婚姻"),
+        ("caifu", "财富"), ("guanming", "官命"),
+    ]:
+        band = getattr(w, key, None)
+        if band is None:
+            continue
+        domains.append({
+            "key": key,
+            "domain_label": label,
+            "low": band.low,
+            "mid": band.mid,
+            "high": band.high,
+            "label": band.label,
+            "society": band.society,
+            "income_cny": band.income_cny,
+            "rationale": band.rationale,
+        })
+    return {
+        "has_15tier": True,
+        "tier_domains": domains,
+        "tier_disclaimer": w.tier_disclaimer,
+    }
+
+
+def _build_retrospective_vm(retrospective: Optional[Any]) -> dict:
+    """F6 · §C.0 流年回溯。
+
+    输出按大运分段；每段含 flow_years 列表（每年 1 行）+ 预渲染的 markdown 表格。
+    （模板引擎不支持嵌套 {% for %}，故每段直接给 `flow_years_md` 字符串。）
+    """
+    if retrospective is None:
+        return {"has_retrospective": False}
+    segments_vm = []
+    for seg in getattr(retrospective, "segments", []) or []:
+        rows = []
+        for f in seg.flow_years:
+            rel_str = "; ".join(f.relations[:3]) if f.relations else ""
+            domains_str = "/".join(f.domains[:3]) if f.domains else "—"
+            # MD 表格行（| 之间用空格围绕）
+            rows.append(
+                f"| {f.year} | {f.liunian} | {f.age} | {f.strength} | "
+                f"{f.main_energy} | {domains_str} | {rel_str} |"
+            )
+        flow_md = "\n".join(rows) if rows else "| — | — | — | — | — | — | — |"
+        segments_vm.append({
+            "seq": seg.seq,
+            "ganzhi": seg.ganzhi,
+            "age_range": f"{seg.age_range[0]}-{seg.age_range[1]}",
+            "year_range": f"{seg.year_range[0]}-{seg.year_range[1] - 1}",
+            "feature": seg.feature,
+            "typical_domains_str": "/".join(seg.typical_domains[:3]) if seg.typical_domains else "—",
+            "flow_years_md": flow_md,
+        })
+    return {
+        "has_retrospective": True,
+        "retro_current_age": getattr(retrospective, "current_age", 0),
+        "retro_current_year": getattr(retrospective, "current_year", 0),
+        "retro_current_dayun": getattr(retrospective, "current_dayun", "—"),
+        "retro_segments": segments_vm,
+        "retro_note": getattr(retrospective, "note", ""),
+    }
+
+
 
 
 def _build_energy_vm(energy: EnergyFindings) -> dict:
@@ -439,10 +593,18 @@ def _build_picture_vm(picture: PictureFindings) -> dict:
 
     marriage_window_str = "—"
     marriage_picture_extra = ""
+    marriage_age_warning = ""
     if mp:
         win = mp.get("初婚最佳窗口")
         if win and len(win) == 2:
             marriage_window_str = f"{win[0]}-{win[1]} 岁"
+        # F7: age status
+        age_status = mp.get("age_status") or {}
+        if age_status.get("downgrade") and age_status.get("warning"):
+            marriage_age_warning = age_status["warning"]
+        elif age_status.get("warning"):
+            # 非降级也展示提示（如"在窗口"）
+            marriage_age_warning = age_status["warning"]
         # v1.3 D3: 白名单展示，避免泄漏内部 _debug / Evidence(...) 等结构化数据。
         # 仅展示稳态、可读的画像字段；其余仅在 master 内部审阅时通过 evidence
         # 列表暴露，client 报告完全屏蔽。
@@ -466,6 +628,7 @@ def _build_picture_vm(picture: PictureFindings) -> dict:
         "marriage_picture": bool(mp),
         "marriage_window_str": marriage_window_str,
         "marriage_picture_extra": marriage_picture_extra.strip(),
+        "marriage_age_warning": marriage_age_warning,
         "picture_hash": picture.hash(),
     }
 
@@ -942,6 +1105,7 @@ def render(
     parsed: ParsedInput,
     support: Optional[Any] = None,
     final_conclusions: Optional[list] = None,
+    retrospective: Optional[Any] = None,
     template_name: Optional[str] = None,
     variant: Literal["master", "client", "v1.2"] = "master",
     *,
@@ -1026,6 +1190,18 @@ def render(
 
     # §H 画像版骨架
     ctx["portrait_block"] = _build_portrait_vm(energy, picture, gates, parsed) if parsed else ""
+
+    # F8 · §0 命局核心结构总览
+    ctx.update(_build_section_zero_vm(energy, picture, parsed))
+
+    # F5 · §B.6 15 层五维定位
+    ctx.update(_build_15tier_vm(picture))
+
+    # F9 · 大运全表
+    ctx["dayun_full_table"] = _dayun_full_table(parsed) if parsed else []
+
+    # F6 · §C.0 流年回溯
+    ctx.update(_build_retrospective_vm(retrospective))
 
     # ── v1.3 D2：client 版预过滤（剔除 ★≤3 的弱项断语）──────────
     if variant == "client":
