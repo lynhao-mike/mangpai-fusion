@@ -347,30 +347,46 @@ def parse_analysis_md(path: pathlib.Path) -> list[AnalysisConclusion]:
 # 三、verdict 匹配（conclusion ↔ feedback）
 # ============================================================
 
+def match_verdict_for_rule(
+    rule_id: str,
+    conclusion: AnalysisConclusion,
+    feedback_rows: list[FeedbackRow],
+) -> tuple[Verdict, str]:
+    """v1.3 D5+ 历史回补：单 rule_id 精确匹配优先。
+
+    对单条 (conclusion, rule_id) 做匹配，避免 conclusion 级一次性合并多个 rule_id
+    导致的 verdict 串扰（C-2026-014 学业段 = 3 个 rule_id 各自命中不同 verdict）。
+
+    优先级：
+      0. raw_line 显式含 ``rule_id`` → 直接取该行 verdict（多行时 miss>hit>abstain>no_data）
+      1. 回退到 conclusion 级 :func:`match_verdict`
+
+    Returns
+    -------
+    tuple[Verdict, str]
+        (verdict, source) — source ∈ {"rule_id_exact", "domain_fallback"}
+    """
+    # Step 0: rule_id 在 raw_line 中精确出现
+    exact = [r for r in feedback_rows if rule_id in r.raw_line]
+    if exact:
+        priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
+        exact.sort(key=lambda r: priority[r.verdict])
+        return exact[0].verdict, "rule_id_exact"
+    return match_verdict(conclusion, feedback_rows), "domain_fallback"
+
+
 def match_verdict(conclusion: AnalysisConclusion, feedback_rows: list[FeedbackRow]) -> Verdict:
     """05 § 十 的简化实现：把 analysis 结论与 feedback 行做语义匹配。
 
-    优先匹配规则（v1.3 D5+ 历史回补扩展，2026-05-25）：
-      0. **rule_id 精确匹配**：若 feedback 行 raw_line 中显式含 conclusion 的任一 rule_id
-         （C-2026-014 等"逐规律标注"格式），直接采用该行 verdict，不被同 domain 其它行污染
+    优先匹配规则：
       1. domain 匹配 + 派别交集 → 取该子集中最具决断力的 verdict（miss > hit > abstain > no_data）
       2. domain 匹配 → 同上
       3. 全部 → no_data
+
+    注意：rule_id 级的精确匹配请用 :func:`match_verdict_for_rule`，本函数仅做 conclusion 级回退。
     """
     if not feedback_rows:
         return "no_data"
-
-    # ----- Step 0：rule_id 精确匹配（最高优先级）-----
-    if conclusion.rule_ids:
-        exact_hits: list[FeedbackRow] = []
-        for r in feedback_rows:
-            if any(rid in r.raw_line for rid in conclusion.rule_ids):
-                exact_hits.append(r)
-        if exact_hits:
-            # 同一 rule_id 出现多行时按决断力排序，但限定在精确命中子集内
-            priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
-            exact_hits.sort(key=lambda r: priority[r.verdict])
-            return exact_hits[0].verdict
 
     # ----- Step 1-2：domain + 派别交集 / domain 匹配 -----
     candidates: list[FeedbackRow] = []
@@ -827,11 +843,14 @@ def ingest_feedback(
     conclusions = parse_analysis_md(case_dir / "analysis.md")
 
     # 启发式：build rule_verdicts
+    # v1.3 D5+ 历史回补（2026-05-25）：rule_id 级精确匹配优先（match_verdict_for_rule），
+    # 避免 conclusion 一次性合并多个 rule_id 导致 verdict 串扰（C-2026-014 学业段三规律
+    # 各自有不同 verdict 是典型场景）。
     rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
     priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
     for c in conclusions:
-        v = match_verdict(c, feedback_rows)
         for rid in c.rule_ids:
+            v, _src = match_verdict_for_rule(rid, c, feedback_rows)
             existing = rule_verdicts.get(rid)
             vctx = VerdictContext(
                 section=c.section,

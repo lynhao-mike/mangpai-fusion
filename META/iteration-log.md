@@ -51,6 +51,329 @@ git revert <track-G 初始化 commit>
 
 ---
 
+## 2026-05-25 21:04 · ingest C-2026-001-庚申戊寅壬子辛丑
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (16 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-122 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-253 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-001 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-091 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-049 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-064 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-014 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-068 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| G-LF-022 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| G-LF-006 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| M3-R-031 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-027 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-003 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-005 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-022 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-CH
+- G-BD
+- G-BD-词馆
+- G-CH-车祸婚姻
+- G-CHE-车祸篇
+- G-BD-词馆神煞应用宝典
+- G-时柱神煞
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-001-庚申戊寅壬子辛丑.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:04 · ingest C-2026-002-壬戌庚戌戊辰丙辰
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (15 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-122 | duan | 1→1 | 0→1 | ★3→★2 | confirmed→confirmed | miss |
+| M1-D-001 | duan | 1→1 | 0→1 | ★3→★2 | confirmed→confirmed | miss |
+| M2-Y-091 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-068 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-014 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| G-LF-006 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| M3-R-003 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-027 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-031 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-022 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-005 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 0→0 | 1→1 | ★1→★1 | confirmed→confirmed | abstain |
+| M2-Y-076 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-099 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-CH
+- G-CHE
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-002-壬戌庚戌戊辰丙辰.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:04 · ingest C-2026-007-乙丑庚辰己丑庚午
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (2 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M2-Y-120 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 0→0 | 1→1 | ★1→★1 | confirmed→confirmed | abstain |
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-007-乙丑庚辰己丑庚午.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-008-壬申癸卯丁未壬寅
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M3-R-031 | ren | 0→1 | 2→2 | ★1→★2 | confirmed→confirmed | hit |
+| M3-R-022 | ren | 0→1 | 2→2 | ★1→★2 | confirmed→confirmed | hit |
+| M2-Y-141 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-008-壬申癸卯丁未壬寅.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-009-庚辰乙酉丙申乙未
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-118 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-070 | yang | 0→0 | 1→1 | ★1→★1 | confirmed→confirmed | abstain |
+| M3-R-031 | ren | 1→2 | 2→2 | ★2→★2 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-009-庚辰乙酉丙申乙未.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-010-甲子丁卯癸卯庚申
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-186 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M3-R-031 | ren | 2→3 | 2→2 | ★2→★3 | confirmed→confirmed | hit |
+| M3-R-022 | ren | 1→2 | 2→2 | ★2→★2 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-010-甲子丁卯癸卯庚申.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-011-乙丑乙酉丁丑癸卯
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (1 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M3-R-031 | ren | 3→4 | 2→2 | ★3→★3 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-011-乙丑乙酉丁丑癸卯.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-012-壬戌癸丑丙申壬辰
+
+case_count: 10
+trigger: ingest_feedback
+
+### Notes
+
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-012-壬戌癸丑丙申壬辰.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-013-壬申甲辰丙辰己丑
+
+case_count: 10
+trigger: ingest_feedback
+
+### Notes
+
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-013-壬申甲辰丙辰己丑.snapshot.yaml
+```
+
+---
+
+## 2026-05-25 21:05 · ingest C-2026-014-丙戌庚子乙亥辛巳
+
+case_count: 10
+trigger: ingest_feedback
+
+### Rule Updates (14 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-044 | duan | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M1-D-022 | duan | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M1-D-122 | duan | 1→1 | 1→2 | ★2→★2 | confirmed→confirmed | miss |
+| M2-Y-011 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| G-LF-002 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| M2-Y-091 | yang | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M3-R-005 | ren | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M1-D-241 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-070 | yang | 0→1 | 1→1 | ★1→★2 | confirmed→confirmed | hit |
+| M2-Y-042 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-026 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| G-LF-022 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| G-LF-014 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| M3-R-031 | ren | 4→4 | 2→3 | ★3→★3 | confirmed→flagged_for_review | miss |
+
+### Status Changes
+
+- M2-Y-091: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-005: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-031: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-CH
+
+### Cross-School Scan
+- 已触发（case_count=10，每 10 案） → META/conflict-trends.md 已更新
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-25-after-C-2026-014-丙戌庚子乙亥辛巳.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)
