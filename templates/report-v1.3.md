@@ -6,6 +6,15 @@
 **分析日期**：{{ analysis_date }}  
 **引擎**：mangpai-fusion v1.3 · 四派融合 · {{ variant }} 版  
 
+{% if dayun_full_table %}
+**全运表**（F9）：
+| 序 | 干支 | 起讫年龄 | 起讫年份 | 标记 |
+|----|------|----------|----------|------|
+{% for d in dayun_full_table %}
+| {{ d.seq }} | {{ d.ganzhi }} | {{ d.age_range }} | {{ d.year_range }} | {{ d.marker }} |
+{% endfor %}
+{% endif %}
+
 <!--
   ╔══════════════════════════════════════════════════════════╗
   ║          AI 润色边界声明（决策 D · 永久锁定）             ║
@@ -26,6 +35,30 @@
 ---
 
 <!-- ██ 铁断区开始 ██  §A–§G  禁止 AI 修改 ██ -->
+
+{% if section_zero %}
+## 〇、命局核心结构（§0 · F8）
+
+<!-- §0-START: 由 D1+D2 数据综合产出，禁止 AI 修改 -->
+
+| 柱 | 干 | 支 |
+|----|----|----|
+{% for p in sz_pillars %}
+| {{ p.name }} | {{ p.gan }} | {{ p.zhi }} |
+{% endfor %}
+
+- **日主**：{{ sz_day_master }}
+- **月令**：{{ sz_yueling }}
+- **体**：{{ sz_body_str }}
+- **用**：{{ sz_purpose_str }}
+- **做功层数**：{{ sz_layer_count }} 层 · **财富天花板**：{{ sz_wealth_ceiling }}
+- **十神暗引（杨派）**：{{ sz_anyin_brief }}
+- **神煞分布**：{{ sz_shensha_brief }}
+
+<!-- §0-END -->
+
+---
+{% endif %}
 
 ## 一、能量层级（§A · D1 段派）
 
@@ -76,9 +109,25 @@
 {% if marriage_picture %}
 - 初婚最佳窗口：{{ marriage_window_str }}  
 - {{ marriage_picture_extra }}  
+{% if marriage_age_warning %}
+- ⚠️ {{ marriage_age_warning }}  
+{% endif %}
 {% endif %}
 {% if not marriage_picture %}
 - 婚姻画像待补充  
+{% endif %}
+
+{% if has_15tier %}
+### 五维 15 层定位（§B.6 · F5）
+
+| 域 | 区间 | 中位 | 社会对应 | 年入参考 | 推断依据 |
+|----|------|------|----------|----------|----------|
+{% for d in tier_domains %}
+| {{ d.domain_label }} | L{{ d.low }}-L{{ d.high }} | **L{{ d.mid }} ({{ d.label }})** | {{ d.society }} | {{ d.income_cny }} | {{ d.rationale }} |
+{% endfor %}
+
+> {{ tier_disclaimer }}  
+> 来源：D1 段派 + D2 杨派合成（MR-501）
 {% endif %}
 
 <!-- §B-END -->
@@ -93,6 +142,22 @@
      passed_layers=2 → ★ 上限 4
      passed_layers=1 → ★ 上限 3
      passed_layers=0 → 不输出 -->
+
+{% if has_retrospective %}
+### 流年回溯（§C.0 · F6 · 起运 → {{ retro_current_year }}）
+
+> {{ retro_note }}  
+> 当前：{{ retro_current_age }} 岁 · {{ retro_current_dayun }} 大运 · 来源 MR-601
+
+{% for seg in retro_segments %}
+**大运 #{{ seg.seq }} {{ seg.ganzhi }}**（年龄 {{ seg.age_range }} · 年份 {{ seg.year_range }}）— {{ seg.feature }} ｜ 典型域：{{ seg.typical_domains_str }}
+
+| 流年 | 干支 | 岁 | 强弱 | 主能量 | 推测域 | 与原局/大运作用 |
+|------|------|----|------|--------|--------|-----------------|
+{{ seg.flow_years_md }}
+
+{% endfor %}
+{% endif %}
 
 {% if gate_results %}
 | 年份 | 流年 | 大运 | 候选事件 | 领域 | 三层 | 道门 | 置信度 | 主触发 | 来源 |
