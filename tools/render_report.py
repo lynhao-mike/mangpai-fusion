@@ -183,6 +183,7 @@ def render_from_output(
     picture = getattr(analysis_output, "picture")
     gates = getattr(analysis_output, "gate_results", [])
     support = getattr(analysis_output, "support", None)
+    final_conclusions = getattr(analysis_output, "final_conclusions", None) or []
     parsed = getattr(analysis_output, "_parsed", None)
 
     # 如果 AnalysisOutput 没有 _parsed（它不存储 ParsedInput），
@@ -198,6 +199,7 @@ def render_from_output(
         gates=gates,
         parsed=parsed,
         support=support,
+        final_conclusions=final_conclusions,
         template_name=template_name,
         variant=variant,
         _skip_lint=not lint_before,
@@ -354,7 +356,11 @@ def _dayun_str(parsed: ParsedInput) -> str:
 
 
 def _bazi_str(parsed: ParsedInput) -> str:
-    b = parsed.bazi
+    if parsed is None:
+        return "—"
+    b = getattr(parsed, "bazi", None)
+    if b is None:
+        return "—"
     return f"{b.年柱}{b.月柱}{b.日柱}{b.时柱}"
 
 
@@ -419,11 +425,16 @@ def _build_picture_vm(picture: PictureFindings) -> dict:
 
     wubu = []
     for step in picture.wubu_steps:
+        ev_list = _evidence_list(step)
         wubu.append({
             "step": step.step,
             "name": step.name,
             "finding": step.finding,
-            "evidence": _evidence_list(step),
+            "evidence": ev_list,
+            # v1.3 D3: 预渲染避免模板嵌套 {% for %} 在外层非贪婪正则下被拦截
+            "evidence_str": " ".join(
+                f"{e['rule_id']}({e['school']})" for e in ev_list
+            ) or "—",
         })
 
     marriage_window_str = "—"
@@ -432,9 +443,16 @@ def _build_picture_vm(picture: PictureFindings) -> dict:
         win = mp.get("初婚最佳窗口")
         if win and len(win) == 2:
             marriage_window_str = f"{win[0]}-{win[1]} 岁"
-        for k, v in mp.items():
-            if k != "初婚最佳窗口":
-                marriage_picture_extra += f"{k}：{v}  "
+        # v1.3 D3: 白名单展示，避免泄漏内部 _debug / Evidence(...) 等结构化数据。
+        # 仅展示稳态、可读的画像字段；其余仅在 master 内部审阅时通过 evidence
+        # 列表暴露，client 报告完全屏蔽。
+        _PICTURE_WHITELIST = (
+            "配偶画像", "婚姻稳定度", "早婚信号", "晚婚信号",
+            "二婚信号", "婚后家境", "桃花强度",
+        )
+        for k in _PICTURE_WHITELIST:
+            if k in mp and mp[k]:
+                marriage_picture_extra += f"{k}：{mp[k]}  "
 
     return {
         "caifu_type": caifu.type if caifu else "—",
@@ -600,8 +618,13 @@ def _build_conclusions_vm(
     energy: EnergyFindings,
     picture: PictureFindings,
     gates: list[GateResult],
+    final_conclusions: Optional[list] = None,
 ) -> dict:
-    """§E 立体合并：从上游 evidence 中提炼共识/互补断语。
+    """§E 立体合并：构建共识/互补层断语视图。
+
+    v1.3 D3：优先消费 ``final_conclusions``（来自 ``AnalysisOutput.final_conclusions``，
+    其 ``layer`` 字段已由 pipeline.integrate 按 04 § 五分层）。当上游未注入
+    final_conclusions 时回退到旧路径——从 evidence 中按星级粗略抽取。
 
     v1.3 D1：每条断语挂 statement_id（基于 case_id + 支撑 rule_ids 集合）。
     """
@@ -609,62 +632,100 @@ def _build_conclusions_vm(
     consensus = []
     complementary = []
 
-    # 共识断语：从能量 evidence 中取高置信（★4+），打 [共识] 标签
-    for ev in energy.evidence:
-        star, pct = _star_pct(getattr(ev, "confidence", None))
-        if star >= 4:
-            ev_str = f"{ev.rule_id}({ev.school})"
-            sid = _compute_statement_id(case_id, [ev.rule_id])
-            consensus.append({
+    if final_conclusions:
+        # 走新路径：直接使用 pipeline.integrate 已分层的 FinalConclusion
+        for fc in final_conclusions:
+            layer = getattr(fc, "layer", None) or (
+                fc.get("layer") if isinstance(fc, dict) else None
+            )
+            if layer not in ("共识", "互补"):
+                continue
+            star, pct = _star_pct(getattr(fc, "confidence", None))
+            schools = getattr(fc, "contributing_schools", None) or (
+                fc.get("contributing_schools") if isinstance(fc, dict) else []
+            ) or []
+            statement = getattr(fc, "statement", None) or (
+                fc.get("statement") if isinstance(fc, dict) else ""
+            )
+            ev_list = _evidence_list(fc)
+            ev_str = " ".join(
+                f"{e['rule_id']}({e['school']})" for e in ev_list
+            ) or "—"
+            rule_ids = [e["rule_id"] for e in ev_list] or [
+                getattr(fc, "conclusion_id", None)
+                or (fc.get("conclusion_id") if isinstance(fc, dict) else "MR-LAYER")
+            ]
+            sid = _compute_statement_id(case_id, rule_ids)
+            falsifiable = getattr(fc, "falsifiable", None) or (
+                fc.get("falsifiable") if isinstance(fc, dict) else None
+            ) or f"若不符则 {rule_ids[0]} 失验"
+            entry = {
                 "statement_id": sid,
-                "statement": ev.description,
-                "schools_str": f"{ev.school}派",
+                "statement": statement,
+                "schools_str": "/".join(f"{s}派" for s in schools) if schools else "—",
                 "star": star,
                 "pct": pct,
-                "evidence": [{"rule_id": ev.rule_id, "school": ev.school,
-                              "description": ev.description}],
-                "evidence_str": ev_str,
-                "falsifiable": f"若命主最终财富/层级不符则 {ev.rule_id} 失验",
-            })
-
-    # 互补断语：从图景 evidence 中取，打 [互补] 标签
-    for ev in picture.evidence:
-        star, pct = _star_pct(getattr(ev, "confidence", None))
-        if star >= 3:
-            ev_str = f"{ev.rule_id}({ev.school})"
-            sid = _compute_statement_id(case_id, [ev.rule_id])
-            complementary.append({
-                "statement_id": sid,
-                "statement": ev.description,
-                "schools_str": f"{ev.school}派",
-                "star": star,
-                "pct": pct,
-                "evidence": [{"rule_id": ev.rule_id, "school": ev.school,
-                              "description": ev.description}],
-                "evidence_str": ev_str,
-                "falsifiable": f"若不符则 {ev.rule_id} 失验",
-            })
-
-    # 三层铁断的应期 evidence 也加入互补层（任派独门）
-    for g in gates:
-        if g.passed_layers == 3:
-            star, pct = _star_pct(g.confidence)
-            ev_list = _evidence_list(g)
-            ev_str = " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or "MR-LAYER3(任)"
-            rule_ids = [e["rule_id"] for e in ev_list] or ["MR-LAYER3"]
-            sid = _compute_statement_id(case_id, rule_ids + [f"YEAR-{g.year}"])
-            complementary.append({
-                "statement_id": sid,
-                "statement": f"{g.year} 年 {g.domain} · {g.candidate_event}（三层齐备）",
-                "schools_str": "任派",
-                "star": star,
-                "pct": pct,
-                "year": g.year,
-                "domain": g.domain,
                 "evidence": ev_list,
                 "evidence_str": ev_str,
-                "falsifiable": f"若 {g.year} 年上述事件未发生 → 失验",
-            })
+                "falsifiable": falsifiable,
+            }
+            if layer == "共识":
+                consensus.append(entry)
+            else:
+                complementary.append(entry)
+    else:
+        # 回退路径：从 evidence 中按星级粗略抽取（保留向下兼容）
+        for ev in energy.evidence:
+            star, pct = _star_pct(getattr(ev, "confidence", None))
+            if star >= 4:
+                ev_str = f"{ev.rule_id}({ev.school})"
+                sid = _compute_statement_id(case_id, [ev.rule_id])
+                consensus.append({
+                    "statement_id": sid,
+                    "statement": ev.description,
+                    "schools_str": f"{ev.school}派",
+                    "star": star,
+                    "pct": pct,
+                    "evidence": [{"rule_id": ev.rule_id, "school": ev.school,
+                                  "description": ev.description}],
+                    "evidence_str": ev_str,
+                    "falsifiable": f"若命主最终财富/层级不符则 {ev.rule_id} 失验",
+                })
+        for ev in picture.evidence:
+            star, pct = _star_pct(getattr(ev, "confidence", None))
+            if star >= 3:
+                ev_str = f"{ev.rule_id}({ev.school})"
+                sid = _compute_statement_id(case_id, [ev.rule_id])
+                complementary.append({
+                    "statement_id": sid,
+                    "statement": ev.description,
+                    "schools_str": f"{ev.school}派",
+                    "star": star,
+                    "pct": pct,
+                    "evidence": [{"rule_id": ev.rule_id, "school": ev.school,
+                                  "description": ev.description}],
+                    "evidence_str": ev_str,
+                    "falsifiable": f"若不符则 {ev.rule_id} 失验",
+                })
+        for g in gates:
+            if g.passed_layers == 3:
+                star, pct = _star_pct(g.confidence)
+                ev_list = _evidence_list(g)
+                ev_str = " ".join(f"{e['rule_id']}({e['school']})" for e in ev_list) or "MR-LAYER3(任)"
+                rule_ids = [e["rule_id"] for e in ev_list] or ["MR-LAYER3"]
+                sid = _compute_statement_id(case_id, rule_ids + [f"YEAR-{g.year}"])
+                complementary.append({
+                    "statement_id": sid,
+                    "statement": f"{g.year} 年 {g.domain} · {g.candidate_event}（三层齐备）",
+                    "schools_str": "任派",
+                    "star": star,
+                    "pct": pct,
+                    "year": g.year,
+                    "domain": g.domain,
+                    "evidence": ev_list,
+                    "evidence_str": ev_str,
+                    "falsifiable": f"若 {g.year} 年上述事件未发生 → 失验",
+                })
 
     return {
         "consensus_conclusions": consensus,
@@ -880,6 +941,7 @@ def render(
     gates: list[GateResult],
     parsed: ParsedInput,
     support: Optional[Any] = None,
+    final_conclusions: Optional[list] = None,
     template_name: Optional[str] = None,
     variant: Literal["master", "client", "v1.2"] = "master",
     *,
@@ -960,7 +1022,7 @@ def render(
     ctx.update(_build_support_vm(support, case_id=ctx["case_id"]))
 
     # §E 立体合并
-    ctx.update(_build_conclusions_vm(energy, picture, gates))
+    ctx.update(_build_conclusions_vm(energy, picture, gates, final_conclusions))
 
     # §H 画像版骨架
     ctx["portrait_block"] = _build_portrait_vm(energy, picture, gates, parsed) if parsed else ""

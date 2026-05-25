@@ -67,7 +67,7 @@
 
 {% for step in wubu_steps %}
 **第 {{ step.step }} 步 · {{ step.name }}**：{{ step.finding }}  
-来源：{% for e in step.evidence %}{{ e.rule_id }}({{ e.school }}) {% endfor %}
+来源：{{ step.evidence_str }}
 
 {% endfor %}
 
@@ -132,7 +132,7 @@
 <!-- §D-START: 铁断段，禁止 AI 修改 -->
 
 {% if support %}
-**高派旁证置信度**：★{{ support_star }} ({{ support_pct }}%)  
+**[高派] 旁证置信度**：★{{ support_star }} ({{ support_pct }}%)  来源：D4 高派神煞合成层（MR-401）  
 
 {% if support_marriage_boosts %}
 **婚姻旁证**：
