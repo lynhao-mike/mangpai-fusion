@@ -118,10 +118,19 @@ class AnalysisConclusion:
 # 启发式：根据语义标记判定 verdict
 # ----------------------------------------------------------------
 
-_HIT_MARKERS = ("✅", "应验", "铁应验", "命中")
-_MISS_MARKERS = ("❌", "失验", "完全失验", "miss")
-_ABSTAIN_MARKERS = ("🟡", "部分应验", "部分", "🟠")
-_NODATA_MARKERS = ("❓", "存疑", "未提供", "未明确", "待回测", "⏳", "进行中", "待时间触发")
+# v1.3 D5+ 历史回补扩展（2026-05-25）：
+#   - HIT 增加 "铁断"（C-012 用 ✅✅✅ 铁断）、"铁证"（C-008 用"罕见史诗级铁证"）
+#   - MISS 增加 "完全证伪"（C-008 用"完全证伪"代替"完全失验"）
+#   - ABSTAIN 增加 "◐"（C-007 用半圆表示部分命中）、"⚠️"（C-007/C-011 用作"需修正/偏保守"中性标记）
+#   - NODATA 增加 "未知"（C-013"⏳ 未知"）、"待补"（C-009"待补具体应期"）
+# 仅在能稳定提升 fanout 命中且不引入误判时纳入。
+_HIT_MARKERS = ("✅", "应验", "铁应验", "命中", "铁断", "铁证")
+_MISS_MARKERS = ("❌", "失验", "完全失验", "完全证伪", "miss")
+_ABSTAIN_MARKERS = ("🟡", "部分应验", "部分", "🟠", "◐", "⚠️")
+_NODATA_MARKERS = (
+    "❓", "存疑", "未提供", "未明确", "未知", "待补", "待回测", "待验",
+    "⏳", "进行中", "待时间触发",
+)
 
 
 def _classify_verdict(text: str) -> Verdict:
@@ -214,7 +223,10 @@ def parse_feedback_md(path: pathlib.Path) -> list[FeedbackRow]:
         if not line.startswith("|") or not line.endswith("|"):
             continue
         cells = [c.strip() for c in line.strip("|").split("|")]
-        if len(cells) < 4:
+        # v1.3 D5+ 历史回补扩展（2026-05-25）：放宽到 >=3 列，覆盖 C-008/C-009/C-010 极简
+        # `| # | 事实 | 派别命中 |` 三列表格。verdict 标记仍是必要条件（见下面 any() 判断），
+        # 故无 verdict 标记的普通"事实表"不会被误纳入。
+        if len(cells) < 3:
             continue
         # 跳过表头 + 分隔行
         if all(re.fullmatch(r"-+:?|:?-+", c.replace(" ", "")) for c in cells):
@@ -338,7 +350,9 @@ def parse_analysis_md(path: pathlib.Path) -> list[AnalysisConclusion]:
 def match_verdict(conclusion: AnalysisConclusion, feedback_rows: list[FeedbackRow]) -> Verdict:
     """05 § 十 的简化实现：把 analysis 结论与 feedback 行做语义匹配。
 
-    优先匹配规则：
+    优先匹配规则（v1.3 D5+ 历史回补扩展，2026-05-25）：
+      0. **rule_id 精确匹配**：若 feedback 行 raw_line 中显式含 conclusion 的任一 rule_id
+         （C-2026-014 等"逐规律标注"格式），直接采用该行 verdict，不被同 domain 其它行污染
       1. domain 匹配 + 派别交集 → 取该子集中最具决断力的 verdict（miss > hit > abstain > no_data）
       2. domain 匹配 → 同上
       3. 全部 → no_data
@@ -346,6 +360,19 @@ def match_verdict(conclusion: AnalysisConclusion, feedback_rows: list[FeedbackRo
     if not feedback_rows:
         return "no_data"
 
+    # ----- Step 0：rule_id 精确匹配（最高优先级）-----
+    if conclusion.rule_ids:
+        exact_hits: list[FeedbackRow] = []
+        for r in feedback_rows:
+            if any(rid in r.raw_line for rid in conclusion.rule_ids):
+                exact_hits.append(r)
+        if exact_hits:
+            # 同一 rule_id 出现多行时按决断力排序，但限定在精确命中子集内
+            priority = {"miss": 0, "hit": 1, "abstain": 2, "no_data": 3}
+            exact_hits.sort(key=lambda r: priority[r.verdict])
+            return exact_hits[0].verdict
+
+    # ----- Step 1-2：domain + 派别交集 / domain 匹配 -----
     candidates: list[FeedbackRow] = []
     if conclusion.domain:
         candidates = [
