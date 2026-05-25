@@ -829,27 +829,36 @@ def _render_template(template: str, ctx: dict) -> str:
 
     out = for_re.sub(_expand_for, out)
 
-    # 2) {% if not key %} ... {% endif %}
-    if_not_re = re.compile(
-        r"\{%\s*if\s+not\s+(\w+)\s*%\}(.*?)\{%\s*endif\s*%\}", re.DOTALL
+    # 2)+3) {% if not key %} / {% if key %}（嵌套支持）
+    # 关键：body 中加负前瞻 (?:(?!\{%\s*if\b).)*?，确保 body 不含嵌套 {% if %}，
+    # 这样每次匹配的 {% endif %} 一定配对最内层；外层 while 循环逐层向外展开，
+    # 直到无变化为止。修复了原非贪婪 (.*?) 在嵌套场景下外层 endif 错配为内层
+    # endif，导致 client 模式泄漏反馈位的 bug。
+    if_not_inner_re = re.compile(
+        r"\{%\s*if\s+not\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+        re.DOTALL,
+    )
+    if_inner_re = re.compile(
+        r"\{%\s*if\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+        re.DOTALL,
     )
     def _expand_if_not(m):
         key = m.group(1)
         body = m.group(2)
         val = ctx.get(key)
         return body if not val else ""
-    out = if_not_re.sub(_expand_if_not, out)
-
-    # 3) {% if key %} ... {% endif %}
-    if_re = re.compile(
-        r"\{%\s*if\s+(\w+)\s*%\}(.*?)\{%\s*endif\s*%\}", re.DOTALL
-    )
     def _expand_if(m):
         key = m.group(1)
         body = m.group(2)
         val = ctx.get(key)
         return body if val else ""
-    out = if_re.sub(_expand_if, out)
+    # 防御性上限：模板嵌套深度不应超过 32 层；超过即视为模板异常并退出循环。
+    for _ in range(32):
+        prev = out
+        out = if_not_inner_re.sub(_expand_if_not, out)
+        out = if_inner_re.sub(_expand_if, out)
+        if out == prev:
+            break
 
     # 4) {{ key }} → 替换为 ctx[key]
     def _replace_var(m):
