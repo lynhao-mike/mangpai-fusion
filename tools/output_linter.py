@@ -575,7 +575,10 @@ def _lint_one_conclusion(
                 Severity.ERROR, "E10",
                 f"引用了黑名单规律 {bid}",
                 location=loc,
-                suggestion=f"参考 mechanical-rules.yaml 的 {bid}.replacement_rules",
+                suggestion=(
+                    f"该规律已废弃，参考 engine/mechanical_rules.py 的 "
+                    f"BLACKLIST[\"{bid}\"].replacement_rules"
+                ),
             )
     for alias_lower, bid in rules.blacklist_aliases.items():
         if not alias_lower:
@@ -585,7 +588,10 @@ def _lint_one_conclusion(
                 Severity.ERROR, "E10",
                 f"使用了黑名单规律 {bid} 的别名「{alias_lower}」",
                 location=loc,
-                suggestion=f"该规律已废弃，参考 {bid}.replacement_rules",
+                suggestion=(
+                    f"该规律已废弃，参考 engine/mechanical_rules.py 的 "
+                    f"BLACKLIST[\"{bid}\"].replacement_rules"
+                ),
             )
 
     # E7：禁忌词（hard）
