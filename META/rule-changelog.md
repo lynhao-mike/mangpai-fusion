@@ -85,3 +85,65 @@
   - 互补层：4 条 → 5 条（新增 COMP-5 贵人帮扶系统）
   - 软化所有非铁断判断为多派联合表达
   - 新增贵人神煞专项判断（县域分层视角）
+
+---
+
+## 2026-05-25 · v1.3 历史案例反馈回补（10/10 完成 → seq=1 闭环触发）
+
+### 背景
+v1.3 D5 自迭代闭环上线前已沉淀的 10 份历史 `feedback.md` 从未走结构化摄入。
+本次按"v1.0 启发式 fallback"通道回灌，目的：
+1. 给 4 派规律计入历史 hits/misses，供 D5 Beta 重算 + D8 漂移检测；
+2. 让 `feedback_completed_count` 0 → 10，触发首次 D8 `iteration-report-001`；
+3. 推进决策 E（Beta 切换阈值 ≥30 案）样本累积。
+
+### 锁定原则
+- **A**：v6/v7 后期案 (007/009/010/011/012/013) `analysis.md` 无可抽 rule_id 时只 bump 计数不 fanout；
+- **B**：双盘案（C-001↔C-002 夫妻 / C-002↔C-014 母子）算独立两次，保留信号强度；
+- **C**：未来 ⏳ 应期段一律 `no_data` 跳过。
+
+### 涉及案例（10 案）
+- C-2026-001 / 002 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 014
+
+### 工具补丁（[`tools/feedback_loop.py`](tools/feedback_loop.py:1)）
+1. **扩展反馈标注词表**（[`_HIT/_MISS/_ABSTAIN/_NODATA_MARKERS`](tools/feedback_loop.py:121)）：
+   - 新增 hit：`铁应验 / 命中 / 铁断 / 铁证`
+   - 新增 miss：`完全失验 / 完全证伪`
+   - 新增 abstain：`部分应验 / 🟠 / ◐ / ⚠️`
+   - 新增 no_data：`未提供 / 未明确 / ⏳ / 进行中 / 待时间触发 / 待回测 / 待验`
+2. **放宽表格列阈** [`parse_feedback_md`](tools/feedback_loop.py:212)：`cells<4` → `cells<3`，兼容 C-008/009/010 简表。
+3. **新增** [`match_verdict_for_rule(rule_id, conclusion, feedback_rows)`](tools/feedback_loop.py:350)：
+   按 `rule_id` 在 `raw_line` 中精确出现优先匹配，priority `miss>hit>abstain>no_data`，无精确匹配再走 domain fallback。
+4. **重构** [`ingest_feedback`](tools/feedback_loop.py:801) fanout：
+   逐 `rule_id` 查 verdict（取代原"按 conclusion 整体匹配再均摊"），修复 C-014 一条 conclusion 含多 rule_id 时被 OR 合并掉的 bug。
+
+### 摄入产出（来自 [`META/iteration-state.json`](META/iteration-state.json:1) + [`META/iteration-log.md`](META/iteration-log.md:1)）
+- `feedback_completed_count`：0 → **10**
+- `iteration_seq`：0 → **1**（[`META/iteration-report-001.md`](META/iteration-report-001.md:1) 已生成）
+- `META/calibration/`：9 个新 snapshot（C-001 因首案先于补丁完成，未入快照）
+- 跨派扫描触发：✅ `META/conflict-trends.md` 同步刷新
+
+### 自动降级（confirmed → flagged_for_review · 累计 misses 触发缓冲阈值）
+| rule_id | 派别 | 触发原因 |
+|---|---|---|
+| **M2-Y-091** | 杨 | 多案累计 miss 越阈，需架构师 review |
+| **M3-R-005** | 任 | 同上 |
+| **M3-R-031** | 任 | 同上 |
+
+### 升级
+- 升级：**0 条**（≥3 案铁应验门槛尚未达成；M1-D-241 / M2-Y-070 等多次 hit 进入候选观察）
+
+### 边界自挖（D3）+ 否决（D4）
+- D3 boundary_miner：本周期无显著边界候选（miss<5 或 p/lift 不达标）
+- D4 veto_miner：本周期 0 条满足全部触发条件
+
+### 跨派一致性
+- 本周期相关冲突计数：**10**（来源 [`META/conflict-trends.md`](META/conflict-trends.md:1)）
+
+### 决策 E 进度
+- 累计反馈样本：**10 / 30**（Beta 切换阈值），还差 20 案。
+- 当前置信度公式仍走线性加权（4:6）。
+
+### 留待人工 review（架构师）
+- 3 条 `flagged_for_review` 规律的合理性与替代规则候选；
+- 是否将 M1-D-241 / M2-Y-070（连续多案 hit）提前进入 candidate-MR 观察名单。

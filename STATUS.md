@@ -2,7 +2,7 @@
 
 **最后更新**：2026-05-25
 **版本**：**v1.3.0**（自迭代闭环上线；`VERSION` = `1.3.0`）
-**当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）
+**当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）+ 历史反馈回补 10/10 ✅（首次 D8 触发 → [`META/iteration-report-001.md`](META/iteration-report-001.md:1)）
 
 ---
 
@@ -106,9 +106,11 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 | 类型 | 数量 |
 |---|---|
 | candidate（候选） | ~261（高派为主）|
-| confirmed（已确认）| ~653（段杨任派）|
-| flagged_for_review（待人工审）| 0 |
+| confirmed（已确认）| ~650（段杨任派；扣除下行 3 条）|
+| flagged_for_review（待人工审）| **3**（**M2-Y-091** / **M3-R-005** / **M3-R-031**，2026-05-25 历史回补累计 misses 触发）|
 | deprecated（已弃用）| 0 |
+
+> 3 条 `flagged_for_review` 来源：[`META/rule-changelog.md`](META/rule-changelog.md:1) "2026-05-25 · v1.3 历史案例反馈回补"。架构师待 review 是否替代或退役。
 
 > v1.0 的 promoted/retired/frozen 三态在 v1.2 重命名为 candidate / confirmed / flagged_for_review / deprecated（`engine/contracts/05-rule-lifecycle.md`），`tools/rule_lifecycle.py` 已自动迁移旧 status。
 
@@ -161,9 +163,10 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 立即可做：
 1. v1.3 自迭代闭环已上线 → 投入实战；命理师按 master 报告填 `[y]/[n]/[?]/[skip]` 即可触发反馈回流
 2. 每 10 完成反馈案自动产出 `META/iteration-report-NNN.md`（D8）→ 架构师 review 是否合并候选边界 / 否决候选
+3. **review 3 条 flagged_for_review 规律**（M2-Y-091 / M3-R-005 / M3-R-031）→ 决定保留观察 / 收紧条件 / 退役（参考 [`META/iteration-report-001.md`](META/iteration-report-001.md:1) §一）
 
 短期（1-3 个月）：
-- 累积反馈样本 ≥ 30 → 置信度公式从线性加权切 Beta（决策 E 阈值）
+- **决策 E Beta 切换阈值 ≥ 30，当前 10/30，还差 20 案** → 累积到位后置信度公式从线性加权（4:6）切 Beta 后验
 - 加轻量 metrics（每步落盘 timing.json，超 60s 告警）
 - 一次性审查 `engine/mechanical-rules.yaml`，把"含判定语义"字段挪到 Python（彻底落地决策 B）
 
