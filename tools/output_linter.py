@@ -460,6 +460,8 @@ def lint(
                 f"断语总数 {len(conclusions)} < 5（策略 B 最少建议）",
             )
         _lint_global_text(full_text, rules, res)
+        # CFL-C015-002 · 跨维度输出耦合性 gate（仅 markdown 模式适用）
+        _lint_cross_domain_coupling(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -676,6 +678,122 @@ def _lint_global_text(
             )
 
 
+# ----------------------------------------------------------------
+# CFL-C015-002 · 跨维度输出耦合性 gate
+# ----------------------------------------------------------------
+# 详见：engine/level-scales.md § 十一
+# 触发条件：报告同时出现高置信度的 "体制内/公门/国企" 关键词
+#         + 高置信度的 "中富/大富/巨富/小富" 市场财富分级
+#         且无明确耦合标注（"权力层级" / "公务员薪酬" / "非体制路径下的对照值"）
+# 严重等级：WARNING (W9)
+# 来源：C-2026-015 反馈 / CFL-C015-002 仲裁
+
+# 行业路径关键词（高置信暗示走体制路径）
+_INSTITUTIONAL_KEYWORDS: tuple[str, ...] = (
+    "体制内",
+    "公门",
+    "国企",
+    "事业单位",
+    "选调",
+    "公务员",
+    "党政",
+    "行政机关",
+    "省厅",
+    "正厅",
+    "副厅",
+    "正处",
+    "副处",
+    "厅局级",
+    "省部级",
+)
+
+# 市场财富分级关键词（暗示用 5 级 15 档市场财富分级）
+_MARKET_WEALTH_KEYWORDS: tuple[str, ...] = (
+    "中富级",
+    "中富·",
+    "大富级",
+    "大富·",
+    "巨富级",
+    "巨富·",
+    "小富级",
+    "小富·",
+    "贫困级",
+    "贫困·",
+)
+
+# 耦合标注关键词（出现任一即视为已做耦合标注，免警告）
+_COUPLING_ANNOTATIONS: tuple[str, ...] = (
+    "权力层级",
+    "公务员薪酬",
+    "非体制路径下的对照值",
+    "体制路径例外条款",
+    "EXC-D-LIFA-CAP-001",
+    "CFL-C015-002",
+    "行业路径耦合提示",
+)
+
+# 高置信信号阈值：报告中包含 ≥N% 或 ★★★★+ 的行
+_HIGH_CONFIDENCE_RE = re.compile(r"★{4,5}|\((?:7[0-9]|8[0-9]|9[0-9]|100)%\)")
+
+
+def _has_high_confidence_marker(text: str, keyword: str) -> bool:
+    """检查 keyword 出现的行附近（同一行或上下 1 行）是否带高置信度标记。"""
+    lines = text.split("\n")
+    for i, line in enumerate(lines):
+        if keyword not in line:
+            continue
+        # 检查 keyword 所在行 + 前后各 1 行
+        window = "\n".join(lines[max(0, i - 1): min(len(lines), i + 2)])
+        if _HIGH_CONFIDENCE_RE.search(window):
+            return True
+    return False
+
+
+def _lint_cross_domain_coupling(
+    md: str, res: LintResult,
+) -> None:
+    """CFL-C015-002 · 检查行业方向 / 财富层级 跨维度输出耦合一致性。
+
+    若报告同时出现高置信"体制内"信号 + 高置信"市场财富分级"，
+    且未包含任何耦合标注 → 触发 W9 cross-domain incoherence warning。
+
+    详见 engine/level-scales.md § 十一。
+    """
+    # 1. 检测高置信"体制内"信号
+    institutional_hits: list[str] = []
+    for kw in _INSTITUTIONAL_KEYWORDS:
+        if kw in md and _has_high_confidence_marker(md, kw):
+            institutional_hits.append(kw)
+
+    if not institutional_hits:
+        return  # 无体制内信号 → 走默认市场财富分级，无需耦合 gate
+
+    # 2. 检测高置信"市场财富分级"输出
+    market_wealth_hits: list[str] = []
+    for kw in _MARKET_WEALTH_KEYWORDS:
+        if kw in md and _has_high_confidence_marker(md, kw):
+            market_wealth_hits.append(kw)
+
+    if not market_wealth_hits:
+        return  # 无市场财富分级输出 → 已经走权力层级，符合规范
+
+    # 3. 检测耦合标注
+    coupling_present = any(ann in md for ann in _COUPLING_ANNOTATIONS)
+
+    if coupling_present:
+        return  # 已做耦合标注 → 符合规范
+
+    # 4. 触发 W9 警告
+    res.add(
+        Severity.WARNING, "W9",
+        f"跨维度输出耦合性问题（CFL-C015-002）：报告同时输出高置信度的"
+        f"体制内信号 {institutional_hits[:3]} 和市场财富分级 {market_wealth_hits[:3]}，"
+        f"但未包含耦合标注。建议：1) 改用权力层级（科/处/厅/部/国）作为主输出框架；"
+        f"或 2) 在财富层级标题前加注释 '以下市场财富分级仅作为非体制路径下的对照值'。"
+        f"详见 engine/level-scales.md § 十一。",
+    )
+
+
 # ============================================================
 # 九、smoke test
 # ============================================================
@@ -710,6 +828,29 @@ _SMOKE_BAD_RANGE = "[共识] 婚姻坎坷 ★5 (50%) 来源：M2-Y-073"
 _SMOKE_BAD_BLACKLIST = "[杨派] 五凶煞=婚凶 婚姻坎坷 ★4 (75%) 来源：M2-Y-073"
 _SMOKE_BAD_FORBIDDEN = "[共识] 未来某年可能必然有大事 ★3 (60%) 来源：M3-R-001"
 
+# CFL-C015-002 smoke test：体制内信号 + 市场财富分级 同时高置信 + 无耦合标注 → W9
+_SMOKE_BAD_CROSS_DOMAIN = """\
+[共识 · 4 派一致] 命主走公门路径 ★5 (90%)
+- 来源：M1-D-005, M2-Y-091, G-XX-005, M3-R-018
+- 证伪：若 65 岁前未在体制内 → 失验
+
+[互补] 财运一生天花板 中富级·上等（500-1000 万资产）★4 (85%)
+- 来源：M1-D-173, M2-Y-035
+- 证伪：若 60 岁仍年薪不到 30 万 → 失验
+"""
+
+# 同样信号但已加耦合标注 → 不应触发 W9
+_SMOKE_GOOD_CROSS_DOMAIN = """\
+[共识 · 4 派一致] 命主走公门路径 ★5 (90%)
+- 来源：M1-D-005, M2-Y-091, G-XX-005, M3-R-018
+- 证伪：若 65 岁前未在体制内 → 失验
+
+[互补] 财运一生天花板：权力层级 正厅级 ★4 (85%)
+（CFL-C015-002 输出耦合标注：以下市场财富分级仅作为非体制路径下的对照值）
+中富级·上等（500-1000 万资产对照值）— 来源：M1-D-173, M2-Y-035
+- 证伪：若 60 岁仍未达正厅 → 失验
+"""
+
 
 def _smoke() -> None:
     print("---- 1. lint good markdown ----")
@@ -726,6 +867,15 @@ def _smoke() -> None:
     print()
     print("---- 4. lint forbidden phrase ----")
     r = lint(_SMOKE_BAD_FORBIDDEN)
+    print(r.format())
+
+    print()
+    print("---- 5. lint cross-domain incoherence (CFL-C015-002, expect W9) ----")
+    r = lint(_SMOKE_BAD_CROSS_DOMAIN)
+    print(r.format())
+    print()
+    print("---- 6. lint cross-domain coupled OK (CFL-C015-002, no W9) ----")
+    r = lint(_SMOKE_GOOD_CROSS_DOMAIN)
     print(r.format())
 
 

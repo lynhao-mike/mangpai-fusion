@@ -168,6 +168,79 @@ EXC-{派别}-{topic}-{NNN}
 - **实战价值**：解释命主"中年破败"的命理本质。
 - **起始置信度**：★★★★ (78%)
 
+### 2.6 体制路径做功层数封顶例外条款（EXC-D-LIFA-CAP-001）⚠️ 候选规则
+
+```yaml
+- id: EXC-D-LIFA-CAP-001
+  layer: exclusive
+  school: duan
+  topic: lifa
+  title: 体制路径做功层数封顶例外条款
+  status: candidate              # 候选 — 待第 2 例正厅及以上体制内命主复现
+  source_rule: M1-D-173 + M1-D-005..008  # 段派"做功层次计量"+体用四律的复合例外
+  parent_rule: M1-D-173          # 父规律：1 层=中富/2 层=大富/3 层=巨富下/4 层=巨富上
+  conclusion: |
+    段派"做功层数 → 富贵层级"映射律（M1-D-173）在以下复合条件下**偏低估**，
+    需将兑现层级**上调 1 档**：
+
+    触发条件（必须同时成立）：
+      ① 命主走纯体制内路径（年轻入仕 + 长期未离体制 + 公门 P > 0.7）
+      ② 命局具备 化杀生枭（M2-Y-042）或 官印相生（CON-GEJU-001/002）等正官命结构
+      ③ 已有 ≥ 2 次跨地市/跨部门调动验证驿马应期
+
+    兑现规则：
+      做功 N 层（按 M1-D-173 原映射）→ 实际兑现 = N+1 层等价（最多 +1 档，不叠加）
+
+    示例（来自 C-2026-015 反馈）：
+      做功 2 层（原映射 L9-L11 副厅/正处）→ 实际 L12 正厅级（+1 档）
+
+  exclusive_reason: |
+    段派 M1-D-173 默认假设命主在市场化路径中以做功层数线性映射财富。
+    本例外只在体制内"年轻有为型"快车道生效，反映"行政体系阶梯叠加效应"——
+    单层做功在体制路径中可对应更高层级（同样做功在民营路径只对应市场层级）。
+
+  applies_when:
+    - industry_path: institutional      # 公门/国企/事业单位
+    - guan_yin_pattern: true            # 化杀生枭 OR 官印相生
+    - yima_validated: ">=2"             # 至少 2 次跨地调动证据
+  conflicts_with: []                    # 无对立规则；与 M1-D-173 互补而非取代
+  excluded_when:
+    - industry_path: market             # 民营/自营/投资人/自由职业 — 走 M1-D-173 默认
+    - mid_career_exit: true             # 中途离开体制 — 退回默认映射
+
+  hit_history:
+    sample: 1
+    hit: 1
+    miss: 0
+    rate: 1.0
+  initial_confidence:
+    star: 3
+    percent: 65                        # 候选规则起步保守，需第 2 例确认才升 confirmed
+  practical_value: high
+  topic_tag: 段派做功 / 体制路径 / 富贵层级修正
+  evidence_cases:
+    - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+      year: 2025
+      hit: true
+      note: |
+        命主 1996 选优入省厅 → 2025.02 升正厅 L12（30 年纯体制路径）。
+        做功 2 层（原映射 L9-L11 副厅上限）→ 实际 L12 正厅，超 1 档。
+        4 次跨地调动验证驿马；化杀生枭 + 官印相生结构齐备。
+        触发本例外条款，输出层级从 L9-L11 上调到 L9-L12。
+  promotion_path: |
+    candidate (1 hit) → confirmed (≥ 2 hits across distinct cases)
+    目标确认条件：再有 1 例正厅及以上体制内命主复现"做功 2 层 → L12"映射
+  notes: |
+    本规则源自 C-2026-015 反馈（CFL-C015-001 仲裁）。
+    ⚠️ 不要把本例外应用到非体制路径案例 — 会导致市场财富分级偏高。
+    见 META/arbitration-log.md CFL-C015-001 的完整推导。
+```
+
+**实战价值**：
+- 解释为何段派做功层数律在**首例正厅级体制内命主**反馈中"压制"了实际兑现层级
+- 与 M1-D-173 的关系：**互补而非取代** — 体制内 +1 档；体制外保持原映射
+- 必须配合 CFL-C015-002 cross-domain coupling gate 使用（见 `engine/level-scales.md` § 十一）
+
 ---
 
 ## 三、杨派独门武器（EXC-Y-*）
