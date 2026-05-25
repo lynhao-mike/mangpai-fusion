@@ -129,8 +129,8 @@ mangpai-fusion/
 └── .kiro/
     ├── skills/
     │   ├── BOOT.md                 启动入口（最小集）
-    │   ├── analyst.md              主分析器
-    │   ├── strategy.yaml           策略选择器
+    │   ├── analyst.md              v1.2 流水线编排器（Orchestrator）
+    │   ├── strategy.yaml           策略选择器（v1.2 仅作输入侧重提示）
     │   ├── modules/                调用模块
     │   ├── protocol/               协议层
     │   └── topics/                 专题剧本
@@ -142,11 +142,11 @@ mangpai-fusion/
 ## 六、快速开始
 
 1. 命主八字从问真八字 APP 复制后，按 `templates/input-from-wenzhen.md` 格式整理
-2. 启动 Kiro，激活 `.kiro/skills/analyst.md`
-3. 提交八字 → 自动按 4 派融合策略分析
-4. 收到双轨置信度报告
+2. 启动 Kiro，激活 `.kiro/skills/analyst.md`（v1.2 编排器）
+3. 提交八字 → analyst 按六阶段（INTAKE → PARSE → PIPELINE → RENDER → DELIVER → FEEDBACK）调用 `engine/pipeline.run_pipeline()`
+4. 收到双轨置信度报告（由 `tools/render_report.py` 渲染 + 双护栏 lint 校验）
 5. 与命主对话后，反馈应验/失验情况
-6. 命中率自动重算，置信度升降级
+6. 命中率自动重算（`tools/feedback_loop.py`），置信度升降级
 
 ---
 
