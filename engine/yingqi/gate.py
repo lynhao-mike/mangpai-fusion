@@ -114,6 +114,127 @@ def check_against_energy(
     return True, notes
 
 
+def _compute_age_at_year(parsed: ParsedInput, year: int) -> int:
+    """从 parsed.birth 提取出生年并计算 age = year - birth_year。
+
+    优先顺序：``birth["公历"]`` (e.g. "1980-01-01") → ``birth["公历年"]`` →
+    ``dayun.起运年 - 起运岁`` 推算（兜底）。
+    """
+    birth_year_str = str((parsed.birth or {}).get("公历", "0"))
+    try:
+        # birth["公历"] 形如 "1980-01-01"
+        birth_year = int(birth_year_str.split("-")[0]) if "-" in birth_year_str \
+            else int((parsed.birth or {}).get("公历年") or 0)
+    except (ValueError, AttributeError):
+        birth_year = int((parsed.birth or {}).get("公历年") or 0)
+    if birth_year == 0:
+        # 用大运推：起运年 - 起运岁 = 出生年
+        birth_year = parsed.dayun.起运年 - int(parsed.dayun.起运岁)
+    return year - birth_year
+
+
+# ============================================================
+# 一·五、social_clock_check (CFL-C014-003 v2 学制盲区律强制前置)
+# ============================================================
+#
+# 来源：C-2026-014（李砚儒儿子）连续 2 次校准均犯学制盲区错误：
+#   - v1.0 报告判 "2026 丙午=高考"（实际 2024）
+#   - v2.0 校准重锚 "2029 己酉=大学毕业"（实际 2028）
+# 在 v2.0 § D 仲裁中明确承诺 social_clock_check 强制前置，但
+# 实际未落代码 → v2.1 再次发现错误。本函数补上这个工程债务。
+#
+# 设计原则：
+#   1. 仅匹配明确含"成立性事件"关键词的 candidate_event
+#   2. 出生年 + 关键词 → 期望年龄窗口 [lo, hi]
+#   3. 严格窗口内 → consistent=True
+#   4. 容差带（±1 年）→ True 但标 ⚠️ warn-only
+#   5. 偏差 > 1 年 → consistent=False，gate_yingqi 钳 passed_layers ≤ 1
+#
+# 关键词列表按"长关键词优先"排序，避免"毕业"误匹配掉"本科毕业"。
+
+# 事件关键词 → (lo, hi, label) 年龄窗口
+_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = [
+    # ===== 学业系列（按长度降序避免被泛词吃掉）=====
+    (("研究生毕业", "硕士毕业"), (24, 29), "研究生毕业"),
+    (("博士毕业", "PhD毕业", "PhD 毕业"), (27, 35), "博士毕业"),
+    (("研究生入学", "硕士入学", "读研"), (21, 26), "研究生入学"),
+    (("博士入学",), (24, 32), "博士入学"),
+    (("本科毕业", "大学毕业"), (21, 24), "本科毕业（4 年制）"),
+    (("高考",), (17, 19), "高考"),
+    (("考研",), (21, 25), "考研"),
+    (("入学", "上学", "录取"), (17, 23), "升学/入学"),
+    # ===== 婚姻系列（picture 已有强约束，本函数作为二次保险）=====
+    (("初婚", "成家"), (20, 40), "初婚"),
+    (("结婚", "成婚", "嫁", "娶", "领证"), (20, 50), "结婚（含再婚）"),
+    # ===== 工作系列 =====
+    (("入职", "第一份工作", "首份工作"), (21, 28), "首次入职"),
+    (("升迁", "升职", "提拔", "晋升"), (25, 65), "升职"),
+    (("退休",), (55, 70), "退休"),
+    # ===== 生育系列 =====
+    (("生子", "生女", "怀孕", "得子", "得女"), (20, 45), "生育"),
+]
+
+# 偏差容忍度（单位：年）。命主年龄换算可能因农历/虚岁出现 ±1 年误差。
+_SOCIAL_CLOCK_TOLERANCE: int = 1
+
+
+def check_social_clock(
+    candidate_event: str,
+    year: int,
+    parsed: ParsedInput,
+) -> tuple[bool, list[str]]:
+    """v1.4 CFL-C014-003 v2：学制盲区律强制前置检查。
+
+    Args:
+        candidate_event: 候选事件描述（"结婚" / "高考" / "大学毕业" 等）
+        year:            公历年份
+        parsed:          ParsedInput（含 birth / dayun）
+
+    Returns:
+        (consistent, notes) — consistent=False 时 gate_yingqi 应钳 passed_layers ≤ 1
+    """
+    if not candidate_event:
+        return True, ["candidate_event 为空，跳过 social_clock 检查"]
+
+    # 关键词匹配（按规则列表顺序，长关键词优先）
+    matched = None
+    for keywords, (lo, hi), label in _SOCIAL_CLOCK_RULES:
+        if any(k in candidate_event for k in keywords):
+            matched = (lo, hi, label)
+            break
+
+    if matched is None:
+        return True, [
+            f"事件 '{candidate_event}' 非典型成立性事件，跳过 social_clock 检查"
+        ]
+
+    lo, hi, label = matched
+    age = _compute_age_at_year(parsed, year)
+
+    if age <= 0:
+        return True, [
+            f"年龄 {age} 不合法（year={year} 早于出生年）→ 跳过 social_clock 检查"
+        ]
+
+    # 严格窗口
+    if lo <= age <= hi:
+        return True, [f"年龄 {age} ∈ {label} 期望窗口 [{lo},{hi}]"]
+
+    # 容差带（±_SOCIAL_CLOCK_TOLERANCE 年）→ warn-only 通过
+    if lo - _SOCIAL_CLOCK_TOLERANCE <= age <= hi + _SOCIAL_CLOCK_TOLERANCE:
+        return True, [
+            f"⚠️ 年龄 {age} 在 {label} 期望窗口 [{lo},{hi}] 边缘 "
+            f"(容差 ±{_SOCIAL_CLOCK_TOLERANCE} 年内)，warn-only 通过"
+        ]
+
+    # 严重偏差 → 不一致
+    return False, [
+        f"年龄 {age} ∉ {label} 期望窗口 [{lo},{hi}] "
+        f"(容差 ±{_SOCIAL_CLOCK_TOLERANCE} 年也不含) → social_clock_consistent=False, "
+        f"passed_layers 应钳到 ≤ 1（CFL-C014-003 学制盲区律 v2）"
+    ]
+
+
 def check_against_picture(
     candidate_event: str,
     domain: str,
@@ -133,18 +254,8 @@ def check_against_picture(
 
     notes: list[str] = []
 
-    # 计算年龄（公历年差，简化）
-    birth_year_str = str((parsed.birth or {}).get("公历", "0"))
-    try:
-        # birth["公历"] 形如 "1980-01-01"
-        birth_year = int(birth_year_str.split("-")[0]) if "-" in birth_year_str \
-            else int((parsed.birth or {}).get("公历年") or 0)
-    except (ValueError, AttributeError):
-        birth_year = int((parsed.birth or {}).get("公历年") or 0)
-    if birth_year == 0:
-        # 用大运推：起运年 - 起运岁 = 出生年
-        birth_year = parsed.dayun.起运年 - int(parsed.dayun.起运岁)
-    age = year - birth_year
+    # 计算年龄（沿用 _compute_age_at_year 工具函数）
+    age = _compute_age_at_year(parsed, year)
 
     # ============ 婚姻 ============
     if domain == "婚姻":
@@ -482,10 +593,13 @@ def gate_yingqi(
     p_ok, p_notes = check_against_picture(
         candidate_event, domain, picture, year, parsed
     )
+    # v1.4 CFL-C014-003 v2：学制盲区律强制前置（与 picture 同级钳制）
+    s_ok, s_notes = check_social_clock(candidate_event, year, parsed)
 
     consistency_notes: list[str] = []
     consistency_notes.extend([f"[energy] {n}" for n in e_notes])
     consistency_notes.extend([f"[picture] {n}" for n in p_notes])
+    consistency_notes.extend([f"[social_clock] {n}" for n in s_notes])
 
     # 3. picture 不一致 → 强制 passed_layers ≤ 1（修复 G2 关键！）
     final_passed = raw_passed
@@ -495,6 +609,16 @@ def gate_yingqi(
             0,
             f"[硬约束] picture_consistent=False → "
             f"passed_layers 从 {raw_passed} 钳到 {final_passed}",
+        )
+
+    # 3·五. v1.4 CFL-C014-003：social_clock 不一致 → 同样钳到 ≤ 1（修复 C-014 学制盲区）
+    if not s_ok:
+        prev = final_passed
+        final_passed = min(final_passed, 1)
+        consistency_notes.insert(
+            0,
+            f"[硬约束] social_clock_consistent=False → "
+            f"passed_layers 从 {prev} 钳到 {final_passed} (CFL-C014-003 v2)",
         )
 
     # energy 不一致 → 钳到 ≤ 2
@@ -511,7 +635,7 @@ def gate_yingqi(
     )
 
     # 5. 置信度
-    upstream_ok = e_ok and p_ok
+    upstream_ok = e_ok and p_ok and s_ok
     confidence = compute_yingqi_confidence(
         passed_layers=final_passed,
         triggers=triggers,
