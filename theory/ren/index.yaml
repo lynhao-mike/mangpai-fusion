@@ -84,6 +84,7 @@ rules:
     sample_n: 3
     last_updated: '2026-05-26'
   status_changed_at: '2026-05-26'
+  quantifiable: false
 - id: M3-R-004
   school: ren
   topic: lifa
@@ -622,6 +623,8 @@ rules:
     sample_n: 8
     last_updated: '2026-05-26'
   status_changed_at: '2026-05-25'
+  domain_restriction:
+  - 应期
 - id: M3-R-032
   school: ren
   topic: lifa

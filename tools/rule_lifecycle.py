@@ -273,6 +273,11 @@ class Rule:
     # 置信度缓存
     confidence_cache: Optional[Confidence] = None
 
+    # v1.4 V1：quantifiable=False 表示框架性心法（不参与 hit/miss 计数）
+    # v1.4 V2：domain_restriction 非空表示仅在列出的域内 ingest 时计 hit/miss
+    quantifiable: bool = True
+    domain_restriction: list[str] = field(default_factory=list)
+
     # 原始 yaml 透传字段（不可被 Track-G 改写）
     _raw: dict[str, Any] = field(default_factory=dict)
 
@@ -508,6 +513,9 @@ def _entry_to_rule(entry: dict[str, Any]) -> Rule:
         recent_5=[bool(x) for x in entry.get("recent_5", [])],
         applied_cases=applied,
         confidence_cache=conf,
+        # v1.4 V1/V2：兼容旧 yaml（无字段时默认 quantifiable=True / 空 domain_restriction）
+        quantifiable=bool(entry.get("quantifiable", True)),
+        domain_restriction=list(entry.get("domain_restriction", []) or []),
         _raw=dict(entry),
     )
     return rule
@@ -537,6 +545,17 @@ def _rule_to_entry(rule: Rule) -> dict[str, Any]:
         d = rule.confidence_cache.to_dict()
         d["last_updated"] = _dt.date.today().isoformat()
         entry["confidence_cache"] = d
+    # v1.4 V1/V2：仅在显式标注（非默认值）时写入 yaml，保持旧 yaml 干净
+    if rule.quantifiable is not True:
+        entry["quantifiable"] = rule.quantifiable
+    elif "quantifiable" in entry and entry["quantifiable"] is True:
+        # 已显式标注 true 的保留
+        entry["quantifiable"] = True
+    if rule.domain_restriction:
+        entry["domain_restriction"] = list(rule.domain_restriction)
+    elif "domain_restriction" in entry:
+        # 显式空列表时清掉
+        entry.pop("domain_restriction", None)
     return entry
 
 

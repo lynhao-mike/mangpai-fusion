@@ -386,6 +386,59 @@ def _collect_evidence(
 
 
 # ============================================================
+# 三·五、v1.4 V4：体制内案例的事件类型多解（CFL-C015-003）
+# ============================================================
+
+# 体制内路径关键词（与 output_linter._INSTITUTIONAL_KEYWORDS 保持一致核心子集）
+_INSTITUTIONAL_HINTS: tuple[str, ...] = (
+    "公门", "国企", "体制", "事业单位", "选调", "公务员",
+    "党政", "行政", "省厅", "正厅", "副厅", "正处", "副处",
+    "厅局", "省部",
+)
+
+
+def _infer_event_type_hypotheses(
+    domain: str,
+    candidate_event: str,
+    picture: PictureFindings,
+) -> list[str]:
+    """v1.4 V4：根据行业路径推断事件类型候选。
+
+    触发条件（CFL-C015-003 规约）：
+        - domain ∈ {"财运", "事业"}
+        - picture.industry_pointers 含体制路径关键词
+        - 当前 candidate_event 暗示"财源/置业"类（避免对已经是"升迁"的事件重复注入）
+
+    返回：
+        - 满足触发条件 → ["职级升迁", "财源/置业"]
+        - 否则 → [] （表示采用 candidate_event 单解）
+
+    设计原则：保守注入，仅在强信号下输出多候选；其他案例保持向后兼容。
+    """
+    if domain not in ("财运", "事业"):
+        return []
+
+    pointers = list(picture.industry_pointers or [])
+    pointers_str = "".join(pointers)
+    if not any(kw in pointers_str for kw in _INSTITUTIONAL_HINTS):
+        return []
+
+    # 已经是"升迁/升职"类事件 → 不需要注入（事件类型已明确）
+    if any(k in candidate_event for k in ("升迁", "升职", "提拔", "晋升")):
+        return []
+
+    # 财星/财源类事件 → 注入双解（职级 / 财源）
+    if any(k in candidate_event for k in ("财", "置业", "财源", "财星", "求财")):
+        return ["职级升迁", "财源/置业"]
+
+    # 事业域的笼统事件 → 同样注入
+    if domain == "事业":
+        return ["职级升迁", "财源/置业"]
+
+    return []
+
+
+# ============================================================
 # 四、主入口
 # ============================================================
 
@@ -499,6 +552,9 @@ def gate_yingqi(
         triggers=triggers,
         primary_trigger=primary_trigger,
         door=door,
+        event_type_hypotheses=_infer_event_type_hypotheses(
+            domain, candidate_event, picture,
+        ),
         confidence=confidence,
         energy_consistent=e_ok,
         picture_consistent=p_ok,

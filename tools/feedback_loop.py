@@ -691,6 +691,29 @@ def _apply_rule_verdicts(
             diff.skipped_rule_ids.append(rid)
             continue
 
+        # v1.4 V1：quantifiable=False → 框架性心法不参与 hit/miss 计分
+        # 触发场景：M3-R-003 等"原局定层次..."级别的方法论总纲
+        if not rule.quantifiable:
+            diff.notes.append(
+                f"[v1.4-V1] 跳过 {rid}: quantifiable=False"
+                f"（框架性心法不参与 hit/miss 计分）"
+            )
+            continue
+
+        # v1.4 V2：domain_restriction 非空且当前 domain 不在列表中 → 跳过该规律的本次计分
+        # 触发场景：M3-R-031 仅适用于"应期"域，被错误引用到"婚姻"域时不计 miss
+        # 注意：vctx.domain 为空时不强制（无法判定域）→ 仍计分，由上层决断力合并兜底
+        if (
+            rule.domain_restriction
+            and vctx.domain
+            and vctx.domain not in rule.domain_restriction
+        ):
+            diff.notes.append(
+                f"[v1.4-V2] 跳过 {rid}: domain={vctx.domain!r} ∉ "
+                f"domain_restriction={rule.domain_restriction}"
+            )
+            continue
+
         hits_before = rule.hits
         misses_before = rule.misses
         old_conf = rule.confidence_cache or rule.recompute_confidence(

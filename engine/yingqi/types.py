@@ -171,6 +171,12 @@ class GateResult:
     # ========== 12 道门归属 ==========
     door: Optional[DoorType] = None
 
+    # ========== v1.4 V4：事件类型候选列表（CFL-C015-003） ==========
+    # 当应期触发器是"财星显象"且命主走体制路径时，应输出多个候选事件类型
+    # 例如：["职级升迁", "财源/置业"] 而不是单一的"财源/置业"。
+    # 默认为空列表 → 表示采用 candidate_event 单解（向后兼容）。
+    event_type_hypotheses: list[str] = field(default_factory=list)
+
     # ========== 最终置信度 ==========
     confidence: Optional[Confidence] = None
 
@@ -212,6 +218,7 @@ class GateResult:
                 self.primary_trigger.to_dict() if self.primary_trigger else None
             ),
             "door": self.door,
+            "event_type_hypotheses": list(self.event_type_hypotheses),
             "confidence": self.confidence.to_dict() if self.confidence else None,
             "energy_consistent": self.energy_consistent,
             "picture_consistent": self.picture_consistent,
@@ -238,6 +245,7 @@ class GateResult:
                 if d.get("primary_trigger") else None
             ),
             door=d.get("door"),
+            event_type_hypotheses=list(d.get("event_type_hypotheses", []) or []),
             confidence=Confidence.from_dict(d["confidence"]) if d.get("confidence") else None,
             energy_consistent=bool(d.get("energy_consistent", True)),
             picture_consistent=bool(d.get("picture_consistent", True)),
