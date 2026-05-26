@@ -3,9 +3,9 @@
 > **本文规定 v1.2 自迭代闭环的核心：规律的状态机、Beta 更新、降级保险丝。**
 > 这是"系统能自我迭代"的具体实现规范。
 
-最后更新：2026-05-23（W1.3）
-版本：v1.2.0
-依赖：决策 E（Beta 分布）+ F（全自动）+ G（3 次降级缓冲）+ K（每 10 案扫描）
+最后更新：2026-05-26（v1.4 W1 · 增 V1/V2 字段：quantifiable + domain_restriction）
+版本：v1.3.0-current
+依赖：决策 E（Beta 分布）+ F（全自动）+ G（3 次降级缓冲）+ K（每 10 案扫描）+ V1/V2/V3（v1.4 W1 ingest 跳过）
 
 ---
 
@@ -16,6 +16,7 @@
 3. **降级带保险丝**：单次失验不动 status，3 次累计才降级
 4. **diff 落盘**：每次状态变更都写 META/iteration-log.md，可回滚
 5. **跨派比较**：每 10 案扫描一次，识别系统性偏差
+6. **测量字段就位**（v1.4 W1）：`quantifiable=False` 框架性心法不参与 hit/miss 计分；`domain_restriction` 限定规律仅在指定域内 ingest 时计分。这是修复"D8 误降级"的关键——见 § 六·1。
 
 ---
 
@@ -205,7 +206,7 @@ def detect_drift(rule: Rule) -> Optional[RuleStatus]:
 
 ---
 
-## 六、theory/{school}/index.yaml schema（v1.2 升级）
+## 六、theory/{school}/index.yaml schema（v1.2 → v1.4 W1 升级）
 
 每个规律在 `theory/{school}/index.yaml` 中的字段：
 
@@ -248,6 +249,15 @@ def detect_drift(rule: Rule) -> Optional[RuleStatus]:
     percent: 85.7
     last_updated: 2026-05-23
 
+  # ── v1.4 W1 新增字段（V1/V2，可选；省略时按默认行为） ──
+  quantifiable: true             # bool，默认 true。
+                                 # = false 表示框架性心法（如 M3-R-003 "原局定层次,大运定吉凶,流年定应期"）
+                                 # ingest 时整体跳过 hit/miss 计分（见 § 六·1）
+  domain_restriction: []         # list[str]，默认空。
+                                 # 非空表示规律仅在列出的域内 ingest 时计 hit/miss
+                                 # 例：M3-R-031 "六合婚姻应期" 收紧到 [应期]
+                                 # 当 ingest 的 conclusion.domain ∉ domain_restriction 时跳过该规律本次计分
+
   # 黑名单标记
   blacklisted: false
   blacklist_reason: null
@@ -256,6 +266,45 @@ def detect_drift(rule: Rule) -> Optional[RuleStatus]:
   source: "段建业《盲派命理》§4.2"
   version: 1.2.0
 ```
+
+### 6.1 V1/V2 ingest 跳过策略（v1.4 决策 V3）
+
+`tools/feedback_loop._apply_rule_verdicts` 在调用 `rule.hits +=1 / misses += 1` 之前先做两层守门（`tools/feedback_loop.py` 实现）：
+
+```python
+# v1.4 V1：quantifiable=False → 框架性心法不参与 hit/miss 计分
+if not rule.quantifiable:
+    diff.notes.append(f"[v1.4-V1] 跳过 {rid}: quantifiable=False"
+                      f"（框架性心法不参与 hit/miss 计分）")
+    continue
+
+# v1.4 V2：domain_restriction 非空且当前 domain 不在列表中 → 跳过该规律的本次计分
+# 注意：vctx.domain 为空时不强制（无法判定域）→ 仍计分，由上层决断力合并兜底
+if (rule.domain_restriction
+    and vctx.domain
+    and vctx.domain not in rule.domain_restriction):
+    diff.notes.append(f"[v1.4-V2] 跳过 {rid}: domain={vctx.domain!r} ∉ "
+                      f"domain_restriction={rule.domain_restriction}")
+    continue
+```
+
+**为什么必须有这两个字段（决策动机）**
+
+v1.3 D5/D8 把规律命中率推到"自动升降级"位（§ 五·2 的 maybe_downgrade）。首次 D8 触发就把 3 条 confirmed 规律降为 flagged_for_review（[`META/iteration-report-001.md`](../../META/iteration-report-001.md)）。其中：
+
+- **M3-R-003**（原局定层次,大运定吉凶,流年定应期）= **方法论总纲**，无可量化的 hit/miss——它是"框架性心法"。被错误纳入计分 → 每次 ingest 都被算成 miss → D8 误降级。**V1 quantifiable=False 关闭此误算路径**。
+- **M3-R-031**（六合婚姻应期）= **应期域专用规律**，被命理师在"婚姻"域 ingest 时错误引用 → 每个婚姻案件都算 miss → 看起来规律失效，**实则是域定位错位**。**V2 domain_restriction=[应期] 关闭此误算路径**。
+
+不解决 V1/V2，自迭代闭环越跑偏差越大——这是 v1.4 启动的核心动因（[`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) § 二 决策 V1/V2/V3）。
+
+### 6.2 默认值与向后兼容
+
+| 字段 | 默认值 | 旧 yaml（无字段时）行为 |
+|---|---|---|
+| `quantifiable` | `True` | 视同 `True`，所有规律默认参与计分 |
+| `domain_restriction` | `[]` | 视同空列表，所有域均参与计分 |
+
+`Rule.from_dict` / `_entry_to_rule` 已处理这两个字段的 fallback（见 [`tools/rule_lifecycle.py`](../../tools/rule_lifecycle.py)）。**旧 yaml 不需要回填**——只有显式标注的规律（如 M3-R-003 / M3-R-031）才会写入 yaml；其余规律保持简洁。
 
 ---
 
@@ -495,6 +544,8 @@ def cross_school_scan() -> ConflictTrendsReport:
 | 版本 | 变更 |
 |---|---|
 | 1.2.0 | 初版 5 状态自动机 + Beta + 3 次降级 + drift detect |
+| 1.3.0 | feedback_loop 重构出 `_apply_rule_verdicts` 共用核心；新增 v1.3 D5 结构化反馈入口（feedback_ingest）；增加 D7 应期延迟反馈（半年外 hit=0.5）独立隔离 |
+| **1.3.0-current** | **v1.4 W1 增字段：`quantifiable: bool`（V1）+ `domain_restriction: list[str]`（V2）；ingest 跳过策略 V3 落地（见 § 六·1）。修复 D8 误降级（M3-R-003 框架性心法 / M3-R-031 域错位）** |
 
 ---
 
