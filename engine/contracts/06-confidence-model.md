@@ -3,9 +3,9 @@
 > **本文规定 v1.2 双轨置信度（★+%）的精确数学公式与聚合规则。**
 > 这是引擎所有"× ★X (X%)"输出的"宪法"。
 
-最后更新：2026-05-23（W1.3）
-版本：v1.2.0
-依赖：05-rule-lifecycle（Beta 计算的源头）+ 04-gate-protocol（三层 gate 上限）
+最后更新：2026-05-26（v1.4 W1 · 增 § 二·1 决策 E Beta 切换计数公式）
+版本：v1.3.0-current
+依赖：05-rule-lifecycle（Beta 计算的源头）+ 04-gate-protocol（三层 gate 上限）+ decisions-locked.md 决策 E
 
 ---
 
@@ -16,6 +16,7 @@
 3. **保守聚合**：多规律联立时，倾向于"最强单条" + 边际加权，**不做天真平均**
 4. **gate 限顶**：再高的规律置信度，三层 gate 不通过也不能 ★★★★★
 5. **不可篡改**：引擎自动算出，AI 不能直接修改 confidence 字段
+6. **切换条件明确**（v1.4 W1 补）：决策 E 从"线性加权"切到"Beta 后验"的阈值口径必须是单一公式（§ 二·1），不允许文档间分歧。
 
 ---
 
@@ -43,6 +44,41 @@
 - 引擎一律输出 `★N (XX%)`，其中 % 是 `round(posterior * 100)`
 - 报告中 `★X` 与 `XX%` 的区间必须一致；output_linter 校验
 
+### 2.1 决策 E Beta 切换计数公式（v1.4 W1 锁定）
+
+> **背景**：决策 E（[`decisions-locked.md`](decisions-locked.md) E 行）规定"≥30 反馈样本切 Beta 后验"。但"30 是怎么数的"在 v1.3 各文档中未明确，造成 STATUS.md 当前显示"11/30"或"10/30"或"12/30"的口径分歧。本节锁定唯一公式。
+
+**Beta 切换计数公式**
+
+```
+N_eff = N_y + N_n + 0.5 · (N_late_hit + N_late_miss)
+
+其中：
+  N_y          = master 反馈中 [y] 标注总数（D5 直接命中）
+  N_n          = master 反馈中 [n] 标注总数（D5 直接失验）
+  N_late_hit   = late_feedback.py 在半年窗外回填的 hit 总数（D7，权重 0.5）
+  N_late_miss  = late_feedback.py 在半年窗外回填的 miss 总数（D7，权重 0.5）
+
+  [?] / [skip] 标注（D5 不计数 verdict）→ 不进入分母
+  abstain（部分应验）→ 不进入分母（不是 hit 也不是 miss）
+  no_data → 不进入分母
+  V1 quantifiable=False 跳过的规律级 verdict → 不进入分母（已被 ingest 层过滤）
+  V2 domain 不匹配跳过的规律级 verdict → 不进入分母（已被 ingest 层过滤）
+
+切换条件：N_eff ≥ 30 时，feedback_loop._apply_rule_verdicts 改用
+         Confidence(posterior=Beta_mean, variance=Beta_variance) 输出，
+         不再走线性加权（4:6 静态:动态）的 v1.0 fallback。
+```
+
+**公式锚点**：
+
+- `N_y` / `N_n` 来源：[`tools/feedback_ingest.py`](../../tools/feedback_ingest.py) `parse_statement_feedback` 解析 `[y]` / `[n]` 标注，再经 `fanout_to_rules` 决断力优先合并到 rule-level（miss > hit > abstain > no_data）。**注意**：分母统计的是 **case-level 完成反馈数 × 规律平均覆盖**，不是 statement-level；细节由 [`META/iteration-state.json`](../../META/iteration-state.json) `feedback_completed_count` 字段维护。
+- `N_late_hit` / `N_late_miss` 来源：[`tools/late_feedback.py`](../../tools/late_feedback.py) 当反馈在应期年 ±0.5 年外到达时，hit/miss 各自打 0.5 折扣（D7 决策）。
+- 不进入分母的标注：`[?]` 命主当场不知道（D5 决策"入库不计数等待 D7 兑现"）；`[skip]` 解释时未讲到。
+
+**仪表盘口径**：[`STATUS.md`](../../STATUS.md) "决策 E Beta 切换" 行写 **`N_eff / 30`**，其中 N_eff 由本公式计算。**任何文档若与本公式分歧，以本公式为准**。
+
+**当前 N_eff（截至 2026-05-26）**：见 [`STATUS.md`](../../STATUS.md) → § "决策 E Beta 切换"。本契约不硬编码当前值。
 
 ---
 
@@ -354,6 +390,7 @@ DEFAULT_PROPOSED = Confidence(
 | 版本 | 变更 |
 |---|---|
 | 1.2.0 | 初版 Beta + 5 ★ 映射 + 联立聚合 + gate 限顶 + 仲裁惩罚 |
+| **1.3.0-current** | **v1.4 W1：增 § 二·1 决策 E Beta 切换计数公式（N_eff = N_y + N_n + 0.5·(N_late_hit + N_late_miss)），统一 STATUS.md / handoff.md / 03-findings 的"30/30"口径** |
 
 ---
 

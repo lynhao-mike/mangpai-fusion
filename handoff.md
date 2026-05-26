@@ -6,8 +6,9 @@
 
 ## 一、当前状态：v1.3.0 已发布 ✅
 
-**版本**：`VERSION` = `1.3.0`
-**主分支**：`main`，HEAD = `fa0e8e6`（W4 验收 + smoke 脚本已合并）
+**版本**：[`VERSION`](VERSION) = `1.3.0`
+**主分支**：`main`（HEAD = `git rev-parse HEAD` 运行时查询；不在本文硬编码——见 [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md) § 〇 单一信息源）
+**契约版本**：v1.3.0-current（[`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)）
 **tag**：`v1.3.0`（本地已建，需手动 `git push origin v1.3.0`）
 **工作目录**：`/projects/sandbox/mangpai-fusion`
 
@@ -36,26 +37,33 @@
 | 类型 | 数量 |
 |---|---|
 | candidate（候选） | ~261 |
-| confirmed（已确认）| ~645 |
-| flagged_for_review（待人工审）| **7**（M2-Y-091 / M3-R-031 / M1-D-122 / M3-R-022 / M3-R-027 / M3-R-003 + 原有 3 条中 M3-R-005 已 deprecated）|
-| deprecated（已弃用）| **1**（M3-R-005）|
+| confirmed（已确认）| ~645（含 v1.4 W1 architect-review 后从 flagged 恢复的 M3-R-031）|
+| flagged_for_review（待人工审）| **3**（**M1-D-122** / **M3-R-003** / **M3-R-022**） |
+| deprecated（已弃用）| **3**（**M2-Y-091** / **M3-R-005** / **M3-R-027**）|
 
-### 新增 flagged_for_review（C-015 摄入触发）
+### 当前 flagged_for_review（待架构师 review）
 - **M1-D-122**（段派）：累计 misses 3，posterior=0.33
+- **M3-R-003**（任派）：累计 misses 3，posterior=0.20。**已加 `quantifiable: false`**（v1.4 V1 → 后续 ingest 不再计分，但 status 维持 flagged 等明确 review 决议）
 - **M3-R-022**（任派）：累计 misses 3，posterior=0.43
-- **M3-R-027**（任派）：累计 misses 3，posterior=0.20
-- **M3-R-003**（任派）：累计 misses 3，posterior=0.20
 
-### 新增 deprecated
-- **M3-R-005**（任派）：从 flagged_for_review → deprecated（累计 4 miss / 0 hit）
+### 当前 deprecated
+- **M2-Y-091**（杨派）：v1.4 W1 architect review 决议 deprecate
+- **M3-R-005**（任派）：累计 4 miss / 0 hit
+- **M3-R-027**（任派）：累计 misses 3，posterior=0.20，v1.4 W1 architect review 决议 deprecate
+
+### v1.4 W1 architect review 恢复 confirmed
+- **M3-R-031**（任派 · 六合婚姻应期）：5 hit / 3 miss，3 个 miss 均为"婚姻"域误用 → 加 `domain_restriction: [应期]` 收紧适用域，从 flagged 恢复 confirmed
 
 ---
 
 ## 三、决策 E 进度（Beta 切换）
 
-- **累计反馈样本**：**11 / 30**（Beta 切换阈值）
+- **N_eff（有效反馈样本数）**：**11 / 30**（Beta 切换阈值，截至 2026-05-26）
+- 公式：`N_eff = N_y + N_n + 0.5·(N_late_hit + N_late_miss)`，详见 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) § 2.1
 - 当前置信度公式仍走**线性加权（4:6）**
-- 还差 **19 案**
+- 还差 **19 案**（按 N_eff 增长率估）
+
+> ⚠️ 本节是"易漂移"信息（每次 ingest 都在变）。手动维护时**只更新本节**，不要复制到其他文档；其他文档应链接回本节。
 
 ---
 
@@ -123,9 +131,10 @@
 项目 mangpai-fusion v1.3.0 已发布。
 
 当前状态：
-- main HEAD = fa0e8e6，tag v1.3.0
-- 累计反馈案 11/30（Beta 切换阈值）
-- 7 条规律 flagged_for_review，1 条 deprecated
+- main HEAD = `git rev-parse HEAD`（不硬编码；详见 STATUS.md / 00-OVERVIEW.md § 〇）
+- tag v1.3.0
+- N_eff（Beta 切换计数）= 11/30（公式：06-confidence-model § 2.1）
+- 5 条规律 flagged_for_review，2 条 deprecated（M3-R-005 / M3-R-027）
 
 可选工作：
 1. Review flagged 规律（M2-Y-091 / M3-R-031 / M1-D-122 / M3-R-022 / M3-R-027 / M3-R-003 / M3-R-005）

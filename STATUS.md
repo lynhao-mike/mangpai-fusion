@@ -1,10 +1,14 @@
 # STATUS · 当前进度
 
-**最后更新**：2026-05-25
-**版本**：**v1.3.0**（自迭代闭环上线；`VERSION` = `1.3.0`）
-**当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）+ 历史反馈回补 10/10 ✅（首次 D8 触发 → [`META/iteration-report-001.md`](META/iteration-report-001.md:1)）
+**最后更新**：2026-05-26（v1.4 W1 文档/测试同步 PR 在路上）
+**版本**：**v1.3.0**（自迭代闭环上线；[`VERSION`](VERSION) = `1.3.0`）
+**主分支 HEAD**：以 `git rev-parse HEAD` 为准。**本文不硬编码短 SHA**——基准评审 § 七 第 6 条架构师红线（[`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md) § 〇 单一信息源）。
+**契约版本**：v1.3.0-current（见 [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)）
+**当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）+ 历史反馈回补 10/10 ✅（首次 D8 触发 → [`META/iteration-report-001.md`](META/iteration-report-001.md:1)）+ v1.4 W1 文档/测试同步进行中
 
 > 🔎 **架构回顾**（2026-05-26）：v1.3.0 发布后第一次回顾性评审 → [`plans/architecture-review-2026-05-26-postrelease.md`](plans/architecture-review-2026-05-26-postrelease.md:1)。基准评审 [`plans/architecture-review.md`](plans/architecture-review.md:1)（v1.2 RC 视角）的 4/5 条建议已落地、6/7 项债务关闭；新发现 `tools/calibrate.py` 与 v1.2/v1.3 工具的双写风险已加 deprecation guard 闭环。
+>
+> 🆕 **v1.4 W1 进行中**（2026-05-26）：架构师视角第二次评审 → 锁定 V1（quantifiable）/ V2（domain_restriction）/ V3（ingest 跳过策略）。规律 yaml schema 已增字段（[`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md) § 六），M3-R-003 / M3-R-031 已回填，契约版本同步 v1.3.0-current，pytest 收编 H7-H11 验收门。详见 [`plans/architecture-v1.4.md`](plans/architecture-v1.4.md:1)。
 
 ---
 
@@ -98,7 +102,7 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 - ❌ 神煞自动识别（依赖问真 APP 提供，决策 A 锁定外算）
 - ❌ 自动排盘（用户必须先用问真 APP 排好）
 - ❌ 八字指纹相似案检索（指纹区已就位，检索器待建）
-- ❌ 反馈样本不足 30 → 置信度公式仍走线性加权，未切 Beta（决策 E 阈值）
+- ❌ 反馈样本 N_eff 不足 30 → 置信度公式仍走线性加权，未切 Beta（决策 E 阈值，N_eff 公式见 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) § 2.1；当前进度见 [`handoff.md`](handoff.md) § 三）
 - ❌ 中医五运六气整合 / 风水堪舆整合
 
 ---
@@ -108,13 +112,13 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 | 类型 | 数量 |
 |---|---|
 | candidate（候选） | ~261（高派为主）|
-| confirmed（已确认）| ~650（段杨任派；扣除下行 3 条）|
-| flagged_for_review（待人工审）| **3**（**M2-Y-091** / **M3-R-005** / **M3-R-031**，2026-05-25 历史回补累计 misses 触发）|
-| deprecated（已弃用）| 0 |
+| confirmed（已确认）| ~645（段杨任派；扣除下行 3 flagged + 3 deprecated；含 M3-R-031 review 后恢复 confirmed）|
+| flagged_for_review（待人工审）| **3**（**M1-D-122** / **M3-R-003** / **M3-R-022**）|
+| deprecated（已弃用）| **3**（**M2-Y-091** / **M3-R-005** / **M3-R-027**）|
 
-> 3 条 `flagged_for_review` 来源：[`META/rule-changelog.md`](META/rule-changelog.md:1) "2026-05-25 · v1.3 历史案例反馈回补"。架构师待 review 是否替代或退役。
+> v1.4 W1 修订（2026-05-26）：M3-R-003 加 `quantifiable: false`（框架性心法不参与计分，[`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md) § 6.1 V1）保留 flagged_for_review 等架构师 review；M3-R-031 加 `domain_restriction: [应期]` 由架构师 review 从 flagged → 恢复 confirmed（V2 决策）。详见 [`META/rule-changelog.md`](META/rule-changelog.md:1)。
 
-> v1.0 的 promoted/retired/frozen 三态在 v1.2 重命名为 candidate / confirmed / flagged_for_review / deprecated（`engine/contracts/05-rule-lifecycle.md`），`tools/rule_lifecycle.py` 已自动迁移旧 status。
+> v1.0 的 promoted/retired/frozen 三态在 v1.2 重命名为 candidate / confirmed / flagged_for_review / deprecated（[`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md)），`tools/rule_lifecycle.py` 已自动迁移旧 status。
 
 ---
 
@@ -165,10 +169,11 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 立即可做：
 1. v1.3 自迭代闭环已上线 → 投入实战；命理师按 master 报告填 `[y]/[n]/[?]/[skip]` 即可触发反馈回流
 2. 每 10 完成反馈案自动产出 `META/iteration-report-NNN.md`（D8）→ 架构师 review 是否合并候选边界 / 否决候选
-3. **review 3 条 flagged_for_review 规律**（M2-Y-091 / M3-R-005 / M3-R-031）→ 决定保留观察 / 收紧条件 / 退役（参考 [`META/iteration-report-001.md`](META/iteration-report-001.md:1) §一）
+3. **review 3 条 flagged_for_review 规律**（M1-D-122 / M3-R-003 / M3-R-022）→ 决定保留观察 / 收紧条件 / 退役（参考 [`META/iteration-report-001.md`](META/iteration-report-001.md:1) § 一 + [`META/rule-changelog.md`](META/rule-changelog.md) 2026-05-26 v1.4 W1 条目）
 
 短期（1-3 个月）：
-- **决策 E Beta 切换阈值 ≥ 30，当前 10/30，还差 20 案** → 累积到位后置信度公式从线性加权（4:6）切 Beta 后验
+- **决策 E Beta 切换阈值 N_eff ≥ 30**（公式见 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) § 2.1）→ 累积到位后置信度公式从线性加权（4:6）切 Beta 后验。当前 N_eff 实测进度见 [`handoff.md`](handoff.md) § 三（不在本文硬编码以避免漂移）。
+- **v1.4 W2 启动**：03-findings-schema 升 1.4.0 + V4/V5/V6 字段（GateResult.event_type_hypotheses / PictureFindings.industry_path / wealth_level.framework）→ 见 [`plans/architecture-v1.4.md`](plans/architecture-v1.4.md)。
 - 加轻量 metrics（每步落盘 timing.json，超 60s 告警）
 - 一次性审查 `engine/mechanical-rules.yaml`，把"含判定语义"字段挪到 Python（彻底落地决策 B）
 

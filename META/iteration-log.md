@@ -427,6 +427,46 @@ META/calibration/2026-05-26-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.y
 
 ---
 
+## 2026-05-26 14:00 · v1.4 W1 文档/测试同步（非 ingest）
+
+trigger: 架构师评审（基准评审 + 后置评审 + v1.4 启动评审三合一）→ 文档/测试一致性 PR
+case_count: 16（无 ingest，本条目为契约/工程级 annotation）
+branch: `feat/v1.4-w1-docs-and-tests`
+
+### 工程改动（无规律 hits/misses 变更）
+
+| 改动类别 | 说明 |
+|---|---|
+| 契约文档 G3 | `engine/contracts/00-OVERVIEW.md` 升 v1.3.0-current；新增 § 〇 单一信息源表（HEAD/版本/N_eff 不再多处硬编码）；§ 4.1/4.2 锁定 D1-D8 + V1-V4；§ 八 三阶发布门槛分层（v1.2/v1.3/v1.4 W1）；§ 九 v1.0→v1.4 演进路径 |
+| 契约文档 V1/V2 | `engine/contracts/05-rule-lifecycle.md` § 六 schema 增 `quantifiable: bool` + `domain_restriction: list[str]` 字段示例；§ 6.1 V3 ingest 跳过策略 + 决策动机（M3-R-003 框架性心法 / M3-R-031 域错位）；§ 6.2 向后兼容默认值 |
+| 契约文档 G2 | `engine/contracts/06-confidence-model.md` § 2.1 决策 E Beta 切换计数公式 N_eff = N_y + N_n + 0.5·(N_late_hit + N_late_miss)；统一 STATUS / handoff 的 "11/30" 口径 |
+| 状态文档 | `STATUS.md` + `handoff.md` 去除硬编码 HEAD 短 SHA；规律计数从错误的 "7 flagged + 1 deprecated" 修正为实际的 **3 flagged + 3 deprecated + 1 restored**（M2-Y-091 / M3-R-005 / M3-R-027 deprecated；M1-D-122 / M3-R-003 / M3-R-022 flagged；M3-R-031 经 architect review 恢复 confirmed） |
+| 测试收编 E3 | 新增 7 个 pytest 验收文件 `tests/v1_3_acceptance/`：H4（boundary_miner D3 阈值）/ H5（v1.2 不退化锚点）/ H7（V1 quantifiable）/ H8（V2 domain_restriction）/ H9（V4 event_type_hypotheses）/ H10（social_clock）/ H11（W10 lint）；`pyproject.toml` 注册 `v1_4_acceptance` marker |
+
+### 验证
+
+- 契约文档结构 sniff：00=19 H2 / 05=26 H2 / 06=16 H2，链接路径自洽
+- 既存 stdlib smoke 全过：H7+H8+H9 25/25 / H10 36/36 / H11 24/24 = **85/85 PASS**（同一份代码路径）
+- `tools.rule_lifecycle._smoke` 5/5 PASS（Rule round-trip 含 quantifiable + domain_restriction）
+- 7 个新 pytest 文件 ast.parse 全 OK
+
+### 范围之外（v1.4 W2/W3 处理）
+
+- V5 PictureFindings.industry_path
+- V6 wealth_level.framework
+- V7 report-v1.4 模板 § 八·零 行业路径耦合提示
+- V8 历史报告回溯扫描器 `tools/cross_domain_consistency_check.py --backfill`
+- 上述 4 项均涉及 `engine/contracts/03-findings-schema.md` schema_version 升级，独立 PR 处理（避免 schema 一次升级两次）
+
+### Rollback Hint
+
+```
+# 本 PR 全部为文档/测试改动，无 yaml/规律状态变更
+# 回滚仅需 git revert 本 PR 的 squash commit
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)
