@@ -4,6 +4,8 @@
 **版本**：**v1.3.0**（自迭代闭环上线；`VERSION` = `1.3.0`）
 **当前里程碑**：M10 完成（v1.3 自迭代闭环 D1-D8 全部上线，W4 验收通过）+ 历史反馈回补 10/10 ✅（首次 D8 触发 → [`META/iteration-report-001.md`](META/iteration-report-001.md:1)）
 
+> 🔎 **架构回顾**（2026-05-26）：v1.3.0 发布后第一次回顾性评审 → [`plans/architecture-review-2026-05-26-postrelease.md`](plans/architecture-review-2026-05-26-postrelease.md:1)。基准评审 [`plans/architecture-review.md`](plans/architecture-review.md:1)（v1.2 RC 视角）的 4/5 条建议已落地、6/7 项债务关闭；新发现 `tools/calibrate.py` 与 v1.2/v1.3 工具的双写风险已加 deprecation guard 闭环。
+
 ---
 
 ## 总体进度
@@ -81,7 +83,7 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 
 ✅ 4 派融合 / 双轨制置信度（★+%）/ 派别冲突显式呈现 / 仲裁裁决
 ✅ 9 大领域权重矩阵（婚/事/财/学/健/六亲 + 格局/富贵/玄学）
-✅ 反馈回流校准（`tools/calibrate.py` v1.0 + `tools/feedback_loop.py` v1.2）
+✅ 反馈回流校准（`tools/feedback_loop.py` v1.2 + `tools/feedback_ingest.py` v1.3；旧版 `tools/calibrate.py` 自 v1.3.0 起 **deprecated**，详见 [`plans/architecture-review-2026-05-26-postrelease.md`](plans/architecture-review-2026-05-26-postrelease.md:1) § 三）
 ✅ 案例归档（`cases/C-YYYY-NNN-{干支}/` + `reports/C-YYYY-NNN-{干支}-report.md`）
 
 ✅ **理论库覆盖**：高派 261 / 段派 290 / 杨派 163 / 任派 200 = **914 条规律全量索引**
@@ -191,5 +193,5 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 | 护栏 | linter + checklist（软）| preflight + output_linter + three_layer_check（硬，违规中断）|
 | trace_id 覆盖 | 0% | 100%（每条断语含 evidence.rule_id 链）|
 | 测试基础设施 | 无 | pytest + 14 案 fixture + G1-G6 回归门槛 |
-| 自迭代 | calibrate.py（半自动）| feedback_loop + rule_lifecycle + drift_detect + cross_school_scan |
+| 自迭代 | calibrate.py（半自动，**v1.3.0 deprecated**）| feedback_loop + feedback_ingest + rule_lifecycle + drift_detect + cross_school_scan + boundary_miner + veto_miner + iteration_report |
 | 置信度公式 | 静态:动态 = 4:6 线性加权 | 线性加权（≥ 30 反馈后切 Beta） |

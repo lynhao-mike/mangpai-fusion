@@ -112,7 +112,8 @@ mangpai-fusion/
 ├── reports/                        正式报告归档
 ├── predictions/                    封存预测（待应期验证）
 ├── tools/                          自动化工具
-│   ├── calibrate.py                反馈回流校准
+│   ├── calibrate.py                反馈回流校准 (v1.0，**v1.3.0 起 deprecated**，
+│   │                                改用 feedback_ingest.py / feedback_loop.py)
 │   ├── seal_prediction.py          预测封存
 │   └── verify_evidence.py          证据校验
 ├── sources/                        4 派原始语料（只读，可追溯）

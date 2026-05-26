@@ -1,6 +1,35 @@
 #!/usr/bin/env python3
 """
-calibrate.py · 反馈回流校准工具 · v1.0
+calibrate.py · 反馈回流校准工具 · v1.0 · **已废弃（v1.3.0 起）**
+
+[DEPRECATED 2026-05-26]
+=====================================================================
+本工具是 v1.0 时期的反馈回流校准入口，自 v1.3.0 起已被 v1.2/v1.3 工具
+全面取代，**默认禁用执行**（保留代码以备历史追溯）。
+
+为什么禁用 — 双写风险（plans/architecture-review-2026-05-26-postrelease.md § 三）：
+
+本工具读写 theory/{school}/index.yaml 的 **v1.0 字段**：
+  hit_count / miss_count / static_score / dynamic_score / final_score
+  status ∈ {candidate, promoted, retired}
+
+而 v1.2/v1.3 工具（tools/feedback_loop.py、tools/feedback_ingest.py、
+tools/rule_lifecycle.py）写入的是 **v1.2/v1.3 字段**：
+  hits / misses / abstained / recent_5 / applied_cases / confidence_cache
+  status ∈ {candidate, confirmed, flagged_for_review, deprecated}
+
+字段名 + 状态机均不一致。同时跑会双写、字段错位、状态机被覆盖。
+
+应改用：
+  - 结构化反馈摄入：python3 -m tools.feedback_ingest C-YYYY-NNN
+  - 规律级回流：    tools/feedback_loop.py (v1.2 入口)
+  - 升降级：        tools/rule_lifecycle.py
+  - 自动调度：      tools/iteration_report.py（每 10 完成反馈案触发）
+
+历史追溯（仅在确认不会写入活动 yaml 时）：
+  MANGPAI_ALLOW_LEGACY_CALIBRATE=1 python3 tools/calibrate.py --case C-XXXX
+
+----- 以下为 v1.0 原始 docstring，保留仅作历史参考 -----
 
 用途：把命主反馈应验/失验数据，回流到 4 派 theory/{school}/index.yaml，
       自动重算每条规律的 hit_count / miss_count / dynamic_score / star，
@@ -579,4 +608,40 @@ def main():
 
 
 if __name__ == "__main__":
+    # ---------- v1.3.0 deprecation guard -------------------------------
+    if os.environ.get("MANGPAI_ALLOW_LEGACY_CALIBRATE") != "1":
+        print(
+            "[DEPRECATED] tools/calibrate.py 已废弃（v1.3.0 起）。",
+            file=sys.stderr,
+        )
+        print(
+            "  原因：写入 theory/{school}/index.yaml 的字段名（hit_count/miss_count）",
+            file=sys.stderr,
+        )
+        print(
+            "        与状态机（candidate/promoted/retired）与 v1.2/v1.3 工具不一致，",
+            file=sys.stderr,
+        )
+        print(
+            "        同时运行会污染规律索引（双写风险）。",
+            file=sys.stderr,
+        )
+        print(
+            "  请改用：python3 -m tools.feedback_ingest C-YYYY-NNN",
+            file=sys.stderr,
+        )
+        print(
+            "          或 tools/feedback_loop.py（规律级 v1.2 入口）",
+            file=sys.stderr,
+        )
+        print(
+            "  追溯历史可设 MANGPAI_ALLOW_LEGACY_CALIBRATE=1 强制运行。",
+            file=sys.stderr,
+        )
+        print(
+            "  详见：plans/architecture-review-2026-05-26-postrelease.md § 三",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+    # ---------- end guard ----------------------------------------------
     main()
