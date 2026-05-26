@@ -462,6 +462,8 @@ def lint(
         _lint_global_text(full_text, rules, res)
         # CFL-C015-002 · 跨维度输出耦合性 gate（仅 markdown 模式适用）
         _lint_cross_domain_coupling(full_text, res)
+        # CFL-C014-003 v2 · W10 学制盲区律强制前置（报告级扫描）
+        _lint_social_clock(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -792,6 +794,136 @@ def _lint_cross_domain_coupling(
         f"或 2) 在财富层级标题前加注释 '以下市场财富分级仅作为非体制路径下的对照值'。"
         f"详见 engine/level-scales.md § 十一。",
     )
+
+
+# ============================================================
+# 八·五、CFL-C014-003 v2 · W10 学制盲区律强制前置（报告级 lint）
+# ============================================================
+#
+# 来源：C-2026-014 v1.0/v2.0 连续犯学制盲区错误（"2026=高考"实际2024 / "2029=毕业"实际2028）。
+# v1.4 已在 engine/yingqi/gate.py 落 social_clock_check（gate pipeline 路径），
+# 但报告 markdown 是命理师手写，仍可能错锚 → 在 output_linter 增加 W10 报告级扫描。
+#
+# 检查逻辑：
+#   1. 从报告头部提取出生年（"出生：YYYY-MM-DD" 或 "生年：YYYY"）
+#   2. 扫描每行：若同时含 4 位年份 + 学制事件关键词 → 计算年龄
+#   3. 偏差 > 容差（±1 年）→ 触发 W10 警告
+#   4. 跳过元数据行（含 v1.0/v2.0/错锚/修正/已应验等关键词）
+
+# 学制规则（与 engine/yingqi/gate._SOCIAL_CLOCK_RULES 同步；本副本为减少跨包依赖）
+_LINT_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = [
+    (("研究生毕业", "硕士毕业"), (24, 29), "研究生毕业"),
+    (("博士毕业", "PhD毕业", "PhD 毕业"), (27, 35), "博士毕业"),
+    (("研究生入学", "硕士入学", "读研"), (21, 26), "研究生入学"),
+    (("博士入学",), (24, 32), "博士入学"),
+    (("本科毕业", "大学毕业"), (21, 24), "本科毕业（4 年制）"),
+    (("高考",), (17, 19), "高考"),
+    (("考研",), (21, 25), "考研"),
+    (("入学", "上学", "录取"), (17, 23), "升学/入学"),
+    (("初婚", "成家"), (20, 40), "初婚"),
+    (("结婚", "成婚", "嫁", "娶", "领证"), (20, 50), "结婚（含再婚）"),
+    (("入职", "第一份工作", "首份工作"), (21, 28), "首次入职"),
+    (("升迁", "升职", "提拔", "晋升"), (25, 65), "升职"),
+    (("退休",), (55, 70), "退休"),
+    (("生子", "生女", "怀孕", "得子", "得女"), (20, 45), "生育"),
+]
+
+_LINT_SOCIAL_CLOCK_TOLERANCE: int = 1
+
+# 出生年提取正则：捕获 "出生：YYYY"、"生年：YYYY"、"**出生**：YYYY-MM-DD" 等格式
+# 兼容 markdown 加粗（**出生**） / 中英文冒号 / 日期 4 位前任意非数字字符
+_BIRTH_YEAR_RE = re.compile(
+    r"(?:出生|生年)[^0-9\n]{0,8}(\d{4})"
+)
+
+# 元数据/历史标记 → 跳过该行
+_LINT_SC_SKIP_MARKERS: tuple[str, ...] = (
+    "v1.0", "v2.0", "v1版", "v2版", "v2.1",
+    "错锚", "修正", "已应验", "已校准",
+    "✅", "原 v",
+    "v2 校准", "v2.0 错", "v2.1 重锚",
+    "rejected_in_cases", "校准前", "校准历史",
+    "→",  # 修正表格行通常含箭头
+    "前值", "旧值",
+)
+
+# 年份正则（限定 1900-2099 范围，避免误匹配）
+_YEAR_RE = re.compile(r"\b(19\d{2}|20\d{2})\b")
+
+
+def _extract_birth_year_from_md(md: str) -> Optional[int]:
+    """从报告 markdown 头部提取命主出生年。"""
+    m = _BIRTH_YEAR_RE.search(md)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            return None
+    return None
+
+
+def _should_skip_sc_lint(line: str) -> bool:
+    """该行是否应跳过学制盲区扫描（元数据/历史/修正记录）。"""
+    return any(marker in line for marker in _LINT_SC_SKIP_MARKERS)
+
+
+def _lint_social_clock(md: str, res: LintResult) -> None:
+    """W10 · 学制盲区律强制前置（报告级扫描，CFL-C014-003 v2）。
+
+    扫描策略：
+      - 仅处理含明确"年份 + 学制事件关键词"的行
+      - 跳过含修正/已应验/历史 v 版本等元数据行
+      - 偏差 > 容差 → 触发 W10
+    """
+    birth_year = _extract_birth_year_from_md(md)
+    if birth_year is None:
+        return  # 无出生年信息，跳过该 lint
+
+    seen_pairs: set[tuple[int, str, int]] = set()  # 去重
+
+    for line in md.splitlines():
+        if not line.strip():
+            continue
+        if _should_skip_sc_lint(line):
+            continue
+
+        # 同行内匹配年份
+        years = [int(m.group(1)) for m in _YEAR_RE.finditer(line)]
+        if not years:
+            continue
+
+        # 同行内匹配关键词（按规则列表顺序，长关键词优先）
+        for keywords, (lo, hi), label in _LINT_SOCIAL_CLOCK_RULES:
+            matched_kw = next((k for k in keywords if k in line), None)
+            if matched_kw is None:
+                continue
+
+            # 对每个年份逐个检查
+            for year in years:
+                age = year - birth_year
+                if age <= 0:
+                    continue
+                # 严格窗口 + 容差
+                if lo - _LINT_SOCIAL_CLOCK_TOLERANCE <= age <= hi + _LINT_SOCIAL_CLOCK_TOLERANCE:
+                    continue
+                # 偏差 > 容差 → 触发
+                pair = (year, label, age)
+                if pair in seen_pairs:
+                    continue
+                seen_pairs.add(pair)
+                res.add(
+                    Severity.WARNING, "W10",
+                    f"学制盲区告警 (CFL-C014-003 v2)：'{year}' + '{matched_kw}' "
+                    f"→ 命主 {birth_year} 出生，{year} 应为 {age} 岁，"
+                    f"但 {label} 期望窗口 [{lo},{hi}]（容差 ±{_LINT_SOCIAL_CLOCK_TOLERANCE}）",
+                    location=line.strip()[:100],
+                    suggestion=(
+                        f"请核对：若实际是 {label}，年份应在 "
+                        f"[{birth_year + lo}, {birth_year + hi}] 之间。"
+                        f"若是历史校准记录或修正条目，加 'v1.0'/'已应验'/'修正' 等标记可跳过本检查。"
+                    ),
+                )
+            break  # 一行内最多触发一种事件类型，避免 noise
 
 
 # ============================================================
