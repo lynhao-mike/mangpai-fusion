@@ -862,7 +862,7 @@ rules:
   topic_label: 财富级别进阶与禄体系
   title: 承载财官本质论
   conclusion: 真正福=禄；真正财官=印和禄(非字面财官)；用哪字取财官该字必须旺
-  status: flagged_for_review
+  status: deprecated
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 财富级别进阶与禄体系
@@ -873,6 +873,11 @@ rules:
     to: flagged_for_review
     case_id: C-2026-014-丙戌庚子乙亥辛巳
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  - date: '2026-05-26'
+    from: flagged_for_review
+    to: deprecated
+    case_id: REVIEW-BATCH-001
+    reason: '架构师 review REV-002: 0hit/3miss, 规律过度抽象无法产出可验证预测'
   hits: 0
   misses: 3
   abstained: 0
@@ -907,7 +912,7 @@ rules:
     posterior: 0.2
     variance: 0.026667
     sample_n: 3
-    last_updated: '2026-05-25'
+    last_updated: '2026-05-26'
   status_changed_at: '2026-05-25'
 - id: M2-Y-092
   school: yang

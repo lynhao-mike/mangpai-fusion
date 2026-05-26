@@ -451,7 +451,7 @@ rules:
   topic: lifa
   topic_label: 十八道法门核心心法 (M3-R-001..030)
   title: 五合四用法
-  status: flagged_for_review
+  status: deprecated
   layer: unmapped
   raw_source: 任派 m3-rules-registry
   raw_anchor: 十八道法门核心心法 (M3-R-001..030) · §15.2
@@ -462,6 +462,11 @@ rules:
     to: flagged_for_review
     case_id: C-2026-015-甲寅乙亥丙辰辛卯
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  - date: '2026-05-26'
+    from: flagged_for_review
+    to: deprecated
+    case_id: REVIEW-BATCH-001
+    reason: '架构师 review REV-006: 0hit/3miss, 教学层方法论总结非可验证规律'
   hits: 0
   misses: 3
   abstained: 0
@@ -533,7 +538,7 @@ rules:
   topic: lifa
   topic_label: 初/中/高级班进阶 (M3-R-031..060)
   title: 六合婚姻应期
-  status: flagged_for_review
+  status: confirmed
   layer: unmapped
   raw_source: 任派 m3-rules-registry
   raw_anchor: 初/中/高级班进阶 (M3-R-031..060) · §15.3/§17
@@ -544,6 +549,11 @@ rules:
     to: flagged_for_review
     case_id: C-2026-014-丙戌庚子乙亥辛巳
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  - date: '2026-05-26'
+    from: flagged_for_review
+    to: confirmed
+    case_id: REVIEW-BATCH-001
+    reason: '架构师 review REV-003: 5hit/3miss(posterior=0.60), miss均为域误用; 恢复+收紧适用域=应期触发'
   hits: 5
   misses: 3
   abstained: 0
