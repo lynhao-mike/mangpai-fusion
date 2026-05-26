@@ -808,6 +808,12 @@ def run_pipeline(
     if timing is None:
         timing = PipelineTiming(threshold_seconds=threshold_seconds)
 
+    # CFL-C016-004/005 修复：在入口统一 adapt_parsed，确保下游所有调用点
+    # 拿到的都是 engine.predicates.types.ParsedInput（含 day_master / 起讫年）。
+    # adapt_parsed 对已是 ParsedInput 的入参是 idempotent 的（直接 return）。
+    from engine.predicates.types import adapt_parsed as _adapt_parsed
+    parsed = _adapt_parsed(parsed)
+
     # Step 2: D1 段派
     with timing.step("energy"):
         energy = evaluate_energy(parsed)
@@ -820,8 +826,11 @@ def run_pipeline(
     with timing.step("yingqi"):
         gate_results: list[GateResult] = []
         candidates = _extract_candidates(parsed)
-        for year, event, domain in candidates:
-            gr = gate_yingqi(year, event, domain, energy, picture, parsed)
+        for year, event, domain, verified in candidates:
+            gr = gate_yingqi(
+                year, event, domain, energy, picture, parsed,
+                verified=verified,   # CFL-C016-002：透传应验度状态
+            )
             if gr.passed_layers >= 1:
                 gate_results.append(gr)
 
@@ -846,6 +855,11 @@ def run_pipeline(
     # 把 timing 引用挂到 output 上（dataclass 非 frozen → 可动态附加）。
     # 注意：to_dict/to_json 仅序列化声明字段，timing 不会泄漏进 JSON 制品。
     object.__setattr__(output, "timing", timing)
+
+    # CFL-C016-004 修复：把已 adapt 的 parsed 挂到 output._parsed，让 render
+    # 能取到 birth / bazi / dayun（不再走 _minimal_parsed_from_energy stub）。
+    # 同样不进入 to_dict/to_json 序列化。
+    object.__setattr__(output, "_parsed", parsed)
 
     # 落盘 findings + timing.json（e2e 模式下 write_findings=False，由 e2e 兜底）
     if write_findings:
@@ -972,18 +986,23 @@ def run_pipeline_e2e(
 
 def _extract_candidates(
     parsed: ParsedInput,
-) -> list[tuple[int, str, str]]:
+) -> list[tuple[int, str, str, bool]]:
     """从 ParsedInput.known_facts + questions 提取候选事件。
 
-    返回 [(year, candidate_event, domain), ...]
+    返回 [(year, candidate_event, domain, verified), ...]
+
+    CFL-C016-002 修复：返回 4-tuple，verified 来自 KnownFact.应验度 ≥ 0.7。
+        - verified=True  → gate ★ 上限 5（已应验回填验证模式）
+        - verified=False → gate ★ 上限 4（前向预测候选模式）
+
+    向后兼容：KnownFact.应验度 默认 1.0，所以现有 C-001..015 案例的
+    candidates 都会得到 verified=True，行为不变。
     """
-    candidates: list[tuple[int, str, str]] = []
-
-    # 从 known_facts 提取
+    candidates: list[tuple[int, str, str, bool]] = []
     for fact in (parsed.known_facts or []):
+        verified = float(getattr(fact, "应验度", 1.0)) >= 0.7
         if fact.year and fact.event:
-            candidates.append((fact.year, fact.event, fact.type or "其他"))
+            candidates.append((fact.year, fact.event, fact.type or "其他", verified))
         elif fact.year and fact.content:
-            candidates.append((fact.year, fact.content, fact.type or "其他"))
-
+            candidates.append((fact.year, fact.content, fact.type or "其他", verified))
     return candidates

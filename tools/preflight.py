@@ -146,6 +146,9 @@ class KnownFact:
     year: Optional[int] = None
     event: Optional[str] = None       # 时间型用
     content: Optional[str] = None     # 状态型用
+    应验度: float = 1.0   # CFL-C016-002：1.0=已应验（命主反馈），0.0=待验证候选时机。
+                          # 默认 1.0 保留 legacy 行为（C-001..015 已 ingest 的事实视为已应验）。
+                          # ≥ 0.7 视为 verified；< 0.7 视为前向预测候选。
 
 
 @dataclass
@@ -396,11 +399,17 @@ def _check_dayun(
         7, "大运.起运年",
         f"必须 int，实为 {qiyun_year!r}"
     )
+    # CFL-C016-001 修复：起运年公式从 floor 改为 round（四舍五入）。
+    # 真实命理"出生后 X 年 Y 月 Z 天起运"，分数年份 ≥ 0.5 时下一整年才入运。
+    # 例：起运岁=3.586 → round=4 → birth_year+4=1988 ✓ (命主 1988-07 才入第 1 运)
+    # 旧公式 floor 会把 3.586 算成 3 → 1987（命主当年还在小运）。
+    # 用 round() 兼容整数（9.0 → 9）和分数年（3.586 → 4 / 3.4 → 3）两种情况。
+    _expected_qiyun_year = birth_year + round(qiyun_sui)
     _require(
-        qiyun_year == birth_year + int(qiyun_sui),
+        qiyun_year == _expected_qiyun_year,
         7, "大运.起运年",
-        f"必须 = birth.年({birth_year}) + floor(起运岁) "
-        f"= {birth_year + int(qiyun_sui)}，实为 {qiyun_year}"
+        f"必须 = birth.年({birth_year}) + round(起运岁) "
+        f"= {_expected_qiyun_year}，实为 {qiyun_year}"
     )
     _require(
         shun_ni in ("顺", "逆"),
@@ -613,6 +622,7 @@ def _check_known_facts(merged: dict[str, Any]) -> list[KnownFact]:
             year=year,
             event=kf.get("事件"),
             content=kf.get("内容"),
+            应验度=float(kf.get("应验度", 1.0)),  # CFL-C016-002：legacy 默认 1.0
         ))
     return out
 
