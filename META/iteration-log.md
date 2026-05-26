@@ -374,6 +374,59 @@ META/calibration/2026-05-25-after-C-2026-014-丙戌庚子乙亥辛巳.snapshot.y
 
 ---
 
+## 2026-05-26 05:35 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+
+case_count: 11
+trigger: ingest_feedback
+
+### Rule Updates (16 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-199 | duan | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M1-D-014 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-009 | duan | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M1-D-171 | duan | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M1-D-122 | duan | 1→1 | 2→3 | ★2→★1 | confirmed→flagged_for_review | miss |
+| M1-D-005 | duan | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-042 | yang | 0→1 | 1→1 | ★1→★2 | confirmed→confirmed | hit |
+| M2-Y-119 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-120 | yang | 0→1 | 1→1 | ★1→★2 | confirmed→confirmed | hit |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M3-R-005 | ren | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| M3-R-022 | ren | 2→2 | 2→3 | ★2→★2 | confirmed→flagged_for_review | miss |
+| M3-R-027 | ren | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M3-R-003 | ren | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M3-R-031 | ren | 4→5 | 3→3 | ★3→★3 | flagged_for_review→flagged_for_review | hit |
+| M2-Y-070 | yang | 1→2 | 1→1 | ★2→★3 | confirmed→confirmed | hit |
+
+### Status Changes
+
+- M1-D-122: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-005: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-022: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-027: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-003: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-BD-XL-MIX
+
+### Cross-School Scan
+- 未触发（case_count=11，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-26-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)

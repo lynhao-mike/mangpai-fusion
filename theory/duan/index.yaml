@@ -26,19 +26,19 @@ rules:
   misses: 1
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - true
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-001
     note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year: null
+    year:
     hit: false
     evidence_chain:
     - M1-D-001
@@ -99,12 +99,27 @@ rules:
   topic: lifa
   topic_label: 体用
   title: 体的分类 — 工具（日干/比劫/印/禄/刃）
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §17.2 体用
   raw_file: theory/raw/duan/promoted/m1-patterns.md
   candidate_score: 4.0
+  status_history: []
+  hits: 0
+  misses: 0
+  abstained: 1
+  misses_at_confirmed: 0
+  misses_at_flagged:
+  recent_5: []
+  applied_cases: []
+  confidence_cache:
+    star: 2
+    percent: 0.5
+    posterior: 0.5
+    variance: 0.083333
+    sample_n: 0
+    last_updated: '2026-05-26'
 - id: M1-D-006
   school: duan
   topic: lifa
@@ -220,12 +235,34 @@ rules:
   topic: lifa
   topic_label: 做功
   title: 做功 1 — 制用结构（80%）
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §17.3 做功
   raw_file: theory/raw/duan/promoted/m1-patterns.md
   candidate_score: 4.5
+  status_history: []
+  hits: 0
+  misses: 1
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged:
+  recent_5:
+  - false
+  applied_cases:
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year:
+    hit: false
+    evidence_chain:
+    - M1-D-009
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+  confidence_cache:
+    star: 1
+    percent: 0.333333
+    posterior: 0.333333
+    variance: 0.055556
+    sample_n: 1
+    last_updated: '2026-05-26'
 - id: M1-D-010
   school: duan
   topic: lifa
@@ -275,12 +312,34 @@ rules:
   topic: lifa
   topic_label: 做功
   title: 做功 6 — 复合结构 + 主神/辅神/废神
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §17.3 做功
   raw_file: theory/raw/duan/promoted/m1-patterns.md
   candidate_score: 4.0
+  status_history: []
+  hits: 1
+  misses: 0
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged:
+  recent_5:
+  - true
+  applied_cases:
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year:
+    hit: true
+    evidence_chain:
+    - M1-D-014
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+  confidence_cache:
+    star: 3
+    percent: 0.666667
+    posterior: 0.666667
+    variance: 0.055556
+    sample_n: 1
+    last_updated: '2026-05-26'
 - id: M1-D-113
   school: duan
   topic: lifa
@@ -341,12 +400,12 @@ rules:
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - true
   applied_cases:
   - case_id: C-2026-009-庚辰乙酉丙申乙未
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-118
@@ -528,48 +587,61 @@ rules:
   topic: lifa
   topic_label: 势与党
   title: 富贵贫贱三档判定 — 势+功/有功无势/无功
-  status: confirmed
+  status: flagged_for_review
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §17.5 势与党
   raw_file: theory/raw/duan/promoted/m1-patterns.md
   candidate_score: 4.5
-  status_history: []
+  status_history:
+  - date: '2026-05-26'
+    from: confirmed
+    to: flagged_for_review
+    case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 1
-  misses: 2
+  misses: 3
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged: 3
   recent_5:
   - true
   - false
   - false
+  - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-122
     note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year: null
+    year:
     hit: false
     evidence_chain:
     - M1-D-122
     note: 1.1 段派视角（M1 段建业 · 4 层签字律）
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year: null
+    year:
     hit: false
     evidence_chain:
     - M1-D-122
     note: 段派（M1-D-*）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year:
+    hit: false
+    evidence_chain:
+    - M1-D-122
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律）
   confidence_cache:
-    star: 2
-    percent: 0.4
-    posterior: 0.4
-    variance: 0.04
-    sample_n: 3
-    last_updated: '2026-05-25'
+    star: 1
+    percent: 0.333333
+    posterior: 0.333333
+    variance: 0.031746
+    sample_n: 4
+    last_updated: '2026-05-26'
+  status_changed_at: '2026-05-26'
 - id: M1-D-123
   school: duan
   topic: lifa
@@ -608,12 +680,12 @@ rules:
   misses: 1
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - false
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year: null
+    year:
     hit: false
     evidence_chain:
     - M1-D-022
@@ -1796,12 +1868,34 @@ rules:
   topic: geju
   topic_label: 过河拆桥
   title: 过河拆桥 — 大富专用结构
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §18.6 过河拆桥
   raw_file: theory/raw/duan/promoted/m1-patterns.md
   candidate_score: 4.5
+  status_history: []
+  hits: 0
+  misses: 1
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged:
+  recent_5:
+  - false
+  applied_cases:
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year:
+    hit: false
+    evidence_chain:
+    - M1-D-171
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+  confidence_cache:
+    star: 1
+    percent: 0.333333
+    posterior: 0.333333
+    variance: 0.055556
+    sample_n: 1
+    last_updated: '2026-05-26'
 - id: M1-D-172
   school: duan
   topic: geju
@@ -1917,12 +2011,12 @@ rules:
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - true
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-241
@@ -2225,12 +2319,34 @@ rules:
   topic: unmapped
   topic_label: 六亲判定
   title: 母星取法（禄/食伤/比劫非印）— 段派独有
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §20.3 六亲判定
   raw_file: theory/raw/duan/promoted/m1-practice.md
   candidate_score: 4.5
+  status_history: []
+  hits: 0
+  misses: 1
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged:
+  recent_5:
+  - false
+  applied_cases:
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year:
+    hit: false
+    evidence_chain:
+    - M1-D-199
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+  confidence_cache:
+    star: 1
+    percent: 0.333333
+    posterior: 0.333333
+    variance: 0.055556
+    sample_n: 1
+    last_updated: '2026-05-26'
 - id: M1-D-211
   school: duan
   topic: unmapped
@@ -2379,12 +2495,12 @@ rules:
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - true
   applied_cases:
   - case_id: C-2026-010-甲子丁卯癸卯庚申
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-186
@@ -2599,12 +2715,12 @@ rules:
   misses: 1
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - false
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year: null
+    year:
     hit: false
     evidence_chain:
     - M1-D-044
@@ -2753,12 +2869,12 @@ rules:
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged: null
+  misses_at_flagged:
   recent_5:
   - true
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year: null
+    year:
     hit: true
     evidence_chain:
     - M1-D-253

@@ -1,18 +1,17 @@
-# v1.3 重构 Handoff · 2026-05-25
+# v1.3.0 已发布 · Handoff · 2026-05-26
 
-> 本文记录 v1.3 自迭代闭环落地后的状态，供下一个 session/agent 无损接续。
-> 取代 v1.2 旧版。
+> 本文记录 v1.3.0 发布后的项目状态，供下一个 session/agent 无损接续。
 
 ---
 
-## 一、当前状态：W4 验收进行中
+## 一、当前状态：v1.3.0 已发布 ✅
 
-**版本**：`VERSION` = `1.2.0`（待改为 `1.3.0`）
-**主分支**：`main`，HEAD = `5eb1dfe`（W3 已合并）
-**工作分支**：`feat/v1.3-w4-acceptance`（本地已建，未 push，有未提交文件）
+**版本**：`VERSION` = `1.3.0`
+**主分支**：`main`，HEAD = `fa0e8e6`（W4 验收 + smoke 脚本已合并）
+**tag**：`v1.3.0`（本地已建，需手动 `git push origin v1.3.0`）
 **工作目录**：`/projects/sandbox/mangpai-fusion`
 
-### W1-W3 已合并 main
+### W1-W4 全部完成并合并 main
 
 | PR | 内容 | 关键产出 |
 |---|---|---|
@@ -20,101 +19,47 @@
 | #27 | W1: D1+D2+D5 | statement_id / 双版报告 / feedback_ingest |
 | #28 | W2: D6+D7 | batch_intake / batch_review / late_feedback / event_signature |
 | #29 | W3: D3+D4+D8 | boundary_miner / veto_miner / iteration_report / 自动触发接入 |
+| #37 | W4: 验收 + smoke 脚本 | H1-H6 全 PASS / 嵌套 if bug 修复 |
 
-### W4 当前进度
+### v1.3.0 发布后已完成（本次 session）
 
-| 任务 | 状态 |
+| 任务 | 结果 |
 |---|---|
-| 测试文件 5 个已建（syntax OK） | ✅ |
-| H1 sid 稳定性 stdlib smoke | ✅ PASS |
-| **H2 双版差分** | 🟡 **暴露 _render_template 嵌套 if bug** |
-| H3 解析正确率 | ✅ 逻辑已验证（W1 /tmp 测试全 PASS） |
-| H6 完整闭环 | ✅ 逻辑已验证（W3 /tmp 测试全 PASS） |
-| 修 bug + 全量重跑 | 🔜 |
-| VERSION → 1.3.0 + STATUS.md | 🔜 |
-| commit + push + PR + merge + tag | 🔜 |
+| C-2026-015 反馈摄入 | ✅ 16 规律更新 / 5 状态变更 / 累计 11/30 |
+| 轻量 metrics | ✅ pipeline.py PipelineTiming 已有 + tools/timing_report.py 全局聚合 |
+| 决策 B 审查 | ✅ 已完全合规（YAML=metadata, Python=logic, check_consistency 通过）|
 
 ---
 
-## 二、必须修的 Bug
+## 二、规律状态快照（截至本次 session）
 
-### `_render_template` 嵌套 {% if %} 错配
+| 类型 | 数量 |
+|---|---|
+| candidate（候选） | ~261 |
+| confirmed（已确认）| ~645 |
+| flagged_for_review（待人工审）| **7**（M2-Y-091 / M3-R-031 / M1-D-122 / M3-R-022 / M3-R-027 / M3-R-003 + 原有 3 条中 M3-R-005 已 deprecated）|
+| deprecated（已弃用）| **1**（M3-R-005）|
 
-**文件**：`tools/render_report.py` 约 L771-815（`_render_template` 函数 step 2 + step 3）
+### 新增 flagged_for_review（C-015 摄入触发）
+- **M1-D-122**（段派）：累计 misses 3，posterior=0.33
+- **M3-R-022**（任派）：累计 misses 3，posterior=0.43
+- **M3-R-027**（任派）：累计 misses 3，posterior=0.20
+- **M3-R-003**（任派）：累计 misses 3，posterior=0.20
 
-**根因**：非贪婪正则 `(.*?)` 遇嵌套 if 时，外层 if 的 body 被截断到内层的第一个 endif。
-
-```
-{% if gate_results %}          ← 外层 start
-  ...
-  {% if is_master %}反馈：[S-001] [ ]{% endif %}  ← 内层完整
-  ...
-{% endif %}                    ← 外层 end（但正则把内层 endif 当成外层的）
-```
-
-**现象**：client 模式（`is_master=False`）下泄漏 1 个反馈位（本应被 `{% if is_master %}` 隐藏）。
-
-**修复方案**：把单次 `re.sub` 改为**内层优先 + while 循环**：
-
-```python
-# 关键：正则 body 中加负前瞻 (?:(?!\{%\s*if\b).)*?
-# 确保匹配的 body 中不含嵌套 {% if %}，这样 endif 一定配对最内层
-_if_not_inner = re.compile(
-    r"\{%\s*if\s+not\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
-    re.DOTALL,
-)
-_if_inner = re.compile(
-    r"\{%\s*if\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
-    re.DOTALL,
-)
-
-changed = True
-while changed:
-    changed = False
-    def _expand_if_not(m):
-        nonlocal changed; changed = True
-        return m.group(2) if not ctx.get(m.group(1)) else ""
-    out = _if_not_inner.sub(_expand_if_not, out)
-    def _expand_if(m):
-        nonlocal changed; changed = True
-        return m.group(2) if ctx.get(m.group(1)) else ""
-    out = _if_inner.sub(_expand_if, out)
-```
-
-**验证**：
-```bash
-# 修完后跑
-python3 -c "
-import sys, json, types, pathlib, re
-# ... 桩 yaml ...
-from tools.render_report import _render_template
-tpl = pathlib.Path('templates/report-v1.3.md').read_text(encoding='utf-8')
-ctx = {..., 'is_master': False, 'is_client': True, ...}  # client 模式
-out = _render_template(tpl, ctx)
-fb_re = re.compile(r'\[S-[\w-]+\]\s*\[\s*\]')
-assert len(fb_re.findall(out)) == 0, 'client 不应有反馈位'
-print('H2 fix verified')
-"
-```
+### 新增 deprecated
+- **M3-R-005**（任派）：从 flagged_for_review → deprecated（累计 4 miss / 0 hit）
 
 ---
 
-## 三、W4 已建测试文件清单
+## 三、决策 E 进度（Beta 切换）
 
-| 文件 | H 指标 | 测试内容 |
-|---|---|---|
-| `tests/v1_3_acceptance/__init__.py` | — | 说明文档 |
-| `tests/v1_3_acceptance/conftest.py` | — | Mock fixtures（MockEnergy/MockPicture/MockGate/MockParsed） |
-| `tests/v1_3_acceptance/test_h1_statement_id_stable.py` | H1 | 5 次重跑 sid 一致 / 格式 / 跨案不撞 / 排序无关 / 集合变 ID 变 |
-| `tests/v1_3_acceptance/test_h2_dual_variant.py` | H2 | master 有反馈位 / client 无 / client ★≤3 过滤 / master 保留弱项 / sid 子集关系 |
-| `tests/v1_3_acceptance/test_h3_feedback_parsing.py` | H3 | 100 样本正确率≥99% / ?/skip→no_data / 重复取最后 / fanout 决断力优先 |
-| `tests/v1_3_acceptance/test_h6_full_loop.py` | H6 | 10 案触发 / 异常 warn-only / 20 案 seq=2 / 重复不计数 |
-
-pytest marker：`v1_3_acceptance`（已注册到 `pyproject.toml`）
+- **累计反馈样本**：**11 / 30**（Beta 切换阈值）
+- 当前置信度公式仍走**线性加权（4:6）**
+- 还差 **19 案**
 
 ---
 
-## 四、v1.3 新增工具速查
+## 四、v1.3 工具速查
 
 | 工具 | 路径 | CLI |
 |---|---|---|
@@ -125,6 +70,7 @@ pytest marker：`v1_3_acceptance`（已注册到 `pyproject.toml`）
 | 边界自动挖掘 | `tools/boundary_miner.py` | `python3 -m tools.boundary_miner [rule_id]` |
 | 候选否决兜底 | `tools/veto_miner.py` | `python3 -m tools.veto_miner [rule_id]` |
 | 迭代报告调度 | `tools/iteration_report.py` | `python3 -m tools.iteration_report [--seq N]` |
+| **Timing 聚合** | `tools/timing_report.py` | `python3 -m tools.timing_report [--human]` |
 
 ---
 
@@ -133,55 +79,65 @@ pytest marker：`v1_3_acceptance`（已注册到 `pyproject.toml`）
 | 文件 | 用途 |
 |---|---|
 | `templates/report-v1.3.md` | v1.3 双版报告模板（{% if is_master %} 控制反馈位） |
-| `META/iteration-state.json` | D8 反馈完成案计数器 |
+| `META/iteration-state.json` | D8 反馈完成案计数器（当前=11） |
+| `META/timing-summary.json` | 全局 pipeline 耗时聚合 |
+| `META/iteration-report-001.md` | 首次自迭代报告（10 案触发） |
 | `cases/_TEMPLATE/feedback.md` | v1.3 反馈模板（报告即反馈表） |
 | `plans/architecture-v1.3.md` | D1-D8 决策面板完整文档 |
 
 ---
 
-## 六、v1.3 决策面板速查（D1-D8 锁定）
+## 六、沙箱约束提醒
 
-| # | 决策 | 锁定值 |
-|---|---|---|
-| D1 | statement_id | `S-{case_seq}-{sha256(sorted_rule_ids)[:6]}` |
-| D2 | 双版输出 | master 含反馈位 + 弱项；client 仅 ★4+ |
-| D3 | boundary_miner | ≥5 miss + p<0.1 + lift≥2 + 回放验证 hit_rate 升 |
-| D4 | veto_miner | ≥5 miss + n≥10 + posterior<40% + boundary 空 → flagged_for_review |
-| D5 | 过后反馈 | [y]/[n]/[?]/[skip]；? 入库不计数 |
-| D6 | 批量工作流 | batch_intake（inbox→pipeline）+ batch_review（pending→ingest） |
-| D7 | 应期延迟 | ±1 年窗口；hit=1.0/0.5；统计独立隔离不污染画像 |
-| D8 | 自迭代触发 | 每 10 **完成反馈案**（非入库）→ iteration_report |
+- **无外网**（INTEGRATIONS_ONLY）→ pip install 全部失败
+- **无 PyYAML** → 用 `ruamel.yaml`（已预装）做 shim：`smoke/run_ingest_c015.py` 有完整示例
+- **无 pytest** → 用 `smoke/*.py` stdlib 脚本验证
+- **git push** → 用 `mcp_sandbox_github_push_to_remote`
+- **PR 创建** → 用 `mcp_sandbox_github_create_pull_request`
 
 ---
 
-## 七、沙箱约束提醒
+## 七、下一步行动
 
-- **无外网**（INTEGRATIONS_ONLY）→ pip install 全部失败
-- **无 PyYAML** → 测试必须桩 yaml 模块（`sys.modules["yaml"] = fake_yaml`）
-- **无 pytest** → 正式 pytest 跑不了；用 `/tmp/test_*.py` stdlib 脚本验证
-- **git push** → 用 `mcp_sandbox_github_push_to_remote`（需参数：path, owner, repository_name, remote_branch_name）
-- **PR 创建** → 用 `mcp_sandbox_github_create_pull_request`
+### 立即可做
+1. **Review 7 条 flagged_for_review 规律** → 决定保留观察 / 收紧条件 / 退役
+2. **继续摄入新案反馈**（还差 19 案达到 Beta 切换阈值 30）
+3. **手动 `git push origin v1.3.0`** 推送 tag
+
+### 短期（1-4 周）
+4. 历史报告回溯扫描：`tools/output_linter.py` 跑 reports/*.md（验证 W9 cross-domain check）
+5. 在 `engine/contracts/03-findings-schema.md` 增加 `industry_path` + `wealth_level.framework` 字段（CFL-C015-002）
+6. v1.4 应期模型扩展 `event_type_hypotheses` 字段（CFL-C015-003）
+
+### 中期（v1.4 路线图）
+7. 跨维度输出耦合性 gate 完整落地（P(体制内)>0.7 时切换输出框架）
+8. 命宫长生诀自动算法
+9. 问真 APP input.md 直接解析
+10. 八字指纹相似案检索器
 
 ---
 
 ## 八、新开对话的第一条指令
 
 ```
-继续 W4 验收。当前分支 feat/v1.3-w4-acceptance（本地未 push）。
+项目 mangpai-fusion v1.3.0 已发布。
 
-待办：
-1. 修 tools/render_report.py _render_template 嵌套 if bug（handoff.md § 二 有完整方案）
-2. 验证 H2 修复（client 反馈位 = 0）
-3. 跑 H1+H2+H3+H6 全 PASS（stdlib smoke）
-4. VERSION → 1.3.0 + STATUS.md 加 M10
-5. commit + push + PR + 合 main + 打 tag v1.3.0
+当前状态：
+- main HEAD = fa0e8e6，tag v1.3.0
+- 累计反馈案 11/30（Beta 切换阈值）
+- 7 条规律 flagged_for_review，1 条 deprecated
+
+可选工作：
+1. Review flagged 规律（M2-Y-091 / M3-R-031 / M1-D-122 / M3-R-022 / M3-R-027 / M3-R-003 / M3-R-005）
+2. 摄入新案反馈（python3 -m tools.feedback_ingest C-XXXX）
+3. 开始 v1.4 规划（CFL-C015-002 跨维度耦合 + CFL-C015-003 应期事件类型分流）
 
 仓库：lynhao-mike/mangpai-fusion
-分支：feat/v1.3-w4-acceptance
 工作目录：/projects/sandbox/mangpai-fusion
+沙箱约束：无 PyYAML（用 ruamel.yaml shim）/ 无 pytest / 无外网
 ```
 
 ---
 
-**本 handoff 由 v1.3 W4 session 于 2026-05-25 写入。**
-**W1-W3 已全部合并 main。W4 待修 1 个 bug + 验收 + tag。**
+**本 handoff 由 v1.3.0 发布后收尾 session 于 2026-05-26 写入。**
+**v1.3.0 全部完成。W4 验收 PASS。C-015 反馈已摄入。timing 聚合已上线。决策 B 合规。**
