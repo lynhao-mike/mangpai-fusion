@@ -470,3 +470,50 @@ branch: `feat/v1.4-w1-docs-and-tests`
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)
+
+
+
+## 2026-05-26 16:00 · v1.4 W2 工程债清扫（CFL-C016-001..005）
+
+trigger: 架构师评审（C-2026-016 案例暴露的 5 条工程债 → 一并修复）
+case_count: 16（无 ingest，本条目为契约/工程级 annotation）
+branch: `feat/cfl-c016-fixes`
+
+### 工程改动（无规律 hits/misses 变更）
+
+| CFL ID | 优先级 | 文件 | 变更摘要 |
+|---|---|---|---|
+| CFL-C016-001 | P2 | `tools/preflight.py` `_check_dayun` | `int(qiyun_sui)` → `round(qiyun_sui)`，支持分数起运岁（出生后 X 年 Y 月 Z 天精确化）|
+| CFL-C016-002 | **P1** | `engine/yingqi/gate.py` + `engine/predicates/types.py` + `tools/preflight.py` + `engine/pipeline.py` | `gate_yingqi(verified=)` + `compute_yingqi_confidence(verified=)`：前向预测模式 ★ 上限 4。`KnownFact.应验度: float = 1.0` 字段贯通 preflight → adapt → extract_candidates → gate。posterior 同步 cap 到 ★ 区间避免 ★/% lint 不一致。|
+| CFL-C016-003 | P3 | `templates/report-v1.3.md` § 一 | "命主能量等级（评分 X/100）" + "引擎置信度（D1 段派）：N 星 / X%" 分两行展示，明确"结论"vs"对结论的把握度"两个概念。|
+| CFL-C016-004 | P2 | `engine/pipeline.py` `run_pipeline` | 入口 `adapt_parsed`（idempotent）+ 出口 `object.__setattr__(output, "_parsed", parsed)`，render 不再走 stub fallback。|
+| CFL-C016-005 | P3 | 同 CFL-004 | retrospective scan 不再因 preflight DayunStep 缺 `起讫年` 而 warn（adapt 后 DayunStep 有此属性）。|
+
+### 测试
+
+新增 `tests/v1_3_acceptance/test_cfl_c016_fixes.py`：
+- `TestCFLC016_001_PreflightQiyunYear`（4 cases · 含整数兼容回归 + floor 拒绝）
+- `TestCFLC016_002_GateForwardPredictionCap`（4 cases · ★ cap + ★/% 区间一致）
+- `TestCFLC016_002_KnownFactVerifiedRouting`（2 cases + 5 parametrize · 应验度 0.7 阈值）
+- `TestCFLC016_004_005_PipelineAdaptAndMount`（3 cases · 接受 preflight ParsedInput / _parsed 挂载 / retrospective 不 warn）
+- `TestCFLC016_003_TemplateEnergyClarity`（1 case · 模板字符串结构）
+
+### 验证
+
+- C-2026-016 input.md 起运岁恢复为真实值 `3.586`，preflight + pipeline 全过
+- 12 条 D3 候选事件 verified=False → 11 条 ★4 (84%) + 1 条 ★3 (66%) 全部 ★/% 区间一致
+- output._parsed 已挂载 / retrospective 字段非空 / render_both 0 lint ERROR
+- 既存 smoke 全过：H7+H8+H9 25/25 / H10 36/36 / H11 24/24 / track_e 8/8 / preflight 1/1 / rule_lifecycle 5/5 = **99/99 PASS**（无 regression）
+
+### 不在本 PR 范围
+
+- V5/V6 PictureFindings.industry_path / wealth_level.framework
+- V7 跨维度耦合 gate（CFL-C015-002 余债）
+- 婚姻应期模型 v2（依赖 N_eff ≥ 30 切 Beta）
+
+### Rollback Hint
+
+```
+# 本 PR 全部为引擎/契约/模板/测试改动，无 yaml 规律状态变更
+# 回滚仅需 git revert 本 PR squash commit
+```

@@ -364,10 +364,26 @@ def compute_yingqi_confidence(
     primary_trigger: Optional[TriggerEvent],
     l2_via_transition: bool,
     upstream_consistent: bool,
+    *,
+    verified: bool = True,
 ) -> Confidence:
     """应期 Confidence 计算（06 § 四完整公式）。
 
     返回 Confidence 五元组（star / percent / posterior / variance / sample_n）。
+
+    Args:
+        verified: 是否已应验（命主反馈应验度 ≥ 0.7）。
+            - True（默认）= 已应验事件回填验证模式 → ★ 上限走 PASSED_LAYERS_TO_STAR_CEILING
+              （3 层齐备 = ★5 铁口断）
+            - False = 前向预测模式（命理师询问的"候选时机"，未经命主验证）
+              → ★ 上限再 -1，三层齐备最高 ★4 (CFL-C016-002 修复)
+
+    CFL-C016-002 设计动机：
+        v1.4 W1 之前，所有 gate 走完 3/3 一律 ★5 (95%)。但本意是
+        "应期是稀有信号，三层齐备才下铁断" — 实际上每个候选事件都被
+        引擎"宽进"为 ★5 与设计意图相违。区分 verified/predict 后：
+            · verified=True → ★5 仍可成立（命主已反馈+gate 验证一致）
+            · verified=False → ★4 顶（候选未经验证，引擎再自信也不能下铁口）
     """
     # 1. gate 上限
     gate_ceiling = PASSED_LAYERS_TO_STAR_CEILING.get(passed_layers, 0)
@@ -376,6 +392,10 @@ def compute_yingqi_confidence(
         return Confidence(
             star=0, percent=0.0, posterior=0.0, variance=1.0, sample_n=0
         )
+
+    # CFL-C016-002 修复：前向预测模式下 ★ 上限再 -1（最高 ★4）
+    if not verified:
+        gate_ceiling = max(1, gate_ceiling - 1)
 
     # 2. 主触发强度
     n_triggers = len(triggers)
@@ -412,6 +432,14 @@ def compute_yingqi_confidence(
     posterior = max(0.0, min(0.95, posterior))
     star = _posterior_to_star(posterior)
     star = min(star, gate_ceiling)
+
+    # CFL-C016-002 后续修复：当 star 被 gate_ceiling 下压（典型 verified=False 场景），
+    # 同步把 posterior cap 到该 ★ 区间的上限，避免 output_linter E1 ★/% 区间不一致告警。
+    # 区间映射（与 _posterior_to_star 一致）：
+    #   ★1 [0.00, 0.39] / ★2 [0.40, 0.54] / ★3 [0.55, 0.69] /
+    #   ★4 [0.70, 0.84] / ★5 [0.85, 0.95]
+    _STAR_POSTERIOR_CAP = {1: 0.39, 2: 0.54, 3: 0.69, 4: 0.84, 5: 0.95}
+    posterior = min(posterior, _STAR_POSTERIOR_CAP.get(star, 0.95))
 
     # passed=1 时强制 ★ ≤ 3 (PASSED_LAYERS_TO_STAR_CEILING)
     # passed=0 时强制 ★ = 0
@@ -560,6 +588,8 @@ def gate_yingqi(
     energy: EnergyFindings,
     picture: PictureFindings,
     parsed: ParsedInput,
+    *,
+    verified: bool = True,
 ) -> GateResult:
     """应期三层门主入口（04 § 二）。
 
@@ -570,6 +600,10 @@ def gate_yingqi(
         energy:         上游 D1 EnergyFindings
         picture:        上游 D2 PictureFindings
         parsed:         ParsedInput（含 bazi / dayun / birth / shensha）
+        verified:       是否为已应验事件（命主反馈应验度 ≥ 0.7）。
+                        默认 True（向后兼容：legacy 案例的 known_facts 已应验）。
+                        前向预测模式（候选时机询问 / 应验度=0）应传 False，
+                        触发 CFL-C016-002 ★ 上限 -1 保护。
 
     Returns:
         GateResult: 含 passed_layers / triggers / door / confidence 等。
@@ -642,6 +676,7 @@ def gate_yingqi(
         primary_trigger=primary_trigger,
         l2_via_transition=l2.used_transition,
         upstream_consistent=upstream_ok,
+        verified=verified,    # CFL-C016-002 透传
     )
 
     # 6. Evidence
