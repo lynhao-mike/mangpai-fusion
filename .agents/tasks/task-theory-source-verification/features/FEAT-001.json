@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-001",
+  "type": "fix",
+  "description": "Fix yang YAML topic_label and raw_anchor misattributions. 75 rules in theory/yang/index.yaml incorrectly have topic_label '2019年班补全' and raw_anchor '2019年班补全' when they actually belong to different sections. Also fix 72 rules that have placeholder section-reference conclusions (e.g., '§2.3') instead of actual conclusion text.",
+  "status": "in_progress",
+  "steps": [
+    "Read theory/raw/yang/promoted/m2-rules-registry.md section §24 (complete rules table) to build the authoritative mapping of rule_id -> section/topic_label",
+    "In theory/yang/index.yaml, fix topic_label for rules M2-Y-019..048: according to m2-rules-registry §24, M2-Y-019..023 are in §2.3, M2-Y-024..028 are in §3, M2-Y-029..030 are in §4, M2-Y-031..036 are in various §5-§14 sections, M2-Y-037..048 are in §9-§21. The correct topic_labels should be derived from the m2-rules-registry section headers (§20 基础篇补全, §21 2017丁酉年班补全, etc.)",
+    "In theory/yang/index.yaml, fix topic_label for rules M2-Y-144..163: these are from §12-§15 (高维/活死木/风水/换象) not '2019年班补全'. Use the m2-rules-registry §24 complete table to determine correct labels",
+    "Fix raw_anchor fields to match the correct section: should be the actual section name from m2-rules-registry (e.g., '基础篇补全' for M2-Y-049..063, '2017丁酉年班补全' for M2-Y-064..088, '2018戊戌年班补全' for M2-Y-089..118, '2019年班补全' only for M2-Y-119..143)",
+    "For the 72 rules with placeholder conclusions (M2-Y-019..048, M2-Y-119..163): look up each rule in m2-rules-registry.md (which has a '核心结论' column for M2-Y-001..018 and similar content in §20-§24 tables). Extract the actual conclusion text from the registry tables and fill in the conclusion field. If the registry only has a brief entry, use that brief entry as the conclusion.",
+    "Verify: grep 'topic_label: 2019年班补全' should now show only ~25 rules (M2-Y-119..143), not 75. grep 'conclusion: §' should return 0 matches."
+  ],
+  "acceptance_criteria": [
+    "All 163 yang rules have correct topic_label matching their actual section in m2-rules-registry.md",
+    "All raw_anchor fields in yang YAML correctly point to the registry section the rule belongs to",
+    "No yang rule has a conclusion field containing only a section reference (§N.N) - all have actual text",
+    "The YAML remains valid (no syntax errors)",
+    "Rules M2-Y-001..018 still have topic_label '入口规则补全' (unchanged, already correct)"
+  ],
+  "verification": [
+    "Run: python3 -c \"import yaml; yaml.safe_load(open('theory/yang/index.yaml'))\" to confirm YAML validity",
+    "Run: grep -c 'topic_label: 2019年班补全' theory/yang/index.yaml -- should be ~25 (only M2-Y-119..143)",
+    "Run: grep 'conclusion: §' theory/yang/index.yaml | wc -l -- should be 0"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
