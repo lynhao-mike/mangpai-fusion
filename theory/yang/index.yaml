@@ -137,26 +137,33 @@ rules:
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
   hits: 0
-  misses: 1
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
   - false
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-011
+    note: 杨派（M2-Y-*）
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-011
     note: 杨派（M2-Y-*）
   confidence_cache:
     star: 1
-    percent: 0.333333
-    posterior: 0.333333
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-012
   school: yang
   topic: lifa
@@ -185,40 +192,65 @@ rules:
   topic_label: 入口规则补全
   title: 完整性原则
   conclusion: 完整=不受穿/破/克坏；财不完整不大；官不完整不长
-  status: confirmed
+  status: deprecated
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 入口规则补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
-  status_history: []
+  status_history:
+  - date: '2026-05-27'
+    from: confirmed
+    to: flagged_for_review
+    case_id: C-2026-001-庚申戊寅壬子辛丑
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  - date: '2026-05-27'
+    from: flagged_for_review
+    to: deprecated
+    case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 0
-  misses: 2
+  misses: 4
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: 3
   recent_5:
+  - false
+  - false
   - false
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-014
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-014
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-014
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-014
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   confidence_cache:
     star: 1
-    percent: 0.25
-    posterior: 0.25
-    variance: 0.0375
-    sample_n: 2
-    last_updated: '2026-05-25'
+    percent: 0.166667
+    posterior: 0.166667
+    variance: 0.019841
+    sample_n: 4
+    last_updated: '2026-05-27'
+  status_changed_at: '2026-05-27'
 - id: M2-Y-015
   school: yang
   topic: lifa
@@ -276,26 +308,33 @@ rules:
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
   hits: 0
-  misses: 1
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-049
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-049
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   confidence_cache:
     star: 1
-    percent: 0.333333
-    posterior: 0.333333
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-050
   school: yang
   topic: lifa
@@ -463,26 +502,33 @@ rules:
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
   hits: 0
-  misses: 1
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-064
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-064
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   confidence_cache:
     star: 1
-    percent: 0.333333
-    posterior: 0.333333
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-065
   school: yang
   topic: hunyin
@@ -522,40 +568,65 @@ rules:
   topic_label: 结婚应期与婚姻深化
   title: 男命劫财见财妻宫破=必离
   conclusion: 比劫力>财力+妻宫冲穿=必离婚；力≤+宫未动=外遇不离
-  status: confirmed
+  status: deprecated
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 结婚应期与婚姻深化
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
-  status_history: []
+  status_history:
+  - date: '2026-05-27'
+    from: confirmed
+    to: flagged_for_review
+    case_id: C-2026-001-庚申戊寅壬子辛丑
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  - date: '2026-05-27'
+    from: flagged_for_review
+    to: deprecated
+    case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 0
-  misses: 2
+  misses: 4
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: 3
   recent_5:
+  - false
+  - false
   - false
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-068
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-068
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-068
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-068
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   confidence_cache:
     star: 1
-    percent: 0.25
-    posterior: 0.25
-    variance: 0.0375
-    sample_n: 2
-    last_updated: '2026-05-25'
+    percent: 0.166667
+    posterior: 0.166667
+    variance: 0.019841
+    sample_n: 4
+    last_updated: '2026-05-27'
+  status_changed_at: '2026-05-27'
 - id: M2-Y-069
   school: yang
   topic: hunyin
@@ -579,41 +650,61 @@ rules:
   raw_anchor: 学历判定系统
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 2
-  misses: 1
-  abstained: 3
+  hits: 4
+  misses: 2
+  abstained: 6
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - true
+  - true
   - false
   - true
   - true
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-070
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-070
     note: 2.3 学业领域 | 学业
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-070
+    note: COMP-2 · 学业层级 L9-L10（互补 · 段+杨+高） | 学业
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-070
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-070
+    note: 2.3 学业领域 | 学业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-070
     note: COMP-2 · 学业层级 L9-L10（互补 · 段+杨+高） | 学业
   confidence_cache:
     star: 3
-    percent: 0.6
-    posterior: 0.6
-    variance: 0.04
-    sample_n: 3
-    last_updated: '2026-05-26'
+    percent: 0.625
+    posterior: 0.625
+    variance: 0.026042
+    sample_n: 6
+    last_updated: '2026-05-27'
 - id: M2-Y-071
   school: yang
   topic: jiaoyu
@@ -681,27 +772,34 @@ rules:
   raw_anchor: 调候改运与三刑
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 1
+  hits: 2
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - true
   - true
   applied_cases:
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-076
+    note: COMP-4 · 健康提示（互补 · 高+杨+任） | 健康
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-076
     note: COMP-4 · 健康提示（互补 · 高+杨+任） | 健康
   confidence_cache:
-    star: 3
-    percent: 0.666667
-    posterior: 0.666667
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    star: 4
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-077
   school: yang
   topic: tiaohou
@@ -879,7 +977,7 @@ rules:
     case_id: REVIEW-BATCH-001
     reason: '架构师 review REV-002: 0hit/3miss, 规律过度抽象无法产出可验证预测'
   hits: 0
-  misses: 3
+  misses: 6
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -887,32 +985,52 @@ rules:
   - false
   - false
   - false
+  - false
+  - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-091
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-091
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-091
+    note: 2.2 承载与做功
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-091
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-091
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-091
     note: 2.2 承载与做功
   confidence_cache:
     star: 1
-    percent: 0.2
-    posterior: 0.2
-    variance: 0.026667
-    sample_n: 3
-    last_updated: '2026-05-26'
+    percent: 0.125
+    posterior: 0.125
+    variance: 0.012153
+    sample_n: 6
+    last_updated: '2026-05-27'
   status_changed_at: '2026-05-25'
 - id: M2-Y-092
   school: yang
@@ -1005,9 +1123,9 @@ rules:
   status_history: []
   hits: 0
   misses: 0
-  abstained: 1
+  abstained: 2
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5: []
   applied_cases: []
   confidence_cache:
@@ -1016,7 +1134,7 @@ rules:
     posterior: 0.5
     variance: 0.083333
     sample_n: 0
-    last_updated: '2026-05-25'
+    last_updated: '2026-05-27'
 - id: M2-Y-100
   school: yang
   topic: lifa
@@ -1449,9 +1567,9 @@ rules:
   status_history: []
   hits: 0
   misses: 0
-  abstained: 2
+  abstained: 4
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5: []
   applied_cases: []
   confidence_cache:
@@ -1460,7 +1578,7 @@ rules:
     posterior: 0.5
     variance: 0.083333
     sample_n: 0
-    last_updated: '2026-05-26'
+    last_updated: '2026-05-27'
 - id: M2-Y-036
   school: yang
   topic: unmapped
@@ -1539,23 +1657,37 @@ rules:
   raw_anchor: 婚姻与六亲系统
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 1
-  misses: 1
+  hits: 2
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
+  - true
   - false
   - true
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-042
     note: 2.4 职业方向 | 事业
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-042
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 五步法） | 婚姻
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-042
+    note: 2.4 职业方向 | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-042
@@ -1564,9 +1696,9 @@ rules:
     star: 2
     percent: 0.5
     posterior: 0.5
-    variance: 0.05
-    sample_n: 2
-    last_updated: '2026-05-26'
+    variance: 0.035714
+    sample_n: 4
+    last_updated: '2026-05-27'
 - id: M2-Y-043
   school: yang
   topic: unmapped
@@ -1645,27 +1777,34 @@ rules:
   raw_anchor: 2019年班补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 1
+  hits: 2
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - true
   - true
   applied_cases:
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-119
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-119
     note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
   confidence_cache:
-    star: 3
-    percent: 0.666667
-    posterior: 0.666667
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-26'
+    star: 4
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-120
   school: yang
   topic: unmapped
@@ -1678,23 +1817,37 @@ rules:
   raw_anchor: 2019年班补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 1
-  misses: 1
+  hits: 2
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
+  - true
   - false
   - true
   applied_cases:
   - case_id: C-2026-007-乙丑庚辰己丑庚午
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M2-Y-120
     note: 杨派（M2） | 事业
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-120
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
+  - case_id: C-2026-007-乙丑庚辰己丑庚午
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-120
+    note: 杨派（M2） | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-120
@@ -1703,9 +1856,9 @@ rules:
     star: 2
     percent: 0.5
     posterior: 0.5
-    variance: 0.05
-    sample_n: 2
-    last_updated: '2026-05-26'
+    variance: 0.035714
+    sample_n: 4
+    last_updated: '2026-05-27'
 - id: M2-Y-121
   school: yang
   topic: unmapped
@@ -1905,27 +2058,34 @@ rules:
   raw_anchor: 2019年班补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 1
+  hits: 2
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - true
   - true
   applied_cases:
   - case_id: C-2026-008-壬申癸卯丁未壬寅
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-141
+    note: CON-1 · 2018 戊戌领证（v2.1++ 已应验）
+  - case_id: C-2026-008-壬申癸卯丁未壬寅
+    year: null
     hit: true
     evidence_chain:
     - M2-Y-141
     note: CON-1 · 2018 戊戌领证（v2.1++ 已应验）
   confidence_cache:
-    star: 3
-    percent: 0.666667
-    posterior: 0.666667
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    star: 4
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M2-Y-142
   school: yang
   topic: unmapped

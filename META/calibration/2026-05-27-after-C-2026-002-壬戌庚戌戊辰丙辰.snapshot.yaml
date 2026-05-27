@@ -1,0 +1,273 @@
+case_id: C-2026-002-壬戌庚戌戊辰丙辰
+ts: '2026-05-27T15:00:31'
+case_count: 14
+rule_updates:
+- rule_id: M1-D-122
+  school: duan
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 3
+    after: 4
+  star:
+    before: 2
+    after: 1
+  posterior:
+    before: 0.4286
+    after: 0.375
+  status:
+    before: flagged_for_review
+    after: deprecated
+  verdict: miss
+  note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+- rule_id: M1-D-001
+  school: duan
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 1
+    after: 2
+  star:
+    before: 3
+    after: 2
+  posterior:
+    before: 0.6
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: miss
+  note: 1.1 段派视角（M1 段建业 · 4 层签字律）
+- rule_id: M2-Y-068
+  school: yang
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 3
+    after: 4
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.2
+    after: 0.1667
+  status:
+    before: flagged_for_review
+    after: deprecated
+  verdict: miss
+  note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性）
+- rule_id: M2-Y-091
+  school: yang
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 4
+    after: 5
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.1667
+    after: 0.1429
+  status:
+    before: deprecated
+    after: deprecated
+  verdict: miss
+  note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性）
+- rule_id: M2-Y-014
+  school: yang
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 3
+    after: 4
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.2
+    after: 0.1667
+  status:
+    before: flagged_for_review
+    after: deprecated
+  verdict: miss
+  note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性）
+- rule_id: G-LF-006
+  school: gao
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 3
+    after: 4
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.2
+    after: 0.1667
+  status:
+    before: candidate
+    after: candidate
+  verdict: miss
+  note: 1.3 高派视角（G 高德臣 · 神煞 + 清浊）
+- rule_id: M3-R-005
+  school: ren
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 5
+    after: 6
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.1429
+    after: 0.125
+  status:
+    before: deprecated
+    after: deprecated
+  verdict: miss
+  note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+- rule_id: M3-R-027
+  school: ren
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 4
+    after: 5
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.1667
+    after: 0.1429
+  status:
+    before: deprecated
+    after: deprecated
+  verdict: miss
+  note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+- rule_id: M3-R-022
+  school: ren
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 4
+    after: 5
+  star:
+    before: 1
+    after: 1
+  posterior:
+    before: 0.375
+    after: 0.3333
+  status:
+    before: deprecated
+    after: deprecated
+  verdict: miss
+  note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+- rule_id: M2-Y-070
+  school: yang
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 2
+    after: 2
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: abstain
+  note: COMP-3 · 学历判定（互补 · 杨+高）
+- rule_id: M2-Y-076
+  school: yang
+  hits:
+    before: 1
+    after: 2
+  misses:
+    before: 0
+    after: 0
+  star:
+    before: 3
+    after: 4
+  posterior:
+    before: 0.6667
+    after: 0.75
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: hit
+  note: COMP-4 · 健康提示（互补 · 高+杨+任）
+- rule_id: M2-Y-035
+  school: yang
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 0
+    after: 0
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: abstain
+  note: EXC-2 · 杨派独门 · 枭夺食 + 食神为用唯一出路
+- rule_id: M2-Y-099
+  school: yang
+  hits:
+    before: 0
+    after: 0
+  misses:
+    before: 0
+    after: 0
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: abstain
+  note: EXC-2 · 杨派独门 · 枭夺食 + 食神为用唯一出路
+status_changes:
+- rule_id: M1-D-122
+  from: flagged_for_review
+  to: deprecated
+  reason: auto-downgrade (累计 misses 触发缓冲阈值)
+- rule_id: M2-Y-068
+  from: flagged_for_review
+  to: deprecated
+  reason: auto-downgrade (累计 misses 触发缓冲阈值)
+- rule_id: M2-Y-014
+  from: flagged_for_review
+  to: deprecated
+  reason: auto-downgrade (累计 misses 触发缓冲阈值)
+cross_school_triggered: false
+frozen: false
+skipped_rule_ids:
+- G-BD
+- G-CH
+- G-CHE
+notes:
+- '[v1.4-V2] 跳过 M3-R-031: domain=''婚姻'' ∉ domain_restriction=[''应期'']'
+- '[v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）'

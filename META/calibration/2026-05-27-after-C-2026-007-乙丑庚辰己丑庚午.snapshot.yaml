@@ -1,0 +1,47 @@
+case_id: C-2026-007-乙丑庚辰己丑庚午
+ts: '2026-05-27T15:00:52'
+case_count: 14
+rule_updates:
+- rule_id: M2-Y-120
+  school: yang
+  hits:
+    before: 1
+    after: 1
+  misses:
+    before: 1
+    after: 2
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.4
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: miss
+  note: 杨派（M2）
+- rule_id: M2-Y-070
+  school: yang
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 2
+    after: 2
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: abstain
+  note: COMP-1 · 学历三本民办（杨+高）
+status_changes: []
+cross_school_triggered: false
+frozen: false
+skipped_rule_ids: []
+notes: []

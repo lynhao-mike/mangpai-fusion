@@ -467,6 +467,396 @@ branch: `feat/v1.4-w1-docs-and-tests`
 
 ---
 
+## 2026-05-27 15:00 · ingest C-2026-001-庚申戊寅壬子辛丑
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (14 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-253 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-122 | duan | 1→2 | 3→3 | ★1→★2 | flagged_for_review→flagged_for_review | hit |
+| M1-D-001 | duan | 1→2 | 1→1 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-068 | yang | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M2-Y-091 | yang | 0→0 | 3→4 | ★1→★1 | deprecated→deprecated | miss |
+| M2-Y-070 | yang | 2→2 | 1→2 | ★3→★2 | confirmed→confirmed | miss |
+| M2-Y-064 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-049 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-014 | yang | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| G-LF-006 | gao | 0→0 | 2→3 | ★1→★1 | candidate→candidate | miss |
+| G-LF-022 | gao | 0→0 | 2→3 | ★1→★1 | candidate→candidate | miss |
+| M3-R-005 | ren | 0→0 | 4→5 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-027 | ren | 0→0 | 3→4 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-022 | ren | 2→2 | 3→4 | ★2→★1 | flagged_for_review→deprecated | miss |
+
+### Status Changes
+
+- M2-Y-068: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M2-Y-014: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M3-R-022: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-DY
+- G-CH
+- G-BD-词馆
+- G-CH-车祸婚姻
+- G-CHE-车祸篇
+- G-BD-词馆神煞应用宝典
+- G-时柱神煞
+
+### Notes
+
+- [v1.4-V2] 跳过 M3-R-031: domain='婚姻' ∉ domain_restriction=['应期']
+- [v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-001-庚申戊寅壬子辛丑.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:00 · ingest C-2026-002-壬戌庚戌戊辰丙辰
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (13 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-122 | duan | 2→2 | 3→4 | ★2→★1 | flagged_for_review→deprecated | miss |
+| M1-D-001 | duan | 2→2 | 1→2 | ★3→★2 | confirmed→confirmed | miss |
+| M2-Y-068 | yang | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| M2-Y-091 | yang | 0→0 | 4→5 | ★1→★1 | deprecated→deprecated | miss |
+| M2-Y-014 | yang | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| G-LF-006 | gao | 0→0 | 3→4 | ★1→★1 | candidate→candidate | miss |
+| M3-R-005 | ren | 0→0 | 5→6 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-027 | ren | 0→0 | 4→5 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-022 | ren | 2→2 | 4→5 | ★1→★1 | deprecated→deprecated | miss |
+| M2-Y-070 | yang | 2→2 | 2→2 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-076 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-099 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+
+### Status Changes
+
+- M1-D-122: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M2-Y-068: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M2-Y-014: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-CH
+- G-CHE
+
+### Notes
+
+- [v1.4-V2] 跳过 M3-R-031: domain='婚姻' ∉ domain_restriction=['应期']
+- [v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-002-壬戌庚戌戊辰丙辰.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:00 · ingest C-2026-007-乙丑庚辰己丑庚午
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (2 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M2-Y-120 | yang | 1→1 | 1→2 | ★2→★2 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 2→2 | 2→2 | ★2→★2 | confirmed→confirmed | abstain |
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-007-乙丑庚辰己丑庚午.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:00 · ingest C-2026-008-壬申癸卯丁未壬寅
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M3-R-031 | ren | 5→6 | 3→3 | ★3→★3 | confirmed→flagged_for_review | hit |
+| M3-R-022 | ren | 2→3 | 5→5 | ★1→★2 | deprecated→deprecated | hit |
+| M2-Y-141 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+
+### Status Changes
+
+- M3-R-031: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-008-壬申癸卯丁未壬寅.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-009-庚辰乙酉丙申乙未
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-118 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-070 | yang | 2→2 | 2→2 | ★2→★2 | confirmed→confirmed | abstain |
+| M3-R-031 | ren | 6→7 | 3→3 | ★3→★3 | flagged_for_review→flagged_for_review | hit |
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-009-庚辰乙酉丙申乙未.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-010-甲子丁卯癸卯庚申
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-186 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M3-R-031 | ren | 7→8 | 3→3 | ★3→★3 | flagged_for_review→flagged_for_review | hit |
+| M3-R-022 | ren | 3→4 | 5→5 | ★2→★2 | deprecated→deprecated | hit |
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-010-甲子丁卯癸卯庚申.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-011-乙丑乙酉丁丑癸卯
+
+case_count: 14
+trigger: ingest_feedback
+
+### Notes
+
+- [v1.4-V2] 跳过 M3-R-031: domain='婚姻' ∉ domain_restriction=['应期']
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-011-乙丑乙酉丁丑癸卯.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-012-壬戌癸丑丙申壬辰
+
+case_count: 14
+trigger: ingest_feedback
+
+### Notes
+
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-012-壬戌癸丑丙申壬辰.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-013-壬申甲辰丙辰己丑
+
+case_count: 14
+trigger: ingest_feedback
+
+### Notes
+
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-013-壬申甲辰丙辰己丑.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-014-丙戌庚子乙亥辛巳
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (13 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-122 | duan | 2→2 | 4→5 | ★1→★1 | deprecated→deprecated | miss |
+| M1-D-022 | duan | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M1-D-044 | duan | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-011 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| G-LF-002 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| M3-R-005 | ren | 0→0 | 6→7 | ★1→★1 | deprecated→deprecated | miss |
+| M2-Y-091 | yang | 0→0 | 5→6 | ★1→★1 | deprecated→deprecated | miss |
+| M1-D-241 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-070 | yang | 2→3 | 2→2 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-042 | yang | 1→1 | 1→2 | ★2→★2 | confirmed→confirmed | miss |
+| M3-R-026 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| G-LF-014 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| G-LF-022 | gao | 0→0 | 3→4 | ★1→★1 | candidate→candidate | miss |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-CH
+- G-CY
+- G-LF
+
+### Notes
+
+- [v1.4-V2] 跳过 M3-R-031: domain='学业' ∉ domain_restriction=['应期']
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-014-丙戌庚子乙亥辛巳.snapshot.yaml
+```
+
+---
+
+## 2026-05-27 15:01 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+
+case_count: 14
+trigger: ingest_feedback
+
+### Rule Updates (15 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-171 | duan | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M1-D-009 | duan | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M1-D-199 | duan | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M1-D-005 | duan | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M1-D-122 | duan | 2→2 | 5→6 | ★1→★1 | deprecated→deprecated | miss |
+| M1-D-014 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-119 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-120 | yang | 1→2 | 2→2 | ★2→★2 | confirmed→confirmed | hit |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-042 | yang | 1→2 | 2→2 | ★2→★2 | confirmed→confirmed | hit |
+| M3-R-005 | ren | 0→0 | 7→8 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-027 | ren | 0→0 | 5→6 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-031 | ren | 8→9 | 3→3 | ★3→★4 | flagged_for_review→flagged_for_review | hit |
+| M3-R-022 | ren | 4→4 | 5→6 | ★2→★2 | deprecated→deprecated | miss |
+| M2-Y-070 | yang | 3→4 | 2→2 | ★3→★3 | confirmed→confirmed | hit |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-BD-XL-MIX
+
+### Notes
+
+- [v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）
+
+### Cross-School Scan
+- 未触发（case_count=14，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-27-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)

@@ -59,19 +59,19 @@ rules:
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-003
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-003
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-003
@@ -117,7 +117,7 @@ rules:
     case_id: C-2026-015-甲寅乙亥丙辰辛卯
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 0
-  misses: 4
+  misses: 8
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -126,38 +126,63 @@ rules:
   - false
   - false
   - false
+  - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-005
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-005
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-005
     note: 2.2 承载与做功
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 2.2 承载与做功
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: false
     evidence_chain:
     - M3-R-005
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 1
-    percent: 0.166667
-    posterior: 0.166667
-    variance: 0.019841
-    sample_n: 4
-    last_updated: '2026-05-26'
+    percent: 0.1
+    posterior: 0.1
+    variance: 0.008182
+    sample_n: 8
+    last_updated: '2026-05-27'
   status_changed_at: '2026-05-26'
 - id: M3-R-006
   school: ren
@@ -324,7 +349,7 @@ rules:
   topic: lifa
   topic_label: 十八道法门核心心法 (M3-R-001..030)
   title: 禄刃不可坏原则
-  status: flagged_for_review
+  status: deprecated
   layer: unmapped
   raw_source: 任派 m3-rules-registry
   raw_anchor: 十八道法门核心心法 (M3-R-001..030) · §15.14
@@ -335,8 +360,13 @@ rules:
     to: flagged_for_review
     case_id: C-2026-015-甲寅乙亥丙辰辛卯
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
-  hits: 2
-  misses: 3
+  - date: '2026-05-27'
+    from: flagged_for_review
+    to: deprecated
+    case_id: C-2026-001-庚申戊寅壬子辛丑
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  hits: 4
+  misses: 6
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -348,43 +378,73 @@ rules:
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-022
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-022
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-008-壬申癸卯丁未壬寅
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-022
     note: 任派（M3）
   - case_id: C-2026-010-甲子丁卯癸卯庚申
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-022
     note: 任派（M3）
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-022
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-022
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-022
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-008-壬申癸卯丁未壬寅
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-022
+    note: 任派（M3）
+  - case_id: C-2026-010-甲子丁卯癸卯庚申
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-022
+    note: 任派（M3）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: false
     evidence_chain:
     - M3-R-022
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 2
-    percent: 0.428571
-    posterior: 0.428571
-    variance: 0.030612
-    sample_n: 5
-    last_updated: '2026-05-26'
-  status_changed_at: '2026-05-26'
+    percent: 0.416667
+    posterior: 0.416667
+    variance: 0.018697
+    sample_n: 10
+    last_updated: '2026-05-27'
+  status_changed_at: '2026-05-27'
 - id: M3-R-023
   school: ren
   topic: lifa
@@ -427,26 +487,33 @@ rules:
   raw_file: theory/raw/ren/promoted/m3-rules-registry.md
   status_history: []
   hits: 0
-  misses: 1
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
-  misses_at_flagged:
+  misses_at_flagged: null
   recent_5:
+  - false
   - false
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-026
+    note: CFL-C014-002 · 学历层级精度 | 学业
+  - case_id: C-2026-014-丙戌庚子乙亥辛巳
+    year: null
     hit: false
     evidence_chain:
     - M3-R-026
     note: CFL-C014-002 · 学历层级精度 | 学业
   confidence_cache:
     star: 1
-    percent: 0.333333
-    posterior: 0.333333
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-25'
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-05-27'
 - id: M3-R-027
   school: ren
   topic: lifa
@@ -469,7 +536,7 @@ rules:
     case_id: REVIEW-BATCH-001
     reason: '架构师 review REV-006: 0hit/3miss, 教学层方法论总结非可验证规律'
   hits: 0
-  misses: 3
+  misses: 6
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -477,32 +544,52 @@ rules:
   - false
   - false
   - false
+  - false
+  - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-027
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-027
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-027
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-001-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-027
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-002-壬戌庚戌戊辰丙辰
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-027
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: false
     evidence_chain:
     - M3-R-027
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 1
-    percent: 0.2
-    posterior: 0.2
-    variance: 0.026667
-    sample_n: 3
-    last_updated: '2026-05-26'
+    percent: 0.125
+    posterior: 0.125
+    variance: 0.012153
+    sample_n: 6
+    last_updated: '2026-05-27'
   status_changed_at: '2026-05-26'
 - id: M3-R-028
   school: ren
@@ -539,7 +626,7 @@ rules:
   topic: lifa
   topic_label: 初/中/高级班进阶 (M3-R-031..060)
   title: 六合婚姻应期
-  status: confirmed
+  status: flagged_for_review
   layer: unmapped
   raw_source: 任派 m3-rules-registry
   raw_anchor: 初/中/高级班进阶 (M3-R-031..060) · §15.3/§17
@@ -555,7 +642,12 @@ rules:
     to: confirmed
     case_id: REVIEW-BATCH-001
     reason: '架构师 review REV-003: 5hit/3miss(posterior=0.60), miss均为域误用; 恢复+收紧适用域=应期触发'
-  hits: 5
+  - date: '2026-05-27'
+    from: confirmed
+    to: flagged_for_review
+    case_id: C-2026-008-壬申癸卯丁未壬寅
+    reason: auto-downgrade (累计 misses 触发缓冲阈值)
+  hits: 9
   misses: 3
   abstained: 0
   misses_at_confirmed: 0
@@ -564,65 +656,89 @@ rules:
   - true
   - true
   - true
-  - false
+  - true
   - true
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-031
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-002-壬戌庚戌戊辰丙辰
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-031
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期） | 婚姻
   - case_id: C-2026-008-壬申癸卯丁未壬寅
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-031
     note: 任派（M3）
   - case_id: C-2026-009-庚辰乙酉丙申乙未
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-031
     note: 任派（M3）
   - case_id: C-2026-010-甲子丁卯癸卯庚申
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-031
     note: 任派（M3）
   - case_id: C-2026-011-乙丑乙酉丁丑癸卯
-    year:
+    year: null
     hit: true
     evidence_chain:
     - M3-R-031
     note: 任派（M3） | 婚姻
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
-    year:
+    year: null
     hit: false
     evidence_chain:
     - M3-R-031
     note: CFL-C014-002 · 学历层级精度 | 学业
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
-    year:
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-008-壬申癸卯丁未壬寅
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 任派（M3）
+  - case_id: C-2026-009-庚辰乙酉丙申乙未
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 任派（M3）
+  - case_id: C-2026-010-甲子丁卯癸卯庚申
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 任派（M3）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
     hit: true
     evidence_chain:
     - M3-R-031
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
-    star: 3
-    percent: 0.6
-    posterior: 0.6
-    variance: 0.021818
-    sample_n: 8
-    last_updated: '2026-05-26'
-  status_changed_at: '2026-05-25'
+    star: 4
+    percent: 0.714286
+    posterior: 0.714286
+    variance: 0.013605
+    sample_n: 12
+    last_updated: '2026-05-27'
+  status_changed_at: '2026-05-27'
   domain_restriction:
   - 应期
 - id: M3-R-032
