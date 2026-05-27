@@ -244,6 +244,12 @@
 
 ## 九、Flagged-for-Review 规律批量审查（2026-05-26 · 架构师 Review）
 
+> **人工 review 固定入口**：所有 flagged_for_review 规律的人工裁决只写入本节及后续新增 REV-* 小节；[`STATUS.md`](../STATUS.md:110) 与 [`handoff.md`](../handoff.md:35) 只链接或摘取当前快照，不重新定义裁决。
+>
+> **裁决口径**：每条规律必须在“保留观察 / 收紧条件 / 恢复 confirmed / 退役 deprecated / 标注 quantifiable=false / 增加 domain_restriction”六类动作中选择至少一项，并说明证据来源、失验域、替代规则或后续样本门槛。
+>
+> **数量维护**：本节记录审查批次的历史事实，可保留触发时数量；当前数量与清单以 [`handoff.md`](../handoff.md:35) § 二为准，不在本节汇总表外追加新的“当前数量”。
+>
 > 触发来源：v1.3 历史回补（10 案）+ C-2026-015 反馈摄入 → 累计 7 条规律降级至 flagged_for_review。
 > 审查目标：逐条决定保留观察 / 收紧条件 / 退役。
 
@@ -426,6 +432,8 @@
 
 ## 十、审查汇总
 
+> 本汇总是 2026-05-26 批次的裁决账本，不等同于仓库当前状态快照。执行状态变更后，当前规则状态只在 [`handoff.md`](../handoff.md:35) § 二维护；后续新增 review 应追加 REV-* 小节，不覆盖历史裁决。
+
 | 规律 | 派别 | 审查结论 | 动作 |
 |---|---|---|---|
 | **M3-R-005** | 任 | ✅ 维持 deprecated | 无需操作（已退役） |
@@ -435,6 +443,14 @@
 | **M3-R-022** | 任 | 🟡 保留观察 flagged | 待正确使用后恢复 |
 | **M3-R-027** | 任 | ⬇️ 退役 deprecated | 需执行 |
 | **M3-R-003** | 任 | 🟡 保留观察 flagged | 标注 quantifiable=false |
+
+### 后续 review 操作清单
+
+1. 新增待审规律时，在本文件追加 `REV-XXX`，不得只在 [`STATUS.md`](../STATUS.md:110) 或 [`handoff.md`](../handoff.md:35) 写一句待审。
+2. 每条 `REV-XXX` 至少记录：当前状态、命中/失验样本、失验域、审查结论、动作、后续样本门槛。
+3. 若动作会改变 yaml 或生命周期字段，必须同步更新 [`META/rule-changelog.md`](rule-changelog.md:1)。
+4. 若只是保留观察，必须写明下一次复审触发条件，例如“再累积 3+ 合格样本”或“下一次 iteration_report 出现同类 miss”。
+5. 不在本文件维护全局 current count；全局 current count 只维护在 [`handoff.md`](../handoff.md:35) § 二，未来成熟后改由规则状态扫描器生成。
 
 ### 关键发现
 

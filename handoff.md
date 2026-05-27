@@ -1,6 +1,8 @@
 # v1.3.0 已发布 · Handoff · 2026-05-26
 
 > 本文记录 v1.3.0 发布后的项目状态，供下一个 session/agent 无损接续。
+>
+> **易漂移信息真相源**：当前 N_eff、规则状态数量、flagged/deprecated 清单只在本文 § 二/三维护；其他文档只链接本文，不复制数字。人工审查与最终裁决只写入 [`META/arbitration-log.md`](META/arbitration-log.md:245)。
 
 ---
 
@@ -33,6 +35,8 @@
 ---
 
 ## 二、规律状态快照（截至本次 session）
+
+> 维护规则：本节是短期交接快照，允许硬编码当前数量与清单；任何 feedback ingest、rule_lifecycle 降级/恢复、人工 review 执行后，必须同步更新本节。除本文外，不在 [`STATUS.md`](STATUS.md:110)、计划文档或 README 中复写这些数字。
 
 | 类型 | 数量 |
 |---|---|
@@ -108,8 +112,8 @@
 ## 七、下一步行动
 
 ### 立即可做
-1. **Review 7 条 flagged_for_review 规律** → 决定保留观察 / 收紧条件 / 退役
-2. **继续摄入新案反馈**（还差 19 案达到 Beta 切换阈值 30）
+1. 按 [`META/arbitration-log.md`](META/arbitration-log.md:245) 的固定入口 review 当前 flagged_for_review 规律（清单以本文 § 二为准）→ 决定保留观察 / 收紧条件 / 退役
+2. **继续摄入新案反馈**（N_eff 进度以本文 § 三为准）
 3. **手动 `git push origin v1.3.0`** 推送 tag
 
 ### 短期（1-4 周）
@@ -133,13 +137,13 @@
 当前状态：
 - main HEAD = `git rev-parse HEAD`（不硬编码；详见 STATUS.md / 00-OVERVIEW.md § 〇）
 - tag v1.3.0
-- N_eff（Beta 切换计数）= 11/30（公式：06-confidence-model § 2.1）
-- 5 条规律 flagged_for_review，2 条 deprecated（M3-R-005 / M3-R-027）
+- N_eff / 规则状态 / flagged 清单：只读本 handoff § 二/三，禁止复制到其他文档
+- 人工 review 固定入口：META/arbitration-log.md § 九/十
 
 可选工作：
-1. Review flagged 规律（M2-Y-091 / M3-R-031 / M1-D-122 / M3-R-022 / M3-R-027 / M3-R-003 / M3-R-005）
+1. Review 当前 flagged 规律（清单以本 handoff § 二为准）
 2. 摄入新案反馈（python3 -m tools.feedback_ingest C-XXXX）
-3. 开始 v1.4 规划（CFL-C015-002 跨维度耦合 + CFL-C015-003 应期事件类型分流）
+3. 按 plans/architecture-v1.4.md 状态矩阵继续收口 v1.4
 
 仓库：lynhao-mike/mangpai-fusion
 工作目录：/projects/sandbox/mangpai-fusion

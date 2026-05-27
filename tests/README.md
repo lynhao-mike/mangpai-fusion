@@ -232,10 +232,32 @@ def test_xxx(case_input):  # case_input 是 fixture 注入的 ParsedInput
 - [ ] G2 C-001 婚期误差（圣杯测试）— 等 Track-B/C 引擎接入
 - [ ] G3 C-002 婚姻失验数 — 等 Track-B/C
 - [ ] G4 C-014 学历过判档数 — 等 Track-B/D
-- [ ] A-003 严格版 — 启发式 over-counts，等"杀印链吸收"语义判定
+- [ ] A-003 严格版 — 启发式 over-counts，等"杀印链吸收"语义判定；当前只做设计澄清，暂不改核心算法
 - [ ] 14 旧案 input.md → v1.2 strict YAML 迁移；目前用 ``_CASE_DATA``
       硬编码大运表
 - [ ] G5/G6 接入真正 ``AnalysisOutput`` mock（W4 集成日 F agent 落地后）
+
+### A-003 设计澄清：杀印链吸收语义
+
+**现状**：
+
+- `tests/track_a_smoke/test_a_layer_count.py::TestALayerCount.test_A003_C2026014_strict` 与 `tests/regression/test_a_energy.py::test_A003_C2026_014_strict_layer_1` 均保留 strict xfail / expectedFailure。
+- `engine/energy/zuogong.py::count_layers` 当前按“被做功路径触及的用神字符”计层，C-2026-014 会把杀印格、食制杀、食生财、财生官等派生路径拆开计数，导致 layer≈3，而段派严格口径希望 layer=1。
+- 该问题属于“语义吸收”缺失，不是测试噪声；但贸然把官杀类用神统一合并会破坏 A-001 中彼此独立做功的官杀字符。
+
+**建议判定边界**：
+
+1. 只有当官杀、印、食伤/财的路径能被解释为同一条“杀印相生主结构”的派生链时，才允许把派生层吸收到 1 个主层。
+2. 若多个官杀/财官字符各自拥有独立成局、独立作用对象或独立输出路径，不得吸收，仍按字符级计层。
+3. 未成年 / 尚未显化案例只作为保守校验，不单独作为算法收紧依据；必须用 A-001、A-002、A-004、A-005 做回归保护。
+4. 下一步进入 Debug/Code 修复时，应先增加“路径归属 / 主结构 id”中间诊断输出，再去掉 strict xfail。
+
+**验收门槛**：
+
+- A-003 strict 从 xfail 改为 pass：C-2026-014 layer=1。
+- A-001 仍保持 layer=2，避免简单合并官杀导致 under-count。
+- A-002 仍保持 layer=1；A-004/A-005 仍满足 layer≥2。
+- 宽松版 A-003 保留为非阻塞保护，确保 wealth_ceiling 不落入贫困或巨富。
 
 ---
 

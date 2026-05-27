@@ -9,6 +9,8 @@
 > 🔎 **架构回顾**（2026-05-26）：v1.3.0 发布后第一次回顾性评审 → [`plans/architecture-review-2026-05-26-postrelease.md`](plans/architecture-review-2026-05-26-postrelease.md:1)。基准评审 [`plans/architecture-review.md`](plans/architecture-review.md:1)（v1.2 RC 视角）的 4/5 条建议已落地、6/7 项债务关闭；新发现 `tools/calibrate.py` 与 v1.2/v1.3 工具的双写风险已加 deprecation guard 闭环。
 >
 > 🆕 **v1.4 W1 进行中**（2026-05-26）：架构师视角第二次评审 → 锁定 V1（quantifiable）/ V2（domain_restriction）/ V3（ingest 跳过策略）。规律 yaml schema 已增字段（[`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md) § 六），M3-R-003 / M3-R-031 已回填，契约版本同步 v1.3.0-current，pytest 收编 H7-H11 验收门。详见 [`plans/architecture-v1.4.md`](plans/architecture-v1.4.md:1)。
+>
+> 🧭 **真相源规则**：HEAD、N_eff、规则状态数量、flagged/deprecated 清单都属于易漂移信息。本文只保留静态说明与链接；当前可执行状态以 [`handoff.md`](handoff.md:35) § 二/三为准，人工裁决以 [`META/arbitration-log.md`](META/arbitration-log.md:245) 为准。除这两个入口外，其他文档不得硬编码规则数量或待审清单。
 
 ---
 
@@ -109,12 +111,14 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 
 ## 当前规律状态
 
-| 类型 | 数量 |
-|---|---|
-| candidate（候选） | ~261（高派为主）|
-| confirmed（已确认）| ~645（段杨任派；扣除下行 3 flagged + 3 deprecated；含 M3-R-031 review 后恢复 confirmed）|
-| flagged_for_review（待人工审）| **3**（**M1-D-122** / **M3-R-003** / **M3-R-022**）|
-| deprecated（已弃用）| **3**（**M2-Y-091** / **M3-R-005** / **M3-R-027**）|
+> **单一真相源**：本节不再硬编码 candidate / confirmed / flagged_for_review / deprecated 的当前数量，避免每次 feedback ingest 后与交接文档漂移。
+>
+> - 当前规则状态快照：见 [`handoff.md`](handoff.md:35) § 二。
+> - 人工 review 固定入口与裁决口径：见 [`META/arbitration-log.md`](META/arbitration-log.md:245) § 九/十。
+> - 状态机定义与字段语义：见 [`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md:1)。
+> - 变更日志：见 [`META/rule-changelog.md`](META/rule-changelog.md:1)。
+>
+> 维护规则：除 [`handoff.md`](handoff.md:35) 的短期交接快照与 [`META/arbitration-log.md`](META/arbitration-log.md:245) 的人工裁决记录外，其他文档不得复制当前规则数量或待审清单；如需引用，只链接对应章节。
 
 > v1.4 W1 修订（2026-05-26）：M3-R-003 加 `quantifiable: false`（框架性心法不参与计分，[`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md) § 6.1 V1）保留 flagged_for_review 等架构师 review；M3-R-031 加 `domain_restriction: [应期]` 由架构师 review 从 flagged → 恢复 confirmed（V2 决策）。详见 [`META/rule-changelog.md`](META/rule-changelog.md:1)。
 
@@ -169,7 +173,7 @@ W4 修复：`tools/render_report.py` `_render_template` 嵌套 `{% if %}` 错配
 立即可做：
 1. v1.3 自迭代闭环已上线 → 投入实战；命理师按 master 报告填 `[y]/[n]/[?]/[skip]` 即可触发反馈回流
 2. 每 10 完成反馈案自动产出 `META/iteration-report-NNN.md`（D8）→ 架构师 review 是否合并候选边界 / 否决候选
-3. **review 3 条 flagged_for_review 规律**（M1-D-122 / M3-R-003 / M3-R-022）→ 决定保留观察 / 收紧条件 / 退役（参考 [`META/iteration-report-001.md`](META/iteration-report-001.md:1) § 一 + [`META/rule-changelog.md`](META/rule-changelog.md) 2026-05-26 v1.4 W1 条目）
+3. 按 [`META/arbitration-log.md`](META/arbitration-log.md:245) 的人工 review 固定入口处理当前 flagged_for_review 规律；待审数量与清单只从 [`handoff.md`](handoff.md:35) § 二读取，不在本文复写
 
 短期（1-3 个月）：
 - **决策 E Beta 切换阈值 N_eff ≥ 30**（公式见 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) § 2.1）→ 累积到位后置信度公式从线性加权（4:6）切 Beta 后验。当前 N_eff 实测进度见 [`handoff.md`](handoff.md) § 三（不在本文硬编码以避免漂移）。
