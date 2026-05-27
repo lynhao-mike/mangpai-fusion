@@ -1,7 +1,14 @@
 {
   "task_id": "task-theory-source-verification",
-  "task_description": "Verify consistency between theory files and original sources, fix all identified discrepancies including: (1) yang YAML topic_label/raw_anchor/conclusion errors, (2) gao extraction file path references",
-  "status": "in_progress",
-  "feature_order": ["FEAT-001", "FEAT-002"],
-  "blocked_reason": null
+  "task_description": "Verify consistency between theory files and original sources, fix all identified discrepancies including: (1) yang YAML topic_label/raw_anchor/conclusion errors, (2) gao extraction file path references, (3) review follow-up fixes",
+  "status": "completed",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
+  "blocked_reason": null,
+  "verification": {
+    "build": "pass",
+    "tests": "pass",
+    "test_quality": "pass",
+    "docker_build": "skipped",
+    "summary": "All verifications pass: yang YAML topic_label correctly shows 25 rules for 2019年班补全 (down from 75), 0 placeholder conclusions remain, all 163 rules present. Gao extraction files now reference correct 'sources/gao/' paths with 0 old path references remaining. All raw_source and raw_file references across all 4 schools point to existing files. Review fixes applied: M2-Y-149..153 topic_label uses exact source heading, M2-Y-034/035 conclusions restored to full source fidelity."
+  }
 }
