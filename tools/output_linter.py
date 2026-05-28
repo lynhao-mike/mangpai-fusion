@@ -464,6 +464,8 @@ def lint(
         _lint_cross_domain_coupling(full_text, res)
         # CFL-C014-003 v2 · W10 学制盲区律强制前置（报告级扫描）
         _lint_social_clock(full_text, res)
+        # W12 · 天干相刑 / 规则外推误用扫描（C-2026-019 复盘）
+        _lint_relation_source_misuse(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -677,6 +679,82 @@ def _lint_global_text(
             res.add(
                 Severity.WARNING, "W7",
                 f"全文出现被禁措辞「{ph}」共 {count} 次：{reason}",
+            )
+
+
+# ============================================================
+# 八·四、W12 · 天干相刑 / 规则外推误用扫描（C-2026-019 复盘）
+# ============================================================
+# 来源：C-2026-019 曾把地支寅巳作用误写成“甲木刑辛金”，
+# 并把 CON-HUNYIN-003（旺神冲衰神拔根，本义为“冲”）外推成“刑伤同理”。
+# 本检查只扫 markdown 报告 / 分析文档；若文本是在纠错说明中引用旧错误，
+# 可通过“不能/不可/不成立/校正/不再”等否定标记免报。
+
+_RELATION_LINT_SKIP_MARKERS: tuple[str, ...] = (
+    "不能", "不可", "不成立", "不再", "校正", "错误", "原写法",
+    "非天干相刑", "非“", "非\"", "非「", "不是", "不写成", "不应写成",
+    "已校正", "防复发", "误用", "不作为", "不宜",
+)
+
+_GAN_WITH_ELEMENT = r"[甲乙丙丁戊己庚辛壬癸][木火土金水]?"
+_ROLE_OR_GAN = (
+    rf"(?:{_GAN_WITH_ELEMENT}|正官|偏官|七杀|官星|正财|偏财|财星|"
+    rf"正印|偏印|印星|食神|伤官|比肩|劫财|日主|元男)"
+)
+
+_DIRECT_TG_XING_PATTERNS: tuple[re.Pattern[str], ...] = (
+    # 甲木刑辛金 / 甲木刑伤辛金：必须是天干/五行直接落在“刑”两侧。
+    re.compile(rf"{_GAN_WITH_ELEMENT}[^\n。；，、]{{0,8}}(?:刑|刑伤|被刑|受刑)[^\n。；，、]{{0,8}}{_GAN_WITH_ELEMENT}"),
+    # 官星被甲木刑伤 / 正官被甲木刑：十神被某天干“刑伤”。
+    re.compile(rf"(?:正官|偏官|七杀|官星|正财|偏财|财星|正印|偏印|印星|食神|伤官|比肩|劫财|日主|元男)[^\n。；，、]{{0,12}}被{_GAN_WITH_ELEMENT}[^\n。；，、]{{0,6}}(?:刑|刑伤)"),
+)
+
+_CON_HUNYIN_MISUSE_RE = re.compile(
+    r"CON-HUNYIN-003[^\n]*(?:刑|穿|刑伤|刑动|刑制|相刑|相穿)|"
+    r"(?:刑|穿|刑伤|刑动|刑制|相刑|相穿)[^\n]*CON-HUNYIN-003"
+)
+
+
+def _should_skip_relation_lint(line: str) -> bool:
+    """纠错/否定语境中可引用旧错误，不触发 W12。"""
+    return any(marker in line for marker in _RELATION_LINT_SKIP_MARKERS)
+
+
+def _lint_relation_source_misuse(md: str, res: LintResult) -> None:
+    """W12 · 阻断“天干相刑”和 CON-HUNYIN-003 外推到刑/穿。"""
+    seen: set[tuple[str, str]] = set()
+
+    for lineno, line in enumerate(md.splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped or _should_skip_relation_lint(stripped):
+            continue
+
+        for pattern in _DIRECT_TG_XING_PATTERNS:
+            if pattern.search(stripped):
+                key = ("direct", stripped)
+                if key in seen:
+                    continue
+                seen.add(key)
+                res.add(
+                    Severity.ERROR,
+                    "E12",
+                    "疑似天干/十神直接相刑表述：刑/穿应先落到地支关系，不能写成“甲木刑辛金”一类天干相刑。",
+                    location=f"line {lineno}: {stripped[:100]}",
+                    suggestion="改为“某地支与某地支构成穿/刑动，牵动某宫/某柱象”；若仅引用旧错误，请在同句加入“原写法错误/不能/不可”等否定标记。",
+                )
+                break
+
+        if _CON_HUNYIN_MISUSE_RE.search(stripped):
+            key = ("con-hunyin", stripped)
+            if key in seen:
+                continue
+            seen.add(key)
+            res.add(
+                Severity.ERROR,
+                "E12",
+                "CON-HUNYIN-003 仅支持“旺神冲衰神”类冲法判断，疑似被外推到刑/穿/刑伤。",
+                location=f"line {lineno}: {stripped[:100]}",
+                suggestion="删除 CON-HUNYIN-003 引用，改引地支穿/刑动来源；或明确写“CON-HUNYIN-003 不适用于本条”。",
             )
 
 
@@ -983,6 +1061,16 @@ _SMOKE_GOOD_CROSS_DOMAIN = """\
 - 证伪：若 60 岁仍未达正厅 → 失验
 """
 
+_SMOKE_BAD_RELATION_SOURCE = """\
+[共识] 甲木刑辛金，官星被刑伤，纯官场路线不利 ★4 (84%)
+- 来源：CON-HUNYIN-003（旺神冲衰神拔根·此处为刑伤同理）
+"""
+
+_SMOKE_GOOD_RELATION_SOURCE = """\
+[共识·已校正] 寅巳为地支层面的穿/刑动，牵动年柱官象；不能写成“甲木刑辛金”。 ★3 (69%)
+- 来源校正：CON-HUNYIN-003 只论冲，不再作为本条依据。
+"""
+
 
 def _smoke() -> None:
     print("---- 1. lint good markdown ----")
@@ -1009,6 +1097,18 @@ def _smoke() -> None:
     print("---- 6. lint cross-domain coupled OK (CFL-C015-002, no W9) ----")
     r = lint(_SMOKE_GOOD_CROSS_DOMAIN)
     print(r.format())
+
+    print()
+    print("---- 7. lint relation-source misuse (C-2026-019, expect E12) ----")
+    r = lint(_SMOKE_BAD_RELATION_SOURCE)
+    print(r.format())
+    assert any(i.code == "E12" for i in r.errors)
+
+    print()
+    print("---- 8. lint relation-source correction note OK (C-2026-019, no E12) ----")
+    r = lint(_SMOKE_GOOD_RELATION_SOURCE)
+    print(r.format())
+    assert not any(i.code == "E12" for i in r.errors)
 
 
 if __name__ == "__main__":  # pragma: no cover
