@@ -138,8 +138,9 @@ def test_current_contract_entrypoints_match_implementation() -> None:
     assert "tools/extract_predictions.py" in naming
     assert "当前不存在，不作为可执行入口" in naming
 
-    assert project_state["active_feedback_entrypoints"] == ["tools/feedback_ingest.py", "tools/feedback_loop.py"]
-    assert project_state["active_report_entrypoints"] == ["tools/render_report.py"]
+    assert project_state["active_feedback_entrypoints"][:2] == ["tools/feedback_ingest.py", "tools/feedback_loop.py"]
+    assert "tools/batch_review.py" in project_state["active_feedback_entrypoints"]
+    assert project_state["active_report_entrypoints"] == ["tools/render_report.py", "tools/output_linter.py"]
 
 
 def test_historical_agent_handoff_is_not_current_branch_source() -> None:
