@@ -399,21 +399,42 @@ def _dayun_full_table(parsed: ParsedInput) -> list[dict]:
     return out
 
 
+def _pillar_parts(pillar: Any) -> tuple[str, str]:
+    """Return (gan, zhi) for both GanZhi-like objects and legacy string pillars."""
+    gan = getattr(pillar, "gan", None)
+    zhi = getattr(pillar, "zhi", None)
+    if gan is not None and zhi is not None:
+        return str(gan), str(zhi)
+
+    text = str(pillar or "")
+    if len(text) >= 2:
+        return text[0], text[1]
+    if len(text) == 1:
+        return text, "—"
+    return "—", "—"
+
+
 def _build_section_zero_vm(
     energy: EnergyFindings,
     picture: PictureFindings,
     parsed: ParsedInput,
 ) -> dict:
     """F8 · §0 命局核心结构总览。"""
-    if not parsed or not parsed.bazi:
+    b = getattr(parsed, "bazi", None) if parsed else None
+    if not b:
         return {"section_zero": False}
-    b = parsed.bazi
+
+    year_gan, year_zhi = _pillar_parts(getattr(b, "年柱", ""))
+    month_gan, month_zhi = _pillar_parts(getattr(b, "月柱", ""))
+    day_gan, day_zhi = _pillar_parts(getattr(b, "日柱", ""))
+    hour_gan, hour_zhi = _pillar_parts(getattr(b, "时柱", ""))
+
     # 4 柱 + 干十神 + 主气 + 长生
     pillars = [
-        {"name": "年", "gan": b.年柱.gan, "zhi": b.年柱.zhi},
-        {"name": "月", "gan": b.月柱.gan, "zhi": b.月柱.zhi},
-        {"name": "日", "gan": b.日柱.gan, "zhi": b.日柱.zhi, "is_master": True},
-        {"name": "时", "gan": b.时柱.gan, "zhi": b.时柱.zhi},
+        {"name": "年", "gan": year_gan, "zhi": year_zhi},
+        {"name": "月", "gan": month_gan, "zhi": month_zhi},
+        {"name": "日", "gan": day_gan, "zhi": day_zhi, "is_master": True},
+        {"name": "时", "gan": hour_gan, "zhi": hour_zhi},
     ]
     # 体用结构
     ty = energy.tiyong if energy and energy.tiyong else None
@@ -421,8 +442,9 @@ def _build_section_zero_vm(
     purpose_str = "、".join(f"{x.char}({x.role})" for x in ty.purpose) if ty and ty.purpose else "—"
     # 暗引 brief
     anyin_brief = ""
-    if picture and picture.anyin_results:
-        items = [f"{a.formula}({a.real_meaning})" for a in picture.anyin_results[:3]]
+    anyin_results = getattr(picture, "anyin_results", None) or []
+    if anyin_results:
+        items = [f"{a.formula}({a.real_meaning})" for a in anyin_results[:3]]
         anyin_brief = "、".join(items)
     # 神煞 brief（来自 parsed.shensha）
     shensha_brief = ""
@@ -437,8 +459,8 @@ def _build_section_zero_vm(
     return {
         "section_zero": True,
         "sz_pillars": pillars,
-        "sz_day_master": b.日柱.gan,
-        "sz_yueling": b.月柱.zhi,
+        "sz_day_master": day_gan,
+        "sz_yueling": month_zhi,
         "sz_body_str": body_str,
         "sz_purpose_str": purpose_str,
         "sz_layer_count": getattr(energy, "layer_count", 0),
