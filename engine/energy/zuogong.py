@@ -618,11 +618,51 @@ def calc_layer_count(paths: list[ZuogongPath], bazi: Bazi) -> int:
                 engaged_chars.add(c)
 
     layers = len(engaged_chars)
-    # TODO(track-A): 段派"杀印相生"主结构整合（M1-D-028）应将官杀类
-    # 用神字符合并为 1，但简单合并会破坏 A-001（戊+丑 同为官杀但
-    # 各自独立做功）。需更精细的"是否被同一印化杀链吸收"判定。
-    # 暂保持字符级计数，A-003（C-2026-014, 19岁未显的杀印格）将报告
-    # layer=3 而非期望的 1，差异写入 PR notes。
+
+    # 段派"杀印相生 / 印化杀"主结构整合（M1-D-028）：
+    # 若强 化 path 已将官杀接入印星生身，则同一结构内由食制杀、合杀、
+    # 食伤生财、财生官衍生触及的 财/官杀 字符不再拆成多层，而是吸收为
+    # 1 个主功神。这样修复 A-003（C-2026-014）庚/辛/戌 over-count；
+    # 同时要求存在明确 化 path，避免破坏 A-001 中彼此独立做功的 戊+丑。
+    hua_paths = [
+        p for p in paths
+        if p.layer_count >= 1
+        and p.type == "化"
+        and "[印化杀]" in p.description
+        and p.chain
+    ]
+    if layers > 1 and hua_paths:
+        absorbed_chars: set[str] = set()
+        for p in paths:
+            if p.layer_count <= 0 or p.type == "复合":
+                continue
+            if p.type not in ("制", "合", "化", "生泄"):
+                continue
+            if p.type == "生泄" and not any(tag in p.description for tag in ("[食伤生财]", "[财生官]")):
+                continue
+            for c in p.chain:
+                if c in engaged_chars:
+                    absorbed_chars.add(c)
+
+        # A-003 这类未显杀印格：用神层全部被同一杀印链及其食财官
+        # 衍生链覆盖，且没有地支主气用神被有效做功形成独立层，才压缩为 1 层。
+        # A-001 的 丑、A-004 的 酉 属主气用神支独立受冲/合/生泄作用，
+        # 不应被天干印化杀链整体吸收。
+        hua_absorbed = {c for hp in hua_paths for c in hp.chain if c in engaged_chars}
+        has_independent_main_qi_zhi = any(
+            c in absorbed_chars
+            and c in main_qi_user_zhis
+            and c not in hua_absorbed
+            and any(
+                p.layer_count >= 1
+                and p.type in ("制", "合")
+                and c in p.chain
+                for p in paths
+            )
+            for c in engaged_chars
+        )
+        if absorbed_chars == engaged_chars and not has_independent_main_qi_zhi:
+            layers = 1
 
     # 注意：过河拆桥 (M1-D-171) 仅在 has_guoheqiaoqiao 标记上记录，
     # 不再直接 +1 层（避免与"engaged_chars"重复加权）。

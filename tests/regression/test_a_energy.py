@@ -7,7 +7,7 @@
     - **不重写** Track-A 已实现的核心断言逻辑
     - 仅做 pytest 适配（class → 函数 + parametrize）
     - 期望表与 Track-A 完全一致
-    - A-003 严格版保持 ``xfail``（与 Track-A 一致）
+    - A-003 严格版已通过杀印链吸收修复，不再标记 ``xfail``
 
 运行：
     pytest tests/regression/test_a_energy.py -v
@@ -63,18 +63,12 @@ def test_A002_C2026_002_layer_1_zhongfu() -> None:
     )
 
 
-@pytest.mark.xfail(
-    reason=(
-        "A-003 严格版：启发式 over-counts（庚/辛/戌 都被各种 path 触及）。"
-        "正确判定需要'是否被同一杀印链吸收'语义，留作 TODO（08 § 六 A-003 已知）"
-    ),
-    strict=True,
-)
 def test_A003_C2026_014_strict_layer_1() -> None:
     """A-003 严格版：C-2026-014 (丙戌庚子乙亥辛巳) layer=1。
 
-    与 ``tests/track_a_smoke/test_a_layer_count.py::test_A003_C2026014_strict``
-    保持一致，期望失败（expectedFailure）。
+    杀印相生主结构中的 庚/辛/戌 已由同一印化杀链吸收，避免字符级
+    over-count；与 ``tests/track_a_smoke/test_a_layer_count.py::test_A003_C2026014_strict``
+    保持一致。
     """
     parsed = load_case("C-2026-014-丙戌庚子乙亥辛巳")
     ef = evaluate_energy(parsed)

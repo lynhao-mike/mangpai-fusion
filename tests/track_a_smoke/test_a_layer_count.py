@@ -77,15 +77,13 @@ class TestALayerCount(unittest.TestCase):
         )
 
     # ------------------------------------------------------------
-    # A-003 — 已知失败（启发式 over-count，详见 PR notes）
+    # A-003 — 杀印链吸收后应严格通过
     # ------------------------------------------------------------
-    @unittest.expectedFailure
     def test_A003_C2026014_strict(self):
-        """A-003 严格版（layer=1）当前 expected fail。
+        """A-003 严格版（layer=1）。
 
-        启发式 over-counts 因为 用神字符 庚/辛/戌 都被各种 path 触及。
-        正确的 段派判定（杀印格 = 1 主功神 + 食制杀/食生财 = 辅）需要
-        "是否被同一杀印链吸收"语义判定，留作 TODO。
+        C-2026-014 是杀印相生主结构；庚/辛/戌 虽被制、合、生泄触及，
+        但在同一印化杀链内只计 1 个主功神，避免字符级 over-count。
         """
         parsed = make_parsed_input("C-2026-014-丙戌庚子乙亥辛巳")
         ef = evaluate_energy(parsed)
