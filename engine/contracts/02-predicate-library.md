@@ -401,9 +401,9 @@ H · 测试 agent 在 W2 创建 fixture 时同步创建 baseline 测试。
 | 1.2.0 | 初版，65 函数 |
 
 新增谓词必须：
-1. PR 到 `v1.2-build`，title 前缀 `[PRED]`
-2. 至少 1 个引擎模块（A/B/C/D）声明依赖
-3. 整合 agent 批准
+1. PR 到 `main`，title 前缀 `[PRED]` 或 `[CONTRACT]`
+2. 至少 1 个引擎模块（D1/D2/D3/D4）声明依赖
+3. 架构师 review 批准，并同步更新调用方测试
 
 ---
 

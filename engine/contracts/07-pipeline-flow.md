@@ -134,7 +134,7 @@ gate_results.sort(key=lambda r: (-r.passed_layers, r.year))
 
 | 项 | 值 |
 |---|---|
-| 入口 | `engine/pangzheng/support.py support_with_shensha(parsed, energy, picture, gate_results)` |
+| 入口 | `engine.pangzheng.support_with_shensha(parsed, energy, picture, gate_results)`（包入口 re-export；实现位于 `engine/pangzheng/pangzheng.py`） |
 | 输入 | `ParsedInput` + 上游三个 Findings |
 | 输出 | `SupportFindings`（03 § 八） |
 | 前置 | parsed.shensha 非空（若为空则 D4 输出空结构，不阻塞流水线） |

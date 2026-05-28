@@ -4,7 +4,7 @@
 > hit_rate 差距 > 0.30" 的系统性偏差登记到此文件。
 >
 > **本文件不自动调权重**——只生成报告，由架构师人工 review 后开 PR 修改
-> `engine/dimension-weights.yaml`。
+> `engine/domain-weights.yaml`。
 >
 > 落地契约：`05-rule-lifecycle § 十一`、决策 K（每 10 案扫频率）。
 
