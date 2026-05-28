@@ -135,13 +135,15 @@ loser_score  = loser.static × 0.6
 ## 九、置信度校准触发点
 
 每次实战分析完成后：
-1. 用户提供反馈（applied=true → 应验/失验）
-2. `tools/calibrate.py` 自动：
-   a. 更新 hit_count / miss_count
-   b. 重算 hit_rate / dynamic_score / final_score / star
-   c. 触发升降级判定
-   d. 写入 `META/rule-changelog.md`
-   e. 同步更新 `mapping/` 文件（如果分层变化）
+1. 用户提供结构化反馈（报告中的 `[y]` / `[n]` / `[?]` / `[skip]`，或应期延迟反馈）
+2. 当前入口：`tools/feedback_ingest.py` 解析报告反馈；`tools/late_feedback.py` 处理应期延迟反馈；底层共用 `tools/feedback_loop.py` 的生命周期核心：
+   a. 更新 hits / misses / abstained 与 recent_5
+   b. 通过 Beta 后验重算 `confidence_cache` 与 star
+   c. 触发升降级判定 / drift 检测
+   d. 写入 `META/iteration-log.md` 与 snapshot
+   e. 必要时触发 boundary / veto / cross-school 扫描
+
+`tools/calibrate.py` 是 deprecated 历史入口，不用于新反馈。
 
 ---
 

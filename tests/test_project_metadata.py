@@ -5,6 +5,8 @@ import json
 import re
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -94,3 +96,55 @@ def test_tool_registry_only_uses_first_readme_table_cell_for_status() -> None:
     missing_entries = [entry for entry in entries.values() if entry.status == "missing"]
     assert missing_entries
     assert all(not entry.exists for entry in missing_entries)
+
+
+@pytest.mark.parametrize(
+    "rel, forbidden",
+    [
+        ("engine/contracts/04-gate-protocol.md", "≥ 0.90 → 5"),
+        ("engine/contracts/07-pipeline-flow.md", "engine/pangzheng/support.py support_with_shensha"),
+        ("engine/contracts/00-OVERVIEW.md", "└── seal_prediction.py"),
+        ("META/conflict-trends.md", "engine/dimension-weights.yaml"),
+        ("predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md", "seal_prediction.py"),
+        ("predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md", "calibrate.py"),
+    ],
+)
+def test_contract_drift_forbidden_fragments_do_not_return(rel: str, forbidden: str) -> None:
+    text = (ROOT / rel).read_text(encoding="utf-8")
+    assert forbidden not in text
+
+
+def test_current_contract_entrypoints_match_implementation() -> None:
+    overview = (ROOT / "engine" / "contracts" / "00-OVERVIEW.md").read_text(encoding="utf-8")
+    pipeline_flow = (ROOT / "engine" / "contracts" / "07-pipeline-flow.md").read_text(encoding="utf-8")
+    naming = (ROOT / "engine" / "contracts" / "09-naming-convention.md").read_text(encoding="utf-8")
+    project_state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+
+    assert "V1-V4" in overview
+    assert "domain-weights.yaml" in overview
+    assert "dimension-weights.yaml` 事实源" in overview
+    assert "tools/feedback_ingest.py" in overview
+    assert "tools/feedback_loop.py" in overview
+    assert "render_both" in overview
+
+    assert "engine.pangzheng.support_with_shensha" in pipeline_flow
+    assert "render_from_output" in pipeline_flow
+    assert "render_both" in pipeline_flow
+    assert "templates/report-v1.3.md" in pipeline_flow
+
+    assert "适用分支：`main`" in naming
+    assert "tools/preflight.py" in naming
+    assert "tools/render_report.py" in naming
+    assert "tools/extract_predictions.py" in naming
+    assert "当前不存在，不作为可执行入口" in naming
+
+    assert project_state["active_feedback_entrypoints"] == ["tools/feedback_ingest.py", "tools/feedback_loop.py"]
+    assert project_state["active_report_entrypoints"] == ["tools/render_report.py"]
+
+
+def test_historical_agent_handoff_is_not_current_branch_source() -> None:
+    handoff = (ROOT / "engine" / "contracts" / "08-agent-handoff.md").read_text(encoding="utf-8")
+    assert "历史说明" in handoff
+    assert "不再作为当前分支策略事实源" in handoff
+    assert "AGENTS.md" in handoff
+    assert "META/project-state.json" in handoff
