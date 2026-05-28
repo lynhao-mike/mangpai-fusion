@@ -78,3 +78,19 @@ def test_tool_registry_supports_internal_status() -> None:
     assert "## internal" in tools_readme
     assert "feedback_loop.py" in tools_readme
     assert "rule_lifecycle.py" in tools_readme
+
+
+def test_tool_registry_only_uses_first_readme_table_cell_for_status() -> None:
+    from tools.tool_registry import build_registry
+
+    entries = {entry.name: entry for entry in build_registry()}
+
+    assert entries["feedback_ingest.py"].status == "active"
+    assert entries["feedback_loop.py"].status == "internal"
+    assert entries["output_linter.py"].status == "active"
+    assert entries["cross_school_scan.py"].status == "active"
+    assert entries["extract_predictions.py"].status == "active"
+
+    missing_entries = [entry for entry in entries.values() if entry.status == "missing"]
+    assert missing_entries
+    assert all(not entry.exists for entry in missing_entries)

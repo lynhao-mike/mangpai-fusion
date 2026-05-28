@@ -38,7 +38,7 @@ STATUS_HEADINGS: dict[str, ToolStatus] = {
     "missing": "missing",
 }
 
-TOOL_LINK_RE = re.compile(r"\[`([^`]+\.py)`\]|\|\s*`([^`]+\.py)`\s*\|")
+FIRST_CELL_TOOL_RE = re.compile(r"(?:\[`([^`]+\.py)`\]|`([^`]+\.py)`)")
 
 
 @dataclass(frozen=True)
@@ -78,6 +78,25 @@ def _scan_python_tools() -> dict[str, pathlib.Path]:
     }
 
 
+def _tool_name_from_first_table_cell(line: str) -> str | None:
+    """Extract only the tool name declared in a README table's first cell.
+
+    Other columns often contain replacement links, e.g. a deprecated tool row may
+    point to an active replacement. Those links must not override the replacement
+    tool's own status.
+    """
+    if not line.lstrip().startswith("|"):
+        return None
+    cells = line.strip().strip("|").split("|")
+    if not cells:
+        return None
+    first_cell = cells[0].strip()
+    match = FIRST_CELL_TOOL_RE.search(first_cell)
+    if not match:
+        return None
+    return match.group(1) or match.group(2)
+
+
 def _read_readme_statuses() -> dict[str, ToolStatus]:
     if not README_PATH.exists():
         return {}
@@ -96,10 +115,9 @@ def _read_readme_statuses() -> dict[str, ToolStatus]:
 
         if current is None:
             continue
-        if line.lstrip().startswith("|"):
-            for match in TOOL_LINK_RE.finditer(line):
-                name = match.group(1) or match.group(2)
-                statuses[name] = current
+        name = _tool_name_from_first_table_cell(line)
+        if name:
+            statuses[name] = current
     return statuses
 
 
@@ -170,6 +188,8 @@ def check_registry(entries: list[ToolEntry]) -> list[str]:
             problems.append(f"UNINDEXED tool exists but is absent from tools/README.md: {e.name}")
         if e.status != "missing" and not e.exists:
             problems.append(f"BROKEN README reference: {e.name} is marked {e.status} but file is missing")
+        if e.status == "missing" and e.exists:
+            problems.append(f"README marks existing tool as missing: {e.name}")
     return problems
 
 

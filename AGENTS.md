@@ -30,9 +30,9 @@ AI agent 执行任务前按以下顺序读取：
 
 | 信息类型 | 唯一事实源 | 说明 |
 |---|---|---|
-| 产品版本 | [`VERSION`](VERSION) | 单行机器可读版本号。 |
+| 产品版本 | [`VERSION`](VERSION) | 单行机器可读版本号；不要从阶段名推断。 |
 | Python 包版本 | [`engine/__init__.py`](engine/__init__.py) | 必须与 [`VERSION`](VERSION) 一致。 |
-| 当前项目状态 | [`META/project-state.json`](META/project-state.json) | 给 AI / 脚本读取的项目级状态。 |
+| 当前项目状态 | [`META/project-state.json`](META/project-state.json) | 给 AI / 脚本读取的项目级状态；`current_phase` 是工作阶段，不等同于产品版本。 |
 | 迭代计数状态 | [`META/iteration-state.json`](META/iteration-state.json) | 反馈完成案、迭代序号等机器状态。 |
 | 工具状态 | [`tools/README.md`](tools/README.md) + [`tools/tool_registry.py`](tools/tool_registry.py) | 工具 active/deprecated/internal/missing 分类。 |
 | 规则状态快照 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) | 易漂移规则数量、N_eff、review 清单运行时扫描。 |
@@ -120,6 +120,7 @@ pytest tests/test_project_metadata.py -q
 ## 6. 禁止事项
 
 - 不要在多个文档中手写产品版本号；版本以 [`VERSION`](VERSION) 为准。
+- 不要把 [`META/project-state.json`](META/project-state.json) 中的 `current_phase` 当成产品版本；它只是当前工作阶段。
 - 不要把 N_eff、规则数量、flagged/deprecated 清单长期写入普通文档；运行 [`tools/rule_status_scan.py`](tools/rule_status_scan.py) 获取。
 - 不要使用 [`tools/calibrate.py`](tools/calibrate.py) 作为新反馈入口；它是 deprecated 历史工具。
 - 不要引用不存在的旧工具名作为可执行入口，例如 `seal_prediction.py`、`verify_evidence.py`。

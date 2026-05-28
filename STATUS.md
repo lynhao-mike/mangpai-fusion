@@ -19,7 +19,7 @@
 | 人工裁决 | [`META/arbitration-log.md`](META/arbitration-log.md) |
 | 历史变更 | [`META/rule-changelog.md`](META/rule-changelog.md) |
 
-当前阶段：v1.3 自迭代闭环已上线，v1.4 W1 文档/测试同步与 AI 入口精简进行中。
+当前阶段：v1.3 自迭代闭环已上线，v1.4 W1 文档/测试同步与 AI 入口精简进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。
 
 ---
 
@@ -43,7 +43,7 @@
 ## 3. 当前可用能力
 
 - 四派融合分析：高德臣 / 段建业 / 杨清娟 / 任付红。
-- 双轨制置信度：★ 等级 + 百分比。
+- 双轨制置信度：★ 等级 + 百分比，区间以 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) 为准。
 - 三层应期门：原局有、大运到位、流年引爆。
 - master/client 双版报告。
 - 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]`。

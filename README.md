@@ -67,13 +67,15 @@
 
 ### 双轨制置信度
 
+置信度区间以 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) 为准，入口文档只保留同步摘要：
+
 | ★ 等级 | 百分比 | 含义 |
 |---|---|---|
-| ★★★★★ | ≥ 90% | 铁断 |
-| ★★★★ | 80-89% | 高置信 |
-| ★★★ | 65-79% | 中置信 |
-| ★★ | 50-64% | 倾向性 |
-| ★ | < 50% | 存疑 |
+| ★★★★★ | 85-100% | 铁断 / 极高置信 |
+| ★★★★ | 70-84% | 高置信 |
+| ★★★ | 55-69% | 中置信 |
+| ★★ | 40-54% | 倾向性 |
+| ★ | 0-39% | 存疑 |
 
 输出格式示例：`★★★★ (87%)`。
 
@@ -144,8 +146,8 @@ pytest tests/test_project_metadata.py -q
 
 ## 六、版本与状态
 
-- 产品版本以 [`VERSION`](VERSION) 为准。
+- 产品版本以 [`VERSION`](VERSION) 为准；不要从阶段名推断产品版本。
 - Python 包版本见 [`engine/__init__.py`](engine/__init__.py)，必须与 [`VERSION`](VERSION) 一致。
-- 当前机器状态见 [`META/project-state.json`](META/project-state.json)。
+- 当前机器状态见 [`META/project-state.json`](META/project-state.json)，其中 `current_phase` 表示工作阶段，不等同于产品版本。
 - 历史变更见 [`META/rule-changelog.md`](META/rule-changelog.md)。
 - 易漂移的规则数量、N_eff、flagged/deprecated 清单不要写入普通文档；需要时运行 [`tools/rule_status_scan.py`](tools/rule_status_scan.py)。
