@@ -1,0 +1,56 @@
+{
+  "product_name": "mangpai-fusion",
+  "product_version_source": "VERSION",
+  "product_version": "1.3.0",
+  "current_phase": "v1.4-W1-docs-and-ai-entrypoint-cleanup",
+  "last_updated": "2026-05-28",
+  "ai_entrypoint": "AGENTS.md",
+  "human_entrypoint": "README.md",
+  "stable_status": "STATUS.md",
+  "short_term_handoff": "handoff.md",
+  "case_root": "cases/",
+  "report_root": "reports/",
+  "template_root": "templates/",
+  "tool_index": "tools/README.md",
+  "tool_registry": "tools/tool_registry.py",
+  "rule_status_scanner": "tools/rule_status_scan.py",
+  "iteration_state": "META/iteration-state.json",
+  "changelog": "META/rule-changelog.md",
+  "arbitration_log": "META/arbitration-log.md",
+  "contract_overview": "engine/contracts/00-OVERVIEW.md",
+  "rule_lifecycle_contract": "engine/contracts/05-rule-lifecycle.md",
+  "confidence_contract": "engine/contracts/06-confidence-model.md",
+  "active_feedback_entrypoints": [
+    "tools/feedback_ingest.py",
+    "tools/feedback_loop.py",
+    "tools/batch_review.py"
+  ],
+  "active_report_entrypoints": [
+    "tools/render_report.py",
+    "tools/output_linter.py"
+  ],
+  "deprecated_tools": [
+    "tools/calibrate.py"
+  ],
+  "missing_historical_tools": [
+    "tools/seal_prediction.py",
+    "tools/verify_evidence.py",
+    "tools/normalize_extracted.py",
+    "tools/score_initial.py",
+    "tools/cross_map.py"
+  ],
+  "volatile_state_policy": {
+    "do_not_hardcode_in_docs": [
+      "git HEAD",
+      "N_eff",
+      "rule status counts",
+      "flagged_for_review list",
+      "deprecated rule list"
+    ],
+    "use_runtime_scanners": [
+      "git rev-parse HEAD",
+      "python tools/rule_status_scan.py --format markdown",
+      "python tools/tool_registry.py --check"
+    ]
+  }
+}

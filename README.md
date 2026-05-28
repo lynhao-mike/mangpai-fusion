@@ -1,7 +1,18 @@
 # mangpai-fusion · 盲派四派融合八字分析系统
 
-> 整合 **高德臣 / 段建业 / 杨清娟 / 任付红** 四家盲派理论于一仓，  
-> 以"共识金字塔"架构 + 双轨制置信度（★ 等级 + 百分比），辅助命理师实战调用。
+> 整合 **高德臣 / 段建业 / 杨清娟 / 任付红** 四派盲派理论，面向命理师实战调用，输出带证据链、派别归属与双轨置信度（★ 等级 + 百分比）的分析报告，并通过案例反馈持续校准规则。
+
+---
+
+## AI / LLM 快速入口
+
+任意 AI agent 进入本仓库后，请优先读取 [`AGENTS.md`](AGENTS.md)。
+
+- 产品版本：[`VERSION`](VERSION)
+- 机器可读项目状态：[`META/project-state.json`](META/project-state.json)
+- 工具唯一索引：[`tools/README.md`](tools/README.md)
+- 稳定项目仪表盘：[`STATUS.md`](STATUS.md)
+- 短期交接：[`handoff.md`](handoff.md)，只作临时下一步，不作长期事实源
 
 ---
 
@@ -9,26 +20,19 @@
 
 本仓库**不是研究语料库**，而是一个**面向命理师的实战调用接口**。
 
-典型使用流程：
+典型流程：
 
-```
-┌──────────────┐     ┌────────────────┐     ┌──────────────┐
-│ 问真八字 APP │ →→→ │ 本仓库分析引擎 │ →→→ │ 用户与命主对话│
-│   排盘提取   │     │  4 派融合分析  │     │   命理解说    │
-└──────────────┘     └────────┬───────┘     └──────┬───────┘
-                              │                    │
-                              ▼                    ▼
-                     ┌─────────────────┐  ┌────────────────┐
-                     │ 双轨置信度报告  │  │ 命主反馈采集   │
-                     │ ★等级 + 百分比 │  │  应验/失验记录 │
-                     └─────────────────┘  └────────┬───────┘
-                                                   │
-                              ┌────────────────────┘
-                              ▼
-                     ┌─────────────────────────────┐
-                     │ 反馈回流 → 校准引擎         │
-                     │ 命中率重算 → 置信度升降级   │
-                     └─────────────────────────────┘
+```text
+问真八字 APP 排盘
+  → templates/input-from-wenzhen.md
+  → cases/C-YYYY-NNN-{干支}/input.md
+  → tools/preflight.py
+  → engine/pipeline.py
+  → tools/render_report.py
+  → reports/*.md
+  → cases/*/feedback.md
+  → tools/feedback_ingest.py / tools/feedback_loop.py
+  → theory/*/index.yaml + META/*
 ```
 
 ---
@@ -44,9 +48,11 @@
 
 ---
 
-## 三、共识金字塔架构
+## 三、核心架构
 
-```
+### 共识金字塔
+
+```text
 ┌─────────────────────────────────────────────────┐
 │ 上层 · 独门层 EXCLUSIVE                         │
 │   单派独有，按该派该规律历史命中率独立打分      │
@@ -59,98 +65,87 @@
 └─────────────────────────────────────────────────┘
 ```
 
-**输出原则**：每条断语都必须显式标注派别归属与置信度等级。
-
----
-
-## 四、双轨制置信度
+### 双轨制置信度
 
 | ★ 等级 | 百分比 | 含义 |
 |---|---|---|
-| ★★★★★ | ≥ 90% | 铁断（4派共识，或单派独门历史命中率≥90%） |
-| ★★★★ | 80-89% | 高置信（3派共识，或2派+独门强证据） |
-| ★★★ | 65-79% | 中置信（2派共识，或单派主线规律） |
-| ★★ | 50-64% | 倾向性（1派支持，需验证） |
-| ★ | < 50% | 存疑（多派相左，或历史命中低） |
+| ★★★★★ | ≥ 90% | 铁断 |
+| ★★★★ | 80-89% | 高置信 |
+| ★★★ | 65-79% | 中置信 |
+| ★★ | 50-64% | 倾向性 |
+| ★ | < 50% | 存疑 |
 
-百分比来源：
-- **静态分**：派别共识数 × 权重 + 规律本身确定性
-- **动态分**：案例反馈历史命中率（命中/总采用 × 100）
-
-输出格式示例：`★★★★ (87%)`
+输出格式示例：`★★★★ (87%)`。
 
 ---
 
-## 五、目录结构
+## 四、目录导航
 
-```
-mangpai-fusion/
-├── README.md                       本文件
-├── handoff.md                      Kiro 接管交接文档
-├── STATUS.md                       当前进度状态
-├── theory/                         4 派结构化规律库
-│   ├── SCHEMA.md                   规律统一 schema 定义
-│   ├── gao/*.yaml                  高派 249 条规律
-│   ├── duan/*.yaml                 段派 290 条规律
-│   ├── yang/*.yaml                 杨派 163 条规律
-│   ├── ren/*.yaml                  任派 200 条规律
-│   └── raw/                        原始抽取记录（可追溯）
-├── mapping/                        跨派映射
-│   ├── consensus.md                共识层（4派全认可铁律）
-│   ├── complementary.md            互补层（2~3派同向）
-│   ├── exclusive.md                独门层（单派独有）
-│   └── conflicts.md                派别冲突仲裁登记
-├── engine/                         核心引擎规则
-│   ├── confidence.yaml             双轨置信度计算引擎
-│   ├── domain-weights.yaml         9 大领域 × 4 派权重矩阵
-│   └── arbitration.md              派别仲裁规则
-├── templates/
-│   ├── input-from-wenzhen.md       问真八字 APP 输入模板
-│   └── report.md                   专业版双轨置信度报告模板
-├── cases/                          案例库（八字指纹 + 全程记录）
-│   └── cases-index.md
-├── reports/                        正式报告归档
-├── predictions/                    封存预测（待应期验证）
-├── tools/                          自动化工具
-│   ├── calibrate.py                反馈回流校准 (v1.0，**v1.3.0 起 deprecated**，
-│   │                                改用 feedback_ingest.py / feedback_loop.py)
-│   ├── seal_prediction.py          预测封存
-│   └── verify_evidence.py          证据校验
-├── sources/                        4 派原始语料（只读，可追溯）
-│   ├── gao/                        高派原文
-│   ├── duan/                       段派原文
-│   ├── yang/                       杨派原文
-│   └── ren/                        任派原文
-├── META/                           自迭代元数据层
-│   ├── ingestion-protocol.md       理论入库协议
-│   ├── calibration-methodology.md  置信度校准方法论
-│   ├── rule-changelog.md           规律变更日志
-│   ├── source-trace.md             来源追溯账本
-│   └── extracted/                  原始抽取过程档案
-└── .kiro/
-    ├── skills/
-    │   ├── BOOT.md                 启动入口（最小集）
-    │   ├── analyst.md              v1.2 流水线编排器（Orchestrator）
-    │   ├── strategy.yaml           策略选择器（v1.2 仅作输入侧重提示）
-    │   ├── modules/                调用模块
-    │   ├── protocol/               协议层
-    │   └── topics/                 专题剧本
-    └── steering/                   仓库级强约束
+| 路径 | 定位 |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | AI agent 操作手册与事实源矩阵 |
+| [`VERSION`](VERSION) | 产品版本唯一机器可读事实源 |
+| [`META/project-state.json`](META/project-state.json) | 当前项目状态机器可读快照 |
+| [`STATUS.md`](STATUS.md) | 稳定项目仪表盘 |
+| [`handoff.md`](handoff.md) | 短期下一步交接，不作长期事实源 |
+| [`theory/`](theory/) | 四派结构化规律库 |
+| [`mapping/`](mapping/) | 跨派共识、互补、独门、冲突映射 |
+| [`engine/`](engine/) | 核心 pipeline、契约与规则实现 |
+| [`templates/`](templates/) | 输入、反馈、报告模板 |
+| [`cases/`](cases/) | 实战案例库 |
+| [`reports/`](reports/) | 正式报告归档 |
+| [`predictions/`](predictions/) | 封存预测 |
+| [`tools/`](tools/) | 自动化工具，索引见 [`tools/README.md`](tools/README.md) |
+| [`META/`](META/) | 迭代状态、规则变更、仲裁与校准记录 |
+| [`plans/`](plans/) | 架构方案与历史计划 |
+| [`tests/`](tests/) | 回归与验收测试 |
+
+---
+
+## 五、常用工作流
+
+### 新增案例
+
+```bash
+python -m tools.preflight cases/C-YYYY-NNN-干支/input.md
 ```
 
+### 生成报告
+
+```bash
+python -m tools.render_report
+python -m tools.output_linter reports/example-report.md
+```
+
+### 摄入反馈
+
+```bash
+python -m tools.feedback_ingest C-YYYY-NNN-干支
+python -m tools.batch_review
+```
+
+### 查看工具与规则状态
+
+```bash
+python tools/tool_registry.py --format markdown
+python tools/tool_registry.py --check
+python tools/rule_status_scan.py --format markdown
+python tools/rule_status_scan.py --check
+```
+
+### 跑测试
+
+```bash
+pytest tests/
+pytest tests/test_project_metadata.py -q
+```
+
 ---
 
-## 六、快速开始
+## 六、版本与状态
 
-1. 命主八字从问真八字 APP 复制后，按 `templates/input-from-wenzhen.md` 格式整理
-2. 启动 Kiro，激活 `.kiro/skills/analyst.md`（v1.2 编排器）
-3. 提交八字 → analyst 按六阶段（INTAKE → PARSE → PIPELINE → RENDER → DELIVER → FEEDBACK）调用 `engine/pipeline.run_pipeline()`
-4. 收到双轨置信度报告（由 `tools/render_report.py` 渲染 + 双护栏 lint 校验）
-5. 与命主对话后，反馈应验/失验情况
-6. 命中率自动重算（`tools/feedback_loop.py`），置信度升降级
-
----
-
-## 七、版本与状态
-
-详见 [`STATUS.md`](./STATUS.md) 与 [`META/rule-changelog.md`](./META/rule-changelog.md)
+- 产品版本以 [`VERSION`](VERSION) 为准。
+- Python 包版本见 [`engine/__init__.py`](engine/__init__.py)，必须与 [`VERSION`](VERSION) 一致。
+- 当前机器状态见 [`META/project-state.json`](META/project-state.json)。
+- 历史变更见 [`META/rule-changelog.md`](META/rule-changelog.md)。
+- 易漂移的规则数量、N_eff、flagged/deprecated 清单不要写入普通文档；需要时运行 [`tools/rule_status_scan.py`](tools/rule_status_scan.py)。

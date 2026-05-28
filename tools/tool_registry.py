@@ -24,7 +24,7 @@ import warnings
 from dataclasses import asdict, dataclass
 from typing import Literal
 
-ToolStatus = Literal["active", "deprecated", "historical", "missing", "unindexed"]
+ToolStatus = Literal["active", "internal", "deprecated", "historical", "missing", "unindexed"]
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TOOLS_DIR = ROOT / "tools"
@@ -32,6 +32,7 @@ README_PATH = TOOLS_DIR / "README.md"
 
 STATUS_HEADINGS: dict[str, ToolStatus] = {
     "active": "active",
+    "internal": "internal",
     "deprecated": "deprecated",
     "historical": "historical",
     "missing": "missing",
@@ -137,7 +138,7 @@ def build_registry() -> list[ToolEntry]:
                 exists=False,
             ))
 
-    order = {"active": 0, "deprecated": 1, "historical": 2, "unindexed": 3, "missing": 4}
+    order = {"active": 0, "internal": 1, "deprecated": 2, "historical": 3, "unindexed": 4, "missing": 5}
     entries.sort(key=lambda e: (order[e.status], e.name))
     return entries
 
