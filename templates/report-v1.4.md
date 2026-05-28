@@ -25,7 +25,7 @@
 ## CLIENT 版模板（Report · 命主可读）
 
 ```markdown
-# 八字分析报告 · {{ case_id }}
+# 八字分析报告 · {{ case_id }} · {{ qian_kun }}
 
 **命主**：{{ gender }}命 · {{ birth_date }}  
 **四柱**：{{ bazi_display }}  

@@ -1,4 +1,4 @@
-# 八字分析报告 v1.3 · {{ case_id }}
+# 八字分析报告 v1.3 · {{ case_id }} · {{ qian_kun }}
 
 **命主**：{{ gender }}命 · {{ birth_date }}  
 **四柱**：{{ bazi_str }}  
