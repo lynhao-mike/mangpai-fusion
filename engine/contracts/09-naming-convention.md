@@ -3,9 +3,9 @@
 > **本文规定 v1.2 起所有案例、报告、预测文件的命名格式。**
 > 旧案重命名清单见末尾"附录 A"。
 
-最后更新：2026-05-23（W1 · S0 契约设计阶段）
-版本：v1.2.0
-适用分支：`v1.2-build`（main 分支保持 v1.0 旧名不动）
+最后更新：2026-05-28（v1.4 W1 文档同步）
+版本：v1.3.0-current
+适用分支：`main`（`v1.2-build` 已合并；当前命名校验以工具实现为准）
 
 ---
 
@@ -45,7 +45,7 @@ cases/C-YYYY-NNN-{干支}/
 ├── analysis.md
 ├── feedback.md
 ├── lessons.md
-└── calibration-report.md   （v1.1+，由 calibrate.py 自动生成）
+└── findings/               （pipeline / render_report 落盘的结构化 Findings，可选）
 ```
 
 示例：
@@ -114,19 +114,11 @@ input.md 必须包含以下字段（详见 `01-input-schema.md`）：
 5. 案例目录名必须 = `C-YYYY-NNN-` + 4 柱 8 字 拼接
 
 ### 3.3 工具
-```python
-# tools/naming.py（W1 末交付）
-def case_id_with_ganzhi(year: int, seq: int, bazi: BaziInput) -> str:
-    """
-    >>> case_id_with_ganzhi(2026, 1, bazi)
-    'C-2026-001-庚申戊寅壬子辛丑'
-    """
-    ...
+当前未保留独立 `tools/naming.py`。命名生成 / 校验由以下入口消费同一规则：
 
-def parse_case_id(case_dir: str) -> tuple[str, BaziInput]:
-    """case_dir → (case_id, parsed_bazi)，反向解析"""
-    ...
-```
+- `tools/preflight.py`：立案输入与案例目录一致性校验。
+- `tools/render_report.py`：报告落盘文件名沿用完整 case_id。
+- `tools/extract_predictions.py`：生成 `PRED-YYYY-NNN-{case_id简写}-{干支}-{用途}.md`。
 
 ---
 
@@ -193,14 +185,12 @@ cases/C-2026-001-庚申戊寅壬子辛丑/
 
 ## 七、工具支持
 
-W1 末交付：
-- `tools/naming.py` - 命名工具函数（生成/解析/校验）
-- `tools/rename_legacy_cases.py` - 旧案批量重命名脚本（一次性使用）
+当前生效入口：
+- `tools/preflight.py` 校验立案与案例目录名。
+- `tools/render_report.py` 输出报告时使用统一文件名。
+- `tools/extract_predictions.py` 生成预测文件名时使用统一规则。
 
-W2-W4 集成到：
-- `tools/preflight.py` 校验立案
-- `tools/render_report.py` 输出报告时使用统一文件名
-- `tools/extract_predictions.py` 生成预测文件名时使用统一规则
+历史计划中的 `tools/naming.py` / `tools/rename_legacy_cases.py` 当前不存在，不作为可执行入口；如需独立命名库，应先补工具注册表与测试。
 
 
 ---
