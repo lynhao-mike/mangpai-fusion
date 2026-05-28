@@ -88,16 +88,15 @@ Track-C 实现按"baseline vs active 增量"判定（避免对原局多重作用
 
 ### 4.2 主触发优先级
 
-`pick_primary_trigger(triggers, domain)` 按以下优先级返回单一主触发：
+`pick_primary_trigger(triggers, domain)` 以 [`engine.yingqi.types.TRIGGER_PRIORITY`](../yingqi/types.py) 为唯一事实源，按以下优先级返回单一主触发：
 
 1. 倒象成立  ← 最高（凶应必报）
-2. 墓库开闭
-3. 合冲引动
-4. 藏干透出
-5. 本字到
-6. 伏吟引动
+2. 伏吟
+3. 本字到 / 合冲引动（同优先级，按 strength 倒序）
+4. 墓库开闭
+5. 藏干透出
 
-同优先级按 strength 倒序。
+同优先级按 strength 倒序；实现排序由 [`engine/yingqi/chufa.py`](../yingqi/chufa.py) 调用 `TRIGGER_PRIORITY` 完成。
 
 ---
 
@@ -159,62 +158,105 @@ Track-C MVP 实现核心 6 个 + "未分类"兜底：
 
 ```python
 @dataclass
+class LayerCheck:
+    layer: GateLayer
+    passed: bool
+    evidence_chars: list[str] = field(default_factory=list)
+    rationale: str = ""
+    used_transition: bool = False
+    used_secondary_keys: bool = False
+
+@dataclass
+class TriggerEvent:
+    type: TriggerType
+    description: str
+    target_chars: list[str] = field(default_factory=list)
+    is_xiong: bool = False
+
+@dataclass
 class GateResult:
-    schema_version: str
     year: int
     candidate_event: str
-    domain: str
+    domain: Domain
 
-    layer1: Optional[LayerCheck]    # 原局
-    layer2: Optional[LayerCheck]    # 大运
-    layer3: Optional[LayerCheck]    # 流年
-    passed_layers: int              # 0..3
+    layer1: LayerCheck
+    layer2: LayerCheck
+    layer3: LayerCheck
+    passed_layers: int              # 0..3；0 层候选通常不进入报告
 
-    triggers: list[TriggerEvent]
-    primary_trigger: Optional[TriggerEvent]
-    door: Optional[Door]
+    triggers: list[TriggerEvent] = field(default_factory=list)
+    primary_trigger: Optional[TriggerEvent] = None
+    door: Optional[DoorType] = None
+    event_type_hypotheses: list[str] = field(default_factory=list)  # v1.4 V4
 
-    energy_consistent: bool
-    picture_consistent: bool
-    consistency_reasons: list[str]
+    confidence: Optional[Confidence] = None
 
-    confidence: float               # 0.0 - 1.0
-    star: int                       # 1 - 5
-    is_xiong: bool
+    energy_consistent: bool = True
+    picture_consistent: bool = True
+    consistency_notes: list[str] = field(default_factory=list)
 
-    upstream_energy_hash: str
-    upstream_picture_hash: str
-    rule_ids: list[str]
-    summary: str
+    evidence: list[Evidence] = field(default_factory=list)
+    school: str = "任"
+    schema_version: str = "1.2.0"
+    case_id: str = ""
+    upstream_energy_hash: str = ""
+    upstream_picture_hash: str = ""
+    debug_info: dict[str, Any] = field(default_factory=dict)
 ```
 
-序列化：`to_dict()` / `from_dict()` / `hash()`（16 位 MD5 截断）。
+序列化：`to_dict()` / `from_dict()` / `hash()`（SHA-256 前 16 位）。字段以 [`engine/yingqi/types.py`](../yingqi/types.py) 为实现事实源。
 
 ---
 
 ## 八、置信度公式（W3 应期专用）
 
-`compute_yingqi_confidence(passed_layers, triggers, primary_trigger, is_xiong, energy_consistent, picture_consistent) -> (conf, star)`
+当前实现签名：
 
+```python
+def compute_yingqi_confidence(
+    passed_layers: int,
+    triggers: list[TriggerEvent],
+    primary_trigger: Optional[TriggerEvent],
+    l2_via_transition: bool,
+    upstream_consistent: bool,
+) -> Confidence:
+    ...
 ```
-conf = passed_layers × 0.25
-     + primary_trigger.strength × 0.20
-     + (energy_consistent ? 0.05 : 0)
-     + (picture_consistent ? 0.05 : 0)
-     + (is_xiong ? 0.10 : 0)
 
-cap = 0.85 if passed_layers < 3 else 1.00
-conf = min(conf, cap)
+核心口径：
 
-star (按 confidence.yaml):
-  ≥ 0.90 → 5    ≥ 0.80 → 4    ≥ 0.65 → 3
-  ≥ 0.50 → 2    < 0.50 → 1
+```python
+gate_ceiling = {0: 0, 1: 3, 2: 4, 3: 5}[passed_layers]
+if gate_ceiling == 0:
+    return Confidence(star=0, percent=0.0, posterior=0.0, variance=1.0, sample_n=0)
 
-★ 强约束（任意一条触发即降级）:
-  passed_layers <  3 → star ≤ 4
-  passed_layers <= 1 → star ≤ 3
-  passed_layers == 0 → star ≤ 2
+posterior = primary_strength + trigger_bonus + type_bonus
+if l2_via_transition:
+    posterior -= 0.08
+    gate_ceiling = max(1, gate_ceiling - 1)
+if not upstream_consistent:
+    posterior -= 0.20
+    gate_ceiling = min(gate_ceiling, 2)
+
+posterior = max(0.0, min(0.95, posterior))
+star = min(posterior_to_star(posterior), gate_ceiling)
 ```
+
+★ 映射以 [`06-confidence-model.md`](06-confidence-model.md) 为唯一口径：
+
+| ★ | posterior 区间 | 显示 % |
+|---|---|---|
+| ★ | [0.00, 0.40) | 0%-39% |
+| ★★ | [0.40, 0.55) | 40%-54% |
+| ★★★ | [0.55, 0.70) | 55%-69% |
+| ★★★★ | [0.70, 0.85) | 70%-84% |
+| ★★★★★ | [0.85, 1.00] | 85%-100% |
+
+★ 强约束：
+- `passed_layers == 3` → star 上限 5
+- `passed_layers == 2` → star 上限 4
+- `passed_layers == 1` → star 上限 3
+- `passed_layers == 0` → star 为 0，通常不输出此候选事件
 
 ---
 
@@ -240,9 +282,8 @@ Track-C 用窗口实现 picture_consistent 硬约束。
 Track-C 不直接消费 SupportFindings，但 Track-D 可用 GateResult 作为
 "是否触发某神煞专项"的输入（如倒象 + 天罗地网 = 婚姻血光）。
 
-### 9.4 Track-F 报告渲染
-GateResult 有 `summary` 字段（一行人类可读总结）和完整结构化数据。
-Track-F 应优先用 `rule_ids` 输出 trace_id，`summary` 作 fallback。
+### 9.4 报告渲染
+GateResult 通过 `to_dict()` 暴露完整结构化数据；报告层应优先使用 `evidence[].rule_id`、`event_type_hypotheses`、`confidence`、`consistency_notes` 等结构化字段。当前高级入口为 [`tools.render_report.render_from_output`](../../tools/render_report.py) / [`tools.render_report.render_both`](../../tools/render_report.py)。
 
 ### 9.5 Track-G 自迭代
 GateResult 的 `hash()` 提供稳定 trace_id。
@@ -255,10 +296,11 @@ GateResult 的 `hash()` 提供稳定 trace_id。
 
 修改本契约 = PR 到 main，title 前缀 `[CONTRACT-04]`。
 若改动以下任一字段，必须通知所有运行中的 agent：
-- GateResult 的 `passed_layers` 语义
-- TRIGGER_TYPES 顺序
+- `GateResult.passed_layers` 语义
+- `TRIGGER_PRIORITY` 排序
 - `compute_yingqi_confidence` 公式
+- `GateResult.event_type_hypotheses` 事件候选语义
 
 ---
 
-**04-gate-protocol 契约结束。下一份 02/03/05/06/07/08 由后续 Track 补齐。**
+**04-gate-protocol 契约结束。当前以实现事实源与 06 置信度契约同步维护。**
