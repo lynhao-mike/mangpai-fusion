@@ -196,10 +196,10 @@ output = integrate(energy, picture, gate_results, support, parsed)
 
 | 项 | 值 |
 |---|---|
-| 入口 | `tools/render_report.py render(analysis_output, template="report-v1.2.md")` |
+| 入口 | `tools/render_report.py render_from_output(analysis_output, variant="master")` / `render_both(analysis_output)` |
 | 输入 | `AnalysisOutput` (lint 通过后) |
-| 输出 | Markdown 报告骨架（铁断不可改） |
-| 落盘 | `reports/C-XXX-{干支}-report.md` |
+| 输出 | Markdown 报告骨架；新案默认 `templates/report-v1.3.md` 的 master/client 双版，`report-v1.2.md` 仅向下兼容 |
+| 落盘 | `reports/C-XXX-{干支}-report.md`（或双版路径，见 render_report 实现） |
 
 骨架结构（三段式）：
 ```
@@ -240,7 +240,7 @@ for gate_r in analysis_output.gate_results:
 同时执行归档：
 - `cases/C-XXX/` 全部文件落盘完毕
 - `cases-index.md` 自动追加一行
-- 触发 `feedback_loop.py`（如果 known_facts 中有事实，立即回测）
+- 若报告已有 master 反馈位，单案入口使用 `tools.feedback_ingest`；底层规则回流由 `tools.feedback_loop` 执行
 
 ---
 

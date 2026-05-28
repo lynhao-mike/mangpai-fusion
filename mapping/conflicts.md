@@ -60,7 +60,7 @@ CFL-{topic}-{NNN}
 子女          → 高派 lead，杨派副
 ```
 
-详见 `engine/domain-weights.yaml`。
+详见 [`engine/domain-weights.yaml`](../engine/domain-weights.yaml)。
 
 ### 原则 2：高强度规律优先
 

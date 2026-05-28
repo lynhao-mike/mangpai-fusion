@@ -499,13 +499,13 @@ def cross_school_scan() -> ConflictTrendsReport:
                 domain=domain,
                 strong=max_school, weak=min_school,
                 gap=max_rate - min_rate,
-                recommendation=f"调整 dimension-weights.yaml 在 {domain} 上 {max_school} 权重↑, {min_school}↓"
+                recommendation=f"调整 domain-weights.yaml 在 {domain} 上 {max_school} 权重↑, {min_school}↓"
             )
     save_to(report, "META/conflict-trends.md")
     return report
 ```
 
-**人工 PR 触发**：cross_school_scan 不自动调权重，只生成报告。架构师人工 review 后开 PR 修 `dimension-weights.yaml`。
+**人工 PR 触发**：cross_school_scan 不自动调权重，只生成报告。架构师人工 review 后开 PR 修 `domain-weights.yaml`。
 
 ---
 

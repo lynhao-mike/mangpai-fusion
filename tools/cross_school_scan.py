@@ -12,7 +12,7 @@
 
 约束：
     本工具**不自动调权重**（决策 K）——只生成报告，由架构师人工 review 后
-    开 PR 修 engine/dimension-weights.yaml。
+    开 PR 修 engine/domain-weights.yaml。
 
 数据源：
     遍历 4 个 theory/{school}/index.yaml 的 applied_cases 字段。每个 case 在
@@ -277,7 +277,7 @@ def cross_school_scan(
                 gap=gap,
                 sample_n=sample_n,
                 recommendation=(
-                    f"建议人工 PR 调整 engine/dimension-weights.yaml 在【{domain}】上"
+                    f"建议人工 PR 调整 engine/domain-weights.yaml 在【{domain}】上"
                     f"提高 {max_sch} 派权重，降低 {min_sch} 派权重；"
                     f"或对 {min_sch} 派 {domain} 类规律启动 review。"
                 ),

@@ -315,14 +315,17 @@ GateLayer = Literal["L1_原局有","L2_大运到位","L3_流年引爆"]
 class LayerCheck:
     layer: GateLayer
     passed: bool
-    evidence_chars: list[Gan|Zhi]        # 通过该层的关键字
-    rationale: str                       # 一句话说明为何通过/未过
+    evidence_chars: list[str] = field(default_factory=list)
+    rationale: str = ""
+    used_transition: bool = False        # L2 是否仅靠过渡期相邻大运通过
+    used_secondary_keys: bool = False    # L1 是否退到 secondary 关键字通过
 
 @dataclass
 class TriggerEvent:
     type: TriggerType
     description: str
-    target_chars: list[Gan|Zhi]
+    target_chars: list[str] = field(default_factory=list)
+    is_xiong: bool = False
 
 @dataclass
 class GateResult:
@@ -339,27 +342,33 @@ class GateResult:
     passed_layers: int                   # 0-3，全过=3
 
     # 6 触发引擎结果
-    triggers: list[TriggerEvent]
-    primary_trigger: Optional[TriggerEvent]
+    triggers: list[TriggerEvent] = field(default_factory=list)
+    primary_trigger: Optional[TriggerEvent] = None
 
     # 12 道门归属（任派 §16）
     door: Optional[Literal[
         "动门","格局门","天地门","统领门","墓库门","夹拱门",
-        "旬空门","鸳鸯门","寿元门","伤残门","牢灾门"]]
+        "旬空门","鸳鸯门","寿元门","伤残门","牢灾门"]] = None
+
+    # v1.4 V4：一个应期触发可保留多个事件类型候选，避免体制内财源/升迁等单解误伤
+    event_type_hypotheses: list[str] = field(default_factory=list)
 
     # 最终置信度（已应用三层惩罚）
-    confidence: Confidence
+    confidence: Optional[Confidence] = None
 
     # 上游约束
-    energy_consistent: bool
-    picture_consistent: bool             # 不违背 D2 marriage_picture 等
+    energy_consistent: bool = True
+    picture_consistent: bool = True       # 不违背 D2 marriage_picture 等
+    consistency_notes: list[str] = field(default_factory=list)
 
     # 元信息
-    evidence: list[Evidence]
-    school: School = "任"
+    evidence: list[Evidence] = field(default_factory=list)
+    school: str = "任"
     schema_version: str = "1.2.0"
-    upstream_energy_hash: str
-    upstream_picture_hash: str
+    case_id: str = ""
+    upstream_energy_hash: str = ""
+    upstream_picture_hash: str = ""
+    debug_info: dict[str, Any] = field(default_factory=dict)
 ```
 
 **三层惩罚规则**（v1.2 硬约束）：
@@ -380,9 +389,10 @@ passed_layers == 0 → 不输出此候选事件
 class ShenshaSupport:
     """单个神煞的旁证"""
     name: str                            # 神煞名（如"金舆"）
-    palaces: list[PalaceName]            # 挂在哪
-    contribution: str                    # 对哪条结论补强
-    boost: float                         # 对置信度的提升 0.0-0.2
+    palaces: list[PalaceName] = field(default_factory=list)  # 挂在哪
+    contribution: str = ""               # 对哪条结论补强
+    boost: float = 0.0                   # 对置信度的提升 0.0-0.2
+    tags: list[str] = field(default_factory=list)
 
 @dataclass
 class HealthFinding:
@@ -396,32 +406,40 @@ class HealthFinding:
 @dataclass
 class CiguanXuetang:
     """词馆学堂（高派学历专用）"""
-    has_ciguan: bool
-    has_xuetang: bool
-    contribution: str
+    has_ciguan: bool = False
+    has_xuetang: bool = False
+    has_wenchang: bool = False
+    has_taiyi: bool = False
+    contribution: str = ""
+    boost: float = 0.0
 
 @dataclass
 class SupportFindings:
     """D4 高派输出 · 旁证补强"""
 
     # 神煞旁证（按对哪条上游结论补强分组）
-    shensha_supports: dict[str, list[ShenshaSupport]]
-    # key 形如 "marriage" "career" "wealth" "health"
+    shensha_supports: dict[str, list[ShenshaSupport]] = field(default_factory=dict)
+    # key 形如 "marriage" "career" "wealth" "health" "education" "general"
 
     # 健康灾厄专项
-    health_findings: list[HealthFinding]
+    health_findings: list[HealthFinding] = field(default_factory=list)
 
     # 词馆学堂（学历）
-    ciguan_xuetang: Optional[CiguanXuetang]
+    ciguan_xuetang: Optional[CiguanXuetang] = None
 
     # 命宫长生诀择日（特殊场景）
     mingong_zhairi: Optional[dict] = None
 
     # 元信息
-    confidence: Confidence
-    evidence: list[Evidence]
-    school: School = "高"
+    confidence: Optional[Confidence] = None
+    evidence: list[Evidence] = field(default_factory=list)
+    school: str = "高"
     schema_version: str = "1.2.0"
+    case_id: str = ""
+    upstream_energy_hash: str = ""
+    upstream_picture_hash: str = ""
+    upstream_gate_hash: str = ""
+    debug_info: dict[str, Any] = field(default_factory=dict)
 ```
 
 **SupportFindings 的特殊性**：D4 的 boost 只能**增强**已有 D1/D2/D3 结论，不能**新提**结论。这是"旁证"二字的本意。
@@ -584,13 +602,13 @@ for year in range(2026, 2050):
         gate_results.append(result)
 
 # Step 5: D4 高派（横向旁证）
-support: SupportFindings = pangzheng_engine.support(parsed, energy, picture, gate_results)
+support: SupportFindings = support_with_shensha(parsed, energy, picture, gate_results)
 
 # Step 6: 整合
-output: AnalysisOutput = integrate(energy, picture, gate_results, support)
+output: AnalysisOutput = integrate(energy, picture, gate_results, support, parsed)
 
-# Step 7: 渲染
-report_md: str = render_report.render(output, template="report-v1.2.md")
+# Step 7: 渲染（新案默认 master/client 双版；v1.2 模板仅保留向下兼容）
+master_md, client_md = render_report.render_both(output)
 ```
 
 ---

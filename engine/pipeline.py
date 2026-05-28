@@ -874,7 +874,7 @@ def run_pipeline_e2e(
     cases_index_path: Optional[Union[str, Path]] = None,
     do_render: bool = False,
     do_self_iter: bool = False,
-    template_name: str = "report-v1.2.md",
+    template_name: str = "report-v1.3.md",
     threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
 ) -> tuple[AnalysisOutput, PipelineTiming]:
     """端到端 8 步编排（v1.2.1 性能监控版）。
@@ -899,7 +899,7 @@ def run_pipeline_e2e(
         cases_index_path:  cases-index.md 路径，传给 preflight 做指纹防重。
         do_render:         是否调用 render_report 渲染 Markdown 报告。
         do_self_iter:      是否调用 feedback_loop 自迭代。
-        template_name:     渲染模板（默认 report-v1.2.md）。
+        template_name:     渲染模板（默认 report-v1.3.md；report-v1.2.md 仅向下兼容）。
         threshold_seconds: 端到端总耗时阈值（默认 60s）。
 
     Returns:

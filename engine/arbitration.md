@@ -43,7 +43,7 @@ L1 显性冲突按以下规则仲裁：
 
 #### 规则 1：领域权重优先
 
-查 `engine/domain-weights.yaml` 取得该领域的 lead 派：
+查 [`engine/domain-weights.yaml`](domain-weights.yaml) 取得该领域的 lead 派：
 ```
 婚姻 → 杨派 lead
 应期 → 任派 lead
