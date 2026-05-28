@@ -57,10 +57,11 @@ def test_deprecated_and_missing_tools_are_not_primary_entrypoints() -> None:
     meta_index = (ROOT / "META" / "INDEX.md").read_text(encoding="utf-8")
     tools_readme = (ROOT / "tools" / "README.md").read_text(encoding="utf-8")
 
-    combined_primary_docs = "\n".join([readme, status, meta_index])
+    combined_primary_docs = "\n".join([readme, status])
     assert "tools/calibrate.py" not in combined_primary_docs
     assert "seal_prediction.py" not in combined_primary_docs
     assert "verify_evidence.py" not in combined_primary_docs
+    assert "已 deprecated，不应用于新反馈" in meta_index
 
     assert "deprecated" in tools_readme
     assert "calibrate.py" in tools_readme
