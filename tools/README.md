@@ -32,6 +32,7 @@
 | [`timing_report.py`](timing_report.py:1) | 聚合 pipeline timing.json | v1.2.1+ metrics |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
+| [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 多派别 Markdown 教材入口；支持 `--dry-run` |
 
 ---
 
