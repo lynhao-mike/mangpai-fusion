@@ -835,6 +835,10 @@ def _lint_portrait_box_style(md: str, res: LintResult) -> None:
     """v1.4 · 命主画像段禁止使用 ╔╗ 等框线字符。"""
     if "命主画像" not in md and "命 主 画 像" not in md and "portrait_block" not in md:
         return
+    # W13 是 v1.4 模板样式护栏；历史 v1.0/v1.2/v1.3 存量报告可保留框线画像，
+    # 避免把历史样式残留误报为理论/知识调用错误。
+    if "v1.4" not in md and "portrait_block" not in md:
+        return
     box_chars = {"╔", "╗", "╚", "╝", "╠", "╣", "║", "═"}
     if any(ch in md for ch in box_chars):
         res.add(
