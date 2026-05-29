@@ -1,0 +1,3041 @@
+{
+  "schema_version": "1.4.0",
+  "pipeline_version": "1.4.0",
+  "generated_at": "2026-05-29T07:56:59Z",
+  "case_id": "C-2026-021-癸亥庚申戊寅己未",
+  "analysis_date": "2026-05-29",
+  "energy": {
+    "schema_version": "1.4.0",
+    "school": "段",
+    "case_id": "C-2026-021-癸亥庚申戊寅己未",
+    "energy_level": {
+      "ordinal": "强",
+      "score": 0.79
+    },
+    "layer_count": 3,
+    "zuogong_paths": [
+      {
+        "type": "制",
+        "chain": [
+          "申",
+          "寅"
+        ],
+        "description": "月支支申 ↔ 日支支寅 之 冲 → 作用于用神申(食伤)",
+        "strength": {
+          "ordinal": "强",
+          "score": 1.0
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "制",
+        "chain": [
+          "亥",
+          "申"
+        ],
+        "description": "年支支亥 ↔ 月支支申 之 穿 → 作用于用神亥(财)",
+        "strength": {
+          "ordinal": "强",
+          "score": 0.9
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "生泄",
+        "chain": [
+          "庚",
+          "癸"
+        ],
+        "description": "月柱庚(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+        "strength": {
+          "ordinal": "中",
+          "score": 0.65
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "生泄",
+        "chain": [
+          "申",
+          "癸"
+        ],
+        "description": "月支申(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+        "strength": {
+          "ordinal": "中",
+          "score": 0.65
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "生泄",
+        "chain": [
+          "癸",
+          "寅"
+        ],
+        "description": "年柱癸(财,水) → 生 → 日支寅(官杀,木) [财生官]",
+        "strength": {
+          "ordinal": "中",
+          "score": 0.65
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "生泄",
+        "chain": [
+          "亥",
+          "寅"
+        ],
+        "description": "年支亥(财,水) → 生 → 日支寅(官杀,木) [财生官]",
+        "strength": {
+          "ordinal": "中",
+          "score": 0.65
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "合",
+        "chain": [
+          "亥",
+          "寅"
+        ],
+        "description": "年支支亥 ↔ 日支支寅 之 六合 → 作用于用神亥(财)",
+        "strength": {
+          "ordinal": "弱",
+          "score": 0.6
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "合",
+        "chain": [
+          "癸",
+          "戊"
+        ],
+        "description": "年柱干癸(财) 合 日柱干戊(比劫) → 用神被合 [合绊]",
+        "strength": {
+          "ordinal": "弱",
+          "score": 0.55
+        },
+        "layer_count": 1
+      },
+      {
+        "type": "墓",
+        "chain": [
+          "未"
+        ],
+        "description": "时支未库藏 乙(余气) 财官 (未冲刑→关库)",
+        "strength": {
+          "ordinal": "弱",
+          "score": 0.4
+        },
+        "layer_count": 0
+      },
+      {
+        "type": "复合",
+        "chain": [
+          "申",
+          "寅",
+          "亥",
+          "申",
+          "庚",
+          "癸"
+        ],
+        "description": "复合做功 = 制 + 合 + 生泄 多种叠加（M1-D-014）",
+        "strength": {
+          "ordinal": "强",
+          "score": 0.85
+        },
+        "layer_count": 0
+      }
+    ],
+    "tiyong": {
+      "body": [
+        {
+          "char": "戊",
+          "role": "体",
+          "location": "日柱-天干（日干）"
+        },
+        {
+          "char": "庚",
+          "role": "食伤",
+          "location": "月柱-天干"
+        },
+        {
+          "char": "己",
+          "role": "比劫",
+          "location": "时柱-天干"
+        },
+        {
+          "char": "申",
+          "role": "食伤",
+          "location": "月柱-地支（月支）"
+        },
+        {
+          "char": "未",
+          "role": "比劫",
+          "location": "时柱-地支（时支）"
+        }
+      ],
+      "purpose": [
+        {
+          "char": "癸",
+          "role": "财",
+          "location": "年柱-天干"
+        },
+        {
+          "char": "亥",
+          "role": "财",
+          "location": "年柱-地支（年支）"
+        },
+        {
+          "char": "寅",
+          "role": "官杀",
+          "location": "日柱-地支（日支）"
+        }
+      ],
+      "rationale": "段派体用判别（M1 §17.2）：日干 戊(土) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 戊(体), 庚(食伤), 己(比劫), 申(食伤), 未(比劫)\n  用（目的）= 财 + 官杀: 癸(财), 亥(财), 寅(官杀)\n  食伤为中性，默认归体（食偏体）"
+    },
+    "shidang": {
+      "shi": {
+        "木": 0.1249,
+        "火": 0.0199,
+        "土": 0.3427,
+        "金": 0.2764,
+        "水": 0.236
+      },
+      "dang": [
+        [
+          "土金",
+          "双党·土生金（合计 62%） = 段派 比劫生食伤党"
+        ],
+        [
+          "金水",
+          "双党·金生水（合计 51%） = 段派 食伤生财党"
+        ],
+        [
+          "土金水",
+          "三党·土→金→水（合计 86%）"
+        ]
+      ],
+      "description": "段派势/党（M1-D-122..123）：[土=34%, 金=28%, 水=24%, 木=12%, 火=2%]; 党形态：3 个"
+    },
+    "zeishen": {
+      "zei_shen": [],
+      "bu_shen": [],
+      "triggered_by_dayun": [],
+      "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+    },
+    "wealth_ceiling": "大富级·上",
+    "has_guoheqiaoqiao": true,
+    "muxing_qufa": "食伤",
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 9
+    },
+    "evidence": [
+      {
+        "rule_id": "M1-D-005..008",
+        "school": "段",
+        "description": "体用判定：体 5 字，用 3 字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "M1-D-122",
+        "school": "段",
+        "description": "势/党：双党·土生金（合计 62%） = 段派 比劫生食伤党",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M1-D-009",
+        "school": "段",
+        "description": "制：月支支申 ↔ 日支支寅 之 冲 → 作用于用神申(食伤)",
+        "weight": 1.0
+      },
+      {
+        "rule_id": "M1-D-009",
+        "school": "段",
+        "description": "制：年支支亥 ↔ 月支支申 之 穿 → 作用于用神亥(财)",
+        "weight": 0.9
+      },
+      {
+        "rule_id": "M1-D-011",
+        "school": "段",
+        "description": "生泄：月柱庚(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "M1-D-011",
+        "school": "段",
+        "description": "生泄：月支申(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "M1-D-011",
+        "school": "段",
+        "description": "生泄：年柱癸(财,水) → 生 → 日支寅(官杀,木) [财生官]",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "M1-D-199",
+        "school": "段",
+        "description": "母星取法（段派独门）：食伤（决策 J）",
+        "weight": 0.8
+      },
+      {
+        "rule_id": "M1-D-171",
+        "school": "段",
+        "description": "过河拆桥结构候选 = 食生财 + 财生官 三连环",
+        "weight": 0.75
+      }
+    ],
+    "debug_info": {
+      "body_strength": 0.7,
+      "has_strong_yong": false,
+      "shidang_summary": "段派势/党（M1-D-122..123）：[土=34%, 金=28%, 水=24%, 木=12%, 火=2%]; 党形态：3 个"
+    }
+  },
+  "picture": {
+    "schema_version": "1.4.0",
+    "school": "杨",
+    "case_id": "C-2026-021-癸亥庚申戊寅己未",
+    "upstream_hash": "65b92c2e782042ab",
+    "wubu_steps": [
+      {
+        "step": 1,
+        "name": "家里找财官",
+        "finding": "家里有财官：时支乙(官)/日支甲(官) → 弱制即得，自家拿（M2-Y-019/023）",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-119",
+            "school": "杨",
+            "description": "第1步家里找财官",
+            "weight": 0.72
+          },
+          {
+            "rule_id": "M2-Y-019",
+            "school": "杨",
+            "description": "家里有先拿家里的",
+            "weight": 0.65
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "name": "出处",
+        "finding": "从坐下出 = 完全是我自己的；从比劫宫出 = 两人的/合作",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-119",
+            "school": "杨",
+            "description": "第2步看财官出处",
+            "weight": 0.7
+          },
+          {
+            "rule_id": "M2-Y-162",
+            "school": "杨",
+            "description": "寻根基",
+            "weight": 0.65
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "name": "取法",
+        "finding": "段派母星取法=食伤 → 杨派对应层次=中（技术/销售/中介）（D1 层数=3=做功扎实）（M2-Y-021/119）",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-021",
+            "school": "杨",
+            "description": "体取财官层次排序",
+            "weight": 0.72
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "name": "皇粮民营",
+        "finding": "吃皇粮候选：天干透食伤['月干庚'] → 技术/销售（吃皇粮候选）（M2-Y-120）",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-120",
+            "school": "杨",
+            "description": "吃皇粮判定",
+            "weight": 0.75
+          }
+        ]
+      },
+      {
+        "step": 5,
+        "name": "天地一气",
+        "finding": "天干十神类(['比劫', '财', '食伤']) 与地支主气(['官杀', '比劫', '财', '食伤'])重叠在 ['比劫', '财', '食伤'] → 部分一致",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-121",
+            "school": "杨",
+            "description": "天地一气原则",
+            "weight": 0.7
+          }
+        ]
+      }
+    ],
+    "wuhe_relations": [
+      {
+        "pair": [
+          "癸",
+          "戊"
+        ],
+        "化神": "火",
+        "state": "搅局",
+        "palaces": [
+          "年柱",
+          "日柱"
+        ],
+        "应事": "西药/药物/颜色/信仰/名声；得妻得财/合作；日主合正财=亲身得",
+        "rationale": "癸戊合化火，但天干己搅局 → 合被拆"
+      }
+    ],
+    "anyin_results": [
+      {
+        "formula": "1旺不受伤",
+        "triggered_shishen": "印",
+        "real_meaning": "比劫旺(力0.34)未受刑穿 → 暗引印：学历/技能（比劫旺暗引印枭）",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-029",
+            "school": "杨",
+            "description": "比劫旺而不受伤暗引印",
+            "weight": 0.72
+          }
+        ]
+      },
+      {
+        "formula": "4印护身",
+        "triggered_shishen": "印化杀（家有靠山）",
+        "real_meaning": "官杀+印同现且官杀生印 → 印护身=家世背景/上有靠山",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-032",
+            "school": "杨",
+            "description": "化敌为友最高境界=化杀生印",
+            "weight": 0.82
+          }
+        ]
+      },
+      {
+        "formula": "5官印相生",
+        "triggered_shishen": "官印相生（杀印一体）",
+        "real_meaning": "官杀+印分置月日 → 官印相生=正途升迁（吃皇粮的标志）",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-042",
+            "school": "杨",
+            "description": "官命9取之化官生印",
+            "weight": 0.8
+          }
+        ]
+      },
+      {
+        "formula": "2受制为用",
+        "triggered_shishen": "食神制杀（成就的根基）",
+        "real_meaning": "食伤+官杀同现 → 食制杀=技术官/能办大事",
+        "evidence": [
+          {
+            "rule_id": "M2-Y-033",
+            "school": "杨",
+            "description": "食神制杀=成就",
+            "weight": 0.78
+          }
+        ]
+      }
+    ],
+    "caifu": {
+      "rank": 1,
+      "type": "官杀库",
+      "rationale": "时支未库藏官杀乙（未开）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-035",
+          "school": "杨",
+          "description": "财富 7 等判定（上游 wealth_ceiling=大富级·上, 自然区间 rank∈[1,3]）",
+          "weight": 0.7
+        },
+        {
+          "rule_id": "M2-Y-034",
+          "school": "杨",
+          "description": "开官杀库=亿级",
+          "weight": 0.85
+        }
+      ]
+    },
+    "guanming": {
+      "rank": 1,
+      "type": "化杀生枭",
+      "rationale": "七杀 + 偏印 同现 → 化杀生枭=行政最高层（罕）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-042",
+          "school": "杨",
+          "description": "化杀生枭=官命1层",
+          "weight": 0.8
+        }
+      ]
+    },
+    "wealth_level": {
+      "framework": "power_hierarchy"
+    },
+    "huosi_wuxing": {
+      "木": "死木",
+      "金": "寒金",
+      "水": "死水",
+      "土": "土"
+    },
+    "industry_pointers": [
+      "公门/国企",
+      "技术/服务"
+    ],
+    "industry_path": {
+      "P_institutional": 0.85,
+      "primary_path": "institutional",
+      "signals": [
+        "公门",
+        "国企"
+      ],
+      "source": "engine.pipeline._infer_industry_path"
+    },
+    "marriage_picture": {
+      "初婚最佳窗口": [
+        22,
+        28
+      ],
+      "配偶画像": "日支藏 甲(七杀)；配偶为身边人/同学同事；性情仁厚直率",
+      "婚姻稳定度": "易动",
+      "早婚信号": "强",
+      "晚婚信号": "弱",
+      "age_status": {
+        "status": "已过",
+        "current_age": 43,
+        "years_past": 15,
+        "warning": "⚠️ 命主当前 43 岁 · 已过初婚最佳窗口 15 年（窗口 22-28 岁）。本断语对当前命主已无指导意义，应作参考信号；若实际未婚，关注后续大运的财官启动期。",
+        "downgrade": true
+      },
+      "evidence": [
+        {
+          "rule_id": "M2-Y-038",
+          "school": "杨",
+          "description": "婚姻看法三步：宫位婚宫寅多动: 被月支冲,与月支刑",
+          "weight": 0.7
+        },
+        {
+          "rule_id": "M2-Y-141",
+          "school": "杨",
+          "description": "结婚应期：配偶星['时支藏 乙(正官, 贴身度0.6)', '年支藏 甲(七杀, 贴身度0.5)']",
+          "weight": 0.78
+        },
+        {
+          "rule_id": "M2-Y-064",
+          "school": "杨",
+          "description": "早期大运激活配偶宫: ['大运3(癸亥, 28-37岁) 地支与婚宫寅六合']",
+          "weight": 0.75
+        }
+      ],
+      "_debug": {
+        "gender": "F",
+        "spouse_locations": [
+          [
+            "时支",
+            "乙",
+            "正官"
+          ],
+          [
+            "年支",
+            "甲",
+            "七杀"
+          ],
+          [
+            "日支",
+            "甲",
+            "七杀"
+          ]
+        ],
+        "tieshen_score": 1.0,
+        "tieshen_descs": [
+          "时支藏 乙(正官, 贴身度0.6)",
+          "年支藏 甲(七杀, 贴身度0.5)",
+          "日支藏 甲(七杀, 贴身度1.0)"
+        ],
+        "early_dayun_activated": true,
+        "activation_notes": [
+          "大运3(癸亥, 28-37岁) 地支与婚宫寅六合"
+        ],
+        "stability_desc": "婚宫寅多动: 被月支冲,与月支刑",
+        "yin_count": 0,
+        "food_count": 2,
+        "bijie_count": 3
+      }
+    },
+    "tiaohou_advice": {
+      "喜补五行": "火",
+      "颜色": [
+        "红色",
+        "紫色"
+      ],
+      "方位": "南方",
+      "数字": [
+        3,
+        4
+      ],
+      "文化": "电子/影视/明星元素",
+      "食物": [
+        "苦味",
+        "辣味",
+        "咖啡",
+        "红色食物"
+      ],
+      "贵人方向": "南",
+      "免责": "本调候建议为概率性指引，非医疗/非法律/非金融建议；不进行风水营销（M2-Y-010 / §18.1）",
+      "_debug_shi": {
+        "木": 0.125,
+        "火": 0.02,
+        "土": 0.343,
+        "金": 0.276,
+        "水": 0.236
+      }
+    },
+    "wealth_15tier": {
+      "xueye": {
+        "low": 11,
+        "mid": 12,
+        "high": 13,
+        "label": "大富下",
+        "society": "正厅/上市高管",
+        "income_cny": "1000-3000万 / 亿级起",
+        "rationale": "D1 骨架 L12-L13 · 学业辅佐神煞 0 项 → 提 0 档"
+      },
+      "shiye": {
+        "low": 11,
+        "mid": 12,
+        "high": 13,
+        "label": "大富下",
+        "society": "正厅/上市高管",
+        "income_cny": "1000-3000万 / 亿级起",
+        "rationale": "D2 杨派官命取法=化杀生枭 (rank=1) 理论上限 L13 · 做功 3 层兑现差 1"
+      },
+      "hunyin": {
+        "low": 11,
+        "mid": 11,
+        "high": 13,
+        "label": "中富上",
+        "society": "副厅/上市中层",
+        "income_cny": "500-1000万 / 数千万",
+        "rationale": "D2 配偶宫+高派金舆等旁证 → 妻家档次约 L11-L13, 中位 L11（参考命主财富档次镜像偏低 1 档）"
+      },
+      "caifu": {
+        "low": 12,
+        "mid": 12,
+        "high": 13,
+        "label": "大富下",
+        "society": "正厅/上市高管",
+        "income_cny": "1000-3000万 / 亿级起",
+        "rationale": "D1 段派 wealth_ceiling=大富级·上 (映射 L12-L13) · 做功层数=3 (微调 +0)"
+      },
+      "guanming": {
+        "low": 9,
+        "mid": 12,
+        "high": 13,
+        "label": "大富下",
+        "society": "正厅/上市高管",
+        "income_cny": "1000-3000万 / 亿级起",
+        "rationale": "杨派官命第 1 取=化杀生枭 → 理论上限 L13, 做功 3 层兑现 L12"
+      },
+      "tier_table": [
+        {
+          "tier": 1,
+          "label": "极贫",
+          "society": "流民/乞讨",
+          "income_cny": "<1万"
+        },
+        {
+          "tier": 2,
+          "label": "贫寒",
+          "society": "长工/苦力",
+          "income_cny": "1-3万"
+        },
+        {
+          "tier": 3,
+          "label": "温饱",
+          "society": "小贩/散工",
+          "income_cny": "3-6万"
+        },
+        {
+          "tier": 4,
+          "label": "普工",
+          "society": "蓝领/低技工",
+          "income_cny": "6-10万"
+        },
+        {
+          "tier": 5,
+          "label": "工薪",
+          "society": "蓝领骨干/办事员",
+          "income_cny": "10-20万"
+        },
+        {
+          "tier": 6,
+          "label": "小康下",
+          "society": "白领基层/个体户",
+          "income_cny": "20-30万"
+        },
+        {
+          "tier": 7,
+          "label": "小康中",
+          "society": "普通公务员/国企科员",
+          "income_cny": "30-50万"
+        },
+        {
+          "tier": 8,
+          "label": "小康上",
+          "society": "科级/小老板/资深技术",
+          "income_cny": "50-100万"
+        },
+        {
+          "tier": 9,
+          "label": "中富下",
+          "society": "副处/民企中层",
+          "income_cny": "100-200万 / 千万级资产"
+        },
+        {
+          "tier": 10,
+          "label": "中富中",
+          "society": "正处/民企高管",
+          "income_cny": "200-500万 / 千万级"
+        },
+        {
+          "tier": 11,
+          "label": "中富上",
+          "society": "副厅/上市中层",
+          "income_cny": "500-1000万 / 数千万"
+        },
+        {
+          "tier": 12,
+          "label": "大富下",
+          "society": "正厅/上市高管",
+          "income_cny": "1000-3000万 / 亿级起"
+        },
+        {
+          "tier": 13,
+          "label": "大富中",
+          "society": "副部/产业头部",
+          "income_cny": "3000万-1亿 / 数亿"
+        },
+        {
+          "tier": 14,
+          "label": "大富上",
+          "society": "正部/巨头创始人",
+          "income_cny": "1-3亿 / 十亿级"
+        },
+        {
+          "tier": 15,
+          "label": "巨富",
+          "society": "国级/全球巨头",
+          "income_cny": ">3亿 / 百亿+"
+        }
+      ],
+      "tier_disclaimer": "15 层为 house-defined 标度（杨清娟盲派业内常用版本）。区间为结构性带宽，实际兑现需 known_facts 校验；命主可能因人生选择低于结构上限。"
+    },
+    "energy_consistent": true,
+    "energy_violations": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.902,
+      "posterior": 0.902,
+      "variance": 0.05,
+      "sample_n": 18
+    },
+    "evidence": [
+      {
+        "rule_id": "M2-Y-119",
+        "school": "杨",
+        "description": "第1步家里找财官",
+        "weight": 0.72
+      },
+      {
+        "rule_id": "M2-Y-019",
+        "school": "杨",
+        "description": "家里有先拿家里的",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "M2-Y-119",
+        "school": "杨",
+        "description": "第2步看财官出处",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-162",
+        "school": "杨",
+        "description": "寻根基",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "M2-Y-021",
+        "school": "杨",
+        "description": "体取财官层次排序",
+        "weight": 0.72
+      },
+      {
+        "rule_id": "M2-Y-120",
+        "school": "杨",
+        "description": "吃皇粮判定",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "M2-Y-121",
+        "school": "杨",
+        "description": "天地一气原则",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-035",
+        "school": "杨",
+        "description": "财富 7 等判定（上游 wealth_ceiling=大富级·上, 自然区间 rank∈[1,3]）",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-034",
+        "school": "杨",
+        "description": "开官杀库=亿级",
+        "weight": 0.85
+      },
+      {
+        "rule_id": "M2-Y-042",
+        "school": "杨",
+        "description": "化杀生枭=官命1层",
+        "weight": 0.8
+      },
+      {
+        "rule_id": "M2-Y-029",
+        "school": "杨",
+        "description": "比劫旺而不受伤暗引印",
+        "weight": 0.72
+      },
+      {
+        "rule_id": "M2-Y-032",
+        "school": "杨",
+        "description": "化敌为友最高境界=化杀生印",
+        "weight": 0.82
+      },
+      {
+        "rule_id": "M2-Y-042",
+        "school": "杨",
+        "description": "官命9取之化官生印",
+        "weight": 0.8
+      },
+      {
+        "rule_id": "M2-Y-033",
+        "school": "杨",
+        "description": "食神制杀=成就",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M2-Y-038",
+        "school": "杨",
+        "description": "婚姻看法三步：宫位婚宫寅多动: 被月支冲,与月支刑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-141",
+        "school": "杨",
+        "description": "结婚应期：配偶星['时支藏 乙(正官, 贴身度0.6)', '年支藏 甲(七杀, 贴身度0.5)']",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M2-Y-064",
+        "school": "杨",
+        "description": "早期大运激活配偶宫: ['大运3(癸亥, 28-37岁) 地支与婚宫寅六合']",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "M2-Y-024",
+        "school": "杨",
+        "description": "癸戊合化火[搅局]",
+        "weight": 0.5
+      }
+    ],
+    "debug_info": {
+      "wealth_ceiling_in": "大富级·上",
+      "layer_count_in": 3,
+      "muxing_qufa_in": "食伤",
+      "industry_pointers": [
+        "公门/国企",
+        "技术/服务"
+      ],
+      "marriage_window": [
+        22,
+        28
+      ]
+    }
+  },
+  "gate_results": [],
+  "support": {
+    "schema_version": "1.4.0",
+    "school": "高",
+    "case_id": "C-2026-021-癸亥庚申戊寅己未",
+    "shensha_supports": {
+      "general": [
+        {
+          "name": "天德贵人",
+          "palaces": [
+            "年柱"
+          ],
+          "contribution": "天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "boost": 0.04,
+          "tags": [
+            "逢凶化吉",
+            "贵人"
+          ]
+        },
+        {
+          "name": "太极贵人",
+          "palaces": [
+            "月柱",
+            "时柱"
+          ],
+          "contribution": "太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "boost": 0.02,
+          "tags": [
+            "玄学倾向"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天乙贵人 = 一生有贵人援助（在 月柱）",
+          "boost": 0.03,
+          "tags": [
+            "贵人"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天乙贵人 = 一生有贵人援助（在 月柱）",
+          "boost": 0.03,
+          "tags": [
+            "贵人"
+          ]
+        },
+        {
+          "name": "驿马",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "boost": 0.03,
+          "tags": [
+            "奔波",
+            "迁动"
+          ]
+        },
+        {
+          "name": "天德合",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "天德合 = 天德的合化形式（在 日柱）",
+          "boost": 0.04,
+          "tags": [
+            "逢凶化吉",
+            "贵人"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "天乙贵人 = 一生有贵人援助（在 时柱）",
+          "boost": 0.03,
+          "tags": [
+            "贵人"
+          ]
+        }
+      ],
+      "health": [
+        {
+          "name": "天德贵人",
+          "palaces": [
+            "年柱"
+          ],
+          "contribution": "天德 = 灾厄减轻（在 年柱）",
+          "boost": 0.03,
+          "tags": [
+            "逢凶化吉"
+          ]
+        },
+        {
+          "name": "羊刃",
+          "palaces": [
+            "年柱",
+            "月柱"
+          ],
+          "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月柱）",
+          "boost": 0.04,
+          "tags": [
+            "伤残风险",
+            "刑伤"
+          ]
+        },
+        {
+          "name": "童子煞",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "boost": 0.02,
+          "tags": [
+            "童子身"
+          ]
+        },
+        {
+          "name": "羊刃",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 日柱）",
+          "boost": 0.04,
+          "tags": [
+            "伤残风险",
+            "刑伤"
+          ]
+        },
+        {
+          "name": "天医",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "boost": 0.03,
+          "tags": [
+            "健康守护"
+          ]
+        }
+      ],
+      "career": [
+        {
+          "name": "羊刃",
+          "palaces": [
+            "年柱",
+            "月柱"
+          ],
+          "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 年柱,月柱）",
+          "boost": 0.03,
+          "tags": [
+            "武职",
+            "刚烈"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 月柱）",
+          "boost": 0.06,
+          "tags": [
+            "贵人扶持",
+            "提拔"
+          ]
+        },
+        {
+          "name": "文昌",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "文昌 = 利文职 / 文化产业（在 月柱）",
+          "boost": 0.02,
+          "tags": [
+            "文职"
+          ]
+        },
+        {
+          "name": "天厨",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "boost": 0.02,
+          "tags": [
+            "饮食业"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 月柱）",
+          "boost": 0.06,
+          "tags": [
+            "贵人扶持",
+            "提拔"
+          ]
+        },
+        {
+          "name": "驿马",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "驿马 = 工作奔波 / 调动 / 出差 / 外出多（在 月柱）",
+          "boost": 0.04,
+          "tags": [
+            "奔波",
+            "调动",
+            "外出",
+            "出差"
+          ]
+        },
+        {
+          "name": "羊刃",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 日柱）",
+          "boost": 0.03,
+          "tags": [
+            "武职",
+            "刚烈"
+          ]
+        },
+        {
+          "name": "天乙贵人",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 时柱）",
+          "boost": 0.06,
+          "tags": [
+            "贵人扶持",
+            "提拔"
+          ]
+        },
+        {
+          "name": "华盖",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "boost": 0.03,
+          "tags": [
+            "艺术",
+            "清贵",
+            "宗教"
+          ]
+        },
+        {
+          "name": "天医",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "天医 = 医疗 / 卫生职业首选（在 时柱）",
+          "boost": 0.04,
+          "tags": [
+            "医疗",
+            "卫生"
+          ]
+        }
+      ],
+      "marriage": [
+        {
+          "name": "羊刃",
+          "palaces": [
+            "年柱",
+            "月柱"
+          ],
+          "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 年柱,月柱）",
+          "boost": -0.03,
+          "tags": [
+            "刚烈"
+          ]
+        },
+        {
+          "name": "阴差阳错",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 日柱）",
+          "boost": -0.05,
+          "tags": [
+            "阴差阳错",
+            "婚姻不顺"
+          ]
+        },
+        {
+          "name": "童子煞",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "童子煞 = 婚姻早期波折 / 易二婚信号（在 日柱）",
+          "boost": -0.03,
+          "tags": [
+            "童子煞",
+            "婚姻波折"
+          ]
+        },
+        {
+          "name": "金舆",
+          "palaces": [
+            "日柱",
+            "时柱"
+          ],
+          "contribution": "金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "boost": 0.05,
+          "tags": [
+            "配偶贵气",
+            "豪车",
+            "富贵婚"
+          ]
+        },
+        {
+          "name": "羊刃",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 日柱）",
+          "boost": -0.03,
+          "tags": [
+            "刚烈"
+          ]
+        },
+        {
+          "name": "孤鸾煞",
+          "palaces": [
+            "日柱"
+          ],
+          "contribution": "孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 日柱）",
+          "boost": -0.04,
+          "tags": [
+            "孤独",
+            "迟婚"
+          ]
+        },
+        {
+          "name": "华盖",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "华盖独守 = 婚姻孤高 / 迟婚信号（轻微负向）（在 时柱）",
+          "boost": -0.03,
+          "tags": [
+            "孤高"
+          ]
+        }
+      ],
+      "wealth": [
+        {
+          "name": "天厨",
+          "palaces": [
+            "月柱"
+          ],
+          "contribution": "天厨 = 食禄丰足 / 饮食业适合（在 月柱）",
+          "boost": 0.03,
+          "tags": [
+            "食禄",
+            "饮食"
+          ]
+        },
+        {
+          "name": "金舆",
+          "palaces": [
+            "日柱",
+            "时柱"
+          ],
+          "contribution": "金舆 = 财富表象，主名下产权 / 大件资产（在 日柱,时柱）",
+          "boost": 0.04,
+          "tags": [
+            "豪车",
+            "财气"
+          ]
+        }
+      ],
+      "education": [
+        {
+          "name": "华盖",
+          "palaces": [
+            "时柱"
+          ],
+          "contribution": "华盖 = 清贵文化教育倾向（在 时柱）",
+          "boost": 0.03,
+          "tags": [
+            "清贵",
+            "文化"
+          ]
+        }
+      ]
+    },
+    "health_findings": [
+      {
+        "organ": "幼年体质",
+        "risk_level": {
+          "ordinal": "弱",
+          "score": 0.2
+        },
+        "risk_years": [],
+        "rationale": "童子煞 = 童子身，主幼年体弱多病信号",
+        "evidence": [
+          {
+            "rule_id": "GP-BD-12",
+            "school": "高",
+            "description": "童子煞 = 幼年体弱",
+            "weight": 0.3
+          }
+        ]
+      }
+    ],
+    "ciguan_xuetang": {
+      "has_ciguan": false,
+      "has_xuetang": true,
+      "has_wenchang": false,
+      "has_taiyi": true,
+      "contribution": "学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, capped to 0.100",
+      "boost": 0.1
+    },
+    "mingong_zhairi": null,
+    "confidence": {
+      "star": 4,
+      "percent": 0.8,
+      "posterior": 0.8,
+      "variance": 0.08,
+      "sample_n": 34
+    },
+    "evidence": [
+      {
+        "rule_id": "GP-BD-05",
+        "school": "高",
+        "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+        "weight": 0.2
+      },
+      {
+        "rule_id": "GP-BD-03",
+        "school": "高",
+        "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+        "weight": 0.1
+      },
+      {
+        "rule_id": "GP-BD-02",
+        "school": "高",
+        "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+        "weight": 0.15
+      },
+      {
+        "rule_id": "GP-CH-01",
+        "school": "高",
+        "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+        "weight": 0.15
+      },
+      {
+        "rule_id": "GP-BD-05b",
+        "school": "高",
+        "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+        "weight": 0.2
+      },
+      {
+        "rule_id": "GP-CH-08-1",
+        "school": "高",
+        "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+        "weight": 0.2
+      },
+      {
+        "rule_id": "GP-BD-12",
+        "school": "高",
+        "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+        "weight": 0.1
+      },
+      {
+        "rule_id": "GP-CS-32",
+        "school": "高",
+        "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+        "weight": 0.15
+      },
+      {
+        "rule_id": "GP-XL-03",
+        "school": "高",
+        "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+        "weight": 0.1
+      },
+      {
+        "rule_id": "GP-BD-14",
+        "school": "高",
+        "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+        "weight": 0.1
+      },
+      {
+        "rule_id": "GP-BD-06",
+        "school": "高",
+        "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+        "weight": 0.15
+      },
+      {
+        "rule_id": "GP-BD-07",
+        "school": "高",
+        "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+        "weight": 0.25
+      },
+      {
+        "rule_id": "GP-BD-01",
+        "school": "高",
+        "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+        "weight": 0.25
+      },
+      {
+        "rule_id": "GP-CH-21",
+        "school": "高",
+        "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+        "weight": 0.2
+      },
+      {
+        "rule_id": "GP-XL-MIX",
+        "school": "高",
+        "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+        "weight": 0.5
+      }
+    ],
+    "upstream_energy_hash": "65b92c2e782042ab",
+    "upstream_picture_hash": "471a4d841bd68c08",
+    "upstream_gate_hash": "",
+    "debug_info": {
+      "n_shensha_total": 32,
+      "n_domains_covered": 6,
+      "domains_covered": [
+        "career",
+        "education",
+        "general",
+        "health",
+        "marriage",
+        "wealth"
+      ],
+      "has_ciguan_xuetang": true,
+      "n_health_findings": 1,
+      "shensha_input_size": 27
+    }
+  },
+  "final_conclusions": [
+    {
+      "conclusion_id": "CC-D1-001",
+      "statement": "格局做功 3 层，富贵层级 大富级·上",
+      "domain": "格局",
+      "layer": "独门",
+      "contributing_schools": [
+        "段"
+      ],
+      "confidence": {
+        "star": 5,
+        "percent": 0.95,
+        "posterior": 0.95,
+        "variance": 0.05,
+        "sample_n": 9
+      },
+      "evidence": [
+        {
+          "rule_id": "M1-D-005..008",
+          "school": "段",
+          "description": "体用判定：体 5 字，用 3 字",
+          "weight": 0.75
+        },
+        {
+          "rule_id": "M1-D-122",
+          "school": "段",
+          "description": "势/党：双党·土生金（合计 62%） = 段派 比劫生食伤党",
+          "weight": 0.7
+        },
+        {
+          "rule_id": "M1-D-009",
+          "school": "段",
+          "description": "制：月支支申 ↔ 日支支寅 之 冲 → 作用于用神申(食伤)",
+          "weight": 1.0
+        },
+        {
+          "rule_id": "M1-D-009",
+          "school": "段",
+          "description": "制：年支支亥 ↔ 月支支申 之 穿 → 作用于用神亥(财)",
+          "weight": 0.9
+        },
+        {
+          "rule_id": "M1-D-011",
+          "school": "段",
+          "description": "生泄：月柱庚(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+          "weight": 0.65
+        },
+        {
+          "rule_id": "M1-D-011",
+          "school": "段",
+          "description": "生泄：月支申(食伤,金) → 生 → 年柱癸(财,水) [食伤生财]",
+          "weight": 0.65
+        },
+        {
+          "rule_id": "M1-D-011",
+          "school": "段",
+          "description": "生泄：年柱癸(财,水) → 生 → 日支寅(官杀,木) [财生官]",
+          "weight": 0.65
+        },
+        {
+          "rule_id": "M1-D-199",
+          "school": "段",
+          "description": "母星取法（段派独门）：食伤（决策 J）",
+          "weight": 0.8
+        },
+        {
+          "rule_id": "M1-D-171",
+          "school": "段",
+          "description": "过河拆桥结构候选 = 食生财 + 财生官 三连环",
+          "weight": 0.75
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D2-001",
+      "statement": "初婚最佳窗口 22-28 岁",
+      "domain": "婚姻",
+      "layer": "独门",
+      "contributing_schools": [
+        "杨"
+      ],
+      "confidence": {
+        "star": 5,
+        "percent": 0.902,
+        "posterior": 0.902,
+        "variance": 0.05,
+        "sample_n": 18
+      },
+      "evidence": [
+        {
+          "rule_id": "M2-Y-038",
+          "school": "杨",
+          "description": "婚姻看法三步：宫位婚宫寅多动: 被月支冲,与月支刑",
+          "weight": 0.7
+        },
+        {
+          "rule_id": "M2-Y-141",
+          "school": "杨",
+          "description": "结婚应期：配偶星['时支藏 乙(正官, 贴身度0.6)', '年支藏 甲(七杀, 贴身度0.5)']",
+          "weight": 0.78
+        },
+        {
+          "rule_id": "M2-Y-064",
+          "school": "杨",
+          "description": "早期大运激活配偶宫: ['大运3(癸亥, 28-37岁) 地支与婚宫寅六合']",
+          "weight": 0.75
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D2-002",
+      "statement": "行业方向：公门/国企、技术/服务",
+      "domain": "事业",
+      "layer": "互补",
+      "contributing_schools": [
+        "杨",
+        "段"
+      ],
+      "confidence": {
+        "star": 5,
+        "percent": 0.902,
+        "posterior": 0.902,
+        "variance": 0.05,
+        "sample_n": 18
+      },
+      "evidence": [
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第1步家里找财官",
+          "weight": 0.72
+        },
+        {
+          "rule_id": "M2-Y-019",
+          "school": "杨",
+          "description": "家里有先拿家里的",
+          "weight": 0.65
+        },
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第2步看财官出处",
+          "weight": 0.7
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D4-GENERA",
+      "statement": "[旁证]general域 boost +0.20",
+      "domain": "general",
+      "layer": "互补",
+      "contributing_schools": [
+        "高"
+      ],
+      "confidence": {
+        "star": 4,
+        "percent": 0.8,
+        "posterior": 0.8,
+        "variance": 0.08,
+        "sample_n": 34
+      },
+      "evidence": [
+        {
+          "rule_id": "GP-BD-05",
+          "school": "高",
+          "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-03",
+          "school": "高",
+          "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-02",
+          "school": "高",
+          "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-CH-01",
+          "school": "高",
+          "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-05b",
+          "school": "高",
+          "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-CH-08-1",
+          "school": "高",
+          "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-CS-32",
+          "school": "高",
+          "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-XL-03",
+          "school": "高",
+          "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-14",
+          "school": "高",
+          "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-06",
+          "school": "高",
+          "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-07",
+          "school": "高",
+          "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-BD-01",
+          "school": "高",
+          "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-CH-21",
+          "school": "高",
+          "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-XL-MIX",
+          "school": "高",
+          "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+          "weight": 0.5
+        },
+        {
+          "rule_id": "GP-GE-天德贵人",
+          "school": "高",
+          "description": "天德贵人在年柱→天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.04
+        },
+        {
+          "rule_id": "GP-GE-太极贵人",
+          "school": "高",
+          "description": "太极贵人在月柱,时柱→太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.02
+        },
+        {
+          "rule_id": "GP-GE-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在月柱→天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-GE-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在月柱→天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-GE-驿马",
+          "school": "高",
+          "description": "驿马在月柱→驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-GE-天德合",
+          "school": "高",
+          "description": "天德合在日柱→天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.04
+        },
+        {
+          "rule_id": "GP-GE-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在时柱→天乙贵人 = 一生有贵人援助（在 时柱）",
+          "weight": 0.03
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D4-HEALTH",
+      "statement": "[旁证]health域 boost +0.16",
+      "domain": "health",
+      "layer": "互补",
+      "contributing_schools": [
+        "高"
+      ],
+      "confidence": {
+        "star": 4,
+        "percent": 0.8,
+        "posterior": 0.8,
+        "variance": 0.08,
+        "sample_n": 34
+      },
+      "evidence": [
+        {
+          "rule_id": "GP-BD-05",
+          "school": "高",
+          "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-03",
+          "school": "高",
+          "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-02",
+          "school": "高",
+          "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-CH-01",
+          "school": "高",
+          "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-05b",
+          "school": "高",
+          "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-CH-08-1",
+          "school": "高",
+          "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-CS-32",
+          "school": "高",
+          "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-XL-03",
+          "school": "高",
+          "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-14",
+          "school": "高",
+          "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-06",
+          "school": "高",
+          "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-07",
+          "school": "高",
+          "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-BD-01",
+          "school": "高",
+          "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-CH-21",
+          "school": "高",
+          "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-XL-MIX",
+          "school": "高",
+          "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+          "weight": 0.5
+        },
+        {
+          "rule_id": "GP-HE-天德贵人",
+          "school": "高",
+          "description": "天德贵人在年柱→天德 = 灾厄减轻（在 年柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-HE-羊刃",
+          "school": "高",
+          "description": "羊刃在年柱,月柱→羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月柱）",
+          "weight": 0.04
+        },
+        {
+          "rule_id": "GP-HE-童子煞",
+          "school": "高",
+          "description": "童子煞在日柱→童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.02
+        },
+        {
+          "rule_id": "GP-HE-羊刃",
+          "school": "高",
+          "description": "羊刃在日柱→羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 日柱）",
+          "weight": 0.04
+        },
+        {
+          "rule_id": "GP-HE-天医",
+          "school": "高",
+          "description": "天医在时柱→天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.03
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D4-CAREER",
+      "statement": "[旁证]career域 boost +0.20",
+      "domain": "career",
+      "layer": "互补",
+      "contributing_schools": [
+        "高"
+      ],
+      "confidence": {
+        "star": 4,
+        "percent": 0.8,
+        "posterior": 0.8,
+        "variance": 0.08,
+        "sample_n": 34
+      },
+      "evidence": [
+        {
+          "rule_id": "GP-BD-05",
+          "school": "高",
+          "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-03",
+          "school": "高",
+          "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-02",
+          "school": "高",
+          "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-CH-01",
+          "school": "高",
+          "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-05b",
+          "school": "高",
+          "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-CH-08-1",
+          "school": "高",
+          "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-CS-32",
+          "school": "高",
+          "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-XL-03",
+          "school": "高",
+          "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-14",
+          "school": "高",
+          "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-06",
+          "school": "高",
+          "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-07",
+          "school": "高",
+          "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-BD-01",
+          "school": "高",
+          "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-CH-21",
+          "school": "高",
+          "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-XL-MIX",
+          "school": "高",
+          "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+          "weight": 0.5
+        },
+        {
+          "rule_id": "GP-CA-羊刃",
+          "school": "高",
+          "description": "羊刃在年柱,月柱→羊刃 = 武职 / 公检法 / 刚烈职业适合（在 年柱,月柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-CA-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在月柱→天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 月柱）",
+          "weight": 0.06
+        },
+        {
+          "rule_id": "GP-CA-文昌",
+          "school": "高",
+          "description": "文昌在月柱→文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.02
+        },
+        {
+          "rule_id": "GP-CA-天厨",
+          "school": "高",
+          "description": "天厨在月柱→天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.02
+        },
+        {
+          "rule_id": "GP-CA-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在月柱→天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 月柱）",
+          "weight": 0.06
+        },
+        {
+          "rule_id": "GP-CA-驿马",
+          "school": "高",
+          "description": "驿马在月柱→驿马 = 工作奔波 / 调动 / 出差 / 外出多（在 月柱）",
+          "weight": 0.04
+        },
+        {
+          "rule_id": "GP-CA-羊刃",
+          "school": "高",
+          "description": "羊刃在日柱→羊刃 = 武职 / 公检法 / 刚烈职业适合（在 日柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-CA-天乙贵人",
+          "school": "高",
+          "description": "天乙贵人在时柱→天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 时柱）",
+          "weight": 0.06
+        },
+        {
+          "rule_id": "GP-CA-华盖",
+          "school": "高",
+          "description": "华盖在时柱→华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-CA-天医",
+          "school": "高",
+          "description": "天医在时柱→天医 = 医疗 / 卫生职业首选（在 时柱）",
+          "weight": 0.04
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D4-WEALTH",
+      "statement": "[旁证]wealth域 boost +0.07",
+      "domain": "wealth",
+      "layer": "互补",
+      "contributing_schools": [
+        "高"
+      ],
+      "confidence": {
+        "star": 4,
+        "percent": 0.8,
+        "posterior": 0.8,
+        "variance": 0.08,
+        "sample_n": 34
+      },
+      "evidence": [
+        {
+          "rule_id": "GP-BD-05",
+          "school": "高",
+          "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-03",
+          "school": "高",
+          "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-02",
+          "school": "高",
+          "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-CH-01",
+          "school": "高",
+          "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-05b",
+          "school": "高",
+          "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-CH-08-1",
+          "school": "高",
+          "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-CS-32",
+          "school": "高",
+          "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-XL-03",
+          "school": "高",
+          "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-14",
+          "school": "高",
+          "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-06",
+          "school": "高",
+          "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-07",
+          "school": "高",
+          "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-BD-01",
+          "school": "高",
+          "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-CH-21",
+          "school": "高",
+          "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-XL-MIX",
+          "school": "高",
+          "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+          "weight": 0.5
+        },
+        {
+          "rule_id": "GP-WE-天厨",
+          "school": "高",
+          "description": "天厨在月柱→天厨 = 食禄丰足 / 饮食业适合（在 月柱）",
+          "weight": 0.03
+        },
+        {
+          "rule_id": "GP-WE-金舆",
+          "school": "高",
+          "description": "金舆在日柱,时柱→金舆 = 财富表象，主名下产权 / 大件资产（在 日柱,时柱）",
+          "weight": 0.04
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D4-EDUCAT",
+      "statement": "[旁证]education域 boost +0.13",
+      "domain": "education",
+      "layer": "互补",
+      "contributing_schools": [
+        "高"
+      ],
+      "confidence": {
+        "star": 4,
+        "percent": 0.8,
+        "posterior": 0.8,
+        "variance": 0.08,
+        "sample_n": 34
+      },
+      "evidence": [
+        {
+          "rule_id": "GP-BD-05",
+          "school": "高",
+          "description": "天德贵人 旁证 [general]: 天德 = 一生有天德扶持 / 逢凶化吉（在 年柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-03",
+          "school": "高",
+          "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 月柱,时柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-02",
+          "school": "高",
+          "description": "天乙贵人 旁证 [general]: 天乙贵人 = 一生有贵人援助（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-CH-01",
+          "school": "高",
+          "description": "驿马 旁证 [general]: 驿马 = 一生迁动多 / 居处不定（在 月柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-05b",
+          "school": "高",
+          "description": "天德合 旁证 [general]: 天德合 = 天德的合化形式（在 日柱）",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-CH-08-1",
+          "school": "高",
+          "description": "羊刃 旁证 [health]: 羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 年柱,月",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 旁证 [health]: 童子煞 = 童子身，幼年体弱信号（在 日柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-CS-32",
+          "school": "高",
+          "description": "天医 旁证 [health]: 天医 = 健康守护 / 病时易遇良医（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-XL-03",
+          "school": "高",
+          "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-14",
+          "school": "高",
+          "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+          "weight": 0.1
+        },
+        {
+          "rule_id": "GP-BD-06",
+          "school": "高",
+          "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 时柱）",
+          "weight": 0.15
+        },
+        {
+          "rule_id": "GP-BD-07",
+          "school": "高",
+          "description": "阴差阳错 旁证 [marriage]: 阴差阳错日 = 婚姻一生不顺铁律（D.9-A，可降级为小杂音 D.9-D）（在 ",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-BD-01",
+          "school": "高",
+          "description": "金舆 旁证 [marriage]: 金舆 = 富贵神煞，配偶有车有产 / 婚姻富贵跃升（在 日柱,时柱）",
+          "weight": 0.25
+        },
+        {
+          "rule_id": "GP-CH-21",
+          "school": "高",
+          "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+          "weight": 0.2
+        },
+        {
+          "rule_id": "GP-XL-MIX",
+          "school": "高",
+          "description": "词馆/学堂综合: 学业辅佐神煞：学堂+0.05/天乙×1+0.04/太极+0.03 → 累加 0.120, cappe",
+          "weight": 0.5
+        },
+        {
+          "rule_id": "GP-ED-华盖",
+          "school": "高",
+          "description": "华盖在时柱→华盖 = 清贵文化教育倾向（在 时柱）",
+          "weight": 0.03
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": ""
+    },
+    {
+      "conclusion_id": "CC-D2-003",
+      "statement": "行业路径耦合：P(体制内)=0.85，财富域采用 power_hierarchy 框架",
+      "domain": "财运",
+      "layer": "互补",
+      "contributing_schools": [
+        "杨",
+        "段"
+      ],
+      "confidence": {
+        "star": 5,
+        "percent": 0.902,
+        "posterior": 0.902,
+        "variance": 0.05,
+        "sample_n": 18
+      },
+      "evidence": [
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第1步家里找财官",
+          "weight": 0.72
+        },
+        {
+          "rule_id": "M2-Y-019",
+          "school": "杨",
+          "description": "家里有先拿家里的",
+          "weight": 0.65
+        },
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第2步看财官出处",
+          "weight": 0.7
+        }
+      ],
+      "yingqi_year": null,
+      "falsifiable": "若命主实际长期走纯市场/民营路径，则该耦合框架需降级为 market_wealth"
+    }
+  ],
+  "conflicts": [],
+  "yingqi_table": [],
+  "overall_confidence": {
+    "star": 4,
+    "percent": 0.851,
+    "posterior": 0.851,
+    "variance": 0.05,
+    "sample_n": 9
+  },
+  "layer_summary": {
+    "共识": 0,
+    "互补": 7,
+    "独门": 2,
+    "冲突仲裁": 0
+  },
+  "hash_chain_valid": true,
+  "hash_chain_notes": [],
+  "retrospective": {
+    "case_id": "C-2026-021-癸亥庚申戊寅己未",
+    "birth_year": 1983,
+    "current_year": 2026,
+    "current_age": 43,
+    "current_dayun": "甲子",
+    "segments": [
+      {
+        "seq": 1,
+        "ganzhi": "辛酉",
+        "age_range": [
+          8,
+          17
+        ],
+        "year_range": [
+          1990,
+          2000
+        ],
+        "feature": "辛食伤 + 酉支气",
+        "typical_domains": [
+          "事业",
+          "子女"
+        ],
+        "flow_years": [
+          {
+            "year": 1990,
+            "age": 7,
+            "liunian": "庚午",
+            "dayun": "辛酉",
+            "relations": [],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 1991,
+            "age": 8,
+            "liunian": "辛未",
+            "dayun": "辛酉",
+            "relations": [
+              "流年伏吟时支(未)"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▽",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 1992,
+            "age": 9,
+            "liunian": "壬申",
+            "dayun": "辛酉",
+            "relations": [
+              "流年支冲日支寅",
+              "流年支穿年支亥",
+              "流年支三刑日支寅",
+              "流年伏吟月支(申)"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "▲",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 1993,
+            "age": 10,
+            "liunian": "癸酉",
+            "dayun": "辛酉",
+            "relations": [
+              "流年干合日干戊化('火', '合绊')",
+              "流年支自刑大运支酉",
+              "流年伏吟大运支(酉)"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "●",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 1994,
+            "age": 11,
+            "liunian": "甲戌",
+            "dayun": "辛酉",
+            "relations": [
+              "流年干合时干己化('土', '合绊')",
+              "流年支穿大运支酉",
+              "流年支三刑时支未"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 1995,
+            "age": 12,
+            "liunian": "乙亥",
+            "dayun": "辛酉",
+            "relations": [
+              "流年干合月干庚化('金', '合绊')",
+              "流年支六合日支寅化木",
+              "流年支穿月支申",
+              "流年支自刑年支亥"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 1996,
+            "age": 13,
+            "liunian": "丙子",
+            "dayun": "辛酉",
+            "relations": [
+              "流年干合大运干辛化('水', '合绊')",
+              "流年支穿时支未"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 1997,
+            "age": 14,
+            "liunian": "丁丑",
+            "dayun": "辛酉",
+            "relations": [
+              "流年支冲时支未",
+              "流年支三刑时支未"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 1998,
+            "age": 15,
+            "liunian": "戊寅",
+            "dayun": "辛酉",
+            "relations": [
+              "流年干合年干癸化('火', '合绊')",
+              "流年支冲月支申",
+              "流年支六合年支亥化木",
+              "流年支三刑月支申",
+              "流年伏吟日支(寅)"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          },
+          {
+            "year": 1999,
+            "age": 16,
+            "liunian": "己卯",
+            "dayun": "辛酉",
+            "relations": [
+              "流年支冲大运支酉"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          }
+        ]
+      },
+      {
+        "seq": 2,
+        "ganzhi": "壬戌",
+        "age_range": [
+          18,
+          27
+        ],
+        "year_range": [
+          2000,
+          2010
+        ],
+        "feature": "壬财 + 戌支气",
+        "typical_domains": [
+          "财富",
+          "婚姻"
+        ],
+        "flow_years": [
+          {
+            "year": 2000,
+            "age": 17,
+            "liunian": "庚辰",
+            "dayun": "壬戌",
+            "relations": [
+              "流年支冲大运支戌"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2001,
+            "age": 18,
+            "liunian": "辛巳",
+            "dayun": "壬戌",
+            "relations": [
+              "流年支冲年支亥",
+              "流年支六合月支申化水",
+              "流年支穿日支寅",
+              "流年支三刑月支申",
+              "流年支三刑日支寅"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2002,
+            "age": 19,
+            "liunian": "壬午",
+            "dayun": "壬戌",
+            "relations": [],
+            "main_energy": "财动 / 婚动",
+            "strength": "●",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2003,
+            "age": 20,
+            "liunian": "癸未",
+            "dayun": "壬戌",
+            "relations": [
+              "流年干合日干戊化('火', '合绊')",
+              "流年支三刑大运支戌",
+              "流年伏吟时支(未)"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "●",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2004,
+            "age": 21,
+            "liunian": "甲申",
+            "dayun": "壬戌",
+            "relations": [
+              "流年干合时干己化('土', '合绊')",
+              "流年支冲日支寅",
+              "流年支穿年支亥",
+              "流年支三刑日支寅",
+              "流年伏吟月支(申)"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2005,
+            "age": 22,
+            "liunian": "乙酉",
+            "dayun": "壬戌",
+            "relations": [
+              "流年干合月干庚化('金', '合绊')",
+              "流年支穿大运支戌"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2006,
+            "age": 23,
+            "liunian": "丙戌",
+            "dayun": "壬戌",
+            "relations": [
+              "流年支三刑时支未",
+              "流年伏吟大运支(戌)"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "▽",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 2007,
+            "age": 24,
+            "liunian": "丁亥",
+            "dayun": "壬戌",
+            "relations": [
+              "流年干合大运干壬化('木', '合绊')",
+              "流年支六合日支寅化木",
+              "流年支穿月支申",
+              "流年支自刑年支亥"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 2008,
+            "age": 25,
+            "liunian": "戊子",
+            "dayun": "壬戌",
+            "relations": [
+              "流年干合年干癸化('火', '合绊')",
+              "流年支穿时支未"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          },
+          {
+            "year": 2009,
+            "age": 26,
+            "liunian": "己丑",
+            "dayun": "壬戌",
+            "relations": [
+              "流年支冲时支未",
+              "流年支三刑时支未",
+              "流年支三刑大运支戌"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          }
+        ]
+      },
+      {
+        "seq": 3,
+        "ganzhi": "癸亥",
+        "age_range": [
+          28,
+          37
+        ],
+        "year_range": [
+          2010,
+          2020
+        ],
+        "feature": "癸财 + 亥支气",
+        "typical_domains": [
+          "财富",
+          "婚姻"
+        ],
+        "flow_years": [
+          {
+            "year": 2010,
+            "age": 27,
+            "liunian": "庚寅",
+            "dayun": "癸亥",
+            "relations": [
+              "流年支冲月支申",
+              "流年支六合年支亥化木",
+              "流年支六合大运支亥化木",
+              "流年支三刑月支申",
+              "流年伏吟日支(寅)"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2011,
+            "age": 28,
+            "liunian": "辛卯",
+            "dayun": "癸亥",
+            "relations": [],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2012,
+            "age": 29,
+            "liunian": "壬辰",
+            "dayun": "癸亥",
+            "relations": [],
+            "main_energy": "财动 / 婚动",
+            "strength": "●",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2013,
+            "age": 30,
+            "liunian": "癸巳",
+            "dayun": "癸亥",
+            "relations": [
+              "流年干合日干戊化('火', '合绊')",
+              "流年支冲年支亥",
+              "流年支冲大运支亥",
+              "流年支六合月支申化水",
+              "流年支穿日支寅",
+              "流年支三刑月支申",
+              "流年支三刑日支寅"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "▲",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2014,
+            "age": 31,
+            "liunian": "甲午",
+            "dayun": "癸亥",
+            "relations": [
+              "流年干合时干己化('土', '合绊')"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2015,
+            "age": 32,
+            "liunian": "乙未",
+            "dayun": "癸亥",
+            "relations": [
+              "流年干合月干庚化('金', '合绊')",
+              "流年伏吟时支(未)"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2016,
+            "age": 33,
+            "liunian": "丙申",
+            "dayun": "癸亥",
+            "relations": [
+              "流年支冲日支寅",
+              "流年支穿年支亥",
+              "流年支穿大运支亥",
+              "流年支三刑日支寅",
+              "流年伏吟月支(申)"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 2017,
+            "age": 34,
+            "liunian": "丁酉",
+            "dayun": "癸亥",
+            "relations": [],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          },
+          {
+            "year": 2018,
+            "age": 35,
+            "liunian": "戊戌",
+            "dayun": "癸亥",
+            "relations": [
+              "流年干合年干癸化('火', '合绊')",
+              "流年干合大运干癸化('火', '合绊')",
+              "流年支三刑时支未"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          },
+          {
+            "year": 2019,
+            "age": 36,
+            "liunian": "己亥",
+            "dayun": "癸亥",
+            "relations": [
+              "流年支六合日支寅化木",
+              "流年支穿月支申",
+              "流年支自刑年支亥",
+              "流年支自刑大运支亥",
+              "流年伏吟大运支(亥)"
+            ],
+            "main_energy": "同业竞争 / 同辈互动",
+            "strength": "●",
+            "domains": [
+              "事业",
+              "家庭"
+            ]
+          }
+        ]
+      },
+      {
+        "seq": 4,
+        "ganzhi": "甲子",
+        "age_range": [
+          38,
+          47
+        ],
+        "year_range": [
+          2020,
+          2030
+        ],
+        "feature": "甲官杀 + 子支气",
+        "typical_domains": [
+          "事业",
+          "健康"
+        ],
+        "flow_years": [
+          {
+            "year": 2020,
+            "age": 37,
+            "liunian": "庚子",
+            "dayun": "甲子",
+            "relations": [
+              "流年支穿时支未",
+              "流年伏吟大运支(子)"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▽",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2021,
+            "age": 38,
+            "liunian": "辛丑",
+            "dayun": "甲子",
+            "relations": [
+              "流年支冲时支未",
+              "流年支六合大运支子化土",
+              "流年支三刑时支未"
+            ],
+            "main_energy": "技术产出 / 子女 / 表达",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "财富"
+            ]
+          },
+          {
+            "year": 2022,
+            "age": 39,
+            "liunian": "壬寅",
+            "dayun": "甲子",
+            "relations": [
+              "流年支冲月支申",
+              "流年支六合年支亥化木",
+              "流年支三刑月支申",
+              "流年伏吟日支(寅)"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "▲",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2023,
+            "age": 40,
+            "liunian": "癸卯",
+            "dayun": "甲子",
+            "relations": [
+              "流年干合日干戊化('火', '合绊')",
+              "流年支互刑大运支子"
+            ],
+            "main_energy": "财动 / 婚动",
+            "strength": "●",
+            "domains": [
+              "财富",
+              "婚姻"
+            ]
+          },
+          {
+            "year": 2024,
+            "age": 41,
+            "liunian": "甲辰",
+            "dayun": "甲子",
+            "relations": [
+              "流年干合时干己化('土', '合绊')"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2025,
+            "age": 42,
+            "liunian": "乙巳",
+            "dayun": "甲子",
+            "relations": [
+              "流年干合月干庚化('金', '合绊')",
+              "流年支冲年支亥",
+              "流年支六合月支申化水",
+              "流年支穿日支寅",
+              "流年支三刑月支申",
+              "流年支三刑日支寅"
+            ],
+            "main_energy": "工作变动 / 压力",
+            "strength": "▲",
+            "domains": [
+              "事业",
+              "健康"
+            ]
+          },
+          {
+            "year": 2026,
+            "age": 43,
+            "liunian": "丙午",
+            "dayun": "甲子",
+            "relations": [
+              "流年支冲大运支子"
+            ],
+            "main_energy": "学问 / 文书 / 长辈",
+            "strength": "●",
+            "domains": [
+              "学业",
+              "家庭",
+              "六亲"
+            ]
+          }
+        ]
+      }
+    ],
+    "note": "本模块输出为结构性力量场（哪一年发生什么类型的能量碰撞），不构成应期铁断。应期铁断需 D3 三层 gate 激活（依赖 known_facts）。"
+  }
+}
