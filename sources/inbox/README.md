@@ -90,10 +90,32 @@ python -m tools.materials_intake --smoke
 ## 四、扩展点（新增派别）
 
 本收件箱默认复用 [`tools/rule_lifecycle.py`](../../tools/rule_lifecycle.py) 的
-`SCHOOL_DIR_MAP` / `SCHOOL_TO_CN`（高/段/杨/任）。新增第五派需要：
+`SCHOOL_DIR_MAP` / `SCHOOL_TO_CN`（高/段/杨/任 + 预留一/预留二）。
+
+### 已预留的 2 个流派入口
+
+| 占位标识 | 目录名 | ID 前缀 | 状态 |
+|---|---|---|---|
+| 预留一 | `ext1` | `E` | 🟡 待启用 — 确定派名后改此行 + 下列 3 处 |
+| 预留二 | `ext2` | `F` | 🟡 待启用 — 同上 |
+
+目录已建好（`sources/ext1/`、`theory/ext1/`、`theory/raw/ext1/extracted/` 及 ext2 同理），
+front-matter 写 `school: ext1`（或 `school: 预留一`）即可被工具识别并归档。
+
+**启用步骤（把占位改为真实派名）**：
+
+1. `tools/rule_lifecycle.py` — 把 `"预留一": "ext1"` / `SCHOOL_TO_CN["ext1"]` 改为真实中文派名；
+2. `theory/SCHEMA.md` §三 — 把 `E | 预留一` 行改为真实派名全称；
+3. `tools/materials_intake.py` — 把 `SCHOOL_PREFIX["ext1"]` 旁注释改为真实派名（代码无需动，值 `E` 仍有效）；
+4. 重命名目录（可选，若想把 `ext1` 改成拼音缩写，如 `li`）。
+
+### 新增第 7+ 派（超出预留）
+
+若需增加更多派别（超出已预留的 2 个），需要：
 
 1. 在 `SCHOOL_DIR_MAP` / `SCHOOL_TO_CN` 注册派别标识与目录名；
 2. 在 [`theory/SCHEMA.md`](../../theory/SCHEMA.md) 的派别字母前缀表登记 ID 前缀；
-3. 在 `sources/{new_school}/` 与 `theory/{new_school}/`、`theory/raw/{new_school}/` 建目录。
+3. 在 `sources/{new}/`、`theory/{new}/`、`theory/raw/{new}/extracted/` 建目录；
+4. 在 `tools/materials_intake.py` 的 `SCHOOL_PREFIX` 同步新前缀。
 
 完成上述后，本工具即可识别新派别教材，跨派映射与交叉核验自动纳入新派。

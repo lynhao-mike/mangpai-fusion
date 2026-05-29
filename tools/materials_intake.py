@@ -55,11 +55,21 @@ except Exception:  # noqa: BLE001
     SCHOOL_DIR_MAP = {
         "段": "duan", "杨": "yang", "高": "gao", "任": "ren",
         "duan": "duan", "yang": "yang", "gao": "gao", "ren": "ren",
+        # 预留流派
+        "预留一": "ext1", "ext1": "ext1",
+        "预留二": "ext2", "ext2": "ext2",
     }
-    SCHOOL_TO_CN = {"duan": "段", "yang": "杨", "gao": "高", "ren": "任"}
+    SCHOOL_TO_CN = {
+        "duan": "段", "yang": "杨", "gao": "高", "ren": "任",
+        "ext1": "预留一", "ext2": "预留二",
+    }
 
 # 派别目录 → 规律 ID 字母前缀（见 theory/SCHEMA.md 派别字母前缀表）
-SCHOOL_PREFIX: dict[str, str] = {"gao": "G", "duan": "D", "yang": "Y", "ren": "R"}
+SCHOOL_PREFIX: dict[str, str] = {
+    "gao": "G", "duan": "D", "yang": "Y", "ren": "R",
+    # ── 预留流派（启用时改为真实派名/前缀）─────────────────────
+    "ext1": "E", "ext2": "F",
+}
 
 
 # ============================================================
