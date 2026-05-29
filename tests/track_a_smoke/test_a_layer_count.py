@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from engine import FINDINGS_SCHEMA_VERSION
 from engine.energy.evaluator import evaluate_energy
 from tests.track_a_smoke._fixtures import make_parsed_input
 
@@ -154,7 +155,7 @@ class TestEnergyFindingsContract(unittest.TestCase):
         self.assertIn("级·", ef.wealth_ceiling)
         self.assertIn(ef.muxing_qufa, ("禄", "食伤", "比劫", "印"))
         self.assertEqual(ef.school, "段")
-        self.assertEqual(ef.schema_version, "1.2.0")
+        self.assertEqual(ef.schema_version, FINDINGS_SCHEMA_VERSION)
 
         # confidence
         self.assertIn(ef.confidence.star, (1, 2, 3, 4, 5))

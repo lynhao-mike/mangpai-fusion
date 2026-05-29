@@ -208,7 +208,7 @@ def test_F_report_structure(sample_report):
         "## 七、命主画像版",
         "[AI-polish]",
         "归档信息",
-        "mangpai-fusion v1.2",
+        "mangpai-fusion v1.3",
     ]
     for marker in required:
         assert marker in sample_report, f"报告缺必要段落标记: {marker!r}"

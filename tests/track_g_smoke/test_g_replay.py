@@ -173,10 +173,11 @@ class TrackGReplayG001(unittest.TestCase):
         )
 
         # 8. status 检查
-        # 旧 "promoted" 自动迁移为 "confirmed"；缓冲是 3，单次 miss 不动 status。
-        # 但若该规律本就没几个 misses_at_confirmed，可能仍未触发降级 → 期望保持 confirmed。
+        # 旧 "promoted" 自动迁移为 "confirmed"；当前生命周期允许
+        # confirmed → flagged_for_review → deprecated 连续收口，若基线规律
+        # ingest 前已处于 flagged_for_review 或已累计足够 misses，单次回放可触发 deprecated。
         new_status = after_entry["status"]
-        self.assertIn(new_status, ("confirmed", "flagged_for_review"),
+        self.assertIn(new_status, ("confirmed", "flagged_for_review", "deprecated"),
                       f"status 异常：{new_status}")
         if before_status == "promoted":
             # 迁移应映射到 confirmed

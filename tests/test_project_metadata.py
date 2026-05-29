@@ -120,7 +120,8 @@ def test_current_contract_entrypoints_match_implementation() -> None:
     naming = (ROOT / "engine" / "contracts" / "09-naming-convention.md").read_text(encoding="utf-8")
     project_state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
 
-    assert "V1-V4" in overview
+    assert "V1-V6 / V8" in overview
+    assert "V7" in overview
     assert "domain-weights.yaml" in overview
     assert "dimension-weights.yaml` 事实源" in overview
     assert "tools/feedback_ingest.py" in overview
