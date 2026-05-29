@@ -56,10 +56,16 @@ THEORY_DIR = pathlib.Path(__file__).resolve().parent.parent / "theory"
 SCHOOL_DIR_MAP: dict[str, str] = {
     "段": "duan", "杨": "yang", "高": "gao", "任": "ren",
     "duan": "duan", "yang": "yang", "gao": "gao", "ren": "ren",
+    # ── 预留流派入口（第 5/6 派）──────────────────────────────
+    # 启用时把 "ext1"/"ext2" 改为真实目录名，"预留一"/"预留二" 改为中文派名。
+    "预留一": "ext1", "ext1": "ext1",
+    "预留二": "ext2", "ext2": "ext2",
 }
 
 SCHOOL_TO_CN: dict[str, str] = {
     "duan": "段", "yang": "杨", "gao": "高", "ren": "任",
+    # ── 预留流派（启用时改为真实派名）─────────────────────────
+    "ext1": "预留一", "ext2": "预留二",
 }
 
 
