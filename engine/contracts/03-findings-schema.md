@@ -3,8 +3,8 @@
 > **本文规定 D1/D2/D3/D4 引擎之间的数据交换格式。**
 > 4 个 Findings 是 v1.2 的"血液"——所有引擎只产/消费这些结构。
 
-最后更新：2026-05-23（W1.2）
-版本：v1.2.0
+最后更新：2026-05-29（W1.4）
+版本：v1.4.0
 依赖：流水线设计（`00-OVERVIEW § 二`）
 
 ---
@@ -268,9 +268,23 @@ class PictureFindings:
     caifu: Optional[CaifuRanking]
     guanming: Optional[GuanmingQufa]
 
+    # v1.4 V6：财富输出框架。
+    # framework ∈ {"market_wealth", "power_hierarchy", "dual"}
+    # 体制路径概率高时，财富域主输出应切换为权力层级 / 公务员薪酬框架；
+    # 市场财富 7 等仅保留为非体制路径对照值。
+    wealth_level: dict[str, Any] = field(default_factory=dict)
+
     # 活死五行（行业定位）
     huosi_wuxing: dict[Wuxing, Literal["活","死","活木","死木","活金","寒金","活水","死水"]]
     industry_pointers: list[str]         # 推荐的行业方向
+
+    # v1.4 V5：行业路径耦合字段。
+    # 推荐结构：{
+    #   "P_institutional": 0.0-1.0,
+    #   "primary_path": "institutional|market|dual|unknown",
+    #   "signals": list[str]
+    # }
+    industry_path: dict[str, Any] = field(default_factory=dict)
 
     # 婚姻画像（杨派强项）
     marriage_picture: Optional[dict] = None  # {初婚年龄, 配偶画像, 婚姻稳定度...}
@@ -286,7 +300,7 @@ class PictureFindings:
     confidence: Confidence
     evidence: list[Evidence]
     school: School = "杨"
-    schema_version: str = "1.2.0"
+    schema_version: str = "1.4.0"
     upstream_hash: str                   # EnergyFindings 的 hash，确保版本一致
 ```
 
@@ -503,8 +517,8 @@ class AnalysisOutput:
     layer_summary: dict[str, int]        # {共识: 7, 互补: 4, 独门: 3, 冲突: 2}
 
     # 元信息
-    schema_version: str = "1.2.0"
-    pipeline_version: str = "1.2.0"
+    schema_version: str = "1.4.0"
+    pipeline_version: str = "1.4.0"
     generated_at: str                    # ISO timestamp
 ```
 
@@ -567,6 +581,7 @@ cases/C-XXX/findings/
 | 版本 | 变更 |
 |---|---|
 | 1.2.0 | 初版 4 个 Findings + AnalysisOutput |
+| 1.4.0 | PictureFindings 增加 `industry_path`、`wealth_level.framework`；GateResult 增加 `event_type_hypotheses`；AnalysisOutput / pipeline 版本升至 1.4.0 |
 
 修改 Findings schema 必须：
 1. PR 标记 `[FINDINGS]`
@@ -613,5 +628,5 @@ master_md, client_md = render_report.render_both(output)
 
 ---
 
-**契约结束。W1.2 三份契约（01/02/03）全部交付。**
-**W1.3 待写：04 应期门接口 + 05 规律生命周期 + 06 置信度模型。**
+**契约结束。W1.4 已同步 V4/V5/V6 结构化字段。**
+**04 应期门接口 + 05 规律生命周期 + 06 置信度模型为 v1.3+ 后续契约。**

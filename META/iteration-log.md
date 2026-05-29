@@ -857,6 +857,114 @@ META/calibration/2026-05-27-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.y
 
 ---
 
+## 2026-05-29 11:17 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+
+case_count: 15
+trigger: ingest_feedback
+
+### Rule Updates (15 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-014 | duan | 2→3 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M1-D-122 | duan | 2→2 | 6→7 | ★1→★1 | deprecated→deprecated | miss |
+| M1-D-005 | duan | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M1-D-009 | duan | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M1-D-199 | duan | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M1-D-171 | duan | 0→0 | 2→3 | ★1→★1 | confirmed→flagged_for_review | miss |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-042 | yang | 2→3 | 2→2 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-119 | yang | 2→3 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M2-Y-120 | yang | 2→3 | 2→2 | ★2→★3 | confirmed→confirmed | hit |
+| M3-R-022 | ren | 4→4 | 6→7 | ★2→★1 | deprecated→deprecated | miss |
+| M3-R-027 | ren | 0→0 | 6→7 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-005 | ren | 0→0 | 8→9 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-031 | ren | 9→10 | 3→3 | ★4→★4 | flagged_for_review→flagged_for_review | hit |
+| M2-Y-070 | yang | 4→5 | 2→2 | ★3→★3 | confirmed→confirmed | hit |
+
+### Status Changes
+
+- M1-D-009: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M1-D-199: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M1-D-171: confirmed → flagged_for_review  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-BD-XL-MIX
+
+### Notes
+
+- [v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）
+
+### Cross-School Scan
+- 未触发（case_count=15，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-29-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+```
+
+---
+
+## 2026-05-29 11:29 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+
+case_count: 15
+trigger: ingest_feedback
+
+### Rule Updates (15 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-199 | duan | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| M1-D-122 | duan | 2→2 | 7→8 | ★1→★1 | deprecated→deprecated | miss |
+| M1-D-014 | duan | 3→4 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M1-D-005 | duan | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M1-D-009 | duan | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| M1-D-171 | duan | 0→0 | 3→4 | ★1→★1 | flagged_for_review→deprecated | miss |
+| M2-Y-120 | yang | 3→4 | 2→2 | ★3→★3 | confirmed→confirmed | hit |
+| M2-Y-042 | yang | 3→4 | 2→2 | ★3→★3 | confirmed→confirmed | hit |
+| M2-Y-035 | yang | 0→0 | 0→0 | ★2→★2 | confirmed→confirmed | abstain |
+| M2-Y-119 | yang | 3→4 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M3-R-031 | ren | 10→11 | 3→3 | ★4→★4 | flagged_for_review→flagged_for_review | hit |
+| M3-R-005 | ren | 0→0 | 9→10 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-022 | ren | 4→4 | 7→8 | ★1→★1 | deprecated→deprecated | miss |
+| M3-R-027 | ren | 0→0 | 7→8 | ★1→★1 | deprecated→deprecated | miss |
+| M2-Y-070 | yang | 5→6 | 2→2 | ★3→★4 | confirmed→confirmed | hit |
+
+### Status Changes
+
+- M1-D-199: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M1-D-009: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+- M1-D-171: flagged_for_review → deprecated  (auto-downgrade (累计 misses 触发缓冲阈值))
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-BD-XL-MIX
+
+### Notes
+
+- [v1.4-V1] 跳过 M3-R-003: quantifiable=False（框架性心法不参与 hit/miss 计分）
+
+### Cross-School Scan
+- 未触发（case_count=15，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-29-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)

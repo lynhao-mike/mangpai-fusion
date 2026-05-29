@@ -404,29 +404,39 @@ def _bump_state(result: IngestResult, case_id: str) -> None:
 # 六、CLI
 # ============================================================
 
+def _safe_print(text: str = "") -> None:
+    """跨平台安全打印，避免 Windows cmd 的 GBK 编码被 emoji 阻断。"""
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        print(text.encode(sys.stdout.encoding or "utf-8", errors="replace").decode(
+            sys.stdout.encoding or "utf-8", errors="replace"
+        ))
+
+
 def _print_human(result: IngestResult) -> None:
-    print(f"\n[feedback_ingest] case_id={result.case_id}")
-    print(f"  解析到 statement 反馈: {result.feedback_count} 条")
-    print(f"  fanout 后涉及规律: {result.rule_count} 条")
+    _safe_print(f"\n[feedback_ingest] case_id={result.case_id}")
+    _safe_print(f"  解析到 statement 反馈: {result.feedback_count} 条")
+    _safe_print(f"  fanout 后涉及规律: {result.rule_count} 条")
     if result.skipped_no_index:
-        print("  ⚠️  statement_index.json 缺失或为空 → 已退回 v1.0 启发式路径")
+        _safe_print("  [WARN] statement_index.json 缺失或为空 → 已退回 v1.0 启发式路径")
     if result.skipped_unknown_sid:
-        print(f"  ⚠️  忽略未知 sid: {len(result.skipped_unknown_sid)} 条 (前 3: "
-              f"{','.join(result.skipped_unknown_sid[:3])})")
+        _safe_print(f"  [WARN] 忽略未知 sid: {len(result.skipped_unknown_sid)} 条 (前 3: "
+                    f"{','.join(result.skipped_unknown_sid[:3])})")
     if result.iteration_diff:
         d = result.iteration_diff
-        print(f"  规律更新: {len(d.rule_updates)} 条 / "
-              f"状态变更: {len(d.status_changes)} 条 / "
-              f"跨派扫描: {'是' if d.cross_school_triggered else '否'}")
-    print(f"  累计完成反馈案: {result.feedback_completed_count}")
-    print(f"  当前迭代序号 (iteration_seq): {result.iteration_seq:03d}")
+        _safe_print(f"  规律更新: {len(d.rule_updates)} 条 / "
+                    f"状态变更: {len(d.status_changes)} 条 / "
+                    f"跨派扫描: {'是' if d.cross_school_triggered else '否'}")
+    _safe_print(f"  累计完成反馈案: {result.feedback_completed_count}")
+    _safe_print(f"  当前迭代序号 (iteration_seq): {result.iteration_seq:03d}")
     if result.iteration_triggered:
-        print("\n  ★★ 已达 10 案整数倍 → iteration_report 已自动触发 ★★")
+        _safe_print("\n  ** 已达 10 案整数倍 → iteration_report 已自动触发 **")
         if result.iteration_report_path:
-            print(f"     📄 报告: {result.iteration_report_path}")
+            _safe_print(f"     报告: {result.iteration_report_path}")
         else:
-            print(f"     ⚠️ 报告写入失败，详见 iteration_diff.notes")
-            print(f"     预期路径: META/iteration-report-{result.iteration_seq:03d}.md")
+            _safe_print("     [WARN] 报告写入失败，详见 iteration_diff.notes")
+            _safe_print(f"     预期路径: META/iteration-report-{result.iteration_seq:03d}.md")
 
 
 def main(argv: Optional[list[str]] = None) -> int:

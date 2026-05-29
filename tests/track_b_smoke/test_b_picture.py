@@ -27,6 +27,7 @@ if str(ROOT) not in sys.path:
 
 import pytest
 
+from engine import FINDINGS_SCHEMA_VERSION
 from engine.energy.evaluator import evaluate_energy
 from engine.picture.matcher import match_picture
 from tests.fixtures.cases import load_case
@@ -273,7 +274,7 @@ def test_picture_findings_required_fields(case_id: str) -> None:
 
     # 元信息
     assert picture.school == "杨"
-    assert picture.schema_version == "1.2.0"
+    assert picture.schema_version == FINDINGS_SCHEMA_VERSION
     assert picture.upstream_hash == energy.hash()
     assert picture.confidence is not None
     assert 1 <= picture.confidence.star <= 5

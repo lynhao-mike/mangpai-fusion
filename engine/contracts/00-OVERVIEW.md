@@ -3,8 +3,8 @@
 > **本文是 v1.2 重构 + v1.3 自迭代闭环的"宪法"。所有 agent、所有规律、所有报告都必须遵守此文档。**
 > 修改本文件需要在 PR 中显式说明，并通知所有运行中的 agent。
 
-最后更新：2026-05-26（v1.3.0 已发布 / v1.4 W1 文档同步）
-契约版本：**v1.3.0-current**
+最后更新：2026-05-29（v1.3.0 已发布 / v1.4 schema 与报告收口）
+契约版本：**v1.4.0-schema-current**
 代码版本：见仓库根 [`VERSION`](../../VERSION)
 适用分支：`main`（v1.2-build 已于 v1.2 发布时合并；v1.3 PR #26-#37 已合 main）
 
@@ -17,11 +17,11 @@
 | 项 | 值 | 来源 / 说明 |
 |---|---|---|
 | 当前发布版本 | **v1.3.0** | [`VERSION`](../../VERSION) |
-| 当前契约版本 | **v1.3.0-current** | 本文件标头 |
+| 当前契约版本 | **v1.4.0-schema-current** | 本文件标头；产品发布版本仍以 [`../../VERSION`](../../VERSION) 为准 |
 | 主分支 | `main` | git symbolic-ref refs/remotes/origin/HEAD |
 | 主分支 HEAD | `git rev-parse HEAD`（运行时查询，不在文档中硬编码） | 历史教训：handoff.md / STATUS.md 各自硬编码 commit 短 SHA 必然漂移 |
-| 已锁定决策 | A-M（v1.2 重构）+ D1-D8（v1.3 自迭代）+ V1-V4（v1.4 W1 已落地）| 见 [`decisions-locked.md`](decisions-locked.md) + [`../../plans/architecture-v1.3.md`](../../plans/architecture-v1.3.md) + [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) |
-| 下一里程碑 | v1.4 Track 1 + Track 4（03 schema 升级 + 跨维度耦合提示）| [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) § 三 |
+| 已锁定决策 | A-M（v1.2 重构）+ D1-D8（v1.3 自迭代）+ V1-V6 / V8（v1.4 已落地）+ V7（模板存在、默认发布门禁收口）| 见 [`decisions-locked.md`](decisions-locked.md) + [`../../plans/architecture-v1.3.md`](../../plans/architecture-v1.3.md) + [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) |
+| 下一里程碑 | v1.4 报告默认发布门禁（V7 ViewModel / linter / 快照验收）+ 全量测试收口 | [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) § 三 |
 
 ---
 

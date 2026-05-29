@@ -1,7 +1,7 @@
 """tools/output_linter.py · 兜底护栏 #2 · 输出格式 + 黑名单校验
 
-实现 07-pipeline-flow.md § 八 的 11 项检查 +
-06-confidence-model.md § 七/§ 十 的禁忌清单。
+实现 07-pipeline-flow.md § 八 的基础检查 +
+06-confidence-model.md § 七/§ 十 的禁忌清单，并包含 v1.4 输出耦合与样式护栏。
 
 支持两种输入：
   1. AnalysisOutput dataclass / dict（结构化）
@@ -10,7 +10,7 @@
 输出 LintResult，含 errors + warnings + per-conclusion 详情。
 
 依赖：标准库 + PyYAML（用于加载 mechanical-rules.yaml 黑名单）
-版本：v1.2.0
+能力：v1.2 基础护栏 + v1.4 W9/W10/W12/画像样式扩展
 作者：Track-E
 """
 from __future__ import annotations
@@ -466,6 +466,8 @@ def lint(
         _lint_social_clock(full_text, res)
         # W12 · 天干相刑 / 规则外推误用扫描（C-2026-019 复盘）
         _lint_relation_source_misuse(full_text, res)
+        # v1.4 · 命主画像禁止使用框线（templates/report-v1.4.md）
+        _lint_portrait_box_style(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -827,6 +829,24 @@ def _has_high_confidence_marker(text: str, keyword: str) -> bool:
         if _HIGH_CONFIDENCE_RE.search(window):
             return True
     return False
+
+
+def _lint_portrait_box_style(md: str, res: LintResult) -> None:
+    """v1.4 · 命主画像段禁止使用 ╔╗ 等框线字符。"""
+    if "命主画像" not in md and "命 主 画 像" not in md and "portrait_block" not in md:
+        return
+    # W13 是 v1.4 模板样式护栏；历史 v1.0/v1.2/v1.3 存量报告可保留框线画像，
+    # 避免把历史样式残留误报为理论/知识调用错误。
+    if "v1.4" not in md and "portrait_block" not in md:
+        return
+    box_chars = {"╔", "╗", "╚", "╝", "╠", "╣", "║", "═"}
+    if any(ch in md for ch in box_chars):
+        res.add(
+            Severity.WARNING,
+            "W13",
+            "命主画像段检测到框线字符（╔╗║═ 等）。v1.4 模板要求画像使用表格展示，禁止框线。",
+        )
+
 
 
 def _lint_cross_domain_coupling(

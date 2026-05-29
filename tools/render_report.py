@@ -1,4 +1,4 @@
-"""tools/render_report.py · v1.2 D-F · 三段式报告渲染器
+"""tools/render_report.py · 三段式报告渲染器（v1.3 默认 / v1.4 预览）
 
 按 07-pipeline-flow.md § 九 + 08-agent-handoff.md § 二 F 实现。
 
@@ -936,20 +936,16 @@ def _build_portrait_vm(
         s, p = _star_pct(g.confidence)
         yingqi_lines.append(f"  · {g.year}：{g.domain} · {g.candidate_event}（{s}星/{p}%）")
 
-    portrait = f"""╔══════════════════════════════════════════════════════════════╗
-║                    命 主 画 像                               ║
-╠══════════════════════════════════════════════════════════════╣
-║ case_id：{parsed.case_id[:20]:<20}                       ║
-║ 四柱：{_bazi_str(parsed)}                                    ║
-╠══════════════════════════════════════════════════════════════╣
-║【财富天花板】{energy.wealth_ceiling}（做功{energy.layer_count}层，{star_e}星/{pct_e}%）║
-║【画面置信度】{star_p}星/{pct_p}%                             ║
-"""
+    portrait = (
+        "| 项目 | 内容 |\n"
+        "|---|---|\n"
+        f"| case_id | {parsed.case_id} |\n"
+        f"| 四柱 | {_bazi_str(parsed)} |\n"
+        f"| 财富天花板 | {energy.wealth_ceiling}（做功{energy.layer_count}层，{star_e}星/{pct_e}%） |\n"
+        f"| 画面置信度 | {star_p}星/{pct_p}% |\n"
+    )
     if yingqi_lines:
-        portrait += "║【铁口应期（三层全过）】\n"
-        for line in yingqi_lines:
-            portrait += f"║{line}\n"
-    portrait += "╚══════════════════════════════════════════════════════════════╝\n"
+        portrait += "| 铁口应期（三层全过） | " + "<br>".join(yingqi_lines) + " |\n"
     portrait += "\n<!-- [AI-polish] 以下文字可由 AI 润色，不可改变星级/百分比数值 -->\n"
     portrait += f"\n命主整体能量{energy.wealth_ceiling}，{energy.layer_count}层做功基础，"
     portrait += f"财富路径清晰。杨派五步法与段派体用判断方向一致，"
@@ -1129,7 +1125,7 @@ def render(
     final_conclusions: Optional[list] = None,
     retrospective: Optional[Any] = None,
     template_name: Optional[str] = None,
-    variant: Literal["master", "client", "v1.2"] = "master",
+    variant: Literal["master", "client", "v1.2", "v1.4"] = "master",
     *,
     _skip_lint: bool = False,
     _capture_ctx_to: Optional[dict] = None,
@@ -1141,6 +1137,7 @@ def render(
       - variant="client"  → templates/report-v1.3.md，关闭 is_master 标志，并在 ctx
         预过滤 ★≤3 的弱项断语；命主可读版
       - variant="v1.2"    → templates/report-v1.2.md，向下兼容旧调用
+      - variant="v1.4"    → templates/report-v1.4.md，v1.4 预览模板；产品默认仍按 v1.3
 
     v1.3 D1：每条断语挂 statement_id（位于 ViewModel 项的 ``statement_id`` 字段）。
 
@@ -1156,7 +1153,7 @@ def render(
         parsed:        ParsedInput（含 bazi / dayun / birth）
         support:       D4 SupportFindings（Optional，Track-D 未合入时传 None）
         template_name: 显式指定模板文件名；不指定则按 variant 选默认。
-        variant:       "master" | "client" | "v1.2"
+        variant:       "master" | "client" | "v1.2" | "v1.4"
         _skip_lint:    内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
         _capture_ctx_to: 内部协调用：若传入 dict，则把构建好的 ctx 复制进去
                        （供 render_from_output 落盘 statement_index.json 使用）。
@@ -1172,6 +1169,8 @@ def render(
     if template_name is None:
         if variant == "v1.2":
             template_name = "report-v1.2.md"
+        elif variant == "v1.4":
+            template_name = "report-v1.4.md"
         else:
             template_name = "report-v1.3.md"
     tpl_path = ROOT / "templates" / template_name
@@ -1190,10 +1189,11 @@ def render(
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
     ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # v1.3 variant 标志（模板用 {% if is_master %} ... {% endif %} 控制反馈位）
+    # variant 标志（模板用 {% if is_master %} ... {% endif %} 控制反馈位）
     ctx["variant"] = variant
-    ctx["is_master"] = (variant == "master")
+    ctx["is_master"] = (variant in ("master", "v1.4"))
     ctx["is_client"] = (variant == "client")
+    ctx["is_v1_4"] = (variant == "v1.4")
 
     # §A 能量
     ctx.update(_build_energy_vm(energy))

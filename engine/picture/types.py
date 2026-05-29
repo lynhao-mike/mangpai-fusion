@@ -13,6 +13,8 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine import FINDINGS_SCHEMA_VERSION
+
 # 复用 Track-A 已实现的共用类型（避免重复定义）
 from engine.energy.types import (  # noqa: F401
     Confidence,
@@ -260,9 +262,19 @@ class PictureFindings:
     caifu: Optional[CaifuRanking] = None
     guanming: Optional[GuanmingQufa] = None
 
+    # v1.4 V6：财富输出框架。
+    # framework ∈ {"market_wealth", "power_hierarchy", "dual"}
+    # 当体制路径概率较高时，财富域应输出权力层级/公务员薪酬框架，
+    # 市场财富 7 等仅作为非体制路径对照值。
+    wealth_level: dict[str, Any] = field(default_factory=dict)
+
     # ========== 活死五行 + 行业定位 ==========
     huosi_wuxing: dict[str, str] = field(default_factory=dict)
     industry_pointers: list[IndustryHint] = field(default_factory=list)
+
+    # v1.4 V5：行业路径耦合字段。
+    # 推荐结构：{"P_institutional": 0.0-1.0, "primary_path": "institutional|market|dual|unknown", "signals": [...]}
+    industry_path: dict[str, Any] = field(default_factory=dict)
 
     # ========== 婚姻画像（杨派强项 · 修复 G2 关键）==========
     # 子字段（dict 形式，避免过度结构化）：
@@ -291,7 +303,7 @@ class PictureFindings:
     confidence: Optional[Confidence] = None
     evidence: list[Evidence] = field(default_factory=list)
     school: str = "杨"
-    schema_version: str = "1.2.0"
+    schema_version: str = FINDINGS_SCHEMA_VERSION
     upstream_hash: str = ""              # EnergyFindings 的 hash
     case_id: str = ""
 
@@ -312,8 +324,10 @@ class PictureFindings:
             "anyin_results": [a.to_dict() for a in self.anyin_results],
             "caifu": self.caifu.to_dict() if self.caifu else None,
             "guanming": self.guanming.to_dict() if self.guanming else None,
+            "wealth_level": dict(self.wealth_level),
             "huosi_wuxing": dict(self.huosi_wuxing),
             "industry_pointers": list(self.industry_pointers),
+            "industry_path": dict(self.industry_path),
             "marriage_picture": _marriage_to_dict(self.marriage_picture),
             "tiaohou_advice": dict(self.tiaohou_advice) if self.tiaohou_advice else None,
             "wealth_15tier": self.wealth_15tier.to_dict() if self.wealth_15tier else None,
@@ -332,8 +346,10 @@ class PictureFindings:
             anyin_results=[AnyinResult.from_dict(x) for x in d.get("anyin_results", [])],
             caifu=CaifuRanking.from_dict(d["caifu"]) if d.get("caifu") else None,
             guanming=GuanmingQufa.from_dict(d["guanming"]) if d.get("guanming") else None,
+            wealth_level=dict(d.get("wealth_level", {})),
             huosi_wuxing=dict(d.get("huosi_wuxing", {})),
             industry_pointers=list(d.get("industry_pointers", [])),
+            industry_path=dict(d.get("industry_path", {})),
             marriage_picture=_marriage_from_dict(d.get("marriage_picture")),
             tiaohou_advice=dict(d["tiaohou_advice"]) if d.get("tiaohou_advice") else None,
             wealth_15tier=Wealth15Tier.from_dict(d["wealth_15tier"]) if d.get("wealth_15tier") else None,
@@ -342,7 +358,7 @@ class PictureFindings:
             confidence=Confidence.from_dict(d["confidence"]) if d.get("confidence") else None,
             evidence=[Evidence.from_dict(x) for x in d.get("evidence", [])],
             school=d.get("school", "杨"),
-            schema_version=d.get("schema_version", "1.2.0"),
+            schema_version=d.get("schema_version", FINDINGS_SCHEMA_VERSION),
             upstream_hash=str(d.get("upstream_hash", "")),
             case_id=str(d.get("case_id", "")),
             debug_info=dict(d.get("debug_info", {})),

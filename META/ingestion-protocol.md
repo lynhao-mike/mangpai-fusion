@@ -2,6 +2,9 @@
 
 > 4 派理论从原始文档 → 结构化 YAML 入库的标准化流程。  
 > 任何理论修改、新增、退役都必须遵循此协议。
+>
+> **前置闸门（S0）**：新教材如何从 `sources/inbox/` 进入只读语料库与本管线，见
+> [`META/materials-intake-protocol.md`](materials-intake-protocol.md)。
 
 ---
 

@@ -310,15 +310,15 @@ engine/level-scales.md (本文件)
 | **0.3 ≤ P ≤ 0.7** | **双框架并列**（权力层级 + 市场财富分级） | 明确标注两套各自适用条件（"若走体制路径..."/"若走市场路径..."） | 模糊路径案例 |
 | **< 0.3** | **市场财富 7 等分级**（M2-Y-035） | 无 | 民营 / 自营 / 投资人案例默认 |
 
-### 11.2 实操检查清单（v1.4 实施待办）
+### 11.2 实操检查清单（v1.4 已落地）
 
-- [ ] **cross_domain_consistency_check**：在 `tools/output_linter.py` 增加全局检查函数，扫描报告 markdown 文本中是否同时出现：
+- [x] **cross_domain_consistency_check**：`tools/output_linter.py` 已增加 W9 全局检查函数；`tools/cross_domain_consistency_check.py --backfill` 负责历史报告批量扫描：
   - 高置信度的"公门 / 国企 / 体制 / 事业单位 / 选调 / 公务员 / 党政 / 行政"等关键词（≥ 70%）
   - 高置信度的"中富 / 大富 / 巨富 / 小富"市场财富分级（≥ 70%）
   - 若同时出现且无耦合标注 → 触发 W9 cross-domain incoherence warning
-- [ ] **报告模板更新**：在 `templates/report.md` § 八财富等级评估前增加"§ 八·零 行业路径耦合提示"段落，强制说明使用哪套分级框架
-- [ ] **三域输出耦合**：财富域 / 事业域 / 学业域三者输出耦合 — 体制内 → 输出权力层级；体制外 → 输出市场分级
-- [ ] **PRINCIPLE.md / contracts 文档**：在 `engine/contracts/03-findings-schema.md` 输出 schema 中追加 `industry_path` 字段（必填），`wealth_level.framework` 字段（枚举：market_wealth / power_hierarchy / dual）
+- [x] **报告模板更新**：在 `templates/report.md` § 八财富等级评估前增加"§ 八·零 行业路径耦合提示"段落，强制说明使用哪套分级框架
+- [x] **三域输出耦合**：`engine/pipeline.py` 在整合层写入 `industry_path` 与 `wealth_level.framework`，体制内/双轨路径自动追加耦合结论
+- [x] **PRINCIPLE.md / contracts 文档**：在 `engine/contracts/03-findings-schema.md` 输出 schema 中追加 `industry_path` 字段，`wealth_level.framework` 字段（枚举：market_wealth / power_hierarchy / dual）
 
 ### 11.3 与 § 九·四 体制路径例外条款（CFL-C015-001）的关系
 
@@ -345,7 +345,7 @@ engine/level-scales.md (本文件)
 ### 11.4 历史回溯影响
 
 - 已结案 10 例（C-001 到 C-014）中，**C-2026-001（路桥国企总经理 正科）** 同样为体制内案例 → 应回溯检查报告是否输出了不一致的市场财富分级
-- 后续 v1.4 引擎落地后，应运行 `tools/cross_domain_consistency_check.py --backfill` 一次性扫描所有历史报告
+- v1.4 引擎落地后，使用 `tools/cross_domain_consistency_check.py --backfill` 一次性扫描所有历史报告；归档输出见 `META/cross-domain-backfill.md`
 
 ---
 

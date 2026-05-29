@@ -19,7 +19,7 @@
 | 人工裁决 | [`META/arbitration-log.md`](META/arbitration-log.md) |
 | 历史变更 | [`META/rule-changelog.md`](META/rule-changelog.md) |
 
-当前阶段：v1.3 自迭代闭环已上线，v1.4 W1 文档/测试同步与 AI 入口精简进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。
+当前阶段：v1.3 自迭代闭环已上线，v1.4 schema 与报告收口进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。v1.4 V1-V6/V8 已落地，V7 报告模板已存在但默认发布门禁仍在收口。
 
 ---
 

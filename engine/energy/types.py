@@ -13,6 +13,7 @@ import json
 from dataclasses import dataclass, field, asdict
 from typing import Any, Literal, Optional, Union
 
+from engine import FINDINGS_SCHEMA_VERSION
 from engine.predicates.types import (
     Bazi,
     Gan,
@@ -273,7 +274,7 @@ class EnergyFindings:
     confidence: Confidence
     evidence: list[Evidence]
     school: School = "段"
-    schema_version: str = "1.2.0"
+    schema_version: str = FINDINGS_SCHEMA_VERSION
     case_id: str = ""
 
     # 上游 / 调试
@@ -315,7 +316,7 @@ class EnergyFindings:
             confidence=Confidence.from_dict(d["confidence"]),
             evidence=[Evidence.from_dict(x) for x in d["evidence"]],
             school=d.get("school", "段"),
-            schema_version=d.get("schema_version", "1.2.0"),
+            schema_version=d.get("schema_version", FINDINGS_SCHEMA_VERSION),
             case_id=d.get("case_id", ""),
             debug_info=dict(d.get("debug_info", {})),
         )

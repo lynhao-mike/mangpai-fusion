@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import pytest
 
+from engine import FINDINGS_SCHEMA_VERSION
 from engine.energy.evaluator import evaluate_energy
 from tests.fixtures.cases import load_case
 
@@ -130,7 +131,7 @@ def test_energy_findings_required_fields(case_id: str) -> None:
     assert "级·" in ef.wealth_ceiling
     assert ef.muxing_qufa in ("禄", "食伤", "比劫", "印")
     assert ef.school == "段"
-    assert ef.schema_version == "1.2.0"
+    assert ef.schema_version == FINDINGS_SCHEMA_VERSION
     assert ef.confidence.star in (1, 2, 3, 4, 5)
     assert 0.0 <= ef.confidence.percent <= 1.0
     assert len(ef.evidence) >= 1
