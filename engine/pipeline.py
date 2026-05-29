@@ -35,6 +35,7 @@ from pathlib import Path
 from typing import Any, Iterator, Literal, Optional, Union
 
 from engine.energy.evaluator import evaluate_energy
+from engine import FINDINGS_SCHEMA_VERSION, PIPELINE_SCHEMA_VERSION
 from engine.energy.types import (
     Confidence,
     EnergyFindings,
@@ -443,8 +444,8 @@ class AnalysisOutput:
     layer_summary: dict[str, int] = field(default_factory=dict)
 
     # 元信息
-    schema_version: str = "1.2.0"
-    pipeline_version: str = "1.2.0"
+    schema_version: str = FINDINGS_SCHEMA_VERSION
+    pipeline_version: str = PIPELINE_SCHEMA_VERSION
     generated_at: str = ""
 
     # Hash 链验证结果
@@ -504,8 +505,8 @@ class AnalysisOutput:
                 if d.get("overall_confidence") else None
             ),
             layer_summary=dict(d.get("layer_summary", {})),
-            schema_version=d.get("schema_version", "1.2.0"),
-            pipeline_version=d.get("pipeline_version", "1.2.0"),
+            schema_version=d.get("schema_version", FINDINGS_SCHEMA_VERSION),
+            pipeline_version=d.get("pipeline_version", PIPELINE_SCHEMA_VERSION),
             generated_at=d.get("generated_at", ""),
             hash_chain_valid=bool(d.get("hash_chain_valid", True)),
             hash_chain_notes=list(d.get("hash_chain_notes", [])),

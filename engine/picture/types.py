@@ -13,6 +13,8 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine import FINDINGS_SCHEMA_VERSION
+
 # 复用 Track-A 已实现的共用类型（避免重复定义）
 from engine.energy.types import (  # noqa: F401
     Confidence,
@@ -301,7 +303,7 @@ class PictureFindings:
     confidence: Optional[Confidence] = None
     evidence: list[Evidence] = field(default_factory=list)
     school: str = "杨"
-    schema_version: str = "1.4.0"
+    schema_version: str = FINDINGS_SCHEMA_VERSION
     upstream_hash: str = ""              # EnergyFindings 的 hash
     case_id: str = ""
 
@@ -356,7 +358,7 @@ class PictureFindings:
             confidence=Confidence.from_dict(d["confidence"]) if d.get("confidence") else None,
             evidence=[Evidence.from_dict(x) for x in d.get("evidence", [])],
             school=d.get("school", "杨"),
-            schema_version=d.get("schema_version", "1.4.0"),
+            schema_version=d.get("schema_version", FINDINGS_SCHEMA_VERSION),
             upstream_hash=str(d.get("upstream_hash", "")),
             case_id=str(d.get("case_id", "")),
             debug_info=dict(d.get("debug_info", {})),
