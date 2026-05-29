@@ -650,15 +650,15 @@ rules:
   raw_anchor: 学历判定系统
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 4
+  hits: 6
   misses: 2
   abstained: 6
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5:
-  - true
-  - true
   - false
+  - true
+  - true
   - true
   - true
   applied_cases:
@@ -698,13 +698,25 @@ rules:
     evidence_chain:
     - M2-Y-070
     note: COMP-2 · 学业层级 L9-L10（互补 · 段+杨+高） | 学业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-070
+    note: COMP-2 · 学业层级 L9-L10（互补 · 段+杨+高） | 学业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-070
+    note: COMP-2 · 学业层级 L9-L10（互补 · 段+杨+高） | 学业
   confidence_cache:
-    star: 3
-    percent: 0.625
-    posterior: 0.625
-    variance: 0.026042
-    sample_n: 6
-    last_updated: '2026-05-27'
+    star: 4
+    percent: 0.7
+    posterior: 0.7
+    variance: 0.019091
+    sample_n: 8
+    last_updated: '2026-05-29'
 - id: M2-Y-071
   school: yang
   topic: jiaoyu
@@ -1567,7 +1579,7 @@ rules:
   status_history: []
   hits: 0
   misses: 0
-  abstained: 4
+  abstained: 6
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5: []
@@ -1578,7 +1590,7 @@ rules:
     posterior: 0.5
     variance: 0.083333
     sample_n: 0
-    last_updated: '2026-05-27'
+    last_updated: '2026-05-29'
 - id: M2-Y-036
   school: yang
   topic: unmapped
@@ -1657,15 +1669,16 @@ rules:
   raw_anchor: 婚姻与六亲系统
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 2
+  hits: 4
   misses: 2
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5:
-  - false
   - true
   - false
+  - true
+  - true
   - true
   applied_cases:
   - case_id: C-2026-014-丙戌庚子乙亥辛巳
@@ -1692,13 +1705,25 @@ rules:
     evidence_chain:
     - M2-Y-042
     note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 五步法） | 婚姻
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-042
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 五步法） | 婚姻
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-042
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 五步法） | 婚姻
   confidence_cache:
-    star: 2
-    percent: 0.5
-    posterior: 0.5
-    variance: 0.035714
-    sample_n: 4
-    last_updated: '2026-05-27'
+    star: 3
+    percent: 0.625
+    posterior: 0.625
+    variance: 0.026042
+    sample_n: 6
+    last_updated: '2026-05-29'
 - id: M2-Y-043
   school: yang
   topic: unmapped
@@ -1777,7 +1802,7 @@ rules:
   raw_anchor: 2019年班补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 2
+  hits: 4
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
@@ -1785,7 +1810,21 @@ rules:
   recent_5:
   - true
   - true
+  - true
+  - true
   applied_cases:
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-119
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-119
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
   - case_id: C-2026-015-甲寅乙亥丙辰辛卯
     year: null
     hit: true
@@ -1800,11 +1839,11 @@ rules:
     note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
   confidence_cache:
     star: 4
-    percent: 0.75
-    posterior: 0.75
-    variance: 0.0375
-    sample_n: 2
-    last_updated: '2026-05-27'
+    percent: 0.833333
+    posterior: 0.833333
+    variance: 0.019841
+    sample_n: 4
+    last_updated: '2026-05-29'
 - id: M2-Y-120
   school: yang
   topic: unmapped
@@ -1817,15 +1856,16 @@ rules:
   raw_anchor: 2019年班补全
   raw_file: theory/raw/yang/promoted/m2-rules-registry.md
   status_history: []
-  hits: 2
+  hits: 4
   misses: 2
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5:
-  - false
   - true
   - false
+  - true
+  - true
   - true
   applied_cases:
   - case_id: C-2026-007-乙丑庚辰己丑庚午
@@ -1852,13 +1892,25 @@ rules:
     evidence_chain:
     - M2-Y-120
     note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-120
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M2-Y-120
+    note: COMP-1 · 行业方向 = 公门/国企（互补 · 杨+段+高） | 事业
   confidence_cache:
-    star: 2
-    percent: 0.5
-    posterior: 0.5
-    variance: 0.035714
-    sample_n: 4
-    last_updated: '2026-05-27'
+    star: 3
+    percent: 0.625
+    posterior: 0.625
+    variance: 0.026042
+    sample_n: 6
+    last_updated: '2026-05-29'
 - id: M2-Y-121
   school: yang
   topic: unmapped

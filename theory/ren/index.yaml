@@ -117,7 +117,7 @@ rules:
     case_id: C-2026-015-甲寅乙亥丙辰辛卯
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 0
-  misses: 8
+  misses: 10
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -176,13 +176,25 @@ rules:
     evidence_chain:
     - M3-R-005
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-005
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 1
-    percent: 0.1
-    posterior: 0.1
-    variance: 0.008182
-    sample_n: 8
-    last_updated: '2026-05-27'
+    percent: 0.083333
+    posterior: 0.083333
+    variance: 0.005876
+    sample_n: 10
+    last_updated: '2026-05-29'
   status_changed_at: '2026-05-26'
 - id: M3-R-006
   school: ren
@@ -366,15 +378,15 @@ rules:
     case_id: C-2026-001-庚申戊寅壬子辛丑
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
   hits: 4
-  misses: 6
+  misses: 8
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
   recent_5:
-  - false
-  - false
   - true
   - true
+  - false
+  - false
   - false
   applied_cases:
   - case_id: C-2026-001-庚申戊寅壬子辛丑
@@ -437,13 +449,25 @@ rules:
     evidence_chain:
     - M3-R-022
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-022
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-022
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
-    star: 2
-    percent: 0.416667
-    posterior: 0.416667
-    variance: 0.018697
-    sample_n: 10
-    last_updated: '2026-05-27'
+    star: 1
+    percent: 0.357143
+    posterior: 0.357143
+    variance: 0.015306
+    sample_n: 12
+    last_updated: '2026-05-29'
   status_changed_at: '2026-05-27'
 - id: M3-R-023
   school: ren
@@ -536,7 +560,7 @@ rules:
     case_id: REVIEW-BATCH-001
     reason: '架构师 review REV-006: 0hit/3miss, 教学层方法论总结非可验证规律'
   hits: 0
-  misses: 6
+  misses: 8
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: 3
@@ -583,13 +607,25 @@ rules:
     evidence_chain:
     - M3-R-027
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-027
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: false
+    evidence_chain:
+    - M3-R-027
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 1
-    percent: 0.125
-    posterior: 0.125
-    variance: 0.012153
-    sample_n: 6
-    last_updated: '2026-05-27'
+    percent: 0.1
+    posterior: 0.1
+    variance: 0.008182
+    sample_n: 8
+    last_updated: '2026-05-29'
   status_changed_at: '2026-05-26'
 - id: M3-R-028
   school: ren
@@ -647,7 +683,7 @@ rules:
     to: flagged_for_review
     case_id: C-2026-008-壬申癸卯丁未壬寅
     reason: auto-downgrade (累计 misses 触发缓冲阈值)
-  hits: 9
+  hits: 11
   misses: 3
   abstained: 0
   misses_at_confirmed: 0
@@ -731,13 +767,25 @@ rules:
     evidence_chain:
     - M3-R-031
     note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
+  - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    year: null
+    hit: true
+    evidence_chain:
+    - M3-R-031
+    note: 1.4 任派视角（M3 任付红 · 18 道法门 + 6 触发应期）
   confidence_cache:
     star: 4
-    percent: 0.714286
-    posterior: 0.714286
-    variance: 0.013605
-    sample_n: 12
-    last_updated: '2026-05-27'
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.011029
+    sample_n: 14
+    last_updated: '2026-05-29'
   status_changed_at: '2026-05-27'
   domain_restriction:
   - 应期

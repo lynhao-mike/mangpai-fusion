@@ -601,6 +601,59 @@ def _build_yingqi_table(gate_results: list[GateResult]) -> list[dict[str, Any]]:
     return table
 
 
+def _infer_industry_path(picture: PictureFindings) -> dict[str, Any]:
+    """v1.4 V5：从行业指针推断体制路径概率。
+
+    这是最小可运行实现，用于把 CFL-C015-002 的输出耦合 gate 从文档/lint
+    推进到结构化 findings。后续可替换为更精细的 D2 行业路径模型。
+    """
+    explicit = getattr(picture, "industry_path", None) or {}
+    if explicit:
+        return dict(explicit)
+
+    pointers = [str(x) for x in getattr(picture, "industry_pointers", []) or []]
+    text = " ".join(pointers)
+    institutional_keywords = [
+        "公门", "国企", "体制", "事业单位", "选调", "公务员",
+        "党政", "行政", "机关", "编制", "官印", "公检法",
+    ]
+    hits = [kw for kw in institutional_keywords if kw in text]
+    if len(hits) >= 2:
+        p = 0.85
+    elif len(hits) == 1:
+        p = 0.72
+    elif pointers:
+        p = 0.20
+    else:
+        p = 0.0
+
+    if p > 0.7:
+        primary = "institutional"
+    elif p >= 0.3:
+        primary = "dual"
+    elif pointers:
+        primary = "market"
+    else:
+        primary = "unknown"
+
+    return {
+        "P_institutional": p,
+        "primary_path": primary,
+        "signals": hits,
+        "source": "engine.pipeline._infer_industry_path",
+    }
+
+
+def _infer_wealth_framework(industry_path: dict[str, Any]) -> str:
+    """v1.4 V6：按 P(体制内) 切换财富输出框架。"""
+    p = float(industry_path.get("P_institutional", 0.0) or 0.0)
+    if p > 0.7:
+        return "power_hierarchy"
+    if p >= 0.3:
+        return "dual"
+    return "market_wealth"
+
+
 def _gate_to_conclusion(
     gr: GateResult,
     idx: int,
@@ -718,12 +771,38 @@ def integrate(
                 evidence=d4_ev,
             ))
 
-    # 5. 计算 layer_summary
+    # 5. v1.4 V5/V6：行业路径与财富框架耦合
+    industry_path = _infer_industry_path(picture)
+    wealth_framework = _infer_wealth_framework(industry_path)
+    picture.industry_path = industry_path
+    picture.wealth_level = {
+        **getattr(picture, "wealth_level", {}),
+        "framework": wealth_framework,
+    }
+    if industry_path.get("primary_path") in {"institutional", "dual"}:
+        p_inst = float(industry_path.get("P_institutional", 0.0) or 0.0)
+        conclusions.append(FinalConclusion(
+            conclusion_id="CC-D2-003",
+            statement=(
+                "行业路径耦合："
+                f"P(体制内)={p_inst:.2f}，财富域采用 {wealth_framework} 框架"
+            ),
+            domain="财运",
+            layer="互补",
+            contributing_schools=["杨", "段"],
+            confidence=picture.confidence or Confidence(
+                star=3, percent=0.70, posterior=0.70, variance=0.05, sample_n=1
+            ),
+            evidence=list(picture.evidence[:3]),
+            falsifiable="若命主实际长期走纯市场/民营路径，则该耦合框架需降级为 market_wealth",
+        ))
+
+    # 6. 计算 layer_summary
     layer_summary: dict[str, int] = {"共识": 0, "互补": 0, "独门": 0, "冲突仲裁": 0}
     for c in conclusions:
         layer_summary[c.layer] = layer_summary.get(c.layer, 0) + 1
 
-    # 6. 计算 overall_confidence
+    # 7. 计算 overall_confidence
     if conclusions:
         stars = [c.confidence.star for c in conclusions]
         avg_star = sum(stars) / len(stars)
@@ -739,10 +818,10 @@ def integrate(
         overall = Confidence(star=2, percent=0.50, posterior=0.50,
                              variance=0.10, sample_n=0)
 
-    # 7. 应期总表
+    # 8. 应期总表
     yingqi_table = _build_yingqi_table(gate_results)
 
-    # 8. 生成时间戳
+    # 9. 生成时间戳
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     case_id = energy.case_id or (parsed.case_id if parsed else "")
@@ -755,10 +834,12 @@ def integrate(
         gate_results=gate_results,
         support=support,
         final_conclusions=conclusions,
-        conflicts=[],  # TODO: 跨派冲突仲裁（v1.3 候选）
+        conflicts=[],  # 结构化冲突由人工/报告层登记；自动语义仲裁另走独立模型
         yingqi_table=yingqi_table,
         overall_confidence=overall,
         layer_summary=layer_summary,
+        schema_version="1.4.0",
+        pipeline_version="1.4.0",
         generated_at=generated_at,
         hash_chain_valid=valid,
         hash_chain_notes=hash_notes,

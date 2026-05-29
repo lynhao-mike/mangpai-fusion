@@ -212,20 +212,23 @@
         event_type：事件类型候选列表（在体制内案例中扩展为"职级升迁/财源/置业"多解）
 
       v1.4 实现：
-        engine/yingqi/threelayer.py 新增 event_type_hypotheses: list[str] 字段
+        engine/yingqi/types.py 新增 event_type_hypotheses: list[str] 字段
+        engine/yingqi/gate.py 增加体制内关键词注入逻辑
         体制内案例的"财星显象"应期 → 输出多个候选事件类型而非单一类型
 
-  feedback_status: pending                # 暂未落规则文件，等 v1.4 应期模型升级时一并处理
+  feedback_status: confirmed              # v1.4 V4 已落地并纳入 H9 pytest 验收
   feedback_evidence: cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
   outcome:
-    correct: null                         # 待 v1.4 实施验证
+    correct: true                         # 工程方向已验证：事件类型与时间窗分流
     notes: |
-      建议性仲裁。已在 META/rule-changelog.md 标记 v1.4 backlog。
-      不立即落代码，避免污染 v1.3 应期模型。
+      建议性仲裁已完成 v1.4 同步：GateResult.event_type_hypotheses 支持 round-trip，
+      体制内财星显象可保留“职级升迁/财源/置业”多候选，不再把时间窗命中误伤为单一事件类型失验。
 
   workflow_artifacts:
     - cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
-    - 待 v1.4：engine/yingqi/threelayer.py
+    - engine/yingqi/types.py: GateResult.event_type_hypotheses
+    - engine/yingqi/gate.py: _infer_event_type_hypotheses
+    - tests/v1_3_acceptance/test_h9_event_type_hypotheses.py
 ```
 
 ---
@@ -235,8 +238,8 @@
 | CFL ID | 类别 | 严重度 | 状态 | 落代码 |
 |---|---|---|---|---|
 | CFL-C015-001 | rule_arbitration | major | confirmed | ✅ EXC-D-LIFA-CAP-001 候选 |
-| CFL-C015-002 | engine_engineering | medium | confirmed | ✅ output_linter W9 |
-| CFL-C015-003 | engine_engineering | medium | pending | ⏳ v1.4 backlog |
+| CFL-C015-002 | engine_engineering | medium | confirmed | ✅ output_linter W9 + v1.4 V5/V6/V7/V8 |
+| CFL-C015-003 | engine_engineering | medium | confirmed | ✅ event_type_hypotheses + H9 |
 
 
 
