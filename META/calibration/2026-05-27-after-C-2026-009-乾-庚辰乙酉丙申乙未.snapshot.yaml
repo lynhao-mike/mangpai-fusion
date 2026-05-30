@@ -1,0 +1,66 @@
+case_id: C-2026-009-乾-庚辰乙酉丙申乙未
+ts: '2026-05-27T15:01:00'
+case_count: 14
+rule_updates:
+- rule_id: M1-D-118
+  school: duan
+  hits:
+    before: 1
+    after: 2
+  misses:
+    before: 0
+    after: 0
+  star:
+    before: 3
+    after: 4
+  posterior:
+    before: 0.6667
+    after: 0.75
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: hit
+  note: 段派（M1）
+- rule_id: M2-Y-070
+  school: yang
+  hits:
+    before: 2
+    after: 2
+  misses:
+    before: 2
+    after: 2
+  star:
+    before: 2
+    after: 2
+  posterior:
+    before: 0.5
+    after: 0.5
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: abstain
+  note: 杨派（M2）
+- rule_id: M3-R-031
+  school: ren
+  hits:
+    before: 6
+    after: 7
+  misses:
+    before: 3
+    after: 3
+  star:
+    before: 3
+    after: 3
+  posterior:
+    before: 0.6364
+    after: 0.6667
+  status:
+    before: flagged_for_review
+    after: flagged_for_review
+  verdict: hit
+  note: 任派（M3）
+status_changes: []
+cross_school_triggered: false
+frozen: false
+skipped_rule_ids: []
+notes: []

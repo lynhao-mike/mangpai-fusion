@@ -5,8 +5,8 @@
 设计要点
 --------
 1. **case_id 短形式自动补全**：
-       load_case("C-2026-001")  # 自动找到 C-2026-001-庚申戊寅壬子辛丑
-       load_case("C-2026-001-庚申戊寅壬子辛丑")  # 完整形式
+       load_case("C-2026-001")  # 自动找到 C-2026-001-乾-庚申戊寅壬子辛丑
+       load_case("C-2026-001-乾-庚申戊寅壬子辛丑")  # 完整形式
 2. **回退策略**（rationale 见 _fixtures.py）：
        a. 优先用 ``tools.preflight.parse()`` 解析 v1.2 strict YAML 形式 input.md
        b. 失败则降级到 ``case_id 8 字干支构造 + 硬编码大运表``
@@ -47,20 +47,21 @@ from engine.predicates.types import (
 REPO_ROOT: Path = Path(__file__).resolve().parents[2]
 CASES_DIR: Path = REPO_ROOT / "cases"
 
-# case_id 形如 ``C-2026-001-庚申戊寅壬子辛丑``
+# case_id 形如 ``C-2026-001-乾-庚申戊寅壬子辛丑``
 _CASE_ID_FULL_RE: re.Pattern[str] = re.compile(
-    r"^C-(?P<year>\d{4})-(?P<num>\d{3})-"
+    r"^C-(?P<year>\d{4})-(?P<num>\d{3})-(?P<mingshi>[乾坤])-"
     r"(?P<bazi>([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4})$"
 )
+_MINGSHI_BY_GENDER: dict[str, str] = {"M": "乾", "F": "坤"}
 _CASE_ID_SHORT_RE: re.Pattern[str] = re.compile(
     r"^C-(?P<year>\d{4})-(?P<num>\d{3})$"
 )
 
 # 三个有 feedback.md 真实回测数据的"圣杯案例"（决策 I）
 VALIDATED_CASE_IDS: tuple[str, ...] = (
-    "C-2026-001-庚申戊寅壬子辛丑",
-    "C-2026-002-壬戌庚戌戊辰丙辰",
-    "C-2026-014-丙戌庚子乙亥辛巳",
+    "C-2026-001-乾-庚申戊寅壬子辛丑",
+    "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+    "C-2026-014-乾-丙戌庚子乙亥辛巳",
 )
 
 
@@ -76,7 +77,7 @@ VALIDATED_CASE_IDS: tuple[str, ...] = (
 # ============================================================
 
 _CASE_DATA: dict[str, dict] = {
-    "C-2026-001-庚申戊寅壬子辛丑": dict(
+    "C-2026-001-乾-庚申戊寅壬子辛丑": dict(
         birth_year=1980,
         gender="M",
         qiyun_sui=8.5,
@@ -92,7 +93,7 @@ _CASE_DATA: dict[str, dict] = {
             (78, "丙戌"),
         ],
     ),
-    "C-2026-002-壬戌庚戌戊辰丙辰": dict(
+    "C-2026-002-坤-壬戌庚戌戊辰丙辰": dict(
         birth_year=1982,
         gender="F",
         qiyun_sui=1.1,
@@ -108,7 +109,7 @@ _CASE_DATA: dict[str, dict] = {
             (72, "壬寅"),
         ],
     ),
-    "C-2026-007-乙丑庚辰己丑庚午": dict(
+    "C-2026-007-乾-乙丑庚辰己丑庚午": dict(
         birth_year=1985,
         gender="M",
         qiyun_sui=5.0,
@@ -124,7 +125,7 @@ _CASE_DATA: dict[str, dict] = {
             (75, "壬申"),
         ],
     ),
-    "C-2026-008-壬申癸卯丁未壬寅": dict(
+    "C-2026-008-坤-壬申癸卯丁未壬寅": dict(
         birth_year=1992,
         gender="F",
         qiyun_sui=10.0,
@@ -140,7 +141,7 @@ _CASE_DATA: dict[str, dict] = {
             (80, "乙未"),
         ],
     ),
-    "C-2026-009-庚辰乙酉丙申乙未": dict(
+    "C-2026-009-乾-庚辰乙酉丙申乙未": dict(
         birth_year=2000,
         gender="M",
         qiyun_sui=2.0,
@@ -156,7 +157,7 @@ _CASE_DATA: dict[str, dict] = {
             (72, "癸巳"),
         ],
     ),
-    "C-2026-010-甲子丁卯癸卯庚申": dict(
+    "C-2026-010-坤-甲子丁卯癸卯庚申": dict(
         birth_year=1984,
         gender="F",
         qiyun_sui=2.0,
@@ -172,7 +173,7 @@ _CASE_DATA: dict[str, dict] = {
             (72, "己未"),
         ],
     ),
-    "C-2026-011-乙丑乙酉丁丑癸卯": dict(
+    "C-2026-011-乾-乙丑乙酉丁丑癸卯": dict(
         birth_year=1985,
         gender="M",
         qiyun_sui=9.0,
@@ -188,9 +189,9 @@ _CASE_DATA: dict[str, dict] = {
             (80, "丁丑"),
         ],
     ),
-    "C-2026-012-壬戌癸丑丙申壬辰": dict(
+    "C-2026-012-坤-壬戌癸丑丙申壬辰": dict(
         birth_year=1983,
-        gender="M",
+        gender="F",
         qiyun_sui=1.0,
         shun_ni="顺",
         steps=[
@@ -204,7 +205,7 @@ _CASE_DATA: dict[str, dict] = {
             (71, "乙巳"),
         ],
     ),
-    "C-2026-013-壬申甲辰丙辰己丑": dict(
+    "C-2026-013-坤-壬申甲辰丙辰己丑": dict(
         birth_year=1992,
         gender="F",
         qiyun_sui=2.0,
@@ -220,7 +221,7 @@ _CASE_DATA: dict[str, dict] = {
             (72, "丙申"),
         ],
     ),
-    "C-2026-014-丙戌庚子乙亥辛巳": dict(
+    "C-2026-014-乾-丙戌庚子乙亥辛巳": dict(
         birth_year=2006,
         gender="M",
         qiyun_sui=8.2,
@@ -244,7 +245,7 @@ _CASE_DATA: dict[str, dict] = {
 # ============================================================
 
 def _expand_short_id(case_id: str) -> str:
-    """C-2026-001 → C-2026-001-庚申戊寅壬子辛丑（自动补全完整 case_id）。"""
+    """C-2026-001 → C-2026-001-乾-庚申戊寅壬子辛丑（自动补全完整 case_id）。"""
     if _CASE_ID_FULL_RE.match(case_id):
         return case_id
     if _CASE_ID_SHORT_RE.match(case_id):
@@ -343,6 +344,14 @@ def parse_case_metadata(case_id: str) -> dict:
         raise KeyError(f"未注册的 case: {full}")
     d = _CASE_DATA[full].copy()
     d["case_id"] = full
+    m = _CASE_ID_FULL_RE.match(full)
+    if m:
+        d["mingshi"] = m.group("mingshi")
+        expected = _MINGSHI_BY_GENDER[str(d["gender"])]
+        if d["mingshi"] != expected:
+            raise ValueError(
+                f"case_id 命式段 {d['mingshi']!r} 与 gender {d['gender']!r} 不一致: {full}"
+            )
     return d
 
 
@@ -351,7 +360,7 @@ def load_case(case_id_or_short: str) -> ParsedInput:
 
     参数：
         case_id_or_short:
-            - 完整形式："C-2026-001-庚申戊寅壬子辛丑"
+            - 完整形式："C-2026-001-乾-庚申戊寅壬子辛丑"
             - 短形式：  "C-2026-001"
 
     返回：
@@ -364,7 +373,7 @@ def load_case(case_id_or_short: str) -> ParsedInput:
     full = _expand_short_id(case_id_or_short)
     if full not in _CASE_DATA:
         raise KeyError(f"case fixture 未注册: {full}")
-    data = _CASE_DATA[full]
+    data = parse_case_metadata(full)
     bazi = _parse_bazi_from_case_id(full)
     dayun = _build_dayun(
         qiyun_sui=float(data["qiyun_sui"]),
@@ -426,7 +435,7 @@ def _smoke() -> None:
         assert len(p.dayun.排布) >= 6
     # 短形式
     p1 = load_case("C-2026-001")
-    p2 = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    p2 = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     assert p1.case_id == p2.case_id
 
     # 验证案例

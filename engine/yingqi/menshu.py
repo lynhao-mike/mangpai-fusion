@@ -656,7 +656,7 @@ def _smoke() -> None:
     from engine.yingqi.chufa import detect_all_triggers
     from engine.yingqi.keys import get_primary_keys
 
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
 
@@ -695,7 +695,7 @@ def _smoke() -> None:
 
     # 学业 2024 (C-014)
     print("\n=== C-2026-014 学业 2024 ===")
-    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     energy014 = evaluate_energy(parsed014)
     picture014 = match_picture(energy014, parsed014)
     keys_xue = get_primary_keys("学业", parsed014.bazi, energy014)

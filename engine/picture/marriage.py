@@ -581,7 +581,7 @@ def _smoke() -> None:
     from engine.energy.evaluator import evaluate_energy
 
     print("\n=== B-002 关键测试：C-2026-001 marriage_picture ===")
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     mp = build_marriage_picture(energy, parsed)
     win = mp["初婚最佳窗口"]
@@ -606,7 +606,7 @@ def _smoke() -> None:
     print(f"  [OK] B-002 G2 修复关键证据：窗口 {win} 含 25 岁（2005 年）")
 
     print("\n=== C-2026-002 marriage_picture ===")
-    parsed2 = load_case("C-2026-002-壬戌庚戌戊辰丙辰")
+    parsed2 = load_case("C-2026-002-坤-壬戌庚戌戊辰丙辰")
     energy2 = evaluate_energy(parsed2)
     mp2 = build_marriage_picture(energy2, parsed2)
     print(f"  初婚最佳窗口: {mp2['初婚最佳窗口']}")
@@ -615,7 +615,7 @@ def _smoke() -> None:
     print(f"  晚婚信号:    {mp2['晚婚信号']}")
 
     print("\n=== C-2026-014 marriage_picture ===")
-    parsed3 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed3 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     energy3 = evaluate_energy(parsed3)
     mp3 = build_marriage_picture(energy3, parsed3)
     print(f"  初婚最佳窗口: {mp3['初婚最佳窗口']}")

@@ -105,8 +105,8 @@ def test_tool_registry_only_uses_first_readme_table_cell_for_status() -> None:
         ("engine/contracts/07-pipeline-flow.md", "engine/pangzheng/support.py support_with_shensha"),
         ("engine/contracts/00-OVERVIEW.md", "└── seal_prediction.py"),
         ("META/conflict-trends.md", "engine/dimension-weights.yaml"),
-        ("predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md", "seal_prediction.py"),
-        ("predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md", "calibrate.py"),
+        ("predictions/PRED-2026-001-C2026001-乾-庚申戊寅壬子辛丑-future.md", "seal_prediction.py"),
+        ("predictions/PRED-2026-001-C2026001-乾-庚申戊寅壬子辛丑-future.md", "calibrate.py"),
     ],
 )
 def test_contract_drift_forbidden_fragments_do_not_return(rel: str, forbidden: str) -> None:

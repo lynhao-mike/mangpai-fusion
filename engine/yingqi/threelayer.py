@@ -351,7 +351,7 @@ def _smoke() -> None:
     from engine.energy.evaluator import evaluate_energy
     from engine.picture.matcher import match_picture
 
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
 
@@ -390,7 +390,7 @@ def _smoke() -> None:
     print(f"  L3: passed={l3.passed} | primary={primary.type if primary else None}")
 
     # 4) C-2026-014 学业 2024
-    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     energy014 = evaluate_energy(parsed014)
     picture014 = match_picture(energy014, parsed014)
     print("\n=== C-2026-014 学业 2024 ===")

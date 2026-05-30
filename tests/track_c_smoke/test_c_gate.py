@@ -60,13 +60,13 @@ from tests.fixtures.cases import load_case
 @pytest.fixture(scope="module")
 def parsed_c001():
     """C-2026-001 ParsedInput"""
-    return load_case("C-2026-001-庚申戊寅壬子辛丑")
+    return load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
 
 
 @pytest.fixture(scope="module")
 def parsed_c014():
     """C-2026-014 ParsedInput"""
-    return load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    return load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
 
 
 @pytest.fixture(scope="module")
@@ -292,10 +292,10 @@ def _run_unittest_style() -> int:
     print("                    Track-C 5 项验收 + G2 圣杯 + Track-E 联动")
     print("=" * 78)
 
-    p001 = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    p001 = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     e001 = evaluate_energy(p001)
     pic001 = match_picture(e001, p001)
-    p014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    p014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     e014 = evaluate_energy(p014)
     pic014 = match_picture(e014, p014)
 

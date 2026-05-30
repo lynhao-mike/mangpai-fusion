@@ -175,7 +175,7 @@ def test_h11_real_c014_v21_report():
     from tools.output_linter import lint
     repo_root = pathlib.Path(__file__).resolve().parents[2]
     report_path = (repo_root / "reports"
-                   / "C-2026-014-丙戌庚子乙亥辛巳-report.md")
+                   / "C-2026-014-乾-丙戌庚子乙亥辛巳-report.md")
     if not report_path.exists():
         pytest.skip(f"真实报告不存在: {report_path}")
     md = report_path.read_text(encoding="utf-8")

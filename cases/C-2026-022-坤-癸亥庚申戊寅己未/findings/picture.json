@@ -1,0 +1,580 @@
+{
+  "schema_version": "1.4.0",
+  "school": "杨",
+  "case_id": "C-2026-022-坤-癸亥庚申戊寅己未",
+  "upstream_hash": "65b92c2e782042ab",
+  "wubu_steps": [
+    {
+      "step": 1,
+      "name": "家里找财官",
+      "finding": "家里有财官：时支乙(官)/日支甲(官) → 弱制即得，自家拿（M2-Y-019/023）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第1步家里找财官",
+          "weight": 0.72
+        },
+        {
+          "rule_id": "M2-Y-019",
+          "school": "杨",
+          "description": "家里有先拿家里的",
+          "weight": 0.65
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "name": "出处",
+      "finding": "从坐下出 = 完全是我自己的；从比劫宫出 = 两人的/合作",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-119",
+          "school": "杨",
+          "description": "第2步看财官出处",
+          "weight": 0.7
+        },
+        {
+          "rule_id": "M2-Y-162",
+          "school": "杨",
+          "description": "寻根基",
+          "weight": 0.65
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "name": "取法",
+      "finding": "段派母星取法=食伤 → 杨派对应层次=中（技术/销售/中介）（D1 层数=3=做功扎实）（M2-Y-021/119）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-021",
+          "school": "杨",
+          "description": "体取财官层次排序",
+          "weight": 0.72
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "name": "皇粮民营",
+      "finding": "吃皇粮候选：天干透食伤['月干庚'] → 技术/销售（吃皇粮候选）（M2-Y-120）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-120",
+          "school": "杨",
+          "description": "吃皇粮判定",
+          "weight": 0.75
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "name": "天地一气",
+      "finding": "天干十神类(['比劫', '财', '食伤']) 与地支主气(['官杀', '比劫', '财', '食伤'])重叠在 ['比劫', '财', '食伤'] → 部分一致",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-121",
+          "school": "杨",
+          "description": "天地一气原则",
+          "weight": 0.7
+        }
+      ]
+    }
+  ],
+  "wuhe_relations": [
+    {
+      "pair": [
+        "癸",
+        "戊"
+      ],
+      "化神": "火",
+      "state": "搅局",
+      "palaces": [
+        "年柱",
+        "日柱"
+      ],
+      "应事": "西药/药物/颜色/信仰/名声；得妻得财/合作；日主合正财=亲身得",
+      "rationale": "癸戊合化火，但天干己搅局 → 合被拆"
+    }
+  ],
+  "anyin_results": [
+    {
+      "formula": "1旺不受伤",
+      "triggered_shishen": "印",
+      "real_meaning": "比劫旺(力0.34)未受刑穿 → 暗引印：学历/技能（比劫旺暗引印枭）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-029",
+          "school": "杨",
+          "description": "比劫旺而不受伤暗引印",
+          "weight": 0.72
+        }
+      ]
+    },
+    {
+      "formula": "4印护身",
+      "triggered_shishen": "印化杀（家有靠山）",
+      "real_meaning": "官杀+印同现且官杀生印 → 印护身=家世背景/上有靠山",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-032",
+          "school": "杨",
+          "description": "化敌为友最高境界=化杀生印",
+          "weight": 0.82
+        }
+      ]
+    },
+    {
+      "formula": "5官印相生",
+      "triggered_shishen": "官印相生（杀印一体）",
+      "real_meaning": "官杀+印分置月日 → 官印相生=正途升迁（吃皇粮的标志）",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-042",
+          "school": "杨",
+          "description": "官命9取之化官生印",
+          "weight": 0.8
+        }
+      ]
+    },
+    {
+      "formula": "2受制为用",
+      "triggered_shishen": "食神制杀（成就的根基）",
+      "real_meaning": "食伤+官杀同现 → 食制杀=技术官/能办大事",
+      "evidence": [
+        {
+          "rule_id": "M2-Y-033",
+          "school": "杨",
+          "description": "食神制杀=成就",
+          "weight": 0.78
+        }
+      ]
+    }
+  ],
+  "caifu": {
+    "rank": 1,
+    "type": "官杀库",
+    "rationale": "时支未库藏官杀乙（未开）",
+    "evidence": [
+      {
+        "rule_id": "M2-Y-035",
+        "school": "杨",
+        "description": "财富 7 等判定（上游 wealth_ceiling=大富级·上, 自然区间 rank∈[1,3]）",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-034",
+        "school": "杨",
+        "description": "开官杀库=亿级",
+        "weight": 0.85
+      }
+    ]
+  },
+  "guanming": {
+    "rank": 1,
+    "type": "化杀生枭",
+    "rationale": "七杀 + 偏印 同现 → 化杀生枭=行政最高层（罕）",
+    "evidence": [
+      {
+        "rule_id": "M2-Y-042",
+        "school": "杨",
+        "description": "化杀生枭=官命1层",
+        "weight": 0.8
+      }
+    ]
+  },
+  "wealth_level": {
+    "framework": "power_hierarchy"
+  },
+  "huosi_wuxing": {
+    "木": "死木",
+    "金": "寒金",
+    "水": "死水",
+    "土": "土"
+  },
+  "industry_pointers": [
+    "公门/国企",
+    "技术/服务"
+  ],
+  "industry_path": {
+    "P_institutional": 0.85,
+    "primary_path": "institutional",
+    "signals": [
+      "公门",
+      "国企"
+    ],
+    "source": "engine.pipeline._infer_industry_path"
+  },
+  "marriage_picture": {
+    "初婚最佳窗口": [
+      22,
+      28
+    ],
+    "配偶画像": "日支藏 甲(七杀)；配偶为身边人/同学同事；性情仁厚直率",
+    "婚姻稳定度": "易动",
+    "早婚信号": "强",
+    "晚婚信号": "弱",
+    "age_status": {
+      "status": "已过",
+      "current_age": 43,
+      "years_past": 15,
+      "warning": "⚠️ 命主当前 43 岁 · 已过初婚最佳窗口 15 年（窗口 22-28 岁）。本断语对当前命主已无指导意义，应作参考信号；若实际未婚，关注后续大运的财官启动期。",
+      "downgrade": true
+    },
+    "evidence": [
+      {
+        "rule_id": "M2-Y-038",
+        "school": "杨",
+        "description": "婚姻看法三步：宫位婚宫寅多动: 被月支冲,与月支刑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "M2-Y-141",
+        "school": "杨",
+        "description": "结婚应期：配偶星['时支藏 乙(正官, 贴身度0.6)', '年支藏 甲(七杀, 贴身度0.5)']",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M2-Y-064",
+        "school": "杨",
+        "description": "早期大运激活配偶宫: ['大运3(癸亥, 28-37岁) 地支与婚宫寅六合']",
+        "weight": 0.75
+      }
+    ],
+    "_debug": {
+      "gender": "F",
+      "spouse_locations": [
+        [
+          "时支",
+          "乙",
+          "正官"
+        ],
+        [
+          "年支",
+          "甲",
+          "七杀"
+        ],
+        [
+          "日支",
+          "甲",
+          "七杀"
+        ]
+      ],
+      "tieshen_score": 1.0,
+      "tieshen_descs": [
+        "时支藏 乙(正官, 贴身度0.6)",
+        "年支藏 甲(七杀, 贴身度0.5)",
+        "日支藏 甲(七杀, 贴身度1.0)"
+      ],
+      "early_dayun_activated": true,
+      "activation_notes": [
+        "大运3(癸亥, 28-37岁) 地支与婚宫寅六合"
+      ],
+      "stability_desc": "婚宫寅多动: 被月支冲,与月支刑",
+      "yin_count": 0,
+      "food_count": 2,
+      "bijie_count": 3
+    }
+  },
+  "tiaohou_advice": {
+    "喜补五行": "火",
+    "颜色": [
+      "红色",
+      "紫色"
+    ],
+    "方位": "南方",
+    "数字": [
+      3,
+      4
+    ],
+    "文化": "电子/影视/明星元素",
+    "食物": [
+      "苦味",
+      "辣味",
+      "咖啡",
+      "红色食物"
+    ],
+    "贵人方向": "南",
+    "免责": "本调候建议为概率性指引，非医疗/非法律/非金融建议；不进行风水营销（M2-Y-010 / §18.1）",
+    "_debug_shi": {
+      "木": 0.125,
+      "火": 0.02,
+      "土": 0.343,
+      "金": 0.276,
+      "水": 0.236
+    }
+  },
+  "wealth_15tier": {
+    "xueye": {
+      "low": 11,
+      "mid": 12,
+      "high": 13,
+      "label": "大富下",
+      "society": "正厅/上市高管",
+      "income_cny": "1000-3000万 / 亿级起",
+      "rationale": "D1 骨架 L12-L13 · 学业辅佐神煞 0 项 → 提 0 档"
+    },
+    "shiye": {
+      "low": 11,
+      "mid": 12,
+      "high": 13,
+      "label": "大富下",
+      "society": "正厅/上市高管",
+      "income_cny": "1000-3000万 / 亿级起",
+      "rationale": "D2 杨派官命取法=化杀生枭 (rank=1) 理论上限 L13 · 做功 3 层兑现差 1"
+    },
+    "hunyin": {
+      "low": 11,
+      "mid": 11,
+      "high": 13,
+      "label": "中富上",
+      "society": "副厅/上市中层",
+      "income_cny": "500-1000万 / 数千万",
+      "rationale": "D2 配偶宫+高派金舆等旁证 → 妻家档次约 L11-L13, 中位 L11（参考命主财富档次镜像偏低 1 档）"
+    },
+    "caifu": {
+      "low": 12,
+      "mid": 12,
+      "high": 13,
+      "label": "大富下",
+      "society": "正厅/上市高管",
+      "income_cny": "1000-3000万 / 亿级起",
+      "rationale": "D1 段派 wealth_ceiling=大富级·上 (映射 L12-L13) · 做功层数=3 (微调 +0)"
+    },
+    "guanming": {
+      "low": 9,
+      "mid": 12,
+      "high": 13,
+      "label": "大富下",
+      "society": "正厅/上市高管",
+      "income_cny": "1000-3000万 / 亿级起",
+      "rationale": "杨派官命第 1 取=化杀生枭 → 理论上限 L13, 做功 3 层兑现 L12"
+    },
+    "tier_table": [
+      {
+        "tier": 1,
+        "label": "极贫",
+        "society": "流民/乞讨",
+        "income_cny": "<1万"
+      },
+      {
+        "tier": 2,
+        "label": "贫寒",
+        "society": "长工/苦力",
+        "income_cny": "1-3万"
+      },
+      {
+        "tier": 3,
+        "label": "温饱",
+        "society": "小贩/散工",
+        "income_cny": "3-6万"
+      },
+      {
+        "tier": 4,
+        "label": "普工",
+        "society": "蓝领/低技工",
+        "income_cny": "6-10万"
+      },
+      {
+        "tier": 5,
+        "label": "工薪",
+        "society": "蓝领骨干/办事员",
+        "income_cny": "10-20万"
+      },
+      {
+        "tier": 6,
+        "label": "小康下",
+        "society": "白领基层/个体户",
+        "income_cny": "20-30万"
+      },
+      {
+        "tier": 7,
+        "label": "小康中",
+        "society": "普通公务员/国企科员",
+        "income_cny": "30-50万"
+      },
+      {
+        "tier": 8,
+        "label": "小康上",
+        "society": "科级/小老板/资深技术",
+        "income_cny": "50-100万"
+      },
+      {
+        "tier": 9,
+        "label": "中富下",
+        "society": "副处/民企中层",
+        "income_cny": "100-200万 / 千万级资产"
+      },
+      {
+        "tier": 10,
+        "label": "中富中",
+        "society": "正处/民企高管",
+        "income_cny": "200-500万 / 千万级"
+      },
+      {
+        "tier": 11,
+        "label": "中富上",
+        "society": "副厅/上市中层",
+        "income_cny": "500-1000万 / 数千万"
+      },
+      {
+        "tier": 12,
+        "label": "大富下",
+        "society": "正厅/上市高管",
+        "income_cny": "1000-3000万 / 亿级起"
+      },
+      {
+        "tier": 13,
+        "label": "大富中",
+        "society": "副部/产业头部",
+        "income_cny": "3000万-1亿 / 数亿"
+      },
+      {
+        "tier": 14,
+        "label": "大富上",
+        "society": "正部/巨头创始人",
+        "income_cny": "1-3亿 / 十亿级"
+      },
+      {
+        "tier": 15,
+        "label": "巨富",
+        "society": "国级/全球巨头",
+        "income_cny": ">3亿 / 百亿+"
+      }
+    ],
+    "tier_disclaimer": "15 层为 house-defined 标度（杨清娟盲派业内常用版本）。区间为结构性带宽，实际兑现需 known_facts 校验；命主可能因人生选择低于结构上限。"
+  },
+  "energy_consistent": true,
+  "energy_violations": [],
+  "confidence": {
+    "star": 5,
+    "percent": 0.902,
+    "posterior": 0.902,
+    "variance": 0.05,
+    "sample_n": 18
+  },
+  "evidence": [
+    {
+      "rule_id": "M2-Y-119",
+      "school": "杨",
+      "description": "第1步家里找财官",
+      "weight": 0.72
+    },
+    {
+      "rule_id": "M2-Y-019",
+      "school": "杨",
+      "description": "家里有先拿家里的",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M2-Y-119",
+      "school": "杨",
+      "description": "第2步看财官出处",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M2-Y-162",
+      "school": "杨",
+      "description": "寻根基",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M2-Y-021",
+      "school": "杨",
+      "description": "体取财官层次排序",
+      "weight": 0.72
+    },
+    {
+      "rule_id": "M2-Y-120",
+      "school": "杨",
+      "description": "吃皇粮判定",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M2-Y-121",
+      "school": "杨",
+      "description": "天地一气原则",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M2-Y-035",
+      "school": "杨",
+      "description": "财富 7 等判定（上游 wealth_ceiling=大富级·上, 自然区间 rank∈[1,3]）",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M2-Y-034",
+      "school": "杨",
+      "description": "开官杀库=亿级",
+      "weight": 0.85
+    },
+    {
+      "rule_id": "M2-Y-042",
+      "school": "杨",
+      "description": "化杀生枭=官命1层",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M2-Y-029",
+      "school": "杨",
+      "description": "比劫旺而不受伤暗引印",
+      "weight": 0.72
+    },
+    {
+      "rule_id": "M2-Y-032",
+      "school": "杨",
+      "description": "化敌为友最高境界=化杀生印",
+      "weight": 0.82
+    },
+    {
+      "rule_id": "M2-Y-042",
+      "school": "杨",
+      "description": "官命9取之化官生印",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M2-Y-033",
+      "school": "杨",
+      "description": "食神制杀=成就",
+      "weight": 0.78
+    },
+    {
+      "rule_id": "M2-Y-038",
+      "school": "杨",
+      "description": "婚姻看法三步：宫位婚宫寅多动: 被月支冲,与月支刑",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M2-Y-141",
+      "school": "杨",
+      "description": "结婚应期：配偶星['时支藏 乙(正官, 贴身度0.6)', '年支藏 甲(七杀, 贴身度0.5)']",
+      "weight": 0.78
+    },
+    {
+      "rule_id": "M2-Y-064",
+      "school": "杨",
+      "description": "早期大运激活配偶宫: ['大运3(癸亥, 28-37岁) 地支与婚宫寅六合']",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M2-Y-024",
+      "school": "杨",
+      "description": "癸戊合化火[搅局]",
+      "weight": 0.5
+    }
+  ],
+  "debug_info": {
+    "wealth_ceiling_in": "大富级·上",
+    "layer_count_in": 3,
+    "muxing_qufa_in": "食伤",
+    "industry_pointers": [
+      "公门/国企",
+      "技术/服务"
+    ],
+    "marriage_window": [
+      22,
+      28
+    ]
+  }
+}

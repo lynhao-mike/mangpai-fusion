@@ -26,10 +26,10 @@ from engine.predicates.types import (
 def _parse_bazi_from_case_id(case_id: str) -> Bazi:
     """从 case_id 中提取 8 字干支后缀，构造 Bazi。
 
-    case_id 形如 ``C-2026-001-庚申戊寅壬子辛丑``。
+    case_id 形如 ``C-2026-001-乾-庚申戊寅壬子辛丑``。
     """
     m = re.match(
-        r"^C-\d{4}-\d{3}-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$",
+        r"^C-\d{4}-\d{3}-[乾坤]-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$",
         case_id,
     )
     if not m:
@@ -82,8 +82,9 @@ def _build_dayun(
 # 改用 preflight.parse() 自动加载。
 
 _CASE_DATA = {
-    "C-2026-001-庚申戊寅壬子辛丑": dict(
+    "C-2026-001-乾-庚申戊寅壬子辛丑": dict(
         birth_year=1980,
+        gender="M",
         qiyun_sui=8.5,
         shun_ni="顺",
         steps=[
@@ -97,8 +98,9 @@ _CASE_DATA = {
             (78, "丙戌"),
         ],
     ),
-    "C-2026-002-壬戌庚戌戊辰丙辰": dict(
+    "C-2026-002-坤-壬戌庚戌戊辰丙辰": dict(
         birth_year=1982,
+        gender="F",
         qiyun_sui=1.1,
         shun_ni="逆",
         steps=[
@@ -112,8 +114,9 @@ _CASE_DATA = {
             (72, "壬寅"),
         ],
     ),
-    "C-2026-014-丙戌庚子乙亥辛巳": dict(
+    "C-2026-014-乾-丙戌庚子乙亥辛巳": dict(
         birth_year=2006,
+        gender="M",
         qiyun_sui=8.2,
         shun_ni="顺",
         steps=[
@@ -127,8 +130,9 @@ _CASE_DATA = {
             (80, "戊申"),
         ],
     ),
-    "C-2026-011-乙丑乙酉丁丑癸卯": dict(
+    "C-2026-011-乾-乙丑乙酉丁丑癸卯": dict(
         birth_year=1985,
+        gender="M",
         # 起运 9 岁阴男逆排（实际 input.md 写"9 岁起，阴男逆排"）
         qiyun_sui=9.0,
         shun_ni="逆",
@@ -143,8 +147,9 @@ _CASE_DATA = {
             (80, "丁丑"),
         ],
     ),
-    "C-2026-012-壬戌癸丑丙申壬辰": dict(
+    "C-2026-012-坤-壬戌癸丑丙申壬辰": dict(
         birth_year=1983,
+        gender="F",
         qiyun_sui=1.0,
         shun_ni="顺",
         steps=[
@@ -177,6 +182,6 @@ def make_parsed_input(case_id: str) -> ParsedInput:
         case_id=case_id,
         bazi=bazi,
         dayun=dayun,
-        birth={"性别": "M", "公历": f"{data['birth_year']}-01-01"},
+        birth={"性别": data["gender"], "公历": f"{data['birth_year']}-01-01"},
         case_meta={"case_id": case_id, "策略": "B"},
     )

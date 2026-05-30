@@ -50,7 +50,7 @@ class TestALayerCount(unittest.TestCase):
     # ------------------------------------------------------------
     def test_A001_C2026001(self):
         """A-001: C-2026-001 (庚申戊寅壬子辛丑) layer=2, 中富/大富。"""
-        parsed = make_parsed_input("C-2026-001-庚申戊寅壬子辛丑")
+        parsed = make_parsed_input("C-2026-001-乾-庚申戊寅壬子辛丑")
         ef = evaluate_energy(parsed)
         self.assertEqual(
             ef.layer_count, 2,
@@ -66,7 +66,7 @@ class TestALayerCount(unittest.TestCase):
     # ------------------------------------------------------------
     def test_A002_C2026002(self):
         """A-002: C-2026-002 (壬戌庚戌戊辰丙辰) layer=1, 中富。"""
-        parsed = make_parsed_input("C-2026-002-壬戌庚戌戊辰丙辰")
+        parsed = make_parsed_input("C-2026-002-坤-壬戌庚戌戊辰丙辰")
         ef = evaluate_energy(parsed)
         self.assertEqual(
             ef.layer_count, 1,
@@ -86,7 +86,7 @@ class TestALayerCount(unittest.TestCase):
         C-2026-014 是杀印相生主结构；庚/辛/戌 虽被制、合、生泄触及，
         但在同一印化杀链内只计 1 个主功神，避免字符级 over-count。
         """
-        parsed = make_parsed_input("C-2026-014-丙戌庚子乙亥辛巳")
+        parsed = make_parsed_input("C-2026-014-乾-丙戌庚子乙亥辛巳")
         ef = evaluate_energy(parsed)
         self.assertEqual(
             ef.layer_count, 1,
@@ -99,7 +99,7 @@ class TestALayerCount(unittest.TestCase):
         承认启发式当前会把 杀印格 + 食生财 + 财生官 全计入。
         但 layer ≤ 4 + 命局结构合法 = 不阻塞下游。
         """
-        parsed = make_parsed_input("C-2026-014-丙戌庚子乙亥辛巳")
+        parsed = make_parsed_input("C-2026-014-乾-丙戌庚子乙亥辛巳")
         ef = evaluate_energy(parsed)
         self.assertGreaterEqual(ef.layer_count, 1)
         self.assertLessEqual(ef.layer_count, 4)
@@ -112,7 +112,7 @@ class TestALayerCount(unittest.TestCase):
     # ------------------------------------------------------------
     def test_A004_C2026011(self):
         """A-004: C-2026-011 (乙丑乙酉丁丑癸卯) layer ≥ 2。"""
-        parsed = make_parsed_input("C-2026-011-乙丑乙酉丁丑癸卯")
+        parsed = make_parsed_input("C-2026-011-乾-乙丑乙酉丁丑癸卯")
         ef = evaluate_energy(parsed)
         self.assertGreaterEqual(
             ef.layer_count, 2,
@@ -124,7 +124,7 @@ class TestALayerCount(unittest.TestCase):
     # ------------------------------------------------------------
     def test_A005_C2026012(self):
         """A-005: C-2026-012 (壬戌癸丑丙申壬辰) layer ≥ 2。"""
-        parsed = make_parsed_input("C-2026-012-壬戌癸丑丙申壬辰")
+        parsed = make_parsed_input("C-2026-012-坤-壬戌癸丑丙申壬辰")
         ef = evaluate_energy(parsed)
         self.assertGreaterEqual(
             ef.layer_count, 2,
@@ -140,7 +140,7 @@ class TestEnergyFindingsContract(unittest.TestCase):
     """对 EnergyFindings 输出格式的契约测试。"""
 
     def test_findings_has_required_fields(self):
-        parsed = make_parsed_input("C-2026-001-庚申戊寅壬子辛丑")
+        parsed = make_parsed_input("C-2026-001-乾-庚申戊寅壬子辛丑")
         ef = evaluate_energy(parsed)
 
         # 必填字段非空
@@ -170,7 +170,7 @@ class TestEnergyFindingsContract(unittest.TestCase):
 
     def test_findings_round_trip_json(self):
         """to_json → from_json round-trip 一致。"""
-        parsed = make_parsed_input("C-2026-002-壬戌庚戌戊辰丙辰")
+        parsed = make_parsed_input("C-2026-002-坤-壬戌庚戌戊辰丙辰")
         ef = evaluate_energy(parsed)
         s = ef.to_json()
         from engine.energy.types import EnergyFindings
@@ -183,11 +183,11 @@ class TestEnergyFindingsContract(unittest.TestCase):
     def test_segpai_muxing_qufa_default(self):
         """段派"母星取法"（决策 J 独门）必须落在 禄/食伤/比劫，不能是 印。"""
         for cid in [
-            "C-2026-001-庚申戊寅壬子辛丑",
-            "C-2026-002-壬戌庚戌戊辰丙辰",
-            "C-2026-014-丙戌庚子乙亥辛巳",
-            "C-2026-011-乙丑乙酉丁丑癸卯",
-            "C-2026-012-壬戌癸丑丙申壬辰",
+            "C-2026-001-乾-庚申戊寅壬子辛丑",
+            "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+            "C-2026-014-乾-丙戌庚子乙亥辛巳",
+            "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+            "C-2026-012-坤-壬戌癸丑丙申壬辰",
         ]:
             parsed = make_parsed_input(cid)
             ef = evaluate_energy(parsed)

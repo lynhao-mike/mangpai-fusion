@@ -51,7 +51,7 @@ git revert <track-G 初始化 commit>
 
 ---
 
-## 2026-05-25 21:04 · ingest C-2026-001-庚申戊寅壬子辛丑
+## 2026-05-25 21:04 · ingest C-2026-001-乾-庚申戊寅壬子辛丑
 
 case_count: 10
 trigger: ingest_feedback
@@ -97,12 +97,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-001-庚申戊寅壬子辛丑.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-001-乾-庚申戊寅壬子辛丑.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:04 · ingest C-2026-002-壬戌庚戌戊辰丙辰
+## 2026-05-25 21:04 · ingest C-2026-002-坤-壬戌庚戌戊辰丙辰
 
 case_count: 10
 trigger: ingest_feedback
@@ -142,12 +142,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-002-壬戌庚戌戊辰丙辰.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-002-坤-壬戌庚戌戊辰丙辰.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:04 · ingest C-2026-007-乙丑庚辰己丑庚午
+## 2026-05-25 21:04 · ingest C-2026-007-乾-乙丑庚辰己丑庚午
 
 case_count: 10
 trigger: ingest_feedback
@@ -168,12 +168,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-007-乙丑庚辰己丑庚午.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-007-乾-乙丑庚辰己丑庚午.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-008-壬申癸卯丁未壬寅
+## 2026-05-25 21:05 · ingest C-2026-008-坤-壬申癸卯丁未壬寅
 
 case_count: 10
 trigger: ingest_feedback
@@ -195,12 +195,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-008-壬申癸卯丁未壬寅.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-008-坤-壬申癸卯丁未壬寅.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-009-庚辰乙酉丙申乙未
+## 2026-05-25 21:05 · ingest C-2026-009-乾-庚辰乙酉丙申乙未
 
 case_count: 10
 trigger: ingest_feedback
@@ -222,12 +222,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-009-庚辰乙酉丙申乙未.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-009-乾-庚辰乙酉丙申乙未.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-010-甲子丁卯癸卯庚申
+## 2026-05-25 21:05 · ingest C-2026-010-坤-甲子丁卯癸卯庚申
 
 case_count: 10
 trigger: ingest_feedback
@@ -249,12 +249,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-010-甲子丁卯癸卯庚申.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-010-坤-甲子丁卯癸卯庚申.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-011-乙丑乙酉丁丑癸卯
+## 2026-05-25 21:05 · ingest C-2026-011-乾-乙丑乙酉丁丑癸卯
 
 case_count: 10
 trigger: ingest_feedback
@@ -274,12 +274,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-011-乙丑乙酉丁丑癸卯.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-011-乾-乙丑乙酉丁丑癸卯.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-012-壬戌癸丑丙申壬辰
+## 2026-05-25 21:05 · ingest C-2026-012-坤-壬戌癸丑丙申壬辰
 
 case_count: 10
 trigger: ingest_feedback
@@ -297,12 +297,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-012-壬戌癸丑丙申壬辰.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-012-坤-壬戌癸丑丙申壬辰.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-013-壬申甲辰丙辰己丑
+## 2026-05-25 21:05 · ingest C-2026-013-坤-壬申甲辰丙辰己丑
 
 case_count: 10
 trigger: ingest_feedback
@@ -320,12 +320,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-013-壬申甲辰丙辰己丑.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-013-坤-壬申甲辰丙辰己丑.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-25 21:05 · ingest C-2026-014-丙戌庚子乙亥辛巳
+## 2026-05-25 21:05 · ingest C-2026-014-乾-丙戌庚子乙亥辛巳
 
 case_count: 10
 trigger: ingest_feedback
@@ -369,12 +369,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-25-after-C-2026-014-丙戌庚子乙亥辛巳.snapshot.yaml
+META/calibration/2026-05-25-after-C-2026-014-乾-丙戌庚子乙亥辛巳.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-26 05:35 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+## 2026-05-26 05:35 · ingest C-2026-015-乾-甲寅乙亥丙辰辛卯
 
 case_count: 11
 trigger: ingest_feedback
@@ -422,7 +422,7 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-26-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+META/calibration/2026-05-26-after-C-2026-015-乾-甲寅乙亥丙辰辛卯.snapshot.yaml
 ```
 
 ---
@@ -467,7 +467,7 @@ branch: `feat/v1.4-w1-docs-and-tests`
 
 ---
 
-## 2026-05-27 15:00 · ingest C-2026-001-庚申戊寅壬子辛丑
+## 2026-05-27 15:00 · ingest C-2026-001-乾-庚申戊寅壬子辛丑
 
 case_count: 14
 trigger: ingest_feedback
@@ -522,12 +522,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-001-庚申戊寅壬子辛丑.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-001-乾-庚申戊寅壬子辛丑.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:00 · ingest C-2026-002-壬戌庚戌戊辰丙辰
+## 2026-05-27 15:00 · ingest C-2026-002-坤-壬戌庚戌戊辰丙辰
 
 case_count: 14
 trigger: ingest_feedback
@@ -576,12 +576,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-002-壬戌庚戌戊辰丙辰.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-002-坤-壬戌庚戌戊辰丙辰.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:00 · ingest C-2026-007-乙丑庚辰己丑庚午
+## 2026-05-27 15:00 · ingest C-2026-007-乾-乙丑庚辰己丑庚午
 
 case_count: 14
 trigger: ingest_feedback
@@ -602,12 +602,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-007-乙丑庚辰己丑庚午.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-007-乾-乙丑庚辰己丑庚午.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:00 · ingest C-2026-008-壬申癸卯丁未壬寅
+## 2026-05-27 15:00 · ingest C-2026-008-坤-壬申癸卯丁未壬寅
 
 case_count: 14
 trigger: ingest_feedback
@@ -633,12 +633,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-008-壬申癸卯丁未壬寅.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-008-坤-壬申癸卯丁未壬寅.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-009-庚辰乙酉丙申乙未
+## 2026-05-27 15:01 · ingest C-2026-009-乾-庚辰乙酉丙申乙未
 
 case_count: 14
 trigger: ingest_feedback
@@ -660,12 +660,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-009-庚辰乙酉丙申乙未.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-009-乾-庚辰乙酉丙申乙未.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-010-甲子丁卯癸卯庚申
+## 2026-05-27 15:01 · ingest C-2026-010-坤-甲子丁卯癸卯庚申
 
 case_count: 14
 trigger: ingest_feedback
@@ -687,12 +687,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-010-甲子丁卯癸卯庚申.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-010-坤-甲子丁卯癸卯庚申.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-011-乙丑乙酉丁丑癸卯
+## 2026-05-27 15:01 · ingest C-2026-011-乾-乙丑乙酉丁丑癸卯
 
 case_count: 14
 trigger: ingest_feedback
@@ -710,12 +710,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-011-乙丑乙酉丁丑癸卯.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-011-乾-乙丑乙酉丁丑癸卯.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-012-壬戌癸丑丙申壬辰
+## 2026-05-27 15:01 · ingest C-2026-012-坤-壬戌癸丑丙申壬辰
 
 case_count: 14
 trigger: ingest_feedback
@@ -733,12 +733,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-012-壬戌癸丑丙申壬辰.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-012-坤-壬戌癸丑丙申壬辰.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-013-壬申甲辰丙辰己丑
+## 2026-05-27 15:01 · ingest C-2026-013-坤-壬申甲辰丙辰己丑
 
 case_count: 14
 trigger: ingest_feedback
@@ -756,12 +756,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-013-壬申甲辰丙辰己丑.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-013-坤-壬申甲辰丙辰己丑.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-014-丙戌庚子乙亥辛巳
+## 2026-05-27 15:01 · ingest C-2026-014-乾-丙戌庚子乙亥辛巳
 
 case_count: 14
 trigger: ingest_feedback
@@ -804,12 +804,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-014-丙戌庚子乙亥辛巳.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-014-乾-丙戌庚子乙亥辛巳.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-27 15:01 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+## 2026-05-27 15:01 · ingest C-2026-015-乾-甲寅乙亥丙辰辛卯
 
 case_count: 14
 trigger: ingest_feedback
@@ -852,12 +852,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-27-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+META/calibration/2026-05-27-after-C-2026-015-乾-甲寅乙亥丙辰辛卯.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-29 11:17 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+## 2026-05-29 11:17 · ingest C-2026-015-乾-甲寅乙亥丙辰辛卯
 
 case_count: 15
 trigger: ingest_feedback
@@ -906,12 +906,12 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-29-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+META/calibration/2026-05-29-after-C-2026-015-乾-甲寅乙亥丙辰辛卯.snapshot.yaml
 ```
 
 ---
 
-## 2026-05-29 11:29 · ingest C-2026-015-甲寅乙亥丙辰辛卯
+## 2026-05-29 11:29 · ingest C-2026-015-乾-甲寅乙亥丙辰辛卯
 
 case_count: 15
 trigger: ingest_feedback
@@ -960,7 +960,7 @@ trigger: ingest_feedback
 # 回滚到本次 ingest 前：
 git revert <commit-hash>
 # 或恢复快照：
-META/calibration/2026-05-29-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.yaml
+META/calibration/2026-05-29-after-C-2026-015-乾-甲寅乙亥丙辰辛卯.snapshot.yaml
 ```
 
 ---
@@ -970,7 +970,7 @@ META/calibration/2026-05-29-after-C-2026-015-甲寅乙亥丙辰辛卯.snapshot.y
 (本段允许手工备注；不影响自动化流程)
 
 
-## 2026-05-27 · ingest C-2026-018-乙丑戊寅乙酉乙酉
+## 2026-05-27 · ingest C-2026-018-坤-乙丑戊寅乙酉乙酉
 
 case_count: 12
 trigger: ingest_feedback（手动模式，本环境无 Python runtime）

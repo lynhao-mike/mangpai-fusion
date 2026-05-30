@@ -42,7 +42,7 @@ WEALTH_ZHONG_OR_DA: set[str] = WEALTH_ZHONG_FU | WEALTH_DA_FU
 
 def test_A001_C2026_001_layer_2_zhongfu_or_dafu() -> None:
     """A-001: C-2026-001 (庚申戊寅壬子辛丑) layer=2, 中富/大富。"""
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     ef = evaluate_energy(parsed)
     assert ef.layer_count == 2, (
         f"A-001 layer_count 应为 2，实为 {ef.layer_count}"
@@ -54,7 +54,7 @@ def test_A001_C2026_001_layer_2_zhongfu_or_dafu() -> None:
 
 def test_A002_C2026_002_layer_1_zhongfu() -> None:
     """A-002: C-2026-002 (壬戌庚戌戊辰丙辰) layer=1, 中富。"""
-    parsed = load_case("C-2026-002-壬戌庚戌戊辰丙辰")
+    parsed = load_case("C-2026-002-坤-壬戌庚戌戊辰丙辰")
     ef = evaluate_energy(parsed)
     assert ef.layer_count == 1, (
         f"A-002 layer_count 应为 1，实为 {ef.layer_count}"
@@ -71,7 +71,7 @@ def test_A003_C2026_014_strict_layer_1() -> None:
     over-count；与 ``tests/track_a_smoke/test_a_layer_count.py::test_A003_C2026014_strict``
     保持一致。
     """
-    parsed = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     ef = evaluate_energy(parsed)
     assert ef.layer_count == 1, (
         f"A-003 期望 layer=1，实为 {ef.layer_count}"
@@ -80,7 +80,7 @@ def test_A003_C2026_014_strict_layer_1() -> None:
 
 def test_A003_C2026_014_relaxed_layer_in_range() -> None:
     """A-003 宽松版：C-2026-014 layer ∈ [1, 4] 且 wealth ∉ 巨富/贫困。"""
-    parsed = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     ef = evaluate_energy(parsed)
     assert 1 <= ef.layer_count <= 4
     assert "贫困" not in ef.wealth_ceiling
@@ -89,7 +89,7 @@ def test_A003_C2026_014_relaxed_layer_in_range() -> None:
 
 def test_A004_C2026_011_layer_ge_2() -> None:
     """A-004: C-2026-011 (乙丑乙酉丁丑癸卯) layer ≥ 2。"""
-    parsed = load_case("C-2026-011-乙丑乙酉丁丑癸卯")
+    parsed = load_case("C-2026-011-乾-乙丑乙酉丁丑癸卯")
     ef = evaluate_energy(parsed)
     assert ef.layer_count >= 2, (
         f"A-004 layer_count 应 ≥ 2，实为 {ef.layer_count}"
@@ -98,7 +98,7 @@ def test_A004_C2026_011_layer_ge_2() -> None:
 
 def test_A005_C2026_012_layer_ge_2() -> None:
     """A-005: C-2026-012 (壬戌癸丑丙申壬辰) layer ≥ 2。"""
-    parsed = load_case("C-2026-012-壬戌癸丑丙申壬辰")
+    parsed = load_case("C-2026-012-坤-壬戌癸丑丙申壬辰")
     ef = evaluate_energy(parsed)
     assert ef.layer_count >= 2, (
         f"A-005 layer_count 应 ≥ 2，实为 {ef.layer_count}"
@@ -112,9 +112,9 @@ def test_A005_C2026_012_layer_ge_2() -> None:
 @pytest.mark.parametrize(
     "case_id",
     [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
     ],
 )
 def test_energy_findings_required_fields(case_id: str) -> None:
@@ -142,7 +142,7 @@ def test_energy_findings_required_fields(case_id: str) -> None:
 
 def test_energy_findings_round_trip_json() -> None:
     """to_json → from_json 一致 + hash 稳定。"""
-    parsed = load_case("C-2026-002-壬戌庚戌戊辰丙辰")
+    parsed = load_case("C-2026-002-坤-壬戌庚戌戊辰丙辰")
     ef = evaluate_energy(parsed)
     s = ef.to_json()
 
@@ -156,11 +156,11 @@ def test_energy_findings_round_trip_json() -> None:
 @pytest.mark.parametrize(
     "case_id",
     [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
-        "C-2026-011-乙丑乙酉丁丑癸卯",
-        "C-2026-012-壬戌癸丑丙申壬辰",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
+        "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+        "C-2026-012-坤-壬戌癸丑丙申壬辰",
     ],
 )
 def test_segpai_muxing_qufa_not_yin(case_id: str) -> None:

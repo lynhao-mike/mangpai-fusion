@@ -50,7 +50,7 @@ from tools.rule_lifecycle import (  # noqa: E402
 )
 
 
-CASE_ID = "C-2026-001-庚申戊寅壬子辛丑"
+CASE_ID = "C-2026-001-乾-庚申戊寅壬子辛丑"
 TARGET_RULE = "M2-Y-068"        # 真实存在的婚姻"必离"规律
 ITERATION_LOG = REPO_ROOT / "META" / "iteration-log.md"
 CALIBRATION_DIR = REPO_ROOT / "META" / "calibration"

@@ -117,7 +117,7 @@ class KnownFact:
 @dataclass
 class ParsedInput:
     schema_version: str                  # "1.2.0"
-    case_id: str                         # "C-2026-001-庚申戊寅壬子辛丑"
+    case_id: str                         # "C-2026-001-乾-庚申戊寅壬子辛丑"
     case_meta: dict
     birth: dict                          # {性别, 公历, 农历, 出生地, 真太阳时校正}
     bazi: Bazi
@@ -595,7 +595,7 @@ cases/C-XXX/findings/
 
 ```python
 # Step 1: preflight 解析
-parsed: ParsedInput = preflight.parse("cases/C-2026-001-庚申戊寅壬子辛丑/input.md")
+parsed: ParsedInput = preflight.parse("cases/C-2026-001-乾-庚申戊寅壬子辛丑/input.md")
 
 # Step 2: D1 段派
 energy: EnergyFindings = energy_evaluator.evaluate(parsed.bazi, parsed.dayun)

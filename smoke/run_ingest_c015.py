@@ -67,7 +67,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 # ── 执行 ingest ──────────────────────────────────────────
 from tools.feedback_ingest import ingest
 
-case_id = "C-2026-015-甲寅乙亥丙辰辛卯"
+case_id = "C-2026-015-乾-甲寅乙亥丙辰辛卯"
 dry_run = "--dry-run" in sys.argv
 
 print(f"[run_ingest_c015] case_id={case_id}  dry_run={dry_run}")

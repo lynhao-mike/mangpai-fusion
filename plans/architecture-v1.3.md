@@ -232,7 +232,7 @@
 
 | 项 | 锁定值 |
 |---|---|
-| `tools/batch_intake.py` | 扫 `cases/inbox/*.md` → 逐案跑 preflight + pipeline + render → 自动建 `cases/C-YYYY-NNN-{干支}/` 目录结构 |
+| `tools/batch_intake.py` | 扫 `cases/inbox/*.md` → 逐案跑 preflight + pipeline + render → 自动建 `cases/C-YYYY-NNN-{乾/坤}-{干支}/` 目录结构 |
 | `tools/batch_review.py` | 扫所有"已有反馈但未跑过 ingest"的案例 → 一条龙跑完 ingest + iteration_report（如达 10 案）→ 输出汇总 diff |
 | 单跑入口 | 全部保留，向下兼容 |
 | 失败策略 | 单案失败不阻塞批次，错误写入 `META/batch-errors.log` |

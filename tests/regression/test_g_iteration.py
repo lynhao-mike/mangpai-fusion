@@ -30,7 +30,7 @@ from tools.rule_lifecycle import LifecycleConfig
 pytestmark = pytest.mark.regression
 
 
-CASE_001 = "C-2026-001-庚申戊寅壬子辛丑"
+CASE_001 = "C-2026-001-乾-庚申戊寅壬子辛丑"
 TARGET_MARRIAGE_RULE = "M2-Y-068"   # 杨派"男命劫财见财妻宫破=必离"
 
 

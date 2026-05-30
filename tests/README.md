@@ -101,7 +101,7 @@ from tests.fixtures.cases import (
 )
 
 # 完整形式
-parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
 
 # 短形式（自动补全）
 parsed = load_case("C-2026-001")

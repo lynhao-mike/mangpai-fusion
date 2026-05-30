@@ -1,0 +1,28 @@
+case_id: C-2026-011-乾-乙丑乙酉丁丑癸卯
+ts: '2026-05-25T21:05:51'
+case_count: 10
+rule_updates:
+- rule_id: M3-R-031
+  school: ren
+  hits:
+    before: 3
+    after: 4
+  misses:
+    before: 2
+    after: 2
+  star:
+    before: 3
+    after: 3
+  posterior:
+    before: 0.5714
+    after: 0.625
+  status:
+    before: confirmed
+    after: confirmed
+  verdict: hit
+  note: 任派（M3）
+status_changes: []
+cross_school_triggered: true
+frozen: false
+skipped_rule_ids: []
+notes: []

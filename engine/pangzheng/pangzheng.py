@@ -409,7 +409,7 @@ def _smoke() -> None:
     print("=" * 78)
 
     # ---- C-2026-001 ----
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     attach_shensha(parsed)
     print(f"\n[C-001] shensha 加载: {len(parsed.shensha)} 柱")
 
@@ -451,7 +451,7 @@ def _smoke() -> None:
     print("  ✓ D-003 通过：驿马含'奔波/调动'标签")
 
     # ---- C-2026-014 (学业案) ----
-    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     attach_shensha(parsed014)
     print(f"\n[C-014] shensha 加载: {len(parsed014.shensha)} 柱")
 

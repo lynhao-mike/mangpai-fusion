@@ -352,9 +352,9 @@ def _smoke() -> None:
     from engine.energy.evaluator import evaluate_energy
 
     for cid in [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
     ]:
         parsed = load_case(cid)
         energy = evaluate_energy(parsed)

@@ -39,7 +39,7 @@ from tools.render_report import render
 @pytest.fixture(scope="module")
 def c001_findings():
     """C-2026-001 完整 findings（energy + picture + 4 个 gate）。"""
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
     gates = []
@@ -240,7 +240,7 @@ def _run_standalone() -> int:
     print("              Track-F 验收：F-001/F-002/F-003 + 2 项综合")
     print("=" * 78)
 
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
     gates = []

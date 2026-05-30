@@ -377,7 +377,7 @@ def _smoke() -> None:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
     from tools.preflight import parse
     p = parse(
-        Path("cases/C-2026-015-甲寅乙亥丙辰辛卯/input.md"),
+        Path("cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/input.md"),
         Path("cases/cases-index.md"),
     )
     from engine.predicates.types import adapt_parsed

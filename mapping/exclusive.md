@@ -219,7 +219,7 @@ EXC-{派别}-{topic}-{NNN}
   practical_value: high
   topic_tag: 段派做功 / 体制路径 / 富贵层级修正
   evidence_cases:
-    - case_id: C-2026-015-甲寅乙亥丙辰辛卯
+    - case_id: C-2026-015-乾-甲寅乙亥丙辰辛卯
       year: 2025
       hit: true
       note: |

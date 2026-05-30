@@ -700,7 +700,7 @@ def _smoke() -> None:
     from engine.energy.evaluator import evaluate_energy
     from engine.picture.matcher import match_picture
 
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
 

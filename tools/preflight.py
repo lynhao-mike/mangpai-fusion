@@ -62,9 +62,10 @@ KNOWN_FACT_TYPES: tuple[str, ...] = (
 
 STRATEGY_LIST: tuple[str, ...] = ("A", "B", "C")
 GENDER_LIST: tuple[str, ...] = ("M", "F")
+MINGSHI_BY_GENDER: dict[str, str] = {"M": "乾", "F": "坤"}
 
 CASE_ID_PATTERN: re.Pattern[str] = re.compile(
-    r"^C-\d{4}-\d{3}-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$"
+    r"^C-\d{4}-\d{3}-[乾坤]-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$"
 )
 
 
@@ -284,7 +285,7 @@ def _check_case_id(case_meta: dict[str, Any]) -> str:
     _require(
         isinstance(cid, str) and CASE_ID_PATTERN.match(cid) is not None,
         4, "case_meta.case_id",
-        f"格式必须为 C-YYYY-NNN-{{8 字干支}}，实为 {cid!r}"
+        f"格式必须为 C-YYYY-NNN-{{乾/坤}}-{{8 字干支}}，实为 {cid!r}"
     )
     # 干支八字段拆四柱再 60 甲子校验
     suffix = cid.split("-")[-1]
@@ -656,6 +657,17 @@ def _check_gender_strategy(birth: dict[str, Any]) -> None:
     )
 
 
+def _check_case_id_gender(case_id: str, birth: dict[str, Any]) -> None:
+    gender = birth.get("性别")
+    expected = MINGSHI_BY_GENDER[str(gender)]
+    actual = case_id.split("-")[-2]
+    _require(
+        actual == expected,
+        4, "case_meta.case_id ↔ birth.性别",
+        f"case_id 命式段 {actual!r} 与 birth.性别 {gender!r}（应为 {expected!r}）不一致"
+    )
+
+
 # ============================================================
 # 六、主接口 parse()
 # ============================================================
@@ -698,6 +710,7 @@ def parse(
     _check_gender_strategy(merged["birth"])
     # step 4
     case_id = _check_case_id(merged["case_meta"])
+    _check_case_id_gender(case_id, merged["birth"])
     # step 11（先做目录校验，避免后面解析浪费时间）
     _check_dir_matches(input_md_path, case_id)
     # step 5
@@ -751,12 +764,12 @@ def parse(
 # ============================================================
 
 _SMOKE_INPUT_MIN = """\
-# C-2099-001 · smoke
+# C-2099-001-乾-甲子甲戌癸卯壬戌 · smoke
 
 ```yaml
 schema_version: 1.2.0
 case_meta:
-  case_id: C-2099-001-甲子甲戌癸卯壬戌
+  case_id: C-2099-001-乾-甲子甲戌癸卯壬戌
   立案日期: 2099-01-01
   命主代号: 测试命主
   策略: B
@@ -827,7 +840,7 @@ def _smoke() -> None:
     import tempfile
 
     with tempfile.TemporaryDirectory() as td:
-        case_dir = Path(td) / "C-2099-001-甲子甲戌癸卯壬戌"
+        case_dir = Path(td) / "C-2099-001-乾-甲子甲戌癸卯壬戌"
         case_dir.mkdir()
         (case_dir / "input.md").write_text(
             _SMOKE_INPUT_MIN, encoding="utf-8"

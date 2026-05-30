@@ -80,7 +80,7 @@ class _Dayun:
 
 class _ParsedC014:
     """命主 14 = 李砚儒儿子，2006-12 出生（虚岁 8 岁起运 = 2014）"""
-    case_id = "C-2026-014-丙戌庚子乙亥辛巳"
+    case_id = "C-2026-014-乾-丙戌庚子乙亥辛巳"
     birth = {"公历": "2006-12-15", "性别": "男"}
     dayun = _Dayun(qiyun_year=2014, qiyun_age=8)
     bazi = None  # 不参与本测试

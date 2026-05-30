@@ -7,6 +7,6 @@
 加载示例：
     >>> from tests.fixtures.cases import load_case, list_real_cases
     >>> parsed = load_case("C-2026-001")  # 短形式自动找完整目录
-    >>> parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")  # 完整形式
+    >>> parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")  # 完整形式
 """
 from __future__ import annotations

@@ -101,7 +101,7 @@
 
 ```yaml
 - cfl_id: CFL-C015-001
-  case_id: C-2026-015-甲寅乙亥丙辰辛卯
+  case_id: C-2026-015-乾-甲寅乙亥丙辰辛卯
   date: 2026-05-25
   category: rule_arbitration            # 规则仲裁（非工程问题）
   severity: major                       # 重大 — 影响段派核心做功律
@@ -133,7 +133,7 @@
     - 做功 2 层（按 M1-D-173 默认）+ 实际 L12 → 偏差 +1 档
 
   feedback_status: confirmed
-  feedback_evidence: cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-001
+  feedback_evidence: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-001
   outcome:
     correct: true                       # 仲裁方向正确（候选规则首例命中）
     notes: |
@@ -150,7 +150,7 @@
 
 ```yaml
 - cfl_id: CFL-C015-002
-  case_id: C-2026-015-甲寅乙亥丙辰辛卯
+  case_id: C-2026-015-乾-甲寅乙亥丙辰辛卯
   date: 2026-05-25
   category: engine_engineering          # ⚠️ 工程改进（非规则纠偏）
   severity: medium
@@ -176,7 +176,7 @@
         P(体制内) < 0.3  → 默认市场财富 7 等
 
   feedback_status: confirmed
-  feedback_evidence: cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-002
+  feedback_evidence: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-002
   outcome:
     correct: true
     notes: |
@@ -195,7 +195,7 @@
 
 ```yaml
 - cfl_id: CFL-C015-003
-  case_id: C-2026-015-甲寅乙亥丙辰辛卯
+  case_id: C-2026-015-乾-甲寅乙亥丙辰辛卯
   date: 2026-05-25
   category: engine_engineering          # 工程改进 — 应期模型升级
   severity: medium
@@ -217,7 +217,7 @@
         体制内案例的"财星显象"应期 → 输出多个候选事件类型而非单一类型
 
   feedback_status: confirmed              # v1.4 V4 已落地并纳入 H9 pytest 验收
-  feedback_evidence: cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
+  feedback_evidence: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
   outcome:
     correct: true                         # 工程方向已验证：事件类型与时间窗分流
     notes: |
@@ -225,7 +225,7 @@
       体制内财星显象可保留“职级升迁/财源/置业”多候选，不再把时间窗命中误伤为单一事件类型失验。
 
   workflow_artifacts:
-    - cases/C-2026-015-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
+    - cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md § 五 CFL-C015-003
     - engine/yingqi/types.py: GateResult.event_type_hypotheses
     - engine/yingqi/gate.py: _infer_event_type_hypotheses
     - tests/v1_3_acceptance/test_h9_event_type_hypotheses.py

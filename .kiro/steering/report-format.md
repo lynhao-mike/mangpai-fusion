@@ -6,7 +6,7 @@
 
 ---
 
-## 一、`reports/C-YYYY-NNN-{干支}-report.md` 的 10 段结构
+## 一、`reports/C-YYYY-NNN-{乾/坤}-{干支}-report.md` 的 10 段结构
 
 ```
 一、八字盘速览           （排盘信息表 + 大运排布全 9 运 + 关键结构 5-8 条）

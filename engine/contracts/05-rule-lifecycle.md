@@ -237,8 +237,8 @@ def detect_drift(rule: Rule) -> Optional[RuleStatus]:
 
   # 案例 trace
   applied_cases:
-    - {case_id: C-2026-001-庚申戊寅壬子辛丑, year: 2005, hit: false, evidence_chain: [M1-D-142]}
-    - {case_id: C-2026-007-乙丑庚辰己丑庚午, year: 2010, hit: true, evidence_chain: [M1-D-142]}
+    - {case_id: C-2026-001-乾-庚申戊寅壬子辛丑, year: 2005, hit: false, evidence_chain: [M1-D-142]}
+    - {case_id: C-2026-007-乾-乙丑庚辰己丑庚午, year: 2010, hit: true, evidence_chain: [M1-D-142]}
     - ...
 
   # 置信度
@@ -383,7 +383,7 @@ def ingest_feedback(case_id: str) -> IterationDiff:
 每次 ingest_feedback 追加一段：
 
 ```markdown
-## 2026-05-23 14:32 · ingest C-2026-014-丙戌庚子乙亥辛巳
+## 2026-05-23 14:32 · ingest C-2026-014-乾-丙戌庚子乙亥辛巳
 
 case_count: 14 → 15
 trigger: 命主反馈到位

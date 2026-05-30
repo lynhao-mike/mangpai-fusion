@@ -6,7 +6,7 @@
 
 工作流（命主 1+ 年后回流事件）：
     1. 事件签名通过 extract_predictions 在分析阶段已经写到
-       predictions/PRED-YYYY-NNN-CXXXXXXX-{干支}-{event}.md 的 frontmatter。
+       predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md 的 frontmatter。
     2. 命理师收到延迟反馈：「命主 2027 年 3 月领证结婚」
     3. 运行：python3 -m tools.late_feedback C-2026-007 --year 2027 --event marriage --hit yes
     4. 系统：
@@ -382,7 +382,7 @@ def record(
     """v1.3 D7 主入口：登记一条应期延迟反馈。
 
     Args:
-        case_id:  完整 case_id（如 ``C-2026-007-乙丑庚辰己丑庚午``）
+        case_id:  完整 case_id（如 ``C-2026-007-乾-乙丑庚辰己丑庚午``）
         year:     命主回流的事件年份
         event:    事件名（中文/英文/标准签名均可，会自动归一化）
         hit:      True=应验、False=失验（窗内未发生指定事件）
@@ -472,7 +472,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         description="v1.3 D7 应期延迟反馈：把命主 1+ 年后回流的事件匹配到封存预测",
         epilog=(
             "示例:\n"
-            "  late_feedback C-2026-007-乙丑庚辰己丑庚午 --year 2027 --event marriage --hit yes\n"
+            "  late_feedback C-2026-007-乾-乙丑庚辰己丑庚午 --year 2027 --event marriage --hit yes\n"
             "  late_feedback C-2026-007 --year 2028 --event 升职 --hit no\n"
             "事件名支持中英文 + 别名（见 tools/late_feedback.EVENT_ALIASES）"
         ),

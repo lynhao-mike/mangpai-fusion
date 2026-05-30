@@ -142,7 +142,7 @@ def attach_shensha(parsed) -> None:
 
 def _smoke() -> None:
     # C-2026-001（应有完整神煞表）
-    sh = load_shensha_from_input_md("C-2026-001-庚申戊寅壬子辛丑")
+    sh = load_shensha_from_input_md("C-2026-001-乾-庚申戊寅壬子辛丑")
     assert "年柱" in sh, f"应解析到年柱: {sh}"
     assert "月柱" in sh
     assert "日柱" in sh
@@ -160,7 +160,7 @@ def _smoke() -> None:
     assert sh == sh2, "短形式应与全形式结果相同"
 
     # C-2026-014（学业案）
-    sh14 = load_shensha_from_input_md("C-2026-014-丙戌庚子乙亥辛巳")
+    sh14 = load_shensha_from_input_md("C-2026-014-乾-丙戌庚子乙亥辛巳")
     print(f"\n[OK] C-014 shensha:")
     for k, v in sh14.items():
         print(f"  {k}: {v}")

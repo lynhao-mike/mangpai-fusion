@@ -31,7 +31,7 @@ trigger: Track-G PR 创建（占位）
 
 ## 2026-05-23 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -52,7 +52,7 @@ trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
 
 ## 2026-05-23 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -73,7 +73,7 @@ trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
 
 ## 2026-05-23 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -94,7 +94,7 @@ trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
 
 ## 2026-05-23 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -115,7 +115,7 @@ trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -136,7 +136,7 @@ trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-002-壬戌庚戌戊辰丙辰` (case_count=10)
+trigger: ingest of `C-2026-002-坤-壬戌庚戌戊辰丙辰` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -157,7 +157,7 @@ trigger: ingest of `C-2026-002-壬戌庚戌戊辰丙辰` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-007-乙丑庚辰己丑庚午` (case_count=10)
+trigger: ingest of `C-2026-007-乾-乙丑庚辰己丑庚午` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -178,7 +178,7 @@ trigger: ingest of `C-2026-007-乙丑庚辰己丑庚午` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-008-壬申癸卯丁未壬寅` (case_count=10)
+trigger: ingest of `C-2026-008-坤-壬申癸卯丁未壬寅` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -199,7 +199,7 @@ trigger: ingest of `C-2026-008-壬申癸卯丁未壬寅` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-009-庚辰乙酉丙申乙未` (case_count=10)
+trigger: ingest of `C-2026-009-乾-庚辰乙酉丙申乙未` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -220,7 +220,7 @@ trigger: ingest of `C-2026-009-庚辰乙酉丙申乙未` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-010-甲子丁卯癸卯庚申` (case_count=10)
+trigger: ingest of `C-2026-010-坤-甲子丁卯癸卯庚申` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -241,7 +241,7 @@ trigger: ingest of `C-2026-010-甲子丁卯癸卯庚申` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-011-乙丑乙酉丁丑癸卯` (case_count=10)
+trigger: ingest of `C-2026-011-乾-乙丑乙酉丁丑癸卯` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -262,7 +262,7 @@ trigger: ingest of `C-2026-011-乙丑乙酉丁丑癸卯` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-012-壬戌癸丑丙申壬辰` (case_count=10)
+trigger: ingest of `C-2026-012-坤-壬戌癸丑丙申壬辰` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -283,7 +283,7 @@ trigger: ingest of `C-2026-012-壬戌癸丑丙申壬辰` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-013-壬申甲辰丙辰己丑` (case_count=10)
+trigger: ingest of `C-2026-013-坤-壬申甲辰丙辰己丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -304,7 +304,7 @@ trigger: ingest of `C-2026-013-壬申甲辰丙辰己丑` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-014-丙戌庚子乙亥辛巳` (case_count=10)
+trigger: ingest of `C-2026-014-乾-丙戌庚子乙亥辛巳` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 
@@ -325,7 +325,7 @@ trigger: ingest of `C-2026-014-丙戌庚子乙亥辛巳` (case_count=10)
 
 ## 2026-05-25 · Cross-School Scan #10
 
-trigger: ingest of `C-2026-001-庚申戊寅壬子辛丑` (case_count=10)
+trigger: ingest of `C-2026-001-乾-庚申戊寅壬子辛丑` (case_count=10)
 
 ### 各领域 4 派 hit_rate
 

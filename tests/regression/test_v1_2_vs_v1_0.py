@@ -93,17 +93,17 @@ def test_G1_three_cases_core_hit_rate(
 
     # 3 案 × 各自 ground truth 事件（含 feedback.md 中命主确认的全部重大事件）
     cases_events = [
-        ("C-2026-001-庚申戊寅壬子辛丑", [
+        ("C-2026-001-乾-庚申戊寅壬子辛丑", [
             (2005, "结婚", "婚姻"),
             (2006, "生子", "六亲"),
             (2020, "母亲去世", "六亲"),
             (2020, "升副科", "事业"),
         ]),
-        ("C-2026-002-壬戌庚戌戊辰丙辰", [
+        ("C-2026-002-坤-壬戌庚戌戊辰丙辰", [
             (2005, "结婚", "婚姻"),
             (2010, "升副科", "事业"),
         ]),
-        ("C-2026-014-丙戌庚子乙亥辛巳", [
+        ("C-2026-014-乾-丙戌庚子乙亥辛巳", [
             (2024, "高考考上一本", "学业"),
         ]),
     ]
@@ -144,7 +144,7 @@ def test_G2_marriage_year_error_le_3(
     if not _engine_c_available():
         pytest.skip("等待 Track-C (D3 任派) 引擎落地（B 已就绪，圣杯仍待 C）")
 
-    truth = feedback_truth["C-2026-001-庚申戊寅壬子辛丑"]
+    truth = feedback_truth["C-2026-001-乾-庚申戊寅壬子辛丑"]
     actual_year = int(truth["marriage_year_actual"])     # 2005
     v1_0_predicted = int(truth["marriage_year_predicted"])  # 2013
     assert abs(v1_0_predicted - actual_year) == 8, (
@@ -157,7 +157,7 @@ def test_G2_marriage_year_error_le_3(
     from engine.yingqi import gate_yingqi
     from tests.fixtures.cases import load_case
 
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
     results = [
@@ -213,7 +213,7 @@ def test_G3_case_002_marriage_failed_count_le_1(
     from engine.yingqi import gate_yingqi
     from tests.fixtures.cases import load_case
 
-    parsed = load_case("C-2026-002-壬戌庚戌戊辰丙辰")
+    parsed = load_case("C-2026-002-坤-壬戌庚戌戊辰丙辰")
     energy = evaluate_energy(parsed)
     picture = match_picture(energy, parsed)
     # 命主 23 岁结婚 = 2005 年（1982+23=2005）
@@ -258,7 +258,7 @@ def test_G4_case_014_education_overshot_zero(
     from engine.pangzheng.loader import attach_shensha
     from tests.fixtures.cases import load_case
 
-    parsed = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     attach_shensha(parsed)
     support = support_with_shensha(parsed)
     edu_boost = support.total_boost_for("education")
@@ -292,9 +292,9 @@ def test_G5_trace_id_coverage_full(
     from tests.fixtures.cases import load_case
 
     case_ids = [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
     ]
     total_findings = 0
     findings_with_trace = 0

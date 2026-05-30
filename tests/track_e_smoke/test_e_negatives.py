@@ -141,7 +141,7 @@ _BASE_INPUT_TMPL = textwrap.dedent("""\
 
 def write_case(
     tmp: Path,
-    case_id: str = "C-2099-001-甲子甲戌癸卯壬戌",
+    case_id: str = "C-2099-001-乾-甲子甲戌癸卯壬戌",
     nz: str = "甲子",
     yz: str = "甲戌",
     dz: str = "癸卯",
@@ -183,7 +183,7 @@ def test_E001_missing_schema_version(rep: _Reporter, tmp: Path) -> None:
 def test_E002_invalid_pillar(rep: _Reporter, tmp: Path) -> None:
     """E-002 四柱含非法字 '甲丑' → preflight FAIL（甲为阳干、丑为阴支不配 60 甲子）"""
     # 用 case_id 为合法（保证前面几步过），仅四柱.年柱 改为 甲丑（非法）
-    case_id = "C-2099-002-甲子甲戌癸卯壬戌"
+    case_id = "C-2099-002-乾-甲子甲戌癸卯壬戌"
     inp = write_case(tmp / "e002", case_id=case_id, nz="甲子")
     text = inp.read_text(encoding="utf-8")
     text = text.replace("年柱: 甲子", "年柱: 甲丑")
@@ -264,7 +264,7 @@ def test_E007_forbidden_phrase(rep: _Reporter) -> None:
 def test_E008_duplicate_fingerprint(rep: _Reporter, tmp: Path) -> None:
     """E-008 指纹重复 → preflight FAIL"""
     # 构造 cases-index.md 含已注册指纹
-    case_id = "C-2099-003-甲子甲戌癸卯壬戌"
+    case_id = "C-2099-003-乾-甲子甲戌癸卯壬戌"
     case_dir = tmp / "e008"
     case_dir.mkdir()
     inp = write_case(case_dir, case_id=case_id, gongli="2024-01-01 00:00")
@@ -274,7 +274,7 @@ def test_E008_duplicate_fingerprint(rep: _Reporter, tmp: Path) -> None:
     cases_index = case_dir / "cases-index.md"
     cases_index.write_text(
         f"# 案例索引\n\n## 二、八字指纹防重\n\n```\n"
-        f"{fp}  · C-2099-999-某某某某  · 男  · 2024-01-01 00:00 · 甲子甲戌癸卯壬戌\n```\n",
+        f"{fp}  · C-2099-999-乾-甲子甲戌癸卯壬戌  · 男  · 2024-01-01 00:00 · 甲子甲戌癸卯壬戌\n```\n",
         encoding="utf-8",
     )
     try:

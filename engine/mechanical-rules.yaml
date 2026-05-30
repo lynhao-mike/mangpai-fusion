@@ -52,7 +52,7 @@ rules:
     confidence_floor: 0.85
     confidence_ceiling: 0.95
     star_ceiling: 5
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 命主询问母亲是否再婚，可直接证伪
 
   - id: MR-002
@@ -65,7 +65,7 @@ rules:
       火金不极旺时才适用（否则被中和）。
     confidence_floor: 0.85
     star_ceiling: 5
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 见到本人即可直接证伪
 
   - id: MR-003
@@ -79,7 +79,7 @@ rules:
       木火通明 → 阳气直 → 性格开朗外向。
     confidence_floor: 0.85
     star_ceiling: 5
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 见到本人即可证伪
 
   - id: MR-004
@@ -93,7 +93,7 @@ rules:
       → 严禁单凭"空亡=晚/无"下断。
     confidence_floor: 0.85
     star_ceiling: 5
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 命主回填具体年份事件
 
   - id: MR-005
@@ -109,7 +109,7 @@ rules:
       联检规约（coupled_with / require_n_of）见 engine/mechanical_rules.MR-005。
     confidence_floor: 0.85
     star_ceiling: 5
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 命主回填实际婚姻年份
 
   - id: MR-006
@@ -125,7 +125,7 @@ rules:
     confidence_floor: 0.70
     confidence_ceiling: 0.85
     star_ceiling: 4   # 注意：本条只到 ★★★★，因 v1.0 给的就是 85%
-    application_case: C-2026-013-壬申甲辰丙辰己丑
+    application_case: C-2026-013-坤-壬申甲辰丙辰己丑
     falsifiable: 命主回填首任配偶背景
 
 # =================================================================
@@ -145,7 +145,7 @@ blacklist:
       - "三藏不透必晚婚"
     schools_originally_blamed: [杨]
     rejected_in_cases:
-      - C-2026-013-壬申甲辰丙辰己丑
+      - C-2026-013-坤-壬申甲辰丙辰己丑
     reason: |
       命主 29 岁首婚（本应"35-41 岁黄金婚期"），完全失验。
       官藏不透 ≠ 晚婚，仅代表"缘分迂回"。
@@ -162,8 +162,8 @@ blacklist:
       - "凶煞集齐=婚姻坎坷"
     schools_originally_blamed: [杨]
     rejected_in_cases:
-      - C-2026-002-壬戌庚戌戊辰丙辰
-      - C-2026-001-庚申戊寅壬子辛丑
+      - C-2026-002-坤-壬戌庚戌戊辰丙辰
+      - C-2026-001-乾-庚申戊寅壬子辛丑
     reason: |
       C-2026-001 实际 23 岁结婚稳定 20+ 年；
       C-2026-002 同样 23 岁稳定婚姻。
@@ -179,7 +179,7 @@ blacklist:
       - "宫位空亡=该宫无事"
     schools_originally_blamed: [任]   # 误用任派
     rejected_in_cases:
-      - C-2026-013-壬申甲辰丙辰己丑
+      - C-2026-013-坤-壬申甲辰丙辰己丑
     reason: |
       空亡需"填实/冲动"才被激活（参考 MR-004）。
       以"空亡=晚/无"直接下铁口断 = 跳过流年冲实分析。

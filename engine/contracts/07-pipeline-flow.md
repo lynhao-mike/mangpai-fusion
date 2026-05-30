@@ -199,7 +199,7 @@ output = integrate(energy, picture, gate_results, support, parsed)
 | 入口 | `tools/render_report.py render_from_output(analysis_output, variant="master")` / `render_both(analysis_output)` |
 | 输入 | `AnalysisOutput` (lint 通过后) |
 | 输出 | Markdown 报告骨架；新案默认 `templates/report-v1.3.md` 的 master/client 双版，`report-v1.2.md` 仅向下兼容 |
-| 落盘 | `reports/C-XXX-{干支}-report.md`（或双版路径，见 render_report 实现） |
+| 落盘 | `reports/C-XXX-{乾/坤}-{干支}-report.md`（或双版路径，见 render_report 实现） |
 
 骨架结构（三段式）：
 ```
@@ -234,7 +234,7 @@ output = integrate(energy, picture, gate_results, support, parsed)
 for gate_r in analysis_output.gate_results:
     if gate_r.confidence.star >= 4:
         create_prediction_file(gate_r, case_id)
-        # → predictions/PRED-YYYY-NNN-CXXXXXXX-{干支}-{event}.md
+        # → predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md
 ```
 
 同时执行归档：

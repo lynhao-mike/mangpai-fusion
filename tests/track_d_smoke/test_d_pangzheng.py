@@ -51,7 +51,7 @@ from tests.fixtures.cases import load_case
 @pytest.fixture(scope="module")
 def support_c001():
     """C-2026-001 SupportFindings"""
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     attach_shensha(parsed)
     return support_with_shensha(parsed)
 
@@ -59,7 +59,7 @@ def support_c001():
 @pytest.fixture(scope="module")
 def support_c014():
     """C-2026-014 SupportFindings"""
-    parsed = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     attach_shensha(parsed)
     return support_with_shensha(parsed)
 
@@ -171,11 +171,11 @@ def _run_unittest_style() -> int:
     print("                    Track-D 3 项验收（D-001/D-002/D-003）")
     print("=" * 78)
 
-    parsed_c001 = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed_c001 = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     attach_shensha(parsed_c001)
     s001 = support_with_shensha(parsed_c001)
 
-    parsed_c014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed_c014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     attach_shensha(parsed_c014)
     s014 = support_with_shensha(parsed_c014)
 

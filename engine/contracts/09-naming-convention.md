@@ -1,9 +1,9 @@
 # 命名规范契约 · 09-naming-convention
 
-> **本文规定 v1.2 起所有案例、报告、预测文件的命名格式。**
+> **本文规定当前所有案例、报告、预测文件的命名格式；case_id 必须显式包含性别命式段（乾/坤）。**
 > 旧案重命名清单见末尾"附录 A"。
 
-最后更新：2026-05-28（v1.4 W1 文档同步）
+最后更新：2026-05-30（case_id 性别命式段收口）
 版本：v1.3.0-current
 适用分支：`main`（`v1.2-build` 已合并；当前命名校验以工具实现为准）
 
@@ -12,25 +12,26 @@
 ## 一、案例 ID 格式
 
 ```
-C-YYYY-NNN-{年柱}{月柱}{日柱}{时柱}
+C-YYYY-NNN-{乾/坤}-{年柱}{月柱}{日柱}{时柱}
 
 其中：
-  YYYY = 立案年份（4 位）
-  NNN  = 当年序号（3 位，001 起，左侧补零）
-  年柱 = 八字第一柱的干+支（2 字）
-  月柱 = 八字第二柱（2 字）
-  日柱 = 八字第三柱（2 字）
-  时柱 = 八字第四柱（2 字）
+  YYYY   = 立案年份（4 位）
+  NNN    = 当年序号（3 位，001 起，左侧补零）
+  乾/坤  = 性别命式段；birth.性别=M 对应乾，birth.性别=F 对应坤
+  年柱   = 八字第一柱的干+支（2 字）
+  月柱   = 八字第二柱（2 字）
+  日柱   = 八字第三柱（2 字）
+  时柱   = 八字第四柱（2 字）
 
 示例：
-  C-2026-001-庚申戊寅壬子辛丑   ← 命主 1（男 1980-02-09 02:00）
-  C-2026-002-壬戌庚戌戊辰丙辰   ← 命主 2（女 1982-10-12 07:20）
-  C-2026-014-丙戌庚子乙亥辛巳   ← 命主 14（男 2006-12-12 09:45）
+  C-2026-001-乾-庚申戊寅壬子辛丑   ← 命主 1（男 1980-02-09 02:00）
+  C-2026-002-坤-壬戌庚戌戊辰丙辰   ← 命主 2（女 1982-10-12 07:20）
+  C-2026-014-乾-丙戌庚子乙亥辛巳   ← 命主 14（男 2006-12-12 09:45）
 ```
 
-**为什么干支不加分隔符？** 8 个汉字连写最紧凑且无歧义；加 `·` 或 `-` 会与 case_id 分隔符冲突。
+**为什么干支不加分隔符？** 8 个汉字连写最紧凑且无歧义；加 `·` 或额外 `-` 会破坏 case_id 的固定段位。
 
-**为什么不在文件名中带性别/出生时间？** 已经被八字干支隐式编码（性别由日干强弱+大运方向定，出生日期由四柱反推唯一）。
+**为什么显式加入乾/坤？** 报告标题与目录名必须直观看出性别命式，且 preflight 会校验该段与 `birth.性别` 一致，避免同八字不同性别在归档、反馈和预测抽取中混淆。
 
 
 ---
@@ -40,7 +41,7 @@ C-YYYY-NNN-{年柱}{月柱}{日柱}{时柱}
 ### 2.1 案例目录
 
 ```
-cases/C-YYYY-NNN-{干支}/
+cases/C-YYYY-NNN-{乾/坤}-{干支}/
 ├── input.md
 ├── analysis.md
 ├── feedback.md
@@ -50,35 +51,36 @@ cases/C-YYYY-NNN-{干支}/
 
 示例：
 ```
-cases/C-2026-001-庚申戊寅壬子辛丑/
-cases/C-2026-014-丙戌庚子乙亥辛巳/
+cases/C-2026-001-乾-庚申戊寅壬子辛丑/
+cases/C-2026-014-乾-丙戌庚子乙亥辛巳/
 ```
 
 ### 2.2 报告文件
 
 ```
-reports/C-YYYY-NNN-{干支}-report.md
+reports/C-YYYY-NNN-{乾/坤}-{干支}-report.md
 ```
 
 示例：
 ```
-reports/C-2026-001-庚申戊寅壬子辛丑-report.md
-reports/C-2026-014-丙戌庚子乙亥辛巳-report.md
+reports/C-2026-001-乾-庚申戊寅壬子辛丑-report.md
+reports/C-2026-014-乾-丙戌庚子乙亥辛巳-report.md
 ```
 
 ### 2.3 预测文件（由 extract_predictions.py 自动生成）
 
 ```
-predictions/PRED-YYYY-NNN-{case_id 简化}-{干支}-{用途}.md
+predictions/PRED-YYYY-NNN-{case_id 简化}-{乾/坤}-{干支}-{用途}.md
 
-其中 case_id 简化 = 去掉所有连字符（如 C2026001）
+其中 case_id 简化 = 去掉所有连字符后仅保留 CYYYYNNN（如 C2026001）
+乾/坤 = 与 case_id 命式段一致
 用途 = future / verification / 具体年份等
 ```
 
 示例：
 ```
-predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md
-predictions/PRED-2026-008-C2026014-丙戌庚子乙亥辛巳-2026gaokao.md
+predictions/PRED-2026-001-C2026001-乾-庚申戊寅壬子辛丑-future.md
+predictions/PRED-2026-008-C2026014-乾-丙戌庚子乙亥辛巳-2026gaokao.md
 ```
 
 ### 2.4 校准报告（自迭代输出）
@@ -111,14 +113,16 @@ input.md 必须包含以下字段（详见 `01-input-schema.md`）：
 2. 第 1 字必须是 10 天干之一（甲乙丙丁戊己庚辛壬癸）
 3. 第 2 字必须是 12 地支之一（子丑寅卯辰巳午未申酉戌亥）
 4. 干支组合必须存在于 60 甲子（不允许"甲丑"等不合法组合）
-5. 案例目录名必须 = `C-YYYY-NNN-` + 4 柱 8 字 拼接
+5. case_id 必须匹配 `C-YYYY-NNN-{乾/坤}-{四柱8字}`
+6. 案例目录名必须与 case_id 完全一致
+7. case_id 的 `{乾/坤}` 必须与 `birth.性别` 一致（M→乾，F→坤）
 
 ### 3.3 工具
 当前未保留独立 `tools/naming.py`。命名生成 / 校验由以下入口消费同一规则：
 
-- `tools/preflight.py`：立案输入与案例目录一致性校验。
+- `tools/preflight.py`：立案输入、性别命式段与案例目录一致性校验。
 - `tools/render_report.py`：报告落盘文件名沿用完整 case_id。
-- `tools/extract_predictions.py`：生成 `PRED-YYYY-NNN-{case_id简写}-{干支}-{用途}.md`。
+- `tools/extract_predictions.py`：生成 `PRED-YYYY-NNN-{case_id简写}-{乾/坤}-{干支}-{用途}.md`。
 
 ---
 
@@ -132,7 +136,7 @@ fingerprint = MD5(性别 + "|" + YYYY-MM-DD HH:MM)[:12]
 ```
 
 **指纹与文件名独立存在**：
-- 文件名带干支 = 人类可读 + 命理师对应命主
+- 文件名带乾/坤与干支 = 人类可读 + 命理师对应命主
 - 指纹 = 系统级防重（不同时辰但同干支的极端情况由指纹区分）
 
 立案时 preflight.py 同时校验：
@@ -146,14 +150,14 @@ fingerprint = MD5(性别 + "|" + YYYY-MM-DD HH:MM)[:12]
 
 ### 5.1 私密案例
 ```
-C-YYYY-NNN-{干支}-PRIV
+C-YYYY-NNN-{乾/坤}-{干支}-PRIV
 ```
 不公开 push，本地 .gitignore 排除。
 
 ### 5.2 同一命主二次立案（追加分析）
 不新建 case_id，在原 case 目录内追加：
 ```
-cases/C-2026-001-庚申戊寅壬子辛丑/
+cases/C-2026-001-乾-庚申戊寅壬子辛丑/
 └── analysis-v2.md   ← 第二次分析，与 analysis.md 共存
 ```
 
@@ -171,14 +175,14 @@ cases/C-2026-001-庚申戊寅壬子辛丑/
 ```markdown
 | Case ID | 日期 | 命主代号 | 性别 | 八字 | 主领域 | 策略 | 应验状态 | 报告链接 |
 
-✓ 第一列必须使用完整 case_id（含干支）：
-   [C-2026-001-庚申戊寅壬子辛丑](C-2026-001-庚申戊寅壬子辛丑/)
+✓ 第一列必须使用完整 case_id（含乾/坤与干支）：
+   [C-2026-001-乾-庚申戊寅壬子辛丑](C-2026-001-乾-庚申戊寅壬子辛丑/)
 
 ✓ "八字"列保留单独显示（人类阅读时仍要直观）：
    庚申·戊寅·壬子·辛丑
 
 ✓ 报告链接：
-   [report v2](../reports/C-2026-001-庚申戊寅壬子辛丑-report.md)
+   [report v2](../reports/C-2026-001-乾-庚申戊寅壬子辛丑-report.md)
 ```
 
 ---
@@ -204,37 +208,37 @@ cases/C-2026-001-庚申戊寅壬子辛丑/
 
 | 旧路径 | 新路径 |
 |---|---|
-| `cases/C-2026-001/` | `cases/C-2026-001-庚申戊寅壬子辛丑/` |
-| `cases/C-2026-002/` | `cases/C-2026-002-壬戌庚戌戊辰丙辰/` |
-| `cases/C-2026-007/` | `cases/C-2026-007-乙丑庚辰己丑庚午/` |
-| `cases/C-2026-008/` | `cases/C-2026-008-壬申癸卯丁未壬寅/` |
-| `cases/C-2026-009/` | `cases/C-2026-009-庚辰乙酉丙申乙未/` |
-| `cases/C-2026-010/` | `cases/C-2026-010-甲子丁卯癸卯庚申/` |
-| `cases/C-2026-011/` | `cases/C-2026-011-乙丑乙酉丁丑癸卯/` |
-| `cases/C-2026-012/` | `cases/C-2026-012-壬戌癸丑丙申壬辰/` |
-| `cases/C-2026-013/` | `cases/C-2026-013-壬申甲辰丙辰己丑/` |
-| `cases/C-2026-014/` | `cases/C-2026-014-丙戌庚子乙亥辛巳/` |
+| `cases/C-2026-001/` | `cases/C-2026-001-乾-庚申戊寅壬子辛丑/` |
+| `cases/C-2026-002/` | `cases/C-2026-002-坤-壬戌庚戌戊辰丙辰/` |
+| `cases/C-2026-007/` | `cases/C-2026-007-乾-乙丑庚辰己丑庚午/` |
+| `cases/C-2026-008/` | `cases/C-2026-008-坤-壬申癸卯丁未壬寅/` |
+| `cases/C-2026-009/` | `cases/C-2026-009-乾-庚辰乙酉丙申乙未/` |
+| `cases/C-2026-010/` | `cases/C-2026-010-坤-甲子丁卯癸卯庚申/` |
+| `cases/C-2026-011/` | `cases/C-2026-011-乾-乙丑乙酉丁丑癸卯/` |
+| `cases/C-2026-012/` | `cases/C-2026-012-坤-壬戌癸丑丙申壬辰/` |
+| `cases/C-2026-013/` | `cases/C-2026-013-坤-壬申甲辰丙辰己丑/` |
+| `cases/C-2026-014/` | `cases/C-2026-014-乾-丙戌庚子乙亥辛巳/` |
 
 ### A.2 报告文件重命名
 
 | 旧路径 | 新路径 |
 |---|---|
-| `reports/C-2026-001-report.md` | `reports/C-2026-001-庚申戊寅壬子辛丑-report.md` |
-| `reports/C-2026-002-report.md` | `reports/C-2026-002-壬戌庚戌戊辰丙辰-report.md` |
-| `reports/C-2026-007-report.md` | `reports/C-2026-007-乙丑庚辰己丑庚午-report.md` |
-| `reports/C-2026-008-report.md` | `reports/C-2026-008-壬申癸卯丁未壬寅-report.md` |
-| `reports/C-2026-009-report.md` | `reports/C-2026-009-庚辰乙酉丙申乙未-report.md` |
-| `reports/C-2026-010-report.md` | `reports/C-2026-010-甲子丁卯癸卯庚申-report.md` |
-| `reports/C-2026-011-report.md` | `reports/C-2026-011-乙丑乙酉丁丑癸卯-report.md` |
-| `reports/C-2026-012-report.md` | `reports/C-2026-012-壬戌癸丑丙申壬辰-report.md` |
-| `reports/C-2026-013-report.md` | `reports/C-2026-013-壬申甲辰丙辰己丑-report.md` |
-| `reports/C-2026-014-report.md` | `reports/C-2026-014-丙戌庚子乙亥辛巳-report.md` |
+| `reports/C-2026-001-report.md` | `reports/C-2026-001-乾-庚申戊寅壬子辛丑-report.md` |
+| `reports/C-2026-002-report.md` | `reports/C-2026-002-坤-壬戌庚戌戊辰丙辰-report.md` |
+| `reports/C-2026-007-report.md` | `reports/C-2026-007-乾-乙丑庚辰己丑庚午-report.md` |
+| `reports/C-2026-008-report.md` | `reports/C-2026-008-坤-壬申癸卯丁未壬寅-report.md` |
+| `reports/C-2026-009-report.md` | `reports/C-2026-009-乾-庚辰乙酉丙申乙未-report.md` |
+| `reports/C-2026-010-report.md` | `reports/C-2026-010-坤-甲子丁卯癸卯庚申-report.md` |
+| `reports/C-2026-011-report.md` | `reports/C-2026-011-乾-乙丑乙酉丁丑癸卯-report.md` |
+| `reports/C-2026-012-report.md` | `reports/C-2026-012-坤-壬戌癸丑丙申壬辰-report.md` |
+| `reports/C-2026-013-report.md` | `reports/C-2026-013-坤-壬申甲辰丙辰己丑-report.md` |
+| `reports/C-2026-014-report.md` | `reports/C-2026-014-乾-丙戌庚子乙亥辛巳-report.md` |
 
 ### A.3 预测文件重命名
 
 | 旧路径 | 新路径 |
 |---|---|
-| `predictions/PRED-2026-001-C2026001-future.md` | `predictions/PRED-2026-001-C2026001-庚申戊寅壬子辛丑-future.md` |
+| `predictions/PRED-2026-001-C2026001-future.md` | `predictions/PRED-2026-001-C2026001-乾-庚申戊寅壬子辛丑-future.md` |
 
 ### A.4 引用更新（grep + sed 全仓扫描）
 

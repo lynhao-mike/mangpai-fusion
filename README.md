@@ -25,7 +25,7 @@
 ```text
 问真八字 APP 排盘
   → templates/input-from-wenzhen.md
-  → cases/C-YYYY-NNN-{干支}/input.md
+  → cases/C-YYYY-NNN-{乾/坤}-{干支}/input.md
   → tools/preflight.py
   → engine/pipeline.py
   → tools/render_report.py
@@ -109,7 +109,7 @@
 ### 新增案例
 
 ```bash
-python -m tools.preflight cases/C-YYYY-NNN-干支/input.md
+python -m tools.preflight cases/C-YYYY-NNN-乾-干支/input.md
 ```
 
 ### 生成报告
@@ -122,7 +122,7 @@ python -m tools.output_linter reports/example-report.md
 ### 摄入反馈
 
 ```bash
-python -m tools.feedback_ingest C-YYYY-NNN-干支
+python -m tools.feedback_ingest C-YYYY-NNN-乾-干支
 python -m tools.batch_review
 ```
 

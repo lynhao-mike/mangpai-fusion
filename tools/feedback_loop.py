@@ -665,7 +665,7 @@ def _apply_rule_verdicts(
     决定是否写 ``iteration-log.md`` 和 ``calibration/.snapshot.yaml``。
 
     Args:
-        case_id:        完整 case_id（如 ``C-2026-001-庚申戊寅壬子辛丑``）
+        case_id:        完整 case_id（如 ``C-2026-001-乾-庚申戊寅壬子辛丑``）
         rule_verdicts:  ``{"M2-Y-068": ("hit", VerdictContext(...)), ...}``
                         每条 verdict 已经在调用方做过决断力优先级合并
                         （miss > hit > abstain > no_data）
@@ -837,7 +837,7 @@ def ingest_feedback(
     Parameters
     ----------
     case_id : str
-        案例 ID，如 "C-2026-001-庚申戊寅壬子辛丑"。也接受前缀 "C-2026-001"。
+        案例 ID，如 "C-2026-001-乾-庚申戊寅壬子辛丑"。也接受前缀 "C-2026-001"。
     cfg : LifecycleConfig
         可选，默认从 engine/calibration.yaml 加载。
     today : str

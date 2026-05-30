@@ -52,7 +52,7 @@ def _run_pipeline(case_id: str):
 # ============================================================
 
 def test_B001_C2026_001_career_gongmen_caifu_le_4() -> None:
-    parsed, energy, picture = _run_pipeline("C-2026-001-庚申戊寅壬子辛丑")
+    parsed, energy, picture = _run_pipeline("C-2026-001-乾-庚申戊寅壬子辛丑")
 
     # 1) caifu.rank ≤ 4
     assert picture.caifu is not None, "caifu 不应为 None"
@@ -96,7 +96,7 @@ def test_B002_C2026_001_marriage_window_contains_22_28() -> None:
     v1.2 D2 必须给出 [22, 28] 窗口包含 25 岁，
     让 D3 在该窗口内搜索应期。
     """
-    parsed, energy, picture = _run_pipeline("C-2026-001-庚申戊寅壬子辛丑")
+    parsed, energy, picture = _run_pipeline("C-2026-001-乾-庚申戊寅壬子辛丑")
 
     assert picture.marriage_picture is not None, (
         "B-002: marriage_picture 不应为 None"
@@ -145,7 +145,7 @@ def test_B002_C2026_001_marriage_window_contains_22_28() -> None:
 # ============================================================
 
 def test_B003_C2026_002_career_service_consistent() -> None:
-    parsed, energy, picture = _run_pipeline("C-2026-002-壬戌庚戌戊辰丙辰")
+    parsed, energy, picture = _run_pipeline("C-2026-002-坤-壬戌庚戌戊辰丙辰")
 
     # 1) energy_consistent
     assert picture.energy_consistent, (
@@ -182,7 +182,7 @@ def test_B004_C2026_014_education_yiben_no_985() -> None:
     """修复 G4：C-2026-014 学历应判为"一本+"水平，
     不应过判到 985/211 顶配（v1.0 失误）。
     """
-    parsed, energy, picture = _run_pipeline("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed, energy, picture = _run_pipeline("C-2026-014-乾-丙戌庚子乙亥辛巳")
 
     # 1) energy_consistent
     assert picture.energy_consistent, (
@@ -235,9 +235,9 @@ def test_B004_C2026_014_education_yiben_no_985() -> None:
 # ============================================================
 
 @pytest.mark.parametrize("case_id", [
-    "C-2026-001-庚申戊寅壬子辛丑",
-    "C-2026-002-壬戌庚戌戊辰丙辰",
-    "C-2026-014-丙戌庚子乙亥辛巳",
+    "C-2026-001-乾-庚申戊寅壬子辛丑",
+    "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+    "C-2026-014-乾-丙戌庚子乙亥辛巳",
 ])
 def test_picture_findings_required_fields(case_id: str) -> None:
     """每个 PictureFindings 必含全部必填字段。"""
@@ -289,7 +289,7 @@ def test_picture_findings_required_fields(case_id: str) -> None:
 def test_picture_findings_round_trip_json() -> None:
     """to_json → from_json 一致 + hash 稳定。"""
     parsed, energy, picture = _run_pipeline(
-        "C-2026-001-庚申戊寅壬子辛丑"
+        "C-2026-001-乾-庚申戊寅壬子辛丑"
     )
     s = picture.to_json()
 
@@ -333,9 +333,9 @@ def _main() -> int:
 
     print("\n--- 通用契约测试 ---")
     for cid in [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
     ]:
         try:
             test_picture_findings_required_fields(cid)

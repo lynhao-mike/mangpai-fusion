@@ -244,10 +244,10 @@ def _smoke() -> None:
     from tests.fixtures.cases import load_case
 
     for cid in [
-        "C-2026-001-庚申戊寅壬子辛丑",
-        "C-2026-002-壬戌庚戌戊辰丙辰",
-        "C-2026-014-丙戌庚子乙亥辛巳",
-        "C-2026-011-乙丑乙酉丁丑癸卯",
+        "C-2026-001-乾-庚申戊寅壬子辛丑",
+        "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+        "C-2026-014-乾-丙戌庚子乙亥辛巳",
+        "C-2026-011-乾-乙丑乙酉丁丑癸卯",
     ]:
         parsed = load_case(cid)
         rels = scan_wuhe(parsed.bazi)

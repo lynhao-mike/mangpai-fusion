@@ -608,7 +608,7 @@ def _smoke() -> None:
     from tests.fixtures.cases import load_case
 
     # C-2026-001
-    parsed = load_case("C-2026-001-庚申戊寅壬子辛丑")
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     # 婚姻关键字（粗判，避免依赖 Track-A energy）
     keys = ["丙", "丁", "巳", "午", "子"]
     yong = ["丙", "子"]
@@ -663,7 +663,7 @@ def _smoke() -> None:
     # 但庚 = 本字 + 子 = 本字（日支）
 
     print("\n=== C-2026-014 学业 2024 ===")
-    parsed014 = load_case("C-2026-014-丙戌庚子乙亥辛巳")
+    parsed014 = load_case("C-2026-014-乾-丙戌庚子乙亥辛巳")
     keys_xue = ["庚", "辛", "申", "酉", "壬", "癸", "丙", "丁"]
     trigs = detect_all_triggers(parsed014, 2024, keys_xue, ["壬", "癸"])
     by_type = {}

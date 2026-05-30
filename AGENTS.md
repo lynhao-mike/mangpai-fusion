@@ -48,7 +48,7 @@ AI agent 执行任务前按以下顺序读取：
 ```text
 问真八字 APP 排盘
   → templates/input-from-wenzhen.md
-  → cases/C-YYYY-NNN-{干支}/input.md
+  → cases/C-YYYY-NNN-{乾/坤}-{干支}/input.md
   → tools/preflight.py
   → engine/pipeline.py
   → tools/render_report.py
@@ -69,7 +69,7 @@ AI agent 执行任务前按以下顺序读取：
 3. 运行入口校验：
 
 ```bash
-python -m tools.preflight cases/C-YYYY-NNN-干支/input.md
+python -m tools.preflight cases/C-YYYY-NNN-乾-干支/input.md
 ```
 
 ### 5.2 生成报告
@@ -85,7 +85,7 @@ python -m tools.preflight cases/C-YYYY-NNN-干支/input.md
 2. 运行：
 
 ```bash
-python -m tools.feedback_ingest C-YYYY-NNN-干支
+python -m tools.feedback_ingest C-YYYY-NNN-乾-干支
 ```
 
 3. 若批量处理，使用：

@@ -98,7 +98,7 @@ fingerprint = $(echo -n "M|YYYY-MM-DD HH:MM" | md5sum | cut -c1-12)
 - **直接在 main 分支** commit + push
 - **绝不开新分支，绝不创建 PR**（用户全局 learning）
 - commit message 格式：`case: C-YYYY-NNN 立案 - <八字签名> - <策略代号>`
-- 例：`case: C-2026-014-丙戌庚子乙亥辛巳 立案 - 丙戌庚子乙亥辛巳·乾造 - 策略B全面画像`
+- 例：`case: C-2026-014-乾-丙戌庚子乙亥辛巳 立案 - 丙戌庚子乙亥辛巳·乾造 - 策略B全面画像`
 
 ## 三、与既有规则的关系
 

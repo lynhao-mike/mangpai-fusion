@@ -7,14 +7,15 @@
 
 职责：
     扫描 reports/C-*-report.md（或 cases/C-*/findings/analysis_output.json）
-    把 ★★★★+ 的应期断语抽出来 → predictions/PRED-YYYY-NNN-CXXXXXXX-{干支}-{event}.md
+    把 ★★★★+ 的应期断语抽出来 → predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md
 
 文件名格式（09 § 二·3）：
-    predictions/PRED-YYYY-NNN-CXXXXXXX-{干支}-{event}.md
+    predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md
     其中：
         YYYY = 应期年（不是 case 年）
         NNN  = 当年序号（001 起）
-        CXXXXXXX = case_id 简化（去 dash）
+        CXXXXXXX = case_id 简化（仅保留年+序号，去 dash）
+        乾/坤 = case_id 命式段
         干支 = 4 柱 8 字
         event = future / verification / 具体事件名（拼音/英文，避免特殊符号）
 
@@ -52,6 +53,7 @@ CASES_DIR = REPO_ROOT / "cases"
 @dataclass
 class PredictionDraft:
     case_id: str
+    case_mingshi: str      # "乾" / "坤"
     case_ganzhi: str       # "庚申戊寅壬子辛丑"
     yingqi_year: int
     statement: str
@@ -161,18 +163,21 @@ def detect_event_signature(text: str, domain: Optional[str] = None) -> str:
 # 二、case_id 工具
 # ============================================================
 
-CASE_ID_RE = re.compile(r"^C-(\d{4})-(\d{3})-([\u4e00-\u9fff]{8})$")
+CASE_ID_RE = re.compile(
+    r"^C-(\d{4})-(\d{3})-([乾坤])-"
+    r"((?:[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4})$"
+)
 
 
-def parse_case_id(case_id: str) -> tuple[str, str]:
-    """C-2026-001-庚申戊寅壬子辛丑 → ("C2026001", "庚申戊寅壬子辛丑")"""
+def parse_case_id(case_id: str) -> tuple[str, str, str]:
+    """C-2026-001-乾-庚申戊寅壬子辛丑 → ("C2026001", "乾", "庚申戊寅壬子辛丑")"""
     m = CASE_ID_RE.match(case_id)
     if not m:
         # 接受不带干支的 fallback
         plain = case_id.replace("-", "")
-        return plain, ""
-    yyyy, nnn, ganzhi = m.groups()
-    return f"C{yyyy}{nnn}", ganzhi
+        return plain, "", ""
+    yyyy, nnn, mingshi, ganzhi = m.groups()
+    return f"C{yyyy}{nnn}", mingshi, ganzhi
 
 
 def list_case_dirs() -> list[pathlib.Path]:
@@ -206,7 +211,7 @@ def extract_from_analysis_output(case_dir: pathlib.Path) -> list[PredictionDraft
         return out
 
     case_id = data.get("case_id", case_dir.name)
-    plain, ganzhi = parse_case_id(case_id)
+    plain, mingshi, ganzhi = parse_case_id(case_id)
 
     # 优先看 final_conclusions（含 yingqi_year）
     for c in data.get("final_conclusions", []) or []:
@@ -219,6 +224,7 @@ def extract_from_analysis_output(case_dir: pathlib.Path) -> list[PredictionDraft
         domain = c.get("domain")
         out.append(PredictionDraft(
             case_id=case_id,
+            case_mingshi=mingshi,
             case_ganzhi=ganzhi,
             yingqi_year=int(c["yingqi_year"]),
             statement=statement,
@@ -241,6 +247,7 @@ def extract_from_analysis_output(case_dir: pathlib.Path) -> list[PredictionDraft
         statement = f"{candidate_event}（{domain or ''}）"
         out.append(PredictionDraft(
             case_id=case_id,
+            case_mingshi=mingshi,
             case_ganzhi=ganzhi,
             yingqi_year=int(g["year"]),
             statement=statement,
@@ -266,13 +273,13 @@ _YEAR_RE = re.compile(r"\b(19|20|21)\d{2}\b")
 
 
 def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
-    """从 reports/C-XXX-{干支}-report.md 启发式抽取。
+    """从 reports/C-XXX-{乾/坤}-{干支}-report.md 启发式抽取。
 
     扫每一行，若同时含有 ★★★★+ 与 4 位年份 → 视为应期断语。
     """
     out: list[PredictionDraft] = []
     case_id = case_dir.name
-    plain, ganzhi = parse_case_id(case_id)
+    plain, mingshi, ganzhi = parse_case_id(case_id)
 
     # 报告路径
     report_candidates = [
@@ -351,6 +358,7 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
             event_sig = detect_event_signature(line, domain)
             draft = PredictionDraft(
                 case_id=case_id,
+                case_mingshi=mingshi,
                 case_ganzhi=ganzhi,
                 yingqi_year=year,
                 statement=stmt,
@@ -402,6 +410,7 @@ def _draft_to_markdown(d: PredictionDraft, *, seq: int) -> str:
     fm: dict[str, Any] = {
         "schema_version": "1.2.0",
         "case_id": d.case_id,
+        "case_mingshi": d.case_mingshi,
         "case_ganzhi": d.case_ganzhi,
         "yingqi_year": d.yingqi_year,
         "domain": d.domain or "未分类",
@@ -465,17 +474,20 @@ def _draft_to_markdown(d: PredictionDraft, *, seq: int) -> str:
 def write_prediction(d: PredictionDraft) -> Optional[pathlib.Path]:
     """写一个 PRED 文件；若已存在同指纹则跳过返回 None。"""
     PREDICTIONS_DIR.mkdir(parents=True, exist_ok=True)
-    plain, _ganzhi = parse_case_id(d.case_id)
+    plain, parsed_mingshi, parsed_ganzhi = parse_case_id(d.case_id)
+    mingshi = d.case_mingshi or parsed_mingshi
+    ganzhi = d.case_ganzhi or parsed_ganzhi
+    case_token = f"{plain}-{mingshi}-{ganzhi}" if mingshi and ganzhi else plain
     fp = d.fingerprint()
     # 判重：扫现有同 case + 同应期年 + 同指纹
-    for existing in PREDICTIONS_DIR.glob(f"PRED-*-{plain}-*.md"):
+    for existing in PREDICTIONS_DIR.glob(f"PRED-*-{case_token}-*.md"):
         text = existing.read_text(encoding="utf-8", errors="ignore")
         if fp in text:
             return None
     seq = _next_seq_for_year(d.yingqi_year)
     event = d.event_slug()
     fname = (
-        f"PRED-{d.yingqi_year}-{seq:03d}-{plain}-{d.case_ganzhi}-{event}.md"
+        f"PRED-{d.yingqi_year}-{seq:03d}-{case_token}-{event}.md"
     )
     path = PREDICTIONS_DIR / fname
     path.write_text(_draft_to_markdown(d, seq=seq), encoding="utf-8")
@@ -526,7 +538,7 @@ def extract_all() -> dict[str, list[pathlib.Path]]:
 # ============================================================
 
 def _smoke() -> None:
-    drafts = extract_from_report_md(CASES_DIR / "C-2026-001-庚申戊寅壬子辛丑")
+    drafts = extract_from_report_md(CASES_DIR / "C-2026-001-乾-庚申戊寅壬子辛丑")
     print(f"[draft count] C-2026-001: {len(drafts)}")
     for d in drafts[:5]:
         print(
