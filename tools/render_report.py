@@ -45,6 +45,22 @@ from engine.predicates.types import ParsedInput
 from engine.yingqi.types import GateResult
 
 
+_TEMPLATE_CACHE: dict[Path, tuple[tuple[int, int], str]] = {}
+_FOR_BLOCK_RE = re.compile(
+    r"\{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}",
+    re.DOTALL,
+)
+_IF_NOT_INNER_RE = re.compile(
+    r"\{%\s*if\s+not\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+    re.DOTALL,
+)
+_IF_INNER_RE = re.compile(
+    r"\{%\s*if\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
+    re.DOTALL,
+)
+_VAR_RE = re.compile(r"\{\{\s*([\w.]+)\s*\}\}")
+
+
 # ============================================================
 # 0. 双护栏异常 + 工具函数
 # ============================================================
@@ -149,6 +165,7 @@ def render_from_output(
     variant: Literal["master", "client", "v1.2"] = "master",
     lint_before: bool = True,
     cases_dir: Optional[Union[str, Path]] = None,
+    skip_findings_save: bool = False,
 ) -> str:
     """高级渲染入口：接受 AnalysisOutput，完成全链路。
 
@@ -171,12 +188,13 @@ def render_from_output(
     Raises:
         RenderGuardrailError: lint 返回任何 ERROR 时。
     """
-    # Step 1: 落盘 findings JSON
-    try:
-        save_findings(analysis_output, cases_dir)
-    except Exception:
-        # 落盘失败不阻断渲染，仅静默（报告仍可交付）
-        pass
+    # Step 1: 落盘 findings JSON。e2e / render_both 已统一落盘时可跳过，避免重复写盘。
+    if not skip_findings_save:
+        try:
+            save_findings(analysis_output, cases_dir)
+        except Exception:
+            # 落盘失败不阻断渲染，仅静默（报告仍可交付）
+            pass
 
     # Step 2: 拆包 AnalysisOutput 字段
     energy = getattr(analysis_output, "energy")
@@ -241,12 +259,18 @@ def render_both(
     Returns:
         {"master": str, "client": str}
     """
+    try:
+        save_findings(analysis_output, cases_dir)
+    except Exception:
+        pass
+
     return {
         v: render_from_output(
             analysis_output,
             variant=v,  # type: ignore[arg-type]
             lint_before=lint_before,
             cases_dir=cases_dir,
+            skip_findings_save=True,
         )
         for v in ("master", "client")
     }
@@ -1010,6 +1034,17 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
 # ============================================================
 
 
+def _read_template_cached(tpl_path: Path) -> str:
+    st = tpl_path.stat()
+    sig = (st.st_mtime_ns, st.st_size)
+    cached = _TEMPLATE_CACHE.get(tpl_path)
+    if cached is not None and cached[0] == sig:
+        return cached[1]
+    template = tpl_path.read_text(encoding="utf-8")
+    _TEMPLATE_CACHE[tpl_path] = (sig, template)
+    return template
+
+
 def _render_template(template: str, ctx: dict) -> str:
     """极简模板渲染：
     - {{ key }}  → str(ctx[key])（缺失则保留占位符）
@@ -1021,10 +1056,6 @@ def _render_template(template: str, ctx: dict) -> str:
     out = template
 
     # 1) {% for item in list_key %} ... {% endfor %}
-    for_re = re.compile(
-        r"\{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}",
-        re.DOTALL,
-    )
     def _expand_for(m):
         item_name = m.group(1)
         list_key = m.group(2)
@@ -1069,21 +1100,13 @@ def _render_template(template: str, ctx: dict) -> str:
             parts.append(b)
         return "".join(parts)
 
-    out = for_re.sub(_expand_for, out)
+    out = _FOR_BLOCK_RE.sub(_expand_for, out)
 
     # 2)+3) {% if not key %} / {% if key %}（嵌套支持）
     # 关键：body 中加负前瞻 (?:(?!\{%\s*if\b).)*?，确保 body 不含嵌套 {% if %}，
     # 这样每次匹配的 {% endif %} 一定配对最内层；外层 while 循环逐层向外展开，
     # 直到无变化为止。修复了原非贪婪 (.*?) 在嵌套场景下外层 endif 错配为内层
     # endif，导致 client 模式泄漏反馈位的 bug。
-    if_not_inner_re = re.compile(
-        r"\{%\s*if\s+not\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
-        re.DOTALL,
-    )
-    if_inner_re = re.compile(
-        r"\{%\s*if\s+(\w+)\s*%\}((?:(?!\{%\s*if\b).)*?)\{%\s*endif\s*%\}",
-        re.DOTALL,
-    )
     def _expand_if_not(m):
         key = m.group(1)
         body = m.group(2)
@@ -1097,8 +1120,8 @@ def _render_template(template: str, ctx: dict) -> str:
     # 防御性上限：模板嵌套深度不应超过 32 层；超过即视为模板异常并退出循环。
     for _ in range(32):
         prev = out
-        out = if_not_inner_re.sub(_expand_if_not, out)
-        out = if_inner_re.sub(_expand_if, out)
+        out = _IF_NOT_INNER_RE.sub(_expand_if_not, out)
+        out = _IF_INNER_RE.sub(_expand_if, out)
         if out == prev:
             break
 
@@ -1106,7 +1129,7 @@ def _render_template(template: str, ctx: dict) -> str:
     def _replace_var(m):
         key = m.group(1).strip()
         return str(ctx.get(key, f"{{{{{key}}}}}"))
-    out = re.sub(r"\{\{\s*([\w.]+)\s*\}\}", _replace_var, out)
+    out = _VAR_RE.sub(_replace_var, out)
 
     return out
 
@@ -1176,7 +1199,7 @@ def render(
     tpl_path = ROOT / "templates" / template_name
     if not tpl_path.exists():
         raise FileNotFoundError(f"模板文件不存在: {tpl_path}")
-    template = tpl_path.read_text(encoding="utf-8")
+    template = _read_template_cached(tpl_path)
 
     # 构建上下文
     ctx: dict[str, Any] = {}

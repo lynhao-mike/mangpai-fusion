@@ -209,7 +209,10 @@ def _scan_year_relations(bazi: Bazi, dayun_gz: GanZhi, ln: GanZhi) -> list[str]:
 
 
 def _infer_main_energy(
-    bazi: Bazi, ln: GanZhi, dayun_gz: GanZhi,
+    bazi: Bazi,
+    ln: GanZhi,
+    dayun_gz: GanZhi,
+    relations: Optional[list[str]] = None,
 ) -> tuple[str, Strength, list[str]]:
     """根据流年干十神（对日主）+ 流年支主气十神 推主能量类型。"""
     day_master = bazi.日柱.gan
@@ -226,7 +229,8 @@ def _infer_main_energy(
     main = energy_label_map.get(cls, f"{cls}年")
 
     # 强弱：默认 ●，关键支冲冲发 → ▲，伏吟+穿+刑 多 → ▽
-    relations = _scan_year_relations(bazi, dayun_gz, ln)
+    if relations is None:
+        relations = _scan_year_relations(bazi, dayun_gz, ln)
     has_chong = any("冲" in r for r in relations)
     has_he = any("六合" in r for r in relations) or any("流年干合" in r for r in relations)
     has_neg = any("穿" in r or "伏吟" in r or "刑" in r for r in relations)
@@ -338,8 +342,10 @@ def scan_retrospective(
         )
         for y in range(y_start, actual_end + 1):
             ln = liunian_ganzhi(y)
-            main, strength, domains = _infer_main_energy(bazi, ln, step.干支)
             relations = _scan_year_relations(bazi, step.干支, ln)
+            main, strength, domains = _infer_main_energy(
+                bazi, ln, step.干支, relations=relations
+            )
             age = y - birth_year
             seg.flow_years.append(FlowYearEnergy(
                 year=y, age=age,

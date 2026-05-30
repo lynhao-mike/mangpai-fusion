@@ -51,6 +51,7 @@ from tools.rule_lifecycle import (
     Rule,
     RuleStatus,
     RuleNotFoundError,
+    RuleYamlStore,
     apply_status_change,
     load_rule,
     maybe_downgrade,
@@ -684,9 +685,13 @@ def _apply_rule_verdicts(
         diff.notes.append("freeze_iteration=true，全部更新被静默跳过")
         return diff
 
+    store = None if dry_run else RuleYamlStore()
+    load_one = load_rule if store is None else store.load_rule
+    save_one = save_rule if store is None else store.save_rule
+
     for rid, (verdict, vctx) in rule_verdicts.items():
         try:
-            rule = load_rule(rid)
+            rule = load_one(rid)
         except RuleNotFoundError:
             diff.skipped_rule_ids.append(rid)
             continue
@@ -798,7 +803,10 @@ def _apply_rule_verdicts(
         ))
 
         if not dry_run:
-            save_rule(rule)
+            save_one(rule)
+
+    if store is not None:
+        store.flush()
 
     # cross_school_scan trigger（每 N 案）
     if (

@@ -26,6 +26,7 @@ import datetime as _dt
 import math
 import pathlib
 from dataclasses import dataclass, field
+from copy import deepcopy
 from typing import Any, Literal, Optional
 
 import yaml
@@ -579,6 +580,63 @@ def _locate_rule_in_yaml(
             if str(entry.get("id")) == rule_id:
                 return path, data, idx
     raise RuleNotFoundError(f"规律 {rule_id!r} 在所有 4 派 index.yaml 中均未找到")
+
+
+class RuleYamlStore:
+    """批量规律 YAML 存储器：一次读取，多次更新，按文件合并写回。
+
+    反馈摄入常会一次更新多条规律。直接循环 ``load_rule`` / ``save_rule`` 会对
+    4 个 ``index.yaml`` 做 O(R×F) 次扫描，并对同一个文件重复整文件写入。本存储器
+    把每个 YAML 只读一次，把被修改的文件只写一次，面向 batch ingest 优化。
+    """
+
+    def __init__(self, paths: Optional[list[pathlib.Path]] = None) -> None:
+        self.paths = list(paths) if paths is not None else _all_index_yamls()
+        self._data_by_path: dict[pathlib.Path, dict[str, Any]] = {}
+        self._index: dict[str, tuple[pathlib.Path, int]] = {}
+        self._dirty_paths: set[pathlib.Path] = set()
+        self._loaded = False
+
+    def _ensure_loaded(self) -> None:
+        if self._loaded:
+            return
+        for path in self.paths:
+            data = _read_yaml(path)
+            self._data_by_path[path] = data
+            for idx, entry in enumerate(data.get("rules", []) or []):
+                rid = str(entry.get("id", ""))
+                if rid:
+                    self._index[rid] = (path, idx)
+        self._loaded = True
+
+    def load_rule(self, rule_id: str) -> Rule:
+        """从预加载索引中加载一条规律，返回可安全原地修改的 Rule。"""
+        self._ensure_loaded()
+        found = self._index.get(rule_id)
+        if found is None:
+            raise RuleNotFoundError(f"规律 {rule_id!r} 在所有 4 派 index.yaml 中均未找到")
+        path, idx = found
+        entry = self._data_by_path[path].get("rules", [])[idx]
+        return _entry_to_rule(deepcopy(entry))
+
+    def save_rule(self, rule: Rule) -> None:
+        """把 Rule 合并回内存中的 YAML 结构，等待 flush() 批量写盘。"""
+        self._ensure_loaded()
+        found = self._index.get(rule.id)
+        if found is None:
+            raise RuleNotFoundError(f"规律 {rule.id!r} 在所有 4 派 index.yaml 中均未找到")
+        path, idx = found
+        rules = self._data_by_path[path].get("rules", [])
+        rules[idx] = _rule_to_entry(rule)
+        self._data_by_path[path]["rules"] = rules
+        self._dirty_paths.add(path)
+
+    def flush(self) -> None:
+        """将所有变更过的 YAML 文件各写回一次。"""
+        self._ensure_loaded()
+        for path in sorted(self._dirty_paths):
+            _write_yaml(path, self._data_by_path[path])
+        self._dirty_paths.clear()
 
 
 def load_rule(rule_id: str) -> Rule:

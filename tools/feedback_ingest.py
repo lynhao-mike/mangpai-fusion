@@ -364,7 +364,8 @@ def ingest(
 def _bump_state(result: IngestResult, case_id: str) -> None:
     """把当前案件计入完成反馈，并检测是否到 10 案触发点。"""
     state = IterationState.load()
-    if case_id in state.completed_case_ids:
+    completed_case_id_set = set(state.completed_case_ids)
+    if case_id in completed_case_id_set:
         # 同一案重复 ingest 不重复计数
         result.feedback_completed_count = state.feedback_completed_count
         result.iteration_seq = state.iteration_seq

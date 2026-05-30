@@ -142,19 +142,34 @@ class _RulesData:
     rule_ids: set[str]                               # {"MR-001", ...}
 
 
-def load_rules(yaml_path: Optional[Path] = None) -> _RulesData:
-    p = Path(yaml_path) if yaml_path else DEFAULT_RULES_YAML
-    if not p.exists():
+_RULES_CACHE: dict[str, tuple[tuple[int, int] | None, _RulesData]] = {}
+
+
+def _empty_rules_data() -> _RulesData:
+    return _RulesData(
+        blacklist_ids=set(),
+        blacklist_aliases={},
+        blacklist_blocked_outputs={},
+        forbidden_hard=[],
+        forbidden_soft=[],
+        rule_ids=set(),
+    )
+
+
+def _rules_signature(path: Path) -> tuple[int, int] | None:
+    try:
+        st = path.stat()
+    except FileNotFoundError:
+        return None
+    return (st.st_mtime_ns, st.st_size)
+
+
+def _load_rules_uncached(path: Path) -> _RulesData:
+    if not path.exists():
         # 缺失 yaml = 仅做结构性 lint，黑名单功能降级
-        return _RulesData(
-            blacklist_ids=set(),
-            blacklist_aliases={},
-            blacklist_blocked_outputs={},
-            forbidden_hard=[],
-            forbidden_soft=[],
-            rule_ids=set(),
-        )
-    data = yaml.safe_load(p.read_text(encoding="utf-8"))
+        return _empty_rules_data()
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     bl: list[dict[str, Any]] = data.get("blacklist") or []
     bl_ids: set[str] = set()
     bl_aliases: dict[str, str] = {}
@@ -182,6 +197,24 @@ def load_rules(yaml_path: Optional[Path] = None) -> _RulesData:
         forbidden_soft=soft,
         rule_ids=rule_ids,
     )
+
+
+def clear_rules_cache() -> None:
+    """清空 mechanical-rules.yaml 解析缓存，主要供测试或热重载场景使用。"""
+    _RULES_CACHE.clear()
+
+
+def load_rules(yaml_path: Optional[Path] = None) -> _RulesData:
+    p = Path(yaml_path) if yaml_path else DEFAULT_RULES_YAML
+    key = str(p.resolve())
+    sig = _rules_signature(p)
+    cached = _RULES_CACHE.get(key)
+    if cached is not None and cached[0] == sig:
+        return cached[1]
+
+    rules = _load_rules_uncached(p)
+    _RULES_CACHE[key] = (sig, rules)
+    return rules
 
 
 # ============================================================
@@ -820,7 +853,11 @@ _HIGH_CONFIDENCE_RE = re.compile(r"★{4,5}|\((?:7[0-9]|8[0-9]|9[0-9]|100)%\)")
 
 def _has_high_confidence_marker(text: str, keyword: str) -> bool:
     """检查 keyword 出现的行附近（同一行或上下 1 行）是否带高置信度标记。"""
-    lines = text.split("\n")
+    return _has_high_confidence_marker_in_lines(text.splitlines(), keyword)
+
+
+def _has_high_confidence_marker_in_lines(lines: list[str], keyword: str) -> bool:
+    """复用已分割行，避免跨关键词重复 split 与全量扫描。"""
     for i, line in enumerate(lines):
         if keyword not in line:
             continue
@@ -859,23 +896,33 @@ def _lint_cross_domain_coupling(
 
     详见 engine/level-scales.md § 十一。
     """
-    # 1. 检测高置信"体制内"信号
-    institutional_hits: list[str] = []
-    for kw in _INSTITUTIONAL_KEYWORDS:
-        if kw in md and _has_high_confidence_marker(md, kw):
-            institutional_hits.append(kw)
-
-    if not institutional_hits:
+    institutional_candidates = [kw for kw in _INSTITUTIONAL_KEYWORDS if kw in md]
+    if not institutional_candidates:
         return  # 无体制内信号 → 走默认市场财富分级，无需耦合 gate
 
+    lines = md.splitlines()
+
+    # 1. 检测高置信"体制内"信号
+    institutional_hits = [
+        kw for kw in institutional_candidates
+        if _has_high_confidence_marker_in_lines(lines, kw)
+    ]
+
+    if not institutional_hits:
+        return  # 无高置信体制内信号 → 无需耦合 gate
+
+    market_wealth_candidates = [kw for kw in _MARKET_WEALTH_KEYWORDS if kw in md]
+    if not market_wealth_candidates:
+        return  # 无市场财富分级输出 → 已经走权力层级，符合规范
+
     # 2. 检测高置信"市场财富分级"输出
-    market_wealth_hits: list[str] = []
-    for kw in _MARKET_WEALTH_KEYWORDS:
-        if kw in md and _has_high_confidence_marker(md, kw):
-            market_wealth_hits.append(kw)
+    market_wealth_hits = [
+        kw for kw in market_wealth_candidates
+        if _has_high_confidence_marker_in_lines(lines, kw)
+    ]
 
     if not market_wealth_hits:
-        return  # 无市场财富分级输出 → 已经走权力层级，符合规范
+        return  # 无高置信市场财富分级输出 → 已经走权力层级，符合规范
 
     # 3. 检测耦合标注
     coupling_present = any(ann in md for ann in _COUPLING_ANNOTATIONS)

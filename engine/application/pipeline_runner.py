@@ -188,6 +188,7 @@ def run_pipeline_e2e(
                     output,
                     template_name=template_name,
                     cases_dir=cases_dir,
+                    skip_findings_save=True,
                 )
                 # 不写入 to_dict 的字段，仅作返回时附带；真正的落盘由 render_report 内部完成
                 object.__setattr__(output, "report_md", report_md)
