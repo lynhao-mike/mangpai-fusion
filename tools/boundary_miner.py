@@ -53,6 +53,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Optional
 
+from engine.domain.ids import RULE_ID_WITH_LAYER_RE as _RULE_ID_RE
 from tools.rule_lifecycle import (
     AppliedCase,
     LifecycleConfig,
@@ -113,14 +114,7 @@ def chi_square_p_value(table: list[list[int]]) -> float:
 # 二、特征提取
 # ============================================================
 
-# 与 feedback_loop.RULE_ID_RE 同源 + 补 MR-LAYER\d+（任派应期 trace）
-_RULE_ID_RE = re.compile(
-    r"\b(?:"
-    r"M[123]-[A-Z]-\d+"            # 段(M1)/杨(M2)/任(M3) 标准
-    r"|MR-LAYER\d+"                # 任派应期 layer 标记
-    r"|G(?:-[A-Z\u4e00-\u9fff]+){1,3}-?\d*"  # 高派
-    r")\b"
-)
+# 与 feedback_loop.RULE_ID_RE 同源 + 补 MR-LAYER\d+（任派应期 trace）；事实源在 engine.domain.ids。
 
 
 def _extract_co_rules_from_case(

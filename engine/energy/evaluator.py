@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import Any, Optional, Union
 
+from engine.domain.confidence import posterior_to_star as _shared_posterior_to_star
 from engine.energy.shidang import evaluate_shidang
 from engine.energy.tiyong import (
     determine_muxing_qufa,
@@ -166,15 +167,8 @@ def _derive_energy_level(layer_count: int, body_strength: float) -> Magnitude:
 
 # 06-confidence: posterior → ★ 区间
 def _posterior_to_star(p: float) -> int:
-    if p < 0.40:
-        return 1
-    if p < 0.55:
-        return 2
-    if p < 0.70:
-        return 3
-    if p < 0.85:
-        return 4
-    return 5
+    """兼容旧私有入口；实际阈值由 engine.domain.confidence 维护。"""
+    return _shared_posterior_to_star(p)
 
 
 def _aggregate_confidence(evidences: list[Evidence]) -> Confidence:

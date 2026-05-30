@@ -47,6 +47,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine.domain.ids import FEEDBACK_RE as _SHARED_FEEDBACK_RE
 from tools.feedback_loop import (
     IterationDiff,
     Verdict,
@@ -73,11 +74,8 @@ ITERATION_STATE_FILE = META_DIR / "iteration-state.json"
 # ============================================================
 
 # 反馈标注正则：``[S-001-a3f1c2] [y]`` 或同行的 ``反馈：[S-...] [n]``
-# 分组 1: statement_id；分组 2: 标注（y/n/?/skip）
-FEEDBACK_RE = re.compile(
-    r"\[(S-[A-Za-z0-9_]+-[a-f0-9]{6})\]\s*\[(y|n|\?|skip)\]",
-    re.IGNORECASE,
-)
+# 分组 1: statement_id；分组 2: 标注（y/n/?/skip）。事实源在 engine.domain.ids。
+FEEDBACK_RE = _SHARED_FEEDBACK_RE
 
 # verdict 映射：标注 → 内部 Verdict
 ANNOTATION_TO_VERDICT: dict[str, Verdict] = {

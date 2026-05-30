@@ -31,6 +31,8 @@ from typing import Any, Literal, Optional
 
 import yaml
 
+from engine.domain.confidence import posterior_to_star as _shared_posterior_to_star
+
 # ============================================================
 # 一、类型定义
 # ============================================================
@@ -134,21 +136,9 @@ def beta_posterior(hits: int, misses: int) -> tuple[float, float]:
 def posterior_to_star(posterior: float) -> int:
     """05 § 四·2 与 06 § 二 的 5 ★ 映射。
 
-    [0.00, 0.40) → 1
-    [0.40, 0.55) → 2
-    [0.55, 0.70) → 3
-    [0.70, 0.85) → 4
-    [0.85, 1.00] → 5
+    兼容旧公开函数名；实际阈值由 engine.domain.confidence 维护。
     """
-    if posterior < 0.40:
-        return 1
-    if posterior < 0.55:
-        return 2
-    if posterior < 0.70:
-        return 3
-    if posterior < 0.85:
-        return 4
-    return 5
+    return _shared_posterior_to_star(posterior)
 
 
 def compute_rule_confidence(

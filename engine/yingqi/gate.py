@@ -20,6 +20,12 @@ from __future__ import annotations
 
 from typing import Optional
 
+from engine.domain.confidence import posterior_to_star as _shared_posterior_to_star
+from engine.domain.social_clock import (
+    INSTITUTIONAL_HINTS,
+    SOCIAL_CLOCK_RULES,
+    SOCIAL_CLOCK_TOLERANCE,
+)
 from engine.energy.types import (
     Confidence,
     EnergyFindings,
@@ -152,30 +158,14 @@ def _compute_age_at_year(parsed: ParsedInput, year: int) -> int:
 #
 # 关键词列表按"长关键词优先"排序，避免"毕业"误匹配掉"本科毕业"。
 
-# 事件关键词 → (lo, hi, label) 年龄窗口
-_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = [
-    # ===== 学业系列（按长度降序避免被泛词吃掉）=====
-    (("研究生毕业", "硕士毕业"), (24, 29), "研究生毕业"),
-    (("博士毕业", "PhD毕业", "PhD 毕业"), (27, 35), "博士毕业"),
-    (("研究生入学", "硕士入学", "读研"), (21, 26), "研究生入学"),
-    (("博士入学",), (24, 32), "博士入学"),
-    (("本科毕业", "大学毕业"), (21, 24), "本科毕业（4 年制）"),
-    (("高考",), (17, 19), "高考"),
-    (("考研",), (21, 25), "考研"),
-    (("入学", "上学", "录取"), (17, 23), "升学/入学"),
-    # ===== 婚姻系列（picture 已有强约束，本函数作为二次保险）=====
-    (("初婚", "成家"), (20, 40), "初婚"),
-    (("结婚", "成婚", "嫁", "娶", "领证"), (20, 50), "结婚（含再婚）"),
-    # ===== 工作系列 =====
-    (("入职", "第一份工作", "首份工作"), (21, 28), "首次入职"),
-    (("升迁", "升职", "提拔", "晋升"), (25, 65), "升职"),
-    (("退休",), (55, 70), "退休"),
-    # ===== 生育系列 =====
-    (("生子", "生女", "怀孕", "得子", "得女"), (20, 45), "生育"),
-]
+# 事件关键词 → (lo, hi, label) 年龄窗口。
+# 兼容旧私有常量名；事实源在 engine.domain.social_clock。
+_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = list(
+    SOCIAL_CLOCK_RULES
+)
 
 # 偏差容忍度（单位：年）。命主年龄换算可能因农历/虚岁出现 ±1 年误差。
-_SOCIAL_CLOCK_TOLERANCE: int = 1
+_SOCIAL_CLOCK_TOLERANCE: int = SOCIAL_CLOCK_TOLERANCE
 
 
 def check_social_clock(
@@ -346,16 +336,8 @@ def _trigger_type_bonus(t: TriggerEvent) -> float:
 
 
 def _posterior_to_star(p: float) -> int:
-    """06 § 二 五星映射。"""
-    if p < 0.40:
-        return 1
-    if p < 0.55:
-        return 2
-    if p < 0.70:
-        return 3
-    if p < 0.85:
-        return 4
-    return 5
+    """06 § 二 五星映射；兼容旧私有入口。"""
+    return _shared_posterior_to_star(p)
 
 
 def compute_yingqi_confidence(
@@ -500,12 +482,8 @@ def _collect_evidence(
 # 三·五、v1.4 V4：体制内案例的事件类型多解（CFL-C015-003）
 # ============================================================
 
-# 体制内路径关键词（与 output_linter._INSTITUTIONAL_KEYWORDS 保持一致核心子集）
-_INSTITUTIONAL_HINTS: tuple[str, ...] = (
-    "公门", "国企", "体制", "事业单位", "选调", "公务员",
-    "党政", "行政", "省厅", "正厅", "副厅", "正处", "副处",
-    "厅局", "省部",
-)
+# 体制内路径关键词（兼容旧私有常量名；事实源在 engine.domain.social_clock）
+_INSTITUTIONAL_HINTS: tuple[str, ...] = INSTITUTIONAL_HINTS
 
 
 def _infer_event_type_hypotheses(

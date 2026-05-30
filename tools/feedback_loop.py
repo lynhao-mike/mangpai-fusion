@@ -44,6 +44,7 @@ from typing import Any, Literal, Optional
 
 import yaml
 
+from engine.domain.ids import RULE_ID_RE, RULE_ID_RE_RELAX
 from tools.drift_detect import detect_drift
 from tools.rule_lifecycle import (
     AppliedCase,
@@ -76,19 +77,7 @@ CALIBRATION_DIR = META_DIR / "calibration"
 
 Verdict = Literal["hit", "miss", "abstain", "no_data"]
 
-# 规律 ID 正则：
-#   - 段派 M1-D-001
-#   - 杨派 M2-Y-068
-#   - 任派 M3-R-031
-#   - 高派 G-XX-005 / G-BD-词馆 / G-* 等
-RULE_ID_RE = re.compile(
-    r"\b(?:M[123]-[DYRY]-\d+|G(?:-[A-Z\u4e00-\u9fff]+){1,3}-?\d*)\b"
-)
-
-# 更宽松的二级正则：含中文章节的高派形式 G-BD-词馆
-RULE_ID_RE_RELAX = re.compile(
-    r"\b(?:M[123]-[A-Z]-\d+|G-[A-Z]+(?:-[\u4e00-\u9fff\w]+)?)"
-)
+# 规律 ID 正则：事实源在 engine.domain.ids；此处保留旧变量名供兼容。
 
 
 @dataclass

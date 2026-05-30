@@ -372,9 +372,17 @@ class PictureFindings:
         return cls.from_dict(json.loads(s))
 
     def hash(self) -> str:
-        """SHA-256 hash 前 16 位（用于 D3 upstream_picture_hash 校验）。"""
+        """SHA-256 hash 前 16 位（用于 D3 upstream_picture_hash 校验）。
+
+        仅对 D2 原生事实字段取 hash。``industry_path`` / ``wealth_level`` 是
+        integration 阶段的派生富化字段，若纳入 hash，会导致 D3 已记录的
+        upstream_picture_hash 在整合后被后置 mutation 破坏。
+        """
+        stable = self.to_dict()
+        stable.pop("industry_path", None)
+        stable.pop("wealth_level", None)
         canonical = json.dumps(
-            self.to_dict(), ensure_ascii=False, sort_keys=True
+            stable, ensure_ascii=False, sort_keys=True
         )
         return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
 

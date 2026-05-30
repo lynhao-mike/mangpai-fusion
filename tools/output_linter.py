@@ -23,6 +23,18 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Iterable, Literal, Optional, Union
 
+from engine.domain.confidence import (
+    STAR_RANGES_PERCENT,
+    expected_pct_range as _shared_expected_pct_range,
+    is_star_percent_consistent,
+    percent_to_star,
+)
+from engine.domain.social_clock import (
+    INSTITUTIONAL_KEYWORDS,
+    SOCIAL_CLOCK_RULES,
+    SOCIAL_CLOCK_TOLERANCE,
+)
+
 try:
     import yaml  # type: ignore
 except ImportError as e:  # pragma: no cover
@@ -35,14 +47,8 @@ except ImportError as e:  # pragma: no cover
 # 一、常量 / 区间表（与 06-confidence-model § 二 保持双向唯一）
 # ============================================================
 
-# ★ 区间表（左闭右闭百分比）
-STAR_RANGES: dict[int, tuple[int, int]] = {
-    1: (0, 39),
-    2: (40, 54),
-    3: (55, 69),
-    4: (70, 84),
-    5: (85, 100),
-}
+# ★ 区间表（左闭右闭百分比）。事实源在 engine.domain.confidence。
+STAR_RANGES: dict[int, tuple[int, int]] = dict(STAR_RANGES_PERCENT)
 
 VALID_SCHOOL_TAGS: set[str] = {"段", "杨", "任", "高", "共识", "互补", "独门", "冲突仲裁", "冲突"}
 
@@ -245,23 +251,16 @@ def parse_star_pct(text: str) -> Optional[tuple[int, int]]:
 
 
 def is_star_pct_consistent(star: int, pct: int) -> bool:
-    if star not in STAR_RANGES:
-        return False
-    lo, hi = STAR_RANGES[star]
-    return lo <= pct <= hi
+    return is_star_percent_consistent(star, pct)
 
 
 def expected_star_for_pct(pct: int) -> int:
     """给定 % 反推应该是 ★几（用于报错建议）"""
-    for s in (5, 4, 3, 2, 1):
-        lo, hi = STAR_RANGES[s]
-        if lo <= pct <= hi:
-            return s
-    return 1
+    return percent_to_star(pct)
 
 
 def expected_pct_range(star: int) -> tuple[int, int]:
-    return STAR_RANGES.get(star, (0, 100))
+    return _shared_expected_pct_range(star)
 
 
 # ============================================================
@@ -804,23 +803,7 @@ def _lint_relation_source_misuse(md: str, res: LintResult) -> None:
 # 来源：C-2026-015 反馈 / CFL-C015-002 仲裁
 
 # 行业路径关键词（高置信暗示走体制路径）
-_INSTITUTIONAL_KEYWORDS: tuple[str, ...] = (
-    "体制内",
-    "公门",
-    "国企",
-    "事业单位",
-    "选调",
-    "公务员",
-    "党政",
-    "行政机关",
-    "省厅",
-    "正厅",
-    "副厅",
-    "正处",
-    "副处",
-    "厅局级",
-    "省部级",
-)
+_INSTITUTIONAL_KEYWORDS: tuple[str, ...] = INSTITUTIONAL_KEYWORDS
 
 # 市场财富分级关键词（暗示用 5 级 15 档市场财富分级）
 _MARKET_WEALTH_KEYWORDS: tuple[str, ...] = (
@@ -955,25 +938,12 @@ def _lint_cross_domain_coupling(
 #   3. 偏差 > 容差（±1 年）→ 触发 W10 警告
 #   4. 跳过元数据行（含 v1.0/v2.0/错锚/修正/已应验等关键词）
 
-# 学制规则（与 engine/yingqi/gate._SOCIAL_CLOCK_RULES 同步；本副本为减少跨包依赖）
-_LINT_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = [
-    (("研究生毕业", "硕士毕业"), (24, 29), "研究生毕业"),
-    (("博士毕业", "PhD毕业", "PhD 毕业"), (27, 35), "博士毕业"),
-    (("研究生入学", "硕士入学", "读研"), (21, 26), "研究生入学"),
-    (("博士入学",), (24, 32), "博士入学"),
-    (("本科毕业", "大学毕业"), (21, 24), "本科毕业（4 年制）"),
-    (("高考",), (17, 19), "高考"),
-    (("考研",), (21, 25), "考研"),
-    (("入学", "上学", "录取"), (17, 23), "升学/入学"),
-    (("初婚", "成家"), (20, 40), "初婚"),
-    (("结婚", "成婚", "嫁", "娶", "领证"), (20, 50), "结婚（含再婚）"),
-    (("入职", "第一份工作", "首份工作"), (21, 28), "首次入职"),
-    (("升迁", "升职", "提拔", "晋升"), (25, 65), "升职"),
-    (("退休",), (55, 70), "退休"),
-    (("生子", "生女", "怀孕", "得子", "得女"), (20, 45), "生育"),
-]
+# 学制规则（与 engine/yingqi/gate._SOCIAL_CLOCK_RULES 同步）；事实源在 engine.domain.social_clock。
+_LINT_SOCIAL_CLOCK_RULES: list[tuple[tuple[str, ...], tuple[int, int], str]] = list(
+    SOCIAL_CLOCK_RULES
+)
 
-_LINT_SOCIAL_CLOCK_TOLERANCE: int = 1
+_LINT_SOCIAL_CLOCK_TOLERANCE: int = SOCIAL_CLOCK_TOLERANCE
 
 # 出生年提取正则：捕获 "出生：YYYY"、"生年：YYYY"、"**出生**：YYYY-MM-DD" 等格式
 # 兼容 markdown 加粗（**出生**） / 中英文冒号 / 日期 4 位前任意非数字字符

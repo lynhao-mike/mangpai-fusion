@@ -27,10 +27,10 @@ AI 润色边界（决策 D · 永久锁定）
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import sys
+import warnings
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Literal, Optional, Union
@@ -38,6 +38,7 @@ from typing import Any, Literal, Optional, Union
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from engine.domain.ids import compute_statement_id
 from engine.energy.types import EnergyFindings
 from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
@@ -192,9 +193,13 @@ def render_from_output(
     if not skip_findings_save:
         try:
             save_findings(analysis_output, cases_dir)
-        except Exception:
-            # 落盘失败不阻断渲染，仅静默（报告仍可交付）
-            pass
+        except Exception as exc:
+            # 落盘失败不阻断渲染，但必须显式暴露，否则后续 D5 反馈会丢失溯源材料。
+            warnings.warn(
+                f"save_findings failed for {getattr(analysis_output, 'case_id', 'UNKNOWN')}: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
 
     # Step 2: 拆包 AnalysisOutput 字段
     energy = getattr(analysis_output, "energy")
@@ -241,9 +246,13 @@ def render_from_output(
             json.dumps(idx, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
-    except Exception:
-        # statement_index 落盘失败不阻断报告交付（仅丢失 D5 反馈精确度）
-        pass
+    except Exception as exc:
+        # statement_index 落盘失败不阻断报告交付，但必须显式暴露（否则 D5 反馈会静默降级）。
+        warnings.warn(
+            f"statement_index write failed for {case_id}: {exc}",
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
     return report
 
@@ -261,8 +270,12 @@ def render_both(
     """
     try:
         save_findings(analysis_output, cases_dir)
-    except Exception:
-        pass
+    except Exception as exc:
+        warnings.warn(
+            f"save_findings failed for {getattr(analysis_output, 'case_id', 'UNKNOWN')}: {exc}",
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
     return {
         v: render_from_output(
@@ -314,27 +327,11 @@ LAYER_ICONS = {True: "✓", False: "✗"}
 def _compute_statement_id(case_id: str, rule_ids: list[str]) -> str:
     """v1.3 D1：稳定的断语 ID。
 
-    形式：``S-{short_case}-{trace_hash[:6]}``
-
-    - ``short_case``：从 case_id 提取序号段，例如 ``C-2026-001-庚申...`` → ``001``。
-      取不到序号段时退化为 case_id 前 6 字符。
-    - ``trace_hash``：``sha256(short_case + "|" + sorted_rule_ids_joined)[:6]``，
-      保证同一案多次重跑、相同 evidence 集合 → 同一 statement_id（D1 决策）。
-
+    兼容旧私有函数名；事实源在 engine.domain.ids.compute_statement_id。
     应期类断语应在 rule_ids 中追加 ``"YEAR-{year}"`` 标记，避免不同年份
     相同 evidence 集合产生 ID 碰撞。
     """
-    parts = case_id.split("-") if case_id else []
-    if len(parts) >= 3 and parts[2].isdigit():
-        short_case = parts[2]
-    elif case_id:
-        short_case = case_id[:6].replace("/", "_")
-    else:
-        short_case = "UNK"
-    sorted_ids = sorted({r for r in (rule_ids or []) if r}) or ["NONE"]
-    payload = f"{short_case}|{','.join(sorted_ids)}"
-    h = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:6]
-    return f"S-{short_case}-{h}"
+    return compute_statement_id(case_id, rule_ids)
 
 
 def _star_pct(conf) -> tuple[int, int]:
