@@ -26,10 +26,11 @@ if str(ROOT) not in sys.path:
 import pytest
 from engine.energy.evaluator import evaluate_energy
 from engine.picture.matcher import match_picture
+from engine.pipeline import run_pipeline
 from engine.yingqi import gate_yingqi
 from tests.fixtures.cases import load_case
 from tools.output_linter import lint
-from tools.render_report import render
+from tools.render_report import render, render_from_output
 
 
 # ============================================================
@@ -213,6 +214,29 @@ def test_F_report_structure(sample_report):
     for marker in required:
         assert marker in sample_report, f"报告缺必要段落标记: {marker!r}"
     print("\n[F-结构] 报告结构完整 ✓")
+
+
+def test_F_render_from_output_keeps_parsed_context(tmp_path):
+    """render_from_output 必须保留 run_pipeline 的 ParsedInput 上下文。"""
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
+    output = run_pipeline(parsed, write_findings=False)
+
+    assert getattr(output, "_parsed", None) is parsed
+
+    report = render_from_output(
+        output,
+        lint_before=False,
+        cases_dir=tmp_path,
+        skip_findings_save=True,
+    )
+
+    assert "{{ qian_kun }}" not in report
+    assert "# 八字分析报告 v1.3 · C-2026-001-乾-庚申戊寅壬子辛丑 · 乾" in report
+    assert "**四柱**：庚申戊寅壬子辛丑" in report
+    assert "**四柱**：—" not in report
+    assert "| 四柱 | 庚申戊寅壬子辛丑 |" in report
+    assert "| 四柱 | — |" not in report
+    assert "**大运**：—" not in report
 
 
 def test_F_support_none_graceful(c001_findings):

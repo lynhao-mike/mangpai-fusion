@@ -94,6 +94,12 @@ def run_pipeline(
         logger.warning("retrospective scan 失败：%s", e)
         object.__setattr__(output, "retrospective", None)
 
+    # 把 render 所需的原始 ParsedInput 挂到 output 上。
+    # AnalysisOutput 的声明字段专注于 D1-D4 findings，不序列化完整输入；但
+    # render_from_output() 需要 bazi/dayun/birth 等上下文渲染报告头与画像表。
+    # 使用动态属性维持现有 JSON schema 不变，同时避免退化到占位 ParsedInput。
+    object.__setattr__(output, "_parsed", parsed)
+
     # 把 timing 引用挂到 output 上（dataclass 非 frozen → 可动态附加）。
     # 注意：to_dict/to_json 仅序列化声明字段，timing 不会泄漏进 JSON 制品。
     object.__setattr__(output, "timing", timing)

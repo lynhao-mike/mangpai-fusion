@@ -368,6 +368,41 @@ def _birth_str(parsed: ParsedInput) -> str:
     return str(birth.get("公历", birth.get("农历", "—")))
 
 
+def _qian_kun_from(parsed: ParsedInput) -> str:
+    """从 case_id 或性别字段推导命式（乾/坤）。"""
+    case_id = str(getattr(parsed, "case_id", "") or "") if parsed else ""
+    m = re.match(r"^C-\d{4}-\d{3}-([乾坤])-", case_id)
+    if m:
+        return m.group(1)
+
+    gender = str(((getattr(parsed, "birth", None) or {}).get("性别", "")) if parsed else "")
+    return {
+        "M": "乾",
+        "男": "乾",
+        "乾": "乾",
+        "F": "坤",
+        "女": "坤",
+        "坤": "坤",
+    }.get(gender, "—")
+
+
+def _dayun_year_range(step: Any) -> Optional[tuple[int, int]]:
+    """兼容本地 ParsedInput.起讫年 与 preflight ParsedInput.起讫。"""
+    years = getattr(step, "起讫年", None)
+    if years is not None:
+        try:
+            return int(years[0]), int(years[1])
+        except Exception:
+            pass
+
+    text = getattr(step, "起讫", None)
+    if isinstance(text, str):
+        m = re.match(r"^\s*(\d{4})\s*[-—~～]\s*(\d{4})\s*$", text)
+        if m:
+            return int(m.group(1)), int(m.group(2))
+    return None
+
+
 def _dayun_str(parsed: ParsedInput) -> str:
     try:
         steps = parsed.dayun.排布
@@ -375,7 +410,13 @@ def _dayun_str(parsed: ParsedInput) -> str:
             return "—"
         parts = []
         for s in steps[:4]:
-            parts.append(f"{s.起讫年[0]}-{s.起讫年[1]}【{s.干支}】")
+            year_range = _dayun_year_range(s)
+            year_text = (
+                f"{year_range[0]}-{year_range[1]}"
+                if year_range is not None
+                else str(getattr(s, "起讫", "—"))
+            )
+            parts.append(f"{year_text}【{s.干支}】")
         return "  ".join(parts)
     except Exception:
         return "—"
@@ -387,7 +428,15 @@ def _bazi_str(parsed: ParsedInput) -> str:
     b = getattr(parsed, "bazi", None)
     if b is None:
         return "—"
-    return f"{b.年柱}{b.月柱}{b.日柱}{b.时柱}"
+
+    def _pillar(name: str) -> str:
+        val = getattr(b, name, None)
+        if val is None and isinstance(b, dict):
+            val = b.get(name)
+        return str(val or "")
+
+    pillars = [_pillar(name) for name in ("年柱", "月柱", "日柱", "时柱")]
+    return "".join(pillars) if all(pillars) else "—"
 
 
 def _dayun_full_table(parsed: ParsedInput) -> list[dict]:
@@ -409,12 +458,18 @@ def _dayun_full_table(parsed: ParsedInput) -> list[dict]:
         current_year = _dt.now().year
         current_age = current_year - birth_year
         for s in steps:
+            year_range = _dayun_year_range(s)
+            year_text = (
+                f"{year_range[0]}-{year_range[1] - 1}"
+                if year_range is not None
+                else str(getattr(s, "起讫", "—"))
+            )
             is_current = (s.起岁 <= current_age <= s.止岁)
             out.append({
                 "seq": s.序号,
                 "ganzhi": str(s.干支),
                 "age_range": f"{s.起岁}-{s.止岁}",
-                "year_range": f"{s.起讫年[0]}-{s.起讫年[1] - 1}",
+                "year_range": year_text,
                 "is_current": is_current,
                 "marker": "← 当前" if is_current else "",
             })
@@ -1207,6 +1262,7 @@ def render(
     # 元信息
     ctx["case_id"] = getattr(parsed, "case_id", "UNKNOWN") if parsed else "UNKNOWN"
     ctx["gender"] = ((getattr(parsed, "birth", None) or {}).get("性别", "—")) if parsed else "—"
+    ctx["qian_kun"] = _qian_kun_from(parsed) if parsed else "—"
     ctx["birth_date"] = _birth_str(parsed) if parsed else "—"
     ctx["bazi_str"] = _bazi_str(parsed) if (parsed and getattr(parsed, "bazi", None)) else "—"
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
