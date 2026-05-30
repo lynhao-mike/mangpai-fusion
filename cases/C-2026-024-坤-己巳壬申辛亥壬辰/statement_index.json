@@ -1,101 +1,139 @@
 {
   "case_id": "C-2026-024-坤-己巳壬申辛亥壬辰",
   "engine_version": "1.3.0",
-  "analysis_version": "v1.0-manual-forward",
+  "analysis_version": "v1.1-feedback-calibrated",
   "generated_at": "2026-05-30T04:40:00Z",
+  "feedback_updated_at": "2026-05-30T04:59:00Z",
   "report_path": "reports/C-2026-024-坤-己巳壬申辛亥壬辰-report.md",
   "analysis_path": "cases/C-2026-024-坤-己巳壬申辛亥壬辰/analysis.md",
   "feedback_path": "cases/C-2026-024-坤-己巳壬申辛亥壬辰/feedback.md",
+  "feedback_summary": {
+    "marriage": "已婚，家庭美满，生活幸福",
+    "children": "一儿一女，先儿后女；女儿 2021-08-11 出生",
+    "education": "2+3大专或高考大专",
+    "career": "2014-2015年入职小学语文教师，实际教英语；2024-2025年升职为校长",
+    "wealth": "小康水平",
+    "body_shape": "体态较丰满，身高约1.60-1.70米",
+    "social": "与同事友好相处"
+  },
   "statements": {
     "S-024-001": {
       "section": "命主画像",
       "statement": "命主聪明敏锐、表达分析强、标准高，不喜被强管。",
       "rule_ids": ["MANUAL-SHANGGUAN-2REN", "MANUAL-RIXIN-SHENYUE"],
       "star": 4,
-      "pct": 86,
+      "pct": 76,
       "schools_str": "段派/杨派",
       "domain": "personality",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "partial_hit",
+      "feedback_note": "教英语、小学校长说明表达与管理能力；但同事关系友好，不能外推为人际冲突。"
     },
     "S-024-002": {
       "section": "事业",
       "statement": "事业宜走专业输出、咨询策划、运营管理、研究分析、金融风控或审美服务，不宜长期被强压制。",
       "rule_ids": ["MANUAL-SHANGGUAN-XIUXIU", "MANUAL-XINJIN-SHENMEI"],
-      "star": 4,
-      "pct": 84,
+      "star": 5,
+      "pct": 92,
       "schools_str": "段派/杨派/高派",
       "domain": "career",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "hit",
+      "feedback_note": "教育/培训/表达输出命中；2014-2015入职小学教师，实际教英语，2024-2025升职校长。"
     },
     "S-024-003": {
       "section": "财富",
       "statement": "财星藏而后发，财富更靠客户资源、项目副业、专业能力变现，财富中位为中产到中富下沿。",
       "rule_ids": ["MANUAL-CAI-CANG", "MANUAL-SHANGGUAN-SHENGCAI"],
-      "star": 4,
-      "pct": 80,
+      "star": 3,
+      "pct": 66,
       "schools_str": "段派/杨派",
       "domain": "wealth",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "partial_hit",
+      "feedback_note": "专业能力变现命中；实际为教师/校长小康水平，财富上界需由 L6-L7 下调到 L5-L6。"
     },
     "S-024-004": {
       "section": "婚恋",
       "statement": "婚恋有正缘但稳定难度高，关系中易因标准、表达、距离或现实责任产生冲突。",
       "rule_ids": ["MANUAL-FUXING-CANG", "MANUAL-SIHAI-CHONG", "MANUAL-SHANGGUAN-WANG"],
-      "star": 4,
-      "pct": 83,
+      "star": 3,
+      "pct": 62,
       "schools_str": "杨派/段派",
       "domain": "marriage",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "partial_hit",
+      "feedback_note": "有正缘命中；已婚、家庭美满、一儿一女，婚姻风险表述过重，需降权。"
     },
     "S-024-005": {
       "section": "应期",
       "statement": "2025-2027 为财、官、婚恋、合作、岗位变化连续触发窗口。",
       "rule_ids": ["MANUAL-YISI-2025", "MANUAL-BINGWU-2026", "MANUAL-DINGWEI-2027"],
-      "star": 4,
-      "pct": 84,
+      "star": 5,
+      "pct": 91,
       "schools_str": "任派/杨派",
       "domain": "timing",
       "year": 2025,
-      "feedback_status": "pending"
+      "feedback_status": "hit",
+      "feedback_note": "2024-2025升职为校长，事业身份强化命中，时间误差 0-1 年。"
     },
     "S-024-006": {
-      "section": "健康",
+      "section": "健康/体貌",
       "statement": "健康重点在寒湿、肾水、妇科、脾胃、睡眠、呼吸皮肤等方向。",
       "rule_ids": ["MANUAL-JINSHUI-WANG", "MANUAL-CHENHAI-SHI"],
       "star": 3,
-      "pct": 74,
+      "pct": 68,
       "schools_str": "高派/杨派",
       "domain": "health",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "partial_pending",
+      "feedback_note": "暂无具体健康反馈；体态丰满可作金水湿土偏重旁证，不作疾病命中。"
     },
     "S-024-007": {
       "section": "大运",
       "statement": "38岁后丙子运会强化事业身份、规则、名分与关系定型。",
       "rule_ids": ["MANUAL-BINGZI-DAYUN", "MANUAL-ZHENGGUAN-TOU"],
-      "star": 4,
-      "pct": 86,
+      "star": 5,
+      "pct": 88,
       "schools_str": "任派/杨派",
       "domain": "luck_cycle",
       "year": 2026,
-      "feedback_status": "tracking"
+      "feedback_status": "early_hit_tracking",
+      "feedback_note": "2024-2025已升职校长，丙子运前夕事业身份已提前显象，2026后继续追踪。"
     },
     "S-024-008": {
       "section": "婚恋建议",
       "statement": "关系经营最大禁忌是伤官压官，即用挑剔、审判、强势表达持续压制伴侣。",
       "rule_ids": ["MANUAL-SHANGGUAN-JIANGUAN", "MANUAL-FEMALE-MARRIAGE"],
-      "star": 5,
-      "pct": 90,
+      "star": 3,
+      "pct": 60,
       "schools_str": "段派/杨派",
       "domain": "marriage",
       "year": null,
-      "feedback_status": "pending"
+      "feedback_status": "risk_only",
+      "feedback_note": "当前家庭美满，未反馈明显冲突；仅保留为风险提示，不作为现实问题断语。"
     }
   },
+  "new_feedback_events": [
+    {
+      "year": 2014,
+      "event": "2014-2015年入职小学语文教师，实际教英语",
+      "domain": "career",
+      "status": "hit"
+    },
+    {
+      "year": 2021,
+      "event": "2021-08-11 生女，形成一儿一女、先儿后女结构",
+      "domain": "children",
+      "status": "new_feedback"
+    },
+    {
+      "year": 2024,
+      "event": "2024-2025年升职为校长",
+      "domain": "career",
+      "status": "hit"
+    }
+  ],
   "links": {
     "input": "input.md",
     "analysis": "analysis.md",
