@@ -102,6 +102,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
 
     def fake_run_pipeline_e2e(*args, **kwargs):
         calls["count"] += 1
+        assert kwargs.get("report_variant") == "client"
         (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
         (findings_dir / "timing.json").write_text("{}", encoding="utf-8")
         (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")

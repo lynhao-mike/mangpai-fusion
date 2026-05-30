@@ -110,6 +110,7 @@ class ProductionAnalysisService:
                 do_render=normalized.render,
                 do_self_iter=False,
                 template_name=normalized.template_name,
+                report_variant="client",
             )
             case_id = str(output.case_id or "")
             summary = self._build_summary(output, timing)

@@ -216,16 +216,35 @@ def _label_for(tier: int) -> tuple[str, str, str]:
 
 
 def _make_band(low: int, mid: int, high: int, rationale: str) -> TierBand:
-    """构造一个 TierBand，自动 clamp 到 [1,15] 并填中位标签。"""
-    low = max(1, min(15, low))
-    high = max(1, min(15, high))
-    mid = max(low, min(high, mid))
+    """构造一个 TierBand，自动 clamp 到 [1,15] 并填中位标签。
+
+    这里承担最后一道数据护栏：无论上游传入顺序如何，输出都必须满足
+    ``1 <= low <= mid <= high <= 15``，避免报告出现 ``L13-L12`` 之类
+    反向区间，或中位超过理论上限。
+    """
+    low = max(1, min(15, int(low)))
+    high = max(1, min(15, int(high)))
+    if low > high:
+        low, high = high, low
+    mid = max(low, min(high, int(mid)))
     label, society, income = _label_for(mid)
     return TierBand(
         low=low, mid=mid, high=high,
         label=label, society=society, income_cny=income,
         rationale=rationale,
     )
+
+
+def _cap_band(band: TierBand, high_cap: int, rationale_suffix: str) -> TierBand:
+    """按领域现实口径收束上限，保留 ordered invariant。"""
+    cap = max(1, min(15, int(high_cap)))
+    if band.high <= cap:
+        return band
+    high = cap
+    low = min(band.low, max(1, high - 1))
+    mid = min(max(low, band.mid), high)
+    rationale = f"{band.rationale} · {rationale_suffix}"
+    return _make_band(low, mid, high, rationale)
 
 
 # ============================================================
@@ -270,11 +289,13 @@ def compute_wealth_15tier(energy: Any, picture: Any) -> Wealth15Tier:
     # ------------------------------------------------------------
     g_max = _guanming_rank_to_max_tier(getattr(guanming, "rank", None))
     g_type = getattr(guanming, "type", "?") if guanming else "?"
-    # 实际兑现：结构上限 - (4 - layer_count，但封 0)
+    # 实际兑现：结构上限 - (4 - layer_count，但封 0)。
+    # 注意事业域的理论上限来自官命取法，不应被财富骨架 base_low 反向抬高；
+    # 否则在 D1=巨富、D2=化官生印 时会出现 L13-L12 / mid > high。
     realize_gap = max(0, 4 - layer_count)
     shiye_high = g_max
-    shiye_mid = max(base_low, g_max - realize_gap)
-    shiye_low = max(base_low - 1, shiye_mid - 2)
+    shiye_mid = max(1, min(shiye_high, g_max - realize_gap))
+    shiye_low = max(1, shiye_mid - 2)
     shiye_band = _make_band(
         shiye_low, shiye_mid, shiye_high,
         rationale=(
@@ -304,6 +325,11 @@ def compute_wealth_15tier(energy: Any, picture: Any) -> Wealth15Tier:
             f"提 {edu_lift} 档"
         ),
     )
+    xueye_band = _cap_band(
+        xueye_band,
+        8,
+        "学业域不直接继承财富/官命上限，按学历资质现实口径封顶 L8",
+    )
 
     # ------------------------------------------------------------
     # 婚姻域（妻家档次）：以 D2.caifu 镜像 + 高派婚姻 net boost
@@ -318,6 +344,11 @@ def compute_wealth_15tier(energy: Any, picture: Any) -> Wealth15Tier:
             f"D2 配偶宫+高派金舆等旁证 → 妻家档次约 L{hun_low}-L{hun_high}, "
             f"中位 L{hun_mid}（参考命主财富档次镜像偏低 1 档）"
         ),
+    )
+    hunyin_band = _cap_band(
+        hunyin_band,
+        9,
+        "婚姻/妻家档次不按命主财富结构直推巨富，现实口径封顶 L9",
     )
 
     # ------------------------------------------------------------
@@ -336,6 +367,12 @@ def compute_wealth_15tier(energy: Any, picture: Any) -> Wealth15Tier:
         )
     else:
         gm_band = None
+
+    caifu_band = _cap_band(
+        caifu_band,
+        12,
+        "财富域以结构潜力作上沿但报告定位采用保守现实口径，封顶 L12",
+    )
 
     return Wealth15Tier(
         xueye=xueye_band,
