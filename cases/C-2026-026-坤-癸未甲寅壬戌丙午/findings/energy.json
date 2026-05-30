@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-026-坤-癸未甲寅壬戌丙午",
+  "energy_level": {
+    "ordinal": "极强",
+    "score": 1.0
+  },
+  "layer_count": 4,
+  "zuogong_paths": [
+    {
+      "type": "合",
+      "chain": [
+        "未",
+        "寅",
+        "戌",
+        "午"
+      ],
+      "description": "四支三合化火(财) → 合用做功",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.8
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "制",
+      "chain": [
+        "癸",
+        "丙"
+      ],
+      "description": "年柱干癸(比劫) 克 时柱干丙(财) → 比劫制财",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.75
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "制",
+      "chain": [
+        "未",
+        "戌"
+      ],
+      "description": "年支支未 ↔ 日支支戌 之 刑 → 作用于用神未(官杀)",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.7
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "墓",
+      "chain": [
+        "未"
+      ],
+      "description": "年支未库藏 己(主气),丁(中气) 财官 + 有冲刑打开 → 墓库做功",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "墓",
+      "chain": [
+        "戌"
+      ],
+      "description": "日支戌库藏 戊(主气),丁(余气) 财官 + 有冲刑打开 → 墓库做功",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "甲",
+        "丙"
+      ],
+      "description": "月柱甲(食伤,木) → 生 → 时柱丙(财,火) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "寅",
+        "丙"
+      ],
+      "description": "月支寅(食伤,木) → 生 → 时柱丙(财,火) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "丙",
+        "未"
+      ],
+      "description": "时柱丙(财,火) → 生 → 年支未(官杀,土) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "午",
+        "未"
+      ],
+      "description": "时支午(财,火) → 生 → 年支未(官杀,土) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "复合",
+      "chain": [
+        "未",
+        "寅",
+        "戌",
+        "午",
+        "癸",
+        "丙"
+      ],
+      "description": "复合做功 = 制 + 合 + 墓 + 生泄 多种叠加（M1-D-014）",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.85
+      },
+      "layer_count": 0
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "壬",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "癸",
+        "role": "比劫",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "甲",
+        "role": "食伤",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "寅",
+        "role": "食伤",
+        "location": "月柱-地支（月支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "丙",
+        "role": "财",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "未",
+        "role": "官杀",
+        "location": "年柱-地支（年支）"
+      },
+      {
+        "char": "戌",
+        "role": "官杀",
+        "location": "日柱-地支（日支）"
+      },
+      {
+        "char": "午",
+        "role": "财",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 壬(水) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 壬(体), 癸(比劫), 甲(食伤), 寅(食伤)\n  用（目的）= 财 + 官杀: 丙(财), 未(官杀), 戌(官杀), 午(财)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.2659,
+      "火": 0.2642,
+      "土": 0.1839,
+      "金": 0.0103,
+      "水": 0.2756
+    },
+    "dang": [
+      [
+        "水木",
+        "双党·水生木（合计 54%） = 段派 比劫生食伤党"
+      ],
+      [
+        "木火",
+        "双党·木生火（合计 53%） = 段派 食伤生财党"
+      ],
+      [
+        "水木火",
+        "三党·水→木→火（合计 81%）"
+      ],
+      [
+        "木火土",
+        "三党·木→火→土（合计 71%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[水=28%, 木=27%, 火=26%, 土=18%, 金=1%]; 党形态：4 个"
+  },
+  "zeishen": {
+    "zei_shen": [],
+    "bu_shen": [],
+    "triggered_by_dayun": [],
+    "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+  },
+  "wealth_ceiling": "巨富级·上",
+  "has_guoheqiaoqiao": true,
+  "muxing_qufa": "食伤",
+  "confidence": {
+    "star": 5,
+    "percent": 0.95,
+    "posterior": 0.95,
+    "variance": 0.05,
+    "sample_n": 9
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 4 字，用 4 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：双党·水生木（合计 54%） = 段派 比劫生食伤党",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-012",
+      "school": "段",
+      "description": "合：四支三合化火(财) → 合用做功",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：年柱干癸(比劫) 克 时柱干丙(财) → 比劫制财",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：年支支未 ↔ 日支支戌 之 刑 → 作用于用神未(官杀)",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-013",
+      "school": "段",
+      "description": "墓：年支未库藏 己(主气),丁(中气) 财官 + 有冲刑打开 → 墓库做功",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-013",
+      "school": "段",
+      "description": "墓：日支戌库藏 戊(主气),丁(余气) 财官 + 有冲刑打开 → 墓库做功",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：食伤（决策 J）",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-171",
+      "school": "段",
+      "description": "过河拆桥结构候选 = 食生财 + 财生官 三连环",
+      "weight": 0.75
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.7,
+    "has_strong_yong": false,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[水=28%, 木=27%, 火=26%, 土=18%, 金=1%]; 党形态：4 个"
+  }
+}

@@ -30,6 +30,7 @@
 | [`cross_domain_consistency_check.py`](cross_domain_consistency_check.py:1) | 历史报告跨维度输出耦合 W9 回溯扫描 | v1.4 V8 / CFL-C015-002 |
 | [`extract_predictions.py`](extract_predictions.py:1) | 抽取 ★4+ 应期到 predictions/ | 预测封存现行入口 |
 | [`timing_report.py`](timing_report.py:1) | 聚合 pipeline timing.json | v1.2.1+ metrics |
+| [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存 |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 多派别 Markdown 教材入口；支持 `--dry-run` |
