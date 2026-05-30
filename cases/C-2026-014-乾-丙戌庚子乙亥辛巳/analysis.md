@@ -545,4 +545,4 @@ social_clock_check(birth_year, event_type) → expected_year_range
 **v2.1 签署**
 - 校准日期：2026-05-26
 - 校准依据：用户主动问询 + v2.0 学制错误识别
-- 引擎版本：mangpai-fusion v1.4.0（feat/v1.4-track-2-3 已合并 main）
+- 引擎版本：mangpai-fusion 产品 v1.3.0；pipeline/schema v1.4.0（feat/v1.4-track-2-3 已合并 main）

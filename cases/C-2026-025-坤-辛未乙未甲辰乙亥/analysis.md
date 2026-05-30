@@ -257,7 +257,7 @@
 |---|---|
 | case_id | C-2026-025-坤-辛未乙未甲辰乙亥 |
 | 分析日期 | 2026-05-30 |
-| 分析师 | mangpai-fusion v1.4 markdown archive |
+| 分析师 | mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0 markdown archive |
 | 共识数 | 4 条 |
 | 互补数 | 4 组 |
 | 独门数 | 4 条 |

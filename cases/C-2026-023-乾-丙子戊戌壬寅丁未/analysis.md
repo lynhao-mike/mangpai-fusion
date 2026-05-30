@@ -290,7 +290,7 @@
 |---|---|
 | case_id | C-2026-023-乾-丙子戊戌壬寅丁未 |
 | 分析日期 | 2026-05-30 |
-| 分析师 | mangpai-fusion v1.4 markdown archive |
+| 分析师 | mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0 markdown archive |
 | 模板方案 | D · 推荐固定版 · 可回测技术归档型 |
 | 参考结构 | C019 report-v2 + C001 analysis + C018 analysis |
 | 共识数 | 4 条 |

@@ -30,8 +30,8 @@
 **命主**：{{ gender }}命 · {{ birth_date }}  
 **四柱**：{{ bazi_display }}  
 **当前大运**：{{ current_dayun }}（{{ current_dayun_years }}） → 下一步{{ next_dayun }}（{{ next_dayun_years }}）  
-**分析日期**：{{ analysis_date }}  
-**引擎**：mangpai-fusion v1.4 · 四派融合  
+**分析日期**：{{ analysis_date }}
+**引擎**：mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0 · 四派融合
 
 ---
 

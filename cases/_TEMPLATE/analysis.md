@@ -259,7 +259,7 @@
 |---|---|
 | case_id | {case_id} |
 | 分析日期 | {YYYY-MM-DD} |
-| 分析师 | mangpai-fusion v1.4 markdown archive |
+| 分析师 | mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0 markdown archive |
 | 模板方案 | 固定版 · 可回测技术归档型 |
 | 模板基准 | C-2026-023 analysis v1.1 |
 | 共识数 | {n} 条 |
