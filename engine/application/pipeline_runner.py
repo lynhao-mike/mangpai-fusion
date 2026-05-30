@@ -1,0 +1,216 @@
+"""应用层流水线用例：编排 D1-D4 引擎、渲染与自迭代边界。"""
+
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+from typing import Optional, Union
+
+from engine.application.candidates import _extract_candidates
+from engine.application.integration import integrate
+from engine.application.timing import PIPELINE_THRESHOLD_SECONDS, PipelineTiming
+from engine.domain.analysis import AnalysisOutput
+from engine.energy.evaluator import evaluate_energy
+from engine.infrastructure.findings_repository import _save_findings
+from engine.pangzheng.pangzheng import support_with_shensha
+from engine.picture.matcher import match_picture
+from engine.predicates.types import ParsedInput
+from engine.yingqi.gate import gate_yingqi
+from engine.yingqi.types import GateResult
+
+logger = logging.getLogger(__name__)
+
+def run_pipeline(
+    parsed: ParsedInput,
+    *,
+    cases_dir: Optional[Union[str, Path]] = None,
+    write_findings: bool = True,
+    timing: Optional[PipelineTiming] = None,
+    threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
+) -> AnalysisOutput:
+    """v1.2 流水线编排：parsed → AnalysisOutput（W1-W4 + integrate）。
+
+    输入：ParsedInput（preflight 解析后）
+    输出：AnalysisOutput（含完整 trace_id 链 + hash 链校验 + ``timing`` 属性）
+
+    流程（每步前后均含耗时埋点）：
+        Step 2 [energy]    evaluate_energy(parsed)
+        Step 3 [picture]   match_picture(energy, parsed)
+        Step 4 [yingqi]    gate_yingqi(...) × N 候选事件
+        Step 5 [pangzheng] support_with_shensha(parsed, energy, picture, gates)
+        Step 6 [integrate] integrate(...)
+
+    （Step 1 preflight / Step 7 render / Step 8 self_iter 由 ``run_pipeline_e2e``
+    负责，本函数仅负责中间 5 步。如外层 ``timing`` 注入则共享同一个计时器。）
+
+    Args:
+        parsed:            ParsedInput（preflight 已通过）。
+        cases_dir:         cases/ 根目录（None=仓库根 cases/）。
+        write_findings:    是否落盘 D1-D4 + analysis_output.json + timing.json。
+                           外层 e2e 会在所有 8 步完成后统一落盘，因此 e2e 调用本
+                           函数时传 ``False``。
+        timing:            外层注入的 PipelineTiming；为 None 时本函数自建一个。
+        threshold_seconds: 耗时护栏阈值（秒），仅在自建 timing 时生效。
+
+    Returns:
+        AnalysisOutput；附带 ``output.timing`` 引用本次运行的 PipelineTiming。
+    """
+    own_timing = timing is None
+    if timing is None:
+        timing = PipelineTiming(threshold_seconds=threshold_seconds)
+
+    # Step 2: D1 段派
+    with timing.step("energy"):
+        energy = evaluate_energy(parsed)
+
+    # Step 3: D2 杨派
+    with timing.step("picture"):
+        picture = match_picture(energy, parsed)
+
+    # Step 4: D3 任派 — 从 known_facts 生成候选事件
+    with timing.step("yingqi"):
+        gate_results: list[GateResult] = []
+        candidates = _extract_candidates(parsed)
+        for year, event, domain in candidates:
+            gr = gate_yingqi(year, event, domain, energy, picture, parsed)
+            if gr.passed_layers >= 1:
+                gate_results.append(gr)
+
+    # Step 5: D4 高派
+    with timing.step("pangzheng"):
+        support = support_with_shensha(parsed, energy, picture, gate_results)
+
+    # Step 6: 整合
+    with timing.step("integrate"):
+        output = integrate(energy, picture, gate_results, support, parsed)
+
+    # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output
+    try:
+        from datetime import datetime as _dt
+        from engine.yingqi.retrospective import scan_retrospective
+        retrospective = scan_retrospective(parsed, current_year=_dt.now().year)
+        object.__setattr__(output, "retrospective", retrospective)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("retrospective scan 失败：%s", e)
+        object.__setattr__(output, "retrospective", None)
+
+    # 把 timing 引用挂到 output 上（dataclass 非 frozen → 可动态附加）。
+    # 注意：to_dict/to_json 仅序列化声明字段，timing 不会泄漏进 JSON 制品。
+    object.__setattr__(output, "timing", timing)
+
+    # 落盘 findings + timing.json（e2e 模式下 write_findings=False，由 e2e 兜底）
+    if write_findings:
+        try:
+            findings_dir = _save_findings(output, cases_dir=cases_dir)
+            timing.write_to(findings_dir, case_id=output.case_id)
+        except Exception as e:  # noqa: BLE001 — 落盘失败不阻断业务
+            logger.warning("findings 落盘失败：%s", e)
+
+    # 仅当本函数自建 timing（独立调用）时立即触发护栏；外层 e2e 注入时由 e2e
+    # 在 8 步全部完成后统一调用 check_threshold()，避免重复警告 & 中间态误报。
+    if own_timing:
+        timing.check_threshold()
+
+    return output
+
+def run_pipeline_e2e(
+    input_md_path: Union[str, Path],
+    *,
+    cases_dir: Optional[Union[str, Path]] = None,
+    cases_index_path: Optional[Union[str, Path]] = None,
+    do_render: bool = False,
+    do_self_iter: bool = False,
+    template_name: str = "report-v1.3.md",
+    threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
+) -> tuple[AnalysisOutput, PipelineTiming]:
+    """端到端 8 步编排（v1.2.1 性能监控版）。
+
+    8 个步骤每步前后均含 ``time.perf_counter()`` 埋点，最终落盘
+    ``cases/C-XXX/findings/timing.json``。总耗时超过 ``threshold_seconds``
+    时输出醒目警告（[PERF WARN]），但**不阻断** findings/报告落盘。
+
+    Steps:
+        1. preflight   — tools/preflight.parse(input_md_path) → ParsedInput
+        2. energy      — D1 段派
+        3. picture     — D2 杨派
+        4. yingqi      — D3 任派
+        5. pangzheng   — D4 高派
+        6. integrate   — D1-D4 → AnalysisOutput
+        7. render      — tools/render_report.render_from_output（do_render=True 时）
+        8. self_iter   — tools/feedback_loop.ingest_feedback（do_self_iter=True 时）
+
+    Args:
+        input_md_path:     cases/C-XXX/input.md 路径。
+        cases_dir:         cases/ 根目录（None=仓库根 cases/）。
+        cases_index_path:  cases-index.md 路径，传给 preflight 做指纹防重。
+        do_render:         是否调用 render_report 渲染 Markdown 报告。
+        do_self_iter:      是否调用 feedback_loop 自迭代。
+        template_name:     渲染模板（默认 report-v1.3.md；report-v1.2.md 仅向下兼容）。
+        threshold_seconds: 端到端总耗时阈值（默认 60s）。
+
+    Returns:
+        ``(AnalysisOutput, PipelineTiming)``。
+
+    Note:
+        Step 1/7/8 任一异常时仅记录耗时 + 日志，不会让上游业务失败——
+        这与 contracts/07-pipeline-flow § 十二 错误处理表保持一致。
+    """
+    timing = PipelineTiming(threshold_seconds=threshold_seconds)
+
+    # Step 1: preflight
+    parsed: Optional[ParsedInput] = None
+    with timing.step("preflight"):
+        # 延迟导入：避免 engine 启动时强依赖 tools/PyYAML
+        from tools.preflight import parse as preflight_parse
+        from engine.predicates.types import adapt_parsed
+        parsed_raw = preflight_parse(
+            Path(input_md_path),
+            Path(cases_index_path) if cases_index_path else None,
+        )
+        parsed = adapt_parsed(parsed_raw)
+
+    # Steps 2-6: energy / picture / yingqi / pangzheng / integrate
+    # write_findings=False —— 我们在 8 步全部完成后统一落盘
+    output = run_pipeline(
+        parsed,
+        cases_dir=cases_dir,
+        write_findings=False,
+        timing=timing,
+        threshold_seconds=threshold_seconds,
+    )
+
+    # Step 7: render（可选）
+    if do_render:
+        with timing.step("render"):
+            try:
+                from tools.render_report import render_from_output
+                report_md = render_from_output(
+                    output,
+                    template_name=template_name,
+                    cases_dir=cases_dir,
+                )
+                # 不写入 to_dict 的字段，仅作返回时附带；真正的落盘由 render_report 内部完成
+                object.__setattr__(output, "report_md", report_md)
+            except Exception as e:  # noqa: BLE001
+                logger.warning("render 步骤失败（不阻断）：%s", e)
+
+    # Step 8: 自迭代（可选）
+    if do_self_iter:
+        with timing.step("self_iter"):
+            try:
+                from tools.feedback_loop import ingest_feedback
+                ingest_feedback(output.case_id)
+            except Exception as e:  # noqa: BLE001
+                logger.warning("self_iter 步骤失败（不阻断）：%s", e)
+
+    # 统一落盘 findings + timing.json（即便 render/self_iter 失败也照常落）
+    try:
+        findings_dir = _save_findings(output, cases_dir=cases_dir)
+        timing.write_to(findings_dir, case_id=output.case_id)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("findings 落盘失败：%s", e)
+
+    # 护栏断言：超 60s 仅警告、不阻断
+    timing.check_threshold()
+
+    return output, timing
