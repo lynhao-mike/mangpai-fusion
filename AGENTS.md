@@ -74,10 +74,15 @@ python -m tools.preflight cases/C-YYYY-NNN-乾-干支/input.md
 
 ### 5.2 生成报告
 
+> **最高硬性约束**：当用户要求“生成报告 / 形成报告 / 出报告”时，必须同时完成 [`reports/`](reports/) 与 [`cases/`](cases/) 两侧归档；只生成报告文件而不建立对应 case 目录与文件，视为未完成任务。
+
 1. 使用 [`engine/pipeline.py`](engine/pipeline.py) 的 pipeline 产出结构化 findings。
 2. 使用 [`tools/render_report.py`](tools/render_report.py) 渲染报告。
 3. 使用 [`tools/output_linter.py`](tools/output_linter.py) 做出口校验。
-4. 报告归档到 [`reports/`](reports/)。
+4. 报告归档到 [`reports/`](reports/)，文件名必须包含 case_id、乾/坤与四柱。
+5. 同步在 [`cases/`](cases/) 下建立同名 case 目录：`cases/C-YYYY-NNN-{乾/坤}-{四柱}/`。
+6. case 目录内至少生成：`input.md`、`analysis.md`、`feedback.md`、`statement_index.json`。
+7. 报告结尾与 case 文件中必须互相记录关联路径，确保后续反馈摄入可追踪。
 
 ### 5.3 摄入反馈
 
