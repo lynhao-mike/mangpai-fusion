@@ -3,9 +3,10 @@
 用途
 ----
 把一次临时问答 / 专项分析 / 处理结果追加归档到：
-- cases/C-YYYY-NNN-*/events.md：能定位到案例时；
+- reports/C-YYYY-NNN-*-events.md：能定位到案例时；
 - META/session-events.md：无法定位到具体案例时。
 
+cases/C-YYYY-NNN-*/events.md 保留为“命理分析过程记录”，不再承载临时问答原文。
 本工具只做增量 append，不改写 analysis.md / feedback.md / statement_index.json，
 避免把临时专项问答混入铁断报告或反馈校准通道。
 """
@@ -22,6 +23,7 @@ from typing import Optional
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CASES_DIR = REPO_ROOT / "cases"
 META_DIR = REPO_ROOT / "META"
+REPORTS_DIR = REPO_ROOT / "reports"
 CASE_ID_RE = re.compile(r"^C-\d{4}-\d{3}-")
 
 
@@ -93,7 +95,7 @@ def resolve_case_dir(case_id: str) -> Path:
 def _target_for(case_id: Optional[str]) -> tuple[Path, Optional[str]]:
     if case_id:
         case_dir = resolve_case_dir(case_id)
-        return case_dir / "events.md", case_dir.name
+        return REPORTS_DIR / f"{case_dir.name}-events.md", case_dir.name
     return META_DIR / "session-events.md", None
 
 
@@ -102,7 +104,14 @@ def _ensure_header(path: Path, case_id: Optional[str]) -> None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     if case_id:
-        title = f"# events · {case_id}\n\n> 本文件记录临时问答、专项分析与处理结果。由 tools/event_archive.py 增量维护；不作为反馈计分事实源。\n\n"
+        report_name = f"{case_id}-report.md"
+        case_events = f"../cases/{case_id}/events.md"
+        title = (
+            f"# events · {case_id}\n\n"
+            "> 本文件归档报告侧专项问答、临时分析与处理结果。由 tools/event_archive.py 增量维护；不作为 feedback 计分事实源。\n"
+            f"> 对应正式报告：[{report_name}]({report_name})\n"
+            f"> 对应案例过程记录：[{case_events}]({case_events})\n\n"
+        )
     else:
         title = "# session-events · 未绑定案例交互记录\n\n> 本文件记录无法归入具体 case 的临时问答、架构分析与处理结果。由 tools/event_archive.py 增量维护。\n\n"
     path.write_text(title, encoding="utf-8")
@@ -124,7 +133,7 @@ def archive_interaction(
         question: 用户本次询问原文或摘要。
         analysis: 分析过程摘要；建议记录依据、路径和关键判断。
         result: 最终交付结果摘要。
-        case_id: 完整案例 ID 或唯一前缀；为空则写 META/session-events.md。
+        case_id: 完整案例 ID 或唯一前缀；有值则写 reports/<case_id>-events.md，空则写 META/session-events.md。
         event_type: 事件类型，如“财运专项”“架构评审”“反馈处理”。
         created_at: ISO UTC 时间；测试可注入。
         dry_run: True 时只返回记录，不写盘。
@@ -160,7 +169,7 @@ def _read_arg(value: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="增量归档一次问答 / 专项分析 / 处理结果")
-    parser.add_argument("--case-id", default=None, help="完整 case_id 或唯一前缀；为空写 META/session-events.md")
+    parser.add_argument("--case-id", default=None, help="完整 case_id 或唯一前缀；有值写 reports/<case_id>-events.md，空则写 META/session-events.md")
     parser.add_argument("--event-type", default="专项问答", help="事件类型")
     parser.add_argument("--question", required=True, help="询问文本；支持 @file")
     parser.add_argument("--analysis", required=True, help="分析摘要；支持 @file")

@@ -505,14 +505,16 @@
 
 ## 归档信息
 
-- **case_id**：C-2026-016-坤-甲子丙子丙戌戊子  
-- **report_path**：reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md  
-- **pipeline_version**：v1.4.0  
-- **statement_index**：cases/C-2026-016-坤-甲子丙子丙戌戊子/statement_index.json  
-- **energy_hash**：`0dc88843d389ed64`  
-- **picture_hash**：`dbe5afa0ff38315a`  
-- **generated_at**：2026-05-26T12:37:44Z  
-- **feedback_path**：cases/C-2026-016-坤-甲子丙子丙戌戊子/feedback.md  
+- **case_id**：C-2026-016-坤-甲子丙子丙戌戊子
+- **report_path**：[../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md](../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md)
+- **report_events_path**：[../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md](../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md)
+- **case_events_path**：[events.md](events.md)
+- **pipeline_version**：v1.4.0
+- **statement_index**：[statement_index.json](statement_index.json)
+- **energy_hash**：`0dc88843d389ed64`
+- **picture_hash**：`dbe5afa0ff38315a`
+- **generated_at**：2026-05-26T12:37:44Z
+- **feedback_path**：[feedback.md](feedback.md)
 
 ---
 

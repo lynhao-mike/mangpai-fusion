@@ -10,3 +10,7 @@
 - 报告标题必须标注性别命式（乾/坤），格式如：`# 八字分析报告 · C-YYYY-NNN-乾-四柱 · 乾`
 - 报告必须包含 C-2026-025 标准章节与归档信息
 - `statement_index.json` 必须使用 C-2026-025 的 `statements` 列表结构
+- 案例绑定的临时问答 / 专项分析 / 处理结果归档到 `reports/C-YYYY-NNN-{乾/坤}-{四柱}-events.md`
+- 正式报告的“归档信息”必须挂载对应 `*-events.md` 与 `cases/*/events.md` 的可点击链接
+- 报告侧 `*-events.md` 必须挂载对应 `cases/*/analysis.md` 的可点击链接；对应 `analysis.md` 的“归档信息”必须反向挂载 `reports/*-events.md`
+- `cases/C-YYYY-NNN-{乾/坤}-{四柱}/events.md` 保留为“命理分析过程记录”，不存放临时问答原文

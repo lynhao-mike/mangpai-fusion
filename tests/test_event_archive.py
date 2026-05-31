@@ -13,6 +13,7 @@ def test_archive_interaction_appends_case_event(tmp_path, monkeypatch) -> None:
     monkeypatch.setattr(event_archive, "REPO_ROOT", repo)
     monkeypatch.setattr(event_archive, "CASES_DIR", repo / "cases")
     monkeypatch.setattr(event_archive, "META_DIR", repo / "META")
+    monkeypatch.setattr(event_archive, "REPORTS_DIR", repo / "reports")
 
     record = event_archive.archive_interaction(
         case_id="C-2099-001",
@@ -23,11 +24,14 @@ def test_archive_interaction_appends_case_event(tmp_path, monkeypatch) -> None:
         created_at="2099-01-02T03:04:05Z",
     )
 
-    path = case_dir / "events.md"
+    path = repo / "reports" / f"{case_id}-events.md"
     text = path.read_text(encoding="utf-8")
     assert record.target_path == path
     assert record.case_id == case_id
     assert "# events" in text
+    assert f"{case_id}-report.md" in text
+    assert f"../cases/{case_id}/events.md" in text
+    assert not (case_dir / "events.md").exists()
     assert "财运专项" in text
     assert "2026-2027 是否适合投资黄金交易" in text
     assert "不宜杠杆短线" in text
@@ -37,6 +41,7 @@ def test_archive_interaction_writes_meta_when_case_absent(tmp_path, monkeypatch)
     monkeypatch.setattr(event_archive, "REPO_ROOT", tmp_path)
     monkeypatch.setattr(event_archive, "CASES_DIR", tmp_path / "cases")
     monkeypatch.setattr(event_archive, "META_DIR", tmp_path / "META")
+    monkeypatch.setattr(event_archive, "REPORTS_DIR", tmp_path / "reports")
 
     record = event_archive.archive_interaction(
         event_type="架构评审",
@@ -58,6 +63,7 @@ def test_archive_interaction_dry_run_does_not_write(tmp_path, monkeypatch) -> No
     monkeypatch.setattr(event_archive, "REPO_ROOT", tmp_path)
     monkeypatch.setattr(event_archive, "CASES_DIR", tmp_path / "cases")
     monkeypatch.setattr(event_archive, "META_DIR", tmp_path / "META")
+    monkeypatch.setattr(event_archive, "REPORTS_DIR", tmp_path / "reports")
 
     record = event_archive.archive_interaction(
         event_type="预演",
