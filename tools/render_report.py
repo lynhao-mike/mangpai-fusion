@@ -1,4 +1,4 @@
-"""tools/render_report.py · 三段式报告渲染器（v1.3 默认 / v1.4 预览）
+"""tools/render_report.py · 标准报告渲染器（产品 v1.3.0 / pipeline schema v1.4.0）
 
 按 07-pipeline-flow.md § 九 + 08-agent-handoff.md § 二 F 实现。
 
@@ -163,23 +163,23 @@ def render_from_output(
     analysis_output: Any,
     *,
     template_name: Optional[str] = None,
-    variant: Literal["master", "client", "v1.2"] = "master",
+    variant: str = "standard",
     lint_before: bool = True,
     cases_dir: Optional[Union[str, Path]] = None,
     skip_findings_save: bool = False,
 ) -> str:
     """高级渲染入口：接受 AnalysisOutput，完成全链路。
 
-    流程（按 07 § 七–§ 九）：
+    流程（按 C-2026-025 标准）：
         1. 将 D1-D4 JSON 落盘到 cases/C-XXX/findings/
-        2. 调用 render() 生成 Markdown（按 variant 选模板）
-        3. v1.3 D1：落盘 cases/C-XXX/statement_index.json（statement_id → 元信息）
+        2. 调用 render() 生成唯一标准 Markdown（命主可读版）
+        3. 落盘 cases/C-XXX/statement_index.json（statements 列表）
         4. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
 
     Args:
         analysis_output: engine.pipeline.AnalysisOutput 实例。
-        template_name:   显式模板文件名；None → 按 variant 选默认。
-        variant:         v1.3 D2 — "master" | "client" | "v1.2"
+        template_name:   兼容参数；None 或任意历史模板名均收敛到 report-v1.3.md。
+        variant:         兼容参数；历史 master/client/v1.2/v1.4 均收敛到 standard。
         lint_before:     是否启用双护栏 lint（默认 True；测试时可关闭）。
         cases_dir:       cases/ 目录路径（None = 仓库根 cases/）。
 
@@ -189,7 +189,7 @@ def render_from_output(
     Raises:
         RenderGuardrailError: lint 返回任何 ERROR 时。
     """
-    # Step 1: 落盘 findings JSON。e2e / render_both 已统一落盘时可跳过，避免重复写盘。
+    # Step 1: 落盘 findings JSON。e2e 可跳过，避免重复写盘。
     if not skip_findings_save:
         try:
             save_findings(analysis_output, cases_dir)
@@ -231,7 +231,7 @@ def render_from_output(
         _capture_ctx_to=captured_ctx,
     )
 
-    # Step 4: v1.3 D1 — 落盘 statement_index.json
+    # Step 4: 按 C-2026-025 标准落盘 statement_index.json
     case_id = (
         getattr(analysis_output, "case_id", None)
         or getattr(getattr(analysis_output, "energy", None), "case_id", None)
@@ -255,38 +255,6 @@ def render_from_output(
         )
 
     return report
-
-
-def render_both(
-    analysis_output: Any,
-    *,
-    lint_before: bool = True,
-    cases_dir: Optional[Union[str, Path]] = None,
-) -> dict[str, str]:
-    """v1.3 D2 便捷工具：同时产出 master + client 两版。
-
-    Returns:
-        {"master": str, "client": str}
-    """
-    try:
-        save_findings(analysis_output, cases_dir)
-    except Exception as exc:
-        warnings.warn(
-            f"save_findings failed for {getattr(analysis_output, 'case_id', 'UNKNOWN')}: {exc}",
-            RuntimeWarning,
-            stacklevel=2,
-        )
-
-    return {
-        v: render_from_output(
-            analysis_output,
-            variant=v,  # type: ignore[arg-type]
-            lint_before=lint_before,
-            cases_dir=cases_dir,
-            skip_findings_save=True,
-        )
-        for v in ("master", "client")
-    }
 
 
 def _minimal_parsed_from_energy(energy: EnergyFindings) -> ParsedInput:
@@ -1035,10 +1003,11 @@ def _build_portrait_vm(
 
 
 def _build_statement_index(ctx: dict, case_id: str) -> dict:
-    """v1.3 D1：从已构建的 ctx 中收集所有 statement_id → 元信息映射。
+    """构建 C-2026-025 标准断语索引：statements 列表。
 
-    供 D5 feedback_ingest 反向查找：拿到反馈中的 statement_id → fanout 到
-    支撑该断语的 rule_id 列表。
+    仅保留命主反馈所需的稳定字段：statement_id、domain、summary、status。
+    规则级 fanout 如需使用 rule_ids，可从 findings/analysis_output.json 追溯，
+    不再写入 statement_index.json，避免报告对象映射结构分裂。
     """
     SECTIONS = {
         "zuogong_paths": "energy",
@@ -1048,7 +1017,8 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
         "support_marriage_boosts": "support_marriage",
         "support_health": "support_health",
     }
-    idx: dict = {}
+    statements: list[dict[str, Any]] = []
+    seen: set[str] = set()
     for key, section in SECTIONS.items():
         for item in ctx.get(key, []) or []:
             sid = item.get("statement_id")
@@ -1061,23 +1031,23 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                 or item.get("name")
                 or ""
             )
-            rule_ids = [e["rule_id"] for e in item.get("evidence", []) if "rule_id" in e]
-            if not rule_ids and item.get("rule_id"):
-                rule_ids = [item["rule_id"]]
-            idx[sid] = {
-                "section": section,
-                "statement": str(stmt)[:240],
-                "rule_ids": rule_ids,
-                "star": item.get("star", 0),
-                "schools_str": item.get("schools_str", ""),
-                "domain": item.get("domain", ""),
-                "year": item.get("year"),
-            }
+            if sid in seen:
+                continue
+            seen.add(sid)
+            domain = item.get("domain") or section
+            year = item.get("year")
+            if year and str(year) not in str(domain):
+                domain = "应期" if section == "yingqi" else domain
+            statements.append({
+                "statement_id": sid,
+                "domain": str(domain or "综合"),
+                "summary": str(stmt).strip()[:120],
+                "status": "pending",
+            })
     return {
         "case_id": case_id,
-        "engine_version": "1.3.0",
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "statements": idx,
+        "generated_at": date.today().isoformat(),
+        "statements": statements,
     }
 
 
@@ -1200,21 +1170,18 @@ def render(
     final_conclusions: Optional[list] = None,
     retrospective: Optional[Any] = None,
     template_name: Optional[str] = None,
-    variant: Literal["master", "client", "v1.2", "v1.4"] = "master",
+    variant: str = "standard",
     *,
     _skip_lint: bool = False,
     _capture_ctx_to: Optional[dict] = None,
 ) -> str:
-    """三段式报告渲染主入口。
+    """唯一标准报告渲染主入口。
 
-    v1.3 D2：双版输出
-      - variant="master"  → templates/report-v1.3.md，带 statement_id 锚点 + [ ] 反馈位
-      - variant="client"  → templates/report-v1.3.md，关闭 is_master 标志，并在 ctx
-        预过滤 ★≤3 的弱项断语；命主可读版
-      - variant="v1.2"    → templates/report-v1.2.md，向下兼容旧调用
-      - variant="v1.4"    → templates/report-v1.4.md，v1.4 预览模板；产品默认仍按 v1.3
+    输出固定为 C-2026-025 标准：产品 v1.3.0、pipeline/schema v1.4.0、命主可读版。
+    历史 variant 与 template_name 参数仅保留兼容，不再产生不同报告版本。
 
-    v1.3 D1：每条断语挂 statement_id（位于 ViewModel 项的 ``statement_id`` 字段）。
+    每条可回测断语仍在 ViewModel 中保留 ``statement_id``，用于生成标准
+    ``statement_index.json`` 的 statements 列表。
 
     双护栏机制（07 § 八 + § 九）：
         生成 Markdown 后立即调用 output_linter.lint()。
@@ -1227,8 +1194,8 @@ def render(
         gates:         D3 GateResult 列表（已过滤 passed_layers >= 1）
         parsed:        ParsedInput（含 bazi / dayun / birth）
         support:       D4 SupportFindings（Optional，Track-D 未合入时传 None）
-        template_name: 显式指定模板文件名；不指定则按 variant 选默认。
-        variant:       "master" | "client" | "v1.2" | "v1.4"
+        template_name: 兼容参数；输出始终使用 templates/report-v1.3.md。
+        variant:       兼容参数；输出始终收敛为 standard。
         _skip_lint:    内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
         _capture_ctx_to: 内部协调用：若传入 dict，则把构建好的 ctx 复制进去
                        （供 render_from_output 落盘 statement_index.json 使用）。
@@ -1240,14 +1207,10 @@ def render(
         RenderGuardrailError: output_linter 返回 ERROR 时。
         FileNotFoundError:    模板文件不存在时。
     """
-    # 选模板：显式 template_name 优先；否则按 variant 选默认
-    if template_name is None:
-        if variant == "v1.2":
-            template_name = "report-v1.2.md"
-        elif variant == "v1.4":
-            template_name = "report-v1.4.md"
-        else:
-            template_name = "report-v1.3.md"
+    # 唯一标准模板：C-2026-025 的命主可读版结构。
+    # template_name / variant 仅保留为兼容旧调用的入参，不再改变输出结构。
+    template_name = "report-v1.3.md"
+    variant = "standard"
     tpl_path = ROOT / "templates" / template_name
     if not tpl_path.exists():
         raise FileNotFoundError(f"模板文件不存在: {tpl_path}")
@@ -1265,11 +1228,11 @@ def render(
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
     ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # variant 标志（模板用 {% if is_master %} ... {% endif %} 控制反馈位）
+    # 历史 master/client/v1.2/v1.4 已作废；上下文仅保留 standard 标志。
     ctx["variant"] = variant
-    ctx["is_master"] = (variant in ("master", "v1.4"))
-    ctx["is_client"] = (variant == "client")
-    ctx["is_v1_4"] = (variant == "v1.4")
+    ctx["is_master"] = False
+    ctx["is_client"] = True
+    ctx["is_v1_4"] = False
 
     # §A 能量
     ctx.update(_build_energy_vm(energy))
@@ -1301,14 +1264,13 @@ def render(
     # F6 · §C.0 流年回溯
     ctx.update(_build_retrospective_vm(retrospective))
 
-    # ── v1.3 D2：client 版预过滤（剔除 ★≤3 的弱项断语）──────────
-    if variant == "client":
-        ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
-        ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
-        ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
-        ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
-        ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
-        ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
+    # 标准命主可读版：仅展示高置信主线，结构与 C-2026-025 保持一致。
+    ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
+    ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
+    ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
+    ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
+    ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
+    ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
 
     # 把构建好的 ctx 暴露给调用方（供 render_from_output 落盘 statement_index.json）
     if _capture_ctx_to is not None:
@@ -1360,9 +1322,9 @@ def _smoke() -> None:
     print(report[:2000])
     print(f"\n...(共 {len(report)} 字)")
 
-    # 简单校验：包含铁口断 §C 和 §H
-    assert "三层" in report or "passed" in report.lower()
-    assert "[AI-polish]" in report
+    # 简单校验：包含 C-2026-025 标准结构
+    assert "## 0. 基本盘面" in report
+    assert "## 归档信息" in report
     assert "★" in report
     assert parsed.case_id in report
 

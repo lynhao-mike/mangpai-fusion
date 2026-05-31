@@ -102,7 +102,7 @@ def aggregate_confidence(evidences: list[Evidence]) -> Confidence:
     sorted_ev = sorted(evidences, key=lambda e: e.confidence.posterior, reverse=True)
     base = sorted_ev[0].confidence.posterior
 
-    # 边际加权（参考 v1.0 templates/report.md 第 81 行）
+    # 边际加权（历史 v1.0 报告模板来源；当前唯一报告模板为 templates/report-v1.3.md）
     margin = sum(
         max(0, e.confidence.posterior - 0.50) * 0.15  # 0.15 = 单条边际系数
         for e in sorted_ev[1:]
@@ -135,13 +135,13 @@ def aggregate_confidence(evidences: list[Evidence]) -> Confidence:
 
 ### 3.1 边际系数 0.15 的来源
 
-参考 v1.0 报告模板（`templates/report.md` § 四互补层加权）：
+边际系数来自 v1.0 历史报告模板中的互补层加权公式；该历史模板已作废，当前报告出口统一为 `templates/report-v1.3.md` 的 C-2026-025 标准：
 
 ```
 联立加权 = max(scores) + Σ(其余 × 0.15)
 ```
 
-v1.2 保留此系数，但加上**派别多样性**修正。
+v1.2 起保留此系数，但加上**派别多样性**修正。
 
 ### 3.2 同质 vs 异质示例
 

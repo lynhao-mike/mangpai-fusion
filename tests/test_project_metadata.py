@@ -126,12 +126,12 @@ def test_current_contract_entrypoints_match_implementation() -> None:
     assert "dimension-weights.yaml` 事实源" in overview
     assert "tools/feedback_ingest.py" in overview
     assert "tools/feedback_loop.py" in overview
-    assert "render_both" in overview
+    assert "唯一标准报告" in overview
 
-    assert "engine.pangzheng.support_with_shensha" in pipeline_flow
     assert "render_from_output" in pipeline_flow
-    assert "render_both" in pipeline_flow
+    assert "variant=\"standard\"" in pipeline_flow
     assert "templates/report-v1.3.md" in pipeline_flow
+    assert "master/client" not in pipeline_flow
 
     assert "适用分支：`main`" in naming
     assert "tools/preflight.py" in naming

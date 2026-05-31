@@ -46,7 +46,7 @@ def test_h1_statement_id_stable_across_5_runs(
                 parsed=mock_parsed,
                 support=None,
                 template_name="report-v1.3.md",
-                variant="master",
+                variant="standard",
                 _skip_lint=True,
                 _capture_ctx_to=ctx_capture,
             )
@@ -84,7 +84,7 @@ def test_h1_sid_format_S_NNN_xxxxxx(
             parsed=mock_parsed,
             support=None,
             template_name="report-v1.3.md",
-            variant="master",
+            variant="standard",
             _skip_lint=True,
             _capture_ctx_to=ctx_capture,
         )

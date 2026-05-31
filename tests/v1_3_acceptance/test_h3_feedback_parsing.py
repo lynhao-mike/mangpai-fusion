@@ -135,24 +135,24 @@ def test_h3_fanout_decisive_priority():
     )
 
     statement_index = {
-        "statements": {
-            "S-001-aaaaaa": {
-                "section": "consensus",
-                "statement": "婚姻晚",
-                "rule_ids": ["M1-D-001", "M2-Y-068"],  # 共支撑两条规律
+        "case_id": "C-2026-001-乾-甲子乙丑丙寅丁卯",
+        "generated_at": "2026-05-30",
+        "statements": [
+            {
+                "statement_id": "S-001-aaaaaa",
                 "domain": "婚姻",
-                "year": None,
-                "star": 4,
+                "summary": "婚姻晚",
+                "status": "pending",
+                "rule_ids": ["M1-D-001", "M2-Y-068"],  # 兼容历史 fanout 扩展字段
             },
-            "S-001-bbbbbb": {
-                "section": "consensus",
-                "statement": "公职",
-                "rule_ids": ["M1-D-001"],  # M1-D-001 同时被这条断语支撑
+            {
+                "statement_id": "S-001-bbbbbb",
                 "domain": "事业",
-                "year": None,
-                "star": 5,
+                "summary": "公职",
+                "status": "pending",
+                "rule_ids": ["M1-D-001"],
             },
-        },
+        ],
     }
     feedbacks = [
         StatementFeedback("S-001-aaaaaa", "y", "hit"),  # 婚姻 hit
@@ -166,4 +166,28 @@ def test_h3_fanout_decisive_priority():
     )
     # M2-Y-068 仅被 hit 标注的断语支撑 → hit
     assert rule_verdicts["M2-Y-068"][0] == "hit"
+    assert unknown == []
+
+
+def test_h3_standard_list_schema_without_rule_ids_is_accepted():
+    """025 标准 list schema 不强制携带 rule_ids；反馈登记不应判 unknown。"""
+    from tools.feedback_ingest import StatementFeedback, fanout_to_rules
+
+    statement_index = {
+        "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
+        "generated_at": "2026-05-30",
+        "statements": [
+            {
+                "statement_id": "S-025-d1a001",
+                "domain": "事业/财富",
+                "summary": "财厚劫透，适合资源整合，忌人情财务混杂",
+                "status": "pending",
+            }
+        ],
+    }
+    rule_verdicts, unknown = fanout_to_rules(
+        [StatementFeedback("S-025-d1a001", "y", "hit")],
+        statement_index,
+    )
+    assert rule_verdicts == {}
     assert unknown == []

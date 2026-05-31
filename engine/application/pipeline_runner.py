@@ -127,7 +127,7 @@ def run_pipeline_e2e(
     do_render: bool = False,
     do_self_iter: bool = False,
     template_name: str = "report-v1.3.md",
-    report_variant: str = "client",
+    report_variant: str = "standard",
     threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
 ) -> tuple[AnalysisOutput, PipelineTiming]:
     """端到端 8 步编排（v1.2.1 性能监控版）。
@@ -152,8 +152,8 @@ def run_pipeline_e2e(
         cases_index_path:  cases-index.md 路径，传给 preflight 做指纹防重。
         do_render:         是否调用 render_report 渲染 Markdown 报告。
         do_self_iter:      是否调用 feedback_loop 自迭代。
-        template_name:     渲染模板（默认 report-v1.3.md；report-v1.2.md 仅向下兼容）。
-        report_variant:    渲染变体；e2e/生产默认 client，避免内部 master 反馈位写入 reports/*-report.md。
+        template_name:     兼容参数；渲染统一收敛到 report-v1.3.md 标准模板。
+        report_variant:    兼容参数；e2e/生产统一收敛到 standard。
         threshold_seconds: 端到端总耗时阈值（默认 60s）。
 
     Returns:

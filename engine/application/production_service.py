@@ -26,6 +26,7 @@ from engine.infrastructure.analysis_store import (
 
 
 DEFAULT_TEMPLATE_NAME = "report-v1.3.md"
+STANDARD_REPORT_VARIANT = "standard"
 SERVICE_NAME = "mangpai-fusion-production-api"
 
 
@@ -109,8 +110,8 @@ class ProductionAnalysisService:
                 cases_index_path=normalized.cases_index_path,
                 do_render=normalized.render,
                 do_self_iter=False,
-                template_name=normalized.template_name,
-                report_variant="client",
+                template_name=DEFAULT_TEMPLATE_NAME,
+                report_variant=STANDARD_REPORT_VARIANT,
             )
             case_id = str(output.case_id or "")
             summary = self._build_summary(output, timing)
@@ -233,7 +234,7 @@ class ProductionAnalysisService:
             input_path=input_path,
             render=bool(request.render),
             force=bool(request.force),
-            template_name=request.template_name or DEFAULT_TEMPLATE_NAME,
+            template_name=DEFAULT_TEMPLATE_NAME,
             cases_dir=cases_dir,
             reports_dir=reports_dir,
             cases_index_path=cases_index_path,
@@ -361,7 +362,7 @@ def request_from_dict(payload: dict[str, Any]) -> SubmitAnalysisRequest:
         input_path=Path(input_path),
         render=bool(payload.get("render", True)),
         force=bool(payload.get("force", False)),
-        template_name=str(payload.get("template_name") or DEFAULT_TEMPLATE_NAME),
+        template_name=DEFAULT_TEMPLATE_NAME,
         cases_dir=Path(str(payload["cases_dir"])) if payload.get("cases_dir") else None,
         reports_dir=Path(str(payload["reports_dir"])) if payload.get("reports_dir") else None,
         cases_index_path=(

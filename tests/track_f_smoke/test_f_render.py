@@ -1,15 +1,15 @@
-"""tests/track_f_smoke/test_f_render.py · Track-F 3 项验收测试
+"""tests/track_f_smoke/test_f_render.py · Track-F 标准报告验收测试
 
-按 08-agent-handoff.md § 六 Track-F 行：
+025 标准已取代历史三段式/双版报告：
 
 | ID    | 输入               | 期望                                   |
 |-------|--------------------|----------------------------------------|
 | F-001 | mock AnalysisOutput | output_linter 0 error                 |
 | F-002 | 3 个 GateResult     | trace_id（evidence.rule_id）覆盖率 100% |
-| F-003 | 含 passed_layers=3  | 铁断段仅含 passed=3 的断语             |
+| F-003 | 含 passed_layers=3  | 关键应期表仅含高置信候选，不泄漏低层候选 |
 
 同时跑 G2 集成：render 后报告体现 2005 vs 2013 婚期差异
-（2005 出现在铁断段，2013 不出现）。
+（2005 出现在关键应期，2013 不出现）。
 
 作者：Track-F
 """
@@ -96,27 +96,22 @@ RULE_ID_RE = re.compile(
 STAR_LINE_RE = re.compile(r"★[1-5]\s*\(")
 
 
-def _iron_call_blocks(report: str) -> list[str]:
-    """从报告中抽取铁口断语的 block（以 **[任派]** 开头的断语段）。"""
-    blocks = []
-    in_block = False
-    buf: list[str] = []
+def _key_yingqi_years(report: str) -> set[int]:
+    """从 025 标准报告的“关键应期”表中抽取年份。"""
+    years: set[int] = set()
+    in_section = False
     for line in report.splitlines():
-        if line.startswith("**[任派]") and "★" in line:
-            if buf:
-                blocks.append("\n".join(buf))
-            buf = [line]
-            in_block = True
-        elif in_block:
-            if line.startswith("**[") or line.startswith("---") or line.startswith("##"):
-                blocks.append("\n".join(buf))
-                buf = [line] if line.startswith("**[") and "★" in line else []
-                in_block = bool(buf)
-            else:
-                buf.append(line)
-    if buf:
-        blocks.append("\n".join(buf))
-    return blocks
+        if line.startswith("## 六、关键应期"):
+            in_section = True
+            continue
+        if in_section and line.startswith("## "):
+            break
+        if not in_section:
+            continue
+        m = re.match(r"\|\s*(\d{4})\s*\|", line)
+        if m:
+            years.add(int(m.group(1)))
+    return years
 
 
 def test_F002_trace_id_coverage_100pct(sample_report, c001_findings):
@@ -152,47 +147,35 @@ def test_F002_trace_id_coverage_100pct(sample_report, c001_findings):
 
 
 # ============================================================
-# F-003 · 铁断段仅含 passed_layers=3 断语
+# F-003 · 关键应期只含高置信候选
 # ============================================================
 
-def test_F003_iron_section_only_passed3(sample_report, c001_findings):
-    """F-003: §C 铁口断语段只出现 passed_layers=3 的事件；
-    passed<3 的（如 2013 年结婚）不出现在铁断标题中。"""
-    iron_blocks = _iron_call_blocks(sample_report)
-    print(f"\n[F-003] 检测到铁断 block 数: {len(iron_blocks)}")
+def test_F003_key_yingqi_only_high_confidence(sample_report, c001_findings):
+    """F-003: 025 标准报告“关键应期”只输出高置信候选；
+    passed<3 的（如 2013 年结婚）不出现在关键应期表中。"""
+    key_years = _key_yingqi_years(sample_report)
+    print(f"\n[F-003] 关键应期年份集合: {sorted(key_years)}")
 
-    # 所有 iron_block 里出现的年份
-    iron_years = set()
-    for b in iron_blocks:
-        for m in re.finditer(r"\*\*\[任派\]\*\* (\d{4})年", b):
-            iron_years.add(int(m.group(1)))
-    print(f"  铁断年份集合: {sorted(iron_years)}")
-
-    # 哪些 gate 是 passed_layers < 3 的
     non_iron_years = {g.year for g in c001_findings["gates"] if g.passed_layers < 3}
     print(f"  非铁断年份（passed<3）: {sorted(non_iron_years)}")
 
-    # 2005 应该在铁断；2013 不应该（picture 钳制到 passed=1）
     gates_by_year = {g.year: g for g in c001_findings["gates"]}
     gate_2005 = gates_by_year.get(2005)
     gate_2013 = gates_by_year.get(2013)
 
     if gate_2005 and gate_2005.passed_layers == 3:
-        assert 2005 in iron_years, "F-003: 2005 三层齐备，应出现在铁断段"
-        print("  ✓ 2005 在铁断段中（G2 圣杯前半：实际婚年）")
+        assert 2005 in key_years, "F-003: 2005 三层齐备，应出现在关键应期表"
+        print("  ✓ 2005 在关键应期中（G2 圣杯前半：实际婚年）")
 
     if gate_2013 and gate_2013.passed_layers < 3:
-        assert 2013 not in iron_years, (
+        assert 2013 not in key_years, (
             f"F-003: 2013 passed={gate_2013.passed_layers}<3，"
-            "不应出现在铁断段（G2 圣杯后半：v1.0 错婚期）"
+            "不应出现在关键应期表（G2 圣杯后半：picture 钳制生效）"
         )
-        print("  ✓ 2013 不在铁断段中（G2 圣杯后半：picture 钳制生效）")
+        print("  ✓ 2013 不在关键应期中（G2 圣杯后半：picture 钳制生效）")
 
-    # 交叉检查：铁断段里没有 non_iron_years 里的年份
-    leaked = iron_years & non_iron_years
-    assert not leaked, (
-        f"F-003: 以下非铁断年份泄漏到铁断段：{leaked}"
-    )
+    leaked = key_years & non_iron_years
+    assert not leaked, f"F-003: 以下非铁断年份泄漏到关键应期：{leaked}"
 
 
 # ============================================================
@@ -200,16 +183,20 @@ def test_F003_iron_section_only_passed3(sample_report, c001_findings):
 # ============================================================
 
 def test_F_report_structure(sample_report):
-    """报告包含所有必要段落标记。"""
+    """报告包含 C-2026-025 唯一标准段落标记。"""
     required = [
-        "## 一、能量层级",
-        "## 二、画面细节",
-        "## 三、应期总表",
-        "## 五、立体合并",
-        "## 七、命主画像版",
-        "[AI-polish]",
-        "归档信息",
-        "mangpai-fusion v1.3",
+        "## 0. 基本盘面",
+        "## 一、命局核心结论",
+        "## 二、体用、病药与人生主线",
+        "## 三、五维定位",
+        "## 四、婚恋与家庭",
+        "## 五、事业与财富",
+        "## 六、关键应期",
+        "## 七、健康与生活风险",
+        "## 八、行动建议",
+        "## 九、总评",
+        "## 归档信息",
+        "mangpai-fusion 产品 v1.3.0",
     ]
     for marker in required:
         assert marker in sample_report, f"报告缺必要段落标记: {marker!r}"
@@ -231,16 +218,14 @@ def test_F_render_from_output_keeps_parsed_context(tmp_path):
     )
 
     assert "{{ qian_kun }}" not in report
-    assert "# 八字分析报告 v1.3 · C-2026-001-乾-庚申戊寅壬子辛丑 · 乾" in report
-    assert "**四柱**：庚申戊寅壬子辛丑" in report
-    assert "**四柱**：—" not in report
+    assert "# 八字分析报告 · C-2026-001-乾-庚申戊寅壬子辛丑 · 乾" in report
     assert "| 四柱 | 庚申戊寅壬子辛丑 |" in report
     assert "| 四柱 | — |" not in report
-    assert "**大运**：—" not in report
+    assert "| 大运 | — |" not in report
 
 
 def test_F_support_none_graceful(c001_findings):
-    """support=None 时报告仍可渲染（Track-D 未合入时的兼容路径）。"""
+    """support=None 时报告仍可渲染并使用标准健康兜底文案。"""
     report = render(
         c001_findings["energy"],
         c001_findings["picture"],
@@ -248,7 +233,7 @@ def test_F_support_none_graceful(c001_findings):
         c001_findings["parsed"],
         support=None,
     )
-    assert "D4 高派旁证未运行" in report or "Track-D" in report
+    assert "健康风险需结合实际体检、作息和反馈继续校准" in report
     result = lint(report)
     assert result.passed, f"support=None 时报告仍应通过 linter，errors={result.errors}"
     print("\n[F-兼容] support=None 路径 ✓")
@@ -307,24 +292,20 @@ def _run_standalone() -> int:
            f"{len(iron_cons)-len(missing)}/{len(iron_cons)} = {cov:.0%}")
 
     # F-003
-    print("\n--- F-003 铁断段仅 passed=3 ---")
-    blocks = _iron_call_blocks(report)
-    iron_years = set()
-    for b in blocks:
-        for m in re.finditer(r"\*\*\[任派\]\*\* (\d{4})年", b):
-            iron_years.add(int(m.group(1)))
+    print("\n--- F-003 关键应期仅高置信候选 ---")
+    key_years = _key_yingqi_years(report)
     non_iron = {g.year for g in gates if g.passed_layers < 3}
-    leaked = iron_years & non_iron
-    _check("F-003 no leak", not leaked, f"leaked={leaked}, iron={sorted(iron_years)}")
+    leaked = key_years & non_iron
+    _check("F-003 no leak", not leaked, f"leaked={leaked}, key_years={sorted(key_years)}")
     gates_map = {g.year: g for g in gates}
     if gates_map.get(2005) and gates_map[2005].passed_layers == 3:
-        _check("G2 2005 in iron", 2005 in iron_years, f"iron_years={iron_years}")
+        _check("G2 2005 in key yingqi", 2005 in key_years, f"key_years={key_years}")
     if gates_map.get(2013) and gates_map[2013].passed_layers < 3:
-        _check("G2 2013 not in iron", 2013 not in iron_years, f"iron_years={iron_years}")
+        _check("G2 2013 not in key yingqi", 2013 not in key_years, f"key_years={key_years}")
 
     # 综合
     print("\n--- 综合结构 ---")
-    for marker in ["[AI-polish]", "## 三、应期总表", "归档信息"]:
+    for marker in ["## 0. 基本盘面", "## 六、关键应期", "## 归档信息"]:
         _check(f"含{marker!r}", marker in report, "")
 
     total = 10

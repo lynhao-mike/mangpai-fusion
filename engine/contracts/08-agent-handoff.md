@@ -85,15 +85,15 @@
 | **验收** | 8 条铁律的负向测试全过（输入违规数据 → 正确拒绝） |
 | **依赖上游** | 无（E 与 A-D 并行） |
 
-### Agent F · 三段式报告渲染器
+### Agent F · 标准报告渲染器
 
 | 项 | 值 |
 |---|---|
-| 分支 | `v1.2-track-F` |
-| **可写区** | `templates/report-v1.2.md` · `tools/render_report.py` |
+| 分支 | `main` 当前标准 |
+| **可写区** | `templates/report-v1.3.md` · `tools/render_report.py` |
 | **只读区** | 所有 contracts/ · engine/ · 旧 templates/ |
-| **交付物** | mock findings → 1 份 sample 报告（lint 通过） |
-| **验收** | output_linter 对 sample 报告 0 error |
+| **交付物** | mock findings → C-2026-025 唯一标准 sample 报告（lint 通过）+ statements 列表对象映射 |
+| **验收** | output_linter 对 sample 报告 0 error；历史模板/variant 入参不得改变输出结构 |
 | **依赖上游** | A/B/C/D 的 Findings Schema（用 mock 实例） |
 
 ### Agent G · 自迭代引擎

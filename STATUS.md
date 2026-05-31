@@ -19,7 +19,7 @@
 | 人工裁决 | [`META/arbitration-log.md`](META/arbitration-log.md) |
 | 历史变更 | [`META/rule-changelog.md`](META/rule-changelog.md) |
 
-当前阶段：v1.3 自迭代闭环已上线，v1.4 schema 与报告收口进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。v1.4 V1-V6/V8 已落地，V7 报告模板已存在但默认发布门禁仍在收口。
+当前阶段：v1.3 自迭代闭环已上线，v1.4 schema 与报告收口进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。报告出口已收敛到 C-2026-025 唯一标准，历史报告模板分叉不再作为入口。
 
 ---
 
@@ -45,7 +45,7 @@
 - 四派融合分析：高德臣 / 段建业 / 杨清娟 / 任付红。
 - 双轨制置信度：★ 等级 + 百分比，区间以 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) 为准。
 - 三层应期门：原局有、大运到位、流年引爆。
-- master/client 双版报告。
+- C-2026-025 唯一标准报告（命主可读版；产品 v1.3.0 / pipeline schema v1.4.0）。
 - 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]`。
 - 规则生命周期：candidate / confirmed / flagged_for_review / deprecated。
 - 每 10 完成反馈案触发迭代报告。

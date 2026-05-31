@@ -622,8 +622,8 @@ support: SupportFindings = support_with_shensha(parsed, energy, picture, gate_re
 # Step 6: 整合
 output: AnalysisOutput = integrate(energy, picture, gate_results, support, parsed)
 
-# Step 7: 渲染（新案默认 master/client 双版；v1.2 模板仅保留向下兼容）
-master_md, client_md = render_report.render_both(output)
+# Step 7: 渲染（C-2026-025 唯一标准报告）
+report_md = render_report.render_from_output(output, variant="standard")
 ```
 
 ---

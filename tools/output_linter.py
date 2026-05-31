@@ -498,7 +498,7 @@ def lint(
         _lint_social_clock(full_text, res)
         # W12 · 天干相刑 / 规则外推误用扫描（C-2026-019 复盘）
         _lint_relation_source_misuse(full_text, res)
-        # v1.4 · 命主画像禁止使用框线（templates/report-v1.4.md）
+        # 唯一标准报告 · 命主画像禁止使用框线
         _lint_portrait_box_style(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)

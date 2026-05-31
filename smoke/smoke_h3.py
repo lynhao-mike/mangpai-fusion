@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """H3 · feedback_ingest 解析正确率 ≥ 99% stdlib smoke"""
 import sys, types
+from pathlib import Path
 
 # ── 桩 yaml ───────────────────────────────────────────────
 fake_yaml = types.ModuleType("yaml")
@@ -12,7 +13,7 @@ class _Loader: pass
 fake_yaml.SafeLoader = _Loader
 sys.modules["yaml"] = fake_yaml
 
-sys.path.insert(0, "/projects/sandbox/mangpai-fusion")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 PASS = []
 FAIL = []
@@ -98,14 +99,16 @@ check("T3_重复sid取最后", len(r3) == 1 and r3[0].verdict == "miss",
 check("T4_空文档0条", parse_statement_feedback("") == [])
 check("T4_纯文字0条", parse_statement_feedback("# 命主反馈\n纯文字无标注") == [])
 
-# ── T5: fanout 决断力优先 miss > hit ─────────────────
+# ── T5: fanout 决断力优先 miss > hit（兼容 list schema 扩展 rule_ids） ─────────────────
 si = {
-    "statements": {
-        "S-001-aaaaaa": {"section":"consensus","statement":"婚姻晚",
-                         "rule_ids":["M1-D-001","M2-Y-068"],"domain":"婚姻","year":None,"star":4},
-        "S-001-bbbbbb": {"section":"consensus","statement":"公职",
-                         "rule_ids":["M1-D-001"],"domain":"事业","year":None,"star":5},
-    }
+    "case_id": "C-2026-001-乾-甲子乙丑丙寅丁卯",
+    "generated_at": "2026-05-30",
+    "statements": [
+        {"statement_id":"S-001-aaaaaa","domain":"婚姻","summary":"婚姻晚","status":"pending",
+         "rule_ids":["M1-D-001","M2-Y-068"]},
+        {"statement_id":"S-001-bbbbbb","domain":"事业","summary":"公职","status":"pending",
+         "rule_ids":["M1-D-001"]},
+    ],
 }
 fbs = [StatementFeedback("S-001-aaaaaa","y","hit"),
        StatementFeedback("S-001-bbbbbb","n","miss")]
@@ -116,5 +119,13 @@ check("T5_M2-Y-068是hit", rule_vd.get("M2-Y-068",("?",))[0] == "hit",
       f"M2-Y-068 verdict={rule_vd.get('M2-Y-068','?')}")
 check("T5_unknown=0", unknown == [], f"unknown={unknown}")
 
-print(f"\nH3: {len(PASS)}/8 PASS  {'OK' if not FAIL else 'FAIL: '+str(FAIL)}")
+si_standard = {
+    "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
+    "generated_at": "2026-05-30",
+    "statements": [{"statement_id":"S-025-d1a001","domain":"事业/财富","summary":"财厚劫透","status":"pending"}],
+}
+rule_vd2, unknown2 = fanout_to_rules([StatementFeedback("S-025-d1a001","y","hit")], si_standard)
+check("T6_标准无rule_ids不判unknown", rule_vd2 == {} and unknown2 == [], f"rule_vd={rule_vd2} unknown={unknown2}")
+
+print(f"\nH3: {len(PASS)}/11 PASS  {'OK' if not FAIL else 'FAIL: '+str(FAIL)}")
 sys.exit(0 if not FAIL else 1)

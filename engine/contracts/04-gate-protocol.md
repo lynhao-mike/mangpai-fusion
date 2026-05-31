@@ -283,7 +283,7 @@ Track-C 不直接消费 SupportFindings，但 Track-D 可用 GateResult 作为
 "是否触发某神煞专项"的输入（如倒象 + 天罗地网 = 婚姻血光）。
 
 ### 9.4 报告渲染
-GateResult 通过 `to_dict()` 暴露完整结构化数据；报告层应优先使用 `evidence[].rule_id`、`event_type_hypotheses`、`confidence`、`consistency_notes` 等结构化字段。当前高级入口为 [`tools.render_report.render_from_output`](../../tools/render_report.py) / [`tools.render_report.render_both`](../../tools/render_report.py)。
+GateResult 通过 `to_dict()` 暴露完整结构化数据；报告层应优先使用 `evidence[].rule_id`、`event_type_hypotheses`、`confidence`、`consistency_notes` 等结构化字段。当前唯一高级入口为 [`tools.render_report.render_from_output`](../../tools/render_report.py)。
 
 ### 9.5 Track-G 自迭代
 GateResult 的 `hash()` 提供稳定 trace_id。

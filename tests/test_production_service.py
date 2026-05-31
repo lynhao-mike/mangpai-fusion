@@ -68,11 +68,11 @@ def test_cache_key_changes_when_render_options_change(tmp_path: Path) -> None:
     key_c = service.compute_cache_key(
         input_sha256="abc",
         render=True,
-        template_name="report-v1.4.md",
+        template_name="report-v1.3.md",
     )
 
     assert key_a != key_b
-    assert key_a != key_c
+    assert key_a == key_c
     assert len(key_a) == 64
 
 
@@ -102,7 +102,8 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
 
     def fake_run_pipeline_e2e(*args, **kwargs):
         calls["count"] += 1
-        assert kwargs.get("report_variant") == "client"
+        assert kwargs.get("report_variant") == "standard"
+        assert kwargs.get("template_name") == "report-v1.3.md"
         (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
         (findings_dir / "timing.json").write_text("{}", encoding="utf-8")
         (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")

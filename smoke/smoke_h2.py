@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""H2 · 双版报告差分 stdlib smoke（无 pytest/PyYAML）
+"""H2 · 唯一标准报告 stdlib smoke（无 pytest/PyYAML）
 
-核心：client 版 0 反馈位 / master 版 >0 反馈位 / client ★≤3 被过滤
+核心：025 标准章节存在、无反馈空槽、无双版标记、上下文只保留 ★4+ 主线。
 """
 import sys, types, re
 
-# ── 桩 yaml ───────────────────────────────────────────────
 fake_yaml = types.ModuleType("yaml")
 fake_yaml.safe_load = lambda s: {}
 fake_yaml.safe_dump = lambda d, **kw: ""
@@ -15,7 +14,7 @@ class _Loader: pass
 fake_yaml.SafeLoader = _Loader
 sys.modules["yaml"] = fake_yaml
 
-sys.path.insert(0, "/projects/sandbox/mangpai-fusion")
+sys.path.insert(0, ".")
 
 PASS = []
 FAIL = []
@@ -28,9 +27,7 @@ def check(name, cond, msg=""):
         FAIL.append(name)
         print(f"  FAIL  {name}  {msg}")
 
-print("=== H2 双版报告差分 ===")
-
-# ── Mock fixtures (复刻 conftest.py) ─────────────────────
+print("=== H2 唯一标准报告 ===")
 
 class _Conf:
     def __init__(self, star, pct): self.star=star; self.percent=pct
@@ -61,8 +58,7 @@ class MockEnergy:
     zuogong_paths=[_Zuogong("财官印齐",["M1-D-001"],star=4,pct=80),
                    _Zuogong("食伤生财",["M1-D-007"],star=5,pct=88)]
     tiyong=_Tiyong()
-    evidence=[_Ev("M1-D-001","段","财官印齐主公职"),
-              _Ev("M2-Y-068","杨","婚姻晚")]
+    evidence=[_Ev("M1-D-001","段","财官印齐主公职"), _Ev("M2-Y-068","杨","婚姻晚")]
     def hash(self): return "mockenergy01"
 
 class _Caifu:
@@ -81,8 +77,8 @@ class MockPicture:
     marriage_picture={"初婚最佳窗口":[28,32]}
     wubu_steps=[_WubuStep(1,"看格","印格成立"),_WubuStep(2,"看气","气清")]
     evidence=[_Ev("M2-Y-068","杨","婚姻晚"),_Ev("M2-Y-099","杨","弱项-应过滤")]
-    anyin_results=[]  # 补齐 _build_section_zero_vm 依赖
-    wealth_15tier=None  # 补齐 _build_15tier_vm
+    anyin_results=[]
+    wealth_15tier=None
     def hash(self): return "mockpicture01"
 
 class _Layer:
@@ -103,92 +99,33 @@ class MockGate:
 class _DayunStep:
     def __init__(self,gz,s,e): self.干支=gz; self.起讫年=(s,e)
 class _Dayun:
-    排布=[_DayunStep("甲戌",1989,1998),_DayunStep("乙亥",1999,2008),
-          _DayunStep("丙子",2009,2018),_DayunStep("丁丑",2019,2028)]
+    排布=[_DayunStep("甲戌",1989,1998),_DayunStep("乙亥",1999,2008),_DayunStep("丙子",2009,2018),_DayunStep("丁丑",2019,2028)]
 class _Pillar:
     def __init__(self, gan, zhi): self.gan=gan; self.zhi=zhi
     def __str__(self): return self.gan+self.zhi
-
 class _Bazi:
     年柱=_Pillar("甲","申"); 月柱=_Pillar("乙","酉"); 日柱=_Pillar("丙","申"); 时柱=_Pillar("乙","未")
-
 class MockParsed:
     case_id="C-2026-099-甲申乙酉丙申乙未"
-    bazi=_Bazi(); dayun=_Dayun()
-    birth={"公历":"1981-09-15","性别":"男"}
+    bazi=_Bazi(); dayun=_Dayun(); birth={"公历":"1981-09-15","性别":"男"}
 
-energy = MockEnergy()
-picture = MockPicture()
-gates = [
-    MockGate(2027,"结婚","婚姻",passed=3,star=5,pct=92,rule_ids=["MR-LAYER3"]),
-    MockGate(2030,"升迁","事业",passed=3,star=4,pct=85,rule_ids=["M3-R-031"]),
-    MockGate(2025,"弱应期","财运",passed=2,star=3,pct=60,rule_ids=["MR-LAYER3"]),
-]
-parsed = MockParsed()
-
-# ── 渲染 ────────────────────────────────────────────────
 from tools.render_report import render
 
-_FB_RE = re.compile(r"\[S-[\w-]+-[a-f0-9]{6}\]\s*\[\s*\]")
+ctx = {}
+out = render(
+    energy=MockEnergy(), picture=MockPicture(),
+    gates=[MockGate(2027,"结婚","婚姻",passed=3,star=5,pct=92), MockGate(2025,"弱应期","财运",passed=2,star=3,pct=60)],
+    parsed=MockParsed(), support=None, template_name="legacy-ignored.md", variant="legacy-ignored",
+    _skip_lint=True, _capture_ctx_to=ctx,
+)
 
-master_ctx = {}
-client_ctx = {}
-master_out = ""
-client_out = ""
+required = ["## 0. 基本盘面", "## 一、命局核心结论", "## 三、五维定位", "## 九、总评", "## 归档信息"]
+check("T1_025章节齐全", all(h in out for h in required))
+check("T2_无反馈空槽", re.search(r"\[S-[\w-]+\]\s*\[\s*\]", out) is None)
+check("T3_无双版标记", all(x not in out for x in ["MASTER 版", "CLIENT 版", "master/client"]))
+check("T4_variant收敛standard", ctx.get("variant") == "standard" and ctx.get("is_client") is True and ctx.get("is_master") is False)
+low_items = [item for key in ("zuogong_paths","consensus_conclusions","complementary_conclusions","gate_results","iron_gates") for item in ctx.get(key, []) if item.get("star",0) <= 3]
+check("T5_只保留高星主线", not low_items, f"low_items={low_items[:2]}")
 
-try:
-    master_out = render(
-        energy=energy, picture=picture, gates=gates, parsed=parsed, support=None,
-        template_name="report-v1.3.md", variant="master",
-        _skip_lint=True, _capture_ctx_to=master_ctx,
-    )
-except Exception as e:
-    print(f"  [warn] master render: {e}")
-
-try:
-    client_out = render(
-        energy=energy, picture=picture, gates=gates, parsed=parsed, support=None,
-        template_name="report-v1.3.md", variant="client",
-        _skip_lint=True, _capture_ctx_to=client_ctx,
-    )
-except Exception as e:
-    print(f"  [warn] client render: {e}")
-
-master_fb = len(_FB_RE.findall(master_out))
-client_fb = len(_FB_RE.findall(client_out))
-
-# T1: master 有反馈位
-check("T1_master有反馈位", master_fb > 0, f"master_fb={master_fb}")
-
-# T2: client 无反馈位（核心 H2 断言）
-check("T2_client无反馈位", client_fb == 0,
-      f"client_fb={client_fb}，泄漏了反馈位！渲染结果片段：\n"
-      + "\n".join(l for l in client_out.splitlines() if "[S-" in l)[:300])
-
-# T3: client complementary ★ >= 4
-client_compl = client_ctx.get("complementary_conclusions", [])
-master_compl = master_ctx.get("complementary_conclusions", [])
-low_star_client = [c for c in client_compl if c.get("star",0) <= 3]
-check("T3_client过滤弱项", len(low_star_client) == 0,
-      f"client 含 ★≤3 断语: {[c.get('statement','')[:30] for c in low_star_client]}")
-
-# T4: client gates ★ >= 4
-client_gates = client_ctx.get("gate_results", [])
-master_gates = master_ctx.get("gate_results", [])
-low_gates_client = [g for g in client_gates if g.get("star",0) <= 3]
-check("T4_client过滤弱应期", len(low_gates_client) == 0,
-      f"client 含 ★≤3 应期: {[g.get('candidate_event','') for g in low_gates_client]}")
-
-# T5: master 保留 ★≤3
-has_low = any(c.get("star",0) <= 3 for c in master_compl) or \
-          any(g.get("star",0) <= 3 for g in master_gates)
-check("T5_master保留弱项", has_low,
-      f"master compl stars={[c.get('star') for c in master_compl]}, "
-      f"gate stars={[g.get('star') for g in master_gates]}")
-
-# T6: client complementary ≤ master complementary
-check("T6_client断语数≤master", len(client_compl) <= len(master_compl),
-      f"client={len(client_compl)} > master={len(master_compl)}")
-
-print(f"\nH2: {len(PASS)}/6 PASS  {'OK' if not FAIL else 'FAIL: '+str(FAIL)}")
+print(f"\nH2: {len(PASS)}/5 PASS  {'OK' if not FAIL else 'FAIL: '+str(FAIL)}")
 sys.exit(0 if not FAIL else 1)

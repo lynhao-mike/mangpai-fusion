@@ -1,4 +1,4 @@
-"""tools/batch_intake.py · v1.3 D6 批量入库工具
+"""tools/batch_intake.py · 批量入库工具
 
 落地契约：
     plans/architecture-v1.3.md § 四 D6（批量工作流）
@@ -17,7 +17,7 @@
          b. 自动建 cases/{case_id}/ 目录
          c. 把 input.md 移入（命理师可对照）
          d. 跑 engine.pipeline 完整四派分析
-         e. render_from_output 产出 master + client 双版报告
+         e. render_from_output 产出唯一标准报告
          f. extract_predictions 抽 ★4+ 应期 + 事件签名（D7）
          g. 索引落 cases/{case_id}/statement_index.json（D1）
     4. 单案失败不阻塞批次（落 META/batch-errors.log）
@@ -118,8 +118,7 @@ class CaseResult:
     error_step: str = ""           # preflight / move / pipeline / render / extract / index
     error_message: str = ""
     error_traceback: str = ""
-    report_master: Optional[pathlib.Path] = None
-    report_client: Optional[pathlib.Path] = None
+    report_path: Optional[pathlib.Path] = None
     predictions_written: int = 0
 
     def to_dict(self) -> dict[str, Any]:
@@ -132,8 +131,7 @@ class CaseResult:
             "skip_reason": self.skip_reason,
             "error_step": self.error_step,
             "error_message": self.error_message,
-            "report_master": str(self.report_master) if self.report_master else None,
-            "report_client": str(self.report_client) if self.report_client else None,
+            "report_path": str(self.report_path) if self.report_path else None,
             "predictions_written": self.predictions_written,
         }
 
@@ -189,7 +187,7 @@ def _process_single(input_path: pathlib.Path, *, dry_run: bool) -> CaseResult:
         result.error_traceback = traceback.format_exc()
         return result
 
-    # ── Step 5: render 双版报告 ─────────────────────────────
+    # ── Step 5: render 唯一标准报告 ─────────────────────────
     try:
         from tools.render_report import render_from_output  # noqa: F401
     except ImportError as exc:
@@ -202,15 +200,11 @@ def _process_single(input_path: pathlib.Path, *, dry_run: bool) -> CaseResult:
     reports_dir.mkdir(parents=True, exist_ok=True)
     try:
         from tools.render_report import render_from_output as _render
-        master_md = _render(analysis_output, variant="master", lint_before=True)
-        client_md = _render(analysis_output, variant="client", lint_before=True)
+        report_md = _render(analysis_output, variant="standard", lint_before=True)
         if not dry_run:
-            master_path = reports_dir / f"{parsed.case_id}-master.md"
-            client_path = reports_dir / f"{parsed.case_id}-client.md"
-            master_path.write_text(master_md, encoding="utf-8")
-            client_path.write_text(client_md, encoding="utf-8")
-            result.report_master = master_path
-            result.report_client = client_path
+            report_path = reports_dir / f"{parsed.case_id}-report.md"
+            report_path.write_text(report_md, encoding="utf-8")
+            result.report_path = report_path
     except Exception as exc:  # noqa: BLE001
         result.error_step = "render"
         result.error_message = str(exc)
@@ -355,10 +349,7 @@ def _append_run_log(result: BatchIntakeResult) -> None:
                 state = "✅"
             else:
                 state = f"❌ {c.error_step}: {c.error_message[:60]}"
-            reports = (
-                f"M:`{c.report_master.name}` C:`{c.report_client.name}`"
-                if c.report_master else "—"
-            )
+            reports = f"`{c.report_path.name}`" if c.report_path else "—"
             lines.append(
                 f"| `{c.source_path.name}` | {c.case_id or '—'} | {state} | "
                 f"{reports} | {c.predictions_written} | {c.error_message[:50] or '—'} |"
@@ -394,7 +385,7 @@ def _print_human(result: BatchIntakeResult) -> None:
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="v1.3 D6 批量入库：扫 cases/inbox/*.md → 流水线 → 双版报告 + 应期",
+        description="批量入库：扫 cases/inbox/*.md → 流水线 → 唯一标准报告 + 应期",
     )
     parser.add_argument(
         "--files", nargs="*", default=None,

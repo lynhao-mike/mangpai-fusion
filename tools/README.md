@@ -18,7 +18,7 @@
 | [`preflight.py`](preflight.py:1) | input.md schema 校验与解析 | 新案入口护栏 |
 | [`batch_intake.py`](batch_intake.py:1) | 批量入库：inbox → cases/pipeline | v1.3 D6 |
 | [`batch_review.py`](batch_review.py:1) | 批量复盘：已填 feedback.md → ingest | v1.3 D6 |
-| [`render_report.py`](render_report.py:1) | 渲染 master/client 双版报告 | 默认模板走 v1.3+，由 output_linter 兜底 |
+| [`render_report.py`](render_report.py:1) | 渲染 C-2026-025 唯一标准报告 | 固定使用 `templates/report-v1.3.md`，由 output_linter 兜底 |
 | [`output_linter.py`](output_linter.py:1) | 报告出口 lint / 禁越界输出 | 兜底护栏 #2 |
 | [`three_layer_check.py`](three_layer_check.py:1) | 应期三层门检查 | v1.2 W3 护栏 |
 | [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |

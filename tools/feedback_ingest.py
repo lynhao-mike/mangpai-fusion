@@ -161,7 +161,11 @@ def fanout_to_rules(
     feedbacks: list[StatementFeedback],
     statement_index: dict[str, Any],
 ) -> tuple[dict[str, tuple[Verdict, VerdictContext]], list[str]]:
-    """v1.3 D5：把 statement-level verdict fanout 到 rule-level。
+    """把 statement-level verdict fanout 到 rule-level。
+
+    C-2026-025 标准 statement_index 使用 statements 列表，默认只承载
+    statement_id/domain/summary/status。若历史索引仍含 rule_ids，则继续 fanout；
+    若标准索引无 rule_ids，则不判 unknown，仅跳过规则级更新，让反馈保持可登记。
 
     一条规律可能被多条断语共用 → 取**最具决断力**的 verdict
     （miss > hit > abstain > no_data）。
@@ -171,7 +175,17 @@ def fanout_to_rules(
         unknown_sids: 在 feedback.md 中出现但 statement_index 里查不到的 sid
                       （通常意味着报告与索引版本不匹配，需重跑 render）
     """
-    statements = statement_index.get("statements", {})
+    raw_statements = statement_index.get("statements", {})
+    if isinstance(raw_statements, list):
+        statements = {
+            item.get("statement_id"): item
+            for item in raw_statements
+            if isinstance(item, dict) and item.get("statement_id")
+        }
+        standard_list_schema = True
+    else:
+        statements = raw_statements if isinstance(raw_statements, dict) else {}
+        standard_list_schema = False
     rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
     unknown_sids: list[str] = []
 
@@ -182,6 +196,8 @@ def fanout_to_rules(
             continue
         rule_ids = info.get("rule_ids", []) or []
         if not rule_ids:
+            if not standard_list_schema:
+                unknown_sids.append(fb.statement_id)
             continue
         section = info.get("section", "")
         year = info.get("year")
@@ -330,7 +346,9 @@ def ingest(
     # 4. fanout
     rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
 
-    # 5. 应用规律级更新（不写 log，本函数末尾统一写）
+    # 5. 应用规律级更新（不写 log，本函数末尾统一写）。
+    # C-2026-025 标准索引不强制承载 rule_ids；无 rule fanout 时仍登记本案反馈，
+    # 但不触发规则置信度更新。
     diff = _apply_rule_verdicts(
         full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
     )
