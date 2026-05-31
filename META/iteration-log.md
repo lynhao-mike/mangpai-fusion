@@ -1041,6 +1041,67 @@ META/calibration/2026-05-31-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapsh
 
 ---
 
+## 2026-05-31 11:01 · ingest C-2026-025-坤-辛未乙未甲辰乙亥
+
+case_count: 22
+trigger: ingest_feedback
+
+### Rule Updates (3 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-013 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-122 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-021 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-025-坤-辛未乙未甲辰乙亥.snapshot.yaml
+```
+
+---
+
+## 2026-05-31 11:01 · ingest C-2026-026-坤-癸未甲寅壬戌丙午
+
+case_count: 22
+trigger: ingest_feedback
+
+### Rule Updates (10 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-005 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-009 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-013 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-120 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-042 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-038 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-141 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-064 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-021 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-019 | yang | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)

@@ -40,6 +40,8 @@ import traceback
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
+from engine.domain.ids import FEEDBACK_RE
+
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 CASES_DIR = REPO_ROOT / "cases"
 META_DIR = REPO_ROOT / "META"
@@ -80,7 +82,6 @@ def discover_pending(*, only_with_v13_annotations: bool = False) -> list[str]:
         return []
     completed = _load_completed_set()
     out: list[str] = []
-    sid_re = re.compile(r"\[S-[A-Za-z0-9_]+-[a-f0-9]{6}\]\s*\[(y|n|\?|skip)\]")
 
     for child in sorted(CASES_DIR.iterdir()):
         if not child.is_dir() or not CASE_DIR_RE.match(child.name):
@@ -95,7 +96,7 @@ def discover_pending(*, only_with_v13_annotations: bool = False) -> list[str]:
                 text = fb.read_text(encoding="utf-8")
             except OSError:
                 continue
-            if not sid_re.search(text):
+            if not FEEDBACK_RE.search(text):
                 continue
         out.append(child.name)
     return out

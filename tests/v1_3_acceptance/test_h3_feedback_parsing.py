@@ -191,3 +191,53 @@ def test_h3_standard_list_schema_without_rule_ids_is_accepted():
     )
     assert rule_verdicts == {}
     assert unknown == []
+
+
+def test_h3_statement_rule_map_enables_standard_schema_fanout():
+    """旁路 statement_rule_map 可在不破坏标准 list schema 时恢复规则级 fanout。"""
+    from tools.feedback_ingest import (
+        StatementFeedback,
+        _merge_statement_rule_map,
+        fanout_to_rules,
+    )
+
+    statement_index = {
+        "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
+        "generated_at": "2026-05-30",
+        "statements": [
+            {
+                "statement_id": "S-025-d1a001",
+                "domain": "事业/财富",
+                "summary": "财厚劫透，适合资源整合，忌人情财务混杂",
+                "status": "pending",
+            }
+        ],
+    }
+    rule_map = {
+        "statements": {
+            "S-025-d1a001": {
+                "rule_ids": ["M1-D-013", "M2-Y-021"],
+                "section": "Step 1",
+            }
+        }
+    }
+
+    merged = _merge_statement_rule_map(statement_index, rule_map)
+    rule_verdicts, unknown = fanout_to_rules(
+        [StatementFeedback("S-025-d1a001", "y", "hit")],
+        merged,
+    )
+
+    assert set(rule_verdicts) == {"M1-D-013", "M2-Y-021"}
+    assert all(v[0] == "hit" for v in rule_verdicts.values())
+    assert unknown == []
+
+
+def test_h3_non_hash_statement_id_is_supported():
+    """手工归档 statement_id（如 S-025-d1a001）必须被统一协议解析。"""
+    from tools.feedback_ingest import parse_statement_feedback
+
+    parsed = parse_statement_feedback("- [S-025-d1a001] [y] 事实：命中")
+    assert len(parsed) == 1
+    assert parsed[0].statement_id == "S-025-d1a001"
+    assert parsed[0].verdict == "hit"

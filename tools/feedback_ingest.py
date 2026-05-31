@@ -44,6 +44,7 @@ import json
 import pathlib
 import re
 import sys
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
@@ -155,6 +156,72 @@ _PRIORITY: dict[Verdict, int] = {
     "abstain": 2,
     "no_data": 3,
 }
+
+
+def _merge_statement_rule_map(
+    statement_index: dict[str, Any],
+    rule_map: Mapping[str, Any],
+) -> dict[str, Any]:
+    """把旁路 statement_rule_map.json 合并进 statement_index。
+
+    设计目标：保持 C-2026-025 标准 list schema 的
+    ``statement_id/domain/summary/status`` 稳定字段不变；需要规则级校准时，
+    允许 case 目录额外提供 ``statement_rule_map.json`` 作为可选追溯层。
+    支持两种写法：
+      - {"S-001-aaaaaa": ["M1-D-001"]}
+      - {"statements": {"S-001-aaaaaa": {"rule_ids": [...]}}}
+    """
+    if not rule_map:
+        return statement_index
+
+    raw_map = rule_map.get("statements", rule_map) if isinstance(rule_map, Mapping) else {}
+    if not isinstance(raw_map, Mapping):
+        return statement_index
+
+    merged = dict(statement_index)
+    raw_statements = merged.get("statements", {})
+    if isinstance(raw_statements, list):
+        statements: list[Any] = []
+        for item in raw_statements:
+            if not isinstance(item, dict):
+                statements.append(item)
+                continue
+            sid = item.get("statement_id")
+            mapped = raw_map.get(sid) if sid else None
+            if mapped:
+                updated = dict(item)
+                if isinstance(mapped, Mapping):
+                    updated["rule_ids"] = list(mapped.get("rule_ids", []) or [])
+                    if mapped.get("section") and not updated.get("section"):
+                        updated["section"] = mapped.get("section")
+                    if mapped.get("year") and not updated.get("year"):
+                        updated["year"] = mapped.get("year")
+                elif isinstance(mapped, list):
+                    updated["rule_ids"] = list(mapped)
+                else:
+                    updated["rule_ids"] = [str(mapped)]
+                statements.append(updated)
+            else:
+                statements.append(item)
+        merged["statements"] = statements
+        return merged
+
+    if isinstance(raw_statements, dict):
+        statements = {k: dict(v) if isinstance(v, dict) else v for k, v in raw_statements.items()}
+        for sid, mapped in raw_map.items():
+            if sid not in statements or not isinstance(statements[sid], dict):
+                continue
+            if isinstance(mapped, Mapping):
+                statements[sid]["rule_ids"] = list(mapped.get("rule_ids", []) or [])
+                statements[sid].setdefault("section", mapped.get("section", ""))
+                if mapped.get("year"):
+                    statements[sid].setdefault("year", mapped.get("year"))
+            elif isinstance(mapped, list):
+                statements[sid]["rule_ids"] = list(mapped)
+            else:
+                statements[sid]["rule_ids"] = [str(mapped)]
+        merged["statements"] = statements
+    return merged
 
 
 def fanout_to_rules(
@@ -314,8 +381,9 @@ def ingest(
     feedback_text = feedback_path.read_text(encoding="utf-8")
     feedbacks = parse_statement_feedback(feedback_text)
 
-    # 2. 读 statement_index
+    # 2. 读 statement_index；如存在旁路 statement_rule_map.json，则合并 rule_ids。
     index_path = case_dir / "statement_index.json"
+    map_path = case_dir / "statement_rule_map.json"
     statement_index: dict = {}
     skipped_no_index = False
     if index_path.exists():
@@ -323,6 +391,12 @@ def ingest(
             statement_index = json.loads(index_path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, ValueError):
             statement_index = {}
+    if map_path.exists() and statement_index:
+        try:
+            rule_map = json.loads(map_path.read_text(encoding="utf-8"))
+            statement_index = _merge_statement_rule_map(statement_index, rule_map)
+        except (json.JSONDecodeError, ValueError, OSError):
+            pass
 
     # 3. 决策路径选择
     if not feedbacks or not statement_index.get("statements"):
@@ -347,11 +421,17 @@ def ingest(
     rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
 
     # 5. 应用规律级更新（不写 log，本函数末尾统一写）。
-    # C-2026-025 标准索引不强制承载 rule_ids；无 rule fanout 时仍登记本案反馈，
-    # 但不触发规则置信度更新。
+    # C-2026-025 标准索引不强制承载 rule_ids；若无旁路映射则仍登记本案反馈，
+    # 但不触发规则置信度更新，并在日志中显式说明，避免生产静默误判。
     diff = _apply_rule_verdicts(
         full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
     )
+
+    if not rule_verdicts:
+        diff.notes.append(
+            "statement-level 反馈已登记，但未找到 rule_ids；"
+            "请在 statement_index.json 或 statement_rule_map.json 提供映射后重摄入"
+        )
 
     # 6. 落 log + snapshot
     if unknown_sids:
