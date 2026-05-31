@@ -8,6 +8,25 @@
 
 ---
 
+## 0. 案例状态、关联文件与版本
+
+| 字段 | 内容 |
+|---|---|
+| case_id | C-2026-016-坤-甲子丙子丙戌戊子 |
+| 乾坤 | 坤 |
+| 四柱 | 甲子 年、丙子 月、丙戌 日、戊子 时 |
+| analysis_version | v1.4-master |
+| analysis_status | 已生成 master 技术归档；已追加 2026-2027 财运与黄金交易专项分析索引 |
+| input_path | [input.md](input.md) |
+| report_path | [命主可读报告](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md) |
+| report_events_path | [专项事件归档](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md) |
+| case_events_path | [命理分析过程记录](events.md) |
+| feedback_path | [feedback.md](feedback.md) |
+| statement_index_path | [statement_index.json](statement_index.json) |
+| 新增分析事项 | [2026-2027 财运与黄金交易专项](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md#2026-05-31t033140z--财运专项--evt-20260531-ab4a1ba0e6) |
+
+---
+
 ## 全运表
 
 | 序 | 干支 | 起讫年龄 | 起讫年份 | 标记 |
@@ -506,9 +525,10 @@
 ## 归档信息
 
 - **case_id**：C-2026-016-坤-甲子丙子丙戌戊子
-- **report_path**：[../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md](../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md)
-- **report_events_path**：[../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md](../../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md)
-- **case_events_path**：[events.md](events.md)
+- **report_path**：[命主可读报告](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-report.md)
+- **report_events_path**：[专项事件归档](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md)
+- **case_events_path**：[命理分析过程记录](events.md)
+- **新增分析事项**：[2026-2027 财运与黄金交易专项](../../reports/C-2026-016-坤-甲子丙子丙戌戊子-events.md#2026-05-31t033140z--财运专项--evt-20260531-ab4a1ba0e6)
 - **pipeline_version**：v1.4.0
 - **statement_index**：[statement_index.json](statement_index.json)
 - **energy_hash**：`0dc88843d389ed64`
