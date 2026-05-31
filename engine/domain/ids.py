@@ -32,7 +32,7 @@ RULE_ID_RELAX_PATTERN = (
 )
 RULE_ID_RE_RELAX = re.compile(RULE_ID_RELAX_PATTERN)
 
-STATEMENT_ID_PATTERN = r"S-[A-Za-z0-9_]+-[a-f0-9]{6}"
+STATEMENT_ID_PATTERN = r"S-[A-Za-z0-9_]+-[A-Za-z0-9_]+"
 STATEMENT_ID_RE = re.compile(rf"\b{STATEMENT_ID_PATTERN}\b")
 FEEDBACK_RE = re.compile(
     rf"\[({STATEMENT_ID_PATTERN})\]\s*\[(y|n|\?|skip)\]",

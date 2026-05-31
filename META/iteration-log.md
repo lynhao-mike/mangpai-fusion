@@ -965,6 +965,82 @@ META/calibration/2026-05-29-after-C-2026-015-乾-甲寅乙亥丙辰辛卯.snapsh
 
 ---
 
+## 2026-05-31 10:21 · ingest C-2026-025-坤-辛未乙未甲辰乙亥
+
+case_count: 22
+trigger: ingest_feedback
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-025-坤-辛未乙未甲辰乙亥.snapshot.yaml
+```
+
+---
+
+## 2026-05-31 10:22 · ingest C-2026-026-坤-癸未甲寅壬戌丙午
+
+case_count: 22
+trigger: ingest_feedback
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapshot.yaml
+```
+
+---
+
+## 2026-05-31 10:24 · ingest C-2026-025-坤-辛未乙未甲辰乙亥
+
+case_count: 22
+trigger: ingest_feedback
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-025-坤-辛未乙未甲辰乙亥.snapshot.yaml
+```
+
+---
+
+## 2026-05-31 10:24 · ingest C-2026-026-坤-癸未甲寅壬戌丙午
+
+case_count: 22
+trigger: ingest_feedback
+
+### Cross-School Scan
+- 未触发（case_count=22，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-05-31-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapshot.yaml
+```
+
+---
+
 ## Annotations
 
 (本段允许手工备注；不影响自动化流程)
