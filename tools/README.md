@@ -51,6 +51,7 @@
 | 工具 | 用途 | 调用边界 |
 |---|---|---|
 | [`feedback_loop.py`](feedback_loop.py:1) | 反馈回流到底层规律生命周期 | 通常由 [`feedback_ingest.py`](feedback_ingest.py:1) / [`batch_review.py`](batch_review.py:1) 调用 |
+| [`pipeline_adapters.py`](pipeline_adapters.py:1) | application ports 的 tools 层默认适配器 | 由 [`engine/application/pipeline_runner.py`](../engine/application/pipeline_runner.py:1) 兼容旧 e2e 调用时延迟加载；新代码优先显式注入 ports |
 | [`rule_lifecycle.py`](rule_lifecycle.py:1) | 规律状态机、Beta 缓存、v1.4 V1/V2 字段 | 生命周期底层实现，不建议绕过反馈入口直接改状态 |
 | [`drift_detect.py`](drift_detect.py:1) | 滑动窗漂移检测 | 由反馈闭环调用 |
 | [`check_archive_links.py`](check_archive_links.py:1) | 检查 case/report 归档互链是否可追踪 | 归档质量检查；通常在报告批量归档后运行 |

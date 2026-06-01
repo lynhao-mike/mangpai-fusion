@@ -201,6 +201,22 @@ class SQLiteAnalysisStore:
             raise RuntimeError(f"analysis job was not created: {analysis_id}")
         return job
 
+    def mark_job_running(self, *, analysis_id: str, started_at: str) -> AnalysisJobRecord:
+        """Mark a queued job as running."""
+        with self.connect() as conn:
+            conn.execute(
+                """
+                UPDATE analysis_jobs
+                   SET status = 'running', started_at = ?
+                 WHERE analysis_id = ?
+                """,
+                (started_at, analysis_id),
+            )
+        job = self.get_job(analysis_id)
+        if job is None:
+            raise RuntimeError(f"analysis job disappeared: {analysis_id}")
+        return job
+
     def complete_job(
         self,
         *,

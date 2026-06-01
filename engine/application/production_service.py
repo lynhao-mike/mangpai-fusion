@@ -68,14 +68,7 @@ class ProductionAnalysisService:
 
     def submit(self, request: SubmitAnalysisRequest) -> dict[str, Any]:
         """Run or reuse one analysis and return a stable response envelope."""
-        normalized = self._normalize_request(request)
-        input_bytes = normalized.input_path.read_bytes()
-        input_sha256 = hashlib.sha256(input_bytes).hexdigest()
-        cache_key = self.compute_cache_key(
-            input_sha256=input_sha256,
-            render=normalized.render,
-            template_name=normalized.template_name,
-        )
+        normalized, input_sha256, cache_key = self._prepare_request(request)
 
         if not normalized.force:
             cached = self.store.get_cached_job(cache_key)
@@ -102,7 +95,48 @@ class ProductionAnalysisService:
             created_at=now,
             started_at=now,
         )
+        return self._run_existing_job(analysis_id, normalized, input_sha256, cache_key).to_dict()
 
+    def enqueue(self, request: SubmitAnalysisRequest) -> AnalysisJobRecord:
+        """Create a queued job without running the pipeline."""
+        normalized, input_sha256, cache_key = self._prepare_request(request)
+        if not normalized.force:
+            cached = self.store.get_cached_job(cache_key)
+            if cached is not None and cached.status == "completed":
+                return self._record_cached_response(
+                    cached=cached,
+                    input_path=normalized.input_path,
+                    input_sha256=input_sha256,
+                    cache_key=cache_key,
+                    request=normalized,
+                )
+        now = _utc_now()
+        analysis_id = self.new_analysis_id(now)
+        return self.store.create_job(
+            analysis_id=analysis_id,
+            input_path=self._display_path(normalized.input_path),
+            input_sha256=input_sha256,
+            cache_key=cache_key,
+            engine_version=__version__,
+            render=normalized.render,
+            template_name=normalized.template_name,
+            created_at=now,
+            status="queued",
+        )
+
+    def run_queued(self, analysis_id: str, request: SubmitAnalysisRequest) -> AnalysisJobRecord:
+        """Run a previously queued job in a worker."""
+        normalized, input_sha256, cache_key = self._prepare_request(request)
+        self.store.mark_job_running(analysis_id=analysis_id, started_at=_utc_now())
+        return self._run_existing_job(analysis_id, normalized, input_sha256, cache_key)
+
+    def _run_existing_job(
+        self,
+        analysis_id: str,
+        normalized: SubmitAnalysisRequest,
+        input_sha256: str,
+        cache_key: str,
+    ) -> AnalysisJobRecord:
         try:
             output, timing = run_pipeline_e2e(
                 normalized.input_path,
@@ -139,18 +173,29 @@ class ProductionAnalysisService:
                 summary=summary,
                 created_at=completed_at,
             )
-            return job.to_dict()
+            return job
         except Exception as exc:  # noqa: BLE001 - preserve production job state
             failed = self.store.fail_job(
                 analysis_id=analysis_id,
                 error=f"{type(exc).__name__}: {exc}",
                 completed_at=_utc_now(),
             )
-            return failed.to_dict()
+            return failed
 
     def get(self, analysis_id: str) -> Optional[dict[str, Any]]:
         job = self.store.get_job(analysis_id)
         return job.to_dict() if job is not None else None
+
+    def _prepare_request(self, request: SubmitAnalysisRequest) -> tuple[SubmitAnalysisRequest, str, str]:
+        normalized = self._normalize_request(request)
+        input_bytes = normalized.input_path.read_bytes()
+        input_sha256 = hashlib.sha256(input_bytes).hexdigest()
+        cache_key = self.compute_cache_key(
+            input_sha256=input_sha256,
+            render=normalized.render,
+            template_name=normalized.template_name,
+        )
+        return normalized, input_sha256, cache_key
 
     def compute_cache_key(
         self,

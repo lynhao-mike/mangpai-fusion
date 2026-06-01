@@ -3,6 +3,7 @@
 Run locally:
 
     python -m tools.production_api --host 127.0.0.1 --port 8765 --db runtime/analysis.sqlite3
+    python -m tools.production_api --enable-queue  # POST /v1/analyses?async=1 返回 queued
 
 The API intentionally uses Python stdlib only.  It is suitable for local or
 internal MVP deployments and can later be replaced by FastAPI/ASGI without
@@ -17,8 +18,9 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Optional
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
+from engine.application.job_queue import InMemoryAnalysisQueue
 from engine.application.production_service import (
     ProductionAnalysisService,
     request_from_dict,
@@ -29,6 +31,7 @@ from engine.infrastructure.analysis_store import SQLiteAnalysisStore
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
 DEFAULT_DB_PATH = "runtime/analysis.sqlite3"
+ASYNC_QUERY_VALUES = ("1", "true", "yes")
 
 
 class ProductionAPIHandler(BaseHTTPRequestHandler):
@@ -39,7 +42,9 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802 - stdlib handler naming
         parsed = urlparse(self.path)
         if parsed.path == "/v1/health":
-            self._send_json(HTTPStatus.OK, self.service.health())
+            health = self.service.health()
+            health["queue_enabled"] = self.analysis_queue is not None
+            self._send_json(HTTPStatus.OK, health)
             return
 
         prefix = "/v1/analyses/"
@@ -70,8 +75,13 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
             self._send_json(HTTPStatus.BAD_REQUEST, {"error": str(exc)})
             return
 
+        async_mode = parse_qs(parsed.query).get("async", [""])[0].lower() in ("1", "true", "yes")
+
         try:
-            result = self.service.submit(request)
+            if async_mode and self.analysis_queue is not None:
+                result = self.analysis_queue.submit(request).to_dict()
+            else:
+                result = self.service.submit(request)
         except (FileNotFoundError, ValueError) as exc:
             self._send_json(HTTPStatus.BAD_REQUEST, {"error": str(exc)})
             return
@@ -82,12 +92,18 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
             )
             return
 
-        status = HTTPStatus.OK if result.get("status") == "completed" else HTTPStatus.INTERNAL_SERVER_ERROR
+        status = HTTPStatus.ACCEPTED if result.get("queued") else (
+            HTTPStatus.OK if result.get("status") == "completed" else HTTPStatus.INTERNAL_SERVER_ERROR
+        )
         self._send_json(status, result)
 
     @property
     def service(self) -> ProductionAnalysisService:
         return self.server.service  # type: ignore[attr-defined]
+
+    @property
+    def analysis_queue(self) -> Optional[InMemoryAnalysisQueue]:
+        return getattr(self.server, "analysis_queue", None)  # type: ignore[attr-defined]
 
     def _read_json_body(self) -> dict[str, Any]:
         raw_length = self.headers.get("Content-Length", "0")
@@ -114,9 +130,9 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-    def log_message(self, fmt: str, *args: Any) -> None:
+    def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
         # Keep default access logs compact and UTF-8 safe on Windows terminals.
-        message = fmt % args
+        message = format % args
         print(f"[{self.log_date_time_string()}] {self.address_string()} {message}")
 
 
@@ -128,9 +144,16 @@ class ProductionHTTPServer(ThreadingHTTPServer):
         server_address: tuple[str, int],
         handler_class: type[BaseHTTPRequestHandler],
         service: ProductionAnalysisService,
+        analysis_queue: Optional[InMemoryAnalysisQueue] = None,
     ) -> None:
         super().__init__(server_address, handler_class)
         self.service = service
+        self.analysis_queue = analysis_queue
+
+    def server_close(self) -> None:
+        if self.analysis_queue is not None:
+            self.analysis_queue.stop()
+        super().server_close()
 
 
 def build_server(
@@ -139,13 +162,19 @@ def build_server(
     port: int = DEFAULT_PORT,
     db_path: str = DEFAULT_DB_PATH,
     workspace_root: Optional[str] = None,
+    enable_queue: bool = False,
+    queue_workers: int = 1,
 ) -> ProductionHTTPServer:
     store = SQLiteAnalysisStore(Path(db_path))
     service = ProductionAnalysisService(
         store=store,
         workspace_root=Path(workspace_root).resolve() if workspace_root else Path.cwd().resolve(),
     )
-    return ProductionHTTPServer((host, int(port)), ProductionAPIHandler, service)
+    analysis_queue = None
+    if enable_queue:
+        analysis_queue = InMemoryAnalysisQueue(service, worker_count=queue_workers)
+        analysis_queue.start()
+    return ProductionHTTPServer((host, int(port)), ProductionAPIHandler, service, analysis_queue)
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -154,6 +183,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="bind port")
     parser.add_argument("--db", default=DEFAULT_DB_PATH, help="SQLite database path")
     parser.add_argument("--workspace-root", default=None, help="workspace root; defaults to current directory")
+    parser.add_argument("--enable-queue", action="store_true", help="enable async job queue for POST /v1/analyses?async=1")
+    parser.add_argument("--queue-workers", type=int, default=1, help="background queue worker count")
     args = parser.parse_args(argv)
 
     server = build_server(
@@ -161,6 +192,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         port=args.port,
         db_path=args.db,
         workspace_root=args.workspace_root,
+        enable_queue=args.enable_queue,
+        queue_workers=args.queue_workers,
     )
     print(
         "mangpai-fusion production API listening on "

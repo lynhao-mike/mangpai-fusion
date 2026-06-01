@@ -8,6 +8,7 @@ from typing import Optional, Union
 
 from engine.application.candidates import _extract_candidates
 from engine.application.integration import integrate
+from engine.application.ports import PipelineAdapters
 from engine.application.timing import PIPELINE_THRESHOLD_SECONDS, PipelineTiming
 from engine.domain.analysis import AnalysisOutput
 from engine.energy.evaluator import evaluate_energy
@@ -129,6 +130,7 @@ def run_pipeline_e2e(
     template_name: str = "report-v1.3.md",
     report_variant: str = "standard",
     threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
+    adapters: Optional[PipelineAdapters] = None,
 ) -> tuple[AnalysisOutput, PipelineTiming]:
     """端到端 8 步编排（v1.2.1 性能监控版）。
 
@@ -137,14 +139,14 @@ def run_pipeline_e2e(
     时输出醒目警告（[PERF WARN]），但**不阻断** findings/报告落盘。
 
     Steps:
-        1. preflight   — tools/preflight.parse(input_md_path) → ParsedInput
+        1. preflight   — PreflightPort.parse(input_md_path) → ParsedInput
         2. energy      — D1 段派
         3. picture     — D2 杨派
         4. yingqi      — D3 任派
         5. pangzheng   — D4 高派
         6. integrate   — D1-D4 → AnalysisOutput
-        7. render      — tools/render_report.render_from_output（do_render=True 时）
-        8. self_iter   — tools/feedback_loop.ingest_feedback（do_self_iter=True 时）
+        7. render      — ReportRenderPort.render（do_render=True 时）
+        8. self_iter   — FeedbackIngestPort.ingest（do_self_iter=True 时）
 
     Args:
         input_md_path:     cases/C-XXX/input.md 路径。
@@ -167,15 +169,14 @@ def run_pipeline_e2e(
 
     # Step 1: preflight
     parsed: Optional[ParsedInput] = None
+    adapters = adapters or _load_default_adapters()
+    if adapters.preflight is None:
+        raise ValueError("run_pipeline_e2e requires a PreflightPort adapter")
     with timing.step("preflight"):
-        # 延迟导入：避免 engine 启动时强依赖 tools/PyYAML
-        from tools.preflight import parse as preflight_parse
-        from engine.predicates.types import adapt_parsed
-        parsed_raw = preflight_parse(
+        parsed = adapters.preflight.parse(
             Path(input_md_path),
             Path(cases_index_path) if cases_index_path else None,
         )
-        parsed = adapt_parsed(parsed_raw)
 
     # Steps 2-6: energy / picture / yingqi / pangzheng / integrate
     # write_findings=False —— 我们在 8 步全部完成后统一落盘
@@ -191,11 +192,12 @@ def run_pipeline_e2e(
     if do_render:
         with timing.step("render"):
             try:
-                from tools.render_report import render_from_output
-                report_md = render_from_output(
+                if adapters.renderer is None:
+                    raise ValueError("do_render=True requires a ReportRenderPort adapter")
+                report_md = adapters.renderer.render(
                     output,
                     template_name=template_name,
-                    variant=report_variant,  # type: ignore[arg-type]
+                    variant=report_variant,
                     cases_dir=cases_dir,
                     skip_findings_save=True,
                 )
@@ -208,8 +210,9 @@ def run_pipeline_e2e(
     if do_self_iter:
         with timing.step("self_iter"):
             try:
-                from tools.feedback_loop import ingest_feedback
-                ingest_feedback(output.case_id)
+                if adapters.feedback is None:
+                    raise ValueError("do_self_iter=True requires a FeedbackIngestPort adapter")
+                adapters.feedback.ingest(output.case_id)
             except Exception as e:  # noqa: BLE001
                 logger.warning("self_iter 步骤失败（不阻断）：%s", e)
 
@@ -224,3 +227,10 @@ def run_pipeline_e2e(
     timing.check_threshold()
 
     return output, timing
+
+
+def _load_default_adapters() -> PipelineAdapters:
+    """延迟加载 tools 默认适配器，保留旧调用方的 e2e 行为。"""
+    from tools.pipeline_adapters import default_pipeline_adapters
+
+    return default_pipeline_adapters()

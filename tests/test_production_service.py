@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from engine.application.production_service import (
     ProductionAnalysisService,
@@ -135,3 +136,69 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert calls["count"] == 1
     assert any(a["kind"] == "report" for a in first["artifacts"])
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-report.md").exists()
+
+
+def test_enqueue_creates_queued_job(tmp_path: Path) -> None:
+    case_dir = tmp_path / "cases" / "C-2026-998-乾-甲子乙丑丙寅丁卯"
+    case_dir.mkdir(parents=True)
+    input_path = case_dir / "input.md"
+    input_path.write_text("demo input", encoding="utf-8")
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+
+    job = service.enqueue(SubmitAnalysisRequest(input_path=input_path, cases_dir=tmp_path / "cases"))
+
+    assert job.status == "queued"
+    assert job.input_path.endswith("input.md")
+    assert job.started_at == ""
+    persisted = service.store.get_job(job.analysis_id)
+    assert persisted is not None
+    assert persisted.status == "queued"
+
+
+def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) -> None:
+    case_dir = tmp_path / "cases" / "C-2026-997-乾-甲子乙丑丙寅丁卯"
+    findings_dir = case_dir / "findings"
+    findings_dir.mkdir(parents=True)
+    input_path = case_dir / "input.md"
+    input_path.write_text("demo input", encoding="utf-8")
+
+    class FakeOutput:
+        case_id = "C-2026-997-乾-甲子乙丑丙寅丁卯"
+        analysis_date = "2026-05-30"
+        final_conclusions: list[Any] = []
+        conflicts: list[Any] = []
+        gate_results: list[Any] = []
+        hash_chain_valid = True
+        overall_confidence = None
+        report_md = "# fake report\n"
+
+    class FakeTiming:
+        total_seconds = 0.01
+
+    def fake_run_pipeline_e2e(*args, **kwargs):
+        (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
+        (findings_dir / "timing.json").write_text("{}", encoding="utf-8")
+        (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")
+        return FakeOutput(), FakeTiming()
+
+    monkeypatch.setattr(
+        "engine.application.production_service.run_pipeline_e2e",
+        fake_run_pipeline_e2e,
+    )
+
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+    request = SubmitAnalysisRequest(input_path=input_path, render=False, cases_dir=tmp_path / "cases")
+    queued = service.enqueue(request)
+
+    completed = service.run_queued(queued.analysis_id, request)
+
+    assert completed.status == "completed"
+    assert completed.started_at is not None
+    assert completed.completed_at is not None
+    assert completed.summary["case_id"] == "C-2026-997-乾-甲子乙丑丙寅丁卯"
