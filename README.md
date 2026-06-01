@@ -112,7 +112,17 @@
 python -m tools.preflight cases/C-YYYY-NNN-乾-干支/input.md
 ```
 
+新命盘首次分析时，若用户同时要求“生成报告 / 形成报告 / 出报告 / 输出报告”，或先分析后追问要求报告，必须把首次分析内容同步归档到同名 case，并在同一轮任务内生成正式 report。
+
 ### 生成报告
+
+生成报告必须同时完成两侧归档：
+
+- `reports/C-YYYY-NNN-{乾/坤}-{四柱}-report.md`
+- `cases/C-YYYY-NNN-{乾/坤}-{四柱}/input.md`
+- `cases/C-YYYY-NNN-{乾/坤}-{四柱}/analysis.md`
+- `cases/C-YYYY-NNN-{乾/坤}-{四柱}/feedback.md`
+- `cases/C-YYYY-NNN-{乾/坤}-{四柱}/statement_index.json`
 
 ```bash
 python -m tools.render_report

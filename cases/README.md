@@ -25,6 +25,8 @@ cases/
 - `reports/C-YYYY-NNN-{乾/坤}-{四柱}-report.md`：命主可读正式报告。
 - `cases/C-YYYY-NNN-{乾/坤}-{四柱}/`：同名 case 目录，至少包含 `input.md`、`analysis.md`、`feedback.md`、`statement_index.json`。
 
+新案例首次分析若用户已经要求“生成报告 / 形成报告 / 出报告 / 输出报告”，不得先只输出会话分析；必须在同一轮任务内生成 report 并建立同名 case。若先口头分析、后续才要求报告，必须将首次会话分析与后续反馈校准补入同名 case，再生成 report，避免首次分析只留在会话中、无法进入反馈闭环。
+
 `analysis.md` 以 `cases/_TEMPLATE/analysis.md` 为固定模板；禁止裸写 `L+数字` 层级，必须写成“层级｜现实释义｜起止界限｜证伪条件”。
 
 ## 命理分析过程记录与交互归档
