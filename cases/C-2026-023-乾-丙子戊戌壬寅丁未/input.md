@@ -109,7 +109,7 @@ known_facts: []
 ## 自由文本备注（不参与引擎，仅给命理师参考）
 
 - 用户要求分析并形成报告。
-- 已生成命主可读版报告：reports/C-2026-023-乾-丙子戊戌壬寅丁未-report.md
-- 已按修正规范生成命理师内部分析归档：cases/C-2026-023-乾-丙子戊戌壬寅丁未/analysis.md
+- 已生成命主可读版报告：[C-2026-023-乾-丙子戊戌壬寅丁未-report.md](../../reports/C-2026-023-乾-丙子戊戌壬寅丁未-report.md)
+- 已按修正规范生成命理师内部分析归档：[analysis.md](analysis.md)
 - 已输出长期 analysis.md 候选模板：templates/analysis-template-options.md
 - 本 case 目录按最高硬性约束同步建立。

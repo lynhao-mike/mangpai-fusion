@@ -7,7 +7,7 @@
 **当前大运**：戊戌运（约2020-2030）  
 **补充报告主题**：2025-2030 年重大事件与变化  
 **报告日期**：2026-06-01  
-**案例路径**：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/
+**案例路径**：[C-2026-027-乾-丁卯壬寅甲午乙丑/](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/)
 
 ---
 
@@ -173,10 +173,10 @@
 
 ## 6. 关联归档
 
-- 输入文件：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/input.md
-- 原始分析归档：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/analysis.md
-- 未来事件归档：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/future-events.md
-- 反馈文件：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/feedback.md
-- 断语索引：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json
-- 基础报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md
-- 本补充报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md
+- 输入文件：[input.md](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/input.md)
+- 原始分析归档：[analysis.md](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/analysis.md)
+- 未来事件归档：[future-events.md](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/future-events.md)
+- 反馈文件：[feedback.md](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/feedback.md)
+- 断语索引：[statement_index.json](../cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json)
+- 基础报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-report.md](C-2026-027-乾-丁卯壬寅甲午乙丑-report.md)
+- 本补充报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md](C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md)

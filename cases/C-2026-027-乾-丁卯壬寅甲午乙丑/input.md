@@ -141,7 +141,7 @@ Rel:_
 
 ## 关联文件
 
-- 报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md
-- 分析归档：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/analysis.md
-- 反馈表：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/feedback.md
-- 断语索引：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json
+- 报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-report.md](../../reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md)
+- 分析归档：[analysis.md](analysis.md)
+- 反馈表：[feedback.md](feedback.md)
+- 断语索引：[statement_index.json](statement_index.json)

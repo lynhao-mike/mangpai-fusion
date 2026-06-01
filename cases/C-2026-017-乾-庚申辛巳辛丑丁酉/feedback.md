@@ -11,8 +11,8 @@
 
 **反馈日期**：(待回填)
 **采集方式**：(待填)
-**关联报告**：reports/C-2026-017-乾-庚申辛巳辛丑丁酉-report.md
-**关联索引**：cases/C-2026-017-乾-庚申辛巳辛丑丁酉/statement_index.json（v1.3 渲染时生成；本案 v1.1 立案先行，待补流水线 run）
+**关联报告**：[C-2026-017-乾-庚申辛巳辛丑丁酉-report.md](../../reports/C-2026-017-乾-庚申辛巳辛丑丁酉-report.md)
+**关联索引**：[statement_index.json](statement_index.json)（v1.3 渲染时生成；本案 v1.1 立案先行，待补流水线 run）
 
 ---
 

@@ -610,13 +610,13 @@ boost +10%
 ## 归档信息
 
 - **case_id**：C-2026-015-乾-甲寅乙亥丙辰辛卯  
-- **report_path**：reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-master.md  
+- **report_path**：[C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md](C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md)
 - **pipeline_version**：v1.3.0  
-- **statement_index**：cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/statement_index.json  
+- **statement_index**：[statement_index.json](../cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/statement_index.json)  
 - **energy_hash**：`62aa9e1347135580`  
 - **picture_hash**：`481f5187a25de7f5`  
 - **generated_at**：2026-05-27T01:29:03Z  
-- **feedback_path**：cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md  
+- **feedback_path**：[feedback.md](../cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/feedback.md)  
 
 ---
 
@@ -625,3 +625,5 @@ boost +10%
 四派融合：段建业盲派 · 杨清娟盲派 · 任付红盲派 · 高德臣盲派
 双轨置信度（★+%）· 三层 gate 铁口断 · 断语级反馈
 ```
+
+- 关联报告：[C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md](C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md)

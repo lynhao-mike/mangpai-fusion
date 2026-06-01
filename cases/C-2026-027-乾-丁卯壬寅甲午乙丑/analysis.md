@@ -36,9 +36,9 @@
 
 ## 五、关联文件
 
-- 输入：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/input.md
-- 基础报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md
-- 未来事件归档：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/future-events.md
-- 未来事件补充报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md
-- 反馈：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/feedback.md
-- 断语索引：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json
+- 输入：[input.md](input.md)
+- 基础报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-report.md](../../reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md)
+- 未来事件归档：[future-events.md](future-events.md)
+- 未来事件补充报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md](../../reports/C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md)
+- 反馈：[feedback.md](feedback.md)
+- 断语索引：[statement_index.json](statement_index.json)

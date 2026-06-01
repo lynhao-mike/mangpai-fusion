@@ -242,7 +242,7 @@ $DY_LOOP
 
 ## 关联归档
 
-- 命主可读报告：reports/C-2026-026-坤-癸未甲寅壬戌丙午-report.md
-- 命理师内部分析：cases/C-2026-026-坤-癸未甲寅壬戌丙午/analysis.md
-- 反馈表：cases/C-2026-026-坤-癸未甲寅壬戌丙午/feedback.md
-- 断语索引：cases/C-2026-026-坤-癸未甲寅壬戌丙午/statement_index.json
+- 命主可读报告：[C-2026-026-坤-癸未甲寅壬戌丙午-report.md](../../reports/C-2026-026-坤-癸未甲寅壬戌丙午-report.md)
+- 命理师内部分析：[analysis.md](analysis.md)
+- 反馈表：[feedback.md](feedback.md)
+- 断语索引：[statement_index.json](statement_index.json)

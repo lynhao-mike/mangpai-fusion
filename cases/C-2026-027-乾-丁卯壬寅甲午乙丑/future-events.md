@@ -4,10 +4,10 @@
 
 本文件归档用户追问“分析这个八字未来几年重大事件和变化”后的补充分析，用于与正式补充报告互相追踪。
 
-- 对应补充报告：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md
-- 原始输入：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/input.md
-- 原始分析：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/analysis.md
-- 断语索引：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json
+- 对应补充报告：[C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md](../../reports/C-2026-027-乾-丁卯壬寅甲午乙丑-future-events-report.md)
+- 原始输入：[input.md](input.md)
+- 原始分析：[analysis.md](analysis.md)
+- 断语索引：[statement_index.json](statement_index.json)
 
 ## 二、校准前提
 

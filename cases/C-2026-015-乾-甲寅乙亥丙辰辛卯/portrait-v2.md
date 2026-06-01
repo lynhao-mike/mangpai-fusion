@@ -6,7 +6,7 @@
 **指纹**：`4ffe3325d69d`
 **分析师**：mangpai-fusion v1.3 引擎落档 + 命理师手工 §H 综合（[AI-polish]）
 
-> 本文件是对 v1.3 流水线产物的**人工综合补充**，不替代 reports/...master.md 的铁断段。所有 ★/% 数值依然由引擎落定（见 `findings/analysis_output.json`），本文件只做：
+> 本文件是对 v1.3 流水线产物的**人工综合补充**，不替代 [C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md](../../reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md) 的铁断段。所有 ★/% 数值依然由引擎落定（见 `findings/analysis_output.json`），本文件只做：
 > 1. 命局核心结构总览（§A 前置）
 > 2. **15 层富贵分级映射**（学业 / 事业 / 婚姻 / 财富 / 官命 五维）
 > 3. 流年回溯 1983-2026（44 年）
@@ -401,10 +401,10 @@
 
 **归档信息**
 
-- portrait_path: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/portrait-v2.md
-- 关联 master 报告: reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md
-- 关联 client 报告: reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report-client.md
-- 关联 findings: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/findings/
-- 关联 statement_index: cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/statement_index.json
+- portrait_path: [portrait-v2.md](portrait-v2.md)
+- 关联 master 报告: [C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md](../../reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report-master.md)
+- 关联基础报告: [C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md](../../reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md)
+- 关联 findings: [findings/](findings)
+- 关联 statement_index: [statement_index.json](statement_index.json)
 - 关联 follow-up issues: F1-F9（详见 lessons.md）
 - 生成方式: 引擎 findings 数据 + 命理师手工综合（[AI-polish]）

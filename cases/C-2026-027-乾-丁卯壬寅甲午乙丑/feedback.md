@@ -2,8 +2,8 @@
 
 **反馈日期**：2026-06-01  
 **采集方式**：用户对话  
-**关联报告**：reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md  
-**关联索引**：cases/C-2026-027-乾-丁卯壬寅甲午乙丑/statement_index.json
+**关联报告**：[C-2026-027-乾-丁卯壬寅甲午乙丑-report.md](../../reports/C-2026-027-乾-丁卯壬寅甲午乙丑-report.md)  
+**关联索引**：[statement_index.json](statement_index.json)
 
 ---
 

@@ -5,9 +5,9 @@
 
 **反馈日期**：2026-05-25
 **采集方式**：用户对话直贴（命主自述事业轨迹 1996-2025 共 30 年）
-**关联报告**：[reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md](../../reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md)
+**关联报告**：[C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md](../../reports/C-2026-015-乾-甲寅乙亥丙辰辛卯-report.md)
 **关联分析**：[analysis.md](analysis.md)
-**statement_index**：[findings/statement_index.json](findings/statement_index.json)
+**statement_index**：[statement_index.json](statement_index.json)
 
 ---
 
