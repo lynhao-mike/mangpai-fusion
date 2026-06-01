@@ -178,6 +178,7 @@ def _extract_features(
     *,
     exclude_rule: str,
     cases_dir: pathlib.Path = CASES_DIR,
+    co_rule_cache: Optional[dict[str, set[str]]] = None,
 ) -> set[str]:
     """从一个 AppliedCase 抽出特征集合。
 
@@ -189,7 +190,14 @@ def _extract_features(
     feats: set[str] = set()
 
     # 1. co-rule (从案例的 analysis.md / findings 抽，排除自身)
-    co_rules = _extract_co_rules_from_case(case.case_id, cases_dir=cases_dir)
+    if co_rule_cache is not None:
+        cache_key = f"{cases_dir.resolve()}::{case.case_id}"
+        co_rules = co_rule_cache.get(cache_key)
+        if co_rules is None:
+            co_rules = _extract_co_rules_from_case(case.case_id, cases_dir=cases_dir)
+            co_rule_cache[cache_key] = co_rules
+    else:
+        co_rules = _extract_co_rules_from_case(case.case_id, cases_dir=cases_dir)
     for rid in co_rules:
         if rid != exclude_rule:
             feats.add(f"co_rule={rid}")
@@ -311,6 +319,7 @@ def mine_boundaries(
     lift_threshold: float = 2.0,
     cases_dir: pathlib.Path = CASES_DIR,
     dry_run: bool = False,
+    co_rule_cache: Optional[dict[str, set[str]]] = None,
 ) -> BoundaryMineResult:
     """对单条规律挖掘候选边界。
 
@@ -348,7 +357,12 @@ def mine_boundaries(
     hit_feats: list[set[str]] = []
     miss_feats: list[set[str]] = []
     for ac in rule.applied_cases:
-        feats = _extract_features(ac, exclude_rule=rule_id, cases_dir=cases_dir)
+        feats = _extract_features(
+            ac,
+            exclude_rule=rule_id,
+            cases_dir=cases_dir,
+            co_rule_cache=co_rule_cache,
+        )
         if ac.hit:
             hit_feats.append(feats)
         else:
@@ -467,11 +481,13 @@ def mine_all(
 ) -> dict[str, BoundaryMineResult]:
     """对 theory 下所有规律 ID 跑挖掘（仅触发 misses>=min_miss 的）。"""
     out: dict[str, BoundaryMineResult] = {}
+    co_rule_cache: dict[str, set[str]] = {}
     for rid in list_rule_ids():
         try:
             r = mine_boundaries(
                 rid, cfg=cfg, min_miss=min_miss,
                 cases_dir=cases_dir, dry_run=dry_run,
+                co_rule_cache=co_rule_cache,
             )
             if not r.skipped or r.candidates or r.notes:
                 out[rid] = r

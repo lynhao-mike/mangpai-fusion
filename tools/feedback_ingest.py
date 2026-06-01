@@ -48,6 +48,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine.application.timing import PipelineTiming
 from engine.domain.ids import FEEDBACK_RE as _SHARED_FEEDBACK_RE
 from tools.feedback_loop import (
     IterationDiff,
@@ -369,6 +370,8 @@ def ingest(
     """
     cfg = cfg or LifecycleConfig.from_yaml()
     today = today or _dt.date.today().isoformat()
+    timing = PipelineTiming()
+    timing_run_id = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     case_dir = find_case_dir(case_id)
     full_case_id = case_dir.name
@@ -378,31 +381,34 @@ def ingest(
         raise FileNotFoundError(f"feedback.md 不存在: {feedback_path}")
 
     # 1. 解析 statement-level 标注
-    feedback_text = feedback_path.read_text(encoding="utf-8")
-    feedbacks = parse_statement_feedback(feedback_text)
+    with timing.step("parse_feedback"):
+        feedback_text = feedback_path.read_text(encoding="utf-8")
+        feedbacks = parse_statement_feedback(feedback_text)
 
     # 2. 读 statement_index；如存在旁路 statement_rule_map.json，则合并 rule_ids。
     index_path = case_dir / "statement_index.json"
     map_path = case_dir / "statement_rule_map.json"
     statement_index: dict = {}
     skipped_no_index = False
-    if index_path.exists():
-        try:
-            statement_index = json.loads(index_path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, ValueError):
-            statement_index = {}
-    if map_path.exists() and statement_index:
-        try:
-            rule_map = json.loads(map_path.read_text(encoding="utf-8"))
-            statement_index = _merge_statement_rule_map(statement_index, rule_map)
-        except (json.JSONDecodeError, ValueError, OSError):
-            pass
+    with timing.step("load_statement_index"):
+        if index_path.exists():
+            try:
+                statement_index = json.loads(index_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, ValueError):
+                statement_index = {}
+        if map_path.exists() and statement_index:
+            try:
+                rule_map = json.loads(map_path.read_text(encoding="utf-8"))
+                statement_index = _merge_statement_rule_map(statement_index, rule_map)
+            except (json.JSONDecodeError, ValueError, OSError):
+                pass
 
     # 3. 决策路径选择
     if not feedbacks or not statement_index.get("statements"):
         # 退回 v1.0 启发式路径（feedback_loop.ingest_feedback）
         from tools.feedback_loop import ingest_feedback as _legacy_ingest
-        diff = _legacy_ingest(full_case_id, cfg=cfg, today=today, dry_run=dry_run)
+        with timing.step("apply_rules"):
+            diff = _legacy_ingest(full_case_id, cfg=cfg, today=today, dry_run=dry_run)
         skipped_no_index = True
         # 仍然把这个案纳入完成反馈计数（哪怕走了启发式）
         result = IngestResult(
@@ -414,18 +420,22 @@ def ingest(
             iteration_diff=diff,
         )
         if not dry_run:
-            _bump_state(result, full_case_id)
+            with timing.step("bump_state"):
+                _bump_state(result, full_case_id, timing=timing)
+            _write_ingest_timing(timing, timing_run_id, result, dry_run=dry_run)
         return result
 
     # 4. fanout
-    rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
+    with timing.step("fanout"):
+        rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
 
     # 5. 应用规律级更新（不写 log，本函数末尾统一写）。
     # C-2026-025 标准索引不强制承载 rule_ids；若无旁路映射则仍登记本案反馈，
     # 但不触发规则置信度更新，并在日志中显式说明，避免生产静默误判。
-    diff = _apply_rule_verdicts(
-        full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
-    )
+    with timing.step("apply_rules"):
+        diff = _apply_rule_verdicts(
+            full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
+        )
 
     if not rule_verdicts:
         diff.notes.append(
@@ -440,8 +450,9 @@ def ingest(
             f"可能需重跑 render）：{','.join(unknown_sids[:3])}"
         )
     if not dry_run:
-        append_iteration_log(diff)
-        write_snapshot(diff)
+        with timing.step("write_audit"):
+            append_iteration_log(diff)
+            write_snapshot(diff)
 
     # 7. 计数器
     result = IngestResult(
@@ -452,12 +463,19 @@ def ingest(
         iteration_diff=diff,
     )
     if not dry_run:
-        _bump_state(result, full_case_id)
+        with timing.step("bump_state"):
+            _bump_state(result, full_case_id, timing=timing)
+        _write_ingest_timing(timing, timing_run_id, result, dry_run=dry_run)
 
     return result
 
 
-def _bump_state(result: IngestResult, case_id: str) -> None:
+def _bump_state(
+    result: IngestResult,
+    case_id: str,
+    *,
+    timing: Optional[PipelineTiming] = None,
+) -> None:
     """把当前案件计入完成反馈，并检测是否到 10 案触发点。"""
     state = IterationState.load()
     completed_case_id_set = set(state.completed_case_ids)
@@ -486,7 +504,11 @@ def _bump_state(result: IngestResult, case_id: str) -> None:
     if result.iteration_triggered:
         try:
             from tools.iteration_report import run_iteration
-            ir = run_iteration(seq=result.iteration_seq, dry_run=False)
+            if timing is None:
+                ir = run_iteration(seq=result.iteration_seq, dry_run=False)
+            else:
+                with timing.step("iteration_report"):
+                    ir = run_iteration(seq=result.iteration_seq, dry_run=False)
             if ir.report_path:
                 result.iteration_report_path = str(ir.report_path)
         except Exception as exc:  # noqa: BLE001
@@ -495,6 +517,34 @@ def _bump_state(result: IngestResult, case_id: str) -> None:
                 result.iteration_diff.notes.append(
                     f"[D8 warn-only] iteration_report 触发失败：{exc!r}"
                 )
+
+
+def _write_ingest_timing(
+    timing: PipelineTiming,
+    run_id: str,
+    result: IngestResult,
+    *,
+    dry_run: bool,
+) -> None:
+    """将 feedback ingest 耗时写入 META/timings/，不阻断主流程。"""
+    try:
+        timing.write_meta_timing(
+            META_DIR,
+            timing_type="feedback_ingest",
+            run_id=f"{run_id}-{result.case_id}",
+            case_id=result.case_id,
+            extra={
+                "feedback_count": result.feedback_count,
+                "rule_count": result.rule_count,
+                "skipped_unknown_sid_count": len(result.skipped_unknown_sid),
+                "skipped_no_index": result.skipped_no_index,
+                "iteration_triggered": result.iteration_triggered,
+                "iteration_seq": result.iteration_seq,
+                "dry_run": dry_run,
+            },
+        )
+    except OSError:
+        pass
 
 
 # ============================================================

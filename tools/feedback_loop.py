@@ -515,25 +515,23 @@ def total_case_count() -> int:
 def append_iteration_log(diff: IterationDiff) -> None:
     """05 § 八 格式追加。
 
-    在 ITERATION_LOG 末尾"## Annotations"段之前插入新段。
+    新段采用 append-only 追加到文件末尾，避免日志增长后每次摄入都整文件读写。
     """
     if not ITERATION_LOG.exists():
         # 兜底：若文件被误删则建一个最小骨架
         ITERATION_LOG.parent.mkdir(parents=True, exist_ok=True)
         ITERATION_LOG.write_text(
-            "# iteration-log · 自迭代审计日志\n\n## Annotations\n",
+            "# iteration-log · 自迭代审计日志\n\n"
+            "## Entries\n\n"
+            "## Annotations\n",
             encoding="utf-8",
         )
 
-    block = _format_iteration_block(diff)
-    text = ITERATION_LOG.read_text(encoding="utf-8")
-
-    if "## Annotations" in text:
-        before, sep, after = text.partition("## Annotations")
-        new_text = before.rstrip() + "\n\n" + block.rstrip() + "\n\n---\n\n" + sep + after
-    else:
-        new_text = text.rstrip() + "\n\n" + block.rstrip() + "\n"
-    ITERATION_LOG.write_text(new_text, encoding="utf-8")
+    block = _format_iteration_block(diff).rstrip()
+    with ITERATION_LOG.open("a", encoding="utf-8") as f:
+        f.write("\n\n---\n\n")
+        f.write(block)
+        f.write("\n")
 
 
 def _format_iteration_block(diff: IterationDiff) -> str:

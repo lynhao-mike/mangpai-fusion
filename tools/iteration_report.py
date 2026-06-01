@@ -38,6 +38,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
+from engine.application.timing import PipelineTiming
 from tools.boundary_miner import BoundaryMineResult, mine_all
 from tools.rule_lifecycle import LifecycleConfig, list_rule_ids, load_rule
 from tools.veto_miner import VetoResult, veto_all
@@ -236,9 +237,13 @@ def run_iteration(
         cycle_case_ids=cycle_case_ids,
     )
 
+    timing = PipelineTiming()
+    timing_run_id = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
     # Step 1: boundary_miner 全量扫描
     try:
-        boundary_results = mine_all(cfg=cfg, dry_run=dry_run)
+        with timing.step("boundary_miner"):
+            boundary_results = mine_all(cfg=cfg, dry_run=dry_run)
         result.boundary_results = boundary_results
         for rid, br in boundary_results.items():
             if br.accepted:
@@ -248,10 +253,11 @@ def run_iteration(
 
     # Step 2: veto_miner（传入 boundary 结果避免重复挖掘）
     try:
-        veto_results = veto_all(
-            boundary_results=result.boundary_results,
-            cfg=cfg, dry_run=dry_run,
-        )
+        with timing.step("veto_miner"):
+            veto_results = veto_all(
+                boundary_results=result.boundary_results,
+                cfg=cfg, dry_run=dry_run,
+            )
         result.veto_results = veto_results
         for rid, vr in veto_results.items():
             if vr.vetoed:
@@ -261,7 +267,8 @@ def run_iteration(
 
     # Step 3: 读取本周期状态变更（不重复触发，仅汇总）
     try:
-        ups, downs = _scan_recent_status_changes(cycle_case_ids)
+        with timing.step("scan_status_changes"):
+            ups, downs = _scan_recent_status_changes(cycle_case_ids)
         result.upgrades_in_cycle = ups
         result.downgrades_in_cycle = downs
     except Exception as exc:  # noqa: BLE001
@@ -269,7 +276,8 @@ def run_iteration(
 
     # Step 4: cross-school 冲突计数
     try:
-        result.cross_school_conflicts = _count_recent_conflicts(cycle_case_ids)
+        with timing.step("cross_school_summary"):
+            result.cross_school_conflicts = _count_recent_conflicts(cycle_case_ids)
     except Exception as exc:  # noqa: BLE001
         result.notes.append(f"扫 conflict-trends.md 异常: {exc!r}")
 
@@ -277,7 +285,23 @@ def run_iteration(
 
     # Step 5: 写报告
     if not dry_run:
-        result.report_path = _write_report(result)
+        with timing.step("write_report"):
+            result.report_path = _write_report(result)
+        timing.write_meta_timing(
+            META_DIR,
+            timing_type="iteration_report",
+            run_id=f"{timing_run_id}-{seq:03d}",
+            extra={
+                "seq": seq,
+                "feedback_completed_count": result.feedback_completed_count,
+                "cycle_case_count": len(result.cycle_case_ids),
+                "boundary_result_count": len(result.boundary_results),
+                "veto_result_count": len(result.veto_results),
+                "rules_with_accepted_boundaries": len(result.rules_with_accepted_boundaries),
+                "rules_vetoed": len(result.rules_vetoed),
+                "dry_run": dry_run,
+            },
+        )
 
     return result
 

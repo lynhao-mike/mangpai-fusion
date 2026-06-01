@@ -1,12 +1,14 @@
 # engine/ · 核心引擎代码与运行时配置
 
-本目录同时存放四派维度引擎代码、共用谓词库、流水线整合层与运行时配置。运行入口以 [`engine/pipeline.py`](pipeline.py) 为准；报告渲染与反馈入口见 [`../tools/README.md`](../tools/README.md)。
+本目录同时存放四派维度引擎代码、共用谓词库、流水线整合层与运行时配置。当前应用层运行入口以 [`application/pipeline_runner.py`](application/pipeline_runner.py) 为准；根部 [`pipeline.py`](pipeline.py) 若存在仅作历史兼容入口。报告渲染、反馈摄入与生产 API 入口见 [`../tools/README.md`](../tools/README.md)。
 
 ## 代码子系统
 
 | 路径 | 职责 |
 |---|---|
-| [`pipeline.py`](pipeline.py) | D1-D4 整合、hash 链校验、端到端流水线。 |
+| [`application/pipeline_runner.py`](application/pipeline_runner.py) | 当前 D1-D4 编排入口；提供 `run_pipeline()` 与 `run_pipeline_e2e()`。 |
+| [`application/production_service.py`](application/production_service.py) | 生产 MVP 同步服务封装：任务元数据、缓存、制品清单。 |
+| [`pipeline.py`](pipeline.py) | 历史兼容入口；新实现优先使用 `application/pipeline_runner.py`。 |
 | [`energy/`](energy/) | D1 段派：能量、做功、体用、贼神捕神。 |
 | [`picture/`](picture/) | D2 杨派：画像、五步法、财富/官命、婚姻、调候。 |
 | [`yingqi/`](yingqi/) | D3 任派：三层门、触发器、应期候选。 |

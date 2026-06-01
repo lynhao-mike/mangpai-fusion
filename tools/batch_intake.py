@@ -47,6 +47,8 @@ import traceback
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
+from engine.application.timing import PipelineTiming
+
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 CASES_DIR = REPO_ROOT / "cases"
 INBOX_DIR = CASES_DIR / "inbox"
@@ -283,11 +285,15 @@ def batch(
         BatchIntakeResult（含每案结果 + 汇总）
     """
     started = _dt.datetime.now().isoformat(timespec="seconds")
-    inputs = files if files is not None else discover_inbox()
+    run_id = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    timing = PipelineTiming()
+    with timing.step("discover"):
+        inputs = files if files is not None else discover_inbox()
     result = BatchIntakeResult(started_at=started, dry_run=dry_run)
 
     for inp in inputs:
-        cr = _process_single(inp, dry_run=dry_run)
+        with timing.step("process_single"):
+            cr = _process_single(inp, dry_run=dry_run)
         result.cases.append(cr)
         # 失败立即写错误日志（每案独立写避免批次崩溃丢日志）
         if not cr.success and not cr.skipped and not dry_run:
@@ -296,6 +302,18 @@ def batch(
     result.finished_at = _dt.datetime.now().isoformat(timespec="seconds")
     if not dry_run and result.cases:
         _append_run_log(result)
+        timing.write_meta_timing(
+            META_DIR,
+            timing_type="batch_intake",
+            run_id=run_id,
+            extra={
+                "input_count": len(result.cases),
+                "success_count": result.success_count,
+                "failure_count": result.failure_count,
+                "skip_count": result.skip_count,
+                "dry_run": result.dry_run,
+            },
+        )
     return result
 
 

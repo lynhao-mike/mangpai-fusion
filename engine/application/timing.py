@@ -28,6 +28,22 @@ PIPELINE_STEP_NAMES: tuple[str, ...] = (
     "self_iter",   # tools/feedback_loop.ingest_feedback（自迭代）
 )
 
+META_TIMING_STEP_NAMES: tuple[str, ...] = (
+    "discover",
+    "process_single",
+    "parse_feedback",
+    "fanout",
+    "apply_rules",
+    "write_audit",
+    "bump_state",
+    "iteration_report",
+    "boundary_miner",
+    "veto_miner",
+    "scan_status_changes",
+    "cross_school_summary",
+    "write_report",
+)
+
 
 @dataclass
 class StepTiming:
@@ -100,18 +116,31 @@ class PipelineTiming:
             out[r.name] = round(out.get(r.name, 0.0) + r.seconds, 4)
         return out
 
-    def to_dict(self, *, case_id: str = "") -> dict[str, Any]:
-        return {
+    def to_dict(
+        self,
+        *,
+        case_id: str = "",
+        timing_type: str = "pipeline",
+        run_id: str = "",
+        step_names: Optional[tuple[str, ...]] = None,
+        extra: Optional[dict[str, Any]] = None,
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
             "case_id": case_id,
+            "run_id": run_id,
+            "timing_type": timing_type,
             "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "pipeline_version": "1.2.1",
             "threshold_seconds": self.threshold_seconds,
             "total_seconds": self.total_seconds,
             "exceeded_threshold": self.exceeded_threshold,
-            "step_names": list(PIPELINE_STEP_NAMES),
+            "step_names": list(step_names or PIPELINE_STEP_NAMES),
             "steps": self.steps_map(),
             "step_details": [r.to_dict() for r in self.records],
         }
+        if extra:
+            payload["extra"] = extra
+        return payload
 
     def write_to(
         self,
@@ -125,6 +154,37 @@ class PipelineTiming:
         path = findings_dir / "timing.json"
         path.write_text(
             json.dumps(self.to_dict(case_id=case_id), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return path
+
+    def write_meta_timing(
+        self,
+        meta_dir: Union[str, Path],
+        *,
+        timing_type: str,
+        run_id: str,
+        case_id: str = "",
+        extra: Optional[dict[str, Any]] = None,
+    ) -> Path:
+        """落盘非 pipeline 链路 timing 到 META/timings/。"""
+        timings_dir = Path(meta_dir) / "timings"
+        timings_dir.mkdir(parents=True, exist_ok=True)
+        safe_type = _safe_timing_part(timing_type)
+        safe_run_id = _safe_timing_part(run_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
+        path = timings_dir / f"{safe_type}-{safe_run_id}.json"
+        path.write_text(
+            json.dumps(
+                self.to_dict(
+                    case_id=case_id,
+                    run_id=run_id,
+                    timing_type=timing_type,
+                    step_names=META_TIMING_STEP_NAMES,
+                    extra=extra,
+                ),
+                ensure_ascii=False,
+                indent=2,
+            ),
             encoding="utf-8",
         )
         return path
@@ -158,3 +218,8 @@ class PipelineTiming:
         logger.warning("[PERF WARN] %s", msg)
         warnings.warn(msg, RuntimeWarning, stacklevel=2)
         return msg
+
+
+def _safe_timing_part(value: str) -> str:
+    """把 timing_type/run_id 清理成可跨平台使用的文件名片段。"""
+    return "".join(ch if ch.isalnum() or ch in ("-", "_") else "-" for ch in value).strip("-") or "timing"

@@ -29,12 +29,20 @@
 | [`cross_school_scan.py`](cross_school_scan.py:1) | 每 10 案跨派一致性扫描 | v1.3 自迭代 |
 | [`cross_domain_consistency_check.py`](cross_domain_consistency_check.py:1) | 历史报告跨维度输出耦合 W9 回溯扫描 | v1.4 V8 / CFL-C015-002 |
 | [`extract_predictions.py`](extract_predictions.py:1) | 抽取 ★4+ 应期到 predictions/ | 预测封存现行入口 |
-| [`timing_report.py`](timing_report.py:1) | 聚合 pipeline timing.json | v1.2.1+ metrics |
-| [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存 |
+| [`timing_report.py`](timing_report.py:1) | 聚合 pipeline、batch、feedback、iteration timing.json | v1.2.1+ metrics；同时扫描 `cases/*/findings/timing.json` 与 `META/timings/*.json` |
+| [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存；高并发场景后续演进为 job queue |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 多派别 Markdown 教材入口；支持 `--dry-run` |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
+
+---
+
+## 调用边界
+
+- [`tools/`](README.md:1) 作为 CLI / adapter 层：负责文件入口、人工日志、批处理与审计落盘。
+- 当前 D1-D4 核心编排优先查看 [`engine/application/pipeline_runner.py`](../engine/application/pipeline_runner.py:1)，生产同步封装查看 [`engine/application/production_service.py`](../engine/application/production_service.py:1)。
+- 新代码不应把 [`engine/application`](../engine/application:1) 继续扩大为依赖 [`tools/`](README.md:1) 的工具集合；涉及长期 API / queue / storage 时应下沉到 application / infrastructure 层。
 
 ---
 
@@ -45,6 +53,8 @@
 | [`feedback_loop.py`](feedback_loop.py:1) | 反馈回流到底层规律生命周期 | 通常由 [`feedback_ingest.py`](feedback_ingest.py:1) / [`batch_review.py`](batch_review.py:1) 调用 |
 | [`rule_lifecycle.py`](rule_lifecycle.py:1) | 规律状态机、Beta 缓存、v1.4 V1/V2 字段 | 生命周期底层实现，不建议绕过反馈入口直接改状态 |
 | [`drift_detect.py`](drift_detect.py:1) | 滑动窗漂移检测 | 由反馈闭环调用 |
+| [`check_archive_links.py`](check_archive_links.py:1) | 检查 case/report 归档互链是否可追踪 | 归档质量检查；通常在报告批量归档后运行 |
+| [`fix_archive_links.py`](fix_archive_links.py:1) | 规范化 case/report Markdown 互链 | 维护辅助；会改写归档链接，运行前建议先检查 diff |
 
 ---
 
