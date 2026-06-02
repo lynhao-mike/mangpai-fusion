@@ -173,6 +173,7 @@
 ## 归档互链
 
 - 新增整体分析师报告：[`reports/C-2026-012-坤-壬戌癸丑丙申壬辰-analyst-report.md`](../../reports/C-2026-012-坤-壬戌癸丑丙申壬辰-analyst-report.md)
+- 新增事业婚姻专项报告：[`reports/C-2026-012-坤-壬戌癸丑丙申壬辰-career-marriage-report.md`](../../reports/C-2026-012-坤-壬戌癸丑丙申壬辰-career-marriage-report.md)
 - 本 case 输入：[`input.md`](input.md)
 - 本 case 反馈：[`feedback.md`](feedback.md)
 
