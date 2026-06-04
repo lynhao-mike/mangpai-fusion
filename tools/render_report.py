@@ -1005,9 +1005,9 @@ def _build_portrait_vm(
 def _build_statement_index(ctx: dict, case_id: str) -> dict:
     """构建 C-2026-025 标准断语索引：statements 列表。
 
-    仅保留命主反馈所需的稳定字段：statement_id、domain、summary、status。
-    规则级 fanout 如需使用 rule_ids，可从 findings/analysis_output.json 追溯，
-    不再写入 statement_index.json，避免报告对象映射结构分裂。
+    除命主反馈所需字段外，同步写入 rule_ids / schools / section 等追溯元数据，
+    让 feedback_ingest 可直接 fanout 到规则与流派统计；旧的不带 rule_ids 的 list
+    schema 仍由反馈摄入侧兼容。
     """
     SECTIONS = {
         "zuogong_paths": "energy",
@@ -1038,11 +1038,19 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
             year = item.get("year")
             if year and str(year) not in str(domain):
                 domain = "应期" if section == "yingqi" else domain
+            ev_list = item.get("evidence") or []
+            rule_ids = sorted({str(e.get("rule_id", "")).strip() for e in ev_list if isinstance(e, dict) and e.get("rule_id")})
+            schools = sorted({str(e.get("school", "")).strip() for e in ev_list if isinstance(e, dict) and e.get("school")})
+            if not rule_ids and item.get("rule_id"):
+                rule_ids = [str(item.get("rule_id"))]
             statements.append({
                 "statement_id": sid,
                 "domain": str(domain or "综合"),
                 "summary": str(stmt).strip()[:120],
                 "status": "pending",
+                "section": section,
+                "rule_ids": rule_ids,
+                "schools": schools,
             })
     return {
         "case_id": case_id,
