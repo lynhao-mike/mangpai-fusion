@@ -82,6 +82,7 @@ def rewrite_line(md_path: Path, line: str) -> str:
 
 
 LINK_DEST_RE = re.compile(r"\]\((cases/[^)]+|reports/[^)]+)\)")
+CASE_ID_RE = re.compile(r"(C-\d{4}-\d{3})-")
 
 
 def fix_existing_destinations(md_path: Path, line: str) -> str:
@@ -91,8 +92,7 @@ def fix_existing_destinations(md_path: Path, line: str) -> str:
     return LINK_DEST_RE.sub(repl, line)
 
 
-def rewrite_file(md_path: Path) -> bool:
-    text = md_path.read_text(encoding="utf-8")
+def rewrite_text(md_path: Path, text: str) -> tuple[bool, str]:
     lines = text.splitlines(keepends=True)
     changed = False
     in_fence = False
@@ -110,13 +110,20 @@ def rewrite_file(md_path: Path) -> bool:
         if new_line != line:
             changed = True
         out.append(new_line)
+    return changed, "".join(out)
+
+
+def rewrite_file(md_path: Path) -> bool:
+    text = md_path.read_text(encoding="utf-8")
+    changed, new_text = rewrite_text(md_path, text)
     if changed:
-        md_path.write_text("".join(out), encoding="utf-8")
+        md_path.write_text(new_text, encoding="utf-8")
     return changed
 
 
-def ensure_report_cross_links(report_path: Path, sibling_reports: list[Path]) -> bool:
-    text = report_path.read_text(encoding="utf-8")
+def ensure_report_cross_links(report_path: Path, sibling_reports: list[Path], text: str | None = None) -> bool:
+    if text is None:
+        text = report_path.read_text(encoding="utf-8")
     additions: list[str] = []
     for sibling in sibling_reports:
         if sibling == report_path:
@@ -136,22 +143,38 @@ def ensure_report_cross_links(report_path: Path, sibling_reports: list[Path]) ->
 
 
 def case_key(report_path: Path) -> str | None:
-    match = re.match(r"(C-\d{4}-\d{3})-", report_path.name)
+    match = CASE_ID_RE.match(report_path.name)
     return match.group(1) if match else None
 
 
 def main() -> None:
     changed: list[str] = []
+    changed_set: set[str] = set()
 
-    md_files = list(REPORTS_DIR.glob("*.md"))
-    md_files.extend(p for p in CASES_DIR.glob("C-*/*.md") if p.is_file())
+    report_files = sorted(REPORTS_DIR.glob("*.md"))
+    case_md_files = sorted(p for p in CASES_DIR.glob("C-*/*.md") if p.is_file())
+    md_files = [*report_files, *case_md_files]
+    report_text_cache: dict[Path, str] = {}
 
-    for md_path in sorted(md_files):
-        if rewrite_file(md_path):
-            changed.append(md_path.relative_to(ROOT).as_posix())
+    for md_path in md_files:
+        try:
+            text = md_path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        changed_file, new_text = rewrite_text(md_path, text)
+        if changed_file:
+            md_path.write_text(new_text, encoding="utf-8")
+            text = new_text
+            rel = md_path.relative_to(ROOT).as_posix()
+            if rel not in changed_set:
+                changed.append(rel)
+                changed_set.add(rel)
+        if md_path in report_files:
+            # 复用本轮已读取/重写后的报告文本，避免 sibling cross-link 阶段重复 I/O。
+            report_text_cache[md_path] = text
 
     reports_by_case: dict[str, list[Path]] = {}
-    for report in REPORTS_DIR.glob("C-*.md"):
+    for report in report_files:
         key = case_key(report)
         if key:
             reports_by_case.setdefault(key, []).append(report)
@@ -161,10 +184,11 @@ def main() -> None:
             continue
         siblings = sorted(siblings)
         for report in siblings:
-            if ensure_report_cross_links(report, siblings):
+            if ensure_report_cross_links(report, siblings, report_text_cache.get(report)):
                 rel = report.relative_to(ROOT).as_posix()
-                if rel not in changed:
+                if rel not in changed_set:
                     changed.append(rel)
+                    changed_set.add(rel)
 
     for rel in changed:
         print(rel)
