@@ -313,3 +313,206 @@ Clock
 5. 跑全量测试与工具 registry 检查。
 
 这一 slice 不移动 D1-D4 包、不改 schema、不改报告模板，最符合“Behavior remains unchanged — structure is improved”。
+
+---
+
+## 10. Clean Architecture Rebuild Blueprint
+
+本节给出“重建后”的目标架构，而不是一次性大搬家脚本。原则是：**先固定行为，再移动边界；先引入抽象，再迁移实现；所有旧入口保留兼容外观层**。
+
+### 10.1 Target package map
+
+```text
+mangpai-fusion/
+  engine/
+    __init__.py
+    pipeline.py                              # public compatibility facade only
+
+    domain/                                  # enterprise rules, pure model, no IO
+      __init__.py
+      bazi/
+        __init__.py
+        models.py                            # FourPillars, Dayun, Ganzhi value objects
+        predicates/                          # pure predicates, migrated from engine/predicates
+      analysis/
+        __init__.py
+        models.py                            # AnalysisOutput domain aggregate
+        conclusions.py                       # FinalConclusion, conflicts, stance
+        confidence.py                        # confidence value object and pure transforms
+      rules/
+        __init__.py
+        lifecycle.py                         # rule state machine as pure policy
+        evidence.py                          # trace ids, statement ids, evidence chain
+      policy/
+        __init__.py
+        social_clock.py
+        industry_path.py
+        wealth_framework.py
+
+    modules/                                 # domain services / bounded modules
+      energy/                                # D1 段派; current engine/energy
+      picture/                               # D2 杨派; current engine/picture
+      yingqi/                                # D3 任派; current engine/yingqi
+      pangzheng/                             # D4 高派; current engine/pangzheng
+
+    application/                             # use cases and orchestration
+      __init__.py
+      ports/
+        __init__.py
+        input_parser.py
+        findings_repository.py
+        report_renderer.py
+        feedback_ingestor.py
+        job_store.py
+        clock.py
+      use_cases/
+        __init__.py
+        run_analysis.py                      # ParsedInput -> AnalysisOutput
+        run_analysis_e2e.py                  # input path -> output/timing via ports
+        render_report.py
+        ingest_feedback.py
+        submit_analysis_job.py
+      services/
+        __init__.py
+        candidate_extraction.py
+        integration.py
+        timing.py
+        cache_key.py
+        artifact_inventory.py
+
+    infrastructure/                          # external details implementing ports
+      __init__.py
+      repositories/
+        findings_file_repository.py
+        sqlite_analysis_store.py
+        theory_yaml_repository.py
+      adapters/
+        preflight_input_parser.py
+        markdown_report_renderer.py
+        feedback_loop_ingestor.py
+        system_clock.py
+      serializers/
+        analysis_json.py
+        findings_json.py
+        report_markdown.py
+      config/
+        yaml_config_loader.py
+        confidence_loader.py
+        calibration_loader.py
+
+  interfaces/                                # delivery mechanisms
+    cli/
+      preflight.py
+      render_report.py
+      feedback_ingest.py
+      batch_intake.py
+      batch_review.py
+    http/
+      production_api.py
+    viewmodels/
+      report_view_model.py
+      statement_index_view_model.py
+      production_response.py
+
+  tools/                                     # backward-compatible command shims
+    preflight.py
+    render_report.py
+    feedback_ingest.py
+    production_api.py
+    pipeline_adapters.py
+```
+
+### 10.2 Dependency rule
+
+Only inward dependencies are allowed:
+
+```text
+interfaces  -> application ports/use_cases -> domain
+            -> infrastructure adapters ----^      ^
+```
+
+Concrete rules:
+
+1. `engine.domain.*` imports only Python stdlib and other `engine.domain.*` modules.
+2. `engine.modules.*` imports domain models/policies and module-local helpers; it must not import `tools.*`, `interfaces.*`, or file repositories.
+3. `engine.application.*` imports domain/module services and abstract ports only.
+4. `engine.infrastructure.*` may import application ports and concrete external libraries.
+5. `interfaces.*` and `tools.*` assemble concrete adapters and call application use cases.
+6. `engine/pipeline.py` remains the only sanctioned old-path facade for `run_pipeline()` / `run_pipeline_e2e()`.
+
+### 10.3 Boundary responsibilities
+
+| Layer | Owns | Must not own |
+|---|---|---|
+| Domain | 八字值对象、证据链、置信度纯策略、规则生命周期策略 | Markdown、文件路径、SQLite、CLI 参数、HTTP response |
+| Modules | D1-D4 派别计算与纯 findings 生成 | 报告落盘、反馈写回、全局 job 状态 |
+| Application | Pipeline 编排、用例事务、port 定义、timing、候选事件抽取 | 具体 preflight 实现、具体 renderer、具体数据库 |
+| Infrastructure | 文件仓储、SQLite、YAML、Markdown 渲染适配、feedback loop 适配 | CLI 参数解析、HTTP 路由、领域规则决策 |
+| Interfaces | CLI/HTTP/ViewModel/response envelope | 核心命理算法、规则生命周期计算 |
+| Tools | 兼容命令入口与迁移期 shim | 新业务逻辑 |
+
+### 10.4 Migration mapping from current code
+
+| Current path | Target path | Migration type |
+|---|---|---|
+| `engine/pipeline.py` | keep as facade | Keep public API, reduce to re-export only |
+| `engine/application/pipeline_runner.py` | `engine/application/use_cases/run_analysis*.py` | Split orchestration and e2e port wiring |
+| `engine/application/integration.py` | `engine/application/services/integration.py` | Move unchanged, keep shim during migration |
+| `engine/application/candidates.py` | `engine/application/services/candidate_extraction.py` | Move unchanged, keep shim |
+| `engine/application/timing.py` | `engine/application/services/timing.py` | Move unchanged, keep shim |
+| `engine/application/ports.py` | `engine/application/ports/*.py` | Split monolithic port module |
+| `engine/application/production_service.py` | `engine/application/use_cases/submit_analysis_job.py` + services | Split cache/artifact/job orchestration |
+| `engine/domain/analysis.py` | `engine/domain/analysis/models.py` + serializers | Separate model from JSON serialization |
+| `engine/predicates/` | `engine/domain/bazi/predicates/` | Move pure predicates, retain old re-export package |
+| `engine/energy/` | `engine/modules/energy/` | Move with compatibility re-export |
+| `engine/picture/` | `engine/modules/picture/` | Move with compatibility re-export |
+| `engine/yingqi/` | `engine/modules/yingqi/` | Move with compatibility re-export |
+| `engine/pangzheng/` | `engine/modules/pangzheng/` | Move with compatibility re-export |
+| `engine/infrastructure/findings_repository.py` | `engine/infrastructure/repositories/findings_file_repository.py` | Rename as port implementation |
+| `engine/infrastructure/analysis_store.py` | `engine/infrastructure/repositories/sqlite_analysis_store.py` | Rename as port implementation |
+| `tools/pipeline_adapters.py` | `engine/infrastructure/adapters/*` + `interfaces/cli/*` | Move implementation down, tools keeps shim |
+| `tools/render_report.py` | `interfaces/cli/render_report.py` + infrastructure renderer + viewmodel | Split rendering, statement index, CLI |
+| `tools/production_api.py` | `interfaces/http/production_api.py` | HTTP adapter only |
+
+### 10.5 Behavior-preserving implementation sequence
+
+1. **Characterization tests first**: freeze public behavior for `engine.pipeline`, active `tools` commands, report snapshots, feedback ingest counters, and production API envelopes.
+2. **Ports split**: replace `engine/application/ports.py` with small port modules while keeping `ports.py` as a compatibility re-export.
+3. **Default adapters move**: move `tools/pipeline_adapters.py` logic into `engine/infrastructure/adapters/*`; keep `tools/pipeline_adapters.py` as delegating shim.
+4. **Use case split**: extract `run_analysis.py` and `run_analysis_e2e.py`; keep `pipeline_runner.py` as delegating shim.
+5. **Production service split**: extract `CacheKeyService`, `ArtifactInventoryService`, `SubmitAnalysisJobUseCase`, and `AnalysisJobStore` port; keep `ProductionAnalysisService` API unchanged.
+6. **Report boundary split**: introduce `interfaces/viewmodels/report_view_model.py`; renderer consumes ViewModel, not raw D1-D4 internals.
+7. **D1-D4 relocation**: move modules to `engine/modules/*` only after imports are covered by shims and tests.
+8. **Predicates relocation**: move pure predicates into `engine/domain/bazi/predicates/*`; keep `engine/predicates/*` re-export modules until all imports are migrated.
+9. **Tools slimming**: active `tools/*` become CLI-compatible shims that delegate to `interfaces/cli/*`.
+10. **Dependency guard**: add static import checks to fail if application imports `tools.*`, or domain imports application/infrastructure/tools.
+
+### 10.6 Architecture acceptance gates
+
+A rebuild slice is complete only when all gates pass:
+
+- Existing public imports still work: `engine.pipeline.run_pipeline`, `engine.pipeline.run_pipeline_e2e`, active `tools/*` commands.
+- Generated findings JSON remains schema-compatible with current contracts.
+- Standard report Markdown snapshot is unchanged unless a separate v1.4 report-template decision explicitly permits change.
+- Feedback `[y]/[n]/[?]/[skip]` behavior remains unchanged.
+- Production API `health`, `submit`, and `get` response envelopes remain unchanged.
+- No `from tools.` / `import tools.` remains under `engine/application/`.
+- No `engine.infrastructure`, `engine.application`, `tools`, or `interfaces` import remains under `engine/domain/`.
+- Old package paths for D1-D4 remain available through shims until a major-version migration window.
+
+### 10.7 First concrete PR plan
+
+The safest first PR is dependency inversion only:
+
+```text
+PR-1: Cut engine.application -> tools reverse dependency
+  add engine/infrastructure/adapters/preflight_input_parser.py
+  add engine/infrastructure/adapters/markdown_report_renderer.py
+  add engine/infrastructure/adapters/feedback_loop_ingestor.py
+  add engine/infrastructure/adapters/pipeline_adapters.py
+  update tools/pipeline_adapters.py to delegate to infrastructure adapters
+  keep engine/application/pipeline_runner.py public signatures unchanged
+  run pytest tests/ and python tools/tool_registry.py --check
+```
+
+This PR improves structure without moving D1-D4 modules, changing schema, changing report content, or changing feedback behavior.
