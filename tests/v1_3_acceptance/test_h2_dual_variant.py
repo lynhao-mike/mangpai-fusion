@@ -169,6 +169,16 @@ def test_h2_statement_index_uses_025_list_schema(
     assert isinstance(index["statements"], list)
     assert index["statements"]
     for item in index["statements"]:
-        assert set(item) == {"statement_id", "domain", "summary", "status"}
+        assert set(item) == {
+            "statement_id",
+            "domain",
+            "summary",
+            "status",
+            "section",
+            "rule_ids",
+            "schools",
+        }
         assert item["statement_id"].startswith("S-")
         assert item["status"] == "pending"
+        assert isinstance(item["rule_ids"], list)
+        assert isinstance(item["schools"], list)

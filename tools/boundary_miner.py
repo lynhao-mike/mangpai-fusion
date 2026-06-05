@@ -385,12 +385,19 @@ def mine_boundaries(
 
     old_hit_rate = n_hit / max(1, n_hit + n_miss)
 
-    # 单变量扫描所有出现过的特征
-    all_features: set[str] = set()
-    for s in hit_feats + miss_feats:
-        all_features.update(s)
+    # 单变量扫描所有出现过的特征。
+    # 性能要点：旧实现对每个 feature 反复扫描 hit_feats/miss_feats，复杂度 O(F*N)。
+    # 这里改为单次遍历特征集累加计数，复杂度 O(total_feature_occurrences)，
+    # 在 rule/case 数量增长时显著降低 CPU 与临时迭代器开销。
+    feature_counts: dict[str, list[int]] = {}
+    for s in miss_feats:
+        for feature in s:
+            feature_counts.setdefault(feature, [0, 0])[0] += 1
+    for s in hit_feats:
+        for feature in s:
+            feature_counts.setdefault(feature, [0, 0])[1] += 1
 
-    if not all_features:
+    if not feature_counts:
         result.notes.append(
             "无可用协同特征——cases/*/analysis.md 与 findings 都未提供任何 rule_id；"
             "boundary_miner 在没有特征时无法挖掘。建议先跑 batch_intake 把案例落到完整结构。"
@@ -398,10 +405,8 @@ def mine_boundaries(
         return result
 
     candidates: list[CandidateBoundary] = []
-    for feature in sorted(all_features):
-        miss_with = sum(1 for s in miss_feats if feature in s)
+    for feature, (miss_with, hit_with) in sorted(feature_counts.items()):
         miss_without = n_miss - miss_with
-        hit_with = sum(1 for s in hit_feats if feature in s)
         hit_without = n_hit - hit_with
 
         if miss_with < min_miss:

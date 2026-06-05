@@ -23,6 +23,7 @@
 from __future__ import annotations
 
 import datetime as _dt
+import math
 import pathlib
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -80,6 +81,33 @@ class SchoolDomainStat:
     def hit_rate(self) -> Optional[float]:
         return (self.hits / self.n) if self.n > 0 else None
 
+    @property
+    def beta_mean(self) -> Optional[float]:
+        """Beta(1,1) 先验下的后验均值，用于小样本时避免 0/100% 过度自信。"""
+        return ((self.hits + 1) / (self.n + 2)) if self.n > 0 else None
+
+    def wilson_interval(self, z: float = 1.96) -> tuple[Optional[float], Optional[float]]:
+        """Wilson 置信区间；n=0 时返回空值。"""
+        if self.n <= 0:
+            return None, None
+        phat = self.hits / self.n
+        denom = 1 + z * z / self.n
+        centre = phat + z * z / (2 * self.n)
+        spread = z * math.sqrt((phat * (1 - phat) + z * z / (4 * self.n)) / self.n)
+        return max(0.0, (centre - spread) / denom), min(1.0, (centre + spread) / denom)
+
+    def to_report_cell(self) -> dict[str, float | int | None]:
+        lo, hi = self.wilson_interval()
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "n": self.n,
+            "hit_rate": self.hit_rate,
+            "beta_mean": self.beta_mean,
+            "ci_low": lo,
+            "ci_high": hi,
+        }
+
 
 @dataclass
 class SystematicBias:
@@ -110,9 +138,9 @@ class ConflictTrendsReport:
         lines.append("")
 
         # 总表
-        lines.append("### 各领域 4 派 hit_rate")
+        lines.append("### 各领域 4 派 hit_rate / Beta后验 / Wilson区间")
         lines.append("")
-        lines.append("| 领域 | 段 (n) | 杨 (n) | 高 (n) | 任 (n) |")
+        lines.append("| 领域 | 段 | 杨 | 高 | 任 |")
         lines.append("|---|---|---|---|---|")
         for domain in DOMAINS:
             row = self.domain_table.get(domain, {})
@@ -120,11 +148,17 @@ class ConflictTrendsReport:
             for sch in ("段", "杨", "高", "任"):
                 e = row.get(sch, {}) if isinstance(row, dict) else {}
                 rate = e.get("hit_rate")
+                beta = e.get("beta_mean")
+                lo = e.get("ci_low")
+                hi = e.get("ci_high")
                 n = e.get("n", 0)
                 if rate is None:
-                    cells.append(f"— ({n})")
+                    cells.append(f"— (n={n})")
                 else:
-                    cells.append(f"{rate:.0%} ({n})")
+                    cells.append(
+                        f"raw={rate:.0%}, beta={beta:.0%}, "
+                        f"95%CI={lo:.0%}-{hi:.0%}, n={n}"
+                    )
             lines.append(f"| {domain} | " + " | ".join(cells) + " |")
         lines.append("")
 
@@ -233,15 +267,23 @@ def cross_school_scan(
 
     stats = _collect_school_domain_stats()
 
-    # 构造 domain_table
+    # 构造 domain_table：同时暴露原始命中率、Beta 后验均值与 Wilson 区间。
     for domain in DOMAINS:
         row: dict[str, dict[str, float | int | None]] = {}
         for sch in ("段", "杨", "高", "任"):
             s = stats.get((sch, domain))
             if s and s.n > 0:
-                row[sch] = {"hit_rate": s.hit_rate, "n": s.n}
+                row[sch] = s.to_report_cell()
             else:
-                row[sch] = {"hit_rate": None, "n": s.n if s else 0}
+                row[sch] = {
+                    "hits": 0,
+                    "misses": 0,
+                    "n": s.n if s else 0,
+                    "hit_rate": None,
+                    "beta_mean": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                }
         report.domain_table[domain] = row
 
     gap_threshold = getattr(cfg, "cross_school_gap_threshold", 0.30)
@@ -282,6 +324,9 @@ def cross_school_scan(
                     f"或对 {min_sch} 派 {domain} 类规律启动 review。"
                 ),
             ))
+
+    total_n_eff = sum(s.n for s in stats.values())
+    report.notes.append(f"total_n_eff={total_n_eff}；低样本领域只能作为趋势观察，不能作为四派准确率定论。")
 
     if not stats:
         report.notes.append(

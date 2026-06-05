@@ -1,0 +1,62 @@
+schema_version: review-draft-2026-06-05
+status: review_draft
+source: theory/raw/compare/裁判模型契约补强清单_2026-06-05.md
+notes: >
+  裁判模型契约 YAML 示例；仅用于字段审查，不接入生产引擎。
+example:
+  domain: 财运
+  primary_judgement: 财运总体可用，但兑现并非线性稳定；结构有财可用，气势需防阻滞。
+  support_judgement: 盲派提示财运更多表现为阶段性事件窗口，应结合大运流年观察。
+  involved_experts:
+    - blind
+    - ziping
+    - tiaohou_ditiansui
+  confidence:
+    raw: 0.72
+    merged: 0.79
+    feedback_adjusted: null
+    star: 4
+    percent: 79
+    reason: 子平与滴天髓同向，盲派提供事件窗口补充；尚无本案反馈，不做反馈上调。
+  time_scope:
+    type: phase
+    label: 当前大运及未来三年窗口
+    start_year: 2026
+    end_year: 2028
+    description: 财运机会与风险并见，需看具体事件触发。
+  feedback_state: pending
+  weight_profile:
+    profile_id: domain-prior-2026-06-05
+    version: review-draft-v1
+    source: theory/raw/yaml/domain_weight_profile_2026-06-05.yaml
+    domain_weights:
+      blind: 0.30
+      ziping: 0.45
+      tiaohou_ditiansui: 0.25
+  evidence_items:
+    - evidence_type: candidate_rule
+      ref: ZP-CAND-20260605-002
+      summary: 财格要看身财关系，财星可用仍需看承载与生护。
+      strength: high
+    - evidence_type: candidate_rule
+      ref: DTS-CAND-20260605-001
+      summary: 命局偏枯会影响稳定性与长期承载。
+      strength: medium
+  minority_views:
+    - expert_system: blind
+      claim: 财运会在事件窗口中阶段性显现。
+      reason_to_preserve: 与主结论不冲突，可作为应期层补充。
+      confidence: 0.70
+      output_visibility: report_note
+  arbitration_reason:
+    winner_reason: 子平在财运域先验权重最高，且结构证据较具体。
+    loser_reason: 无直接败方；滴天髓与盲派均作为补充。
+    conflict_type: none
+    output_strategy: primary_with_minority
+review:
+  allowed_use:
+    - 字段级审查
+    - 测试计划设计
+  prohibited_use:
+    - 直接生成正式报告
+    - 直接驱动生产裁判逻辑
