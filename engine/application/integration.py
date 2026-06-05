@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from typing import Any, Optional
 
+from engine.application.parallel_domain_orchestrator import analyze_parallel_domains
 from engine.application.production_rule_loader import load_default_production_library
 from engine.domain.analysis import AnalysisOutput, FinalConclusion
 from engine.energy.types import Confidence, EnergyFindings, Evidence
@@ -322,7 +323,20 @@ def integrate(
     # 9. 应期总表
     yingqi_table = _build_yingqi_table(gate_results)
 
-    # 10. 生成时间戳
+    # 10. 多专家功能域旁路分析
+    parallel_analysis = None
+    try:
+        parallel_analysis = analyze_parallel_domains(
+            parsed=parsed,
+            energy=energy,
+            picture=picture,
+            gate_results=gate_results,
+            support=support,
+        )
+    except Exception as exc:  # noqa: BLE001 - 并行旁路不得阻断既有生产 pipeline
+        hash_notes.append(f"多专家功能域分析跳过：{exc}")
+
+    # 11. 生成时间戳
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     case_id = energy.case_id or (parsed.case_id if parsed else "")
@@ -344,4 +358,5 @@ def integrate(
         generated_at=generated_at,
         hash_chain_valid=valid,
         hash_chain_notes=hash_notes,
+        parallel_analysis=parallel_analysis,
     )

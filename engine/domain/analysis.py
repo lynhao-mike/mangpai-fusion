@@ -134,6 +134,17 @@ def _load_retrospective(d: Any) -> Optional[Any]:
     except Exception:  # noqa: BLE001
         return None
 
+
+def _load_parallel_analysis(d: Any) -> Optional[Any]:
+    """延迟导入 + 容错的 ParallelAnalysisOutput 反序列化。"""
+    if not d:
+        return None
+    try:
+        from engine.domain.parallel import ParallelAnalysisOutput
+        return ParallelAnalysisOutput.from_dict(d)
+    except Exception:  # noqa: BLE001
+        return None
+
 @dataclass
 class AnalysisOutput:
     """完整分析输出。
@@ -175,6 +186,9 @@ class AnalysisOutput:
     # F6 · 流年回溯（不参与 hash 链；run_pipeline 注入）
     retrospective: Optional[Any] = None  # RetrospectiveReport（避免循环导入）
 
+    # v1.5 · 多专家功能域旁路分析（不影响 D1-D4 hash 链）
+    parallel_analysis: Optional[Any] = None  # ParallelAnalysisOutput（避免循环导入）
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
@@ -200,6 +214,12 @@ class AnalysisOutput:
                 self.retrospective.to_dict()
                 if self.retrospective is not None
                 and hasattr(self.retrospective, "to_dict")
+                else None
+            ),
+            "parallel_analysis": (
+                self.parallel_analysis.to_dict()
+                if self.parallel_analysis is not None
+                and hasattr(self.parallel_analysis, "to_dict")
                 else None
             ),
         }
@@ -231,6 +251,7 @@ class AnalysisOutput:
             hash_chain_valid=bool(d.get("hash_chain_valid", True)),
             hash_chain_notes=list(d.get("hash_chain_notes", [])),
             retrospective=_load_retrospective(d.get("retrospective")),
+            parallel_analysis=_load_parallel_analysis(d.get("parallel_analysis")),
         )
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:

@@ -208,6 +208,7 @@ def render_from_output(
     support = getattr(analysis_output, "support", None)
     final_conclusions = getattr(analysis_output, "final_conclusions", None) or []
     retrospective = getattr(analysis_output, "retrospective", None)
+    parallel_analysis = getattr(analysis_output, "parallel_analysis", None)
     parsed = getattr(analysis_output, "_parsed", None)
 
     # 如果 AnalysisOutput 没有 _parsed（它不存储 ParsedInput），
@@ -225,6 +226,7 @@ def render_from_output(
         support=support,
         final_conclusions=final_conclusions,
         retrospective=retrospective,
+        parallel_analysis=parallel_analysis,
         template_name=template_name,
         variant=variant,
         _skip_lint=not lint_before,
@@ -1002,6 +1004,69 @@ def _build_portrait_vm(
 
 
 
+def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) -> dict:
+    """v1.5 · 多专家功能域裁判视图。"""
+    if parallel_analysis is None:
+        return {"parallel_domain_conclusions": [], "parallel_domain_readings": []}
+
+    domain_rows: list[dict[str, Any]] = []
+    reading_rows: list[dict[str, Any]] = []
+    for analysis in getattr(parallel_analysis, "domain_analyses", []) or []:
+        consensus = getattr(analysis, "consensus", None)
+        adjudication = getattr(analysis, "adjudication_result", None)
+        if consensus is None or adjudication is None:
+            continue
+        evidence_items = getattr(consensus, "evidence_items", []) or []
+        refs = [str(getattr(item, "ref", "")) for item in evidence_items if getattr(item, "ref", "")]
+        statement_id = _compute_statement_id(
+            case_id,
+            refs or [getattr(consensus, "conclusion_id", "PDC")],
+        )
+        conf = getattr(consensus, "confidence", None)
+        domain_rows.append({
+            "statement_id": statement_id,
+            "domain": getattr(consensus, "domain", getattr(analysis, "domain", "综合")),
+            "headline": getattr(consensus, "headline", ""),
+            "statement": getattr(consensus, "final_statement", ""),
+            "layer": getattr(consensus, "layer", ""),
+            "decision": getattr(adjudication, "decision", ""),
+            "support_score": getattr(adjudication, "support_score", 0.0),
+            "oppose_score": getattr(adjudication, "oppose_score", 0.0),
+            "star": int(getattr(conf, "star", 0) or 0),
+            "pct": int(getattr(conf, "percent", 0) or 0),
+            "experts_str": "/".join(getattr(consensus, "contributing_experts", []) or []) or "—",
+            "dissenting_str": "/".join(getattr(consensus, "dissenting_experts", []) or []) or "—",
+            "evidence": [
+                {
+                    "rule_id": str(getattr(item, "ref", "")),
+                    "school": "多专家裁判",
+                    "description": str(getattr(item, "summary", "")),
+                }
+                for item in evidence_items
+            ],
+            "evidence_str": " ".join(refs) or "—",
+            "falsifiable": getattr(consensus, "falsifiable", ""),
+            "reading_ids": [str(getattr(r, "reading_id", "")) for r in getattr(analysis, "readings", []) or []],
+            "adjudication_id": getattr(adjudication, "adjudication_id", ""),
+        })
+        for reading in getattr(analysis, "readings", []) or []:
+            r_conf = getattr(reading, "confidence", None)
+            reading_rows.append({
+                "reading_id": getattr(reading, "reading_id", ""),
+                "domain": getattr(reading, "domain", ""),
+                "expert_system": getattr(reading, "expert_system", ""),
+                "expert_name": getattr(reading, "expert_name", ""),
+                "stance": getattr(reading, "stance", ""),
+                "claim": getattr(reading, "claim", ""),
+                "star": int(getattr(r_conf, "star", 0) or 0),
+                "pct": int(getattr(r_conf, "percent", 0) or 0),
+            })
+    return {
+        "parallel_domain_conclusions": domain_rows,
+        "parallel_domain_readings": reading_rows,
+    }
+
+
 def _build_statement_index(ctx: dict, case_id: str) -> dict:
     """构建 C-2026-025 标准断语索引：statements 列表。
 
@@ -1017,6 +1082,7 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
         "iron_gates": "yingqi",
         "support_marriage_boosts": "support_marriage",
         "support_health": "support_health",
+        "parallel_domain_conclusions": "parallel_domain_adjudication",
     }
     statements: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -1044,7 +1110,7 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
             schools = sorted({str(e.get("school", "")).strip() for e in ev_list if isinstance(e, dict) and e.get("school")})
             if not rule_ids and item.get("rule_id"):
                 rule_ids = [str(item.get("rule_id"))]
-            statements.append({
+            row = {
                 "statement_id": sid,
                 "domain": str(domain or "综合"),
                 "summary": str(stmt).strip()[:120],
@@ -1052,7 +1118,18 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                 "section": section,
                 "rule_ids": rule_ids,
                 "schools": schools,
-            })
+            }
+            if section == "parallel_domain_adjudication":
+                row.update({
+                    "reading_ids": list(item.get("reading_ids", [])),
+                    "adjudication_id": item.get("adjudication_id", ""),
+                    "expert_systems": [
+                        x for x in str(item.get("experts_str", "")).split("/") if x and x != "—"
+                    ],
+                    "vote_id": item.get("adjudication_id", ""),
+                    "stance": item.get("decision", ""),
+                })
+            statements.append(row)
     return {
         "case_id": case_id,
         "generated_at": date.today().isoformat(),
@@ -1178,6 +1255,7 @@ def render(
     support: Optional[Any] = None,
     final_conclusions: Optional[list] = None,
     retrospective: Optional[Any] = None,
+    parallel_analysis: Optional[Any] = None,
     template_name: Optional[str] = None,
     variant: str = "standard",
     *,
@@ -1273,6 +1351,9 @@ def render(
     # F6 · §C.0 流年回溯
     ctx.update(_build_retrospective_vm(retrospective))
 
+    # v1.5 · 多专家功能域裁判
+    ctx.update(_build_parallel_analysis_vm(parallel_analysis, case_id=ctx["case_id"]))
+
     # 标准命主可读版：仅展示高置信主线，结构与 C-2026-025 保持一致。
     ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
     ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
@@ -1289,6 +1370,9 @@ def render(
     ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
     ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
     ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
+    ctx["parallel_domain_conclusions"] = [
+        c for c in ctx.get("parallel_domain_conclusions", []) if c.get("star", 0) >= 1
+    ]
 
     # 把构建好的 ctx 暴露给调用方（供 render_from_output 落盘 statement_index.json）
     if _capture_ctx_to is not None:

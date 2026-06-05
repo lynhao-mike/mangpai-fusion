@@ -111,6 +111,16 @@
 {% endfor %}
 {% endif %}
 
+{% if parallel_domain_conclusions %}
+### 多专家功能域裁判（v1.5 旁路）
+
+| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 |
+|---|---|---|---|---|---|
+{% for c in parallel_domain_conclusions %}
+| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
+{% endfor %}
+{% endif %}
+
 {% if consensus_conclusions %}
 ### 共识结论
 

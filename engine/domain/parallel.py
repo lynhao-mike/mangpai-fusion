@@ -416,6 +416,19 @@ class CrossExpertConflict:
             "output_strategy": self.output_strategy,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "CrossExpertConflict":
+        return cls(
+            conflict_id=str(data["conflict_id"]),
+            domain=data["domain"],
+            involved_experts=list(data.get("involved_experts", [])),
+            conflict_type=data["conflict_type"],
+            arbitration_reason=str(data.get("arbitration_reason", "")),
+            winner=data.get("winner"),
+            loser=data.get("loser"),
+            output_strategy=data.get("output_strategy", "primary_with_minority"),
+        )
+
 
 @dataclass(frozen=True)
 class DomainConsensus:
@@ -458,6 +471,27 @@ class DomainConsensus:
             "output_strategy": self.output_strategy,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "DomainConsensus":
+        return cls(
+            conclusion_id=str(data["conclusion_id"]),
+            domain=data["domain"],
+            headline=str(data["headline"]),
+            final_statement=str(data["final_statement"]),
+            layer=data["layer"],
+            contributing_experts=list(data.get("contributing_experts", [])),
+            dissenting_experts=list(data.get("dissenting_experts", [])),
+            confidence=ParallelConfidence.from_dict(data["confidence"]),
+            evidence_items=[EvidenceItem.from_dict(x) for x in data.get("evidence_items", [])],
+            falsifiable=str(data.get("falsifiable", "")),
+            time_scope=TimeScope.from_dict(data["time_scope"]) if data.get("time_scope") else None,
+            feedback_state=data.get("feedback_state", "pending"),
+            weight_profile=WeightProfile.from_dict(data["weight_profile"]) if data.get("weight_profile") else None,
+            minority_views=[MinorityView.from_dict(x) for x in data.get("minority_views", [])],
+            arbitration_reason=ArbitrationReason.from_dict(data["arbitration_reason"]) if data.get("arbitration_reason") else None,
+            output_strategy=data.get("output_strategy", "primary_only"),
+        )
+
 
 @dataclass(frozen=True)
 class DomainAnalysis:
@@ -478,6 +512,16 @@ class DomainAnalysis:
             "conflicts": [conflict.to_dict() for conflict in self.conflicts],
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "DomainAnalysis":
+        return cls(
+            domain=data["domain"],
+            readings=[ExpertReading.from_dict(x) for x in data.get("readings", [])],
+            adjudication_result=AdjudicationResult.from_dict(data["adjudication_result"]),
+            consensus=DomainConsensus.from_dict(data["consensus"]),
+            conflicts=[CrossExpertConflict.from_dict(x) for x in data.get("conflicts", [])],
+        )
+
 
 @dataclass(frozen=True)
 class ParallelAnalysisOutput:
@@ -496,3 +540,15 @@ class ParallelAnalysisOutput:
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:
         return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "ParallelAnalysisOutput":
+        return cls(
+            case_id=str(data["case_id"]),
+            domain_analyses=[DomainAnalysis.from_dict(x) for x in data.get("domain_analyses", [])],
+            schema_version=str(data.get("schema_version", "parallel-domain-review-draft-2026-06-05")),
+        )
+
+    @classmethod
+    def from_json(cls, text: str) -> "ParallelAnalysisOutput":
+        return cls.from_dict(json.loads(text))

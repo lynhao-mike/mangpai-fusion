@@ -51,6 +51,7 @@
 - 每 10 完成反馈案触发迭代报告。
 - 工具索引与规则状态可运行时扫描。
 - 子平 / 滴天髓生产规则库：经 [`engine/application/production_rule_loader.py`](engine/application/production_rule_loader.py) 加载，进入 [`engine/application/integration.py`](engine/application/integration.py) 的最终断语与证据链，并在标准报告模板展示。
+- 多专家功能域裁判旁路：经 [`engine/application/parallel_domain_orchestrator.py`](engine/application/parallel_domain_orchestrator.py) 生成盲派专家组 / 子平 / 滴天髓在学业、事业、财运、婚姻、健康、性格六域的读数与裁判结果，并写入 [`AnalysisOutput.parallel_analysis`](engine/domain/analysis.py:179)。
 
 ---
 
@@ -98,6 +99,7 @@ python tools/rule_status_scan.py --check
 | P1 | 按运行时扫描结果处理 flagged_for_review 规则 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) |
 | P2 | v1.4 findings schema 扩展 | [`plans/architecture-v1.4.md`](plans/architecture-v1.4.md) |
 | P2 | 子平 / 滴天髓生产规则继续扩充触发器与回归样本 | [`theory/ziping/index.yaml`](theory/ziping/index.yaml)、[`theory/tiaohou_ditiansui/index.yaml`](theory/tiaohou_ditiansui/index.yaml) |
+| P2 | 将多专家功能域裁判从旁路升级为反馈可动态调权的主裁判层 | [`engine/application/parallel_domain_orchestrator.py`](engine/application/parallel_domain_orchestrator.py)、[`tests/test_parallel_domain_orchestrator.py`](tests/test_parallel_domain_orchestrator.py) |
 | P2 | 八字指纹相似案检索 | [`plans/`](plans/) |
 
 ---
