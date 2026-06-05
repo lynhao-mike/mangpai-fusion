@@ -19,7 +19,7 @@
 | 人工裁决 | [`META/arbitration-log.md`](META/arbitration-log.md) |
 | 历史变更 | [`META/rule-changelog.md`](META/rule-changelog.md) |
 
-当前阶段：v1.3 自迭代闭环已上线，v1.4 schema 与报告收口进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。报告出口已收敛到 C-2026-025 唯一标准，历史报告模板分叉不再作为入口。
+当前阶段：v1.3 自迭代闭环已上线，v1.4 schema 与报告收口进行中。产品版本仍以 [`VERSION`](VERSION) 为准；阶段名只描述当前工作流，不表示已发布 v1.4 产品版本。报告出口已收敛到 C-2026-025 唯一标准，历史报告模板分叉不再作为入口。子平 / 滴天髓生产规则已接入 pipeline 与标准报告出口，规则来源以 [`theory/ziping/index.yaml`](theory/ziping/index.yaml) 与 [`theory/tiaohou_ditiansui/index.yaml`](theory/tiaohou_ditiansui/index.yaml) 为准，不从 raw candidate 文件旁路加载。
 
 ---
 
@@ -50,6 +50,7 @@
 - 规则生命周期：candidate / confirmed / flagged_for_review / deprecated。
 - 每 10 完成反馈案触发迭代报告。
 - 工具索引与规则状态可运行时扫描。
+- 子平 / 滴天髓生产规则库：经 [`engine/application/production_rule_loader.py`](engine/application/production_rule_loader.py) 加载，进入 [`engine/application/integration.py`](engine/application/integration.py) 的最终断语与证据链，并在标准报告模板展示。
 
 ---
 
@@ -96,6 +97,7 @@ python tools/rule_status_scan.py --check
 | P1 | 继续摄入新案反馈，扩大有效样本 | [`tools/feedback_ingest.py`](tools/feedback_ingest.py) |
 | P1 | 按运行时扫描结果处理 flagged_for_review 规则 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) |
 | P2 | v1.4 findings schema 扩展 | [`plans/architecture-v1.4.md`](plans/architecture-v1.4.md) |
+| P2 | 子平 / 滴天髓生产规则继续扩充触发器与回归样本 | [`theory/ziping/index.yaml`](theory/ziping/index.yaml)、[`theory/tiaohou_ditiansui/index.yaml`](theory/tiaohou_ditiansui/index.yaml) |
 | P2 | 八字指纹相似案检索 | [`plans/`](plans/) |
 
 ---

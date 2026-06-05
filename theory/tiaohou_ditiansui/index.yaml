@@ -1,0 +1,84 @@
+schema_version: production-rules-2026-06-05
+status: active
+source_scope: production_rules
+expert_system: tiaohou_ditiansui
+notes: >
+  滴天髓 / 调候规则已从旁路候选规则提升为正式生产规则。
+  本文件可被默认 pipeline 自动加载，不再属于 review_draft / bypass_candidate_rules。
+rules:
+  - id: DTS-PROD-20260605-001
+    status: active
+    expert_system: tiaohou_ditiansui
+    title: 命贵中和，偏枯有损
+    topic: zhonghe_pianku
+    domains:
+      - 健康
+      - 性格
+      - 事业
+    axis_refs:
+      - AXIS-02
+      - AXIS-03
+      - AXIS-04
+    layer: 互补
+    claim: 命局以中和平正为贵，明显偏枯往往对应结构性损耗或稳定性不足。
+    conditions:
+      trigger: wuxing_imbalanced
+      required:
+        - 五行偏全或寒热燥湿状态可判定
+      optional:
+        - 有冲动、顺逆或旺衰进退证据
+      exclusions:
+        - 特殊格成立且有严格成格条件时，不能仅以偏枯否定
+    output:
+      statement: 滴天髓规则参与：命局偏枯时，应优先关注体质、性格稳定性与长期事业承载。
+      falsifiable: 若明显偏枯局长期稳定无损且反馈持续命中吉象，本规则需降权。
+    confidence:
+      star: 4
+      percent: 0.77
+      posterior: 0.77
+      variance: 0.04
+      sample_n: 1
+    source:
+      path: sources/tiaohou_ditiansui/滴天髓_part1.md
+      excerpt: 命贵中和，偏枯终于有损；理求平正，奇异不足为凭。
+    review:
+      notes: 已生产化为健康、性格与事业域基础规则。
+
+  - id: DTS-PROD-20260605-002
+    status: active
+    expert_system: tiaohou_ditiansui
+    title: 地支冲需视强弱喜忌
+    topic: chong_dong
+    domains:
+      - 婚姻
+      - 健康
+      - 事业
+    axis_refs:
+      - AXIS-07
+      - AXIS-08
+    layer: 互补
+    claim: 地支逢冲不能直接定吉凶，必须结合强弱、喜忌、去凶或激凶判断。
+    conditions:
+      trigger: has_zhi_chong
+      required:
+        - 存在明确地支冲动
+        - 能判断冲者与被冲者强弱
+        - 能判断被冲对象为喜或忌
+      optional:
+        - 有大运流年触发
+      exclusions:
+        - 无明确冲动对象或喜忌不明时，不可下定论
+    output:
+      statement: 滴天髓规则参与：冲动结果取决于力量与喜忌，去凶可利，激凶则祸，不能见冲即凶。
+      falsifiable: 若冲动结果长期与强弱喜忌无关，本规则需复审。
+    confidence:
+      star: 4
+      percent: 0.75
+      posterior: 0.75
+      variance: 0.04
+      sample_n: 1
+    source:
+      path: sources/tiaohou_ditiansui/滴天髓_part1.md
+      excerpt: 地支逢冲，犹天干之相克也，须视其强弱喜忌而论之。
+    review:
+      notes: 已生产化，用于裁判层处理婚姻、健康与事业冲突判断。

@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from typing import Any, Optional
 
+from engine.application.production_rule_loader import load_default_production_library
 from engine.domain.analysis import AnalysisOutput, FinalConclusion
 from engine.energy.types import Confidence, EnergyFindings, Evidence
 from engine.pangzheng.types import SupportFindings
@@ -151,6 +152,22 @@ def _gate_to_conclusion(
         falsifiable=f"如果 {gr.year}年未发生'{gr.candidate_event}'，则失验",
     )
 
+
+def _production_rule_to_conclusion(rule: Any, idx: int) -> FinalConclusion:
+    """将子平 / 滴天髓生产规则转换为报告层互补断语。"""
+
+    domain = rule.domains[0] if rule.domains else "综合"
+    return FinalConclusion(
+        conclusion_id=f"CC-XP-{idx + 1:03d}",
+        statement=rule.output.statement,
+        domain=domain,
+        layer=rule.layer if rule.layer in {"共识", "互补", "独门", "冲突仲裁"} else "互补",
+        contributing_schools=[rule.display_school],  # type: ignore[list-item]
+        confidence=rule.confidence,
+        evidence=[rule.to_evidence()],
+        falsifiable=rule.output.falsifiable,
+    )
+
 def integrate(
     energy: EnergyFindings,
     picture: PictureFindings,
@@ -271,12 +288,22 @@ def integrate(
             falsifiable="若命主实际长期走纯市场/民营路径，则该耦合框架需降级为 market_wealth",
         ))
 
-    # 6. 计算 layer_summary
+    # 6. 子平 / 滴天髓正式生产规则：自动加载并注入最终断语
+    try:
+        production_library = load_default_production_library()
+        for idx, rule in enumerate(
+            production_library.triggered_rules(parsed=parsed, energy=energy, picture=picture)
+        ):
+            conclusions.append(_production_rule_to_conclusion(rule, idx))
+    except Exception as exc:  # noqa: BLE001 - 生产规则异常不得阻断既有四派 pipeline
+        hash_notes.append(f"生产规则加载跳过：{exc}")
+
+    # 7. 计算 layer_summary
     layer_summary: dict[str, int] = {"共识": 0, "互补": 0, "独门": 0, "冲突仲裁": 0}
     for c in conclusions:
         layer_summary[c.layer] = layer_summary.get(c.layer, 0) + 1
 
-    # 7. 计算 overall_confidence
+    # 8. 计算 overall_confidence
     if conclusions:
         stars = [c.confidence.star for c in conclusions]
         avg_star = sum(stars) / len(stars)
@@ -292,10 +319,10 @@ def integrate(
         overall = Confidence(star=2, percent=0.50, posterior=0.50,
                              variance=0.10, sample_n=0)
 
-    # 8. 应期总表
+    # 9. 应期总表
     yingqi_table = _build_yingqi_table(gate_results)
 
-    # 9. 生成时间戳
+    # 10. 生成时间戳
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     case_id = energy.case_id or (parsed.case_id if parsed else "")

@@ -1,0 +1,85 @@
+schema_version: production-rules-2026-06-05
+status: active
+source_scope: production_rules
+expert_system: ziping
+notes: >
+  子平规则已从旁路候选规则提升为正式生产规则。
+  本文件可被默认 pipeline 自动加载，不再属于 review_draft / bypass_candidate_rules。
+rules:
+  - id: ZP-PROD-20260605-001
+    status: active
+    expert_system: ziping
+    title: 用神为全局关键
+    topic: yongshen
+    domains:
+      - 事业
+      - 财富
+      - 学业
+      - 性格
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+    layer: 互补
+    claim: 用神是八字全局判断的核心支点，格局成败与吉凶取舍应围绕用神展开。
+    conditions:
+      trigger: has_energy_structure
+      required:
+        - 已能识别月令与日主旺衰
+        - 用神来源可追溯到月令、透干或藏干
+      optional:
+        - 存在相神或救应结构
+      exclusions:
+        - 从格、化格、专旺等特殊格尚未确认时，不可机械套用普通扶抑
+    output:
+      statement: 子平规则参与：命局判断应先定用神，再围绕用神成败评估事业、财富与整体层次。
+      falsifiable: 若大量案例不依赖用神取裁仍能稳定断准，则本规则需降权。
+    confidence:
+      star: 4
+      percent: 0.78
+      posterior: 0.78
+      variance: 0.04
+      sample_n: 1
+    source:
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神者，八字全局之关键，补日主之偏枯，定格局之成败。
+    review:
+      notes: 来源明确，已生产化为子平总纲规则。
+
+  - id: ZP-PROD-20260605-002
+    status: active
+    expert_system: ziping
+    title: 财格要看身财关系
+    topic: wealth_structure
+    domains:
+      - 财富
+      - 事业
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+      - AXIS-06
+    layer: 互补
+    claim: 财运不能只看财星多少，必须判断身能否任财，以及财是否有生护。
+    conditions:
+      trigger: has_wealth_picture
+      required:
+        - 财星明确出现或成势
+        - 日主旺衰已判定
+      optional:
+        - 食神生财
+        - 官星护财
+      exclusions:
+        - 财星仅见而无根无生护时，不可直接断富
+    output:
+      statement: 子平规则参与：财星可用但仍需看身财承载与生护，否则容易财来财去或难任财帛。
+      falsifiable: 若财旺身弱且无结构补救者长期稳定富裕，本规则需复审。
+    confidence:
+      star: 4
+      percent: 0.76
+      posterior: 0.76
+      variance: 0.04
+      sample_n: 1
+    source:
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 财喜食神生、官星护，忌比肩劫财夺财。财旺身弱，难任财帛；身旺财弱，财薄清贫。
+    review:
+      notes: 已生产化，可连接财富域权重矩阵。

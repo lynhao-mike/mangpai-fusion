@@ -239,6 +239,27 @@ def test_F_support_none_graceful(c001_findings):
     print("\n[F-兼容] support=None 路径 ✓")
 
 
+def test_F_production_rules_render_from_output(tmp_path):
+    """render_from_output 应展示子平 / 滴天髓生产规则参与结果与证据链。"""
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
+    output = run_pipeline(parsed, write_findings=False)
+
+    report = render_from_output(
+        output,
+        lint_before=False,
+        cases_dir=tmp_path,
+        skip_findings_save=True,
+    )
+
+    assert "### 子平 / 滴天髓生产规则参与" in report
+    assert "子平规则参与" in report
+    assert "滴天髓规则参与" in report
+    assert "ZP-PROD-20260605-001" in report
+    assert "DTS-PROD-20260605-001" in report
+    result = lint(report)
+    assert result.passed, f"生产规则展示应通过 linter，errors={result.errors}"
+
+
 # ============================================================
 # 独立运行入口（不依赖 pytest）
 # ============================================================

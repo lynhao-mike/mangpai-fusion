@@ -103,11 +103,19 @@
 - 适合方向：{{ industry_pointers_str }}。
 - 财富参考：{{ wealth_ceiling }}；需以稳定现金流、资产沉淀和风险隔离为优先。
 
+{% if production_rule_conclusions %}
+### 子平 / 滴天髓生产规则参与
+
+{% for c in production_rule_conclusions %}
+- {{ c.statement }}（{{ c.schools_str }}；置信：★{{ c.star }}/{{ c.pct }}%；证据：{{ c.evidence_str }}）。
+{% endfor %}
+{% endif %}
+
 {% if consensus_conclusions %}
 ### 共识结论
 
 {% for c in consensus_conclusions %}
-- {{ c.statement }}（{{ c.schools_str }}；置信：★{{ c.star }}/{{ c.pct }}%）。
+- {{ c.statement }}（{{ c.schools_str }}；置信：★{{ c.star }}/{{ c.pct }}%；证据：{{ c.evidence_str }}）。
 {% endfor %}
 {% endif %}
 
@@ -115,7 +123,7 @@
 ### 互补结论
 
 {% for c in complementary_conclusions %}
-- {{ c.statement }}（{{ c.schools_str }}；置信：★{{ c.star }}/{{ c.pct }}%）。
+- {{ c.statement }}（{{ c.schools_str }}；置信：★{{ c.star }}/{{ c.pct }}%；证据：{{ c.evidence_str }}）。
 {% endfor %}
 {% endif %}
 

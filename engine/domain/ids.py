@@ -17,6 +17,8 @@ RULE_ID_PATTERN = (
     r"|XF-\d+"
     r"|G(?:-[A-Z0-9\u4e00-\u9fff]+){1,3}-?\d*"
     r"|GP-[A-Z0-9\u4e00-\u9fff_]+(?:-[A-Z0-9\u4e00-\u9fff_]+)*"
+    r"|ZP-PROD-[A-Z0-9-]+"
+    r"|DTS-PROD-[A-Z0-9-]+"
     r")\b"
 )
 RULE_ID_RE = re.compile(RULE_ID_PATTERN)
@@ -28,6 +30,8 @@ RULE_ID_RELAX_PATTERN = (
     r"|MR-[A-Z\d-]+"
     r"|G-[A-Z]+(?:-[\u4e00-\u9fff\w]+)?"
     r"|GP-[A-Z0-9\u4e00-\u9fff_]+(?:-[A-Z0-9\u4e00-\u9fff_]+)*"
+    r"|ZP-PROD-[A-Z0-9-]+"
+    r"|DTS-PROD-[A-Z0-9-]+"
     r")\b"
 )
 RULE_ID_RE_RELAX = re.compile(RULE_ID_RELAX_PATTERN)

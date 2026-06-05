@@ -1011,6 +1011,7 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
     """
     SECTIONS = {
         "zuogong_paths": "energy",
+        "production_rule_conclusions": "production_rules",
         "consensus_conclusions": "consensus",
         "complementary_conclusions": "complementary",
         "iron_gates": "yingqi",
@@ -1276,6 +1277,15 @@ def render(
     ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
     ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
     ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
+    ctx["production_rule_conclusions"] = [
+        c for c in ctx.get("complementary_conclusions", [])
+        if any(tag in c.get("schools_str", "") for tag in ("子平", "滴天髓"))
+    ]
+    production_ids = {c.get("statement_id") for c in ctx["production_rule_conclusions"]}
+    ctx["complementary_conclusions"] = [
+        c for c in ctx.get("complementary_conclusions", [])
+        if c.get("statement_id") not in production_ids
+    ]
     ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
     ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
     ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
