@@ -1,0 +1,67 @@
+schema_version: review-draft-2026-06-05
+status: review_draft
+source_scope: bypass_candidate_rules
+expert_system: tiaohou_ditiansui
+notes: >
+  旁路候选规则示例；不接入生产引擎；所有规则 status 固定为 candidate。
+rules:
+  - id: DTS-CAND-20260605-001
+    status: candidate
+    expert_system: tiaohou_ditiansui
+    title: 命贵中和，偏枯有损
+    topic: zhonghe_pianku
+    domains:
+      - 健康
+      - 性格
+      - 事业
+    axis_refs:
+      - AXIS-02
+      - AXIS-03
+      - AXIS-04
+    claim: 命局以中和平正为贵，明显偏枯往往对应结构性损耗或稳定性不足。
+    conditions:
+      required:
+        - 五行偏全或寒热燥湿状态可判定
+      optional:
+        - 有冲动、顺逆或旺衰进退证据
+      exclusions:
+        - 特殊格成立且有严格成格条件时，不能仅以偏枯否定
+    output:
+      statement: 命局偏枯时，应优先关注体质、性格稳定性与长期事业承载。
+      falsifiable: 若明显偏枯局长期稳定无损且反馈持续命中吉象，本规则需降权。
+    source:
+      path: sources/tiaohou_ditiansui/滴天髓_part1.md
+      excerpt: 命贵中和，偏枯终于有损；理求平正，奇异不足为凭。
+    review:
+      notes: 适合作为滴天髓健康与性格域的基础规则。
+
+  - id: DTS-CAND-20260605-002
+    status: candidate
+    expert_system: tiaohou_ditiansui
+    title: 地支冲需视强弱喜忌
+    topic: chong_dong
+    domains:
+      - 婚姻
+      - 健康
+      - 事业
+    axis_refs:
+      - AXIS-07
+      - AXIS-08
+    claim: 地支逢冲不能直接定吉凶，必须结合强弱、喜忌、去凶或激凶判断。
+    conditions:
+      required:
+        - 存在明确地支冲动
+        - 能判断冲者与被冲者强弱
+        - 能判断被冲对象为喜或忌
+      optional:
+        - 有大运流年触发
+      exclusions:
+        - 无明确冲动对象或喜忌不明时，不可下定论
+    output:
+      statement: 冲动结果取决于力量与喜忌，去凶可利，激凶则祸，不能见冲即凶。
+      falsifiable: 若冲动结果长期与强弱喜忌无关，本规则需复审。
+    source:
+      path: sources/tiaohou_ditiansui/滴天髓_part1.md
+      excerpt: 地支逢冲，犹天干之相克也，须视其强弱喜忌而论之。
+    review:
+      notes: 可用于裁判层处理婚姻、健康与事业冲突判断。

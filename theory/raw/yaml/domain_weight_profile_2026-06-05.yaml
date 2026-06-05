@@ -1,0 +1,53 @@
+schema_version: review-draft-2026-06-05
+status: review_draft
+profile_id: domain-prior-2026-06-05
+profile_version: review-draft-v1
+source: theory/raw/compare/领域权重矩阵初始数值建议_2026-06-05.md
+notes: >
+  领域权重旁路 YAML 示例；仅供裁判模型审查，不接入生产引擎。
+experts:
+  - id: blind
+    label: 盲派综合组
+  - id: ziping
+    label: 子平格局派
+  - id: tiaohou_ditiansui
+    label: 滴天髓调候派
+weights:
+  财运:
+    blind: 0.30
+    ziping: 0.45
+    tiaohou_ditiansui: 0.25
+  事业:
+    blind: 0.25
+    ziping: 0.50
+    tiaohou_ditiansui: 0.25
+  婚姻:
+    blind: 0.45
+    ziping: 0.30
+    tiaohou_ditiansui: 0.25
+  健康:
+    blind: 0.25
+    ziping: 0.25
+    tiaohou_ditiansui: 0.50
+  性格:
+    blind: 0.30
+    ziping: 0.25
+    tiaohou_ditiansui: 0.45
+  学业:
+    blind: 0.30
+    ziping: 0.45
+    tiaohou_ditiansui: 0.25
+constraints:
+  sum_per_domain: 1.0
+  low_sample_policy: conservative
+  max_single_round_delta: 0.05
+  min_effective_sample_for_adjustment: 11
+review:
+  allowed_use:
+    - 人工审查
+    - 裁判模型样例演练
+    - 后续 schema 验证
+  prohibited_use:
+    - 直接接入生产引擎
+    - 直接作为 active 权重
+    - 用于下最终流派准确率结论
