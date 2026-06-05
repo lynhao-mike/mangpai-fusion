@@ -6,6 +6,7 @@
 | [report-v1.3.md](report-v1.3.md) | C-2026-025 唯一标准报告模板（命主可读版；产品 v1.3.0 / pipeline schema v1.4.0） | 当前唯一标准 |
 | [feedback.md](feedback.md) | 命主反馈采集模板 | M7 产出 |
 | [analysis-template-options.md](analysis-template-options.md) | analysis 输出规范候选方案与长期规则说明 | v1.4 定稿参考 |
+| [theory-extraction-template.md](theory-extraction-template.md) | 子平格局派、滴天髓调候派等原始教案到候选规则的理论提取模板 | 多专家体系预留入口 |
 | [cases/_TEMPLATE/analysis.md](../cases/_TEMPLATE/analysis.md) | case 目录内的固定 analysis 技术归档模板；以 C-2026-023 最新 analysis 为基准 | v1.4 固定模板 |
 | [cases/_TEMPLATE/statement_index.json](../cases/_TEMPLATE/statement_index.json) | case 目录内的断语索引模板；结构与 C-2026-025 一致：`statements` 列表 | 当前唯一对象映射标准 |
 
