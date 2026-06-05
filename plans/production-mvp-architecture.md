@@ -82,7 +82,16 @@ GET /v1/analyses/{analysis_id}
   → return stable JSON envelope
 ```
 
-### 4.3 健康检查
+### 4.3 列表查询
+
+```text
+GET /v1/analyses?status=completed&case_id=C-...&limit=50&offset=0
+  → validate pagination bounds
+  → query recent jobs by optional status / case filters
+  → return items[] with the same stable job envelope
+```
+
+### 4.4 健康检查
 
 ```text
 GET /v1/health
@@ -125,7 +134,7 @@ GET /v1/health
   ],
   "summary": {
     "final_conclusions_count": 12,
-    "overall_confidence": {"stars": 4, "percent": 82}
+    "overall_confidence": {"star": 4, "percent": 82}
   }
 }
 ```
@@ -134,7 +143,36 @@ GET /v1/health
 
 返回与提交响应同构；未找到返回 `404`。
 
-### 5.3 `GET /v1/health`
+### 5.3 `GET /v1/analyses`
+
+用于生产控制台、轮询客户端与批量排障。查询参数：
+
+| 参数 | 含义 | 默认 |
+|---|---|---|
+| `status` | 可选 job 状态过滤：`queued` / `running` / `completed` / `failed` | 不过滤 |
+| `case_id` | 可选案例过滤 | 不过滤 |
+| `limit` | 返回条数，API 层上限 200 | 50 |
+| `offset` | 分页偏移 | 0 |
+
+响应：
+
+```json
+{
+  "items": [
+    {
+      "analysis_id": "AN-20260530-...",
+      "status": "completed",
+      "case_id": "C-2026-016-坤-甲子丙子丙戌戊子",
+      "cache_hit": false,
+      "artifacts": []
+    }
+  ],
+  "limit": 50,
+  "offset": 0
+}
+```
+
+### 5.4 `GET /v1/health`
 
 ```json
 {
@@ -262,8 +300,8 @@ PY
 
 ## 10. 生产化路线图
 
-1. **MVP**：同步 API + SQLite + 本地 artifact 路径。
-2. **vNext**：引入异步 job worker；API 只提交任务并轮询状态。
+1. **MVP**：同步 API + 可选单进程异步队列 + SQLite + 本地 artifact 路径 + job 列表查询。
+2. **vNext**：将内存队列替换为持久化 worker；API 只提交任务并轮询状态。
 3. **规模化**：PostgreSQL 存 job，Redis 存热缓存，S3/MinIO 存 artifact。
 4. **治理化**：加入认证、限流、租户隔离、审计日志、指标上报。
 5. **反馈闭环**：把 `feedback_ingest` 纳入生产 API，形成分析/反馈/校准完整闭环。

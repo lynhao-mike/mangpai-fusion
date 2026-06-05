@@ -47,6 +47,27 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
             self._send_json(HTTPStatus.OK, health)
             return
 
+        if parsed.path == "/v1/analyses":
+            query = parse_qs(parsed.query)
+            status = query.get("status", [None])[0]
+            case_id = query.get("case_id", [None])[0]
+            limit = self._parse_positive_int(query.get("limit", ["50"])[0], default=50, maximum=200)
+            offset = self._parse_positive_int(query.get("offset", ["0"])[0], default=0, maximum=100_000)
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "items": self.service.list(
+                        status=status,
+                        case_id=case_id,
+                        limit=limit,
+                        offset=offset,
+                    ),
+                    "limit": limit,
+                    "offset": offset,
+                },
+            )
+            return
+
         prefix = "/v1/analyses/"
         if parsed.path.startswith(prefix):
             analysis_id = parsed.path[len(prefix):].strip("/")
@@ -121,6 +142,13 @@ class ProductionAPIHandler(BaseHTTPRequestHandler):
         if not isinstance(payload, dict):
             raise ValueError("JSON body must be an object")
         return payload
+
+    def _parse_positive_int(self, raw: str, *, default: int, maximum: int) -> int:
+        try:
+            value = int(raw)
+        except (TypeError, ValueError):
+            return default
+        return max(0, min(value, maximum))
 
     def _send_json(self, status: HTTPStatus, payload: dict[str, Any]) -> None:
         data = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")

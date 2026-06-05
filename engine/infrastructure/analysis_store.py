@@ -350,6 +350,58 @@ class SQLiteAnalysisStore:
             ).fetchall()
         return self._job_from_row(row, artifact_rows)
 
+    def list_jobs(
+        self,
+        *,
+        status: Optional[str] = None,
+        case_id: Optional[str] = None,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> list[AnalysisJobRecord]:
+        """Return recent jobs with optional status/case filters."""
+        clauses: list[str] = []
+        params: list[Any] = []
+        if status:
+            clauses.append("status = ?")
+            params.append(status)
+        if case_id:
+            clauses.append("case_id = ?")
+            params.append(case_id)
+        where_sql = f"WHERE {' AND '.join(clauses)}" if clauses else ""
+        safe_limit = max(1, min(int(limit), 200))
+        safe_offset = max(0, int(offset))
+        with self.connect() as conn:
+            rows = conn.execute(
+                f"""
+                SELECT *
+                  FROM analysis_jobs
+                  {where_sql}
+                 ORDER BY created_at DESC, analysis_id DESC
+                 LIMIT ? OFFSET ?
+                """,
+                (*params, safe_limit, safe_offset),
+            ).fetchall()
+            artifact_rows_by_analysis: dict[str, list[sqlite3.Row]] = {
+                str(row["analysis_id"]): [] for row in rows
+            }
+            if artifact_rows_by_analysis:
+                placeholders = ",".join("?" for _ in artifact_rows_by_analysis)
+                artifact_rows = conn.execute(
+                    f"""
+                    SELECT analysis_id, kind, path, sha256, created_at
+                      FROM analysis_artifacts
+                     WHERE analysis_id IN ({placeholders})
+                     ORDER BY id ASC
+                    """,
+                    tuple(artifact_rows_by_analysis),
+                ).fetchall()
+                for artifact_row in artifact_rows:
+                    artifact_rows_by_analysis[str(artifact_row["analysis_id"])].append(artifact_row)
+        return [
+            self._job_from_row(row, artifact_rows_by_analysis.get(str(row["analysis_id"]), []))
+            for row in rows
+        ]
+
     def _job_from_row(
         self,
         row: sqlite3.Row,

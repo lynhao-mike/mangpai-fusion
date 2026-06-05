@@ -186,6 +186,25 @@ class ProductionAnalysisService:
         job = self.store.get_job(analysis_id)
         return job.to_dict() if job is not None else None
 
+    def list(
+        self,
+        *,
+        status: Optional[str] = None,
+        case_id: Optional[str] = None,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> list[dict[str, Any]]:
+        """List recent production jobs for dashboards and polling clients."""
+        return [
+            job.to_dict()
+            for job in self.store.list_jobs(
+                status=status,
+                case_id=case_id,
+                limit=limit,
+                offset=offset,
+            )
+        ]
+
     def _prepare_request(self, request: SubmitAnalysisRequest) -> tuple[SubmitAnalysisRequest, str, str]:
         normalized = self._normalize_request(request)
         input_bytes = normalized.input_path.read_bytes()

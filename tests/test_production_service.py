@@ -138,6 +138,43 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-report.md").exists()
 
 
+def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:
+    store = SQLiteAnalysisStore(tmp_path / "analysis.sqlite3")
+    service = ProductionAnalysisService(store=store, workspace_root=tmp_path)
+    store.create_job(
+        analysis_id="AN-1",
+        input_path="cases/a/input.md",
+        input_sha256="sha-a",
+        cache_key="cache-a",
+        engine_version="1.3.0",
+        render=True,
+        template_name="report-v1.3.md",
+        created_at="2026-05-30T00:00:00Z",
+        status="completed",
+        case_id="C-A",
+    )
+    store.create_job(
+        analysis_id="AN-2",
+        input_path="cases/b/input.md",
+        input_sha256="sha-b",
+        cache_key="cache-b",
+        engine_version="1.3.0",
+        render=True,
+        template_name="report-v1.3.md",
+        created_at="2026-05-30T00:00:01Z",
+        status="failed",
+        case_id="C-B",
+    )
+
+    all_jobs = service.list()
+    completed_jobs = service.list(status="completed")
+    case_jobs = service.list(case_id="C-B")
+
+    assert [job["analysis_id"] for job in all_jobs] == ["AN-2", "AN-1"]
+    assert [job["analysis_id"] for job in completed_jobs] == ["AN-1"]
+    assert [job["analysis_id"] for job in case_jobs] == ["AN-2"]
+
+
 def test_enqueue_creates_queued_job(tmp_path: Path) -> None:
     case_dir = tmp_path / "cases" / "C-2026-998-乾-甲子乙丑丙寅丁卯"
     case_dir.mkdir(parents=True)
