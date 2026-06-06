@@ -18,7 +18,7 @@ def test_load_default_candidate_library_loads_ziping_and_ditiansui() -> None:
 
     assert set(library.rule_sets) == {"ziping", "tiaohou_ditiansui"}
     assert len(library.rule_sets["ziping"].rules) == 57
-    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 197
+    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 234
     assert [rule.id for rule in library.rule_sets["ziping"].rules[:2]] == [
         "ZP-CAND-20260605-001",
         "ZP-CAND-20260605-002",
@@ -28,7 +28,7 @@ def test_load_default_candidate_library_loads_ziping_and_ditiansui() -> None:
         "DTS-CAND-20260605-002",
     ]
     assert library.rule_sets["ziping"].rules[-1].id == "ZP-CAND-20260606-039"
-    assert library.rule_sets["tiaohou_ditiansui"].rules[-1].id == "DTS-CAND-20260606-178"
+    assert library.rule_sets["tiaohou_ditiansui"].rules[-1].id == "DTS-CAND-20260606-215"
 
 
 def test_rules_can_be_filtered_by_domain_and_expert_system() -> None:
