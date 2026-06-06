@@ -2,9 +2,8 @@ schema_version: review-draft-2026-06-05
 status: review_draft
 source_scope: bypass_candidate_rules
 expert_system: tiaohou_ditiansui
-notes: '旁路候选规则；不接入生产引擎；所有规则 status 固定为 candidate。 本文件已覆盖现有滴天髓调候派样板提取稿 DTS-SAMPLE-001 至 DTS-SAMPLE-018。
-
-  '
+notes: 旁路候选规则；不接入生产引擎；所有规则 status 固定为 candidate。 本文件已覆盖现有滴天髓调候派样板提取稿 DTS-SAMPLE-001
+  至 DTS-SAMPLE-018，并覆盖《滴天髓阐微》part1-8 extracted 审查稿。
 rules:
 - id: DTS-CAND-20260605-001
   status: candidate
@@ -6966,3 +6965,649 @@ rules:
     excerpt: 土虚寡信，木多金缺，阴火不能生湿土……趋炎附势……损人利己。
   review:
     notes: 对应 DTS-CW-P6-20260606-037。
+- id: DTS-CAND-20260606-216
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 科名秀气重清气官星不起难登正途
+  topic: keming_qingqi_guanxing
+  domains:
+  - 学业
+  - 事业
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 科名与资格路径重在清气秀气及官星可用，官星不起并非仅指不透，而是官星太旺太弱、无根、受伤或与印财食伤关系失宜。
+  conditions:
+    required:
+    - 用户询问学业、考试、资质或正途晋升
+    - 官星、印星、食伤、财星与日主关系可判
+    - 官星是否有根、有载、有通关、有护卫可判
+    optional:
+    - 存在考试或资格反馈
+    - 存在官印财食伤组合应期
+    exclusions:
+    - 不得将古代科名机械映射为现代学历
+    - 官星不可用时不能仅因透官断正途顺利
+  output:
+    statement: 学业与资格路径需看清气、秀气及官星是否真正可用，官星不起时多体现为正途认可或考试晋升受阻。
+    falsifiable: 若官星不起结构仍长期稳定兑现正途资格与晋升，本规则需降权或细分条件。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 秀才不是尘凡子，清气还嫌官不起。细究之，必有清气存焉。官星不起者，非官星不透之谓也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-001；现代化映射为学业、资格与正途晋升。
+- id: DTS-CAND-20260606-217
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 清气可发秀运途破清则困场屋
+  topic: keming_yuntu_poqing
+  domains:
+  - 学业
+  - 事业
+  axis_refs:
+  - AXIS-07
+  - AXIS-10
+  claim: 原局有清气秀气不代表必能兑现，若运途破清、伤官印或浊其秀气，则才学、考试或资格路径可能长期受阻。
+  conditions:
+    required:
+    - 原局具备清气或秀气
+    - 大运流年破用神、伤官印或冲合关键支点
+    - 考试、资格或职业晋升应期可判
+    optional:
+    - 长期备考不顺反馈
+    - 机会临门受阻反馈
+    exclusions:
+    - 无清气基础时不可用此解释
+    - 不能作宿命化否定
+  output:
+    statement: 原局有才学基础但运途破清时，资格兑现与考试晋升容易出现阶段性阻滞。
+    falsifiable: 若破清运不影响考试资格兑现，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 格局原可发秀，只因运途不济，破其清气，以致终身不能稍舒眉曲也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-002；用于解释有才而不第或资格难兑现。
+- id: DTS-CAND-20260606-218
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 格局不显遇合宜运亦可科甲连登
+  topic: keming_yuntu_zhuxi
+  domains:
+  - 学业
+  - 事业
+  axis_refs:
+  - AXIS-07
+  - AXIS-10
+  claim: 原局格局不高或不显，但若一路运途助清气官星、去浊气忌客，也可能在特定阶段获得考试、资质或社会认可。
+  conditions:
+    required:
+    - 原局有微弱清气或官印线索
+    - 行运连续助喜去忌
+    - 关键年份形成官印或其他可兑现结构
+    optional:
+    - 逆袭式考试或晋升反馈
+    exclusions:
+    - 完全无结构基础时不可只凭好运断跃迁
+  output:
+    statement: 格局不显但运途连续助清去浊时，仍可能出现资格、考试或职业认可的转机。
+    falsifiable: 若助清去浊之运不带来任何兑现机会，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 有格局本无出色，竟能科甲连登，此因一路运途合宜，助其清气官星，去其浊气忌客之故也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-003；强调原局基础与运途助力并看。
+- id: DTS-CAND-20260606-219
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 异路功名重日干有气财官相通
+  topic: yilu_gongming_caiguan
+  domains:
+  - 事业
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 非传统正途的职业成名或任职，重在日干有气、财星得门户、财官相通，可对应专业、行政、商业资源转组织权责等路径。
+  conditions:
+    required:
+    - 职业路径非标准考试或正途选拔
+    - 日主有根或得助
+    - 财星、官星可通或食伤生财财生官成立
+    optional:
+    - 商业资源转职位反馈
+    - 专业行政事务反馈
+    exclusions:
+    - 日主无气且财官压身时不可按此吉断
+    - 不得贬义化异路
+  output:
+    statement: 非典型职业路径是否能成，关键看日主能否承载财官及资源是否能转为组织认可。
+    falsifiable: 若财官相通与非典型晋升无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 异路功名莫说轻，日干得气遇财星。总不外日干有气，财民相通也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-004；异路现代化为非传统职业晋升路径。
+- id: DTS-CAND-20260606-220
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 异路高卑看清纯气势与运途损益
+  topic: yilu_gongming_gaodi
+  domains:
+  - 事业
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-10
+  claim: 财官相通只说明有异路机会，职位高低与持续性仍取决于格局清纯、气势厚薄、日主承载力与运途损益。
+  conditions:
+    required:
+    - 财官相通或异路路径存在
+    - 格局清浊和气势厚薄可判
+    - 运途对财官印日主的损益可判
+    optional:
+    - 职位层级反馈
+    - 资源承载反馈
+    exclusions:
+    - 不得以传统官阶直接映射现代阶层
+  output:
+    statement: 异路机会之外，还要评估清纯气势和运途损益，才能判断职业层级与持续性。
+    falsifiable: 若清浊气势与运途损益不影响异路高低，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 其仕路之高卑，须究格局之气势，运途之损益可知矣。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-005；用于职业层级与持续性判断。
+- id: DTS-CAND-20260606-221
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 财官虽通日主失衡劫伤夹杂则难出身
+  topic: yilu_chengbai_chengzai
+  domains:
+  - 事业
+  - 财富
+  axis_refs:
+  - AXIS-03
+  - AXIS-04
+  - AXIS-10
+  claim: 财官相通不是充分条件，日主太旺财轻无泄、日主太弱财官压身，或财官通中夹杂伤官劫财，均会使职业资源难以兑现。
+  conditions:
+    required:
+    - 财官路径存在
+    - 日主旺弱可判
+    - 食伤劫财印星与官财关系可判
+    - 财官是否被劫占或被伤可判
+    optional:
+    - 资源转化失败反馈
+    - 岗位资格难兑现反馈
+    exclusions:
+    - 日主承载与制化完整时不可按难出身
+  output:
+    statement: 财官虽有路径，但若日主承载失衡或劫伤夹杂，资源与职位兑现会明显受阻。
+    falsifiable: 若日主失衡和劫伤夹杂不影响财官兑现，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 日干太旺，财轻无食伤……日干太弱，财星官星并旺者，有财官虽通，伤官劫占者……皆不能出身也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-006；适合与子平财官承载力对照。
+- id: DTS-CAND-20260606-222
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 高位权责须天然清气与喜神有情
+  topic: diwei_qingqi_xishen
+  domains:
+  - 事业
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 较高组织地位或重要权责，不只看官杀强旺，而看天然清气、真神真气得用、喜神有情且格局无明显可嫌之物。
+  conditions:
+    required:
+    - 用户询问地位、权责或组织影响力
+    - 用神、喜神、官杀印财与全局清浊可判
+    - 格局是否纯粹无伤可判
+    optional:
+    - 长期声誉或治理能力反馈
+    exclusions:
+    - 不得作贵贱标签
+    - 官杀强旺但混浊无情时不可按高位吉断
+  output:
+    statement: 组织权责与长期影响力，需要真神真气得用、喜神有情与格局清纯共同支撑。
+    falsifiable: 若清气喜神与组织权责无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 天然清气发机权。四柱内，且与喜神有情，格局之中并无可嫌之物。所用者皆真神所喜者皆真气。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-007；现代化为组织责任与影响力。
+- id: DTS-CAND-20260606-223
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 刃杀神清可任强权责刃不当权难贵显
+  topic: rensha_shenqing
+  domains:
+  - 事业
+  - 性格
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 执法、军警、风控、纪律、危机管理等强权责岗位，需杀刃结构清纯、刃旺敌杀且刃当权；刃不当权或财官混浊则难成清贵权责。
+  conditions:
+    required:
+    - 七杀、羊刃、印绶、财星关系可判
+    - 刃是否当令有权可判
+    - 杀刃是否平衡可判
+    - 职业涉及强执行或风险控制
+    optional:
+    - 执法风控或危机管理反馈
+    exclusions:
+    - 不得鼓励暴力或权力崇拜
+    - 刃不当权时不可按强权责成格
+  output:
+    statement: 强执行与风险控制岗位需杀刃清纯且刃能当权，否则权责承接力不足或混浊。
+    falsifiable: 若杀刃清纯与强权责岗位无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 兵权獬豸弁冠客，刃煞神清气势特。必以刃旺敌杀，气势出人也。如刃不当权，虽能敌杀，不但不能掌兵权，亦不能贵显也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-008；输出限定为职业气质与风险边界。
+- id: DTS-CAND-20260606-224
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 刃旺杀弱神气不清主强势对抗风险
+  topic: rensha_xingqing_fengxian
+  domains:
+  - 性格
+  - 事业
+  axis_refs:
+  - AXIS-04
+  - AXIS-09
+  claim: 羊刃过旺而七杀不足制衡，或杀刃结构不清，容易使执行力转为强势、苛刻、冒进或对抗式管理风险。
+  conditions:
+    required:
+    - 羊刃旺
+    - 杀弱或杀不清
+    - 印食财等调节不足
+    - 岁运再助刃或冲动刃杀
+    optional:
+    - 管理冲突反馈
+    - 合作关系紧张反馈
+    exclusions:
+    - 不得作人格羞辱
+    - 杀刃平衡且制化清楚时不可按此风险
+  output:
+    statement: 刃旺杀弱或神气不清时，管理风格可能偏强势，对抗和冲突风险上升。
+    falsifiable: 若刃旺杀弱不带来强势对抗倾向，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 其人疾恶太严，如刃旺杀弱亦然，必傲物而骄慢也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-009；用行为倾向替代人格贬损。
+- id: DTS-CAND-20260606-225
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 地方部门任事重财官清纯日元生旺
+  topic: diwei_caiguan_renzhi
+  domains:
+  - 事业
+  - 财富
+  axis_refs:
+  - AXIS-03
+  - AXIS-04
+  - AXIS-10
+  claim: 地方治理、部门管理或业务负责人，需要财官清纯、日元生旺、神贯气足、财官情协，形成任事承载力。
+  conditions:
+    required:
+    - 财官印杀与日主关系可判
+    - 格局清纯程度可判
+    - 岗位问题涉及管理、治理或业务负责
+    - 日元是否生旺有气可判
+    optional:
+    - 团队管理反馈
+    - 业务责任反馈
+    exclusions:
+    - 财官混浊或日主无气时不可按管理承载吉断
+  output:
+    statement: 管理任事能力需财官清纯、日元有气与精气神贯通，不能只看财官出现。
+    falsifiable: 若财官清纯和日元生旺不影响管理承载，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 分藩司牧财官和，清纯格局神气多。必须格局清纯，更须日元生旺，神贯气足，然后财官情协，则精气神三者足矣。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-010；现代化为部门管理和业务治理。
+- id: DTS-CAND-20260606-226
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 事业格局虽佳五行失调亦损家庭稳定
+  topic: shiye_jiating_fenyu
+  domains:
+  - 事业
+  - 婚姻
+  - 家庭
+  - 子女
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 职业财官格局可佳，但若调候失衡或亲缘相关五行受损，家庭、生育、关系或后续稳定性仍可能另有压力。
+  conditions:
+    required:
+    - 职业财官结构成立
+    - 调候缺失或子息婚姻相关五行受损
+    - 岁运可能加重偏枯
+    optional:
+    - 事业与家庭表现不一致反馈
+    exclusions:
+    - 不得作绝对克断
+    - 家庭领域证据不足时不可跨域直推
+  output:
+    statement: 事业格局与家庭稳定需分域判断，事业可成并不自动代表亲缘关系无压力。
+    falsifiable: 若事业格局与家庭稳定总是同步，则此分域规则需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 伤官用财，格局本佳……惜柱中无水，戌乃燥土，不能生金晦火……所以妻妾生十子皆克。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-011；亲缘输出必须保守化。
+- id: DTS-CAND-20260606-227
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 基层辅职亦看一点清气清浊定职责范围
+  topic: diwei_qingzhuo_jiceng
+  domains:
+  - 事业
+  axis_refs:
+  - AXIS-04
+  - AXIS-10
+  claim: 辅助、基层或非高阶职位也需一点清气作为岗位获得与职责承接依据，清浊形影影响平台、职级和职责范围。
+  conditions:
+    required:
+    - 职业层级或辅助岗位问题
+    - 全局清浊、用神、冲合制化可判
+    - 一点清气可定位
+    optional:
+    - 基层职能或辅助岗位反馈
+    exclusions:
+    - 不得用贵贱羞辱表达
+    - 格正局清高阶结构另行判断
+  output:
+    statement: 基层或辅助岗位也有其清气依据，需从清浊、用神和冲合制化判断职责范围与平台限制。
+    falsifiable: 若一点清气与岗位取得无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 便是诸司并首领，也从清浊分形离。虽非格正局清，真神得用，而气象格局之中，冲合理气之内，必有一点清气。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-012；转译为职级、平台与职责范围。
+- id: DTS-CAND-20260606-228
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 干支升降分清浊支气上升干气下降
+  topic: qingzhuo_ganzhi_shengjiang
+  domains:
+  - 事业
+  - 学业
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-05
+  claim: 清浊判断需看干支升降通透，地支所藏透出成用为清气上升，天干落地得根或合化入支为形气落实。
+  conditions:
+    required:
+    - 需要判断清浊、格局层级或用神真假
+    - 透干藏支与根气可判
+    - 干支升降关系明确
+    optional:
+    - 合化成用或用神落空证据
+    exclusions:
+    - 单看天干或地支不可直接定清浊
+  output:
+    statement: 清浊与用神真假需从透干、藏支、根气及冲合制化的升降形影中综合判断。
+    falsifiable: 若干支升降通透不影响清浊判断，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 天干象天，地支象地。地支上升于天干者，轻清之气也；天干下降于地支者，重浊之气也。于升降形影，冲合制化中，分其清浊，究其轻重。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-013；可转为透干藏支和通根谓词。
+- id: DTS-CAND-20260606-229
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 运途重地支天干不背十年不可截看
+  topic: suiyun_dayun_zhengti
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-07
+  claim: 大运判断以地支为重但天干不可违背，应把一柱大运作为干支整体判断，不宜机械拆成上五年和下五年。
+  conditions:
+    required:
+    - 大运分析
+    - 喜忌五行已定
+    - 大运干支生克、通根、盖头截脚可判
+    optional:
+    - 十年阶段反馈
+    exclusions:
+    - 不可只按天干或只按地支下结论
+    - 不可机械上下截看
+  output:
+    statement: 大运要看干支整体，地支为环境地势，天干为显化助背，十年趋势不可简单上下截断。
+    falsifiable: 若干支整体判断不优于上下截看，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 运途乃我所临之地，故以地支为重。要天干不背，相生相扶为美，故一运看十年切勿上下截看。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-014；可修正大运模块过度分段。
+- id: DTS-CAND-20260606-230
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 喜运干支同气或干生支为厚支生干气泄
+  topic: suiyun_xiyun_houbao
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  axis_refs:
+  - AXIS-07
+  claim: 喜用之运以干支同气、通根或天干生地支为较厚；地支生天干虽有喜神显露但根气被泄，力量较减。
+  conditions:
+    required:
+    - 喜用五行明确
+    - 大运干支关系可判
+    - 同气、干生支、支生干、通根与无根可判
+    optional:
+    - 机会厚薄反馈
+    exclusions:
+    - 不能仅凭喜神出现断全吉
+  output:
+    statement: 喜运也有厚薄之分，干支同气或干生支较厚，支生干则多为显露而气泄。
+    falsifiable: 若干支厚薄不影响运势兑现，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 宁使天干生地支，弗使地支生天干；天干生地支而荫厚，地支生天干而气泄。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-015；适合作为大运评分权重候选。
+- id: DTS-CAND-20260606-231
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 盖头截脚使吉凶减半或喜运难兑现
+  topic: suiyun_gaitou_jiejiao
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-07
+  - AXIS-08
+  claim: 大运干克支喜为盖头，支不载干喜为截脚；盖头多使吉凶折减，截脚常使喜干无根而整运难以兑现。
+  conditions:
+    required:
+    - 大运干支与喜忌冲突
+    - 盖头或截脚结构可识别
+    - 原局或太岁制化条件可判
+    optional:
+    - 吉运不吉或凶运不凶反馈
+    exclusions:
+    - 原局或太岁有力制化时须折减凶性或恢复吉性
+  output:
+    statement: 盖头截脚会让吉凶打折或喜运落空，需同时看原局和流年能否制化。
+    falsifiable: 若盖头截脚不影响大运兑现，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 何谓盖头……何谓截脚……运逢吉不见其吉，运逢凶不见其凶者，缘盖头截脚之故也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-016；建议后续转为 gaitou/jiejiao 标记。
+- id: DTS-CAND-20260606-232
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 太岁重天干兼究地支天克地冲最凶
+  topic: suiyun_taisui_tiankedichong
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-07
+  - AXIS-08
+  claim: 流年以天干为显事入口，但地支决定冲合根气；岁运与日主或用神形成天克地冲时，日主休囚或用神受伤则风险显著加重。
+  conditions:
+    required:
+    - 流年分析
+    - 太岁天干与日主、用神或大运发生克合
+    - 流年地支冲动关键宫位或根气
+    - 日主旺衰可判
+    optional:
+    - 突发变动反馈
+    - 年度风险反馈
+    exclusions:
+    - 日主旺相且用神不伤时需降低风险等级
+  output:
+    statement: 年度风险需看太岁天干显事与地支冲根，天克地冲且日主休囚时风险最高。
+    falsifiable: 若天克地冲与年度风险无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 太岁管一年否泰，如所遇之人，故以天干为重，然地支不可不究。最凶者天克地冲，岁运冲克。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-017；输出为风险等级不作绝对灾断。
+- id: DTS-CAND-20260606-233
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 岁运战冲和好按喜忌坐支力量制化定胜负
+  topic: suiyun_zhanchonghehao
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-07
+  - AXIS-08
+  claim: 岁运关系不能只看克冲合或同类，而要判断双方力量、坐支根气、日主喜忌与原局制化，战看谁降谁，冲看谁破谁，合看能否化，同类看是否有根。
+  conditions:
+    required:
+    - 岁运与原局发生克战、地支冲、合或同类帮扶
+    - 喜忌与根气可判
+    - 制化条件可判
+    optional:
+    - 应期胜负反馈
+    - 吉凶转化反馈
+    exclusions:
+    - 不可见克冲即凶、见合好即吉
+  output:
+    statement: 岁运战冲和好要按喜忌、根气和制化定胜负，不能只按关系名目判断吉凶。
+    falsifiable: 若力量喜忌制化不影响岁运结果，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 休囚系乎运，尤系乎岁，战冲视孰降，和好视孰切。战者克也。冲进破也。和者合也。好者，类相同也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-018；适合进入裁判模型动态轴。
+- id: DTS-CAND-20260606-234
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 合而能化方吉合而不化反为羁绊
+  topic: hehua_jiban
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  axis_refs:
+  - AXIS-07
+  - AXIS-08
+  claim: 合不等于吉，天干地支合须判断能否化、化出是否为喜、是否有根气季令支持；不能化且绊住喜用反为牵制。
+  conditions:
+    required:
+    - 岁运或原局出现合
+    - 化神是否得令得根可判
+    - 合住对象为喜或忌可判
+    optional:
+    - 合作、婚恋、合约或应期延误反馈
+    exclusions:
+    - 合化为喜且不绊喜用时不可按羁绊
+  output:
+    statement: 见合需先判能否化及化神喜忌，合而不化常表现为牵制、延误或关系羁绊。
+    falsifiable: 若合化与合绊不影响实际结果，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 合而能化，喜金则吉，合而不化，反为羁绊，不顾日主之喜我，则不吉矣。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-019；避免见合即吉。
+- id: DTS-CAND-20260606-235
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 好为同类帮扶须通根有力方切
+  topic: suiyun_haotonglei_tonggen
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  axis_refs:
+  - AXIS-07
+  claim: 岁运同类为好，但必须通根、有力、归垣才是真帮扶；天干同类如朋友帮扶，地支禄旺如家室可住，无根无势则帮扶不切。
+  conditions:
+    required:
+    - 岁运同五行或同阴阳
+    - 根气、禄旺、归垣可判
+    - 同类为喜或忌可判
+    optional:
+    - 人际资源或机会落实反馈
+    exclusions:
+    - 同类无根无势时不可按强帮扶
+  output:
+    statement: 同类帮扶也分强弱，通根归垣才是真助力，无根同类多为表面帮扶。
+    falsifiable: 若同类是否通根不影响帮扶效果，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 好者，类相同也。如庚运申年，辛运酉年，是为真好，乃支之禄旺，自我本气归垣。如运无根气，其风见势衰而无依附之情非为好也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-020；可细化同类显露与同类有根评分。
+- id: DTS-CAND-20260606-236
+  status: candidate
+  expert_system: tiaohou_ditiansui
+  title: 贞元看阶段循环与传承不作寿限断
+  topic: zhenyuan_jieduan_chuancheng
+  domains:
+  - 事业
+  - 家庭
+  - 财富
+  axis_refs:
+  - AXIS-07
+  - AXIS-10
+  claim: 贞元用于观察阶段循环、前后半生、家族资源与事业传承，现代输出不应直接判断寿限，而应转为收束、交接与后续资源管理提示。
+  conditions:
+    required:
+    - 长期阶段分析、家族资源或事业传承问题
+    - 年月日时与大运阶段可判
+    - 喜忌延续可判
+    optional:
+    - 家业传承或事业交接反馈
+    exclusions:
+    - 不得预测死亡时间或作寿限断
+    - 仅做短期流年问题时不优先使用
+  output:
+    statement: 贞元象可用于前后半生节律、事业收束与资源传承判断，但不得输出寿限预测。
+    falsifiable: 若阶段循环与传承反馈无关，则此条需复核。
+  source:
+    path: sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md
+    excerpt: 造化起于元，亦止于贞。再肇贞元之会，胚胎嗣续之机。年月吉者，前半世吉，日时吉者，后半世吉。其人既终之后，而其家兴旺者，身后运必吉也。
+  review:
+    notes: 对应 DTS-CW-P8-20260606-021；必须绑定 no_death_prediction 安全边界。
