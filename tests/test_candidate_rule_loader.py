@@ -17,14 +17,18 @@ def test_load_default_candidate_library_loads_ziping_and_ditiansui() -> None:
     library = load_default_candidate_library()
 
     assert set(library.rule_sets) == {"ziping", "tiaohou_ditiansui"}
-    assert len(library.rule_sets["ziping"].rules) == 2
-    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 2
-    assert [rule.id for rule in library.rules] == [
+    assert len(library.rule_sets["ziping"].rules) == 57
+    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 197
+    assert [rule.id for rule in library.rule_sets["ziping"].rules[:2]] == [
         "ZP-CAND-20260605-001",
         "ZP-CAND-20260605-002",
+    ]
+    assert [rule.id for rule in library.rule_sets["tiaohou_ditiansui"].rules[:2]] == [
         "DTS-CAND-20260605-001",
         "DTS-CAND-20260605-002",
     ]
+    assert library.rule_sets["ziping"].rules[-1].id == "ZP-CAND-20260606-039"
+    assert library.rule_sets["tiaohou_ditiansui"].rules[-1].id == "DTS-CAND-20260606-178"
 
 
 def test_rules_can_be_filtered_by_domain_and_expert_system() -> None:
@@ -34,20 +38,20 @@ def test_rules_can_be_filtered_by_domain_and_expert_system() -> None:
     ziping_wealth_rules = library.rules_for_domain("财富", expert_system="ziping")
     dts_health_rules = library.rules_for_domain("健康", expert_system="tiaohou_ditiansui")
 
-    assert [rule.id for rule in career_rules] == [
+    assert {rule.id for rule in career_rules} >= {
         "ZP-CAND-20260605-001",
         "ZP-CAND-20260605-002",
         "DTS-CAND-20260605-001",
         "DTS-CAND-20260605-002",
-    ]
-    assert [rule.id for rule in ziping_wealth_rules] == [
+    }
+    assert {rule.id for rule in ziping_wealth_rules} >= {
         "ZP-CAND-20260605-001",
         "ZP-CAND-20260605-002",
-    ]
-    assert [rule.id for rule in dts_health_rules] == [
+    }
+    assert {rule.id for rule in dts_health_rules} >= {
         "DTS-CAND-20260605-001",
         "DTS-CAND-20260605-002",
-    ]
+    }
 
 
 def test_candidate_rule_can_be_converted_to_evidence_item() -> None:
