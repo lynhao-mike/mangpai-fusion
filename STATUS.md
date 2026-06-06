@@ -45,7 +45,7 @@
 - 四派融合分析：高德臣 / 段建业 / 杨清娟 / 任付红。
 - 双轨制置信度：★ 等级 + 百分比，区间以 [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) 为准。
 - 三层应期门：原局有、大运到位、流年引爆。
-- C-2026-025 唯一标准报告（命主可读版；产品 v1.3.0 / pipeline schema v1.4.0）。
+- C-2026-025 唯一标准报告（命理师内部版；产品 v1.3.0 / pipeline schema v1.4.0；默认不生成用户报告）。
 - 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]`。
 - 规则生命周期：candidate / confirmed / flagged_for_review / deprecated。
 - 每 10 完成反馈案触发迭代报告。

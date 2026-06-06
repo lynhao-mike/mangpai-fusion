@@ -1,6 +1,6 @@
 # engine/contracts/07-pipeline-flow.md · 流水线数据流
 
-本契约描述当前主干的端到端数据流。报告出口已统一为 C-2026-025 标准：产品 v1.3.0、pipeline/schema v1.4.0、命主可读版。
+本契约描述当前主干的端到端数据流。报告出口已统一为 C-2026-025 标准：产品 v1.3.0、pipeline/schema v1.4.0、命理师内部版；除非收到明确“用户报告 / 客户报告 / 命主可读报告 / 对外报告”命令，否则不生成用户报告。
 
 ## 九、Step render_report
 
@@ -8,8 +8,8 @@
 |---|---|
 | 入口 | `tools/render_report.py render_from_output(analysis_output, variant="standard")` |
 | 输入 | `AnalysisOutput`（lint 通过后） |
-| 输出 | Markdown 报告；固定使用 `templates/report-v1.3.md` 的 C-2026-025 命主可读版结构 |
-| 落盘 | `reports/C-XXX-{乾/坤}-{干支}-report.md` 与 `cases/C-XXX-{乾/坤}-{干支}/analysis.md` |
+| 输出 | Markdown 报告；固定使用 `templates/report-v1.3.md` 的 C-2026-025 命理师内部版结构 |
+| 落盘 | `reports/C-XXX-{乾/坤}-{干支}-analyst-report.md` 与 `cases/C-XXX-{乾/坤}-{干支}/analysis.md` |
 | 对象映射 | `cases/C-XXX-{乾/坤}-{干支}/statement_index.json`，顶层 `statements` 为列表 |
 
 标准报告章节：
@@ -42,7 +42,7 @@ for gate_r in analysis_output.gate_results:
 
 同时执行归档：
 
-- `reports/C-XXX-{乾/坤}-{干支}-report.md` 落盘。
+- `reports/C-XXX-{乾/坤}-{干支}-analyst-report.md` 落盘。
 - `cases/C-XXX-{乾/坤}-{干支}/input.md`、`analysis.md`、`feedback.md`、`statement_index.json` 落盘。
 - `cases-index.md` 自动追加一行。
 - 反馈入口使用 `tools.feedback_ingest`；底层规则回流由 `tools.feedback_loop` 执行。

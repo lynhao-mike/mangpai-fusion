@@ -204,7 +204,7 @@ def _process_single(input_path: pathlib.Path, *, dry_run: bool) -> CaseResult:
         from tools.render_report import render_from_output as _render
         report_md = _render(analysis_output, variant="standard", lint_before=True)
         if not dry_run:
-            report_path = reports_dir / f"{parsed.case_id}-report.md"
+            report_path = reports_dir / f"{parsed.case_id}-analyst-report.md"
             report_path.write_text(report_md, encoding="utf-8")
             result.report_path = report_path
     except Exception as exc:  # noqa: BLE001

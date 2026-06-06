@@ -1,7 +1,7 @@
-# 八字分析报告 · {{ case_id }} · {{ qian_kun }}
+# 八字命理师分析报告 · {{ case_id }} · {{ qian_kun }}
 
-> {{ qian_kun }}造 · {{ bazi_str }}  
-> 四派融合盲派分析 · 命主可读版  
+> {{ qian_kun }}造 · {{ bazi_str }}
+> 多流派功能域并行直出 · 命理师内部版
 > 生成日期：{{ analysis_date }} · mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0
 
 ---
@@ -112,12 +112,14 @@
 {% endif %}
 
 {% if parallel_domain_conclusions %}
-### 多专家功能域裁判（v1.5 旁路）
+### 多流派功能域并行直出（v1.5-A，暂不自动裁判）
 
-| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 |
+> 当前阶段不做自动裁判与机械投票；要求盲派专家组、子平格局派、调候派（滴天髓）围绕同一功能域分别输出可反馈结论。下表保留结构化证据，供命理师人工复核与后续反馈校准。
+
+| 功能域 | 当前层级 | 流派/专家 | 结论 | 置信 | 证据 |
 |---|---|---|---|---|---|
 {% for c in parallel_domain_conclusions %}
-| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
+| {{ c.domain }} | {{ c.layer }} | {{ c.experts_str }} | {{ c.statement }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
 {% endfor %}
 {% endif %}
 
@@ -177,7 +179,7 @@
 
 ## 九、总评
 
-本报告采用四派融合盲派框架，以段派做功、杨派画面、任派应期、高派旁证互相校验；结论为命主可读版，后续以 `feedback.md` 与 `statement_index.json` 逐条回测校准。
+本报告为命理师内部报告，采用四派融合盲派框架，并承接 v1.5-A“多流派功能域并行直出阶段”：盲派专家组、子平格局派、调候派（滴天髓）分别对功能域输出结论，暂不启用自动裁判模型。后续以 `feedback.md` 与 `statement_index.json` 逐条回测校准；除非收到明确“用户报告 / 客户报告 / 命主可读报告 / 对外报告”命令，否则不得据此生成用户报告。
 
 ---
 
@@ -186,10 +188,10 @@
 | 字段 | 内容 |
 |---|---|
 | case_id | {{ case_id }} |
-| 报告类型 | 命主可读版 |
+| 报告类型 | 命理师内部版 |
 | product_version | v1.3.0 |
 | pipeline_version | v1.4.0 |
-| report_path | reports/{{ case_id }}-report.md |
+| report_path | reports/{{ case_id }}-analyst-report.md |
 | case_analysis | cases/{{ case_id }}/analysis.md |
 | case_feedback | cases/{{ case_id }}/feedback.md |
 | statement_index | cases/{{ case_id }}/statement_index.json |

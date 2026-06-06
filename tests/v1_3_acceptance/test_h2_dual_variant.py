@@ -1,7 +1,7 @@
 """H2 · 唯一标准报告校验
 
-025 标准取代历史 master/client 双版：
-  - 渲染只输出命主可读版标准结构
+当前标准取代历史 master/client 双版：
+  - 渲染默认输出命理师内部版标准结构
   - 历史 variant 入参不得改变输出结构
   - 标准报告不包含 MASTER/CLIENT 标记与反馈空槽
   - statement_index 使用 statements 列表结构
@@ -35,7 +35,7 @@ _REQUIRED_HEADINGS = [
 def test_h2_standard_report_has_025_headings(
     mock_energy, mock_picture, mock_gates, mock_parsed
 ):
-    """标准报告必须固定为 C-2026-025 的命主可读结构。"""
+    """标准报告必须固定为当前命理师内部结构。"""
     from tools.render_report import render
 
     report = render(
@@ -51,7 +51,7 @@ def test_h2_standard_report_has_025_headings(
 
     for heading in _REQUIRED_HEADINGS:
         assert heading in report
-    assert "命主可读版" in report
+    assert "命理师内部版" in report
     assert "product_version | v1.3.0" in report
     assert "pipeline_version | v1.4.0" in report
 
@@ -122,7 +122,7 @@ def test_h2_standard_report_has_no_dual_variant_markers(
 def test_h2_standard_context_filters_low_star_items(
     mock_energy, mock_picture, mock_gates, mock_parsed
 ):
-    """标准命主可读版只保留 ★4+ 主线。"""
+    """标准命理师报告保留主线过滤策略，并标记为内部版。"""
     from tools.render_report import render
 
     ctx: dict = {}
@@ -138,8 +138,8 @@ def test_h2_standard_context_filters_low_star_items(
     )
 
     assert ctx["variant"] == "standard"
-    assert ctx["is_client"] is True
-    assert ctx["is_master"] is False
+    assert ctx["is_client"] is False
+    assert ctx["is_master"] is True
     for key in ("zuogong_paths", "consensus_conclusions", "complementary_conclusions", "gate_results", "iron_gates"):
         for item in ctx.get(key, []):
             assert item.get("star", 0) >= 4

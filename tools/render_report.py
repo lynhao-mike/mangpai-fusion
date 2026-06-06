@@ -170,9 +170,9 @@ def render_from_output(
 ) -> str:
     """高级渲染入口：接受 AnalysisOutput，完成全链路。
 
-    流程（按 C-2026-025 标准）：
+    流程（按当前默认命理师报告标准）：
         1. 将 D1-D4 JSON 落盘到 cases/C-XXX/findings/
-        2. 调用 render() 生成唯一标准 Markdown（命主可读版）
+        2. 调用 render() 生成命理师报告 Markdown
         3. 落盘 cases/C-XXX/statement_index.json（statements 列表）
         4. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
 
@@ -1264,8 +1264,8 @@ def render(
 ) -> str:
     """唯一标准报告渲染主入口。
 
-    输出固定为 C-2026-025 标准：产品 v1.3.0、pipeline/schema v1.4.0、命主可读版。
-    历史 variant 与 template_name 参数仅保留兼容，不再产生不同报告版本。
+    输出固定为当前命理师报告标准：产品 v1.3.0、pipeline/schema v1.4.0。
+    历史 variant 与 template_name 参数仅保留兼容，不再默认产生用户/客户/命主可读报告。
 
     每条可回测断语仍在 ViewModel 中保留 ``statement_id``，用于生成标准
     ``statement_index.json`` 的 statements 列表。
@@ -1294,8 +1294,8 @@ def render(
         RenderGuardrailError: output_linter 返回 ERROR 时。
         FileNotFoundError:    模板文件不存在时。
     """
-    # 唯一标准模板：C-2026-025 的命主可读版结构。
-    # template_name / variant 仅保留为兼容旧调用的入参，不再改变输出结构。
+    # 唯一标准模板：当前默认作为命理师报告结构基线。
+    # template_name / variant 仅保留为兼容旧调用的入参，不再默认生成用户报告。
     template_name = "report-v1.3.md"
     variant = "standard"
     tpl_path = ROOT / "templates" / template_name
@@ -1315,10 +1315,10 @@ def render(
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
     ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # 历史 master/client/v1.2/v1.4 已作废；上下文仅保留 standard 标志。
+    # 历史 master/client/v1.2/v1.4 已作废；默认产物为 analyst 内部报告。
     ctx["variant"] = variant
-    ctx["is_master"] = False
-    ctx["is_client"] = True
+    ctx["is_master"] = True
+    ctx["is_client"] = False
     ctx["is_v1_4"] = False
 
     # §A 能量
@@ -1354,7 +1354,7 @@ def render(
     # v1.5 · 多专家功能域裁判
     ctx.update(_build_parallel_analysis_vm(parallel_analysis, case_id=ctx["case_id"]))
 
-    # 标准命主可读版：仅展示高置信主线，结构与 C-2026-025 保持一致。
+    # 命理师报告：保留可回测主线与低置信旁路结论，便于后续反馈校准。
     ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
     ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
     ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]

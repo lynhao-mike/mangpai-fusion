@@ -6,7 +6,7 @@
     engine/contracts/09-naming-convention.md § 二·3（predictions 文件名规范）
 
 职责：
-    扫描 reports/C-*-report.md（或 cases/C-*/findings/analysis_output.json）
+    优先扫描 cases/C-*/findings/analysis_output.json；必要时回退扫描 reports/C-*-analyst-report.md
     把 ★★★★+ 的应期断语抽出来 → predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md
 
 文件名格式（09 § 二·3）：
@@ -25,7 +25,7 @@ frontmatter 必须含：
 
 注意：
     - 优先消费 cases/C-XXX/findings/analysis_output.json（Track-F 落盘的结构化输出）
-    - 当结构化文件不存在时，对 reports/C-*-report.md 做启发式抽取（fallback）
+    - 当结构化文件不存在时，对 reports/C-*-analyst-report.md 做启发式抽取（fallback）
     - 已存在的 predictions 文件不覆盖（按文件名指纹判重）
 
 作者：Track-G
@@ -273,7 +273,7 @@ _YEAR_RE = re.compile(r"\b(19|20|21)\d{2}\b")
 
 
 def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
-    """从 reports/C-XXX-{乾/坤}-{干支}-report.md 启发式抽取。
+    """从 reports/C-XXX-{乾/坤}-{干支}-analyst-report.md 启发式抽取。
 
     扫每一行，若同时含有 ★★★★+ 与 4 位年份 → 视为应期断语。
     """
@@ -283,6 +283,8 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
 
     # 报告路径
     report_candidates = [
+        REPORTS_DIR / f"{case_id}-analyst-report.md",
+        REPORTS_DIR / f"{plain}-analyst-report.md",
         REPORTS_DIR / f"{case_id}-report.md",
         REPORTS_DIR / f"{plain}-report.md",
     ]
@@ -291,13 +293,16 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
         if p.exists():
             report_path = p
             break
-    # 兜底：报告可能用旧 v1.0 文件名
+    # 兜底：优先匹配当前命理师报告命名，再兼容旧 v1.0 文件名。
     if report_path is None:
         prefix = case_id.split("-", 3)[:3]
         prefix_plain = "-".join(prefix)
-        for p in REPORTS_DIR.glob(f"{prefix_plain}*-report.md"):
-            report_path = p
-            break
+        for pattern in (f"{prefix_plain}*-analyst-report.md", f"{prefix_plain}*-report.md"):
+            for p in REPORTS_DIR.glob(pattern):
+                report_path = p
+                break
+            if report_path is not None:
+                break
     if report_path is None:
         return out
 

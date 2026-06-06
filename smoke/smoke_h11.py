@@ -253,7 +253,7 @@ print("\n--- T8: 真实 C-014 v2.1 报告（修正版）---")
 import pathlib
 report_path = pathlib.Path(
     "/projects/sandbox/mangpai-fusion/reports/"
-    "C-2026-014-乾-丙戌庚子乙亥辛巳-report.md"
+    "C-2026-014-乾-丙戌庚子乙亥辛巳-analyst-report.md"
 )
 if report_path.exists():
     md_real = report_path.read_text(encoding="utf-8")

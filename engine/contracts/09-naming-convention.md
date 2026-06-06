@@ -57,14 +57,16 @@ cases/C-2026-014-乾-丙戌庚子乙亥辛巳/
 
 ### 2.2 报告文件
 
+默认报告文件为命理师内部报告；除非收到明确“生成用户报告 / 客户报告 / 命主可读报告 / 对外报告”命令，否则不得生成用户报告。
+
 ```
-reports/C-YYYY-NNN-{乾/坤}-{干支}-report.md
+reports/C-YYYY-NNN-{乾/坤}-{干支}-analyst-report.md
 ```
 
 示例：
 ```
-reports/C-2026-001-乾-庚申戊寅壬子辛丑-report.md
-reports/C-2026-014-乾-丙戌庚子乙亥辛巳-report.md
+reports/C-2026-001-乾-庚申戊寅壬子辛丑-analyst-report.md
+reports/C-2026-014-乾-丙戌庚子乙亥辛巳-analyst-report.md
 ```
 
 ### 2.3 预测文件（由 extract_predictions.py 自动生成）
@@ -182,7 +184,7 @@ cases/C-2026-001-乾-庚申戊寅壬子辛丑/
    庚申·戊寅·壬子·辛丑
 
 ✓ 报告链接：
-   [report v2](../reports/C-2026-001-乾-庚申戊寅壬子辛丑-report.md)
+   [analyst report](../reports/C-2026-001-乾-庚申戊寅壬子辛丑-analyst-report.md)
 ```
 
 ---
@@ -220,6 +222,8 @@ cases/C-2026-001-乾-庚申戊寅壬子辛丑/
 | `cases/C-2026-014/` | `cases/C-2026-014-乾-丙戌庚子乙亥辛巳/` |
 
 ### A.2 报告文件重命名
+
+> 本节记录 2026-05-30 历史性重命名，旧 `-report.md` 用户报告已在后续策略中删除；当前默认命理师报告命名以 §2.2 的 `-analyst-report.md` 为准。
 
 | 旧路径 | 新路径 |
 |---|---|

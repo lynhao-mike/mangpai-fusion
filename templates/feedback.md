@@ -18,7 +18,7 @@
 
 **反馈日期**：YYYY-MM-DD  
 **关联案例**：cases/C-YYYY-NNN/  
-**关联报告**：reports/C-YYYY-NNN-report.md  
+**关联报告**：reports/C-YYYY-NNN-{乾/坤}-{四柱}-analyst-report.md
 **采集方式**：[面对面 / 电话 / 微信 / 视频]
 
 ---

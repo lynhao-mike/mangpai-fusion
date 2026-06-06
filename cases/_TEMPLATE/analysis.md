@@ -1,6 +1,6 @@
 # {case_id} · 分析过程
 
-> 定位：命理师内部技术归档；用于追溯命主可读报告、后续反馈摄入与规则校准。  
+> 定位：命理师内部技术归档；用于追溯命理师报告、后续反馈摄入与规则校准。
 > 本模板以 C-2026-023 最新分析归档为基准，采用“可回测技术归档型”：保留四派 Step 主干、known_facts、statement_id、应期映射、冲突仲裁、五维层级释义与禁用规则。
 
 ---
@@ -15,7 +15,7 @@
 | analysis_version | v1.1-fixed-template |
 | analysis_status | {初断归档 / 反馈校准 / 复盘修订}；known_facts {为空/部分录入/已校准} |
 | input_path | [input.md](input.md) |
-| report_path | [report.md](../../reports/{case_id}-report.md) |
+| report_path | [analyst-report.md](../../reports/{case_id}-analyst-report.md) |
 | feedback_path | [feedback.md](feedback.md) |
 | statement_index_path | [statement_index.json](statement_index.json) |
 
@@ -23,7 +23,7 @@
 
 | 模板原则 | 说明 |
 |---|---|
-| 内部归档优先 | 本文件记录推理链，不替代命主可读报告 |
+| 内部归档优先 | 本文件记录推理链，与命理师报告互相追踪；不默认生成命主可读报告 |
 | 可回测优先 | 每条核心断语尽量绑定 statement_id、证据、置信度、证伪条件 |
 | 四派分层 | 保留四派各自定性、共识、互补、独门、冲突仲裁 |
 | 层级释义 | L+数字必须同时写出现实对应、起止界限、上调/下调条件 |
@@ -268,6 +268,6 @@
 | 冲突数 | {n} 条，{已仲裁/待仲裁} |
 | 应期清单 | {n} 个关键年份/阶段 |
 | 整体置信度 | ★★★★ ({pct}%) |
-| 关联报告 | [report.md](../../reports/{case_id}-report.md) |
+| 关联报告 | [analyst-report.md](../../reports/{case_id}-analyst-report.md) |
 | 反馈入口 | [feedback.md](feedback.md) |
 | 断语索引 | [statement_index.json](statement_index.json) |
