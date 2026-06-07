@@ -226,7 +226,7 @@ def _production_rule_readings(
             expert_system=expert_system,
             expert_name=EXPERT_LABELS[expert_system],
             stance="support",
-            claim=rule.output.statement,
+            claim=_production_rule_claim(rule, domain),
             polarity="positive",
             confidence=_parallel_confidence(rule.confidence, reason=f"{rule.display_school}生产规则触发"),
             evidence_items=[EvidenceItem(
@@ -236,12 +236,40 @@ def _production_rule_readings(
                 strength="high" if rule.confidence.star >= 4 else "medium",
             )],
             axis_refs=list(rule.axis_refs),
-            scope_limit="当前为生产规则触发读数，尚未升级为完整域内专家树。",
+            scope_limit=_production_rule_scope(rule),
             falsifiable=rule.output.falsifiable,
             source_engine="engine.application.production_rule_loader",
-            notes=rule.review_notes,
+            notes=_production_rule_notes(rule),
         ))
     return readings
+
+
+def _production_rule_claim(rule: ProductionRule, domain: DomainName) -> str:
+    """把子平 / 滴天髓生产规则展开成接近盲派读数的“过程 + 结论”。"""
+
+    required = "；".join(rule.conditions.required) or "基础触发条件已满足"
+    optional = "；".join(rule.conditions.optional) or "无额外可选补强条件"
+    exclusions = "；".join(rule.conditions.exclusions) or "无特殊排除项"
+    return (
+        f"【{rule.display_school}·{rule.title}】领域：{domain}。"
+        f"取法过程：先验触发={rule.conditions.trigger}；必看条件={required}；"
+        f"可选补强={optional}；排除/保留={exclusions}。"
+        f"理论判断：{rule.claim}。落地断语：{rule.output.statement}"
+    )
+
+
+def _production_rule_scope(rule: ProductionRule) -> str:
+    domains = "、".join(rule.domains) or "未标注"
+    axes = "、".join(rule.axis_refs) or "未标注"
+    return f"适用领域={domains}；分析轴={axes}；当前为生产规则触发读数，需与盲派底盘和反馈共同校准。"
+
+
+def _production_rule_notes(rule: ProductionRule) -> str:
+    source = rule.source
+    parts = [f"来源：{source.path}；摘录：{source.excerpt}"]
+    if rule.review_notes:
+        parts.append(f"审校：{rule.review_notes}")
+    return "；".join(parts)
 
 
 def _adjudicate(domain: DomainName, readings: list[ExpertReading]) -> AdjudicationResult:

@@ -1,4 +1,4 @@
-# 八字命理师分析报告 · {{ case_id }} · {{ qian_kun }}
+# 八字分析报告 · {{ case_id }} · {{ qian_kun }}
 
 > {{ qian_kun }}造 · {{ bazi_str }}
 > 多流派功能域并行直出 · 命理师内部版
@@ -120,6 +120,24 @@
 |---|---|---|---|---|---|
 {% for c in parallel_domain_conclusions %}
 | {{ c.domain }} | {{ c.layer }} | {{ c.experts_str }} | {{ c.statement }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
+{% endfor %}
+{% endif %}
+
+{% if parallel_domain_sections %}
+### 三派逐域分析过程（方案 A：功能域分章）
+
+> 本节按功能域分章，每个功能域固定输出盲派、子平、滴天髓三段。即使某一派未触发正式规则，也会以 `abstain` 形式明确记录“未生成读数/规则未接线”，避免报告只展示强势流派而遗漏空白域。每段均保留取法过程、证据链、适用边界、证伪条件与置信度，后续可逐条进入 `statement_index.json` 反馈校准。
+
+{% for d in parallel_domain_sections %}
+#### {{ d.domain }}域 · {{ d.layer }} · ★{{ d.star }}/{{ d.pct }}%
+
+- 裁判摘要：{{ d.statement }}
+- 决策状态：{{ d.decision }}
+
+| 盲派专家组 | 子平格局派 | 滴天髓调候派 |
+|---|---|---|
+| {{ d.blind_block }} | {{ d.ziping_block }} | {{ d.ditiansui_block }} |
+
 {% endfor %}
 {% endif %}
 

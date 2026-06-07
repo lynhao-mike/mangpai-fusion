@@ -470,10 +470,15 @@ def _build_section_zero_vm(
     if not b:
         return {"section_zero": False}
 
-    year_gan, year_zhi = _pillar_parts(getattr(b, "年柱", ""))
-    month_gan, month_zhi = _pillar_parts(getattr(b, "月柱", ""))
-    day_gan, day_zhi = _pillar_parts(getattr(b, "日柱", ""))
-    hour_gan, hour_zhi = _pillar_parts(getattr(b, "时柱", ""))
+    def _get_pillar(name: str) -> Any:
+        if isinstance(b, dict):
+            return b.get(name, "")
+        return getattr(b, name, "")
+
+    year_gan, year_zhi = _pillar_parts(_get_pillar("年柱"))
+    month_gan, month_zhi = _pillar_parts(_get_pillar("月柱"))
+    day_gan, day_zhi = _pillar_parts(_get_pillar("日柱"))
+    hour_gan, hour_zhi = _pillar_parts(_get_pillar("时柱"))
 
     # 4 柱 + 干十神 + 主气 + 长生
     pillars = [
@@ -1007,10 +1012,15 @@ def _build_portrait_vm(
 def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) -> dict:
     """v1.5 · 多专家功能域裁判视图。"""
     if parallel_analysis is None:
-        return {"parallel_domain_conclusions": [], "parallel_domain_readings": []}
+        return {
+            "parallel_domain_conclusions": [],
+            "parallel_domain_readings": [],
+            "parallel_domain_sections": [],
+        }
 
     domain_rows: list[dict[str, Any]] = []
     reading_rows: list[dict[str, Any]] = []
+    domain_sections: list[dict[str, Any]] = []
     for analysis in getattr(parallel_analysis, "domain_analyses", []) or []:
         consensus = getattr(analysis, "consensus", None)
         adjudication = getattr(analysis, "adjudication_result", None)
@@ -1049,22 +1059,100 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             "reading_ids": [str(getattr(r, "reading_id", "")) for r in getattr(analysis, "readings", []) or []],
             "adjudication_id": getattr(adjudication, "adjudication_id", ""),
         })
+        readings_by_expert: dict[str, list[dict[str, Any]]] = {
+            "blind": [],
+            "ziping": [],
+            "tiaohou_ditiansui": [],
+        }
         for reading in getattr(analysis, "readings", []) or []:
-            r_conf = getattr(reading, "confidence", None)
-            reading_rows.append({
-                "reading_id": getattr(reading, "reading_id", ""),
-                "domain": getattr(reading, "domain", ""),
-                "expert_system": getattr(reading, "expert_system", ""),
-                "expert_name": getattr(reading, "expert_name", ""),
-                "stance": getattr(reading, "stance", ""),
-                "claim": getattr(reading, "claim", ""),
-                "star": int(getattr(r_conf, "star", 0) or 0),
-                "pct": int(getattr(r_conf, "percent", 0) or 0),
-            })
+            row = _parallel_reading_row(reading, case_id)
+            reading_rows.append(row)
+            expert_system = str(row.get("expert_system", ""))
+            if expert_system in readings_by_expert:
+                readings_by_expert[expert_system].append(row)
+        domain_sections.append({
+            "domain": getattr(analysis, "domain", getattr(consensus, "domain", "综合")),
+            "headline": getattr(consensus, "headline", ""),
+            "decision": getattr(adjudication, "decision", ""),
+            "layer": getattr(consensus, "layer", ""),
+            "star": int(getattr(conf, "star", 0) or 0),
+            "pct": int(getattr(conf, "percent", 0) or 0),
+            "statement": getattr(consensus, "final_statement", ""),
+            "blind_block": _merge_parallel_expert_rows(readings_by_expert["blind"], "盲派专家组"),
+            "ziping_block": _merge_parallel_expert_rows(readings_by_expert["ziping"], "子平格局派"),
+            "ditiansui_block": _merge_parallel_expert_rows(readings_by_expert["tiaohou_ditiansui"], "滴天髓调候派"),
+        })
     return {
         "parallel_domain_conclusions": domain_rows,
         "parallel_domain_readings": reading_rows,
+        "parallel_domain_sections": domain_sections,
     }
+
+
+def _parallel_reading_row(reading: Any, case_id: str) -> dict[str, Any]:
+    """把单条 ExpertReading 转为报告与 statement_index 共用行。"""
+
+    r_conf = getattr(reading, "confidence", None)
+    evidence = getattr(reading, "evidence_items", []) or []
+    evidence_refs = [str(getattr(item, "ref", "")) for item in evidence if getattr(item, "ref", "")]
+    evidence_summaries = [str(getattr(item, "summary", "")) for item in evidence if getattr(item, "summary", "")]
+    return {
+        "statement_id": _compute_statement_id(
+            case_id,
+            evidence_refs or [str(getattr(reading, "reading_id", "PDR"))],
+        ),
+        "reading_id": getattr(reading, "reading_id", ""),
+        "domain": getattr(reading, "domain", ""),
+        "expert_system": getattr(reading, "expert_system", ""),
+        "expert_name": getattr(reading, "expert_name", ""),
+        "stance": getattr(reading, "stance", ""),
+        "statement": getattr(reading, "claim", ""),
+        "claim": getattr(reading, "claim", ""),
+        "star": int(getattr(r_conf, "star", 0) or 0),
+        "pct": int(getattr(r_conf, "percent", 0) or 0),
+        "evidence": [
+            {
+                "rule_id": str(getattr(item, "ref", "")),
+                "school": str(getattr(reading, "expert_name", getattr(reading, "expert_system", ""))),
+                "description": str(getattr(item, "summary", "")),
+            }
+            for item in evidence
+        ],
+        "evidence_str": " ".join(evidence_refs) or "—",
+        "evidence_summary": "；".join(evidence_summaries[:3]) or "—",
+        "axis_refs_str": "、".join(getattr(reading, "axis_refs", []) or []) or "—",
+        "scope_limit": getattr(reading, "scope_limit", "") or "—",
+        "falsifiable": getattr(reading, "falsifiable", "") or "—",
+        "source_engine": getattr(reading, "source_engine", "") or "—",
+        "notes": getattr(reading, "notes", "") or "—",
+    }
+
+
+def _merge_parallel_expert_rows(rows: list[dict[str, Any]], fallback_name: str) -> str:
+    """把同一功能域下同一专家体系的多条 reading 合并为模板可直接渲染的块。"""
+
+    if not rows:
+        return (
+            f"**{fallback_name}**：未生成读数。\n"
+            "- 立场：abstain；置信：★0/0%。\n"
+            "- 取法过程与断语：该域暂无已接线生产读数。\n"
+            "- 证据：—。\n"
+            "- 边界：规则未接线或触发条件不足。\n"
+            "- 证伪：后续接线并回测后再建立可证伪断语。"
+        )
+    lines: list[str] = []
+    title = str(rows[0].get("expert_name") or fallback_name)
+    lines.append(f"**{title}**：")
+    for idx, row in enumerate(rows, start=1):
+        lines.append(
+            f"{idx}. 立场：{row.get('stance', '—')}；置信：★{row.get('star', 0)}/{row.get('pct', 0)}%。"
+        )
+        lines.append(f"   - 取法过程与断语：{row.get('claim', '—')}")
+        lines.append(f"   - 证据：{row.get('evidence_str', '—')}：{row.get('evidence_summary', '—')}")
+        lines.append(f"   - 分析轴：{row.get('axis_refs_str', '—')}")
+        lines.append(f"   - 边界：{row.get('scope_limit', '—')}")
+        lines.append(f"   - 证伪：{row.get('falsifiable', '—')}")
+    return "\n".join(lines)
 
 
 def _build_statement_index(ctx: dict, case_id: str) -> dict:
@@ -1083,6 +1171,7 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
         "support_marriage_boosts": "support_marriage",
         "support_health": "support_health",
         "parallel_domain_conclusions": "parallel_domain_adjudication",
+        "parallel_domain_readings": "parallel_domain_reading",
     }
     statements: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -1128,6 +1217,17 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                     ],
                     "vote_id": item.get("adjudication_id", ""),
                     "stance": item.get("decision", ""),
+                })
+            elif section == "parallel_domain_reading":
+                row.update({
+                    "reading_id": item.get("reading_id", ""),
+                    "expert_system": item.get("expert_system", ""),
+                    "expert_name": item.get("expert_name", ""),
+                    "stance": item.get("stance", ""),
+                    "source_engine": item.get("source_engine", ""),
+                    "axis_refs": [
+                        x for x in str(item.get("axis_refs_str", "")).split("、") if x and x != "—"
+                    ],
                 })
             statements.append(row)
     return {
