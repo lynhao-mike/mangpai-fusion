@@ -1,0 +1,41 @@
+{
+  "copied_sources": [],
+  "dry_run": false,
+  "duplicate_key_count": 27,
+  "duplicate_record_count": 60,
+  "generated_at": "2026-06-07T08:44:26.607707+00:00",
+  "output_jsonl": "cases/raw_feedback/parsed/real_cases_990.jsonl",
+  "output_summary": "cases/raw_feedback/parsed/real_cases_990-summary.json",
+  "privacy_flag_distribution": {
+    "detailed_place": 582,
+    "masked_or_redacted": 363,
+    "sensitive_life_event": 269,
+    "wechat": 1
+  },
+  "protocol": "META/case-feedback-intake-protocol.md",
+  "quality_distribution": {
+    "A": 8,
+    "B": 973,
+    "C": 1,
+    "D": 10
+  },
+  "quality_flag_distribution": {
+    "abnormal_birth_date": 1,
+    "missing_birth_datetime_or_bazi": 9,
+    "missing_birth_place_or_true_solar_time": 17,
+    "missing_events": 69,
+    "missing_gender": 9,
+    "missing_questions": 973,
+    "possible_duplicate": 33,
+    "unknown_calendar": 1,
+    "very_long_possible_concatenation": 1
+  },
+  "record_count": 992,
+  "schema_version": "case-feedback-intake/v0.1",
+  "source_file_count": 3,
+  "source_files": [
+    "cases/实战案例反馈990个案例_part1.md",
+    "cases/实战案例反馈990个案例_part2.md",
+    "cases/实战案例反馈990个案例_part3.md"
+  ]
+}

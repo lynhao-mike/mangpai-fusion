@@ -1,0 +1,6226 @@
+{
+  "schema_version": "case-feedback-promote/v0.1",
+  "dry_run": false,
+  "generated_at": "2026-06-07T08:55:25.429666+00:00",
+  "source_jsonl": "cases/raw_feedback/parsed/real_cases_990.jsonl",
+  "output_dir": "cases/raw_feedback/case_drafts",
+  "summary_path": "cases/raw_feedback/case_drafts/promote-summary.json",
+  "grades": [
+    "A",
+    "B"
+  ],
+  "limit": null,
+  "min_events": 1,
+  "require_bazi": false,
+  "include_duplicates": false,
+  "evaluated_count": 992,
+  "selected_count": 882,
+  "skipped_count": 110,
+  "directly_formalizable_count": 6,
+  "needs_wenzhen_repan_count": 876,
+  "grade_distribution": {
+    "B": 874,
+    "A": 8
+  },
+  "quality_flag_distribution": {
+    "missing_questions": 871,
+    "missing_birth_place_or_true_solar_time": 9
+  },
+  "decisions": [
+    {
+      "raw_id": "RF-2026-000001",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000001"
+    },
+    {
+      "raw_id": "RF-2026-000002",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000002"
+    },
+    {
+      "raw_id": "RF-2026-000003",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000003"
+    },
+    {
+      "raw_id": "RF-2026-000004",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000004"
+    },
+    {
+      "raw_id": "RF-2026-000005",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000005"
+    },
+    {
+      "raw_id": "RF-2026-000006",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000007",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000008",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000008"
+    },
+    {
+      "raw_id": "RF-2026-000009",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000009"
+    },
+    {
+      "raw_id": "RF-2026-000010",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000010"
+    },
+    {
+      "raw_id": "RF-2026-000011",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000011"
+    },
+    {
+      "raw_id": "RF-2026-000012",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000012"
+    },
+    {
+      "raw_id": "RF-2026-000013",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000013"
+    },
+    {
+      "raw_id": "RF-2026-000014",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000015",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000015"
+    },
+    {
+      "raw_id": "RF-2026-000016",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "unsafe_quality_flag"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000017",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000017"
+    },
+    {
+      "raw_id": "RF-2026-000018",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000018"
+    },
+    {
+      "raw_id": "RF-2026-000019",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000020",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000021",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000022",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000023",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000024",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000024"
+    },
+    {
+      "raw_id": "RF-2026-000025",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000026",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000026"
+    },
+    {
+      "raw_id": "RF-2026-000027",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000028",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000029",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000029"
+    },
+    {
+      "raw_id": "RF-2026-000030",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000030"
+    },
+    {
+      "raw_id": "RF-2026-000031",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000031"
+    },
+    {
+      "raw_id": "RF-2026-000032",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000032"
+    },
+    {
+      "raw_id": "RF-2026-000033",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000033"
+    },
+    {
+      "raw_id": "RF-2026-000034",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000034"
+    },
+    {
+      "raw_id": "RF-2026-000035",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000036",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000037",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000038",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000038"
+    },
+    {
+      "raw_id": "RF-2026-000039",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000040",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000041",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000042",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000043",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun",
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000044",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000045",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000045"
+    },
+    {
+      "raw_id": "RF-2026-000046",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun",
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000047",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000048",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000048"
+    },
+    {
+      "raw_id": "RF-2026-000049",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000050",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000050"
+    },
+    {
+      "raw_id": "RF-2026-000051",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000052",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000052"
+    },
+    {
+      "raw_id": "RF-2026-000053",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000053"
+    },
+    {
+      "raw_id": "RF-2026-000054",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000054"
+    },
+    {
+      "raw_id": "RF-2026-000055",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000055"
+    },
+    {
+      "raw_id": "RF-2026-000056",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000056"
+    },
+    {
+      "raw_id": "RF-2026-000057",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000057"
+    },
+    {
+      "raw_id": "RF-2026-000058",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000058"
+    },
+    {
+      "raw_id": "RF-2026-000059",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000059"
+    },
+    {
+      "raw_id": "RF-2026-000060",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000060"
+    },
+    {
+      "raw_id": "RF-2026-000061",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000061"
+    },
+    {
+      "raw_id": "RF-2026-000062",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000062"
+    },
+    {
+      "raw_id": "RF-2026-000063",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000063"
+    },
+    {
+      "raw_id": "RF-2026-000064",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000064"
+    },
+    {
+      "raw_id": "RF-2026-000065",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000065"
+    },
+    {
+      "raw_id": "RF-2026-000066",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000066"
+    },
+    {
+      "raw_id": "RF-2026-000067",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000067"
+    },
+    {
+      "raw_id": "RF-2026-000068",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000069",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000069"
+    },
+    {
+      "raw_id": "RF-2026-000070",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000070"
+    },
+    {
+      "raw_id": "RF-2026-000071",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000072",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000072"
+    },
+    {
+      "raw_id": "RF-2026-000073",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000073"
+    },
+    {
+      "raw_id": "RF-2026-000074",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000075",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000075"
+    },
+    {
+      "raw_id": "RF-2026-000076",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000076"
+    },
+    {
+      "raw_id": "RF-2026-000077",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000077"
+    },
+    {
+      "raw_id": "RF-2026-000078",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000078"
+    },
+    {
+      "raw_id": "RF-2026-000079",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000079"
+    },
+    {
+      "raw_id": "RF-2026-000080",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000080"
+    },
+    {
+      "raw_id": "RF-2026-000081",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000081"
+    },
+    {
+      "raw_id": "RF-2026-000082",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000082"
+    },
+    {
+      "raw_id": "RF-2026-000083",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000083"
+    },
+    {
+      "raw_id": "RF-2026-000084",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000084"
+    },
+    {
+      "raw_id": "RF-2026-000085",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000085"
+    },
+    {
+      "raw_id": "RF-2026-000086",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000086"
+    },
+    {
+      "raw_id": "RF-2026-000087",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000087"
+    },
+    {
+      "raw_id": "RF-2026-000088",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000088"
+    },
+    {
+      "raw_id": "RF-2026-000089",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000089"
+    },
+    {
+      "raw_id": "RF-2026-000090",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000090"
+    },
+    {
+      "raw_id": "RF-2026-000091",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000091"
+    },
+    {
+      "raw_id": "RF-2026-000092",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000092"
+    },
+    {
+      "raw_id": "RF-2026-000093",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000093"
+    },
+    {
+      "raw_id": "RF-2026-000094",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000094"
+    },
+    {
+      "raw_id": "RF-2026-000095",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000096",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000096"
+    },
+    {
+      "raw_id": "RF-2026-000097",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000097"
+    },
+    {
+      "raw_id": "RF-2026-000098",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000098"
+    },
+    {
+      "raw_id": "RF-2026-000099",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000099"
+    },
+    {
+      "raw_id": "RF-2026-000100",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000100"
+    },
+    {
+      "raw_id": "RF-2026-000101",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000101"
+    },
+    {
+      "raw_id": "RF-2026-000102",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000102"
+    },
+    {
+      "raw_id": "RF-2026-000103",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000103"
+    },
+    {
+      "raw_id": "RF-2026-000104",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000105",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000105"
+    },
+    {
+      "raw_id": "RF-2026-000106",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000107",
+      "selected": false,
+      "reasons": [
+        "insufficient_events",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000108",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000108"
+    },
+    {
+      "raw_id": "RF-2026-000109",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000109"
+    },
+    {
+      "raw_id": "RF-2026-000110",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000110"
+    },
+    {
+      "raw_id": "RF-2026-000111",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000111"
+    },
+    {
+      "raw_id": "RF-2026-000112",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000112"
+    },
+    {
+      "raw_id": "RF-2026-000113",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000113"
+    },
+    {
+      "raw_id": "RF-2026-000114",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000115",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000115"
+    },
+    {
+      "raw_id": "RF-2026-000116",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000116"
+    },
+    {
+      "raw_id": "RF-2026-000117",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000117"
+    },
+    {
+      "raw_id": "RF-2026-000118",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000118"
+    },
+    {
+      "raw_id": "RF-2026-000119",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000119"
+    },
+    {
+      "raw_id": "RF-2026-000120",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000120"
+    },
+    {
+      "raw_id": "RF-2026-000121",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000121"
+    },
+    {
+      "raw_id": "RF-2026-000122",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000122"
+    },
+    {
+      "raw_id": "RF-2026-000123",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000123"
+    },
+    {
+      "raw_id": "RF-2026-000124",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000124"
+    },
+    {
+      "raw_id": "RF-2026-000125",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000125"
+    },
+    {
+      "raw_id": "RF-2026-000126",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000126"
+    },
+    {
+      "raw_id": "RF-2026-000127",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000128",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000128"
+    },
+    {
+      "raw_id": "RF-2026-000129",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000130",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000130"
+    },
+    {
+      "raw_id": "RF-2026-000131",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000131"
+    },
+    {
+      "raw_id": "RF-2026-000132",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000132"
+    },
+    {
+      "raw_id": "RF-2026-000133",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000134",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000135",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000136",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000136"
+    },
+    {
+      "raw_id": "RF-2026-000137",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000137"
+    },
+    {
+      "raw_id": "RF-2026-000138",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000138"
+    },
+    {
+      "raw_id": "RF-2026-000139",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000139"
+    },
+    {
+      "raw_id": "RF-2026-000140",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000140"
+    },
+    {
+      "raw_id": "RF-2026-000141",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000141"
+    },
+    {
+      "raw_id": "RF-2026-000142",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000142"
+    },
+    {
+      "raw_id": "RF-2026-000143",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000143"
+    },
+    {
+      "raw_id": "RF-2026-000144",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000145",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000145"
+    },
+    {
+      "raw_id": "RF-2026-000146",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000146"
+    },
+    {
+      "raw_id": "RF-2026-000147",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000147"
+    },
+    {
+      "raw_id": "RF-2026-000148",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000148"
+    },
+    {
+      "raw_id": "RF-2026-000149",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000149"
+    },
+    {
+      "raw_id": "RF-2026-000150",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000150"
+    },
+    {
+      "raw_id": "RF-2026-000151",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000151"
+    },
+    {
+      "raw_id": "RF-2026-000152",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000153",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000153"
+    },
+    {
+      "raw_id": "RF-2026-000154",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000154"
+    },
+    {
+      "raw_id": "RF-2026-000155",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000155"
+    },
+    {
+      "raw_id": "RF-2026-000156",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000156"
+    },
+    {
+      "raw_id": "RF-2026-000157",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000158",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000159",
+      "selected": false,
+      "reasons": [
+        "insufficient_events",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000160",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000160"
+    },
+    {
+      "raw_id": "RF-2026-000161",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000161"
+    },
+    {
+      "raw_id": "RF-2026-000162",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000162"
+    },
+    {
+      "raw_id": "RF-2026-000163",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000163"
+    },
+    {
+      "raw_id": "RF-2026-000164",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000164"
+    },
+    {
+      "raw_id": "RF-2026-000165",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000166",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000166"
+    },
+    {
+      "raw_id": "RF-2026-000167",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000167"
+    },
+    {
+      "raw_id": "RF-2026-000168",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000168"
+    },
+    {
+      "raw_id": "RF-2026-000169",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000169"
+    },
+    {
+      "raw_id": "RF-2026-000170",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000170"
+    },
+    {
+      "raw_id": "RF-2026-000171",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000171"
+    },
+    {
+      "raw_id": "RF-2026-000172",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000172"
+    },
+    {
+      "raw_id": "RF-2026-000173",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000173"
+    },
+    {
+      "raw_id": "RF-2026-000174",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000174"
+    },
+    {
+      "raw_id": "RF-2026-000175",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000175"
+    },
+    {
+      "raw_id": "RF-2026-000176",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000176"
+    },
+    {
+      "raw_id": "RF-2026-000177",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000177"
+    },
+    {
+      "raw_id": "RF-2026-000178",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000178"
+    },
+    {
+      "raw_id": "RF-2026-000179",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000179"
+    },
+    {
+      "raw_id": "RF-2026-000180",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000180"
+    },
+    {
+      "raw_id": "RF-2026-000181",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000181"
+    },
+    {
+      "raw_id": "RF-2026-000182",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000182"
+    },
+    {
+      "raw_id": "RF-2026-000183",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000183"
+    },
+    {
+      "raw_id": "RF-2026-000184",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000184"
+    },
+    {
+      "raw_id": "RF-2026-000185",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000185"
+    },
+    {
+      "raw_id": "RF-2026-000186",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000186"
+    },
+    {
+      "raw_id": "RF-2026-000187",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000187"
+    },
+    {
+      "raw_id": "RF-2026-000188",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000188"
+    },
+    {
+      "raw_id": "RF-2026-000189",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000189"
+    },
+    {
+      "raw_id": "RF-2026-000190",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000190"
+    },
+    {
+      "raw_id": "RF-2026-000191",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000191"
+    },
+    {
+      "raw_id": "RF-2026-000192",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000192"
+    },
+    {
+      "raw_id": "RF-2026-000193",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000193"
+    },
+    {
+      "raw_id": "RF-2026-000194",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000194"
+    },
+    {
+      "raw_id": "RF-2026-000195",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000195"
+    },
+    {
+      "raw_id": "RF-2026-000196",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000196"
+    },
+    {
+      "raw_id": "RF-2026-000197",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000197"
+    },
+    {
+      "raw_id": "RF-2026-000198",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000198"
+    },
+    {
+      "raw_id": "RF-2026-000199",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000200",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000200"
+    },
+    {
+      "raw_id": "RF-2026-000201",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000201"
+    },
+    {
+      "raw_id": "RF-2026-000202",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000203",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000203"
+    },
+    {
+      "raw_id": "RF-2026-000204",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000204"
+    },
+    {
+      "raw_id": "RF-2026-000205",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000205"
+    },
+    {
+      "raw_id": "RF-2026-000206",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000206"
+    },
+    {
+      "raw_id": "RF-2026-000207",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000207"
+    },
+    {
+      "raw_id": "RF-2026-000208",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000208"
+    },
+    {
+      "raw_id": "RF-2026-000209",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000209"
+    },
+    {
+      "raw_id": "RF-2026-000210",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000210"
+    },
+    {
+      "raw_id": "RF-2026-000211",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000211"
+    },
+    {
+      "raw_id": "RF-2026-000212",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000212"
+    },
+    {
+      "raw_id": "RF-2026-000213",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000213"
+    },
+    {
+      "raw_id": "RF-2026-000214",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000214"
+    },
+    {
+      "raw_id": "RF-2026-000215",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000215"
+    },
+    {
+      "raw_id": "RF-2026-000216",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000216"
+    },
+    {
+      "raw_id": "RF-2026-000217",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000217"
+    },
+    {
+      "raw_id": "RF-2026-000218",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000218"
+    },
+    {
+      "raw_id": "RF-2026-000219",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000219"
+    },
+    {
+      "raw_id": "RF-2026-000220",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000220"
+    },
+    {
+      "raw_id": "RF-2026-000221",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000221"
+    },
+    {
+      "raw_id": "RF-2026-000222",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000222"
+    },
+    {
+      "raw_id": "RF-2026-000223",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000223"
+    },
+    {
+      "raw_id": "RF-2026-000224",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000224"
+    },
+    {
+      "raw_id": "RF-2026-000225",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000225"
+    },
+    {
+      "raw_id": "RF-2026-000226",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000226"
+    },
+    {
+      "raw_id": "RF-2026-000227",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000227"
+    },
+    {
+      "raw_id": "RF-2026-000228",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000228"
+    },
+    {
+      "raw_id": "RF-2026-000229",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000229"
+    },
+    {
+      "raw_id": "RF-2026-000230",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000230"
+    },
+    {
+      "raw_id": "RF-2026-000231",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000232",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000232"
+    },
+    {
+      "raw_id": "RF-2026-000233",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000233"
+    },
+    {
+      "raw_id": "RF-2026-000234",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000234"
+    },
+    {
+      "raw_id": "RF-2026-000235",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000235"
+    },
+    {
+      "raw_id": "RF-2026-000236",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000236"
+    },
+    {
+      "raw_id": "RF-2026-000237",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000238",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000238"
+    },
+    {
+      "raw_id": "RF-2026-000239",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_birth_datetime_and_bazi",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000240",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000240"
+    },
+    {
+      "raw_id": "RF-2026-000241",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000241"
+    },
+    {
+      "raw_id": "RF-2026-000242",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000242"
+    },
+    {
+      "raw_id": "RF-2026-000243",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000243"
+    },
+    {
+      "raw_id": "RF-2026-000244",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000244"
+    },
+    {
+      "raw_id": "RF-2026-000245",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000245"
+    },
+    {
+      "raw_id": "RF-2026-000246",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000246"
+    },
+    {
+      "raw_id": "RF-2026-000247",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000247"
+    },
+    {
+      "raw_id": "RF-2026-000248",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000248"
+    },
+    {
+      "raw_id": "RF-2026-000249",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000249"
+    },
+    {
+      "raw_id": "RF-2026-000250",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000250"
+    },
+    {
+      "raw_id": "RF-2026-000251",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000251"
+    },
+    {
+      "raw_id": "RF-2026-000252",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000252"
+    },
+    {
+      "raw_id": "RF-2026-000253",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000253"
+    },
+    {
+      "raw_id": "RF-2026-000254",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000254"
+    },
+    {
+      "raw_id": "RF-2026-000255",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000255"
+    },
+    {
+      "raw_id": "RF-2026-000256",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000257",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000257"
+    },
+    {
+      "raw_id": "RF-2026-000258",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000258"
+    },
+    {
+      "raw_id": "RF-2026-000259",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000259"
+    },
+    {
+      "raw_id": "RF-2026-000260",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000260"
+    },
+    {
+      "raw_id": "RF-2026-000261",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000261"
+    },
+    {
+      "raw_id": "RF-2026-000262",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000262"
+    },
+    {
+      "raw_id": "RF-2026-000263",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000263"
+    },
+    {
+      "raw_id": "RF-2026-000264",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000264"
+    },
+    {
+      "raw_id": "RF-2026-000265",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000265"
+    },
+    {
+      "raw_id": "RF-2026-000266",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000266"
+    },
+    {
+      "raw_id": "RF-2026-000267",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000267"
+    },
+    {
+      "raw_id": "RF-2026-000268",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000268"
+    },
+    {
+      "raw_id": "RF-2026-000269",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000269"
+    },
+    {
+      "raw_id": "RF-2026-000270",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000270"
+    },
+    {
+      "raw_id": "RF-2026-000271",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000271"
+    },
+    {
+      "raw_id": "RF-2026-000272",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000272"
+    },
+    {
+      "raw_id": "RF-2026-000273",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000273"
+    },
+    {
+      "raw_id": "RF-2026-000274",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000274"
+    },
+    {
+      "raw_id": "RF-2026-000275",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000275"
+    },
+    {
+      "raw_id": "RF-2026-000276",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000276"
+    },
+    {
+      "raw_id": "RF-2026-000277",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000277"
+    },
+    {
+      "raw_id": "RF-2026-000278",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000278"
+    },
+    {
+      "raw_id": "RF-2026-000279",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000279"
+    },
+    {
+      "raw_id": "RF-2026-000280",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000280"
+    },
+    {
+      "raw_id": "RF-2026-000281",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000281"
+    },
+    {
+      "raw_id": "RF-2026-000282",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000282"
+    },
+    {
+      "raw_id": "RF-2026-000283",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000283"
+    },
+    {
+      "raw_id": "RF-2026-000284",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000284"
+    },
+    {
+      "raw_id": "RF-2026-000285",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000285"
+    },
+    {
+      "raw_id": "RF-2026-000286",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000286"
+    },
+    {
+      "raw_id": "RF-2026-000287",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000287"
+    },
+    {
+      "raw_id": "RF-2026-000288",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000288"
+    },
+    {
+      "raw_id": "RF-2026-000289",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000289"
+    },
+    {
+      "raw_id": "RF-2026-000290",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000290"
+    },
+    {
+      "raw_id": "RF-2026-000291",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000291"
+    },
+    {
+      "raw_id": "RF-2026-000292",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000292"
+    },
+    {
+      "raw_id": "RF-2026-000293",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000293"
+    },
+    {
+      "raw_id": "RF-2026-000294",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000295",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000295"
+    },
+    {
+      "raw_id": "RF-2026-000296",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000296"
+    },
+    {
+      "raw_id": "RF-2026-000297",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000297"
+    },
+    {
+      "raw_id": "RF-2026-000298",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000298"
+    },
+    {
+      "raw_id": "RF-2026-000299",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000299"
+    },
+    {
+      "raw_id": "RF-2026-000300",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000300"
+    },
+    {
+      "raw_id": "RF-2026-000301",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000301"
+    },
+    {
+      "raw_id": "RF-2026-000302",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000302"
+    },
+    {
+      "raw_id": "RF-2026-000303",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000303"
+    },
+    {
+      "raw_id": "RF-2026-000304",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000304"
+    },
+    {
+      "raw_id": "RF-2026-000305",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000305"
+    },
+    {
+      "raw_id": "RF-2026-000306",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000306"
+    },
+    {
+      "raw_id": "RF-2026-000307",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000307"
+    },
+    {
+      "raw_id": "RF-2026-000308",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000308"
+    },
+    {
+      "raw_id": "RF-2026-000309",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000309"
+    },
+    {
+      "raw_id": "RF-2026-000310",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000310"
+    },
+    {
+      "raw_id": "RF-2026-000311",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000311"
+    },
+    {
+      "raw_id": "RF-2026-000312",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000312"
+    },
+    {
+      "raw_id": "RF-2026-000313",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000313"
+    },
+    {
+      "raw_id": "RF-2026-000314",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000314"
+    },
+    {
+      "raw_id": "RF-2026-000315",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000316",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000316"
+    },
+    {
+      "raw_id": "RF-2026-000317",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000317"
+    },
+    {
+      "raw_id": "RF-2026-000318",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000318"
+    },
+    {
+      "raw_id": "RF-2026-000319",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000319"
+    },
+    {
+      "raw_id": "RF-2026-000320",
+      "selected": false,
+      "reasons": [
+        "insufficient_events",
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000321",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000321"
+    },
+    {
+      "raw_id": "RF-2026-000322",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000322"
+    },
+    {
+      "raw_id": "RF-2026-000323",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000323"
+    },
+    {
+      "raw_id": "RF-2026-000324",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000324"
+    },
+    {
+      "raw_id": "RF-2026-000325",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000326",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000326"
+    },
+    {
+      "raw_id": "RF-2026-000327",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000327"
+    },
+    {
+      "raw_id": "RF-2026-000328",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000328"
+    },
+    {
+      "raw_id": "RF-2026-000329",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000329"
+    },
+    {
+      "raw_id": "RF-2026-000330",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000330"
+    },
+    {
+      "raw_id": "RF-2026-000331",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000331"
+    },
+    {
+      "raw_id": "RF-2026-000332",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000332"
+    },
+    {
+      "raw_id": "RF-2026-000333",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000333"
+    },
+    {
+      "raw_id": "RF-2026-000334",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000334"
+    },
+    {
+      "raw_id": "RF-2026-000335",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000336",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000336"
+    },
+    {
+      "raw_id": "RF-2026-000337",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000337"
+    },
+    {
+      "raw_id": "RF-2026-000338",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000338"
+    },
+    {
+      "raw_id": "RF-2026-000339",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000339"
+    },
+    {
+      "raw_id": "RF-2026-000340",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000340"
+    },
+    {
+      "raw_id": "RF-2026-000341",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000341"
+    },
+    {
+      "raw_id": "RF-2026-000342",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000342"
+    },
+    {
+      "raw_id": "RF-2026-000343",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000343"
+    },
+    {
+      "raw_id": "RF-2026-000344",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000344"
+    },
+    {
+      "raw_id": "RF-2026-000345",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000345"
+    },
+    {
+      "raw_id": "RF-2026-000346",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000346"
+    },
+    {
+      "raw_id": "RF-2026-000347",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000347"
+    },
+    {
+      "raw_id": "RF-2026-000348",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000349",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000350",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000350"
+    },
+    {
+      "raw_id": "RF-2026-000351",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000352",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000352"
+    },
+    {
+      "raw_id": "RF-2026-000353",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000353"
+    },
+    {
+      "raw_id": "RF-2026-000354",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000354"
+    },
+    {
+      "raw_id": "RF-2026-000355",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000355"
+    },
+    {
+      "raw_id": "RF-2026-000356",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000356"
+    },
+    {
+      "raw_id": "RF-2026-000357",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000357"
+    },
+    {
+      "raw_id": "RF-2026-000358",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000358"
+    },
+    {
+      "raw_id": "RF-2026-000359",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000359"
+    },
+    {
+      "raw_id": "RF-2026-000360",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000360"
+    },
+    {
+      "raw_id": "RF-2026-000361",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000361"
+    },
+    {
+      "raw_id": "RF-2026-000362",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000362"
+    },
+    {
+      "raw_id": "RF-2026-000363",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000363"
+    },
+    {
+      "raw_id": "RF-2026-000364",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000364"
+    },
+    {
+      "raw_id": "RF-2026-000365",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000365"
+    },
+    {
+      "raw_id": "RF-2026-000366",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000366"
+    },
+    {
+      "raw_id": "RF-2026-000367",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000367"
+    },
+    {
+      "raw_id": "RF-2026-000368",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000369",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000369"
+    },
+    {
+      "raw_id": "RF-2026-000370",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000370"
+    },
+    {
+      "raw_id": "RF-2026-000371",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000371"
+    },
+    {
+      "raw_id": "RF-2026-000372",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000372"
+    },
+    {
+      "raw_id": "RF-2026-000373",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000373"
+    },
+    {
+      "raw_id": "RF-2026-000374",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000374"
+    },
+    {
+      "raw_id": "RF-2026-000375",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000375"
+    },
+    {
+      "raw_id": "RF-2026-000376",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000376"
+    },
+    {
+      "raw_id": "RF-2026-000377",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000377"
+    },
+    {
+      "raw_id": "RF-2026-000378",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000378"
+    },
+    {
+      "raw_id": "RF-2026-000379",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000379"
+    },
+    {
+      "raw_id": "RF-2026-000380",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000380"
+    },
+    {
+      "raw_id": "RF-2026-000381",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000381"
+    },
+    {
+      "raw_id": "RF-2026-000382",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000382"
+    },
+    {
+      "raw_id": "RF-2026-000383",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000383"
+    },
+    {
+      "raw_id": "RF-2026-000384",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000384"
+    },
+    {
+      "raw_id": "RF-2026-000385",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000386",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000386"
+    },
+    {
+      "raw_id": "RF-2026-000387",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000387"
+    },
+    {
+      "raw_id": "RF-2026-000388",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000388"
+    },
+    {
+      "raw_id": "RF-2026-000389",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000389"
+    },
+    {
+      "raw_id": "RF-2026-000390",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000390"
+    },
+    {
+      "raw_id": "RF-2026-000391",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000391"
+    },
+    {
+      "raw_id": "RF-2026-000392",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000392"
+    },
+    {
+      "raw_id": "RF-2026-000393",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000393"
+    },
+    {
+      "raw_id": "RF-2026-000394",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000394"
+    },
+    {
+      "raw_id": "RF-2026-000395",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000395"
+    },
+    {
+      "raw_id": "RF-2026-000396",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000396"
+    },
+    {
+      "raw_id": "RF-2026-000397",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000397"
+    },
+    {
+      "raw_id": "RF-2026-000398",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000398"
+    },
+    {
+      "raw_id": "RF-2026-000399",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000399"
+    },
+    {
+      "raw_id": "RF-2026-000400",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000400"
+    },
+    {
+      "raw_id": "RF-2026-000401",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000401"
+    },
+    {
+      "raw_id": "RF-2026-000402",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000402"
+    },
+    {
+      "raw_id": "RF-2026-000403",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000403"
+    },
+    {
+      "raw_id": "RF-2026-000404",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000404"
+    },
+    {
+      "raw_id": "RF-2026-000405",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000406",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000406"
+    },
+    {
+      "raw_id": "RF-2026-000407",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000407"
+    },
+    {
+      "raw_id": "RF-2026-000408",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000408"
+    },
+    {
+      "raw_id": "RF-2026-000409",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000409"
+    },
+    {
+      "raw_id": "RF-2026-000410",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000410"
+    },
+    {
+      "raw_id": "RF-2026-000411",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000411"
+    },
+    {
+      "raw_id": "RF-2026-000412",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000412"
+    },
+    {
+      "raw_id": "RF-2026-000413",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000413"
+    },
+    {
+      "raw_id": "RF-2026-000414",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000414"
+    },
+    {
+      "raw_id": "RF-2026-000415",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000415"
+    },
+    {
+      "raw_id": "RF-2026-000416",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000416"
+    },
+    {
+      "raw_id": "RF-2026-000417",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000417"
+    },
+    {
+      "raw_id": "RF-2026-000418",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000418"
+    },
+    {
+      "raw_id": "RF-2026-000419",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000419"
+    },
+    {
+      "raw_id": "RF-2026-000420",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000420"
+    },
+    {
+      "raw_id": "RF-2026-000421",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000421"
+    },
+    {
+      "raw_id": "RF-2026-000422",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000422"
+    },
+    {
+      "raw_id": "RF-2026-000423",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000423"
+    },
+    {
+      "raw_id": "RF-2026-000424",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000424"
+    },
+    {
+      "raw_id": "RF-2026-000425",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000426",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000427",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000427"
+    },
+    {
+      "raw_id": "RF-2026-000428",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000428"
+    },
+    {
+      "raw_id": "RF-2026-000429",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000429"
+    },
+    {
+      "raw_id": "RF-2026-000430",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000430"
+    },
+    {
+      "raw_id": "RF-2026-000431",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000431"
+    },
+    {
+      "raw_id": "RF-2026-000432",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000432"
+    },
+    {
+      "raw_id": "RF-2026-000433",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000433"
+    },
+    {
+      "raw_id": "RF-2026-000434",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000434"
+    },
+    {
+      "raw_id": "RF-2026-000435",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000435"
+    },
+    {
+      "raw_id": "RF-2026-000436",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000436"
+    },
+    {
+      "raw_id": "RF-2026-000437",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000437"
+    },
+    {
+      "raw_id": "RF-2026-000438",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000438"
+    },
+    {
+      "raw_id": "RF-2026-000439",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000439"
+    },
+    {
+      "raw_id": "RF-2026-000440",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000440"
+    },
+    {
+      "raw_id": "RF-2026-000441",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000441"
+    },
+    {
+      "raw_id": "RF-2026-000442",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000442"
+    },
+    {
+      "raw_id": "RF-2026-000443",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000443"
+    },
+    {
+      "raw_id": "RF-2026-000444",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000444"
+    },
+    {
+      "raw_id": "RF-2026-000445",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000445"
+    },
+    {
+      "raw_id": "RF-2026-000446",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000446"
+    },
+    {
+      "raw_id": "RF-2026-000447",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000447"
+    },
+    {
+      "raw_id": "RF-2026-000448",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000448"
+    },
+    {
+      "raw_id": "RF-2026-000449",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000449"
+    },
+    {
+      "raw_id": "RF-2026-000450",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000450"
+    },
+    {
+      "raw_id": "RF-2026-000451",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000451"
+    },
+    {
+      "raw_id": "RF-2026-000452",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000452"
+    },
+    {
+      "raw_id": "RF-2026-000453",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000453"
+    },
+    {
+      "raw_id": "RF-2026-000454",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000455",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000455"
+    },
+    {
+      "raw_id": "RF-2026-000456",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000456"
+    },
+    {
+      "raw_id": "RF-2026-000457",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000457"
+    },
+    {
+      "raw_id": "RF-2026-000458",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000458"
+    },
+    {
+      "raw_id": "RF-2026-000459",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000459"
+    },
+    {
+      "raw_id": "RF-2026-000460",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000460"
+    },
+    {
+      "raw_id": "RF-2026-000461",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000461"
+    },
+    {
+      "raw_id": "RF-2026-000462",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000462"
+    },
+    {
+      "raw_id": "RF-2026-000463",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000463"
+    },
+    {
+      "raw_id": "RF-2026-000464",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000464"
+    },
+    {
+      "raw_id": "RF-2026-000465",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000465"
+    },
+    {
+      "raw_id": "RF-2026-000466",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000466"
+    },
+    {
+      "raw_id": "RF-2026-000467",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000467"
+    },
+    {
+      "raw_id": "RF-2026-000468",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000468"
+    },
+    {
+      "raw_id": "RF-2026-000469",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000469"
+    },
+    {
+      "raw_id": "RF-2026-000470",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000470"
+    },
+    {
+      "raw_id": "RF-2026-000471",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000471"
+    },
+    {
+      "raw_id": "RF-2026-000472",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000472"
+    },
+    {
+      "raw_id": "RF-2026-000473",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000473"
+    },
+    {
+      "raw_id": "RF-2026-000474",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000474"
+    },
+    {
+      "raw_id": "RF-2026-000475",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000475"
+    },
+    {
+      "raw_id": "RF-2026-000476",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000476"
+    },
+    {
+      "raw_id": "RF-2026-000477",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000477"
+    },
+    {
+      "raw_id": "RF-2026-000478",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000478"
+    },
+    {
+      "raw_id": "RF-2026-000479",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000479"
+    },
+    {
+      "raw_id": "RF-2026-000480",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000480"
+    },
+    {
+      "raw_id": "RF-2026-000481",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000481"
+    },
+    {
+      "raw_id": "RF-2026-000482",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000482"
+    },
+    {
+      "raw_id": "RF-2026-000483",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000483"
+    },
+    {
+      "raw_id": "RF-2026-000484",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000484"
+    },
+    {
+      "raw_id": "RF-2026-000485",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000485"
+    },
+    {
+      "raw_id": "RF-2026-000486",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000487",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000487"
+    },
+    {
+      "raw_id": "RF-2026-000488",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000489",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000489"
+    },
+    {
+      "raw_id": "RF-2026-000490",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000490"
+    },
+    {
+      "raw_id": "RF-2026-000491",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000491"
+    },
+    {
+      "raw_id": "RF-2026-000492",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000492"
+    },
+    {
+      "raw_id": "RF-2026-000493",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000493"
+    },
+    {
+      "raw_id": "RF-2026-000494",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000494"
+    },
+    {
+      "raw_id": "RF-2026-000495",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000495"
+    },
+    {
+      "raw_id": "RF-2026-000496",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000496"
+    },
+    {
+      "raw_id": "RF-2026-000497",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000497"
+    },
+    {
+      "raw_id": "RF-2026-000498",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000498"
+    },
+    {
+      "raw_id": "RF-2026-000499",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000499"
+    },
+    {
+      "raw_id": "RF-2026-000500",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000500"
+    },
+    {
+      "raw_id": "RF-2026-000501",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000501"
+    },
+    {
+      "raw_id": "RF-2026-000502",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000502"
+    },
+    {
+      "raw_id": "RF-2026-000503",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000503"
+    },
+    {
+      "raw_id": "RF-2026-000504",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000504"
+    },
+    {
+      "raw_id": "RF-2026-000505",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000505"
+    },
+    {
+      "raw_id": "RF-2026-000506",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000506"
+    },
+    {
+      "raw_id": "RF-2026-000507",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000507"
+    },
+    {
+      "raw_id": "RF-2026-000508",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000508"
+    },
+    {
+      "raw_id": "RF-2026-000509",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000509"
+    },
+    {
+      "raw_id": "RF-2026-000510",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000510"
+    },
+    {
+      "raw_id": "RF-2026-000511",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000511"
+    },
+    {
+      "raw_id": "RF-2026-000512",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000512"
+    },
+    {
+      "raw_id": "RF-2026-000513",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000513"
+    },
+    {
+      "raw_id": "RF-2026-000514",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000514"
+    },
+    {
+      "raw_id": "RF-2026-000515",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000515"
+    },
+    {
+      "raw_id": "RF-2026-000516",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000517",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000517"
+    },
+    {
+      "raw_id": "RF-2026-000518",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000518"
+    },
+    {
+      "raw_id": "RF-2026-000519",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000519"
+    },
+    {
+      "raw_id": "RF-2026-000520",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000520"
+    },
+    {
+      "raw_id": "RF-2026-000521",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000521"
+    },
+    {
+      "raw_id": "RF-2026-000522",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000522"
+    },
+    {
+      "raw_id": "RF-2026-000523",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000523"
+    },
+    {
+      "raw_id": "RF-2026-000524",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000524"
+    },
+    {
+      "raw_id": "RF-2026-000525",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000526",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000526"
+    },
+    {
+      "raw_id": "RF-2026-000527",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000527"
+    },
+    {
+      "raw_id": "RF-2026-000528",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000528"
+    },
+    {
+      "raw_id": "RF-2026-000529",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000529"
+    },
+    {
+      "raw_id": "RF-2026-000530",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000530"
+    },
+    {
+      "raw_id": "RF-2026-000531",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000531"
+    },
+    {
+      "raw_id": "RF-2026-000532",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000532"
+    },
+    {
+      "raw_id": "RF-2026-000533",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000533"
+    },
+    {
+      "raw_id": "RF-2026-000534",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000534"
+    },
+    {
+      "raw_id": "RF-2026-000535",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000535"
+    },
+    {
+      "raw_id": "RF-2026-000536",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000536"
+    },
+    {
+      "raw_id": "RF-2026-000537",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000537"
+    },
+    {
+      "raw_id": "RF-2026-000538",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000538"
+    },
+    {
+      "raw_id": "RF-2026-000539",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000540",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000540"
+    },
+    {
+      "raw_id": "RF-2026-000541",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000541"
+    },
+    {
+      "raw_id": "RF-2026-000542",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000542"
+    },
+    {
+      "raw_id": "RF-2026-000543",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000543"
+    },
+    {
+      "raw_id": "RF-2026-000544",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000544"
+    },
+    {
+      "raw_id": "RF-2026-000545",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000545"
+    },
+    {
+      "raw_id": "RF-2026-000546",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000546"
+    },
+    {
+      "raw_id": "RF-2026-000547",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000547"
+    },
+    {
+      "raw_id": "RF-2026-000548",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000548"
+    },
+    {
+      "raw_id": "RF-2026-000549",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000550",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000550"
+    },
+    {
+      "raw_id": "RF-2026-000551",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000551"
+    },
+    {
+      "raw_id": "RF-2026-000552",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000552"
+    },
+    {
+      "raw_id": "RF-2026-000553",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000554",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000554"
+    },
+    {
+      "raw_id": "RF-2026-000555",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000555"
+    },
+    {
+      "raw_id": "RF-2026-000556",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000556"
+    },
+    {
+      "raw_id": "RF-2026-000557",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000557"
+    },
+    {
+      "raw_id": "RF-2026-000558",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000558"
+    },
+    {
+      "raw_id": "RF-2026-000559",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000559"
+    },
+    {
+      "raw_id": "RF-2026-000560",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000560"
+    },
+    {
+      "raw_id": "RF-2026-000561",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000561"
+    },
+    {
+      "raw_id": "RF-2026-000562",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000563",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000563"
+    },
+    {
+      "raw_id": "RF-2026-000564",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000565",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000565"
+    },
+    {
+      "raw_id": "RF-2026-000566",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000566"
+    },
+    {
+      "raw_id": "RF-2026-000567",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000567"
+    },
+    {
+      "raw_id": "RF-2026-000568",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000568"
+    },
+    {
+      "raw_id": "RF-2026-000569",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000569"
+    },
+    {
+      "raw_id": "RF-2026-000570",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000570"
+    },
+    {
+      "raw_id": "RF-2026-000571",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000571"
+    },
+    {
+      "raw_id": "RF-2026-000572",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000572"
+    },
+    {
+      "raw_id": "RF-2026-000573",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000573"
+    },
+    {
+      "raw_id": "RF-2026-000574",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000574"
+    },
+    {
+      "raw_id": "RF-2026-000575",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000576",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000576"
+    },
+    {
+      "raw_id": "RF-2026-000577",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000577"
+    },
+    {
+      "raw_id": "RF-2026-000578",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000578"
+    },
+    {
+      "raw_id": "RF-2026-000579",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000579"
+    },
+    {
+      "raw_id": "RF-2026-000580",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000580"
+    },
+    {
+      "raw_id": "RF-2026-000581",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000581"
+    },
+    {
+      "raw_id": "RF-2026-000582",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000582"
+    },
+    {
+      "raw_id": "RF-2026-000583",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000583"
+    },
+    {
+      "raw_id": "RF-2026-000584",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000584"
+    },
+    {
+      "raw_id": "RF-2026-000585",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000585"
+    },
+    {
+      "raw_id": "RF-2026-000586",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000586"
+    },
+    {
+      "raw_id": "RF-2026-000587",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000587"
+    },
+    {
+      "raw_id": "RF-2026-000588",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000588"
+    },
+    {
+      "raw_id": "RF-2026-000589",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000589"
+    },
+    {
+      "raw_id": "RF-2026-000590",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000590"
+    },
+    {
+      "raw_id": "RF-2026-000591",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000591"
+    },
+    {
+      "raw_id": "RF-2026-000592",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000592"
+    },
+    {
+      "raw_id": "RF-2026-000593",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000593"
+    },
+    {
+      "raw_id": "RF-2026-000594",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000594"
+    },
+    {
+      "raw_id": "RF-2026-000595",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000595"
+    },
+    {
+      "raw_id": "RF-2026-000596",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "missing_qian_kun",
+        "missing_birth_datetime_and_bazi"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000597",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000597"
+    },
+    {
+      "raw_id": "RF-2026-000598",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000598"
+    },
+    {
+      "raw_id": "RF-2026-000599",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000599"
+    },
+    {
+      "raw_id": "RF-2026-000600",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000600"
+    },
+    {
+      "raw_id": "RF-2026-000601",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000601"
+    },
+    {
+      "raw_id": "RF-2026-000602",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000602"
+    },
+    {
+      "raw_id": "RF-2026-000603",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000603"
+    },
+    {
+      "raw_id": "RF-2026-000604",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000605",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000605"
+    },
+    {
+      "raw_id": "RF-2026-000606",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000606"
+    },
+    {
+      "raw_id": "RF-2026-000607",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000607"
+    },
+    {
+      "raw_id": "RF-2026-000608",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000609",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000609"
+    },
+    {
+      "raw_id": "RF-2026-000610",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000610"
+    },
+    {
+      "raw_id": "RF-2026-000611",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000611"
+    },
+    {
+      "raw_id": "RF-2026-000612",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000612"
+    },
+    {
+      "raw_id": "RF-2026-000613",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000613"
+    },
+    {
+      "raw_id": "RF-2026-000614",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000615",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000615"
+    },
+    {
+      "raw_id": "RF-2026-000616",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000616"
+    },
+    {
+      "raw_id": "RF-2026-000617",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000617"
+    },
+    {
+      "raw_id": "RF-2026-000618",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000618"
+    },
+    {
+      "raw_id": "RF-2026-000619",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000619"
+    },
+    {
+      "raw_id": "RF-2026-000620",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000620"
+    },
+    {
+      "raw_id": "RF-2026-000621",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000621"
+    },
+    {
+      "raw_id": "RF-2026-000622",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000622"
+    },
+    {
+      "raw_id": "RF-2026-000623",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000623"
+    },
+    {
+      "raw_id": "RF-2026-000624",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000624"
+    },
+    {
+      "raw_id": "RF-2026-000625",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000625"
+    },
+    {
+      "raw_id": "RF-2026-000626",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000626"
+    },
+    {
+      "raw_id": "RF-2026-000627",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000627"
+    },
+    {
+      "raw_id": "RF-2026-000628",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000628"
+    },
+    {
+      "raw_id": "RF-2026-000629",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000629"
+    },
+    {
+      "raw_id": "RF-2026-000630",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000631",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000631"
+    },
+    {
+      "raw_id": "RF-2026-000632",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000632"
+    },
+    {
+      "raw_id": "RF-2026-000633",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000633"
+    },
+    {
+      "raw_id": "RF-2026-000634",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000634"
+    },
+    {
+      "raw_id": "RF-2026-000635",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000635"
+    },
+    {
+      "raw_id": "RF-2026-000636",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000636"
+    },
+    {
+      "raw_id": "RF-2026-000637",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000638",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000638"
+    },
+    {
+      "raw_id": "RF-2026-000639",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000639"
+    },
+    {
+      "raw_id": "RF-2026-000640",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000641",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000641"
+    },
+    {
+      "raw_id": "RF-2026-000642",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000643",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000643"
+    },
+    {
+      "raw_id": "RF-2026-000644",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000644"
+    },
+    {
+      "raw_id": "RF-2026-000645",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000645"
+    },
+    {
+      "raw_id": "RF-2026-000646",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000646"
+    },
+    {
+      "raw_id": "RF-2026-000647",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000647"
+    },
+    {
+      "raw_id": "RF-2026-000648",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000648"
+    },
+    {
+      "raw_id": "RF-2026-000649",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000649"
+    },
+    {
+      "raw_id": "RF-2026-000650",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000650"
+    },
+    {
+      "raw_id": "RF-2026-000651",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000651"
+    },
+    {
+      "raw_id": "RF-2026-000652",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000652"
+    },
+    {
+      "raw_id": "RF-2026-000653",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000653"
+    },
+    {
+      "raw_id": "RF-2026-000654",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000654"
+    },
+    {
+      "raw_id": "RF-2026-000655",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000655"
+    },
+    {
+      "raw_id": "RF-2026-000656",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000656"
+    },
+    {
+      "raw_id": "RF-2026-000657",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000657"
+    },
+    {
+      "raw_id": "RF-2026-000658",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000658"
+    },
+    {
+      "raw_id": "RF-2026-000659",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000659"
+    },
+    {
+      "raw_id": "RF-2026-000660",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000660"
+    },
+    {
+      "raw_id": "RF-2026-000661",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000661"
+    },
+    {
+      "raw_id": "RF-2026-000662",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000662"
+    },
+    {
+      "raw_id": "RF-2026-000663",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000663"
+    },
+    {
+      "raw_id": "RF-2026-000664",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000664"
+    },
+    {
+      "raw_id": "RF-2026-000665",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000665"
+    },
+    {
+      "raw_id": "RF-2026-000666",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000666"
+    },
+    {
+      "raw_id": "RF-2026-000667",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000667"
+    },
+    {
+      "raw_id": "RF-2026-000668",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000668"
+    },
+    {
+      "raw_id": "RF-2026-000669",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000669"
+    },
+    {
+      "raw_id": "RF-2026-000670",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000670"
+    },
+    {
+      "raw_id": "RF-2026-000671",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000671"
+    },
+    {
+      "raw_id": "RF-2026-000672",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000672"
+    },
+    {
+      "raw_id": "RF-2026-000673",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000673"
+    },
+    {
+      "raw_id": "RF-2026-000674",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000674"
+    },
+    {
+      "raw_id": "RF-2026-000675",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000675"
+    },
+    {
+      "raw_id": "RF-2026-000676",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000676"
+    },
+    {
+      "raw_id": "RF-2026-000677",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000677"
+    },
+    {
+      "raw_id": "RF-2026-000678",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000678"
+    },
+    {
+      "raw_id": "RF-2026-000679",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000679"
+    },
+    {
+      "raw_id": "RF-2026-000680",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000680"
+    },
+    {
+      "raw_id": "RF-2026-000681",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000681"
+    },
+    {
+      "raw_id": "RF-2026-000682",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000682"
+    },
+    {
+      "raw_id": "RF-2026-000683",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000683"
+    },
+    {
+      "raw_id": "RF-2026-000684",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000684"
+    },
+    {
+      "raw_id": "RF-2026-000685",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000685"
+    },
+    {
+      "raw_id": "RF-2026-000686",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000686"
+    },
+    {
+      "raw_id": "RF-2026-000687",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000687"
+    },
+    {
+      "raw_id": "RF-2026-000688",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000688"
+    },
+    {
+      "raw_id": "RF-2026-000689",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000689"
+    },
+    {
+      "raw_id": "RF-2026-000690",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000690"
+    },
+    {
+      "raw_id": "RF-2026-000691",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000691"
+    },
+    {
+      "raw_id": "RF-2026-000692",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000692"
+    },
+    {
+      "raw_id": "RF-2026-000693",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000693"
+    },
+    {
+      "raw_id": "RF-2026-000694",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000694"
+    },
+    {
+      "raw_id": "RF-2026-000695",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000695"
+    },
+    {
+      "raw_id": "RF-2026-000696",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000696"
+    },
+    {
+      "raw_id": "RF-2026-000697",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000697"
+    },
+    {
+      "raw_id": "RF-2026-000698",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000699",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000699"
+    },
+    {
+      "raw_id": "RF-2026-000700",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000701",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000701"
+    },
+    {
+      "raw_id": "RF-2026-000702",
+      "selected": false,
+      "reasons": [
+        "missing_qian_kun"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000703",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000703"
+    },
+    {
+      "raw_id": "RF-2026-000704",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000704"
+    },
+    {
+      "raw_id": "RF-2026-000705",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000705"
+    },
+    {
+      "raw_id": "RF-2026-000706",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000707",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000708",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000708"
+    },
+    {
+      "raw_id": "RF-2026-000709",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000709"
+    },
+    {
+      "raw_id": "RF-2026-000710",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000710"
+    },
+    {
+      "raw_id": "RF-2026-000711",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000712",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000712"
+    },
+    {
+      "raw_id": "RF-2026-000713",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000713"
+    },
+    {
+      "raw_id": "RF-2026-000714",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000714"
+    },
+    {
+      "raw_id": "RF-2026-000715",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000715"
+    },
+    {
+      "raw_id": "RF-2026-000716",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000716"
+    },
+    {
+      "raw_id": "RF-2026-000717",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000717"
+    },
+    {
+      "raw_id": "RF-2026-000718",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000718"
+    },
+    {
+      "raw_id": "RF-2026-000719",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000719"
+    },
+    {
+      "raw_id": "RF-2026-000720",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000720"
+    },
+    {
+      "raw_id": "RF-2026-000721",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000721"
+    },
+    {
+      "raw_id": "RF-2026-000722",
+      "selected": false,
+      "reasons": [
+        "grade_not_selected",
+        "unsafe_quality_flag"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000723",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000724",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000724"
+    },
+    {
+      "raw_id": "RF-2026-000725",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000725"
+    },
+    {
+      "raw_id": "RF-2026-000726",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000726"
+    },
+    {
+      "raw_id": "RF-2026-000727",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000727"
+    },
+    {
+      "raw_id": "RF-2026-000728",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000728"
+    },
+    {
+      "raw_id": "RF-2026-000729",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000729"
+    },
+    {
+      "raw_id": "RF-2026-000730",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000730"
+    },
+    {
+      "raw_id": "RF-2026-000731",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000731"
+    },
+    {
+      "raw_id": "RF-2026-000732",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000732"
+    },
+    {
+      "raw_id": "RF-2026-000733",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000733"
+    },
+    {
+      "raw_id": "RF-2026-000734",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000734"
+    },
+    {
+      "raw_id": "RF-2026-000735",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000735"
+    },
+    {
+      "raw_id": "RF-2026-000736",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000736"
+    },
+    {
+      "raw_id": "RF-2026-000737",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000737"
+    },
+    {
+      "raw_id": "RF-2026-000738",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000738"
+    },
+    {
+      "raw_id": "RF-2026-000739",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000739"
+    },
+    {
+      "raw_id": "RF-2026-000740",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000740"
+    },
+    {
+      "raw_id": "RF-2026-000741",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000741"
+    },
+    {
+      "raw_id": "RF-2026-000742",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000742"
+    },
+    {
+      "raw_id": "RF-2026-000743",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000743"
+    },
+    {
+      "raw_id": "RF-2026-000744",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000744"
+    },
+    {
+      "raw_id": "RF-2026-000745",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000745"
+    },
+    {
+      "raw_id": "RF-2026-000746",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000746"
+    },
+    {
+      "raw_id": "RF-2026-000747",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000747"
+    },
+    {
+      "raw_id": "RF-2026-000748",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000748"
+    },
+    {
+      "raw_id": "RF-2026-000749",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000750",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000751",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000751"
+    },
+    {
+      "raw_id": "RF-2026-000752",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000752"
+    },
+    {
+      "raw_id": "RF-2026-000753",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000753"
+    },
+    {
+      "raw_id": "RF-2026-000754",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000754"
+    },
+    {
+      "raw_id": "RF-2026-000755",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000755"
+    },
+    {
+      "raw_id": "RF-2026-000756",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000757",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000757"
+    },
+    {
+      "raw_id": "RF-2026-000758",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000758"
+    },
+    {
+      "raw_id": "RF-2026-000759",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000759"
+    },
+    {
+      "raw_id": "RF-2026-000760",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000760"
+    },
+    {
+      "raw_id": "RF-2026-000761",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000762",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000762"
+    },
+    {
+      "raw_id": "RF-2026-000763",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000763"
+    },
+    {
+      "raw_id": "RF-2026-000764",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000764"
+    },
+    {
+      "raw_id": "RF-2026-000765",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000765"
+    },
+    {
+      "raw_id": "RF-2026-000766",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000766"
+    },
+    {
+      "raw_id": "RF-2026-000767",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000767"
+    },
+    {
+      "raw_id": "RF-2026-000768",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000768"
+    },
+    {
+      "raw_id": "RF-2026-000769",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000769"
+    },
+    {
+      "raw_id": "RF-2026-000770",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000770"
+    },
+    {
+      "raw_id": "RF-2026-000771",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000771"
+    },
+    {
+      "raw_id": "RF-2026-000772",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000772"
+    },
+    {
+      "raw_id": "RF-2026-000773",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000773"
+    },
+    {
+      "raw_id": "RF-2026-000774",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000774"
+    },
+    {
+      "raw_id": "RF-2026-000775",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000775"
+    },
+    {
+      "raw_id": "RF-2026-000776",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000776"
+    },
+    {
+      "raw_id": "RF-2026-000777",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000777"
+    },
+    {
+      "raw_id": "RF-2026-000778",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000779",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000780",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000780"
+    },
+    {
+      "raw_id": "RF-2026-000781",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000781"
+    },
+    {
+      "raw_id": "RF-2026-000782",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000782"
+    },
+    {
+      "raw_id": "RF-2026-000783",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000783"
+    },
+    {
+      "raw_id": "RF-2026-000784",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000784"
+    },
+    {
+      "raw_id": "RF-2026-000785",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000785"
+    },
+    {
+      "raw_id": "RF-2026-000786",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000786"
+    },
+    {
+      "raw_id": "RF-2026-000787",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000787"
+    },
+    {
+      "raw_id": "RF-2026-000788",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000788"
+    },
+    {
+      "raw_id": "RF-2026-000789",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000789"
+    },
+    {
+      "raw_id": "RF-2026-000790",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000790"
+    },
+    {
+      "raw_id": "RF-2026-000791",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000791"
+    },
+    {
+      "raw_id": "RF-2026-000792",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000792"
+    },
+    {
+      "raw_id": "RF-2026-000793",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000793"
+    },
+    {
+      "raw_id": "RF-2026-000794",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000794"
+    },
+    {
+      "raw_id": "RF-2026-000795",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000795"
+    },
+    {
+      "raw_id": "RF-2026-000796",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000796"
+    },
+    {
+      "raw_id": "RF-2026-000797",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000797"
+    },
+    {
+      "raw_id": "RF-2026-000798",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000798"
+    },
+    {
+      "raw_id": "RF-2026-000799",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000799"
+    },
+    {
+      "raw_id": "RF-2026-000800",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000800"
+    },
+    {
+      "raw_id": "RF-2026-000801",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000801"
+    },
+    {
+      "raw_id": "RF-2026-000802",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000802"
+    },
+    {
+      "raw_id": "RF-2026-000803",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000803"
+    },
+    {
+      "raw_id": "RF-2026-000804",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000804"
+    },
+    {
+      "raw_id": "RF-2026-000805",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000805"
+    },
+    {
+      "raw_id": "RF-2026-000806",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000806"
+    },
+    {
+      "raw_id": "RF-2026-000807",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000807"
+    },
+    {
+      "raw_id": "RF-2026-000808",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000809",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000810",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000811",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000812",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000813",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000813"
+    },
+    {
+      "raw_id": "RF-2026-000814",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000814"
+    },
+    {
+      "raw_id": "RF-2026-000815",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000815"
+    },
+    {
+      "raw_id": "RF-2026-000816",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000816"
+    },
+    {
+      "raw_id": "RF-2026-000817",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000817"
+    },
+    {
+      "raw_id": "RF-2026-000818",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000818"
+    },
+    {
+      "raw_id": "RF-2026-000819",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000819"
+    },
+    {
+      "raw_id": "RF-2026-000820",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000820"
+    },
+    {
+      "raw_id": "RF-2026-000821",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000821"
+    },
+    {
+      "raw_id": "RF-2026-000822",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000822"
+    },
+    {
+      "raw_id": "RF-2026-000823",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000823"
+    },
+    {
+      "raw_id": "RF-2026-000824",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000824"
+    },
+    {
+      "raw_id": "RF-2026-000825",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000825"
+    },
+    {
+      "raw_id": "RF-2026-000826",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000826"
+    },
+    {
+      "raw_id": "RF-2026-000827",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000827"
+    },
+    {
+      "raw_id": "RF-2026-000828",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000828"
+    },
+    {
+      "raw_id": "RF-2026-000829",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000829"
+    },
+    {
+      "raw_id": "RF-2026-000830",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000830"
+    },
+    {
+      "raw_id": "RF-2026-000831",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000831"
+    },
+    {
+      "raw_id": "RF-2026-000832",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000832"
+    },
+    {
+      "raw_id": "RF-2026-000833",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000833"
+    },
+    {
+      "raw_id": "RF-2026-000834",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000834"
+    },
+    {
+      "raw_id": "RF-2026-000835",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000835"
+    },
+    {
+      "raw_id": "RF-2026-000836",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000836"
+    },
+    {
+      "raw_id": "RF-2026-000837",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000837"
+    },
+    {
+      "raw_id": "RF-2026-000838",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000838"
+    },
+    {
+      "raw_id": "RF-2026-000839",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000839"
+    },
+    {
+      "raw_id": "RF-2026-000840",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000840"
+    },
+    {
+      "raw_id": "RF-2026-000841",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000841"
+    },
+    {
+      "raw_id": "RF-2026-000842",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000842"
+    },
+    {
+      "raw_id": "RF-2026-000843",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000843"
+    },
+    {
+      "raw_id": "RF-2026-000844",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000844"
+    },
+    {
+      "raw_id": "RF-2026-000845",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000845"
+    },
+    {
+      "raw_id": "RF-2026-000846",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000846"
+    },
+    {
+      "raw_id": "RF-2026-000847",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000847"
+    },
+    {
+      "raw_id": "RF-2026-000848",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000848"
+    },
+    {
+      "raw_id": "RF-2026-000849",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000849"
+    },
+    {
+      "raw_id": "RF-2026-000850",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000850"
+    },
+    {
+      "raw_id": "RF-2026-000851",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000851"
+    },
+    {
+      "raw_id": "RF-2026-000852",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000852"
+    },
+    {
+      "raw_id": "RF-2026-000853",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000853"
+    },
+    {
+      "raw_id": "RF-2026-000854",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000854"
+    },
+    {
+      "raw_id": "RF-2026-000855",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000855"
+    },
+    {
+      "raw_id": "RF-2026-000856",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000856"
+    },
+    {
+      "raw_id": "RF-2026-000857",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000857"
+    },
+    {
+      "raw_id": "RF-2026-000858",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000858"
+    },
+    {
+      "raw_id": "RF-2026-000859",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000859"
+    },
+    {
+      "raw_id": "RF-2026-000860",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000860"
+    },
+    {
+      "raw_id": "RF-2026-000861",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000861"
+    },
+    {
+      "raw_id": "RF-2026-000862",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000862"
+    },
+    {
+      "raw_id": "RF-2026-000863",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000863"
+    },
+    {
+      "raw_id": "RF-2026-000864",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000864"
+    },
+    {
+      "raw_id": "RF-2026-000865",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000865"
+    },
+    {
+      "raw_id": "RF-2026-000866",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000866"
+    },
+    {
+      "raw_id": "RF-2026-000867",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000867"
+    },
+    {
+      "raw_id": "RF-2026-000868",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000868"
+    },
+    {
+      "raw_id": "RF-2026-000869",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000869"
+    },
+    {
+      "raw_id": "RF-2026-000870",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000870"
+    },
+    {
+      "raw_id": "RF-2026-000871",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000871"
+    },
+    {
+      "raw_id": "RF-2026-000872",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000872"
+    },
+    {
+      "raw_id": "RF-2026-000873",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000873"
+    },
+    {
+      "raw_id": "RF-2026-000874",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000874"
+    },
+    {
+      "raw_id": "RF-2026-000875",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000875"
+    },
+    {
+      "raw_id": "RF-2026-000876",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000876"
+    },
+    {
+      "raw_id": "RF-2026-000877",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000877"
+    },
+    {
+      "raw_id": "RF-2026-000878",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000878"
+    },
+    {
+      "raw_id": "RF-2026-000879",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000879"
+    },
+    {
+      "raw_id": "RF-2026-000880",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000880"
+    },
+    {
+      "raw_id": "RF-2026-000881",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000881"
+    },
+    {
+      "raw_id": "RF-2026-000882",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000882"
+    },
+    {
+      "raw_id": "RF-2026-000883",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000883"
+    },
+    {
+      "raw_id": "RF-2026-000884",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000884"
+    },
+    {
+      "raw_id": "RF-2026-000885",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000885"
+    },
+    {
+      "raw_id": "RF-2026-000886",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000886"
+    },
+    {
+      "raw_id": "RF-2026-000887",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000887"
+    },
+    {
+      "raw_id": "RF-2026-000888",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000888"
+    },
+    {
+      "raw_id": "RF-2026-000889",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000889"
+    },
+    {
+      "raw_id": "RF-2026-000890",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000890"
+    },
+    {
+      "raw_id": "RF-2026-000891",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000891"
+    },
+    {
+      "raw_id": "RF-2026-000892",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000892"
+    },
+    {
+      "raw_id": "RF-2026-000893",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000893"
+    },
+    {
+      "raw_id": "RF-2026-000894",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000894"
+    },
+    {
+      "raw_id": "RF-2026-000895",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000895"
+    },
+    {
+      "raw_id": "RF-2026-000896",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000896"
+    },
+    {
+      "raw_id": "RF-2026-000897",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000897"
+    },
+    {
+      "raw_id": "RF-2026-000898",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000898"
+    },
+    {
+      "raw_id": "RF-2026-000899",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000900",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000900"
+    },
+    {
+      "raw_id": "RF-2026-000901",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000901"
+    },
+    {
+      "raw_id": "RF-2026-000902",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000902"
+    },
+    {
+      "raw_id": "RF-2026-000903",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000903"
+    },
+    {
+      "raw_id": "RF-2026-000904",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000904"
+    },
+    {
+      "raw_id": "RF-2026-000905",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000905"
+    },
+    {
+      "raw_id": "RF-2026-000906",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000906"
+    },
+    {
+      "raw_id": "RF-2026-000907",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000907"
+    },
+    {
+      "raw_id": "RF-2026-000908",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000908"
+    },
+    {
+      "raw_id": "RF-2026-000909",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000909"
+    },
+    {
+      "raw_id": "RF-2026-000910",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000910"
+    },
+    {
+      "raw_id": "RF-2026-000911",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000911"
+    },
+    {
+      "raw_id": "RF-2026-000912",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000912"
+    },
+    {
+      "raw_id": "RF-2026-000913",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000913"
+    },
+    {
+      "raw_id": "RF-2026-000914",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000914"
+    },
+    {
+      "raw_id": "RF-2026-000915",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000915"
+    },
+    {
+      "raw_id": "RF-2026-000916",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000916"
+    },
+    {
+      "raw_id": "RF-2026-000917",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000917"
+    },
+    {
+      "raw_id": "RF-2026-000918",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000918"
+    },
+    {
+      "raw_id": "RF-2026-000919",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000919"
+    },
+    {
+      "raw_id": "RF-2026-000920",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000920"
+    },
+    {
+      "raw_id": "RF-2026-000921",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000921"
+    },
+    {
+      "raw_id": "RF-2026-000922",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000922"
+    },
+    {
+      "raw_id": "RF-2026-000923",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000923"
+    },
+    {
+      "raw_id": "RF-2026-000924",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000924"
+    },
+    {
+      "raw_id": "RF-2026-000925",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000926",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000926"
+    },
+    {
+      "raw_id": "RF-2026-000927",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000928",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000928"
+    },
+    {
+      "raw_id": "RF-2026-000929",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000930",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000930"
+    },
+    {
+      "raw_id": "RF-2026-000931",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000931"
+    },
+    {
+      "raw_id": "RF-2026-000932",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000932"
+    },
+    {
+      "raw_id": "RF-2026-000933",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000933"
+    },
+    {
+      "raw_id": "RF-2026-000934",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000934"
+    },
+    {
+      "raw_id": "RF-2026-000935",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000935"
+    },
+    {
+      "raw_id": "RF-2026-000936",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000936"
+    },
+    {
+      "raw_id": "RF-2026-000937",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000937"
+    },
+    {
+      "raw_id": "RF-2026-000938",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000938"
+    },
+    {
+      "raw_id": "RF-2026-000939",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000939"
+    },
+    {
+      "raw_id": "RF-2026-000940",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000940"
+    },
+    {
+      "raw_id": "RF-2026-000941",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000941"
+    },
+    {
+      "raw_id": "RF-2026-000942",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000942"
+    },
+    {
+      "raw_id": "RF-2026-000943",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000943"
+    },
+    {
+      "raw_id": "RF-2026-000944",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000944"
+    },
+    {
+      "raw_id": "RF-2026-000945",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000945"
+    },
+    {
+      "raw_id": "RF-2026-000946",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000947",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000947"
+    },
+    {
+      "raw_id": "RF-2026-000948",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000948"
+    },
+    {
+      "raw_id": "RF-2026-000949",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000950",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000950"
+    },
+    {
+      "raw_id": "RF-2026-000951",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000951"
+    },
+    {
+      "raw_id": "RF-2026-000952",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000952"
+    },
+    {
+      "raw_id": "RF-2026-000953",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000953"
+    },
+    {
+      "raw_id": "RF-2026-000954",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000954"
+    },
+    {
+      "raw_id": "RF-2026-000955",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000955"
+    },
+    {
+      "raw_id": "RF-2026-000956",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000956"
+    },
+    {
+      "raw_id": "RF-2026-000957",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000957"
+    },
+    {
+      "raw_id": "RF-2026-000958",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000959",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000959"
+    },
+    {
+      "raw_id": "RF-2026-000960",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000960"
+    },
+    {
+      "raw_id": "RF-2026-000961",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000961"
+    },
+    {
+      "raw_id": "RF-2026-000962",
+      "selected": false,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000963",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000963"
+    },
+    {
+      "raw_id": "RF-2026-000964",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000964"
+    },
+    {
+      "raw_id": "RF-2026-000965",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000965"
+    },
+    {
+      "raw_id": "RF-2026-000966",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000966"
+    },
+    {
+      "raw_id": "RF-2026-000967",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000967"
+    },
+    {
+      "raw_id": "RF-2026-000968",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000968"
+    },
+    {
+      "raw_id": "RF-2026-000969",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000969"
+    },
+    {
+      "raw_id": "RF-2026-000970",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000970"
+    },
+    {
+      "raw_id": "RF-2026-000971",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000971"
+    },
+    {
+      "raw_id": "RF-2026-000972",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000972"
+    },
+    {
+      "raw_id": "RF-2026-000973",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000973"
+    },
+    {
+      "raw_id": "RF-2026-000974",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000974"
+    },
+    {
+      "raw_id": "RF-2026-000975",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000975"
+    },
+    {
+      "raw_id": "RF-2026-000976",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000976"
+    },
+    {
+      "raw_id": "RF-2026-000977",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000977"
+    },
+    {
+      "raw_id": "RF-2026-000978",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000978"
+    },
+    {
+      "raw_id": "RF-2026-000979",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000979"
+    },
+    {
+      "raw_id": "RF-2026-000980",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000980"
+    },
+    {
+      "raw_id": "RF-2026-000981",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000981"
+    },
+    {
+      "raw_id": "RF-2026-000982",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000982"
+    },
+    {
+      "raw_id": "RF-2026-000983",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000983"
+    },
+    {
+      "raw_id": "RF-2026-000984",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000984"
+    },
+    {
+      "raw_id": "RF-2026-000985",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000985"
+    },
+    {
+      "raw_id": "RF-2026-000986",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000986"
+    },
+    {
+      "raw_id": "RF-2026-000987",
+      "selected": false,
+      "reasons": [
+        "insufficient_events"
+      ],
+      "draft_dir": ""
+    },
+    {
+      "raw_id": "RF-2026-000988",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000988"
+    },
+    {
+      "raw_id": "RF-2026-000989",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000989"
+    },
+    {
+      "raw_id": "RF-2026-000990",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000990"
+    },
+    {
+      "raw_id": "RF-2026-000991",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000991"
+    },
+    {
+      "raw_id": "RF-2026-000992",
+      "selected": true,
+      "reasons": [],
+      "draft_dir": "cases/raw_feedback/case_drafts/RF-2026-000992"
+    }
+  ]
+}
