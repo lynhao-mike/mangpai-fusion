@@ -1,0 +1,28 @@
+{
+  "dry_run": false,
+  "gender_distribution": {
+    "女": 39,
+    "男": 59
+  },
+  "generated_at": "2026-06-07T15:15:41.775815+00:00",
+  "outputs": {
+    "jsonl": "cases/raw_feedback/parsed/wenzhen_repan_completed.jsonl",
+    "summary": "cases/raw_feedback/parsed/wenzhen_repan_completed-summary.json",
+    "top30": "cases/raw_feedback/parsed/wenzhen_repan_top30.md"
+  },
+  "quality_distribution": {
+    "A": 1,
+    "B": 97
+  },
+  "quality_flag_distribution": {
+    "invalid_ganzhi_chars": 10
+  },
+  "record_count": 98,
+  "schema_version": "wenzhen-repan-completed/v0.1",
+  "selection_policy": "Top 30 sorted by event_count desc, score desc, quality grade, original index.",
+  "source_indexes": [
+    "cases/raw_feedback/case_drafts/wenzhen-repan-index-male.md",
+    "cases/raw_feedback/case_drafts/wenzhen-repan-index-female.md"
+  ],
+  "top30_count": 30
+}
