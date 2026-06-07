@@ -1,0 +1,98 @@
+schema_version: v2-event-mapping-2026-06-07
+mappings:
+  career:
+    main:
+      event_type: career_direction
+      title: 事业主线候选
+      polarity: positive
+      tags: [career, main]
+    risk:
+      event_type: career_risk
+      title: 事业风险候选
+      polarity: negative
+      tags: [career, risk]
+    opportunity:
+      event_type: career_opportunity
+      title: 事业机会候选
+      polarity: positive
+      tags: [career, opportunity]
+  wealth:
+    main:
+      event_type: wealth_pattern
+      title: 财运结构候选
+      polarity: positive
+      tags: [wealth, main]
+    risk:
+      event_type: wealth_risk
+      title: 财务风险候选
+      polarity: negative
+      tags: [wealth, risk]
+    opportunity:
+      event_type: wealth_opportunity
+      title: 财务机会候选
+      polarity: positive
+      tags: [wealth, opportunity]
+  marriage:
+    main:
+      event_type: relationship_pattern
+      title: 婚恋结构候选
+      polarity: neutral
+      tags: [marriage, main]
+    risk:
+      event_type: relationship_risk
+      title: 婚恋风险候选
+      polarity: negative
+      tags: [marriage, risk]
+    opportunity:
+      event_type: relationship_opportunity
+      title: 婚恋机会候选
+      polarity: positive
+      tags: [marriage, opportunity]
+  health:
+    main:
+      event_type: health_pattern
+      title: 健康结构候选
+      polarity: neutral
+      tags: [health, main]
+    risk:
+      event_type: health_risk
+      title: 健康风险候选
+      polarity: negative
+      tags: [health, risk]
+    opportunity:
+      event_type: health_support
+      title: 健康调护候选
+      polarity: positive
+      tags: [health, opportunity]
+  family:
+    main:
+      event_type: family_pattern
+      title: 家庭六亲候选
+      polarity: neutral
+      tags: [family, main]
+    risk:
+      event_type: family_risk
+      title: 家庭六亲风险候选
+      polarity: negative
+      tags: [family, risk]
+    opportunity:
+      event_type: family_support
+      title: 家庭六亲助力候选
+      polarity: positive
+      tags: [family, opportunity]
+  education:
+    main:
+      event_type: education_pattern
+      title: 学业学历候选
+      polarity: positive
+      tags: [education, main]
+    risk:
+      event_type: education_risk
+      title: 学业学历风险候选
+      polarity: negative
+      tags: [education, risk]
+    opportunity:
+      event_type: education_opportunity
+      title: 学业学历机会候选
+      polarity: positive
+      tags: [education, opportunity]
