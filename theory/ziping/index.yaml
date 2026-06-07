@@ -1,85 +1,2172 @@
-schema_version: production-rules-2026-06-05
+schema_version: production-rules-2026-06-07
 status: active
 source_scope: production_rules
 expert_system: ziping
-notes: >
-  子平规则已从旁路候选规则提升为正式生产规则。
-  本文件可被默认 pipeline 自动加载，不再属于 review_draft / bypass_candidate_rules。
+notes: 由旁路候选规则批量提升为正式生产生成规则；所有 candidate 均转为 active，可被默认 pipeline 与双引擎理论层加载。
 rules:
-  - id: ZP-PROD-20260605-001
-    status: active
-    expert_system: ziping
-    title: 用神为全局关键
-    topic: yongshen
-    domains:
-      - 事业
-      - 财富
-      - 学业
-      - 性格
-    axis_refs:
-      - AXIS-01
-      - AXIS-04
-    layer: 互补
-    claim: 用神是八字全局判断的核心支点，格局成败与吉凶取舍应围绕用神展开。
-    conditions:
-      trigger: has_energy_structure
-      required:
-        - 已能识别月令与日主旺衰
-        - 用神来源可追溯到月令、透干或藏干
-      optional:
-        - 存在相神或救应结构
-      exclusions:
-        - 从格、化格、专旺等特殊格尚未确认时，不可机械套用普通扶抑
-    output:
-      statement: 子平规则参与：命局判断应先定用神，再围绕用神成败评估事业、财富与整体层次。
-      falsifiable: 若大量案例不依赖用神取裁仍能稳定断准，则本规则需降权。
-    confidence:
-      star: 4
-      percent: 0.78
-      posterior: 0.78
-      variance: 0.04
-      sample_n: 1
-    source:
-      path: sources/ziping/《子平真诠》.md
-      excerpt: 用神者，八字全局之关键，补日主之偏枯，定格局之成败。
-    review:
-      notes: 来源明确，已生产化为子平总纲规则。
-
-  - id: ZP-PROD-20260605-002
-    status: active
-    expert_system: ziping
-    title: 财格要看身财关系
-    topic: wealth_structure
-    domains:
-      - 财富
-      - 事业
-    axis_refs:
-      - AXIS-01
-      - AXIS-04
-      - AXIS-06
-    layer: 互补
-    claim: 财运不能只看财星多少，必须判断身能否任财，以及财是否有生护。
-    conditions:
-      trigger: has_wealth_picture
-      required:
-        - 财星明确出现或成势
-        - 日主旺衰已判定
-      optional:
-        - 食神生财
-        - 官星护财
-      exclusions:
-        - 财星仅见而无根无生护时，不可直接断富
-    output:
-      statement: 子平规则参与：财星可用但仍需看身财承载与生护，否则容易财来财去或难任财帛。
-      falsifiable: 若财旺身弱且无结构补救者长期稳定富裕，本规则需复审。
-    confidence:
-      star: 4
-      percent: 0.76
-      posterior: 0.76
-      variance: 0.04
-      sample_n: 1
-    source:
-      path: sources/ziping/《子平真诠》.md
-      excerpt: 财喜食神生、官星护，忌比肩劫财夺财。财旺身弱，难任财帛；身旺财弱，财薄清贫。
-    review:
-      notes: 已生产化，可连接财富域权重矩阵。
+- id: ZP-PROD-20260605-001
+  status: active
+  expert_system: ziping
+  title: 用神为全局关键
+  topic: yongshen
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  claim: 用神是八字全局判断的核心支点，格局成败与吉凶取舍应围绕用神展开。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 已能识别月令与日主旺衰
+    - 用神来源可追溯到月令、透干或藏干
+    optional:
+    - 存在相神或救应结构
+    exclusions:
+    - 从格、化格、专旺等特殊格尚未确认时，不可机械套用普通扶抑
+  output:
+    statement: 子平规则参与：命局判断应先定用神，再围绕用神成败评估事业、财富与整体层次。
+    falsifiable: 若大量案例不依赖用神取裁仍能稳定断准，则本规则需降权。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神者，八字全局之关键，补日主之偏枯，定格局之成败。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-001；适合作为子平候选规则总纲。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-002
+  status: active
+  expert_system: ziping
+  title: 财格要看身财关系
+  topic: wealth_structure
+  domains:
+  - 财富
+  - 事业
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-06
+  claim: 财运不能只看财星多少，必须判断身能否任财，以及财是否有生护。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 财星明确出现或成势
+    - 日主旺衰已判定
+    optional:
+    - 食神生财
+    - 官星护财
+    exclusions:
+    - 财星仅见而无根无生护时，不可直接断富
+  output:
+    statement: 子平规则参与：财星可用但仍需看身财承载与生护，否则容易财来财去或难任财帛。
+    falsifiable: 若财旺身弱且无结构补救者长期稳定富裕，本规则需复审。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 财喜食神生、官星护，忌比肩劫财夺财。财旺身弱，难任财帛；身旺财弱，财薄清贫。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-012；可直接连接财富域权重矩阵。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-003
+  status: active
+  expert_system: ziping
+  title: 用神以月令为第一出处
+  topic: yongshen_month_branch
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  claim: 月令是用神定位的优先来源，透干与藏干共同参与判定。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 月令可识别
+    - 月令透干或藏干可评估
+    optional:
+    - 其他柱存在呼应月令的干支
+    exclusions:
+    - 特殊格局已成立且不按普通月令取用时需另行审查
+  output:
+    statement: 子平规则参与：子平取用应优先追溯月令，再结合透干、藏干与全局结构判断。
+    falsifiable: 若大量命例中月令不具主导性而其他柱长期更优先，则需重估。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 月令为用神第一出处，月令透出之干、藏干可用者，即为正用。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-002；需与调候派四季旺衰对照。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-004
+  status: active
+  expert_system: ziping
+  title: 身旺身弱决定取用方向
+  topic: shenqiang_shenruo
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  claim: 常规扶抑框架中，日主旺则取克泄，日主弱则取生扶。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 日主强弱已判定
+    - 未先验成立从格、化格或专旺格
+    optional:
+    - 月令、根气、透干均可辅助确认强弱
+    exclusions:
+    - 气候极端或特殊格局成立时不可机械套用
+  output:
+    statement: 子平规则参与：普通格局应先判日主强弱，再决定取克泄或生扶的用神方向。
+    falsifiable: 若大量身旺仍取生扶且稳定应验，需要标注例外或转入特殊格局。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 日主旺，用神取克泄；日主弱，用神取生扶。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-003；与 DTS-CAND 扶抑裁量高度同向。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-005
+  status: active
+  expert_system: ziping
+  title: 用神成败决定全局吉凶
+  topic: yongshen_success_failure
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 子平分析应围绕用神是否成立、受护或受破来评估整体吉凶。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 用神已定位
+    - 可判断用神是否受生扶、受克破或受合化影响
+    optional:
+    - 有相神、忌神或救应结构
+    exclusions:
+    - 未能定位用神时不应直接下全局吉凶结论
+  output:
+    statement: 子平规则参与：全局吉凶应围绕用神成败展开，不能只看局部五行或单柱吉凶。
+    falsifiable: 若不依赖用神成败仍能做出同等质量判断，则此条要降级为辅助原则。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神一立，全造吉凶以此定。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-004；适合裁判层作为结构成败输入。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-006
+  status: active
+  expert_system: ziping
+  title: 用神受克要看救应
+  topic: jiuying
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 用神受克不等于必败，还要看是否存在护用、制克、合化等救应。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 用神明确受克或受破
+    - 可识别制克用神之物或护卫用神之物
+    optional:
+    - 有合化、通关或相神协助
+    exclusions:
+    - 无明确受克关系时不应强行套用救应判断
+  output:
+    statement: 子平规则参与：用神被克后需复核救应，救应存在时破局程度应重新计算。
+    falsifiable: 若用神受克但无救仍长期应吉，则此规则失效。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神喜生扶、忌克破。用神被克为败，有干支制克用神之物、护卫用神，谓之救应。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-005；可与滴天髓冲动强弱规则组成冲击处理链。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-007
+  status: active
+  expert_system: ziping
+  title: 格局纯杂影响高低
+  topic: geju_chunza
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 格局结构越纯一、力量越集中，层级和稳定性通常越高；混杂会带来干扰与波折。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 已识别主要用神或格局
+    - 可判断是否有异神混杂或干扰用神
+    optional:
+    - 有财官印食或杀伤枭刃的组合证据
+    exclusions:
+    - 混杂但能制化成用时需转入制化规则审查
+  output:
+    statement: 子平规则参与：格局纯杂应影响事业、财富层级与结构稳定性判断。
+    falsifiable: 若多数杂局仍高度稳定且不低于纯局，则需要修正纯杂权重。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 纯者，用神一气专一，无他神混杂；杂者，别神透出干扰用神。格纯则贵，格杂则贫贱多波折。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-006；需与滴天髓中和平正原则并行审查。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-008
+  status: active
+  expert_system: ziping
+  title: 用神有情无情决定格局高低
+  topic: yongshen_youqing
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-08
+  claim: 用神与全局互动是否顺畅，会影响格局高低；有情则格高，无情则格低。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 用神已定位
+    - 可判断用神与其他干支的生克、护卫或隔断关系
+    optional:
+    - 有相神、救应或顺生链条
+    exclusions:
+    - 只见单点用神而无互动证据时不宜评高低
+  output:
+    statement: 子平规则参与：用神不仅要存在，还要与全局有情顺接，才可提高格局层级。
+    falsifiable: 若无情局仍频繁显示高层结果，则要区分局部破与总体成。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神有情、护卫周全则格高；用神无情、克泄交加则格低。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-007；适合与顺逆轴对照。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-009
+  status: active
+  expert_system: ziping
+  title: 调候为急，先救气候再论扶抑
+  topic: tiaohou_priority
+  domains:
+  - 健康
+  - 性格
+  - 事业
+  axis_refs:
+  - AXIS-02
+  - AXIS-03
+  - AXIS-04
+  claim: 寒热燥湿明显时，调候优先级高于普通扶抑取用。
+  conditions:
+    trigger: always
+    required:
+    - 寒热燥湿状态明显
+    - 气候问题足以影响全局用神判断
+    optional:
+    - 有季节、月令或五行偏枯证据
+    exclusions:
+    - 气候不明显时不可把调候无限上纲
+  output:
+    statement: 子平规则参与：气候偏枯明显时，应先解决调候问题，再进入常规扶抑和格局判断。
+    falsifiable: 若气候极端但调候完全无效且扶抑更准，则此条需降权。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 四时气候寒热燥湿，为八字第一要务，调候重于扶抑用神。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-008；与滴天髓调候派高度同向。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-010
+  status: active
+  expert_system: ziping
+  title: 相神受伤往往比局部受伤更伤格
+  topic: xiangshen
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  axis_refs:
+  - AXIS-04
+  - AXIS-08
+  claim: 相神是辅佐用神成格的关键，受损会造成更大的结构性破坏。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 用神和相神均可识别
+    - 相神存在受克、受冲、受合去或失位证据
+    optional:
+    - 用神本身未直接受重伤但成格通道受阻
+    exclusions:
+    - 相神定位不清时不可夸大其损伤
+  output:
+    statement: 子平规则参与：相神受伤需按结构性损伤处理，不能只按局部受伤轻看。
+    falsifiable: 若相神受伤后局面并未明显恶化，则需重新定义相神权重。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 相神者，辅佐用神成格之神，如君王之辅相。伤用神祸轻，伤相神祸重，相神一损，全局崩塌。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-009；适合结构损失判定。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-011
+  status: active
+  expert_system: ziping
+  title: 四吉神失宜也可能破格
+  topic: sijishen
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 官、印、财、食虽为四吉神，但必须得法适位，失宜也会破格。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 官、印、财、食至少一类明确出现
+    - 可判断其位置、旺衰、数量和组合是否得法
+    optional:
+    - 有伤官、七杀或比劫混杂证据
+    exclusions:
+    - 仅凭吉神名义不可直接断吉
+  output:
+    statement: 子平规则参与：四吉神需看得法与适位，失宜时反而可能损害格局。
+    falsifiable: 若四吉神无论得失都稳定为吉，则此条失去区分度。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 官、印、财、食为四吉神，用之得法成格，用之失宜反破格。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-010；与滴天髓不拘名义原则存在对照价值。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-012
+  status: active
+  expert_system: ziping
+  title: 四凶神制化得宜可成贵格
+  topic: sixiongshen_zhihua
+  domains:
+  - 事业
+  - 健康
+  - 竞争类事务
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 杀、伤、枭、刃并非绝对凶，制化得宜时可转为贵格或有用结构。
+  conditions:
+    trigger: always
+    required:
+    - 杀、伤、枭、刃至少一类明确出现
+    - 存在制、化、用或护卫关系
+    optional:
+    - 有官印、食制杀、伤官配印等结构证据
+    exclusions:
+    - 凶神无制无化时不可直接转吉
+  output:
+    statement: 子平规则参与：四凶神需看制化，得宜可成有力结构，不可见凶神即断凶。
+    falsifiable: 若制化后的凶神仍普遍应凶，则此条应分情形细化。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 杀、伤、枭、刃为四凶神，制化得宜反成贵格。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-011；适合与滴天髓去凶/激凶逻辑互补。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-013
+  status: active
+  expert_system: ziping
+  title: 正官格以清纯为贵
+  topic: zhengguan_ge
+  domains:
+  - 事业
+  - 仕途
+  - 名望
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 正官格关键在清纯与财印相生，伤官七杀混杂会降低层次。
+  conditions:
+    trigger: has_official_picture
+    required:
+    - 正官格或官星结构可识别
+    - 可判断财印相生或伤官七杀混杂
+    optional:
+    - 官星有根、有护或得令
+    exclusions:
+    - 混杂但另有制化成格时需另行审查
+  output:
+    statement: 子平规则参与：官格不只看有官，还要看财印相生是否顺畅以及混杂程度。
+    falsifiable: 若官格混杂而仍显著高成就，则需补充混而可用条件。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 官格见财印相生为纯，混杂伤官七杀则杂。格纯则贵，格杂则贫贱多波折。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-013；为具体格局候选条目。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-014
+  status: active
+  expert_system: ziping
+  title: 从化从势专旺属于特殊取用逻辑
+  topic: special_geju
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  claim: 从格、化格、从势、专旺等特殊结构不能机械套用普通扶抑模型。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 命局疑似从化、从势或专旺
+    - 普通扶抑与实际结构存在冲突
+    optional:
+    - 有一方气势专一或化合成势证据
+    exclusions:
+    - 特殊格条件不足时应回到普通扶抑框架
+  output:
+    statement: 子平规则参与：特殊结构需先验判定，再决定取用方式，不能直接套常规身旺身弱。
+    falsifiable: 若所有命例都可用扶抑解释而无需从化、从势、专旺，则此条可降级为少数例外。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 论从化、论从势、论专旺。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-014；与滴天髓中和平正存在潜在冲突审查点。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-015
+  status: active
+  expert_system: ziping
+  title: 格局高低应与有情、纯杂、护卫联合判断
+  topic: geju_level_composite
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  - AXIS-08
+  claim: 格局高低不是单点判断，应由用神、相神、纯杂、救应和护卫共同决定。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 已识别主要格局或用神
+    - 至少可评估有情、纯杂、护卫中的两个维度
+    optional:
+    - 有相神或救应证据
+    exclusions:
+    - 证据不足时不宜直接定高低等级
+  output:
+    statement: 子平规则参与：格局层级应综合有情、纯杂、护卫与救应，而非单凭一个神煞或十神。
+    falsifiable: 若高格局案例中普遍缺少护卫与有情，则此条需重写。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神有情、护卫周全则格高；用神无情、克泄交加则格低。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-015；适合作为子平裁判输入的综合规则。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-016
+  status: active
+  expert_system: ziping
+  title: 成败可随运岁转化
+  topic: timing_transformation
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-05
+  - AXIS-08
+  claim: 先天格局成败不是最终定局，大运流年可能改变用神成败状态。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 已有静态格局判断
+    - 大运或流年对用神、相神、忌神产生作用
+    optional:
+    - 有合冲刑害、透出或得令变化
+    exclusions:
+    - 无运岁触发证据时不应过度推断转化
+  output:
+    statement: 子平规则参与：子平判断应支持静态格局与动态运岁双层分析，成败可因时转化。
+    falsifiable: 若运岁对成败变化影响极小，则此条只是附会。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 用神因成得败，因败得成。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-016；适合进入应期与动态裁判模块。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-017
+  status: active
+  expert_system: ziping
+  title: 财官多寡也要取用，不可只看数量
+  topic: wealth_official_quantity
+  domains:
+  - 财富
+  - 事业
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-06
+  claim: 财官多寡只是结构信息，必须进一步判断取用、制化与成格。
+  conditions:
+    trigger: has_official_picture
+    required:
+    - 财星或官星数量、位置可识别
+    - 可判断其是否可用或是否被制化
+    optional:
+    - 有身财、官印、财官相生等结构证据
+    exclusions:
+    - 仅凭财官数量不可直接断吉凶
+  output:
+    statement: 子平规则参与：财官多少不等于吉凶，关键在能否取用、制化和成格。
+    falsifiable: 若单看数量就足以稳定断准，则取用环节可简化。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 论财官多寡取用。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-017；补足财富与事业域的数量边界。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260605-018
+  status: active
+  expert_system: ziping
+  title: 格例总纲适合作为规则索引入口
+  topic: geju_index
+  domains:
+  - 全域
+  axis_refs:
+  - AXIS-00
+  - AXIS-04
+  claim: 格例总纲更适合作为理论库结构化导航，具体格局应拆成独立候选条目。
+  conditions:
+    trigger: always
+    required:
+    - 存在格例总纲或分类性文本
+    - 可映射到具体可操作格局条目
+    optional:
+    - 已有下级格局、用神或成败规则
+    exclusions:
+    - 无法映射到可操作规则时不宜直接入库为结论规则
+  output:
+    statement: 子平规则参与：格例总纲应作为规则索引入口，用于组织具体格局候选，而非直接输出断语。
+    falsifiable: 若总纲无法映射到具体可操作规则，则不宜直接入库。
+  source:
+    path: sources/ziping/《子平真诠》.md
+    excerpt: 格例总纲
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SAMPLE-018；偏索引型候选，后续可拆分为具体格局规则。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-001
+  status: active
+  expert_system: ziping
+  title: 五行生克与支干源流先定骨架
+  topic: wuxing_ganzhi_framework
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-00
+  - AXIS-01
+  - AXIS-04
+  claim: 五行生克与干支源流是《三命通会》后续格局、十神与日时断法的基础骨架。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 可识别五行生克关系
+    - 可识别天干地支及其来源层次
+    optional:
+    - 有纳音、干支组合或四时旺衰证据
+    exclusions:
+    - 不可绕过基础生克直接以单一神煞定吉凶
+  output:
+    statement: 子平规则参与：分析《三命通会》体系命局时，应先建立五行生克与干支骨架，再进入格局断事。
+    falsifiable: 若忽略基础骨架仍能稳定断准，则本规则需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 五行生成、生克、支干源流、纳音取象
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-001；第一批全源提取候选。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-002
+  status: active
+  expert_system: ziping
+  title: 月令与提纲决定先后次序
+  topic: yueling_tigang
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-02
+  - AXIS-04
+  claim: 月令提纲是定旺衰、取用与判断成格先后次序的核心依据。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 月令可判定
+    - 旺相休囚或四时进退可判定
+    optional:
+    - 有透干、藏干或通月气证据
+    exclusions:
+    - 月令失去主导且另有特殊格成立时需另判
+  output:
+    statement: 子平规则参与：应先按月令提纲判断旺衰与气势，再进入扶抑、制化与格局裁断。
+    falsifiable: 若月令长期不具主导性，则需重新定义提纲权重。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 月令提纲、旺相休囚、四时进退
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-002。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-003
+  status: active
+  expert_system: ziping
+  title: 合冲刑害改变气机通塞
+  topic: he_chong_xing_hai
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-07
+  - AXIS-08
+  claim: 合冲刑害会改变命局气机通塞与成败状态，是判断改局、破局和开局的重要开关。
+  conditions:
+    trigger: has_zhi_chong
+    required:
+    - 存在合、冲、刑、害或会局关系
+    - 可判断受作用对象的喜忌或结构位置
+    optional:
+    - 有大运流年触发证据
+    exclusions:
+    - 喜忌与力量不明时不可见冲合即断吉凶
+  output:
+    statement: 子平规则参与：合冲刑害应按气机通塞与受作用对象评估，不能只作静态关系描述。
+    falsifiable: 若合冲刑害对命局成败无明显影响，则只能保留为辅助信息。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 十干合、支元六合、支元三合、三刑、冲击
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-003。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-004
+  status: active
+  expert_system: ziping
+  title: 财官印食伤须随身强身弱取用
+  topic: shishen_by_strength
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-06
+  claim: 财官印食伤不能按名称绝对定吉凶，必须随日主强弱、通月气与制化状态取用。
+  conditions:
+    trigger: has_official_picture
+    required:
+    - 日主强弱可判定
+    - 财官印食伤至少一类结构可识别
+    optional:
+    - 有通月气、制化、救应或格局证据
+    exclusions:
+    - 从格、化格或专旺格成立时需另按特殊格处理
+  output:
+    statement: 子平规则参与：十神判断应回到日主承载力和格局制化，不能只看名义吉凶。
+    falsifiable: 若脱离身强身弱仍可稳定断准，则该条件需拆分。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 正官、偏官、正财、偏财、印绶、伤官、食神
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-004。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-005
+  status: active
+  expert_system: ziping
+  title: 通月气有倚托则贵
+  topic: tong_yueqi_yituo
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  axis_refs:
+  - AXIS-02
+  - AXIS-04
+  claim: 命局若能通月令之气并有生扶、制化或通关倚托，则更容易形成较高层次。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 可判断是否通月气
+    - 存在可依托的生扶、制化或通关结构
+    optional:
+    - 有财官印相生或行运助成证据
+    exclusions:
+    - 仅见形式而无实质倚托时不可评高
+  output:
+    statement: 子平规则参与：通月气且有倚托时，可提高事业、财富或学业层级判断；无倚托则多按平常处理。
+    falsifiable: 若缺乏倚托仍稳定高层次，则需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 通月气，有倚托，则贵；无倚托，则平常
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-005。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-006
+  status: active
+  expert_system: ziping
+  title: 禄归时与时柱能改晚景
+  topic: lugui_shizhu
+  domains:
+  - 事业
+  - 财富
+  - 子息
+  - 晚景
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 时柱中的禄气、互换禄或禄归时结构，会影响晚景、子息和后段发力。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 时柱干支可判定
+    - 存在禄归时、日禄居时或互换禄证据
+    optional:
+    - 大运晚段助动时柱或禄气
+    exclusions:
+    - 时柱受严重冲破且无救应时不可直接按吉断
+  output:
+    statement: 子平规则参与：禄气落在时柱且未破时，应重视后半生发力、子息与晚景表现。
+    falsifiable: 若时柱禄气对晚运无区分度，则此条需弱化。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 日禄居时、禄归时、互换禄
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-006。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-007
+  status: active
+  expert_system: ziping
+  title: 财库官库印库需钥匙冲开
+  topic: ku_key_open
+  domains:
+  - 财富
+  - 事业
+  - 健康
+  axis_refs:
+  - AXIS-06
+  - AXIS-07
+  claim: 财库、官库、印库是否能发用，取决于是否有适当冲开、引动或钥匙结构。
+  conditions:
+    trigger: has_zhi_chong
+    required:
+    - 存在财库、官库或印库
+    - 可判断是否有冲开、引动或钥匙
+    optional:
+    - 大运流年触发库星
+    exclusions:
+    - 库星被破坏且无可用资源时不可按发用论
+  output:
+    statement: 子平规则参与：库星要看能否打开与流通，有钥匙可成资源，闭塞则多沉滞。
+    falsifiable: 若库星不需冲开也稳定发用，则“钥匙”条件需改写。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 财库、官库、印库，皆有钥匙；冲开则发，闭塞则滞
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-007。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-008
+  status: active
+  expert_system: ziping
+  title: 时柱日时断法重晚景子息与收官
+  topic: rishi_shizhu
+  domains:
+  - 子息
+  - 晚景
+  - 事业
+  - 健康
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 日时组合是《三命通会》判断晚景、子息、财气收束与灾福归结的重要结构。
+  conditions:
+    trigger: has_official_picture
+    required:
+    - 日柱和时柱组合可判定
+    - 可识别日时之间的财官印食伤或刑冲合害关系
+    optional:
+    - 有晚运或子息反馈证据
+    exclusions:
+    - 不可脱离全局只按单个日时句式机械断事
+  output:
+    statement: 子平规则参与：日时断法可作为后半生、子息和收官判断的候选证据，但必须与全局合参。
+    falsifiable: 若时柱对后运和子息无区分度，则此类断法需降级。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 六丁日……时断；六戊日……时断；六己日……时断；六庚日……时断；六辛日……时断；六壬日……时断；六癸日……时断
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-008。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-009
+  status: active
+  expert_system: ziping
+  title: 伤官见官与伤官伤尽必须分辨
+  topic: shangguan_official
+  domains:
+  - 事业
+  - 婚姻
+  - 学业
+  axis_refs:
+  - AXIS-04
+  - AXIS-08
+  claim: 伤官见官和伤官伤尽是不同结构，需按制化、有尽无尽和官星状态分开判断。
+  conditions:
+    trigger: has_official_picture
+    required:
+    - 伤官与官星关系可识别
+    - 可判断是否有制、有泄、有尽或直接克官
+    optional:
+    - 有印绶、财星或运岁介入
+    exclusions:
+    - 不可见伤官即断凶，亦不可见伤尽即断吉
+  output:
+    statement: 子平规则参与：伤官局需先分见官、制化和伤尽状态，再判断事业、婚姻或学业影响。
+    falsifiable: 若不区分制化仍能稳定应事，则该拆分需收缩。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 伤官见官、伤官伤尽
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-009。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-010
+  status: active
+  expert_system: ziping
+  title: 特殊格局要先辨真伪再谈贵气
+  topic: special_geju_authenticity
+  domains:
+  - 事业
+  - 财富
+  - 名望
+  axis_refs:
+  - AXIS-04
+  - AXIS-06
+  claim: 飞天禄马、壬骑龙背、魁罡、合化等特殊格必须先确认真成与未破，不能见名即贵。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 存在特殊格局名目或结构
+    - 可核验成格条件、得令状态与破格因素
+    optional:
+    - 行运扶助特殊格
+    exclusions:
+    - 只见名目不见气势或条件不足时不可按贵格论
+  output:
+    statement: 子平规则参与：特殊格局应先辨真伪与破成，再作为事业、财富或名望判断证据。
+    falsifiable: 若假格也稳定高应验，则真伪分界需调整。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 飞天禄马、壬骑龙背、魁罡、合化诸格
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-010。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-011
+  status: active
+  expert_system: ziping
+  title: 行运能放大或逆转原局成败
+  topic: yunshi_geju_change
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  axis_refs:
+  - AXIS-05
+  - AXIS-07
+  claim: 大运流年可放大、修复或逆转原局成败，静态格局不能替代动态判断。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 已有原局成败判断
+    - 大运或流年对用神、忌神、库、合冲刑害产生作用
+    optional:
+    - 有成败转换、发用或破局反馈
+    exclusions:
+    - 无运岁触发证据时不可过度推断
+  output:
+    statement: 子平规则参与：子平判断应把原局与运岁分层处理，成败可因运岁触发而转化。
+    falsifiable: 若运岁对成败变化极小，则此条需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 行运与命局相应，则成败易见；行运悖于命局，则吉凶倒置
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-011。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-012
+  status: active
+  expert_system: ziping
+  title: 刑冲破害常落在六亲与子息
+  topic: xingchong_liuqin_zixi
+  domains:
+  - 婚姻
+  - 子息
+  - 家庭
+  - 财富
+  axis_refs:
+  - AXIS-06
+  - AXIS-07
+  - AXIS-08
+  claim: 刑冲破害的结果常会落实到六亲、婚姻、子息与财库消耗等具体生活领域。
+  conditions:
+    trigger: has_zhi_chong
+    required:
+    - 存在刑冲破害关系
+    - 受作用对象可映射到六亲、配偶、子息或财库
+    optional:
+    - 运岁触发或反馈中有家庭关系波动
+    exclusions:
+    - 无六亲映射证据时不可强行断家庭事件
+  output:
+    statement: 子平规则参与：刑冲破害应在六亲、婚姻、子息和财富域中做次级风险提示。
+    falsifiable: 若刑冲破害不对应六亲与子息波动，则需重新分域。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 刑冲破害，六亲多不宁；子息受损，妻财多耗
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-SM-20260606-012。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-013
+  status: active
+  expert_system: ziping
+  title: 五行过不及贵在中道
+  topic: wuxing_zhongdao
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 五行判断应以太过、不及是否得抑扬损益并归中和为核心，不宜把旺弱本身直接等同吉凶。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 命局存在某一五行明显太过或不及
+    - 可判断制化、生扶、泄耗等调平机制
+    optional:
+    - 行运能补偏或加剧偏颇
+    exclusions:
+    - 五行力量均衡且无明显偏枯时不可强套
+  output:
+    statement: 子平规则参与：先标注五行偏颇点，再判断是否有药可救，旺弱需回到中和框架评估。
+    falsifiable: 若五行太过不及与实际吉凶无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 过与不及，皆为乖道……所以贵在折衷，归於中道。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-001。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-014
+  status: active
+  expert_system: ziping
+  title: 五行皆赖土以成载化
+  topic: wuxing_laitu_zaihua
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 土承担承载、归藏、通关与成形功能，五行流转若无土承接则难稳定落实。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 命局五行流转需要承载或归宿
+    - 土星有无、强弱、燥湿或冲破状态可判
+    optional:
+    - 财富资产或事业落地反馈明显
+    exclusions:
+    - 土过重成滞时不可按承载吉象直断
+  output:
+    statement: 子平规则参与：评估事业落地、财富积累与稳定性时，应检查土是否能承载并通关。
+    falsifiable: 若土的承载状态与落地稳定性无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 金不得土，则无自出；火不得土，则无自归……故五行皆赖土也。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-002。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-015
+  status: active
+  expert_system: ziping
+  title: 木赖水生但多水漂流
+  topic: mu_shuisheng_piaoliu
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 木需水滋生，但水多则漂流；木的成败还需分生木、死木及火金作用。
+  conditions:
+    trigger: always
+    required:
+    - 木为日主或关键用神
+    - 水势、火势、金势与木的生旺休囚可判
+    optional:
+    - 命局有水泛、火秀、金裁等组合
+    exclusions:
+    - 木不为关键结构时不可作为主断
+  output:
+    statement: 子平规则参与：对木象需分滋润、漂流、发秀、裁成与受伤风险逐层输出。
+    falsifiable: 若水量与木象稳定性无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 木赖水生，少则滋润，多则漂流。生木得火而秀……死木得金而造。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-003。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-016
+  status: active
+  expert_system: ziping
+  title: 春木火暖水滋为美
+  topic: chunmu_huoshui_xiangji
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 春木虽得令，初春仍需火暖与水滋并济，水火相济才利生发。
+  conditions:
+    trigger: always
+    required:
+    - 甲乙木生寅卯辰月或命局春木为核心
+    - 火暖与水滋状态可判
+    optional:
+    - 命局寒湿或燥烈偏颇明显
+    exclusions:
+    - 火水交战而不能相济时不可按美局处理
+  output:
+    statement: 子平规则参与：春木判断应同时检查火暖与水滋，缺一则生发层次下降。
+    falsifiable: 若春木火水配合与事业健康表现无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 初春犹有余寒，当以火温暖……水火二物，要得时相济为美。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-004。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-017
+  status: active
+  expert_system: ziping
+  title: 甲木寒木向阳主富贵
+  topic: jiamu_hanmu_xiangyang
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 寒木得丙火透出而向阳，又有癸水暗滋，可形成较高层次的富贵候选。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 甲木处寒湿或初春余寒
+    - 丙火透出且癸水藏透配合得当
+    optional:
+    - 格局清纯或行运扶起丙癸
+    exclusions:
+    - 丙癸交战或寒湿未解时不可按高格直断
+  output:
+    statement: 子平规则参与：甲木寒局若丙癸相济，可提示事业名望与财富潜力较高。
+    falsifiable: 若寒木向阳组合未对应较好发展，则需复核条件。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 得丙癸逢，富贵双全。癸藏丙透，名寒木向阳，主大富贵。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-005。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-018
+  status: active
+  expert_system: ziping
+  title: 水泛木浮需戊己制水
+  topic: shuifan_mufu_wuji
+  domains:
+  - 事业
+  - 健康
+  - 家庭
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 木遇壬癸成片而无戊己制水时，生扶反成漂浮，主根基不稳与风险加重。
+  conditions:
+    trigger: always
+    required:
+    - 木为日主或关键用神
+    - 壬癸亥子水势泛滥
+    - 缺戊己制水或土被冲破无力
+    optional:
+    - 居住、职业或健康稳定性反馈不足
+    exclusions:
+    - 有力土制水并能托根时不可按漂浮断
+  output:
+    statement: 子平规则参与：水泛木浮应现代化输出为根基不稳、流动过强与安全健康风险提示。
+    falsifiable: 若水泛木浮不对应不稳定反馈，则需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 一派壬癸，又无戊己制之，名水泛木浮，死无棺椁。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-006。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-019
+  status: active
+  expert_system: ziping
+  title: 夏木根燥需水润而忌火旺
+  topic: xiamu_shuirun_jihuowang
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 夏木根叶燥烈，首重水润；火旺则泄木焚木，易成消耗与过劳。
+  conditions:
+    trigger: always
+    required:
+    - 甲乙木生巳午未月
+    - 火旺、水弱或水有根可用状态可判
+    optional:
+    - 健康消耗或情绪急躁反馈
+    exclusions:
+    - 水过多漂木时不可按单纯滋润论
+  output:
+    statement: 子平规则参与：夏木应重点提示水润条件和火旺消耗风险。
+    falsifiable: 若夏木水火状态与消耗表现无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 夏月之木，根乾叶燥……欲得水盛而成滋润之力……切忌火旺而招焚化之忧。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-007。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-020
+  status: active
+  expert_system: ziping
+  title: 秋甲先丁后庚以成材
+  topic: qiujiamu_dinggeng_chengcai
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 秋令甲木枯槁而金旺，需先丁火炼暖，再用庚金斲凿，方能成材。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 甲木生申酉戌月
+    - 丁火与庚金配置可判
+    optional:
+    - 技术、规范、压力裁成反馈
+    exclusions:
+    - 无丁火调候时不可单凭庚金断成材
+  output:
+    statement: 子平规则参与：秋甲判断应先看丁火，再看庚金裁成，次序失当则层次下降。
+    falsifiable: 若丁庚次序与成器表现无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 三秋甲木，木性枯槁，金土乘旺，先丁後庚。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-008。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-021
+  status: active
+  expert_system: ziping
+  title: 冬甲丁先庚后丙佐
+  topic: dongjiamu_dinggeng_bingzuo
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 冬令甲木寒凝，宜丁先庚后并以丙火佐之，先暖发生机再谈裁成。
+  conditions:
+    trigger: always
+    required:
+    - 甲木生亥子丑月
+    - 丁、庚、丙配置和强弱可判
+    optional:
+    - 寒湿健康或事业启动迟缓反馈
+    exclusions:
+    - 火已过旺或木已燥枯时不可照套冬甲取用
+  output:
+    statement: 子平规则参与：冬甲应输出丁火引生、庚金裁成、丙火辅暖的分层判断。
+    falsifiable: 若冬甲丁庚丙配置与启动成材无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 十一月甲木，木性生寒，丁先庚後，丙火佐之。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-009。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-022
+  status: active
+  expert_system: ziping
+  title: 乙木丙癸不可离
+  topic: yimu_binggui
+  domains:
+  - 事业
+  - 性格
+  - 婚姻
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 乙木如花草，常需丙火照耀与癸水滋养并用，才利柔性生发。
+  conditions:
+    trigger: has_marriage_picture
+    required:
+    - 乙木为日主或关键用神
+    - 丙火与癸水配置可判
+    optional:
+    - 才艺、审美、人际或成长环境反馈
+    exclusions:
+    - 丙癸不能相济或乙木不为核心时不可主断
+  output:
+    statement: 子平规则参与：乙木判断应重视丙癸照拂滋养，区别于甲木栋梁取庚。
+    falsifiable: 若乙木丙癸配置与柔性生发无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 三春乙木，为芝兰蒿草之物，丙癸不可离也。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-010。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-023
+  status: active
+  expert_system: ziping
+  title: 丙火多以壬水辅映成既济
+  topic: binghuo_renshui_jiji
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 丙火多需壬水辅映，水火既济则光辉有用，过烈或无水则失衡。
+  conditions:
+    trigger: always
+    required:
+    - 丙火为日主或关键透干
+    - 壬水有无、强弱与季节火势可判
+    optional:
+    - 名声表达、权威或眼目心血管反馈
+    exclusions:
+    - 水火冲战不能既济时不可按辅映吉象断
+  output:
+    statement: 子平规则参与：丙火判断应检查壬水辅映是否成立，并同步提示过烈或水火战的风险。
+    falsifiable: 若壬水辅映与丙火表现无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 三春丙火……端用壬水，为扶阳，名曰天和地润。三夏丙火，阳威性烈，专用壬水。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-011。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-024
+  status: active
+  expert_system: ziping
+  title: 丁火须甲引庚劈
+  topic: dinghuo_jiayin_gengpi
+  domains:
+  - 事业
+  - 性格
+  - 财富
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 丁火如灯烛，需甲木为薪，但甲旺又需庚金劈甲引丁，方能成有序燃发。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 丁火为日主或关键用神
+    - 甲木旺度与庚金有无可判
+    optional:
+    - 学习、技术、资源转化或才华显露反馈
+    exclusions:
+    - 季节旺衰不支持甲庚引丁时不可机械套用
+  output:
+    statement: 子平规则参与：丁火应分甲木资源与庚金加工机制，判断才华能否被引燃。
+    falsifiable: 若甲庚配置与丁火显用无关，则此条需降权。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 正月丁火，甲木当权，乃为母旺，非庚不能劈甲，何以引丁。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-012。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-025
+  status: active
+  expert_system: ziping
+  title: 土聚滞散轻须水木调和
+  topic: tuju_tuzhi_shuimu
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 土过聚则滞塞，过散则轻浮；燥土需水润，实土需木疏，方可中和。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 戊己土旺重、过燥、过湿或过散
+    - 水润与木疏条件可判
+    optional:
+    - 资产沉淀、脾胃代谢或性情固执反馈
+    exclusions:
+    - 土已中和流通时不可按滞塞断
+  output:
+    statement: 子平规则参与：土象判断应标注聚滞、散轻、燥湿与水木调和状态。
+    falsifiable: 若土的聚散燥湿与稳定健康表现无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 土聚则滞，土散则轻。土太实无水，燥则不和，无木则不疏通。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-013。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-026
+  status: active
+  expert_system: ziping
+  title: 戊土丙甲癸三者为关键调配
+  topic: wutu_bingjiagui
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 戊土常以丙火照暖、甲木疏劈、癸水滋润构成生机与灵动的关键组合。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 戊土为日主或关键结构
+    - 丙、甲、癸三者有无、位置与强弱可判
+    optional:
+    - 事业开拓、资源组织或脾胃环境反馈
+    exclusions:
+    - 季节取用已改以壬水或其他神为先时不可固定三者同权
+  output:
+    statement: 子平规则参与：戊土应检查丙照、甲疏、癸润三项是否成配，缺项则降低生机层次。
+    falsifiable: 若丙甲癸配置与戊土发展层次无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+    excerpt: 三春戊土，无丙照暖，戊土不生，无甲疏劈，戊土不灵，无癸滋润，万物不长。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P1-20260606-014。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-027
+  status: active
+  expert_system: ziping
+  title: 夏己取癸为要次用丙火
+  topic: xiaji_gui_bing
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 夏令己土如田园禾稼，首重癸水甘沛润燥，其次丙火太阳发生，缺癸则旱，缺丙则孤阴。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 己土为日主或关键结构
+    - 生于巳午未月
+    - 癸水与丙火有无、强弱可判
+    optional:
+    - 事业生发、财富田产、脾胃燥湿或成长环境反馈
+    exclusions:
+    - 非夏令己土或癸丙被合化破坏时不可直接套用
+  output:
+    statement: 子平规则参与：夏令己土应先看癸润再看丙照，缺癸偏旱，缺丙偏孤阴不长。
+    falsifiable: 若夏己发展层次与癸润丙照配置无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 三夏己土，杂气才官，禾稼在田，最喜甘沛，取癸为要，次用丙火。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-001。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-028
+  status: active
+  expert_system: ziping
+  title: 秋己癸先丙后以润暖收藏
+  topic: qiuji_gui_bing
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 秋令己土外虚内实、寒气渐升，需癸水润泽收藏，再以丙火温暖。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 己土生申酉戌月
+    - 癸水与丙火配置可判
+    - 寒燥、金旺或土燥程度可判
+    optional:
+    - 积累、储蓄、地产、组织稳定或燥寒健康反馈
+    exclusions:
+    - 夏己燥田或冬己寒冻格局应另按季节取用
+  output:
+    statement: 子平规则参与：秋令己土应检查癸先丙后的润暖次序，以判断收藏与稳定层次。
+    falsifiable: 若秋己层次与癸丙润暖次序无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 三秋己土，万物收藏之际，外虚内实，寒气渐升，须丙火温之，癸水润之……癸先丙後。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-002。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-029
+  status: active
+  expert_system: ziping
+  title: 冬己丙暖为尊见火不孤见土不贫
+  topic: dongji_binghuo
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 家庭
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 冬令己土湿泥寒冻，首需丙火解冻生发；壬水出干易成水浸之患，见火不孤，见土不贫。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 己土生亥子丑月
+    - 寒湿明显
+    - 丙火、壬水与比土配置可判
+    optional:
+    - 事业启动、居住资产、脾胃寒湿或家庭支持反馈
+    exclusions:
+    - 局中丙火被严重合克无力时不可按解冻有功断
+  output:
+    statement: 子平规则参与：冬己以丙暖为先，壬水出干需防水浸，得火土则根基与孤贫风险改善。
+    falsifiable: 若冬己寒湿与丙火解冻、土助根基无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 三冬己土，湿泥寒冻，非丙暖不生，取丙为尊……见火不孤，见土不贫。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-003。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-030
+  status: active
+  expert_system: ziping
+  title: 金无火炼不能成器但火力须平衡
+  topic: jinhuo_chengqi
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 金需火炼方能成器，但金火轻重必须相称；金重火轻则执事繁难，金轻火重则煅炼消亡。
+  conditions:
+    trigger: always
+    required:
+    - 庚辛金为日主或关键用神
+    - 火星参与制炼
+    - 金火强弱比例可判
+    optional:
+    - 技术打磨、制度压力、炎症手术或金属伤象反馈
+    exclusions:
+    - 辛金温润取水淘洗优先的格局不可机械套火炼
+  output:
+    statement: 子平规则参与：金类成器需看火炼是否得中，火轻难成，火重伤金。
+    falsifiable: 若金火轻重与成器压力表现无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 金无火链，不能成器，金重火轻，执事繁难，金轻火重，煆炼消亡。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-004。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-031
+  status: active
+  expert_system: ziping
+  title: 金局水火土偏失则沉枯埋没
+  topic: jinju_shuihuotu
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 金的成败取决于水火土适量配合，火旺金沉，水重沉沦，无水干枯，土重埋没。
+  conditions:
+    trigger: always
+    required:
+    - 金为日主、用神或关键结构
+    - 水火土任一方过旺、缺失或失衡
+    optional:
+    - 职业显达、资源埋没、表达流通或呼吸皮肤反馈
+    exclusions:
+    - 金局已有清晰成器或淘洗结构时不可按偏失断
+  output:
+    statement: 子平规则参与：金局需标注水火土的生、炼、润、埋关系，过偏则降低金的发挥层次。
+    falsifiable: 若水火土偏失与金的显达埋没无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 金无水乾枯，水重，则沉沦无用，金无土死绝，土重，则埋没不显。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-005。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-032
+  status: active
+  expert_system: ziping
+  title: 金已成器不欲再火
+  topic: jin_chengqi_zaihuo
+  domains:
+  - 事业
+  - 健康
+  axis_refs:
+  - AXIS-04
+  - AXIS-08
+  - AXIS-09
+  claim: 金未成器时喜火炼成形，金已成器后再逢火则可能伤损变形，应分阶段判断火的作用。
+  conditions:
+    trigger: always
+    required:
+    - 金局已有火炼、格局成器或金已得用
+    - 岁运或原局再见强火
+    optional:
+    - 职位变动、名誉受损、手术炎症或器械风险反馈
+    exclusions:
+    - 金尚未成器且火弱不足时仍可喜火炼
+  output:
+    statement: 子平规则参与：金已成器后再遇强火需提示过度锻炼、压力变形或伤损风险。
+    falsifiable: 若成器后再火与损耗事件无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 金成则火灭，故金未成器，欲得见火，金已成器，不欲见火。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-006。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-033
+  status: active
+  expert_system: ziping
+  title: 春金喜火荣身厚土辅助忌水盛增寒
+  topic: chunjin_huotu
+  domains:
+  - 事业
+  - 健康
+  - 学业
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 春金休囚气弱，宜火气温荣、厚土生扶；水盛则增寒，木旺则耗损金力。
+  conditions:
+    trigger: always
+    required:
+    - 庚辛金生寅卯辰月
+    - 火、土、水、木配置与寒湿程度可判
+    optional:
+    - 早期发展、学习技术、贵人资源或寒湿体质反馈
+    exclusions:
+    - 秋金当令或冬金寒冷格局需另按月令取用
+  output:
+    statement: 子平规则参与：春金以火荣土助为佳，水盛木旺需提示寒弱与耗力。
+    falsifiable: 若春金发展与火土扶助、水木偏盛无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 春月之金……贵乎火气为荣……欲得厚土辅助，水盛增寒……木旺损力。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-007。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-034
+  status: active
+  expert_system: ziping
+  title: 庚金按月令取用先辨丙丁甲壬
+  topic: gengjin_yueling_quyong
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 庚金取用随月令转换，寅月丙甲为上，卯月丁火借甲引丁，巳月先壬求中和，申月专丁煅炼并取木引丁。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 庚金日主或庚金关键
+    - 月令明确
+    - 丙、丁、甲、壬等配置可判
+    optional:
+    - 技能裁炼、压力制度、名望升迁或气候失衡反馈
+    exclusions:
+    - 非庚金或辛金温润格局不可套用庚金取用
+  output:
+    statement: 子平规则参与：庚金应按月令分别检查丙暖、丁炼、甲引疏与壬水中和条件。
+    falsifiable: 若庚金月令取用次序与事业成器无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 正月庚金……丙甲为上；二月庚金……专用丁火；四月庚金……先壬水；七月庚金……专用丁火煆炼。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-008；生产化宜拆分月令子规则。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-035
+  status: active
+  expert_system: ziping
+  title: 庚金戌亥丑月防土埋寒冻须甲壬丙丁
+  topic: gengjin_maihan
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 庚金戌月怕土厚埋金，须甲疏壬洗；入亥丑寒冻则需丁造丙暖，丑月先丙解冻再丁炼并辅甲。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 庚金生戌、亥或丑月
+    - 厚土、寒水与丙丁甲壬配置可判
+    optional:
+    - 埋没迟发、技术难显或外部环境开通反馈
+    exclusions:
+    - 庚金生申酉当令且不见埋寒病时不可套用
+  output:
+    statement: 子平规则参与：戌亥丑月庚金应重点检查土埋与寒冻，并以甲壬丙丁分病配药。
+    falsifiable: 若埋寒格局与庚金事业迟滞无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 九月庚金……最怕土厚埋金，宜先用甲疏，後用壬洗；十二月庚金……先取丙火解冻，次取丁火炼金。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-009。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-036
+  status: active
+  expert_system: ziping
+  title: 辛金畏土叠喜壬淘洗兼用己壬
+  topic: xinjin_jiren
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  - 学业
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 辛金重温润清透，常以己土为生身之本、壬水为淘洗流通之功，忌燥烈火与厚土叠埋。
+  conditions:
+    trigger: always
+    required:
+    - 辛金日主或关键辛金
+    - 己土、壬水、丙火与土厚燥湿可判
+    optional:
+    - 才艺审美、专业精细、名声清润或皮肤肺系反馈
+    exclusions:
+    - 庚金刚健须火炼格局不可与辛金混用
+  output:
+    statement: 子平规则参与：辛金判断应重己土生身与壬水淘洗，土叠火燥会降低清透层次。
+    falsifiable: 若辛金清透与己壬配置无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 正月辛金……取己土为身之本……全赖壬水之功；五月辛金……须己壬兼用；八月辛金……专用壬水淘洗。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-010。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-037
+  status: active
+  expert_system: ziping
+  title: 水不绝源赖金生泛滥赖土防
+  topic: shuiju_jinyuan_tudi
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 水要流远需金生其源，泛滥则需土作堤防；水火均衡成既济，水土混杂则源浊为凶。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 壬癸水为日主、用神或成势
+    - 金源、土堤、火暖与水土混浊可判
+    optional:
+    - 流动事业、迁移远行、智慧表达或肾泌尿反馈
+    exclusions:
+    - 水势已中和且不见泛滥或断源时不可套用
+  output:
+    statement: 子平规则参与：水局应同时标注金源、土堤、水火既济与水土混浊状态。
+    falsifiable: 若水局成败与金源土防无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 水不绝源，仗金生而流远，水流泛滥，赖土克以堤防，水火均，则合既济之美。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-011。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-038
+  status: active
+  expert_system: ziping
+  title: 壬水汪洋须戊堤庚源丙暖随月调配
+  topic: renshui_yueling
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 壬水汪洋需按月令配置戊土堤防、庚辛金源、丙火温暖或甲木疏土，不能只论水旺水弱。
+  conditions:
+    trigger: has_wealth_picture
+    required:
+    - 壬水日主或壬水成势
+    - 月令明确
+    - 戊、庚辛、丙、甲配置可判
+    optional:
+    - 管理边界、流动资源、迁移发展或泛滥失控反馈
+    exclusions:
+    - 癸水柔弱细流格局不可直接按壬水汪洋论
+  output:
+    statement: 子平规则参与：壬水需按月令检查戊堤、金源、丙暖与甲疏的组合，而非只以旺弱定吉凶。
+    falsifiable: 若壬水月令取用与发展边界无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 正月壬水……宜用庚金之源……庚丙戊三者齐透；十月壬水司权……专用戊丙，次取庚金。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-012；生产化宜拆月。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260606-039
+  status: active
+  expert_system: ziping
+  title: 癸水柔弱喜辛源丙暖冬须解冻
+  topic: guishui_xinbing
+  domains:
+  - 事业
+  - 健康
+  - 学业
+  - 性格
+  axis_refs:
+  - AXIS-01
+  - AXIS-04
+  - AXIS-08
+  claim: 癸水柔弱而重源头与温暖，春夏需庚辛生源，寒冬首取丙火解冻，再得辛金滋扶则金温水暖。
+  conditions:
+    trigger: always
+    required:
+    - 癸水日主或关键癸水
+    - 季节寒暖与庚辛、丙火配置可判
+    optional:
+    - 学习资质、情绪寒湿、肾泌尿或贵人资源反馈
+    exclusions:
+    - 壬水汪洋成势时不可按癸水柔弱细流同论
+  output:
+    statement: 子平规则参与：癸水应重点检查辛金源头与丙火照暖，冬令尤其需丙火解冻。
+    falsifiable: 若癸水发展与辛源丙暖无关，则此条需复核。
+  source:
+    path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+    excerpt: 正月癸水……先用辛金，次用丙火照暖；十一月癸水……专用丙火解冻……又要辛金滋扶。
+  review:
+    notes: 由候选规则批量提升为生产生成规则；原审查备注：对应 ZP-QTBJ-P2-20260606-013。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1

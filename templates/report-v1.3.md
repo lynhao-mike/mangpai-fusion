@@ -112,14 +112,14 @@
 {% endif %}
 
 {% if parallel_domain_conclusions %}
-### 多流派功能域并行直出（v1.5-A，暂不自动裁判）
+### 多专家功能域裁判（v1.5 旁路）
 
-> 当前阶段不做自动裁判与机械投票；要求盲派专家组、子平格局派、调候派（滴天髓）围绕同一功能域分别输出可反馈结论。下表保留结构化证据，供命理师人工复核与后续反馈校准。
+> 盲派专家组、子平格局派、调候派（滴天髓）围绕同一功能域分别输出 reading，经旁路裁判层合并为可反馈结论。下表保留结构化证据，供命理师复核与后续反馈校准。
 
-| 功能域 | 当前层级 | 流派/专家 | 结论 | 置信 | 证据 |
+| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 |
 |---|---|---|---|---|---|
 {% for c in parallel_domain_conclusions %}
-| {{ c.domain }} | {{ c.layer }} | {{ c.experts_str }} | {{ c.statement }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
+| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
 {% endfor %}
 {% endif %}
 

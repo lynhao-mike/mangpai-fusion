@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 from engine.application.candidates import _extract_candidates
+from engine.application.dual_engine_adapter import analyze_dual_engine
 from engine.application.integration import integrate
 from engine.application.ports import PipelineAdapters
 from engine.application.timing import PIPELINE_THRESHOLD_SECONDS, PipelineTiming
@@ -84,6 +85,25 @@ def run_pipeline(
     # Step 6: 整合
     with timing.step("integrate"):
         output = integrate(energy, picture, gate_results, support, parsed)
+
+    # v1.6 · 双引擎适配层（理论派 + 盲派 + 融合层）—— 不参与 D1-D4 hash 链
+    try:
+        theory_findings, blind_findings, fusion_findings = analyze_dual_engine(
+            parsed=parsed,
+            energy=energy,
+            picture=picture,
+            gate_results=gate_results,
+            support=support,
+        )
+        object.__setattr__(output, "theory_findings", theory_findings)
+        object.__setattr__(output, "blind_findings", blind_findings)
+        object.__setattr__(output, "fusion_findings", fusion_findings)
+        object.__setattr__(output, "parallel_analysis", fusion_findings.parallel_analysis)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("dual engine adapter 失败：%s", e)
+        object.__setattr__(output, "theory_findings", None)
+        object.__setattr__(output, "blind_findings", None)
+        object.__setattr__(output, "fusion_findings", None)
 
     # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output
     try:

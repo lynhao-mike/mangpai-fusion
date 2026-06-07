@@ -145,6 +145,39 @@ def _load_parallel_analysis(d: Any) -> Optional[Any]:
     except Exception:  # noqa: BLE001
         return None
 
+
+def _load_theory_findings(d: Any) -> Optional[Any]:
+    """延迟导入 + 容错的 TheoryFindings 反序列化。"""
+    if not d:
+        return None
+    try:
+        from engine.domain.dual_engine import TheoryFindings
+        return TheoryFindings.from_dict(d)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _load_blind_findings(d: Any) -> Optional[Any]:
+    """延迟导入 + 容错的 BlindFindings 反序列化。"""
+    if not d:
+        return None
+    try:
+        from engine.domain.dual_engine import BlindFindings
+        return BlindFindings.from_dict(d)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _load_fusion_findings(d: Any) -> Optional[Any]:
+    """延迟导入 + 容错的 FusionFindings 反序列化。"""
+    if not d:
+        return None
+    try:
+        from engine.domain.dual_engine import FusionFindings
+        return FusionFindings.from_dict(d)
+    except Exception:  # noqa: BLE001
+        return None
+
 @dataclass
 class AnalysisOutput:
     """完整分析输出。
@@ -189,6 +222,11 @@ class AnalysisOutput:
     # v1.5 · 多专家功能域旁路分析（不影响 D1-D4 hash 链）
     parallel_analysis: Optional[Any] = None  # ParallelAnalysisOutput（避免循环导入）
 
+    # v1.6 · 双引擎适配层（理论派 + 盲派 + 融合层，不影响 D1-D4 hash 链）
+    theory_findings: Optional[Any] = None  # TheoryFindings（避免循环导入）
+    blind_findings: Optional[Any] = None  # BlindFindings（避免循环导入）
+    fusion_findings: Optional[Any] = None  # FusionFindings（避免循环导入）
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
@@ -222,6 +260,24 @@ class AnalysisOutput:
                 and hasattr(self.parallel_analysis, "to_dict")
                 else None
             ),
+            "theory_findings": (
+                self.theory_findings.to_dict()
+                if self.theory_findings is not None
+                and hasattr(self.theory_findings, "to_dict")
+                else None
+            ),
+            "blind_findings": (
+                self.blind_findings.to_dict()
+                if self.blind_findings is not None
+                and hasattr(self.blind_findings, "to_dict")
+                else None
+            ),
+            "fusion_findings": (
+                self.fusion_findings.to_dict()
+                if self.fusion_findings is not None
+                and hasattr(self.fusion_findings, "to_dict")
+                else None
+            ),
         }
 
     @classmethod
@@ -252,6 +308,9 @@ class AnalysisOutput:
             hash_chain_notes=list(d.get("hash_chain_notes", [])),
             retrospective=_load_retrospective(d.get("retrospective")),
             parallel_analysis=_load_parallel_analysis(d.get("parallel_analysis")),
+            theory_findings=_load_theory_findings(d.get("theory_findings")),
+            blind_findings=_load_blind_findings(d.get("blind_findings")),
+            fusion_findings=_load_fusion_findings(d.get("fusion_findings")),
         )
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:

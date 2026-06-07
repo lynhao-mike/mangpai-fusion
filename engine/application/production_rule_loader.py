@@ -370,6 +370,12 @@ def _rule_triggered(
         return parsed is not None
     if trigger == "has_wealth_picture":
         return bool(getattr(picture, "caifu", None) or getattr(picture, "wealth_level", None))
+    if trigger == "has_official_picture":
+        return bool(getattr(picture, "guanming", None))
+    if trigger == "has_marriage_picture":
+        return bool(getattr(picture, "marriage_picture", None))
+    if trigger == "has_tiaohou_advice":
+        return bool(getattr(picture, "tiaohou_advice", None))
     if trigger == "wuxing_imbalanced":
         return _is_wuxing_imbalanced(parsed)
     if trigger == "has_zhi_chong":

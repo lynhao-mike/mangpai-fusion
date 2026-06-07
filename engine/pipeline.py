@@ -13,6 +13,12 @@ from __future__ import annotations
 import logging
 
 from engine.application.candidates import _extract_candidates
+from engine.application.dual_engine_adapter import (
+    analyze_dual_engine,
+    build_blind_findings,
+    build_fusion_findings,
+    build_theory_findings,
+)
 from engine.application.integration import (
     _build_yingqi_table,
     _gate_to_conclusion,
@@ -36,6 +42,7 @@ from engine.domain.analysis import (
     Stance,
     _load_retrospective,
 )
+from engine.domain.dual_engine import BlindFindings, FusionFindings, TheoryFindings
 from engine.infrastructure.findings_repository import _save_findings, save_findings
 
 logger = logging.getLogger(__name__)
@@ -50,6 +57,9 @@ __all__ = [
     "PipelineTiming",
     "Stance",
     "StepTiming",
+    "TheoryFindings",
+    "BlindFindings",
+    "FusionFindings",
     "_build_yingqi_table",
     "_extract_candidates",
     "_gate_to_conclusion",
@@ -57,6 +67,10 @@ __all__ = [
     "_infer_wealth_framework",
     "_load_retrospective",
     "_save_findings",
+    "analyze_dual_engine",
+    "build_blind_findings",
+    "build_fusion_findings",
+    "build_theory_findings",
     "integrate",
     "run_pipeline",
     "run_pipeline_e2e",
