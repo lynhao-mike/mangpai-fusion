@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-RF000448-乾-庚辰甲申癸亥癸亥",
+  "energy_level": {
+    "ordinal": "弱",
+    "score": 0.29
+  },
+  "layer_count": 1,
+  "zuogong_paths": [
+    {
+      "type": "制",
+      "chain": [
+        "申",
+        "亥"
+      ],
+      "description": "月支支申 ↔ 日支支亥 之 穿 → 作用于用神申(官杀)",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.9
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "化",
+      "chain": [
+        "辰",
+        "庚",
+        "癸"
+      ],
+      "description": "年支辰(官杀,土) → 生 → 年柱庚(印,金) → 生身 [印化杀]",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.8
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "墓",
+      "chain": [
+        "辰"
+      ],
+      "description": "年支辰库藏 戊(主气) 财官 (未冲刑→关库)",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.4
+      },
+      "layer_count": 0
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "癸",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "庚",
+        "role": "印",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "甲",
+        "role": "食伤",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "癸",
+        "role": "比劫",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "申",
+        "role": "印",
+        "location": "月柱-地支（月支）"
+      },
+      {
+        "char": "亥",
+        "role": "比劫",
+        "location": "日柱-地支（日支）"
+      },
+      {
+        "char": "亥",
+        "role": "比劫",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "辰",
+        "role": "官杀",
+        "location": "年柱-地支（年支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 癸(水) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 癸(体), 庚(印), 甲(食伤), 癸(比劫), 申(印), 亥(比劫)\n  用（目的）= 财 + 官杀: 辰(官杀)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.1727,
+      "火": 0.0,
+      "土": 0.0857,
+      "金": 0.2583,
+      "水": 0.4833
+    },
+    "dang": [
+      [
+        "水",
+        "单势·水旺（势力 48%）"
+      ],
+      [
+        "金水",
+        "双党·金生水（合计 74%） = 段派 印生比劫党"
+      ],
+      [
+        "金水木",
+        "三党·金→水→木（合计 91%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[水=48%, 金=26%, 木=17%, 土=9%, 火=0%]; 党形态：3 个"
+  },
+  "zeishen": {
+    "zei_shen": [],
+    "bu_shen": [],
+    "triggered_by_dayun": [],
+    "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+  },
+  "wealth_ceiling": "小富级·中",
+  "has_guoheqiaoqiao": false,
+  "muxing_qufa": "食伤",
+  "confidence": {
+    "star": 5,
+    "percent": 0.95,
+    "posterior": 0.95,
+    "variance": 0.05,
+    "sample_n": 5
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 7 字，用 1 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：单势·水旺（势力 48%）",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：月支支申 ↔ 日支支亥 之 穿 → 作用于用神申(官杀)",
+      "weight": 0.9
+    },
+    {
+      "rule_id": "M1-D-010",
+      "school": "段",
+      "description": "化：年支辰(官杀,土) → 生 → 年柱庚(印,金) → 生身 [印化杀]",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：食伤（决策 J）",
+      "weight": 0.8
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.7,
+    "has_strong_yong": false,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[水=48%, 金=26%, 木=17%, 土=9%, 火=0%]; 党形态：3 个"
+  }
+}

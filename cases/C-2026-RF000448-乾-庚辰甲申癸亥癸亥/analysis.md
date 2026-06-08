@@ -10,4 +10,6 @@
 
 ## Pipeline 分析
 
-待运行正式 pipeline 后回填。
+- findings：`findings/analysis_output.json`
+- 命理师报告：`../../reports/C-2026-RF000448-乾-庚辰甲申癸亥癸亥-analyst-report.md`
+- statement index：`statement_index.json`

@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+  "energy_level": {
+    "ordinal": "弱",
+    "score": 0.29
+  },
+  "layer_count": 1,
+  "zuogong_paths": [
+    {
+      "type": "制",
+      "chain": [
+        "巳",
+        "亥"
+      ],
+      "description": "年支支亥 ↔ 月支支巳 之 冲 → 作用于用神巳(财)",
+      "strength": {
+        "ordinal": "强",
+        "score": 1.0
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "乙",
+        "巳"
+      ],
+      "description": "年柱乙(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "寅",
+        "巳"
+      ],
+      "description": "日支寅(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "卯",
+        "巳"
+      ],
+      "description": "时支卯(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "合",
+      "chain": [
+        "寅",
+        "亥"
+      ],
+      "description": "年支支亥 ↔ 日支支寅 之 六合 → 作用于用神寅(财)",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.6
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "制",
+      "chain": [
+        "寅",
+        "亥"
+      ],
+      "description": "年支支亥 ↔ 日支支寅 之 破 → 作用于用神寅(财)",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.4
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "复合",
+      "chain": [
+        "巳",
+        "亥",
+        "乙",
+        "巳",
+        "寅",
+        "巳"
+      ],
+      "description": "复合做功 = 制 + 合 + 生泄 多种叠加（M1-D-014）",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.85
+      },
+      "layer_count": 0
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "壬",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "乙",
+        "role": "食伤",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "辛",
+        "role": "印",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "癸",
+        "role": "比劫",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "亥",
+        "role": "禄",
+        "location": "年柱-地支（年支）"
+      },
+      {
+        "char": "寅",
+        "role": "食伤",
+        "location": "日柱-地支（日支）"
+      },
+      {
+        "char": "卯",
+        "role": "食伤",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "巳",
+        "role": "财",
+        "location": "月柱-地支（月支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 壬(水) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 壬(体), 乙(食伤), 辛(印), 癸(比劫), 亥(禄), 寅(食伤)\n  用（目的）= 财 + 官杀: 巳(财)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.3556,
+      "火": 0.1309,
+      "土": 0.0066,
+      "金": 0.15,
+      "水": 0.3569
+    },
+    "dang": [
+      [
+        "水木",
+        "双党·水生木（合计 71%） = 段派 比劫生食伤党"
+      ],
+      [
+        "水木火",
+        "三党·水→木→火（合计 84%）"
+      ],
+      [
+        "金水木",
+        "三党·金→水→木（合计 86%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[水=36%, 木=36%, 金=15%, 火=13%, 土=1%]; 党形态：3 个"
+  },
+  "zeishen": {
+    "zei_shen": [],
+    "bu_shen": [],
+    "triggered_by_dayun": [],
+    "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+  },
+  "wealth_ceiling": "小富级·中",
+  "has_guoheqiaoqiao": false,
+  "muxing_qufa": "禄",
+  "confidence": {
+    "star": 5,
+    "percent": 0.95,
+    "posterior": 0.95,
+    "variance": 0.05,
+    "sample_n": 8
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 7 字，用 1 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：双党·水生木（合计 71%） = 段派 比劫生食伤党",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：年支支亥 ↔ 月支支巳 之 冲 → 作用于用神巳(财)",
+      "weight": 1.0
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：年柱乙(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：日支寅(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：时支卯(食伤,木) → 生 → 月支巳(财,火) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-012",
+      "school": "段",
+      "description": "合：年支支亥 ↔ 日支支寅 之 六合 → 作用于用神寅(财)",
+      "weight": 0.6
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：禄（决策 J）",
+      "weight": 0.8
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.7,
+    "has_strong_yong": false,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[水=36%, 木=36%, 金=15%, 火=13%, 土=1%]; 党形态：3 个"
+  }
+}

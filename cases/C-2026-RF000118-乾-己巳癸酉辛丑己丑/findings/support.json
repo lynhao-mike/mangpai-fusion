@@ -1,0 +1,256 @@
+{
+  "schema_version": "1.4.0",
+  "school": "高",
+  "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+  "shensha_supports": {
+    "career": [
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱）",
+        "boost": 0.06,
+        "tags": [
+          "贵人扶持",
+          "提拔"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱）",
+        "boost": 0.06,
+        "tags": [
+          "贵人扶持",
+          "提拔"
+        ]
+      },
+      {
+        "name": "文昌",
+        "palaces": [
+          "月柱"
+        ],
+        "contribution": "文昌 = 利文职 / 文化产业（在 月柱）",
+        "boost": 0.02,
+        "tags": [
+          "文职"
+        ]
+      },
+      {
+        "name": "天厨",
+        "palaces": [
+          "月柱"
+        ],
+        "contribution": "天厨 = 餐饮 / 食品业有利（在 月柱）",
+        "boost": 0.02,
+        "tags": [
+          "饮食业"
+        ]
+      },
+      {
+        "name": "将星",
+        "palaces": [
+          "月柱"
+        ],
+        "contribution": "将星 = 统御之神，主握权 / 团队领导（在 月柱）",
+        "boost": 0.04,
+        "tags": [
+          "统领",
+          "权位"
+        ]
+      },
+      {
+        "name": "华盖",
+        "palaces": [
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "华盖 = 艺术 / 宗教 / 学术清贵之业（在 日柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "艺术",
+          "清贵",
+          "宗教"
+        ]
+      }
+    ],
+    "general": [
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 一生有贵人援助（在 年柱）",
+        "boost": 0.03,
+        "tags": [
+          "贵人"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 一生有贵人援助（在 年柱）",
+        "boost": 0.03,
+        "tags": [
+          "贵人"
+        ]
+      },
+      {
+        "name": "太极贵人",
+        "palaces": [
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "太极贵人 = 性情好探索玄理 / 道家（在 日柱,时柱）",
+        "boost": 0.02,
+        "tags": [
+          "玄学倾向"
+        ]
+      }
+    ],
+    "wealth": [
+      {
+        "name": "天厨",
+        "palaces": [
+          "月柱"
+        ],
+        "contribution": "天厨 = 食禄丰足 / 饮食业适合（在 月柱）",
+        "boost": 0.03,
+        "tags": [
+          "食禄",
+          "饮食"
+        ]
+      }
+    ],
+    "marriage": [
+      {
+        "name": "红艳煞",
+        "palaces": [
+          "月柱"
+        ],
+        "contribution": "红艳 = 异性缘旺（双刃剑：旺则桃花 / 凶则烂桃花）（在 月柱）",
+        "boost": 0.02,
+        "tags": [
+          "桃花",
+          "异性缘"
+        ]
+      },
+      {
+        "name": "华盖",
+        "palaces": [
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "华盖独守 = 婚姻孤高 / 迟婚信号（轻微负向）（在 日柱,时柱）",
+        "boost": -0.03,
+        "tags": [
+          "孤高"
+        ]
+      }
+    ],
+    "education": [
+      {
+        "name": "华盖",
+        "palaces": [
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "华盖 = 清贵文化教育倾向（在 日柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "清贵",
+          "文化"
+        ]
+      }
+    ]
+  },
+  "health_findings": [],
+  "ciguan_xuetang": {
+    "has_ciguan": false,
+    "has_xuetang": false,
+    "has_wenchang": false,
+    "has_taiyi": false,
+    "contribution": "学业辅佐神煞：太极+0.03 → 累加 0.030, capped to 0.030",
+    "boost": 0.03
+  },
+  "mingong_zhairi": null,
+  "confidence": {
+    "star": 4,
+    "percent": 0.75,
+    "posterior": 0.75,
+    "variance": 0.08,
+    "sample_n": 14
+  },
+  "evidence": [
+    {
+      "rule_id": "GP-BD-02",
+      "school": "高",
+      "description": "天乙贵人 旁证 [career]: 天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱）",
+      "weight": 0.3
+    },
+    {
+      "rule_id": "GP-XL-03",
+      "school": "高",
+      "description": "文昌 旁证 [career]: 文昌 = 利文职 / 文化产业（在 月柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-BD-14",
+      "school": "高",
+      "description": "天厨 旁证 [career]: 天厨 = 餐饮 / 食品业有利（在 月柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-BD-10",
+      "school": "高",
+      "description": "将星 旁证 [career]: 将星 = 统御之神，主握权 / 团队领导（在 月柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-BD-06",
+      "school": "高",
+      "description": "华盖 旁证 [career]: 华盖 = 艺术 / 宗教 / 学术清贵之业（在 日柱,时柱）",
+      "weight": 0.15
+    },
+    {
+      "rule_id": "GP-BD-03",
+      "school": "高",
+      "description": "太极贵人 旁证 [general]: 太极贵人 = 性情好探索玄理 / 道家（在 日柱,时柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-BD-09",
+      "school": "高",
+      "description": "红艳煞 旁证 [marriage]: 红艳 = 异性缘旺（双刃剑：旺则桃花 / 凶则烂桃花）（在 月柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-XL-MIX",
+      "school": "高",
+      "description": "词馆/学堂综合: 学业辅佐神煞：太极+0.03 → 累加 0.030, capped to 0.030",
+      "weight": 0.15
+    }
+  ],
+  "upstream_energy_hash": "83871a8abf86542b",
+  "upstream_picture_hash": "81817ba1a542b879",
+  "upstream_gate_hash": "b6e712fcb419b0cb",
+  "debug_info": {
+    "n_shensha_total": 13,
+    "n_domains_covered": 5,
+    "domains_covered": [
+      "career",
+      "education",
+      "general",
+      "marriage",
+      "wealth"
+    ],
+    "has_ciguan_xuetang": true,
+    "n_health_findings": 0,
+    "shensha_input_size": 13
+  }
+}

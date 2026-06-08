@@ -1,0 +1,54 @@
+{
+  "case_id": "C-2026-RF000900-乾-戊寅乙卯丙寅戊子",
+  "run_id": "",
+  "timing_type": "pipeline",
+  "generated_at": "2026-06-08T04:51:04Z",
+  "pipeline_version": "1.2.1",
+  "threshold_seconds": 60.0,
+  "total_seconds": 1.843,
+  "exceeded_threshold": false,
+  "step_names": [
+    "preflight",
+    "energy",
+    "picture",
+    "yingqi",
+    "pangzheng",
+    "integrate",
+    "render",
+    "self_iter"
+  ],
+  "steps": {
+    "energy": 0.0004,
+    "picture": 0.0017,
+    "yingqi": 0.014,
+    "pangzheng": 0.002,
+    "integrate": 1.8249
+  },
+  "step_details": [
+    {
+      "name": "energy",
+      "seconds": 0.0004,
+      "started_at": "2026-06-08T04:51:01.943454Z"
+    },
+    {
+      "name": "picture",
+      "seconds": 0.0017,
+      "started_at": "2026-06-08T04:51:01.943864Z"
+    },
+    {
+      "name": "yingqi",
+      "seconds": 0.014,
+      "started_at": "2026-06-08T04:51:01.945564Z"
+    },
+    {
+      "name": "pangzheng",
+      "seconds": 0.002,
+      "started_at": "2026-06-08T04:51:01.959637Z"
+    },
+    {
+      "name": "integrate",
+      "seconds": 1.8249,
+      "started_at": "2026-06-08T04:51:01.961652Z"
+    }
+  ]
+}

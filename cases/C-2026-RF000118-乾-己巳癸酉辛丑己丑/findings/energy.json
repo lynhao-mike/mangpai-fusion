@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+  "energy_level": {
+    "ordinal": "弱",
+    "score": 0.33
+  },
+  "layer_count": 1,
+  "zuogong_paths": [
+    {
+      "type": "化",
+      "chain": [
+        "巳",
+        "己",
+        "辛"
+      ],
+      "description": "年支巳(官杀,火) → 生 → 年柱己(印,土) → 生身 [印化杀]",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.8
+      },
+      "layer_count": 1
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "辛",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "己",
+        "role": "印",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "癸",
+        "role": "食伤",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "己",
+        "role": "印",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "酉",
+        "role": "禄",
+        "location": "月柱-地支（月支）"
+      },
+      {
+        "char": "丑",
+        "role": "印",
+        "location": "日柱-地支（日支）"
+      },
+      {
+        "char": "丑",
+        "role": "印",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "巳",
+        "role": "官杀",
+        "location": "年柱-地支（年支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 辛(金) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 辛(体), 己(印), 癸(食伤), 己(印), 酉(禄), 丑(印)\n  用（目的）= 财 + 官杀: 巳(官杀)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.0,
+      "火": 0.0786,
+      "土": 0.422,
+      "金": 0.3447,
+      "水": 0.1547
+    },
+    "dang": [
+      [
+        "土",
+        "单势·湿土（势力 42%）"
+      ],
+      [
+        "土金",
+        "双党·土生金（合计 77%） = 段派 印生比劫党"
+      ],
+      [
+        "土金水",
+        "三党·土→金→水（合计 92%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[土=42%, 金=34%, 水=15%, 火=8%, 木=0%]; 党形态：3 个"
+  },
+  "zeishen": {
+    "zei_shen": [],
+    "bu_shen": [],
+    "triggered_by_dayun": [],
+    "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+  },
+  "wealth_ceiling": "小富级·上",
+  "has_guoheqiaoqiao": false,
+  "muxing_qufa": "禄",
+  "confidence": {
+    "star": 5,
+    "percent": 0.913,
+    "posterior": 0.913,
+    "variance": 0.05,
+    "sample_n": 4
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 7 字，用 1 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：单势·湿土（势力 42%）",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-010",
+      "school": "段",
+      "description": "化：年支巳(官杀,火) → 生 → 年柱己(印,土) → 生身 [印化杀]",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：禄（决策 J）",
+      "weight": 0.8
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.9,
+    "has_strong_yong": false,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[土=42%, 金=34%, 水=15%, 火=8%, 木=0%]; 党形态：3 个"
+  }
+}

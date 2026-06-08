@@ -1,0 +1,305 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-RF000606-乾-庚午己丑甲申辛未",
+  "energy_level": {
+    "ordinal": "极强",
+    "score": 1.0
+  },
+  "layer_count": 4,
+  "zuogong_paths": [
+    {
+      "type": "制",
+      "chain": [
+        "丑",
+        "未"
+      ],
+      "description": "月支支丑 ↔ 时支支未 之 冲 → 作用于用神丑(财)",
+      "strength": {
+        "ordinal": "强",
+        "score": 1.0
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "制",
+      "chain": [
+        "午",
+        "丑"
+      ],
+      "description": "年支支午 ↔ 月支支丑 之 穿 → 作用于用神午(食伤)",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.9
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "墓",
+      "chain": [
+        "丑"
+      ],
+      "description": "月支丑库藏 己(主气),辛(余气) 财官 + 有冲刑打开 → 墓库做功",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "墓",
+      "chain": [
+        "未"
+      ],
+      "description": "时支未库藏 己(主气) 财官 + 有冲刑打开 → 墓库做功",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "午",
+        "己"
+      ],
+      "description": "年支午(食伤,火) → 生 → 月柱己(财,土) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "己",
+        "庚"
+      ],
+      "description": "月柱己(财,土) → 生 → 年柱庚(官杀,金) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "丑",
+        "庚"
+      ],
+      "description": "月支丑(财,土) → 生 → 年柱庚(官杀,金) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "未",
+        "庚"
+      ],
+      "description": "时支未(财,土) → 生 → 年柱庚(官杀,金) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "合",
+      "chain": [
+        "己",
+        "甲"
+      ],
+      "description": "月柱干己(财) 合 日柱干甲(比劫) 化土=财 [合绊]",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.55
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "复合",
+      "chain": [
+        "丑",
+        "未",
+        "午",
+        "丑",
+        "丑"
+      ],
+      "description": "复合做功 = 制 + 合 + 墓 + 生泄 多种叠加（M1-D-014）",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.85
+      },
+      "layer_count": 0
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "甲",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "午",
+        "role": "食伤",
+        "location": "年柱-地支（年支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "庚",
+        "role": "官杀",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "己",
+        "role": "财",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "辛",
+        "role": "官杀",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "丑",
+        "role": "财",
+        "location": "月柱-地支（月支）"
+      },
+      {
+        "char": "申",
+        "role": "官杀",
+        "location": "日柱-地支（日支）"
+      },
+      {
+        "char": "未",
+        "role": "财",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 甲(木) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 甲(体), 午(食伤)\n  用（目的）= 财 + 官杀: 庚(官杀), 己(财), 辛(官杀), 丑(财), 申(官杀), 未(财)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.1402,
+      "火": 0.1086,
+      "土": 0.3588,
+      "金": 0.3615,
+      "水": 0.0309
+    },
+    "dang": [
+      [
+        "土金",
+        "双党·土生金（合计 72%） = 段派 财生官杀党"
+      ],
+      [
+        "火土金",
+        "三党·火→土→金（合计 83%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[金=36%, 土=36%, 木=14%, 火=11%, 水=3%]; 党形态：2 个"
+  },
+  "zeishen": {
+    "zei_shen": [
+      "金"
+    ],
+    "bu_shen": [
+      "庚寅",
+      "辛卯",
+      "丙申",
+      "丁酉"
+    ],
+    "triggered_by_dayun": [
+      1,
+      2,
+      7,
+      8
+    ],
+    "rationale": "段派贼神捕神（M1-D-015..016）：金势 36% 极旺且为'克我'（官杀） → 贼神"
+  },
+  "wealth_ceiling": "巨富级·上",
+  "has_guoheqiaoqiao": true,
+  "muxing_qufa": "比劫",
+  "confidence": {
+    "star": 5,
+    "percent": 0.95,
+    "posterior": 0.95,
+    "variance": 0.05,
+    "sample_n": 10
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 2 字，用 6 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：双党·土生金（合计 72%） = 段派 财生官杀党",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：月支支丑 ↔ 时支支未 之 冲 → 作用于用神丑(财)",
+      "weight": 1.0
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：年支支午 ↔ 月支支丑 之 穿 → 作用于用神午(食伤)",
+      "weight": 0.9
+    },
+    {
+      "rule_id": "M1-D-013",
+      "school": "段",
+      "description": "墓：月支丑库藏 己(主气),辛(余气) 财官 + 有冲刑打开 → 墓库做功",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-013",
+      "school": "段",
+      "description": "墓：时支未库藏 己(主气) 财官 + 有冲刑打开 → 墓库做功",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：年支午(食伤,火) → 生 → 月柱己(财,土) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-015",
+      "school": "段",
+      "description": "贼神：金",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：比劫（决策 J）",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-171",
+      "school": "段",
+      "description": "过河拆桥结构候选 = 食生财 + 财生官 三连环",
+      "weight": 0.75
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.5,
+    "has_strong_yong": true,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[金=36%, 土=36%, 木=14%, 火=11%, 水=3%]; 党形态：2 个"
+  }
+}

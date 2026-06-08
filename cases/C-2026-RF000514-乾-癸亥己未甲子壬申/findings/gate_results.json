@@ -1,0 +1,1831 @@
+[
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 1986,
+    "candidate_event": "凶,家有变故了",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "年份 1986 在大运起运前: 目标年 1986 早于起运年 (1983+9.0) → 尚未交运",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "寅",
+        "申",
+        "己",
+        "未"
+      ],
+      "rationale": "流年丙寅 触发 4 个: ['合冲引动', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干生)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年寅 与原局时支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(地支克,天干生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,天干克)，累计 6 种，增量次数 2",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干生)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,家有变故了' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丙寅 触发 4 个: ['合冲引动', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干生)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "丙寅",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 1998,
+    "candidate_event": "凶,中考重大失败",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "己"
+      ],
+      "rationale": "大运戊午: 大运午藏 己 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "寅",
+        "申",
+        "午",
+        "己",
+        "未"
+      ],
+      "rationale": "流年戊寅 触发 5 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,地支生)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年寅 与原局时支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年寅 与大运午 半三合",
+        "target_chars": [
+          "寅",
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,地支生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(地支克,地支生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,地支克)，累计 6 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,地支生)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": "天地门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 5
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,中考重大失败' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运戊午: 大运午藏 己 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年戊寅 触发 5 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立', '倒象成立'] | 主触发=",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,地支生)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "戊寅",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 5,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2002,
+    "candidate_event": "凶,高考重大失败",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "申"
+      ],
+      "rationale": "大运丁巳: 大运巳六合原局时支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "壬",
+        "丁",
+        "巳",
+        "申",
+        "己"
+      ],
+      "rationale": "流年壬午 触发 4 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年壬 与大运丁 合化木",
+        "target_chars": [
+          "壬",
+          "丁"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运巳 与原局时支申 六合",
+        "target_chars": [
+          "巳",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(六合,地支克,天干克)，累计 7 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 3",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 年龄 19 ∈ 高考 期望窗口 [17,19]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丁巳: 大运巳六合原局时支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年壬午 触发 4 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "壬午",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2008,
+    "candidate_event": "凶,生意失败亏钱 10 几万",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "申"
+      ],
+      "rationale": "大运丁巳: 大运巳六合原局时支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "子",
+        "未",
+        "申",
+        "巳",
+        "己"
+      ],
+      "rationale": "流年戊子 触发 5 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年子 与原局月支未 穿",
+        "target_chars": [
+          "子",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年子 与原局时支申 半三合",
+        "target_chars": [
+          "子",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运巳 与原局时支申 六合",
+        "target_chars": [
+          "巳",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(六合,地支克,天干克)，累计 7 种，增量次数 5",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 5
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,生意失败亏钱 10 几万' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丁巳: 大运巳六合原局时支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年戊子 触发 5 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "戊子",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 5,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2014,
+    "candidate_event": "吉,新生意开端",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运丙辰未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "申"
+      ],
+      "rationale": "流年甲午 触发 4 个: ['本字到', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年甲午 的天干 甲 = 原局关键字",
+        "target_chars": [
+          "甲"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年甲 与原局月柱干己 合化土",
+        "target_chars": [
+          "甲",
+          "己"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 4",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 6 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 4",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,新生意开端' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年甲午 触发 4 个: ['本字到', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支生,天干生)，累计 4 种，增量次数 4",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "甲午",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2015,
+    "candidate_event": "吉,生意有重大起色，赚钱有 100 多万",
+    "domain": "财运",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "未"
+      ],
+      "rationale": "原局存在 财运 关键字: 戊,己,未",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "辰",
+        "戊"
+      ],
+      "rationale": "大运丙辰: 大运丙辰的天干丙∈ 必需字; 大运丙辰的地支辰∈ 必需字; 大运辰藏 戊 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "未",
+        "子",
+        "辰",
+        "申"
+      ],
+      "rationale": "流年乙未 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年乙未 的地支 未 = 原局关键字",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年未 与原局日支子 穿",
+        "target_chars": [
+          "未",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运辰 与原局日支子 半三合",
+        "target_chars": [
+          "辰",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=财运 无 picture 强约束",
+      "[social_clock] 事件 '吉,生意有重大起色，赚钱有 100 多万' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 财运 关键字: 戊,己,未",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙辰: 大运丙辰的天干丙∈ 必需字; 大运丙辰的地支辰∈ 必需字; 大运辰藏 戊 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年乙未 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "乙未",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2016,
+    "candidate_event": "吉,生意很顺利",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运丙辰未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "申",
+        "亥",
+        "子"
+      ],
+      "rationale": "流年丙申 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年丙申 的地支 申 = 原局关键字",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年申 与原局年支亥 穿",
+        "target_chars": [
+          "申",
+          "亥"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年申 与原局日支子 半三合",
+        "target_chars": [
+          "申",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,生意很顺利' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丙申 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "丙申",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2017,
+    "candidate_event": "吉,继续大发展",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运丙辰未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "酉",
+        "辰",
+        "申"
+      ],
+      "rationale": "流年丁酉 触发 2 个: ['合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年酉 与大运辰 六合",
+        "target_chars": [
+          "酉",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.94,
+      "posterior": 0.94,
+      "variance": 0.05,
+      "sample_n": 2
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,继续大发展' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丁酉 触发 2 个: ['合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "丁酉",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 2,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2018,
+    "candidate_event": "凶,投资新生意，亏钱 100 多",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运丙辰未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "戌",
+        "未",
+        "辰",
+        "己",
+        "申"
+      ],
+      "rationale": "流年戊戌 触发 6 个: ['合冲引动', '合冲引动', '墓库开闭', '墓库开闭', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(刑,天干生)，累计 4 种，增量次",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局月支未 刑",
+        "target_chars": [
+          "戌",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与大运辰 冲",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "流年戌（火库）被大运辰冲开",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局月支未（藏 己,丁,乙）含关键字 己，被 流年戌刑 开库",
+        "target_chars": [
+          "未",
+          "己"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(刑,天干生)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(刑,天干生)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "未"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 6
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,投资新生意，亏钱 100 多' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年戊戌 触发 6 个: ['合冲引动', '合冲引动', '墓库开闭', '墓库开闭', '倒象成立', '倒象成立'",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(刑,天干生)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "戊戌",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 6,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2012,
+    "candidate_event": "凶,投资生意，亏钱 100 多万",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运丙辰未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "申"
+      ],
+      "rationale": "流年壬辰 触发 1 个: ['倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.9,
+      "posterior": 0.9,
+      "variance": 0.05,
+      "sample_n": 1
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,投资生意，亏钱 100 多万' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年壬辰 触发 1 个: ['倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "壬辰",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 1,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2022,
+    "candidate_event": "凶,本行生意亏钱，100-200 万",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "己",
+        "未",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 甲,己,未,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "未"
+      ],
+      "rationale": "大运乙卯: 大运卯与原局月支未半三合",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "寅",
+        "申",
+        "卯",
+        "未"
+      ],
+      "rationale": "流年壬寅 触发 4 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年寅 与原局时支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运卯 与原局月支未 半三合",
+        "target_chars": [
+          "卯",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 4",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 5 种，增量次数 1",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 4",
+      "target_chars": [
+        "未"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,本行生意亏钱，100-200 万' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 甲,己,未,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运乙卯: 大运卯与原局月支未半三合",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年壬寅 触发 4 个: ['合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 4",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "壬寅",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2023,
+    "candidate_event": "吉,赚钱，200 以上",
+    "domain": "财运",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "未"
+      ],
+      "rationale": "原局存在 财运 关键字: 戊,己,未",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "未"
+      ],
+      "rationale": "大运乙卯: 大运卯与原局月支未半三合",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "卯",
+        "未"
+      ],
+      "rationale": "流年癸卯 触发 3 个: ['合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年卯 与原局月支未 半三合",
+        "target_chars": [
+          "卯",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运卯 与原局月支未 半三合",
+        "target_chars": [
+          "卯",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 5",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 5",
+      "target_chars": [
+        "未"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=财运 无 picture 强约束",
+      "[social_clock] 事件 '吉,赚钱，200 以上' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 财运 关键字: 戊,己,未",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运乙卯: 大运卯与原局月支未半三合",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年癸卯 触发 3 个: ['合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 未 倒象 [凶",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 5",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "癸卯",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 3,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+    "year": 2024,
+    "candidate_event": "吉,上半年亏钱，下半年赚钱其他信息",
+    "domain": "财运",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "未"
+      ],
+      "rationale": "原局存在 财运 关键字: 戊,己,未",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "未"
+      ],
+      "rationale": "大运乙卯: 大运卯与原局月支未半三合",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "辰",
+        "子",
+        "卯",
+        "甲",
+        "己",
+        "未"
+      ],
+      "rationale": "流年甲辰 触发 7 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 己 倒象 [多重打击(C)]：大运/流年新增 1 种新关系(地支克)，累计 3 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年甲辰 的地支 辰 = 原局关键字",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年辰 与原局日支子 半三合",
+        "target_chars": [
+          "辰",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年辰 与大运卯 穿",
+        "target_chars": [
+          "辰",
+          "卯"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年甲 与原局月柱干己 合化土",
+        "target_chars": [
+          "甲",
+          "己"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运卯 与原局月支未 半三合",
+        "target_chars": [
+          "卯",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 己 倒象 [多重打击(C)]：大运/流年新增 1 种新关系(地支克)，累计 3 种，增量次数 4",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 未 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(半三合,地支克)，累计 4 种，增量次数 4",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 己 倒象 [多重打击(C)]：大运/流年新增 1 种新关系(地支克)，累计 3 种，增量次数 4",
+      "target_chars": [
+        "己"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 7
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=财运 无 picture 强约束",
+      "[social_clock] 事件 '吉,上半年亏钱，下半年赚钱其他信息' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 财运 关键字: 戊,己,未",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运乙卯: 大运卯与原局月支未半三合",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年甲辰 触发 7 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立',",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 己 倒象 [多重打击(C)]：大运/流年新增 1 种新关系(地支克)，累计 3 种，增量次数 4",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "4f9ee31cc6c34e22",
+    "upstream_picture_hash": "22e95b66eb076527",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "甲辰",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 7,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  }
+]

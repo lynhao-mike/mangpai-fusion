@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.4.0",
+  "school": "高",
+  "case_id": "C-2026-RF000108-坤-乙丑甲申甲申辛未",
+  "shensha_supports": {
+    "career": [
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱）",
+        "boost": 0.06,
+        "tags": [
+          "贵人扶持",
+          "提拔"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱",
+          "月柱",
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱,月柱,日柱,时柱）",
+        "boost": 0.06,
+        "tags": [
+          "贵人扶持",
+          "提拔"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 月柱,日柱）",
+        "boost": 0.03,
+        "tags": [
+          "武职",
+          "刚烈"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 月柱,日柱）",
+        "boost": 0.03,
+        "tags": [
+          "武职",
+          "刚烈"
+        ]
+      },
+      {
+        "name": "天医",
+        "palaces": [
+          "时柱"
+        ],
+        "contribution": "天医 = 医疗 / 卫生职业首选（在 时柱）",
+        "boost": 0.04,
+        "tags": [
+          "医疗",
+          "卫生"
+        ]
+      }
+    ],
+    "general": [
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "天乙贵人 = 一生有贵人援助（在 年柱）",
+        "boost": 0.03,
+        "tags": [
+          "贵人"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "年柱",
+          "月柱",
+          "日柱",
+          "时柱"
+        ],
+        "contribution": "天乙贵人 = 一生有贵人援助（在 年柱,月柱,日柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "贵人"
+        ]
+      }
+    ],
+    "health": [
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 月柱,日柱）",
+        "boost": 0.04,
+        "tags": [
+          "伤残风险",
+          "刑伤"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 月柱,日柱）",
+        "boost": 0.04,
+        "tags": [
+          "伤残风险",
+          "刑伤"
+        ]
+      },
+      {
+        "name": "天医",
+        "palaces": [
+          "时柱"
+        ],
+        "contribution": "天医 = 健康守护 / 病时易遇良医（在 时柱）",
+        "boost": 0.03,
+        "tags": [
+          "健康守护"
+        ]
+      }
+    ],
+    "marriage": [
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 月柱,日柱）",
+        "boost": -0.03,
+        "tags": [
+          "刚烈"
+        ]
+      },
+      {
+        "name": "天喜",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "天喜 = 桃花喜事 / 配偶缘（在 月柱,日柱）",
+        "boost": 0.04,
+        "tags": [
+          "喜事",
+          "桃花"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "日柱"
+        ],
+        "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 月柱,日柱）",
+        "boost": -0.03,
+        "tags": [
+          "刚烈"
+        ]
+      }
+    ]
+  },
+  "health_findings": [],
+  "ciguan_xuetang": {
+    "has_ciguan": true,
+    "has_xuetang": false,
+    "has_wenchang": false,
+    "has_taiyi": true,
+    "contribution": "学业辅佐神煞：词馆+0.05/天乙×4+0.06 → 累加 0.110, capped to 0.100",
+    "boost": 0.1
+  },
+  "mingong_zhairi": null,
+  "confidence": {
+    "star": 4,
+    "percent": 0.8,
+    "posterior": 0.8,
+    "variance": 0.08,
+    "sample_n": 14
+  },
+  "evidence": [
+    {
+      "rule_id": "GP-BD-02",
+      "school": "高",
+      "description": "天乙贵人 旁证 [career]: 天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 年柱）",
+      "weight": 0.3
+    },
+    {
+      "rule_id": "GP-CH-08-1",
+      "school": "高",
+      "description": "羊刃 旁证 [career]: 羊刃 = 武职 / 公检法 / 刚烈职业适合（在 月柱,日柱）",
+      "weight": 0.15
+    },
+    {
+      "rule_id": "GP-CS-32",
+      "school": "高",
+      "description": "天医 旁证 [career]: 天医 = 医疗 / 卫生职业首选（在 时柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-BD-08",
+      "school": "高",
+      "description": "天喜 旁证 [marriage]: 天喜 = 桃花喜事 / 配偶缘（在 月柱,日柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-XL-MIX",
+      "school": "高",
+      "description": "词馆/学堂综合: 学业辅佐神煞：词馆+0.05/天乙×4+0.06 → 累加 0.110, capped to 0.1",
+      "weight": 0.5
+    }
+  ],
+  "upstream_energy_hash": "b445f03db351ac3c",
+  "upstream_picture_hash": "dda549e784ca6ca0",
+  "upstream_gate_hash": "5be4f0db7ca0b6ef",
+  "debug_info": {
+    "n_shensha_total": 13,
+    "n_domains_covered": 4,
+    "domains_covered": [
+      "career",
+      "general",
+      "health",
+      "marriage"
+    ],
+    "has_ciguan_xuetang": true,
+    "n_health_findings": 0,
+    "shensha_input_size": 18
+  }
+}
