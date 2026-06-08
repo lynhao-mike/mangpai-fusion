@@ -1,0 +1,63 @@
+{
+  "case_id": "",
+  "run_id": "20260608T090707Z",
+  "timing_type": "batch_intake",
+  "generated_at": "2026-06-08T09:07:07Z",
+  "pipeline_version": "1.2.1",
+  "threshold_seconds": 60.0,
+  "total_seconds": 0.0691,
+  "exceeded_threshold": false,
+  "step_names": [
+    "discover",
+    "process_single",
+    "parse_feedback",
+    "fanout",
+    "apply_rules",
+    "write_audit",
+    "bump_state",
+    "iteration_report",
+    "boundary_miner",
+    "veto_miner",
+    "scan_status_changes",
+    "cross_school_summary",
+    "write_report"
+  ],
+  "steps": {
+    "discover": 0.0,
+    "process_single": 0.0691
+  },
+  "step_details": [
+    {
+      "name": "discover",
+      "seconds": 0.0,
+      "started_at": "2026-06-08T09:07:07.281614Z"
+    },
+    {
+      "name": "process_single",
+      "seconds": 0.024,
+      "started_at": "2026-06-08T09:07:07.281648Z"
+    },
+    {
+      "name": "process_single",
+      "seconds": 0.0155,
+      "started_at": "2026-06-08T09:07:07.305695Z"
+    },
+    {
+      "name": "process_single",
+      "seconds": 0.0142,
+      "started_at": "2026-06-08T09:07:07.321274Z"
+    },
+    {
+      "name": "process_single",
+      "seconds": 0.0154,
+      "started_at": "2026-06-08T09:07:07.335475Z"
+    }
+  ],
+  "extra": {
+    "input_count": 4,
+    "success_count": 0,
+    "failure_count": 0,
+    "skip_count": 4,
+    "dry_run": false
+  }
+}

@@ -14,12 +14,19 @@ def _extract_candidates(
     domain 映射表（preflight type → engine domain）：
         职业 → 事业
         学历 → 学业
+        子女/父母/亲属 → 六亲
         其余 保持不变
     """
-    # preflight type → engine domain 映射
+    # preflight type → engine domain 映射；输出必须符合 D3 gate 支持的 Domain。
     _TYPE_TO_DOMAIN: dict[str, str] = {
         "职业": "事业",
         "学历": "学业",
+        "子女": "六亲",
+        "父母": "六亲",
+        "亲属": "六亲",
+        "兄弟": "六亲",
+        "姐妹": "六亲",
+        "兄弟姐妹": "六亲",
     }
 
     candidates: list[tuple[int, str, str]] = []
