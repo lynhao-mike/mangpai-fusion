@@ -1,0 +1,273 @@
+{
+  "schema_version": "1.4.0",
+  "school": "段",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申",
+  "energy_level": {
+    "ordinal": "弱",
+    "score": 0.29
+  },
+  "layer_count": 1,
+  "zuogong_paths": [
+    {
+      "type": "化",
+      "chain": [
+        "申",
+        "子",
+        "乙"
+      ],
+      "description": "时支申(官杀,金) → 生 → 月支子(印,水) → 生身 [印化杀]",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.8
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "制",
+      "chain": [
+        "巳",
+        "申"
+      ],
+      "description": "年支支巳 ↔ 时支支申 之 刑 → 作用于用神巳(食伤)",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.7
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "丙",
+        "己"
+      ],
+      "description": "月柱丙(食伤,火) → 生 → 年柱己(财,土) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "巳",
+        "己"
+      ],
+      "description": "年支巳(食伤,火) → 生 → 年柱己(财,土) [食伤生财]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "生泄",
+      "chain": [
+        "己",
+        "申"
+      ],
+      "description": "年柱己(财,土) → 生 → 时支申(官杀,金) [财生官]",
+      "strength": {
+        "ordinal": "中",
+        "score": 0.65
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "合",
+      "chain": [
+        "巳",
+        "申"
+      ],
+      "description": "年支支巳 ↔ 时支支申 之 六合 → 作用于用神巳(食伤)",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.6
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "合",
+      "chain": [
+        "己",
+        "甲"
+      ],
+      "description": "年柱干己(财) 合 时柱干甲(比劫) 化土=财 [合绊]",
+      "strength": {
+        "ordinal": "弱",
+        "score": 0.55
+      },
+      "layer_count": 1
+    },
+    {
+      "type": "复合",
+      "chain": [
+        "申",
+        "子",
+        "乙",
+        "巳",
+        "申",
+        "丙"
+      ],
+      "description": "复合做功 = 制 + 化 + 合 + 生泄 多种叠加（M1-D-014）",
+      "strength": {
+        "ordinal": "强",
+        "score": 0.85
+      },
+      "layer_count": 0
+    }
+  ],
+  "tiyong": {
+    "body": [
+      {
+        "char": "乙",
+        "role": "体",
+        "location": "日柱-天干（日干）"
+      },
+      {
+        "char": "丙",
+        "role": "食伤",
+        "location": "月柱-天干"
+      },
+      {
+        "char": "甲",
+        "role": "比劫",
+        "location": "时柱-天干"
+      },
+      {
+        "char": "巳",
+        "role": "食伤",
+        "location": "年柱-地支（年支）"
+      },
+      {
+        "char": "子",
+        "role": "印",
+        "location": "月柱-地支（月支）"
+      },
+      {
+        "char": "卯",
+        "role": "禄",
+        "location": "日柱-地支（日支）"
+      }
+    ],
+    "purpose": [
+      {
+        "char": "己",
+        "role": "财",
+        "location": "年柱-天干"
+      },
+      {
+        "char": "申",
+        "role": "官杀",
+        "location": "时柱-地支（时支）"
+      }
+    ],
+    "rationale": "段派体用判别（M1 §17.2）：日干 乙(木) 为我。\n  体（工具）= 日干 + 印 + 比劫 + 禄: 乙(体), 丙(食伤), 甲(比劫), 巳(食伤), 子(印), 卯(禄)\n  用（目的）= 财 + 官杀: 己(财), 申(官杀)\n  食伤为中性，默认归体（食偏体）"
+  },
+  "shidang": {
+    "shi": {
+      "木": 0.3788,
+      "火": 0.202,
+      "土": 0.1313,
+      "金": 0.0871,
+      "水": 0.2008
+    },
+    "dang": [
+      [
+        "水木",
+        "双党·水生木（合计 58%） = 段派 印生比劫党"
+      ],
+      [
+        "木火",
+        "双党·木生火（合计 58%） = 段派 比劫生食伤党"
+      ],
+      [
+        "水木火",
+        "三党·水→木→火（合计 78%）"
+      ],
+      [
+        "木火土",
+        "三党·木→火→土（合计 71%）"
+      ]
+    ],
+    "description": "段派势/党（M1-D-122..123）：[木=38%, 火=20%, 水=20%, 土=13%, 金=9%]; 党形态：4 个"
+  },
+  "zeishen": {
+    "zei_shen": [],
+    "bu_shen": [],
+    "triggered_by_dayun": [],
+    "rationale": "段派贼神捕神（M1-D-015..016）：无极旺克我者，贼神不显"
+  },
+  "wealth_ceiling": "小富级·上",
+  "has_guoheqiaoqiao": true,
+  "muxing_qufa": "禄",
+  "confidence": {
+    "star": 5,
+    "percent": 0.95,
+    "posterior": 0.95,
+    "variance": 0.05,
+    "sample_n": 9
+  },
+  "evidence": [
+    {
+      "rule_id": "M1-D-005..008",
+      "school": "段",
+      "description": "体用判定：体 6 字，用 2 字",
+      "weight": 0.75
+    },
+    {
+      "rule_id": "M1-D-122",
+      "school": "段",
+      "description": "势/党：双党·水生木（合计 58%） = 段派 印生比劫党",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-010",
+      "school": "段",
+      "description": "化：时支申(官杀,金) → 生 → 月支子(印,水) → 生身 [印化杀]",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-009",
+      "school": "段",
+      "description": "制：年支支巳 ↔ 时支支申 之 刑 → 作用于用神巳(食伤)",
+      "weight": 0.7
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：月柱丙(食伤,火) → 生 → 年柱己(财,土) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：年支巳(食伤,火) → 生 → 年柱己(财,土) [食伤生财]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-011",
+      "school": "段",
+      "description": "生泄：年柱己(财,土) → 生 → 时支申(官杀,金) [财生官]",
+      "weight": 0.65
+    },
+    {
+      "rule_id": "M1-D-199",
+      "school": "段",
+      "description": "母星取法（段派独门）：禄（决策 J）",
+      "weight": 0.8
+    },
+    {
+      "rule_id": "M1-D-171",
+      "school": "段",
+      "description": "过河拆桥结构候选 = 食生财 + 财生官 三连环",
+      "weight": 0.75
+    }
+  ],
+  "debug_info": {
+    "body_strength": 0.7,
+    "has_strong_yong": false,
+    "shidang_summary": "段派势/党（M1-D-122..123）：[木=38%, 火=20%, 水=20%, 土=13%, 金=9%]; 党形态：4 个"
+  }
+}

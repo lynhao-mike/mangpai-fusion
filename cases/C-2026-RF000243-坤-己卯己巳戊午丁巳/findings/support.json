@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.4.0",
+  "school": "高",
+  "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+  "shensha_supports": {
+    "marriage": [
+      {
+        "name": "红艳煞",
+        "palaces": [
+          "年柱"
+        ],
+        "contribution": "红艳 = 异性缘旺（双刃剑：旺则桃花 / 凶则烂桃花）（在 年柱）",
+        "boost": 0.02,
+        "tags": [
+          "桃花",
+          "异性缘"
+        ]
+      },
+      {
+        "name": "孤鸾煞",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 月柱,时柱）",
+        "boost": -0.04,
+        "tags": [
+          "孤独",
+          "迟婚"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 月柱,时柱）",
+        "boost": -0.03,
+        "tags": [
+          "刚烈"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 月柱,时柱）",
+        "boost": -0.03,
+        "tags": [
+          "刚烈"
+        ]
+      },
+      {
+        "name": "九丑日",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "九丑日 = 婚姻易遇杂事波折（在 日柱）",
+        "boost": -0.02,
+        "tags": [
+          "婚姻杂事"
+        ]
+      },
+      {
+        "name": "孤鸾煞",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 日柱）",
+        "boost": -0.04,
+        "tags": [
+          "孤独",
+          "迟婚"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 日柱）",
+        "boost": -0.03,
+        "tags": [
+          "刚烈"
+        ]
+      },
+      {
+        "name": "天喜",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "天喜 = 桃花喜事 / 配偶缘（在 日柱）",
+        "boost": 0.04,
+        "tags": [
+          "喜事",
+          "桃花"
+        ]
+      },
+      {
+        "name": "童子煞",
+        "palaces": [
+          "时柱"
+        ],
+        "contribution": "童子煞 = 婚姻早期波折 / 易二婚信号（在 时柱）",
+        "boost": -0.03,
+        "tags": [
+          "童子煞",
+          "婚姻波折"
+        ]
+      }
+    ],
+    "health": [
+      {
+        "name": "血刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "血刃 = 手术 / 外伤 / 出血风险（健康警示信号）（在 月柱,时柱）",
+        "boost": 0.04,
+        "tags": [
+          "手术",
+          "外伤"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 月柱,时柱）",
+        "boost": 0.04,
+        "tags": [
+          "伤残风险",
+          "刑伤"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 月柱,时柱）",
+        "boost": 0.04,
+        "tags": [
+          "伤残风险",
+          "刑伤"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "羊刃 = 健康刑伤风险信号（GP-CH-08 阳刃被刑穿=下身伤）（在 日柱）",
+        "boost": 0.04,
+        "tags": [
+          "伤残风险",
+          "刑伤"
+        ]
+      },
+      {
+        "name": "童子煞",
+        "palaces": [
+          "时柱"
+        ],
+        "contribution": "童子煞 = 童子身，幼年体弱信号（在 时柱）",
+        "boost": 0.02,
+        "tags": [
+          "童子身"
+        ]
+      }
+    ],
+    "career": [
+      {
+        "name": "驿马",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "驿马 = 工作奔波 / 调动 / 出差 / 外出多（在 月柱,时柱）",
+        "boost": 0.04,
+        "tags": [
+          "奔波",
+          "调动",
+          "外出",
+          "出差"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 月柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "武职",
+          "刚烈"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 月柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "武职",
+          "刚烈"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 日柱）",
+        "boost": 0.06,
+        "tags": [
+          "贵人扶持",
+          "提拔"
+        ]
+      },
+      {
+        "name": "羊刃",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "羊刃 = 武职 / 公检法 / 刚烈职业适合（在 日柱）",
+        "boost": 0.03,
+        "tags": [
+          "武职",
+          "刚烈"
+        ]
+      }
+    ],
+    "general": [
+      {
+        "name": "驿马",
+        "palaces": [
+          "月柱",
+          "时柱"
+        ],
+        "contribution": "驿马 = 一生迁动多 / 居处不定（在 月柱,时柱）",
+        "boost": 0.03,
+        "tags": [
+          "奔波",
+          "迁动"
+        ]
+      },
+      {
+        "name": "天乙贵人",
+        "palaces": [
+          "日柱"
+        ],
+        "contribution": "天乙贵人 = 一生有贵人援助（在 日柱）",
+        "boost": 0.03,
+        "tags": [
+          "贵人"
+        ]
+      }
+    ]
+  },
+  "health_findings": [
+    {
+      "organ": "外伤/手术",
+      "risk_level": {
+        "ordinal": "弱",
+        "score": 0.3
+      },
+      "risk_years": [],
+      "rationale": "血刃/流霞挂 月柱,时柱 → 一生有手术 / 外伤倾向；应期需配合 Track-C 流年触发判定",
+      "evidence": [
+        {
+          "rule_id": "GP-CH-09",
+          "school": "高",
+          "description": "血刃 = 手术 / 外伤神煞",
+          "weight": 0.4
+        }
+      ]
+    },
+    {
+      "organ": "下身/腿脚",
+      "risk_level": {
+        "ordinal": "弱",
+        "score": 0.25
+      },
+      "risk_years": [],
+      "rationale": "羊刃挂 日柱 → 阳刃为忌时主下身伤残 (GP-CH-08-5)；应期看流年是否冲穿羊刃位",
+      "evidence": [
+        {
+          "rule_id": "GP-CH-08-5",
+          "school": "高",
+          "description": "阳刃被刑穿 = 下身伤残",
+          "weight": 0.45
+        }
+      ]
+    },
+    {
+      "organ": "幼年体质",
+      "risk_level": {
+        "ordinal": "弱",
+        "score": 0.2
+      },
+      "risk_years": [],
+      "rationale": "童子煞 = 童子身，主幼年体弱多病信号",
+      "evidence": [
+        {
+          "rule_id": "GP-BD-12",
+          "school": "高",
+          "description": "童子煞 = 幼年体弱",
+          "weight": 0.3
+        }
+      ]
+    }
+  ],
+  "ciguan_xuetang": null,
+  "mingong_zhairi": null,
+  "confidence": {
+    "star": 4,
+    "percent": 0.75,
+    "posterior": 0.75,
+    "variance": 0.08,
+    "sample_n": 24
+  },
+  "evidence": [
+    {
+      "rule_id": "GP-BD-09",
+      "school": "高",
+      "description": "红艳煞 旁证 [marriage]: 红艳 = 异性缘旺（双刃剑：旺则桃花 / 凶则烂桃花）（在 年柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-CH-21",
+      "school": "高",
+      "description": "孤鸾煞 旁证 [marriage]: 孤鸾 = 婚姻孤独信号 / 易迟婚或独居（GP-CH-21 离婚六条之一）（在 ",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-CH-08-1",
+      "school": "高",
+      "description": "羊刃 旁证 [marriage]: 羊刃 = 命主刚烈，对婚姻有耗（负向信号）（在 月柱,时柱）",
+      "weight": 0.15
+    },
+    {
+      "rule_id": "GP-BD-13",
+      "school": "高",
+      "description": "九丑日 旁证 [marriage]: 九丑日 = 婚姻易遇杂事波折（在 日柱）",
+      "weight": 0.1
+    },
+    {
+      "rule_id": "GP-BD-08",
+      "school": "高",
+      "description": "天喜 旁证 [marriage]: 天喜 = 桃花喜事 / 配偶缘（在 日柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-BD-12",
+      "school": "高",
+      "description": "童子煞 旁证 [marriage]: 童子煞 = 婚姻早期波折 / 易二婚信号（在 时柱）",
+      "weight": 0.15
+    },
+    {
+      "rule_id": "GP-CH-09",
+      "school": "高",
+      "description": "血刃 旁证 [health]: 血刃 = 手术 / 外伤 / 出血风险（健康警示信号）（在 月柱,时柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-CH-01",
+      "school": "高",
+      "description": "驿马 旁证 [career]: 驿马 = 工作奔波 / 调动 / 出差 / 外出多（在 月柱,时柱）",
+      "weight": 0.2
+    },
+    {
+      "rule_id": "GP-BD-02",
+      "school": "高",
+      "description": "天乙贵人 旁证 [career]: 天乙贵人 = 贵人扶持，逢凶化吉 / 上司器重（在 日柱）",
+      "weight": 0.3
+    }
+  ],
+  "upstream_energy_hash": "5e081d9d289f6579",
+  "upstream_picture_hash": "960ceb99ed9e2480",
+  "upstream_gate_hash": "fbefde8928246806",
+  "debug_info": {
+    "n_shensha_total": 21,
+    "n_domains_covered": 4,
+    "domains_covered": [
+      "career",
+      "general",
+      "health",
+      "marriage"
+    ],
+    "has_ciguan_xuetang": false,
+    "n_health_findings": 3,
+    "shensha_input_size": 22
+  }
+}
