@@ -241,3 +241,52 @@ def test_h3_non_hash_statement_id_is_supported():
     assert len(parsed) == 1
     assert parsed[0].statement_id == "S-025-d1a001"
     assert parsed[0].verdict == "hit"
+
+
+def test_h3_parallel_feedback_fanout_stats_and_weight_proposal(tmp_path, monkeypatch):
+    """并行域 statement 反馈应写入 reading/adjudication 级日志并可聚合提案。"""
+    import tools.feedback_ingest as fi
+    from tools.feedback_ingest import (
+        StatementFeedback,
+        compute_weight_update_proposal,
+        fanout_to_parallel_feedback,
+        get_expert_domain_stats,
+    )
+
+    expert_log = tmp_path / "expert_domain_feedback.jsonl"
+    adjudication_log = tmp_path / "adjudication_accuracy.jsonl"
+    monkeypatch.setattr(fi, "EXPERT_DOMAIN_FEEDBACK_LOG", expert_log)
+    monkeypatch.setattr(fi, "ADJUDICATION_ACCURACY_LOG", adjudication_log)
+    statement_index = {
+        "statements": [
+            {
+                "statement_id": "S-PD-001",
+                "section": "parallel_domain_adjudication",
+                "domain": "财运",
+                "summary": "财运可用",
+                "claim": "财运可用",
+                "decision": "yes",
+                "reading_ids": ["RD-C-TEST-财运-BLIND-001", "RD-C-TEST-财运-ZIPING-001"],
+                "adjudication_id": "ADJ-C-TEST-财运",
+                "expert_systems": ["blind", "ziping"],
+                "supporting_experts": ["blind", "ziping"],
+                "dissenting_experts": [],
+                "abstained_experts": ["tiaohou_ditiansui"],
+                "consensus_layer": "双专家共识",
+            }
+        ]
+    }
+
+    counts = fanout_to_parallel_feedback(
+        [StatementFeedback("S-PD-001", "y", "hit")],
+        statement_index,
+        case_id="C-TEST",
+    )
+
+    assert counts == {"expert_feedback_rows": 2, "adjudication_feedback_rows": 1}
+    stats = get_expert_domain_stats(domain="财运", expert="blind")
+    assert stats["items"][0]["hits"] == 1
+    assert stats["items"][0]["sample_warning"] is True
+    proposal = compute_weight_update_proposal(min_n_eff=1)
+    assert proposal["proposal_count"] >= 1
+    assert proposal["proposals"][0]["requires_human_review"] is True

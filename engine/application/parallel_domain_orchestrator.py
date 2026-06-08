@@ -11,24 +11,20 @@ from __future__ import annotations
 import hashlib
 from typing import Iterable, Optional
 
+from engine.application.adjudication import adjudicate_domain, build_domain_consensus
 from engine.application.production_rule_loader import (
     ProductionRule,
     ProductionRuleLibrary,
     load_default_production_library,
 )
 from engine.domain.parallel import (
-    AdjudicationResult,
-    ArbitrationReason,
     DomainAnalysis,
     DomainName,
     EvidenceItem,
-    ExpertJudgement,
     ExpertReading,
     ExpertSystem,
     ParallelAnalysisOutput,
     ParallelConfidence,
-    WeightProfile,
-    DomainConsensus,
 )
 from engine.energy.types import Confidence, EnergyFindings, Evidence
 from engine.pangzheng.types import SupportFindings
@@ -43,16 +39,6 @@ EXPERT_LABELS: dict[ExpertSystem, str] = {
     "ziping": "子平格局派",
     "tiaohou_ditiansui": "滴天髓调候派",
 }
-DOMAIN_WEIGHTS: dict[DomainName, dict[ExpertSystem, float]] = {
-    "学业": {"blind": 0.42, "ziping": 0.34, "tiaohou_ditiansui": 0.24},
-    "事业": {"blind": 0.42, "ziping": 0.36, "tiaohou_ditiansui": 0.22},
-    "财运": {"blind": 0.44, "ziping": 0.34, "tiaohou_ditiansui": 0.22},
-    "婚姻": {"blind": 0.50, "ziping": 0.28, "tiaohou_ditiansui": 0.22},
-    "健康": {"blind": 0.34, "ziping": 0.22, "tiaohou_ditiansui": 0.44},
-    "性格": {"blind": 0.42, "ziping": 0.30, "tiaohou_ditiansui": 0.28},
-}
-
-
 def analyze_parallel_domains(
     *,
     parsed: Optional[ParsedInput],
@@ -109,8 +95,13 @@ def analyze_domain(
         if expert not in existing:
             readings.append(_abstain_reading(domain, case_id, expert))
 
-    adjudication = _adjudicate(domain, readings)
-    consensus = _to_consensus(domain, adjudication, readings)
+    adjudication = adjudicate_domain(case_id=case_id, domain=domain, readings=readings)
+    consensus = build_domain_consensus(
+        case_id=case_id,
+        domain=domain,
+        readings=readings,
+        adjudication=adjudication,
+    )
     return DomainAnalysis(
         domain=domain,
         readings=readings,
@@ -168,9 +159,13 @@ def _blind_readings(
                 falsifiable=f"若命主实际{domain}路径与画面指针长期不符，则杨派读数需降权。",
             ))
 
-    domain_gates = [g for g in gate_results if str(g.domain) == domain and g.confidence]
+    domain_gates = [g for g in gate_results if str(g.domain) == domain and g.confidence is not None]
     if domain_gates:
-        best_gate = sorted(domain_gates, key=lambda g: (g.passed_layers, g.confidence.star), reverse=True)[0]
+        best_gate = sorted(
+            domain_gates,
+            key=lambda g: (g.passed_layers, g.confidence.star if g.confidence is not None else 0),
+            reverse=True,
+        )[0]
         readings.append(ExpertReading(
             reading_id=_reading_id(case_id, domain, "blind", "ren"),
             case_id=case_id,
@@ -272,127 +267,6 @@ def _production_rule_notes(rule: ProductionRule) -> str:
     return "；".join(parts)
 
 
-def _adjudicate(domain: DomainName, readings: list[ExpertReading]) -> AdjudicationResult:
-    weights = DOMAIN_WEIGHTS[domain]
-    profile = WeightProfile(
-        profile_id=f"parallel-domain-{domain}",
-        profile_version="2026-06-06-minimal-v1",
-        source="engine.application.parallel_domain_orchestrator.DOMAIN_WEIGHTS",
-        domain_weights=weights,
-    )
-    judgements: list[ExpertJudgement] = []
-    support_score = 0.0
-    oppose_score = 0.0
-    for idx, reading in enumerate(readings, start=1):
-        ballot = _ballot_from_stance(reading.stance)
-        prior = weights.get(reading.expert_system, 0.0)
-        confidence_weight = max(0.0, min(1.0, reading.confidence.raw))
-        evidence_quality = _evidence_quality(reading)
-        feedback_weight = 1.0
-        conflict_penalty = 0.0
-        raw_score = prior * confidence_weight
-        adjusted = raw_score * evidence_quality * feedback_weight - conflict_penalty
-        if ballot == "yes":
-            support_score += adjusted
-        elif ballot == "no":
-            oppose_score += adjusted
-        elif ballot == "mixed":
-            support_score += adjusted * 0.5
-            oppose_score += adjusted * 0.5
-        judgements.append(ExpertJudgement(
-            judgement_id=f"J-{domain}-{idx:02d}",
-            reading_id=reading.reading_id,
-            expert_system=reading.expert_system,
-            domain=domain,
-            claim=reading.claim,
-            ballot=ballot,
-            raw_score=round(raw_score, 4),
-            prior_domain_weight=round(prior, 4),
-            confidence_weight=round(confidence_weight, 4),
-            feedback_weight=feedback_weight,
-            evidence_quality_weight=round(evidence_quality, 4),
-            conflict_penalty=conflict_penalty,
-            adjusted_score=round(adjusted, 4),
-            rationale=f"{EXPERT_LABELS[reading.expert_system]}：领域权重×置信度×证据质量。",
-        ))
-
-    active_support = [r.expert_system for r in readings if r.stance in {"support", "timing_only"}]
-    active_oppose = [r.expert_system for r in readings if r.stance == "oppose"]
-    abstained = [r.expert_system for r in readings if r.stance == "abstain"]
-    if support_score == 0 and oppose_score == 0:
-        decision = "no_output"
-    elif support_score >= oppose_score:
-        decision = "yes" if oppose_score == 0 else "mixed"
-    else:
-        decision = "no"
-    merged = max(support_score, oppose_score)
-    confidence = ParallelConfidence(
-        raw=round(merged, 4),
-        merged=round(merged, 4),
-        star=_star_from_score(merged),
-        percent=round(min(0.95, merged) * 100),
-        reason="按领域权重、单派置信度与证据质量合并。",
-    )
-    return AdjudicationResult(
-        adjudication_id=f"ADJ-{domain}-{_short_hash([r.reading_id for r in readings])}",
-        domain=domain,
-        claim=_primary_claim(readings),
-        decision=decision,
-        judgements=judgements,
-        support_score=round(support_score, 4),
-        oppose_score=round(oppose_score, 4),
-        confidence=confidence,
-        weight_profile=profile,
-        winning_experts=sorted(set(active_support)) if decision in {"yes", "mixed"} else sorted(set(active_oppose)),
-        dissenting_experts=sorted(set(active_oppose if decision in {"yes", "mixed"} else active_support)),
-        abstained_experts=sorted(set(abstained)),
-        arbitration_reason=ArbitrationReason(
-            winner_reason="第一版裁判按领域先验权重、置信度与证据质量加权。",
-            loser_reason="未胜出读数保留在 readings，用于后续反馈校准。",
-            conflict_type="none" if not active_oppose else "evidence",
-            output_strategy="primary_with_minority" if active_oppose else "primary_only",
-        ),
-    )
-
-
-def _to_consensus(domain: DomainName, adjudication: AdjudicationResult, readings: list[ExpertReading]) -> DomainConsensus:
-    selected = [r for r in readings if r.expert_system in adjudication.winning_experts and r.stance != "abstain"]
-    evidence_items: list[EvidenceItem] = []
-    for reading in selected:
-        evidence_items.extend(reading.evidence_items)
-    contributing = sorted(set(r.expert_system for r in selected))
-    if adjudication.decision == "no_output":
-        layer = "不输出"
-        statement = f"{domain}域暂无足够多专家证据输出。"
-    elif len(contributing) >= 3:
-        layer = "多专家共识"
-        statement = f"{domain}域多专家读数同向：{adjudication.claim}"
-    elif len(contributing) == 2:
-        layer = "双专家共识"
-        statement = f"{domain}域双专家读数同向：{adjudication.claim}"
-    elif contributing:
-        layer = "主专家胜出"
-        statement = f"{domain}域以{EXPERT_LABELS[contributing[0]]}为主：{adjudication.claim}"
-    else:
-        layer = "冲突保留"
-        statement = f"{domain}域存在冲突或低置信读数，暂作保留。"
-    return DomainConsensus(
-        conclusion_id=f"PDC-{domain}-{_short_hash([adjudication.adjudication_id])}",
-        domain=domain,
-        headline=f"{domain}域裁判：{layer}",
-        final_statement=statement,
-        layer=layer,
-        contributing_experts=contributing,
-        dissenting_experts=list(adjudication.dissenting_experts),
-        confidence=adjudication.confidence,
-        evidence_items=evidence_items[:8],
-        falsifiable=f"若命主反馈显示{domain}域主结论长期不符，则本域裁判失验并回写权重。",
-        weight_profile=adjudication.weight_profile,
-        arbitration_reason=adjudication.arbitration_reason,
-        output_strategy=adjudication.arbitration_reason.output_strategy if adjudication.arbitration_reason else "primary_only",
-    )
-
-
 def _picture_claim(domain: DomainName, picture: PictureFindings) -> str:
     if domain == "婚姻" and picture.marriage_picture:
         window = picture.marriage_picture.get("初婚最佳窗口")
@@ -449,46 +323,6 @@ def _parallel_confidence(confidence: Optional[Confidence], *, reason: str) -> Pa
         percent=percent,
         reason=reason,
     )
-
-
-def _ballot_from_stance(stance: str) -> str:
-    if stance in {"support", "timing_only"}:
-        return "yes"
-    if stance == "oppose":
-        return "no"
-    if stance == "mixed":
-        return "mixed"
-    return "abstain"
-
-
-def _evidence_quality(reading: ExpertReading) -> float:
-    if reading.stance == "abstain":
-        return 0.0
-    if not reading.evidence_items:
-        return 0.6
-    high = sum(1 for item in reading.evidence_items if item.strength == "high")
-    medium = sum(1 for item in reading.evidence_items if item.strength == "medium")
-    return min(1.0, 0.65 + high * 0.15 + medium * 0.08)
-
-
-def _primary_claim(readings: list[ExpertReading]) -> str:
-    active = [r for r in readings if r.stance != "abstain"]
-    if not active:
-        return "暂无足够读数"
-    active.sort(key=lambda r: (r.confidence.raw, len(r.evidence_items)), reverse=True)
-    return active[0].claim
-
-
-def _star_from_score(score: float) -> int:
-    if score >= 0.80:
-        return 5
-    if score >= 0.60:
-        return 4
-    if score >= 0.40:
-        return 3
-    if score >= 0.20:
-        return 2
-    return 1
 
 
 def _reading_id(case_id: str, domain: str, expert: str, suffix: str) -> str:

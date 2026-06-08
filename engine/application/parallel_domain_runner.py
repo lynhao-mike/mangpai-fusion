@@ -18,8 +18,10 @@ from engine.application.domain_analyzers import (
     DomainAnalysisContext,
     DomainAnalyzerRegistry,
     build_empty_parallel_registry,
+    EXPERT_LABELS,
+    AbstainDomainAnalyzer,
 )
-from engine.domain.parallel import DomainAnalysis, DomainName, ExpertSystem, ParallelAnalysisOutput
+from engine.domain.parallel import DomainAnalysis, DomainName, ExpertReading, ExpertSystem, ParallelAnalysisOutput
 
 
 def run_parallel_domain_analysis(
@@ -36,15 +38,19 @@ def run_parallel_domain_analysis(
     resolved_case_id = case_id or _case_id_from_parsed(parsed)
     selected_domains = list(domains or DEFAULT_DOMAINS)
     active_registry = registry or build_empty_parallel_registry()
-    context = DomainAnalysisContext(
-        case_id=resolved_case_id,
-        base_context=dict(base_context or {}),
-    )
+    shared_base_context = dict(base_context or {})
 
     analyses: list[DomainAnalysis] = []
     for domain in selected_domains:
         readings = [
-            active_registry.get(domain, expert_system).analyze(parsed, domain, context)
+            _safe_analyze(
+                parsed=parsed,
+                domain=domain,
+                case_id=resolved_case_id,
+                expert_system=expert_system,
+                registry=active_registry,
+                base_context=shared_base_context,
+            )
             for expert_system in expert_order
         ]
         adjudication = adjudicate_domain(
@@ -72,6 +78,29 @@ def run_parallel_domain_analysis(
         case_id=resolved_case_id,
         domain_analyses=analyses,
     )
+
+
+def _safe_analyze(
+    *,
+    parsed: Any,
+    domain: DomainName,
+    case_id: str,
+    expert_system: ExpertSystem,
+    registry: DomainAnalyzerRegistry,
+    base_context: dict[str, Any],
+) -> ExpertReading:
+    context = DomainAnalysisContext(
+        case_id=case_id,
+        base_context=dict(base_context),
+    )
+    try:
+        return registry.get(domain, expert_system).analyze(parsed, domain, context)
+    except Exception as exc:  # noqa: BLE001
+        return AbstainDomainAnalyzer(
+            expert_system=expert_system,
+            expert_name=EXPERT_LABELS[expert_system],
+            reason=f"分析器异常，按隔离原则弃权：{exc}",
+        ).analyze(parsed, domain, context)
 
 
 def _case_id_from_parsed(parsed: Any) -> str:

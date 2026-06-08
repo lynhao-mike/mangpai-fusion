@@ -4,6 +4,83 @@
 
 ---
 
+## 0. 最新交接 · 多流派并行功能域与裁判模型
+
+> 更新时间：2026-06-08。此节优先级高于下方旧的问真转案短期交接；下方内容保留为历史上下文，除非用户明确要求继续问真转案，否则下一位 agent 应先接续本节。
+
+### 0.1 本轮已完成
+
+本轮根据“多流派并行功能域分析与裁判模型”方案，采用最小补丁方式对现有 v1.5 旁路实现做了加固，没有从零重建模型，也没有覆盖既有契约。
+
+已完成改动：
+
+- 加固 [`run_parallel_domain_analysis()`](engine/application/parallel_domain_runner.py)：每个 analyzer 调用都会拿到独立 [`DomainAnalysisContext`](engine/application/domain_analyzers.py) 副本，避免共享 `base_context` 污染。
+- 加固异常隔离：单个 analyzer 抛异常时，runner 会转成显式 abstain reading，不影响同域其他专家或后续领域。
+- 扩展 [`DomainAnalyzer`](engine/application/domain_analyzers.py)：新增 `is_wired()` 协议，并在 [`DomainAnalyzerRegistry`](engine/application/domain_analyzers.py) 上提供 wiring 状态查询。
+- 新增模块级 [`get_wiring_status()`](engine/application/domain_analyzers.py)，返回默认 6 域 × 3 专家体系的 `wired` / `abstain_only` 状态。
+- 扩展 [`tools/feedback_ingest.py`](tools/feedback_ingest.py)：新增 parallel-domain statement 反馈 fanout，到 reading / adjudication 级 JSONL 日志。
+- 新增日志目标：[`engine/logs/expert_domain_feedback.jsonl`](engine/logs/expert_domain_feedback.jsonl) 与 [`engine/logs/adjudication_accuracy.jsonl`](engine/logs/adjudication_accuracy.jsonl)。这两个文件按需追加生成；当前不要求已存在。
+- 新增 [`get_expert_domain_stats()`](tools/feedback_ingest.py) 聚合 expert × domain 命中 / 失验、`n_eff`、Beta mean、Wilson lower bound。
+- 新增 [`compute_weight_update_proposal()`](tools/feedback_ingest.py) 生成动态权重调整提案；只返回 proposal，不自动修改任何 YAML 权重源。
+- 扩展测试：[`tests/test_parallel_domain_runner.py`](tests/test_parallel_domain_runner.py) 与 [`tests/v1_3_acceptance/test_h3_feedback_parsing.py`](tests/v1_3_acceptance/test_h3_feedback_parsing.py)。
+
+验证已通过：
+
+```bash
+python -m pytest tests/test_parallel_domain_runner.py tests/v1_3_acceptance/test_h3_feedback_parsing.py -q
+```
+
+结果：`13 passed in 0.27s`。
+
+### 0.2 本轮触碰文件
+
+- [`engine/application/parallel_domain_runner.py`](engine/application/parallel_domain_runner.py)
+- [`engine/application/domain_analyzers.py`](engine/application/domain_analyzers.py)
+- [`tools/feedback_ingest.py`](tools/feedback_ingest.py)
+- [`tests/test_parallel_domain_runner.py`](tests/test_parallel_domain_runner.py)
+- [`tests/v1_3_acceptance/test_h3_feedback_parsing.py`](tests/v1_3_acceptance/test_h3_feedback_parsing.py)
+- [`handoff.md`](handoff.md)
+
+未触碰：
+
+- [`engine/application/pipeline_runner.py`](engine/application/pipeline_runner.py)
+- [`engine/energy/`](engine/energy/)
+- [`engine/picture/`](engine/picture/)
+- [`engine/yingqi/`](engine/yingqi/)
+- [`engine/pangzheng/`](engine/pangzheng/)
+
+### 0.3 下一位 agent 应继续做什么
+
+用户会把完整计划和执行方案一起发给下一位 agent。下一位 agent 不要按“从零创建阶段 1-A / 1-B”执行，因为当前仓库已经存在并行域模型、runner、orchestrator、adjudication、statement index 与测试骨架。
+
+建议下一步按以下顺序继续：
+
+1. 先读取 [`META/project-state.json`](META/project-state.json)、[`engine/domain/parallel.py`](engine/domain/parallel.py)、[`engine/application/adjudication.py`](engine/application/adjudication.py)、[`engine/application/domain_analyzers.py`](engine/application/domain_analyzers.py)、[`engine/application/parallel_domain_runner.py`](engine/application/parallel_domain_runner.py)、[`tools/feedback_ingest.py`](tools/feedback_ingest.py)。
+2. 运行一次最小验证：`python -m pytest tests/test_parallel_domain_runner.py tests/v1_3_acceptance/test_h3_feedback_parsing.py -q`。
+3. 继续补动态权重闭环的“读取/应用 proposal”层：可以新增人工确认后的 `apply_weight_update_proposal()`，但必须保持默认不自动写权重。
+4. 若要接入裁判实时权重，优先在 [`engine/application/adjudication.py`](engine/application/adjudication.py) 支持可注入 feedback overlay / `WeightProfile`，不要替换现有 review draft prior profile。
+5. 扩展测试覆盖：proposal 应用前后权重归一化、`n_eff < 5` 只警告不调整、`n_eff >= 10` 才允许较大调整、连续 miss 触发降权 proposal。
+6. 如需面向 CLI 暴露统计，可以考虑给 [`tools/feedback_ingest.py`](tools/feedback_ingest.py) 增加只读参数，例如 `--expert-domain-stats` / `--weight-proposal`；不要默认在 ingest 后自动改权重。
+7. 最后再考虑是否更新 [`META/project-state.json`](META/project-state.json) 中 `v1_5_status.dynamic_feedback_weighting`；只有当 proposal + 人工应用 + 测试闭环都完成后，才可从 `pending` 改为更准确状态。
+
+### 0.4 下一位 agent 必须遵守的约束
+
+- 不要覆盖 [`engine/domain/parallel.py`](engine/domain/parallel.py)；只能做兼容性增补。
+- 内部专家枚举继续使用 `blind` / `ziping` / `tiaohou_ditiansui`，中文只在报告层展示。
+- 功能域继续使用现有 `财运` / `事业` / `婚姻` / `健康` / `性格` / `学业`。
+- 不要修改 [`engine/application/pipeline_runner.py`](engine/application/pipeline_runner.py)。
+- 不要修改 D1-D4 核心目录：[`engine/energy/`](engine/energy/)、[`engine/picture/`](engine/picture/)、[`engine/yingqi/`](engine/yingqi/)、[`engine/pangzheng/`](engine/pangzheng/)。
+- 不要让任一专家 analyzer 读取其他专家中间态；跨专家信息只能通过 [`ExpertReading`](engine/domain/parallel.py) 进入裁判。
+- 动态权重默认只产出 proposal 和日志；未经人工确认，不得自动改 prior profile 或 YAML 权重文件。
+
+### 0.5 可直接发给下一位 agent 的开场指令
+
+```text
+请先读取 handoff.md 的“0. 最新交接 · 多流派并行功能域与裁判模型”。我会把完整计划和执行方案一并发给你，但不要按从零创建文件执行；当前仓库已存在 v1.5 并行域模型、runner、orchestrator、adjudication、statement index 与测试骨架。请在现有实现基础上继续最小补丁：先复跑 python -m pytest tests/test_parallel_domain_runner.py tests/v1_3_acceptance/test_h3_feedback_parsing.py -q，然后继续补动态反馈权重闭环的 proposal 应用与测试。不要修改 engine/application/pipeline_runner.py，不要修改 D1-D4 核心目录，不要自动改权重 YAML。
+```
+
+---
+
 ## 1. 当前工作状态
 
 本轮围绕问真 APP 补录排盘样本，已经完成从“已补完整排盘识别”到“首批正式转案 dry-run 方案”的非破坏性流水线。当前没有创建新的正式 [`cases/`](cases/) 下 `C-...` 案例目录；所有产物仍停留在 [`cases/raw_feedback/parsed/`](cases/raw_feedback/parsed/) 与 [`tools/`](tools/) 的审阅、候选、预检、计划层。

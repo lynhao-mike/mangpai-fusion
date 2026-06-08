@@ -8,7 +8,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping, Sequence
+from pathlib import Path
+from typing import Any, Mapping, Sequence
+
+import yaml
 
 from engine.domain.parallel import (
     AdjudicationDecision,
@@ -28,18 +31,10 @@ from engine.domain.parallel import (
     WeightProfile,
 )
 
-DEFAULT_DOMAIN_WEIGHTS: dict[DomainName, dict[ExpertSystem, float]] = {
-    "财运": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.25},
-    "事业": {"blind": 0.25, "ziping": 0.50, "tiaohou_ditiansui": 0.25},
-    "婚姻": {"blind": 0.45, "ziping": 0.30, "tiaohou_ditiansui": 0.25},
-    "健康": {"blind": 0.25, "ziping": 0.25, "tiaohou_ditiansui": 0.50},
-    "性格": {"blind": 0.30, "ziping": 0.25, "tiaohou_ditiansui": 0.45},
-    "学业": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.25},
-}
-
-DEFAULT_WEIGHT_PROFILE_ID = "domain-prior-2026-06-05"
-DEFAULT_WEIGHT_PROFILE_VERSION = "review-draft-v1"
 DEFAULT_WEIGHT_PROFILE_SOURCE = "theory/raw/yaml/domain_weight_profile_2026-06-05.yaml"
+DEFAULT_WEIGHT_PROFILE_PATH = Path(DEFAULT_WEIGHT_PROFILE_SOURCE)
+DEFAULT_WEIGHT_PROFILE_STATUS = "review_draft"
+DEFAULT_EXPERT_SYSTEMS: tuple[ExpertSystem, ...] = ("blind", "ziping", "tiaohou_ditiansui")
 
 
 @dataclass(frozen=True)
@@ -56,23 +51,64 @@ def build_weight_profile(
     domain: DomainName,
     *,
     weights_by_domain: Mapping[str, Mapping[str, float]] | None = None,
-    profile_id: str = DEFAULT_WEIGHT_PROFILE_ID,
-    profile_version: str = DEFAULT_WEIGHT_PROFILE_VERSION,
-    source: str = DEFAULT_WEIGHT_PROFILE_SOURCE,
+    profile_id: str | None = None,
+    profile_version: str | None = None,
+    source: str | None = None,
+    workspace_root: str | Path = ".",
 ) -> WeightProfile:
     """构造本次裁判使用的领域权重版本。"""
 
-    source_weights = weights_by_domain or DEFAULT_DOMAIN_WEIGHTS
+    if weights_by_domain is None:
+        payload = load_domain_weight_profile_payload(workspace_root=workspace_root)
+        source_weights = payload["weights"]
+        resolved_profile_id = str(payload["profile_id"])
+        resolved_profile_version = str(payload["profile_version"])
+        resolved_source = DEFAULT_WEIGHT_PROFILE_SOURCE
+    else:
+        source_weights = weights_by_domain
+        resolved_profile_id = profile_id or "inline-domain-prior"
+        resolved_profile_version = profile_version or "inline"
+        resolved_source = source or "inline"
+
     domain_weights = source_weights.get(domain)
     if not domain_weights:
-        domain_weights = {"blind": 1 / 3, "ziping": 1 / 3, "tiaohou_ditiansui": 1 / 3}
+        domain_weights = {expert: 1 / len(DEFAULT_EXPERT_SYSTEMS) for expert in DEFAULT_EXPERT_SYSTEMS}
     normalized = _normalize_weights(domain_weights)
     return WeightProfile(
-        profile_id=profile_id,
-        profile_version=profile_version,
-        source=source,
+        profile_id=profile_id or resolved_profile_id,
+        profile_version=profile_version or resolved_profile_version,
+        source=source or resolved_source,
         domain_weights=normalized,
     )
+
+
+def load_domain_weight_profile_payload(*, workspace_root: str | Path = ".") -> dict[str, Any]:
+    """只读加载旁路领域权重 YAML。"""
+
+    path = (Path(workspace_root) / DEFAULT_WEIGHT_PROFILE_PATH).resolve()
+    root = Path(workspace_root).resolve()
+    try:
+        path.relative_to((root / "theory" / "raw" / "yaml").resolve())
+    except ValueError as exc:
+        raise ValueError(f"领域权重 profile 只能读取 theory/raw/yaml 下的文件：{path}") from exc
+    raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError(f"领域权重 profile 顶层必须是 mapping：{path}")
+    if raw.get("status") != DEFAULT_WEIGHT_PROFILE_STATUS:
+        raise ValueError(f"领域权重 profile status 必须为 review_draft，实际为 {raw.get('status')!r}")
+    weights = raw.get("weights")
+    if not isinstance(weights, dict):
+        raise ValueError("领域权重 profile 缺少 weights mapping。")
+    for domain, domain_weights in weights.items():
+        if not isinstance(domain_weights, dict):
+            raise ValueError(f"{domain} 权重必须是 mapping。")
+        missing = set(DEFAULT_EXPERT_SYSTEMS) - set(domain_weights)
+        if missing:
+            raise ValueError(f"{domain} 缺少专家权重：{sorted(missing)}")
+        total = sum(float(domain_weights[expert]) for expert in DEFAULT_EXPERT_SYSTEMS)
+        if abs(total - 1.0) > 1e-6:
+            raise ValueError(f"{domain} 权重和必须为 1.0，实际为 {total:.6f}")
+    return raw
 
 
 def adjudicate_domain(
@@ -102,9 +138,9 @@ def adjudicate_domain(
 
     support_score = sum(j.adjusted_score for j in judgements if j.ballot == "yes")
     oppose_score = sum(j.adjusted_score for j in judgements if j.ballot == "no")
-    abstained = [j.expert_system for j in judgements if j.ballot == "abstain"]
-    winning_experts = [j.expert_system for j in judgements if j.ballot == "yes"]
-    dissenting_experts = [j.expert_system for j in judgements if j.ballot == "no"]
+    abstained: list[ExpertSystem] = [j.expert_system for j in judgements if j.ballot == "abstain"]
+    winning_experts: list[ExpertSystem] = [j.expert_system for j in judgements if j.ballot == "yes"]
+    dissenting_experts: list[ExpertSystem] = [j.expert_system for j in judgements if j.ballot == "no"]
     decision = _decide(support_score, oppose_score, judgements, cfg)
     raw_confidence = _bounded(abs(support_score - oppose_score) + max(support_score, oppose_score))
     confidence = _confidence_from_score(
@@ -221,10 +257,10 @@ def _judge_reading(
 
 
 def _normalize_weights(weights: Mapping[str, float]) -> dict[ExpertSystem, float]:
-    total = sum(float(v) for v in weights.values())
+    total = sum(float(weights.get(expert, 0.0)) for expert in DEFAULT_EXPERT_SYSTEMS)
     if total <= 0:
-        return {"blind": 1 / 3, "ziping": 1 / 3, "tiaohou_ditiansui": 1 / 3}
-    return {key: float(value) / total for key, value in weights.items()}
+        return {expert: 1 / len(DEFAULT_EXPERT_SYSTEMS) for expert in DEFAULT_EXPERT_SYSTEMS}
+    return {expert: float(weights.get(expert, 0.0)) / total for expert in DEFAULT_EXPERT_SYSTEMS}
 
 
 def _select_claim(readings: Sequence[ExpertReading]) -> str:

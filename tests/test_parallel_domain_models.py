@@ -1,17 +1,26 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
-from engine.application.adjudication import adjudicate_domain, build_domain_consensus
-from engine.domain.parallel import EvidenceItem, ExpertReading, ParallelConfidence
+import pytest
+import yaml
+
+from engine.application.adjudication import (
+    build_weight_profile,
+    adjudicate_domain,
+    build_domain_consensus,
+    load_domain_weight_profile_payload,
+)
+from engine.domain.parallel import DomainName, EvidenceItem, ExpertReading, ExpertSystem, ParallelConfidence, ReadingStance
 
 
 def _reading(
     *,
-    expert_system: str,
-    stance: str,
+    expert_system: ExpertSystem,
+    stance: ReadingStance,
     confidence: float,
-    domain: str = "财运",
+    domain: DomainName = "财运",
     claim: str = "财运总体可用，但兑现并非线性稳定",
 ) -> ExpertReading:
     return ExpertReading(
@@ -51,6 +60,45 @@ def test_expert_reading_roundtrip_keeps_isolation_boundary() -> None:
     assert restored.expert_system == "ziping"
     assert restored.isolation_boundary == "external_protocol_only"
     assert restored.evidence_items[0].ref == "REF-ziping"
+
+
+def test_default_weight_profile_is_loaded_from_review_draft_yaml() -> None:
+    payload = load_domain_weight_profile_payload()
+    profile = build_weight_profile("财运")
+
+    assert payload["status"] == "review_draft"
+    assert payload["profile_id"] == "domain-prior-2026-06-05"
+    assert profile.profile_id == payload["profile_id"]
+    assert profile.profile_version == payload["profile_version"]
+    assert profile.source == "theory/raw/yaml/domain_weight_profile_2026-06-05.yaml"
+    assert profile.domain_weights == payload["weights"]["财运"]
+    assert abs(sum(profile.domain_weights.values()) - 1.0) < 1e-6
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ({"status": "active"}, "status 必须为 review_draft"),
+        ({"weights": {"财运": {"blind": 0.30, "ziping": 0.45}}}, "缺少专家权重"),
+        (
+            {"weights": {"财运": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.30}}},
+            "权重和必须为 1.0",
+        ),
+    ],
+)
+def test_weight_profile_loader_rejects_invalid_review_draft_yaml(
+    tmp_path: Path,
+    mutation: dict,
+    message: str,
+) -> None:
+    payload = load_domain_weight_profile_payload()
+    payload.update(mutation)
+    path = tmp_path / "theory" / "raw" / "yaml" / "domain_weight_profile_2026-06-05.yaml"
+    path.parent.mkdir(parents=True)
+    path.write_text(yaml.safe_dump(payload, allow_unicode=True, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match=message):
+        load_domain_weight_profile_payload(workspace_root=tmp_path)
 
 
 def test_adjudication_uses_domain_weights_and_preserves_minority() -> None:

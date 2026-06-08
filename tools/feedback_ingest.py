@@ -41,6 +41,7 @@ from __future__ import annotations
 import argparse
 import datetime as _dt
 import json
+import math
 import pathlib
 import re
 import sys
@@ -69,6 +70,9 @@ from tools.rule_lifecycle import LifecycleConfig
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 META_DIR = REPO_ROOT / "META"
 ITERATION_STATE_FILE = META_DIR / "iteration-state.json"
+ENGINE_LOG_DIR = REPO_ROOT / "engine" / "logs"
+EXPERT_DOMAIN_FEEDBACK_LOG = ENGINE_LOG_DIR / "expert_domain_feedback.jsonl"
+ADJUDICATION_ACCURACY_LOG = ENGINE_LOG_DIR / "adjudication_accuracy.jsonl"
 
 
 # ============================================================
@@ -182,10 +186,10 @@ def _merge_statement_rule_map(
     merged = dict(statement_index)
     raw_statements = merged.get("statements", {})
     if isinstance(raw_statements, list):
-        statements: list[Any] = []
+        statement_list: list[Any] = []
         for item in raw_statements:
             if not isinstance(item, dict):
-                statements.append(item)
+                statement_list.append(item)
                 continue
             sid = item.get("statement_id")
             mapped = raw_map.get(sid) if sid else None
@@ -201,27 +205,27 @@ def _merge_statement_rule_map(
                     updated["rule_ids"] = list(mapped)
                 else:
                     updated["rule_ids"] = [str(mapped)]
-                statements.append(updated)
+                statement_list.append(updated)
             else:
-                statements.append(item)
-        merged["statements"] = statements
+                statement_list.append(item)
+        merged["statements"] = statement_list
         return merged
 
     if isinstance(raw_statements, dict):
-        statements = {k: dict(v) if isinstance(v, dict) else v for k, v in raw_statements.items()}
+        statement_map: dict[Any, Any] = {k: dict(v) if isinstance(v, dict) else v for k, v in raw_statements.items()}
         for sid, mapped in raw_map.items():
-            if sid not in statements or not isinstance(statements[sid], dict):
+            if sid not in statement_map or not isinstance(statement_map[sid], dict):
                 continue
             if isinstance(mapped, Mapping):
-                statements[sid]["rule_ids"] = list(mapped.get("rule_ids", []) or [])
-                statements[sid].setdefault("section", mapped.get("section", ""))
+                statement_map[sid]["rule_ids"] = list(mapped.get("rule_ids", []) or [])
+                statement_map[sid].setdefault("section", mapped.get("section", ""))
                 if mapped.get("year"):
-                    statements[sid].setdefault("year", mapped.get("year"))
+                    statement_map[sid].setdefault("year", mapped.get("year"))
             elif isinstance(mapped, list):
-                statements[sid]["rule_ids"] = list(mapped)
+                statement_map[sid]["rule_ids"] = list(mapped)
             else:
-                statements[sid]["rule_ids"] = [str(mapped)]
-        merged["statements"] = statements
+                statement_map[sid]["rule_ids"] = [str(mapped)]
+        merged["statements"] = statement_map
     return merged
 
 
@@ -289,6 +293,196 @@ def fanout_to_rules(
                 vctx.statement_ids = sorted(set(vctx.statement_ids + [fb.statement_id]))
 
     return rule_verdicts, unknown_sids
+
+
+def fanout_to_parallel_feedback(
+    feedbacks: list[StatementFeedback],
+    statement_index: dict[str, Any],
+    *,
+    case_id: str,
+    dry_run: bool = False,
+) -> dict[str, int]:
+    """把 statement 反馈旁路登记到 reading / adjudication 级 JSONL。"""
+
+    statements = _statement_map(statement_index)
+    expert_rows: list[dict[str, Any]] = []
+    adjudication_rows: list[dict[str, Any]] = []
+    now = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    for feedback in feedbacks:
+        if feedback.verdict not in {"hit", "miss"}:
+            continue
+        info = statements.get(feedback.statement_id)
+        if not info:
+            continue
+        domain = str(info.get("domain", ""))
+        expert_systems = [str(x) for x in info.get("expert_systems", []) or []]
+        reading_ids = [str(x) for x in info.get("reading_ids", []) or []]
+        if not expert_systems and info.get("expert_system"):
+            expert_systems = [str(info.get("expert_system"))]
+        for reading_id in reading_ids:
+            expert = _expert_for_reading(reading_id, expert_systems)
+            expert_rows.append({
+                "ts": now,
+                "case_id": case_id,
+                "statement_id": feedback.statement_id,
+                "reading_id": reading_id,
+                "domain": domain,
+                "expert_system": expert,
+                "verdict": feedback.verdict,
+                "annotation": feedback.annotation,
+            })
+        adjudication_id = str(info.get("adjudication_id", ""))
+        if adjudication_id:
+            adjudication_rows.append({
+                "ts": now,
+                "case_id": case_id,
+                "statement_id": feedback.statement_id,
+                "adjudication_id": adjudication_id,
+                "domain": domain,
+                "claim": info.get("claim", info.get("summary", "")),
+                "decision": info.get("decision", info.get("stance", "")),
+                "supporting_experts": list(info.get("supporting_experts", []) or []),
+                "dissenting_experts": list(info.get("dissenting_experts", []) or []),
+                "abstained_experts": list(info.get("abstained_experts", []) or []),
+                "consensus_layer": info.get("consensus_layer", info.get("layer", "")),
+                "verdict": feedback.verdict,
+                "minority_vindicated": feedback.verdict == "miss",
+            })
+    if not dry_run:
+        _append_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG, expert_rows)
+        _append_jsonl(ADJUDICATION_ACCURACY_LOG, adjudication_rows)
+    return {"expert_feedback_rows": len(expert_rows), "adjudication_feedback_rows": len(adjudication_rows)}
+
+
+def get_expert_domain_stats(domain: str | None = None, expert: str | None = None) -> dict[str, Any]:
+    """聚合 expert × domain 的 hit/miss、Beta 均值与 Wilson 下界。"""
+
+    buckets: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in _read_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG):
+        row_domain = str(row.get("domain", ""))
+        row_expert = str(row.get("expert_system", ""))
+        if domain is not None and row_domain != domain:
+            continue
+        if expert is not None and row_expert != expert:
+            continue
+        if row.get("verdict") not in {"hit", "miss"}:
+            continue
+        bucket = buckets.setdefault(
+            (row_domain, row_expert),
+            {"domain": row_domain, "expert_system": row_expert, "hits": 0, "misses": 0},
+        )
+        if row.get("verdict") == "hit":
+            bucket["hits"] += 1
+        else:
+            bucket["misses"] += 1
+    stats = [_finalize_expert_stats(bucket) for bucket in buckets.values()]
+    return {"items": stats}
+
+
+def compute_weight_update_proposal(min_n_eff: int = 10) -> dict[str, Any]:
+    """基于反馈历史计算动态权重调整提案；不自动写入任何 YAML。"""
+
+    stats = get_expert_domain_stats()["items"]
+    proposals: list[dict[str, Any]] = []
+    for item in stats:
+        if item["n_eff"] < min_n_eff:
+            continue
+        multiplier = min(1.30, max(0.70, item["beta_mean"] / 0.5))
+        proposals.append({
+            "domain": item["domain"],
+            "expert_system": item["expert_system"],
+            "n_eff": item["n_eff"],
+            "beta_mean": item["beta_mean"],
+            "wilson_lower": item["wilson_lower"],
+            "proposed_feedback_multiplier": round(multiplier, 6),
+            "requires_human_review": True,
+        })
+    return {
+        "schema_version": "expert-domain-weight-proposal/v0.1",
+        "min_n_eff": min_n_eff,
+        "proposal_count": len(proposals),
+        "proposals": proposals,
+        "note": "仅为动态权重调整提案；不会自动修改领域先验权重。",
+    }
+
+
+def _statement_map(statement_index: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    raw = statement_index.get("statements", {})
+    if isinstance(raw, list):
+        return {
+            str(item.get("statement_id")): item
+            for item in raw
+            if isinstance(item, dict) and item.get("statement_id")
+        }
+    if isinstance(raw, dict):
+        return {str(key): value for key, value in raw.items() if isinstance(value, dict)}
+    return {}
+
+
+def _expert_for_reading(reading_id: str, fallback_experts: list[str]) -> str:
+    upper = reading_id.upper()
+    if "ZIPING" in upper or "子平" in reading_id:
+        return "ziping"
+    if "DITIANSUI" in upper or "TIAOHOU" in upper or "滴天髓" in reading_id:
+        return "tiaohou_ditiansui"
+    if "BLIND" in upper or "盲派" in reading_id:
+        return "blind"
+    if len(fallback_experts) == 1:
+        return fallback_experts[0]
+    return ""
+
+
+def _append_jsonl(path: pathlib.Path, rows: list[dict[str, Any]]) -> None:
+    if not rows:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def _read_jsonl(path: pathlib.Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict):
+            rows.append(row)
+    return rows
+
+
+def _finalize_expert_stats(bucket: dict[str, Any]) -> dict[str, Any]:
+    hits = int(bucket["hits"])
+    misses = int(bucket["misses"])
+    n_eff = hits + misses
+    beta_mean = (hits + 1) / (n_eff + 2) if n_eff >= 0 else 0.5
+    return {
+        "domain": bucket["domain"],
+        "expert_system": bucket["expert_system"],
+        "hits": hits,
+        "misses": misses,
+        "n_eff": float(n_eff),
+        "beta_mean": round(beta_mean, 6),
+        "wilson_lower": round(_wilson_lower(hits, n_eff), 6),
+        "sample_warning": n_eff < 5,
+    }
+
+
+def _wilson_lower(hits: int, total: int, z: float = 1.96) -> float:
+    if total <= 0:
+        return 0.0
+    phat = hits / total
+    denominator = 1 + z * z / total
+    centre = phat + z * z / (2 * total)
+    margin = z * math.sqrt((phat * (1 - phat) + z * z / (4 * total)) / total)
+    return max(0.0, (centre - margin) / denominator)
 
 
 # ============================================================
@@ -428,6 +622,12 @@ def ingest(
     # 4. fanout
     with timing.step("fanout"):
         rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
+        parallel_feedback_counts = fanout_to_parallel_feedback(
+            feedbacks,
+            statement_index,
+            case_id=full_case_id,
+            dry_run=dry_run,
+        )
 
     # 5. 应用规律级更新（不写 log，本函数末尾统一写）。
     # C-2026-025 标准索引不强制承载 rule_ids；若无旁路映射则仍登记本案反馈，
@@ -441,6 +641,12 @@ def ingest(
         diff.notes.append(
             "statement-level 反馈已登记，但未找到 rule_ids；"
             "请在 statement_index.json 或 statement_rule_map.json 提供映射后重摄入"
+        )
+    if parallel_feedback_counts["expert_feedback_rows"] or parallel_feedback_counts["adjudication_feedback_rows"]:
+        diff.notes.append(
+            "parallel-domain 反馈已登记："
+            f"reading={parallel_feedback_counts['expert_feedback_rows']}，"
+            f"adjudication={parallel_feedback_counts['adjudication_feedback_rows']}"
         )
 
     # 6. 落 log + snapshot

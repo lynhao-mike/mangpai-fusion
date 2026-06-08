@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from engine.application.domain_analyzers import DomainAnalysisContext, DomainAnalyzerRegistry
+from engine.application.domain_analyzers import DomainAnalysisContext, DomainAnalyzerRegistry, get_wiring_status
 from engine.application.parallel_domain_runner import run_parallel_domain_analysis
-from engine.domain.parallel import EvidenceItem, ExpertReading, ParallelConfidence
+from engine.domain.parallel import DomainName, EvidenceItem, ExpertReading, ExpertSystem, ParallelConfidence
 
 
 @dataclass(frozen=True)
@@ -14,12 +14,12 @@ class ParsedStub:
 
 
 class SupportAnalyzer:
-    def __init__(self, expert_system: str, expert_name: str, confidence: float) -> None:
-        self.expert_system = expert_system
+    def __init__(self, expert_system: ExpertSystem, expert_name: str, confidence: float) -> None:
+        self.expert_system: ExpertSystem = expert_system
         self.expert_name = expert_name
         self.confidence = confidence
 
-    def analyze(self, parsed: Any, domain: str, context: DomainAnalysisContext) -> ExpertReading:
+    def analyze(self, parsed: Any, domain: DomainName, context: DomainAnalysisContext) -> ExpertReading:
         return ExpertReading(
             reading_id=f"RD-{context.case_id}-{domain}-{self.expert_system}",
             case_id=context.case_id,
@@ -43,6 +43,9 @@ class SupportAnalyzer:
             falsifiable="测试反馈相反则失验。",
             source_engine="mock",
         )
+
+    def is_wired(self) -> bool:
+        return True
 
 
 def test_parallel_domain_runner_collects_three_expert_readings_with_abstain_fallback() -> None:
@@ -81,3 +84,46 @@ def test_parallel_domain_runner_defaults_to_all_abstain_without_registry() -> No
     assert all(reading.stance == "abstain" for reading in analysis.readings)
     assert analysis.adjudication_result.decision == "no_output"
     assert analysis.consensus.layer == "不输出"
+
+
+class MutatingAnalyzer(SupportAnalyzer):
+    def analyze(self, parsed: Any, domain: DomainName, context: DomainAnalysisContext) -> ExpertReading:
+        context.base_context["seen_by"] = self.expert_system
+        return super().analyze(parsed, domain, context)
+
+
+class RaisingAnalyzer(SupportAnalyzer):
+    def analyze(self, parsed: Any, domain: DomainName, context: DomainAnalysisContext) -> ExpertReading:
+        raise RuntimeError("mock failure")
+
+
+def test_parallel_domain_runner_isolates_context_and_catches_exceptions() -> None:
+    registry = DomainAnalyzerRegistry()
+    registry.register("事业", "blind", MutatingAnalyzer("blind", "盲派综合组", 0.80))
+    registry.register("事业", "ziping", RaisingAnalyzer("ziping", "子平格局派", 0.72))
+    registry.register("事业", "tiaohou_ditiansui", MutatingAnalyzer("tiaohou_ditiansui", "滴天髓调候派", 0.70))
+    base_context: dict[str, Any] = {"seed": "stable"}
+
+    output = run_parallel_domain_analysis(
+        ParsedStub(case_id="C-TEST"),
+        domains=["事业"],
+        registry=registry,
+        base_context=base_context,
+    )
+
+    analysis = output.domain_analyses[0]
+    assert base_context == {"seed": "stable"}
+    assert [reading.stance for reading in analysis.readings] == ["support", "abstain", "support"]
+    assert "mock failure" in analysis.readings[1].claim
+    assert analysis.adjudication_result.decision == "yes"
+
+
+def test_domain_analyzer_wiring_status_marks_registered_and_abstain_only() -> None:
+    registry = DomainAnalyzerRegistry()
+    registry.register("婚姻", "blind", SupportAnalyzer("blind", "盲派综合组", 0.80))
+
+    status = get_wiring_status(registry)
+
+    assert status["婚姻"]["blind"] == "wired"
+    assert status["婚姻"]["ziping"] == "abstain_only"
+    assert status["财运"]["blind"] == "abstain_only"

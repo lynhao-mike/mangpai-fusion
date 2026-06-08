@@ -33,6 +33,11 @@ class DomainAnalyzer(Protocol):
 
     def analyze(self, parsed: Any, domain: DomainName, context: DomainAnalysisContext) -> ExpertReading:
         """返回该专家体系对指定功能域的独立 ExpertReading。"""
+        ...
+
+    def is_wired(self) -> bool:
+        """是否已接入真实规则或执行器。"""
+        ...
 
 
 class AbstainDomainAnalyzer:
@@ -45,7 +50,7 @@ class AbstainDomainAnalyzer:
         expert_name: str,
         reason: str = "理论库或执行器尚未接入，按旁路原则显式弃权。",
     ) -> None:
-        self.expert_system = expert_system
+        self.expert_system: ExpertSystem = expert_system
         self.expert_name = expert_name
         self.reason = reason
 
@@ -77,6 +82,10 @@ class AbstainDomainAnalyzer:
         )
 
 
+    def is_wired(self) -> bool:
+        return False
+
+
 class StaticReadingAnalyzer:
     """测试与旁路演练用的静态 reading analyzer。"""
 
@@ -94,6 +103,9 @@ class StaticReadingAnalyzer:
             data["reading_id"] = f"RD-{context.case_id}-{domain}-{self.reading.expert_system}"
             return ExpertReading.from_dict(data)
         return self.reading
+
+    def is_wired(self) -> bool:
+        return True
 
 
 class DomainAnalyzerRegistry:
@@ -117,6 +129,25 @@ class DomainAnalyzerRegistry:
     def registered_experts(self, domain: DomainName) -> list[ExpertSystem]:
         return [expert for (registered_domain, expert), _ in self._items.items() if registered_domain == domain]
 
+    def get_wiring_status(
+        self,
+        *,
+        domains: tuple[DomainName, ...] | None = None,
+        experts: tuple[ExpertSystem, ...] | None = None,
+    ) -> dict[str, dict[str, str]]:
+        """返回各功能域 × 专家体系的接线状态。"""
+
+        selected_domains = domains or DEFAULT_DOMAINS
+        selected_experts = experts or DEFAULT_EXPERT_ORDER
+        status: dict[str, dict[str, str]] = {}
+        for domain in selected_domains:
+            status[domain] = {}
+            for expert in selected_experts:
+                analyzer = self.get(domain, expert)
+                is_wired = getattr(analyzer, "is_wired", lambda: True)()
+                status[domain][expert] = "wired" if is_wired else "abstain_only"
+        return status
+
 
 EXPERT_LABELS: dict[ExpertSystem, str] = {
     "blind": "盲派综合组",
@@ -132,3 +163,9 @@ def build_empty_parallel_registry() -> DomainAnalyzerRegistry:
     """构造全部专家默认弃权的旁路注册表。"""
 
     return DomainAnalyzerRegistry()
+
+
+def get_wiring_status(registry: DomainAnalyzerRegistry | None = None) -> dict[str, dict[str, str]]:
+    """返回默认功能域 × 专家体系的接线状态。"""
+
+    return (registry or build_empty_parallel_registry()).get_wiring_status()
