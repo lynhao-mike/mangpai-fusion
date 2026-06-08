@@ -1,15 +1,20 @@
-# C-2026-RF000243-坤-己卯己巳戊午丁巳 · 分析归档
+# Case C-2026-RF000243-坤-己卯己巳戊午丁巳 · 分析记录
 
-## 转案说明
+## 一、转案说明
 
-- 原始反馈 ID：RF-2026-000243
-- 问真四柱：己卯己巳戊午丁巳
-- 关联输入：[input.md](input.md)
-- 关联反馈：[feedback.md](feedback.md)
-- 关联报告：[C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md](../../reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md)
+- 转案日期：2026-06-08
+- raw_id：`RF-2026-000243`
+- 来源草稿：`cases/raw_feedback/case_drafts/RF-2026-000243/input.md`
+- 来源索引：`cases/raw_feedback/case_drafts/wenzhen-repan-index-female.md`
+- staging manifest：`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl`
+- promotion plan：`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.json`
 
-## Pipeline 分析
+## 二、当前状态
 
-- findings：`findings/analysis_output.json`
-- 命理师报告：`../../reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md`
-- statement index：`statement_index.json`
+本文件为正式 case 初始化分析记录；尚未生成命理师报告。
+
+## 三、待分析重点
+
+- 命局结构与问真四柱核对。
+- 已知事实年表与大运、流年应期回测。
+- 多流派功能域结论与后续 statement_index 绑定。
