@@ -1,0 +1,62 @@
+{
+  "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+  "run_id": "20260608T044826Z-C-2026-RF000243-坤-己卯己巳戊午丁巳",
+  "timing_type": "feedback_ingest",
+  "generated_at": "2026-06-08T04:48:27Z",
+  "pipeline_version": "1.2.1",
+  "threshold_seconds": 60.0,
+  "total_seconds": 0.9067,
+  "exceeded_threshold": false,
+  "step_names": [
+    "discover",
+    "process_single",
+    "parse_feedback",
+    "fanout",
+    "apply_rules",
+    "write_audit",
+    "bump_state",
+    "iteration_report",
+    "boundary_miner",
+    "veto_miner",
+    "scan_status_changes",
+    "cross_school_summary",
+    "write_report"
+  ],
+  "steps": {
+    "parse_feedback": 0.0008,
+    "load_statement_index": 0.0028,
+    "apply_rules": 0.9025,
+    "bump_state": 0.0006
+  },
+  "step_details": [
+    {
+      "name": "parse_feedback",
+      "seconds": 0.0008,
+      "started_at": "2026-06-08T04:48:26.956714Z"
+    },
+    {
+      "name": "load_statement_index",
+      "seconds": 0.0028,
+      "started_at": "2026-06-08T04:48:26.957551Z"
+    },
+    {
+      "name": "apply_rules",
+      "seconds": 0.9025,
+      "started_at": "2026-06-08T04:48:26.960405Z"
+    },
+    {
+      "name": "bump_state",
+      "seconds": 0.0006,
+      "started_at": "2026-06-08T04:48:27.862969Z"
+    }
+  ],
+  "extra": {
+    "feedback_count": 0,
+    "rule_count": 0,
+    "skipped_unknown_sid_count": 0,
+    "skipped_no_index": true,
+    "iteration_triggered": false,
+    "iteration_seq": 1,
+    "dry_run": false
+  }
+}

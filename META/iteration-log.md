@@ -1171,3 +1171,128 @@ trigger: ingest_feedback（手动模式，本环境无 Python runtime）
 git revert <commit-hash>
 ```
 
+
+
+---
+
+## 2026-06-08 12:48 · ingest C-2026-RF000345-乾-癸酉乙丑乙卯乙酉
+
+case_count: 26
+trigger: ingest_feedback
+
+### Notes
+
+- feedback.md 中未检出含应验标记的表格行
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=26，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-08-after-C-2026-RF000345-乾-癸酉乙丑乙卯乙酉.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-08 12:48 · ingest C-2026-RF000441-乾-癸亥己未己未庚午
+
+case_count: 26
+trigger: ingest_feedback
+
+### Notes
+
+- feedback.md 中未检出含应验标记的表格行
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=26，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-08-after-C-2026-RF000441-乾-癸亥己未己未庚午.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-08 12:48 · ingest C-2026-RF000864-乾-己巳丙子乙卯甲申
+
+case_count: 26
+trigger: ingest_feedback
+
+### Notes
+
+- feedback.md 中未检出含应验标记的表格行
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=26，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-08-after-C-2026-RF000864-乾-己巳丙子乙卯甲申.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-08 12:48 · ingest C-2026-RF000243-坤-己卯己巳戊午丁巳
+
+case_count: 26
+trigger: ingest_feedback
+
+### Notes
+
+- feedback.md 中未检出含应验标记的表格行
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=26，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-08-after-C-2026-RF000243-坤-己卯己巳戊午丁巳.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-08 12:48 · ingest C-2026-RF000524-坤-己巳丙寅戊戌丁巳
+
+case_count: 26
+trigger: ingest_feedback
+
+### Notes
+
+- feedback.md 中未检出含应验标记的表格行
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=26，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-08-after-C-2026-RF000524-坤-己巳丙寅戊戌丁巳.snapshot.yaml
+```
