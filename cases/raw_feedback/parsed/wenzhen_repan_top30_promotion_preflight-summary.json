@@ -1,13 +1,6 @@
 {
-  "blocked_count": 0,
-  "blocked_raw_ids": [],
-  "candidate_count": 26,
-  "dry_run": false,
-  "error_distribution": {},
-  "generated_at": "2026-06-07T15:41:18.421085+00:00",
-  "policy": "Preflight report only; manual approval and tools.preflight are still required before formal case creation.",
-  "ready_count": 26,
-  "ready_raw_ids": [
+  "blocked_count": 26,
+  "blocked_raw_ids": [
     "RF-2026-000345",
     "RF-2026-000441",
     "RF-2026-000864",
@@ -34,6 +27,20 @@
     "RF-2026-000249",
     "RF-2026-000281",
     "RF-2026-000408"
+  ],
+  "candidate_count": 30,
+  "dry_run": false,
+  "error_distribution": {
+    "formal_case_dir_conflict": 26
+  },
+  "generated_at": "2026-06-08T08:44:54.404465+00:00",
+  "policy": "Preflight report only; manual approval and tools.preflight are still required before formal case creation.",
+  "ready_count": 4,
+  "ready_raw_ids": [
+    "RF-2026-000771",
+    "RF-2026-000551",
+    "RF-2026-000894",
+    "RF-2026-000684"
   ],
   "report_markdown": "cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight.md",
   "schema_version": "wenzhen-promotion-preflight/v0.1",

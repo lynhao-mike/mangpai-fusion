@@ -1,13 +1,13 @@
 # 问真 Top 30 · 转案 staging manifest 索引
 
-> 生成时间：2026-06-07T15:35:58.369535+00:00
+> 生成时间：2026-06-08T08:44:54.284259+00:00
 > 用途：机器可读转案候选队列；不是正式 case。
 
 ## 汇总
 
 - Top N：30
-- staging 候选：26
-- 阻断未入队：4
+- staging 候选：30
+- 阻断未入队：0
 - JSONL：`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl`
 
 ## 候选表
@@ -26,6 +26,7 @@
 | 10 | RF-2026-000108 | C-2026-RF000108-坤-乙丑甲申甲申辛未 | 坤 | 乙丑甲申甲申辛未 | 15 | cases/raw_feedback/case_drafts/RF-2026-000108/input.md | staged_pending_human_review |
 | 11 | RF-2026-000448 | C-2026-RF000448-乾-庚辰甲申癸亥癸亥 | 乾 | 庚辰甲申癸亥癸亥 | 15 | cases/raw_feedback/case_drafts/RF-2026-000448/input.md | staged_pending_human_review |
 | 12 | RF-2026-000592 | C-2026-RF000592-乾-丁卯壬寅壬寅戊申 | 乾 | 丁卯壬寅壬寅戊申 | 15 | cases/raw_feedback/case_drafts/RF-2026-000592/input.md | staged_pending_human_review |
+| 13 | RF-2026-000771 | C-2026-RF000771-乾-癸亥壬戌壬午庚子 | 乾 | 癸亥壬戌壬午庚子 | 15 | cases/raw_feedback/case_drafts/RF-2026-000771/input.md | staged_pending_human_review |
 | 14 | RF-2026-000900 | C-2026-RF000900-乾-戊寅乙卯丙寅戊子 | 乾 | 戊寅乙卯丙寅戊子 | 15 | cases/raw_feedback/case_drafts/RF-2026-000900/input.md | staged_pending_human_review |
 | 15 | RF-2026-000965 | C-2026-RF000965-坤-壬午乙巳甲午丙子 | 坤 | 壬午乙巳甲午丙子 | 15 | cases/raw_feedback/case_drafts/RF-2026-000965/input.md | staged_pending_human_review |
 | 16 | RF-2026-000118 | C-2026-RF000118-乾-己巳癸酉辛丑己丑 | 乾 | 己巳癸酉辛丑己丑 | 14 | cases/raw_feedback/case_drafts/RF-2026-000118/input.md | staged_pending_human_review |
@@ -35,11 +36,14 @@
 | 20 | RF-2026-000990 | C-2026-RF000990-乾-庚午己丑戊寅癸亥 | 乾 | 庚午己丑戊寅癸亥 | 14 | cases/raw_feedback/case_drafts/RF-2026-000990/input.md | staged_pending_human_review |
 | 21 | RF-2026-000301 | C-2026-RF000301-乾-乙亥辛巳壬寅癸卯 | 乾 | 乙亥辛巳壬寅癸卯 | 13 | cases/raw_feedback/case_drafts/RF-2026-000301/input.md | staged_pending_human_review |
 | 22 | RF-2026-000514 | C-2026-RF000514-乾-癸亥己未甲子壬申 | 乾 | 癸亥己未甲子壬申 | 13 | cases/raw_feedback/case_drafts/RF-2026-000514/input.md | staged_pending_human_review |
+| 23 | RF-2026-000551 | C-2026-RF000551-乾-壬戌丙午甲申丁卯 | 乾 | 壬戌丙午甲申丁卯 | 13 | cases/raw_feedback/case_drafts/RF-2026-000551/input.md | staged_pending_human_review |
 | 24 | RF-2026-000865 | C-2026-RF000865-乾-辛未丙申戊午癸亥 | 乾 | 辛未丙申戊午癸亥 | 13 | cases/raw_feedback/case_drafts/RF-2026-000865/input.md | staged_pending_human_review |
+| 25 | RF-2026-000894 | C-2026-RF000894-乾-壬戌己酉庚子戊子 | 乾 | 壬戌己酉庚子戊子 | 13 | cases/raw_feedback/case_drafts/RF-2026-000894/input.md | staged_pending_human_review |
 | 26 | RF-2026-000989 | C-2026-RF000989-乾-庚午己丑戊寅丁巳 | 乾 | 庚午己丑戊寅丁巳 | 13 | cases/raw_feedback/case_drafts/RF-2026-000989/input.md | staged_pending_human_review |
 | 27 | RF-2026-000249 | C-2026-RF000249-坤-乙亥乙酉庚午戊寅 | 坤 | 乙亥乙酉庚午戊寅 | 12 | cases/raw_feedback/case_drafts/RF-2026-000249/input.md | staged_pending_human_review |
 | 28 | RF-2026-000281 | C-2026-RF000281-乾-己巳乙亥己丑戊辰 | 乾 | 己巳乙亥己丑戊辰 | 12 | cases/raw_feedback/case_drafts/RF-2026-000281/input.md | staged_pending_human_review |
 | 29 | RF-2026-000408 | C-2026-RF000408-乾-辛亥甲午辛卯壬辰 | 乾 | 辛亥甲午辛卯壬辰 | 12 | cases/raw_feedback/case_drafts/RF-2026-000408/input.md | staged_pending_human_review |
+| 30 | RF-2026-000684 | C-2026-RF000684-坤-己巳丙子戊申戊午 | 坤 | 己巳丙子戊申戊午 | 12 | cases/raw_feedback/case_drafts/RF-2026-000684/input.md | staged_pending_human_review |
 
 ## 使用约束
 
