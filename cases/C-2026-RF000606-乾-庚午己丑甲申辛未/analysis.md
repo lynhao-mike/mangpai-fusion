@@ -1,15 +1,21 @@
-# C-2026-RF000606-乾-庚午己丑甲申辛未 · 分析归档
+# Case C-2026-RF000606-乾-庚午己丑甲申辛未 · 分析记录
 
-## 转案说明
+## 一、转案说明
 
-- 原始反馈 ID：RF-2026-000606
-- 问真四柱：庚午己丑甲申辛未
-- 关联输入：[input.md](input.md)
-- 关联反馈：[feedback.md](feedback.md)
-- 关联报告：[C-2026-RF000606-乾-庚午己丑甲申辛未-analyst-report.md](../../reports/C-2026-RF000606-乾-庚午己丑甲申辛未-analyst-report.md)
+- 转案日期：2026-06-08
+- 转案批次：问真 staging 第二批正式转案
+- raw_id：`RF-2026-000606`
+- 来源草稿：`cases/raw_feedback/case_drafts/RF-2026-000606/input.md`
+- 来源索引：`cases/raw_feedback/case_drafts/wenzhen-repan-index-male.md`
+- staging manifest：`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl`
+- promotion preflight summary：`cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight-summary.json`
 
-## Pipeline 分析
+## 二、当前状态
 
-- findings：`findings/analysis_output.json`
-- 命理师报告：`../../reports/C-2026-RF000606-乾-庚午己丑甲申辛未-analyst-report.md`
-- statement index：`statement_index.json`
+本文件为正式 case 初始化分析记录；尚未生成命理师报告。
+
+## 三、待分析重点
+
+- 命局结构与问真四柱核对。
+- 已知事实年表与大运、流年应期回测。
+- 多流派功能域结论与后续 statement_index 绑定。
