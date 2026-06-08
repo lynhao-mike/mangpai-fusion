@@ -51,6 +51,7 @@ def build_weight_profile(
     domain: DomainName,
     *,
     weights_by_domain: Mapping[str, Mapping[str, float]] | None = None,
+    feedback_overlay: Mapping[str, Any] | None = None,
     profile_id: str | None = None,
     profile_version: str | None = None,
     source: str | None = None,
@@ -69,6 +70,14 @@ def build_weight_profile(
         resolved_profile_id = profile_id or "inline-domain-prior"
         resolved_profile_version = profile_version or "inline"
         resolved_source = source or "inline"
+
+    if feedback_overlay is not None:
+        source_weights = _merge_feedback_overlay(source_weights, feedback_overlay)
+        resolved_profile_id = str(feedback_overlay.get("profile_id") or f"{resolved_profile_id}+feedback-overlay")
+        resolved_profile_version = str(
+            feedback_overlay.get("profile_version") or f"{resolved_profile_version}+feedback-overlay"
+        )
+        resolved_source = str(feedback_overlay.get("source") or f"{resolved_source}+feedback-overlay")
 
     domain_weights = source_weights.get(domain)
     if not domain_weights:
@@ -256,7 +265,28 @@ def _judge_reading(
     )
 
 
-def _normalize_weights(weights: Mapping[str, float]) -> dict[ExpertSystem, float]:
+def _merge_feedback_overlay(
+    source_weights: Mapping[str, Mapping[str, float]],
+    feedback_overlay: Mapping[str, Any],
+) -> dict[str, dict[ExpertSystem, float]]:
+    overlay_weights = feedback_overlay.get("weights")
+    if not isinstance(overlay_weights, Mapping):
+        raise ValueError("feedback overlay 缺少 weights mapping。")
+    merged: dict[str, dict[ExpertSystem, float]] = {}
+    for domain, domain_weights in source_weights.items():
+        if not isinstance(domain_weights, Mapping):
+            continue
+        domain_overlay = overlay_weights.get(domain)
+        selected = domain_overlay if isinstance(domain_overlay, Mapping) else domain_weights
+        merged[str(domain)] = _normalize_weights(selected)
+    for domain, domain_overlay in overlay_weights.items():
+        if domain in merged or not isinstance(domain_overlay, Mapping):
+            continue
+        merged[str(domain)] = _normalize_weights(domain_overlay)
+    return merged
+
+
+def _normalize_weights(weights: Mapping[Any, float]) -> dict[ExpertSystem, float]:
     total = sum(float(weights.get(expert, 0.0)) for expert in DEFAULT_EXPERT_SYSTEMS)
     if total <= 0:
         return {expert: 1 / len(DEFAULT_EXPERT_SYSTEMS) for expert in DEFAULT_EXPERT_SYSTEMS}

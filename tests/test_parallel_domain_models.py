@@ -75,6 +75,33 @@ def test_default_weight_profile_is_loaded_from_review_draft_yaml() -> None:
     assert abs(sum(profile.domain_weights.values()) - 1.0) < 1e-6
 
 
+def test_weight_profile_can_merge_human_confirmed_feedback_overlay() -> None:
+    prior_weights = {
+        "财运": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.25},
+        "婚姻": {"blind": 0.40, "ziping": 0.30, "tiaohou_ditiansui": 0.30},
+    }
+    overlay = {
+        "profile_id": "domain-prior-test+feedback-overlay",
+        "profile_version": "test-v1+feedback-overlay",
+        "source": "tmp/feedback_overlay.json",
+        "status": "human_confirmed",
+        "weights": {
+            "财运": {"blind": 0.21, "ziping": 0.585, "tiaohou_ditiansui": 0.25},
+        },
+    }
+
+    profile = build_weight_profile("财运", weights_by_domain=prior_weights, feedback_overlay=overlay)
+    untouched = build_weight_profile("婚姻", weights_by_domain=prior_weights, feedback_overlay=overlay)
+
+    assert profile.profile_id == "domain-prior-test+feedback-overlay"
+    assert profile.profile_version == "test-v1+feedback-overlay"
+    assert profile.source == "tmp/feedback_overlay.json"
+    assert round(sum(profile.domain_weights.values()), 6) == 1.0
+    assert profile.domain_weights["ziping"] > prior_weights["财运"]["ziping"]
+    assert profile.domain_weights["blind"] < prior_weights["财运"]["blind"]
+    assert untouched.domain_weights == prior_weights["婚姻"]
+
+
 @pytest.mark.parametrize(
     ("mutation", "message"),
     [
@@ -127,6 +154,15 @@ def test_adjudication_uses_domain_weights_and_preserves_minority() -> None:
     assert result.minority_views[0].expert_system == "tiaohou_ditiansui"
     assert consensus.layer == "双专家共识"
     assert consensus.weight_profile is not None
+
+
+def test_weight_profile_rejects_feedback_overlay_without_weights() -> None:
+    with pytest.raises(ValueError, match="feedback overlay 缺少 weights mapping"):
+        build_weight_profile(
+            "财运",
+            weights_by_domain={"财运": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.25}},
+            feedback_overlay={"status": "human_confirmed"},
+        )
 
 
 def test_adjudication_no_output_when_all_experts_abstain() -> None:

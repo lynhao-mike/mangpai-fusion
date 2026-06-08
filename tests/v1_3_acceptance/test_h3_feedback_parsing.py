@@ -290,3 +290,144 @@ def test_h3_parallel_feedback_fanout_stats_and_weight_proposal(tmp_path, monkeyp
     proposal = compute_weight_update_proposal(min_n_eff=1)
     assert proposal["proposal_count"] >= 1
     assert proposal["proposals"][0]["requires_human_review"] is True
+
+
+def test_h3_weight_proposal_low_sample_only_warns(tmp_path, monkeypatch):
+    """n_eff < 5 时只提示样本不足，不产生调整 proposal。"""
+    import json
+    import tools.feedback_ingest as fi
+    from tools.feedback_ingest import compute_weight_update_proposal
+
+    expert_log = tmp_path / "expert_domain_feedback.jsonl"
+    monkeypatch.setattr(fi, "EXPERT_DOMAIN_FEEDBACK_LOG", expert_log)
+    rows = [
+        {"domain": "财运", "expert_system": "blind", "verdict": "hit"},
+        {"domain": "财运", "expert_system": "blind", "verdict": "miss"},
+        {"domain": "财运", "expert_system": "blind", "verdict": "miss"},
+        {"domain": "财运", "expert_system": "blind", "verdict": "miss"},
+    ]
+    expert_log.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+
+    proposal = compute_weight_update_proposal(min_n_eff=5)
+
+    assert proposal["proposal_count"] == 0
+    assert proposal["diagnostics"][0]["n_eff"] == 4.0
+    assert proposal["diagnostics"][0]["adjustment_allowed"] is False
+    assert "样本不足" in proposal["diagnostics"][0]["reason"]
+
+
+def test_h3_weight_proposal_allows_larger_adjustment_at_n_eff_10(tmp_path, monkeypatch):
+    """n_eff >= 10 时允许进入 0.70~1.30 的较大调整区间。"""
+    import json
+    import tools.feedback_ingest as fi
+    from tools.feedback_ingest import compute_weight_update_proposal
+
+    expert_log = tmp_path / "expert_domain_feedback.jsonl"
+    monkeypatch.setattr(fi, "EXPERT_DOMAIN_FEEDBACK_LOG", expert_log)
+    rows = [{"domain": "财运", "expert_system": "ziping", "verdict": "hit"} for _ in range(10)]
+    expert_log.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+
+    proposal = compute_weight_update_proposal(min_n_eff=10)
+
+    assert proposal["proposal_count"] == 1
+    assert proposal["proposals"][0]["n_eff"] == 10.0
+    assert proposal["proposals"][0]["proposed_feedback_multiplier"] == 1.3
+
+
+def test_h3_consecutive_misses_trigger_downweight_proposal(tmp_path, monkeypatch):
+    """连续 miss 应触发降权 proposal。"""
+    import json
+    import tools.feedback_ingest as fi
+    from tools.feedback_ingest import compute_weight_update_proposal
+
+    expert_log = tmp_path / "expert_domain_feedback.jsonl"
+    monkeypatch.setattr(fi, "EXPERT_DOMAIN_FEEDBACK_LOG", expert_log)
+    rows = [{"domain": "婚姻", "expert_system": "blind", "verdict": "miss"} for _ in range(10)]
+    expert_log.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+
+    proposal = compute_weight_update_proposal(min_n_eff=10)
+
+    assert proposal["proposal_count"] == 1
+    assert proposal["proposals"][0]["expert_system"] == "blind"
+    assert proposal["proposals"][0]["proposed_feedback_multiplier"] == 0.7
+
+
+def test_h3_apply_weight_proposal_preview_normalizes_and_does_not_write(tmp_path):
+    """未人工确认时只返回归一化 preview，不写入任何权重文件。"""
+    from tools.feedback_ingest import apply_weight_update_proposal
+
+    output_path = tmp_path / "feedback_overlay.json"
+    base_profile = {
+        "profile_id": "domain-prior-test",
+        "profile_version": "test-v1",
+        "weights": {
+            "财运": {"blind": 0.30, "ziping": 0.45, "tiaohou_ditiansui": 0.25},
+        },
+    }
+    proposal = {
+        "proposals": [
+            {
+                "domain": "财运",
+                "expert_system": "ziping",
+                "proposed_feedback_multiplier": 1.30,
+                "requires_human_review": True,
+            },
+            {
+                "domain": "财运",
+                "expert_system": "blind",
+                "proposed_feedback_multiplier": 0.70,
+                "requires_human_review": True,
+            },
+        ]
+    }
+
+    result = apply_weight_update_proposal(
+        proposal,
+        base_profile=base_profile,
+        output_path=output_path,
+    )
+
+    assert result["applied"] is False
+    assert output_path.exists() is False
+    weights = result["overlay"]["weights"]["财运"]
+    assert round(sum(weights.values()), 6) == 1.0
+    assert weights["ziping"] > base_profile["weights"]["财运"]["ziping"]
+    assert weights["blind"] < base_profile["weights"]["财运"]["blind"]
+    assert "feedback_overlay" in result["preview_diff"]
+
+
+def test_h3_apply_weight_proposal_requires_confirmation_to_write(tmp_path):
+    """应用型入口必须显式人工确认后才写 overlay 文件。"""
+    import json
+    from tools.feedback_ingest import apply_weight_update_proposal
+
+    output_path = tmp_path / "feedback_overlay.json"
+    base_profile = {
+        "profile_id": "domain-prior-test",
+        "profile_version": "test-v1",
+        "weights": {
+            "事业": {"blind": 0.25, "ziping": 0.50, "tiaohou_ditiansui": 0.25},
+        },
+    }
+    proposal = {
+        "proposals": [
+            {
+                "domain": "事业",
+                "expert_system": "ziping",
+                "proposed_feedback_multiplier": 0.70,
+                "requires_human_review": True,
+            },
+        ]
+    }
+
+    result = apply_weight_update_proposal(
+        proposal,
+        base_profile=base_profile,
+        confirm=True,
+        output_path=output_path,
+    )
+
+    assert result["applied"] is True
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert payload["status"] == "human_confirmed"
+    assert round(sum(payload["weights"]["事业"].values()), 6) == 1.0

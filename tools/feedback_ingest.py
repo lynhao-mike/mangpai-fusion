@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as _dt
+import difflib
 import json
 import math
 import pathlib
@@ -73,6 +74,8 @@ ITERATION_STATE_FILE = META_DIR / "iteration-state.json"
 ENGINE_LOG_DIR = REPO_ROOT / "engine" / "logs"
 EXPERT_DOMAIN_FEEDBACK_LOG = ENGINE_LOG_DIR / "expert_domain_feedback.jsonl"
 ADJUDICATION_ACCURACY_LOG = ENGINE_LOG_DIR / "adjudication_accuracy.jsonl"
+DOMAIN_WEIGHT_PRIOR_PROFILE = REPO_ROOT / "theory" / "raw" / "yaml" / "domain_weight_profile_2026-06-05.yaml"
+DEFAULT_EXPERT_SYSTEMS = ("blind", "ziping", "tiaohou_ditiansui")
 
 
 # ============================================================
@@ -385,26 +388,146 @@ def compute_weight_update_proposal(min_n_eff: int = 10) -> dict[str, Any]:
 
     stats = get_expert_domain_stats()["items"]
     proposals: list[dict[str, Any]] = []
+    diagnostics: list[dict[str, Any]] = []
     for item in stats:
-        if item["n_eff"] < min_n_eff:
-            continue
-        multiplier = min(1.30, max(0.70, item["beta_mean"] / 0.5))
-        proposals.append({
+        n_eff = float(item["n_eff"])
+        diagnostic = {
             "domain": item["domain"],
             "expert_system": item["expert_system"],
-            "n_eff": item["n_eff"],
+            "n_eff": n_eff,
+            "beta_mean": item["beta_mean"],
+            "wilson_lower": item["wilson_lower"],
+            "adjustment_allowed": False,
+            "reason": "样本不足，不调整" if n_eff < min_n_eff else "样本达到阈值，可进入人工 review",
+        }
+        if n_eff < min_n_eff:
+            diagnostics.append(diagnostic)
+            continue
+        lower_bound = 0.70 if n_eff >= 10 else 0.90
+        upper_bound = 1.30 if n_eff >= 10 else 1.10
+        multiplier = min(upper_bound, max(lower_bound, float(item["beta_mean"]) / 0.5))
+        proposal = {
+            "domain": item["domain"],
+            "expert_system": item["expert_system"],
+            "n_eff": n_eff,
             "beta_mean": item["beta_mean"],
             "wilson_lower": item["wilson_lower"],
             "proposed_feedback_multiplier": round(multiplier, 6),
             "requires_human_review": True,
-        })
+            "source": "expert_domain_feedback_stats",
+        }
+        proposals.append(proposal)
+        diagnostics.append({**diagnostic, "adjustment_allowed": True, "proposed_feedback_multiplier": proposal["proposed_feedback_multiplier"]})
     return {
-        "schema_version": "expert-domain-weight-proposal/v0.1",
+        "schema_version": "expert-domain-weight-proposal/v0.2",
         "min_n_eff": min_n_eff,
         "proposal_count": len(proposals),
         "proposals": proposals,
-        "note": "仅为动态权重调整提案；不会自动修改领域先验权重。",
+        "diagnostics": diagnostics,
+        "note": "仅为动态权重调整提案；未经 apply_weight_update_proposal(confirm=True) 不会写入任何权重文件。",
     }
+
+
+def apply_weight_update_proposal(
+    proposal: Mapping[str, Any],
+    *,
+    base_profile: Mapping[str, Any] | None = None,
+    confirm: bool = False,
+    output_path: str | pathlib.Path | None = None,
+) -> dict[str, Any]:
+    """显式确认后把 proposal 应用为新 overlay；默认只返回 preview diff。"""
+
+    base = dict(base_profile or _load_weight_prior_profile())
+    base_weights = base.get("weights", {})
+    if not isinstance(base_weights, Mapping):
+        raise ValueError("base profile 缺少 weights mapping。")
+    proposed_weights = _apply_proposal_to_weights(base_weights, proposal.get("proposals", []))
+    overlay = {
+        "schema_version": "expert-domain-feedback-overlay/v0.1",
+        "status": "human_confirmed" if confirm else "preview_only",
+        "base_profile_id": base.get("profile_id", ""),
+        "base_profile_version": base.get("profile_version", ""),
+        "source": "tools.feedback_ingest.apply_weight_update_proposal",
+        "requires_human_review": not confirm,
+        "weights": proposed_weights,
+    }
+    preview_diff = _weight_preview_diff(base_weights, proposed_weights)
+    result = {
+        "applied": bool(confirm and output_path),
+        "confirmed": confirm,
+        "output_path": str(output_path) if output_path else None,
+        "preview_diff": preview_diff,
+        "overlay": overlay,
+    }
+    if not confirm:
+        return result
+    if output_path is None:
+        raise ValueError("confirm=True 时必须提供 output_path，且不得覆盖 prior profile。")
+    target = pathlib.Path(output_path)
+    if target.resolve() == DOMAIN_WEIGHT_PRIOR_PROFILE.resolve():
+        raise ValueError("禁止覆盖 review_draft prior profile；请写入新的 overlay 文件。")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(overlay, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {**result, "applied": True}
+
+
+def _load_weight_prior_profile() -> dict[str, Any]:
+    try:
+        import yaml
+    except ImportError as exc:  # pragma: no cover
+        raise RuntimeError("读取 prior profile 需要 PyYAML。") from exc
+    raw = yaml.safe_load(DOMAIN_WEIGHT_PRIOR_PROFILE.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError(f"领域权重 prior profile 顶层必须是 mapping：{DOMAIN_WEIGHT_PRIOR_PROFILE}")
+    return raw
+
+
+def _apply_proposal_to_weights(
+    base_weights: Mapping[str, Any],
+    proposals: Any,
+) -> dict[str, dict[str, float]]:
+    multipliers: dict[tuple[str, str], float] = {}
+    for item in proposals if isinstance(proposals, list) else []:
+        if not isinstance(item, Mapping):
+            continue
+        if item.get("requires_human_review") is not True:
+            continue
+        domain = str(item.get("domain", ""))
+        expert = str(item.get("expert_system", ""))
+        if domain and expert:
+            multipliers[(domain, expert)] = float(item.get("proposed_feedback_multiplier", 1.0))
+
+    proposed: dict[str, dict[str, float]] = {}
+    for domain, domain_weights in base_weights.items():
+        if not isinstance(domain_weights, Mapping):
+            continue
+        adjusted = {
+            expert: float(domain_weights.get(expert, 0.0)) * multipliers.get((str(domain), expert), 1.0)
+            for expert in DEFAULT_EXPERT_SYSTEMS
+        }
+        proposed[str(domain)] = _normalize_domain_weights(adjusted)
+    return proposed
+
+
+def _normalize_domain_weights(weights: Mapping[str, float]) -> dict[str, float]:
+    total = sum(float(weights.get(expert, 0.0)) for expert in DEFAULT_EXPERT_SYSTEMS)
+    if total <= 0:
+        return {expert: round(1 / len(DEFAULT_EXPERT_SYSTEMS), 6) for expert in DEFAULT_EXPERT_SYSTEMS}
+    normalized = {expert: float(weights.get(expert, 0.0)) / total for expert in DEFAULT_EXPERT_SYSTEMS}
+    rounded = {expert: round(value, 6) for expert, value in normalized.items()}
+    drift = round(1.0 - sum(rounded.values()), 6)
+    if drift:
+        rounded[DEFAULT_EXPERT_SYSTEMS[0]] = round(rounded[DEFAULT_EXPERT_SYSTEMS[0]] + drift, 6)
+    return rounded
+
+
+def _weight_preview_diff(
+    base_weights: Mapping[str, Any],
+    proposed_weights: Mapping[str, Any],
+) -> str:
+    before = json.dumps(base_weights, ensure_ascii=False, indent=2, sort_keys=True).splitlines()
+    after = json.dumps(proposed_weights, ensure_ascii=False, indent=2, sort_keys=True).splitlines()
+    return "\n".join(difflib.unified_diff(before, after, fromfile="prior_weights", tofile="feedback_overlay", lineterm=""))
 
 
 def _statement_map(statement_index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -796,10 +919,22 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         description="v1.3 D5 结构化反馈摄入：解析填好的 feedback.md → 应用规律级更新"
     )
-    parser.add_argument("case_id", help="案例 ID 或前缀（如 C-2026-001）")
+    parser.add_argument("case_id", nargs="?", help="案例 ID 或前缀（如 C-2026-001）")
     parser.add_argument("--dry-run", action="store_true", help="不落盘 yaml / log / state")
     parser.add_argument("--json", action="store_true", help="以 JSON 格式输出结果")
+    parser.add_argument("--expert-domain-stats", action="store_true", help="只读输出专家×功能域反馈统计")
+    parser.add_argument("--weight-proposal", action="store_true", help="只读输出动态权重调整 proposal，不写文件")
+    parser.add_argument("--min-n-eff", type=int, default=10, help="生成权重 proposal 的最小有效样本数")
     args = parser.parse_args(argv)
+
+    if args.expert_domain_stats:
+        print(json.dumps(get_expert_domain_stats(), ensure_ascii=False, indent=2))
+        return 0
+    if args.weight_proposal:
+        print(json.dumps(compute_weight_update_proposal(min_n_eff=args.min_n_eff), ensure_ascii=False, indent=2))
+        return 0
+    if not args.case_id:
+        parser.error("除 --expert-domain-stats / --weight-proposal 外必须提供 case_id")
 
     try:
         result = ingest(args.case_id, dry_run=args.dry_run)
