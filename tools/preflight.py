@@ -65,7 +65,7 @@ GENDER_LIST: tuple[str, ...] = ("M", "F")
 MINGSHI_BY_GENDER: dict[str, str] = {"M": "乾", "F": "坤"}
 
 CASE_ID_PATTERN: re.Pattern[str] = re.compile(
-    r"^C-\d{4}-\d{3}-[乾坤]-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$"
+    r"^C-\d{4}-(?:\d{3}|RF\d{6})-[乾坤]-([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4}$"
 )
 
 
