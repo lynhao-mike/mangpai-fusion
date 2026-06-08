@@ -202,9 +202,10 @@ def normalize_known_facts(draft: dict[str, Any]) -> list[dict[str, Any]]:
     for item in draft.get("known_facts") or []:
         raw_type = str(item.get("type", "other"))
         facts.append({
-            "year": item.get("year"),
-            "type": FACT_TYPE_MAP.get(raw_type, "其他"),
-            "event": item.get("desc") or item.get("event") or item.get("content") or "",
+            "年份": item.get("year"),
+            "类型": FACT_TYPE_MAP.get(raw_type, "其他"),
+            "事件": item.get("desc") or item.get("event") or item.get("content") or "",
+            "内容": item.get("content") or item.get("desc") or item.get("event") or "",
         })
     return facts
 
@@ -292,7 +293,7 @@ def build_case(record: dict[str, Any]) -> tuple[PromotionCase, dict[str, str]]:
         "",
     ]
     for fact in normalize_known_facts(draft):
-        feedback.append(f"- {fact.get('year', '未知')} · {fact['type']} · {fact['event']}")
+        feedback.append(f"- {fact.get('年份', '未知')} · {fact['类型']} · {fact['事件']}")
     feedback.extend(["", "## 断语标注区", "", "<!-- 生成报告后在此按 [S-...] 补充标注。 -->", ""])
     analysis = [
         f"# {case_id} · 分析归档",

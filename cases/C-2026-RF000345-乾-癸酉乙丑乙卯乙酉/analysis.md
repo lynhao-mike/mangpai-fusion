@@ -1,0 +1,13 @@
+# C-2026-RF000345-乾-癸酉乙丑乙卯乙酉 · 分析归档
+
+## 转案说明
+
+- 原始反馈 ID：RF-2026-000345
+- 问真四柱：癸酉乙丑乙卯乙酉
+- 关联输入：[input.md](input.md)
+- 关联反馈：[feedback.md](feedback.md)
+- 关联报告：[C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md](../../reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md)
+
+## Pipeline 分析
+
+待运行正式 pipeline 后回填。
