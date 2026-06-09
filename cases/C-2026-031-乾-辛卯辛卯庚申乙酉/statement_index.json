@@ -1,0 +1,123 @@
+{
+  "case_id": "C-2026-031-乾-辛卯辛卯庚申乙酉",
+  "generated_at": "2026-06-09",
+  "report_path": "reports/C-2026-031-乾-辛卯辛卯庚申乙酉-analyst-report.md",
+  "analysis_path": "cases/C-2026-031-乾-辛卯辛卯庚申乙酉/analysis.md",
+  "statements": [
+    {
+      "statement_id": "S-031-core-001",
+      "domain": "命局总论",
+      "summary": "身强财旺，财被合冲劫；先以学业技能立身，后以规则平台承财，不宜早财早情",
+      "expert_systems": ["盲派"],
+      "confidence_star": 4,
+      "confidence_pct": 82,
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-core-002",
+      "domain": "命局总论",
+      "summary": "庚金生卯月，财旺身亦强；原局缺明火，格局待官杀运成器",
+      "expert_systems": ["子平"],
+      "confidence_star": 4,
+      "confidence_pct": 80,
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-core-003",
+      "domain": "命局总论",
+      "summary": "仲春庚金，木旺金硬，最喜火炼、水润；忌金木硬战",
+      "expert_systems": ["滴天髓/调候"],
+      "confidence_star": 4,
+      "confidence_pct": 78,
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-edu-15tier",
+      "domain": "学业",
+      "summary": "学业 / 资质 L8，中位一本 / 强专业本科或等效高含金量资质",
+      "fifteen_tier_layer": "L8｜一本 / 强专业本科或等效高含金量资质",
+      "fifteen_tier_boundary": "L7-L9",
+      "fifteen_tier_meaning": "重在理工、规则、技术、金融风控、工程、法务合规、数据类等可证照化方向",
+      "fifteen_tier_falsifier": "若长期成绩中下、无证书竞赛、学习抗拒明显，则降至 L6-L7",
+      "reading_ids": ["RD-031-EDU-BLIND", "RD-031-EDU-ZIPING", "RD-031-EDU-DITIANSUI"],
+      "adjudication_id": "ADJ-031-EDU-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-career-15tier",
+      "domain": "事业",
+      "summary": "事业 L8，专业骨干 / 项目负责人 / 强规则平台骨干",
+      "fifteen_tier_layer": "L8｜专业骨干 / 项目负责人 / 强规则平台骨干",
+      "fifteen_tier_boundary": "L7-L9",
+      "fifteen_tier_meaning": "靠技术、制度、风控、工程、金融、法务、管理流程得位置",
+      "fifteen_tier_falsifier": "若不进入规则平台、不积累证照技能，长期频繁换轨，则降至 L6-L7",
+      "reading_ids": ["RD-031-CAREER-BLIND", "RD-031-CAREER-ZIPING", "RD-031-CAREER-DITIANSUI"],
+      "adjudication_id": "ADJ-031-CAREER-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-wealth-15tier",
+      "domain": "财富",
+      "summary": "财富 L8，中上资产积累型，靠专业 / 平台 / 项目收入沉淀",
+      "fifteen_tier_layer": "L8｜中上资产积累型",
+      "fifteen_tier_boundary": "L7-L9",
+      "fifteen_tier_meaning": "能见较好现金流，但不宜早期高杠杆和合伙裸奔",
+      "fifteen_tier_falsifier": "若职业长期低收入、现金流不稳、投资亏损重，则降至 L6-L7；若有股权兑现可上调 L9",
+      "reading_ids": ["RD-031-WEALTH-BLIND", "RD-031-WEALTH-ZIPING", "RD-031-WEALTH-DITIANSUI"],
+      "adjudication_id": "ADJ-031-WEALTH-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-marriage-15tier",
+      "domain": "婚姻",
+      "summary": "婚姻 L6，晚定较佳、早期关系易反复但可治理",
+      "fifteen_tier_layer": "L6｜晚定较佳、早期关系易反复但可治理",
+      "fifteen_tier_boundary": "L5-L7",
+      "fifteen_tier_meaning": "配偶或对象多有主见，关系中钱、边界、家庭规则要先立",
+      "fifteen_tier_falsifier": "若未来早婚且持续稳定、无明显冲突，则上调；若多次关系因钱和边界破裂，则降至 L5",
+      "reading_ids": ["RD-031-MARRIAGE-BLIND", "RD-031-MARRIAGE-ZIPING", "RD-031-MARRIAGE-DITIANSUI"],
+      "adjudication_id": "ADJ-031-MARRIAGE-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-health-15tier",
+      "domain": "健康",
+      "summary": "健康风险 L6，中等压力型风险",
+      "fifteen_tier_layer": "L6｜中等压力型风险",
+      "fifteen_tier_boundary": "L5-L7",
+      "fifteen_tier_meaning": "重点看筋骨运动伤、肝胆疏泄、呼吸皮肤、牙齿金属类、情绪紧绷",
+      "fifteen_tier_falsifier": "若体检长期稳定且运动伤少，可降风险；若过敏、筋骨伤、焦虑失眠频发，则上调风险",
+      "reading_ids": ["RD-031-HEALTH-BLIND", "RD-031-HEALTH-ZIPING", "RD-031-HEALTH-DITIANSUI"],
+      "adjudication_id": "ADJ-031-HEALTH-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-personality-15tier",
+      "domain": "性格",
+      "summary": "性格 L8，硬核执行型 / 规则竞争型人格",
+      "fifteen_tier_layer": "L8｜硬核执行型 / 规则竞争型人格",
+      "fifteen_tier_boundary": "L7-L9",
+      "fifteen_tier_meaning": "目标感强、好胜、反应快，有技术洁癖和控制欲",
+      "fifteen_tier_falsifier": "若实际性格温吞、依赖强、抗压差，则降至 L6-L7；若竞赛和组织表现突出，可上调 L9",
+      "reading_ids": ["RD-031-PERSONALITY-BLIND", "RD-031-PERSONALITY-ZIPING", "RD-031-PERSONALITY-DITIANSUI"],
+      "adjudication_id": "ADJ-031-PERSONALITY-001",
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-timing-001",
+      "domain": "应期",
+      "summary": "11-20 岁戊子运学业有保护但节律波动，需防情绪、拖延、偏科、与家长 / 老师硬顶",
+      "confidence_star": 4,
+      "confidence_pct": 76,
+      "status": "pending"
+    },
+    {
+      "statement_id": "S-031-timing-003",
+      "domain": "应期",
+      "summary": "21-30 岁丁亥运学历、证照、职业平台、感情关系同时打开，宜定专业路线",
+      "confidence_star": 4,
+      "confidence_pct": 78,
+      "status": "pending"
+    }
+  ]
+}

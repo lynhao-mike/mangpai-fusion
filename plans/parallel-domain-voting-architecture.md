@@ -449,9 +449,109 @@ dynamic_domain_weight = normalize(prior_domain_weight × feedback_weight)
 
 ## 9. 报告结构改造
 
-建议新报告增加“多专家裁判区块”。
+已采纳的报告路线：**方案 A作为第一版命理师报告结构，方案 C作为终局产品形态**。
 
-示例：
+- **方案 A（第一版）**：默认命理师报告按“总裁决摘要 → 三派共同命局底盘 → 功能域逐项裁判 → 主要事项 15 层判断 → 跨域一致性 → 高风险铁断/应期 → feedback 映射”组织。它不是在旧 D1-D4 报告末尾追加多派补丁，而是把“功能域 × 专家体系 × 裁判结果 × 15 层落点”提升为报告主轴。
+- **方案 C（终局）**：长期拆成 `analyst-report.md` 与 `expert-audit.md` 双层报告。前者服务命理师实战快速调用，后者服务训练、复盘、权重校准与 reading/adjudication 审计。
+- **15 层硬约束**：学业 / 事业 / 财富 / 婚姻 / 健康 / 性格等主要事项必须逐项输出 15 层判断，且每项至少包含“层级｜现实释义｜起止界限｜证伪条件”。缺任一主要事项时，报告不得视为完成。
+
+###9.1 第一版命理师报告骨架（方案 A）
+
+```text
+# 八字分析报告 · {case_id} · {乾/坤}
+
+##0. 基本盘面
+- case_id / 性别命式 / 四柱 / 大运 /版本 /归档路径
+
+## 一、总裁决摘要
+- 总体命局等级
+- 主导结构
+- 最强一致结论
+- 最大冲突结论
+- 最需要反馈验证的断语
+
+## 二、三派共同命局底盘
+###2.1盲派底盘
+- 段派：能量、做功、体用、财级
+- 杨派：画像、五步法、婚财官取象
+- 任派：应期三层门
+- 高派：神煞、健康、灾厄、旁证
+
+###2.2 子平格局底盘
+- 格局成败
+- 十神结构
+- 旺衰清浊
+- 用神忌神
+
+###2.3 滴天髓 / 调候底盘
+- 寒暖燥湿
+- 气势流通
+- 病药关系
+- 调候取用
+
+###2.4 底盘一致性裁判
+- 三派同向点
+- 三派冲突点
+- 裁判采纳理由
+
+## 三、功能域逐项裁判
+###3.1 学业
+-盲派专家组意见
+- 子平格局派意见
+- 滴天髓调候派意见
+- 冲突与仲裁
+- 裁判结论
+- 15 层落点
+- 现实释义
+- 起止界限
+- 证伪条件
+- 可验证断语 /反馈入口
+
+###3.2事业
+同上
+
+###3.3 财富
+同上
+
+###3.4 婚姻
+同上
+
+###3.5 健康
+同上
+
+###3.6 性格
+同上
+
+## 三点五、主要事项 15 层判断完成性检查
+- 学业：层级｜现实释义｜起止界限｜证伪条件
+-事业：层级｜现实释义｜起止界限｜证伪条件
+- 财富：层级｜现实释义｜起止界限｜证伪条件
+- 婚姻：层级｜现实释义｜起止界限｜证伪条件
+- 健康：层级｜现实释义｜起止界限｜证伪条件
+- 性格：层级｜现实释义｜起止界限｜证伪条件
+
+## 四、跨域一致性检查
+- 学业 ↔事业
+-事业 ↔ 财富
+- 婚姻 ↔ 性格
+- 健康 ↔ 应期
+
+## 五、高风险铁断与禁断边界
+- ★4+ 可验证断语
+-不能下断的部分
+- 必须回访确认的命题
+
+## 六、statement_index / feedback 映射
+- statement_id
+- domain
+- expert_system
+- reading_id
+- adjudication_id
+- rule_ids
+- feedback_state
+```
+
+###9.2 单功能域展示模板
 
 ```text
 ## 婚姻域 · 多专家裁判
@@ -467,6 +567,10 @@ dynamic_domain_weight = normalize(prior_domain_weight × feedback_weight)
 - 保留：滴天髓
 - 胜出：双专家共识
 - 置信度：★★★★ 82%
+- 15 层落点：L6｜早期关系波动、后期可稳
+- 现实释义：恋爱 / 初婚阶段易因节奏、沟通或家庭因素反复；若后期规则清晰、边界稳定，可转入长期关系。
+- 起止界限：下界 L5 为稳定度不足、关系多拖延；上界 L7 为有波动但可落实长期承诺。
+- 证伪条件：实际无明显关系反复、无迟滞窗口，且在关键运年持续稳定，则降低该层级判断。
 
 ### 少数派意见
 - 滴天髓派认为调候失衡主要体现为情绪温度波动，不必直接等同于婚姻破裂。
@@ -479,6 +583,23 @@ dynamic_domain_weight = normalize(prior_domain_weight × feedback_weight)
 ```
 
 报告中必须避免只显示最终结论，而隐藏多专家分歧。否则用户无法判断各专家体系的贡献与反对意见。
+
+###9.3终局双层报告（方案 C）
+
+```text
+reports/{case_id}-analyst-report.md
+ - 面向命理师实战
+ - 按功能域输出裁判结论
+ -只保留三派摘要、关键证据、冲突点与反馈入口
+
+cases/{case_id}/expert-audit.md
+ - 面向系统训练与复盘
+ - 保留盲派 / 子平 / 滴天髓完整原始 reading
+ - 保留 ExpertJudgement、AdjudicationResult、少数派报告、弃权原因
+ -作为 feedback_ingest 与权重校准的主要审计材料
+```
+
+第一版不强制生成 `expert-audit.md`，但 `statement_index.json` 必须预留 reading/adjudication 字段，避免未来拆分双层报告时丢失追踪能力。
 
 ---
 
@@ -502,6 +623,10 @@ dynamic_domain_weight = normalize(prior_domain_weight × feedback_weight)
   "adjudication_id": "ADJ-HY-001",
   "claim": "婚姻早期易动",
   "decision": "yes",
+  "fifteen_tier_layer": "L6｜早期关系波动、后期可稳",
+  "fifteen_tier_meaning": "恋爱 / 初婚阶段易反复，后期可转入长期关系",
+  "fifteen_tier_boundary": "L5-L7",
+  "fifteen_tier_falsifier": "关键运年持续稳定且无关系反复，则降低该层级判断",
   "supporting_experts": ["盲派", "子平"],
   "dissenting_experts": [],
   "abstained_experts": ["滴天髓"]
@@ -583,7 +708,8 @@ sources/ziping 或 sources/tiaohou_ditiansui
 - 每个专家体系至少一个 reading 或显式 abstain。
 - 产生 adjudication_result。
 - 报告显示多专家意见。
-- statement_index 可追踪到 reading/adjudication。
+- 每个已接入功能域必须输出 15 层落点、现实释义、起止界限与证伪条件；作为主要事项输出时，缺 15 层判断即视为报告未完成。
+- statement_index 可追踪到 reading/adjudication 与 15 层判断 statement。
 
 ### 阶段 4：扩展到五大功能域
 
@@ -601,9 +727,14 @@ sources/ziping 或 sources/tiaohou_ditiansui
 - `cross_school_scan` 从“规则 topic 聚合”升级为“专家体系 × 功能域 × adjudication/reading 聚合”。
 - 统计展示 Beta 后验、Wilson 区间、`n_eff`。
 
-### 阶段 6：报告默认切换
+### 阶段 6：报告双层化（方案 C）
 
-当五大域与性格域均具备多专家并行分析，并且测试通过后，再考虑把默认报告从“D1-D4 串行整合版”切换为“多专家功能域裁判版”。
+当五大域与性格域均具备多专家并行分析，并且测试通过后，将报告形态从单份命理师报告升级为双层报告：
+
+- `reports/{case_id}-analyst-report.md`：命理师实战调用版，采用方案 A 主骨架，突出总裁决、功能域结论、主要事项 15 层判断、冲突点与反馈入口。
+- `cases/{case_id}/expert-audit.md`：专家审计版，保留三派完整 reading、裁判模型评分、弃权原因、少数派报告、15 层判断生成依据、规则证据链与权重计算过程。
+
+默认产物仍不得生成命主/用户可读报告；除非用户明确要求“用户报告 / 客户报告 / 命主可读报告 / 对外报告”。
 
 ---
 
@@ -638,7 +769,7 @@ sources/ziping 或 sources/tiaohou_ditiansui
 | `engine/tiaohou_ditiansui/` | 后续新增 | 调候派（滴天髓）隔离实现目录 |
 | `tests/test_parallel_domain_models.py` | 新增 | 验证模型序列化与裁判结构 |
 | `tests/test_parallel_domain_runner.py` | 新增 | 用 mock analyzer 验证多专家裁判流程 |
-| `tools/render_report.py` | 后续修改 | 增加多专家裁判报告区块 |
+| `tools/render_report.py` | 已进入第一版修改范围 | 默认命理师报告改为方案 A 主骨架，并为方案 C 双层报告预留 reading/adjudication追踪字段 |
 | `tools/feedback_ingest.py` | 后续修改 | 支持 reading/adjudication 反馈 fanout |
 
 ---
@@ -664,7 +795,7 @@ sources/ziping 或 sources/tiaohou_ditiansui
 
 ## 16. 建议结论
 
-建议采用**渐进旁路方案**：
+建议采用**方案 A 第一版 +方案 C终局的渐进旁路方案**：
 
 1. 保留现有 D1-D4 主流程。
 2. 把现有段、杨、任、高整合为盲派专家组，同时保留内部子流派隔离。
@@ -673,8 +804,8 @@ sources/ziping 或 sources/tiaohou_ditiansui
 5. 新增裁判模型，而不是简单投票引擎。
 6. 使用用户提供的主题权重作为初始先验，并通过反馈闭环动态调控。
 7. 先用婚姻或财富跑通多专家 reading + adjudication。
-8. 报告中先新增“多专家裁判区块”，不立即替换全文结构。
+8. 报告第一版采用方案 A：总裁决摘要、三派共同底盘、功能域逐项裁判、跨域一致性、反馈映射；不再把多专家裁判放在旧报告末尾当补丁。
 9. 反馈系统同步支持 reading/adjudication 归因。
-10. 等五大域稳定后，再考虑默认切换。
+10. 等五大域稳定后，进入方案 C：拆分命理师实战报告与专家审计报告。
 
 这样既能满足“多流派分别完整分析同一功能域，再由裁判模型综合判定”的目标，又能避免一次性重构破坏当前报告、反馈、测试与归档流程。
