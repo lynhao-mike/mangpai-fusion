@@ -53,6 +53,7 @@ python tools/rule_status_scan.py --check
 - 提交前关键校验已复跑：`python tools/tool_registry.py --check`、`python tools/rule_status_scan.py --check`、`python -m pytest tests/test_project_metadata.py tests/test_application_candidates.py -q`，结果分别为通过、通过、`14 passed`。
 - Top30 feedback readiness：`rf_cases 30`、`completed_rf 5`、`missing_feedback 0`、`with_annotations 0`、`without_annotations 30`、`pending_annotated 0`。
 - `python -m tools.batch_review --strict-v13 --dry-run --json` 已通过；当前 strict v1.3 pending 为非 Top30 的 2 案，dry-run 结果 `input 2`、`success 2`、`failure 0`、`rule_updates 20`。
+- Top30 提交前质量复核已通过：`rf_reports 30`、`rf_case_ids 30`、`unique_case_ids 30`、`strict_v13_annotated_feedback 0`、`errors 0`、`warnings 0`；临时复核脚本已删除。
 
 ### 0.3 当前工作区状态
 
@@ -68,7 +69,7 @@ python tools/rule_status_scan.py --check
 ### 0.4 下一步建议
 
 1. 若继续维护问真 Top30，需先把命理师报告中的断语反馈位复制/整理到各 `feedback.md` 并人工标注 `[y]` / `[n]` / `[?]` / `[skip]`；当前 Top30 不具备 strict v1.3 批量摄入条件。
-2. 若继续系统维护，可清理或归档旧交接中已经过期的问真 dry-run 叙述，避免下一位 agent 误以为仍有 OCR 阻塞队列或未转案首批。
+2. 旧问真 dry-run 叙述已归档精简；后续不要再按旧 OCR 阻塞/首批 dry-run 流程推进 Top30。
 3. 若准备提交变更，先运行：
 
 ```bash
