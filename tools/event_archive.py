@@ -104,7 +104,7 @@ def _ensure_header(path: Path, case_id: Optional[str]) -> None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     if case_id:
-        report_name = f"{case_id}-analyst-report.md"
+        report_name = f"{case_id}-content-report.md"
         case_events = f"../cases/{case_id}/events.md"
         title = (
             f"# events · {case_id}\n\n"

@@ -6,7 +6,7 @@
     engine/contracts/09-naming-convention.md § 二·3（predictions 文件名规范）
 
 职责：
-    优先扫描 cases/C-*/findings/analysis_output.json；必要时回退扫描 reports/C-*-analyst-report.md
+    优先扫描 cases/C-*/findings/analysis_output.json；必要时扫描 V2 reports/C-*-content-report.md，兼容历史 reports/C-*-analyst-report.md
     把 ★★★★+ 的应期断语抽出来 → predictions/PRED-YYYY-NNN-CXXXXXXX-{乾/坤}-{干支}-{event}.md
 
 文件名格式（09 § 二·3）：
@@ -25,7 +25,7 @@ frontmatter 必须含：
 
 注意：
     - 优先消费 cases/C-XXX/findings/analysis_output.json（Track-F 落盘的结构化输出）
-    - 当结构化文件不存在时，对 reports/C-*-analyst-report.md 做启发式抽取（fallback）
+    - 当结构化文件不存在时，优先对 V2 reports/C-*-content-report.md 做启发式抽取，并兼容历史 analyst-report
     - 已存在的 predictions 文件不覆盖（按文件名指纹判重）
 
 作者：Track-G
@@ -273,7 +273,7 @@ _YEAR_RE = re.compile(r"\b(19|20|21)\d{2}\b")
 
 
 def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
-    """从 reports/C-XXX-{乾/坤}-{干支}-analyst-report.md 启发式抽取。
+    """从 V2 content-report 启发式抽取；兼容历史 analyst-report。
 
     扫每一行，若同时含有 ★★★★+ 与 4 位年份 → 视为应期断语。
     """
@@ -283,6 +283,8 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
 
     # 报告路径
     report_candidates = [
+        REPORTS_DIR / f"{case_id}-content-report.md",
+        REPORTS_DIR / f"{plain}-content-report.md",
         REPORTS_DIR / f"{case_id}-analyst-report.md",
         REPORTS_DIR / f"{plain}-analyst-report.md",
         REPORTS_DIR / f"{case_id}-report.md",
@@ -293,11 +295,11 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
         if p.exists():
             report_path = p
             break
-    # 兜底：优先匹配当前命理师报告命名，再兼容旧 v1.0 文件名。
+    # 兜底：优先匹配 V2 统一报告命名，再兼容历史命理师报告命名。
     if report_path is None:
         prefix = case_id.split("-", 3)[:3]
         prefix_plain = "-".join(prefix)
-        for pattern in (f"{prefix_plain}*-analyst-report.md", f"{prefix_plain}*-report.md"):
+        for pattern in (f"{prefix_plain}*-content-report.md", f"{prefix_plain}*-analyst-report.md", f"{prefix_plain}*-report.md"):
             for p in REPORTS_DIR.glob(pattern):
                 report_path = p
                 break
@@ -306,7 +308,7 @@ def extract_from_report_md(case_dir: pathlib.Path) -> list[PredictionDraft]:
     if report_path is None:
         return out
 
-    # 读 analysis.md 也作为补充（v1.0 报告 + analysis 都可能含应期表）
+    # 历史 case 可能仍保留 analysis.md，作为兼容补充；V2 新案默认只读 content-report。
     sources = [report_path]
     analysis = case_dir / "analysis.md"
     if analysis.exists():

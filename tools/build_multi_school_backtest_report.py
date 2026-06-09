@@ -245,9 +245,8 @@ def build_report(cases_glob: str) -> str:
         "",
         "## 8. 关联路径",
         "- 输入案例：`cases/C-2026-RF*-*/input.md`",
-        "- 分析归档：`cases/C-2026-RF*-*/analysis.md`",
+        "- 统一报告：`reports/C-2026-RF*-content-report.md`（兼容历史 analyst-report 归档）",
         "- 陈述索引：`cases/C-2026-RF*-*/statement_index.json`",
-        "- 命理师报告：`reports/C-2026-RF*-analyst-report.md`",
         "- 本回测表：`reports/multi_school_backtest_v1.md`",
         "",
     ])

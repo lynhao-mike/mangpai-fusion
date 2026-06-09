@@ -7,7 +7,7 @@
 
 ## 使用说明
 
-分析报告输出后 → 命理师与命主对话 → 收集反馈 → 填入本模板 → 触发 `tools/calibrate.py`
+统一版命理师内容报告输出后 → 命理师与命主对话 → 收集反馈 → 填入本模板 → 触发 `tools/feedback_ingest.py`
 
 ---
 
@@ -18,7 +18,7 @@
 
 **反馈日期**：YYYY-MM-DD  
 **关联案例**：cases/C-YYYY-NNN/  
-**关联报告**：reports/C-YYYY-NNN-{乾/坤}-{四柱}-analyst-report.md
+**关联报告**：reports/C-YYYY-NNN-{乾/坤}-{四柱}-content-report.md
 **采集方式**：[面对面 / 电话 / 微信 / 视频]
 
 ---
@@ -122,10 +122,8 @@
 > 反馈写入完成后，自动触发以下操作：
 
 ```bash
-# 调用校准工具
-python3 tools/calibrate.py \
-    --case C-YYYY-NNN \
-    --feedback cases/C-YYYY-NNN/feedback.md
+# 调用当前反馈摄入入口
+python -m tools.feedback_ingest C-YYYY-NNN
 ```
 
 校准引擎会自动：

@@ -217,7 +217,7 @@ def render_yaml_block(data: dict[str, Any]) -> str:
 def build_case(record: dict[str, Any]) -> tuple[PromotionCase, dict[str, str]]:
     case_id = record["suggested_case_id"]
     case_dir = CASES_ROOT / case_id
-    report_path = REPO_ROOT / "reports" / f"{case_id}-analyst-report.md"
+    report_path = REPO_ROOT / "reports" / f"{case_id}-content-report.md"
     target = PromotionCase(
         raw_id=record["raw_id"],
         case_id=case_id,
@@ -277,7 +277,7 @@ def build_case(record: dict[str, Any]) -> tuple[PromotionCase, dict[str, str]]:
         f"- 原始反馈 ID：{record['raw_id']}",
         f"- 来源草稿：{record['draft_path']}",
         f"- 来源索引：{record['source_index_path']}",
-        f"- 关联命理师报告：[{target.report_path.name}](../../reports/{target.report_path.name})",
+        f"- 关联命理师内容报告：[{target.report_path.name}](../../reports/{target.report_path.name})",
         "- 注意：大运排布由问真起运描述与月柱顺逆机械展开，后续可人工复核。",
         "",
     ]
@@ -287,7 +287,7 @@ def build_case(record: dict[str, Any]) -> tuple[PromotionCase, dict[str, str]]:
         f"- 原始反馈 ID：{record['raw_id']}",
         f"- 来源草稿：{record['draft_path']}",
         "- ingest 入口：`python tools/feedback_ingest.py {}`".format(case_id),
-        "- 标注约定：仅对正式报告中的 `[S-...]` 使用 `[y]` / `[n]` / `[?]` / `[skip]`。",
+        "- 标注约定：反馈按正式报告中的可验证断语填写；内部对齐由 statement_index.json 维护，报告展示层不显示 statement_id。",
         "",
         "## 已知事实年表",
         "",
@@ -325,7 +325,7 @@ def build_case(record: dict[str, Any]) -> tuple[PromotionCase, dict[str, str]]:
             "input": _rel(target.input_path),
             "analysis": _rel(target.analysis_path),
             "feedback": _rel(target.feedback_path),
-            "analyst_report": _rel(target.report_path),
+            "content_report": _rel(target.report_path),
         },
     }
     files = {

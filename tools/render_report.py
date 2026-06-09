@@ -460,6 +460,28 @@ def _pillar_parts(pillar: Any) -> tuple[str, str]:
     return "—", "—"
 
 
+def _known_facts_to_display(known_facts: Any) -> tuple[list[str], str]:
+    """Build report-facing known facts text without exposing internal indexes."""
+    if not known_facts:
+        items = ["暂无已知反馈事实；本报告按命盘结构与可回测断语输出，后续需通过反馈校准。"]
+        return items, items[0]
+    out: list[str] = []
+    for fact in known_facts:
+        year = getattr(fact, "year", None)
+        event = getattr(fact, "event", None)
+        content = getattr(fact, "content", None)
+        if isinstance(fact, dict):
+            year = fact.get("year", year)
+            event = fact.get("event", event)
+            content = fact.get("content", content)
+        parts = [str(x) for x in (year, event, content) if x not in (None, "")]
+        if parts:
+            out.append(" / ".join(parts))
+    if not out:
+        out = ["暂无已知反馈事实；本报告按命盘结构与可回测断语输出，后续需通过反馈校准。"]
+    return out, "<br>".join(out)
+
+
 def _build_section_zero_vm(
     energy: EnergyFindings,
     picture: PictureFindings,
@@ -475,10 +497,14 @@ def _build_section_zero_vm(
             return b.get(name, "")
         return getattr(b, name, "")
 
-    year_gan, year_zhi = _pillar_parts(_get_pillar("年柱"))
-    month_gan, month_zhi = _pillar_parts(_get_pillar("月柱"))
-    day_gan, day_zhi = _pillar_parts(_get_pillar("日柱"))
-    hour_gan, hour_zhi = _pillar_parts(_get_pillar("时柱"))
+    year_raw = _get_pillar("年柱")
+    month_raw = _get_pillar("月柱")
+    day_raw = _get_pillar("日柱")
+    hour_raw = _get_pillar("时柱")
+    year_gan, year_zhi = _pillar_parts(year_raw)
+    month_gan, month_zhi = _pillar_parts(month_raw)
+    day_gan, day_zhi = _pillar_parts(day_raw)
+    hour_gan, hour_zhi = _pillar_parts(hour_raw)
 
     # 4 柱 + 干十神 + 主气 + 长生
     pillars = [
@@ -510,6 +536,18 @@ def _build_section_zero_vm(
     return {
         "section_zero": True,
         "sz_pillars": pillars,
+        "year_pillar": f"{year_gan}{year_zhi}",
+        "month_pillar": f"{month_gan}{month_zhi}",
+        "day_pillar": f"{day_gan}{day_zhi}",
+        "hour_pillar": f"{hour_gan}{hour_zhi}",
+        "year_gan": year_gan,
+        "year_zhi": year_zhi,
+        "month_gan": month_gan,
+        "month_zhi": month_zhi,
+        "day_gan": day_gan,
+        "day_zhi": day_zhi,
+        "hour_gan": hour_gan,
+        "hour_zhi": hour_zhi,
         "sz_day_master": day_gan,
         "sz_yueling": month_zhi,
         "sz_body_str": body_str,
@@ -550,6 +588,58 @@ def _build_15tier_vm(picture: PictureFindings) -> dict:
         "tier_domains": domains,
         "tier_disclaimer": w.tier_disclaimer,
     }
+
+
+def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
+    """Build V2 report-facing 15-tier fields without exposing internal statement IDs.
+
+    The current renderer historically exposes five-dimensional ``tier_domains`` from
+    ``picture.wealth_15tier``. V2 needs six report domains. Until the full six-domain
+    expert model is wired into runtime objects, provide conservative display defaults
+    so the template never leaks raw placeholders; richer case-specific values may be
+    supplied by future context builders and should override these defaults.
+    """
+    by_label = {str(d.get("domain_label", "")): d for d in ctx.get("tier_domains", []) if isinstance(d, dict)}
+
+    def _boundary_explain(boundary: str) -> str:
+        if "-" in boundary and not boundary.startswith("待"):
+            low, high = boundary.split("-", 1)
+            return f"下限 {low} 表示反馈不足、执行走偏或资源不接时的保守落点；上限 {high} 表示大运承接、教育/平台/规则配合良好时的可冲层次"
+        return "下限与上限均待现实反馈、三派裁判和应期回测后确定"
+
+    def _from_band(label: str, fallback_layer: str, fallback_meaning: str) -> tuple[str, str, str, str]:
+        band = by_label.get(label)
+        if not band:
+            return fallback_layer, fallback_meaning, "待反馈校准", "命局结构、三派逐域裁判、现实反馈"
+        low = band.get("low", "?")
+        mid = band.get("mid", "?")
+        high = band.get("high", "?")
+        text_label = band.get("label", fallback_meaning)
+        layer = f"L{mid}｜{text_label}"
+        meaning = str(band.get("society") or fallback_meaning)
+        boundary = f"L{low}-L{high}"
+        evidence = str(band.get("rationale") or "命局结构、三派逐域裁判、现实反馈")
+        return layer, meaning, boundary, evidence
+
+    specs = {
+        "education": _from_band("学业", "待补｜学业层级待三派裁判补齐", "升学、证照、学习稳定度待反馈校准"),
+        "career": _from_band("事业", "待补｜事业层级待三派裁判补齐", "职业平台、岗位责任、专业资质待反馈校准"),
+        "wealth": _from_band("财富", "待补｜财富层级待三派裁判补齐", "收入、资产沉淀、风险隔离待反馈校准"),
+        "marriage": _from_band("婚姻", "待补｜婚姻层级待三派裁判补齐", "关系稳定度、边界和应期待反馈校准"),
+        "health": _from_band("健康", "待补｜健康风险待三派裁判补齐", "体检、作息、压力和疾病反馈待校准"),
+        "personality": _from_band("性格", "待补｜性格层级待三派裁判补齐", "行为风格、抗压和执行力待反馈校准"),
+    }
+    out: dict[str, str] = {}
+    for key, (layer, meaning, boundary, evidence) in specs.items():
+        out[f"{key}_15tier_layer"] = layer
+        out[f"{key}_15tier_meaning"] = meaning
+        out[f"{key}_15tier_boundary"] = boundary
+        out[f"{key}_15tier_evidence"] = evidence
+        out[f"{key}_15tier_confidence"] = "待反馈校准"
+        out[f"{key}_15tier_timing"] = "随大运与流年反馈复盘"
+        out[f"{key}_15tier_boundary_explain"] = _boundary_explain(str(boundary))
+        out[f"{key}_domain_process"] = "三派逐域判断待运行时裁判补齐；当前以命局底盘、生产规则与反馈校准为主"
+    return out
 
 
 def _build_retrospective_vm(retrospective: Optional[Any]) -> dict:
@@ -1486,7 +1576,11 @@ def render(
     ctx["dayun_str"] = _dayun_str(parsed) if (parsed and getattr(parsed, "dayun", None)) else "—"
     ctx["analysis_date"] = date.today().isoformat()
     ctx["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # 历史 master/client/v1.2/v1.4 已作废；默认产物为 analyst 内部报告。
+    ctx["case_status"] = "正式归档 / 待反馈校准"
+    known_facts, known_facts_br = _known_facts_to_display(getattr(parsed, "known_facts", None) if parsed else None)
+    ctx["known_facts"] = known_facts
+    ctx["known_facts_br"] = known_facts_br
+    # 历史 master/client/v1.2/v1.4 已作废；默认产物为命理师内容报告（统一版）。
     ctx["variant"] = variant
     ctx["is_master"] = True
     ctx["is_client"] = False
@@ -1515,6 +1609,7 @@ def render(
 
     # F5 · §B.6 15 层五维定位
     ctx.update(_build_15tier_vm(picture))
+    ctx.update(_build_v2_15tier_display_defaults(ctx))
 
     # F9 · 大运全表
     ctx["dayun_full_table"] = _dayun_full_table(parsed) if parsed else []
@@ -1525,7 +1620,7 @@ def render(
     # v1.5 · 多专家功能域裁判
     ctx.update(_build_parallel_analysis_vm(parallel_analysis, case_id=ctx["case_id"]))
 
-    # 命理师报告：保留可回测主线与低置信旁路结论，便于后续反馈校准。
+    # 命理师内容报告（统一版）：保留可回测主线与低置信旁路结论，便于后续反馈校准。
     ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
     ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
     ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
