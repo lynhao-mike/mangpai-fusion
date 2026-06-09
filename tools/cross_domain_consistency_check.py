@@ -1,16 +1,17 @@
-"""tools/cross_domain_consistency_check.py · v1.4 V8 历史报告耦合回溯扫描
+"""tools/cross_domain_consistency_check.py · 跨域一致性扫描工具
 
 用途：
-    批量扫描 reports/*.md，复用 output_linter 的 W9 cross-domain coupling
-    检查，输出历史报告中“高置信体制内信号 + 市场财富分级 + 无耦合标注”的清单。
+    1. 批量扫描 reports/*.md，复用 output_linter 的 W9 cross-domain coupling 检查；
+    2. 对 parallel analysis JSON 执行 application service 级跨域一致性检查。
 
 示例：
     python tools/cross_domain_consistency_check.py --backfill
-    python tools/cross_domain_consistency_check.py --backfill --write META/cross-domain-backfill.md
+    python tools/cross_domain_consistency_check.py --parallel-json findings/parallel.json
 """
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
 import sys
 from dataclasses import dataclass
@@ -19,7 +20,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from engine.application.cross_domain_consistency import evaluate_cross_domain_consistency
+from engine.domain.parallel import ParallelAnalysisOutput
 from tools.output_linter import lint
+
 REPORTS_DIR = ROOT / "reports"
 DEFAULT_OUTPUT = ROOT / "META" / "cross-domain-backfill.md"
 
@@ -40,6 +44,16 @@ def scan_reports(reports_dir: pathlib.Path = REPORTS_DIR) -> list[BackfillHit]:
         if w9:
             hits.append(BackfillHit(path=path, warnings=w9))
     return hits
+
+
+def scan_parallel_json(path: pathlib.Path) -> list[dict]:
+    """读取 ParallelAnalysisOutput JSON 并返回跨域一致性 note dict。"""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    output = ParallelAnalysisOutput.from_dict(data)
+    return [
+        note.to_dict()
+        for note in evaluate_cross_domain_consistency(output.domain_analyses, case_id=output.case_id)
+    ]
 
 
 def render_markdown(hits: list[BackfillHit]) -> str:
@@ -70,13 +84,21 @@ def render_markdown(hits: list[BackfillHit]) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="历史报告跨维度输出耦合 W9 回溯扫描")
+    parser = argparse.ArgumentParser(description="跨维度输出一致性扫描")
     parser.add_argument("--backfill", action="store_true", help="扫描 reports/*.md")
-    parser.add_argument("--write", nargs="?", const=str(DEFAULT_OUTPUT), help="把结果写入指定 markdown 文件；不带路径时写 META/cross-domain-backfill.md")
+    parser.add_argument("--parallel-json", help="扫描 ParallelAnalysisOutput JSON")
+    parser.add_argument("--write", nargs="?", const=str(DEFAULT_OUTPUT), help="把 --backfill 结果写入指定 markdown 文件；不带路径时写 META/cross-domain-backfill.md")
     args = parser.parse_args(argv)
 
+    if args.parallel_json:
+        path = pathlib.Path(args.parallel_json)
+        if not path.is_absolute():
+            path = ROOT / path
+        print(json.dumps(scan_parallel_json(path), ensure_ascii=False, indent=2))
+        return 0
+
     if not args.backfill:
-        parser.error("必须指定 --backfill")
+        parser.error("必须指定 --backfill 或 --parallel-json")
 
     hits = scan_reports()
     md = render_markdown(hits)

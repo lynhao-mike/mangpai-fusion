@@ -116,10 +116,20 @@
 
 > 盲派专家组、子平格局派、调候派（滴天髓）围绕同一功能域分别输出 reading，经旁路裁判层合并为可反馈结论。下表保留结构化证据，供命理师复核与后续反馈校准。
 
-| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 |
-|---|---|---|---|---|---|
+| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 | adjudication_id | feedback_state | 冲突解释 |
+|---|---|---|---|---|---|---|---|---|
 {% for c in parallel_domain_conclusions %}
-| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} |
+| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} | {{ c.adjudication_id }} | {{ c.feedback_state }} | {{ c.conflict_summary }} |
+{% endfor %}
+{% endif %}
+
+{% if parallel_domain_consistency_notes %}
+### 跨域一致性与仲裁提示
+
+| 涉及领域 | 等级 | 一致性提示 | 仲裁备注 | 关联裁判 |
+|---|---|---|---|---|
+{% for n in parallel_domain_consistency_notes %}
+| {{ n.domain }} | {{ n.severity }} | {{ n.statement }} | {{ n.arbitration_note }} | {{ n.related_adjudication_ids }} |
 {% endfor %}
 {% endif %}
 
@@ -133,6 +143,10 @@
 
 - 裁判摘要：{{ d.statement }}
 - 决策状态：{{ d.decision }}
+- adjudication_id：{{ d.adjudication_id }}
+- expert_systems：{{ d.expert_systems_str }}
+- feedback_state：{{ d.feedback_state }}
+- 冲突解释：{{ d.conflict_summary }}
 
 | 盲派专家组 | 子平格局派 | 滴天髓调候派 |
 |---|---|---|

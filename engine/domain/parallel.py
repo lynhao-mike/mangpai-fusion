@@ -121,12 +121,16 @@ class TimeScope:
 
 @dataclass(frozen=True)
 class WeightProfile:
-    """本次裁判使用的领域权重版本。"""
+    """本次裁判使用的领域权重版本与审计摘要。"""
 
     profile_id: str
     profile_version: str
     source: str
     domain_weights: dict[ExpertSystem, float]
+    feedback_modulations: dict[ExpertSystem, float] = field(default_factory=dict)
+    feedback_overlay_version: str = "no-feedback-overlay"
+    feedback_overlay_source_path: str = "inline:none"
+    n_eff_summary: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -134,6 +138,10 @@ class WeightProfile:
             "profile_version": self.profile_version,
             "source": self.source,
             "domain_weights": dict(self.domain_weights),
+            "feedback_modulations": dict(self.feedback_modulations),
+            "feedback_overlay_version": self.feedback_overlay_version,
+            "feedback_overlay_source_path": self.feedback_overlay_source_path,
+            "n_eff_summary": dict(self.n_eff_summary),
         }
 
     @classmethod
@@ -144,6 +152,10 @@ class WeightProfile:
             profile_version=str(version),
             source=str(data.get("source", "")),
             domain_weights={k: float(v) for k, v in data.get("domain_weights", {}).items()},
+            feedback_modulations={k: float(v) for k, v in data.get("feedback_modulations", {}).items()},
+            feedback_overlay_version=str(data.get("feedback_overlay_version", "no-feedback-overlay")),
+            feedback_overlay_source_path=str(data.get("feedback_overlay_source_path", "inline:none")),
+            n_eff_summary=dict(data.get("n_eff_summary", {})),
         )
 
 
@@ -530,12 +542,14 @@ class ParallelAnalysisOutput:
     case_id: str
     domain_analyses: list[DomainAnalysis]
     schema_version: str = "parallel-domain-review-draft-2026-06-05"
+    consistency_notes: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
             "case_id": self.case_id,
             "domain_analyses": [analysis.to_dict() for analysis in self.domain_analyses],
+            "consistency_notes": [dict(note) for note in self.consistency_notes],
         }
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:
@@ -547,6 +561,7 @@ class ParallelAnalysisOutput:
             case_id=str(data["case_id"]),
             domain_analyses=[DomainAnalysis.from_dict(x) for x in data.get("domain_analyses", [])],
             schema_version=str(data.get("schema_version", "parallel-domain-review-draft-2026-06-05")),
+            consistency_notes=[dict(x) for x in data.get("consistency_notes", [])],
         )
 
     @classmethod

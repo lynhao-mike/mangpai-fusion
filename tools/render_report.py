@@ -1016,11 +1016,30 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             "parallel_domain_conclusions": [],
             "parallel_domain_readings": [],
             "parallel_domain_sections": [],
+            "parallel_domain_consistency_notes": [],
         }
 
     domain_rows: list[dict[str, Any]] = []
     reading_rows: list[dict[str, Any]] = []
     domain_sections: list[dict[str, Any]] = []
+    consistency_rows: list[dict[str, Any]] = []
+    for note in getattr(parallel_analysis, "consistency_notes", []) or []:
+        if not isinstance(note, dict):
+            continue
+        note_id = str(note.get("note_id", ""))
+        domains = [str(x) for x in note.get("domains", [])]
+        related_adjudication_ids = [str(x) for x in note.get("related_adjudication_ids", [])]
+        consistency_rows.append({
+            "statement_id": _compute_statement_id(case_id, [note_id or "CDC"]),
+            "note_id": note_id,
+            "domain": "/".join(domains) or "跨域一致性",
+            "domains": domains,
+            "severity": str(note.get("severity", "warning")),
+            "statement": str(note.get("message", "")),
+            "arbitration_note": str(note.get("arbitration_note", "")),
+            "related_adjudication_ids": related_adjudication_ids,
+            "source": str(note.get("source", "engine.application.cross_domain_consistency")),
+        })
     for analysis in getattr(parallel_analysis, "domain_analyses", []) or []:
         consensus = getattr(analysis, "consensus", None)
         adjudication = getattr(analysis, "adjudication_result", None)
@@ -1033,6 +1052,12 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             refs or [getattr(consensus, "conclusion_id", "PDC")],
         )
         conf = getattr(consensus, "confidence", None)
+        conflicts = getattr(analysis, "conflicts", []) or []
+        conflict_explanations = [str(getattr(conflict, "arbitration_reason", "")) for conflict in conflicts]
+        supporting_experts = list(getattr(adjudication, "winning_experts", []) or [])
+        dissenting_experts = list(getattr(adjudication, "dissenting_experts", []) or [])
+        abstained_experts = list(getattr(adjudication, "abstained_experts", []) or [])
+        expert_systems = [str(getattr(r, "expert_system", "")) for r in getattr(analysis, "readings", []) or []]
         domain_rows.append({
             "statement_id": statement_id,
             "domain": getattr(consensus, "domain", getattr(analysis, "domain", "综合")),
@@ -1046,6 +1071,14 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             "pct": int(getattr(conf, "percent", 0) or 0),
             "experts_str": "/".join(getattr(consensus, "contributing_experts", []) or []) or "—",
             "dissenting_str": "/".join(getattr(consensus, "dissenting_experts", []) or []) or "—",
+            "expert_systems": expert_systems,
+            "consensus_layer": getattr(consensus, "layer", ""),
+            "supporting_experts": supporting_experts,
+            "dissenting_experts": dissenting_experts,
+            "abstained_experts": abstained_experts,
+            "feedback_state": getattr(adjudication, "feedback_state", getattr(consensus, "feedback_state", "")),
+            "conflict_explanations": conflict_explanations,
+            "conflict_summary": "；".join(conflict_explanations) or "无专家强冲突。",
             "evidence": [
                 {
                     "rule_id": str(getattr(item, "ref", "")),
@@ -1078,6 +1111,10 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             "star": int(getattr(conf, "star", 0) or 0),
             "pct": int(getattr(conf, "percent", 0) or 0),
             "statement": getattr(consensus, "final_statement", ""),
+            "adjudication_id": getattr(adjudication, "adjudication_id", ""),
+            "expert_systems_str": "/".join(expert_systems) or "—",
+            "feedback_state": getattr(adjudication, "feedback_state", getattr(consensus, "feedback_state", "")),
+            "conflict_summary": "；".join(conflict_explanations) or "无专家强冲突。",
             "blind_block": _merge_parallel_expert_rows(readings_by_expert["blind"], "盲派专家组"),
             "ziping_block": _merge_parallel_expert_rows(readings_by_expert["ziping"], "子平格局派"),
             "ditiansui_block": _merge_parallel_expert_rows(readings_by_expert["tiaohou_ditiansui"], "滴天髓调候派"),
@@ -1086,6 +1123,7 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
         "parallel_domain_conclusions": domain_rows,
         "parallel_domain_readings": reading_rows,
         "parallel_domain_sections": domain_sections,
+        "parallel_domain_consistency_notes": consistency_rows,
     }
 
 
@@ -1172,6 +1210,7 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
         "support_health": "support_health",
         "parallel_domain_conclusions": "parallel_domain_adjudication",
         "parallel_domain_readings": "parallel_domain_reading",
+        "parallel_domain_consistency_notes": "parallel_domain_consistency",
     }
     statements: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -1209,12 +1248,19 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                 "schools": schools,
             }
             if section == "parallel_domain_adjudication":
+                conflict_explanations = list(item.get("conflict_explanations", [])) or [
+                    str(item.get("conflict_summary", "无专家强冲突。"))
+                ]
                 row.update({
                     "reading_ids": list(item.get("reading_ids", [])),
                     "adjudication_id": item.get("adjudication_id", ""),
-                    "expert_systems": [
-                        x for x in str(item.get("experts_str", "")).split("/") if x and x != "—"
-                    ],
+                    "expert_systems": list(item.get("expert_systems", [])),
+                    "consensus_layer": item.get("consensus_layer", item.get("layer", "")),
+                    "supporting_experts": list(item.get("supporting_experts", [])),
+                    "dissenting_experts": list(item.get("dissenting_experts", [])),
+                    "abstained_experts": list(item.get("abstained_experts", [])),
+                    "conflict_explanations": conflict_explanations,
+                    "feedback_state": item.get("feedback_state", ""),
                     "vote_id": item.get("adjudication_id", ""),
                     "stance": item.get("decision", ""),
                 })
@@ -1228,6 +1274,15 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                     "axis_refs": [
                         x for x in str(item.get("axis_refs_str", "")).split("、") if x and x != "—"
                     ],
+                })
+            elif section == "parallel_domain_consistency":
+                row.update({
+                    "note_id": item.get("note_id", ""),
+                    "domains": list(item.get("domains", [])),
+                    "severity": item.get("severity", ""),
+                    "arbitration_note": item.get("arbitration_note", ""),
+                    "related_adjudication_ids": list(item.get("related_adjudication_ids", [])),
+                    "source": item.get("source", ""),
                 })
             statements.append(row)
     return {

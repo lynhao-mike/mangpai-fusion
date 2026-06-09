@@ -1,8 +1,13 @@
-# engine/domain-weights.yaml · 9 大领域 × 4 派 lead/co/audit 权重矩阵
+# engine/domain-weights.yaml · LEGACY 9 大领域 × 4 派 lead/co/audit 权重矩阵
 # v1.0 · 2026-05-23
 #
-# 用途：决定每个领域中哪一派是 lead，冲突仲裁时按权重决胜
-# 调用：engine/arbitration.md → 冲突场景 → 查本表 → 决定胜方
+# LEGACY NOTICE:
+#   本文件是旧四派领域仲裁矩阵（legacy four-school arbitration matrix）。
+#   parallel-domain 三专家裁判 runtime 不得直接读取本文件。
+#   三专家 × 六功能域 canonical runtime 权重唯一事实源为 engine/expert-weights.yaml。
+#
+# 用途：决定旧四派流程中每个领域哪一派是 lead，冲突仲裁时按权重决胜
+# 调用：旧 engine/arbitration.md → 冲突场景 → 查本表 → 决定胜方
 # 维护：每年 review 一次，或当某派在某领域累计失验 ≥ 5 例时调整
 
 version: "1.0"

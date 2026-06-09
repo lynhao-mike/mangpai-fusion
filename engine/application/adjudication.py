@@ -11,8 +11,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-import yaml
-
+from engine.application.weight_profile_service import (
+    CANONICAL_WEIGHT_PROFILE_SOURCE,
+    WeightProfileService,
+    load_domain_weight_profile_payload,
+)
+from engine.domain.parallel_constants import CANONICAL_EXPERT_ORDER
 from engine.domain.parallel import (
     AdjudicationDecision,
     AdjudicationResult,
@@ -31,10 +35,10 @@ from engine.domain.parallel import (
     WeightProfile,
 )
 
-DEFAULT_WEIGHT_PROFILE_SOURCE = "theory/raw/yaml/domain_weight_profile_2026-06-05.yaml"
+DEFAULT_WEIGHT_PROFILE_SOURCE = CANONICAL_WEIGHT_PROFILE_SOURCE
 DEFAULT_WEIGHT_PROFILE_PATH = Path(DEFAULT_WEIGHT_PROFILE_SOURCE)
-DEFAULT_WEIGHT_PROFILE_STATUS = "review_draft"
-DEFAULT_EXPERT_SYSTEMS: tuple[ExpertSystem, ...] = ("blind", "ziping", "tiaohou_ditiansui")
+DEFAULT_WEIGHT_PROFILE_STATUS = "active"
+DEFAULT_EXPERT_SYSTEMS: tuple[ExpertSystem, ...] = CANONICAL_EXPERT_ORDER
 
 
 @dataclass(frozen=True)
@@ -43,8 +47,7 @@ class AdjudicationConfig:
 
     support_threshold: float = 0.03
     no_output_threshold: float = 0.01
-    conflict_penalty: float = 0.0
-    feedback_weight: float = 1.0
+    default_conflict_penalty: float = 0.0
 
 
 def build_weight_profile(
@@ -60,11 +63,8 @@ def build_weight_profile(
     """构造本次裁判使用的领域权重版本。"""
 
     if weights_by_domain is None:
-        payload = load_domain_weight_profile_payload(workspace_root=workspace_root)
-        source_weights = payload["weights"]
-        resolved_profile_id = str(payload["profile_id"])
-        resolved_profile_version = str(payload["profile_version"])
-        resolved_source = DEFAULT_WEIGHT_PROFILE_SOURCE
+        service = WeightProfileService(workspace_root=workspace_root, feedback_overlay=feedback_overlay)
+        return service.build_weight_profile(domain)
     else:
         source_weights = weights_by_domain
         resolved_profile_id = profile_id or "inline-domain-prior"
@@ -88,36 +88,8 @@ def build_weight_profile(
         profile_version=profile_version or resolved_profile_version,
         source=source or resolved_source,
         domain_weights=normalized,
+        feedback_modulations={expert: 1.0 for expert in DEFAULT_EXPERT_SYSTEMS},
     )
-
-
-def load_domain_weight_profile_payload(*, workspace_root: str | Path = ".") -> dict[str, Any]:
-    """只读加载旁路领域权重 YAML。"""
-
-    path = (Path(workspace_root) / DEFAULT_WEIGHT_PROFILE_PATH).resolve()
-    root = Path(workspace_root).resolve()
-    try:
-        path.relative_to((root / "theory" / "raw" / "yaml").resolve())
-    except ValueError as exc:
-        raise ValueError(f"领域权重 profile 只能读取 theory/raw/yaml 下的文件：{path}") from exc
-    raw = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(raw, dict):
-        raise ValueError(f"领域权重 profile 顶层必须是 mapping：{path}")
-    if raw.get("status") != DEFAULT_WEIGHT_PROFILE_STATUS:
-        raise ValueError(f"领域权重 profile status 必须为 review_draft，实际为 {raw.get('status')!r}")
-    weights = raw.get("weights")
-    if not isinstance(weights, dict):
-        raise ValueError("领域权重 profile 缺少 weights mapping。")
-    for domain, domain_weights in weights.items():
-        if not isinstance(domain_weights, dict):
-            raise ValueError(f"{domain} 权重必须是 mapping。")
-        missing = set(DEFAULT_EXPERT_SYSTEMS) - set(domain_weights)
-        if missing:
-            raise ValueError(f"{domain} 缺少专家权重：{sorted(missing)}")
-        total = sum(float(domain_weights[expert]) for expert in DEFAULT_EXPERT_SYSTEMS)
-        if abs(total - 1.0) > 1e-6:
-            raise ValueError(f"{domain} 权重和必须为 1.0，实际为 {total:.6f}")
-    return raw
 
 
 def adjudicate_domain(
@@ -128,6 +100,7 @@ def adjudicate_domain(
     claim: str | None = None,
     weight_profile: WeightProfile | None = None,
     config: AdjudicationConfig | None = None,
+    conflict_penalties: Mapping[ExpertSystem, float] | None = None,
 ) -> AdjudicationResult:
     """对一个功能域的一组专家 reading 做最小加权裁判。"""
 
@@ -141,6 +114,7 @@ def adjudicate_domain(
             claim=main_claim,
             weight_profile=profile,
             config=cfg,
+            conflict_penalty=(conflict_penalties or {}).get(reading.expert_system),
         )
         for index, reading in enumerate(readings, start=1)
     ]
@@ -164,6 +138,7 @@ def adjudicate_domain(
         winning_experts=winning_experts,
         dissenting_experts=dissenting_experts,
         minority_views=minority_views,
+        conflict_penalty_total=sum(j.conflict_penalty for j in judgements),
     )
 
     return AdjudicationResult(
@@ -228,20 +203,25 @@ def _judge_reading(
     claim: str,
     weight_profile: WeightProfile,
     config: AdjudicationConfig,
+    conflict_penalty: float | None = None,
 ) -> ExpertJudgement:
     ballot = _ballot_from_stance(reading.stance)
     raw_score = _raw_score_from_ballot(ballot, reading.confidence.raw)
     prior_domain_weight = weight_profile.domain_weights.get(reading.expert_system, 0.0)
     confidence_weight = _bounded(reading.confidence.raw)
     evidence_quality_weight = _evidence_quality_weight(reading.evidence_items)
-    conflict_penalty = config.conflict_penalty if ballot in {"yes", "no"} else 0.0
+    feedback_weight = _feedback_weight_for(weight_profile, reading.expert_system)
+    resolved_conflict_penalty = (
+        config.default_conflict_penalty if conflict_penalty is None else max(0.0, float(conflict_penalty))
+    )
+    resolved_conflict_penalty = resolved_conflict_penalty if ballot in {"yes", "no"} else 0.0
     adjusted_score = (
         raw_score
         * prior_domain_weight
         * confidence_weight
-        * config.feedback_weight
+        * feedback_weight
         * evidence_quality_weight
-        - conflict_penalty
+        - resolved_conflict_penalty
     )
     adjusted_score = max(0.0, adjusted_score)
     return ExpertJudgement(
@@ -254,13 +234,15 @@ def _judge_reading(
         raw_score=round(raw_score, 6),
         prior_domain_weight=round(prior_domain_weight, 6),
         confidence_weight=round(confidence_weight, 6),
-        feedback_weight=round(config.feedback_weight, 6),
+        feedback_weight=round(feedback_weight, 6),
         evidence_quality_weight=round(evidence_quality_weight, 6),
-        conflict_penalty=round(conflict_penalty, 6),
+        conflict_penalty=round(resolved_conflict_penalty, 6),
         adjusted_score=round(adjusted_score, 6),
         rationale=(
             f"{reading.expert_system} 在 {reading.domain} 域以 {reading.stance} 进入裁判；"
-            f"先验权重 {prior_domain_weight:.2f}。"
+            f"adjusted_score = raw_score({raw_score:.3f}) × prior_domain_weight({prior_domain_weight:.3f}) "
+            f"× confidence_weight({confidence_weight:.3f}) × feedback_weight({feedback_weight:.3f}) "
+            f"× evidence_quality_weight({evidence_quality_weight:.3f}) - conflict_penalty({resolved_conflict_penalty:.3f})。"
         ),
     )
 
@@ -284,6 +266,10 @@ def _merge_feedback_overlay(
             continue
         merged[str(domain)] = _normalize_weights(domain_overlay)
     return merged
+
+
+def _feedback_weight_for(weight_profile: WeightProfile, expert_system: ExpertSystem) -> float:
+    return max(0.5, min(float(weight_profile.feedback_modulations.get(expert_system, 1.0)), 1.5))
 
 
 def _normalize_weights(weights: Mapping[Any, float]) -> dict[ExpertSystem, float]:
@@ -422,6 +408,7 @@ def _build_arbitration_reason(
     winning_experts: Sequence[ExpertSystem],
     dissenting_experts: Sequence[ExpertSystem],
     minority_views: Sequence[MinorityView],
+    conflict_penalty_total: float,
 ) -> ArbitrationReason:
     if decision == "no_output":
         return ArbitrationReason(
@@ -431,7 +418,10 @@ def _build_arbitration_reason(
         )
     if decision == "mixed":
         return ArbitrationReason(
-            winner_reason="支持与反对得分接近，不做机械多数决。",
+            winner_reason=(
+                "支持与反对得分接近，不做机械多数决。"
+                f" conflict_penalty_total={conflict_penalty_total:.3f}。"
+            ),
             loser_reason="无明确败方。",
             conflict_type="evidence",
             output_strategy="parallel",
@@ -439,13 +429,14 @@ def _build_arbitration_reason(
     output_strategy: OutputStrategy = "primary_with_minority" if minority_views else "primary_only"
     winner = ", ".join(winning_experts) if decision == "yes" else ", ".join(dissenting_experts)
     loser = ", ".join(dissenting_experts) if decision == "yes" else ", ".join(winning_experts)
+    penalty_note = f" conflict_penalty_total={conflict_penalty_total:.3f}。" if conflict_penalty_total > 0 else ""
     return ArbitrationReason(
         winner_reason=(
             f"{winner or '主胜方'} 加权得分胜出；"
-            f"support={support_score:.3f}, oppose={oppose_score:.3f}。"
+            f"support={support_score:.3f}, oppose={oppose_score:.3f}。{penalty_note}"
         ),
         loser_reason=f"{loser or '无明确败方'} 未达到胜出得分。",
-        conflict_type="evidence" if minority_views else "none",
+        conflict_type="evidence" if minority_views or conflict_penalty_total > 0 else "none",
         output_strategy=output_strategy,
     )
 

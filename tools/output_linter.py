@@ -500,6 +500,8 @@ def lint(
         _lint_relation_source_misuse(full_text, res)
         # 唯一标准报告 · 命主画像禁止使用框线
         _lint_portrait_box_style(full_text, res)
+        # Phase C · parallel-domain markdown 输出门禁
+        _lint_parallel_domain_markdown(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -518,6 +520,7 @@ def lint(
                 f"conclusion 总数 {len(conclusions)} < 5（策略 B 最少建议）",
             )
         _lint_dataclass_global(d, res)
+        _lint_parallel_domain_traceability(d, res)
 
     # 逐条 lint
     for c in conclusions:
@@ -695,6 +698,63 @@ def _lint_dataclass_global(
             res.add(
                 Severity.WARNING, "W8",
                 f"GateResult[{gi}].picture_consistent=False",
+            )
+
+
+def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> None:
+    """Phase C · 结构化 parallel-domain statement traceability 门禁。"""
+
+    statement_index = d.get("statement_index") if isinstance(d.get("statement_index"), dict) else d
+    raw_statements = statement_index.get("statements", []) if isinstance(statement_index, dict) else []
+    if isinstance(raw_statements, dict):
+        statements = list(raw_statements.values())
+    elif isinstance(raw_statements, list):
+        statements = raw_statements
+    else:
+        statements = []
+
+    for idx, row in enumerate(statements):
+        if not isinstance(row, dict) or row.get("section") != "parallel_domain_adjudication":
+            continue
+        loc = str(row.get("statement_id") or f"parallel_domain_adjudication[{idx}]")
+        required_non_empty = {
+            "reading_ids": row.get("reading_ids"),
+            "adjudication_id": row.get("adjudication_id"),
+            "expert_systems": row.get("expert_systems"),
+            "domain": row.get("domain"),
+            "consensus_layer": row.get("consensus_layer"),
+            "feedback_state": row.get("feedback_state"),
+        }
+        required_present = (
+            "supporting_experts",
+            "dissenting_experts",
+            "abstained_experts",
+        )
+        for field_name, value in required_non_empty.items():
+            if value in (None, "", []):
+                res.add(
+                    Severity.ERROR,
+                    "E14",
+                    f"parallel-domain statement 缺少追踪字段 {field_name}",
+                    location=loc,
+                    suggestion="重跑 render_report，确保 statement_index 写入完整裁判追踪链。",
+                )
+        for field_name in required_present:
+            if field_name not in row or row.get(field_name) is None:
+                res.add(
+                    Severity.ERROR,
+                    "E14",
+                    f"parallel-domain statement 缺少追踪字段 {field_name}",
+                    location=loc,
+                    suggestion="重跑 render_report，确保 statement_index 写入完整裁判追踪链；该字段可为空列表但必须存在。",
+                )
+        if not row.get("conflict_explanations"):
+            res.add(
+                Severity.ERROR,
+                "E14",
+                "parallel-domain statement 缺 conflict_explanations",
+                location=loc,
+                suggestion="补充专家冲突解释；即使无强冲突，也必须显式写入“无专家强冲突”。",
             )
 
 
@@ -1042,6 +1102,52 @@ def _lint_social_clock(md: str, res: LintResult) -> None:
 
 
 # ============================================================
+# 八·六、Phase C · parallel-domain markdown 输出门禁
+# ============================================================
+
+_PARALLEL_SECTION_RE = re.compile(
+    r"###\s*多专家功能域裁判[\s\S]*?(?=\n###\s|\n##\s|\Z)"
+)
+
+
+def _lint_parallel_domain_markdown(md: str, res: LintResult) -> None:
+    """阻断缺少裁判追踪字段的 parallel-domain markdown section。"""
+
+    match = _PARALLEL_SECTION_RE.search(md)
+    if not match:
+        return
+    section = match.group(0)
+    required_tokens = {
+        "reading_ids": "reading_ids",
+        "adjudication trace/adjudication_id": "adjudication_id",
+        "expert trace/expert_systems": "expert_systems",
+        "domain": "domain",
+        "consensus_layer": "consensus_layer",
+        "supporting_experts": "supporting_experts",
+        "dissenting_experts": "dissenting_experts",
+        "abstained_experts": "abstained_experts",
+        "feedback_state": "feedback_state",
+    }
+    for field_name, token in required_tokens.items():
+        if token not in section:
+            res.add(
+                Severity.ERROR,
+                "E14",
+                f"parallel-domain section 缺少 {field_name}",
+                location="多专家功能域裁判",
+                suggestion="使用新版 report-v1.3 模板渲染，保留裁判追踪字段。",
+            )
+    if "冲突解释" not in section and "conflict_explanations" not in section and "conflict" not in section:
+        res.add(
+            Severity.ERROR,
+            "E14",
+            "parallel-domain section 缺少 conflict 解释",
+            location="多专家功能域裁判",
+            suggestion="即使无强冲突，也必须显式写入“无专家强冲突”。",
+        )
+
+
+# ============================================================
 # 九、smoke test
 # ============================================================
 
@@ -1149,6 +1255,10 @@ def _smoke() -> None:
 
 
 if __name__ == "__main__":  # pragma: no cover
+    if len(sys.argv) >= 2 and sys.argv[1] in {"-h", "--help"}:
+        print("usage: python -m tools.output_linter [REPORT_MD_PATH]")
+        print("without REPORT_MD_PATH, runs built-in smoke checks")
+        sys.exit(0)
     if len(sys.argv) >= 2:
         text = Path(sys.argv[1]).read_text(encoding="utf-8")
         r = lint(text)

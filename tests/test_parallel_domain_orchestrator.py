@@ -1,8 +1,16 @@
 from __future__ import annotations
 
+import inspect
+from typing import Any, cast
+
 from engine.application.parallel_domain_orchestrator import analyze_parallel_domains
 from engine.domain.analysis import AnalysisOutput
+from engine.application.production_rule_loader import ProductionRuleLibrary
 from engine.domain.parallel import ParallelAnalysisOutput
+from engine.energy.types import EnergyFindings
+from engine.pangzheng.types import SupportFindings
+from engine.picture.types import PictureFindings
+from engine.yingqi.types import GateResult
 from engine.pipeline import run_pipeline
 from tests.fixtures.cases import load_case
 from tools.render_report import render_from_output
@@ -35,6 +43,51 @@ def test_parallel_domain_orchestrator_outputs_all_default_domains() -> None:
         for analysis in parallel.domain_analyses
         for reading in analysis.readings
     )
+
+
+def test_parallel_domain_orchestrator_calls_canonical_runner(monkeypatch) -> None:
+    calls: dict[str, Any] = {}
+
+    class LibraryStub:
+        def triggered_rules(self, *, parsed: Any, energy: Any, picture: Any) -> list[Any]:
+            calls["triggered_rules"] = {"parsed": parsed, "energy": energy, "picture": picture}
+            return ["RULE-STUB"]
+
+    class EnergyStub:
+        case_id = "C-ADAPTER"
+
+    def fake_runner(*args: Any, **kwargs: Any) -> ParallelAnalysisOutput:
+        calls["runner_args"] = args
+        calls["runner_kwargs"] = kwargs
+        return ParallelAnalysisOutput(case_id=kwargs["case_id"], domain_analyses=[])
+
+    monkeypatch.setattr("engine.application.parallel_domain_orchestrator.run_parallel_domain_analysis", fake_runner)
+
+    output = analyze_parallel_domains(
+        parsed=None,
+        energy=cast(EnergyFindings, EnergyStub()),
+        picture=cast(PictureFindings, object()),
+        gate_results=[cast(GateResult, object())],
+        support=cast(SupportFindings, object()),
+        production_library=cast(ProductionRuleLibrary, LibraryStub()),
+        domains=["财运"],
+    )
+
+    assert output.case_id == "C-ADAPTER"
+    assert calls["runner_args"] == (None,)
+    assert calls["runner_kwargs"]["case_id"] == "C-ADAPTER"
+    assert calls["runner_kwargs"]["domains"] == ["财运"]
+    assert calls["runner_kwargs"]["base_context"]["production_rules"] == ["RULE-STUB"]
+
+
+def test_parallel_domain_orchestrator_stays_compatibility_adapter_only() -> None:
+    source = inspect.getsource(analyze_parallel_domains)
+
+    assert "run_parallel_domain_analysis" in source
+    assert "adjudicate_domain" not in source
+    assert "build_domain_consensus" not in source
+    assert "detect_cross_expert_conflicts" not in source
+    assert "evaluate_cross_domain_consistency" not in source
 
 
 def test_analysis_output_round_trips_parallel_analysis() -> None:

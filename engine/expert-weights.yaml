@@ -1,0 +1,61 @@
+schema_version: expert-weight-profile/v1
+status: active
+profile_id: expert-domain-prior-2026-06-09
+profile_version: phase-b-v1
+updated_at: '2026-06-09T07:00:00Z'
+source: engine/expert-weights.yaml
+notes: >
+  Canonical runtime 权重事实源：三专家体系 × 六功能域。
+  engine/domain-weights.yaml 是 legacy four-school arbitration matrix，
+  theory/raw/yaml/domain_weight_profile_2026-06-05.yaml 仅作迁移输入与审查草稿，runtime 不直接读取。
+experts:
+  - id: blind
+    label: 盲派综合组
+  - id: ziping
+    label: 子平格局派
+  - id: tiaohou_ditiansui
+    label: 滴天髓调候派
+domains:
+  - 财运
+  - 事业
+  - 婚姻
+  - 健康
+  - 性格
+  - 学业
+weights:
+  财运:
+    blind: 0.30
+    ziping: 0.45
+    tiaohou_ditiansui: 0.25
+  事业:
+    blind: 0.25
+    ziping: 0.50
+    tiaohou_ditiansui: 0.25
+  婚姻:
+    blind: 0.45
+    ziping: 0.30
+    tiaohou_ditiansui: 0.25
+  健康:
+    blind: 0.25
+    ziping: 0.25
+    tiaohou_ditiansui: 0.50
+  性格:
+    blind: 0.30
+    ziping: 0.25
+    tiaohou_ditiansui: 0.45
+  学业:
+    blind: 0.30
+    ziping: 0.45
+    tiaohou_ditiansui: 0.25
+constraints:
+  sum_per_domain: 1.0
+  low_sample_policy: conservative_weak_modulation
+  max_single_round_delta: 0.05
+  min_effective_sample_for_adjustment: 11
+feedback_overlay:
+  version: no-feedback-overlay
+  source_path: inline:none
+  min_effective_sample_for_adjustment: 11
+  low_sample_max_delta: 0.02
+  mature_sample_max_delta: 0.15
+  entries: []
