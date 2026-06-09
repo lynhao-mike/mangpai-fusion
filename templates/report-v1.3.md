@@ -116,10 +116,10 @@
 
 > 盲派专家组、子平格局派、调候派（滴天髓）围绕同一功能域分别输出 reading，经旁路裁判层合并为可反馈结论。下表保留结构化证据，供命理师复核与后续反馈校准。
 
-| 功能域 | 裁判层级 | 主结论 | 采纳专家 | 置信 | 证据 | adjudication_id | feedback_state | 冲突解释 |
-|---|---|---|---|---|---|---|---|---|
+| domain | consensus_layer | 主结论 | reading_ids | adjudication_id | expert_systems | supporting_experts | dissenting_experts | abstained_experts | feedback_state | 冲突解释 |
+|---|---|---|---|---|---|---|---|---|---|---|
 {% for c in parallel_domain_conclusions %}
-| {{ c.domain }} | {{ c.layer }} | {{ c.statement }} | {{ c.experts_str }} | ★{{ c.star }}/{{ c.pct }}% | {{ c.evidence_str }} | {{ c.adjudication_id }} | {{ c.feedback_state }} | {{ c.conflict_summary }} |
+| {{ c.domain }} | {{ c.consensus_layer }} | {{ c.statement }} | {{ c.reading_ids_str }} | {{ c.adjudication_id }} | {{ c.expert_systems_str }} | {{ c.supporting_experts_str }} | {{ c.dissenting_experts_str }} | {{ c.abstained_experts_str }} | {{ c.feedback_state }} | {{ c.conflict_summary }} |
 {% endfor %}
 {% endif %}
 

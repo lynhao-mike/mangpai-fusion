@@ -18,12 +18,30 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from typing import cast
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import pytest
+from engine.domain.parallel import (
+    AdjudicationDecision,
+    AdjudicationResult,
+    ConsensusLayer,
+    CrossExpertConflict,
+    DomainAnalysis,
+    DomainConsensus,
+    DomainName,
+    EvidenceItem,
+    ExpertReading,
+    ExpertSystem,
+    FeedbackState,
+    ParallelAnalysisOutput,
+    ParallelConfidence,
+    ReadingStance,
+    WeightProfile,
+)
 from engine.energy.evaluator import evaluate_energy
 from engine.picture.matcher import match_picture
 from engine.pipeline import run_pipeline
@@ -36,6 +54,112 @@ from tools.render_report import render, render_from_output
 # ============================================================
 # fixtures（module scope，整个测试文件只跑一次上游引擎）
 # ============================================================
+
+def _parallel_confidence(raw: float = 0.82, star: int = 4, percent: int = 82) -> ParallelConfidence:
+    return ParallelConfidence(raw=raw, star=star, percent=percent, reason="Track-F renderer contract test")
+
+
+
+def _parallel_reading(
+    case_id: str,
+    domain: DomainName,
+    expert_system: ExpertSystem,
+    stance: ReadingStance,
+    *,
+    confidence: float = 0.82,
+) -> ExpertReading:
+    return ExpertReading(
+        reading_id=f"RD-{case_id}-{domain}-{expert_system}",
+        case_id=case_id,
+        domain=domain,
+        expert_system=expert_system,
+        expert_name={
+            "blind": "盲派专家组",
+            "ziping": "子平格局派",
+            "tiaohou_ditiansui": "滴天髓调候派",
+        }[expert_system],
+        stance=stance,
+        claim=f"{domain}域 {expert_system} {stance} 读数",
+        polarity="positive" if stance == "support" else "negative" if stance == "oppose" else "neutral",
+        confidence=_parallel_confidence(raw=confidence, percent=int(confidence * 100)),
+        evidence_items=[EvidenceItem(evidence_type="runtime_finding", ref=f"RULE-{domain}-{expert_system}", summary="真实规则证据")],
+        axis_refs=[f"{domain}-axis"],
+        scope_limit="仅用于 renderer contract 测试",
+        falsifiable="后续反馈不符则失验",
+        source_engine="track_f_renderer_test",
+    )
+
+
+
+def _parallel_analysis_case(
+    *,
+    case_id: str,
+    domain: DomainName,
+    stances: dict[ExpertSystem, ReadingStance],
+    feedback_state: FeedbackState,
+    conflict: bool = False,
+) -> ParallelAnalysisOutput:
+    readings = [
+        _parallel_reading(case_id, domain, expert_system, stance)
+        for expert_system, stance in stances.items()
+    ]
+    supporting: list[ExpertSystem] = [reading.expert_system for reading in readings if reading.stance == "support"]
+    dissenting: list[ExpertSystem] = [reading.expert_system for reading in readings if reading.stance == "oppose"]
+    abstained: list[ExpertSystem] = [reading.expert_system for reading in readings if reading.stance == "abstain"]
+    weight_profile = WeightProfile(
+        profile_id="track-f-renderer-contract",
+        profile_version="test",
+        source="tests/track_f_smoke/test_f_render.py",
+        domain_weights={reading.expert_system: 1 / len(readings) for reading in readings},
+        feedback_modulations={reading.expert_system: 1.0 for reading in readings},
+        feedback_overlay_version=feedback_state,
+    )
+    adjudication = AdjudicationResult(
+        adjudication_id=f"ADJ-{case_id}-{domain}",
+        domain=domain,
+        claim=f"{domain}域裁判结论",
+        decision=cast(AdjudicationDecision, "yes" if supporting else "no_output"),
+        judgements=[],
+        support_score=0.7 if supporting else 0.0,
+        oppose_score=0.4 if dissenting else 0.0,
+        confidence=_parallel_confidence(),
+        weight_profile=weight_profile,
+        winning_experts=supporting,
+        dissenting_experts=dissenting,
+        abstained_experts=abstained,
+        feedback_state=feedback_state,
+    )
+    consensus = DomainConsensus(
+        conclusion_id=f"PDC-{case_id}-{domain}",
+        domain=domain,
+        headline=f"{domain}域多专家裁判",
+        final_statement=f"{domain}域 renderer 合同断语",
+        layer=cast(ConsensusLayer, "多专家共识" if len(supporting) >= 3 else "双专家共识" if len(supporting) >= 2 else "独门" if supporting else "不输出"),
+        contributing_experts=supporting,
+        dissenting_experts=dissenting,
+        confidence=adjudication.confidence,
+        evidence_items=[EvidenceItem(evidence_type="runtime_finding", ref=f"PDC-{domain}", summary="裁判汇总证据")],
+        falsifiable="后续反馈不符则失验",
+        feedback_state=feedback_state,
+        weight_profile=weight_profile,
+    )
+    conflicts = [
+        CrossExpertConflict(
+            conflict_id=f"CONFLICT-{case_id}-{domain}",
+            domain=domain,
+            involved_experts=supporting[:1] + dissenting[:1],
+            conflict_type="evidence",
+            arbitration_reason="support 与 oppose 专家证据强冲突，裁判保留少数派。",
+            winner=supporting[0] if supporting else None,
+            loser=dissenting[0] if dissenting else None,
+        )
+    ] if conflict and supporting and dissenting else []
+    return ParallelAnalysisOutput(
+        case_id=case_id,
+        domain_analyses=[DomainAnalysis(domain=domain, readings=readings, adjudication_result=adjudication, consensus=consensus, conflicts=conflicts)],
+    )
+
+
 
 @pytest.fixture(scope="module")
 def c001_findings():
@@ -258,6 +382,94 @@ def test_F_production_rules_render_from_output(tmp_path):
     assert "DTS-PROD-20260605-001" in report
     result = lint(report)
     assert result.passed, f"生产规则展示应通过 linter，errors={result.errors}"
+
+
+@pytest.mark.parametrize(
+    ("name", "domain", "stances", "feedback_state", "conflict"),
+    [
+        ("consensus", cast(DomainName, "事业"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "support"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "support")}, cast(FeedbackState, "pending"), False),
+        ("partial_consensus", cast(DomainName, "财运"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "support"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "abstain")}, cast(FeedbackState, "pending"), False),
+        ("expert_conflict", cast(DomainName, "婚姻"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "oppose"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "support")}, cast(FeedbackState, "pending"), True),
+        ("abstain", cast(DomainName, "健康"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "abstain"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "abstain"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "abstain")}, cast(FeedbackState, "pending"), False),
+        ("feedback_overlay_enabled", cast(DomainName, "性格"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "abstain"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "support")}, cast(FeedbackState, "partial"), False),
+        ("feedback_overlay_disabled", cast(DomainName, "学业"), {cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "abstain"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "abstain")}, cast(FeedbackState, "pending"), False),
+    ],
+)
+def test_F_parallel_adjudication_renderer_outputs_e14_contract_fields(
+    c001_findings,
+    name: str,
+    domain: DomainName,
+    stances: dict[ExpertSystem, ReadingStance],
+    feedback_state: FeedbackState,
+    conflict: bool,
+):
+    """Track-F Renderer 必须输出 E14 新并行裁判协议字段。"""
+    case_id = f"C-TRACK-F-{name}"
+    parallel = _parallel_analysis_case(
+        case_id=case_id,
+        domain=domain,
+        stances=stances,
+        feedback_state=feedback_state,
+        conflict=conflict,
+    )
+
+    report = render(
+        c001_findings["energy"],
+        c001_findings["picture"],
+        c001_findings["gates"],
+        c001_findings["parsed"],
+        support=None,
+        parallel_analysis=parallel,
+    )
+
+    required_tokens = [
+        "reading_ids",
+        "adjudication_id",
+        "expert_systems",
+        "domain",
+        "consensus_layer",
+        "supporting_experts",
+        "dissenting_experts",
+        "abstained_experts",
+        "feedback_state",
+        "冲突解释",
+    ]
+    for token in required_tokens:
+        assert token in report
+    assert f"RD-{case_id}-{domain}-blind" in report
+    assert f"ADJ-{case_id}-{domain}" in report
+    assert feedback_state in report
+    if conflict:
+        assert "裁判保留少数派" in report
+
+    result = lint(report)
+    assert not [issue for issue in result.errors if issue.code == "E14"]
+    assert result.passed, f"{name} 场景应通过 linter，errors={result.errors}"
+
+
+
+def test_F_parallel_adjudication_renderer_contract_drift_guard(c001_findings):
+    """Renderer 输出的 Markdown schema 必须与 output_linter E14 schema 同步。"""
+    case_id = "C-TRACK-F-contract"
+    report = render(
+        c001_findings["energy"],
+        c001_findings["picture"],
+        c001_findings["gates"],
+        c001_findings["parsed"],
+        support=None,
+        parallel_analysis=_parallel_analysis_case(
+            case_id=case_id,
+            domain=cast(DomainName, "财运"),
+            stances={cast(ExpertSystem, "blind"): cast(ReadingStance, "support"), cast(ExpertSystem, "ziping"): cast(ReadingStance, "oppose"), cast(ExpertSystem, "tiaohou_ditiansui"): cast(ReadingStance, "abstain")},
+            feedback_state=cast(FeedbackState, "partial"),
+            conflict=True,
+        ),
+    )
+
+    header = "| domain | consensus_layer | 主结论 | reading_ids | adjudication_id | expert_systems | supporting_experts | dissenting_experts | abstained_experts | feedback_state | 冲突解释 |"
+    assert header in report
+    assert lint(report).passed
+
 
 
 # ============================================================

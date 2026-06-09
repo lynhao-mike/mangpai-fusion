@@ -1009,6 +1009,14 @@ def _build_portrait_vm(
 
 
 
+def _join_trace_values(values: list[Any], *, empty: str = "source_missing") -> str:
+    """把真实 trace 字段转成 Markdown 单元格展示；缺源时显式标注。"""
+
+    cleaned = [str(value) for value in values if str(value).strip()]
+    return ",".join(cleaned) if cleaned else empty
+
+
+
 def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) -> dict:
     """v1.5 · 多专家功能域裁判视图。"""
     if parallel_analysis is None:
@@ -1058,12 +1066,15 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
         dissenting_experts = list(getattr(adjudication, "dissenting_experts", []) or [])
         abstained_experts = list(getattr(adjudication, "abstained_experts", []) or [])
         expert_systems = [str(getattr(r, "expert_system", "")) for r in getattr(analysis, "readings", []) or []]
+        reading_ids = [str(getattr(r, "reading_id", "")) for r in getattr(analysis, "readings", []) or []]
+        consensus_layer = getattr(consensus, "layer", "")
+        feedback_state = getattr(adjudication, "feedback_state", getattr(consensus, "feedback_state", ""))
         domain_rows.append({
             "statement_id": statement_id,
             "domain": getattr(consensus, "domain", getattr(analysis, "domain", "综合")),
             "headline": getattr(consensus, "headline", ""),
             "statement": getattr(consensus, "final_statement", ""),
-            "layer": getattr(consensus, "layer", ""),
+            "layer": consensus_layer,
             "decision": getattr(adjudication, "decision", ""),
             "support_score": getattr(adjudication, "support_score", 0.0),
             "oppose_score": getattr(adjudication, "oppose_score", 0.0),
@@ -1072,11 +1083,15 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             "experts_str": "/".join(getattr(consensus, "contributing_experts", []) or []) or "—",
             "dissenting_str": "/".join(getattr(consensus, "dissenting_experts", []) or []) or "—",
             "expert_systems": expert_systems,
-            "consensus_layer": getattr(consensus, "layer", ""),
+            "expert_systems_str": _join_trace_values(expert_systems),
+            "consensus_layer": consensus_layer,
             "supporting_experts": supporting_experts,
+            "supporting_experts_str": _join_trace_values(supporting_experts),
             "dissenting_experts": dissenting_experts,
+            "dissenting_experts_str": _join_trace_values(dissenting_experts, empty="none"),
             "abstained_experts": abstained_experts,
-            "feedback_state": getattr(adjudication, "feedback_state", getattr(consensus, "feedback_state", "")),
+            "abstained_experts_str": _join_trace_values(abstained_experts, empty="none"),
+            "feedback_state": feedback_state or "source_missing",
             "conflict_explanations": conflict_explanations,
             "conflict_summary": "；".join(conflict_explanations) or "无专家强冲突。",
             "evidence": [
@@ -1089,8 +1104,9 @@ def _build_parallel_analysis_vm(parallel_analysis: Optional[Any], case_id: str) 
             ],
             "evidence_str": " ".join(refs) or "—",
             "falsifiable": getattr(consensus, "falsifiable", ""),
-            "reading_ids": [str(getattr(r, "reading_id", "")) for r in getattr(analysis, "readings", []) or []],
-            "adjudication_id": getattr(adjudication, "adjudication_id", ""),
+            "reading_ids": reading_ids,
+            "reading_ids_str": _join_trace_values(reading_ids),
+            "adjudication_id": getattr(adjudication, "adjudication_id", "") or "source_missing",
         })
         readings_by_expert: dict[str, list[dict[str, Any]]] = {
             "blind": [],
