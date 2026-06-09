@@ -75,6 +75,17 @@
 | 工具 | 用途 | 说明 |
 |---|---|---|
 | [`build_indexes.py`](build_indexes.py:1) | 构建 / 重建索引 | 迁移与维护场景使用 |
+| [`build_multi_school_backtest_report.py`](build_multi_school_backtest_report.py:1) | 生成问真 READY 案例多流派回测报告 | 问真批处理阶段性辅助；非日常反馈入口 |
+| [`build_wenzhen_first5_promotion_plan.py`](build_wenzhen_first5_promotion_plan.py:1) | 生成问真首批 5 案转正式 case 的 dry-run 计划 | 问真批处理阶段性辅助；新流程优先使用 READY 批处理链路 |
+| [`build_wenzhen_top30_review_pack.py`](build_wenzhen_top30_review_pack.py:1) | 生成问真 Top30 人工 review 包 | 问真 Top30 批处理辅助；非日常主入口 |
+| [`build_wenzhen_top30_review_gate.py`](build_wenzhen_top30_review_gate.py:1) | 生成问真 Top30 review gate / OCR 队列 / promotion checklist | 问真 Top30 批处理辅助；用于 OCR 与晋级闸门 |
+| [`build_wenzhen_top30_staging_manifest.py`](build_wenzhen_top30_staging_manifest.py:1) | 生成问真 Top30 转正式 case 的 staging manifest | 问真 Top30 批处理辅助；供 promotion preflight / promote 工具读取 |
+| [`extract_wenzhen_repan_completed.py`](extract_wenzhen_repan_completed.py:1) | 从排盘补录索引抽取已完成问真排盘 JSONL | 问真排盘补录迁移辅助；非日常反馈入口 |
+| [`preflight_wenzhen_staging_promotion.py`](preflight_wenzhen_staging_promotion.py:1) | 转正式 case 前校验问真 staging 候选 | 问真 Top30 批处理辅助；检查冲突、必备字段与目标路径 |
+| [`promote_wenzhen_first5_cases.py`](promote_wenzhen_first5_cases.py:1) | 将已批准首批 5 个问真 staging 候选转正式 case | 历史首批迁移辅助；后续批次优先使用 READY 批量工具 |
+| [`promote_wenzhen_ready_batch.py`](promote_wenzhen_ready_batch.py:1) | 将问真 READY staging 候选批量转正式 case | 问真 Top30 批处理辅助；运行前需完成 review gate / preflight |
+| [`promote_wenzhen_staging_cases.py`](promote_wenzhen_staging_cases.py:1) | 将问真 staging records 转正式 case | 问真批处理迁移辅助；非日常反馈入口 |
+| [`sync_wenzhen_repan_index_status.py`](sync_wenzhen_repan_index_status.py:1) | 同步问真排盘拆分索引状态与统计 | 问真补录索引维护辅助 |
 | [`promote_candidate_rules_to_production.py`](promote_candidate_rules_to_production.py:1) | 候选规则迁移为生产规则 | 历史迁移辅助；非日常反馈入口 |
 
 ---

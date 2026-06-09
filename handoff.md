@@ -4,7 +4,83 @@
 
 ---
 
-## 0. 最新交接 · 多流派并行功能域与裁判模型
+## 0. 最新交接 · 问真 Top30 转案、报告与工具索引维护
+
+> 更新时间：2026-06-09。此节优先级高于下方旧交接；问真 Top30 已完成 OCR 修正、正式转案、命理师报告生成与工具索引漂移修复。下方旧节保留历史上下文，不再作为当前下一步判断依据。
+
+### 0.1 本轮已完成
+
+- 已完成问真 Top30 中 4 个 OCR 阻塞样本的人工确认修正：`王→壬`、`西→酉`。
+- 已重新运行 review gate、staging manifest、promotion preflight，Top30 OCR 队列已清零。
+- 已将 4 个原 OCR 阻塞样本转为正式 case：
+  - `C-2026-RF000771-乾-癸亥壬戌壬午庚子`
+  - `C-2026-RF000551-乾-壬戌丙午甲申丁卯`
+  - `C-2026-RF000894-乾-壬戌己酉庚子戊子`
+  - `C-2026-RF000684-坤-己巳丙子戊申戊午`
+- 已为上述 4 案生成命理师内部报告：
+  - [`reports/C-2026-RF000771-乾-癸亥壬戌壬午庚子-analyst-report.md`](reports/C-2026-RF000771-乾-癸亥壬戌壬午庚子-analyst-report.md)
+  - [`reports/C-2026-RF000551-乾-壬戌丙午甲申丁卯-analyst-report.md`](reports/C-2026-RF000551-乾-壬戌丙午甲申丁卯-analyst-report.md)
+  - [`reports/C-2026-RF000894-乾-壬戌己酉庚子戊子-analyst-report.md`](reports/C-2026-RF000894-乾-壬戌己酉庚子戊子-analyst-report.md)
+  - [`reports/C-2026-RF000684-坤-己巳丙子戊申戊午-analyst-report.md`](reports/C-2026-RF000684-坤-己巳丙子戊申戊午-analyst-report.md)
+- 已修复应期候选事件 domain 归一化：[`engine/application/candidates.py`](engine/application/candidates.py) 将 `子女`、`父母`、`亲属`、`兄弟姐妹` 等映射为 D3 gate 支持的 `六亲`。
+- 已新增候选事件回归测试：[`tests/test_application_candidates.py`](tests/test_application_candidates.py)。
+- 已删除临时报表渲染脚本 `tools/_tmp_render_existing_wenzhen_reports.py`。
+- 已修复工具索引漂移：[`tools/README.md`](tools/README.md) historical 表新增 11 个问真批处理/迁移辅助工具，`python tools/tool_registry.py --check` 已通过。
+- 已完成问真 Top30 全量 case/report 互链核查，并为 30 个 RF 正式 case 的 `analysis.md` 补充命理师报告反向归档链接；临时核查脚本已删除，未纳入工具索引。
+- 已评估 Top30 feedback 批量摄入准备状态：30 个 RF case 均有 `feedback.md`，但当前均未包含 `[S-...] [y/n/?/skip]` 标注；5 个 RF case 已在 `iteration-state` 中计为 completed，Top30 本轮不执行正式摄入。
+- 已为 30 个 RF case 的 `feedback.md` 更新关联报告路径，将“待生成”改为对应 `reports/*-analyst-report.md`，并更新断语反馈占位说明，提示后续手动补 `[S-...]` 标注后再摄入。
+
+### 0.2 验证状态
+
+已通过：
+
+```bash
+python -m pytest tests/test_project_metadata.py tests/test_application_candidates.py -q
+python -m pytest tests/ -q
+python tools/tool_registry.py --check
+python tools/rule_status_scan.py --check
+```
+
+关键结果：
+
+- 元数据 + 候选事件测试：`14 passed`。
+- 全量测试：`290 passed, 1 skipped`。
+- 工具索引：`tool registry check passed`。
+- 规则状态扫描：`rule status scan passed`。
+- 4 份新报告经 [`tools/output_linter.py`](tools/output_linter.py) 定向校验无 ERROR，仅有既有 WARN。
+- 4 份新报告经 [`tools/check_archive_links.py`](tools/check_archive_links.py) 定向归档链接校验：`targeted archive links ok`。
+- Top30 全量 RF analyst report ↔ case 互链核查：`rf_analyst_reports 30`，`errors 0`。
+- 提交前关键校验已复跑：`python tools/tool_registry.py --check`、`python tools/rule_status_scan.py --check`、`python -m pytest tests/test_project_metadata.py tests/test_application_candidates.py -q`，结果分别为通过、通过、`14 passed`。
+- Top30 feedback readiness：`rf_cases 30`、`completed_rf 5`、`missing_feedback 0`、`with_annotations 0`、`without_annotations 30`、`pending_annotated 0`。
+- `python -m tools.batch_review --strict-v13 --dry-run --json` 已通过；当前 strict v1.3 pending 为非 Top30 的 2 案，dry-run 结果 `input 2`、`success 2`、`failure 0`、`rule_updates 20`。
+
+### 0.3 当前工作区状态
+
+当前预期变更：
+
+- [`tools/README.md`](tools/README.md)：补登记问真批处理/迁移辅助工具。
+- 30 个 `cases/C-2026-RF*/analysis.md`：补充 `## 四、归档互链` 与对应 `reports/*-analyst-report.md` 反向链接。
+- 30 个 `cases/C-2026-RF*/feedback.md`：更新关联报告链接与断语反馈占位说明。
+- [`handoff.md`](handoff.md)：记录 Top30 全量互链核查、feedback readiness、dry-run 与提交前校验结果。
+
+报告、case 与候选事件归一化相关变更已经在当前工作区状态中体现；全量测试会改写 C-2026-001 findings 运行时产物，已用 `git checkout -- cases/C-2026-001-乾-庚申戊寅壬子辛丑/findings/analysis_output.json cases/C-2026-001-乾-庚申戊寅壬子辛丑/findings/timing.json` 恢复。
+
+### 0.4 下一步建议
+
+1. 若继续维护问真 Top30，需先把命理师报告中的断语反馈位复制/整理到各 `feedback.md` 并人工标注 `[y]` / `[n]` / `[?]` / `[skip]`；当前 Top30 不具备 strict v1.3 批量摄入条件。
+2. 若继续系统维护，可清理或归档旧交接中已经过期的问真 dry-run 叙述，避免下一位 agent 误以为仍有 OCR 阻塞队列或未转案首批。
+3. 若准备提交变更，先运行：
+
+```bash
+git status --short --untracked-files=all
+python tools/tool_registry.py --check
+python tools/rule_status_scan.py --check
+python -m pytest tests/test_project_metadata.py tests/test_application_candidates.py -q
+```
+
+---
+
+## 1. 历史交接 · 多流派并行功能域与裁判模型
 
 > 更新时间：2026-06-08。此节优先级高于下方旧的问真转案短期交接；下方内容保留为历史上下文，除非用户明确要求继续问真转案，否则下一位 agent 应先接续本节。
 
@@ -81,238 +157,21 @@ python -m pytest tests/test_parallel_domain_runner.py tests/v1_3_acceptance/test
 
 ---
 
-## 1. 当前工作状态
+## 2. 历史交接 · 问真 dry-run 流程归档说明
 
-本轮围绕问真 APP 补录排盘样本，已经完成从“已补完整排盘识别”到“首批正式转案 dry-run 方案”的非破坏性流水线。当前没有创建新的正式 [`cases/`](cases/) 下 `C-...` 案例目录；所有产物仍停留在 [`cases/raw_feedback/parsed/`](cases/raw_feedback/parsed/) 与 [`tools/`](tools/) 的审阅、候选、预检、计划层。
+> 以下旧 dry-run 叙述已归档精简。当前事实以本文件顶部“0. 最新交接 · 问真 Top30 转案、报告与工具索引维护”为准：Top30 已完成 OCR 修正、正式转案、报告生成、case/report 互链与 feedback readiness 核查。不要再按旧流程判断为“仍有 4 个 OCR 阻塞样本”或“尚未创建正式 case”。
 
-核心结论：
+历史上下文仅保留用于追溯：
 
-- 已从男女优先索引抽取 98 个完整问真排盘样本。
-- 已生成 Top30 人工审阅包。
-- Top30 中 4 个因 OCR / 干支异常进入阻塞队列。
-- 26 个非阻塞候选已进入 staging manifest。
-- 26 个 staging 候选通过 promotion preflight，状态均为 READY。
-- 已生成首批 5 个 READY 候选的正式转案 dry-run 计划。
-- 下一步必须先人工确认首批 5 案转案方案，再创建正式 case 目录并逐案运行 preflight。
+- 问真排盘补录阶段曾从男女优先索引抽取 98 个完整样本，并生成 Top30 审阅包。
+- 旧阶段曾有 4 个 OCR 阻塞 raw_id：`RF-2026-000771`、`RF-2026-000551`、`RF-2026-000894`、`RF-2026-000684`；这些样本已在最新交接中完成修正并转正式 case。
+- 旧阶段曾有 26 个非阻塞 staging 候选与首批 5 案 dry-run promotion plan；当前 Top30 已进入正式 case/report 归档状态，不应再要求“先确认首批 5 案再创建 case”。
+- 相关历史产物仍可按需查阅：[`cases/raw_feedback/parsed/wenzhen_repan_top30_review.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_review.md)、[`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl`](cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl)、[`cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight-summary.json)、[`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md`](cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md)。
 
----
+当前后续如继续问真 Top30，只做两类工作：
 
-## 2. 本轮已完成产物
-
-### 2.1 索引同步与完整样本抽取
-
-已完成问真排盘 split index 的状态同步与完整样本抽取，相关工具与产物：
-
-- [`tools/sync_wenzhen_repan_index_status.py`](tools/sync_wenzhen_repan_index_status.py)：同步导航页、男命优先索引、女命优先索引的状态与统计。
-- [`tools/extract_wenzhen_repan_completed.py`](tools/extract_wenzhen_repan_completed.py)：从 split indexes 抽取完整排盘样本。
-- [`cases/raw_feedback/parsed/wenzhen_repan_completed.jsonl`](cases/raw_feedback/parsed/wenzhen_repan_completed.jsonl)：98 条完整排盘结构化记录。
-- [`cases/raw_feedback/parsed/wenzhen_repan_completed-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_completed-summary.json)：抽取汇总。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30.md`](cases/raw_feedback/parsed/wenzhen_repan_top30.md)：初版 Top30 候选列表。
-
-关键结果：
-
-- 完整样本数：98。
-- 性别分布：男 59、女 39。
-- 质量分布：A 1、B 97。
-- 干支异常标记：10 条，主要来自 OCR 字符，如“王”疑似“壬”、“西”疑似“酉”。
-
-### 2.2 Top30 人工审阅包
-
-已生成 Top30 人工审阅包，用于命理师逐案核对排盘、事实与原始反馈摘录：
-
-- [`tools/build_wenzhen_top30_review_pack.py`](tools/build_wenzhen_top30_review_pack.py)：生成 Top30 审阅包。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_review.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_review.md)：Top30 人工审阅 Markdown 包。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_review-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_top30_review-summary.json)：审阅包摘要。
-
-验证结果：
-
-- 审阅 section：30。
-- 表格记录：30。
-- 人工 checklist：30。
-- 缺失 draft：0。
-- 事件数不一致：0。
-- review flags：`invalid_ganzhi_chars=3`、`ocr_wang_for_ren=3`、`ocr_xi_for_you=2`。
-
-### 2.3 OCR 阻塞队列与 promotion checklist
-
-已对 Top30 进行 review gate 分流：
-
-- [`tools/build_wenzhen_top30_review_gate.py`](tools/build_wenzhen_top30_review_gate.py)：生成 OCR 阻塞队列与 promotion checklist。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_ocr_queue.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_ocr_queue.md)：需要先人工校正的 OCR / 干支异常队列。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_checklist.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_checklist.md)：26 个非阻塞候选的转案准备清单。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_review_gate-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_top30_review_gate-summary.json)：分流摘要。
-
-阻塞 raw_id：
-
-- `RF-2026-000771`
-- `RF-2026-000551`
-- `RF-2026-000894`
-- `RF-2026-000684`
-
-验证结果：
-
-- OCR queue：4。
-- Promotion candidates：26。
-- Top30 总数一致：30。
-- OCR 队列与 promotion checklist 未重复、未遗漏。
-
-### 2.4 Staging manifest
-
-已把 26 个非阻塞候选转成机器可读 staging manifest：
-
-- [`tools/build_wenzhen_top30_staging_manifest.py`](tools/build_wenzhen_top30_staging_manifest.py)：生成 staging manifest。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl`](cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.jsonl)：26 行 staging JSONL。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest-summary.json)：staging 摘要。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_staging_manifest.md)：人工可读 staging index。
-
-验证结果：
-
-- JSONL rows：26。
-- Markdown table rows：26。
-- required fields 缺失：0。
-- blocking flags inside staging：0。
-- 所有候选状态均为 `staged_pending_human_review`。
-
-### 2.5 Promotion preflight
-
-已对 26 个 staging 候选执行正式转案前预检：
-
-- [`tools/preflight_wenzhen_staging_promotion.py`](tools/preflight_wenzhen_staging_promotion.py)：检查 suggested case id、draft 来源、字段完整性、事件数、四柱格式、目标目录冲突。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight.md)：preflight 报告。
-- [`cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight-summary.json`](cases/raw_feedback/parsed/wenzhen_repan_top30_promotion_preflight-summary.json)：preflight 摘要。
-
-验证结果：
-
-- Candidate count：26。
-- READY：26。
-- BLOCKED：0。
-- Errors：0。
-- Warnings：0。
-- 与 staging manifest 数量一致。
-
-### 2.6 首批 5 案 dry-run 转案计划
-
-已为前 5 个 READY 候选生成正式转案 dry-run 方案：
-
-- [`tools/build_wenzhen_first5_promotion_plan.py`](tools/build_wenzhen_first5_promotion_plan.py)：生成首批 5 案 dry-run 转案方案。
-- [`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.json`](cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.json)：结构化转案计划。
-- [`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md`](cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md)：人工可读转案计划。
-
-首批 raw_id：
-
-- `RF-2026-000345`
-- `RF-2026-000441`
-- `RF-2026-000864`
-- `RF-2026-000243`
-- `RF-2026-000524`
-
-验证结果：
-
-- Plan count：5。
-- Markdown case sections：5。
-- Markdown table rows：5。
-- 每案目标文件数：4。
-- 目标正式目录尚未创建，检查结果为空列表。
-
----
-
-## 3. 当前硬性约束
-
-后续 agent 必须遵守：
-
-1. 不得把 [`cases/raw_feedback/parsed/`](cases/raw_feedback/parsed/) 中的候选样本直接当作正式案例使用。
-2. 不得在未获得人工确认前创建新的 [`cases/`](cases/) 下 `C-...` 正式目录。
-3. 阻塞队列中的 4 个 raw_id 必须先人工校正 OCR / 干支，再重新走 gate、staging、preflight。
-4. 正式转案时每个 case 目录至少需要生成：`input.md`、`analysis.md`、`feedback.md`、`statement_index.json`。
-5. 每个正式 case 的 `input.md` 创建后，必须运行 `python -m tools.preflight cases/<case_id>/input.md`。
-6. 每个正式 case 必须保留 raw_id、source index path、draft path、staging manifest path，方便后续反馈摄入追踪。
-7. 本轮所有工具均为非破坏性工具，不应自动修改正式 case 目录。
-
----
-
-## 4. 下一步推荐执行顺序
-
-### 4.1 人工确认首批 5 案
-
-先打开并核对：
-
-- [`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md`](cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md)
-- [`cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.json`](cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.json)
-
-需要确认：
-
-- suggested case id 是否接受。
-- 四柱与问真原文是否一致。
-- birth fields 是否足够生成正式 `input.md`。
-- known facts 是否可迁移到正式 `feedback.md`。
-- 是否允许创建对应正式目录。
-
-### 4.2 创建首批 5 个正式 case
-
-人工确认后，再创建 5 个正式目录。每案按 dry-run plan 生成：
-
-- `input.md`：来自 staging 排盘、birth 字段与原 draft known_facts。
-- `analysis.md`：记录来源、转案说明、待正式分析占位。
-- `feedback.md`：迁移已知事实，并保留 raw_id 追踪。
-- `statement_index.json`：初始化 statement 追踪骨架。
-
-创建后逐案运行：
-
-```bash
-python -m tools.preflight cases/<case_id>/input.md
-```
-
-### 4.3 通过首批 5 案后再批量推进
-
-若首批 5 案通过正式 preflight：
-
-1. 复用相同模板与字段映射。
-2. 继续处理剩余 21 个 READY staging 候选。
-3. 每批建议 5-10 个，不建议一次性创建 26 个。
-4. 每批完成后更新对应 review / staging / preflight 记录。
-
-### 4.4 单独处理 OCR 阻塞队列
-
-阻塞 raw_id 不应混入首批转案：
-
-- `RF-2026-000771`
-- `RF-2026-000551`
-- `RF-2026-000894`
-- `RF-2026-000684`
-
-处理顺序：
-
-1. 打开 [`cases/raw_feedback/parsed/wenzhen_repan_top30_ocr_queue.md`](cases/raw_feedback/parsed/wenzhen_repan_top30_ocr_queue.md)。
-2. 人工核对问真截图 / 原文中“王”“西”等 OCR 可疑字。
-3. 修正源 draft 或索引中的排盘文本。
-4. 重新运行 review gate、staging manifest、promotion preflight。
-5. 只有通过 preflight 后才进入正式转案。
-
----
-
-## 5. 建议给下一 agent 的开场指令
-
-可直接复制以下指令给新 agent：
-
-```text
-请读取 handoff.md，并继续问真排盘 Top30 转正式案例流程。当前已经完成 Top30 review、OCR gate、26 个 staging 候选、promotion preflight，以及首批 5 案 dry-run promotion plan。不要直接创建全部正式 cases；先读取 cases/raw_feedback/parsed/wenzhen_repan_first5_promotion_plan.md 与 .json，按计划创建首批 5 个正式 case 目录，每案生成 input.md、analysis.md、feedback.md、statement_index.json，并逐案运行 python -m tools.preflight cases/<case_id>/input.md。不要处理 OCR 阻塞队列，除非我明确要求修 OCR。
-```
-
----
-
-## 6. 快速核验命令
-
-如需复核当前状态，可运行：
-
-```bash
-python tools/build_wenzhen_top30_review_pack.py --dry-run
-python tools/build_wenzhen_top30_review_gate.py --dry-run
-python tools/build_wenzhen_top30_staging_manifest.py --dry-run
-python tools/preflight_wenzhen_staging_promotion.py --dry-run
-python tools/build_wenzhen_first5_promotion_plan.py --dry-run
-```
-
-如需重建非破坏性产物，可去掉 `--dry-run`。重建这些产物不会创建正式 [`cases/`](cases/) 下的 `C-...` 目录。
+1. 给 30 个 RF case 的 [`feedback.md`](cases/) 人工补充 `[S-...] [y/n/?/skip]` 后，再运行 strict v1.3 feedback ingest / batch review。
+2. 或对已归档的 30 份 [`reports/*-analyst-report.md`](reports/) 与 30 个 [`cases/C-2026-RF*/`](cases/) 做提交前质量核查。
 
 ---
 
