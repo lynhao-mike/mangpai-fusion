@@ -62,6 +62,18 @@ _IF_INNER_RE = re.compile(
 _VAR_RE = re.compile(r"\{\{\s*([\w.]+)\s*\}\}")
 
 
+def _write_text_if_changed(path: Path, text: str, *, encoding: str = "utf-8") -> bool:
+    """仅在内容变化时写盘，减少批量重复渲染的无效 I/O。"""
+    if path.exists():
+        try:
+            if path.read_text(encoding=encoding) == text:
+                return False
+        except OSError:
+            pass
+    path.write_text(text, encoding=encoding)
+    return True
+
+
 # ============================================================
 # 0. 双护栏异常 + 工具函数
 # ============================================================
@@ -189,10 +201,8 @@ def render_from_output(
         idx_dir = cases_root / case_id
         idx_dir.mkdir(parents=True, exist_ok=True)
         idx = _build_statement_index(captured_ctx, case_id)
-        (idx_dir / "statement_index.json").write_text(
-            json.dumps(idx, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+        idx_text = json.dumps(idx, ensure_ascii=False, indent=2)
+        _write_text_if_changed(idx_dir / "statement_index.json", idx_text)
     except Exception as exc:
         # statement_index 落盘失败不阻断报告交付，但必须显式暴露（否则 D5 反馈会静默降级）。
         warnings.warn(
@@ -1377,34 +1387,44 @@ def _render_template(template: str, ctx: dict) -> str:
         items = ctx.get(list_key, [])
         if not isinstance(items, list):
             return ""
+
+        item_field_re = re.compile(
+            r"\{\{\s*" + re.escape(item_name) + r"\.(\w+)\s*\}\}"
+        )
+        nested_for_re = re.compile(
+            r"\{%\s*for\s+(\w+)\s+in\s+" + re.escape(item_name) +
+            r"\.(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}",
+            re.DOTALL,
+        )
+
+        nested_item_field_re_cache: dict[str, re.Pattern[str]] = {}
+
         parts = []
         for item in items:
             b = body
-            # 展开 {{ item.field }} 和 {{ item }}
+            # 展开 {{ item.field }} 和嵌套 {% for ev in item.evidence %}。
             if isinstance(item, dict):
-                # {{ item.field }} → item["field"]
-                b = re.sub(
-                    r"\{\{\s*" + re.escape(item_name) + r"\.(\w+)\s*\}\}",
+                b = item_field_re.sub(
                     lambda mm, i=item: str(i.get(mm.group(1), "")),
                     b,
                 )
-                # 嵌套 {% for ev in item.evidence %} 展开
-                nested_for_re = re.compile(
-                    r"\{%\s*for\s+(\w+)\s+in\s+" + re.escape(item_name) +
-                    r"\.(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}",
-                    re.DOTALL,
-                )
+
                 def _expand_nested(mm, item=item):
                     n_item_name = mm.group(1)
                     n_field = mm.group(2)
                     n_body = mm.group(3)
                     n_list = item.get(n_field, []) if isinstance(item, dict) else []
+                    n_item_field_re = nested_item_field_re_cache.get(n_item_name)
+                    if n_item_field_re is None:
+                        n_item_field_re = re.compile(
+                            r"\{\{\s*" + re.escape(n_item_name) + r"\.(\w+)\s*\}\}"
+                        )
+                        nested_item_field_re_cache[n_item_name] = n_item_field_re
                     np_parts = []
                     for ni in (n_list or []):
                         nb = n_body
                         if isinstance(ni, dict):
-                            nb = re.sub(
-                                r"\{\{\s*" + re.escape(n_item_name) + r"\.(\w+)\s*\}\}",
+                            nb = n_item_field_re.sub(
                                 lambda mmm, ni=ni: str(ni.get(mmm.group(1), "")),
                                 nb,
                             )
