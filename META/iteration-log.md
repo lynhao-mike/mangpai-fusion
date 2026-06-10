@@ -1296,3 +1296,27 @@ git revert <commit-hash>
 # 或恢复快照：
 META/calibration/2026-06-08-after-C-2026-RF000524-坤-己巳丙寅戊戌丁巳.snapshot.yaml
 ```
+
+
+---
+
+## 2026-06-10 17:35 · ingest C-2026-032-乾-癸酉乙卯戊戌甲寅
+
+case_count: 28
+trigger: ingest_feedback
+
+### Notes
+
+- analysis.md 中未检出任何含规律 ID 的结论段
+
+### Cross-School Scan
+- 未触发（case_count=28，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-10-after-C-2026-032-乾-癸酉乙卯戊戌甲寅.snapshot.yaml
+```

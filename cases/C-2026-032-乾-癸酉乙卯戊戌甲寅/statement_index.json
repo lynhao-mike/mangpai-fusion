@@ -3,14 +3,23 @@
   "report_path": "reports/C-2026-032-乾-癸酉乙卯戊戌甲寅-content-report.md",
   "input_path": "cases/C-2026-032-乾-癸酉乙卯戊戌甲寅/input.md",
   "feedback_path": "cases/C-2026-032-乾-癸酉乙卯戊戌甲寅/feedback.md",
-  "status": "initial_pending_feedback",
+  "status": "feedback_ingested_2026-06-10",
+  "feedback_summary": {
+    "marriage": "2018 戊戌领证，初婚至今稳定 10 年+。",
+    "children": "一儿一女，先男后女；长子 2021-05-11 10:30，长女 2025-06-23 04:30。",
+    "career": "省属国企副总。",
+    "income": "年入 300-500 万。",
+    "investment_loss": "丙午月期货亏损 30 多万元。",
+    "pending": ["最高学历", "证照资质", "2014-2016 关键节点", "具体升职年份", "资产结构", "健康史", "丙午月具体年份与交易品种"]
+  },
   "statements": [
     {
       "statement_id": "C2026032-S001",
       "domain": "命局总论",
       "statement": "官杀旺、财官同来、身坐戌库，需印火通关与规则承压。",
-      "confidence": {"star": 4, "percent": 82},
-      "feedback_state": "pending",
+      "confidence": {"star": 5, "percent": 88},
+      "feedback_state": "hit",
+      "feedback_evidence": ["省属国企副总", "年入 300-500 万", "2018 领证并稳定", "一儿一女"],
       "evidence": ["M1-D-001", "M2-Y-091", "M3-R-018"]
     },
     {
@@ -19,47 +28,95 @@
       "statement": "资质中上，但早年压力、偏科与阶段性厌学风险并存。",
       "confidence": {"star": 4, "percent": 78},
       "feedback_state": "pending",
+      "feedback_evidence": [],
       "evidence": ["M1-D-021", "M2-Y-014", "MR-002"]
     },
     {
       "statement_id": "C2026032-S003",
       "domain": "事业",
-      "statement": "适合规则、技术、管理、风控、工程、平台型岗位。",
-      "confidence": {"star": 4, "percent": 80},
-      "feedback_state": "pending",
+      "statement": "适合规则、技术、管理、风控、工程、平台型岗位；反馈显示已达省属国企副总层级。",
+      "confidence": {"star": 5, "percent": 90},
+      "feedback_state": "strong_hit",
+      "feedback_evidence": ["省属国企副总"],
       "evidence": ["M1-D-005", "M2-Y-091", "G-CAREER-001"]
     },
     {
       "statement_id": "C2026032-S004",
       "domain": "财富",
-      "statement": "有财机但需风控，当前壬子运财动强，不宜高杠杆。",
-      "confidence": {"star": 4, "percent": 76},
-      "feedback_state": "pending",
+      "statement": "有财机但需风控，当前壬子运财动强；反馈显示年入 300-500 万，财富层级高于初断中位；丙午月期货亏损 30 多万元验证投机财高风险分支。",
+      "confidence": {"star": 5, "percent": 88},
+      "feedback_state": "strong_hit_adjusted_up_with_speculation_risk",
+      "feedback_evidence": ["年入 300-500 万", "丙午月期货亏损 30 多万元"],
       "evidence": ["M1-D-173", "M2-Y-035", "MR-002"]
     },
     {
       "statement_id": "C2026032-S005",
       "domain": "婚姻",
-      "statement": "婚恋重边界，关系易受工作、钱与家庭规则牵动。",
-      "confidence": {"star": 3, "percent": 70},
-      "feedback_state": "pending",
+      "statement": "婚恋重边界但可成；反馈显示 2018 领证、初婚稳定 10 年+、一儿一女，冲害破象需降权。",
+      "confidence": {"star": 4, "percent": 78},
+      "feedback_state": "partial_hit_adjusted",
+      "feedback_evidence": ["2018 戊戌领证", "初婚至今稳定 10 年+", "一儿一女"],
       "evidence": ["M1-D-044", "M2-Y-073", "G-HUNYIN-001"]
     },
     {
       "statement_id": "C2026032-S006",
       "domain": "健康",
       "statement": "重点关注脾胃、肝胆、筋骨、睡眠焦虑和湿寒压力。",
-      "confidence": {"star": 3, "percent": 72},
+      "confidence": {"star": 3, "percent": 68},
       "feedback_state": "pending",
+      "feedback_evidence": [],
       "evidence": ["M1-D-308", "M3-R-018", "MR-002"]
     },
     {
       "statement_id": "C2026032-S007",
       "domain": "性格",
       "statement": "责任感强、目标感强、抗压硬扛，外柔内硬且容易自我紧绷。",
-      "confidence": {"star": 4, "percent": 81},
-      "feedback_state": "pending",
+      "confidence": {"star": 4, "percent": 82},
+      "feedback_state": "indirect_hit",
+      "feedback_evidence": ["省属国企副总", "高收入", "婚育责任稳定承接"],
       "evidence": ["M1-D-142", "M2-Y-021", "M3-R-020"]
+    }
+  ],
+  "event_hits": [
+    {
+      "event_id": "C2026032-E2018-MARRIAGE",
+      "year": 2018,
+      "domain": "婚姻",
+      "event": "2018 戊戌领证",
+      "hit_state": "hit",
+      "calibration_note": "壬子运初段财动、戊戌年引动日支戌库与家庭名分。"
+    },
+    {
+      "event_id": "C2026032-E2021-SON",
+      "year": 2021,
+      "domain": "子女",
+      "event": "长子出生，2021-05-11 10:30",
+      "hit_state": "new_fact",
+      "calibration_note": "纳入子女与家庭责任校准。"
+    },
+    {
+      "event_id": "C2026032-E2025-DAUGHTER",
+      "year": 2025,
+      "domain": "子女",
+      "event": "长女出生，2025-06-23 04:30",
+      "hit_state": "new_fact",
+      "calibration_note": "2024-2026 家庭责任窗口得到现实反馈。"
+    },
+    {
+      "event_id": "C2026032-ECAREER-INCOME",
+      "year": null,
+      "domain": "事业财富",
+      "event": "省属国企副总，年入 300-500 万",
+      "hit_state": "strong_hit",
+      "calibration_note": "事业与财富层级上调；待补具体任职年份。"
+    },
+    {
+      "event_id": "C2026032-EPINGWU-FUTURES-LOSS",
+      "year": null,
+      "domain": "财富",
+      "event": "丙午月期货亏损 30 多万元",
+      "hit_state": "risk_hit",
+      "calibration_note": "壬子大运叠丙午流年或丙午月，子午冲动偏财，投机、杠杆与短线交易风险应上调；职业现金流与投机财需分轨判断。"
     }
   ],
   "domain_layers": {
