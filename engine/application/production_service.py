@@ -365,8 +365,8 @@ class ProductionAnalysisService:
 
     def _write_report_artifact(self, *, case_id: str, report_md: str, reports_dir: Path) -> Path:
         reports_dir.mkdir(parents=True, exist_ok=True)
-        report_path = reports_dir / f"{case_id}-analyst-report.md"
-        tmp_path = reports_dir / f".{case_id}-analyst-report.tmp"
+        report_path = reports_dir / f"{case_id}-content-report.md"
+        tmp_path = reports_dir / f".{case_id}-content-report.tmp"
         tmp_path.write_text(report_md, encoding="utf-8")
         shutil.move(str(tmp_path), str(report_path))
         return report_path

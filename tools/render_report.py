@@ -96,68 +96,13 @@ def save_findings(
 ) -> Path:
     """将 D1-D4 Findings JSON 写入 cases/C-XXX/findings/。
 
-    按 07-pipeline-flow.md § 三/§ 四/§ 五/§ 六 落盘约定：
-        cases/C-XXX/findings/energy.json
-        cases/C-XXX/findings/picture.json
-        cases/C-XXX/findings/gate_results.json
-        cases/C-XXX/findings/support.json
-        cases/C-XXX/findings/analysis_output.json  (如 output 是 AnalysisOutput)
-
-    Args:
-        output: AnalysisOutput 或含 energy/picture/gate_results/support 字段的对象。
-        cases_dir: cases/ 目录路径（默认为仓库根 cases/）。
-
-    Returns:
-        findings 目录的 Path。
+    兼容保留工具层公开 API；实际落盘逻辑统一委托给
+    engine.infrastructure.findings_repository，避免工具层与基础设施层
+    各维护一份 JSON 序列化/文件写入实现。
     """
-    cases_root = Path(cases_dir) if cases_dir else ROOT / "cases"
+    from engine.infrastructure.findings_repository import save_findings as _save_findings
 
-    # 取 case_id
-    case_id: str = (
-        getattr(output, "case_id", None)
-        or (getattr(output, "energy", None) and getattr(output.energy, "case_id", ""))
-        or "UNKNOWN"
-    )
-
-    findings_dir = cases_root / case_id / "findings"
-    findings_dir.mkdir(parents=True, exist_ok=True)
-
-    def _write(name: str, obj: Any) -> None:
-        if obj is None:
-            return
-        if hasattr(obj, "to_json"):
-            text = obj.to_json(indent=2)
-        elif hasattr(obj, "to_dict"):
-            text = json.dumps(obj.to_dict(), ensure_ascii=False, indent=2)
-        elif isinstance(obj, list):
-            text = json.dumps(
-                [
-                    (x.to_dict() if hasattr(x, "to_dict") else x)
-                    for x in obj
-                ],
-                ensure_ascii=False,
-                indent=2,
-            )
-        else:
-            text = json.dumps(obj, ensure_ascii=False, indent=2)
-        (findings_dir / name).write_text(text, encoding="utf-8")
-
-    energy = getattr(output, "energy", None)
-    picture = getattr(output, "picture", None)
-    gates = getattr(output, "gate_results", None)
-    support = getattr(output, "support", None)
-
-    _write("energy.json", energy)
-    _write("picture.json", picture)
-    _write("gate_results.json", gates)
-    _write("support.json", support)
-
-    # analysis_output.json — only if the object itself has to_dict (i.e. AnalysisOutput)
-    if hasattr(output, "to_dict") and energy is not None:
-        _write("analysis_output.json", output)
-
-    return findings_dir
-
+    return _save_findings(output, cases_dir=cases_dir)
 
 def render_from_output(
     analysis_output: Any,

@@ -29,6 +29,7 @@ def test_archive_interaction_appends_case_event(tmp_path, monkeypatch) -> None:
     assert record.target_path == path
     assert record.case_id == case_id
     assert "# events" in text
+    assert f"{case_id}-content-report.md" in text
     assert f"{case_id}-analyst-report.md" in text
     assert f"../cases/{case_id}/events.md" in text
     assert not (case_dir / "events.md").exists()

@@ -105,11 +105,13 @@ def _ensure_header(path: Path, case_id: Optional[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if case_id:
         report_name = f"{case_id}-content-report.md"
+        legacy_report_name = f"{case_id}-analyst-report.md"
         case_events = f"../cases/{case_id}/events.md"
         title = (
             f"# events · {case_id}\n\n"
             "> 本文件归档报告侧专项问答、临时分析与处理结果。由 tools/event_archive.py 增量维护；不作为 feedback 计分事实源。\n"
             f"> 对应正式报告：[{report_name}]({report_name})\n"
+            f"> 历史报告兼容引用：[{legacy_report_name}]({legacy_report_name})\n"
             f"> 对应案例过程记录：[{case_events}]({case_events})\n\n"
         )
     else:

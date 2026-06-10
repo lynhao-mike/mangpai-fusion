@@ -135,7 +135,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert second["cache_hit"] is True
     assert calls["count"] == 1
     assert any(a["kind"] == "report" for a in first["artifacts"])
-    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-analyst-report.md").exists()
+    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-content-report.md").exists()
 
 
 def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:

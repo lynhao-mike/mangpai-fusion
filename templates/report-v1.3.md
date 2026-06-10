@@ -1,12 +1,13 @@
 # 命理师内容报告（统一版）· {{ case_id }} · {{ qian_kun }}
+<!-- # 八字分析报告 · {{ case_id }} · {{ qian_kun }} -->
 
 > {{ qian_kun }}造 · {{ bazi_str }}  
-> 多流派功能域并行直出 · V2 单报告模式  
+> 命理师内部版 · 多流派功能域并行直出 · V2 单报告模式
 > 生成日期：{{ analysis_date }} · mangpai-fusion 产品 v1.3.0 · pipeline/schema v1.4.0
 
 ---
 
-## 案例概览与输入复核
+## 0. 基本盘面
 
 | 区域 | 内容 |
 |---|---|
@@ -14,6 +15,8 @@
 | 命式 | {{ qian_kun }}造 |
 | 出生信息 | {{ birth_date }} |
 | 案例状态 | {{ case_status }} |
+| 四柱 | {{ bazi_str }} |
+| 大运 | {{ dayun_str }} |
 | 分析版本 | V2 命理师内容报告（统一版） |
 | 使用口径 | 子平格局派、滴天髓调候派、盲派共同分析；未成年人案例不得作婚恋事实断，只保留结构风险与未来验证边界。 |
 | 重要神煞 | {{ sz_shensha_brief }} |
@@ -29,7 +32,7 @@
 
 ---
 
-## 总裁决摘要
+## 一、命局核心结论
 
 - **总体命局等级**：{{ energy_ordinal }}（{{ energy_score_pct }}%）。这里的“命局等级”只表示原局结构的承载度、清晰度与可训练性，不等同于现实已经达到的社会阶层；现实层级必须结合学历、职业、家庭资源、反馈事实与大运落点再校准。
 - **主导结构**：日主 {{ sz_day_master }}，月令 {{ sz_yueling }}；体为 {{ sz_body_str }}，用为 {{ sz_purpose_str }}。
@@ -40,7 +43,7 @@
 
 ---
 
-## 三派共同命局底盘
+## 二、体用、病药与人生主线
 
 ### 盲派底盘
 
@@ -96,6 +99,18 @@
 - 本案暂无可单列输出的子平生产规则断语；若理论库存在但未触发，按 abstain 进入三派逐域裁判。
 {% endif %}
 
+### 子平 / 滴天髓生产规则参与
+
+{% if production_rule_conclusions %}
+{% for c in production_rule_conclusions %}
+- 子平规则参与 / 滴天髓规则参与：{{ c.statement }}（{{ c.schools_str }}；证据：{{ c.evidence_str }}；置信：★{{ c.star }}/{{ c.pct }}%）。
+{% endfor %}
+{% endif %}
+{% if not production_rule_conclusions %}
+- 子平规则参与：本案暂无可单列输出的子平生产规则断语。
+- 滴天髓规则参与：本案暂无可单列输出的滴天髓生产规则断语。
+{% endif %}
+
 ### 滴天髓调候底盘
 
 - 调候派底盘优先通过生产规则断语与三派逐域分析过程呈现；未接线领域必须明确标记 abstain，不得强行补断。
@@ -133,7 +148,7 @@
 
 ---
 
-## 三派逐域分析与主要事项十五层判断
+## 三、五维定位
 
 > 本节把“三派逐域分析过程”和“主要事项十五层判断”合并，避免先分析一次、后面再重复总结。每个事项同时给出三派依据、裁判结论、层级解释、界限解释、置信度与应期。
 
@@ -157,9 +172,33 @@
 - 本案尚未生成完整多专家功能域裁判过程；当前以命局底盘、生产规则断语和 15 层定位为主，不宣称三派已完成每一域强裁判。
 {% endif %}
 
+{% if parallel_domain_conclusions %}
+### 多专家功能域裁判（v1.5 旁路）
+
+| domain | consensus_layer | 主结论 | reading_ids | adjudication_id | expert_systems | supporting_experts | dissenting_experts | abstained_experts | feedback_state | 冲突解释 |
+|---|---|---|---|---|---|---|---|---|---|---|
+{% for c in parallel_domain_conclusions %}
+| {{ c.domain }} | {{ c.consensus_layer }} | {{ c.statement }} | {{ c.reading_ids_str }} | {{ c.adjudication_id }} | {{ c.expert_systems_str }} | {{ c.supporting_experts_str }} | {{ c.dissenting_experts_str }} | {{ c.abstained_experts_str }} | {{ c.feedback_state }} | {{ c.conflict_summary }} |
+{% endfor %}
+{% endif %}
+
 ---
 
-## 共识层（Consensus）
+## 四、婚恋与家庭
+
+{% if marriage_picture %}
+- 婚恋画像：初婚最佳窗口 {{ marriage_window_str }}；{{ marriage_picture_extra }}
+{% if marriage_age_warning %}
+- 婚恋提醒：{{ marriage_age_warning }}
+{% endif %}
+{% endif %}
+{% if not marriage_picture %}
+- 婚恋画像：待结合反馈补充；未成年人案例不得作婚恋事实断，只保留结构风险与未来验证边界。
+{% endif %}
+
+---
+
+## 五、事业与财富
 
 {% if consensus_conclusions %}
 {% for c in consensus_conclusions %}
@@ -222,13 +261,13 @@
 
 ---
 
-## 应期总表
+## 六、关键应期
 
 {% if gate_results %}
-| 事项 | 时间窗口 | 触发条件 | 置信度 |
-|---|---|---|---|
+| 年份 | 事项 | 时间窗口 | 触发条件 | 置信度 |
+|---|---|---|---|---|
 {% for g in gate_results %}
-| {{ g.domain }} | {{ g.year }}（{{ g.liunian }}，{{ g.dayun_str }}） | {{ g.candidate_event }}；触发：{{ g.primary_trigger_type }} | ★{{ g.star }}/{{ g.pct }}% |
+| {{ g.year }} | {{ g.domain }} | {{ g.year }}（{{ g.liunian }}，{{ g.dayun_str }}） | {{ g.candidate_event }}；触发：{{ g.primary_trigger_type }} | ★{{ g.star }}/{{ g.pct }}% |
 {% endfor %}
 {% endif %}
 {% if not gate_results %}
@@ -237,7 +276,20 @@
 
 ---
 
-## 跨域一致性检查
+## 七、健康与生活风险
+
+{% if support_health %}
+{% for h in support_health %}
+- {{ h.organ }}：{{ h.rationale }}（风险：{{ h.risk_ordinal }}）。
+{% endfor %}
+{% endif %}
+{% if not support_health %}
+- 健康风险需结合实际体检、作息和反馈继续校准；不以单一神煞推出重病或灾祸。
+{% endif %}
+
+---
+
+## 八、行动建议
 
 {% if parallel_domain_consistency_notes %}
 | 一致项 / 不一致项 | 处理结果 |
@@ -276,7 +328,7 @@
 
 ---
 
-## 总评
+## 九、总评
 
 - **命局等级解释**：{{ energy_ordinal }}（{{ energy_score_pct }}%）代表原局结构的强弱、做功能力与可训练空间；若现实反馈不支持，不可直接等同于社会成就。
 - **事业层级解释**：{{ guanming_type }}（第 {{ guanming_rank }} 取）表示事业更适合通过专业、规则、证照、项目责任和组织平台兑现；上升幅度取决于官杀运、平台机会与承担责任的程度。
