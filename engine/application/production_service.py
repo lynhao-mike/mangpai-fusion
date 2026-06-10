@@ -8,8 +8,6 @@ artifact inventory, and stable response envelopes.
 from __future__ import annotations
 
 import hashlib
-import json
-import shutil
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -17,6 +15,14 @@ from pathlib import Path
 from typing import Any, Optional, Union
 
 from engine import FINDINGS_SCHEMA_VERSION, PIPELINE_SCHEMA_VERSION, __version__
+from engine.application.artifact_inventory import (
+    append_artifact_if_exists,
+    collect_analysis_artifacts,
+    display_path,
+    file_sha256,
+    write_report_artifact,
+)
+from engine.application.cache_key import compute_cache_key as _compute_cache_key
 from engine.application.pipeline_runner import run_pipeline_e2e
 from engine.infrastructure.analysis_store import (
     AnalysisArtifactRecord,
@@ -223,16 +229,11 @@ class ProductionAnalysisService:
         render: bool,
         template_name: str,
     ) -> str:
-        payload = {
-            "engine_version": __version__,
-            "findings_schema_version": FINDINGS_SCHEMA_VERSION,
-            "pipeline_schema_version": PIPELINE_SCHEMA_VERSION,
-            "input_sha256": input_sha256,
-            "render": bool(render),
-            "template_name": template_name or DEFAULT_TEMPLATE_NAME,
-        }
-        raw = json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
-        return hashlib.sha256(raw).hexdigest()
+        return _compute_cache_key(
+            input_sha256=input_sha256,
+            render=render,
+            template_name=template_name,
+        )
 
     def new_analysis_id(self, now: Optional[str] = None) -> str:
         stamp = (now or _utc_now()).replace("-", "").replace(":", "")
@@ -324,52 +325,18 @@ class ProductionAnalysisService:
         request: SubmitAnalysisRequest,
         completed_at: str,
     ) -> list[AnalysisArtifactRecord]:
-        artifacts: list[AnalysisArtifactRecord] = []
-        findings_dir = (request.cases_dir or self.workspace_root / "cases") / case_id / "findings"
-        for kind, filename in (
-            ("energy", "energy.json"),
-            ("picture", "picture.json"),
-            ("gate_results", "gate_results.json"),
-            ("support", "support.json"),
-            ("analysis_output", "analysis_output.json"),
-            ("timing", "timing.json"),
-        ):
-            self._append_artifact_if_exists(
-                artifacts,
-                kind=kind,
-                path=findings_dir / filename,
-                created_at=completed_at,
-            )
-
-        statement_index = (request.cases_dir or self.workspace_root / "cases") / case_id / "statement_index.json"
-        self._append_artifact_if_exists(
-            artifacts,
-            kind="statement_index",
-            path=statement_index,
+        return collect_analysis_artifacts(
+            case_id=case_id,
+            output=output,
+            render=request.render,
+            cases_dir=request.cases_dir or self.workspace_root / "cases",
+            reports_dir=request.reports_dir or self.workspace_root / "reports",
+            workspace_root=self.workspace_root,
             created_at=completed_at,
         )
 
-        if request.render and hasattr(output, "report_md"):
-            report_path = self._write_report_artifact(
-                case_id=case_id,
-                report_md=str(getattr(output, "report_md")),
-                reports_dir=request.reports_dir or self.workspace_root / "reports",
-            )
-            self._append_artifact_if_exists(
-                artifacts,
-                kind="report",
-                path=report_path,
-                created_at=completed_at,
-            )
-        return artifacts
-
     def _write_report_artifact(self, *, case_id: str, report_md: str, reports_dir: Path) -> Path:
-        reports_dir.mkdir(parents=True, exist_ok=True)
-        report_path = reports_dir / f"{case_id}-content-report.md"
-        tmp_path = reports_dir / f".{case_id}-content-report.tmp"
-        tmp_path.write_text(report_md, encoding="utf-8")
-        shutil.move(str(tmp_path), str(report_path))
-        return report_path
+        return write_report_artifact(case_id=case_id, report_md=report_md, reports_dir=reports_dir)
 
     def _append_artifact_if_exists(
         self,
@@ -379,15 +346,12 @@ class ProductionAnalysisService:
         path: Path,
         created_at: str,
     ) -> None:
-        if not path.exists():
-            return
-        artifacts.append(
-            AnalysisArtifactRecord(
-                kind=kind,
-                path=self._display_path(path),
-                sha256=_file_sha256(path),
-                created_at=created_at,
-            )
+        append_artifact_if_exists(
+            artifacts,
+            kind=kind,
+            path=path,
+            workspace_root=self.workspace_root,
+            created_at=created_at,
         )
 
     def _build_summary(self, output: Any, timing: Any) -> dict[str, Any]:
@@ -410,11 +374,7 @@ class ProductionAnalysisService:
         return summary
 
     def _display_path(self, path: Union[str, Path]) -> str:
-        p = Path(path).resolve()
-        try:
-            return p.relative_to(self.workspace_root).as_posix()
-        except ValueError:
-            return str(p)
+        return display_path(path, workspace_root=self.workspace_root)
 
 
 def request_from_dict(payload: dict[str, Any]) -> SubmitAnalysisRequest:
@@ -442,8 +402,4 @@ def _utc_now() -> str:
 
 
 def _file_sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    return file_sha256(path)

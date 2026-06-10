@@ -250,7 +250,7 @@ def run_pipeline_e2e(
 
 
 def _load_default_adapters() -> PipelineAdapters:
-    """延迟加载 tools 默认适配器，保留旧调用方的 e2e 行为。"""
-    from tools.pipeline_adapters import default_pipeline_adapters
+    """延迟加载 infrastructure 默认适配器，保留旧调用方的 e2e 行为。"""
+    from engine.infrastructure.adapters import default_pipeline_adapters
 
     return default_pipeline_adapters()

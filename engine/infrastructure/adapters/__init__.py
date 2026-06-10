@@ -1,8 +1,4 @@
-"""Backward-compatible shim for pipeline adapters.
-
-Default adapter implementations live in engine.infrastructure.adapters so
-application use cases do not depend on tools.* modules for wiring.
-"""
+"""Infrastructure adapters implementing application ports."""
 
 from __future__ import annotations
 
