@@ -1320,3 +1320,38 @@ git revert <commit-hash>
 # 或恢复快照：
 META/calibration/2026-06-10-after-C-2026-032-乾-癸酉乙卯戊戌甲寅.snapshot.yaml
 ```
+
+
+---
+
+## 2026-06-11 08:43 · ingest C-2026-026-坤-癸未甲寅壬戌丙午
+
+case_count: 28
+trigger: ingest_feedback
+
+### Rule Updates (10 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-005 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-009 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-013 | duan | 2→3 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M2-Y-120 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-042 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-038 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-141 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-064 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M2-Y-021 | yang | 2→3 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M2-Y-019 | yang | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+
+### Cross-School Scan
+- 未触发（case_count=28，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-11-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapshot.yaml
+```
