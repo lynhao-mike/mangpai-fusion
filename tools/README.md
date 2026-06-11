@@ -22,6 +22,7 @@
 | [`output_linter.py`](output_linter.py:1) | 报告出口 lint / 禁越界输出 | 兜底护栏 #2 |
 | [`three_layer_check.py`](three_layer_check.py:1) | 应期三层门检查 | v1.2 W3 护栏 |
 | [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |
+| [`feedback_review_gate.py`](feedback_review_gate.py:1) | 反馈复核包摄入前置闸门 | 只读检查 `META/feedback-closure-review-pack-*.json` 是否已完成人工裁决 |
 | [`feedback_impact_report.py`](feedback_impact_report.py:1) | 反馈影响路径与置信度调整可视化 | dry-run 计算断语→规则→置信度变化，输出 Markdown + Mermaid |
 | [`late_feedback.py`](late_feedback.py:1) | 应期延迟反馈：±1 年窗口 | v1.3 D7 |
 | [`boundary_miner.py`](boundary_miner.py:1) | ≥5 miss 后自动挖候选边界 | v1.3 D3 |
@@ -87,6 +88,10 @@
 | [`promote_wenzhen_ready_batch.py`](promote_wenzhen_ready_batch.py:1) | 将问真 READY staging 候选批量转正式 case | 问真 Top30 批处理辅助；运行前需完成 review gate / preflight |
 | [`promote_wenzhen_staging_cases.py`](promote_wenzhen_staging_cases.py:1) | 将问真 staging records 转正式 case | 问真批处理迁移辅助；非日常反馈入口 |
 | [`sync_wenzhen_repan_index_status.py`](sync_wenzhen_repan_index_status.py:1) | 同步问真排盘拆分索引状态与统计 | 问真补录索引维护辅助 |
+| [`promote_wenzhen_pending_analysis_samples.py`](promote_wenzhen_pending_analysis_samples.py:1) | 将问真待分析样本批量初始化为正式 case | 问真批处理迁移辅助；支持 dry-run 与无效干支人工 review 标记 |
+| [`fix_wenzhen_invalid_ganzhi.py`](fix_wenzhen_invalid_ganzhi.py:1) | 修复问真样本 OCR 式无效干支字符 | 问真迁移修复辅助；支持 `--dry-run` |
+| [`normalize_wenzhen_fixed_cases.py`](normalize_wenzhen_fixed_cases.py:1) | 规范化已修复问真无效干支 case | 问真迁移修复辅助；同步结构化四柱/性别/大运字段 |
+| [`generate_wenzhen_fixed_reports.py`](generate_wenzhen_fixed_reports.py:1) | 为已修复问真无效干支 case 生成统一报告 | 问真迁移修复辅助；不运行反馈摄入 |
 | [`promote_candidate_rules_to_production.py`](promote_candidate_rules_to_production.py:1) | 候选规则迁移为生产规则 | 历史迁移辅助；非日常反馈入口 |
 
 ---
