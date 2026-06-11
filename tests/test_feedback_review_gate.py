@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from tools.feedback_review_gate import check_review_pack
+from tools.feedback_review_gate import check_review_pack, main
 
 
 def _base_item(statement_id: str = "S-001") -> dict[str, object]:
@@ -84,3 +84,40 @@ def test_feedback_review_gate_partial_adjudication_requires_allow_partial(tmp_pa
     assert allowed.pending_count == 1
     assert allowed.adjudicated_count == 1
     assert allowed.problems == []
+
+
+def test_feedback_review_gate_main_returns_nonzero_for_blocked_pack(tmp_path: Path, capsys) -> None:
+    path = _write_pack(tmp_path, _base_pack([_base_item()], ingest_blocked=True))
+
+    code = main([str(path)])
+    captured = capsys.readouterr()
+
+    assert code == 1
+    assert "feedback review gate: blocked" in captured.out
+    assert "1 item(s) still pending" in captured.out
+    assert captured.err == ""
+
+
+def test_feedback_review_gate_main_json_output_is_ascii_safe(tmp_path: Path, capsys) -> None:
+    item = _base_item()
+    item["verdict"] = "skip"
+    path = _write_pack(tmp_path, _base_pack([item], ingest_blocked=False))
+
+    code = main([str(path), "--format", "json"])
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+
+    assert code == 0
+    assert payload["status"] == "ready"
+    assert payload["adjudicated_count"] == 1
+    assert "乾" not in captured.out
+    assert "\\u4e7e" in captured.out
+
+
+def test_feedback_review_gate_main_returns_error_for_missing_pack(capsys) -> None:
+    code = main(["missing-review-pack.json"])
+    captured = capsys.readouterr()
+
+    assert code == 2
+    assert captured.out == ""
+    assert "feedback review gate: error: review pack not found" in captured.err
