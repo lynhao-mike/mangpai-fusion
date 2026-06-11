@@ -1,0 +1,1873 @@
+[
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2010,
+    "candidate_event": "吉,考日语****合格，进入日企",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "戊",
+        "丙",
+        "辰",
+        "丑"
+      ],
+      "rationale": "原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "戊"
+      ],
+      "rationale": "大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "辰",
+        "丑"
+      ],
+      "rationale": "流年庚寅 触发 3 个: ['倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "倒象成立",
+        "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+      "target_chars": [
+        "戊"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,考日语****合格，进入日企' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年庚寅 触发 3 个: ['倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "庚寅",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 3,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2012,
+    "candidate_event": "凶,工作压力大被领导压迫得**结节离职",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "丑",
+        "辰",
+        "丙"
+      ],
+      "rationale": "原局存在 事业 关键字: 戊,己,丑,辰,丙",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "戊"
+      ],
+      "rationale": "大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "辰",
+        "子",
+        "戊",
+        "丑"
+      ],
+      "rationale": "流年壬辰 触发 7 个: ['本字到', '合冲引动', '墓库开闭', '墓库开闭', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年壬辰 的地支 辰 = 原局关键字",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年辰 与原局时支子 半三合",
+        "target_chars": [
+          "辰",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局年支辰（藏 戊,乙,癸）含关键字 戊，被 流年辰刑 开库",
+        "target_chars": [
+          "辰",
+          "戊"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局月支辰（藏 戊,乙,癸）含关键字 戊，被 流年辰刑 开库",
+        "target_chars": [
+          "辰",
+          "戊"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "戊"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [
+      "职级升迁",
+      "财源/置业"
+    ],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 7
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 事件 '凶,工作压力大被领导压迫得**结节离职' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 戊,己,丑,辰,丙",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年壬辰 触发 7 个: ['本字到', '合冲引动', '墓库开闭', '墓库开闭', '倒象成立', '倒象成立',",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "壬辰",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 7,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2014,
+    "candidate_event": "吉,2013 年进入新公司，2014 年底升职加薪结婚",
+    "domain": "婚姻",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "丑",
+        "辰"
+      ],
+      "rationale": "原局存在 婚姻 关键字: 戊,己,丑,辰",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "戊"
+      ],
+      "rationale": "大运甲寅: 大运寅藏 戊 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "午",
+        "丑",
+        "子",
+        "寅",
+        "戊",
+        "辰"
+      ],
+      "rationale": "流年甲午 触发 8 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年甲午 的地支 午 = 原局关键字",
+        "target_chars": [
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年午 与原局日支丑 穿",
+        "target_chars": [
+          "午",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年午 与原局时支子 冲",
+        "target_chars": [
+          "午",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年午 与大运寅 半三合",
+        "target_chars": [
+          "午",
+          "寅"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "解合：原局丑子六合 + 流年午 冲开",
+        "target_chars": [
+          "丑",
+          "子",
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 4 种新关系(地支克,地支生,天干克,穿)，累计 6 种，增量次数 5",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 4",
+      "target_chars": [
+        "戊"
+      ],
+      "is_xiong": true
+    },
+    "door": "鸳鸯门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 8
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 婚姻 domain：能量层不强约束，由 picture 主导",
+      "[picture] 年龄 26 ∈ 初婚最佳窗口 [22,28]",
+      "[social_clock] 年龄 26 ∈ 结婚（含再婚） 期望窗口 [20,50]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 婚姻 关键字: 戊,己,丑,辰",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运甲寅: 大运寅藏 戊 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年甲午 触发 8 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立',",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 4",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "甲午",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 8,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2015,
+    "candidate_event": "吉,2015～2017 工作家庭都很顺利，升职加薪2016 年生娃",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "丑",
+        "辰",
+        "丙"
+      ],
+      "rationale": "原局存在 事业 关键字: 戊,己,丑,辰,丙",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丑",
+        "己",
+        "辛"
+      ],
+      "rationale": "大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "未",
+        "癸",
+        "丑",
+        "子",
+        "己"
+      ],
+      "rationale": "流年乙未 触发 10 个: ['本字到', '伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '墓库开闭', '墓库开闭', '倒象成立'] | 主触发=倒象成立: 用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,天干克)，累计 4 种，增量次",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年乙未 的地支 未 = 原局关键字",
+        "target_chars": [
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "伏吟",
+        "description": "大运癸丑 与原局日柱 伏吟",
+        "target_chars": [
+          "癸",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年未 与原局日支丑 冲",
+        "target_chars": [
+          "未",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年未 与原局时支子 穿",
+        "target_chars": [
+          "未",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年未 与大运丑 冲",
+        "target_chars": [
+          "未",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局时支子 六合",
+        "target_chars": [
+          "丑",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "解合：原局丑子六合 + 流年未 冲开",
+        "target_chars": [
+          "丑",
+          "子",
+          "未"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "流年未（木库）被大运丑冲开",
+        "target_chars": [
+          "未",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局日支丑（藏 己,癸,辛）含关键字 己，被 流年未冲 开库",
+        "target_chars": [
+          "丑",
+          "己"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,天干克)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,天干克)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "丑"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 10
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] D1 wealth_ceiling=巨富级·上（足以支撑成立性事件）",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 年龄 27 ∈ 升职 期望窗口 [25,65]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 戊,己,丑,辰,丙",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年乙未 触发 10 个: ['本字到', '伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,天干克)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "乙未",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 10,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2018,
+    "candidate_event": "凶,吉凶参半，升职加薪，但压力过大离职了",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "戊",
+        "丙",
+        "辰",
+        "丑"
+      ],
+      "rationale": "原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "丑"
+      ],
+      "rationale": "大运癸丑: 大运癸丑的天干癸∈ 必需字; 大运癸丑的地支丑∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "癸",
+        "丑",
+        "戌",
+        "辰",
+        "子"
+      ],
+      "rationale": "流年戊戌 触发 12 个: ['本字到', '伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '墓库开闭', '墓库开闭', '墓库开闭'] | 主触发=伏吟: 大运癸丑 与原局日柱 伏吟",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年戊戌 的天干 戊 = 原局关键字",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "伏吟",
+        "description": "大运癸丑 与原局日柱 伏吟",
+        "target_chars": [
+          "癸",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局年支辰 冲",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局月支辰 冲",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局日支丑 刑",
+        "target_chars": [
+          "戌",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与大运丑 刑",
+        "target_chars": [
+          "戌",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戊 与原局日柱干癸 合化火",
+        "target_chars": [
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戊 与大运癸 合化火",
+        "target_chars": [
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局时支子 六合",
+        "target_chars": [
+          "丑",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局年支辰（藏 戊,乙,癸）含关键字 戊,癸，被 流年戌冲 开库",
+        "target_chars": [
+          "辰",
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局月支辰（藏 戊,乙,癸）含关键字 戊,癸，被 流年戌冲 开库",
+        "target_chars": [
+          "辰",
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局日支丑（藏 己,癸,辛）含关键字 癸，被 流年戌刑 开库",
+        "target_chars": [
+          "丑",
+          "癸"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "伏吟",
+      "description": "大运癸丑 与原局日柱 伏吟",
+      "target_chars": [
+        "癸",
+        "丑"
+      ],
+      "is_xiong": false
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.91,
+      "posterior": 0.91,
+      "variance": 0.05,
+      "sample_n": 12
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 年龄 30 ∈ 升职 期望窗口 [25,65]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运癸丑: 大运癸丑的天干癸∈ 必需字; 大运癸丑的地支丑∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年戊戌 触发 12 个: ['本字到', '伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.2",
+        "school": "任",
+        "description": "主触发 [伏吟]: 大运癸丑 与原局日柱 伏吟",
+        "weight": 0.78
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "戊戌",
+      "primary_trigger_type": "伏吟",
+      "primary_trigger_strength": 0.78,
+      "n_triggers": 12,
+      "is_xiong": false,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2019,
+    "candidate_event": "凶,2019～2023 家庭开始不顺，开始欠债但工作学习都很好换了不错的工作，补了学历",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "丑",
+        "辰",
+        "丙"
+      ],
+      "rationale": "原局存在 事业 关键字: 戊,己,丑,辰,丙",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丑",
+        "己",
+        "辛"
+      ],
+      "rationale": "大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "己",
+        "癸",
+        "丑",
+        "子"
+      ],
+      "rationale": "流年己亥 触发 4 个: ['本字到', '伏吟', '合冲引动', '藏干透出'] | 主触发=伏吟: 大运癸丑 与原局日柱 伏吟",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年己亥 的天干 己 = 原局关键字",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "伏吟",
+        "description": "大运癸丑 与原局日柱 伏吟",
+        "target_chars": [
+          "癸",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局时支子 六合",
+        "target_chars": [
+          "丑",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "藏干透出",
+        "description": "流年己亥 透出原局 日支 藏干 己（原本不透）",
+        "target_chars": [
+          "己"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "伏吟",
+      "description": "大运癸丑 与原局日柱 伏吟",
+      "target_chars": [
+        "癸",
+        "丑"
+      ],
+      "is_xiong": false
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [
+      "职级升迁",
+      "财源/置业"
+    ],
+    "confidence": {
+      "star": 5,
+      "percent": 0.91,
+      "posterior": 0.91,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 事件 '凶,2019～2023 家庭开始不顺，开始欠债但工作学习都很好换了不错的工作，补了学历' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 戊,己,丑,辰,丙",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年己亥 触发 4 个: ['本字到', '伏吟', '合冲引动', '藏干透出'] | 主触发=伏吟: 大运癸丑 与原",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.2",
+        "school": "任",
+        "description": "主触发 [伏吟]: 大运癸丑 与原局日柱 伏吟",
+        "weight": 0.78
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "己亥",
+      "primary_trigger_type": "伏吟",
+      "primary_trigger_strength": 0.78,
+      "n_triggers": 4,
+      "is_xiong": false,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2023,
+    "candidate_event": "凶,换工作后突然被新公司辞退，小孩不上学",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "戊",
+        "己",
+        "丑",
+        "辰",
+        "丙"
+      ],
+      "rationale": "原局存在 事业 关键字: 戊,己,丑,辰,丙",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丑",
+        "己",
+        "辛"
+      ],
+      "rationale": "大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "丑",
+        "卯",
+        "辰",
+        "戊",
+        "子"
+      ],
+      "rationale": "流年癸卯 触发 6 个: ['伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,穿)，累计 4 种，增量次",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 1,
+    "triggers": [
+      {
+        "type": "伏吟",
+        "description": "大运癸丑 与原局日柱 伏吟",
+        "target_chars": [
+          "癸",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年卯 与原局年支辰 穿",
+        "target_chars": [
+          "卯",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年卯 与原局月支辰 穿",
+        "target_chars": [
+          "卯",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年癸 与原局年柱干戊 合化火",
+        "target_chars": [
+          "癸",
+          "戊"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局时支子 六合",
+        "target_chars": [
+          "丑",
+          "子"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,穿)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,穿)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "辰"
+      ],
+      "is_xiong": true
+    },
+    "door": "统领门",
+    "event_type_hypotheses": [
+      "职级升迁",
+      "财源/置业"
+    ],
+    "confidence": {
+      "star": 2,
+      "percent": 0.83,
+      "posterior": 0.83,
+      "variance": 0.05,
+      "sample_n": 6
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[硬约束] social_clock_consistent=False → passed_layers 从 3 钳到 1 (CFL-C014-003 v2)",
+      "[energy] D1 wealth_ceiling=巨富级·上（足以支撑成立性事件）",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 年龄 35 ∉ 升学/入学 期望窗口 [17,23] (容差 ±1 年也不含) → social_clock_consistent=False, passed_layers 应钳到 ≤ 1（CFL-C014-003 学制盲区律 v2）"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 戊,己,丑,辰,丙",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运癸丑: 大运癸丑的地支丑∈ 必需字; 大运丑藏 己 ∈ 必需字; 大运丑藏 辛 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年癸卯 触发 6 个: ['伏吟', '合冲引动', '合冲引动', '合冲引动', '合冲引动', '倒象成立'] ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,穿)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 1,
+      "liunian": "癸卯",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 6,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2001,
+    "candidate_event": "凶,2001～2002.初中突然成绩变得很好，好像开悟一样，不费力考全班第一 2003 有所下降",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "戊",
+        "丙",
+        "辰",
+        "丑"
+      ],
+      "rationale": "原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运乙卯未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "辛",
+        "丙",
+        "卯",
+        "辰",
+        "戊",
+        "丑"
+      ],
+      "rationale": "流年辛巳 触发 7 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年辛 与原局月柱干丙 合化水",
+        "target_chars": [
+          "辛",
+          "丙"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运卯 与原局年支辰 穿",
+        "target_chars": [
+          "卯",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运卯 与原局月支辰 穿",
+        "target_chars": [
+          "卯",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丙 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支生,天干合,天干生)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "丙"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 4 种新关系(地支克,地支生,天干克,穿)，累计 6 种，增量次数 4",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "戊"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 7
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,2001～2002.初中突然成绩变得很好，好像开悟一样，不费力考全班第一 2003 有所下降' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年辛巳 触发 7 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立', '倒象成立'",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(地支克,地支生,天干克)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "辛巳",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 7,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2006,
+    "candidate_event": "凶,2004～200**爱学习，看漫画书贪玩，但中途也发奋逆袭高二考进快班2006 年高考放弃了考 400 多分但是志愿没填好落榜了",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "戊",
+        "丙",
+        "辰",
+        "丑"
+      ],
+      "rationale": "原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "戊"
+      ],
+      "rationale": "大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "戌",
+        "辰",
+        "丑",
+        "戊",
+        "癸"
+      ],
+      "rationale": "流年丙戌 触发 10 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '墓库开闭', '墓库开闭', '墓库开闭', '倒象成立', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年丙戌 的天干 丙 = 原局关键字",
+        "target_chars": [
+          "丙"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局年支辰 冲",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局月支辰 冲",
+        "target_chars": [
+          "戌",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年戌 与原局日支丑 刑",
+        "target_chars": [
+          "戌",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局年支辰（藏 戊,乙,癸）含关键字 戊,癸，被 流年戌冲 开库",
+        "target_chars": [
+          "辰",
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局月支辰（藏 戊,乙,癸）含关键字 戊,癸，被 流年戌冲 开库",
+        "target_chars": [
+          "辰",
+          "戊",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "墓库开闭",
+        "description": "原局日支丑（藏 己,癸,辛）含关键字 癸，被 流年戌刑 开库",
+        "target_chars": [
+          "丑",
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "戊"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 辰 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(冲,地支克,天干克)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "辰"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 丑 倒象 [三态矛盾(A)]：大运/流年新增 3 种新关系(刑,地支克,天干克)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+      "target_chars": [
+        "戊"
+      ],
+      "is_xiong": true
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 10
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 年龄 18 ∈ 高考 期望窗口 [17,19]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运甲寅: 大运寅藏 丙 ∈ 必需字; 大运寅藏 戊 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丙戌 触发 10 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '墓库开闭', '墓库开闭'",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 戊 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(地支克,天干克)，累计 4 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "丙戌",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 10,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 1993,
+    "candidate_event": "凶,妈妈生病住院差点离世，家庭条件本来还可以但为了治病基本都花掉了",
+    "domain": "六亲",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "辰"
+      ],
+      "rationale": "原局存在 六亲-母 关键字: 丙,辰",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "年份 1993 在大运起运前: 目标年 1993 早于起运年 (1988+7.0) → 尚未交运",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "酉",
+        "辰",
+        "丑"
+      ],
+      "rationale": "流年癸酉 触发 3 个: ['合冲引动', '合冲引动', '合冲引动'] | 主触发=合冲引动: 流年酉 与原局年支辰 六合",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年酉 与原局年支辰 六合",
+        "target_chars": [
+          "酉",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年酉 与原局月支辰 六合",
+        "target_chars": [
+          "酉",
+          "辰"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年酉 与原局日支丑 半三合",
+        "target_chars": [
+          "酉",
+          "丑"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "合冲引动",
+      "description": "流年酉 与原局年支辰 六合",
+      "target_chars": [
+        "酉",
+        "辰"
+      ],
+      "is_xiong": false
+    },
+    "door": "天地门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.7,
+      "posterior": 0.7,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 凶应事件 '凶,妈妈生病住院差点离世，家庭条件本来还可以但为了治病基本都花掉了'：energy 不构成约束",
+      "[picture] domain=六亲 无 picture 强约束",
+      "[social_clock] 事件 '凶,妈妈生病住院差点离世，家庭条件本来还可以但为了治病基本都花掉了' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 六亲-母 关键字: 丙,辰",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年癸酉 触发 3 个: ['合冲引动', '合冲引动', '合冲引动'] | 主触发=合冲引动: 流年酉 与原局年支辰",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.3",
+        "school": "任",
+        "description": "主触发 [合冲引动]: 流年酉 与原局年支辰 六合",
+        "weight": 0.62
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "癸酉",
+      "primary_trigger_type": "合冲引动",
+      "primary_trigger_strength": 0.62,
+      "n_triggers": 3,
+      "is_xiong": false,
+      "sub_domain": "母",
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+    "year": 2016,
+    "candidate_event": "出生 性格特点: 内心光明，坚韧，懒，兴趣多，爱学习。有点偏激，容易被激怒，精神洁癖，冷漠。对自己喜欢的人很热情百分之百付出，不喜欢的人很冷漠不来往",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "戊",
+        "丙",
+        "辰",
+        "丑"
+      ],
+      "rationale": "原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "丑"
+      ],
+      "rationale": "大运癸丑: 大运癸丑的天干癸∈ 必需字; 大运癸丑的地支丑∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "癸",
+        "丑",
+        "子"
+      ],
+      "rationale": "流年丙申 触发 3 个: ['本字到', '伏吟', '合冲引动'] | 主触发=伏吟: 大运癸丑 与原局日柱 伏吟",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年丙申 的天干 丙 = 原局关键字",
+        "target_chars": [
+          "丙"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "伏吟",
+        "description": "大运癸丑 与原局日柱 伏吟",
+        "target_chars": [
+          "癸",
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局时支子 六合",
+        "target_chars": [
+          "丑",
+          "子"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "伏吟",
+      "description": "大运癸丑 与原局日柱 伏吟",
+      "target_chars": [
+        "癸",
+        "丑"
+      ],
+      "is_xiong": false
+    },
+    "door": null,
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.89,
+      "posterior": 0.89,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '出生 性格特点: 内心光明，坚韧，懒，兴趣多，爱学习。有点偏激，容易被激怒，精神洁癖，冷漠。对自己喜欢的人很热情百分之百付出，不喜欢的人很冷漠不来往' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 癸,戊,丙,辰,丑",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运癸丑: 大运癸丑的天干癸∈ 必需字; 大运癸丑的地支丑∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丙申 触发 3 个: ['本字到', '伏吟', '合冲引动'] | 主触发=伏吟: 大运癸丑 与原局日柱 伏吟",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.2",
+        "school": "任",
+        "description": "主触发 [伏吟]: 大运癸丑 与原局日柱 伏吟",
+        "weight": 0.78
+      }
+    ],
+    "upstream_energy_hash": "bb0e36c8ef3f0142",
+    "upstream_picture_hash": "c0bbc437c5feefc4",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "丙申",
+      "primary_trigger_type": "伏吟",
+      "primary_trigger_strength": 0.78,
+      "n_triggers": 3,
+      "is_xiong": false,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  }
+]

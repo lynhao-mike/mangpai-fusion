@@ -1,0 +1,1313 @@
+[
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2013,
+    "candidate_event": "凶,数学老师针对自己，时常辱骂自己，阿爷去世，之后父母关系变差，分居，自己和母亲生活",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "壬",
+        "癸",
+        "申"
+      ],
+      "rationale": "原局存在 事业 关键字: 壬,癸,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "寅",
+        "申",
+        "甲"
+      ],
+      "rationale": "大运丙寅: 大运丙寅的地支寅∈ 必需字; 大运寅冲原局年支申; 大运寅藏 甲 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "癸",
+        "巳",
+        "申",
+        "寅"
+      ],
+      "rationale": "流年癸巳 触发 6 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '藏干透出', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(六合,冲)，累计 5 种，增量次数",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年癸巳 的天干 癸 = 原局关键字",
+        "target_chars": [
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年巳 与原局年支申 六合",
+        "target_chars": [
+          "巳",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年巳 与大运寅 刑",
+        "target_chars": [
+          "巳",
+          "寅"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "藏干透出",
+        "description": "流年癸巳 透出原局 时支 藏干 癸（原本不透）",
+        "target_chars": [
+          "癸"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(六合,冲)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(六合,冲)，累计 5 种，增量次数 4",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [
+      "职级升迁",
+      "财源/置业"
+    ],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 6
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 凶应事件 '凶,数学老师针对自己，时常辱骂自己，阿爷去世，之后父母关系变差，分居，自己和母亲生活'：energy 不构成约束",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 事件 '凶,数学老师针对自己，时常辱骂自己，阿爷去世，之后父母关系变差，分居，自己和母亲生活' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 壬,癸,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运丙寅的地支寅∈ 必需字; 大运寅冲原局年支申; 大运寅藏 甲 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年癸巳 触发 6 个: ['本字到', '合冲引动', '合冲引动', '合冲引动', '藏干透出', '倒象成立']",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(六合,冲)，累计 5 种，增量次数 4",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "癸巳",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 6,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2014,
+    "candidate_event": "凶,钢琴 6 级考试前被门夹了手，手指骨折导致考级延迟。十一去奶奶家玩的时候路上一个陌生叔叔自称是认识自己的邻居，对我又搂又抱，但 qj 未遂我逃了",
+    "domain": "六亲",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "庚",
+        "申",
+        "乙",
+        "卯",
+        "壬",
+        "癸"
+      ],
+      "rationale": "原局存在 六亲 关键字: 庚,申,乙,卯,壬,癸",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "申",
+        "午",
+        "甲"
+      ],
+      "rationale": "大运丙寅: 大运寅冲原局年支申; 大运寅与原局日支午半三合; 大运寅藏 甲 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "午",
+        "寅",
+        "申"
+      ],
+      "rationale": "流年甲午 触发 6 个: ['本字到', '本字到', '合冲引动', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年甲午 的天干 甲 = 原局关键字",
+        "target_chars": [
+          "甲"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "本字到",
+        "description": "流年甲午 的地支 午 = 原局关键字",
+        "target_chars": [
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年午 与大运寅 半三合",
+        "target_chars": [
+          "午",
+          "寅"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局日支午 半三合",
+        "target_chars": [
+          "寅",
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "寿元门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 6
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=六亲 无 picture 强约束",
+      "[social_clock] 事件 '凶,钢琴 6 级考试前被门夹了手，手指骨折导致考级延迟。十一去奶奶家玩的时候路上一个陌生叔叔自称是认识自己的邻居，对我又搂又抱，但 qj 未遂我逃了' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 六亲 关键字: 庚,申,乙,卯,壬,癸",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运寅冲原局年支申; 大运寅与原局日支午半三合; 大运寅藏 甲 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年甲午 触发 6 个: ['本字到', '本字到', '合冲引动', '合冲引动', '合冲引动', '倒象成立'] ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "甲午",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 6,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2016,
+    "candidate_event": "吉,学习成绩不错，当上课代表，拿到三好学生等奖状",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "壬",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "申"
+      ],
+      "rationale": "大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "申",
+        "寅"
+      ],
+      "rationale": "流年丙申 触发 5 个: ['本字到', '本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年丙申 的天干 丙 = 原局关键字",
+        "target_chars": [
+          "丙"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "本字到",
+        "description": "流年丙申 的地支 申 = 原局关键字",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年申 与大运寅 冲",
+        "target_chars": [
+          "申",
+          "寅"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 5
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,学习成绩不错，当上课代表，拿到三好学生等奖状' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 丙,壬,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年丙申 触发 5 个: ['本字到', '本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "丙申",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 5,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2018,
+    "candidate_event": "吉,遇见一个很喜欢的人，过的比较开心，学习成绩不错",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "壬",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "申"
+      ],
+      "rationale": "大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "寅",
+        "申",
+        "壬"
+      ],
+      "rationale": "流年戊戌 触发 3 个: ['合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "壬"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 2 种新关系(冲,天干生)，累计 5 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "壬"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,遇见一个很喜欢的人，过的比较开心，学习成绩不错' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 丙,壬,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年戊戌 触发 3 个: ['合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 壬 倒象 [凶",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "戊戌",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 3,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2019,
+    "candidate_event": "凶,中考状态不对，头特别疼，没有考上重点高中，去了市第二的中学，和喜欢的人不欢而散",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "壬",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "申"
+      ],
+      "rationale": "大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "亥",
+        "申",
+        "寅",
+        "壬"
+      ],
+      "rationale": "流年己亥 触发 5 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=倒象成立: 用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 ",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年亥 与原局年支申 穿",
+        "target_chars": [
+          "亥",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年亥 与大运寅 六合",
+        "target_chars": [
+          "亥",
+          "寅"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 1",
+        "target_chars": [
+          "壬"
+        ],
+        "is_xiong": true
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 3 种新关系(冲,天干生,穿)，累计 6 种，增量次数 4",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 1",
+      "target_chars": [
+        "壬"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 5
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '凶,中考状态不对，头特别疼，没有考上重点高中，去了市第二的中学，和喜欢的人不欢而散' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 丙,壬,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年己亥 触发 5 个: ['合冲引动', '合冲引动', '合冲引动', '倒象成立', '倒象成立'] | 主触发=",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 壬 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(天干克)，累计 4 种，增量次数 1",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "己亥",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 5,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2020,
+    "candidate_event": "吉,学习成绩优异，年级前十，人际关系和睦，人缘很好，过的也比较开心。去上海和爸爸重逢，暑假自由自在",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "壬",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "申"
+      ],
+      "rationale": "大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "子",
+        "申",
+        "寅"
+      ],
+      "rationale": "流年庚子 触发 3 个: ['合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,半三合)，累计 5 种，增量次",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年子 与原局年支申 半三合",
+        "target_chars": [
+          "子",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,半三合)，累计 5 种，增量次数 3",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,半三合)，累计 5 种，增量次数 3",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 5,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 事件 '吉,学习成绩优异，年级前十，人际关系和睦，人缘很好，过的也比较开心。去上海和爸爸重逢，暑假自由自在' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 丙,壬,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运丙寅: 大运丙寅的天干丙∈ 必需字; 大运寅冲原局年支申",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年庚子 触发 3 个: ['合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [三",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [三态矛盾(A)]：大运/流年新增 2 种新关系(冲,半三合)，累计 5 种，增量次数 3",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "庚子",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 3,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2021,
+    "candidate_event": "吉,学习成绩拔尖，600＋也考过，同学老师很友善过的很开心",
+    "domain": "事业",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "壬",
+        "癸",
+        "申"
+      ],
+      "rationale": "原局存在 事业 关键字: 壬,癸,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "乙",
+        "癸"
+      ],
+      "rationale": "大运乙丑: 大运乙丑的天干乙∈ 必需字; 大运丑藏 癸 ∈ 必需字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "丑",
+        "午"
+      ],
+      "rationale": "流年辛丑 触发 3 个: ['本字到', '合冲引动', '合冲引动'] | 主触发=本字到: 流年辛丑 的地支 丑 = 原局关键字",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年辛丑 的地支 丑 = 原局关键字",
+        "target_chars": [
+          "丑"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年丑 与原局日支午 穿",
+        "target_chars": [
+          "丑",
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局日支午 穿",
+        "target_chars": [
+          "丑",
+          "午"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "本字到",
+      "description": "流年辛丑 的地支 丑 = 原局关键字",
+      "target_chars": [
+        "丑"
+      ],
+      "is_xiong": false
+    },
+    "door": "动门",
+    "event_type_hypotheses": [
+      "职级升迁",
+      "财源/置业"
+    ],
+    "confidence": {
+      "star": 4,
+      "percent": 0.73,
+      "posterior": 0.73,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] 事业 domain：picture 无强约束（参考 industry_pointers）",
+      "[social_clock] 事件 '吉,学习成绩拔尖，600＋也考过，同学老师很友善过的很开心' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 事业 关键字: 壬,癸,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2",
+        "school": "任",
+        "description": "L2 大运到位 → 大运乙丑: 大运乙丑的天干乙∈ 必需字; 大运丑藏 癸 ∈ 必需字",
+        "weight": 0.75
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年辛丑 触发 3 个: ['本字到', '合冲引动', '合冲引动'] | 主触发=本字到: 流年辛丑 的地支 丑 =",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.1",
+        "school": "任",
+        "description": "主触发 [本字到]: 流年辛丑 的地支 丑 = 原局关键字",
+        "weight": 0.65
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "辛丑",
+      "primary_trigger_type": "本字到",
+      "primary_trigger_strength": 0.65,
+      "n_triggers": 3,
+      "is_xiong": false,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2022,
+    "candidate_event": "凶,高考严重失利，去了一所普通一本，大学里郁郁寡欢",
+    "domain": "其他",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "壬",
+        "申"
+      ],
+      "rationale": "原局存在 其他 关键字: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": false,
+      "evidence_chars": [],
+      "rationale": "大运乙丑未提供 其他 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 丙,壬,申",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "壬",
+        "寅",
+        "申",
+        "丁"
+      ],
+      "rationale": "流年壬寅 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 2",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 2,
+    "triggers": [
+      {
+        "type": "本字到",
+        "description": "流年壬寅 的天干 壬 = 原局关键字",
+        "target_chars": [
+          "壬"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年寅 与原局年支申 冲",
+        "target_chars": [
+          "寅",
+          "申"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年壬 与原局月柱干丁 合化木",
+        "target_chars": [
+          "壬",
+          "丁"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "倒象成立",
+        "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 2",
+        "target_chars": [
+          "申"
+        ],
+        "is_xiong": true
+      }
+    ],
+    "primary_trigger": {
+      "type": "倒象成立",
+      "description": "用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 2",
+      "target_chars": [
+        "申"
+      ],
+      "is_xiong": true
+    },
+    "door": "牢灾门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 4,
+      "percent": 0.95,
+      "posterior": 0.95,
+      "variance": 0.05,
+      "sample_n": 4
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=其他 无 picture 强约束",
+      "[social_clock] 年龄 18 ∈ 高考 期望窗口 [17,19]"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 其他 关键字: 丙,壬,申",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年壬寅 触发 4 个: ['本字到', '合冲引动', '合冲引动', '倒象成立'] | 主触发=倒象成立: 用神 ",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.6",
+        "school": "任",
+        "description": "主触发 [倒象成立]: 用神 申 倒象 [凶煞引动(B)]：大运/流年新增 1 种新关系(冲)，累计 4 种，增量次数 2",
+        "weight": 0.85
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 2,
+      "final_passed_layers": 2,
+      "liunian": "壬寅",
+      "primary_trigger_type": "倒象成立",
+      "primary_trigger_strength": 0.85,
+      "n_triggers": 4,
+      "is_xiong": true,
+      "sub_domain": null,
+      "l2_via_transition": false
+    }
+  },
+  {
+    "schema_version": "1.4.0",
+    "school": "任",
+    "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+    "year": 2021,
+    "candidate_event": "有心动过速，心悸，后来改善睡眠一般，容易焦虑 性格特点: 急性子，外表热情内心阴郁",
+    "domain": "健康",
+    "layer1": {
+      "layer": "L1_原局有",
+      "passed": true,
+      "evidence_chars": [
+        "丙",
+        "午",
+        "卯"
+      ],
+      "rationale": "原局存在 健康 关键字: 丙,午,卯",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "layer2": {
+      "layer": "L2_大运到位",
+      "passed": true,
+      "evidence_chars": [
+        "甲"
+      ],
+      "rationale": "大运乙丑(过渡期): 过渡期：相邻大运甲子的天干甲∈ 必需字",
+      "used_transition": true,
+      "used_secondary_keys": false
+    },
+    "layer3": {
+      "layer": "L3_流年引爆",
+      "passed": true,
+      "evidence_chars": [
+        "丑",
+        "午",
+        "辛",
+        "丙"
+      ],
+      "rationale": "流年辛丑 触发 3 个: ['合冲引动', '合冲引动', '合冲引动'] | 主触发=合冲引动: 流年丑 与原局日支午 穿",
+      "used_transition": false,
+      "used_secondary_keys": false
+    },
+    "passed_layers": 3,
+    "triggers": [
+      {
+        "type": "合冲引动",
+        "description": "流年丑 与原局日支午 穿",
+        "target_chars": [
+          "丑",
+          "午"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "流年辛 与原局日柱干丙 合化水",
+        "target_chars": [
+          "辛",
+          "丙"
+        ],
+        "is_xiong": false
+      },
+      {
+        "type": "合冲引动",
+        "description": "大运丑 与原局日支午 穿",
+        "target_chars": [
+          "丑",
+          "午"
+        ],
+        "is_xiong": false
+      }
+    ],
+    "primary_trigger": {
+      "type": "合冲引动",
+      "description": "流年丑 与原局日支午 穿",
+      "target_chars": [
+        "丑",
+        "午"
+      ],
+      "is_xiong": false
+    },
+    "door": "动门",
+    "event_type_hypotheses": [],
+    "confidence": {
+      "star": 3,
+      "percent": 0.62,
+      "posterior": 0.62,
+      "variance": 0.05,
+      "sample_n": 3
+    },
+    "energy_consistent": true,
+    "picture_consistent": true,
+    "consistency_notes": [
+      "[energy] 非典型成立性事件，跳过 energy 一致性检查",
+      "[picture] domain=健康 无 picture 强约束",
+      "[social_clock] 事件 '有心动过速，心悸，后来改善睡眠一般，容易焦虑 性格特点: 急性子，外表热情内心阴郁' 非典型成立性事件，跳过 social_clock 检查"
+    ],
+    "evidence": [
+      {
+        "rule_id": "MR-LAYER1",
+        "school": "任",
+        "description": "L1 原局有 → 原局存在 健康 关键字: 丙,午,卯",
+        "weight": 0.7
+      },
+      {
+        "rule_id": "MR-LAYER2-TRANS",
+        "school": "任",
+        "description": "L2 大运到位 → 大运乙丑(过渡期): 过渡期：相邻大运甲子的天干甲∈ 必需字",
+        "weight": 0.65
+      },
+      {
+        "rule_id": "MR-LAYER3",
+        "school": "任",
+        "description": "L3 流年引爆 → 流年辛丑 触发 3 个: ['合冲引动', '合冲引动', '合冲引动'] | 主触发=合冲引动: 流年丑 与原局日支午",
+        "weight": 0.78
+      },
+      {
+        "rule_id": "M3-R-031.3",
+        "school": "任",
+        "description": "主触发 [合冲引动]: 流年丑 与原局日支午 穿",
+        "weight": 0.62
+      }
+    ],
+    "upstream_energy_hash": "0e92e3ccb087e901",
+    "upstream_picture_hash": "e425befc787ea74e",
+    "debug_info": {
+      "raw_passed_layers": 3,
+      "final_passed_layers": 3,
+      "liunian": "辛丑",
+      "primary_trigger_type": "合冲引动",
+      "primary_trigger_strength": 0.62,
+      "n_triggers": 3,
+      "is_xiong": false,
+      "sub_domain": null,
+      "l2_via_transition": true
+    }
+  }
+]
