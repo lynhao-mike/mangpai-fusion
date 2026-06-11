@@ -4,7 +4,93 @@
 
 ---
 
-## 0. 最新交接 · 问真 Top30 转案、报告与工具索引维护
+## 0. 最新交接 · 问真补盘全量重算闭环（方案 C 第一/二阶段）
+
+> 更新时间：2026-06-11。此节优先级高于下方旧交接；本轮已完成“问真补盘不是轻量回填，而是全量重算 + 硬门禁 + 可审计产物”的方案 C 第一/二阶段落地。下方 Top30 交接保留历史上下文，不再作为当前下一步判断依据。
+
+### 0.1 本轮已完成
+
+- 已形成诊断与方案备选文档：[`META/wenzhen-recompute-diagnosis-2026-06-11.md`](META/wenzhen-recompute-diagnosis-2026-06-11.md)。核心判断：补盘反馈闭环必须重跑真实 pipeline，不允许仅靠旧 `analysis_output.json` 或局部字段补写制造“已更新”假象。
+- 新增应用层重算编排：[`engine/application/recompute.py`](engine/application/recompute.py)，统一执行 preflight、真实 pipeline、statement index hard gate、前后 findings 快照、跨流派矩阵、结论 diff、置信度 delta、反馈绑定检查与 manifest 写入。
+- 新增跨流派裁判审计产物模块：
+  - [`engine/application/school_verdict.py`](engine/application/school_verdict.py)：生成 `school_verdict_matrix.json`。
+  - [`engine/application/conclusion_diff.py`](engine/application/conclusion_diff.py)：生成 `conclusion_diff.json`。
+  - [`engine/application/confidence_delta.py`](engine/application/confidence_delta.py)：生成 `confidence_delta.json`。
+- 新增 CLI：[`tools/recompute_wenzhen_case.py`](tools/recompute_wenzhen_case.py)，支持按 case id 或 `input.md` 路径执行：
+
+```bash
+python -m tools.recompute_wenzhen_case C-2026-XXX-乾-四柱 --json
+python -m tools.recompute_wenzhen_case cases/C-2026-XXX-乾-四柱/input.md --json
+```
+
+- CLI 默认启用 statement index 硬门禁：若 [`statement_index.json`](cases/) 缺失或 `statements` 为空，返回码为 `2`，状态为 `hard_gate_failed`；仅调试时可使用 `--allow-empty-statement-index`。
+- 已将重算能力暴露到应用层公共入口：[`engine/application/__init__.py`](engine/application/__init__.py) 导出 `RecomputeRequest`、`RecomputeResult`、`RecomputeHardGateError`、`recompute_wenzhen_case()`。
+- 已增强 `feedback_binding_check.json`：复用 [`tools/feedback_ingest.py`](tools/feedback_ingest.py) 的 `parse_statement_feedback()`，识别结构化 `[S-...] [y/n/?/skip]` 反馈数量、已绑定断语、未知 statement id，并写入 `recompute_manifest.json` 的 hard gate 摘要。
+- 新增回归测试：[`tests/test_wenzhen_recompute.py`](tests/test_wenzhen_recompute.py)，覆盖 artifact 写入、statement index hard gate、CLI 失败码、应用层公共导出、合法 statement id 反馈解析与未知 statement 识别。
+
+### 0.2 新增/更新的重算产物约定
+
+一次成功重算会在 case 目录生成或更新以下审计产物：
+
+- `findings.before.json`
+- `findings.after.json`
+- `school_verdict_matrix.json`
+- `conclusion_diff.json`
+- `confidence_delta.json`
+- `feedback_binding_check.json`
+- `recompute_manifest.json`
+
+同时要求 pipeline 产出非空 [`statement_index.json`](cases/)；统一内容报告仍按既有 pipeline/report 流程输出到 [`reports/`](reports/)。
+
+### 0.3 验证状态
+
+已通过：
+
+```bash
+pytest tests/test_wenzhen_recompute.py -q
+pytest tests/test_production_service.py -q
+python -m tools.recompute_wenzhen_case --help
+python -m compileall engine/application/conclusion_diff.py engine/application/confidence_delta.py engine/application/school_verdict.py engine/application/recompute.py tools/recompute_wenzhen_case.py tests/test_wenzhen_recompute.py
+python -m compileall engine/application/__init__.py engine/application/recompute.py tests/test_wenzhen_recompute.py
+```
+
+关键结果：
+
+- 重算聚焦测试：`4 passed`。
+- 生产服务相邻测试：`6 passed`。
+- CLI 帮助命令可正常加载。
+- 编译检查通过。
+
+### 0.4 当前工作区预期变更
+
+- [`META/wenzhen-recompute-diagnosis-2026-06-11.md`](META/wenzhen-recompute-diagnosis-2026-06-11.md)：诊断与方案备选文档。
+- [`engine/application/recompute.py`](engine/application/recompute.py)：全量重算应用层入口。
+- [`engine/application/school_verdict.py`](engine/application/school_verdict.py)：跨流派矩阵构建。
+- [`engine/application/conclusion_diff.py`](engine/application/conclusion_diff.py)：结论变化追踪。
+- [`engine/application/confidence_delta.py`](engine/application/confidence_delta.py)：置信度变化追踪。
+- [`engine/application/__init__.py`](engine/application/__init__.py)：公共导出更新。
+- [`tools/recompute_wenzhen_case.py`](tools/recompute_wenzhen_case.py)：重算 CLI。
+- [`tests/test_wenzhen_recompute.py`](tests/test_wenzhen_recompute.py)：重算闭环回归测试。
+- [`handoff.md`](handoff.md)：本交接更新。
+
+### 0.5 下一步建议
+
+1. 将 [`tools/recompute_wenzhen_case.py`](tools/recompute_wenzhen_case.py) 登记到 [`tools/README.md`](tools/README.md) 与 [`tools/tool_registry.py`](tools/tool_registry.py)，标记为 active 工具，并运行 `python tools/tool_registry.py --check`。
+2. 选择 1 个已归档问真 RF case 做真实重算试运行，优先用 `--json` 保存输出；若硬门禁失败，先修 pipeline/render 的 `statement_index.json` 生成，不要关闭 hard gate。
+3. 真实试运行后检查 `feedback_binding_check.json`：若存在 `unknown_structured_statement_ids`，说明 [`feedback.md`](templates/feedback.md) 中标注的 statement id 与最新 [`statement_index.json`](cases/) 不匹配，需人工重绑。
+4. 若要批量补跑 Top30，不要直接批量执行；先抽样验证 1-3 案，再新增批量 wrapper，并要求每案都有 `recompute_manifest.json`。
+5. 后续若把重算纳入反馈摄入前置流程，应让 [`tools/feedback_ingest.py`](tools/feedback_ingest.py) 或批处理工具读取 `recompute_manifest.json`，拒绝 statement index 不完整或反馈绑定不一致的 case。
+
+### 0.6 禁止误用提醒
+
+- 不要用旧 `findings/analysis_output.json` 代替全量重算结果。
+- 不要把 `--allow-empty-statement-index` 用在正式补盘闭环；它只适合调试。
+- 不要只看报告文本是否生成；必须检查 `recompute_manifest.json` 与 `feedback_binding_check.json`。
+- 不要把未知 statement id 静默丢弃；应保留在 `unknown_structured_statement_ids` 中交给人工重绑。
+
+---
+
+## 1. 历史交接 · 问真 Top30 转案、报告与工具索引维护
 
 > 更新时间：2026-06-09。此节优先级高于下方旧交接；问真 Top30 已完成 OCR 修正、正式转案、命理师报告生成与工具索引漂移修复。下方旧节保留历史上下文，不再作为当前下一步判断依据。
 
@@ -81,7 +167,7 @@ python -m pytest tests/test_project_metadata.py tests/test_application_candidate
 
 ---
 
-## 1. 历史交接 · 多流派并行功能域与裁判模型
+## 2. 历史交接 · 多流派并行功能域与裁判模型
 
 > 更新时间：2026-06-08。此节优先级高于下方旧的问真转案短期交接；下方内容保留为历史上下文，除非用户明确要求继续问真转案，否则下一位 agent 应先接续本节。
 
@@ -158,7 +244,7 @@ python -m pytest tests/test_parallel_domain_runner.py tests/v1_3_acceptance/test
 
 ---
 
-## 2. 历史交接 · 问真 dry-run 流程归档说明
+## 3. 历史交接 · 问真 dry-run 流程归档说明
 
 > 以下旧 dry-run 叙述已归档精简。当前事实以本文件顶部“0. 最新交接 · 问真 Top30 转案、报告与工具索引维护”为准：Top30 已完成 OCR 修正、正式转案、报告生成、case/report 互链与 feedback readiness 核查。不要再按旧流程判断为“仍有 4 个 OCR 阻塞样本”或“尚未创建正式 case”。
 
