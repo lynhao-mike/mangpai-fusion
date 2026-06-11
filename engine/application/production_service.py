@@ -152,6 +152,7 @@ class ProductionAnalysisService:
                 do_self_iter=False,
                 template_name=DEFAULT_TEMPLATE_NAME,
                 report_variant=STANDARD_REPORT_VARIANT,
+                error_policy="strict",
             )
             case_id = str(output.case_id or "")
             summary = self._build_summary(output, timing)

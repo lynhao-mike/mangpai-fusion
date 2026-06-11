@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
 from engine.application.candidates import _extract_candidates
 from engine.application.dual_engine_adapter import analyze_dual_engine
@@ -151,6 +151,7 @@ def run_pipeline_e2e(
     report_variant: str = "standard",
     threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
     adapters: Optional[PipelineAdapters] = None,
+    error_policy: Literal["tolerant", "strict"] = "tolerant",
 ) -> tuple[AnalysisOutput, PipelineTiming]:
     """端到端 8 步编排（v1.2.1 性能监控版）。
 
@@ -177,13 +178,17 @@ def run_pipeline_e2e(
         template_name:     兼容参数；渲染统一收敛到 report-v1.3.md 标准模板。
         report_variant:    兼容参数；e2e/生产统一收敛到 standard。
         threshold_seconds: 端到端总耗时阈值（默认 60s）。
+        error_policy:      ``"tolerant"``（默认）：render/self_iter/findings 失败仅
+                           记录警告，不阻断返回；``"strict"``：上述步骤任一失败直接
+                           抛出异常，供生产服务捕获并将 job 标记为 failed。
 
     Returns:
         ``(AnalysisOutput, PipelineTiming)``。
 
     Note:
-        Step 1/7/8 任一异常时仅记录耗时 + 日志，不会让上游业务失败——
-        这与 contracts/07-pipeline-flow § 十二 错误处理表保持一致。
+        tolerant 模式下 Step 7/8/findings 任一异常时仅记录耗时 + 日志，不会让
+        上游业务失败——这与 contracts/07-pipeline-flow § 十二 错误处理表保持一致。
+        strict 模式由 ProductionAnalysisService 使用，确保交付完整性。
     """
     timing = PipelineTiming(threshold_seconds=threshold_seconds)
 
@@ -224,6 +229,8 @@ def run_pipeline_e2e(
                 # 不写入 to_dict 的字段，仅作返回时附带；真正的落盘由 render_report 内部完成
                 object.__setattr__(output, "report_md", report_md)
             except Exception as e:  # noqa: BLE001
+                if error_policy == "strict":
+                    raise
                 logger.warning("render 步骤失败（不阻断）：%s", e)
 
     # Step 8: 自迭代（可选）
@@ -234,6 +241,8 @@ def run_pipeline_e2e(
                     raise ValueError("do_self_iter=True requires a FeedbackIngestPort adapter")
                 adapters.feedback.ingest(output.case_id)
             except Exception as e:  # noqa: BLE001
+                if error_policy == "strict":
+                    raise
                 logger.warning("self_iter 步骤失败（不阻断）：%s", e)
 
     # 统一落盘 findings + timing.json（即便 render/self_iter 失败也照常落）
@@ -241,6 +250,8 @@ def run_pipeline_e2e(
         findings_dir = _save_findings(output, cases_dir=cases_dir)
         timing.write_to(findings_dir, case_id=output.case_id)
     except Exception as e:  # noqa: BLE001
+        if error_policy == "strict":
+            raise
         logger.warning("findings 落盘失败：%s", e)
 
     # 护栏断言：超 60s 仅警告、不阻断
