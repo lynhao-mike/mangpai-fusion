@@ -1,14 +1,14 @@
 # Recoverability Classification
 
-生成时间：`2026-06-12T16:02:35Z`
+生成时间：`2026-06-12T16:03:27Z`
 
 ## 1. 可恢复性分类
 
 | 分类 | 数量 | 比例 | 预估恢复样本数 |
 |---|---:|---:|---:|
 | HIGH_RECOVERABLE | 0 | 0.0% | 0 |
-| MEDIUM_RECOVERABLE | 157 | 25.08% | 157 |
-| LOW_RECOVERABLE | 469 | 74.92% | 0 |
+| MEDIUM_RECOVERABLE | 162 | 27.36% | 162 |
+| LOW_RECOVERABLE | 430 | 72.64% | 0 |
 | UNRECOVERABLE | 0 | 0.0% | 0 |
 
 ## 2. TOP10 Root Causes
@@ -16,14 +16,14 @@
 ### ROOT_CAUSE_1
 
 - 原因：`feedback_has_only_indirect_or_report_level_reference`
-- 影响样本数：469
-- 占比：74.92%
+- 影响样本数：430
+- 占比：72.64%
 
 ### ROOT_CAUSE_2
 
 - 原因：`report_and_index_exist_but_record_mapping_missing`
-- 影响样本数：157
-- 占比：25.08%
+- 影响样本数：162
+- 占比：27.36%
 
 ## 3. Phase-1000 阻塞主根因
 

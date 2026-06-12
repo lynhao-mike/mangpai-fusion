@@ -102,8 +102,6 @@ def extract_feedback_rows(case_dir: Path) -> list[dict[str, Any]]:
             if key not in seen:
                 seen.add(key)
                 rows.append(make_row(case_dir.name, line_no, line.strip(), verdict_category(verdict_cell, line), "direct_statement_id", sid_match))
-        elif verdict_cell:
-            rows.append(make_row(case_dir.name, line_no, line.strip(), verdict_category(verdict_cell, line), "table_without_statement_id", ""))
 
     if not rows and text.strip():
         for line_no, line in enumerate(text.splitlines(), 1):
@@ -282,7 +280,7 @@ def main() -> None:
     empty_feedback_files = sum(1 for d in dirs if (d / "feedback.md").exists() and not (d / "feedback.md").read_text(encoding="utf-8", errors="ignore").strip())
     source_verdict_rows = Counter(verdict_stats)
     source_verdict_rows["empty"] = empty_feedback_files
-    source_verdict_rows["legacy"] = source_stats["legacy_unmapped_line"] + source_stats["table_without_statement_id"]
+    source_verdict_rows["legacy"] = source_stats["legacy_unmapped_line"]
     source_verdict_rows["unknown"] += verdict_stats["unknown"]
 
     write_source_audit(rows, source_verdict_rows, source_stats)
