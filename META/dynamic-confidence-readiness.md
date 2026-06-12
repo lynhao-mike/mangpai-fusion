@@ -120,3 +120,10 @@ META/dynamic-confidence-readiness.json
 - `y + n >= 30`。
 - `pending_ratio < 0.5`。
 - 至少 3 个新生成案例完成：`report render -> statement_records.json -> feedback.md -> builder -> learning_samples.json`。
+- 所有 not_learnable rows 已分类记录到 `learning_samples.json::not_learnable`。
+
+## 9. 禁止项
+
+- 不得在未达到阈值时手动调低阈值。
+- 不得绕过 readiness 强行触发 Dynamic Confidence。
+- 不得修改本阈值表；如需变更，须新增契约版本并触发 P6-3 流程。
