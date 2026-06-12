@@ -50,6 +50,11 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine.application.dynamic_weight_logs import (
+    append_jsonl,
+    ensure_log_files,
+    read_jsonl,
+)
 from engine.application.feedback_parser import (
     ANNOTATION_TO_VERDICT,
     FEEDBACK_RE,
@@ -77,6 +82,7 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 META_DIR = REPO_ROOT / "META"
 ITERATION_STATE_FILE = META_DIR / "iteration-state.json"
 ENGINE_LOG_DIR = REPO_ROOT / "engine" / "logs"
+WEIGHT_CHANGES_LOG = ENGINE_LOG_DIR / "weight-changes.jsonl"
 EXPERT_DOMAIN_FEEDBACK_LOG = ENGINE_LOG_DIR / "expert_domain_feedback.jsonl"
 ADJUDICATION_ACCURACY_LOG = ENGINE_LOG_DIR / "adjudication_accuracy.jsonl"
 DOMAIN_WEIGHT_PRIOR_PROFILE = REPO_ROOT / "theory" / "raw" / "yaml" / "domain_weight_profile_2026-06-05.yaml"
@@ -294,6 +300,7 @@ def fanout_to_parallel_feedback(
             expert = _expert_for_reading(reading_id, expert_systems)
             expert_rows.append({
                 "ts": now,
+                "event_type": "expert_domain_feedback",
                 "case_id": case_id,
                 "statement_id": feedback.statement_id,
                 "reading_id": reading_id,
@@ -306,6 +313,7 @@ def fanout_to_parallel_feedback(
         if adjudication_id:
             adjudication_rows.append({
                 "ts": now,
+                "event_type": "adjudication_accuracy",
                 "case_id": case_id,
                 "statement_id": feedback.statement_id,
                 "adjudication_id": adjudication_id,
@@ -320,8 +328,9 @@ def fanout_to_parallel_feedback(
                 "minority_vindicated": feedback.verdict == "miss",
             })
     if not dry_run:
-        _append_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG, expert_rows)
-        _append_jsonl(ADJUDICATION_ACCURACY_LOG, adjudication_rows)
+        ensure_log_files((WEIGHT_CHANGES_LOG, EXPERT_DOMAIN_FEEDBACK_LOG, ADJUDICATION_ACCURACY_LOG))
+        _append_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG, expert_rows, event_type="expert_domain_feedback")
+        _append_jsonl(ADJUDICATION_ACCURACY_LOG, adjudication_rows, event_type="adjudication_accuracy")
     return {"expert_feedback_rows": len(expert_rows), "adjudication_feedback_rows": len(adjudication_rows)}
 
 
@@ -523,29 +532,12 @@ def _expert_for_reading(reading_id: str, fallback_experts: list[str]) -> str:
     return ""
 
 
-def _append_jsonl(path: pathlib.Path, rows: list[dict[str, Any]]) -> None:
-    if not rows:
-        return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+def _append_jsonl(path: pathlib.Path, rows: list[dict[str, Any]], *, event_type: str | None = None) -> None:
+    append_jsonl(path, rows, event_type=event_type)
 
 
 def _read_jsonl(path: pathlib.Path) -> list[dict[str, Any]]:
-    if not path.exists():
-        return []
-    rows: list[dict[str, Any]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(row, dict):
-            rows.append(row)
-    return rows
+    return read_jsonl(path)
 
 
 def _finalize_expert_stats(bucket: dict[str, Any]) -> dict[str, Any]:

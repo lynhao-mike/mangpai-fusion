@@ -1,9 +1,9 @@
 {
   "product_name": "mangpai-fusion",
   "product_version_source": "VERSION",
-  "product_version": "1.3.0",
+  "product_version": "1.3.1",
   "current_phase": "v1.4-schema-and-reporting-convergence-plus-production-rules",
-  "last_updated": "2026-06-06",
+  "last_updated": "2026-06-12",
   "ai_entrypoint": "AGENTS.md",
   "human_entrypoint": "README.md",
   "stable_status": "STATUS.md",
@@ -37,7 +37,8 @@
     "pipeline_parallel_analysis_attachment": "landed",
     "parallel_domain_report_section": "landed",
     "parallel_domain_statement_index": "landed",
-    "dynamic_feedback_weighting": "landed_proposal_confirmed_overlay"
+    "dynamic_feedback_weighting": "landed_proposal_confirmed_overlay",
+    "blind_expert_adapters": "deprecated_absent_no_references"
   },
   "active_feedback_entrypoints": [
     "tools/feedback_ingest.py",
