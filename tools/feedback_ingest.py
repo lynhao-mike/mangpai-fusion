@@ -21,18 +21,22 @@
 公开 API
 --------
 ingest(case_id, *, cfg=None, dry_run=False) -> IngestResult
-    主入口；解析 → fanout → 应用 → 计数 → 落盘审计
+    主入口；解析 → statement_records fanout → 应用 → 计数 → 落盘审计
 
 parse_statement_feedback(text) -> list[StatementFeedback]
     纯函数：从填好的 feedback.md 文本里抽出 [(sid, verdict), ...]
 
-fanout_to_rules(statement_feedbacks, statement_index)
+fanout_to_rules(statement_feedbacks, statement_records)
     → dict[rule_id, (Verdict, VerdictContext)]
     按决断力优先级（miss > hit > abstain > skip/no_data）合并
 
-注意：本工具优先消费 v1.3 结构化路径（statement_index.json + 标注式 feedback.md）。
-若 statement_index.json 不存在或 feedback.md 中无 `[S-...]` 标注，
-回退给 feedback_loop.ingest_feedback 走 v1.0 启发式路径。
+build_learning_samples(statement_feedbacks, statement_records)
+    → list[dict]，仅输出已映射且 verdict 非 pending/no_data 的学习样本。
+
+注意：本工具优先消费 v1.4+ 结构化路径（statement_records.json + 标注式 feedback.md）。
+若 statement_records.json 不存在或 feedback.md 中无 `[S-...]` 标注，
+回退给 feedback_loop.ingest_feedback 走 v1.0 启发式路径。legacy
+statement_index.json / statement_rule_map.json 不再作为 Dynamic Confidence fanout 来源。
 
 作者：Track-G v1.3
 """
@@ -98,6 +102,34 @@ DEFAULT_EXPERT_SYSTEMS = ("blind", "ziping", "tiaohou_ditiansui")
 
 
 @dataclass
+class BridgeMappingStats:
+    """Dynamic Confidence bridge 的只读映射统计。"""
+
+    total_rows: int = 0
+    mapped_rows: int = 0
+    learnable_rows: int = 0
+    unmapped_rows: int = 0
+    pending_rows: int = 0
+    needs_mapping_repair_rows: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        total = self.total_rows or 1
+        return {
+            "total_rows": self.total_rows,
+            "mapped_rows": self.mapped_rows,
+            "learnable_rows": self.learnable_rows,
+            "unmapped_rows": self.unmapped_rows,
+            "pending_rows": self.pending_rows,
+            "needs_mapping_repair_rows": self.needs_mapping_repair_rows,
+            "recoverable_percent": round(self.learnable_rows / total * 100, 2),
+            "mapped_percent": round(self.mapped_rows / total * 100, 2),
+            "unmapped_percent": round(self.unmapped_rows / total * 100, 2),
+            "pending_percent": round(self.pending_rows / total * 100, 2),
+            "readiness": "READY_FOR_BRIDGE" if self.learnable_rows > 0 else "BLOCKED",
+        }
+
+
+@dataclass
 class IngestResult:
     """ingest() 的返回值。"""
     case_id: str
@@ -110,6 +142,8 @@ class IngestResult:
     iteration_seq: int = 0                     # 当前迭代序号（每 10 完成案 +1）
     iteration_triggered: bool = False          # 本次是否达到 10 案整数倍
     iteration_report_path: Optional[str] = None  # v1.3 D8：自动触发的迭代报告路径
+    learning_sample_count: int = 0             # Dynamic Confidence 可学习样本数
+    bridge_mapping_stats: Optional[BridgeMappingStats] = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -122,6 +156,8 @@ class IngestResult:
             "iteration_seq": self.iteration_seq,
             "iteration_triggered": self.iteration_triggered,
             "iteration_report_path": self.iteration_report_path,
+            "learning_sample_count": self.learning_sample_count,
+            "bridge_mapping_stats": self.bridge_mapping_stats.to_dict() if self.bridge_mapping_stats else None,
             "iteration_diff": self.iteration_diff.to_dict() if self.iteration_diff else None,
         }
 
@@ -205,68 +241,129 @@ def _merge_statement_rule_map(
     return merged
 
 
+def _record_map(statement_records: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+    """把 statement_records.json envelope 规范化为 statement_id -> record。"""
+
+    raw_records = statement_records.get("records", []) if isinstance(statement_records, Mapping) else []
+    if isinstance(raw_records, Mapping):
+        raw_records = list(raw_records.values())
+    records: dict[str, dict[str, Any]] = {}
+    if not isinstance(raw_records, list):
+        return records
+    for item in raw_records:
+        if not isinstance(item, dict):
+            continue
+        sid = str(item.get("statement_id") or "").strip()
+        if sid:
+            records[sid] = dict(item)
+    return records
+
+
+def _record_is_mapped(record: Mapping[str, Any] | None) -> bool:
+    if not record:
+        return False
+    required = ("statement_id", "rule_id", "family_id", "school", "canon", "rule_type")
+    for field in required:
+        value = str(record.get(field) or "").strip()
+        if not value or value.upper().startswith("UNMAPPED"):
+            return False
+    return True
+
+
+def build_learning_samples(
+    feedbacks: list[StatementFeedback],
+    statement_records: Mapping[str, Any],
+) -> tuple[list[dict[str, str]], list[dict[str, Any]], BridgeMappingStats]:
+    """构建 Dynamic Confidence 可学习样本，但不写权重、不更新置信度。
+
+    输出只包含七字段：statement_id, rule_id, family_id, school, canon,
+    rule_type, verdict。无法 join 到 statement_records 或 metadata 不完整的反馈行
+    标记为 needs_mapping_repair=true，并排除出学习样本。
+    """
+
+    records = _record_map(statement_records)
+    samples: list[dict[str, str]] = []
+    mapped_rows: list[dict[str, Any]] = []
+    stats = BridgeMappingStats(total_rows=len(feedbacks))
+    for fb in feedbacks:
+        record = records.get(fb.statement_id)
+        mapped = _record_is_mapped(record)
+        pending = fb.verdict == "no_data"
+        row = {
+            "statement_id": fb.statement_id,
+            "verdict": fb.verdict,
+            "annotation": fb.annotation,
+            "needs_mapping_repair": not mapped,
+            "repair_reason": "" if mapped else "statement_id_not_found_or_incomplete_statement_record",
+        }
+        if record:
+            row.update({
+                "rule_id": str(record.get("rule_id") or ""),
+                "family_id": str(record.get("family_id") or ""),
+                "school": str(record.get("school") or ""),
+                "canon": str(record.get("canon") or ""),
+                "rule_type": str(record.get("rule_type") or ""),
+            })
+        else:
+            row.update({
+                "rule_id": "UNMAPPED",
+                "family_id": "UNMAPPED",
+                "school": "UNMAPPED",
+                "canon": "UNMAPPED",
+                "rule_type": "UNMAPPED",
+            })
+        mapped_rows.append(row)
+        if pending:
+            stats.pending_rows += 1
+        if mapped:
+            stats.mapped_rows += 1
+        else:
+            stats.unmapped_rows += 1
+            stats.needs_mapping_repair_rows += 1
+        if mapped and not pending:
+            sample = {
+                "statement_id": fb.statement_id,
+                "rule_id": row["rule_id"],
+                "family_id": row["family_id"],
+                "school": row["school"],
+                "canon": row["canon"],
+                "rule_type": row["rule_type"],
+                "verdict": fb.verdict,
+            }
+            samples.append(sample)
+            stats.learnable_rows += 1
+    return samples, mapped_rows, stats
+
+
 def fanout_to_rules(
     feedbacks: list[StatementFeedback],
-    statement_index: dict[str, Any],
+    statement_records: Mapping[str, Any],
 ) -> tuple[dict[str, tuple[Verdict, VerdictContext]], list[str]]:
-    """把 statement-level verdict fanout 到 rule-level。
+    """把 statement-level verdict 通过 statement_records fanout 到 rule-level。"""
 
-    C-2026-025 标准 statement_index 使用 statements 列表，默认只承载
-    statement_id/domain/summary/status。若历史索引仍含 rule_ids，则继续 fanout；
-    若标准索引无 rule_ids，则不判 unknown，仅跳过规则级更新，让反馈保持可登记。
-
-    一条规律可能被多条断语共用 → 取**最具决断力**的 verdict
-    （miss > hit > abstain > no_data）。
-
-    Returns:
-        rule_verdicts: ``{rule_id: (Verdict, VerdictContext)}``
-        unknown_sids: 在 feedback.md 中出现但 statement_index 里查不到的 sid
-                      （通常意味着报告与索引版本不匹配，需重跑 render）
-    """
-    raw_statements = statement_index.get("statements", {})
-    if isinstance(raw_statements, list):
-        statements = {
-            item.get("statement_id"): item
-            for item in raw_statements
-            if isinstance(item, dict) and item.get("statement_id")
-        }
-        standard_list_schema = True
-    else:
-        statements = raw_statements if isinstance(raw_statements, dict) else {}
-        standard_list_schema = False
+    records = _record_map(statement_records)
     rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
     unknown_sids: list[str] = []
 
     for fb in feedbacks:
-        info = statements.get(fb.statement_id)
-        if info is None:
+        info = records.get(fb.statement_id)
+        if not _record_is_mapped(info):
             unknown_sids.append(fb.statement_id)
             continue
-        rule_ids = info.get("rule_ids", []) or []
-        if not rule_ids:
-            if not standard_list_schema:
-                unknown_sids.append(fb.statement_id)
-            continue
-        section = info.get("section", "")
-        year = info.get("year")
-        domain = info.get("domain", "")
-
-        for rid in rule_ids:
-            existing = rule_verdicts.get(rid)
-            if existing is None or _PRIORITY[fb.verdict] < _PRIORITY[existing[0]]:
-                # 合并 statement_ids（多条断语指向同一规律时累积）
-                prev_sids = existing[1].statement_ids if existing else []
-                vctx = VerdictContext(
-                    section=section,
-                    year=year,
-                    domain=domain,
-                    statement_ids=sorted(set(prev_sids + [fb.statement_id])),
-                )
-                rule_verdicts[rid] = (fb.verdict, vctx)
-            else:
-                # 优先级相同或更低 → 仅累积 statement_ids
-                ev, vctx = existing
-                vctx.statement_ids = sorted(set(vctx.statement_ids + [fb.statement_id]))
+        rid = str(info.get("rule_id") or "").strip()
+        existing = rule_verdicts.get(rid)
+        if existing is None or _PRIORITY[fb.verdict] < _PRIORITY[existing[0]]:
+            prev_sids = existing[1].statement_ids if existing else []
+            vctx = VerdictContext(
+                section=str(info.get("section") or ""),
+                year=info.get("year"),
+                domain=str(info.get("domain") or ""),
+                statement_ids=sorted(set(prev_sids + [fb.statement_id])),
+            )
+            rule_verdicts[rid] = (fb.verdict, vctx)
+        else:
+            ev, vctx = existing
+            vctx.statement_ids = sorted(set(vctx.statement_ids + [fb.statement_id]))
 
     return rule_verdicts, unknown_sids
 
@@ -622,17 +719,18 @@ def ingest(
     today: Optional[str] = None,
     dry_run: bool = False,
 ) -> IngestResult:
-    """v1.3 D5 主入口：解析新格式 feedback.md → fanout → 应用 → 计数。
+    """v1.4 bridge 主入口：解析 feedback.md → statement_records fanout → 应用 → 计数。
 
     Steps:
         1. 找 case 目录
-        2. 读 statement_index.json（D1 落盘的索引）
+        2. 读 statement_records.json（Dynamic Confidence 学习事实源）
         3. 解析 feedback.md 中的 `[S-...] [y/n/?/skip]` 标注
-        4. fanout 到 rule_verdicts
-        5. 调 feedback_loop._apply_rule_verdicts 应用更新
-        6. 写 iteration-log + snapshot
-        7. 更新 META/iteration-state.json 计数器
-        8. 检查 % 10 == 0 → iteration_triggered=True
+        4. 生成只读 learning samples，并标记无法映射的 row
+        5. fanout 到 rule_verdicts
+        6. 调 feedback_loop._apply_rule_verdicts 应用现有规则级更新
+        7. 写 iteration-log + snapshot
+        8. 更新 META/iteration-state.json 计数器
+        9. 检查 % 10 == 0 → iteration_triggered=True
 
     Args:
         case_id:  完整 case_id 或前缀（如 ``C-2026-001``）
@@ -661,26 +759,19 @@ def ingest(
         feedback_text = feedback_path.read_text(encoding="utf-8")
         feedbacks = parse_statement_feedback(feedback_text)
 
-    # 2. 读 statement_index；如存在旁路 statement_rule_map.json，则合并 rule_ids。
-    index_path = case_dir / "statement_index.json"
-    map_path = case_dir / "statement_rule_map.json"
-    statement_index: dict = {}
+    # 2. 读 statement_records。legacy statement_index / statement_rule_map 不再作为 bridge fanout 来源。
+    records_path = case_dir / "statement_records.json"
+    statement_records: dict[str, Any] = {}
     skipped_no_index = False
-    with timing.step("load_statement_index"):
-        if index_path.exists():
+    with timing.step("load_statement_records"):
+        if records_path.exists():
             try:
-                statement_index = json.loads(index_path.read_text(encoding="utf-8"))
+                statement_records = json.loads(records_path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, ValueError):
-                statement_index = {}
-        if map_path.exists() and statement_index:
-            try:
-                rule_map = json.loads(map_path.read_text(encoding="utf-8"))
-                statement_index = _merge_statement_rule_map(statement_index, rule_map)
-            except (json.JSONDecodeError, ValueError, OSError):
-                pass
+                statement_records = {}
 
     # 3. 决策路径选择
-    if not feedbacks or not statement_index.get("statements"):
+    if not feedbacks or not _record_map(statement_records):
         # 退回 v1.0 启发式路径（feedback_loop.ingest_feedback）
         from tools.feedback_loop import ingest_feedback as _legacy_ingest
         with timing.step("apply_rules"):
@@ -694,6 +785,11 @@ def ingest(
             skipped_unknown_sid=[],
             skipped_no_index=True,
             iteration_diff=diff,
+            bridge_mapping_stats=BridgeMappingStats(
+                total_rows=len(feedbacks),
+                unmapped_rows=len(feedbacks),
+                needs_mapping_repair_rows=len(feedbacks),
+            ),
         )
         if not dry_run:
             with timing.step("bump_state"):
@@ -701,28 +797,30 @@ def ingest(
             _write_ingest_timing(timing, timing_run_id, result, dry_run=dry_run)
         return result
 
-    # 4. fanout
+    # 4. 生成只读 bridge learning samples，再执行现有规则级 fanout。
+    with timing.step("bridge_learning_samples"):
+        learning_samples, mapped_rows, bridge_stats = build_learning_samples(feedbacks, statement_records)
     with timing.step("fanout"):
-        rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_index)
-        parallel_feedback_counts = fanout_to_parallel_feedback(
-            feedbacks,
-            statement_index,
-            case_id=full_case_id,
-            dry_run=dry_run,
-        )
+        rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_records)
+        parallel_feedback_counts = {"expert_feedback_rows": 0, "adjudication_feedback_rows": 0}
 
-    # 5. 应用规律级更新（不写 log，本函数末尾统一写）。
-    # C-2026-025 标准索引不强制承载 rule_ids；若无旁路映射则仍登记本案反馈，
-    # 但不触发规则置信度更新，并在日志中显式说明，避免生产静默误判。
+    # 5. 应用现有规则级更新（不写 log，本函数末尾统一写）。
+    # Dynamic Confidence 学习样本只读生成；本函数不直接写入权重或更新 dynamic confidence。
     with timing.step("apply_rules"):
         diff = _apply_rule_verdicts(
             full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
         )
 
+    diff.notes.append(
+        "Dynamic Confidence bridge sample gate："
+        f"learnable={len(learning_samples)}，mapped={bridge_stats.mapped_rows}，"
+        f"unmapped={bridge_stats.unmapped_rows}，pending={bridge_stats.pending_rows}；"
+        "本次仅生成学习样本，不直接写入权重或更新 dynamic confidence。"
+    )
     if not rule_verdicts:
         diff.notes.append(
-            "statement-level 反馈已登记，但未找到 rule_ids；"
-            "请在 statement_index.json 或 statement_rule_map.json 提供映射后重摄入"
+            "statement-level 反馈已登记，但未找到完整 statement_records 映射；"
+            "needs_mapping_repair=true 的 row 不纳入学习样本"
         )
     if parallel_feedback_counts["expert_feedback_rows"] or parallel_feedback_counts["adjudication_feedback_rows"]:
         diff.notes.append(
@@ -734,7 +832,7 @@ def ingest(
     # 6. 落 log + snapshot
     if unknown_sids:
         diff.notes.append(
-            f"忽略 {len(unknown_sids)} 个 statement_id（report 与 index 不匹配，"
+            f"忽略 {len(unknown_sids)} 个 statement_id（feedback 与 statement_records 不匹配，"
             f"可能需重跑 render）：{','.join(unknown_sids[:3])}"
         )
     if not dry_run:
@@ -749,6 +847,8 @@ def ingest(
         rule_count=len(rule_verdicts),
         skipped_unknown_sid=unknown_sids,
         iteration_diff=diff,
+        learning_sample_count=len(learning_samples),
+        bridge_mapping_stats=bridge_stats,
     )
     if not dry_run:
         with timing.step("bump_state"):
@@ -826,6 +926,8 @@ def _write_ingest_timing(
                 "rule_count": result.rule_count,
                 "skipped_unknown_sid_count": len(result.skipped_unknown_sid),
                 "skipped_no_index": result.skipped_no_index,
+                "learning_sample_count": result.learning_sample_count,
+                "bridge_mapping_stats": result.bridge_mapping_stats.to_dict() if result.bridge_mapping_stats else None,
                 "iteration_triggered": result.iteration_triggered,
                 "iteration_seq": result.iteration_seq,
                 "dry_run": dry_run,
@@ -853,8 +955,17 @@ def _print_human(result: IngestResult) -> None:
     _safe_print(f"\n[feedback_ingest] case_id={result.case_id}")
     _safe_print(f"  解析到 statement 反馈: {result.feedback_count} 条")
     _safe_print(f"  fanout 后涉及规律: {result.rule_count} 条")
+    _safe_print(f"  Dynamic Confidence 可学习样本: {result.learning_sample_count} 条")
+    if result.bridge_mapping_stats:
+        stats = result.bridge_mapping_stats.to_dict()
+        _safe_print(
+            "  bridge 映射统计: "
+            f"recoverable={stats['recoverable_percent']}% / "
+            f"unmapped={stats['unmapped_percent']}% / pending={stats['pending_percent']}% / "
+            f"{stats['readiness']}"
+        )
     if result.skipped_no_index:
-        _safe_print("  [WARN] statement_index.json 缺失或为空 → 已退回 v1.0 启发式路径")
+        _safe_print("  [WARN] statement_records.json 缺失或为空 → 已退回 v1.0 启发式路径")
     if result.skipped_unknown_sid:
         _safe_print(f"  [WARN] 忽略未知 sid: {len(result.skipped_unknown_sid)} 条 (前 3: "
                     f"{','.join(result.skipped_unknown_sid[:3])})")
@@ -876,7 +987,7 @@ def _print_human(result: IngestResult) -> None:
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="v1.3 D5 结构化反馈摄入：解析填好的 feedback.md → 应用规律级更新"
+        description="结构化反馈摄入：解析 feedback.md → statement_records bridge fanout → 应用规律级更新"
     )
     parser.add_argument("case_id", nargs="?", help="案例 ID 或前缀（如 C-2026-001）")
     parser.add_argument("--dry-run", action="store_true", help="不落盘 yaml / log / state")

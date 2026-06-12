@@ -15,6 +15,7 @@
 """
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -346,6 +347,40 @@ def test_F_render_from_output_keeps_parsed_context(tmp_path):
     assert "| 四柱 | 庚申戊寅壬子辛丑 |" in report
     assert "| 四柱 | — |" not in report
     assert "| 大运 | — |" not in report
+
+
+def test_F_render_from_output_writes_statement_records(tmp_path):
+    """render_from_output 必须生成 statement_records.json 且保留 statement_index.json。"""
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
+    output = run_pipeline(parsed, write_findings=False)
+
+    render_from_output(
+        output,
+        lint_before=False,
+        cases_dir=tmp_path,
+        skip_findings_save=True,
+    )
+
+    case_dir = tmp_path / output.case_id
+    records_path = case_dir / "statement_records.json"
+    index_path = case_dir / "statement_index.json"
+    assert records_path.exists()
+    assert index_path.exists()
+
+    payload = json.loads(records_path.read_text(encoding="utf-8"))
+    assert payload["schema_version"] == "statement_record.v1"
+    records = payload["records"]
+    assert records
+    assert payload["statement_records_generated"] == len(records)
+    assert payload["missing_field_count"] == 0
+
+    statement_ids = [record["statement_id"] for record in records]
+    assert len(statement_ids) == len(set(statement_ids))
+    for record in records:
+        assert record["rule_id"]
+        assert record["family_id"]
+        assert record["school"]
+        assert record["canon"]
 
 
 def test_F_support_none_graceful(c001_findings):

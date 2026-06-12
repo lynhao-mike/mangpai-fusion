@@ -40,6 +40,7 @@ sys.path.insert(0, str(ROOT))
 
 from engine.domain.ids import compute_statement_id
 from engine.energy.types import EnergyFindings
+from engine.statement_runtime import write_statement_records
 from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
 from engine.predicates.types import ParsedInput
@@ -190,7 +191,7 @@ def render_from_output(
         _capture_ctx_to=captured_ctx,
     )
 
-    # Step 4: 按 C-2026-025 标准落盘 statement_index.json
+    # Step 4: 按 C-2026-025 标准落盘 statement_index.json，并同步生成 statement_records.json。
     case_id = (
         getattr(analysis_output, "case_id", None)
         or getattr(getattr(analysis_output, "energy", None), "case_id", None)
@@ -200,13 +201,14 @@ def render_from_output(
         cases_root = Path(cases_dir) if cases_dir else ROOT / "cases"
         idx_dir = cases_root / case_id
         idx_dir.mkdir(parents=True, exist_ok=True)
+        write_statement_records(captured_ctx, case_id, idx_dir)
         idx = _build_statement_index(captured_ctx, case_id)
         idx_text = json.dumps(idx, ensure_ascii=False, indent=2)
         _write_text_if_changed(idx_dir / "statement_index.json", idx_text)
     except Exception as exc:
-        # statement_index 落盘失败不阻断报告交付，但必须显式暴露（否则 D5 反馈会静默降级）。
+        # statement runtime/index 落盘失败不阻断报告交付，但必须显式暴露（否则 D5 反馈会静默降级）。
         warnings.warn(
-            f"statement_index write failed for {case_id}: {exc}",
+            f"statement runtime artifact write failed for {case_id}: {exc}",
             RuntimeWarning,
             stacklevel=2,
         )
