@@ -44,11 +44,11 @@
 
 ## 四、闭环补救待人工标注
 
-> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但尚未人工裁决。请将 `[待标注]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
+> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但已按 RF 未知项规则标注为 skip。请将 `[skip]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
 
 | statement_id | 事项 | 年份 | 报告证据 | 人工反馈 |
 |---|---|---:|---|---|
-| S-RF000243-ba3d20 | 事业 | 2022 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:1015 | 反馈：S-RF000243-ba3d20 [待标注] |
-| S-RF000243-61c196 | 财运 | 2006 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:2561 | 反馈：S-RF000243-61c196 [待标注] |
-| S-RF000243-097c5f | 婚姻 | 2023 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:2595 | 反馈：S-RF000243-097c5f [待标注] |
-| S-RF000243-ca78f0 | 健康 | 2009 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:3001 | 反馈：S-RF000243-ca78f0 [待标注] |
+| S-RF000243-ba3d20 | 事业 | 2022 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:1015 | 反馈：[S-RF000243-ba3d20] [skip] |
+| S-RF000243-61c196 | 财运 | 2006 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:2561 | 反馈：[S-RF000243-61c196] [skip] |
+| S-RF000243-097c5f | 婚姻 | 2023 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:2595 | 反馈：[S-RF000243-097c5f] [skip] |
+| S-RF000243-ca78f0 | 健康 | 2009 | reports/C-2026-RF000243-坤-己卯己巳戊午丁巳-analyst-report.md:3001 | 反馈：[S-RF000243-ca78f0] [skip] |

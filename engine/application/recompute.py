@@ -7,8 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from tools.feedback_ingest import parse_statement_feedback
-
+from engine.application.feedback_parser import parse_statement_feedback
 from engine.application.confidence_delta import build_confidence_delta
 from engine.application.conclusion_diff import build_conclusion_diff
 from engine.application.pipeline_runner import run_pipeline_e2e

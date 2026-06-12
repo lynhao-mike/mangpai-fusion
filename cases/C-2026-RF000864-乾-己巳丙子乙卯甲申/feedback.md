@@ -46,10 +46,10 @@
 
 ## 四、闭环补救待人工标注
 
-> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但尚未人工裁决。请将 `[待标注]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
+> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但已按 RF 未知项规则标注为 skip。请将 `[skip]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
 
 | statement_id | 事项 | 年份 | 报告证据 | 人工反馈 |
 |---|---|---:|---|---|
-| S-RF000864-5ed093 | 事业 | 2007 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:1029 | 反馈：S-RF000864-5ed093 [待标注] |
-| S-RF000864-a331ef | 财运 | 2006 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:2575 | 反馈：S-RF000864-a331ef [待标注] |
-| S-RF000864-16b735 | 婚姻 | 2023 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:2609 | 反馈：S-RF000864-16b735 [待标注] |
+| S-RF000864-5ed093 | 事业 | 2007 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:1029 | 反馈：[S-RF000864-5ed093] [skip] |
+| S-RF000864-a331ef | 财运 | 2006 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:2575 | 反馈：[S-RF000864-a331ef] [skip] |
+| S-RF000864-16b735 | 婚姻 | 2023 | reports/C-2026-RF000864-乾-己巳丙子乙卯甲申-analyst-report.md:2609 | 反馈：[S-RF000864-16b735] [skip] |

@@ -50,8 +50,13 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine.application.feedback_parser import (
+    ANNOTATION_TO_VERDICT,
+    FEEDBACK_RE,
+    StatementFeedback,
+    parse_statement_feedback,
+)
 from engine.application.timing import PipelineTiming
-from engine.domain.ids import FEEDBACK_RE as _SHARED_FEEDBACK_RE
 from tools.feedback_loop import (
     IterationDiff,
     Verdict,
@@ -82,26 +87,8 @@ DEFAULT_EXPERT_SYSTEMS = ("blind", "ziping", "tiaohou_ditiansui")
 # 二、解析器
 # ============================================================
 
-# 反馈标注正则：``[S-001-a3f1c2] [y]`` 或同行的 ``反馈：[S-...] [n]``
-# 分组 1: statement_id；分组 2: 标注（y/n/?/skip）。事实源在 engine.domain.ids。
-FEEDBACK_RE = _SHARED_FEEDBACK_RE
-
-# verdict 映射：标注 → 内部 Verdict
-ANNOTATION_TO_VERDICT: dict[str, Verdict] = {
-    "y": "hit",
-    "n": "miss",
-    "?": "no_data",   # D5 决策：? 入库不计数
-    "skip": "no_data",
-}
-
-
-@dataclass
-class StatementFeedback:
-    """一条断语级反馈。"""
-    statement_id: str
-    annotation: str            # 原始标注："y"/"n"/"?"/"skip"
-    verdict: Verdict           # 转换后的内部 Verdict
-    raw_line: str = ""
+# 反馈标注正则、标注映射、StatementFeedback 与 parse_statement_feedback
+# 下沉在 engine.application.feedback_parser，避免 application 层反向依赖 tools。
 
 
 @dataclass
@@ -131,26 +118,6 @@ class IngestResult:
             "iteration_report_path": self.iteration_report_path,
             "iteration_diff": self.iteration_diff.to_dict() if self.iteration_diff else None,
         }
-
-
-def parse_statement_feedback(text: str) -> list[StatementFeedback]:
-    """从填好的 feedback.md 文本里抽出所有 `[S-...] [y/n/?/skip]` 标注。
-
-    去重策略：同一 statement_id 出现多次 → 取**最后一次**有效标注（命理师可能改主意）。
-    """
-    matches: dict[str, StatementFeedback] = {}
-    for line in text.splitlines():
-        for m in FEEDBACK_RE.finditer(line):
-            sid = m.group(1)
-            ann = m.group(2).lower()
-            verdict = ANNOTATION_TO_VERDICT.get(ann, "no_data")
-            matches[sid] = StatementFeedback(
-                statement_id=sid,
-                annotation=ann,
-                verdict=verdict,
-                raw_line=line.strip(),
-            )
-    return list(matches.values())
 
 
 # ============================================================

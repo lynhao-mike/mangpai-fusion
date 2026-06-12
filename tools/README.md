@@ -37,6 +37,7 @@
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 多派别 Markdown 教材入口；支持 `--dry-run` |
 | [`case_feedback_intake.py`](case_feedback_intake.py:1) | 真实案例反馈语料抽取：原文归档、候选拆分、质量分级、JSONL 输出 | 处理 `cases/实战案例反馈990个案例_part*.md`；支持 `--dry-run` |
+| [`recompute_wenzhen_case.py`](recompute_wenzhen_case.py:1) | 问真补盘正式 case hard-gated 重算 | 运行严格 pipeline，校验 `statement_index.json`，产出 school verdict / conclusion diff / confidence delta / feedback binding 检查 |
 | [`case_feedback_promote.py`](case_feedback_promote.py:1) | A/B 级真实反馈样本转 case draft | 只生成 `cases/raw_feedback/case_drafts/RF-.../` 待补排盘草稿；不写正式 `cases-index.md` |
 | [`case_feedback_repan_index.py`](case_feedback_repan_index.py:1) | 问真排盘补录索引生成器 | 汇总 `case_drafts/RF-.../input.md` 的出生信息与排盘粘贴占位区；支持 `--dry-run` |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |

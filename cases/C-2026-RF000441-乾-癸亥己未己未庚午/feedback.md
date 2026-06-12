@@ -46,9 +46,9 @@
 
 ## 四、闭环补救待人工标注
 
-> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但尚未人工裁决。请将 `[待标注]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
+> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但已按 RF 未知项规则标注为 skip。请将 `[skip]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
 
 | statement_id | 事项 | 年份 | 报告证据 | 人工反馈 |
 |---|---|---:|---|---|
-| S-RF000441-84adcf | 事业 | 2006 | reports/C-2026-RF000441-乾-癸亥己未己未庚午-analyst-report.md:1009 | 反馈：S-RF000441-84adcf [待标注] |
-| S-RF000441-fcca32 | 婚姻 | 2022 | reports/C-2026-RF000441-乾-癸亥己未己未庚午-analyst-report.md:2583 | 反馈：S-RF000441-fcca32 [待标注] |
+| S-RF000441-84adcf | 事业 | 2006 | reports/C-2026-RF000441-乾-癸亥己未己未庚午-analyst-report.md:1009 | 反馈：[S-RF000441-84adcf] [skip] |
+| S-RF000441-fcca32 | 婚姻 | 2022 | reports/C-2026-RF000441-乾-癸亥己未己未庚午-analyst-report.md:2583 | 反馈：[S-RF000441-fcca32] [skip] |

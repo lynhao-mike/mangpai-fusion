@@ -1355,3 +1355,139 @@ git revert <commit-hash>
 # 或恢复快照：
 META/calibration/2026-06-11-after-C-2026-026-坤-癸未甲寅壬戌丙午.snapshot.yaml
 ```
+
+---
+
+## 2026-06-12 09:52 · ingest C-2026-RF000345-乾-癸酉乙丑乙卯乙酉
+
+case_count: 29
+trigger: ingest_feedback
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- MR-LAYER1
+- MR-LAYER2
+- MR-LAYER3
+- M3-R-031.6
+
+### Cross-School Scan
+- 未触发（case_count=29，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-12-after-C-2026-RF000345-乾-癸酉乙丑乙卯乙酉.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-12 09:52 · ingest C-2026-RF000441-乾-癸亥己未己未庚午
+
+case_count: 29
+trigger: ingest_feedback
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- MR-LAYER1
+- MR-LAYER2
+- MR-LAYER3
+- M3-R-031.6
+
+### Cross-School Scan
+- 未触发（case_count=29，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-12-after-C-2026-RF000441-乾-癸亥己未己未庚午.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-12 09:52 · ingest C-2026-RF000864-乾-己巳丙子乙卯甲申
+
+case_count: 29
+trigger: ingest_feedback
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- MR-LAYER1
+- MR-LAYER2
+- MR-LAYER3
+- M3-R-031.6
+- M3-R-031.1
+
+### Cross-School Scan
+- 未触发（case_count=29，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-12-after-C-2026-RF000864-乾-己巳丙子乙卯甲申.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-12 09:52 · ingest C-2026-RF000243-坤-己卯己巳戊午丁巳
+
+case_count: 29
+trigger: ingest_feedback
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- MR-LAYER1
+- MR-LAYER2
+- MR-LAYER3
+- M3-R-031.1
+- M3-R-031.3
+
+### Cross-School Scan
+- 未触发（case_count=29，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-12-after-C-2026-RF000243-坤-己卯己巳戊午丁巳.snapshot.yaml
+```
+
+
+---
+
+## 2026-06-12 09:52 · ingest C-2026-RF000524-坤-己巳丙寅戊戌丁巳
+
+case_count: 29
+trigger: ingest_feedback
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- MR-LAYER1
+- MR-LAYER2
+- MR-LAYER3
+- M3-R-031.2
+
+### Cross-School Scan
+- 未触发（case_count=29，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-06-12-after-C-2026-RF000524-坤-己巳丙寅戊戌丁巳.snapshot.yaml
+```
