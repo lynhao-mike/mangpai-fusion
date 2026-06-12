@@ -50,8 +50,18 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal, Optional
 
+from engine.application.dynamic_weight_logs import (
+    append_jsonl,
+    ensure_log_files,
+    read_jsonl,
+)
+from engine.application.feedback_parser import (
+    ANNOTATION_TO_VERDICT,
+    FEEDBACK_RE,
+    StatementFeedback,
+    parse_statement_feedback,
+)
 from engine.application.timing import PipelineTiming
-from engine.domain.ids import FEEDBACK_RE as _SHARED_FEEDBACK_RE
 from tools.feedback_loop import (
     IterationDiff,
     Verdict,
@@ -72,6 +82,7 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 META_DIR = REPO_ROOT / "META"
 ITERATION_STATE_FILE = META_DIR / "iteration-state.json"
 ENGINE_LOG_DIR = REPO_ROOT / "engine" / "logs"
+WEIGHT_CHANGES_LOG = ENGINE_LOG_DIR / "weight-changes.jsonl"
 EXPERT_DOMAIN_FEEDBACK_LOG = ENGINE_LOG_DIR / "expert_domain_feedback.jsonl"
 ADJUDICATION_ACCURACY_LOG = ENGINE_LOG_DIR / "adjudication_accuracy.jsonl"
 DOMAIN_WEIGHT_PRIOR_PROFILE = REPO_ROOT / "theory" / "raw" / "yaml" / "domain_weight_profile_2026-06-05.yaml"
@@ -82,26 +93,8 @@ DEFAULT_EXPERT_SYSTEMS = ("blind", "ziping", "tiaohou_ditiansui")
 # 二、解析器
 # ============================================================
 
-# 反馈标注正则：``[S-001-a3f1c2] [y]`` 或同行的 ``反馈：[S-...] [n]``
-# 分组 1: statement_id；分组 2: 标注（y/n/?/skip）。事实源在 engine.domain.ids。
-FEEDBACK_RE = _SHARED_FEEDBACK_RE
-
-# verdict 映射：标注 → 内部 Verdict
-ANNOTATION_TO_VERDICT: dict[str, Verdict] = {
-    "y": "hit",
-    "n": "miss",
-    "?": "no_data",   # D5 决策：? 入库不计数
-    "skip": "no_data",
-}
-
-
-@dataclass
-class StatementFeedback:
-    """一条断语级反馈。"""
-    statement_id: str
-    annotation: str            # 原始标注："y"/"n"/"?"/"skip"
-    verdict: Verdict           # 转换后的内部 Verdict
-    raw_line: str = ""
+# 反馈标注正则、标注映射、StatementFeedback 与 parse_statement_feedback
+# 下沉在 engine.application.feedback_parser，避免 application 层反向依赖 tools。
 
 
 @dataclass
@@ -131,26 +124,6 @@ class IngestResult:
             "iteration_report_path": self.iteration_report_path,
             "iteration_diff": self.iteration_diff.to_dict() if self.iteration_diff else None,
         }
-
-
-def parse_statement_feedback(text: str) -> list[StatementFeedback]:
-    """从填好的 feedback.md 文本里抽出所有 `[S-...] [y/n/?/skip]` 标注。
-
-    去重策略：同一 statement_id 出现多次 → 取**最后一次**有效标注（命理师可能改主意）。
-    """
-    matches: dict[str, StatementFeedback] = {}
-    for line in text.splitlines():
-        for m in FEEDBACK_RE.finditer(line):
-            sid = m.group(1)
-            ann = m.group(2).lower()
-            verdict = ANNOTATION_TO_VERDICT.get(ann, "no_data")
-            matches[sid] = StatementFeedback(
-                statement_id=sid,
-                annotation=ann,
-                verdict=verdict,
-                raw_line=line.strip(),
-            )
-    return list(matches.values())
 
 
 # ============================================================
@@ -327,6 +300,7 @@ def fanout_to_parallel_feedback(
             expert = _expert_for_reading(reading_id, expert_systems)
             expert_rows.append({
                 "ts": now,
+                "event_type": "expert_domain_feedback",
                 "case_id": case_id,
                 "statement_id": feedback.statement_id,
                 "reading_id": reading_id,
@@ -339,6 +313,7 @@ def fanout_to_parallel_feedback(
         if adjudication_id:
             adjudication_rows.append({
                 "ts": now,
+                "event_type": "adjudication_accuracy",
                 "case_id": case_id,
                 "statement_id": feedback.statement_id,
                 "adjudication_id": adjudication_id,
@@ -353,8 +328,9 @@ def fanout_to_parallel_feedback(
                 "minority_vindicated": feedback.verdict == "miss",
             })
     if not dry_run:
-        _append_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG, expert_rows)
-        _append_jsonl(ADJUDICATION_ACCURACY_LOG, adjudication_rows)
+        ensure_log_files((WEIGHT_CHANGES_LOG, EXPERT_DOMAIN_FEEDBACK_LOG, ADJUDICATION_ACCURACY_LOG))
+        _append_jsonl(EXPERT_DOMAIN_FEEDBACK_LOG, expert_rows, event_type="expert_domain_feedback")
+        _append_jsonl(ADJUDICATION_ACCURACY_LOG, adjudication_rows, event_type="adjudication_accuracy")
     return {"expert_feedback_rows": len(expert_rows), "adjudication_feedback_rows": len(adjudication_rows)}
 
 
@@ -556,29 +532,12 @@ def _expert_for_reading(reading_id: str, fallback_experts: list[str]) -> str:
     return ""
 
 
-def _append_jsonl(path: pathlib.Path, rows: list[dict[str, Any]]) -> None:
-    if not rows:
-        return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+def _append_jsonl(path: pathlib.Path, rows: list[dict[str, Any]], *, event_type: str | None = None) -> None:
+    append_jsonl(path, rows, event_type=event_type)
 
 
 def _read_jsonl(path: pathlib.Path) -> list[dict[str, Any]]:
-    if not path.exists():
-        return []
-    rows: list[dict[str, Any]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(row, dict):
-            rows.append(row)
-    return rows
+    return read_jsonl(path)
 
 
 def _finalize_expert_stats(bucket: dict[str, Any]) -> dict[str, Any]:

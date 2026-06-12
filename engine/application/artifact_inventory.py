@@ -1,9 +1,8 @@
 """生产分析 artifact 清单应用服务。
 
-把 [`ProductionAnalysisService`](engine/application/production_service.py) 中的 artifact
-发现、报告 artifact 写入、路径展示与 sha256 计算抽离到独立模块，降低生产服务
-的职责密度。该模块只处理文件系统 artifact 编目，不触碰 job store、cache 或
-pipeline 编排。
+把 ProductionAnalysisService 中的 artifact 发现、报告 artifact 写入、路径展示
+与 sha256 计算抽离到独立模块，降低生产服务的职责密度。该模块只处理文件系统
+artifact 编目，不触碰 job store、cache 或 pipeline 编排。
 """
 
 from __future__ import annotations
@@ -24,6 +23,18 @@ FINDINGS_ARTIFACTS: tuple[tuple[str, str], ...] = (
     ("analysis_output", "analysis_output.json"),
     ("timing", "timing.json"),
 )
+REQUIRED_CASE_ARTIFACTS: tuple[tuple[str, str], ...] = (
+    ("statement_index", "statement_index.json"),
+    ("statement_rule_map", "statement_rule_map.json"),
+)
+
+
+class ArtifactGateError(RuntimeError):
+    """Raised when production hard-gate artifacts are missing."""
+
+    def __init__(self, missing: list[str]) -> None:
+        self.missing = missing
+        super().__init__("missing required production artifacts: " + ", ".join(missing))
 
 
 def collect_analysis_artifacts(
@@ -38,43 +49,54 @@ def collect_analysis_artifacts(
 ) -> list[AnalysisArtifactRecord]:
     """收集一次分析运行产生的 artifact 记录。
 
-    保持历史生产服务行为：先记录 findings 内固定 JSON 文件，再记录
-    statement_index.json；若本次开启 render 且 output 带 report_md，则写入
-    reports/{case_id}-content-report.md 并记录 report artifact。
+    生产准入路径采用 hard gate：固定 findings、statement_index.json、
+    statement_rule_map.json 以及 render=True 时的 report 均必须存在；缺失即抛出
+    ArtifactGateError，让生产 job 进入 failed，避免 incomplete artifact 被缓存。
     """
     artifacts: list[AnalysisArtifactRecord] = []
+    missing: list[str] = []
     findings_dir = cases_dir / case_id / "findings"
     for kind, filename in FINDINGS_ARTIFACTS:
-        append_artifact_if_exists(
+        append_required_artifact(
             artifacts,
+            missing,
             kind=kind,
             path=findings_dir / filename,
             workspace_root=workspace_root,
             created_at=created_at,
         )
 
-    statement_index = cases_dir / case_id / "statement_index.json"
-    append_artifact_if_exists(
-        artifacts,
-        kind="statement_index",
-        path=statement_index,
-        workspace_root=workspace_root,
-        created_at=created_at,
-    )
-
-    if render and hasattr(output, "report_md"):
-        report_path = write_report_artifact(
-            case_id=case_id,
-            report_md=str(getattr(output, "report_md")),
-            reports_dir=reports_dir,
-        )
-        append_artifact_if_exists(
+    case_dir = cases_dir / case_id
+    for kind, filename in REQUIRED_CASE_ARTIFACTS:
+        append_required_artifact(
             artifacts,
-            kind="report",
-            path=report_path,
+            missing,
+            kind=kind,
+            path=case_dir / filename,
             workspace_root=workspace_root,
             created_at=created_at,
         )
+
+    if render:
+        report_md = getattr(output, "report_md", None)
+        if report_md is None:
+            missing.append("report")
+        else:
+            report_path = write_report_artifact(
+                case_id=case_id,
+                report_md=str(report_md),
+                reports_dir=reports_dir,
+            )
+            append_required_artifact(
+                artifacts,
+                missing,
+                kind="report",
+                path=report_path,
+                workspace_root=workspace_root,
+                created_at=created_at,
+            )
+    if missing:
+        raise ArtifactGateError(missing)
     return artifacts
 
 
@@ -86,6 +108,29 @@ def write_report_artifact(*, case_id: str, report_md: str, reports_dir: Path) ->
     tmp_path.write_text(report_md, encoding="utf-8")
     shutil.move(str(tmp_path), str(report_path))
     return report_path
+
+
+def append_required_artifact(
+    artifacts: list[AnalysisArtifactRecord],
+    missing: list[str],
+    *,
+    kind: str,
+    path: Path,
+    workspace_root: Path,
+    created_at: str,
+) -> None:
+    """追加必需 artifact；缺失时记录 kind/path 并等待统一 hard fail。"""
+    if not path.exists():
+        missing.append(f"{kind}:{display_path(path, workspace_root=workspace_root)}")
+        return
+    artifacts.append(
+        AnalysisArtifactRecord(
+            kind=kind,
+            path=display_path(path, workspace_root=workspace_root),
+            sha256=file_sha256(path),
+            created_at=created_at,
+        )
+    )
 
 
 def append_artifact_if_exists(

@@ -105,9 +105,17 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
         calls["count"] += 1
         assert kwargs.get("report_variant") == "standard"
         assert kwargs.get("template_name") == "report-v1.3.md"
-        (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
-        (findings_dir / "timing.json").write_text("{}", encoding="utf-8")
+        for filename in (
+            "energy.json",
+            "picture.json",
+            "gate_results.json",
+            "support.json",
+            "analysis_output.json",
+            "timing.json",
+        ):
+            (findings_dir / filename).write_text("{}", encoding="utf-8")
         (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")
+        (case_dir / "statement_rule_map.json").write_text("{}", encoding="utf-8")
         return FakeOutput(), FakeTiming()
 
     monkeypatch.setattr(
@@ -135,6 +143,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert second["cache_hit"] is True
     assert calls["count"] == 1
     assert any(a["kind"] == "report" for a in first["artifacts"])
+    assert any(a["kind"] == "statement_rule_map" for a in first["artifacts"])
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-content-report.md").exists()
 
 
@@ -216,9 +225,17 @@ def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) ->
         total_seconds = 0.01
 
     def fake_run_pipeline_e2e(*args, **kwargs):
-        (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
-        (findings_dir / "timing.json").write_text("{}", encoding="utf-8")
+        for filename in (
+            "energy.json",
+            "picture.json",
+            "gate_results.json",
+            "support.json",
+            "analysis_output.json",
+            "timing.json",
+        ):
+            (findings_dir / filename).write_text("{}", encoding="utf-8")
         (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")
+        (case_dir / "statement_rule_map.json").write_text("{}", encoding="utf-8")
         return FakeOutput(), FakeTiming()
 
     monkeypatch.setattr(
@@ -239,3 +256,52 @@ def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) ->
     assert completed.started_at is not None
     assert completed.completed_at is not None
     assert completed.summary["case_id"] == "C-2026-997-乾-甲子乙丑丙寅丁卯"
+
+
+def test_submit_hard_fails_when_required_artifact_is_missing(monkeypatch, tmp_path: Path) -> None:
+    case_dir = tmp_path / "cases" / "C-2026-996-乾-甲子乙丑丙寅丁卯"
+    findings_dir = case_dir / "findings"
+    findings_dir.mkdir(parents=True)
+    input_path = case_dir / "input.md"
+    input_path.write_text("demo input", encoding="utf-8")
+
+    class FakeOutput:
+        case_id = "C-2026-996-乾-甲子乙丑丙寅丁卯"
+        analysis_date = "2026-05-30"
+        final_conclusions: list[Any] = []
+        conflicts: list[Any] = []
+        gate_results: list[Any] = []
+        hash_chain_valid = True
+        overall_confidence = None
+        report_md = "# fake report\n"
+
+    class FakeTiming:
+        total_seconds = 0.01
+
+    def fake_run_pipeline_e2e(*args, **kwargs):
+        (findings_dir / "analysis_output.json").write_text("{}", encoding="utf-8")
+        (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")
+        return FakeOutput(), FakeTiming()
+
+    monkeypatch.setattr(
+        "engine.application.production_service.run_pipeline_e2e",
+        fake_run_pipeline_e2e,
+    )
+
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+    job = service.submit(
+        SubmitAnalysisRequest(
+            input_path=input_path,
+            render=True,
+            cases_dir=tmp_path / "cases",
+            reports_dir=tmp_path / "reports",
+        )
+    )
+
+    assert job["status"] == "failed"
+    assert "ArtifactGateError" in job["error"]
+    assert "statement_rule_map" in job["error"]
+    assert "energy" in job["error"]

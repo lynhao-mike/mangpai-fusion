@@ -4,6 +4,6 @@
 Findings / pipeline schema 版本独立演进，用于运行时数据交换契约。
 """
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 FINDINGS_SCHEMA_VERSION = "1.4.0"
 PIPELINE_SCHEMA_VERSION = "1.4.0"

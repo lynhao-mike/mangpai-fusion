@@ -47,10 +47,10 @@
 
 ## 四、闭环补救待人工标注
 
-> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但尚未人工裁决。请将 `[待标注]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
+> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但已按 RF 未知项规则标注为 skip。请将 `[skip]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
 
 | statement_id | 事项 | 年份 | 报告证据 | 人工反馈 |
 |---|---|---:|---|---|
-| S-RF000345-7304d7 | 事业 | 2023 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:1077 | 反馈：S-RF000345-7304d7 [待标注] |
-| S-RF000345-000cf8 | 财运 | 2024 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:2767 | 反馈：S-RF000345-000cf8 [待标注] |
-| S-RF000345-6a264e | 健康 | 2007 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:3297 | 反馈：S-RF000345-6a264e [待标注] |
+| S-RF000345-7304d7 | 事业 | 2023 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:1077 | 反馈：[S-RF000345-7304d7] [skip] |
+| S-RF000345-000cf8 | 财运 | 2024 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:2767 | 反馈：[S-RF000345-000cf8] [skip] |
+| S-RF000345-6a264e | 健康 | 2007 | reports/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉-analyst-report.md:3297 | 反馈：[S-RF000345-6a264e] [skip] |

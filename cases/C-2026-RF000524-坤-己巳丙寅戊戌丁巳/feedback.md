@@ -44,11 +44,11 @@
 
 ## 四、闭环补救待人工标注
 
-> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但尚未人工裁决。请将 `[待标注]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
+> 以下条目已通过 `statement_rule_map.json` 绑定报告明示应期规则，但已按 RF 未知项规则标注为 skip。请将 `[skip]` 改为 `[y]` / `[n]` / `[?]` / `[skip]` 后再运行摄入。
 
 | statement_id | 事项 | 年份 | 报告证据 | 人工反馈 |
 |---|---|---:|---|---|
-| S-RF000524-5134f2 | 事业 | 2022 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:1009 | 反馈：S-RF000524-5134f2 [待标注] |
-| S-RF000524-52e122 | 财运 | 2021 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2555 | 反馈：S-RF000524-52e122 [待标注] |
-| S-RF000524-8c1f1f | 婚姻 | 2024 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2589 | 反馈：S-RF000524-8c1f1f [待标注] |
-| S-RF000524-e88f2d | 健康 | 2022 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2995 | 反馈：S-RF000524-e88f2d [待标注] |
+| S-RF000524-5134f2 | 事业 | 2022 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:1009 | 反馈：[S-RF000524-5134f2] [skip] |
+| S-RF000524-52e122 | 财运 | 2021 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2555 | 反馈：[S-RF000524-52e122] [skip] |
+| S-RF000524-8c1f1f | 婚姻 | 2024 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2589 | 反馈：[S-RF000524-8c1f1f] [skip] |
+| S-RF000524-e88f2d | 健康 | 2022 | reports/C-2026-RF000524-坤-己巳丙寅戊戌丁巳-analyst-report.md:2995 | 反馈：[S-RF000524-e88f2d] [skip] |
