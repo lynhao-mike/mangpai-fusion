@@ -66,6 +66,11 @@ from engine.application.feedback_parser import (
     parse_statement_feedback,
 )
 from engine.application.timing import PipelineTiming
+from engine.application.minimal_learning_loop import (
+    FeedbackNormalizationError,
+    normalize_feedback_entries,
+    run_learning_update,
+)
 from tools.feedback_loop import (
     IterationDiff,
     Verdict,
@@ -144,6 +149,7 @@ class IngestResult:
     iteration_report_path: Optional[str] = None  # v1.3 D8：自动触发的迭代报告路径
     learning_sample_count: int = 0             # Dynamic Confidence 可学习样本数
     bridge_mapping_stats: Optional[BridgeMappingStats] = None
+    phase_a_learning_summary: Optional[dict[str, Any]] = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -158,6 +164,7 @@ class IngestResult:
             "iteration_report_path": self.iteration_report_path,
             "learning_sample_count": self.learning_sample_count,
             "bridge_mapping_stats": self.bridge_mapping_stats.to_dict() if self.bridge_mapping_stats else None,
+            "phase_a_learning_summary": self.phase_a_learning_summary,
             "iteration_diff": self.iteration_diff.to_dict() if self.iteration_diff else None,
         }
 
@@ -339,31 +346,42 @@ def fanout_to_rules(
     feedbacks: list[StatementFeedback],
     statement_records: Mapping[str, Any],
 ) -> tuple[dict[str, tuple[Verdict, VerdictContext]], list[str]]:
-    """把 statement-level verdict 通过 statement_records fanout 到 rule-level。"""
+    """把 statement-level verdict 通过 statement_records / legacy statement_index fanout 到 rule-level。"""
 
     records = _record_map(statement_records)
+    legacy_statements = _statement_map(dict(statement_records)) if isinstance(statement_records, Mapping) else {}
     rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
     unknown_sids: list[str] = []
 
     for fb in feedbacks:
         info = records.get(fb.statement_id)
-        if not _record_is_mapped(info):
+        legacy_info = legacy_statements.get(fb.statement_id)
+        if _record_is_mapped(info):
+            rule_ids = [str(info.get("rule_id") or "").strip()]
+            context_source = info or {}
+        elif legacy_info is not None:
+            rule_ids = [str(rid).strip() for rid in (legacy_info.get("rule_ids", []) or []) if str(rid).strip()]
+            context_source = legacy_info
+            if not rule_ids:
+                continue
+        else:
             unknown_sids.append(fb.statement_id)
             continue
-        rid = str(info.get("rule_id") or "").strip()
-        existing = rule_verdicts.get(rid)
-        if existing is None or _PRIORITY[fb.verdict] < _PRIORITY[existing[0]]:
-            prev_sids = existing[1].statement_ids if existing else []
-            vctx = VerdictContext(
-                section=str(info.get("section") or ""),
-                year=info.get("year"),
-                domain=str(info.get("domain") or ""),
-                statement_ids=sorted(set(prev_sids + [fb.statement_id])),
-            )
-            rule_verdicts[rid] = (fb.verdict, vctx)
-        else:
-            ev, vctx = existing
-            vctx.statement_ids = sorted(set(vctx.statement_ids + [fb.statement_id]))
+
+        for rid in rule_ids:
+            existing = rule_verdicts.get(rid)
+            if existing is None or _PRIORITY[fb.verdict] < _PRIORITY[existing[0]]:
+                prev_sids = existing[1].statement_ids if existing else []
+                vctx = VerdictContext(
+                    section=str(context_source.get("section") or ""),
+                    year=context_source.get("year"),
+                    domain=str(context_source.get("domain") or ""),
+                    statement_ids=sorted(set(prev_sids + [fb.statement_id])),
+                )
+                rule_verdicts[rid] = (fb.verdict, vctx)
+            else:
+                ev, vctx = existing
+                vctx.statement_ids = sorted(set(vctx.statement_ids + [fb.statement_id]))
 
     return rule_verdicts, unknown_sids
 
@@ -797,25 +815,36 @@ def ingest(
             _write_ingest_timing(timing, timing_run_id, result, dry_run=dry_run)
         return result
 
-    # 4. 生成只读 bridge learning samples，再执行现有规则级 fanout。
+    # 4. 生成 bridge learning samples、执行 Phase-A 最小学习更新，再执行现有规则级 fanout。
     with timing.step("bridge_learning_samples"):
         learning_samples, mapped_rows, bridge_stats = build_learning_samples(feedbacks, statement_records)
+        normalized_feedback = normalize_feedback_entries(
+            feedbacks,
+            case_id=full_case_id,
+            source_text=feedback_text,
+        )
+    with timing.step("phase_a_learning_update"):
+        phase_a_learning_summary = run_learning_update(
+            statement_records,
+            normalized_feedback,
+            case_dir=case_dir,
+            dry_run=dry_run,
+        )
     with timing.step("fanout"):
         rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_records)
         parallel_feedback_counts = {"expert_feedback_rows": 0, "adjudication_feedback_rows": 0}
 
     # 5. 应用现有规则级更新（不写 log，本函数末尾统一写）。
-    # Dynamic Confidence 学习样本只读生成；本函数不直接写入权重或更新 dynamic confidence。
     with timing.step("apply_rules"):
         diff = _apply_rule_verdicts(
             full_case_id, rule_verdicts, cfg=cfg, today=today, dry_run=dry_run
         )
 
     diff.notes.append(
-        "Dynamic Confidence bridge sample gate："
+        "Phase-A Minimal Learning Loop："
         f"learnable={len(learning_samples)}，mapped={bridge_stats.mapped_rows}，"
-        f"unmapped={bridge_stats.unmapped_rows}，pending={bridge_stats.pending_rows}；"
-        "本次仅生成学习样本，不直接写入权重或更新 dynamic confidence。"
+        f"unmapped={bridge_stats.unmapped_rows}，pending={bridge_stats.pending_rows}，"
+        f"confidence_updates={phase_a_learning_summary['updated_count']}。"
     )
     if not rule_verdicts:
         diff.notes.append(
@@ -849,6 +878,7 @@ def ingest(
         iteration_diff=diff,
         learning_sample_count=len(learning_samples),
         bridge_mapping_stats=bridge_stats,
+        phase_a_learning_summary=phase_a_learning_summary,
     )
     if not dry_run:
         with timing.step("bump_state"):
@@ -928,6 +958,7 @@ def _write_ingest_timing(
                 "skipped_no_index": result.skipped_no_index,
                 "learning_sample_count": result.learning_sample_count,
                 "bridge_mapping_stats": result.bridge_mapping_stats.to_dict() if result.bridge_mapping_stats else None,
+                "phase_a_learning_summary": result.phase_a_learning_summary,
                 "iteration_triggered": result.iteration_triggered,
                 "iteration_seq": result.iteration_seq,
                 "dry_run": dry_run,
@@ -956,6 +987,12 @@ def _print_human(result: IngestResult) -> None:
     _safe_print(f"  解析到 statement 反馈: {result.feedback_count} 条")
     _safe_print(f"  fanout 后涉及规律: {result.rule_count} 条")
     _safe_print(f"  Dynamic Confidence 可学习样本: {result.learning_sample_count} 条")
+    if result.phase_a_learning_summary:
+        _safe_print(
+            "  Phase-A 学习更新: "
+            f"updates={result.phase_a_learning_summary.get('updated_count', 0)} / "
+            f"observable_changes={len(result.phase_a_learning_summary.get('observable_confidence_changes', []))}"
+        )
     if result.bridge_mapping_stats:
         stats = result.bridge_mapping_stats.to_dict()
         _safe_print(

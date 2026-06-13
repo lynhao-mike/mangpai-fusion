@@ -27,11 +27,26 @@ _REQUIRED_RECORD_FIELDS = (
     "canon",
     "rule_type",
     "statement_text",
+    "timestamp",
     "confidence_snapshot",
     "generated_at",
     "source_engine_version",
     "source_rule_version",
 )
+
+_PHASE_A_REQUIRED_FIELDS = (
+    "statement_id",
+    "case_id",
+    "rule_id",
+    "family_id",
+    "school",
+    "canon",
+    "rule_type",
+    "statement_text",
+    "timestamp",
+)
+
+_UNMAPPED = "UNMAPPED"
 
 _RULE_PREFIX_RE = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)*")
 
@@ -81,10 +96,10 @@ def build_statement_records_envelope(
             evidence = [{"rule_id": str(item.get("rule_id")), "school": str(item.get("school", ""))}]
         ev = next((entry for entry in evidence if str(entry.get("rule_id") or "").strip()), None)
         if ev is None:
-            continue
-        rule_id = str(ev.get("rule_id") or "").strip()
+            ev = {}
+        rule_id = str(ev.get("rule_id") or item.get("rule_id") or _UNMAPPED).strip() or _UNMAPPED
         metadata = resolve_rule_metadata(rule_id, ev, item)
-        record = {
+        record = enforce_statement_record({
             "statement_id": statement_id,
             "case_id": case_id,
             "rule_id": rule_id,
@@ -93,11 +108,12 @@ def build_statement_records_envelope(
             "canon": metadata["canon"],
             "rule_type": metadata["rule_type"],
             "statement_text": statement_text,
+            "timestamp": ts,
             "confidence_snapshot": _confidence_snapshot(item),
             "generated_at": ts,
             "source_engine_version": __version__,
             "source_rule_version": SOURCE_RULE_VERSION,
-        }
+        })
         records.append(record)
         seen_statement_ids.add(statement_id)
 
@@ -131,6 +147,17 @@ def write_statement_records(
             pass
     path.write_text(text, encoding="utf-8")
     return envelope
+
+
+def enforce_statement_record(record: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a Phase-A statement_record with missing required fields set to ``UNMAPPED``."""
+
+    out = dict(record)
+    for field in _PHASE_A_REQUIRED_FIELDS:
+        value = out.get(field)
+        if value in (None, "", []):
+            out[field] = _UNMAPPED
+    return out
 
 
 def validate_statement_records(records: Iterable[Mapping[str, Any]]) -> StatementRuntimeStats:
@@ -257,8 +284,8 @@ def _confidence_snapshot(item: Mapping[str, Any]) -> dict[str, Any]:
 
 def _family_id_for_rule(rule_id: str) -> str:
     rid = rule_id.strip()
-    if not rid:
-        return "FAM-UNKNOWN"
+    if not rid or rid == _UNMAPPED:
+        return _UNMAPPED
     match = _RULE_PREFIX_RE.match(rid)
     if match:
         return f"FAM-{match.group(0)}"
@@ -267,6 +294,8 @@ def _family_id_for_rule(rule_id: str) -> str:
 
 def _normalize_school(raw_school: str, rule_id: str) -> str:
     school = raw_school.strip()
+    if rule_id == _UNMAPPED:
+        return _UNMAPPED
     if school and school not in {"?", "—", "source_missing"}:
         return school
     if rule_id.startswith("M1-D"):
@@ -287,6 +316,8 @@ def _normalize_school(raw_school: str, rule_id: str) -> str:
 
 
 def _canon_for_rule(rule_id: str, school: str) -> str:
+    if rule_id == _UNMAPPED or school == _UNMAPPED:
+        return _UNMAPPED
     if rule_id.startswith("M1-D") or school == "段":
         return "duan"
     if rule_id.startswith("M2-Y") or school == "杨":
@@ -305,6 +336,8 @@ def _canon_for_rule(rule_id: str, school: str) -> str:
 
 
 def _rule_type_for_rule(rule_id: str, item: Mapping[str, Any]) -> str:
+    if rule_id == _UNMAPPED:
+        return _UNMAPPED
     section = str(item.get("section") or "")
     if rule_id.startswith(("MR-", "M3-R")):
         return "timing_gate"

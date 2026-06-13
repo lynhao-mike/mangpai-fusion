@@ -39,7 +39,7 @@ RULE_ID_RE_RELAX = re.compile(RULE_ID_RELAX_PATTERN)
 STATEMENT_ID_PATTERN = r"S-[A-Za-z0-9_]+-[A-Za-z0-9_]+"
 STATEMENT_ID_RE = re.compile(rf"\b{STATEMENT_ID_PATTERN}\b")
 FEEDBACK_RE = re.compile(
-    rf"\[({STATEMENT_ID_PATTERN})\]\s*\[(y|n|\?|skip)\]",
+    rf"\[({STATEMENT_ID_PATTERN})\]\s*\[(y|n|partial|\?|skip)\]",
     re.IGNORECASE,
 )
 FEEDBACK_SLOT_RE = re.compile(rf"\[{STATEMENT_ID_PATTERN}\]\s*\[\s*\]")
