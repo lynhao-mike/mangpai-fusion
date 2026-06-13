@@ -1,0 +1,465 @@
+schema_version: inference-flow-map-2026-06-14
+flow_basis:
+  - README.md
+  - engine/README.md
+  - engine/contracts/00-OVERVIEW.md
+  - engine/application/pipeline_runner.py
+  - engine/application/integration.py
+  - engine/application/production_rule_loader.py
+  - engine/application/parallel_domain_orchestrator.py
+  - engine/application/dual_engine_adapter.py
+  - engine/v2/application/runner.py
+  - tools/README.md
+entrypoints:
+  primary_case_cli:
+    node_id: T0
+    path: tools/preflight.py
+    status: 已实现
+  primary_application_pipeline:
+    node_id: A0
+    path: engine/application/pipeline_runner.py
+    status: 已实现
+  compatibility_pipeline:
+    node_id: A0_COMPAT
+    path: engine/pipeline.py
+    status: 已实现
+    role: re-export compatibility facade
+  production_service:
+    node_id: P0
+    path: engine/application/production_service.py
+    status: 已实现
+  production_api:
+    node_id: P_API
+    path: tools/production_api.py
+    status: 已实现
+  v2_sidecar:
+    node_id: V2_0
+    path: engine/v2/application/runner.py
+    status: 部分实现
+    attached_to_main_pipeline: no
+flow_nodes:
+  - id: N01_input
+    layer: orchestration
+    status: 已实现
+    component: cases/*/input.md
+    action: receive_bazi_input
+    input:
+      - 问真八字 APP 排盘内容
+      - 四柱
+      - 大运
+      - 神煞
+      - 性别
+      - 已知事实
+    output:
+      - markdown input file
+    next:
+      - N02_preflight
+  - id: N02_preflight
+    layer: orchestration
+    status: 已实现
+    component: tools/preflight.py or PipelineAdapters.preflight.parse
+    action: validate_and_parse_input
+    input:
+      - cases/*/input.md
+    output:
+      - ParsedInput
+    next:
+      - N03_pipeline_runner
+  - id: N03_pipeline_runner
+    layer: inference
+    status: 已实现
+    component: engine.application.pipeline_runner.run_pipeline
+    action: orchestrate_D1_D4
+    input:
+      - ParsedInput
+    output:
+      - D1 energy findings
+      - D2 picture findings
+      - D3 gate results
+      - D4 support findings
+    next:
+      - N04_D1_energy
+      - N05_D2_picture
+      - N06_D3_yingqi
+      - N07_D4_pangzheng
+      - N08_integrate
+  - id: N04_D1_energy
+    layer: inference
+    status: 已实现
+    component: engine.energy.evaluator.evaluate_energy
+    school_triggered:
+      - 段派
+    rule_system_triggered:
+      - Python engine logic under engine/energy/
+      - theory/duan/index.yaml as structured knowledge store, not directly loaded by production_rule_loader
+    input:
+      - ParsedInput
+    output:
+      - EnergyFindings
+    execution_mode: serial_before_D2
+    next:
+      - N05_D2_picture
+  - id: N05_D2_picture
+    layer: inference
+    status: 已实现
+    component: engine.picture.matcher.match_picture
+    school_triggered:
+      - 杨派
+    rule_system_triggered:
+      - Python engine logic under engine/picture/
+      - theory/yang/index.yaml as structured knowledge store, not directly loaded by production_rule_loader
+    input:
+      - EnergyFindings
+      - ParsedInput
+    output:
+      - PictureFindings
+    execution_mode: serial_after_D1
+    next:
+      - N06_D3_yingqi
+  - id: N06_D3_yingqi
+    layer: inference
+    status: 已实现
+    component: engine.yingqi.gate.gate_yingqi
+    school_triggered:
+      - 任派
+    rule_system_triggered:
+      - Python engine logic under engine/yingqi/
+      - theory/ren/index.yaml as structured knowledge store, not directly loaded by production_rule_loader
+    input:
+      - candidates extracted from ParsedInput known_facts
+      - EnergyFindings
+      - PictureFindings
+      - ParsedInput
+    output:
+      - GateResult list
+    execution_mode: serial_after_D2_loop_over_candidates
+    next:
+      - N07_D4_pangzheng
+  - id: N07_D4_pangzheng
+    layer: inference
+    status: 已实现
+    component: engine.pangzheng.pangzheng.support_with_shensha
+    school_triggered:
+      - 高派
+    rule_system_triggered:
+      - Python engine logic under engine/pangzheng/
+      - shensha support table
+      - theory/gao/index.yaml as structured knowledge store, not directly loaded by production_rule_loader
+    input:
+      - ParsedInput
+      - EnergyFindings
+      - PictureFindings
+      - GateResult list
+    output:
+      - SupportFindings
+    execution_mode: serial_after_D3
+    next:
+      - N08_integrate
+  - id: N08_integrate
+    layer: inference
+    status: 已实现
+    component: engine.application.integration.integrate
+    action: combine_D1_D4_into_AnalysisOutput
+    input:
+      - EnergyFindings
+      - PictureFindings
+      - GateResult list
+      - SupportFindings
+      - ParsedInput
+    output:
+      - AnalysisOutput
+    internal_steps:
+      - verify_hash_chain
+      - convert_passed_gate_results_to_FinalConclusion
+      - append_D1_core_conclusion
+      - append_D2_marriage_and_industry_conclusions
+      - append_D4_support_conclusions
+      - infer_industry_path_and_wealth_framework
+      - load_and_trigger_production_rules
+      - compute_layer_summary
+      - compute_overall_confidence
+      - build_yingqi_table
+      - attach_parallel_domain_analysis
+    next:
+      - N09_production_rules
+      - N10_parallel_domains
+      - N11_dual_engine_adapter
+      - N12_retrospective
+      - N13_findings_save
+  - id: N09_production_rules
+    layer: inference
+    status: 部分实现
+    component: engine.application.production_rule_loader.load_default_production_library
+    school_triggered:
+      - 子平
+      - 滴天髓调候
+    rule_system_triggered:
+      - theory/ziping/index.yaml
+      - theory/tiaohou_ditiansui/index.yaml
+    input:
+      - ParsedInput
+      - EnergyFindings
+      - PictureFindings
+    trigger_conditions:
+      - always
+      - has_wealth_picture
+      - has_official_picture
+      - has_marriage_picture
+      - has_tiaohou_advice
+      - wuxing_imbalanced
+      - has_zhi_chong
+      - has_energy_structure
+    output:
+      - ProductionRule list
+      - FinalConclusion conversion in integration
+    execution_mode: serial_inside_integrate
+    inconsistent:
+      - ziping file matches production loader format
+      - tiaohou_ditiansui file does not match production loader format
+    next:
+      - N08_integrate
+      - N10_parallel_domains
+  - id: N10_parallel_domains
+    layer: inference
+    status: 已实现
+    component: engine.application.parallel_domain_orchestrator.analyze_parallel_domains
+    action: run_multi_expert_domain_analysis
+    experts:
+      - blind
+      - ziping
+      - tiaohou_ditiansui
+    domains:
+      - 学业
+      - 事业
+      - 财运
+      - 婚姻
+      - 健康
+      - 性格
+    input:
+      - ParsedInput
+      - EnergyFindings
+      - PictureFindings
+      - GateResult list
+      - SupportFindings
+      - triggered ProductionRule list
+    runner: engine.application.parallel_domain_runner.run_parallel_domain_analysis
+    analyzer_registry: engine.application.domain_analyzers.build_pipeline_findings_registry
+    execution_mode: per_domain_expert_loop_default_serial_optional_parallel_executor
+    output:
+      - ParallelAnalysisOutput
+    next:
+      - N08_integrate
+      - N11_dual_engine_adapter
+  - id: N11_dual_engine_adapter
+    layer: inference
+    status: 已实现
+    component: engine.application.dual_engine_adapter.analyze_dual_engine
+    action: build_theory_blind_fusion_findings
+    called_from: engine.application.pipeline_runner.run_pipeline
+    input:
+      - ParsedInput
+      - EnergyFindings
+      - PictureFindings
+      - GateResult list
+      - SupportFindings
+    outputs:
+      - TheoryFindings
+      - BlindFindings
+      - FusionFindings
+    execution_mode: sidecar_after_integrate_not_hash_chain
+    next:
+      - N13_findings_save
+  - id: N12_retrospective
+    layer: inference
+    status: 已实现
+    component: engine.yingqi.retrospective.scan_retrospective
+    action: scan_yearly_retrospective_until_current_year
+    called_from: engine.application.pipeline_runner.run_pipeline
+    input:
+      - ParsedInput
+    output:
+      - retrospective attribute on AnalysisOutput
+    execution_mode: sidecar_after_integrate_not_hash_chain
+    next:
+      - N13_findings_save
+  - id: N13_findings_save
+    layer: orchestration
+    status: 已实现
+    component: engine.infrastructure.findings_repository._save_findings
+    action: persist_findings_and_timing
+    input:
+      - AnalysisOutput
+      - PipelineTiming
+    output:
+      - cases/*/findings/*
+    next:
+      - N14_render_optional
+      - N15_self_iter_optional
+  - id: N14_render_optional
+    layer: orchestration
+    status: 已实现
+    component: tools/render_report.py via PipelineAdapters.renderer.render
+    action: render_standard_report
+    condition: run_pipeline_e2e(do_render=True) or production service render=True
+    input:
+      - AnalysisOutput
+      - templates/report-v1.3.md
+    output:
+      - reports/*-content-report.md
+      - report_md attribute
+    next:
+      - N16_output_linter_external
+  - id: N15_self_iter_optional
+    layer: training_evaluation
+    status: 已实现
+    component: tools/feedback_ingest.py or PipelineAdapters.feedback.ingest
+    action: feedback_ingest_or_self_iteration
+    condition: run_pipeline_e2e(do_self_iter=True) or explicit feedback workflow
+    input:
+      - cases/*/feedback.md
+      - cases/*/statement_index.json
+    output:
+      - theory/*/index.yaml updates
+      - META/iteration-log.md
+      - META/iteration-report-NNN.md when threshold reached
+    next:
+      - N17_feedback_loop
+  - id: N16_output_linter_external
+    layer: orchestration
+    status: 已实现
+    component: tools/output_linter.py
+    action: lint_report_output
+    input:
+      - reports/*.md
+    output:
+      - pass_or_fail
+    next: []
+  - id: N17_feedback_loop
+    layer: training_evaluation
+    status: 已实现
+    component: tools/feedback_loop.py
+    action: apply_rule_verdicts_update_lifecycle_and_confidence
+    input:
+      - y/n/?/skip feedback markers
+      - rule verdicts
+    output:
+      - hits/misses/abstained
+      - recent_5
+      - confidence_cache
+      - status changes
+    next:
+      - N18_mining_and_iteration
+  - id: N18_mining_and_iteration
+    layer: training_evaluation
+    status: 已实现
+    component: boundary_miner/veto_miner/iteration_report/cross_school_scan
+    action: mine_boundaries_detect_vetoes_emit_iteration_reports
+    input:
+      - updated rule states
+      - completed feedback count
+    output:
+      - boundary candidates
+      - flagged_for_review
+      - iteration reports
+      - conflict trends
+    next: []
+  - id: V2_01_reasoning_sidecar
+    layer: inference
+    status: 部分实现
+    component: engine.v2.application.runner.run_v2_reasoning
+    action: readonly_v2_reasoning
+    called_from_main_pipeline: no
+    input:
+      - ParsedInput
+      - EnergyFindings
+      - PictureFindings
+      - GateResult list
+      - SupportFindings
+      - optional ProductionRuleLibrary
+    internal_steps:
+      - build_school_evidences
+      - build_domain_evidences
+      - run_domain_agents
+      - build_event_candidates
+      - find_similar_cases
+    output:
+      - V2AnalysisOutput
+    next: []
+skill_invocation:
+  runtime_pipeline_skills_called: []
+  repository_skills_present:
+    - skill_id: roo_autonomous_skill
+      path: .roo/skills/autonomous-skill.md
+      called_by_pipeline: no
+    - skill_id: roo_geju_skill
+      path: .roo/skills/geju-skill.md
+      called_by_pipeline: no
+    - skill_id: global_geju
+      path: C:/Users/Administrator/.roo/skills/geju/SKILL.md
+      called_by_pipeline: no
+engine_topology:
+  main_D1_D4_pipeline:
+    mode: serial
+    order:
+      - preflight
+      - D1 energy
+      - D2 picture
+      - D3 yingqi loop
+      - D4 pangzheng
+      - integrate
+  production_rules:
+    mode: serial_inside_integrate
+    systems:
+      - ziping
+      - tiaohou_ditiansui
+    status: 部分实现
+  parallel_domain_analysis:
+    mode: per_domain_multi_expert_loop
+    default_execution: serial
+    optional_execution: bounded_parallel_executor
+    systems:
+      - blind
+      - ziping
+      - tiaohou_ditiansui
+    status: 已实现
+  dual_engine_adapter:
+    mode: sidecar_after_integrate
+    systems:
+      - theory
+      - blind
+      - fusion
+    status: 已实现
+  v2_reasoning:
+    mode: readonly_sidecar_not_mainline
+    status: 部分实现
+real_execution_path_summary:
+  data_enters_system:
+    - cases/*/input.md
+    - tools/preflight.py
+    - PipelineAdapters.preflight.parse
+  skills_called:
+    - none_in_runtime_pipeline
+  rule_systems_triggered:
+    hard_coded_python_engines:
+      - engine/energy/
+      - engine/picture/
+      - engine/yingqi/
+      - engine/pangzheng/
+    yaml_production_rules:
+      - theory/ziping/index.yaml
+      - theory/tiaohou_ditiansui/index.yaml
+    yaml_structured_knowledge_not_directly_loaded_by_production_loader:
+      - theory/duan/index.yaml
+      - theory/gao/index.yaml
+      - theory/yang/index.yaml
+      - theory/ren/index.yaml
+  multi_engine_parallel_or_serial:
+    D1_D4: serial
+    production_rules: serial
+    parallel_domain_runner: default_serial_optional_parallel
+    dual_engine_adapter: sidecar
+    v2_runner: sidecar_not_mainline
+inconsistent:
+  - theory/tiaohou_ditiansui/index.yaml does not satisfy production_rule_loader expected schema
+  - four blind school YAML indexes are structured knowledge stores but current D1-D4 runtime primarily uses Python engine modules, not a unified YAML rule interpreter
+  - engine.pipeline.py exists but is compatibility facade, not primary implementation

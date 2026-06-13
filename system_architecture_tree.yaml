@@ -1,0 +1,503 @@
+schema_version: architecture-scan-2026-06-14
+scan_scope:
+  roots:
+    - engine/
+    - theory/
+    - tools/
+    - .roo/skills/
+    - .agents/
+  basis:
+    - README.md
+    - META/project-state.json
+    - STATUS.md
+    - tools/README.md
+    - engine/README.md
+    - engine/contracts/00-OVERVIEW.md
+architecture_layers:
+  inference_layer:
+    status: 部分实现
+    modules:
+      engine.application.pipeline_runner:
+        path: engine/application/pipeline_runner.py
+        status: 已实现
+        functions:
+          run_pipeline:
+            status: 已实现
+            role: ParsedInput 到 AnalysisOutput 的 D1-D4 主流水线编排
+            calls:
+              - engine.energy.evaluator.evaluate_energy
+              - engine.picture.matcher.match_picture
+              - engine.yingqi.gate.gate_yingqi
+              - engine.pangzheng.pangzheng.support_with_shensha
+              - engine.application.integration.integrate
+              - engine.application.dual_engine_adapter.analyze_dual_engine
+              - engine.yingqi.retrospective.scan_retrospective
+          run_pipeline_e2e:
+            status: 已实现
+            role: input.md 到 preflight、pipeline、可选 render、自迭代、findings 落盘的端到端编排
+            calls:
+              - PipelineAdapters.preflight.parse
+              - run_pipeline
+              - PipelineAdapters.renderer.render
+              - PipelineAdapters.feedback.ingest
+              - engine.infrastructure.findings_repository._save_findings
+      engine.pipeline:
+        path: engine/pipeline.py
+        status: 已实现
+        role: 历史兼容外观层
+        implementation: re-export application/domain/infrastructure symbols
+      engine.energy:
+        path: engine/energy/
+        status: 已实现
+        school_binding: 段派
+        submodules:
+          evaluator.py:
+            status: 已实现
+            function: D1 能量评估入口
+          zuogong.py:
+            status: 已实现
+            function: 做功结构
+          tiyong.py:
+            status: 已实现
+            function: 体用判别
+          shidang.py:
+            status: 已实现
+            function: 势党组合
+          zeishen.py:
+            status: 已实现
+            function: 贼神捕神
+          types.py:
+            status: 已实现
+            function: EnergyFindings 与相关类型
+      engine.picture:
+        path: engine/picture/
+        status: 已实现
+        school_binding: 杨派
+        submodules:
+          matcher.py:
+            status: 已实现
+            function: D2 画像匹配入口
+          wubu.py:
+            status: 已实现
+            function: 五步法
+          wuhe.py:
+            status: 已实现
+            function: 五合关系
+          anyin.py:
+            status: 已实现
+            function: 暗引
+          caifu.py:
+            status: 已实现
+            function: 财富/官命相关画像
+          marriage.py:
+            status: 已实现
+            function: 婚姻画像
+          tiaohou.py:
+            status: 已实现
+            function: 调候建议
+          wealth_15tier.py:
+            status: 已实现
+            function: 财富 15 层框架
+          types.py:
+            status: 已实现
+            function: PictureFindings 与相关类型
+      engine.yingqi:
+        path: engine/yingqi/
+        status: 已实现
+        school_binding: 任派
+        submodules:
+          gate.py:
+            status: 已实现
+            function: D3 应期三层门入口
+          chufa.py:
+            status: 已实现
+            function: 触发器
+          menshu.py:
+            status: 已实现
+            function: 门数/门类
+          threelayer.py:
+            status: 已实现
+            function: 三层叠加校验
+          retrospective.py:
+            status: 已实现
+            function: 流年回溯旁路
+          keys.py:
+            status: 已实现
+            function: 应期键定义
+          types.py:
+            status: 已实现
+            function: GateResult 与相关类型
+      engine.pangzheng:
+        path: engine/pangzheng/
+        status: 已实现
+        school_binding: 高派
+        submodules:
+          pangzheng.py:
+            status: 已实现
+            function: D4 神煞旁证入口
+          support.py:
+            status: 已实现
+            function: 兼容包装
+          shensha_lib.py:
+            status: 已实现
+            function: 神煞旁证表
+          loader.py:
+            status: 已实现
+            function: 神煞数据加载
+          types.py:
+            status: 已实现
+            function: SupportFindings 与相关类型
+      engine.application.integration:
+        path: engine/application/integration.py
+        status: 已实现
+        function: D1-D4 findings 合成 AnalysisOutput
+        features:
+          hash_chain_verification: 已实现
+          final_conclusion_generation: 已实现
+          industry_path_and_wealth_framework_coupling: 已实现
+          production_rule_injection: 部分实现
+          parallel_domain_attachment: 已实现
+          conflict_structuring: 部分实现
+        notes:
+          - conflicts 字段自动返回空列表，结构化冲突由其他层处理
+          - 子平/滴天髓生产规则异常会写入 hash_notes，不阻断主流水线
+      engine.application.production_rule_loader:
+        path: engine/application/production_rule_loader.py
+        status: 部分实现
+        function: 子平/滴天髓正式生产规则加载与触发
+        allowed_paths:
+          - theory/ziping/index.yaml
+          - theory/tiaohou_ditiansui/index.yaml
+        supported_expert_systems:
+          - ziping
+          - tiaohou_ditiansui
+        required_top_level:
+          status: active
+          source_scope: production_rules
+        required_rule_status: active
+        triggers:
+          - always
+          - has_wealth_picture
+          - has_official_picture
+          - has_marriage_picture
+          - has_tiaohou_advice
+          - wuxing_imbalanced
+          - has_zhi_chong
+          - has_energy_structure
+        inconsistent:
+          - theory/tiaohou_ditiansui/index.yaml is list-of-Rule candidate format, not production-rules mapping format expected by loader
+      engine.application.dual_engine_adapter:
+        path: engine/application/dual_engine_adapter.py
+        status: 已实现
+        function: 生成 TheoryFindings、BlindFindings、FusionFindings 三层聚合输出
+        engines:
+          theory_engine:
+            status: 部分实现
+            inputs:
+              - 子平/滴天髓生产规则
+              - 五行强弱
+              - 日主强弱
+              - 体用摘要
+          blind_engine:
+            status: 已实现
+            inputs:
+              - D1 energy
+              - D2 picture
+              - D3 gate_results
+              - D4 support
+          fusion_engine:
+            status: 已实现
+            inputs:
+              - parallel_analysis consensus
+      engine.application.parallel_domain_runner:
+        path: engine/application/parallel_domain_runner.py
+        status: 已实现
+        function: 多专家功能域 canonical runner
+        execution:
+          default: 顺序执行
+          optional: bounded thread executor via ParallelExecutionConfig
+        steps:
+          - expert analyzer task build
+          - isolated execution envelope
+          - cross expert conflict detection
+          - domain adjudication
+          - consensus building
+          - cross domain consistency evaluation
+      engine.application.domain_analyzers:
+        path: engine/application/domain_analyzers.py
+        status: 已实现
+        function: 专家体系 × 功能域 analyzer 协议与注册表
+        analyzers:
+          PipelineBlindAnalyzer:
+            status: 已实现
+            expert_system: blind
+          PipelineProductionRuleAnalyzer:
+            status: 部分实现
+            expert_systems:
+              - ziping
+              - tiaohou_ditiansui
+          AbstainDomainAnalyzer:
+            status: 已实现
+            function: 未接线时显式弃权
+      engine.application.parallel_domain_orchestrator:
+        path: engine/application/parallel_domain_orchestrator.py
+        status: 已实现
+        function: pipeline findings 到 canonical runner 的薄适配层
+      engine.v2:
+        path: engine/v2/
+        status: 部分实现
+        function: V2 实战推理旁路
+        submodules:
+          application/runner.py:
+            status: 已实现
+            function: run_v2_reasoning 只读旁路
+          evidence/:
+            status: 已实现
+            function: school/domain evidence build
+          domain/:
+            status: 已实现
+            function: V2 输出、事件、证据、相似度类型
+          mapping/event_mapping.yaml:
+            status: 已实现
+            function: 事件映射配置
+        notes:
+          - run_v2_reasoning 不修改 AnalysisOutput
+          - 未在主 run_pipeline 中直接调用
+      engine.predicates:
+        path: engine/predicates/
+        status: 已实现
+        function: 共用谓词原子库
+        submodules:
+          - ganzhi.py
+          - wuxing.py
+          - relations.py
+          - palace.py
+          - cycles.py
+          - tou_cang.py
+          - strength.py
+          - shensha.py
+          - types.py
+  knowledge_layer:
+    status: 部分实现
+    modules:
+      theory.schema:
+        path: theory/SCHEMA.md
+        status: 部分实现
+        function: 四派盲派规则统一 schema 文档
+        applies_to:
+          - theory/gao/index.yaml
+          - theory/duan/index.yaml
+          - theory/yang/index.yaml
+          - theory/ren/index.yaml
+        inconsistent:
+          - actual index.yaml fields are auto-generated and not fully equal to documented schema
+          - statuses include promoted/confirmed/candidate/pending_normalization while newer lifecycle also mentions active/flagged/deprecated in tools
+      theory.duan:
+        path: theory/duan/index.yaml
+        status: 部分实现
+        rule_format: blind_school_auto_index
+        rule_count_comment: 290
+        connected_engine: engine/energy/
+      theory.gao:
+        path: theory/gao/index.yaml
+        status: 部分实现
+        rule_format: blind_school_auto_index
+        rule_count_comment: 261
+        connected_engine: engine/pangzheng/
+      theory.yang:
+        path: theory/yang/index.yaml
+        status: 部分实现
+        rule_format: blind_school_auto_index
+        rule_count_comment: 163
+        connected_engine: engine/picture/
+      theory.ren:
+        path: theory/ren/index.yaml
+        status: 部分实现
+        rule_format: blind_school_auto_index
+        rule_count_comment: 200
+        connected_engine: engine/yingqi/
+      theory.ziping:
+        path: theory/ziping/index.yaml
+        status: 已实现
+        rule_format: production_rules_mapping
+        connected_engine: engine/application/production_rule_loader.py
+      theory.tiaohou_ditiansui:
+        path: theory/tiaohou_ditiansui/index.yaml
+        status: 部分实现
+        rule_format: candidate_rule_list
+        connected_engine: engine/application/production_rule_loader.py
+        inconsistent:
+          - loader expects production_rules_mapping but file begins with list items containing Rule
+      theory.raw:
+        path: theory/raw/
+        status: 部分实现
+        function: 原始抽取、候选规则、legacy protocol、promoted markdown 追溯链
+        subtrees:
+          - raw/duan/
+          - raw/gao/
+          - raw/yang/
+          - raw/ren/
+          - raw/ziping/
+          - raw/tiaohou_ditiansui/
+          - raw/yaml/
+          - raw/compare/
+          - raw/_legacy-protocol-ref/
+          - raw/_legacy-shared-rules/
+      mapping:
+        path: mapping/
+        status: 部分实现
+        function: 跨派共识、互补、独门、冲突映射文档
+      engine.config:
+        path: engine/
+        status: 已实现
+        files:
+          confidence.yaml: 双轨置信度配置
+          domain-weights.yaml: 领域权重配置
+          expert-weights.yaml: 专家权重配置
+          mechanical-rules.yaml: 机械规则配置
+          calibration.yaml: 自迭代配置
+          arbitration.md: 仲裁规则文档
+          level-scales.md: 等级尺度文档
+  training_evaluation_layer:
+    status: 部分实现
+    modules:
+      tools.feedback_ingest:
+        path: tools/feedback_ingest.py
+        status: 已实现
+        function: 结构化反馈摄入入口
+      tools.feedback_loop:
+        path: tools/feedback_loop.py
+        status: 已实现
+        function: 规则命中/失验回流与生命周期更新
+      tools.batch_review:
+        path: tools/batch_review.py
+        status: 已实现
+        function: 批量复盘入口
+      tools.batch_intake:
+        path: tools/batch_intake.py
+        status: 已实现
+        function: 批量入库入口
+      tools.late_feedback:
+        path: tools/late_feedback.py
+        status: 已实现
+        function: 应期延迟反馈
+      tools.boundary_miner:
+        path: tools/boundary_miner.py
+        status: 已实现
+        function: 失验边界挖掘
+      tools.veto_miner:
+        path: tools/veto_miner.py
+        status: 已实现
+        function: 候选否决兜底
+      tools.iteration_report:
+        path: tools/iteration_report.py
+        status: 已实现
+        function: 每 10 案迭代报告
+      tools.cross_school_scan:
+        path: tools/cross_school_scan.py
+        status: 已实现
+        function: 跨派一致性扫描
+      tools.rule_status_scan:
+        path: tools/rule_status_scan.py
+        status: 已实现
+        function: 规则状态运行时扫描
+      tools.drift_detect:
+        path: tools/drift_detect.py
+        status: 已实现
+        function: 滑动窗漂移检测
+      engine.application.minimal_learning_loop:
+        path: engine/application/minimal_learning_loop.py
+        status: 已实现
+        function: 最小学习闭环
+      engine.application.dynamic_weight_logs:
+        path: engine/application/dynamic_weight_logs.py
+        status: 已实现
+        function: 动态权重日志
+      engine.application.weight_profile_service:
+        path: engine/application/weight_profile_service.py
+        status: 已实现
+        function: 权重配置服务
+      engine.logs:
+        path: engine/logs/
+        status: 已实现
+        function: JSONL 审计/反馈/权重变化日志
+  orchestration_layer:
+    status: 已实现
+    modules:
+      tools.preflight:
+        path: tools/preflight.py
+        status: 已实现
+        function: input.md schema 校验与 ParsedInput 生成
+      tools.render_report:
+        path: tools/render_report.py
+        status: 已实现
+        function: 标准报告渲染入口
+      tools.output_linter:
+        path: tools/output_linter.py
+        status: 已实现
+        function: 报告出口 lint 与护栏
+      tools.production_api:
+        path: tools/production_api.py
+        status: 已实现
+        function: stdlib HTTP JSON API
+      engine.application.production_service:
+        path: engine/application/production_service.py
+        status: 已实现
+        function: 生产同步服务封装、缓存、SQLite 元数据、制品清单
+      engine.application.job_queue:
+        path: engine/application/job_queue.py
+        status: 已实现
+        function: job queue 支持
+      engine.infrastructure.analysis_store:
+        path: engine/infrastructure/analysis_store.py
+        status: 已实现
+        function: SQLite 分析任务存储
+      engine.infrastructure.findings_repository:
+        path: engine/infrastructure/findings_repository.py
+        status: 已实现
+        function: findings 落盘
+      engine.infrastructure.adapters.pipeline_adapters:
+        path: engine/infrastructure/adapters/pipeline_adapters.py
+        status: 已实现
+        function: pipeline adapters
+      tools.tool_registry:
+        path: tools/tool_registry.py
+        status: 已实现
+        function: tools 注册表生成与漂移检查
+      tools.materials_intake:
+        path: tools/materials_intake.py
+        status: 已实现
+        function: 教材入库前置闸门
+      tools.event_archive:
+        path: tools/event_archive.py
+        status: 已实现
+        function: 交互事件归档
+skills:
+  roo_autonomous_skill:
+    path: .roo/skills/autonomous-skill.md
+    status: 已实现
+    function: 系统审计与自主推进方法论
+    called_by_pipeline: no
+  roo_geju_skill:
+    path: .roo/skills/geju-skill.md
+    status: 已实现
+    function: 高层格局审查方法论
+    called_by_pipeline: no
+  global_geju_skill:
+    path: C:/Users/Administrator/.roo/skills/geju/SKILL.md
+    status: 已实现
+    function: 外部 Roo skill
+    called_by_pipeline: no
+implementation_status_legend:
+  已实现: 文件和入口存在，且被当前代码或工具索引直接引用
+  部分实现: 文件存在但格式漂移、旁路未接主线、或仅部分能力接入
+  未实现: 文档或配置声明但当前扫描范围内不存在对应文件
+known_missing_or_deprecated:
+  deprecated:
+    - tools/calibrate.py
+  missing_historical_tools:
+    - tools/seal_prediction.py
+    - tools/verify_evidence.py
+    - tools/normalize_extracted.py
+    - tools/score_initial.py
+    - tools/cross_map.py
