@@ -7385,3 +7385,2189 @@
     - 命中至理，只存用神。
     - 依此而推，则吉凶无有不验矣。
     confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-296
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 女命以财为夫源、以官杀为夫星；若财官同为喜用且清透有根，则婚姻质量与配偶助力同步上升，若财官混浊受伤则婚姻应验转为迟滞、分离或配偶无力。
+    trigger_conditions:
+    - 女命
+    - 财星与官杀同现
+    - 财官为喜用或受伤
+    adjustment_mechanism:
+    - 财星清而生官则增强配偶助力
+    - 官杀混杂或财星被劫则减弱婚姻稳定
+    - 岁运冲合财官时触发婚姻事件
+    prediction_target:
+    - 婚姻
+    - 应期
+    evidence:
+    - 夫妻章：‘夫妻因缘宿世来，喜神有意傍天财’；原注论财为妻、官杀为夫，并以喜忌活看。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-297
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 女命财轻劫重而官杀无护时，配偶资源被比劫夺泄，婚姻判断应降级为夫缘薄或婚后经济牵制；若岁运补官杀护财，则该降级条件解除。
+    trigger_conditions:
+    - 女命
+    - 财星轻弱
+    - 比劫旺重
+    - 官杀无护财作用
+    adjustment_mechanism:
+    - 比劫夺财则减弱夫财承载
+    - 官杀制劫护财则恢复夫缘
+    - 财星得根透出时降低比劫破坏
+    prediction_target:
+    - 婚姻
+    - 财富
+    evidence:
+    - 夫妻章原注：财轻比劫重、无官杀者，婚姻贫薄；有官杀制劫则可转。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-298
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 女命财重身弱且官杀透重时，婚姻不得以财旺作吉断，必须转判为夫家压力、身体承载弱或婚后受制；若印比扶身得地，则财官压力转为可承接资源。
+    trigger_conditions:
+    - 女命
+    - 财星重
+    - 日主弱
+    - 官杀透重
+    adjustment_mechanism:
+    - 身弱不能任财官则减弱婚姻收益
+    - 印比扶身则增强承载
+    - 财官再逢旺运则加重受制
+    prediction_target:
+    - 婚姻
+    - 健康
+    - 财富
+    evidence:
+    - 夫妻章原注：财重身弱、官杀重者，须辨身能任否，不可专以财官为美。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-299
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 女命官杀混杂而食伤并透时，婚姻关系出现多头牵制与言行冲突；若清去一方官杀或食伤受印制，则婚姻冲突条件下降。
+    trigger_conditions:
+    - 女命
+    - 官杀混杂
+    - 食伤透出
+    - 官杀或食伤无清制
+    adjustment_mechanism:
+    - 官杀混杂则增强多缘与不定
+    - 食伤制官则增强冲突
+    - 印星制食伤或去杀留官则减弱冲突
+    prediction_target:
+    - 婚姻
+    - 性格
+    - 应期
+    evidence:
+    - 夫妻章原注论官杀、食伤、印绶互见时，须活看喜忌，混杂则婚姻不清。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-300
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 男命以财为妻；若财星为喜用并坐日支或贴近日主，则婚姻与家财同增，若财星远隔、入墓或被合去，则妻缘与财力应验同步下降。
+    trigger_conditions:
+    - 男命
+    - 财星为妻星
+    - 财星贴近日主或远隔受制
+    adjustment_mechanism:
+    - 财星贴近日主且为喜则增强妻财应验
+    - 财星入墓被合则减弱妻缘
+    - 冲开墓库且财为喜时触发婚姻或财富事件
+    prediction_target:
+    - 婚姻
+    - 财富
+    - 应期
+    evidence:
+    - 夫妻章原注：男以财为妻，须看财星喜忌、位置、冲合与衰旺。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-301
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 男命财星为忌而旺贴日主时，不得以有财作妻贤断，应判婚姻牵累或因妻财生事；若岁运制财或化财生官为喜，则负面婚姻应验减轻。
+    trigger_conditions:
+    - 男命
+    - 财星旺
+    - 财星贴近日主
+    - 财星为忌
+    adjustment_mechanism:
+    - 忌财贴身则增强婚姻牵制
+    - 比劫制忌财或官印化财则减弱牵制
+    - 财旺岁运触发妻财事件
+    prediction_target:
+    - 婚姻
+    - 财富
+    - 应期
+    evidence:
+    - 夫妻章原注强调财不必皆吉，须以喜忌活看，不可执财为妻而定美恶。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-302
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 子女以食伤为先验；若食伤为喜用且有财星流通，则子息表现与晚年助力增强，若印重夺食或食伤入墓受冲克，则子息应验降级。
+    trigger_conditions:
+    - 食伤代表子息
+    - 食伤为喜用或受制
+    - 财星或印星参与
+    adjustment_mechanism:
+    - 食伤生财则增强子息成就
+    - 印重夺食则减弱子息缘分
+    - 冲开食伤墓库且食伤为喜时触发子女事件
+    prediction_target:
+    - 子女
+    - 晚年
+    - 应期
+    evidence:
+    - 子女章：‘子女根枝一世传，喜神看与杀相连’；阐微以食伤、财印、官杀互参子息。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-303
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 食伤为子女喜神但被旺印贴身压制时，子女缘、生产过程或子女发展不得作顺断；若财星破印护食伤，则子息判断恢复。
+    trigger_conditions:
+    - 食伤为喜神
+    - 印星旺
+    - 印星贴近食伤
+    - 财星有无破印
+    adjustment_mechanism:
+    - 印星夺食则减弱子息
+    - 财星制印护食则增强子息
+    - 印旺运再临时触发子女阻滞
+    prediction_target:
+    - 子女
+    - 健康
+    - 应期
+    evidence:
+    - 子女章原注论印绶太重则伤食伤，须财星通关或制印方可言子。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-304
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 官杀为子女约束星而食伤弱时，子女判断转向压力、迟得或少助；若食伤得令透出并能制杀生财，则子女应验转为有成。
+    trigger_conditions:
+    - 官杀旺
+    - 食伤弱
+    - 子女宫或食伤受压
+    adjustment_mechanism:
+    - 杀旺无制则减弱子息安稳
+    - 食伤制杀则增强子女成就
+    - 财星泄食伤过度时降低制杀能力
+    prediction_target:
+    - 子女
+    - 应期
+    evidence:
+    - 子女章‘喜神看与杀相连’，阐微据杀、食伤、财印组合定子息利害。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-305
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 子女星为喜但落空亡、墓库或远隔无根时，子息数量与助力应降级；若岁运冲实、引动或补根，则对应年份出现子女事项。
+    trigger_conditions:
+    - 食伤或子女星为喜
+    - 子女星空亡或入墓
+    - 岁运冲实引动
+    adjustment_mechanism:
+    - 空墓远隔则减弱子息应验
+    - 冲实墓库则增强事件触发
+    - 补根岁运增强子息稳定
+    prediction_target:
+    - 子女
+    - 应期
+    evidence:
+    - 子女章阐微多以根气、冲合、墓库、岁运活看子息有无与迟早。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-306
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 父母以年月与印财为核心；若年月喜神清透且印星得用，则父母助力与早年资源增强，若年月忌神成党冲克日主，则早年家业与父母缘下降。
+    trigger_conditions:
+    - 年月柱代表早年父母
+    - 印星或财星关联父母
+    - 年月喜忌清浊
+    adjustment_mechanism:
+    - 年月喜神得用则增强父母助力
+    - 年月忌神结党则减弱祖业
+    - 岁运冲年月时触发父母或家宅事件
+    prediction_target:
+    - 父母
+    - 家业
+    - 应期
+    evidence:
+    - 父母章：‘父母或隆与或替，岁月所关果非细’；阐微以年月、财印、喜忌论父母。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-307
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 印星为母象而受财星贴身破坏时，母缘、学业承接或早年庇护下降；若比劫制财或官杀生印，则破印条件解除。
+    trigger_conditions:
+    - 印星代表母亲或庇护
+    - 财星旺贴印
+    - 印星为喜用
+    adjustment_mechanism:
+    - 财破印则减弱母缘与学业承接
+    - 官杀生印则增强庇护
+    - 比劫制财则降低破印
+    prediction_target:
+    - 父母
+    - 学业
+    - 早年
+    evidence:
+    - 父母章阐微以印为母、财破印为损，须看财印喜忌与救应。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-308
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 财星为父象而被比劫重夺时，父缘、祖财或早年经济支持下降；若官杀制劫护财，则父财应验恢复。
+    trigger_conditions:
+    - 财星代表父亲或家财
+    - 比劫旺
+    - 财星受夺
+    adjustment_mechanism:
+    - 比劫夺财则减弱父缘与祖财
+    - 官杀制劫则增强护财
+    - 财星得令有根时抗劫能力增强
+    prediction_target:
+    - 父母
+    - 财富
+    - 早年
+    evidence:
+    - 父母章阐微以财印分父母，财受劫夺则父财受损，须官杀制劫。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-309
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 兄弟以比劫禄刃为主；若比劫为喜并能分担财杀，则兄弟朋友助力增强，若比劫为忌夺财抗官，则兄弟朋友牵累增强。
+    trigger_conditions:
+    - 比劫或禄刃显现
+    - 比劫为喜或为忌
+    - 财官杀参与
+    adjustment_mechanism:
+    - 比劫为喜则增强同辈助力
+    - 比劫夺财则减弱财富与兄弟关系
+    - 官杀制忌劫则降低牵累
+    prediction_target:
+    - 兄弟
+    - 财富
+    - 事业
+    evidence:
+    - 兄弟章：‘兄弟谁废与谁兴，提用财神问重轻’；阐微以比劫、财官喜忌论兄弟。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-310
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 比劫成党且财星孤露时，兄弟朋友关系应验为夺财、合伙破财或资源分散；若食伤泄劫生财或官杀制劫，则该破财模式减弱。
+    trigger_conditions:
+    - 比劫成党
+    - 财星孤露
+    - 食伤或官杀救应不足
+    adjustment_mechanism:
+    - 比劫夺财则增强合伙破财
+    - 食伤泄劫生财则减弱破财
+    - 官杀制劫则恢复财星稳定
+    prediction_target:
+    - 兄弟
+    - 财富
+    - 事业
+    evidence:
+    - 兄弟章阐微论比劫与财星轻重，劫重财轻则兄弟不得力且财受损。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-311
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 疾病判断以五行偏胜偏枯为先；若某一五行过旺且无泄化，或某一五行过弱且受克，则对应脏腑疾病风险上升，岁运再触发该五行时应期成立。
+    trigger_conditions:
+    - 五行偏胜或偏枯
+    - 无泄化或受克
+    - 岁运触发同类五行
+    adjustment_mechanism:
+    - 偏胜无泄则增强实病
+    - 偏枯受克则增强虚病
+    - 药神到位则减弱疾病应验
+    prediction_target:
+    - 健康
+    - 应期
+    evidence:
+    - 疾病章论五行太过不及、寒暖燥湿、气血偏枯而成疾。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-312
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 木旺无金修剪且水再滋木时，肝胆、筋骨与情志类疾病风险上升；若金透有根或火泄木气，则木病条件下降。
+    trigger_conditions:
+    - 木旺
+    - 金弱或不透
+    - 水再生木
+    adjustment_mechanism:
+    - 水滋木旺则增强木病
+    - 金克木有力则减弱木亢
+    - 火泄木气则降低郁滞
+    prediction_target:
+    - 健康
+    - 性格
+    evidence:
+    - 疾病章以五行配脏腑，木偏旺偏枯均可成病，须金火调剂。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-313
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 木弱逢金重砍伐且火土不能救护时，筋骨肝胆与生发能力疾病风险上升；若水木运补根，则该风险减弱。
+    trigger_conditions:
+    - 木弱
+    - 金旺克木
+    - 水木根气不足
+    adjustment_mechanism:
+    - 金重克木则增强木弱病
+    - 水木补根则减弱病象
+    - 火制金或土泄火过度时需重评
+    prediction_target:
+    - 健康
+    - 应期
+    evidence:
+    - 疾病章论五行不及受克则病，木弱受金伤主筋骨肝胆之患。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-314
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 火旺无水济且木再生火时，心血、眼目、炎症与急躁性情风险上升；若水得根透出或湿土泄火，则火病条件下降。
+    trigger_conditions:
+    - 火旺
+    - 水弱或无水
+    - 木再生火
+    adjustment_mechanism:
+    - 木火相煽则增强火病
+    - 水济火则减弱炎上
+    - 湿土泄火则缓和燥烈
+    prediction_target:
+    - 健康
+    - 性格
+    evidence:
+    - 疾病章论火太过则血气燥烈，须水济或湿土泄。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-315
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 火弱逢水旺寒凝且木不能引火时，心阳、血脉与精神活力风险上升；若木火运到位，则寒凝火弱病象减轻。
+    trigger_conditions:
+    - 火弱
+    - 水旺寒重
+    - 木弱不能生火
+    adjustment_mechanism:
+    - 水旺灭火则增强寒病
+    - 木生火则增强复阳
+    - 土制水护火则减弱水患
+    prediction_target:
+    - 健康
+    - 性格
+    - 应期
+    evidence:
+    - 疾病章论火不及受水克则病，寒湿重时须木火扶阳。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-316
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 土燥厚而无水润、无木疏时，脾胃、皮肤、积滞与燥结风险上升；若水润木疏并行，则土燥病象下降。
+    trigger_conditions:
+    - 土旺且燥
+    - 水弱不能润
+    - 木弱不能疏土
+    adjustment_mechanism:
+    - 燥土壅滞则增强脾胃积滞
+    - 水润土则减弱燥结
+    - 木疏土则增强流通
+    prediction_target:
+    - 健康
+    - 性格
+    evidence:
+    - 疾病章论土燥脆金、土厚壅滞，须水润木疏。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-317
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 土湿重而水泛木漂时，脾胃、湿痰、水肿与拖延性情风险上升；若火燥土、木得根疏土，则湿土病象下降。
+    trigger_conditions:
+    - 土湿重
+    - 水旺泛滥
+    - 火弱不能燥土
+    adjustment_mechanism:
+    - 水泛湿土则增强湿病
+    - 火暖燥土则减弱湿滞
+    - 木有根疏土则改善流通
+    prediction_target:
+    - 健康
+    - 性格
+    evidence:
+    - 疾病章论湿土、水泛、寒湿成病，须火燥土并得木疏。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-318
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 金旺无火炼且土再生金时，肺皮、筋骨刚硬、肃杀性情与刀伤风险上升；若火透制金或水泄金气，则金病下降。
+    trigger_conditions:
+    - 金旺
+    - 火弱不能炼金
+    - 土旺生金
+    adjustment_mechanism:
+    - 土金相生过重则增强金病
+    - 火炼金则减弱刚暴
+    - 水泄金则降低肃杀
+    prediction_target:
+    - 健康
+    - 性格
+    - 灾伤
+    evidence:
+    - 疾病章以金主肺皮筋骨，金太过须火炼水泄。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-319
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 金弱逢火烈克熔且土不生金时，肺皮、呼吸与骨骼脆弱风险上升；若湿土生金或水制火，则金弱病象减轻。
+    trigger_conditions:
+    - 金弱
+    - 火旺克金
+    - 土弱不生金
+    adjustment_mechanism:
+    - 火烈熔金则增强金弱病
+    - 土生金则增强修复
+    - 水制火则减弱克金
+    prediction_target:
+    - 健康
+    - 应期
+    evidence:
+    - 疾病章论金不及受火克则病，须土生金或水制火。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-320
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 水旺无土止且金再生水时，肾水、泌尿、寒湿与漂荡性情风险上升；若土得力止水或木泄水气，则水病下降。
+    trigger_conditions:
+    - 水旺
+    - 土弱不能止水
+    - 金旺生水
+    adjustment_mechanism:
+    - 金水泛滥则增强寒湿水病
+    - 土止水则减弱泛滥
+    - 木泄水则增强流通
+    prediction_target:
+    - 健康
+    - 性格
+    evidence:
+    - 疾病章论水太过泛滥成病，须土止或木泄。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-321
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 水弱逢土重塞流且金不生水时，肾水、津液、循环与智力续航风险上升；若金水运补源，则水弱病象减轻。
+    trigger_conditions:
+    - 水弱
+    - 土旺克水
+    - 金弱不能生水
+    adjustment_mechanism:
+    - 土重塞水则增强水弱病
+    - 金生水则增强源头
+    - 木旺泄水时进一步减弱水力
+    prediction_target:
+    - 健康
+    - 性格
+    - 应期
+    evidence:
+    - 疾病章论水不及受土克则病，须金水补源。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-322
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 性情判断以五气顺逆清浊为核心；若五行顺生且喜神清，则性情稳定可用，若五行逆战且忌神浊杂，则性情偏激与行为失控风险上升。
+    trigger_conditions:
+    - 五行顺生或逆战
+    - 喜神清或忌神浊
+    - 日主承载能力
+    adjustment_mechanism:
+    - 顺生清纯则增强稳定
+    - 逆战浊杂则增强偏激
+    - 岁运助喜神时性情改善
+    prediction_target:
+    - 性格
+    - 事业
+    - 婚姻
+    evidence:
+    - 性情章论五气不戾、浊乱偏枯、顺逆生克以定人之性情。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-323
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 伤官旺而无印制、又见官星受冲时，言语冲突、违制与职业风险上升；若印星制伤或财星泄伤生官，则该风险减弱。
+    trigger_conditions:
+    - 伤官旺
+    - 官星受伤
+    - 印星或财星救应不足
+    adjustment_mechanism:
+    - 伤官见官则增强冲突
+    - 印制伤官则减弱违制
+    - 财泄伤生官则转为才华变现
+    prediction_target:
+    - 性格
+    - 事业
+    - 应期
+    evidence:
+    - 性情章阐微以伤官、官星、印财组合定聪明、傲物与违制。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-324
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 羊刃旺而官杀不能制、食伤又助其势时，刚暴、争斗与灾伤风险上升；若官杀有力制刃或食伤泄刃生财，则风险下降。
+    trigger_conditions:
+    - 羊刃或劫刃旺
+    - 官杀无力
+    - 食伤或比劫助势
+    adjustment_mechanism:
+    - 刃旺无制则增强争斗
+    - 官杀制刃则转为权柄
+    - 食伤泄刃生财则降低暴烈
+    prediction_target:
+    - 性格
+    - 灾伤
+    - 事业
+    evidence:
+    - 性情章阐微论刚柔、偏枯、刃杀制化以定性情与灾咎。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-325
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 方局成势时必须先判所成五行是否为喜；若方局为喜且干头透出引化，则事业与对应领域增强，若方局为忌或冲克用神，则成局反成灾病。
+    trigger_conditions:
+    - 地支成方或三合局
+    - 成局五行为喜或忌
+    - 天干透引
+    adjustment_mechanism:
+    - 方局为喜则增强结构力量
+    - 方局为忌则增强偏枯
+    - 干头透引则提高成局应验
+    prediction_target:
+    - 事业
+    - 健康
+    - 应期
+    evidence:
+    - 方局章论方是方兮局是局，方局齐来不可拘，并须看喜忌透干。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-326
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 方局齐来而五行不一、干头又反复时，不得按单一成局断吉，必须判为杂局牵制；若岁运去杂留清，则对应五行事件才成立。
+    trigger_conditions:
+    - 方局齐来
+    - 五行杂见
+    - 天干透出相反五行
+    adjustment_mechanism:
+    - 杂局反复则减弱成局纯度
+    - 去杂留清则增强单一五行应验
+    - 冲破关键支则成局失效
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 方局章阐微论方局混杂、干头反复，不可执一局而论。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-327
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 木局成而日主承载足、食伤财星顺泄时，文艺、教育、成长型事业增强；若金杀强冲木局，则事业转为阻滞或筋骨肝胆病象。
+    trigger_conditions:
+    - 亥卯未或寅卯辰木势成
+    - 木为喜或可用
+    - 金杀冲克木局
+    adjustment_mechanism:
+    - 木局为喜则增强成长事业
+    - 食伤财星顺泄则增强变现
+    - 金杀冲木则减弱局力并触发病伤
+    prediction_target:
+    - 事业
+    - 财富
+    - 健康
+    evidence:
+    - 方局章以方局所成五行配喜忌，木局须看金火土水调剂。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-328
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 火局成而水弱不济时，名声传播与显达性增强但健康炎燥风险同步上升；若水透有根，则火局转为文明之用。
+    trigger_conditions:
+    - 巳午未或寅午戌火势成
+    - 火旺
+    - 水弱或水透有根
+    adjustment_mechanism:
+    - 火局为喜则增强名声
+    - 无水济火则增强炎燥病灾
+    - 水透有根则降低火烈
+    prediction_target:
+    - 事业
+    - 健康
+    - 性格
+    evidence:
+    - 方局章与调候原则并用，火局成势须辨寒暖济烈。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-329
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 金局成而火弱不炼时，规则、技术、裁断能力增强但肃杀与肺皮伤灾风险上升；若火炼水泄得宜，则金局转为器用。
+    trigger_conditions:
+    - 申酉戌或巳酉丑金势成
+    - 金旺
+    - 火弱或火透制金
+    adjustment_mechanism:
+    - 金局为喜则增强规则技术
+    - 火弱不炼则增强刚冷病伤
+    - 火炼水泄则提升器用
+    prediction_target:
+    - 事业
+    - 健康
+    - 灾伤
+    evidence:
+    - 方局章论金局成势须看火炼、水泄与喜忌。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-330
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 水局成而土弱不止时，流动、智谋、迁移信息类应验增强但漂荡寒湿风险上升；若土堤木泄得宜，则水局转为可用资源。
+    trigger_conditions:
+    - 申子辰或亥子丑水势成
+    - 水旺
+    - 土弱或木泄土止
+    adjustment_mechanism:
+    - 水局为喜则增强智谋迁移
+    - 土弱不止则增强漂荡寒湿
+    - 土止木泄则提升流通
+    prediction_target:
+    - 事业
+    - 迁移
+    - 健康
+    evidence:
+    - 方局章与源流通关同看，水局成势须有土止木泄。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-331
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 墓库不逢冲而所藏喜神不得透出时，喜神应验延迟；若岁运冲开墓库且不伤司令，则所藏喜神对应事项被引发。
+    trigger_conditions:
+    - 喜神藏于墓库
+    - 原局墓库未开
+    - 岁运冲墓库
+    adjustment_mechanism:
+    - 墓闭则减弱喜神应验
+    - 冲开且不伤司令则增强事件触发
+    - 冲坏用神根气则由发用转为损用
+    prediction_target:
+    - 事业
+    - 财富
+    - 婚姻
+    - 应期
+    evidence:
+    - 墓库章论墓库逢冲须辨冲开、冲坏与所藏喜忌，不可一概作发。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-332
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 墓库所藏为忌神时，岁运冲开不作发财发贵断，应判忌神出库引发病灾或关系冲突；若同时有制化忌神之药，则凶应减轻。
+    trigger_conditions:
+    - 忌神藏于墓库
+    - 岁运冲开墓库
+    - 制化药神有无
+    adjustment_mechanism:
+    - 冲开忌库则增强凶应
+    - 药神制化则减弱凶应
+    - 忌神得令透出则扩大应验
+    prediction_target:
+    - 健康
+    - 婚姻
+    - 财富
+    - 应期
+    evidence:
+    - 墓库章阐微强调冲墓须分所藏喜忌，忌神出库反成祸。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-333
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 支冲发生在司令月支且冲及用神根气时，其应验重于普通支冲；若冲去忌神或冲动伏藏喜神，则支冲由凶转吉。
+    trigger_conditions:
+    - 地支相冲
+    - 月支司令参与
+    - 用神或忌神根气被冲
+    adjustment_mechanism:
+    - 冲伤用神则增强凶应
+    - 冲去忌神则增强吉应
+    - 冲动伏藏喜神则触发事件
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 健康
+    - 应期
+    evidence:
+    - 地支章论支冲须分彼我、司令、喜忌与动静，不可见冲即凶。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-334
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 合局合去用神时，即使表面有情，也会削弱事业、婚姻或健康承载；若合去忌神或合化为喜，则合反为成事条件。
+    trigger_conditions:
+    - 天干或地支合
+    - 合涉用神或忌神
+    - 合化五行为喜或忌
+    adjustment_mechanism:
+    - 合去用神则减弱应验
+    - 合去忌神则增强吉应
+    - 合而不化则按牵绊不按成化
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 合冲章阐微以喜合、忌合、合化真假论成败，不以合字定吉。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-335
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - GENERAL_PRINCIPLE
+    statement: 大运重地支、流年重天干；若大运地支改换根气而流年天干引动喜忌，则该年事件成立，若仅流年天干无根引，则应验减弱。
+    trigger_conditions:
+    - 大运地支改变根气
+    - 流年天干透出喜忌
+    - 原局有对应根源
+    adjustment_mechanism:
+    - 运支给根则增强十年趋势
+    - 年干引发则触发年度事件
+    - 无根虚透则减弱应验
+    prediction_target:
+    - 应期
+    - 事业
+    - 财富
+    - 婚姻
+    evidence:
+    - 岁运章原注：天干管天、地支管地，大运重支，流年重干，并须干支统看。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-336
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 喜神在原局伏藏而大运给根、流年透出时，为喜神发用年份；若流年透出但大运截脚无根，则发用应验降级。
+    trigger_conditions:
+    - 喜神原局伏藏
+    - 大运给根
+    - 流年透出喜神
+    adjustment_mechanism:
+    - 运根年透则增强发用
+    - 截脚无根则减弱发用
+    - 合去流年喜神则发用失效
+    prediction_target:
+    - 应期
+    - 事业
+    - 财富
+    evidence:
+    - 岁运章论喜神伏藏、岁运引出与盖头截脚，须看有根无根。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-337
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - ANTI_PATTERN
+    statement: 忌神在原局伏藏而大运给根、流年透出时，为忌神出伏年份；若制化药神同时到位，则凶应减轻或转为压力后成事。
+    trigger_conditions:
+    - 忌神原局伏藏
+    - 大运给根
+    - 流年透出忌神
+    - 药神有无
+    adjustment_mechanism:
+    - 运根年透则增强忌神应验
+    - 药神制化则减弱凶应
+    - 合冲引动忌神库时扩大应验
+    prediction_target:
+    - 应期
+    - 健康
+    - 事业
+    - 婚姻
+    evidence:
+    - 岁运章论伏藏喜忌遇岁运引动而应，忌神须看制化。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-338
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运并临喜神且不冲克原局用神时，喜事强度高于普通喜神流年；若岁运并临忌神或冲用神，则风险强度同步放大。
+    trigger_conditions:
+    - 大运与流年同气或同柱
+    - 并临五行为喜或忌
+    - 原局用神是否受冲
+    adjustment_mechanism:
+    - 喜神并临则增强吉应
+    - 忌神并临则增强凶应
+    - 冲克用神时优先按凶断
+    prediction_target:
+    - 应期
+    - 事业
+    - 健康
+    - 财富
+    evidence:
+    - 岁运章论岁运同临、战冲、喜忌力量叠加，须以原局喜忌为准。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-339
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - ANTI_PATTERN
+    statement: 太岁冲日支或夫妻宫且冲动忌神时，婚姻、居所或身体事件风险上升；若冲去忌神并引动喜神，则该冲可转为迁动成事。
+    trigger_conditions:
+    - 太岁冲日支或夫妻宫
+    - 被冲五行为喜或忌
+    - 原局有伏藏或墓库
+    adjustment_mechanism:
+    - 冲动忌神则增强风险
+    - 冲去忌神则转吉
+    - 引动喜神则触发婚迁事项
+    prediction_target:
+    - 婚姻
+    - 迁移
+    - 健康
+    - 应期
+    evidence:
+    - 岁运章论太岁与原局冲战，须分日主、宫位、喜忌与胜负。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-340
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 大运盖头为忌、地支为喜时，前期阻力大而后期可转；若流年透出地支所藏喜神，则该运中的转机年份成立。
+    trigger_conditions:
+    - 大运天干为忌
+    - 大运地支为喜
+    - 流年透出运支藏干喜神
+    adjustment_mechanism:
+    - 忌干盖头则减弱初期
+    - 喜支有根则保留后劲
+    - 流年透喜则触发转机
+    prediction_target:
+    - 应期
+    - 事业
+    - 财富
+    evidence:
+    - 岁运章论盖头截脚，干支不可截看，须辨上下何者有根发用。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-341
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 大运天干为喜、地支截脚为忌时，外显机会虽有但落地承载不足；若流年补根护喜，则短期成事，否则多成虚名。
+    trigger_conditions:
+    - 大运天干为喜
+    - 大运地支为忌
+    - 喜神根气不足
+    adjustment_mechanism:
+    - 喜干虚透则增强表面机会
+    - 忌支截脚则减弱落地
+    - 流年补根则恢复成事
+    prediction_target:
+    - 应期
+    - 事业
+    - 财富
+    evidence:
+    - 岁运章论截脚之运，喜干无根则应验不实，须流年补根。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-342
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - GENERAL_PRINCIPLE
+    - TIMING
+    statement: 贞元判断要求以年为元、月为亨、日为利、时为贞分阶段验证；若喜神集中于前两柱则早年先发，集中于日时则中晚年发用。
+    trigger_conditions:
+    - 四柱分年/月/日/时
+    - 喜神分布前后
+    - 岁运引动对应柱位
+    adjustment_mechanism:
+    - 喜神在年月则增强早年
+    - 喜神在日时则增强中晚年
+    - 岁运引动柱位则触发阶段事件
+    prediction_target:
+    - 应期
+    - 事业
+    - 家业
+    evidence:
+    - 贞元章：‘贞元之会，元亨利贞’，阐微以年月日时分人生阶段与家业兴替。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-343
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 源流结构以气从源头流至止处为吉；若源头为喜且流通至日主或用神，则事业财富连续性增强，若中途被冲合阻断，则连续性下降。
+    trigger_conditions:
+    - 五行有源头
+    - 源头流向日主或用神
+    - 中途有冲合阻断
+    adjustment_mechanism:
+    - 源流连续则增强稳定成事
+    - 阻节断流则减弱连续性
+    - 通关五行到位则恢复流通
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 源流章论何处起源、何处归止，气势流通则吉，阻节则滞。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-344
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 通关神处于相战两神之间且有根透出时，冲克转为流通；若通关神远隔、被合或自身受克，则通关失败并保留原冲克凶应。
+    trigger_conditions:
+    - 两五行相战
+    - 通关神存在
+    - 通关神位置贴近或远隔
+    adjustment_mechanism:
+    - 通关贴近有根则增强流通
+    - 通关远隔被合则失效
+    - 岁运补通关神则触发缓和事件
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 健康
+    - 应期
+    evidence:
+    - 通关章论两神相战须有中间一神引通，远隔无根则不能解战。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-345
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - GENERAL_PRINCIPLE
+    - ANTI_PATTERN
+    statement: 清浊真假必须落到喜忌与可应验目标；若真神得令贴身而假神混杂无根，则以真神为主断，若假神得局得根压倒真神，则原先真神判断失效。
+    trigger_conditions:
+    - 真神与假神并见
+    - 真神得令贴身
+    - 假神得局或无根
+    - 喜忌目标明确
+    adjustment_mechanism:
+    - 真神得令则增强主断
+    - 假神得局压真则改判
+    - 岁运扶真抑假则恢复真神应验
+    prediction_target:
+    - 事业
+    - 财富
+    - 婚姻
+    - 应期
+    evidence:
+    - 清浊真假章论真神、假神、清浊须以得令得地及岁运扶抑判成败。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-346
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 体用判断必须先分日主之体与所用之神；若体强而用神可泄可克，则成就来自外用发挥，若体弱而用神反来耗克，则外用转为负担。
+    trigger_conditions:
+    - 日主体用已分
+    - 日主强弱明确
+    - 用神对日主有泄克或扶助
+    adjustment_mechanism:
+    - 体强能任用则增强事业承载
+    - 体弱被用神耗克则减弱成事
+    - 岁运扶体时恢复用神可用
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 体用章论体用不可混看，须以日主强弱与用神得失定成败。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-347
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 体弱而财官同来耗克时，不得以财官俱全作富贵断；若印比先扶体，再见财官，才可转为可承载之富贵。
+    trigger_conditions:
+    - 日主弱
+    - 财星与官杀同现
+    - 印比扶体有无
+    adjustment_mechanism:
+    - 财官耗克弱体则减弱富贵
+    - 印比扶体则增强承载
+    - 财官旺运未扶体时触发压力
+    prediction_target:
+    - 事业
+    - 财富
+    - 健康
+    evidence:
+    - 体用章与富贵贫贱章均强调身不能任财官时，财官反成病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-348
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 体旺而食伤财星顺泄时，才华、经营与财富变现能力增强；若食伤被印夺或财星被劫，则顺泄链断而成事降级。
+    trigger_conditions:
+    - 日主体旺
+    - 食伤财星形成顺泄
+    - 印星或比劫干扰
+    adjustment_mechanism:
+    - 食伤生财则增强变现
+    - 印夺食伤则减弱才华输出
+    - 比劫夺财则减弱财富留存
+    prediction_target:
+    - 事业
+    - 财富
+    evidence:
+    - 体用章论旺体宜泄宜用，源流章论顺流至财则成用。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-349
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 旺极结构若无可制可泄之神，不能按普通身旺取财官；只有顺其旺势或从其气势时，岁运助旺才成吉应。
+    trigger_conditions:
+    - 日主或成局旺极
+    - 制泄之神无力
+    - 岁运助旺或逆旺
+    adjustment_mechanism:
+    - 无制泄则普通财官失效
+    - 顺旺助势则增强成局
+    - 逆旺冲克则触发破局
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 体用章与从旺从强章论旺极不可逆取，须顺其气势。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-350
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 弱极结构若无根无扶，不得按普通身弱求扶；只有从其所从之财官食伤，岁运不破从势时，事业财富判断才成立。
+    trigger_conditions:
+    - 日主弱极
+    - 根气与印比皆无力
+    - 财官食伤成势
+    adjustment_mechanism:
+    - 弱极无扶则扶身判断失效
+    - 从势不破则增强所从领域
+    - 印比岁运破从则转为波折
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 体用章与从气从势章论弱极须从，不可拘泥扶抑。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-351
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 清气透干且地支有根时，格局应验稳定；若清气被邻干合去或被冲伤根气，则原有事业与性情优势下降。
+    trigger_conditions:
+    - 喜神清透
+    - 地支有根
+    - 合冲作用于喜神
+    adjustment_mechanism:
+    - 清透有根则增强稳定
+    - 合去喜神则减弱应验
+    - 冲伤根气则降低持续性
+    prediction_target:
+    - 事业
+    - 性格
+    - 应期
+    evidence:
+    - 清浊章论一清到底为贵，清神受合冲则清气不全。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-352
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 浊气混杂而无去浊之神时，判断不得直接取贵；若岁运去忌留喜或制化浊神，则浊局可转清并触发阶段性上升。
+    trigger_conditions:
+    - 喜忌混杂
+    - 忌神浊乱
+    - 去浊制化有无
+    adjustment_mechanism:
+    - 浊神无制则减弱贵气
+    - 去忌留喜则增强清气
+    - 岁运制浊时触发改善
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 清浊章论澄浊求清，混浊须有去留方可成格。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-353
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 真神得令但不透时，应验潜伏；若岁运透出真神并不受合伤，则真神对应事项发用，若透出即被合克，则发用失败。
+    trigger_conditions:
+    - 真神得令
+    - 真神藏支不透
+    - 岁运透出并受合克与否
+    adjustment_mechanism:
+    - 藏而不透则应验潜伏
+    - 岁运透真则增强发用
+    - 透而被合克则发用失效
+    prediction_target:
+    - 事业
+    - 财富
+    - 婚姻
+    - 应期
+    evidence:
+    - 真假章论真神得令为主，但须透显发用并防合伤。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-354
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 假神虽透而失令无根时，不得作为主判断；若岁运给假神根局并压倒真神，则原先真神主断需改判。
+    trigger_conditions:
+    - 假神透干
+    - 假神失令无根
+    - 岁运是否补根成局
+    adjustment_mechanism:
+    - 假神无根则减弱主断
+    - 岁运补根成局则增强假神
+    - 真神被冲克时改判假神主事
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 真假章论假神须辨得地得势，失令无根不能主事。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-355
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 清神为财而官印不混时，财富路径清晰且可转为地位；若比劫浊财或伤官乱官，则财富与名位同时降级。
+    trigger_conditions:
+    - 财星为清神
+    - 官印或比劫伤官参与
+    - 财星喜忌明确
+    adjustment_mechanism:
+    - 财清生官则增强财富名位
+    - 比劫浊财则减弱财富
+    - 伤官乱官则减弱名位
+    prediction_target:
+    - 财富
+    - 事业
+    evidence:
+    - 清浊章以财官印食的清浊去留定富贵贫贱。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-356
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 清神为官而食伤不犯、印星承接时，职位规则与名誉增强；若伤官直接冲官且无印化，则职位风险上升。
+    trigger_conditions:
+    - 官星为清神
+    - 食伤是否犯官
+    - 印星是否承接官气
+    adjustment_mechanism:
+    - 官印相生则增强职位
+    - 伤官犯官则增强风险
+    - 印制伤官则恢复官清
+    prediction_target:
+    - 事业
+    - 名誉
+    - 应期
+    evidence:
+    - 清浊章与官星章均论官清有印为贵，伤官混浊则败。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-357
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 源流以生化链条连续为可用；若从印到身、从身到食伤、从食伤到财的链条连续，则学业才华财富可连续验证。
+    trigger_conditions:
+    - 印身食伤财形成生化链
+    - 链条中无冲断
+    - 各环节喜忌明确
+    adjustment_mechanism:
+    - 链条连续则增强多领域连续应验
+    - 任一环被冲断则对应领域下降
+    - 岁运补断环则恢复流通
+    prediction_target:
+    - 学业
+    - 事业
+    - 财富
+    evidence:
+    - 源流章论源头、流通、归止，气脉不断则成事。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-358
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 源头为忌而流至日主时，气脉越通越增压力，不得作流通吉断；若中途有药神截化忌源，则压力转为可用。
+    trigger_conditions:
+    - 源头五行为忌
+    - 忌源流近日主
+    - 药神截化有无
+    adjustment_mechanism:
+    - 忌源流通则增强压力
+    - 药神截化则减弱凶应
+    - 岁运助忌源时扩大风险
+    prediction_target:
+    - 健康
+    - 事业
+    - 应期
+    evidence:
+    - 源流章强调流通须分喜忌，非所有流通皆吉。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-359
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 源头在年月而流至日时用神时，祖业早年资源可转入中晚年事业；若月日之间被冲合截断，则早年资源难以承接。
+    trigger_conditions:
+    - 源头在年月
+    - 用神在日时
+    - 月日之间有冲合截断
+    adjustment_mechanism:
+    - 源流贯通则增强家业承接
+    - 冲合截断则减弱传承
+    - 岁运通关时触发承接事件
+    prediction_target:
+    - 家业
+    - 事业
+    - 应期
+    evidence:
+    - 源流章与贞元章合看年月日时，前后气脉相接则有承传。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-360
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 源流止于财库且财为喜时，财富积累能力增强；若财库被冲坏或库中为忌财，则积累转为破耗。
+    trigger_conditions:
+    - 气脉流至财星或财库
+    - 财星为喜或为忌
+    - 墓库受冲
+    adjustment_mechanism:
+    - 止于喜财库则增强积累
+    - 冲坏财库则减弱留存
+    - 忌财出库则增强破耗
+    prediction_target:
+    - 财富
+    - 应期
+    evidence:
+    - 源流章论归止所在，墓库章论冲库须分喜忌与冲开冲坏。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-361
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 源流止于官印且官印为喜时，事业名誉与资格认证增强；若食伤中途冲官或财破印，则官印归止失效。
+    trigger_conditions:
+    - 气脉流至官印
+    - 官印为喜
+    - 食伤或财星破坏
+    adjustment_mechanism:
+    - 官印归止则增强名位
+    - 食伤冲官则减弱职位
+    - 财破印则减弱资格庇护
+    prediction_target:
+    - 事业
+    - 学业
+    - 名誉
+    evidence:
+    - 源流章论归止定应事，官印章论官印清承主名位。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-362
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 通关神必须同时接触相战双方才有效；若只生一方而不能化另一方，则不能解除冲克，应继续按战局论。
+    trigger_conditions:
+    - 两神相战
+    - 通关神存在
+    - 通关神能否连接双方
+    adjustment_mechanism:
+    - 连接双方则增强通关
+    - 只接一方则通关失效
+    - 岁运补足另一端则恢复通关
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 健康
+    evidence:
+    - 通关章论两神相战须中间一神引通，偏在一边不能解战。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-363
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 木土相战而火为通关时，火有根透出可把木克土转为木生火、火生土；若火弱被水灭，则木土战局继续伤脾胃与家业。
+    trigger_conditions:
+    - 木土相战
+    - 火为通关
+    - 火有根或受水克
+    adjustment_mechanism:
+    - 火通关有力则减弱木土冲突
+    - 水灭火则通关失败
+    - 火运到位时触发缓和
+    prediction_target:
+    - 健康
+    - 家业
+    - 事业
+    evidence:
+    - 通关章以五行相战求中介，疾病章以木土战论脾胃筋骨。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-364
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 水火相战而木为通关时，木有根可把水火战转为水生木、木生火；若木被金伤，则水火冲突继续表现为心肾不交与情绪失衡。
+    trigger_conditions:
+    - 水火相战
+    - 木为通关
+    - 木有根或被金伤
+    adjustment_mechanism:
+    - 木通关有力则减弱水火战
+    - 金伤木则通关失败
+    - 木火运到位时增强调和
+    prediction_target:
+    - 健康
+    - 性格
+    - 应期
+    evidence:
+    - 通关章与疾病章合看水火既济不成时须木引通。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-365
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 金木相战而水为通关时，水有源可化金生水、水生木；若土重塞水，则金木战继续表现为肝胆筋骨与刀伤风险。
+    trigger_conditions:
+    - 金木相战
+    - 水为通关
+    - 水有源或受土塞
+    adjustment_mechanism:
+    - 水通关有源则减弱金木战
+    - 土塞水则通关失败
+    - 金水木运连通时触发缓和
+    prediction_target:
+    - 健康
+    - 灾伤
+    - 事业
+    evidence:
+    - 通关章论金木交战须水引，疾病章以金木战主筋骨伤病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-366
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 火金相战而土为通关时，湿土得用可化火生土、土生金；若燥土脆金或木来克土，则火金战仍主肺皮炎症与职业冲突。
+    trigger_conditions:
+    - 火金相战
+    - 土为通关
+    - 土湿燥及受克状态
+    adjustment_mechanism:
+    - 湿土通关则减弱火金战
+    - 燥土脆金则通关不足
+    - 木克土则破坏通关
+    prediction_target:
+    - 健康
+    - 事业
+    - 应期
+    evidence:
+    - 通关章与疾病章合看火金战须土引，但土之燥湿决定成败。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-367
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 土水相战而金为通关时，金得土生且能生水可化土克水；若火烈克金，则水土战继续表现为肾脾湿燥冲突。
+    trigger_conditions:
+    - 土水相战
+    - 金为通关
+    - 金得生或被火克
+    adjustment_mechanism:
+    - 金通关有力则减弱土水战
+    - 火克金则通关失败
+    - 金水运到位时改善流通
+    prediction_target:
+    - 健康
+    - 事业
+    evidence:
+    - 通关章论土水战须金泄土生水，疾病章以土水失衡主脾肾。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-368
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - GENERAL_PRINCIPLE
+    statement: 岁运先看是否触发原局既有病药；若岁运只新增孤立五行而不触发原局结构，则事件强度低于触发原局病药的年份。
+    trigger_conditions:
+    - 原局已有病药结构
+    - 岁运触发病或药
+    - 岁运新增五行是否孤立
+    adjustment_mechanism:
+    - 触发病神则增强风险
+    - 触发药神则增强修正
+    - 孤立五行无根则应验减弱
+    prediction_target:
+    - 应期
+    - 健康
+    - 事业
+    evidence:
+    - 岁运章强调岁运以原局为本，病药章强调病药被引动则应。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-369
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运同时引动夫妻宫与财官星时，婚姻事件优先级高于单纯财官流年；若引动为忌，则婚姻冲突或分离风险上升。
+    trigger_conditions:
+    - 岁运冲合夫妻宫
+    - 财星或官杀被引动
+    - 引动五行为喜或忌
+    adjustment_mechanism:
+    - 宫星同动则增强婚姻应期
+    - 忌神同动则增强冲突
+    - 喜神同动则增强成婚或修复
+    prediction_target:
+    - 婚姻
+    - 应期
+    evidence:
+    - 夫妻章与岁运章合看，宫位与星神同动则应事明确。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-370
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运同时引动子女宫与食伤时，生育、子女教育或子女健康事件成立；若食伤为忌或被印夺，则子女事件转为阻滞。
+    trigger_conditions:
+    - 岁运冲合子女宫
+    - 食伤被引动
+    - 印星或忌神参与
+    adjustment_mechanism:
+    - 宫星同动则增强子女应期
+    - 印夺食伤则增强阻滞
+    - 食伤为喜得根则增强顺应
+    prediction_target:
+    - 子女
+    - 健康
+    - 应期
+    evidence:
+    - 子女章与岁运章合看，子女星与宫位同动为应期依据。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-371
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运冲年月且同时引动财印时，父母、家宅或早年资源事项被触发；若财印为忌受冲，则家宅父母压力上升。
+    trigger_conditions:
+    - 岁运冲合年月
+    - 财星或印星被引动
+    - 财印喜忌明确
+    adjustment_mechanism:
+    - 年月动则增强父母家宅应期
+    - 喜财印动则增强助力
+    - 忌财印动则增强压力
+    prediction_target:
+    - 父母
+    - 家宅
+    - 应期
+    evidence:
+    - 父母章以年月财印论父母，岁运冲合年月则应。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-372
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运引动比劫与财星时，合伙、兄弟朋友与破财事件优先判断；若官杀同步制劫，则破财风险下降并转为团队助力。
+    trigger_conditions:
+    - 岁运引动比劫
+    - 财星同时被引动
+    - 官杀制劫有无
+    adjustment_mechanism:
+    - 比劫财同动则增强合伙财务事件
+    - 官杀制劫则减弱破财
+    - 比劫为喜时转为同辈助力
+    prediction_target:
+    - 兄弟
+    - 财富
+    - 应期
+    evidence:
+    - 兄弟章以比劫财星轻重论同辈，岁运引动则应。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-373
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - ANTI_PATTERN
+    statement: 岁运冲开喜神墓库但同时冲坏喜神根气时，不作单纯发用断；应判为先动后损或成中带破。
+    trigger_conditions:
+    - 喜神入墓
+    - 岁运冲墓
+    - 喜神根气同时受伤
+    adjustment_mechanism:
+    - 冲开喜库则增强事件
+    - 冲坏根气则减弱结果
+    - 药神护根则降低破损
+    prediction_target:
+    - 财富
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 墓库章论冲开与冲坏须分辨，岁运章论动中有损。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-374
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - ANTI_PATTERN
+    statement: 岁运合来喜神但合化为忌时，不得按喜神到位断；若合而不化且喜神仍有根，则只作牵绊不作彻底失效。
+    trigger_conditions:
+    - 岁运合喜神
+    - 合化五行为忌
+    - 喜神根气有无
+    adjustment_mechanism:
+    - 合化为忌则减弱喜神
+    - 合而不化则保留部分应验
+    - 喜神有根则降低失效
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 合冲章论合须辨化与不化，喜合成忌则反败。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-375
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - TIMING
+    - EVENT
+    statement: 岁运冲去忌神合绊时，原局被困喜神可恢复发用；若冲去的是喜神合护，则保护解除并转凶。
+    trigger_conditions:
+    - 原局有合绊
+    - 岁运冲开合局
+    - 被释放者为喜或忌
+    adjustment_mechanism:
+    - 冲开忌绊则增强喜神
+    - 冲开喜护则增强风险
+    - 释放喜神有根则应验加大
+    prediction_target:
+    - 事业
+    - 婚姻
+    - 应期
+    evidence:
+    - 合冲章与岁运章合看，冲合不是固定吉凶，须看释放何神。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-376
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 寒暖调候优先于普通财官取用；若寒局无火而财官虽清，事业财富仍因生机不足降级，火运到位后才可转强。
+    trigger_conditions:
+    - 命局寒重
+    - 火弱或无火
+    - 财官清透
+    adjustment_mechanism:
+    - 寒无火则减弱财官成就
+    - 火运暖局则增强发用
+    - 水运再临则加重迟滞
+    prediction_target:
+    - 事业
+    - 财富
+    - 应期
+    evidence:
+    - 调候章论寒则用火，寒暖失衡时财官清亦须受制于生机。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-377
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 热局无水而印比食伤虽旺时，不得按才华旺盛作持续吉断；若水运济热并不灭火，则才华与名声才可稳定。
+    trigger_conditions:
+    - 命局热重
+    - 水弱或无水
+    - 印比食伤旺
+    adjustment_mechanism:
+    - 热无水则增强燥烈失衡
+    - 水济热则增强持续性
+    - 水过旺灭火则转为另一失衡
+    prediction_target:
+    - 事业
+    - 性格
+    - 健康
+    evidence:
+    - 调候章论热则用水，燥烈过度时旺神反成病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-378
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 燥局土金成势而无水润时，财富与执行力虽可见但健康燥病、关系冷硬风险上升；若水木并至，则燥局转为可用。
+    trigger_conditions:
+    - 命局燥重
+    - 土金成势
+    - 水木润疏有无
+    adjustment_mechanism:
+    - 燥土金重则增强执行与燥病
+    - 水润木疏则减弱偏枯
+    - 火土运再临则加重风险
+    prediction_target:
+    - 财富
+    - 健康
+    - 婚姻
+    evidence:
+    - 调候章论燥喜湿，疾病章论土燥脆金、金燥伤身。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-379
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 湿局水土成势而无火燥时，资源流动与包容性虽强但拖延、湿病和财务滞留风险上升；火土得宜则湿局可转为承载。
+    trigger_conditions:
+    - 命局湿重
+    - 水土成势
+    - 火弱不能燥湿
+    adjustment_mechanism:
+    - 湿重无火则增强滞留
+    - 火燥湿土则增强承载
+    - 水运再临则加重泛滥
+    prediction_target:
+    - 财富
+    - 健康
+    - 性格
+    evidence:
+    - 调候章论湿喜燥，疾病章论寒湿水泛须火燥土。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-380
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 病药结构中药神必须能直接处理病神；若药神只增加另一种偏枯而不制化原病，则不能作为有效用神。
+    trigger_conditions:
+    - 命局有明确病神
+    - 存在候选药神
+    - 药神能否直接制化病神
+    adjustment_mechanism:
+    - 药神直达病神则增强修正
+    - 药神制造新偏枯则失效
+    - 岁运补药神根气则增强疗效
+    prediction_target:
+    - 事业
+    - 健康
+    - 应期
+    evidence:
+    - 病药章论有病方为贵，无伤不是奇，药须中病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-381
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 病神被暂时合住但未被制化时，不能判病已除；岁运冲开合绊后，原病会重新应验。
+    trigger_conditions:
+    - 病神存在
+    - 病神被合住
+    - 制化药神不足
+    adjustment_mechanism:
+    - 合住病神则暂缓应验
+    - 冲开合绊则恢复病应
+    - 药神制化后才真正减弱
+    prediction_target:
+    - 健康
+    - 事业
+    - 应期
+    evidence:
+    - 病药章与合冲章合看，合绊不同于制化，冲开则病复。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-382
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 药神被合去或入墓时，原局虽有药也难发用；岁运冲墓或解合且药神为喜时，对应年份病局改善。
+    trigger_conditions:
+    - 药神存在
+    - 药神被合去或入墓
+    - 岁运解合冲墓
+    adjustment_mechanism:
+    - 药神受困则减弱修正
+    - 解合冲墓则增强药神
+    - 冲坏药根则改善失败
+    prediction_target:
+    - 健康
+    - 事业
+    - 应期
+    evidence:
+    - 病药章论药神得力方能治病，合冲墓库决定药神发用。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-383
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - GENERAL_PRINCIPLE
+    statement: 五行偏枯若同时造成性情与健康同象，则该偏枯可信度高于只见单一象；岁运触发同一五行时，应同时验证性格行为与疾病事件。
+    trigger_conditions:
+    - 五行偏枯
+    - 性情象与疾病象同源
+    - 岁运触发同五行
+    adjustment_mechanism:
+    - 双象同源则增强判断
+    - 只见单象则降低置信
+    - 药神到位则两类应验同步减弱
+    prediction_target:
+    - 性格
+    - 健康
+    - 应期
+    evidence:
+    - 性情章与疾病章均以五气偏枯为本，可互证偏枯。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-384
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 木火通明且寒暖适中时，学业、表达、文化传播与名声增强；若水泛灭火或金重伤木，则通明结构失效。
+    trigger_conditions:
+    - 木火相生
+    - 寒暖适中
+    - 水泛或金重干扰
+    adjustment_mechanism:
+    - 木火通明则增强表达名声
+    - 水泛灭火则减弱光明
+    - 金重伤木则削弱生发
+    prediction_target:
+    - 学业
+    - 事业
+    - 名誉
+    evidence:
+    - 调候与性情章论木火得宜主文明、表达，偏寒偏克则失效。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-385
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - EVENT
+    statement: 金水相涵且不过寒时，智谋、技术、流通与谋略增强；若寒水太过无火，则金水结构转为冷滞与健康风险。
+    trigger_conditions:
+    - 金水相生
+    - 寒暖不过偏
+    - 火调候有无
+    adjustment_mechanism:
+    - 金水相涵则增强智谋技术
+    - 无火过寒则增强冷滞
+    - 火暖局则恢复流通
+    prediction_target:
+    - 事业
+    - 学业
+    - 健康
+    evidence:
+    - 调候章论寒暖，性情章以金水组合论智巧与冷滞。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-386
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 土厚埋金而金为用时，技术、规则与肺皮象被压制；若木疏土或水润土露金，则金用恢复。
+    trigger_conditions:
+    - 土旺厚重
+    - 金为用神
+    - 木水疏润有无
+    adjustment_mechanism:
+    - 土厚埋金则减弱金用
+    - 木疏土则露金
+    - 水润土则降低埋滞
+    prediction_target:
+    - 事业
+    - 健康
+    evidence:
+    - 疾病章论土厚埋金、土燥脆金，体用章以用神受埋为病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-387
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 水多木漂而木为用时，学业成长、肝胆筋骨与事业方向不稳；若土止水或火暖木根，则木用恢复。
+    trigger_conditions:
+    - 水旺泛滥
+    - 木为用神
+    - 土火救应有无
+    adjustment_mechanism:
+    - 水多木漂则减弱木用
+    - 土止水则增强根基
+    - 火暖木则增强生发
+    prediction_target:
+    - 学业
+    - 事业
+    - 健康
+    evidence:
+    - 调候与疾病章论水泛木漂，须土止火暖。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-388
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 火炎土焦而土为用时，承载、脾胃与财富稳定性下降；若水济火润土，则土用恢复。
+    trigger_conditions:
+    - 火旺炎烈
+    - 土为用神
+    - 水润有无
+    adjustment_mechanism:
+    - 火炎土焦则减弱土用
+    - 水济火润土则增强承载
+    - 木再生火则加重焦燥
+    prediction_target:
+    - 财富
+    - 健康
+    - 事业
+    evidence:
+    - 调候章论热燥须水，疾病章论土燥成病。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-389
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - STRUCTURE
+    - ANTI_PATTERN
+    statement: 金寒水冷而火为用时，名声、活力与心血象受压；若木引火或土制水护火，则火用恢复。
+    trigger_conditions:
+    - 金水寒重
+    - 火为用神
+    - 木土救应有无
+    adjustment_mechanism:
+    - 寒金冷水则减弱火用
+    - 木引火则增强复阳
+    - 土制水则保护火
+    prediction_target:
+    - 事业
+    - 健康
+    - 性格
+    evidence:
+    - 调候章论寒则用火，疾病章论水旺火弱主寒凝。
+    confidence_init: 0.5
+- Rule:
+    id: TIAOHOU-DTS-CAND-390
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+    - GENERAL_PRINCIPLE
+    - TIMING
+    statement: 每条结构规则必须经过岁运触发才能落为事件；若原局有结构但岁运未动宫位、星神或病药，则只作潜势不作已发生断。
+    trigger_conditions:
+    - 原局存在结构规则
+    - 岁运是否触发宫位星神病药
+    - 目标事项明确
+    adjustment_mechanism:
+    - 岁运触发则增强事件成立
+    - 未触发则降为潜势
+    - 宫星病药同动则提高应验强度
+    prediction_target:
+    - 应期
+    - 事业
+    - 婚姻
+    - 健康
+    evidence:
+    - 岁运章以原局为体、岁运为用，所有结构须待动而应。
+    confidence_init: 0.5
