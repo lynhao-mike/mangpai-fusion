@@ -4,7 +4,92 @@
 
 ---
 
-## 0. 最新交接 · 问真补盘全量重算闭环（方案 C 第一/二阶段）
+## 0. 最新交接 · 滴天髓调候派候选规则抽取（geju 最大安全吞吐）
+
+> 更新时间：2026-06-13。此节优先级高于下方旧交接；当前任务是让新对话继续 `sources/tiaohou_ditiansui/` → `theory/tiaohou_ditiansui/index.yaml` 的候选调候规则提取/规格化工作。规则扩表已进入清洁目标区间，后续必须优先从未覆盖原文句群、反馈反证缺口或规则族合并规格出发，禁止靠薄改写继续堆数量。
+
+### 0.1 当前状态
+
+- 唯一输出目标：[`theory/tiaohou_ditiansui/index.yaml`](theory/tiaohou_ditiansui/index.yaml)。
+- 当前已校验规则数：460 条。
+- 最新有效规则 ID：`TIAOHOU-DTS-CAND-460`。
+- 下一条若继续追加，应从 `TIAOHOU-DTS-CAND-461` 开始。
+- 最近一次独立校验结果：`OK 460 rules TIAOHOU-DTS-CAND-460`。
+- 最近四批追加摘要：第十四批 `296-345` 共 50 条；第十五批 `346-390` 共 45 条；第十六批 `391-430` 共 40 条；第十七批 `431-460` 共 30 条。
+- 临时追加脚本 `tools/_append_tiaohou_batch14.py` 至 `tools/_append_tiaohou_batch17.py` 均已执行、校验并删除，当前不应遗留临时工具文件。
+
+### 0.2 用户指定候选规则规格
+
+规则文件使用顶层 YAML 列表，每项形如：
+
+```yaml
+- Rule:
+    id: TIAOHOU-DTS-CAND-461
+    school: tiaohou_ditiansui
+    canon: 滴天髓调候派
+    rule_type:
+      - STRUCTURE | EVENT | TIMING | GENERAL_PRINCIPLE | ANTI_PATTERN
+    statement: 可被反馈验证为对或错的条件化断语
+    trigger_conditions:
+      - 至少两个触发条件
+    adjustment_mechanism:
+      - 条件化增强/减弱/失效机制
+    prediction_target:
+      - 事业 / 财运 / 婚姻 / 健康 / 性格 / 应期
+    evidence:
+      - extracted_from_text
+    confidence_init: 0.50
+```
+
+硬约束：
+
+- 必须保持 `school: tiaohou_ditiansui`、`canon: 滴天髓调候派`、`confidence_init: 0.50`。
+- `statement` 必须可失败、可反馈校准，不能写成不可证伪的泛化格言。
+- 每条规则必须有 `trigger_conditions`，且至少 2 个条件。
+- 每条规则必须有非空 `adjustment_mechanism`、`prediction_target`、`evidence`。
+- 禁止在 YAML 内写注释、解释性散文或会话记录。
+- 避免“可能 / 一般 / 通常”等弱化词；用明确条件和失效条件控制置信边界。
+- 用户规格优先于仓库生产规则 schema；此文件当前是候选抽取规格，不要按生产规则 schema 强行改写。
+
+### 0.3 下一轮推荐路线
+
+1. 先确认当前文件仍为 460 条且末尾 ID 正确：
+
+```cmd
+python -c "exec('from pathlib import Path\nimport yaml\ndata=yaml.safe_load(Path(\"theory/tiaohou_ditiansui/index.yaml\").read_text(encoding=\"utf-8\"))\nprint(len(data), data[-1][\"Rule\"][\"id\"])')"
+```
+
+2. 若继续扩表，只从 `TIAOHOU-DTS-CAND-461` 起追加，并优先检查：
+   - `sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part2.md`：体用、源流、通关、方局、墓库刑冲是否还有未覆盖原文句群。
+   - `sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part3.md`：清浊真假是否还有可验证的拆分缺口。
+   - `sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part4.md`：夫妻、子女、父母、兄弟是否还有宫星同动与岁运应期缺口。
+   - `sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part7.md`：疾病、性情是否还有五行偏枯与寒暖燥湿触发缺口。
+   - `sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part8.md`：岁运、贞元是否还有运年触发和反证条件缺口。
+3. 若找不到明确未覆盖原文句群，应暂停扩表，转入“规则族合并/重复审查/规格定稿”，重点审查相邻规则是否只是同义拆分。
+4. 第十七批以后新增规则必须通过更高门槛：每条都要能说明它覆盖了哪类原文或反馈空白，而不是复述既有 460 条。
+
+### 0.4 追加与校验工作流
+
+推荐继续沿用临时脚本模式，但脚本执行后必须删除：
+
+1. 新建 `tools/_append_tiaohou_batch18.py`。
+2. 读取 [`theory/tiaohou_ditiansui/index.yaml`](theory/tiaohou_ditiansui/index.yaml)，先校验旧计数 `460` 与 ID 顺序。
+3. 用 `R(...)` 构造 `NEW_RULES`，从 `TIAOHOU-DTS-CAND-461` 顺序编号。
+4. 追加后校验新计数、字段完整性、ID 唯一性、`trigger_conditions` 长度、固定字段值。
+5. 使用 `yaml.safe_dump(..., allow_unicode=True, sort_keys=False, width=1000)` 写回。
+6. 独立运行一次校验命令；Windows `cmd.exe` 下如中文输出乱码，不影响 UTF-8 文件本身，但校验命令里可用 Unicode 转义规避终端编码问题。
+7. 校验通过后删除临时脚本，避免污染 [`tools/README.md`](tools/README.md) 与 [`tools/tool_registry.py`](tools/tool_registry.py)。
+
+### 0.5 当前质量判断
+
+- 先前估算的清洁候选规则目标区间约为 430-520 条，理想控制在 450±30；当前 460 条已经进入理想区间。
+- 继续“最大安全吞吐”不等于继续追求大批量；下一轮更适合小批量高确信扩表，或直接做重复审查与规格定稿。
+- 可继续新增的优先级：原文未覆盖句群 > 反馈反证缺口 > 明确规则族边界补丁 > 同义规则合并规格。
+- 禁止新增低价值变体：只替换预测域、只改五行名、只把同一机制换句话说，均应合并而不是追加。
+
+---
+
+## 1. 历史交接 · 问真补盘全量重算闭环（方案 C 第一/二阶段）
 
 > 更新时间：2026-06-11。此节优先级高于下方旧交接；本轮已完成“问真补盘不是轻量回填，而是全量重算 + 硬门禁 + 可审计产物”的方案 C 第一/二阶段落地。下方 Top30 交接保留历史上下文，不再作为当前下一步判断依据。
 
