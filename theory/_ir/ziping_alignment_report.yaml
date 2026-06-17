@@ -1,0 +1,240 @@
+schema_version: ziping-alignment-report-2026-06-17
+theory_id: ziping
+rule_count: 78
+structure_coverage:
+  pattern: 75.64
+  ten_gods: 38.46
+  use_god: 52.56
+missing_structures: []
+ambiguity_cases:
+- rule_id: ZP-PROD-20260605-005
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-006
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-008
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-009
+  reason:
+  - contains_tiaohou_term_but_kept_in_ziping_namespace_without_cross_school_conflict
+- rule_id: ZP-PROD-20260605-010
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-011
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-012
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-013
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-017
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260605-018
+  reason:
+  - domain_full_scope_mapped_to_fate
+- rule_id: ZP-PROD-20260606-004
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260606-005
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260606-008
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-010
+  reason:
+  - multi_structure_type
+- rule_id: ZP-PROD-20260606-015
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-020
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-021
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-026
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-031
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-033
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-034
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-035
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-036
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-037
+  reason:
+  - broad_element_vector
+- rule_id: ZP-PROD-20260606-038
+  reason:
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-001
+  reason:
+  - multi_structure_type
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-002
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-004
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-005
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-006
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-007
+  reason:
+  - multi_structure_type
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-008
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-009
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-010
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-011
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-012
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-013
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-014
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-015
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-016
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-017
+  reason:
+  - multi_structure_type
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-018
+  reason:
+  - multi_structure_type
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-019
+  reason:
+  - multi_structure_type
+  - broad_element_vector
+- rule_id: ZP-SRC-20260617-020
+  reason:
+  - multi_structure_type
+- rule_id: ZP-SRC-20260617-021
+  reason:
+  - multi_structure_type
+constraints:
+  cross_school_fusion: false
+  conflict_edges_generated: false
+  rule_graph_updated: false
+  family_clustering: false
+raw_candidate_scan:
+  source_root: theory/raw/ziping/extracted
+  source_files:
+  - theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+  - theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+  - theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+  - theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+  candidate_count: 57
+  already_promoted_to_production_count: 57
+  added_candidate_rules: 0
+  missing_from_production: []
+  note: All raw extracted candidates are represented in production; no duplicate candidate-only RuleIR entries were appended.
+per_rule_source_metadata:
+  source_path_added: true
+  raw_candidate_id_added: true
+  raw_source_path_added: true
+  mapped_rule_count: 57
+  missing_raw_candidate_id: []
+  note: source_path points to the production source; raw_candidate_id and raw_source_path preserve extracted candidate provenance.
+source_text_extraction:
+  source_root: sources/ziping
+  source_files:
+  - sources/ziping/《子平真诠》.md
+  - sources/ziping/《三命通会》.md
+  added_rule_count: 21
+  added_rule_ids:
+  - ZP-SRC-20260617-001
+  - ZP-SRC-20260617-002
+  - ZP-SRC-20260617-003
+  - ZP-SRC-20260617-004
+  - ZP-SRC-20260617-005
+  - ZP-SRC-20260617-006
+  - ZP-SRC-20260617-007
+  - ZP-SRC-20260617-008
+  - ZP-SRC-20260617-009
+  - ZP-SRC-20260617-010
+  - ZP-SRC-20260617-011
+  - ZP-SRC-20260617-012
+  - ZP-SRC-20260617-013
+  - ZP-SRC-20260617-014
+  - ZP-SRC-20260617-015
+  - ZP-SRC-20260617-016
+  - ZP-SRC-20260617-017
+  - ZP-SRC-20260617-018
+  - ZP-SRC-20260617-019
+  - ZP-SRC-20260617-020
+  - ZP-SRC-20260617-021
+  selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw
+    candidate rules; duplicates were skipped by rule_id.
+  boundary:
+    theory_id: ziping
+    cross_school_fusion: false
+    conflict_edges_generated: false
+    rule_graph_updated: false
+    family_clustering: false
+  batches:
+  - batch_id: source_text_batch_001
+    source_files:
+    - sources/ziping/《子平真诠》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-001
+    - ZP-SRC-20260617-002
+    - ZP-SRC-20260617-003
+    - ZP-SRC-20260617-004
+    - ZP-SRC-20260617-005
+    - ZP-SRC-20260617-006
+    - ZP-SRC-20260617-007
+    - ZP-SRC-20260617-008
+  - batch_id: source_text_batch_002
+    source_files:
+    - sources/ziping/《子平真诠》.md
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-009
+    - ZP-SRC-20260617-010
+    - ZP-SRC-20260617-011
+    - ZP-SRC-20260617-012
+    - ZP-SRC-20260617-013
+    - ZP-SRC-20260617-014
+    - ZP-SRC-20260617-015
+    - ZP-SRC-20260617-016
+    - ZP-SRC-20260617-017
+    - ZP-SRC-20260617-018
+    - ZP-SRC-20260617-019
+    - ZP-SRC-20260617-020
+    - ZP-SRC-20260617-021

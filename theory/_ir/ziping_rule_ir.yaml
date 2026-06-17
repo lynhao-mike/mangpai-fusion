@@ -1,0 +1,1650 @@
+schema_version: ziping-rule-ir-2026-06-17
+source_scope: theory/ziping + theory/raw/ziping/extracted + sources/ziping
+rules:
+- rule_id: ZP-PROD-20260605-001
+  theory_id: ziping
+  statement: 用神是八字全局判断的核心支点，格局成败与吉凶取舍应围绕用神展开。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-001
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-002
+  theory_id: ziping
+  statement: 财运不能只看财星多少，必须判断身能否任财，以及财是否有生护。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-012
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-003
+  theory_id: ziping
+  statement: 月令是用神定位的优先来源，透干与藏干共同参与判定。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-002
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-004
+  theory_id: ziping
+  statement: 常规扶抑框架中，日主旺则取克泄，日主弱则取生扶。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-003
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-005
+  theory_id: ziping
+  statement: 子平分析应围绕用神是否成立、受护或受破来评估整体吉凶。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-004
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-006
+  theory_id: ziping
+  statement: 用神受克不等于必败，还要看是否存在护用、制克、合化等救应。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-005
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-007
+  theory_id: ziping
+  statement: 格局结构越纯一、力量越集中，层级和稳定性通常越高；混杂会带来干扰与波折。
+  structure_type:
+  - pattern
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-006
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-008
+  theory_id: ziping
+  statement: 用神与全局互动是否顺畅，会影响格局高低；有情则格高，无情则格低。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-007
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-009
+  theory_id: ziping
+  statement: 寒热燥湿明显时，调候优先级高于普通扶抑取用。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-008
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-010
+  theory_id: ziping
+  statement: 相神是辅佐用神成格的关键，受损会造成更大的结构性破坏。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-009
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-011
+  theory_id: ziping
+  statement: 官、印、财、食虽为四吉神，但必须得法适位，失宜也会破格。
+  structure_type:
+  - pattern
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-010
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-012
+  theory_id: ziping
+  statement: 杀、伤、枭、刃并非绝对凶，制化得宜时可转为贵格或有用结构。
+  structure_type:
+  - pattern
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-011
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-013
+  theory_id: ziping
+  statement: 正官格关键在清纯与财印相生，伤官七杀混杂会降低层次。
+  structure_type:
+  - pattern
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-013
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-014
+  theory_id: ziping
+  statement: 从格、化格、从势、专旺等特殊结构不能机械套用普通扶抑模型。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-014
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-015
+  theory_id: ziping
+  statement: 格局高低不是单点判断，应由用神、相神、纯杂、救应和护卫共同决定。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-015
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-016
+  theory_id: ziping
+  statement: 先天格局成败不是最终定局，大运流年可能改变用神成败状态。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-016
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-017
+  theory_id: ziping
+  statement: 财官多寡只是结构信息，必须进一步判断取用、制化与成格。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-017
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260605-018
+  theory_id: ziping
+  statement: 格例总纲更适合作为理论库结构化导航，具体格局应拆成独立候选条目。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SAMPLE-018
+  raw_source_path: theory/raw/ziping/extracted/子平格局派_候选理论提取_2026-06-05.md
+- rule_id: ZP-PROD-20260606-001
+  theory_id: ziping
+  statement: 五行生克与干支源流是《三命通会》后续格局、十神与日时断法的基础骨架。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-001
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-002
+  theory_id: ziping
+  statement: 月令提纲是定旺衰、取用与判断成格先后次序的核心依据。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-002
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-003
+  theory_id: ziping
+  statement: 合冲刑害会改变命局气机通塞与成败状态，是判断改局、破局和开局的重要开关。
+  structure_type:
+  - pattern
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-003
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-004
+  theory_id: ziping
+  statement: 财官印食伤不能按名称绝对定吉凶，必须随日主强弱、通月气与制化状态取用。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-004
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-005
+  theory_id: ziping
+  statement: 命局若能通月令之气并有生扶、制化或通关倚托，则更容易形成较高层次。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-005
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-006
+  theory_id: ziping
+  statement: 时柱中的禄气、互换禄或禄归时结构，会影响晚景、子息和后段发力。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-006
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-007
+  theory_id: ziping
+  statement: 财库、官库、印库是否能发用，取决于是否有适当冲开、引动或钥匙结构。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-007
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-008
+  theory_id: ziping
+  statement: 日时组合是《三命通会》判断晚景、子息、财气收束与灾福归结的重要结构。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-008
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-009
+  theory_id: ziping
+  statement: 伤官见官和伤官伤尽是不同结构，需按制化、有尽无尽和官星状态分开判断。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-009
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-010
+  theory_id: ziping
+  statement: 飞天禄马、壬骑龙背、魁罡、合化等特殊格必须先确认真成与未破，不能见名即贵。
+  structure_type:
+  - pattern
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-010
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-011
+  theory_id: ziping
+  statement: 大运流年可放大、修复或逆转原局成败，静态格局不能替代动态判断。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-011
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-012
+  theory_id: ziping
+  statement: 刑冲破害的结果常会落实到六亲、婚姻、子息与财库消耗等具体生活领域。
+  structure_type:
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - marriage
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-SM-20260606-012
+  raw_source_path: theory/raw/ziping/extracted/子平_三命通会_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-013
+  theory_id: ziping
+  statement: 五行判断应以太过、不及是否得抑扬损益并归中和为核心，不宜把旺弱本身直接等同吉凶。
+  structure_type:
+  - ten_gods
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-001
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-014
+  theory_id: ziping
+  statement: 土承担承载、归藏、通关与成形功能，五行流转若无土承接则难稳定落实。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-002
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-015
+  theory_id: ziping
+  statement: 木需水滋生，但水多则漂流；木的成败还需分生木、死木及火金作用。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-003
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-016
+  theory_id: ziping
+  statement: 春木虽得令，初春仍需火暖与水滋并济，水火相济才利生发。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-004
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-017
+  theory_id: ziping
+  statement: 寒木得丙火透出而向阳，又有癸水暗滋，可形成较高层次的富贵候选。
+  structure_type:
+  - ten_gods
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-005
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-018
+  theory_id: ziping
+  statement: 木遇壬癸成片而无戊己制水时，生扶反成漂浮，主根基不稳与风险加重。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-006
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-019
+  theory_id: ziping
+  statement: 夏木根叶燥烈，首重水润；火旺则泄木焚木，易成消耗与过劳。
+  structure_type:
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-007
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-020
+  theory_id: ziping
+  statement: 秋令甲木枯槁而金旺，需先丁火炼暖，再用庚金斲凿，方能成材。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-008
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-021
+  theory_id: ziping
+  statement: 冬令甲木寒凝，宜丁先庚后并以丙火佐之，先暖发生机再谈裁成。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-009
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-022
+  theory_id: ziping
+  statement: 乙木如花草，常需丙火照耀与癸水滋养并用，才利柔性生发。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - marriage
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-010
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-023
+  theory_id: ziping
+  statement: 丙火多需壬水辅映，水火既济则光辉有用，过烈或无水则失衡。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-011
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-024
+  theory_id: ziping
+  statement: 丁火如灯烛，需甲木为薪，但甲旺又需庚金劈甲引丁，方能成有序燃发。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-012
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-025
+  theory_id: ziping
+  statement: 土过聚则滞塞，过散则轻浮；燥土需水润，实土需木疏，方可中和。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-013
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-026
+  theory_id: ziping
+  statement: 戊土常以丙火照暖、甲木疏劈、癸水滋润构成生机与灵动的关键组合。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P1-20260606-014
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-027
+  theory_id: ziping
+  statement: 夏令己土如田园禾稼，首重癸水甘沛润燥，其次丙火太阳发生，缺癸则旱，缺丙则孤阴。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-001
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-028
+  theory_id: ziping
+  statement: 秋令己土外虚内实、寒气渐升，需癸水润泽收藏，再以丙火温暖。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-002
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-029
+  theory_id: ziping
+  statement: 冬令己土湿泥寒冻，首需丙火解冻生发；壬水出干易成水浸之患，见火不孤，见土不贫。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-003
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-030
+  theory_id: ziping
+  statement: 金需火炼方能成器，但金火轻重必须相称；金重火轻则执事繁难，金轻火重则煅炼消亡。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-004
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-031
+  theory_id: ziping
+  statement: 金的成败取决于水火土适量配合，火旺金沉，水重沉沦，无水干枯，土重埋没。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-005
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-032
+  theory_id: ziping
+  statement: 金未成器时喜火炼成形，金已成器后再逢火则可能伤损变形，应分阶段判断火的作用。
+  structure_type:
+  - ten_gods
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-006
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-033
+  theory_id: ziping
+  statement: 春金休囚气弱，宜火气温荣、厚土生扶；水盛则增寒，木旺则耗损金力。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-007
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-034
+  theory_id: ziping
+  statement: 庚金取用随月令转换，寅月丙甲为上，卯月丁火借甲引丁，巳月先壬求中和，申月专丁煅炼并取木引丁。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-008
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-035
+  theory_id: ziping
+  statement: 庚金戌月怕土厚埋金，须甲疏壬洗；入亥丑寒冻则需丁造丙暖，丑月先丙解冻再丁炼并辅甲。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-009
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-036
+  theory_id: ziping
+  statement: 辛金重温润清透，常以己土为生身之本、壬水为淘洗流通之功，忌燥烈火与厚土叠埋。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-010
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-037
+  theory_id: ziping
+  statement: 水要流远需金生其源，泛滥则需土作堤防；水火均衡成既济，水土混杂则源浊为凶。
+  structure_type:
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-011
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-038
+  theory_id: ziping
+  statement: 壬水汪洋需按月令配置戊土堤防、庚辛金源、丙火温暖或甲木疏土，不能只论水旺水弱。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-012
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-PROD-20260606-039
+  theory_id: ziping
+  statement: 癸水柔弱而重源头与温暖，春夏需庚辛生源，寒冬首取丙火解冻，再得辛金滋扶则金温水暖。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: theory/ziping/index.yaml
+  raw_candidate_id: ZP-QTBJ-P2-20260606-013
+  raw_source_path: theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md
+- rule_id: ZP-SRC-20260617-001
+  theory_id: ziping
+  statement: 十干相合须得月令化神之气方可论化；不得令、隔干受冲克或地支冲破者，只作合绊，原干仍按本五行生克取断。
+  structure_type:
+  - pattern
+  - ten_gods
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - marriage
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 十干五合：甲己合土，乙庚合金，丙辛合水，丁壬合木，戊癸合火。合有正合、化合之分。得月令之气则化，不得月令只作牵绊。
+  source_line: 26
+- rule_id: ZP-SRC-20260617-002
+  theory_id: ziping
+  statement: 吉神被合则失用，凶神被合则化凶；财官被合夺时，应同步转入婚姻六亲层判断其配偶缘分与关系稳定性。
+  structure_type:
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - marriage
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 吉神被合则失用，凶神被合则化凶。男命财为妻，财被合夺；女命官为夫，官被合离，皆六亲不合之象。
+  source_line: 29
+- rule_id: ZP-SRC-20260617-003
+  theory_id: ziping
+  statement: 旺衰以月令为提纲但不得单凭月令定强弱；失令而地支有根、有助可转旺，得令而遭重克、失地无助亦可转弱。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 旺衰以月令为提纲，然得地得助，虽失令亦不弱；失地无助，虽得令亦不强。
+  source_line: 35
+- rule_id: ZP-SRC-20260617-004
+  theory_id: ziping
+  statement: 地支刑冲会合以是否散局、成局、损用为裁断核心；合可解冲，制可解刑，若刑破格局则优先标记为用神受损。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - marriage
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 三会聚一方之气，三合成局。冲则散局，合则解冲……刑破格局则损用神。解法全在合神、制神，以合解冲，以克解刑。
+  source_line: 40
+- rule_id: ZP-SRC-20260617-005
+  theory_id: ziping
+  statement: 用神可随干支组合而变格：月令正用遇财多生官、官多护财、地支会合或天干透出时，应按变格后的主导十神重新取用。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 用神随干支组合变换格局，正用可变偏用。月令本为官星，财多生官变财格；月令本为财星，官多护财变官格。
+  source_line: 55
+- rule_id: ZP-SRC-20260617-006
+  theory_id: ziping
+  statement: 辰戌丑未杂气取用以透干与会局为准；本气、余气、墓气虽藏于支内，若不透不聚，则难作正用。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 辰戌丑未为杂气，藏天地余气，分本气、余气、墓气。取杂气用神，以透出天干、地支会局为准，不透不聚，难作正用。
+  source_line: 79
+- rule_id: ZP-SRC-20260617-007
+  theory_id: ziping
+  statement: 墓库逢冲须分宜忌：用神在库而冲开得用为吉，忌神或身旺用神藏库被冲破则为破库损用。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 宜冲则冲开取用，忌冲则冲破用神。身弱用神在库，逢冲出库帮身则吉；身旺用神藏库，逢冲破库损用则凶。
+  source_line: 83
+- rule_id: ZP-SRC-20260617-008
+  theory_id: ziping
+  statement: 天干喜忌主外显、地支喜忌主内藏；大运流年引出支中藏干透清时，藏中用神显吉，藏中忌神显祸。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - marriage
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 天干主表面，地支主内里……地支藏干喜忌，大运引出透干，谓之透清。藏中用神，运岁透出，格局显用；藏中忌神，运岁透出，祸患显现。
+  source_line: 117
+- rule_id: ZP-SRC-20260617-009
+  theory_id: ziping
+  statement: 正官成格以官星清纯为要：官星宜一位得月令或透藏有力，并得财印扶助；若杀混、伤官破官、刑冲破害或贪合忘官，则官格受损。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 官星纯粹，无杀混杂，无伤官破损，谓之正官成格。官格运喜财印，财以生官，印以护身；忌伤官、七杀旺运破官。
+  source_line: 129
+- rule_id: ZP-SRC-20260617-010
+  theory_id: ziping
+  statement: 财格成败须兼看财星旺度与日主承载：财喜食神生、官星护，忌比劫夺财；财旺身弱宜印比扶身，身旺财弱宜食伤生财。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 财喜食神生，喜官星护，忌比肩劫财夺财。身旺财旺，富格；财旺身弱，不能任财；身旺财弱，财薄。
+  source_line: 136
+- rule_id: ZP-SRC-20260617-011
+  theory_id: ziping
+  statement: 印绶以护身生身为用，喜官杀生印，忌财星破印、食伤泄印；若印旺身强，则转喜食伤吐秀以泄其过旺。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 印绶护身，喜官星生印，忌财星破印、食伤泄印。身弱印旺可成学术名望；印旺身强，喜食伤吐秀。
+  source_line: 142
+- rule_id: ZP-SRC-20260617-012
+  theory_id: ziping
+  statement: 食神格以泄秀、生财、制杀为主要功用，须日主有根可泄；若枭印夺食，食神失用，财源、寿元与事业表达均受损。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 食神泄秀，生财，制杀。喜身旺有根，忌枭神夺食。食神格喜财运泄食生财，忌枭印破食。
+  source_line: 148
+- rule_id: ZP-SRC-20260617-013
+  theory_id: ziping
+  statement: 七杀须制化方成偏官贵格：身强杀有制可取权贵，食神制杀、阳刃合杀、印绶化杀皆可为用；无制或财生杀旺攻身则为忌。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 偏官即七杀，七杀有制为偏官，无制攻身则祸。制杀用神，以食神、阳刃为上。杀格运喜食伤制杀、印绶化杀，忌财生杀旺攻身。
+  source_line: 155
+- rule_id: ZP-SRC-20260617-014
+  theory_id: ziping
+  statement: 伤官不宜无制见官；伤官生财可转财富之用，伤官配印可转名学之贵，若无财印救应而官星来混，则以祸患破格论。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 伤官泄秀，喜身旺，忌见官。伤官生财为用，伤官配印为贵，伤官无制见官则祸。
+  source_line: 161
+- rule_id: ZP-SRC-20260617-015
+  theory_id: ziping
+  statement: 阳刃格以身旺刃旺为前提，喜官杀制刃以成权柄，忌比劫帮刃助凶；食伤泄刃若损制化平衡，亦作破格风险。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 阳刃为刚猛之气，身旺刃旺，喜官杀制刃，刃无制则凶。刃格喜官杀运制刃，忌比劫帮刃、食伤泄刃。
+  source_line: 167
+- rule_id: ZP-SRC-20260617-016
+  theory_id: ziping
+  statement: 建禄月劫本身不直接成贵，须另见财官成用；用财宜官护财，用官宜财生官，若再逢比劫夺财而无救，多主格局失用。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 建禄、月劫，日主得禄得劫，身旺。禄劫无财官取用，喜财官透出成格。禄劫格喜财官运，用财则官护财，用官则财生官。
+  source_line: 173
+- rule_id: ZP-SRC-20260617-017
+  theory_id: ziping
+  statement: 从化格须化神得令得势且日主本气无根方可论真化；真化顺所化五行取用，假化仍按本日主格局论，岁运破化神或扶本气则破格。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - marriage
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 化气真者，弃日主本气，从所化五行……化格喜助化神之运，忌破化之本气。假化之命，仍按本日主五行论格局。
+  source_line: 186
+- rule_id: ZP-SRC-20260617-018
+  theory_id: ziping
+  statement: 从势格以日主无根、全局聚成一方旺势为成立条件；真从喜助旺势，忌生扶日主破从，假从逢帮身运反以破格论。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - wealth
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 日主无根，全局聚成一方旺势，谓之从势。从财、从杀、从儿，各从其旺。真从喜助旺势，忌生扶日主破格；假从逢帮身运破从格。
+  source_line: 190
+- rule_id: ZP-SRC-20260617-019
+  theory_id: ziping
+  statement: 专旺格以曲直、炎上、稼穑、从革、润下五局为纲，成局后喜泄秀与助旺，忌官杀克破旺神。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《子平真诠》.md
+  source_excerpt: 五专旺格：曲直木、炎上火、稼穑土、从革金、润下水。专旺格忌官杀来克，喜泄秀助旺。
+  source_line: 194
+- rule_id: ZP-SRC-20260617-020
+  theory_id: ziping
+  statement: 财官印食为子平格局纲领，四者喜忌有固定破坏链：官怕伤、财怕劫、印怕财、食怕枭，取格时须优先检查对应破神是否透出或得势。
+  structure_type:
+  - pattern
+  - ten_gods
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - wealth
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《三命通会》.md
+  source_excerpt: 以印、食、官、财为格局纲领……官怕伤，财怕劫，印怕财，食怕枭。徐子平专论财、官、印、食，分六格。
+  source_line: 66
+- rule_id: ZP-SRC-20260617-021
+  theory_id: ziping
+  statement: 官杀混杂须以去留清浊定格：能去杀留官或去官留杀者为清，去留无力或官杀并旺相战者为浊，事业权责与祸福皆随清浊转变。
+  structure_type:
+  - pattern
+  - ten_gods
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/《三命通会》.md
+  source_excerpt: 官煞混杂，或去煞留官，或去官留煞，须看轻重、有力制合。制煞太过亦失威，留煞有制则权重。
+  source_line: 78
+enhancement:
+  raw_candidate_scan:
+    source_root: theory/raw/ziping/extracted
+    candidate_count: 57
+    already_promoted_to_production_count: 57
+    added_candidate_rules: 0
+    note: Raw extracted candidates were compared against theory/ziping/index.yaml; candidate-only entries are appended only
+      when not already represented in production.
+  per_rule_source_metadata:
+    source_path_added: true
+    raw_candidate_id_added: true
+    raw_source_path_added: true
+    mapped_rule_count: 57
+    missing_raw_candidate_id: []
+    note: source_path points to the production source; raw_candidate_id and raw_source_path preserve extracted candidate provenance.
+  source_text_extraction:
+    source_root: sources/ziping
+    source_files:
+    - sources/ziping/《子平真诠》.md
+    - sources/ziping/《三命通会》.md
+    added_rule_count: 21
+    added_rule_ids:
+    - ZP-SRC-20260617-001
+    - ZP-SRC-20260617-002
+    - ZP-SRC-20260617-003
+    - ZP-SRC-20260617-004
+    - ZP-SRC-20260617-005
+    - ZP-SRC-20260617-006
+    - ZP-SRC-20260617-007
+    - ZP-SRC-20260617-008
+    - ZP-SRC-20260617-009
+    - ZP-SRC-20260617-010
+    - ZP-SRC-20260617-011
+    - ZP-SRC-20260617-012
+    - ZP-SRC-20260617-013
+    - ZP-SRC-20260617-014
+    - ZP-SRC-20260617-015
+    - ZP-SRC-20260617-016
+    - ZP-SRC-20260617-017
+    - ZP-SRC-20260617-018
+    - ZP-SRC-20260617-019
+    - ZP-SRC-20260617-020
+    - ZP-SRC-20260617-021
+    selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw
+      candidate rules; duplicates were skipped by rule_id.
+    boundary:
+      theory_id: ziping
+      cross_school_fusion: false
+      conflict_edges_generated: false
+      rule_graph_updated: false
+      family_clustering: false
+    batches:
+    - batch_id: source_text_batch_001
+      source_files:
+      - sources/ziping/《子平真诠》.md
+      added_rule_ids:
+      - ZP-SRC-20260617-001
+      - ZP-SRC-20260617-002
+      - ZP-SRC-20260617-003
+      - ZP-SRC-20260617-004
+      - ZP-SRC-20260617-005
+      - ZP-SRC-20260617-006
+      - ZP-SRC-20260617-007
+      - ZP-SRC-20260617-008
+    - batch_id: source_text_batch_002
+      source_files:
+      - sources/ziping/《子平真诠》.md
+      - sources/ziping/《三命通会》.md
+      added_rule_ids:
+      - ZP-SRC-20260617-009
+      - ZP-SRC-20260617-010
+      - ZP-SRC-20260617-011
+      - ZP-SRC-20260617-012
+      - ZP-SRC-20260617-013
+      - ZP-SRC-20260617-014
+      - ZP-SRC-20260617-015
+      - ZP-SRC-20260617-016
+      - ZP-SRC-20260617-017
+      - ZP-SRC-20260617-018
+      - ZP-SRC-20260617-019
+      - ZP-SRC-20260617-020
+      - ZP-SRC-20260617-021

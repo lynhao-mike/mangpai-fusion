@@ -1,0 +1,93 @@
+schema_version: theory-alignment-report-2026-06-13
+normalization_scope:
+- theory/duan/index.yaml
+- theory/gao/index.yaml
+- theory/yang/index.yaml
+- theory/ren/index.yaml
+- theory/ziping/index.yaml
+- theory/tiaohou_ditiansui/index.yaml
+constraints:
+  no_inference: true
+  no_conflict_analysis: true
+  no_family_clustering: true
+  no_rule_merge: true
+  preserve_original_format: true
+field_mapping:
+  rule_id: id or generated fallback when id missing
+  theory_id: school or expert_system or parent directory name
+  statement: statement > claim > conclusion > output.statement > title
+  semantic_tags: 'explicit structural fields only: topic/topic_label/rule_type/axis_refs/layer/canon/raw_anchor'
+  domain: explicit domain/domains/prediction_target normalized to 财/官/印/婚姻/健康/性格 where literal mapping exists
+  element_vector: literal element/stem/branch token presence only, binary 0/1; no strength inference
+  status: source status or active fallback
+  original_format: complete original rule mapping preserved
+theories:
+- theory_id: duan
+  source_path: theory/duan/index.yaml
+  detected_rule_format: mapping_with_rules_list
+  source_rule_count: 290
+  converted_rule_count: 290
+  conversion_success_rate: 1.0
+  schema_mismatch_points:
+  - blind_school_index_lacks_explicit_domain_on_many_rules
+  - missing_explicit_domain_field:290
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+- theory_id: gao
+  source_path: theory/gao/index.yaml
+  detected_rule_format: mapping_with_rules_list
+  source_rule_count: 261
+  converted_rule_count: 261
+  conversion_success_rate: 1.0
+  schema_mismatch_points:
+  - blind_school_index_lacks_explicit_domain_on_many_rules
+  - missing_explicit_domain_field:261
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+- theory_id: yang
+  source_path: theory/yang/index.yaml
+  detected_rule_format: mapping_with_rules_list
+  source_rule_count: 163
+  converted_rule_count: 163
+  conversion_success_rate: 1.0
+  schema_mismatch_points:
+  - blind_school_index_lacks_explicit_domain_on_many_rules
+  - missing_explicit_domain_field:163
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+- theory_id: ren
+  source_path: theory/ren/index.yaml
+  detected_rule_format: mapping_with_rules_list
+  source_rule_count: 200
+  converted_rule_count: 200
+  conversion_success_rate: 1.0
+  schema_mismatch_points:
+  - blind_school_index_lacks_explicit_domain_on_many_rules
+  - missing_explicit_domain_field:200
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+- theory_id: ziping
+  source_path: theory/ziping/index.yaml
+  detected_rule_format: mapping_with_rules_list
+  source_rule_count: 57
+  converted_rule_count: 57
+  conversion_success_rate: 1.0
+  schema_mismatch_points: []
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+- theory_id: tiaohou_ditiansui
+  source_path: theory/tiaohou_ditiansui/index.yaml
+  detected_rule_format: list_of_Rule_wrappers
+  source_rule_count: 460
+  converted_rule_count: 460
+  conversion_success_rate: 1.0
+  schema_mismatch_points:
+  - top_level_format:list_of_Rule_wrappers
+  - top_level_is_list_of_Rule_wrappers_not_production_rules_mapping
+  can_enter_unified_inference_layer: true
+  blocking_reasons: []
+totals:
+  source_rule_count: 1431
+  converted_rule_count: 1431
+  conversion_success_rate: 1.0
+  ir_rule_count: 1431
