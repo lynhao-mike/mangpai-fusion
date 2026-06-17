@@ -1566,14 +1566,1011 @@ rules:
   source_path: sources/ziping/《三命通会》.md
   source_excerpt: 官煞混杂，或去煞留官，或去官留煞，须看轻重、有力制合。制煞太过亦失威，留煞有制则权重。
   source_line: 78
+- rule_id: ZP-SRC-20260617-022
+  theory_id: ziping
+  statement: 甲木春生调候：正月甲木余寒未散，得丙癸并透则寒木向阳，主大富贵；无丙癸者平常。火暖水滋，水火既济为春甲第一配伍法则。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 正月甲木，初春尚有余寒，得丙癸逢，富贵双全。癸藏丙透，名寒木向阳，主大富贵。
+  source_line: 24
+- rule_id: ZP-SRC-20260617-023
+  theory_id: ziping
+  statement: 甲木夏用调候：夏月甲木木性虚焦，先取癸水后取丁火，庚金次之；壬水亦可用，忌火旺招焚化之忧；用神宜水润以解燥。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 五六月甲木，木性虚焦，一理共推。五月先癸後丁庚金次之。六月三伏生寒，丁火退气。先丁後庚，无癸亦可。
+  source_line: 44
+- rule_id: ZP-SRC-20260617-024
+  theory_id: ziping
+  statement: 甲木秋用调候：三秋甲木木性枯槁，先取丁火后取庚金；丁庚两全，方能将甲造为画戟；运行金水，杀印相生可显达。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三秋甲木，木性枯槁，金土乘旺，先丁後庚，丁庚两全，将甲造为画戟，七月甲堪为戟，非丁火不能造庚，非庚不能造甲，丁庚两透，科甲定然。
+  source_line: 57
+- rule_id: ZP-SRC-20260617-025
+  theory_id: ziping
+  statement: 甲木冬用调候：冬月甲木盘屈在地，庚丁为要，丙火佐之；忌壬水泛身，须戊土制水；庚丁两透去浊留清，富贵之极。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 十月甲木，庚丁为要，丙火次之。忌壬水泛身，须戊土制之。若庚丁两透，又加戊出干，名曰去浊留清，富贵之极。
+  source_line: 84
+- rule_id: ZP-SRC-20260617-026
+  theory_id: ziping
+  statement: 乙木调候总纲：三春乙木丙癸不可离；春乙见丙则卉木向阳万象回春，须癸滋养根基；丙癸齐透天干无制则登科及第。
+  structure_type:
+  - pattern
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三春乙木，为芝兰蒿草之物，丙癸不可离也，春乙见丙，卉木向阳，万象回春，须癸滋养根基。丙癸齐透天干，无化合制克，自然登科及第。
+  source_line: 97
+- rule_id: ZP-SRC-20260617-027
+  theory_id: ziping
+  statement: 乙木夏用调候：夏月乙木气退枯焦，以癸水为尊，庚辛佐癸；四月专尚癸水，五六月先丙后癸；忌戊己杂乱困癸，否则下格。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三夏乙木，木性枯焦。四月专尚癸水。五六月先丙後癸，夏至前仍用癸水。凡五六月乙木，气退枯焦，用癸水切忌戊己杂乱，则为下格。
+  source_line: 116
+- rule_id: ZP-SRC-20260617-028
+  theory_id: ziping
+  statement: 乙木秋用调候：三秋乙木金神司令，先丙后癸；丙癸两透则科甲名臣；九月端用癸水以滋根；秋乙逢金无丙癸则非贫即夭。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三秋乙木，金神司令，先丙後癸，惟九月端用癸水，恐丙暖戊土为病也。秋乙逢金，非贫即夭。
+  source_line: 137
+- rule_id: ZP-SRC-20260617-029
+  theory_id: ziping
+  statement: 乙木冬用调候：冬月乙木花木寒冻，端用丙火解冻，则花木有向阳之意；不宜癸水冻花木；十一月一阳来复，丙透无癸制则可许科甲。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 十一月乙木，花木寒冻，一阳来复，喜用丙火解冻，则花木有向阳之意，不宜用癸以冻花木，故端用丙火。
+  source_line: 156
+- rule_id: ZP-SRC-20260617-030
+  theory_id: ziping
+  statement: 丙火调候总纲：三春丙火端用壬水为扶阳，名曰天和地润既济功成；正月壬庚为佐，二月端用壬水，三月土重晦光取甲佐之；癸水逢丙则云雾迷蒙不显不达。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三春丙火，秉象至威，阳回大地，侮雪欺霜，端用壬水，为扶阳，名曰天和地润，既济功成，正月用壬，庚辛为佐，二月端用壬水，三月土重晦光，取甲佐之为妙。
+  source_line: 167
+- rule_id: ZP-SRC-20260617-031
+  theory_id: ziping
+  statement: 丙火夏用调候：三夏丙火阳威性烈，专用壬水；四五月壬庚两透方为上命；阳刃合杀威权万里；忌壬水太多名杀重身轻；炎上格不见庚辛多见甲乙则反主大富贵。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三夏丙火，阳威性烈，专用壬水。若亥宫壬水无力，回克泄气故也，仍用申宫长生之水，方云富贵。四月端用壬水，金为佐，五月亦端用壬。
+  source_line: 216
+- rule_id: ZP-SRC-20260617-032
+  theory_id: ziping
+  statement: 调候用神总纲：五行各有旺衰，随月令司权而定调候用神；日主过旺则抑之，衰弱则扶之；贵在折衷中道，无太过不及之累，此才官印食取用之根本原则。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 以义推之，夫万物负阴而抱阳，冲气以和。过与不及，皆为乖道。故高者抑之使平，下者举之使崇，或益其不及，或损其太过。所以贵在折衷，归於中道，使无有余不足之累，即才官印食贵人驿马之微意也。
+  source_line: 11
+- rule_id: ZP-SRC-20260617-033
+  theory_id: ziping
+  statement: 木性调候纲要：木性腾上无所止，喜金任使以收敛，爱土培根固基；木赖水生少则滋润多则漂流；春木忌水盛阴浓、夏木忌火旺焚化、秋木宜刚金修削、冬木喜火温暖土培。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 木性腾上而无所止，气重则欲金任使，有金则有惟高惟敛之德。仍爱土重，则根蟠深固，土少则有枝茂根危之患。木赖水生，少则滋润，多则漂流。
+  source_line: 14
+- rule_id: ZP-SRC-20260617-034
+  theory_id: ziping
+  statement: 丙火秋用调候：七八月丙火阳气转衰，仍用壬水辅映光辉；壬多宜戊制，戊壬并见可成科甲；九月火气愈退且土晦光，须先甲木次壬水，甲壬两透富贵非凡。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 八月丙火，日近黄昏，丙之余光，存於湖海，仍用壬水辅映。九月丙火，火气愈退，所忌土晦光，必须先用甲木，次取壬水。
+  source_line: 281
+- rule_id: ZP-SRC-20260617-035
+  theory_id: ziping
+  statement: 丙火冬用调候：冬月丙火失令，随局权衡木水土金；十月木旺宜庚、水旺宜戊、火旺用壬；十一月以壬水为最、戊土佐之；十二月喜壬为用，土多不可少甲。
+  structure_type:
+  - use_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 总之十月丙火，木旺宜庚，水旺宜戊，火旺用壬，随宜酌用可也。十一月丙火，冬至一阳生，弱中复强，壬水为最，戊土佐之。十二月丙火，气进二阳，每雪欺霜，喜壬为用。
+  source_line: 316
+- rule_id: ZP-SRC-20260617-036
+  theory_id: ziping
+  statement: 丁火春用调候：春月丁火以甲木为母，但须庚金劈甲引丁；正月非庚不能劈甲，二月先庚后甲，三月先甲制土次看庚金，庚甲两透多主科甲。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 正月丁火，甲木当权，乃为母旺，非庚不能劈甲，何以引丁，姑用庚金。二月丁火，湿乙伤丁，先庚後甲。三月丁火，戊土司令，泄弱丁气，先用甲木引丁制土，次看庚金。
+  source_line: 368
+- rule_id: ZP-SRC-20260617-037
+  theory_id: ziping
+  statement: 丁火夏用调候：四月丁火乘旺，取甲引丁而须庚劈甲，忌癸水泄庚湿甲伤丁；五月建禄不宜乱用甲，火局须庚壬两透；六月丁弱退气，专取甲木，壬水次之。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 四月丁火乘旺，虽取甲引丁，必用庚劈甲。五月丁火，时归建禄，不宜乱用甲木。六月丁火，阴柔退气，但值三伏生寒，丁弱极矣，专取甲木，壬水次之。
+  source_line: 406
+- rule_id: ZP-SRC-20260617-038
+  theory_id: ziping
+  statement: 丁火秋用调候：三秋丁火退气柔弱，端用甲木，仍取庚劈甲、丙暖金晒甲；甲庚丙并用分优劣，甲庚丙皆透主科甲，无甲用乙则富贵皆小。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 七月丁火，退气柔弱，端用甲木，金虽乘旺司权，无伤丁之理，仍取庚劈甲，为引火之物，或借丙暖金晒甲。三秋甲庚丙并用，仍分优劣。
+  source_line: 459
+- rule_id: ZP-SRC-20260617-039
+  theory_id: ziping
+  statement: 丁火冬用调候：三冬丁火微寒，以甲木为尊、庚金佐之，甲庚两透科甲分明；冬丁有甲不怕水多金多；戊癸随局权宜酌用。
+  structure_type:
+  - use_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三冬丁火微寒，端用庚甲，甲乃庚之良友，凡用甲木，庚不可少。三冬丁火，甲木为尊，庚金佐之，戊癸权宜酌用可也。
+  source_line: 492
+- rule_id: ZP-SRC-20260617-040
+  theory_id: ziping
+  statement: 土性调候纲要：土散四维而赖金木水火成象；土聚则滞、土散则轻，燥土需水润，实土需木疏，得金火方成大器；辰未土较丑戌更利滋养生发。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 五行之土，散在四维，故金木水火，依而成象，是四时皆有用有忌者。土得金火，方成大器，土高无贵，空惹灰尘，土聚则滞，土散则轻。
+  source_line: 525
+- rule_id: ZP-SRC-20260617-041
+  theory_id: ziping
+  statement: 四季土调候总纲：春土虚浮喜火生扶、金制木为祥；夏土燥烈得水滋润成功；秋土金旺耗气而喜火比助；冬土外寒内温，火盛有荣，比肩扶助尤佳。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 生於春月，其势虚浮，喜火生扶，恶木太过。夏月之土，其势燥烈，得盛水滋润成功。秋月之土，子旺母衰，金多而耗盗其气。冬月之土，外寒内温，水旺才丰，金多子秀，火盛有荣。
+  source_line: 527
+- rule_id: ZP-SRC-20260617-042
+  theory_id: ziping
+  statement: 戊土春用调候：三春戊土无丙不生、无甲不灵、无癸不长；正二月先丙后癸，三月先甲后丙癸，甲丙癸齐透可取高格。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 三春戊土，无丙照暖，戊土不生，无甲疏劈，戊土不灵，无癸滋润，万物不长，正二月先丙後，癸又次之，三月先甲後丙，癸又次之。
+  source_line: 539
+- rule_id: ZP-SRC-20260617-043
+  theory_id: ziping
+  statement: 戊土夏用调候：四月戊土先甲疏劈，次取丙癸为佐；五月仲夏火炎，先看壬水次取甲木，丙火酌用；六月夏土干枯，先看癸水，次用丙火甲木。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 四月戊土，阳气发升，寒气内藏，外实内虚，不畏火炎，故先用甲疏劈，次取丙癸为佐。五月戊土，仲夏火炎，先看壬水，次取甲木。六月戊土，遇夏乾枯，先看癸水，次用丙火甲木。
+  source_line: 566
+- rule_id: ZP-SRC-20260617-044
+  theory_id: ziping
+  statement: 丁火从财与伤官变格：八月一派辛金且不见庚金、无比劫，可作弃命从财而富贵；九月一派戊土泄丁，不见甲木，为伤官伤尽，非寻常格局。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 或八月一派辛金，不见庚金，又无比劫，比弃命从才，富而且贵。或九月一派戊土，泄丁火之气，不见甲木，为伤官伤尽，非寻常可比。
+  source_line: 475
+- rule_id: ZP-SRC-20260617-045
+  theory_id: ziping
+  statement: 丙火从财从杀变格：秋丙成金局且辛出干、不见比劫，可作从财格而富贵；冬丙壬多无甲，可作弃命从杀，虽不科甲亦有宦途。
+  structure_type:
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 或成金局，无辛出干，此非从才，乃朱门饿莩，如辛出干，不见比劫，此从才格，反主富贵。或壬多无甲，乃作弃命从杀，即不科甲，亦是宦僚。
+  source_line: 284
+- rule_id: ZP-SRC-20260617-046
+  theory_id: ziping
+  statement: 戊土秋用调候：七月阳入寒出，先丙后癸，甲木次之；八月金泄身寒，赖丙照暖、喜水滋润，先丙后癸不必木疏；九月戊土当权，先看甲木次取癸水，见金则先癸后丙。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 七月戊土，阳气渐入，寒气渐出，先丙後癸，甲木次之。八月戊土，金泄身寒，赖丙照暖，喜水滋润，先丙後癸，不必木疏。九月戊土当权，不可专用丙，先看甲木，次取癸水。
+  source_line: 602
+- rule_id: ZP-SRC-20260617-047
+  theory_id: ziping
+  statement: 戊土冬用调候：十月小阳初出，先甲次丙，非甲土不灵、非丙土不暖；十一二月严寒冰冻，以丙火为尊、甲木为佐，丙甲两透为佳，寒土无丙则内虚外实。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 0
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 十月戊土，时值小阳，阳气略出，先用甲木，次取丙火，非甲，土不灵，非丙，土不暖。十一二月严寒冰冻，丙火为尊，甲木为佐。
+  source_line: 645
+- rule_id: ZP-SRC-20260617-048
+  theory_id: ziping
+  statement: 己土正月调候：正月己土田园犹冻，丙火为尊以照暖生物；忌壬水泛荡田园，壬多须戊土为堤，戊制壬而丙暖土则可取贵。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part1.md
+  source_excerpt: 正月己土，田园犹冻，盖因腊气未除，余寒未退，故丙为尊，得丙照暖，万物自生，忌见壬水，反为己病。须戊作堤，以保园圃，壬多要见戊制。
+  source_line: 679
+- rule_id: ZP-SRC-20260617-049
+  theory_id: ziping
+  statement: 己土二三月调候：二月阳升田园未展，先甲疏土，次癸润土，丙透则势强；三月正栽培禾稼，先丙后癸，随用甲疏，丙癸甲俱透可成高格。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 二月己土，阳气渐升，虽禾稼未成，万物出土，田园未展，先取甲木疏之，忌合，次取癸水润之。三月己土，正栽培禾稼之时，先丙後癸，土暖而润，随用甲疏。
+  source_line: 1
+- rule_id: ZP-SRC-20260617-050
+  theory_id: ziping
+  statement: 己土夏用调候：三夏己土禾稼在田，最喜甘沛，取癸为要，次用丙火；无癸为旱田，无丙为孤阴；丙癸两透并得辛金生癸，为水火既济之富贵格。
+  structure_type:
+  - use_god
+  - pattern
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 三夏己土，杂气才官，禾稼在田，最喜甘沛，取癸为要，次用丙火，夏无太阳，禾稼不长，故无癸曰旱田，无丙曰孤阴。或丙癸两透，又加辛金生癸，此富贵之格，名水火既济。
+  source_line: 15
+- rule_id: ZP-SRC-20260617-051
+  theory_id: ziping
+  statement: 己土秋用调候：三秋己土外虚内实、寒气渐升，须丙火温之、癸水润之；癸能泄金，丙能制金，补土精神；总以先癸后丙，取辛辅癸，九月土盛宜甲疏之。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 三秋己土，万物收藏之际，外虚内实，寒气渐升，须丙火温之，癸水润之。总之三秋己土，先癸後丙，取辛辅癸，九月土盛，宜甲木疏之，余皆酌用。
+  source_line: 34
+- rule_id: ZP-SRC-20260617-052
+  theory_id: ziping
+  statement: 己土冬用调候：三冬己土湿泥寒冻，非丙暖不生，取丙为尊，甲木参酌；戊癸不用，惟初冬壬旺取戊制之；壬水出干为水浸湖田，见火不孤、见土不贫。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 0
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 三冬己土，湿泥寒冻，非丙暖不生，取丙为尊，甲木参酌，戊土癸水不用，惟初冬壬旺，取戊制之。凡三冬己土，见壬水出干，为水浸湖田，此人孤苦，若见火不孤，见土不贫。
+  source_line: 52
+- rule_id: ZP-SRC-20260617-053
+  theory_id: ziping
+  statement: 金性调候纲要：金以至阴含至阳之精而成坚刚，金无火炼不能成器；金重火轻则执事繁难，金轻火重则煅炼消亡；金无水则干枯，水重则沉沦，土重则埋没不显。
+  structure_type:
+  - pattern
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 金以至阴为体，中含至阳之精，乃能坚刚。金无火链，不能成器，金重火轻，执事繁难，金轻火重，煆炼消亡。金能生水，火旺则金沉，土能生金，金多则土贱，金无水乾枯，水重，则沉沦无用，金无土死绝，土重，则埋没不显。
+  source_line: 66
+- rule_id: ZP-SRC-20260617-054
+  theory_id: ziping
+  statement: 四季金调候总纲：春金余寒未尽，贵火气为荣并需厚土辅助；夏金柔弱，火多不厌而水润呈祥；秋金当令，火炼成器，水泄精神；冬金形寒性冷，土制水、火助土为利。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 春月之金，余寒未尽，贵乎火气为荣，性柔体弱，欲得厚土辅助。夏月之金，尤为柔弱，火多而郤为不厌，水盛而滋润呈祥。秋月之金，当权得令，火来煆炼，遂成钟鼎之材。冬月之金，形寒性冷，土能制水，金体不寒，火来助土，子母成功。
+  source_line: 67
+- rule_id: ZP-SRC-20260617-055
+  theory_id: ziping
+  statement: 庚金春用调候：正月庚金先丙暖性，须甲疏土防埋金；二月专用丁火，借甲引丁、借庚劈甲；三月土旺金顽，先甲后丁，乏甲不能立业，乏丁不能成名。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 正月庚金，木旺之际，有土皆死，不能生金，且金之寒气未除，先用丙暖庚性，又虑土厚埋金，须甲疏泄。二月庚金，专用丁火，借甲引丁，借庚劈甲。三月庚金，戊土司令，无生金之理，有埋金之忧，故先甲後丁。
+  source_line: 76
+- rule_id: ZP-SRC-20260617-056
+  theory_id: ziping
+  statement: 庚金夏用调候：四月庚金长生于巳，先壬水求中和，次取戊土、丙火佐之；五月庚金败地专用壬水，癸次之；六月庚金三伏生寒顽钝，先丁火次甲木。
+  structure_type:
+  - use_god
+  - avoid_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - health
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 四月庚金，长生於巳，巳内有戊，丙不熔金，故不畏火炎，丙亦可作用，但先壬水，方得中和。五月庚金，丁火旺烈，庚金败地，专用壬水，癸又次之。六月庚金，三伏生寒，顽钝极矣，先用丁火，次取甲木。
+  source_line: 122
+- rule_id: ZP-SRC-20260617-057
+  theory_id: ziping
+  statement: 庚金秋用调候：七月庚金刚锐极盛，专用丁火煅炼，次取木引丁；八月庚金刚锐支退，用丁甲而丙不可少，旺金木衰，非火莫制。
+  structure_type:
+  - use_god
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: 0
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 七月庚金，刚锐极矣，专用丁火煆炼，次取木引丁。八月庚金，刚锐支退，用丁甲，丙不可少。总之旺金木衰，非火莫制，不见丙丁，艺术之辈。
+  source_line: 151
+- rule_id: ZP-SRC-20260617-058
+  theory_id: ziping
+  statement: 庚金生于九月，戊土司令而有土厚埋金之患，宜先用甲木疏土、后用壬水淘洗，忌己土浊壬；甲壬俱备则格局清贵，二者俱无则下格。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 九月庚金，戊土司令，最怕土厚埋金，宜先用甲疏，後用壬洗，则金自出矣，忌见己土浊壬。
+  source_line: 172
+- rule_id: ZP-SRC-20260617-059
+  theory_id: ziping
+  statement: 庚金生于十月，水冷金寒，须丁火炼金、丙火温暖；若金水混杂而全无丙丁，或金局无火，则格局偏寒而难成。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: -1
+  domain:
+  - career
+  - fate
+  - health
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 十月庚金，水冷性寒，非丁莫造，非丙不暖。
+  source_line: 187
+- rule_id: ZP-SRC-20260617-060
+  theory_id: ziping
+  statement: 庚金生于十一月，天气严寒，仍以丁火、甲木为先，丙火照暖为次；若一派金水而不入火土之乡，多主孤贫浪荡。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: -1
+  domain:
+  - career
+  - fate
+  - health
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 十一月庚金，天气严寒，仍取丁甲，次取丙火照暖。
+  source_line: 200
+- rule_id: ZP-SRC-20260617-061
+  theory_id: ziping
+  statement: 庚金生于十二月，寒湿太重，先取丙火解冻，次取丁火炼金，甲木亦不可少；丙丁甲得用则寒金可成器。
+  structure_type:
+  - use_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 1
+    earth: 0
+    metal: 1
+    water: -1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 十二月庚金，寒气太重，且多湿泥，愈寒愈冻，先取丙火解冻，次取丁火炼金，甲亦不可少。
+  source_line: 215
+- rule_id: ZP-SRC-20260617-062
+  theory_id: ziping
+  statement: 辛金生于正月，寒未尽而甲木司权，先取己土为身本，再赖壬水发金，庚金佐制甲木；己壬庚配合则富贵较全。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: -1
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 故正月辛金，先己後壬，己为君，庚为佐，如用丙火须参看。
+  source_line: 232
+- rule_id: ZP-SRC-20260617-063
+  theory_id: ziping
+  statement: 辛金生于二月，阳和木旺，以壬水为尊，戊己土为病，须甲木制伏土浊；壬甲得配则金不埋、水不浊。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 二月辛金，阳和之际，壬水为尊，见戊己为病，得甲制伏，则辛金不致埋没，壬水不致混浊。
+  source_line: 241
+- rule_id: ZP-SRC-20260617-064
+  theory_id: ziping
+  statement: 辛金生于三月，戊土司令而母旺子相，先用壬水淘洗，后用甲木疏土；壬甲俱无则平常，土厚无甲则易成埋金。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: -1
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 三月辛金，戊土司令，辛承正气，母旺子相，先壬後甲。
+  source_line: 265
+- rule_id: ZP-SRC-20260617-065
+  theory_id: ziping
+  statement: 辛金生于四月，忌丙火燥烈，喜壬水洗淘；壬癸甲俱无又不成格者为下品，火旺无水时可取土泄火。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: -1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  - health
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 四月辛金，时道首夏，忌丙火之燥烈，喜壬水之洗淘。
+  source_line: 271
+- rule_id: ZP-SRC-20260617-066
+  theory_id: ziping
+  statement: 辛金生于五月，丁火司权而辛金失令，不宜煅炼，须壬水与己土并用，癸水可辅但力弱；火局无壬则难救。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 0
+    fire: -1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  - health
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 五月辛金，丁火司权，辛金失令，阴柔之极，不宜煆炼，须己壬兼用。
+  source_line: 282
+- rule_id: ZP-SRC-20260617-067
+  theory_id: ziping
+  statement: 辛金生于六月，己土当权而土多掩金，先用壬水，取庚金为佐，忌戊土出干；若得甲木制戊方吉。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 六月辛金，己土当权，辅助太多，恐掩金光，先用壬水，取庚佐之。
+  source_line: 293
+- rule_id: ZP-SRC-20260617-068
+  theory_id: ziping
+  statement: 辛金生于七月，庚金司令而金旺，壬水为尊以泄金流通，甲木与戊土酌用，癸水不可作为主用。
+  structure_type:
+  - use_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 七月辛金，壬不在多，故书曰，水浅金多，号曰体全之象，壬水为尊，甲戊酌用可也，癸水不可为用。
+  source_line: 308
+- rule_id: ZP-SRC-20260617-069
+  theory_id: ziping
+  statement: 辛金生于八月，金旺至极，专用壬水淘洗流通，戊己土生扶太过为病，有土则喜甲木制土，无戊则不宜用甲。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: 0
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - wealth
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 八月辛金，当权得令，旺之极矣，专用壬水淘洗，故云金见水以流通。
+  source_line: 316
+- rule_id: ZP-SRC-20260617-070
+  theory_id: ziping
+  statement: 辛金生于九月，成土司令而土重，先壬后甲，以壬泄旺金、甲疏厚土；火土为病，水木为药。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: 1
+    fire: -1
+    earth: -1
+    metal: 1
+    water: 1
+  domain:
+  - career
+  - fate
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 九月辛金，成土司令，母旺子相，须甲疏土，壬泄旺金，先壬後甲。
+  source_line: 338
+- rule_id: ZP-SRC-20260617-071
+  theory_id: ziping
+  statement: 水命总论以源流、堤防与寒暖为纲：水赖金生而流远，泛滥赖土堤防，水火均则既济，水土混则浊源；四时忌火多、土重、金死、木旺失衡。
+  structure_type:
+  - use_god
+  - avoid_god
+  - pattern
+  element_vector:
+    wood: -1
+    fire: -1
+    earth: 1
+    metal: 1
+    water: 1
+  domain:
+  - fate
+  - health
+  - career
+  status: active
+  source_path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+  source_excerpt: 水不绝源，仗金生而流远，水流泛滥，赖土克以堤防，水火均，则合既济之美，水土混，则有浊源之凶。
+  source_line: 385
 enhancement:
   raw_candidate_scan:
     source_root: theory/raw/ziping/extracted
     candidate_count: 57
     already_promoted_to_production_count: 57
     added_candidate_rules: 0
-    note: Raw extracted candidates were compared against theory/ziping/index.yaml; candidate-only entries are appended only
-      when not already represented in production.
+    note: Raw extracted candidates were compared against theory/ziping/index.yaml; candidate-only entries are appended only when not already represented in production.
   per_rule_source_metadata:
     source_path_added: true
     raw_candidate_id_added: true
@@ -1586,7 +2583,9 @@ enhancement:
     source_files:
     - sources/ziping/《子平真诠》.md
     - sources/ziping/《三命通会》.md
-    added_rule_count: 21
+    - sources/ziping/穷通宝鉴-明-余春台_part1.md
+    - sources/ziping/穷通宝鉴-明-余春台_part2.md
+    added_rule_count: 71
     added_rule_ids:
     - ZP-SRC-20260617-001
     - ZP-SRC-20260617-002
@@ -1609,8 +2608,57 @@ enhancement:
     - ZP-SRC-20260617-019
     - ZP-SRC-20260617-020
     - ZP-SRC-20260617-021
-    selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw
-      candidate rules; duplicates were skipped by rule_id.
+    - ZP-SRC-20260617-022
+    - ZP-SRC-20260617-023
+    - ZP-SRC-20260617-024
+    - ZP-SRC-20260617-025
+    - ZP-SRC-20260617-026
+    - ZP-SRC-20260617-027
+    - ZP-SRC-20260617-028
+    - ZP-SRC-20260617-029
+    - ZP-SRC-20260617-030
+    - ZP-SRC-20260617-031
+    - ZP-SRC-20260617-032
+    - ZP-SRC-20260617-033
+    - ZP-SRC-20260617-034
+    - ZP-SRC-20260617-035
+    - ZP-SRC-20260617-036
+    - ZP-SRC-20260617-037
+    - ZP-SRC-20260617-038
+    - ZP-SRC-20260617-039
+    - ZP-SRC-20260617-040
+    - ZP-SRC-20260617-041
+    - ZP-SRC-20260617-042
+    - ZP-SRC-20260617-043
+    - ZP-SRC-20260617-044
+    - ZP-SRC-20260617-045
+    - ZP-SRC-20260617-046
+    - ZP-SRC-20260617-047
+    - ZP-SRC-20260617-048
+    - ZP-SRC-20260617-049
+    - ZP-SRC-20260617-050
+    - ZP-SRC-20260617-051
+    - ZP-SRC-20260617-052
+    - ZP-SRC-20260617-053
+    - ZP-SRC-20260617-054
+    - ZP-SRC-20260617-055
+    - ZP-SRC-20260617-056
+    - ZP-SRC-20260617-057
+    - ZP-SRC-20260617-058
+    - ZP-SRC-20260617-059
+    - ZP-SRC-20260617-060
+    - ZP-SRC-20260617-061
+    - ZP-SRC-20260617-062
+    - ZP-SRC-20260617-063
+    - ZP-SRC-20260617-064
+    - ZP-SRC-20260617-065
+    - ZP-SRC-20260617-066
+    - ZP-SRC-20260617-067
+    - ZP-SRC-20260617-068
+    - ZP-SRC-20260617-069
+    - ZP-SRC-20260617-070
+    - ZP-SRC-20260617-071
+    selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw candidate rules; duplicates were skipped by rule_id.
     boundary:
       theory_id: ziping
       cross_school_fusion: false
@@ -1648,3 +2696,70 @@ enhancement:
       - ZP-SRC-20260617-019
       - ZP-SRC-20260617-020
       - ZP-SRC-20260617-021
+    - batch_id: source_text_batch_003
+      source_files:
+      - sources/ziping/穷通宝鉴-明-余春台_part1.md
+      added_rule_ids:
+      - ZP-SRC-20260617-022
+      - ZP-SRC-20260617-023
+      - ZP-SRC-20260617-024
+      - ZP-SRC-20260617-025
+      - ZP-SRC-20260617-026
+      - ZP-SRC-20260617-027
+      - ZP-SRC-20260617-028
+      - ZP-SRC-20260617-029
+      - ZP-SRC-20260617-030
+      - ZP-SRC-20260617-031
+      - ZP-SRC-20260617-032
+      - ZP-SRC-20260617-033
+    - batch_id: source_text_batch_004
+      source_files:
+      - sources/ziping/穷通宝鉴-明-余春台_part1.md
+      added_rule_ids:
+      - ZP-SRC-20260617-034
+      - ZP-SRC-20260617-035
+      - ZP-SRC-20260617-036
+      - ZP-SRC-20260617-037
+      - ZP-SRC-20260617-038
+      - ZP-SRC-20260617-039
+      - ZP-SRC-20260617-040
+      - ZP-SRC-20260617-041
+      - ZP-SRC-20260617-042
+      - ZP-SRC-20260617-043
+      - ZP-SRC-20260617-044
+      - ZP-SRC-20260617-045
+    - batch_id: source_text_batch_005
+      source_files:
+      - sources/ziping/穷通宝鉴-明-余春台_part1.md
+      - sources/ziping/穷通宝鉴-明-余春台_part2.md
+      added_rule_ids:
+      - ZP-SRC-20260617-046
+      - ZP-SRC-20260617-047
+      - ZP-SRC-20260617-048
+      - ZP-SRC-20260617-049
+      - ZP-SRC-20260617-050
+      - ZP-SRC-20260617-051
+      - ZP-SRC-20260617-052
+      - ZP-SRC-20260617-053
+      - ZP-SRC-20260617-054
+      - ZP-SRC-20260617-055
+      - ZP-SRC-20260617-056
+      - ZP-SRC-20260617-057
+    - batch_id: source_text_batch_006
+      source_files:
+      - sources/ziping/穷通宝鉴-明-余春台_part2.md
+      added_rule_ids:
+      - ZP-SRC-20260617-058
+      - ZP-SRC-20260617-059
+      - ZP-SRC-20260617-060
+      - ZP-SRC-20260617-061
+      - ZP-SRC-20260617-062
+      - ZP-SRC-20260617-063
+      - ZP-SRC-20260617-064
+      - ZP-SRC-20260617-065
+      - ZP-SRC-20260617-066
+      - ZP-SRC-20260617-067
+      - ZP-SRC-20260617-068
+      - ZP-SRC-20260617-069
+      - ZP-SRC-20260617-070
+      - ZP-SRC-20260617-071

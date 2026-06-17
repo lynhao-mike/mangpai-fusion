@@ -1,10 +1,10 @@
 schema_version: ziping-alignment-report-2026-06-17
 theory_id: ziping
-rule_count: 78
+rule_count: 128
 structure_coverage:
-  pattern: 75.64
-  ten_gods: 38.46
-  use_god: 52.56
+  pattern: 66.41
+  ten_gods: 23.44
+  use_god: 68.75
 missing_structures: []
 ambiguity_cases:
 - rule_id: ZP-PROD-20260605-005
@@ -176,7 +176,9 @@ source_text_extraction:
   source_files:
   - sources/ziping/《子平真诠》.md
   - sources/ziping/《三命通会》.md
-  added_rule_count: 21
+  - sources/ziping/穷通宝鉴-明-余春台_part1.md
+  - sources/ziping/穷通宝鉴-明-余春台_part2.md
+  added_rule_count: 71
   added_rule_ids:
   - ZP-SRC-20260617-001
   - ZP-SRC-20260617-002
@@ -199,8 +201,57 @@ source_text_extraction:
   - ZP-SRC-20260617-019
   - ZP-SRC-20260617-020
   - ZP-SRC-20260617-021
-  selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw
-    candidate rules; duplicates were skipped by rule_id.
+  - ZP-SRC-20260617-022
+  - ZP-SRC-20260617-023
+  - ZP-SRC-20260617-024
+  - ZP-SRC-20260617-025
+  - ZP-SRC-20260617-026
+  - ZP-SRC-20260617-027
+  - ZP-SRC-20260617-028
+  - ZP-SRC-20260617-029
+  - ZP-SRC-20260617-030
+  - ZP-SRC-20260617-031
+  - ZP-SRC-20260617-032
+  - ZP-SRC-20260617-033
+  - ZP-SRC-20260617-034
+  - ZP-SRC-20260617-035
+  - ZP-SRC-20260617-036
+  - ZP-SRC-20260617-037
+  - ZP-SRC-20260617-038
+  - ZP-SRC-20260617-039
+  - ZP-SRC-20260617-040
+  - ZP-SRC-20260617-041
+  - ZP-SRC-20260617-042
+  - ZP-SRC-20260617-043
+  - ZP-SRC-20260617-044
+  - ZP-SRC-20260617-045
+  - ZP-SRC-20260617-046
+  - ZP-SRC-20260617-047
+  - ZP-SRC-20260617-048
+  - ZP-SRC-20260617-049
+  - ZP-SRC-20260617-050
+  - ZP-SRC-20260617-051
+  - ZP-SRC-20260617-052
+  - ZP-SRC-20260617-053
+  - ZP-SRC-20260617-054
+  - ZP-SRC-20260617-055
+  - ZP-SRC-20260617-056
+  - ZP-SRC-20260617-057
+  - ZP-SRC-20260617-058
+  - ZP-SRC-20260617-059
+  - ZP-SRC-20260617-060
+  - ZP-SRC-20260617-061
+  - ZP-SRC-20260617-062
+  - ZP-SRC-20260617-063
+  - ZP-SRC-20260617-064
+  - ZP-SRC-20260617-065
+  - ZP-SRC-20260617-066
+  - ZP-SRC-20260617-067
+  - ZP-SRC-20260617-068
+  - ZP-SRC-20260617-069
+  - ZP-SRC-20260617-070
+  - ZP-SRC-20260617-071
+  selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw candidate rules; duplicates were skipped by rule_id.
   boundary:
     theory_id: ziping
     cross_school_fusion: false
@@ -238,3 +289,70 @@ source_text_extraction:
     - ZP-SRC-20260617-019
     - ZP-SRC-20260617-020
     - ZP-SRC-20260617-021
+  - batch_id: source_text_batch_003
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part1.md
+    added_rule_ids:
+    - ZP-SRC-20260617-022
+    - ZP-SRC-20260617-023
+    - ZP-SRC-20260617-024
+    - ZP-SRC-20260617-025
+    - ZP-SRC-20260617-026
+    - ZP-SRC-20260617-027
+    - ZP-SRC-20260617-028
+    - ZP-SRC-20260617-029
+    - ZP-SRC-20260617-030
+    - ZP-SRC-20260617-031
+    - ZP-SRC-20260617-032
+    - ZP-SRC-20260617-033
+  - batch_id: source_text_batch_004
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part1.md
+    added_rule_ids:
+    - ZP-SRC-20260617-034
+    - ZP-SRC-20260617-035
+    - ZP-SRC-20260617-036
+    - ZP-SRC-20260617-037
+    - ZP-SRC-20260617-038
+    - ZP-SRC-20260617-039
+    - ZP-SRC-20260617-040
+    - ZP-SRC-20260617-041
+    - ZP-SRC-20260617-042
+    - ZP-SRC-20260617-043
+    - ZP-SRC-20260617-044
+    - ZP-SRC-20260617-045
+  - batch_id: source_text_batch_005
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part1.md
+    - sources/ziping/穷通宝鉴-明-余春台_part2.md
+    added_rule_ids:
+    - ZP-SRC-20260617-046
+    - ZP-SRC-20260617-047
+    - ZP-SRC-20260617-048
+    - ZP-SRC-20260617-049
+    - ZP-SRC-20260617-050
+    - ZP-SRC-20260617-051
+    - ZP-SRC-20260617-052
+    - ZP-SRC-20260617-053
+    - ZP-SRC-20260617-054
+    - ZP-SRC-20260617-055
+    - ZP-SRC-20260617-056
+    - ZP-SRC-20260617-057
+  - batch_id: source_text_batch_006
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part2.md
+    added_rule_ids:
+    - ZP-SRC-20260617-058
+    - ZP-SRC-20260617-059
+    - ZP-SRC-20260617-060
+    - ZP-SRC-20260617-061
+    - ZP-SRC-20260617-062
+    - ZP-SRC-20260617-063
+    - ZP-SRC-20260617-064
+    - ZP-SRC-20260617-065
+    - ZP-SRC-20260617-066
+    - ZP-SRC-20260617-067
+    - ZP-SRC-20260617-068
+    - ZP-SRC-20260617-069
+    - ZP-SRC-20260617-070
+    - ZP-SRC-20260617-071
