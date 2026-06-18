@@ -1,0 +1,1288 @@
+schema_version: ziping-cleaned-rules-2026-06-18
+source_file: theory/ziping/index.yaml
+expert_system: ziping
+clean_rules:
+- rule_id: ZP-CLEAN-20260618-001
+  original_rule_ids:
+  - ZP-PROD-20260605-001
+  - ZP-PROD-20260605-005
+  statement: 子平判断应先定位用神，并围绕用神是否成立、受护或受破来评估格局成败、整体吉凶与事业财富层次。
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  - 性格
+  - 婚姻
+  - 健康
+  structure_type: yongshen_global_success_failure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-002
+  original_rule_ids:
+  - ZP-PROD-20260605-003
+  - ZP-PROD-20260606-002
+  statement: 子平取用与成格先后应优先依据月令提纲，并结合透干、藏干、旺相休囚与通月气情况判断。
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  - 健康
+  structure_type: yueling_tigang_priority
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-003
+  original_rule_ids:
+  - ZP-PROD-20260605-004
+  - ZP-PROD-20260606-004
+  statement: 普通格局须先判日主强弱，再按日主承载力、十神状态、通月气与制化关系决定取用方向，不可只按十神名义定吉凶。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 婚姻
+  structure_type: shenqiang_shenruo_shishen_quyong
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-004
+  original_rule_ids:
+  - ZP-PROD-20260605-007
+  - ZP-PROD-20260605-013
+  statement: 格局或官格判断须看清纯与混杂：结构纯一、财印相生和护卫顺畅者层级较高，伤官七杀或异神混杂且无制化者层次下降。
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  - 仕途
+  - 名望
+  structure_type: geju_chunza_zhengguan_purity
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-005
+  original_rule_ids:
+  - ZP-PROD-20260605-008
+  - ZP-PROD-20260605-015
+  statement: 格局层级应综合用神有情、纯杂、相神、护卫与救应判断；用神顺接且护卫周全者层级提高，单点证据不足时不宜定高低。
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  structure_type: geju_level_youqing_composite
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-006
+  original_rule_ids:
+  - ZP-PROD-20260605-014
+  - ZP-PROD-20260606-010
+  statement: 从格、化格、从势、专旺及飞天禄马、壬骑龙背、魁罡、合化等特殊格须先验真成、得令与未破，再决定是否另按特殊取用和贵气判断。
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  - 名望
+  structure_type: special_geju_authenticity
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-007
+  original_rule_ids:
+  - ZP-PROD-20260605-016
+  - ZP-PROD-20260606-011
+  statement: 原局成败须与大运流年分层处理，运岁可放大、修复或逆转用神、相神、忌神、库与合冲刑害所对应的成败状态。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: yunshi_geju_transformation
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-008
+  original_rule_ids:
+  - ZP-PROD-20260605-002
+  - ZP-PROD-20260605-017
+  statement: 财星、官星的多少只提供结构信息，财富和事业判断仍须回到身财承载、取用、制化、生护与成格条件。
+  domains:
+  - 财富
+  - 事业
+  structure_type: wealth_official_quantity_quyong
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-009
+  original_rule_ids:
+  - ZP-PROD-20260606-030
+  - ZP-PROD-20260606-032
+  statement: 金局用火须分阶段：金未成器时喜适度火炼成形，金已成器后再遇强火则需提示过度锻炼、压力变形或伤损风险。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: jinhuo_chengqi_stage
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-010
+  original_rule_ids:
+  - ZP-PROD-20260618-019
+  - ZP-PROD-20260618-020
+  - ZP-PROD-20260618-021
+  statement: 六亲、配偶与子息判断须看对应星位或宫位所坐之地及生助冲克；坐生旺库、禄马、贵人、官印且受生者助力提高，坐空亡、刑克煞、羊刃、死绝、冲败者风险提高。
+  domains:
+  - 家庭
+  - 财富
+  - 健康
+  - 婚姻
+  - 子女
+  structure_type: liuqin_spouse_children_star_location
+  confidence_adjusted:
+    base: 0.7033
+    posterior_base: 0.7033
+    variance: 0.1
+    redundancy_penalty: 0.1
+    percent: 0.633
+    posterior: 0.633
+    star: 3
+    cluster_size: 3
+- rule_id: ZP-CLEAN-20260618-011
+  original_rule_ids:
+  - ZP-PROD-20260618-014
+  - ZP-PROD-20260618-015
+  statement: 七煞与时上偏官须校验数量、清透、身旺身弱与制伏轻重；一位清透且制伏得宜可成权用，重见或制伏失衡则劳碌受限，制太过者喜煞旺运恢复权用。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  - 子女
+  structure_type: qisha_zhifu_shishang_pianguan
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.08
+    redundancy_penalty: 0.05
+    percent: 0.684
+    posterior: 0.684
+    star: 4
+    cluster_size: 2
+- rule_id: ZP-CLEAN-20260618-012
+  original_rule_ids:
+  - ZP-PROD-20260605-006
+  statement: 子平规则参与：用神被克后需复核救应，救应存在时破局程度应重新计算。
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-013
+  original_rule_ids:
+  - ZP-PROD-20260605-009
+  statement: 子平规则参与：气候偏枯明显时，应先解决调候问题，再进入常规扶抑和格局判断。
+  domains:
+  - 健康
+  - 性格
+  - 事业
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-014
+  original_rule_ids:
+  - ZP-PROD-20260605-010
+  statement: 子平规则参与：相神受伤需按结构性损伤处理，不能只按局部受伤轻看。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-015
+  original_rule_ids:
+  - ZP-PROD-20260605-011
+  statement: 子平规则参与：四吉神需看得法与适位，失宜时反而可能损害格局。
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-016
+  original_rule_ids:
+  - ZP-PROD-20260605-012
+  statement: 子平规则参与：四凶神需看制化，得宜可成有力结构，不可见凶神即断凶。
+  domains:
+  - 事业
+  - 健康
+  - 竞争类事务
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-017
+  original_rule_ids:
+  - ZP-PROD-20260605-018
+  statement: 子平规则参与：格例总纲应作为规则索引入口，用于组织具体格局候选，而非直接输出断语。
+  domains:
+  - 全域
+  structure_type: geju_shishen_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-018
+  original_rule_ids:
+  - ZP-PROD-20260606-001
+  statement: 子平规则参与：分析《三命通会》体系命局时，应先建立五行生克与干支骨架，再进入格局断事。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-019
+  original_rule_ids:
+  - ZP-PROD-20260606-003
+  statement: 子平规则参与：合冲刑害应按气机通塞与受作用对象评估，不能只作静态关系描述。
+  domains:
+  - 事业
+  - 婚姻
+  - 财富
+  - 健康
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-020
+  original_rule_ids:
+  - ZP-PROD-20260606-005
+  statement: 子平规则参与：通月气且有倚托时，可提高事业、财富或学业层级判断；无倚托则多按平常处理。
+  domains:
+  - 事业
+  - 财富
+  - 学业
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-021
+  original_rule_ids:
+  - ZP-PROD-20260606-006
+  statement: 子平规则参与：禄气落在时柱且未破时，应重视后半生发力、子息与晚景表现。
+  domains:
+  - 事业
+  - 财富
+  - 子息
+  - 晚景
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-022
+  original_rule_ids:
+  - ZP-PROD-20260606-007
+  statement: 子平规则参与：库星要看能否打开与流通，有钥匙可成资源，闭塞则多沉滞。
+  domains:
+  - 财富
+  - 事业
+  - 健康
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-023
+  original_rule_ids:
+  - ZP-PROD-20260606-008
+  statement: 子平规则参与：日时断法可作为后半生、子息和收官判断的候选证据，但必须与全局合参。
+  domains:
+  - 子息
+  - 晚景
+  - 事业
+  - 健康
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-024
+  original_rule_ids:
+  - ZP-PROD-20260606-009
+  statement: 子平规则参与：伤官局需先分见官、制化和伤尽状态，再判断事业、婚姻或学业影响。
+  domains:
+  - 事业
+  - 婚姻
+  - 学业
+  structure_type: geju_shishen_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-025
+  original_rule_ids:
+  - ZP-PROD-20260606-012
+  statement: 子平规则参与：刑冲破害应在六亲、婚姻、子息和财富域中做次级风险提示。
+  domains:
+  - 婚姻
+  - 子息
+  - 家庭
+  - 财富
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-026
+  original_rule_ids:
+  - ZP-PROD-20260606-013
+  statement: 子平规则参与：先标注五行偏颇点，再判断是否有药可救，旺弱需回到中和框架评估。
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  - 性格
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-027
+  original_rule_ids:
+  - ZP-PROD-20260606-014
+  statement: 子平规则参与：评估事业落地、财富积累与稳定性时，应检查土是否能承载并通关。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-028
+  original_rule_ids:
+  - ZP-PROD-20260606-015
+  statement: 子平规则参与：对木象需分滋润、漂流、发秀、裁成与受伤风险逐层输出。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-029
+  original_rule_ids:
+  - ZP-PROD-20260606-016
+  statement: 子平规则参与：春木判断应同时检查火暖与水滋，缺一则生发层次下降。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-030
+  original_rule_ids:
+  - ZP-PROD-20260606-017
+  statement: 子平规则参与：甲木寒局若丙癸相济，可提示事业名望与财富潜力较高。
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-031
+  original_rule_ids:
+  - ZP-PROD-20260606-018
+  statement: 子平规则参与：水泛木浮应现代化输出为根基不稳、流动过强与安全健康风险提示。
+  domains:
+  - 事业
+  - 健康
+  - 家庭
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-032
+  original_rule_ids:
+  - ZP-PROD-20260606-019
+  statement: 子平规则参与：夏木应重点提示水润条件和火旺消耗风险。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-033
+  original_rule_ids:
+  - ZP-PROD-20260606-020
+  statement: 子平规则参与：秋甲判断应先看丁火，再看庚金裁成，次序失当则层次下降。
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-034
+  original_rule_ids:
+  - ZP-PROD-20260606-021
+  statement: 子平规则参与：冬甲应输出丁火引生、庚金裁成、丙火辅暖的分层判断。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-035
+  original_rule_ids:
+  - ZP-PROD-20260606-022
+  statement: 子平规则参与：乙木判断应重视丙癸照拂滋养，区别于甲木栋梁取庚。
+  domains:
+  - 事业
+  - 性格
+  - 婚姻
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-036
+  original_rule_ids:
+  - ZP-PROD-20260606-023
+  statement: 子平规则参与：丙火判断应检查壬水辅映是否成立，并同步提示过烈或水火战的风险。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-037
+  original_rule_ids:
+  - ZP-PROD-20260606-024
+  statement: 子平规则参与：丁火应分甲木资源与庚金加工机制，判断才华能否被引燃。
+  domains:
+  - 事业
+  - 性格
+  - 财富
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-038
+  original_rule_ids:
+  - ZP-PROD-20260606-025
+  statement: 子平规则参与：土象判断应标注聚滞、散轻、燥湿与水木调和状态。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-039
+  original_rule_ids:
+  - ZP-PROD-20260606-026
+  statement: 子平规则参与：戊土应检查丙照、甲疏、癸润三项是否成配，缺项则降低生机层次。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-040
+  original_rule_ids:
+  - ZP-PROD-20260606-027
+  statement: 子平规则参与：夏令己土应先看癸润再看丙照，缺癸偏旱，缺丙偏孤阴不长。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-041
+  original_rule_ids:
+  - ZP-PROD-20260606-028
+  statement: 子平规则参与：秋令己土应检查癸先丙后的润暖次序，以判断收藏与稳定层次。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-042
+  original_rule_ids:
+  - ZP-PROD-20260606-029
+  statement: 子平规则参与：冬己以丙暖为先，壬水出干需防水浸，得火土则根基与孤贫风险改善。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 家庭
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-043
+  original_rule_ids:
+  - ZP-PROD-20260606-031
+  statement: 子平规则参与：金局需标注水火土的生、炼、润、埋关系，过偏则降低金的发挥层次。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-044
+  original_rule_ids:
+  - ZP-PROD-20260606-033
+  statement: 子平规则参与：春金以火荣土助为佳，水盛木旺需提示寒弱与耗力。
+  domains:
+  - 事业
+  - 健康
+  - 学业
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-045
+  original_rule_ids:
+  - ZP-PROD-20260606-034
+  statement: 子平规则参与：庚金应按月令分别检查丙暖、丁炼、甲引疏与壬水中和条件。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  structure_type: quyong_framework
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-046
+  original_rule_ids:
+  - ZP-PROD-20260606-035
+  statement: 子平规则参与：戌亥丑月庚金应重点检查土埋与寒冻，并以甲壬丙丁分病配药。
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-047
+  original_rule_ids:
+  - ZP-PROD-20260606-036
+  statement: 子平规则参与：辛金判断应重己土生身与壬水淘洗，土叠火燥会降低清透层次。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  - 学业
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-048
+  original_rule_ids:
+  - ZP-PROD-20260606-037
+  statement: 子平规则参与：水局应同时标注金源、土堤、水火既济与水土混浊状态。
+  domains:
+  - 事业
+  - 健康
+  - 财富
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-049
+  original_rule_ids:
+  - ZP-PROD-20260606-038
+  statement: 子平规则参与：壬水需按月令检查戊堤、金源、丙暖与甲疏的组合，而非只以旺弱定吉凶。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  structure_type: quyong_framework
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-050
+  original_rule_ids:
+  - ZP-PROD-20260606-039
+  statement: 子平规则参与：癸水应重点检查辛金源头与丙火照暖，冬令尤其需丙火解冻。
+  domains:
+  - 事业
+  - 健康
+  - 学业
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-051
+  original_rule_ids:
+  - ZP-PROD-20260618-001
+  statement: 子平规则参与：大运裁断应优先检查运支方气，运干只作兼参；若运支扶用则吉力增强，助忌则凶象加重。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: timing_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-052
+  original_rule_ids:
+  - ZP-PROD-20260618-002
+  statement: 子平规则参与：大运应期不只看交运年份，还应按原局得气深浅判断初段、中段或过运后发应。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: timing_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-053
+  original_rule_ids:
+  - ZP-PROD-20260618-003
+  statement: 子平规则参与：年度吉凶需以大运为背景，再用小运校正，不可见大运吉便直接断吉，见大运凶便直接断凶。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: timing_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-054
+  original_rule_ids:
+  - ZP-PROD-20260618-004
+  statement: 子平规则参与：流年日岁相克需分上下顺逆，日犯岁君的风险权重大于岁伤日干，仍须检查制合救应。
+  domains:
+  - 事业
+  - 财富
+  - 健康
+  - 婚姻
+  structure_type: timing_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-055
+  original_rule_ids:
+  - ZP-PROD-20260618-005
+  statement: 子平规则参与：遇岁运冲月、返吟、伏吟时，应提高六亲不安、破财、突发阻滞的风险等级，并检查救应。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: timing_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-056
+  original_rule_ids:
+  - ZP-PROD-20260618-006
+  statement: 子平规则参与：三合缺一只作合局倾向或待补结构，不可直接按化局改变旺衰、格局与用神。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-057
+  original_rule_ids:
+  - ZP-PROD-20260618-007
+  statement: 子平规则参与：三刑应先分有无吉神扶助和凶煞叠加，再决定是刑害、刑发还是反为权用。
+  domains:
+  - 事业
+  - 婚姻
+  - 健康
+  - 性格
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-058
+  original_rule_ids:
+  - ZP-PROD-20260618-008
+  statement: 子平规则参与：空亡应按所空对象区分解祸或散福；祸聚喜空忌合，福聚忌空喜合。
+  domains:
+  - 事业
+  - 财富
+  - 婚姻
+  - 健康
+  structure_type: interaction_trigger_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-059
+  original_rule_ids:
+  - ZP-PROD-20260618-009
+  statement: 子平规则参与：灾煞先提高血光、意外、职业风险提示；若福神与官印生旺同临，可改判为武权、执法、风险职业之用。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: geju_shishen_structure
+  confidence_adjusted:
+    base: 0.71
+    posterior_base: 0.71
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.71
+    posterior: 0.71
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-060
+  original_rule_ids:
+  - ZP-PROD-20260618-010
+  statement: 子平规则参与：勾绞须按身克煞或煞克身分流，身能制煞偏事业刑权，煞克身偏横灾刑狱。
+  domains:
+  - 事业
+  - 健康
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.7
+    posterior_base: 0.7
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.7
+    posterior: 0.7
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-061
+  original_rule_ids:
+  - ZP-PROD-20260618-011
+  statement: 子平规则参与：孤辰寡宿用于婚姻孤独风险时，必须先查连属和贵人包裹；有豁免则降低婚偶不利结论。
+  domains:
+  - 婚姻
+  - 家庭
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.7
+    posterior_base: 0.7
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.7
+    posterior: 0.7
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-062
+  original_rule_ids:
+  - ZP-PROD-20260618-012
+  statement: 子平规则参与：天罗地网需按性别、命类、重犯与恶煞无气分级；男天罗女地网及重犯者优先提示阻滞、婚育和健康风险。
+  domains:
+  - 事业
+  - 婚姻
+  - 健康
+  structure_type: shensha_risk_structure
+  confidence_adjusted:
+    base: 0.7
+    posterior_base: 0.7
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.7
+    posterior: 0.7
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-063
+  original_rule_ids:
+  - ZP-PROD-20260618-013
+  statement: 子平规则参与：十恶大败须先验日柱触发，再看吉神贵气能否扶起；非日柱或有强救应者降低破败结论。
+  domains:
+  - 财富
+  - 事业
+  - 健康
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.71
+    posterior_base: 0.71
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.71
+    posterior: 0.71
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-064
+  original_rule_ids:
+  - ZP-PROD-20260618-016
+  statement: 子平规则参与：官煞混见先做去留裁决；透干者较易去，月支藏者较难去，去煞留官偏清贵，去官留煞偏威权。
+  domains:
+  - 事业
+  - 财富
+  - 性格
+  structure_type: geju_shishen_structure
+  confidence_adjusted:
+    base: 0.73
+    posterior_base: 0.73
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.73
+    posterior: 0.73
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-065
+  original_rule_ids:
+  - ZP-PROD-20260618-017
+  statement: 子平规则参与：小儿命先看四柱根苗花果与日主中和，吉链完整则偏易养长寿，身轻煞财伤食重并刑冲破害则提高难养早年健康风险。
+  domains:
+  - 健康
+  - 家庭
+  - 子女
+  structure_type: atomic_rule_structure
+  confidence_adjusted:
+    base: 0.72
+    posterior_base: 0.72
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.72
+    posterior: 0.72
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-066
+  original_rule_ids:
+  - ZP-PROD-20260618-018
+  statement: 子平规则参与：小儿早年健康须以时辰关煞为入口，再叠加日主强弱与财官多寡，弱身多财官且关煞并重者列为难养高风险。
+  domains:
+  - 健康
+  - 家庭
+  - 子女
+  structure_type: geju_shishen_structure
+  confidence_adjusted:
+    base: 0.7
+    posterior_base: 0.7
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.7
+    posterior: 0.7
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-067
+  original_rule_ids:
+  - ZP-PROD-20260618-022
+  statement: 子平规则参与：女命先以夫星子息为主轴，再看日主与月令中和；官得地夫荣、伤官无克子贵，日主过旺则提高婚姻权争与孤苦风险。
+  domains:
+  - 婚姻
+  - 子女
+  - 性格
+  structure_type: kinship_family_structure
+  confidence_adjusted:
+    base: 0.71
+    posterior_base: 0.71
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.71
+    posterior: 0.71
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-068
+  original_rule_ids:
+  - ZP-PROD-20260618-023
+  statement: 子平规则参与：六乙鼠贵必须验乙日丙子和庚辛丑午禁忌，成格偏事业权贵，破格则转为普通伤官官煞冲绊结构。
+  domains:
+  - 事业
+  - 性格
+  - 财富
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.69
+    posterior_base: 0.69
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.69
+    posterior: 0.69
+    star: 4
+    cluster_size: 1
+- rule_id: ZP-CLEAN-20260618-069
+  original_rule_ids:
+  - ZP-PROD-20260618-024
+  statement: 子平规则参与：六阴朝阳须同时满足辛日戊子、避丙丁午冲破、通身旺月，成格主学堂秀气与事业贵显，犯忌则降为普通印食冲破结构。
+  domains:
+  - 事业
+  - 学业
+  - 性格
+  structure_type: wuxing_seasonal_structure
+  confidence_adjusted:
+    base: 0.69
+    posterior_base: 0.69
+    variance: 0.06
+    redundancy_penalty: 0.0
+    percent: 0.69
+    posterior: 0.69
+    star: 4
+    cluster_size: 1

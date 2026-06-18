@@ -1,0 +1,2994 @@
+schema_version: ziping-coverage-audit-2026-06-18
+audit_scope:
+  cleaned_rules: theory/ziping/_cleaned/index_cleaned.yaml
+  zp_gap_rules: theory/_ir/ziping_rule_ir.yaml#ZP-SRC-20260617-*
+  sources:
+  - sources/ziping/《三命通会》.md
+  - sources/ziping/《子平真诠》.md
+  - sources/ziping/穷通宝鉴-明-余春台_part1.md
+  - sources/ziping/穷通宝鉴-明-余春台_part2.md
+constraints:
+  subjective_gap_judgment: false
+  rule_expansion: false
+  meta_layer_generation: false
+  coverage_verification_only: true
+rule_signature_map_summary:
+  total_signatures: 231
+  cleaned_signature_count: 69
+  zp_gap_signature_count: 162
+  condition_structure_keys:
+  - earthly_branches
+  - element_balance
+  - geju
+  - heavenly_stems
+  - interactions
+  - month_command
+  - palace_relation
+  - seasonal_climate
+  - shen_sha
+  - strength
+  - ten_gods
+  - timing
+  - yongshen
+  outcome_structure_keys:
+  - career_official
+  - good_bad
+  - health_lifespan
+  - level_quality
+  - marriage_family
+  - temperament_appearance
+  - wealth_rank
+  domain_keys:
+  - career
+  - family
+  - health
+  - marriage
+  - pattern
+  - personality
+  - timing
+  - wealth
+  element_vector_keys:
+  - wood
+  - fire
+  - earth
+  - metal
+  - water
+rule_signature_map_sample:
+- rule_id: ZP-CLEAN-20260618-001
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - interactions
+  - palace_relation
+  - ten_gods
+  - yongshen
+  - yongshen_global_success_failure
+  outcome_structure:
+  - career_official
+  - good_bad
+  - wealth_rank
+  domain:
+  - career
+  - family
+  - health
+  - marriage
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平判断应先定位用神，并围绕用神是否成立、受护或受破来评估格局成败、整体吉凶与事业财富层次。
+- rule_id: ZP-CLEAN-20260618-002
+  source_group: cleaned
+  condition_structure:
+  - earthly_branches
+  - geju
+  - heavenly_stems
+  - interactions
+  - month_command
+  - palace_relation
+  - strength
+  - yongshen
+  - yueling_tigang_priority
+  outcome_structure:
+  - good_bad
+  - temperament_appearance
+  domain:
+  - career
+  - family
+  - health
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平取用与成格先后应优先依据月令提纲，并结合透干、藏干、旺相休囚与通月气情况判断。
+- rule_id: ZP-CLEAN-20260618-003
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - interactions
+  - palace_relation
+  - shenqiang_shenruo_shishen_quyong
+  - strength
+  - yongshen
+  outcome_structure:
+  - good_bad
+  - temperament_appearance
+  domain:
+  - career
+  - health
+  - marriage
+  - pattern
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 普通格局须先判日主强弱，再按日主承载力、十神状态、通月气与制化关系决定取用方向，不可只按十神名义定吉凶。
+- rule_id: ZP-CLEAN-20260618-004
+  source_group: cleaned
+  condition_structure:
+  - element_balance
+  - geju
+  - geju_chunza_zhengguan_purity
+  - interactions
+  - ten_gods
+  outcome_structure:
+  - career_official
+  - health_lifespan
+  - level_quality
+  - wealth_rank
+  domain:
+  - career
+  - health
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 格局或官格判断须看清纯与混杂：结构纯一、财印相生和护卫顺畅者层级较高，伤官七杀或异神混杂且无制化者层次下降。
+- rule_id: ZP-CLEAN-20260618-005
+  source_group: cleaned
+  condition_structure:
+  - element_balance
+  - geju
+  - geju_level_youqing_composite
+  - interactions
+  - palace_relation
+  - yongshen
+  outcome_structure:
+  - level_quality
+  - temperament_appearance
+  domain:
+  - career
+  - marriage
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 格局层级应综合用神有情、纯杂、相神、护卫与救应判断；用神顺接且护卫周全者层级提高，单点证据不足时不宜定高低。
+- rule_id: ZP-CLEAN-20260618-006
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - heavenly_stems
+  - interactions
+  - month_command
+  - shen_sha
+  - special_geju_authenticity
+  - strength
+  - ten_gods
+  - yongshen
+  outcome_structure:
+  - good_bad
+  - level_quality
+  - wealth_rank
+  domain:
+  - career
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 1
+    metal: 0
+    water: 1
+  statement: 从格、化格、从势、专旺及飞天禄马、壬骑龙背、魁罡、合化等特殊格须先验真成、得令与未破，再决定是否另按特殊取用和贵气判断。
+- rule_id: ZP-CLEAN-20260618-007
+  source_group: cleaned
+  condition_structure:
+  - earthly_branches
+  - interactions
+  - palace_relation
+  - timing
+  - yongshen
+  - yunshi_geju_transformation
+  outcome_structure:
+  - good_bad
+  - level_quality
+  domain:
+  - career
+  - health
+  - marriage
+  - pattern
+  - timing
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 原局成败须与大运流年分层处理，运岁可放大、修复或逆转用神、相神、忌神、库与合冲刑害所对应的成败状态。
+- rule_id: ZP-CLEAN-20260618-008
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - interactions
+  - ten_gods
+  - wealth_official_quantity_quyong
+  - yongshen
+  outcome_structure:
+  - career_official
+  - good_bad
+  - temperament_appearance
+  - wealth_rank
+  domain:
+  - career
+  - pattern
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 财星、官星的多少只提供结构信息，财富和事业判断仍须回到身财承载、取用、制化、生护与成格条件。
+- rule_id: ZP-CLEAN-20260618-009
+  source_group: cleaned
+  condition_structure:
+  - element_balance
+  - interactions
+  - jinhuo_chengqi_stage
+  - palace_relation
+  - strength
+  - ten_gods
+  outcome_structure:
+  - good_bad
+  - health_lifespan
+  - temperament_appearance
+  domain:
+  - career
+  - health
+  - personality
+  element_vector:
+    wood: 0
+    fire: 1
+    earth: 1
+    metal: 1
+    water: 0
+  statement: 金局用火须分阶段：金未成器时喜适度火炼成形，金已成器后再遇强火则需提示过度锻炼、压力变形或伤损风险。
+- rule_id: ZP-CLEAN-20260618-010
+  source_group: cleaned
+  condition_structure:
+  - earthly_branches
+  - interactions
+  - liuqin_spouse_children_star_location
+  - palace_relation
+  - shen_sha
+  - strength
+  - ten_gods
+  outcome_structure:
+  - career_official
+  - good_bad
+  - health_lifespan
+  - marriage_family
+  - wealth_rank
+  domain:
+  - career
+  - family
+  - health
+  - marriage
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 六亲、配偶与子息判断须看对应星位或宫位所坐之地及生助冲克；坐生旺库、禄马、贵人、官印且受生者助力提高，坐空亡、刑克煞、羊刃、死绝、冲败者风险提高。
+- rule_id: ZP-CLEAN-20260618-011
+  source_group: cleaned
+  condition_structure:
+  - element_balance
+  - heavenly_stems
+  - interactions
+  - palace_relation
+  - qisha_zhifu_shishang_pianguan
+  - strength
+  - ten_gods
+  - timing
+  outcome_structure:
+  - career_official
+  - good_bad
+  - level_quality
+  domain:
+  - career
+  - health
+  - personality
+  - timing
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 0
+  statement: 七煞与时上偏官须校验数量、清透、身旺身弱与制伏轻重；一位清透且制伏得宜可成权用，重见或制伏失衡则劳碌受限，制太过者喜煞旺运恢复权用。
+- rule_id: ZP-CLEAN-20260618-012
+  source_group: cleaned
+  condition_structure:
+  - interactions
+  - palace_relation
+  - wuxing_seasonal_structure
+  - yongshen
+  outcome_structure:
+  - level_quality
+  domain:
+  - career
+  - family
+  - marriage
+  - pattern
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：用神被克后需复核救应，救应存在时破局程度应重新计算。
+- rule_id: ZP-CLEAN-20260618-013
+  source_group: cleaned
+  condition_structure:
+  - atomic_rule_structure
+  - element_balance
+  - geju
+  - interactions
+  - palace_relation
+  - seasonal_climate
+  outcome_structure: []
+  domain:
+  - career
+  - family
+  - health
+  - pattern
+  - personality
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：气候偏枯明显时，应先解决调候问题，再进入常规扶抑和格局判断。
+- rule_id: ZP-CLEAN-20260618-014
+  source_group: cleaned
+  condition_structure:
+  - atomic_rule_structure
+  - interactions
+  - palace_relation
+  - ten_gods
+  outcome_structure:
+  - health_lifespan
+  - level_quality
+  - temperament_appearance
+  domain:
+  - career
+  - family
+  - health
+  - marriage
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：相神受伤需按结构性损伤处理，不能只按局部受伤轻看。
+- rule_id: ZP-CLEAN-20260618-015
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - interactions
+  - palace_relation
+  - wuxing_seasonal_structure
+  outcome_structure:
+  - career_official
+  - good_bad
+  domain:
+  - career
+  - family
+  - pattern
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：四吉神需看得法与适位，失宜时反而可能损害格局。
+- rule_id: ZP-CLEAN-20260618-016
+  source_group: cleaned
+  condition_structure:
+  - atomic_rule_structure
+  - interactions
+  - palace_relation
+  outcome_structure:
+  - good_bad
+  domain:
+  - career
+  - family
+  - health
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：四凶神需看制化，得宜可成有力结构，不可见凶神即断凶。
+- rule_id: ZP-CLEAN-20260618-017
+  source_group: cleaned
+  condition_structure:
+  - geju
+  - geju_shishen_structure
+  - interactions
+  - palace_relation
+  outcome_structure: []
+  domain:
+  - family
+  - pattern
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：格例总纲应作为规则索引入口，用于组织具体格局候选，而非直接输出断语。
+- rule_id: ZP-CLEAN-20260618-018
+  source_group: cleaned
+  condition_structure:
+  - earthly_branches
+  - element_balance
+  - geju
+  - interaction_trigger_structure
+  - interactions
+  - palace_relation
+  outcome_structure: []
+  domain:
+  - career
+  - family
+  - health
+  - pattern
+  - personality
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：分析《三命通会》体系命局时，应先建立五行生克与干支骨架，再进入格局断事。
+- rule_id: ZP-CLEAN-20260618-019
+  source_group: cleaned
+  condition_structure:
+  - interaction_trigger_structure
+  - interactions
+  - palace_relation
+  outcome_structure: []
+  domain:
+  - career
+  - family
+  - health
+  - marriage
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：合冲刑害应按气机通塞与受作用对象评估，不能只作静态关系描述。
+- rule_id: ZP-CLEAN-20260618-020
+  source_group: cleaned
+  condition_structure:
+  - palace_relation
+  - ten_gods
+  - wuxing_seasonal_structure
+  outcome_structure:
+  - career_official
+  - wealth_rank
+  domain:
+  - career
+  - family
+  - wealth
+  element_vector:
+    wood: 0
+    fire: 0
+    earth: 0
+    metal: 0
+    water: 1
+  statement: 子平规则参与：通月气且有倚托时，可提高事业、财富或学业层级判断；无倚托则多按平常处理。
+unmatched_segments: []
+new_true_rules: []
+false_gap_candidates:
+- source_excerpt: ○论五行生成天高寥廓，六气回旋以成四时；地厚幽深，五行化生以成万物。可谓无穷而莫测者也。圣人立法以推步者，盖不能逃其数。观其立数之因，亦皆出乎自然。故载于经典，同而不异，推以达其机，穷以通其变，皆不离于数内。一曰水，二曰火，三曰木，四曰金，五曰土者，咸有所自也。水，北方子之位也，子者，阳之初一，阳数也，故水曰一；火，南方午之位也，午者，阴之初二，阴数也，故火曰二；木居东方，东，阳也，三者，奇之数，亦阳也，故木曰三；金居西方，西，阴也，四者，偶之数，亦阴也，故金曰四；土应西南长
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 3
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 34
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论五行生克五行相生相克，其理昭然。十干十二支、五运六气、岁月日时皆自此立，更相为用，在天则为气：寒、暑、燥、湿、风；在地则成形：金、木、水、火、土。形气相感而化生万物，此造化生成之大纪也。原其妙用，可谓无穷矣。木主于东；应春。木之为言触也，阳气触动，冒地而生也。水流趋东以生木也；木上发而覆下，乃自然之质也。火主于南，应夏。火之为言化也，毁也，阳在上，阴在下；毁然盛而变化万物也。钻木取火，木所生也。然火无正体，体本木焉。出以应物，尽而复入，乃自然之气也。金主于西，应秋。金之为
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 4
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论支干源流夫干犹木之干，强而为阳；支犹木之枝，弱而为阴。昔盘古氏明天地之道，达阴阳之变为三才。首君以天地既分之后，先有天而后有地，由是气化而人生焉，故天皇氏一姓十三人，继盘古氏以治，是曰天灵淡泊，无为而俗自化，始制干支之名，以定岁之所在。其十干曰：于逢、旃蒙、柔兆、疆圉、著雍、屠维、上章、重光、玄??、昭阳；十二支曰：困敦、赤奋若、摄提格、单于、执徐、大荒落、敦洋、协洽、??滩、作噩、阉茂、大渊献。蔡邕独断曰：“干，干也。其名有十，亦曰十母，即今甲乙丙丁戊己庚辛壬癸是也；支
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 5
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○总论纳音尝观《笔谈》论六十甲子纳音，本六十律，旋相为宫，法也。纳音与《易》纳甲同法：乾纳甲、坤纳癸，始于乾而终于坤。纳音始于金，金，乾也，终于土，土，坤也。五行之中，惟有金铸而为器，则音响彰，纳音所以先金。纳音之法，同类娶妻，隔八生子，律吕相生之法也。甲子，金之仲，同位娶乙丑，隔八下生壬申；金之孟壬申，同位娶癸酉，隔八上生庚辰；金之季庚辰，同位娶辛已，隔八下生戊子。火之仲戊子，娶乙丑，生丙申；火之孟丙申，娶丁酉，生甲辰；火之季甲辰，娶乙已，生壬子。木之仲如是左行，至于丁已，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 6
+  matched_rule_id: ZP-SRC-20260617-033
+  match_score: 36
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论纳音取象昔者，黄帝将甲子分轻重而配成六十，号曰花甲子，其花字诚为奥妙，圣人借意而喻之，不可著意执泥。夫自子至亥十二宫，各有金、木、水、火、土之属，始起于子为一阳，终于亥为六阴，其五行所属金、木、水、火、土，在天为五星，于地为五岳，于德为五常，于人为五脏，其于命也为五行。是故甲子之属乃应之于命，命则一世之事。故甲子纳音象，圣人喻之，亦如人一世之事也。何言乎？子丑二位，阴阳始孕，人在胞胎，物藏根，未有涯际；寅卯二位，阴阳渐开，人渐生长，物以拆甲，群葩渐剖，如人将有立身也；辰巳
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 7
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○释六十甲子性质吉凶甲子金，为宝物，喜金木旺地。进神喜，福星，平头，悬针，破字。乙丑金，为顽矿，喜火及南方日时。福星，华盖，正印。丙寅火，为炉炭，喜冬及木。福星，禄刑，平头，聋哑。丁卯火，为炉烟，喜巽地及秋冬。平头，截路，悬针。戊辰木，山林山野处不材之木，喜水。禄库，华盖，水禄马库，棒杖，伏神，平头。己巳木，山头花草，喜春及秋。禄库，八吉，阙字，曲脚。庚午土，路旁干土，喜水及春。福星，官贵，截路，棒杖，悬针。辛未土，含万宝，待秋成，喜秋及火。华盖，悬针，破字。壬申金，戈戟，大
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 8
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论天干阴阳生死或问：十干有阴阳、刚柔、生死之分，其说然否？答曰：十干五阳五阴，阳者为刚，阴者为柔，其生死之分如母生子，子成而母老死，理之自然。赋曰：阳生阴死，阳死阴生，循环逆顺，变化见矣。甲木乃十干之首，主宰四时，生育万物；在天为雷为龙，在地为梁为栋，谓之阳木。其禄到寅。寅为离上之木，其根已断，其枝已绝，谓之死木。死木者，刚木也，须仗斧斤斫削方成其器。长生于亥，亥为河潭池沼之水，名曰死水，故死木放死水中，虽浸年久，不能朽坏，譬如杪椿之木，在于水中则能坚固。若离水至岸而遇癸水
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 9
+  matched_rule_id: ZP-CLEAN-20260618-067
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论地支地支之用，不比天干，动静不同，圆方迥异。然五行所属则一，而所处之地不一。且如在年则有在年之论，在月则有在月之论，在日时则有日时之论，其阴阳、轻重、刚柔岂混于一体？今当以月提为主，所藏所用，要见何神，所耗所嫌，要系何物。凡四柱之神，较量深浅而用。子十二支之魁，溪涧江洋之水，乃戊土旺地，然必过大雪之期，一阳来复之后，方能成旺。辛金所生，亦必于阳回水暖而后能生也。与午相冲，与卯相刑，与申辰三合。若申、子、辰全，会起水局，即成江海，发波涛之声也。丑虽隆冬，有冰霜之可怯，但天时
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 10
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○十干分配天文甲木为雷。雷者，阳气之嘘也，甲木属阳，故取象于雷焉。稽诸月令，仲春之月，雷乃发声，甲木旺，即其验也，况雷奋于地，木生于地，其理又无不同者。甲木至申而遂绝，以雷声至申而渐收也。凡命属甲日，主喜值春天，或类象，或趋乾，或遥巳，或拱贵，俱大吉；运不喜西方。经云：木在春生，处世安然，必寿。乙木为风。乙木长生在午，败在巳。在午而生者，盖乙为山林活木，至夏来而畅茂，诗所谓千章夏木青是也；其败巳云何？巳乃巽地，巽为风，木盛风生也，风生于木而反摧木，犹之火生于木而反焚木，其取败
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 11
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○十二支分配地理子为墨池。子在正北方，属水，色象墨，故有墨池之象。凡命逢子年生者，时喜见癸亥，谓之水归大海，又谓之双鱼游墨，必为文章士矣。午为烽堠。午正位于南，属火、土，其色赤黄，名其曰烽堠者，此也；又午为马，烽堠乃戎马兵火之处所也。午生人时利见辰，真龙出则凡马空矣，谓之马化龙驹。卯为琼林。卯系乙木，居位正东，于时为仲春，万物生焉，色若琅之青，故曰琼林。卯年遇巳未时者，是为兔入月宫之象，主大贵。酉为寺钟。酉属金，位近戍亥，戍亥者，天门也，钟，金属也，寺钟敲则响彻天门；又酉居正
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 12
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 46
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论地支属相或问：地支有属相，而天干则无者，何也？答曰：天干动而无相，地支静而有相。盖轻清者天也，重浊者地也，重浊之中，乃有物焉。故子属鼠，丑属牛，寅属虎，卯属兔，辰属龙，巳属蛇，午属马，未属羊，申属猴，酉属鸡，戍属犬，亥属猪。此十二属相亦有奇偶之分，盛衰之用。奇者鼠、虎、龙、马、猴、犬，一则属阳，六兽之足皆单；偶者牛、兔、蛇、羊、鸡、猪，二则属阴，六兽之足皆双。唯蛇无足又何取义？盖巳在月乃纯阳之月，在时乃春阳之时，数则偶而时则阳，故用蛇以象之，蛇乃阴物，不用其足而象巳著疑，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 13
+  matched_rule_id: ZP-SRC-20260617-089
+  match_score: 36
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论人元司事夫一气浑沦，形质未离，熟为阴阳？太始既肇，裂一为三，倏息乃分，天得之而轻清为阳，地得之而重浊为阴，人位乎天地之中，禀阳阴冲和之气。故此轻清者为十干，主禄，谓之天元，重浊者为十二支，主身，谓之地元，天地多正其位，成才于两间者，乃所谓人也。故支吕所藏者主命，谓之人元，名为司事之神，以命术言之为月令。如正月建寅，寅中有艮土用事五日，丙火长生五日，甲木二十日；二月建卯，卯中有甲木用事七日，乙木二十三日；三月建辰，辰中有乙木用事七日，壬水墓库五日，戊土一十八日；四月建已，已
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 14
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论四时节气卦气正月为泰，天气下降，当为雨水；二月大壮，雷在天上，当为惊蛰，先雨水而后惊蛰，亦宜也，惊蛰者，万物出乎震，震为雷也；清明者，万物齐乎巽，巽为风也，巽洁齐而曰清明，清明乃洁齐之义；谷雨三月中，自雨水后土膏脉动，至此又雨，则土脉生物，所以滋五谷之种也；小满四月中，先儒云：小雪后阳一日生一分，积三十日，生三十分而成一昼，为冬至，小满后阴生亦然。至若三月中谷雨，五月中芒种，此二气独指谷麦言，谷必原其生之始，谷种于春，得木之气，残于秋，金克木也；麦必要其成之终，麦种于秋，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 15
+  matched_rule_id: ZP-SRC-20260617-103
+  match_score: 35
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论五行旺相休囚死并寄生十二宫盛德乘时曰旺。如春木旺，旺则生火，火乃木之子，子乘父业，故火相；木用水生，生我者父母，今子嗣得时，登高明显赫之地，而生我者当知退矣，故水休。休者，美之无极，休然无事之义。火能克金，金乃木之鬼，被火克制，不能施设，故金囚；火能生土，土为木之财，财为隐藏之物，草木发生，土散气尘，所以春木克土则死。夏火旺火，生土则土相，木生火则木休，水克火则水囚，火克金则金死。六月土旺，土生金则金相，火生土则火休，木克土则木囚，土克水则水死。秋金旺，金生水则水相，土生
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 16
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 45
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论遁月时夫命以年为本为父，月为兄弟僚友，日为主为妻为己身，时为子孙为帝产为平生荣辱之首。又曰年为根，月为苗，日为花，时为实，故苗无根不生，实无花不结。所以遁月从年，遁时从日。遁月即甲己之年，正月起丙寅，二月丁卯，顺行十二月。古歌曰：甲已之年丙作首，乙庚之岁戊为头，丙辛之岁寻庚上，丁壬壬位顺行流，更有戊癸何处起？甲寅之上好追求。遁时如甲子日子时生人即甲己，还加甲，便知子时乃甲子，丑时乃乙丑，顺行十二时。古歌曰：甲己还加甲，乙庚丙作初，丙辛从戊起，丁壬庚子居，戊癸何方发？壬子是
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 17
+  matched_rule_id: ZP-SRC-20260617-116
+  match_score: 34
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论年月日时凡论人命，年月日时排成四柱，遁月从年，则以年为本，遁时从日，则以日为主。古法以年看，子平以日看，本此。如人本木而得卯月以乘之，主金而得酉时以乘子，谓之本，主乘旺气；如本水而得甲申、丙子、壬戌、癸亥月；主火而得丙寅、戊午、甲辰、乙已时；本木而得己亥、辛卯、甲寅、庚寅月，主金而得辛已、癸酉、庚申、壬申时，谓之本，主还家；本木而得癸未月，主金而得乙丑时；木水而得壬辰月，主火而得甲戌时，谓之本，主持印。四位如此，更吉神往来，凶煞回避，谓之本主得位，本胜于主者多得祖荫，主胜
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 18
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论胎元夫胎者，受形之始，故易乾知太始，以形言也；月者，成气之时，故传曰积日以为月，以气言也。今谈命或不以胎月为重，殊不思胎月是四柱之根苗，日时虽为紧，若不犯破胎月，或乘旺气禄马之处则为福尤多，或日时之吉而为胎月所犯，则吉亦归无用。是胎月最为枢要。胎元之取，唯有一法，以当生前三百日为十月之气，乃是受胎之正，譬甲子日生便以甲子为受胎之日，盖五六计三百日，看其生日在何月中有，则闰在其中矣。且如戊子生人甲寅月乙丑日，须于半月前十月或十一月内，寻当生乙丑日，乃是三百日之正胎。
+    ○论坐
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 19
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论大运夫运者，人生之传舍。探命之说先以三元、四柱、五行、生死、格局致合以定根基，然后考究运气，协而从之以定平生之吉凶也。古人以大运则一辰十岁，折除以三日为年者何？盖一月之终，晦朔周而有三十日，一日之终，昼夜周而有十二时；总十年之运气，凡三日有三十六时，乃见三百六十日为一岁之数；在一月之中有三百六十时，折除节气，算计三千六百日为一辰之十岁也。天论折除之法必用生者日历。过日时数，其节气之数。阳男阴女，大运以生日后未来节气日时为数，顺而行之；阴男阳女，大运以生日前过去节气日时为数
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 21
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论小运夫大运司十年之休咎，小运掌一岁之灾祥，是小运者补大运之不足而立名也。古人以男起丙寅顺行，女起壬申逆行，一定而不可易也。解者谓男之阳火，元气起戊子，三十丁已，十月至丙寅，此木生火；女之阴水，元气起庚子，二十辛已，十月至壬申，为金生水，此其数也。醉醒子以为男女小运皆由时生而行之，逆顺亦以年定。如阳命阳年甲子时生堕地，即行乙丑，二岁丙寅，一位一年，周而复始，阴命阳年逆行亦然。尝试用之，屡验，亦要与大运及柱中用神日主较量吉凶。童限未交大运，专用此法；行死绝煞旺之宫，必有危难。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 22
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 42
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论太岁夫太岁者，乃一岁之主宰，诸神之领袖。其说有二：如四柱中生年曰当生太岁，如逐年轮转曰游行太岁。当生太岁乃终身之主，其理已论于前；其逐年太岁游行十二宫，定一年之祸福，为四时之吉凶。盖太岁如君也，大运如臣也。如君臣和悦，其年则吉；若值刑战，其年则凶。经运：岁伤日干，有祸必轻；日犯岁君，灾殃必重。此又分言：岁君伤日者，如庚年克甲日为偏官，譬君治臣，父治子，虽有灾晦，不为大害，何则？上治其下，顺也，其情尚未尽绝；日犯岁君，如甲日克戊年为偏财，譬臣其君，子其父，深为不利，何则？下
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 23
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○总论岁运夫太岁者，年中天子，一岁诸神煞之尊；统正方位，四送六气，迁运四时以成岁功，至尊无上，若人遇克冲压伏，皆为不详之兆。运者协和二十四气，般运一生休咎，扶持四柱，辅弼三元，运与流年二者相为表里，乃人命祸福死生所系，岁用天元，运用地支，凡行好运而日干伤流年天元，为福轻；若行不好运及脱财官运而日干伤岁干，为祸重，若是已发之命，祸患立至，凡行不好运，未可便言衰绝，大要知已发未发，其气数已过未过言之。行运以生月为运元，最怕行运与太岁冲克，若岁运冲月必祸；若岁运与日相对，谓之返吟，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 24
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十干合夫合者，乃和谐之义，如阳见阳，二阳相竞则为克，阴见阴，二阴不足则为克，唯阴见阳，阳见阴为合，亦如男女相合而成夫妇之道。东方甲乙木畏西方庚辛金克。甲属阳为兄，乙属阴为妹，甲兄遂将乙妹嫁金家，与庚为妻，所以乙与庚合。南方丙丁火畏北方壬癸水克。丙属阳为兄，丁属阴为妹，丙兄遂将丁妹嫁水家，与壬为妻，所以丁与壬合。中央戊己土畏东方甲乙木克。戊属阳为兄，己属阴为妹，戊兄遂将己妹嫁木家，与甲为妻，所以甲与己合。西方庚辛金畏南方丙丁火克。庚属阳为兄，辛属阴为妹，庚兄乃将辛妹嫁火家，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 25
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论进交退伏阎东叟云：以十干为四候，十五日为一候，十二日为进神候，外三日为交退伏神候。故甲子为第一进神，则丙子、丁丑、戊寅为交退伏神；己卯为第二进神，则辛卯、壬辰、癸巳为交退退伏神；甲午为第三进神，则丙午、丁未、戊申为交退伏神；己酉为第四进神，则辛酉、壬戌、癸亥为交退伏神。值进神则发迹亨快，值交神则庶事不谐，值退神则官资降黜，值伏神三车以甲己年遁起，丙寅至戊辰三数，数至三则变化，辰为龙，亦能变化，故甲己、乙庚、丙辛、丁壬、戊癸随其所属天干而得其气。又曰：甲己丙作首，丙属火，火
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 26
+  matched_rule_id: ZP-SRC-20260617-140
+  match_score: 41
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十干化气复阳子曰：“十干合而化者，阴阳之配，夫妇之道也。”遇六合，合遁三则化。以五子余数至已上得合；既合，遁虎统龙，龙主阳，得司天而成变化者也。子者，坎之位，天一生水媾精之象，胎娠阳中。故男子从子左行三十至巳，阳也，故三十而娶，女子从子右行二十至巳，阴也，故二十而嫁。此人事合五行之造化，讵可过于此期哉？东壬子，至丁巳六数。故丁与壬合，丁壬化木。甲德统龙。南戊子，至癸巳六数。故戊与癸合，戊癸化火。丙德统龙。西庚子，至乙巳六数。故乙与庚合，乙庚化金。庚德统龙。中甲子，至己巳六
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 27
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论支元六合夫合者，和也，乃阴阳相和，其气自合。子寅辰午申戌六者为阳，丑卯已未酉亥六者为阴，是以一阴一阳和而谓之合。子合丑，寅合亥，却不子合亥，寅合丑，夫何故？造物中虽是阴阳为合，气数中要占阳气为尊，子为一阳，丑为二阴，一二成三数；寅为三阳，亥是六阴，三六成九数；卯为四阳，戌是五阴，四五得九数；辰为五阳，酉为四阴，五四得九数；巳为六阳，申为三阴，六三得九数；午为一阳，未为二阴，一二得三数。子丑午未各得三者，三生万物，余皆得九者，乃阳数极也。夫合有合禄、合马、合贵之说。珞??录
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 28
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 41
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论支元三合或以三合者，如人一身之运用也。精乃天之元，气乃神之本，是以精为气之母，神为气之子，子母相生，精气神全而不散之为合。盖谓支属人元，故以此论之。如申子辰，申乃子之母，辰乃子之子，申乃水生，子乃水旺。辰乃水气，生即产，旺即成，库即收，有生有成有收，万物得始得终，乃自然之理，故申子辰为水局。若三字缺一则化不成局，不可以三合化局论。盖天地间道理，两则化，一阴一阳之谓也，三则化，三生万物之谓也。已酉丑、寅午戌、亥卯未皆然。五行不言土者，四行皆赖土成局，万物皆归藏于土故也；若辰
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 29
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论将星华盖将星者，如将札中军也，故以三合中位谓之将星；化盖者，喻如宝盖，天有此星，其形如盖，常覆乎大帝之座，故以三合底处得库谓之华盖。凡将星常欲吉星相扶，贵煞加临乃为吉庆。《理愚歌》云：将星若用亡神临，为国栋梁臣。言吉助之为贵，更夹贵库墓纯粹而不杂者，出将入相之格也，带华盖、正印而不夹库，两府之格也；只带库墓而带正印，员郎以上，既不带墓又不带正印，止有华盖，常调之禄也；带华印而正建驿马，名曰节印，主旌节之贵；若岁干库同库为两重福，主大贵。凡人命得华盖，多主孤寡，总贵亦不免孤
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 30
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 54
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论咸池《淮南子》曰：“日出扶桑，入于咸池。”故五行沐浴之地，名咸池。是取日人之义，万物暗昧之时。寅午戌卯、已酉丑午、申子辰酉、亥卯未子即长生第二位沐浴之宫是也。一名败神，一名桃花煞，其神之奸邪淫鄙，如生旺则美容仪，耽酒色，疏财好欢，破散家业，唯务贪淫；如死绝，落魄不检，言行狡诈，游荡赌博，忘恩失信，私滥奸淫，靡所不为；与元辰并，更临生旺者，多得匪人为妻；与贵人建禄并，多因油盐酒货得生，或因妇人暗昧之财起家，平生有水厄、痨瘵之疾，累遭遗失暗昧之灾。此人入命，有破无成，非为吉兆
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 31
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 46
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论六害因昼夜阴阳之气感而六合。因六合而生六害，因六害而忌昼夜阴阳之气。六害者，十二支凌战之辰也。子未相害者，谓未旺土，亥子旺水，名势家相害。故子见未则为害。丑午相害者，谓午以旺火凌丑死金，名官鬼相害。故丑见午，而午更带丑干之真鬼则为害尤甚。寅巳相害者，谓名恃临官擅能而进相害，若干神往来有鬼者尤甚，况刑在其中，尤不可不加减灾福言之。卯辰相害者，谓卯以旺木凌辰死土，此以少凌长相害。故辰见卯，而卯更带辰干真鬼则其害尤甚。申亥相害者，谓名恃临官，竞嫉才能，争进相害。故申见亥，亥见申
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 32
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 56
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论三刑《阴符经》曰：恩生于害，害生于恩；三刑生于二合，亦如六害生于六合之义。如申子辰三合加寅卯辰三位，则申刑寅，子刑卯，辰见辰自刑；寅午戌加巳午未，则寅巳，午见午自刑，戌刑未；巳酉丑加申酉戌，则巳刑申，酉见酉自刑，丑刑戌；亥卯未加亥子丑，则亥见亥自刑，卯刑子，未刑丑。合中生刑，犹人夫妇相合而反致刑伤。造化人事，共理一而巳矣。或曰：三刑之法，以数起之。皇极中天，十为煞数，积数至十则悉空其数，天道恶盈满则覆。故数自卯顺至子，子逆至卯，极十数而为无礼之刑；寅逆至巳，巳逆至申，极十
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 33
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 64
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论冲击地支取七位为冲，犹天干取七位为煞之义。如子午对冲，子至午七数，甲逢庚为煞，甲至庚七数。数中六则合，七则过，故相冲击为煞也。相冲者，十二支战击之神，大概为凶。然有为福之甚者，乃冲处相生。如辛巳金见癸亥水之类，主声望播流，高明出众，科甲峥嵘；若冲处相克，如壬申金见庚寅木之类，主人神情貌俊，襟韵脱俗，轩昂洒落，上视仰面而行；若生旺主人神刚貌肃胆气壮，倜傥敢为多成败；死绝则寒酸鄙薄，形容乖劣，动招凶辱，多夭折。若戌丑辰未四库所藏为十干财官、印绶等物，尤喜冲激；若寅申巳亥金，子
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 34
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 60
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十干禄禄，爵禄也，当得势而享，乃谓之禄。自始分十干、十二支时，便以甲乙配同寅卯、居东；丙丁配同巳午，居南；庚辛配同申酉，居酉；壬癸配同亥子，居北。十干就支神为禄，谓禄随旺行，所以甲禄寅，乙禄卯，庚禄申，辛禄酉，壬禄亥，癸禄子，丙禄已，丁禄午，戊寄已，已寄午，谓已午乃火旺之乡，子随母得禄之义。内有辰戍丑未，辰戌为魁罡，名曰边鄙恶地，禄元不寄；丑未乃天乙贵人出入之门，禄元避之，所以四宫无禄。又曰四季有杂气，为禄不专，故不取。甲禄寅。如甲见丙寅，甲土克丙水为财，为福星禄；戊寅火
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 35
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论金舆舆者，车也，金者，贵之义也，譬之君子居官得禄，须坐车以载之。故金舆常居禄前二辰，如甲子人禄在寅，辰为金舆是也。此煞乃禄命之旄旗，三才之节钺，主人性柔貌愿，举止温克，妇人逢之，不富即贵；男子得之，多妻妾，阴福相扶持，生日、生时遇之为佳，骨肉平生安泰，得贤妻妾，子孙茂盛。如皇族多带此煞，常格得之，身在无气中生，主作赘。紫虚局云：“禄前二辰号金舆，遇此之人福最殊。偏主聪明多富贵，一生清泰亦无虞。”
+    ○论驿马所谓驿马者，乃先天三合数也，先天寅七、午九、戌五，合数二十有一，故自
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 36
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○总论禄马禄为养命之源，马是扶身之本，两者最喜相见。且如寅午戌马在申，甲禄在寅，甲干寅上遁见丙，申上遁见壬，则以丙为天禄，壬为天马，在日时上交互见之，谓之天禄天马。又甲人遁至戌，见甲戌，谓之活禄。甲子人遁见丙寅，谓之活马。又如寅午戌在申，而时干得庚；亥卯未在巳，而时干得丙；申子辰在寅而时干得甲；巳酉丑在亥，而时干得壬，以日支求时干，以时干求日支，互换得之，谓之禄马交驰。又如甲禄在寅，申子辰马亦在寅，却是甲子、甲申、甲辰生，而时得丙寅，帝座上会禄马，谓之禄马同乡。又如禄前马后，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 38
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 40
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论天乙贵人天乙者，乃天上之神，在紫微垣、阊阖门外，与太乙并列，事天皇大帝，下游三辰，家在己丑斗牛之次，出乎己未井鬼之舍，执玉衡较量天人之事，名曰在乙也。其神最尊贵，所至之处，一切凶煞隐然而避。《壶中子》云：贵人分治昼夜，各自专权，以昼生遇昼贵，夜生遇夜贵，为得力。或以子后为昼，午后为夜；或以日出为昼，日入为夜，皆是臆说。不若只以寅申分阴阳，冬至后用阳贵，夏至后阴贵。人命一阳生后遇阳贵为得力，一阴生后遇阴贵为得力。《三车一览》则以甲阳木乘少阳之气生乎东方，至巳而用事毕矣，故退
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 39
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论三奇《珞??录子》曰：“奇为贵也；奇者，异也。”谓物以贵为奇也。乙丙丁出于贵人干德配支之妙，阴贵甲德起子，则乙德在丑，丙德在寅，丁德在卯，三干相连而无间。阴贵甲德起申、乙在未，丙在午，丁在已，三间相连而无间，以其随贵人在天，故曰“天上三奇”，十干惟此为异，余则或间罗网，或间天空，或不重临，又不相联，不可以为奇。《玉霄宝鉴》谓古人以正月为岁之始，日出于乙，故以乙为日奇；老人星见为瑞，见于丁位，故以丁为星奇；月照夜到丙位而天下明，故以丙为月奇。若甲戊庚亦以为天上三奇，以甲戊庚
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 40
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论天月德夫德者，利物济人、掩凶作善之谓也。天德者，谓周天有三百六十五度二十五分半，除十二宫分野，每宫各占三十度，共计三百六十度，外有五度二十五分半，散在十二佐宫甲、庚、丙、壬、乙、辛、丁、癸、乾、坤、艮、巽，谓之神藏煞没。每宫各得四十四分，所以子午卯酉中有甲庚丙壬，辰戌丑未中有乙辛丁癸，寅申巳亥中有乾坤艮巽，此十二位宫，能回凶作善，乃曰天德也。月德者，乃三合所照之方，日月会合之辰，申子辰会酉出，庚入垣于壬；亥卯未会干出，丙入垣于甲；寅午戌会卯出，甲入垣于丙；巳酉丑会子出，壬
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 41
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论太极贵太极者，太初也，始也，物造于初为太极，成也，收也，物有所归曰极。造化始终相保，乃曰太极贵也。甲乙木先造乎子，坎水助而生，后终乎午，离火焚而死。丙丁火先喜出乎震，卯也，后喜藏乎兑，酉也。庚辛金得寅，乃金生乎艮，见亥乃金庙乎乾。壬癸水先得则生，后得巳而纳。经曰：“地陷东南，四渎俱流巽位，皆有始有终之意。”戊己，土也，喜生乎申，得辰戌丑未为正库。《理愚歌》云：“四库全时为至贵，位班上列据权衡。”人命入格，更有福气贵神扶，岂不为美。有文昌贵，甲乙蛇口乙猪头，丙狗丁龙戊向猴；
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 42
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论学堂词馆夫学堂者，如人读书之在学堂；词馆者，如今官翰林，谓之词馆，取其学业精专，文章出类。长生乃学堂之正位，如金命见辛巳，金长生在巳；辛巳，纳音又属金是也。临官乃词馆正位，如金命壬申，金临官在申；壬申，纳音又属金是也。余以类推。诸家说有学堂会禄，如金长生巳，临官申，甲乙人得之；水土长生申，临官亥，丙丁壬癸人得之；木长生亥，临官寅，戊己人得之；火长生寅，临官巳，庚辛人得之。又名官贵学堂，以官贵长生之位为学堂，官贵临官之位为词馆也。有学堂会食，如甲食丙，得丙寅；乙食丁，得丁巳
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 43
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 56
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论正印正印，乃五行之正库，金命见乙丑，木癸未，火甲戌，水土壬辰、丙辰是也。《言谈》云：“生逢正印，必拜玉堂。”《妙选》云：“五行入垣，官居五府。”可见得本家正印为贵。本主同德为上，帝座为中，胎月为下。主人重厚魁梧，功名昭著。本家印又得贵格扶之，更妙。若木得水印，火得木印，多兼他权外财。若身克印，或印克身，废而复兴。若水人得火印，火人带水印，次于本家印，然须本主有旺气，方吉。若克破别无福救，或空亡，只作清闲道僧、无成举人。若五行有清气，则绝世高人；有煞则贫贱。有贵人夹印，如丙
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 44
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论德秀夫德者，本月生旺之德；秀者，合天地中和之气、五行变化而成者也。又曰；德者，阴阳解凶之神；秀者，天地清秀之气，四时当旺之神。故寅午戌月，丙丁为德，戊癸为秀。申子辰月，壬癸戊己为德，丙辛甲己为秀。巳酉丑月，庚辛为德，乙庚为秀。亥卯未月，甲乙为德，丁壬为秀。凡人命中得此德秀，无破冲克压者，赋性聪明，温厚和气。若遇学堂，更带财官，主贵。冲克减力。
+    ○论劫煞亡神劫者，夺也，自外夺之之谓夺；亡者，失也，自内失之之谓亡。劫在五行绝处，亡在五行临官，俱属寅申巳亥。水绝在巳，申子辰以巳
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 45
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 54
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论羊刃《三车》云：“羊言刚也，刃者取宰割之义。”禄过则刃生；功成当退不退则过，越其分如羊之在刃，言有伤也。故羊刃常居禄前一辰。希尹曰：“阴阳万物之理，皆恶权盛。”当其极，处火则焦，灭水则涌，竭金则折，缺土则崩，裂木则摧折，故既成而未极，则为福，已极则将反而为凶。极盛之地，十干中正处是也。卯者，甲之正位，为阳木之极；辰者，乙之正位，为阴木之极；午者，丙之正位，为阳火之极；未者，丁之正位，为阴火之极；酉者，庚之正位，为阳金之极；戌者，辛之正位，为阴金之极；子者，壬之正位，为阳水
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 47
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论空亡空对实、亡对有言。《神白经》云：“空亡空亡几多般，十干不到作空看。”《洞玄经》云：“遁穷而亡生。”故以甲旬尽处曰空亡，盖有是位而无禄，曰空；有支而无干，曰亡。如甲子的遁至酉而十干足，所以无戌亥，余五干例见，是为空亡。然空而有实，亡而有存，所以未可便为凶论。《珞??录子》论空亡云：五阳令用一阳，五阴令用一阴。假如甲子、丙寅、戊辰、庚午、壬申则用戌不用亥；乙丑、丁卯、己巳、辛未、癸酉则用亥不用戌。阳分阳年，阴分阴年。又说：甲子至戊辰，以戌为空亡；己巳至癸酉，以亥为空亡，分
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 48
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论元辰元辰者，别而不合之名。阳前阴后，则有所屈，屈则于事无所申；阴前阳后，则直而不遂，于事暴而不治，难与同事，故谓之元辰。是以阳男阴女，在冲前一位支辰；阴男阳女，在冲后一位支辰。假如甲子生男，与甲午对冲，即乙未为正；乙丑生男，与乙未对冲，即甲午为正。余干午未半之。所以为凶者，当气冲之地，左鼓则风煞在右，右鼓则风煞在左，故阴阳男女，取冲前冲后不同。若岁运临之，如物当风，动摇颠倒，不得宁息。不有内疾，必有外难。虽富贵崇高，势位炎盛，大运逢之，十年可畏。立朝定当窜逐，居家必罹凶咎
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 49
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论暗金的煞此三煞乃先天数之四冲也。夫子、午之数各九，卯、酉各六，总为三十。自子顺行，极三十而见巳，是为四仲之正煞。寅申各七，巳亥，各四、总二十有二，自子顺行，极二十二而见酉，是为四孟之正煞辰戌各五，丑、未各八总二十有六，自子顺行，极二十六数而见丑，是为四季之正煞。是起于数者然也，凡神煞，皆起于数，与禄马同类。此一煞而有三名；一曰吟呻，二曰破碎，三曰白衣。子午卯酉在巳，寅申巳亥在酉，辰戌丑未在丑。巳者，金生之地，巳中，临官之火，金气临克，主杖楚刑狱呻吟之灾，故曰吟呻。酉者，金
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 50
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论灾煞灾煞者，其性勇猛，常居劫煞之前，冲破将星，谓之灾煞。如申子辰将星在子，午却去冲子；寅午戌在午，子却去冲；巳酉丑在酉，卯却去冲；亥卯未在卯，酉却去冲。是灾煞也。此煞主血光横死。在水火，防焚溺，金木杖刃，土坠落，瘟疫克身，大凶。若有福神相助，多是武权。亦如劫煞之类，要见官星、印绶生旺处为佳。《神白经》云：“灾煞畏乎克生处，却为祥。”正谓此也。
+    ○论六厄厄者，遭乎难者也，常居马前一辰，劫后二辰，死而不生谓之厄。申子辰水局，水死在卯；寅午戌火局，火死在酉；亥卯未木局，木死在午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 51
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论勾绞勾者，牵连之义；绞者，羁绊之名，二煞尝相对冲，亦犹亡劫。阳男阴女，命前三辰为勾；命后一三辰为绞；阴男阳女，命前三辰为绞，命后三辰为勾。假令甲子阳命人，卯为勾，酉为绞；乙丑阴命人，辰为绞，戌为勾之例。古歌云：“爪牙煞去命三辰，大忌金神羊刃临；夹煞克身无福救，必遭蛇虎伤其身。”此煞大忌金神白虎并，则凶。牛马犬畜等伤亦是，不独虎狼也。不克身与福同宫者不用。大抵此煞，凡命遇之，身若克煞，多心路计巧，主掌刑法之任；或为将帅，专地诛戮。煞若克身，主非命而终；小人逢之，非横灾祸；行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 53
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 43
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论孤辰寡宿先贤有云：老而无夫曰寡，幼而无父曰孤，此其义也。辰谓星辰，宿谓星宿，指其神也。人命犯此星辰，则孤寡如是。如亥子丑逐方三位，进前一辰见寅为孤，退后一辰见戌为寡。又过角为孤，退角为寡。其余三方皆依此推。乃阴阳惆怅之义。且夫寅为春始，辰为春末，巳为夏始，未为夏末，申为秋始，戌为秋末，亥为冬始，丑为冬末，皆阴阳支离之神，四时代谢之方。《三车》云：造物中以生我者为母，克我者为夫，我克者为妻。亥子丑属北方水位，水用金为母，金绝于寅，是母绝也；用火为妻，火墓为戌，是妻墓也。巳午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 54
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论天罗地网罗网之说，其义甚明。然何以戌亥为天罗，辰巳为地网，盖天倾西北，戌亥者，六阴之终也；地陷东南，辰巳者，六阳之终也。阴阳终极，则暗昧不明，如人之在罗网，此春义也。《壶中子》云：“龙蛇混杂，偏不利于辰生；猪犬侵凌，但独嫌于亥字。”龙为辰，蛇为巳；辰人得巳，巳人得辰，皆曰龙蛇混杂。男命则不妨，惟女命破婚害子，薄命抱疾。辰人得巳，重；巳人得辰，轻。谓龙生蛇穴者，退；蛇生龙穴者，进。猪为亥，犬为戌；戌人得亥，亥人得戌，皆曰猪犬侵凌。女命则不妨，惟男命则滞龃龉龆，妨祖克妻。戌人
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 55
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十恶大败十恶者，譬律法中人，犯十恶重罪，在所不赦，大败者，譬兵法中与敌交战，大败无一生还，喻极凶也。六甲旬中十个日值禄人空亡，如甲辰、乙巳，甲以寅为禄，乙以卯为禄，甲辰旬以寅卯为空亡。壬申者，壬以亥为禄，甲子旬以亥为空亡。余如丙申、丁亥、庚辰、戊戌、癸亥、辛巳、乙丑等日皆仿此。命中犯者，当以日上见之为是，其余不论。况犯者未必皆凶，若内有吉神相扶，贵气相辅，当为吉论。《元白经》曰：“十恶都来十个辰，逐年有煞用区分。”如庚戌年见甲辰日，辛亥年见乙巳日，壬寅年见丙申日，癸巳年见
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 56
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○总论诸神煞神煞，古有百二十名，其说穿凿支离，造化恐不如是。除羊刃、空亡、劫煞、灾煞、大煞、元辰、勾绞、咸池、破碎、罗网、冲击、天空悬针、平头倒戈等煞命中切要者，已备论于前矣，兹以诸星家考验有理，复备叙于左。自缢煞。此煞取五行反系处，如戌人巳，巳人戌，辰人亥，亥人辰，寅人未，未人寅，卯人申，申人卯，午人丑，丑人午，子人酉，酉人子是也。大忌相克，天元是墓，更有天中、官符、大耗者，定凶。水溺煞。此煞取丙子、癸未、癸丑上带咸池、金刃、羊刃。盖丙子纳音水，又子为水旺之地，未为井宿之居
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 57
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十干坐支兼得月时及行运吉凶△甲乙甲木属阳，乃栋梁之材。喜生秋冬，遇申子月为吉。柱见庚辛，譬斧凿之论，主名利。运行申酉辰戌丑未乡，大能发越，见辛官尤妙。忌寅午戌合局及透丁火伤官，乃辛苦劳力、作事无成之命，运逢亦不顺。若合局丁透，有辰戌丑未，干上露戊己，再行财运，伤官生财，却发大福。乙木属阴，为生气之木，遇春生而花叶茂盛，亦喜生于小春之令。逢亥卯未甲子辰二局更行北运，虽透丙丁庚辛，亦不妨。所忌寅午戌火，巳酉丑多，多伤残，再行南运，主夭无疑。甲乙贵乎木得宜，要知金水旺为奇。春从
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 58
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论十二月支得日干吉凶△子月甲乙日得子月为印绶，喜见官露印，忌坐天财、伤印。岁运喜忌同。丙丁日为官，贵，阴阳和合。喜露财、官、见三合、六合、官印合，须考月令中气。身旺喜财、官，身弱喜印旺。忌七煞伤官、岁运伤为福之地，丁得之偏官，两阴相攻，喜身旺有合制，忌身弱无合露，正官及四柱带多无制伏，运喜身旺合偏官，忌身弱。戊己日为财，喜露财身旺，忌坐刃透比。不遇亥子日生，难为财运。喜身旺与财，身弱喜旺，忌劫。庚辛日为长生财，喜坐露财身旺，忌无财身弱。如四柱全无财星，便不是长生财，只是伤官
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 59
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论五行时地分野吉凶按王氏所谓二气者，阴阳也；五行者，金、木、水、火、土也，时者，春、夏、秋、冬也；地者，冀、青、兖、徐、扬、荆、梁、雍、豫也。盖天有阴阳，行于四时；地有五行，具于九州，正朱子所谓五行质具于地、气行于天，故天有春夏秋冬，地有金木水火，皆以时地相为用也。今之谈命者，但知论阴阳五行而不知兼论方隅与昼夜阴晴，所以有年日月时同而贵贱寿夭迥异，便谓五行无据，启世人不信命之疑，亦诬点。嗟夫，人生天地，莫逃五行；九州分疆，风气异宜，阴晴寒暖，理难一律。人禀天地灵气以生一时，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 60
+  matched_rule_id: ZP-SRC-20260617-103
+  match_score: 41
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论木正春木，令木也，晴则花叶敷荣，雨则寒其萌蘖。正月生者，虽三阳交泰，寒气未除，见火则生意蔼然，富贵无敌。火多泄其元气，徐、扬人昼生者疾。火土问躔，富而且贵；有土无火，仅足衣资而己。逢金折伤之患，得火制之为福。见水不为子母相生，盖初春之木，才有生意，见水则寒，反不为吉。冀，雍生者，贫寒，男滥而女淫也。二月之木，生意畅茂，遇土培植为佳。火土同行，富贵而寿。火盛亦泄其气，盖花木始含英而真阳发散故。兖、青人富贵无虞，徐、扬人美中不足。干支有壬、癸、亥、子者，咎也，水生之，太过，性
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 61
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论火三春之火，其气温然而始著也；晴则借木而明，雨则湿木而晦。正月微阳之火，隐于木中，虽有可亲可爱之意，但冰霜之气未消，遇木生之，则阳气发挥矣。逢金为财，徐、扬人富而好礼。金木同行，官居鼎鼐。逢金值水，夭折无疑，荆、梁、冀、雍之人尤甚。见土盗泄微阳，浮薄卑贱。二月见木，败处逢生，木秀火明，文章富贵人也，但不宜有水，盖湿木不生无陷火也。谷雨以后生者，微水无凶，盖土司时、木主令，化凶为吉也。兖、青、徐、扬生者富贵何疑。土与金，正月同论，但辰月土差旺耳。夏令之火，阳气之极，草木为之
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 62
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 56
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论土土值春时，土膏脉起，万物含生，木气发泄，前哲所谓病寅死卯墓辰者，良有以也。雨则阴凝土湿而荫甲不舒，晴则冻释阳和而生意发越。故春令之土一接阳气，就能发育万物。正月之土尚有霜寒，遇雨则冻，遇水则冰，值木则病，惟得火以温之，则荣华莫比。逢金制木，亦名利两成。二月之土，正木盛土崩之时，遇木同躔，有脾胃肠风痔漏之灾，轻者疾，重者夭，徐、扬人干支有火而值昼晴者，无咎见火同躔，位登台鼎。见水则凶，冀、雍、青、兖人土浑水浊，终有水涌土溃之危，盖水生旺木而伤土也，值此者贫寒疾夭，徐、扬、
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 63
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论金春日之金，木旺火相。非金得气时也，绝寅胎养于卯辰者，盖造化无终极之理也。是以春令之金，晴明吉。阴雨则滞。正宜遇土以生之，谓其将绝而有生意耳。正月之金，见木为财，木神太旺，仅足衣资。土气尚寒，未能生助，艺术显名而巳。火若问躔，男女重婚重嫁。见火遇土，富贵非常，逢水泄之，孤寒懦弱。二、三月之金，见土则生，生之意无穷，主人富贵而寿。逢水泄其元气，亦主贫薄无情。见火则囚，金遇鬼，贫夭无疑。土生水制为吉。见木而有困滞之灾，盖春木盛旺，以微弱之金而欲制之，是犹以婴儿而御强敌，其不格
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 64
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论水春月之水，孰不谓其病寅死卯墓辰为至弱矣，殊不知水为阴气，生申旺子。秋冬之时，其气翕聚未散，故水常涸，春至，阳气上蒸，阴气下降，故雨露既濡而水生发，此水势之常耳。星家以活水生于卯者，良有以也。晴则春水溶溶，雨则汪洋泛滥。正月生者，水有寒气，见火则冰融冻释，富贵雍容。得金相助，徐、扬生者最佳。逢木无火，则水冷木寒，未有生意。遇土克水，亦主贫寒。土制金生，衣资丰赡。二、三月之水，浩无边际，见土则有堤防，昼则富贵，夜则流移，生于谷雨后者，或主淫邪痹惫之疾，盖土浑水浊故也。见火则
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 65
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论古人立印食官财名义徐子平论格局，独以印、食、官、财四者为纲。其立名之义云何？盖造化流行天地间，不过阴阳五行而已。阴阳五行，交相为用，不过生克制化而已。今指甲乙为例，以日干论甲乙，在五行属木，甲阳而乙阴也。如人命得甲乙，生谓之日主属我，生我者壬癸水，我生者丙丁火，克我者庚辛金，我克者戊己土，而十干尽之矣。生我者，有父母之义，故立名印绶。印，荫也。绶，受也。譬父母有恩德荫庇子孙，子孙得受其福。朝廷设官分职，畀以印绶，使之掌管。官而无印，何所凭据？人无父母，何所怙恃？其理通一无
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 66
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论正官正官者，乃甲见辛、乙见庚之例。阴阳配合，相制有用，成其道也。故正官为六格之首，止许一位，多则不宜。正官先看月令，然后方看其余。以五行之气，惟月令当时为最，况四柱各管年限，年管十五，失之太早，时管五十后，失之太迟。故只此月令为正，余格例此。甲日生酉月，乙生申巳，丙生子，丁生亥，戊生卯，己生寅，庚生午，辛生寅巳，壬生午未丑，癸生辰巳戌月，皆为正气。官星更天干透出，如甲见辛酉，乙见庚申之例，谓之支藏干透，余位不宜再见，又须日主健旺，得财印两扶，柱中不见伤煞，行运引至官乡，大
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 67
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○天福贵人谓官星坐处，见禄如人，有官有禄，莫非天福。甲生人以辛为官，辛禄在酉，是以甲人见酉，乙人见申之例。甲用辛官，柱有辛酉，更得福神助之，生旺有气为佳。一名禄干福神，遇者主科名巍峨，官职尊崇，多掌丝纶文翰之美。
+    ○天元作禄经云：金若遇火，有重权，防御刺史臣（如庚午、庚寅、庚戌、辛巳、辛未等日）。水若遇土，入官局，可沾侍郎禄（如壬午、壬戌、癸巳、癸丑、癸未等日）。木若遇金，主伤衰化煞，为权势若雷（如甲申、甲戌、乙巳、乙酉、乙丑等日）。火若遇水，主兵权，为将镇三边（如丙申、丙子
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 68
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○岁德正官取年上干支官为岁德，喜忌与月令正官同论。遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺地，财生印助福无涯。又：年上官星为岁德，喜逢财印旺身宫，不逢七煞偏官位，富贵荣华莫与京。
+    ○时上正官如甲日酉辛
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 70
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○官印禄库经云：官中见禄库逢财，金玉自天来。如甲乙逢乙丑，丙丁逢庚午，戊己逢壬辰，庚辛见乙未，壬癸逢丙戌是也。一命丁丑、辛亥、癸酉、壬戌，癸用丙为财，戌为财库，用戊为官，戌中戊土正旺，财库生助，酉为癸印，丑为印库，财官印俱逢库旺，无冲破，为贵。
+    ○相刑遇贵经云：日时相刑得遇贵，执法有权势。又云：寅刑巳，巳刑申，庚辛逢寅是贵人；卯刑子，子刑卯，癸乙双双富又清；未刑戌，戌刑未，甲戊逢羊贵自荣，不利文官主武权。如刘应节尚书：癸未、乙卯、丙戌、戊子，子卯刑而得乙癸，未戌刑而得戊，所以
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 72
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○金木间隔经云：木若逢金间隔，作两府之官。木无金，终不成器。如杨博尚书：己巳、庚午、乙卯、庚辰，乙坐卯自旺，生于午，得两庚间隔，成器，故贵极品。 ○水火既济经云：火若遇水成既济，兵权万里。如辛巳、辛丑、丙子、戊子，丙日临子，坐下正官，月时引旺，重逢奇仪。丙以癸为官，癸以戊为官，互换见官，丙合辛财生官，化为真水。戊子时，戊合子中癸，化为真火，入水火既济格，大贵。
+    ○金火相成经云：金无火制器难成。如乙巳、辛巳、庚午、辛已，庚坐午，入火乡官贵之地，喜生四月，逢生天干二辛相比，地支巳
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 75
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论偏官偏官者，乃甲见庚、乙见辛之例，犹二男不同处，二女不同居，不成配偶，故谓之偏官。以其隔七位而相克战，故谓之七煞。譬小人多凶暴，无忌惮，若无礼法控制之，不惩不戒，必伤其主，故有制谓之偏官，无制谓之七煞。如日主健旺，有印绶助化，即经云逢煞看财，如身强煞弱，有财星则吉，身弱煞强，有财引鬼盗气，非贫则夭；有食神透制，即经云一见制伏，却为贵本；有阳刃配合，即经云煞无刃不显，逢煞看刃是也。以上诸制合生化，须要无太过不及，是借小人势力卫护君子以成威权，乃大权大贵之命。又性格聪明，忌日
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 78
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○天元坐煞谓甲申、乙酉等日。如乙丑日，丑中自坐辛金为煞，喜生春夏，乙木健旺，煞自有制，不喜明见丙丁，生秋月雕零，坐下藏鬼，岂不为害？凡值此等日，要日干倚旺，再无官煞复克，喜印化煞，财旺身旺，为福。如煞旺，有伤官合制，亦贵，如无助化，再行煞旺运，或再见煞克，为人必面目瘢痕，侏儒跛鳖，骈指瘤赘，奸贪猛暴，恃强不惮，累犯宪章。克重多夭，合格为武贵。但为人心多性急，阴险怀毒，僭伪谋害，不近人情。
+    ○时上一位贵《喜忌篇》云：若乃时逢七煞，见之未必为凶，月制干强，其煞反为权印。经云：时上
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 79
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○年上七煞经云：年逢贵气，不用制伏，喜日主健旺，羊刃相合，柱中带财，更行财运，发福清秀。最忌身衰，盖七煞乃小人之象，既居祖宗之位，如朝廷老臣，祖父老仆，日主健旺，老仆则尽力以事幼主，日主衰弱，不能与小人为主，何肯尽力事之？反成害已之物。年干见此，必主出身寒微，四柱行运有情，主寒门生贵子，若煞旺身衰，冲刑太过，必主贫穷，至重者带孝遭刑。又曰：岁煞一位不宜制，四柱重见却宜制，日主生旺，制伏略多，喜行煞旺地，制伏太过，或煞旺身衰，官煞混杂，岁运如之，碌碌之辈。若制伏不及，运至身衰煞
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 81
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○官煞混杂人命官煞俱有谓之混杂，只取财印为用，柱元有财，运行财发，大要身强胜任其财方可，身弱官煞混，多夭贫。身旺有制亦好，无制，成印局化煞亦可。诗曰：官煞交加用命推，个中消息要详之，得时身旺分轻重，贵财分明辨别知。如壬辰、丙午、丙辰、癸巳，身煞俱旺，官从戊化，德秀兼备。丁亥、壬子、丁未、癸卯，丁从壬化、亥卯未会局，水木清奇。甲午、己巳、辛酉、甲午、辛日巳丙为官，二午丁为煞，喜旺专禄，巳酉会局，胜煞，虽无制伏，初行西方，身益旺，故贵。观三命不可以混杂为贱论。
+    ○专禄要制此格六庚
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 82
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○弃命从煞《独步》云：弃命从煞，须要会煞从财，忌煞从煞。盖言从煞格，以煞神太重，身无所归，不得已从之，要行煞旺及财乡，四柱无一点比肩印绶方论，如遇运扶身旺，与煞为敌，从煞不专，故为祸患。经云：弃命从煞论刚柔。言弃天干从地支，随五行性情，阴干从地支，煞纯者多贵，以阴柔能从物也。阳干从地支，煞纯者亦贵，但次于阴，以阳不受制也。水火金土皆从，惟阳木不能从，死木受斧斤，反遭其伤故也。《元理赋》云：平生为富且贵，皆因煞重身柔。鬼多无鬼，反不为凶。古歌曰：五阳坐日全逢煞，弃命相从寿不坚，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 84
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○壬骑龙背《喜忌篇》云：“阳水叠逢辰位，是壬骑龙背之乡。”此格以壬日坐辰，壬以丁为财，己为官，壬用支辰暗冲戌中丁、戊，壬日得财官之贵，柱中须辰多方能冲起，再得一寅字合住财官为妙，不宜财官显露，喜行身旺及伤官、食神运，忌南方财官之地。柱有丁巳午戌，只作财官论，若壬日坐寅，柱中辰多，亦取此格，以壬食甲、甲合己为壬官，甲生丁为壬财，辰能冲戌，寅以合之为贵。若壬辰日，年月时皆寅午火局，财生旺得地，财多不清，只为富命。双曰：壬辰日取辰多，暗冲起戌中火土金为财官印三奇，若三辰一寅为冲合贵
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 86
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○子遥巳禄《喜忌篇》云：甲子日再遇子时，畏庚辛申酉丑午，此格以甲子日甲子时，甲以辛为官，二子中癸水能遥合巳中戊土，戊来合癸，畏子上甲木克制，不敢来合，戊与丙同居巳宫，丙戊为父子，戊动丙亦动，丙却与酉中辛相合来克甲木，甲日得官星，戊方得合癸，是谓巳酉丑三合会起官星局，年月大怕有午冲子、丑绊子，不能遥矣。又曰：此格以二子中癸水遥合巳中戊土为甲之财，丙戊禄同在巳，丙是甲之爵星，戊是丙之爵星，戊动丙亦动，丙见子戊贪合癸妻为印绶，丙却合起辛金为甲之官，如人有子继其后，传其家，以成父道之
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 87
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○丑遥巳禄《喜忌篇》云：辛、癸日多逢丑地，不喜官星，岁时逢子巳二宫，虚名虚利。此格只有辛丑、癸丑二日，辛以丙为官，癸以戊为官，丙戊禄在巳，惟丑能破巳，柱中多逢丑地，则丙戊之禄出，辛癸遥合得官星，忌见子绊未冲，巳字填实，不过虚名虚利而已，岁运同论。辛丑日宜生秋月，癸丑日宜生冬月，柱中金水多方合此局，再见申酉，得一合住巳字，不致贵气走出为妙。无丙丁巳午，辛日之纯粹，无戊己巳午，癸日之纯粹，再无冲绊，为人淳厚，富贵双全，略见损伤，亦主富足。若生辰戌丑未月，当以杂气取用，逢卯辰申酉亥
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 88
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 56
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○冲合禄马如甲日生人，柱无酉辛丑，有卯多冲酉，巳酉合丑为甲日正官，喜壬癸生助，忌酉辛填实，若止一卯字，再有刑合起亦为好命。乙日生人柱无申庚，却有寅冲申，子辰合拱或巳刑出，为乙正官，喜壬癸生助，忌申庚填实。戊日生人柱无卯乙，却有酉冲卯，亥未合卯，戊得官星，喜壬癸财、丙丁印，忌见卯乙。己日生人柱无寅甲，却有申冲寅，午戌合寅即暗有官星，喜财、印，忌见寅甲。丙丁二日即倒冲禄马格，庚辛壬癸四日即飞天禄马格，以例推之。以上四干冲合，皆忌官星明露及受伤，月令得官乘旺为妙，冲神遇合，不逢羁绊
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 89
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○破官四柱元无财官印绶，却有破官之辰，如癸卯日破出午中己土为官，癸酉日破出辰中戊土为官，甲午日破出酉中辛金为官，柱中须得一字三合合住贵气为妙。《元理赋》云：卯破午，午破酉，财官双美。又云：年日支无破官之辰，月时支有破官合官之辰，主贵。如甲寅日无破，月逢丙午，时临己巳，此取午破酉中辛官，有巳合之，又用巳中丙戊合辛，为贵。诗曰：卯破午未有大官，午未破酉一般看，丑破巳午不为例，子破卯辰用不难。
+    ○飞财日干同月干，日支同时支，冲出对宫之财是也。得此格当发财禄，忌泄气，凶。如壬申日生，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 90
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○破财此格如乙卯日生，八字不见财官，用卯字破出午未中己土为财用，要寅、戌一字暗合财气为妙，忌劫财填实，但有财位及填实，冲位便破不行矣。如庚申、辛酉日破寅卯辰之木为财，丙午、丁未日破酉戌之金为财，壬子、癸丑日破巳午中之火为财，此数日本日刃日禄本体自强，故可冲破取财为用，其余日主柔弱，岂能破夺横来财乎。合此格者，多能横发取不意之财。诗曰：命里无财看破财，破来财禄似山堆，运行官印多多福，却怕刑冲填实灾。又：卯破午未取财看，午未破酉总一般，丑破巳午财来广，酉破辰卯福不难。
+    ○虎午奔巳
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 92
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○羊击猪蛇此格乃辛未、癸未二日，以二三未字合起亥字，冲出巳中丙戊为辛癸之官，柱有酉丑一字合住贵气为妙，怕填实冲刑。如甲戌、辛未、癸未、癸丑，庚申、癸未、辛未、乙未，二命合格，俱贵。诗曰：羊击猪蛇格最强，日逢辛癸未相当，柱中再逢酉申字，合禄无伤入庙堂。以上诸格，须柱中无财官方用，有则不取。
+    ○六阴朝阳《喜忌篇》云：六辛日，时逢戊子，嫌午位，运喜西方。此格六辛日为主，辛以丙为官星，以癸为寿星，喜戊子时，以戊合癸，子乃辛之生地，戊禄在巳，戊来印辛，戊乃丙之子，丙见戊印辛，丙却生戊合
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 94
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙鼠贵《喜忌篇》云：阴木独遇子时，为六乙鼠贵之地。乙以子申为贵神，独遇子者用鼠不用猴也。乙用庚金为官星，得丙子时，以子上丙火遥归巳中本禄，巳来合申，申来动子，是谓申子辰三合会贵，谓申中带将庚来，乙日得官星，用申时则官星显露，所以不取。若子字多，谓之聚贵，尤妙。年月中有午冲丑绊，则子不能遥禄，申庚为官露，酉辛为煞露，被丙伤，子反不中矣。岁运同。此格要月通木局，日下支神皆是木旺之地，水印亦可，忌见金火，若岁运逢申酉，凶悔，东方渐退，午运则亡。如一命：壬寅、辛亥、乙未、丙子，合
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 96
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○日禄归时《喜忌篇》云：日禄归时没官星，号青云得路。此格有七日：甲寅、丁午、戊巳、己午、庚申、壬亥、癸子，日主之禄归于时位，喜日干坐旺、印绶生、月透财元、伤食、天月二德，主大富贵。忌刑冲破害、空亡死绝、及劫财分禄、倒食作合、官煞克制，虽可取用，亦不纯粹。岁运同。如乙日见己卯时，是时上偏财；丙日见癸巳时，是官星显露；辛日见丁酉时，是时上偏官，不作归禄格看。四柱何如？若月有官星或天干透财官，只作财官论；若时支归禄，年月时支亦有禄，谓之聚福归禄，又谓五行归禄；若日禄归时，时禄归日，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 97
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 61
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○拱禄拱贵《喜忌篇》云：拱禄拱贵，填实则凶。拱，向也，夹也。禄是临官之禄，贵是官星之贵，或指天乙贵人。拱禄有五日五时，癸亥、癸丑，癸丑、癸亥拱子禄：丁巳、丁未，己未、己巳拱午禄；戊辰、戊午拱巳禄。拱贵有五日五时，甲申、甲戌拱酉，乙未、乙酉拱申，是官贵；甲寅、甲子拱丑，戊申、戊午拱未，辛丑、辛卯拱寅，官贵兼天乙贵。凡拱格，须日时同干，贵禄与月令通气，运行身旺及贵禄旺地，方大好，印绶、伤官、食神、财运，亦吉。忌刑冲破害，羊刃七煞，伤了日时，拱不住贵气。大忌填实、空亡，譬如器皿空则
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 98
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 60
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○冲禄此格如庚禄申，柱中无申，得庚寅日，年月时再有寅字，并冲申为庚之禄。甲禄在寅，柱中无寅，却得甲申日，年月时再有申字，并冲寅为甲之禄。大忌丙伤庚、庚伤甲，填实禄位则不贵。余例推。如己巳、丁丑、庚寅、戊寅；辛巳、乙未、甲申、壬申；乙卯、甲申、辛卯、辛卯，三命合格，贵。
+    ○六壬趋艮此格乃六壬日见甲寅时，合出亥中壬禄，即暗禄格。经云：明禄不如暗禄是也。忌亥字填实，怕冲刑克破。壬寅、壬辰二日为正，见寅字多者大富，以寅中甲木食神生丙火长生之财，财旺生官，故美。忌官煞损身，申庚伤甲，不
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 99
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲趋乾此格乃六甲日见亥。亥，天门之位，北极之垣，甲木赖之长生。又亥能合出寅中本禄，与趋艮同。忌寅字填实，巳字刑冲。又曰：甲见亥时，亥有壬禄为印，喜见辛金生印，不喜见财，柱有卯合亥，即不能合寅中禄矣，若身弱遇巳酉丑局，金神太多，岁运重见，生灾。《相心赋》云：六甲趋乾，主仁慈刚介心平。《真宝赋》云：六甲趋乾，透印绶为佳，财星叠见，位列名卿。《千里马》云：壬趋艮，甲趋乾，清朝名士。诗曰：趋乾六甲最为奇，甲日生人得亥时，岁运若逢财旺处，官灾患难来寻之，详诗与赋，有忌财喜财不同，余
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 101
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○日贵日贵者，自坐天乙是也。此格只有四日：丁酉、丁亥、癸巳、癸卯，主为人纯粹，有仁德，有姿色，不傲物气高。贵气聚于日，更有财食印相助，贵气为福。喜三六合宅墓合，行贵人财旺运，发福。大忌刑冲破害空亡，运行再遇前忌，太岁加会，更见魁罡，定主贫夭。若别成格，不论。日贵须分昼夜，日生要癸卯、丁亥，夜生要癸巳、丁酉，日夜不皆为得体。经云：贵人者慈祥恺悌之号，德性尊重之名，遇财官印食则吉，值煞刃冲刑则凶，运遇魁罡，为害不浅。古歌曰：生日天干坐贵支，若见魁罡福不齐，年逢月禄不为喜，日贵重逢
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 103
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○日德此格止有五日：甲寅、丙辰、戊辰、庚辰、壬戌，取甲丙戊庚壬五阳干，甲坐寅得禄，丙坐辰官库，庚作辰财印两全，壬坐戌三奇俱备。寅为三阳之首，辰戌为魁罡之地，干支异于别位，故名日德也。若合日德，主为人性格慈善，体貌魁梧，有怜贫敬老之心，无毒害克剥之意，逢凶有救，遇难有解，不遭非横，福必丰厚。赋云：日德心善多稳厚，而作事慈祥是也。运临身旺，大是奇绝，若旺气已衰，行遇魁罡必死，或未及发福，格局既好，运至魁罡，必生祸患，一脱乎此，亦能再发，终力微。此格只一位，喜财官，日德重叠，不宜见
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 104
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○魁罡此格有四日：庚辰、壬辰、戊戌、庚戌。辰为天罡，戌为河魁，乃阴阳绝灭之地，故名。独除甲干，以居干之首，在辰为青龙，在戊为禄堂，有吉而无凶故也。此格须叠化重逢日位，加临者众，以伏为贵。经云：魁罡聚众，发福非常，主为人性格聪明，文章振发，临事果断，秉权好杀。赋云：魁罡性严有操持，而为人聪敏是也。运行身旺，发福百端，一见财官，祸患立至，或带刑煞尤甚，倘日位独处，刑冲克制重临，必是小人，刑责不巳，穷必彻骨，运临财官旺处，主防奇祸。若月令见财官印绶，日主一位，即以财官印食取用，虽微
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 105
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○福德秀气此格专以巳酉丑金局而看所得天干，如乙巳、乙酉、乙丑三日，是乙用金为煞，喜印绶，喜制伏，不宜生六月逢未，以墓上带旺，金能克木，不宜生八月再露其煞，运行印绶官旺乡，便能发福。丁巳、丁酉、丁丑三日，是丁用壬为官，喜金旺生水，亦不喜生八月，以八月火死，功名蹭蹬，又不喜生十一月，以十一月癸水为煞为寿不耐，柱中喜见财官，旺位为贵，运行官旺，便可发福。己巳、己酉、己丑三日，是己用甲木为官，巳酉丑金局皆伤其官，亦名盗气，何以为吉？殊不知金能生水财，喜行财运便发，柱中不要见丙丁寅午戌
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 106
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○禄元互换此格止有四日：戊申、丁酉、丙子、庚子。戊申日见乙卯时，戊取卯中乙木为官，乙取申中庚金为官，互换成其贵禄，柱中喜壬癸为财，生助乙木官星，运临官旺乡，便是贵命，忌见甲煞、辛伤、寅酉冲。丁酉见壬寅，丙子见癸巳，庚子见丁亥，喜忌与前同推。如一命：癸亥、壬戌、丙子、癸巳，互换禄旺，各临官贵，无刑冲破害，故贵。又：己未、辛未、丙子、癸巳，合格，大贵。古法论禄元互换，如戊午见丁巳之例，是取临官之禄。
+    ○子午双包子为帝座，午为端门，帝王所居之位，人命或两子两午，或两午包一子，或两子
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 107
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○青龙伏形甲乙木属东方，谓之青龙伏形者，伏于金也。如甲申、甲戌、乙巳、乙酉、乙丑，此五日生，坐下财官，俱要月令有托，官星得地，不见伤官之神，金木相停为合象。有以乙巳日时，名青龙伏藏，主饮酒有失，暗损福寿，不饮则可。诗曰：甲乙如居申酉乡，木逢春旺最为良，四柱若逢库相助，财官双美不寻常。
+    ○白虎持势庚辛金属西方，谓之白虎持势者，得其势也。如庚午、庚寅、庚戌、辛巳、辛卯、辛未，此六日生，坐下财官印贵，要日主有托受生气，或官旺得时有助，不见财官，用官必贵，用财必富，岁运同。有以辛卯日
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 109
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 54
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○朱雀乘风丙丁火属南方，谓之朱雀乘风，亦持势之义也。丙丁喜居金水之乡，身旺有托富贵。如丙子、丁亥，水火既济，又合胎元受气之贵，官旺财旺为上。丙丁有申子辰水局，亦为既济。赋云：火旺得水，以成既济之功，须水火相停，不致偏枯方是。丙申、丙辰、丁酉，丁丑，得身有托，生气相扶，财官旺相，俱吉。有以丁未日时名朱雀折足，大不利六畜，亡散死伤，或患疮疾，有甲乙则有子孙。诗曰：朱雀乘风是丙丁，如逢金水便峥嵘，申子辰乡多贵达，逢时多殿玉阶行。
+    ○玄武当权壬癸水属北方，谓之玄武当权，亦持势之义。如
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 111
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○勾陈得位戊己土属中央，谓之勾陈当位，即当权之义。如戊寅、戊辰、戊子、戊申、乙卯、己亥、己未，皆坐下财官印，若身旺，官得时者贵，财得时者富，不见伤官劫财为妙，忌冲刑，煞旺生灾，岁运同。诗曰：戊己勾陈在旺乡，寅卯之宫号最强，若是更临辰卯未，亥子相逢大吉昌。又：日干戊己坐财官，号曰勾陈得位看，知有大财分瑞气，命中值此列朝班。
+    ○还魂借气五行自死绝而有救递相还者。如木绝在申，而遇甲申；金绝在寅，而遇戊寅之类。最吉，有福神次之，无则下。 ○八专禄旺八专日见前，或又添丙午、丁巳、戊辰、
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 113
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○曲直甲乙日得亥卯未局，柱中须有亥字带印为入格，若无亥有卯，止是木之本气，却要见金土为贵，既无亥字，又无金土，则木不秀不实，难以言贵。如甲寅日有亥，时见丁卯劫财、阳刃、伤官，虽贵不全合格。诗曰：甲乙日生亥卯未，局全曲直须荣贵，柱中无亥宜土金，自是生来享福地。又曰：甲乙生人寅卯辰，又名仁寿两堪评，亥卯未全嫌白帝，若逢坎位必身荣。
+    ○炎上丙丁日遇寅午戌局，柱中须有寅字带印为入格，无寅止是九流近贵之命，若火自旺，无亥水相济，不贵。喜东北方运，忌见辰丑戊己，晦火光明，多主眼疾，或患风
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 116
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○从革庚辛日见巳酉丑局，须带丙丁巳午一二位方成其器，但不可火多。如辛巳、辛酉、辛丑三日不喜五月生，被火所伤，宜八月或水土养育食神印绶为吉。诗曰：白虎但逢巳酉丑，格乎从革名偏厚，丙丁巳午少逢之，贵气炼成官最久。又：金居从革贵人钦，造化清高福最深，四柱火来相混杂，空门艺术谩经论。
+    ○润下壬癸日见申子辰全，忌引卯巳死绝之地，三刑四冲之乡，死绝则不流，冲刑则横流，岁运同。或曰水太泛须柱有土神一两位制之，得成堤岸，既有土怕会木为凶，如有木伤土要金印救解，终是一生成败。运喜西方，不宜东南
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 118
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○稼穑赋云：戊己忻逢四季，乃为稼穑之名。是戊己生逢季月，喜见木为官，止得一木为妙，木多则土虚，主虚诈为破家不仁之人。辰未土聚之地，见巳午火即贵，亦不宜多，多则土燥，不能滋生万物。丑戌之土，内怀金气，不宜重见，恐存煞气，不生万物，又不宜见金泄气，不贵。秋土不成器为死土，因土内含金，冬土不成器为泥土，因土内含水，故土只四季也。诗曰：戊己日生宜四季，多防丑戌坏金气，生来见木或逢荧，个中消息真荣贵。又：戊己生逢四月中，戊辰丑未要全逢，喜行财地嫌官煞，运到东方定有凶。
+    ○土局润下赋云：
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 120
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○金白水清赋云：金白水清，此辈宜登科第。此象乃庚申、辛酉日生秋月令，引到时上遇亥子水乡，以金则白，以水则清，无刑冲破害，主富厚。切忌夏生，则不入格，春金二三月，运行西北亦可。如庚辰、庚子、癸巳、癸酉、癸丑等日，生秋冬月令，无火伤，无土制，见金水相停成局，亦是。诗曰：金清水白主荣贵，秀丽文章定出群，更无火土来刑制，声誉掀腾翰苑人。
+    ○木火交辉赋云：火明木秀，生春月以为荣。此象乃甲戌、甲午、甲寅、丙午、丙寅、丙戌等日，生春月或夏月，柱无金水伤坏，时上有木火。行木火运，木日火秀，行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 122
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○火金铸印赋云：金非火不能成器，火非金无以显诸用，金火相停，有铸印之象，忌丑字为损模。赋云：乘轩衣冕，金火何多。又云：金鬼无偏，此之谓也。 ○火土夹杂火见土则暗，土宿火则晦，故火自火，土自土，两不相掩为妙，若火土夹杂，主愚浊。经云：“火虚土聚成何用，定是尘埃碌碌人”是也。如：戊申、己未、丙午、乙未；庚戌、乙丑、丙辰、戊戌；戊戌、丁巳、己未、丙寅。三命皆火土夹杂，平常。
+    ○墓煞古歌曰：墓中逢鬼要知之，夹煞持丘骨肉离，犯此凶星无救助，生来福寿少年亏。如甲日见庚戌、庚辰，乙日见辛丑
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 124
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 44
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○四位纯全寅申巳亥有五行生气驿马学堂，是为四生；子午卯酉有五行旺气，乙辛丁癸临之，是为四正；辰戌丑未，五行杂气，华盖、正印临之，是为四墓。经云：财官印绶，镇居于寅申巳亥。《真宝赋》云：子午卯酉，八专之象，文为一品??邦砥柱，武则分茅挂印成功。又云：寅申巳亥，位至三公。《元理赋》云：子午卯酉全备，酒色昏迷。《千里马》云：四库全备，龙变化为大海，为九五之尊。《宝鉴赋》云：辰戌丑未顺行，帝王君命无疑。《理愚歌》云：四库全时为四贵，位班上列据权衡。《独步》云：寅申巳亥四生之局，用物身
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 127
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○一气生成天元一气，乃四壬寅，四辛卯，四庚辰，四己巳，四戊午，四丁未，四丙申，四乙酉，四甲戌，四癸亥是也。四柱干支一气，中间亦有轻重贵贱，须细别之。壬寅、辛卯、甲戌富贵双全；己巳亦贵；戊午、丁未刃旺性强，虽贵亦多凶险，克妻，不善终；庚辰贵而风流，名重利轻；乙酉多伤残；癸亥多贫薄；丙申生北方亦可取贵，岁运如遇刑冲破夺，必生灾祸。大要推其支内有无财官印食，入格有无伤损，天干有无得令，上下干支财官印食可化不可化，可从不可从，定其轻重贵贱。又曰：四干纯一不杂，为天元一气，不可以比肩论
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 128
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○背禄逐马背禄者，甲以辛为官为禄，甲生春夏，金绝则无官矣，故为背禄。逐马者，甲以己土为财为马，被乙及亥卯未劫夺，甲无财矣，故为逐马。余例推。如壬子、壬子、丁未、乙已，定取壬为官禄，壬，亥月建禄，丁生子月，癸旺是煞，壬禄已过为背，向者有禄，背者无禄；丁取庚为财为马，子月庚死，此为背禄逐马，逢煞运，行劫地，亦不发福，无根元故也。《珞??录子》云：“背禄逐马，守穷途而ゐ惶”，与此不同，能见赋中。
+    ○十干十二年生大贵人例六甲年丁卯月乙未日戊寅时 六乙年己卯月甲戌日乙亥时六丙年庚寅月丁
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 129
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论正财正财者，乃甲见己、乙见戊之例。受我克制，为我之妻，譬人娶妻，妻赍财嫁我，我必精神康强，而后可享用，若衰微不振，虽妻财丰厚，但能目视，终不得用。故财要得时乘旺，不偏正混乱，不重叠多见，自家日主有力，皆能发福。若财多身弱，柱无印助，财少身强，柱有比劫，太过不及，皆不为福。《珞》云：若月令得财局，身衰逢印资助，当作富论，如先见印，却怕见财。《独步》云：先财后印，反成其福，先印后财，反成其辱是也。用财不宜明露，柱见比劫，则宜透出，使人共见则不能夺。赋云：财宜藏，藏则丰厚，露则
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 131
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○岁带正马如甲日午年己，乙日巳年戊，喜忌与月干正财同。若岁带正马，生辰戌丑未月或夏令月中，己土旺相，不犯刑冲分夺，日干乘旺，主受祖业丰厚。若生寅卯月令，柱中更带比肩，或遇运行伤劫之地，必主贫困。 ○时带正马如甲日带巳午时之例，无刑冲破劫，主招美妻，得外来财物，生子荣贵，财产丰厚，此非父母之财，乃身外之财，招来产业，宜俭不宜奢。
+    ○财旺生官《继善篇》云：富而且贵，定因财旺生官。盖财有生官之理，既取财为用，不要见官，若见官则为财官格矣。柱有伤食，虽财厚亦不能生官。如戊己以亥子、壬
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 132
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○天元坐财如庚辰、辛卯日，春生，甲乙木为财，喜戊己印生身，壬癸食生财，忌庚辛金劫夺，切不可岁逢官煞，即春月金弱，不能胜任，反不为福。甲午、乙未日夏生，己土为财；甲辰日夏生，戊土为财；丙戌、丁丑日秋生，辛金为财，喜忌俱与前同。惟壬午、癸巳二日，禄马同乡，不专以财论。
+    ○论偏财何谓偏财？乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 135
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○时上偏财《喜忌篇》云：时上偏财，怕逢兄弟，如甲日见戊辰或甲戌时之例。喜见辛官、壬癸生助，忌庚煞、乙劫，柱中不宜再见戊己，若身太旺，运东方寅卯则失财，余干例推。此与时上偏官格相似，只要一位，不宜多逢，天元透出为妙，支内所藏次之，柱有官印相助，日主健旺，便作好命看。大怕年月冲破，兄弟辈出，则福气不全。古诗云：时上偏财冲最忌，兄弟之辈皆为畏，喜行身旺官禄乡，别无透出方为贵。
+    ○弃命从财《独步》云：弃命从财，须要会财，若逢根气，命损无猜。假如丁生酉月，柱多庚辛，日干无气，只得弃命相
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 137
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○日坐天财如戊己土克水为财，水墓辰是也。古歌云：年干克下是天财，克墓之乡正库开，财入库时多谷帛，家豪金物积成堆。如毕状元己巳、癸酉、庚辰、甲申是也。 ○偏正财合论《精纪》有生成财，如甲乙见戊己土为财，申子辰上坐生旺库，戊申、戊辰、戊子支干成合是也。凡命入贵格，除贵外，须主大富，仍多历钱谷之任；若不入贵格，又无福神助，亦是富豪百姓。若自生自旺，甲人见戊午、己亥之例，主富。余仿此。有生合财，如甲人见戊癸，己人见癸戊，庚人见甲己等类，主成立富贵。有子母财，如木命人见火月、土日时之类
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 139
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论印绶印绶者，乃五行生我之名。如甲乙在亥子月，丙丁在寅卯月之类，乃我气之源，为生气，为父母，能护我官星，使无伤克，譬人生得物相助相养，受现成之福，岂不为妙？此格主聪明，多智慧，性慈惠，语善良，迟讷体，貌丰厚，能饮食，平生少病，不逢凶横，但吝财耳，为官多为正官，受宣敕不拘文武，皆掌印信，喜官星，以官能生印。经云：印赖官生。又云：有官无印，即非真官，有印有官，方成厚福是也。忌财星，以财能破印。经云：印绶生月岁时，忌见财星，运入财乡，却宜退身避位是也。岁运同论，印绶不逢损伤，多受
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 141
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○时逢生印如甲日子时，取子中癸水为印，资助日主，其人足智多谋，安享食禄，年月上要见辛官生印，运行西北，官印乃为贵命，若柱逢戊己土重，更有午字冲破，运历东南，官印衰绝，百事无成，公吏肆市人也。 ○胞胎逢印绶经云：胞胎逢印绶，禄享千锺。如庚寅、辛卯、丙申、乙酉等，日时月令逢印绶之地，主贵。经云：时日胞胎格，月通印绶，逢煞官印运助，职位列三公。
+    ○弃印就财经云：弃印就财明偏正，印绶忌财，此理甚明。正印居月令者，决不可见财，若居年时，月令见财只用财格，喜印生身，敌财为福。若偏印，月令
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 142
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 54
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论倒食倒食即偏印之谓，一名吞啖煞，食神最忌见之。如甲生丙火为食，火能生土，为甲之财，财旺生金，为甲之官，食神生旺，财官备矣。今甲见壬为倒食者，壬旺则克了丙火，丙被克去，不能生土，甲无财矣；壬合起丁，伤甲之辛，甲无官矣；壬克去丙，庚煞得安，来伤甲木，甲生灾矣。所谓用食忌见者，此也。凡命带倒食，福薄寿夭，若有制合，如甲日见壬辰、壬戌，辰戌中带有土制丁合；乙日见癸未、癸丑，丑未中有己制癸；丙日见甲申，丁日见乙巳、乙酉，戊日见丙子、丙申、丙辰，己日见丁亥，庚日见戊寅、戊辰，辛日见己
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 145
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论杂气杂气者，乃辰戌丑未，辰中有乙戊癸，为水土库；戌中有辛戊丁，为火库；丑中有癸辛己，为金库；未中有丁己乙，为木库。各随所藏之气而言，看我日干，或为官，或为财，或为印，官系福身之物，财是养命之源，印乃资身之本，在人最为切要。四库各藏三件，乃天地不正之气，故以杂言也。经云：财官印绶全备，藏蓄于四季之中是也。此格喜透露冲刑，忌压伏，其余喜忌消详，与前正气财官印同。假令六甲日生得丑月，以丑中辛金为官，己土为财，癸水为印，看天干透出何字为福次，分节气浅深，何物当令，大概透财者富，透
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 146
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○附论墓运秘诀云：幼年不宜逢墓库，老年值此却丰隆。又云：旺官旺印与旺财，入墓有祸；伤官食神并身旺，遇库兴灾。又云：旺煞入墓，寿算难延。可见凡官印伤官七煞为用神者，俱忌行墓库之运，惟晚年行自库地则吉。 ○论伤官伤官者，我生彼之谓，乃甲见丁、乙见丙之类，甲用辛为官，丁火乘旺，盗我之气，克制辛金，使不辅甲为贵，故名伤官。伤官格务要伤尽，方作贵看，元有官星，伤之则重。经云：“伤官见官，祸患百端”是也。伤官虽凶，乃我所生，自家之物，伤尽则能生财，财旺则能生官，造化展转有情。如月令在伤官
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 147
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论食神食神者，日干所生顺数第三位，乃甲食丙、乙食丁之例。甲生丙为泄气，丙生戊为甲偏财，偏财是天禄自然之财，不劳己之心力，享见成福禄。甲丙有父子之道，如子旺相，生起财禄以奉其父母，岂不安享？又甲见庚为煞，见戊为财，其食神丙火能制伏庚煞，使不得克伤甲木，能生戊财，使为甲木所用。凡命遇财煞之地，食神旺相，煞被食制，不敢为祸，财被食生，充裕不竭，故食神一名寿星，一名爵星，良有以也。此格要日主食神俱生旺，无冲破，主人财厚食丰，福量宽弘，肥体肥大，优游自足，有子息，有寿考。四柱见财食在
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 149
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○飞天禄马《喜忌篇》云：若逢伤官月建，如凶处未必为凶，内有倒禄飞冲，忌官星，亦嫌羁绊，以格唯有四日：庚子、壬子、辛亥、癸亥，生十月、十一月冬水纯阴，柱无财官，方用。又须月时或年与日同支，方能并冲。忌官星显露，禄难飞冲，合神羁绊，不能飞冲，要柱中有一字合住禄马，方不走了贵气。喜伤官、食神及干支本运。假令庚子日、庚以丁火为官，在子月生，是伤官月建，可谓凶处，若子字多，冲出午中丁火，则庚日得官星，未可便以凶论，柱要有未或寅、戌，但得一字合午为妙，若有丑羁绊，子去贪合，不能冲午中之禄
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 150
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○倒冲禄伤官月建，内有倒冲禄马格，喜忌与飞天同，惟时不论。此格止有二日：丙午、丁巳，夏日纯阳，丙以癸水为官，要柱中午多有力，冲出子中癸水，则丙日得官星；丁以壬水为官，要柱中巳多有力，冲出亥中壬水，则丁日得官星。更得丑寅或申辰卯未，但有一字合住禄马为妙，多则不中。丙午日怕未，丁巳日怕申辰等字羁绊，则巳午贪合，不能冲子亥中之禄，柱有亥壬子癸为煞官显露，则减分数，岁运同。古歌云：丙日无官局午多，倒冲禄马癸官和，不逢未字来羁绊，癸子俱无福嵯峨。又：倒冲贵气不同伦，丙午飞冲子禄神，癸水
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 151
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○福星贵人乃甲人见丙寅、丙子，乙人见丁亥、丁丑，遁得本旬中真食神，主享受自然，遇者非贵亦富，余倒推。前人作《甲丙相邀入虎乡歌》，是以年论，故有丙寅、丙子，若以日遁则非。 ○食神同窠谓甲食丙，甲子人见丙子之类，十三位即同，乃本家物也，得此者不贵即富，月不如日，日不如时，若互换生旺带禄，贵者大贵。如韩魏公：戊申、庚申、庚辰、庚辰；宋秦桧：庚午、己丑、乙卯、壬午；又明王崇古少保：乙亥、辛巳、戊申、庚申是也。如倒食本家，甲子年见壬子时，庚子年见戊子时，亦贵，但损子。
+    ○食神带合谓甲人
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 152
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 39
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○红鸾天印谓丙食戊而得戊戌，辛食癸而得癸丑，壬甲辰，乙丁未，日时得之，主富贵。 ○墨池涌泉谓辛巳得癸巳、癸亥。如陈朝议：辛巳、壬辰、癸巳、癸亥是也。推此类，丙寅爱戊寅，戊申爱庚申，己巳爱辛亥，庚午爱壬申，甲戌爱丙寅，壬辰爱甲申，皆同此格，主文贵。
+    ○论阳刃（前论羊刃煞与此参看）阳者，阴阳之阳，刃者，刀刃之刃，即禄前一位，言旺越其分，故险。窃详甲人见卯，卯中有乙木，乙为甲弟，能劫其兄之财，冲去酉中辛官，合其庚妻，庚乃甲之七煞，劫财冲官合熬，所以至凶。惟甲丙戊庚壬五阳干有刃，乙丁
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 155
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 66
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论建禄（此与前论禄同参）建禄者，乃甲日寅月，乙日卯月，五行临官之位也。甲用金为官，金绝在寅，用土为财，土病于寅，以身旺太过，财官俱不得，若别无财官可取，再遇劫夺，马既不扶，禄又不养，多主贫贱，颇宜时带偏官、偏财或食神，更看年时上露者取用，若略见财官，反争夺不吉。凡命月令建禄，难招祖业，必主平生见财不聚，却病少寿长，行运再见比肩，克妻妨父损子，或官非破财，或因妻孥财帛争夺。如八字内外元有财官，引旺得地，官星有助，运临官星有气之地，亦贵；财星有助，运临财旺之地，亦富；财官俱旺，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 158
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 60
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论性情相貌夫贵贱观乎八字，性情应乎五行。善、恶、仁、义、礼、智、信，心之所主；喜、怒、哀、乐、爱、恶、欲，性之所生。东方震位木，号青龙，名曰曲直，五常主仁。其色青，其味酸，其性直，其情和。旺相主有博爱恻隐之心，慈祥恺悌之意；济物利人，恤孤念寡，直朴清高，行藏慷慨；丰姿秀丽，骨格修长，手足纤腻，口尖发美，面色青白，语句轩昂，此则木盛多仁之义。休囚主瘦长发少，拗性偏心，嫉妒不仁，此则木衰情寡之义也。死绝则眉眼不正，悭吝鄙啬，肌肉干燥，项长喉结，行坐不稳，身多欹侧。遇火色带赤，见
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 159
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 56
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论疾病先知五脏六腑所属干支歌诀：甲胆乙肝丙小肠，丁心戊胃己脾乡；庚是大肠辛属肺，壬系膀胱癸肾藏；三焦亦向壬中寄，包络同归入癸乡。又曰：甲头乙顶丙肩求，丁心戊肋己属腹；庚是脐轮辛属股，壬胫癸足一身由。又曰：子属膀胱水道耳，丑为胞肚及脾乡；寅胆发脉并两手，卯本十指内肝方；辰土为皮肩胸类，已面咽齿下宾肛；午火精神司眼目，未土胃腕隔脊梁；申金大肠经络肺，酉中精血小肠藏；戌土命门腿踝足，亥水为头及肾囊；若依此法推人病，歧伯雷公也播扬。又曰：午头巳未两肩均，左右二膊是辰申；卯酉双肋寅戌
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 160
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论女命或问妇人何利？利在夫星。夫利，其妇必利；夫困，其妇必困。妇人从夫，先观夫星以定出身之贵贱，再看子星以察晚年之荣辱。官煞财得地，夫利也；食神得地，子利也。夫利则出身富贵，一生享福；子利则晚年厚养，褒宠诰封。然亦有旺夫者，以食生财，财生官故耳。反是则否。女命以克我者为夫，我生者为子，皆要得时，乘生旺之气。若旺气只聚于时，亦可用官为夫，不要见煞；用煞为夫，不要见官，一位为好。有两位官星，无煞以杂之，四柱纯煞，无官以混之，俱为良妇。更得本身自旺尤佳，但旺不可太过。食为子息。引
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 161
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○纯纯者一也。如纯一官星，或纯一煞星，有财有印，不值刑冲，不相混杂是也。如癸已、戊午、辛酉、丙申，本身专禄，旺不从化。辛用丙官为夫星，五月火旺夫健。丙用癸为官，坐贵见戊为食，同归禄于巳。辛金生癸水为子，引入申时长生之地。天干癸戊辛丙，水火既济；地支巳午酉申，拱夹财库，所以嫁夫为官，食天禄，夫荣子贵之命。
+    ○和和者恬静也。如身柔弱，独有一位夫星，柱无冲破、攻击之神，禀其中和之气，则为和也。如壬辰、辛亥、己卯、己巳，己用甲为夫，亥乃生长之地，得天时地利；甲以辛为官，金生于已，已以
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 162
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 45
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○清清者洁净之称。女命或一官一煞，不相混杂，谓之清。要夫星得时，柱有财生官，有印助身，无一点混浊之气，方为清贵。如已未、壬申、乙未、甲申，乙以庚为夫，庚禄到申；以丁为子，丁旺于未；以壬为印，壬生于申。又坐下支神为乙木之财，财旺则能生官，四柱无刑冲破败。经云：财官印绶三般物，女命逢之必旺夫。故为夫人之命。
+    ○贵贵者尊荣之号。命中有官星，得其财气以相资，三奇得其宗，四柱不植鬼病，乃女命尧舜也。经云：无煞女人之命，一贵可作良人。又云：女命无煞逢二德，可两国之封。天德者，非独天月二德
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 164
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○浊浊者混也。乃五行失位，水土互伤，其身太旺，正夫不显，偏夫丛杂，柱多分别，无财官印食，为下贱村浊，或娼妓婢妾，淫巧之人。如己亥、乙亥、癸丑、己未，癸水生十月大泛，癸以戊为夫不显，时引己未是偏夫，嫌丑未皆有土混杂，柱中无财，乙木为食神干旺，已土受克，鬼败临身，五行失位，主先清后浊，不能享福。
+    ○滥滥者婪也。谓柱中明有夫多，暗者财旺，干支又多带煞，必因酒色，私暗得财。此等之命，或为奴婢，或克夫再嫁。如庚寅、丙戌、庚申，丁亥，庚申，八专自旺，丙火为夫，寅戌会局时干，又丁爱重火情，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 166
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 44
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○娼娼者妓也。乃身旺夫绝，官衰食盛，或柱中不见官煞，或有而伤官伤尽，或官煞混乱而食神盛旺，此必娼妓之命，否则，为师尼婢妾，克夫淫奔。如丁亥、庚戌、戊辰、庚申，戊以甲为夫，九月失时无气，又被庚克绝。时引入申以庚为食，建禄在申。戊辰魁罡，生申太旺。亥中壬财亦旺，谓之身旺逢生，贪食贪财，夫绝而为秀丽娼也。
+    ○淫淫者沃也。乃本身得地，夫星明暗交集。谓日干自旺，柱中皆官煞是也。在干者为明，在支者为暗。四柱太过，如一丁见三壬及辰子多之例，谓之交集，于人无所不纳也。如戊辰、壬辰、壬戌、癸亥
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 168
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○旺夫克子夫女人有旺夫伤子者何？此法皆时上推之，时为归宿之地，夫子二星引归于时，夫星生旺，子星衰败是也。如一命：丙戌、丙申、丁巳、辛亥，丁坐巳自旺，以壬水为夫，时上乃是夫星临官之地，月支申金乃夫星长生之地。以辛金为财，七月金旺，二丙相比，皆坐夫之财印，故主夫聪秀富贵。丁以戊为子息之垣，引至时上见亥，亥中甲木能克戊土，乃子星被克而难得也，故主旺夫伤子。余仿此推。
+    ○旺子伤夫有旺子伤夫者何？此法专以月时推之，谓克我者为官为夫，有气得时，则夫发福；若支干失位不得月气，柱中又逢冲克，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 170
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○伤夫克子伤夫克子者，乃夫星干支失位，生月失时，柱中又逢冲克，时支亦不生扶，兼且印绶重逢盗夫之气，克子之甚，夫子不能旺，反绝于时是也。如一命：丙子、庚子、乙亥、丙子，乙木以庚金为夫星，十一月金寒水冷，又金死子地，支亥子水盗金气尽，柱无土生助伤官，木多，故伤其夫。乙木以丙火为子，引至子时，乃水旺火灭之地，虽年时干二火被群水相克，夫子皆亡，故曰伤夫克子。余仿此推。
+    ○安静守分安静守分，乃夫星有气，日干自旺，相停无克，不值刑冲，财食得所者是也，如一命：癸巳、庚申、乙卯、丁亥，乙坐卯
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 172
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○横夭少年夫横夭少年者，造化之穷绝，格局之变异也。有悬梁溺水、血产少亡、被人杀死，若此者何？乃身弱而遇煞重，煞多克身，又带刑冲破败之类；或命中元有官星受伤，行运复遇官乡；或无官见伤，运复临官之类；或带刃无制，运行合刃之地，及亡神劫煞等类，此皆横夭类也。不独女命有之，男命亦同。如一命：丁卯、癸丑、庚辰、丙子，庚用丁为官，被癸水子辰伤官叠遇，克之太重，水多金沉，一交丁巳运，伤官见官，又会丙煞克身，故溺水之害。
+    ○福寿两备夫福寿两备者，造化之中和，格局之纯粹也。有享用一生，永锡难老
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 174
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○正偏自处夫正偏自处者何也？乃夫妇相合，复遇比肩分争，如一位夫星有两位妻星相合，谓之争合。若本身自旺，彼身值衰，四柱不冲，则我正而彼偏矣。盖我生旺有气，则夫从我为正；我身衰而别位旺，则夫从别位，我反为偏，谓之彼旺争去我夫，我只得为偏。或自旺太过，柱无夫星者亦为偏；或官煞混杂，或伤官太重，亦为偏，更淫滥。如一命：壬子、丙午、辛酉、辛卯，辛用丙为夫星，我坐酉支，专禄自旺，虽时引辛卯之金，彼却无力，故我为正而彼为偏，此为二女争夫，正偏自处。又：癸未、壬戌、癸巳、壬子，癸用土为夫，癸
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 176
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○招嫁不定夫招嫁不定者何也？乃目令中有夫星，透干与己相合，己身从伏，其夫星却无气，时引夫星或煞星却乘旺地求克己身，又从伏便夫，故谓之招嫁不定。若夫星不旺，或受克制，必嫁夫迟，或嫁夫不明，或夫不济事，或有外情。如一命：癸酉、甲子、己未、乙亥，己用甲为夫，生于十一月，失时不旺，时逢亥字，乃甲木长生，是夫旺也，却不合，又被乙木制己未，未为乙木库地。甲生子月，夫坐败地，不显，时上乙亥，亥中又有生长之甲，欲甲又招乙也，此招嫁不定，余仿此推。论曰：凡观阴命，先推夫子兴衰，欲究荣枯，次辨日
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 177
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 64
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论小儿夫观小儿之命，如种花木之法。善培养者，则根苗茂盛，花果兴隆；不善培养者反是。何以言之？凡人种花木，必以土栽培其根，根实则苗盛；必以水浇灌其体，体壮则花茂；赖阳火温照其花，花实则果成；假金刃修伐其枝，枝清则本固。设若土虚根浅，水少苗枯，日暴花焦，风摧果落，是皆失中和培养之气，其花木安有不枯之理乎？人之八字，以年为根，月为苗，日为花，时为果，其理皆然。故推小儿之命，要日干有气，月令生扶，年上栽根，印绶无伤，财官有制，七煞得化，伤官遇合，气禀中和，不值刑冲破害，此则易养长寿
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 178
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○论六亲或问：阴阳何所配合为夫妇而成六亲？答云：如甲以乙为妹，配以庚金为妻；丙以丁为妹，配以壬水为妻；戊以己配甲；庚以辛配丙；壬以癸配戊，一阴一阳配成夫妇，有夫妇然后有父子，有父子然后有兄弟。六亲者，父母兄弟妻子也。六甲娶己为妻，甲己合而生庚辛为子。男取克干为子，女取干生为息，则己者庚辛之母，庚为父，乙为母，故谓阴干生我为母，我克阳干者为父，克我者为官为子，我克者为财为妻，比和者为兄弟姊妹，生我妻阴干为文母，妻克阳干为丈人，克我女者为女婿，食神为孙，其余六亲俱于十干变化取用。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 179
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○定妇人孕生男女诀曰：父母岁数两头安，受胎之月中心取；乾坎艮震为男儿，巽离坤兑总属女。假父母年双为折，受胎月只为单，成坎卦，定男；父母年只为单，受胎月双为拆，成离卦，定女。父年上，母年下，胎月中，余准此推。又一法：以大衍之数推之，诀曰：七七四十九，问娘何月有；除却母生年，单奇双是偶；奇偶若不常，寿命不长久。假先下四十九数于算盘，乃加上母受胎月数，总得若干数。若值正月胎，是五十数，其母三十一除去，止余十九数，九则为单，单则男。若单生女，双生男，主夭折。卷八
+    ○六甲日甲子时断（以
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 180
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日乙丑时断（以下六甲所忌月同上，时忌并论）六甲日生时乙丑，劫财羊刃不宜有；柱中逢火带辛金，制伏和平贵亦久。甲日乙丑时，辛金为官，己土为财，丑中暗己，被明乙劫夺，乙丑金神，若年日时合成火局，得制伏，主德性纯和而贵；无火凶狠；如合水局凶恶损家。甲子日乙丑时，连珠得合妻贤子贵。春月身旺，财帛破散。夏月甲衰，金神有制，贵。秋生，近侍之贵。丑月最吉，亥、子多凶。甲寅日乙丑时，春贫，秋贵，冬富，夏火制金神，吉。甲辰日乙丑时，主富厚有财，通火气年月，贵。甲午日乙丑时，金神入火局，身弱
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 182
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日丙寅时断六甲日生时丙寅，时居日禄坐食神；旺壬不见无刑破，福寿康宁富贵人。甲日丙寅时，甲木寅上健旺，丙为食神，寿星得地，柱无壬夺癸克，通火木月气者贵，忌见官星及申冲禄。甲子日丙寅时，日禄居时，青云得路，年月无庚辛金，贵；通木火气极贵。午月行东北方运，五六品贵。申月，归禄逢煞，主大权贵；水局平常。若年月与日时同，大贵。甲寅日丙寅时，年月无巳酉辛丑字，是归禄格，位至一二品。纯木火带土，富贵双全，六卿之职。丙子及亥未，卯月，四五品贵；行西南方运，最吉。亦有酉、丑月贵者，看干透
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 183
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日丁卯时断六甲日生时丁卯，伤官羊刃真当恼；纵然月气有扶持，未免为人性不好。甲日丁卯时，伤官羊刃，甲用辛为官，丁字伤之，用巳为财，卯中乙木劫之，主为人凶狠。若柱透辛，伤官见官，刑害百端，运气凶险，不得善终；柱有七煞合刃，行财官印绶，大贵。甲子日丁卯时，克剥悭吝，作事进退，不免刑伤妻子，或死他乡。生辰戌丑未月，贵。卯月凶，柱有官煞制亦吉。甲寅日丁卯时，年月木火相停，通明之象，贵。月令坐丑、未贵。乙亥月，文章冠世，官至三品，干支金水全，官印双显贵。甲辰日丁卯时，财帛满目，生计
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 184
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日戊辰时断六甲日生时戊辰，天财坐库会滋身；富商巨贾田园盛，月带辛金名利成。甲日戊辰时，天财坐库，时上偏财，遇龙守库，主为商贾发财，田园广盛。八月带禄，财官俱有，富贵双全。忌比肩、羊刃夺财。甲子日戊辰时，主移根换叶，改姓易宗，妻贤子孝，作高命论。未月，行北方运，贵。酉月，北方运，大贵。甲寅日戊辰时，龙吟虎啸格，贵。纯辰，中贵。纯寅康寿。亥卯未三合，财旺身强，大贵。酉丑申年月亦吉。甲辰日戊辰时，刑冲发财，妻重子晚，双亲有克。酉月三四品贵。丑月亦贵。地支纯辰，大贵。甲午日戊辰
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 185
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日己巳时断六甲日生时己巳，病中财物实难任；月通火气方为贵，若是身衰亦不禁。甲日己巳时，食旺身衰，甲木巳上病，虽有暗戊为财，丙为食，不通月气，难任其福。甲己为平头煞，生逢春月，身旺财衰，主骨肉参商，平生作事，弄巧成拙。己巳金神有火制伏，巳酉丑合局，行南方运，名重禄高。柱不见火，残害化气，主凶恶暴亡。甲子日己巳时，先贫后富，祖业轻微，妻勤子拗。生寅未巳丑年月，虽贵防疾。申子辰戌，大贵。甲寅日己巳时，时日相刑，忧伤妻子。生火年月，有明断之才，掌兵权之职。戊子年月，承袭祖荫，主
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 186
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日庚午时断六甲日生时庚午，死处又遭鬼当头；丁丙不逢生再弱，忙忙贫苦度春秋。甲日庚午时，死地逢鬼，甲木死于午，午头见庚为鬼，不通月气，无救助者，带疾寿促。月逢丙寅，身旺庚绝则吉，亦主有始无终。若通木气，主方面，通水气，行东方运，止郎官。甲子日庚午时，时日相冲，忧伤妻子，平常。若子午年月及寅戌月生，行西北方运，金紫风宪。甲寅日庚午时，春月有寿。夏月伤官伤尽，财源进退。申有权，酉反复。冬月伤妻子。子未年月煞助印生，四品。甲辰日庚午时，田园乐赏。寅月，行金运，风宪。甲午日庚午时
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 187
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日辛未时断六甲日生辛未时，官星坐贵最为奇；月逢金气须荣贵，财禄相停敢断之。甲日辛未时，时贵逢官，甲见辛为官，未有天乙贵；己为财，未中己土得气，若通木气月，有寄托者富；通土气月者，富贵双全。甲子日辛未时，辰戌丑未及己酉月，土金地方，文贵显达。甲寅日辛未时，寅申月贵。纯酉丑年月，大贵。甲辰日辛未时，辰戌丑未月富。巳酉丑子年月贵。甲午日辛未时，春吉，夏凶，秋身弱难任官禄，冬贵。甲申日辛未时，春吉，夏辛苦，秋显达，冬根基别立贵。子丑月大贵。甲戌日辛未时，先刑后贵。寅卯酉丑年月贵
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 188
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 44
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日壬申时断六甲生时遇壬申，明伤暗鬼坐其身；柱无丙戊秋冬旺，坎□飘流无定人。甲日壬申时，甲木绝在申，申土壬水长生，庚金建禄，明袅暗鬼，甲旺化鬼为官，犹不免凶暴。若生秋庚旺，生冬壬旺，柱无丙戊制伏，漂流之象。若巳午月，大吉。强横透庚，作煞论，运行北方，贵。甲子日壬申时，申子辰亥月，水泛木漂，移根换叶，玉堂金马之贵。水土运，凶。甲寅日壬申时，旺中有失。辰戌丑未月勾陈得位；寅、午、戌月，偏官有制；秋月，行东南运，俱贵。甲辰日壬申时，寅辰年月，文章显贵。透丙戊尤美。甲午日壬申时，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 189
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日癸酉时断六甲日生时癸酉，暗官明印未希奇；柱中有火无刑破，元命胎生贵可知。甲日癸酉时，胎生元命，甲木酉上受胎，为甲生气，明癸为印，暗辛为官，有巳土破印，不贵。酉为金神，若柱有寅戌，通火气者，德性纯厚而贵。无火见水，凶暴残疾。甲子日癸酉时，春生木旺；酉月官纯，贵。若混之以煞，或煞多，柱中全无火气，凶。甲寅日癸酉时，春生寿，夏反复。秋性不定，多凶。冬平常。丑未月贵。甲辰日癸酉时，子戌年月，有财有官，贵。甲午日癸酉时，主孤。生寅午戌月，行东北方郎官。甲申日癸酉时，平常。通火气
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 190
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日甲戌时断六甲日生时甲戌，木遭火局气不舒；为了好善福平常，父母并伤诚可??。甲日甲戌时，甲用丙为食，辛为官，戌上食神入火局，辛有余气，身被火焚，为人好善，平常衣禄。甲以戊为父，癸为母，戌上旺甲伤戊，内有暗戊伤癸，戊癸受克，难为二亲。甲子日甲戌时，春寿，夏暴，秋贵，冬，移根换叶，柱见纯亥夹角，虽贵终凶。辰戌丑未，杂气财官，亦吉。甲寅日甲戌时，比肩争禄，木气遭焚，四十后渐不如前。甲丙申子年月，大贵。纯戌风宪，午月，行水火运，七八品贵。甲辰日甲戌时，财源稳厚，多凶。春月金火运
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 191
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六甲日乙亥时断六甲日生时乙亥，羊刃反伤为祸害；财官辛戊不相逢，只恐功名不亨泰。甲日乙亥时，甲木亥上长生有旺，乙为刃，制克学堂，壬为倒食，亥上建禄。甲以金为官，戊己为财，辛金沐浴，戊己衰绝，不能作福。生巳酉丑月及见辛，柱有戊字，贵。余虽聪明，功名不遂，艺术人也。甲子日乙亥时，成趋乾格，贵。如生申月，煞旺合刃，权贵。酉月正官，柱稍得土助，大贵。辰巳丑未戌月俱吉。年月纯卯，刃旺则凶。甲寅日乙亥时，辰戌丑未月，富。申酉月，贵，冬，平常。若寅亥月，高贵。甲辰日乙亥时，酉月正官，最贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 192
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日丙子时断六乙日生时丙子，伤官坐贵福不全；柱中不见官刑破，方是平生贵禄缘。乙日丙子时，六乙鼠贵。乙用庚为官，死于子；见丙为伤，丙暗邀辛化煞为权，柱中不见庚辛，无丑绊午冲，方成格，贵。若有上忌及不通月气，无救助者，暴恶贫下，有疾寿促。乙丑日丙子时，身弱平常，无午穿冲，贤德温厚。申酉年月，风宪。寅子，贵显。忌丙寅、己未、甲戌、己丑等月，主凶刑恶死。乙卯日丙子时，高。辰戌丑未亥年月，不见官星，贵。乙巳日丙子时，吉。若巳午年月，寿促，不然，身孤劳碌，纯土，财旺生官，行西运；子辰
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 193
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日丁丑时断（以下六乙日所忌月分与上同，时亦并论）六乙日生时丁丑，食神相助遇财官；月通金气化为福，不是寻常下贱看。乙日丁丑时，食会财官，丁为食，庚为官，己为财，丑中有辛金合局，己土得位，如有倚托者，贵。通金气月化者，富厚尊重；不通月气，平常。乙丑日丁丑时，秋生有权；主带疾；夏吉，冬平；春旺，贵寿。乙卯日丁丑时，亥月，身旺见辛偏官，柱有丁制，风宪武职。乙巳日丁丑时生，亥卯未寅月，贵。通金气月有倚托者，福重。乙未日丁丑时，辰戌丑未月，富。春寿长，秋名利，夏贫下，冬平常，申年月
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 194
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日戊寅时断六乙日生时戊寅，败财背禄实伤身；有心无力多成败，止是平常衣禄人。六乙日戊寅时，败财背禄，乙用庚为官，寅中有丙，伤官背禄：用戊己为财，寅中甲旺财败，为人作事成败平常。通土气者吉。乙丑日戊寅时高，生子年戌月者，富贵。辰戌，行木火运，威权。乙卯日戊寅时，刑中发福。秋生贵。酉年遇辰戌丑未月，富。卯月建禄，午月印生，透官印，俱吉。乙巳日戊寅时，孤克平常。若年月申庚，正官；丑辛，七煞，俱贵。辰月，北方运，吉。乙未日戊寅时，春生有寿。秋贵显。夏平常，冬反复。辰戌且未，俱吉。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 195
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日己卯时断六乙日生逢己卯，时居日禄财临好；旺通木气贵无疑，酉土辛重亦可恼。乙日己卯时，禄入庙堂，乙木逢卯建禄，为人秀丽，通木火者贵。见庚辛为伤禄破命，患目疾。若生巳酉丑月，平常衣禄。辰戌丑未，吉。申月亦吉。乙丑日己卯时高，中年大福。春生，身太旺，孤。夏贫。秋有疾。冬温厚。柱不见辛金，吉。若辰戌丑未月，金紫贵。乙卯日己卯时高，春生旺，为僧道，富足。夏平常，不见辛金，吉。秋带疾。冬温厚。卯丑年月，显达高寿。乙巳日己卯时，春孤贫，夏平，秋带疾，冬贵。午辰年月、地支一路相连，尤
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 196
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日庚辰时断六乙日生时庚辰，水白金清化象真；壬从辛酉通官贵，却防目疾减精神。乙日庚辰时，妻贤子贵。乙合庚化金，若通申巳酉丑月，为人秀丽，主贵，却防目疾。如不见化，以壬为印，庚为官，辰土癸水合局，乙木有托，行东南运，贵显平和。乙丑日庚辰时，破祖克父，身弱忌疾，通月气者，贵。子申年月，天干透甲戊，合三奇，大贵。乙卯日庚辰时，富贵。通火土年月，大贵。乙巳日庚辰时，作事成败，僧道富贵带疾。常人刑克妻子。申子辰卯巳年月，贵。乙未日庚辰时，亥卯身，身旺；巳申，官旺，天干透煞印，皆贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 197
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日辛巳时断六乙日生时辛巳，金木交争主不仁；有化月中身旺贵，不通无化恐伤人。乙日辛巳时，暗金交争，是非日有，若通身旺月，有倚托，化鬼为官，行身旺运，贵。通木气月，行金旺运，大贵。通金气月，行身旺运，亦贵。乙丑日辛巳时，先杂后纯，生寅午丙丁年月，偏官有制，作高命看。巳申酉丑月，官煞重叠，多带疾从煞，亦吉。惟身强主兵权，有名誉。乙卯日辛巳时，春生，身强煞浅，大贵。夏平常。秋，官煞旺；冬，印绶旺，俱吉。秋不如冬。乙巳日辛巳时，克妻，妻子俱晚。若巳酉丑月，木柔金重，主带疾。不然寿
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 198
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日壬午时断六乙日生时壬午，印绶生身财食聚；月通水木禄丰盈，不通月气平常数。乙日壬午时，印绶学堂，乙木长生在午，见壬为印，用丁为食，己为财，午上丁己建旺，若通水月气者，文章秀丽；不通月气，平常衣禄，通运亦好。乙丑日壬午时，春夏多富贵。秋冬官印，或纯煞透干，尤吉。乙卯日壬午时高，丑月，入杂气财官；申酉月，身煞两停，俱主显贵。纯午酉年月，三四品；辰戌，平常。乙巳日壬午时吉，春夏富贵。秋冬平常。乙未日壬午时，寅卯身旺，亥子印旺，丑月财官印三奇，俱主贵显。申月正官，尤吉，若庚午、
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 199
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 48
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日癸未时断六乙日生时癸未，入墓之中遇倒伤；马劣财微食见克，一生衣禄主平常。乙日癸未时，乙以癸为倒食，未中丁火食神，己土偏财，破癸癸倒未中丁火之食，平常衣禄。通土气月则吉。乙丑日癸未时，凶刑孤独，年月通土气，吉。乙卯日癸未时，改祖离亲，就妻为家。午未年月，贵。春尤贵。乙巳日癸未时，不贵则富，先难后易。纯午、三品贵。辰戌丑月，俱吉。乙未日癸未时，春，身旺刑伤。秋，官煞旺，科名有分。冬安稳。夏平常。乙酉日癸未时，身坐煞，春，身旺，吉。夏，身弱煞衰，贫。秋，煞旺，身能从化，贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 200
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日甲申时断六乙日生时甲申，官星得印位生成；月中通气无冲破，必定荣华仕路人。乙日甲申时，官印生身，乙用庚为官，壬为印，申上庚旺壬生，身有寄托，通金水月运者贵；不通，身弱官重，虽贵不永。乙丑日甲申时高，纯子辰年月，行东南运，大贵。巳酉丑，贵；中防凶。午未纯，吉。亥卯亦吉。余月平平。乙卯日甲申时，化贵。月通水气无伤破者，贵，不然，富。乙巳日甲申时，身强官旺。春，聪明显达，官至四品。夏，身心劳碌。秋冬眼疾。午年月，行财运，贵。乙未日甲申时，生未酉亥月，聪俊特达，官至二三品。丙丁
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 201
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日乙酉时断六乙日生时乙酉，得逢金局火为奇；用神遇木重重见，鬼绝寿伤反无依。乙日乙酉时，身绝鬼旺，乙以辛为鬼，酉上辛旺乙绝。若通巳酉丑月，化金局者贵。如用神坐木，身旺不化，又见于酉，不夭必贫。乙丑日乙酉时高，生巳酉丑月，合金局，更行西运，大贵。寅午戌月，贫下。亥卯未月，吉。纯子年月，行南运，一二品贵。寅月火金，七品贵。申月水木，金紫贵。乙卯日乙酉时，月通金局者贵。未寅年月，官至一二品。乙巳日乙酉时，春吉。夏，伤官有制，好。秋，木弱金重，夭，不然有疾。冬，福厚亦夭。乙未日乙
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 202
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日丙戌时断六乙日生时丙戌，鬼败临身有损伤；若不气通身旺月，孤贫劳碌苦难当。乙日丙戌时，鬼败临身，乙用庚为官，见丙背禄，戌中有辛余气、丙丁库，食神制煞，若柱透庚，伤官见官，为祸百端；年月有寅午，丙火合局，即一木叠逢火位，主人傲物气高，衣禄平常，残疾，不然寿促。通身旺月气者，吉。乙丑日丙戌时，春身旺，吉。夏，伤官太重。秋，劳力辛苦。冬亥子，印绶带伤官，极贵。戌月，木火运，七品贵。纯戌年月，天干透庚丙者，大贵。寅午合火者夭。乙卯日丙戌时，寅卯月，运西运，六七品贵。子月印绶；丑
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 203
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六乙日丁亥时断六乙日生丁亥时，食神印绶亦奇哉；月气水土无财贵，切忌伤妻与子灾。乙日丁亥时，死处逢生，乙木死，亥却气壬水为生气印绶，乙用丁为食，亥中丁坐无气，喜甲木生，助丁食为福。如遇金局，行水运者，防目疾。四柱见财，或行财运、贪财坏印，主破财。戊为财为妻，庚为官为子，亥上庚绝土病，妻衰子少。乙丑日丁亥时秀，生壬子申未卯月，干透财印者，才德兼全，职在风宪。年月干支纯金，身衰煞旺，主凶死。乙卯日丁亥时，巳酉丑月偏官，申月正官，俱贵。亥月，东南运，风宪。未月，三合木局，大贵。乙未
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 204
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日戊子时断六丙日生时戊子，财官生旺遇食神；月气相扶为最贵，身衰夫倚是常人。丙日戊子时，官旺财生，丙用辛为财，癸为官，丙合辛，戊合癸，子中癸旺辛生，丙火无气。若通火气，月有倚托者贵；不通贫下。通木气亦吉。丙子日戊子时，寅巳卯未月，木能生火，大贵。冬月，丙火无气，贫夭。戌月，行火土运，五六品贵。忌丁巳月，夭；己酉月，破家失土，身贱。丙寅日戊子时，生卯丑月，清贵。寅戌，平常。夏月身旺，柱有水金方吉。子月正官，大贵。忌癸巳月，刑；癸亥月，恶死；己酉月，大败。丙辰日戊子时，丙辰为
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 205
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日己丑时断（以下六丙日所忌月分与上同。时亦并论）六丙日生时己丑，官鬼相生禄不成；若见申庚并乙旺，不求财禄过平生。丙日己丑时，伤官背禄，傲物志高。丙用癸为官，丑中有癸余气，被明暗土伤，柱透癸为祸。若见庚辛，伤官生财，却为福庆。丙子日己丑时，寅亥申辰年月，天干透财印食者贵。丙寅日己丑时，平常，生乙酉月，正财格，有乙庚健旺者贵。巳丑年月，干透官印者贵。丙辰日己丑时，申亥年月，化水则吉；不化寿促，戌月冲库，无人不发。寅午身旺，成火上格，大贵。丙午日己丑时，春月，行火金运，官至极
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 206
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日庚寅时断六丙日生时庚寅，学堂生气助其身；运中有合通金局，必是荣华富贵人。丙日庚寅时，生气学堂，丙寅上长生，文章秀气；丙以庚辛为财，寅上庚绝丙旺。若通月气金局者财旺，富贵双全，喜西方运；不通局者财薄。两子日庚寅时，生子月，近贵。癸酉月，行水木运，高贵；火木运，五品以上贵。未申、癸午年月，身居武职，大贵，寿浅。丙寅日庚寅时，贵不久。生酉申年月，世裔冷职。子丑寅未，贵显。纯寅尤吉。丙辰日庚寅时，生寅午戌未年月，妻贤子孝，富贵双全。申子，行北运，大贵。酉丑，富。丙午日庚寅时，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 207
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日辛卯时断六丙日生时辛卯，旺木双妻为人巧；不旺化水死乡中，色欲随身多爱好。丙日辛卯时，败财逢合，丙日卯上沐浴，见辛合神。若身甚旺不得化者，只是为人无礼而贪色欲，却好如身弱化水，卯上水死，秀而不实，为人惯巧虚诈。惟丙午、丙寅、春月生，身旺不化者，文贵显秀。丙子日辛卯时，子卯相刑，伤妻害子。年月同，主魁名，近侍之贵。寅、午、丑、戌、天干地支俱合者大贵。丙寅日辛卯时，无祖自立，有肢体疾。寅卯未子月，贵。余月平，岁运同。丙辰日辛卯时，生寅戌月，天月二德，高。巳月，行北方运，贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 208
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日壬辰时断六丙日生时壬辰，煞星坐库火难亲；身强反主为官贵，如弱定为贫夭人。丙日壬辰时，水火未济。丙见壬偏官，辰上壬水合局，火死无光。若生春夏，身旺化鬼为官，复行身旺运，贵。秋冬，身衰鬼旺，更无倚托，贫下残疾。丙子日壬辰时，辰戌丑未月，偏官有制，吉。亥卯年月，富贵。寅午，行子运；子，行寅午运，俱贵。不然僧道。丙寅日壬辰时，身煞两旺，寅卯辰丑未年月，大贵。巳午戌年月亦贵。丙辰日壬辰时，身孤有财，主恶死。春生，行北运；夏，东运，俱贵。秋，南运，官至三品。丙午日壬辰时贵，身旺煞
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 209
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日癸巳时断六丙日生时癸巳，日禄归时又遇官；不见巳寅壬癸月，功名唾于得何难。丙日癸巳时，日禄归时，丙火巳上见癸为正官，坐贵。柱无壬己并寅亥，冲刑者贵，有则否。官通水旺，丙通木旺，无有不贵。丙子日癸巳时，丙禄在已，癸禄在巳，互换禄马，岁月无壬已寅亥冲破，近侍风宪，位至公侯。丙寅日癸巳时，春月，干支无水，文进绣衣，荣妻荫子。卯戌申酉年月，二三品贵。丙辰日癸巳时，不利祖宗。酉戌寅丑年月，魁罡格，通身旺，贵。丙午日癸巳时，丑辰月，杂气财官，贵显。寅月，丙长生；已月，丙建禄，天干透
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 210
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日甲午时断六丙日生时甲午，格入伏晶要见土；乐逢戊巳最为祥，火炎太过多辛苦。丙日甲午时，丙火午上太旺，要见己合甲化土，火气伏晶，明照四方，若不见土难享福。生辰戌丑未月，上伏火气，造化得中贵。年月干上再透戊己，运行金水，贵；不透，通土气运亦贵。通，忌刑破。丙子日甲午时，春生吉；夏无依，秋财旺，冬官贵，少子晚成，火土运发达。丙寅日甲午时，生辰戌丑未月，上伏火气，造化得中贵。午月，火太旺，凶。丙辰日甲午时，寅卯印助，申酉印旺，巳午身旺，亥子官旺，俱吉。然以火土为重，无则福薄。未
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 211
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日乙未时断六丙日生时乙未，火月生人多富贵；乙为正印局中逢，不见财星方可慰。丙日乙未时，生气印绶，丙见未为印库，若通火气月，贵；不通，柱无财，不行财运，亦作高命论，见则贪财坏印，主平常。冬生，官旺辅印，贵显。丙子日乙未时，春，印绶稳厚。夏平稳，秋反复，冬贵，岁运同。丙寅日乙未时，生卯未月，印绶格，智慧丰厚，难为妻子。寅巳子辰年月，贵。丙辰日乙未时，春吉，夏平稳，秋劳碌，冬贵显。巳午月，行西北运，六七品贵。丙午日乙未时，不贵则富。午戌年月，职居风宪。申子辰，官星制刃；亥印未
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 212
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日丙申时断六丙日生时丙申，身衰财破比肩分；暗中鬼旺七煞地，无救何能家道殷。丙日丙申时，财旺身衰，丙逢庚为财，壬为鬼，申庚旺壬生，丙火无气，财须比肩分夺。若不通身旺月者贫下；有倚托救助，又通身旺月，运再同，贵。丙子日丙申时，若通火气及寅卯月再行身旺运，吉。年月纯金，弃命就财，亦以吉论。丙寅日丙申时，时日对冲，忧伤妻子，通火气月，行身旺运，吉，亥月，手艺。丙辰日丙申时，寅月，行南运，贵。子，三合官局，天干透印，大贵。亥生透壬，多夭。戌未，平常。丙午日丙申时，主血火厄，后大发
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 213
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日丁酉时断六丙日生时丁酉，刃生身死为灾咎；柱中无救定然凶，就财弃命难长寿。丙日丁酉时，刃生身死，丁为刃，辛为财，酉上辛旺丙死，丁火长生，就财弃命，若无救助，不通身旺月，刃神不见刑冲，为人凶狠，不明礼义，有始无终；通月气，或有救助，为技艺便巧之流。癸卯月生者，癸能破丁刃为官，癸水卯上长生，卯中有旺乙为印，如用神有力，又行水木运，贵显。丙子日丁酉时，春稳，夏贵，秋平，冬吉。未申酉亥年月，大贵。有丑会子，有辰会酉，俱以贵论。丙寅日丁酉时，卯亥未年月，干透官煞者贵。余月有艺，平
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 214
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日戊戌时断六丙日生时戊戌，火局之中遇食神；月气火通为福寿，不通逢吉亦常人。丙日戊戌时，寿永，名利不失。寅亥卯未印及申酉戌已年月生，贵。丙寅日戊戌时，庙堂食神，丙以戊为食神寿星，戌上丙火入库，戊土专位，若通火气月及东南运，福厚有寿；不通，平常。丙子日戊戌时，寿永，名利不失。家亥卯未印及申酉戌已年胜，贵。丙子日戊戌时，夏月，福寿双全。春，木克土，食神被枭。寅月，丙戊俱长生，最吉。有申庚制甲，大贵。秋冬火衰贫下。巳申亥年月，风宪极品。丙辰日戊戌时，午月，丙火有气，土厚地方，五
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 215
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丙日己亥时断六丙日生时己亥，亥中壬旺被已伤；若通月气方为贵，寅卯不逢主泛常。丙日己亥时，鬼旺身绝，丙见己为伤官，壬为正鬼，甲为倒食，亥上有明己，旺壬生甲，丙火绝气，若通身旺月有倚托者，化鬼为官，主贵，终亦凶狠。通身旺运亦贵；身弱无倚托，不通月气，柱中透出壬字，为祸百端，傲物气高，主平常。丙子日己亥时，秋冬，平常。未月，行水木运，干透木火者，贵。子月，行东运，大贵。申、亥、丑、戌年月，亦贵。丙寅日己亥时，夏生，化鬼为官，妻贤子孝，不贵则富。寅卯辰巳申丑年月，或午戌会局，天干
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 216
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日庚子时断六丁日生时庚子，身衰鬼旺暗中藏；月无救助多贫夭，得坐身强又吉昌。丁日庚子时，身绝鬼旺，丁以庚为财，癸为鬼，子中有癸，丁火无气，不能助扶。若通身旺月，有倚托者贵，更行身旺运，大贵；反是，贫夭下贱。丁丑日庚子时平，通木火气，或行身旺运，贵。亦有亥子年月贵者，以丁火阴柔，不怕水乡故也。丁卯庚子时贫，辰戌丑未，偏官有制，午月干强，春身旺，俱吉。秋冬平常。忌癸巳月，破祖凶；己未月，刑伤；甲申月，刺面血光死。丁巳日庚子时，春旺，夏强，俱贵。秋冬平常。四季月，制伏得中吉。子
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 217
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日辛丑时断（以下六丁日所忌月分同上，时忌无论）六丁日生时辛丑，库中财谷多陈朽；身无依倚不为凶，有托妻贤而富厚。丁日辛丑时，丑为财库，辛为妻财，已为食神，丑旺金局，暗己得位，丁火无气，若失天时无倚托者，就妻而发；有倚托救助者，财食丰足。丁丑日辛丑时，申酉月，财格，财旺生官，贵。午月，伤财身旺，主官禄。纯子寅，武贵三品。水月，艰辛劳苦。辰月贵戚。丁卯日辛丑时，辰巳未年月，富贵，妻子迟。寅卯印助，戌库身旺，刑。丑丁，得倚托，大贵。丁巳日辛丑时，因阴人致贵。巳酉丑申年月，财旺生
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 218
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日壬寅时断六丁日生时壬寅，身去从官化木神；水木月通成局象，尊荣安富贵无伦。丁日壬寅时，身去从官，丁壬化木，寅上健旺，若水局之月，大贵；通木月亦贵。如丁未月，行东方运，好。丁丑日壬寅时化贵。生冬月，官旺，贵。春，印绶，安稳，夏吉；秋平，行东运好。丁卯日壬寅时，贵化吉。寅卯年月，行金水运，大贵。亥子月，行西运，贵。丁巳日壬寅时，丁死于寅，巳无生意，又被寅刑，有始无终，若行金水运，荣贵。寅午年月，身旺；申子辰，官旺；亥卯未，印旺，俱可言贵。丁未日壬寅时，恶死。春生印吉，夏，木
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 219
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日癸卯时断六丁日生时癸卯，鬼旺身衰困不禁；倚托月通方论福，不然贫下苦悲心。丁日癸卯时，身衰鬼旺，丁以癸为鬼，乙为倒食，卯上癸生乙旺，若有倚托救助及身旺月，化鬼为官，吉，柱无运通亦吉；反此贫下，失明血疾，妻灾子少。丁丑日癸卯时，辰戌丑未月，制伏得中贵。午月干强，贵。申丑，风宪。丁卯日癸卯时，寅卯月生，印绶带煞，不为凶论；行官运，贵显。丁巳日癸卯时，丑月生，北方运，土厚地方，吉；水秀之地，二三品贵。申酉，用财亦吉。丁未日癸卯时，偏官生印。春吉，夏平，秋富，冬贫。丁酉日癸卯时
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 220
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日甲辰时断六丁日生时甲辰，官星得位印生身；不通月气平为福，有倚扶同禄贵人。丁日甲辰时，印绶官库，甲为印，壬为官，辰中甲木印绶生身，官星合局，若通月气，有倚托者贵，否则平常。春生，喜北运；冬生，喜南运，吉。丁丑日甲辰时吉，亥子月，富贵。申月，东方运；午月，金水运，俱贵。纯寅，风宪极品。丁卯日甲辰时，辰戌丑未月，孤克，运通发财。丑月，南方运，贵。卯月，金水运，近侍权贵，不利建白。丁巳日甲辰时，凶刑孤克。春印吉。夏秋平常。冬官旺。纯戌，木火运，官居冷职。丁未日甲辰时，丑亥卯未
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 221
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日乙巳时断六丁日生时乙巳，伤官暗里会枭神；东方运地成虚秀，金水之乡禄贵人。丁日乙巳时，丁以壬为官，乙为倒食，巳上壬绝，有明乙倒食，暗戊伤官健旺，为人傲物志高，平常。若通金水月气，贵。运通亦贵。丁丑日乙巳时，春富，夏孤，秋吉，冬贵。丁卯日乙巳时，春印，夏旺，秋财，冬官，看取用何如？俱可论吉。午未年月，文章贵显，行官禄运，吉。丁巳日乙巳时，再生巳月，倒冲，亥壬为官，无水填实破格者，主四五品贵。丁未日乙巳时，若人倒冲格，无冲破，贵。巳亥年月，三四品贵。酉丑合财局，富。丁酉日乙
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 222
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日丙午时断六丁日生逢丙午，日禄喜居时上遇；柱中鼠兔癸无伤，少年腾达青云路。丁日丙午时，青云得路。丁火午上建禄，若支无枭破，干无癸刑，禄元纯粹，主贵。如支有子卯，干有癸破禄，遇而不遇。丁丑日丙午时平，寅卯戌未年月，贵。酉丑，用财最吉。忌亥子官煞。丁卯日丙午时，旺中有灾，卯字刑破白丁。巳月。西北运，贵；东南，极品有权。寅亥，武职二品。若全子酉，大贵。丁巳日丙午时，丁禄午，丙禄巳，互换禄格，柱无寅亥子字，文章显贵。丁未日丙午时贵，破祖而成。年月忌壬癸字。甲申月，财官印三奇；辰
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 223
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日丁未时断六丁日生时丁未，火托木局生有气；衣禄安稳且如常，运见水兮方得地。丁日丁未时，火托木局，丁以甲为印绶，未为木库印绶之乡，若柱不见财星，不行财运，月年通亥卯未局，有倚托者，安稳之福。丁丑日丁未时，丑未刑冲，不得善终。年月辰戌，四库全，贵当极品。申未，三品，法司淡薄清闲。丁卯日丁未时，刑中发。寅卯月，印绶，发财敦厚。辰戌申午，俱吉。丁巳日丁未时，拱禄格贵。年有子字，则午为阙门，得拱大贵。忌空亡填实。年月见财官印，俱吉；财，富；官印，贵。丁未日丁未时，八专太旺，早克父
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 224
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日戊申时断六丁日生时戊申，天元背禄败其身；月无救助财难发，只是平常衣禄人。丁日戊申时，身败背禄，丁以壬为官，申上见戊土伤克，若年月干透，壬，见官为祸，虽有旺庚为财，自败不能制克，不通身旺月者平常。喜甲寅年月，忌壬子。丁丑日戊申时，秀贵。未申年月，贵；行东南运，大贵。巳月，西北运，六卿之职。丁卯日戊申时，春，伤官用印；秋，伤官用财，俱吉。夏，比肩；冬，伤官见官，平常。四季月，吉。丁巳日戊申时，不贵即富，未免刑克。夏生，行西北运，贵，秋冬，劳苦。丁未日戊申时；生巳午未戌，身
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 225
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日己酉时断六丁日生时已酉，学堂遇贵格诚稀；妻子有气食神旺，无破无刑方是奇。丁日己酉时，丁火酉上长生，学堂、天乙贵人皆兼得之。丁用己为食，辛为财，酉上明己暗辛生旺，文章秀丽，如见卯乙冲破者不贵。丁丑日己酉时，辰巳午未申戍年月贵。丁卯日己酉时，时日并冲，忧伤妻子，通火气吉。忌乙卯字。年月有亥未、巳丑，但一字两合，不以冲论。丁巳日己酉时，巳酉丑年月，财旺生官，终身富贵。亥子亦吉。丁未日己酉时，通火气，贵。见卯乙癸字不贵。丁酉日己酉时，刑害孤恶，通木火月，吉。丁亥日己酉时，蹇滞
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 226
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日庚戌时断六丁日生时庚戌，墓中逢败难成福；若无救助鬼来伤，财帛不聚伤其目。丁日庚戌时，墓中逢败，丁以庚辛为财，戌中有丙为败，不成其福。若无救助，叠见癸水，主伤目。丁丑日庚戌时，时日相刑，忧伤妻子。若寅亥申酉年月，官至三品。午未子辰，行金木运亦贵。丁卯日庚戌时，生亥未年月，三合会印，贵。子月，煞印，吉。年月建禄，僧道，主贵。柱无救助，见癸旺，多患目疾，酉月无贵；纯酉戌年月，天干透己甲者贵，中带凶。丁巳日庚戌时，辰巳月，金水运，风宪。癸子、壬亥，南方运，极品。纯未，西北运，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 227
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六丁日辛亥时断六丁日生时辛亥，财官双美印长生；若通月气极高贵，月不通兮名利轻。丁日辛亥时，财官双美，丁用壬为官，辛为财，甲为印，亥上有明辛为财，暗壬为官，生甲为印，若通火气有寄托者，大贵，有全美之名；不通，名利乖劣。丁丑日辛亥时，秋财旺，夏身旺，春印旺，贵显。冬，官煞太重，恐身弱不能胜任其福。丁卯日辛亥时，时上财官印三奇，再得年月印助财生，皆主大贵。纯子，行木火运，官可六品，巳酉丑月，辛财得局，方有倚旺，富贵双全。丁巳日辛亥时，时日相冲，忧伤妻子。若通火气，秋生，行东运，贵
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 228
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日壬子时断六戊日生时壬子，月通四季墓中财；若交身化为真火，水旺运乡忌目灾。戊日壬子时，妻财俱旺，戊以壬为妻财，子上壬水旺，戊土无气，生辰戌丑未月，不化者获财。若合癸化落水旺乡，火不显其光，作事无成，虚而不实，当患目灾。通月气旺者贵。戊子日壬子时，财星格。寅卯月，禄马朝元，显贵。酉亥丑年月，西北运，金紫风宪。忌乙卯年刑；癸巳月，旺中刑；丙午月，旺中受刑。戊寅日壬子时，卯月，正官格，贵。夏乖，秋少顺。丑酉年月，吉。忌己巳月刑，己亥月凶刑。戊辰日壬子时，春，财官旺、贵。夏乖。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 229
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日癸丑时断（以下六戊日所忌月份俱同上断，时犯亦同）六戊日时生癸丑，却去从妻成配偶；为人性巧甚聪明，尤好风流嗜花酒。戊日癸丑时，戊以癸为妻财，丑中有癸余气从财，癸旺，若通月气化为真火，为人聪明；若通土气，主富贵，操权。夏月，行东方运，贵显。戊子日癸丑时，戊月生，杂气印绶，天干透丙丁字，不必格局，主富贵。若年月午酉，干透庚乙，乙与庚合，戊与癸合，戊食庚，庚旺于酉，贵于丑，癸为财，乙为官，而印根于午，日时干支为天地合德，贵禄交加，况兼以罗文贵，遇者主极品。戊寅日癸丑时，寅已午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 230
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日甲寅时断六戊日生时甲寅，病中又被鬼伤身；月气若通身旺吉，日干衰弱夭亡人。戊日甲寅时，身衰鬼旺，寅中甲建禄，丙生身，如通身旺月，有倚托有救助，化鬼为官，主富贵；反此贫夭，行身旺运亦吉。戊子日甲寅时，先破后发，贵。未月生，干有制伏，贵。午月无制，聪明近贵。辰戌丑身旺，亥卯煞旺，但有印有制，贵。纯乙丑年月，金紫。戊寅日甲寅时，身旺，骨肉不同居。午月，刃印带煞；子月，正财党煞，干透制；亥卯未，纯煞身柔，干透刃，运行西南，兵权万里；巳丑戌年月，身旺敌煞；酉丑申，制煞，皆主大贵，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 231
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日乙卯时断六戊日生时乙卯，四柱伤官不见好；辛申弗逢冲害无，管取功名直到老。戊日乙卯时，官强身弱，戊用乙为官，卯上乙旺戊死，若无倚托，不通月气，身弱化官为鬼，纵贵寿夭；若通月气，身旺有托，柱中不见申酉辛庚、伤官甲木破命者贵显。戊子日乙卯时，时日相刑，伤妻害子，自成自立。年月再遇，主风宪。午酉，四正全，大贵。戊寅日乙卯时，亥子年月，妻贤子孝，贵。卯辰纯，吉；寅巳亦吉。戊辰日乙卯时，身孤，贵。巳卯年月，身强官旺，荣身显祖，子孝妻贤。戊午日乙卯时，刃格，正官去刃为福，子寅卯辰午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 232
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日丙辰时断六戊日生时丙辰，宝藏财库利于身；无伤无破何须问，禄马相扶富贵人。戊日丙辰时，官藏财库，戊用壬癸为财，乙木为官，丙为倒食，辰上丙火无气，壬癸入库，乙有余气，若有倚托通月气者，贵显。戊子日丙辰时，春生近贵。夏辛苦。秋，权高寿促。冬财，通火土，有倚托者贵。戊寅日丙辰时，龙吟虎啸，中年大贵。子月，行北运，土厚地方，官至三品；东运，风宪。丑辰年月，四五品贵。寅午戌年，通土气月，行木火运，极品。戊辰日丙辰时，克父大发，通身旺月，行东北运富；水木月，行身旺运，贵。戊午日丙辰
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 233
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日丁巳时断六戊日生时丁巳，印生日禄喜归时；财官不见刑冲破，早际风云会遇期。戊日丁巳时，印绶遇禄，戊禄居巳，见丁为印，巳上丁火帝旺。年月支干不宜见财官，见官损禄，见财损印。不见官煞，不行财官，行食伤印运，高贵。忌刑冲破害。戊子日丁巳时，贵。子月正财，土厚地方，显达。亥丑年月，官居极品，内臣中，富贵双全。戊寅日丁巳时，寅巳相刑，忧伤妻子。午月，东北运，风宪。寅午年月，四品。戊辰日丁巳时，巳酉丑月，性格风流，威权重大。年月支干不见财官，青云得路。亥戌，行南运，五六品贵。申，行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 234
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 62
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日戊午时断六戊日生时戊午，为人凶狠性多刚；月中化火居官吉，破害刑冲却是良。戊日戊午时，刃神重叠，戊以午为刃，性狠多刚，如见刑冲破害，刃神受制，通月气者，为边疆武职。月中有化气得天时者，大贵。年月干见甲，僧道命。年中火旺，戊土被焚，多患脾肺疾。若月不通寅午戌亥，通运气者亦贵。戊子日戊午时，巳寅戌月，风宪。夏不熔铸，先刑后发，旺处多官。灾破祖。戊寅日戊午时，戌月，三合火局，干透癸化，得天时地利者贵。年月申子会水，寅午会火，有既济之妙；辰月亦得；酉伤官；未官印，俱吉。戊辰日戊
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 235
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日己未时断六戊日生时己未，羊刃偏官不怕冲；但是为人多性狠，平生衣禄亦无凶。戊日己未时，羊刃偏官，戊以己为羊刃，甲为偏官，时上明暗二己为刃，甲木未中合局，若见刑冲破害，刃煞有制，主贵。通月旺者平常衣禄，二十年，父母俱失；若不通月气，得寅申者贵。戊寅日己未时，时日相穿，忧伤妻子，早苦晚好。月通土气，行财官运，贵；水木月，行身旺运，贵。戊寅日己未时，先难后易，贵人提携，不贵即富。年月透甲制刃，地支午未身旺，煞刃双显，主大贵。戊辰日己未时，春冬，行北运，富贵。戊午日己未时，羊刃
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 236
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日庚申时断六戊日生时庚申，干上食神喜相亲；不见卯寅兼甲丙，何忧玉带不荣身。戊日庚申时，戊以庚为食，壬癸为财，申上庚旺壬生，戊土有气，无丙火夺食破财，再无寅巳刑冲，生秋月大贵。如有丙火甲寅并巳，为人反复，亦有功名。年月干止透甲三奇，地支会局，或止寅辰，皆贵。戊子日庚申时，若生亥子月，亦是合禄，贵。戊寅日庚申时，凶刑后发，如生寅月，作食禄制煞论，贵。戊辰日庚申时，专食合禄，纯寅年月，二寅不怕一申冲，亦贵。戊午日庚申时，未酉丑年月，柱无丙甲卯寅，入合禄格，行西北运，贵；有甲丙
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 237
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日辛酉时断六戊日生时辛酉，伤官暴败怕时逢；柱中纵有财星助，有子不成命早终。戊日辛酉时，身败伤官，戊以乙为官，辛为伤官，酉上辛金旺，戊土沐浴，为人性傲行卑。年月透乙，为祸百端；如有乙再行官旺运，刑害不吉。若通生气月，行北运，不贵即富。戊子日辛酉时，巳酉丑月，伤官伤尽，行财旺运，武职风宪。戊寅日辛酉时，通土气月，行西北运，不贵亦富。戊辰日辛酉时，丑未年月，干透财，主贵。若癸巳月，词馆学堂居提纲，主文学高科，寅申巳亥年，则时犯狼藉煞，晚无结果。戊午日辛酉时，春夏平常。秋，伤官
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 238
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日壬戌时断六戊日生时壬戌，身居正位见天财；若生秋月通身旺，万贯家资不用猜。戊日壬戌时，专位逢财，戊以仁为财，戌上水冠带。春夏壬水无气，财帛不旺；冬则大旺，土虚身弱不能驱驾；惟秋后戊土坚厚，财命有气，富贵。戊子日壬戌时，酉申戌月，家财满目。辰、丑冲刑库开，俱吉。戊寅日壬戌时，寅午戌辰年月，金水运，大贵。戊辰日壬戌时，时日并冲，忧伤妻子，如土厚地方，大贵。卯月，火金运，中贵。寅申戌丑，行西南运，极贵。戊午日壬戌时，寅午戌月生，时岁火多，以印绶论，未免孤克，先难后易，不贵即富
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 239
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六戊日癸亥时断六戊日生时癸亥，化火无戌战水乡；若见乙庚丁丑无，反为官命不寻常。戊日癸亥时，戊合癸化火，火绝于亥，战于水乡，不成其象，为人虚秀，多是九流艺术近贵之人，主患目疾。戊以甲为鬼，壬癸为财，亥上壬旺甲生，戊土气绝，财帛聚散，若年月干头见乙丁庚旺，为三奇之贵；通土气月身旺，行火木运，吉。戊子日癸亥时，年月不见戊字破格，贵。申子年月，东南运；亥卯，南运，俱贵。巳午未旺，大贵。戊寅日癸亥时，午未月生，化火会局，高命。春，官煞混杂，温饱衣禄。酉丑年月，三品京堂。戊辰日癸亥时，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 240
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日甲子时断六己日生时甲子，明见官星暗有财；倚托若通于月气，平生衣禄自天来。己日甲子时，明官暗财。己用甲为官，癸为财，辛为食，子为天乙贵，子上有明甲暗癸，辛长生。身若有倚托通月气者，富贵；若不身旺，行土气运，亦好。己丑日甲子时，化贵，午寅年月，夭折；通土气月，贵。忌甲寅月，贵中恶死。丁未月受刑，丁丑月破祖，失乡恶死。己卯日甲子时，先破祖后旺，或旺中有伤。辰戌丑未月，贵。午，身旺。子，聚贵，亥，官长生，俱大贵。忌己巳月，破败凶死。庚申月，血光恶死。壬子月，刑害死。己巳日庚子
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 241
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日乙丑时断六己日生时乙丑，煞星受制不为伤；柱中身旺多荣贵，无助生人昼夜忙。己日乙丑时，专财逢鬼，丑上有明乙为鬼，暗癸为财。若有倚托通身旺者，贵；通运亦吉。若鬼有助，旺不能任者，衣禄平常。己丑日乙丑时，时上偏官，居武职都阃，还看地方断之。卯月金水运，六七品贵。己卯日乙丑时，子申月，行金土运，侯伯。巳酉丑戌年月，俱吉。己巳日乙丑时，寅卯月，偏官格。无酉戌字，文进贵命。己未日乙丑时，时日并冲，妻生财可也。卯午年月，金神入火乡，西南运，贵。辰戌四季全，大贵。干透丁辛，纯阴亦贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 242
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日丙寅时断六己日生时丙寅，暗官明印旺其身；月通木气无冲破，贵倚三台八位成。己日丙寅时，官印生旺。己用甲为官，丙为印，寅上甲旺丙生。如果无破、通木局月气者，大贵。喜行木火，不宜金水，岁君同。己丑日丙寅时，春官旺，夏印旺，秋既济，冬平。辰戌年月，文贵显达。纯丑，寿高。戌月，木火运，五、六品贵。己卯日丙寅时，午辰年月，文章显达，大贵。寅午，官至三品。己巳日丙寅时，先刑后旺。寅月，正官格，文章显贵。亥子水，水运，贵。纯戌，武职三品。年月申亥四生局全，大贵，或不善终。己未日丙寅时
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 243
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日丁卯时断六己日生时丁卯，支干暗鬼枭虚神；柱中有助方为福，无助难为显达人。己日丁卯时，己以丁为印，乙为鬼，卯上明丁暗乙。若岁月中无救助倚托者，虚秀不实，有成有败。月中见辛制伏身旺者，贵；运旺，亦吉。己丑日丁卯时，申子辰，武职。亥卯未，荣富。巳酉丑，行东北运，吉。己卯日丁卯时，巳酉年月，制伏得宜。庚申合煞，文进大贵。子月，刑煞遇贵，主兵权或法官。地支纯印或三合木局，运行寅，混官再遇流年冲运，凶死。己巳日丁卯时，无冲破，富贵；寅午辰年月，刑伤不利。亥月，木火运，贵。若春生透
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 244
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日戊辰时断六己日生时戊辰，其身得位遇财神；田园富贵多诚信，甲乙提纲禄贵人。己日戊辰时，财库专位。已以壬癸为财，辰上入墓，己土专位。为人诚信富贵。若通月气或甲乙透出，是生月带禄、大贵。辰月，身旺，不得父母力。见甲化土者，大富。冬夏，财旺生官、富贵。西运，平常。己丑日戊辰时，身孤。寅卯月，禄旺。辰月透甲，作化气看，贵。午，富厚。寅酉，风宪。年月子丑透甲，行东南运，金紫，近侍；怕西北运，退职。己卯日戊辰时，卯月，风宪。水木年月，行东北运，并同。己巳日戊辰时，身孤后发。春官贵；
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 245
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 54
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日己巳时断六己日生时己巳，金神与火两相和；不通月气平常看，月气如通荣甲科。己日己巳时，金火相合，己以丙为印，巳中有丙，健旺；己巳又为金神，坐于火位，相合。若通火月气，四柱不见财星破印，不行财遇，发福非常。若不通月气，或在冬生，虚秀不实。不通，得南运，亦吉。己丑日己巳时，辰月，西北运，贵。午未火旺，大贵。申子戌巳，亦吉。己卯日己巳时，夹辰财库，主大富。又，卯以巳为驿马，二己通看，谓之坐马。再生午月，禄马俱有，尤为贵命。亥月，财临旺地，官遇长生。巳月，金神遇火，皆主大贵。己
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 246
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日庚午时断六己日生时遇午，禄归时地主昌荣；柱中怕有官星见，若是伏晶另一评。己日庚午时，日禄归时。已见庚为伤官，乙为正鬼；午上有明庚合乙，伤官合煞，主人独立有成。若年月无乙而伤官临于败地，柱有甲、丙二字，伏晶格，不损格局无冲破，主大贵。己丑日庚午时，寅月生，贵；夏凶；秋暴；冬，财旺子少。己卯日庚午时，已禄居午，年月有甲丙及寅午者，大贵。卯月，煞旺庚合，权贵。己巳日庚午时，贵。寅午戌月，金神入火乡，作印绶论，贵显，辰戌丑未年月，侯伯。若逢合煞运，必不善终。酉月、东南运，贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 247
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日辛未时断六己日生时辛未，食神官库喜相亲；木通月气须言贵，月不通兮富命人。己日辛未时，食神助官。己以辛为食，甲为官，未为官库，未上有明辛暗甲。若有倚托通月气，贵。食神生旺，胜过财官。通木气月，官旺，尤贵；不通，主福。通运，亦贵。己丑日辛未时，不贵即富。通土气月，富。通木气月，贵。一云刑，凶。己卯日辛未时，酉戌亥卯，未年月，贵，行东南运，金紫。己巳日辛未时，金神日。寅午戌月生，贵；亥卯辰午，行金火水木运，大贵。己未日辛未时，春夏、丑月，丰姿特达，言语清辨，名高禄重。秋冬，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 248
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日壬申时断六己日生时壬申，损败天元气不全；若失天元无倚托，非穷即夭命难延。己日壬申时，水旺土虚，己以甲为官，壬为财，庚背禄。申上庚旺壬生甲绝，己土气败。若通四季土气或通土气运，吉。若失天时无倚托，不通月气，非贫即夭；不然残疾，末狼狈。己丑日壬申时，酉年月，天干透印，富贵好礼，为人慨慷。辰戌吉。亥年，乾清坤夷大格。寅申，官贵相辅，俱吉。已卯日壬申时，辰月，杂气财官，早贵。亥月、南方运，五、六品贵。寅申年，三、二品贵。己巳日壬申时，大凶，刑。己酉丑月，伤官，行财运，吉。寅午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 249
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日癸酉时断六己日生时癸酉，沐浴之乡水土浑；财食支藏多聚散，身衰失地寿难存。己日癸酉时，水土浑浊。己以癸为财，辛为食。酉上癸病，辛旺，比肩夺财，财多聚散；更身衰失地，主成败反复；不然，寿促。若通身旺月或运，吉。己丑日癸亥时，春平；夏稳；秋伤官伤尽，有威权；冬富。如丙寅巳月，金神遇火，贵。丑月，金水运，郎官。透乙，大贵。己卯日癸酉时，时日相逢卯酉，主迁移；刑伤又伤官带煞，主性凶暴，作事迟延。生四季月，吉。己巳日癸酉时，巳酉丑月，伤官伤尽，居武职、风宪。卯戌月，金神入火乡，贵
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 250
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日甲戌时断六己日生时甲戌，妻从夫化为真土；如通月气禄源深，反此而言平常取。己日甲戌时，妻从夫化。己合甲木化土成局，土神钟秀、禄源深厚。月中无化，取甲为官，丙为印，戌土上甲木成形，丙火合局。通月气，贵；不通，有刑冲破害者平常，己身虽吉，父母早失。己丑日甲戌时，克父太旺。辰月生，土厚。居巳午末申，临官、帝旺，吉。亥戌寅卯，土病死，凶。酉辰，三、四品，贵，中年退闲。亥木火运，六、七品，贵。己卯日甲戌时，丙丁午戌年月，干有庚辛制伏官煞，生山明水秀地方，官至二、三品。未酉丑月，行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 251
+  matched_rule_id: ZP-SRC-20260617-112
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六己日乙亥时断六己日生时乙亥，官藏煞见未为奇；逢金制煞方为吉，身不旺兮凶可知。己日乙亥时，煞见官藏。己以甲为官，乙为鬼。亥上有明乙暗甲，为官煞混杂。柱中见辛制乙，去煞留官；通月气者，贵显。亥上水旺土虚，漂流失业，见财不聚，成败进退；要身鬼两停，方吉。不通月气，通运气，亦吉。己丑日乙亥时，巳酉丑月，制煞留官，贵。午月，身旺，亦贵。子月、火运、七、八品，贵。卯未，透辛制乙，大贵。己卯日乙亥时，卯月，偏官格，煞重身柔，作弃命看。壬字暗逢，志气轩昂；柱有制伏，行土金运，官至三、四品
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 252
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日丙子时断六庚日生时丙子，身鬼俱衰退神强；有托荣华无托贱，鬼逢生旺寿难长。庚日丙子时，身鬼俱衰弱。庚以癸为伤，丙为鬼。子上庚死、丙火无气、癸水健旺。若身有倚托，吉；无倚托，又行身衰鬼旺运，飘风夭贱。通火气月，要行西运，贵。身弱不然。庚子日丙子时，贵。年月再子，并冲，午中丁为官，己为印，人飞天禄马格；柱无财官填实，主贵；为僧道，一尘不染，万法皆成；为常人，有名有利，刑伤妻子。一说先贫后富。忌己巳月，破刑，贫。癸未月，孤单。巳亥月、刑。庚寅日丙子时，春生，带财带煞，行金水运
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 253
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日丁丑时断六庚日生时丁丑，贵地逢官火太轻；木火运通轩冕客，不通独立只虚名。庚日丁丑时，金重火轻。庚以丁为官，以己为印，丑上丁火气轻，己土正位。若通木火气月，官印逢生旺，贵；不通，虚名而已。通火土生旺月，富；不通，运遇亦主名声。庚子日丁丑时，春夏，贵；秋平常；冬孤克。庚寅日丁丑时，魁元。寅卯午未亥月，清秀高命。行午、未运，贵显。通火土年月，贵。庚辰日丁丑时，丑月，富而寿促。己，近侍，大贵。通火旺土生月，贵；不得，运遇亦富，有名誉。庚午日丁丑时，通土月气，贵；不，亦富，有名
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 254
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日戊寅时断六庚日生时戊寅，火生金绝福高人；月通从革或秋降，却做皇家柱石臣。庚日戊寅时，火生金绝。庚以丙为鬼，戊为倒食。寅上有明戊、合癸化火，庚金气绝。若不通金旺月，无救助者，夭贱贫下。巳月，庚长生，丙健旺，身鬼俱强；运行西方，勇暴，武贵。申酉丑戌月，金火合局，化鬼为官，更得身强运，贵。庚子日戊寅时，寅午年月，登科显达。纯申，三、四品贵。丑月、金火运，公卿。庚寅日戊寅时，月通火局或秋生，行身旺运，贵。庚子月，自死。年见辛酉，贫夭残疾。身衰见丙太旺，同论。庚辰日戊寅时，春夏
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 255
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日己卯时断六庚日生时己卯，胎生元命发因妻；柱中有托逢庚旺，财禄丰盈福寿齐。庚日己卯时，胎生元命。庚金卯上受胎，见巳为生气印绶。庚以乙为财，卯有旺乙，因妻发福。若柱旺丁，生月带禄者，贵；有倚托者，富。通生气财旺者，生财旺运者，俱贵。庚子日己卯时，子卯相刑，忧伤妻子，子年月，贵。丑未，官至三品。一云破祖失土，大贵。庚寅日己卯时，亥卯月，财星格，早荣早退。午戌，三合官局，干透金水，行西北运，吉。庚辰日己卯时，孤。年月通木气及有倚托者，贵。庚午日己卯时，刑破。申子辰己酉丑，俱行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 256
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日庚辰时断六庚日生时庚辰，金火秋生气象纯；若有魁罡包贵贱，财官喜忌六官分。庚日庚辰时，金水清白。六庚之中，庚戌庚辰为魁罡，怕见财官刑冲；不见，主为人粗豪暴勇而贵，见则祸患百出。庚子。庚寅、庚午、庚申，喜见财官。生秋月，为人秀丽，不贵则富。若身不化，得甲乙丁透出，生火木分野，亦作财官论。喜月气通运者，吉。庚子日庚辰时，申月生，井栏叉格。柱并运不见丙丁巳午寅戌字，贵。纯卯年月，位至公侯。庚寅日庚辰时，龙虎拱门。年月通火土者，贵。纯庚辰，王侯；不然，极凶。若年月遇木火，运再行
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 257
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 48
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日辛巳时断六庚日生时辛巳，偏官合刃自身生；为人刚毅妻财损，运到金乡贵禄享。庚日辛巳时，阳刃偏官。庚以辛为刃，丙为杀。明辛暗丙，合煞为权。通身旺月，贵；不通，无贵，寿考。庚子日辛巳时，春富；夏、秋贵；冬贫。辰戌丑未年月，印绶，行西南运，贵。庚寅日辛巳时，巳酉丑月，身旺，贵。煞旺身弱月，贫。纯申年月，大贵悠久。亥月，东南运、主有权贵。庚辰日辛巳时，巳酉丑月，身旺，贵。煞旺身弱月，贫。纯申年月，大贵悠久。亥月，东南运、主有权贵。庚辰日辛巳时，终蹇。年月不见财，高。通木气，行西
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 258
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日壬午时断六庚日生时壬午，官印福宫聚食神；金士助身须显贵，日逢火旺命难通。庚日壬午时，官印健旺。庚以丁为官，己为印，壬为食。午上壬食无气，丁巳禄旺。通金土月气扶身者，贵。通火气，官贵太重，反化为鬼；庚金柔弱，不能作福，运气扶身，亦贵。庚子日壬午时，时日并冲，忧伤妻子。通金气，贵。火气，大贵，但多忧劳禄。庚寅日壬午时，辰戌丑未巳申酉月，身旺，俱贵。寅午，火旺，运气再遇，寿促；不然，残疾。庚辰日壬午时，食神旺，善饮食，有操持，发即死。庚午日壬午时，寅午戌月、金柔火旺，畏缩残
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 259
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日癸未时断六庚日生时癸未，官星魁制权星退；柱中见己不透丁，却能显达得官位。庚日癸未时，印财库，庚以乙为财，未中入库，用丁为官，己为印，未中己丁却有明癸制之。柱有己制癸，不透丁字，居官显达。若无己透丁，为祸百端。通火土运气，贵。庚子日癸未时，年月无丁透露，有己土制伏癸水者，贵。庚寅日癸未时，贵。辰戌丑未月，高。夏富。岁运同，巳酉申月，身旺，大贵。庚辰日癸未时，魁罡日。辰中有土制癸。年月无丁；贵。卯月，金水运，七品贵。庚午日癸未时，贵。酉申巳亥年月，总领兵戎，官至二品。先虚
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 260
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日甲申时断六庚日生时甲申，归禄带财格最纯；巳丙与寅柱不见，功名富贵自然臻。庚日甲申时，日禄居时。庚金申上见禄，甲为偏财。柱中不通丙火，巳寅冲刑，主贵有平常。岁运同。庚子日甲申时，时犯日禄，见财星，柱无巳寅丙，富贵双全。辰戌丑未土能生金，吉。寅午戌，平常。申酉，行火木运、贵。寅亥，三、四品，贵。卯，刑。子，多凶。庚寅日甲申时，寅、亥月，官至三品。庚辰日甲申时，日魁罡，又归禄，俱不喜财官、柱无寅午戌丙丁巳字，贵。庚午日甲申时，贵。通身旺月，无丙巳寅午丁，伤破，贵。庚申日甲申
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 261
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日乙酉时断六庚日生时乙酉，金中相会化真金；柱中无火多刚缺，有火相成贵气荣。庚日乙酉时，气化真金。庚以乙为财，辛为刃，酉上财绝刃旺。若化真金，柱中无火，金太刚则缺；行火运，造化抑扬，得合中道。庚辰日最好年月带马，三、四品贵，但主少子或不肖。庚子日乙酉时，主富。月通火气，贵：不通，平常，运通亦称意。卯亥年月，帅阃。一云破祖刑凶。庚寅日乙酉时，刑。寅午戌吉。申子，凶暴。庚辰日乙酉时，刑。寅卯午年等月，二品权贵。戌亥大贵。《神白经》云：化金，主福厚。庚午日乙酉时，刑，中贵。寅午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 262
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日丙戌时断六庚日生时丙戌，金火持争事不详；身旺月通印绶吉，不通无救祸难当。庚日丙戌时，金火持争。庚以丙为鬼，丙火、戊土合局，金无气。若通身旺印，卯月有救助者，贵；反是平常或夭贱。运通亦吉。庚属大肠，若丙丁旺甚，主痔漏、脏毒、脓血之灾。庚子日丙戌时，春，偏官用财，吉。夏，煞旺身衰，凶暴。秋，身煞俱旺。已酉丑月，西方运，腰金衣紫。寅亥子月，金绝病死，多贫贱。一云聋哑、犬狼伤。庚寅日丙戌时，申子辰月，偏官有制，吉。秋生，身煞俱旺，有禄权。纯午，孤贫无倚，不然残疾。丑午行西南，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 263
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六庚日丁亥时断六庚日生时丁亥，官星失地自身衰；不通月气难成福，若见魁罡却妙哉。庚日丁亥时，庚以甲为财，壬为食，丁为官。亥上丁火无气，壬旺甲生，庚金失地，难任财食。若不通身旺月，不能成福；通月气、有阴土扶身者，发财。官星有助，稍贵。庚戌，庚辰此二日魁罡，不宜财官生旺；时逢丁亥，反贵。庚子日丁亥时，贵。申子辰月，伤官、劳碌。卯月、金火运、五六品贵。庚寅日丁亥时，平，初贫，中秀，末主富旺。辰戌年月，贵显。申酉亥卯已午年月，干透乙已者，大贵。庚辰日丁亥时，纯未，显达。已午，西北运，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 264
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日戊子时断六辛日生时戊子，印绶学堂坐食神；不见丙丁同午破，必是荣华贵显人。辛日戊子时，六阴朝阳。辛金子上长生学堂。辛以戊为印。癸为食，时上明戊暗癸，柱中不见丙丁午字，冲开；通身旺月，大贵；犯者不贵。不通月气，通运，亦贵。辛丑日戊子时，丑月，杂气财官，贵。纯丑，儒职。纯辰、行西运，都宪。酉月，东北运，贵。忌庚寅月，刺面，凶。癸未月，受刑。癸丑月。破败孤凶。辛卯日戊子时，春生，寅贫、卯贵。夏清贵。秋羊刃，无益。冬富，丑月尤吉。辰戌未月，财官印绶、俱吉。《神白经》云：金火化，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 265
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日己丑时断六辛日生时己丑，金土持争势不安；年月财官相救助，免交贫困受饥寒。辛日己丑时，金土相争。辛以己为倒食，丑上有明己暗辛。岁月无财官救助者，贫困；得财官运，亦吉。辛丑日己丑时，孤浊滞生。申酉月，金旺，运行火乡，疏通，刑伤妻子；为僧道，贵。纯丑，西南运，大贵。辛卯日己丑时，寅卯亥未等月，财星格，南方运，贵。辰戌丑未，印绶，南方运，吉。辛已日己丑时，丑已申酉月生，金多克木，损伤妻子；僧道，贵。寅卯辰。月，南运，贵。辛未日己丑时，寅卯未月，财星格。已午，官显。辛酉日己丑时
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 266
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 53
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日庚寅时断六辛日生时庚寅，财旺生官遇贵神；金木局中通月气，必为荣贵富豪人。辛日庚寅时，贵人财官。辛以寅为天乙贵，丙火为官，甲木为财，寅上丙、甲旺，若通金木月气或通运，主富贵显达。辛丑日庚寅时，春贵；夏官旺；秋显达；冬吉。丑月、南运，风宪或武贵。一云发即风疾。年月酉、申金，无火气、贫夭。辛卯日庚寅时，午未亥子，俱贵。寅卯申酉，六、七品贵。辛巳日庚寅时，春贵；夏官禄，行西北运，大贵；秋身旺；冬暴狠。一云刑后有财。辛未日庚寅时，已未丑月，名标金标，妻贤子孝，晚年风疾。寅卯午戌
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 267
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日辛卯时断六辛日生时辛卯，妻子难为遇比肩；秋产冬生贫下格，丙临寅马却当权。辛日辛卯时，比肩分财。辛以乙为财，卯上乙旺，遇比分夺，损伤妻子。生秋冬，财官无气，平常。寅巳午月，干透丙火，丙合辛生，官贵显达。辛卯，悬针煞，柱多不吉。辛丑日辛卯时，春、夏生土厚地方，富贵。秋，克妻刑子。冬、艰辛。寅巳午月，近待，贵。甲戌年月、木火运，风宪。辛卯日辛卯时，寅午戌月，财官双美，贵显。卯酉申辰年月，近侍，贵；见官印财星，妙。一云先苦，中年大发。辛巳日辛卯时，春，财旺；夏、官旺、秋，身强
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 268
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日壬辰时断六辛日生时壬辰，伤官伤尽倍精神；四柱火虚防克害，九流技艺卜医人。辛日壬辰时，暗金沉水底。辛用丙为官，壬为伤官，辰水库，丙辛无气，壬水合局。若年月透丙，是伤官见官，刑祸百端，为人气高夸大，秀而不实。不通月气、无倚托者，为人反复成败，为医卜艺术。柱有木火身旺，行东南运、贵。辛丑日壬辰时，春，财旺，妻贤子孝。夏，伤官见官，然亦多富。秋吉。冬，孤克，多贵。辛巳日在辰时，春、显达；夏，平常；有名利，主暴虐。酉月、行东运，贵。戌未，四库全，最贵。纯未，杂气财印。丑未，冲开
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 269
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日癸巳时断六辛日生时癸巳，贵气无伤官印强；月气有通兼倚托，早年荣贵姓名香。辛日癸巳时，官印扶身。辛以丙为官，戊为印，癸为食神。巳上丙戊健旺，癸合化火，赤白文章。若有倚托、通月气者，显达；若月不通，运通，亦贵。辛丑日癸巳时，凶，别父母发福。春夏，吉。秋冬，凶暴。一云化贵、戒酒。辛卯日癸巳时，春夏，身弱寿促。秋，身强、劳力辛苦。如月气火木，三、四品贵。辛巳日癸巳时，化贵。子午年，寅午戌月，贵，亥卯未，清贵。申子辰，无义之人。辛巳癸巳，两干不杂寅辰，透丙，俱主极贵。丑酉三合，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 270
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日甲午时断六辛日逢甲午时，暗鬼枭神真可畏；若无倚托反劳生，莫道六辛逢马贵。辛日甲午时，鬼旺身衰。辛用丁为鬼，己为倒食，甲为财。甲午木死则神无气，丁己健旺，虽见午为天乙贵，平生反复；纵通旺气，亦贵不永。若生火土月，西方运，贵。辛丑日甲午时，未申年月，四柱有利害，虽富寿夭。通金，虽贵不永。辛卯目甲午时，卯月，武贵。寅戌，破祖；不然，残夭。巳午七、八品贵。运同。辛巳日甲午时，平。寅午戌，官旺，吉。申子辰、平常。卯戌年，官印双全，公候。辛未日甲午时，申子辰，偏官有制，吉。丑戌，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 271
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日乙未时断六辛日生时乙未，火木相成金不畏；月通金气与春荣，财旺生官身自贵。辛日乙未时，天财入库。辛以乙为财，未上入库；己为倒食，丁为正鬼；未上有暗丁，己被明乙制伏，不能为害。若通巳酉丑月者，贵，通火，行西运；通金，行南运，俱贵。辛丑日乙未时。刑。亥卯未寅月，财旺生官不贵则富。辰戌丑子，俱吉。辛卯日乙未时，亥卯未月，财盛生官，吉。辛巳日乙未时，月通金火，贵。运通，亦贵。辛未日乙未时，寅卯未年月，财旺生官，名高禄重。通火气，行西运；通金气，行南，俱吉。辛酉日乙未时，月通火气
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 272
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日丙申时断辛日生时遇丙申，月通金火转精神；化成金水逢金地，聚福能为富贵人。辛日丙申时，丙辛化水，申上长生。若月通巳酉丑金气者，精神秀丽，文章聚福。通火气旺、有倚托者，贵。辛酉、辛未最妙，不成化象。申上官星无气，平常衣禄。辛丑日丙申时，化贵。少年蹇剥，中贵显。亥月，作化气看。吉。寅午戊巳未月，官星有气；春，财旺，俱吉。辛卯日丙申时，化贵。寅巳午未戌酉亥月，官星明朗，山明水秀，登科荣贵。通士气，亦贵。一云少蹇、中、末好。辛巳日丙申时，见血则福；又云贵中失。申未年月，身厚，妻
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 273
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日丁酉时断六辛日生时丁酉，鬼破禄无祸百端；倚托身强方断吉，月通制伏是偏官。辛日丁酉时，火金持争。辛金酉上健旺，见丁为正鬼；酉上丁长生，破禄，不成其福，反复成败。身强通月气有制伏者，作偏官论；更行身旺运，贵。通金气无丁，身强，行南运，大贵。辛丑日丁酉时，高平稳。酉月、土木运，方面。戌亥子巳未年月，大贵。辛卯日丁酉时，时日并冲。月通金气，不透丙丁，南方运，贵。辛巳日丁酉时，平。亥月，反复不定。午月，偏官带疾，显达寿促。子月，贵戚。一云有财有喜，寿不过三十一。辛未日丁酉时，不
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 274
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日戊戌时断六辛日生时戊戌，印绶生身坐禄堂；有托福人难靠祖，不通月气是平常。辛日戊戌时，禄同印堂同居。辛以戌为禄堂，戌上有明戊为印绶；以丙、丁为官，戌上戊土正位，丙、丁火局。若有倚托通月气者，难为祖业。不通，平常。辛丑日戊戌时，刑害。辰戌丑未，印绶，行南运，大贵。寅巳，正官，贵。子午卯酉，武职风宪。辛卯日戊戌时，刑害，饕餮。亥，卯月，木火运，五、六品贵。辛巳日戊戌时，辰戌丑未月，印绶，文贵少病；生土厚分野，贵。戌月，行木火运，风宪。辛未日戊戌时，凶恶狠暴，忧伤妻子。寅巳午
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 275
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六辛日己亥时断六辛日生时己亥，背禄剥官反破伤；如作飞天禄马贵，失时无合空忙忙。辛日己亥时，飞禄合局。辛以丙为官，亥上有旺壬伤，故官无气；如再得亥月或亥日，以亥冲出巳中丙火为官星。若是辛西、辛丑合局，贵；其余辛无合。不通月气，无倚托，贫下；有倚托，吉。辛丑日己亥时，辰戌丑未及寅卯月生，作飞天禄马，贵。未月，金水运，金紫方面。辛卯日己亥时，寅卯亥未月，财旺生官，终身有庆。巳酉丁年月，贵。辛巳日己亥时，填实巳字，不入飞天格，作官印论，主父母竭力扶持而后富贵。辛未日己亥时，贵。亥卯
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 276
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日庚子时断六壬日生时庚子，子上明庚暗损伤；火土月中仍主吉，不通凶狠只平常。壬日庚子时，刃旺身强。壬以庚为倒食，癸为羊刃，时上明庚癸旺，若通火土月气，制伏庚癸，大贵；不通，凶狠平常。通运亦贵。壬子日庚子时，辰戌丑未月，杂气财官；巳申酉丑，印绶，居土厚分野，俱贵。寅月，金水运，近侍金紫。午月，行西运，六品，子运败凶。若纯壬子羊刃，贫凶。一云，少年富，三十五后艰辛，末大富。忌辛巳月凶恶死，辛亥月大凶，甲子月刑。壬寅日庚子时，贵而刑。辰戌丑未月，杂气财官；巳申酉月，印绶，俱贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 277
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日辛丑时断六壬日生时辛丑，下有官星上印绶；如通月气运西南，官印扶身人清秀。壬日辛丑时，官印得位。壬以己为官，辛为印，丑上金局，暗已得位，若通月气，为人清秀，禄贵安稳；不通，主性僻诡谲。壬子日辛丑时，巳酉丑月，印绶，多受父母荫。申月，火土运，近侍有权。辰戌丑未，有官有印，丰资旷达，名播天涯。寅午戌月，财破，禄印不成局，平常。亥申年月，贵壬寅日辛丑时，丑月，杂气印绶高。辰巳，煞强无制伏，财官身弱，辛苦。壬辰日辛丑时，辰戌丑未，杂气财官印绶，俱吉。春平，夏财禄，秋吉，中有凶。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 278
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 46
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日壬寅时断六壬日生时壬寅，水火相逢既济论；水木月通财禄贵，不通无救是常人。壬日壬寅时，水火既济。壬用丙为财，甲为食，寅上丙生甲旺，壬水无气，若通水局，有倚托，皆贵，不通无救，福薄。壬寅日健旺，主大富，如不通月气，亦贵。壬子日壬寅时，纯子，年月无午冲破，入飞天格，富贵。寅卯巳申酉戌亥年月，俱贵。壬寅日壬寅时，壬趋艮格，土厚地方，山明水秀，腰金衣紫。巳亥年月，武职三品，富厚纯笃。寅年午月，行北运，金紫。巳月，行西北运，贵。辰戌丑未，亦吉。纯寅尤吉。一云中年贵，五十后大厄。壬
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 279
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日癸卯时断六壬日生时癸卯，引归死地势难安；劫财煞刃见伤鬼，倚托若无常命看。壬日癸卯时，身死刃生。壬以癸为刃，卯为暗乙，而伤官鬼。卯上癸生乙旺壬死，不通身旺月气，无救助及倚托者，夭贱。巳酉丑月，印旺无化者，性僻孤高虚诈，通身旺，见金气，行才运，贵。伤官伤尽，行南运，亦贵。壬子日癸卯时，子卯相刑，忧伤妻子，贵人提携，财帛盈余，敦厚之命。壬寅日癸卯时，背财败禄，或兴或废。子年月，贵。巳月，财官虽刑，亦贵。辰戌丑未，官煞制刃，俱吉。壬辰日癸卯时，通身旺月，见土金破刃，行财运，贵
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 280
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日甲辰时断六壬日生时甲辰，壬骑龙背坐食神；柱中有托无刑害，必是荣华富贵人。壬日甲辰时，亦为壬骑龙背。壬以甲为食神，辰上壬水合局，甲有生气，食神旺相，通月气者富贵福厚。冬月，行卯运，不利。壬子日甲辰时，纯子年月，飞天禄马，无破，六卿。巳酉，大贵。亥，亦贵。壬寅日甲辰时，巳月偏官格，不冲不破，贵显。午，正官，贵。辰卯局全，东方，少年登科，荣贵。壬辰日甲辰时，辰月生，壬骑龙背，大贵。寅月，不贵即富。戌月，杂气财官，冲开辰库，高命。子月，断根损叶，成败不定。未月，金水运，贵。壬
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 281
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日乙巳时断六壬日生时乙巳，身绝有财不聚财；进神暗鬼来相克，透己相刑是祸胎。壬日乙巳时，财旺身绝。壬用丙为财，戊为鬼，庚为倒食。巳上有乙木为伤官，丙戌健旺，庚金长生，壬水气绝，柱有己官，祸患百端，傲物夸高。若不通身旺月无救助者，贫；有倚托，通旺，或行身旺运，皆吉。壬子日乙巳时，贵，但难为妻子，性格刚强，不受击触。戌年月，纯煞有制，行木金运，官至三品。壬寅日乙巳时，孤高，刑妻克子，如为僧道，富贵。壬辰日乙巳时，春平，夏财，秋稳实，冬无助救，主贫苦。壬午日乙巳时，辰戌月，贵。
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 282
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日丙午时断六壬日生时丙午，聚财之地坐胞胎；月逢金水须富贵，弃命从来是就财。壬日丙午时，禄马三奇。壬以己为官，丙丁为财，午上丁己是禄马，壬水受胎，有倚托，通金水月气，就财生旺，主富贵，通火气，亦贵。壬子日丙午时，公直撑持，孤高而贵。年月子午，字重，水火既济，极品。壬寅日丙午时，寅午戌月，财星格，但嫌身弱，宜僧道，吉。秋生，印绶。冬，身旺，行金火运，金紫。壬辰日丙午时，寅午戌月，财旺，大贵。壬午日丙午时，冬日身旺，吉。夏，财多身弱，丑日近侍，贵。寅午，金土运，独弱从强，弃命
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 283
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 50
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日丁未时断六壬日生时丁未，夫化妻从格局奇；若是局中通水木，发财发福两相宜。壬日丁未时，夫从妻化，壬合丁，未上同木局，贵。若月通木局，有倚托者发财，不通，但有资助，因妻致富。壬子日丁未时，月通木气，贵；通金气，富，通火土气，富贵；两全不通，行火土运，亦吉。壬寅日丁未时，丁壬化木，亥卯未，寅月，贵。壬辰日丁未时，辰月生，壬骑龙背局，贵显。寅月，妻重子荣。三合水局，身旺无倚，多贫克妻。壬午日丁未时，春平，夏富，秋贵，冬吉。巳午年月，位至王候。未月，东运，贵。子月，正印、三奇俱
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 284
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日戊申时断六壬日生时戊申，长生之地鬼伤身；身强制伏为高命，反此定知贫薄人。壬日戊申时，水土混浊。壬以戊为鬼，庚为印，申上庚金健旺，壬水长生，戊土偏官，身鬼俱强，为人勇暴，若通旺月，行身旺运，有甲木制伏者贵；不通，聪明不贵，再行鬼旺运，难以显达。壬子日戊申时，羊刃带煞，贵人提携。巳午年月，近侍有权。壬寅日戊申时，时日相冲，身孤为僧道，吉。如寅午戌或纯辰年月，亦贵。壬辰日戊申时，戌月生，早登科甲，官至方面。寅卯丑申子午等年月，极贵，武职一品。壬午日戊申时，偏官偏印。亥卯未寅
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 285
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日己酉时断六壬日生时己酉，明官暗印有扶持；月通身旺人清贵，犹恐恋花贪酒色。壬日己酉时，败处逢生。壬水酉上沐浴，辛为生气印绶，酉上辛金旺，用己为官，酉上有明己，若通月气有倚托，行财官运，贵，反是，平常。但犯桃花坐命，风流人物，恋花贪酒。壬子日己酉时，春平，夏吉，秋常，冬旺。如卯月生，好花酒。壬寅日己酉时，大富贵，喜通水气，行官运，贵。但好花酒，风流人物。壬辰日己酉时，高，月同日，壬骑龙背，大贵。巳月，行东北运，贵。壬午日己酉时，禄马同乡，先难后易。丑寅月，行金水运，武职二
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 286
+  matched_rule_id: ZP-SRC-20260617-133
+  match_score: 46
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日庚戌时断六壬日生时庚戌，身临财库却为鬼；明庚暗戌相刑克，财禄生平聚散多。壬日庚戌时，枭临财库，壬以丙丁为财，库于戌，庚为倒食，戊偏官，若通火木月气，有倚托者，贵；不通，财帛聚散。壬子日庚戌时，名利进退，庚辛年月，贵。辰丑，刑冲；酉月，破害，财库得用；巳午，财官旺，俱吉。壬寅日庚戌时，刑妻克子。若春生，平，夏、冬，吉。辰丑未月，贵。壬辰日庚戌时，夏月，不富则贵，春平，秋稳，冬辛勤劳苦，或为僧道，有财破刑。壬午日庚戌时，禄马同乡，壬自坐禄，有庚辛制甲乙为贵。辰戌丑未年月，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 287
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六壬日辛亥时断六壬日逢辛亥时，印禄相随最是奇；财官不见无冲破，得路青云报尔知。壬日辛亥时，日禄居时，无克破，有倚托，柱中不见财官，富贵显达；行东运，大贵；若通气，减福；南方运，不贵巨富。壬子日辛亥时，主父母不得善终，后发不富。亥卯年月，文章进身，大贵。壬寅日辛亥时，艰难中发。未月，杂气财官，敦厚，中年贵，五十后终。亥月，东南运，方面。壬辰日辛亥时，秀贵、恶死，午月，干头无己土，青云得路，若有甲合，为去官留煞，三四品贵。酉月亦贵。壬午日辛亥时，平。丑月，风宪。寅月，禄马同乡，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 288
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日壬子时断六癸日生时壬子，青云得路最为奇；若无己土冲克破，自有功名显达时。癸日壬子时，日禄归时，癸水子上建禄，若年月干支无戊己午未字刑冲破害，三元有倚托，通月气者，文章秀丽，官职显达；若通木气月，亦贵。如柱透己，有甲合，亦贵。否则，反覆。癸丑日壬子时，午寅、乙丑，己丑年月，文职四五品，通身旺木气月，无戊己午巳字，显贵。未，风宪。巳午，进士。忌壬寅、乙未、庚戌月，俱刑。乙丑月，下贱。癸卯日壬子时，时日相刑，伤妻克子，近贵；无己土，威权。若亥巳俱全，进士乌府。年月纯寅，伤官
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 289
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日癸丑时断六癸日生时癸丑，支中暗鬼有刑伤；月通身旺防妻损，丑巳遥合贵异常。癸日癸丑时，支得隐鬼。癸以己为偏官，丑中有暗己得位，癸以丁为妻，丑中丁火无气，若通身旺比肩之月，防损妻财。柱丑寅多，以寅刑巳，丑合巳，刑出巳中，丙戊为财官，须干头无戊己字，大贵。忌巳未卯破格。癸丑日癸丑时，丑遥巳中丙戊为财官，若生丑寅申子酉三合年月，主妻贤于孝，荣贵特达；火土运凶；金水运吉。癸卯日癸丑时，日贵格，身孤克，主贵。丑寅辰年月，干支无戊己巳午卯字，极品。癸巳日癸丑时，福德秀气格，学问聪明
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 290
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日甲寅时断六癸日生时甲寅，刃复官禄减精神；柱中无有庚申字，刑合财官是贵人。癸日甲寅时，刑合财官，癸以丙为财，戊为官，寅刑出巳中丙戊为财官，若柱无官煞及刑冲破害损格，贵；有庚申戊己字，无制伏，不贵。癸丑日甲寅时，本贵，丑中有辛金，减其分数。纯水年月，官至一品。秋生印绶，亦贵。辰月，行东运，贫下。纯申破寅，凶。癸卯日甲寅时，亥卯未月，至贵。寅卯年月，刑合格，侯伯。寅亥，四品。寅月，西运，金紫。丑戌辰巳，亦贵。癸巳日甲寅时，平，通身旺月，大贵。忌戊己庚申字，岁运同。癸未日甲寅
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 291
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日乙卯时断六癸日生乙卯时，长生之地遇食神；众无午酉兼辛巳，福寿双全禄位人。癸日乙卯时，食神干旺。癸以乙为学堂食神，卯上癸水长生，乙坐禄，柱中无己破辛夺，午酉刑冲，通月气，有倚托，主聪明有寿，居官食禄；若有己土，不贵。春月生，北运，显达。癸丑日乙卯时，辰丑月，高贵。一云：少贱中年贵。癸卯日乙卯时，艰难。生寅卯月，伤官格，难言富贵。未戌年月，技艺近贵。辰丑，吉。己丑、丙子，凶。癸巳日乙卯时，财官双美，春伤官，夏财旺，秋印稳，冬平常。如丑午子亥年月，官至三四品。乙亥、乙酉，残
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 292
+  matched_rule_id: ZP-SRC-20260617-161
+  match_score: 58
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日丙辰时断六癸日生时丙辰，偏官无气未为贫；若无木气通其局，定是清高福禄人。癸日丙辰时，身坐官库，癸用戊己为官，辰上土墓为官库，见丙为财，辰为水局，丙火无气，癸水合局，柱无甲破官损库，主贵。癸丑日丙辰时，平。辰戌丑未月，财官有气，贵。癸卯日丙辰时，孤独难为椿萱，有财帛，贵，人钦敬。卯亥年月，日贵格。午戌，九品至五品。寅月，行南运，风宪。癸巳日丙辰时，子月生，南方，山明水秀，地方，高贵。子未年月，富厚。戌卯，近侍。未戌申，儒官。癸未日丙辰时，高。寅卯未月，平常。辰戌丑月，吉
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 293
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 52
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日丁巳时断六癸日生时丁巳，贵地逢财遇暗官；有托就看财禄盛，无依必定福偏残。癸日丁巳时，癸合财官，癸用丙为财，戊为官，庚为印，巳为天乙贵人。巳上庚金长生，丙戊建禄，癸水受胎，若有倚托，通水气月，贵，不通水气。平常。时逢三奇，大抵发于晚年。癸丑日丁巳时，先贫后富，行火水运，发达。癸卯日丁巳时，若子月，身旺财旺，贵显。癸巳日丁巳时，财官双美。子月，贵。火月，富。天干透土，地支午未，主大权贵。纯丑，极品。癸未日丁巳时，寅午戌月，身财旺显，秋冬禄旺，伤残疾。癸酉日丁巳时，先贫后富
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 294
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 51
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日戊午时断六癸日生时戊午，化火临时帝旺乡；运喜东南木火地，为官清正禄荣昌。癸日戊午时，化气成火局，癸合戊化火，午上帝旺，合局而贵，身旺不化癸水，地方之气引到南方，癸水无气，贵而寿促，东方运吉。癸丑日戊午时，财厚，南运主贵寿促，东运吉。癸卯日戊午时，申子辰亥月，身旺不化，平常。卯戌月，贵。癸已日戊午时，中年大富，若行东运，贵显。申未月，亦贵。癸未日戊午时，寅午戌，化火合局，贵显。癸酉日戊午时，主伤妻家财，有始无终，子年子贵而无禄，行南运，好。癸亥日戊午时，贵，未月，东方运
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 295
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日己未时断六癸日生时癸未，鬼旺身衰福不齐；月气不通无救助，平常衣禄有相亏。癸日己未时，鬼旺身衰。癸以己为鬼，未上明暗二己得坐专位，癸水无气，浑浊不清，反复成败，若通月制又不通水气者，平常。癸丑日己未时，高。年月俱丑，贫薄。辰戌丑未，土旺，主目疾、贫贱。通金木水气，贵。午月，东北运，六七品贵。癸卯日己未时，子巳未年月，二品。巳寅字，刑六亲。癸巳日己未时，财官双美，柱无戊土，有卯木合局，作时上偏官，有制，贵。癸未日己未时，高。春偏官有制，吉。夏，平常。秋、冬身旺，申月行木运
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 296
+  matched_rule_id: ZP-SRC-20260617-098
+  match_score: 49
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日庚申时断六癸日生时庚申，官星印旺在其支；柱中无己丙寅巳，自有荣华富贵时。癸日庚申时，作专印合禄。癸以戊为正官，庚为正印，申上庚旺戊生，以申合巳中戊丙，癸日得财官，若有倚托，柱中无财及破害刑冲官印，主贵；柱中有财，行财运，反复进退，少贵。癸丑日庚申时，辰戌丑未年月，文章冠世，官至三品。子月坐禄，亦吉。癸卯日庚申时，卯月作合禄格，西北运，贵，金紫。申月，东北运，风宪。庚辰、庚戌年月，正官格，贵。辰月，金水运，七品贵。癸巳日庚申时，贫，亦是合禄格。未月生，问学有成，西北运，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 297
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 55
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日辛酉时断六癸日生时辛酉，自身失地更何有；支中明暗被辛伤，无助利名终不就。癸日辛酉时，明暗枭神。癸见辛为倒食，酉上辛建旺，癸失地，若无倚托救助者，遇贵生涯；有倚托则吉。癸丑日辛酉时，秋月，印绶格，行官煞运，吉。冬，福禄双全。子寅年月，干头无戊己字，贵。癸卯日辛酉时，日贵格，辰戌丑未月，贵。子卯年月，大贵。巳午，亦贵。又云不利妻子。癸巳日辛酉时，孤。寅卯年，辰戌丑未月，贵。子午卯酉，中贵。寅申巳亥，最贵。癸未日辛酉时，春贫，夏先难后易，秋吉，冬贵。癸酉日辛酉时，申酉月，印
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 298
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日壬戌时断六癸日生日壬戌，支内正官生财库；月兼有救贵多成，倚托若无终不富。癸日壬戌时，水火既济，癸用丙丁为财，戊土为官，戊与癸合旺，为人智谋，通月气有倚托者贵；不通，平常；通火土月气，富贵双全；运气通，亦吉。癸丑日壬戌时，刑，亥月，土厚地方上贵。辰申年月，南方运，状元。五月，南运，都宪。若春秋生，南方运，八九品。癸卯日壬戌时，日贵格，寅巳年月，干透戊丁财官而旺，大贵有权。卯辰丑午子等年月，文贵。酉戌，金土运，五六品。癸巳日壬戌时，财官双美，春平，夏秋冬贵。辰丑未寅酉年月
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 299
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 57
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: ○六癸日癸亥时断六癸日生时癸亥，禄马飞天临旺神；不见官星兼惹绊，必为贵格异常人。癸日癸亥时，禄马飞天格，癸水亥健旺，癸用戊为官，丙为财，亥中丙戊俱绝，癸无财官，却亥去冲出巳中丙戊，飞来就癸为财官，柱无戊己惹绊及官星破禄，若见庚辛，清白而秀，为人智慧，贵为方面。癸丑日癸亥时，作拱禄格。巳酉丑生，福德秀气。午月平常。卯酉月，行南运，金紫风宪，但难为寿。癸卯日癸亥时，平，日贵格。寅卯月，伤官论，行金水运，风宪。辰戌丑未月，官旺。纯卯，三品贵。辰戌与卯刑，主孤贫。癸巳日癸亥时，丑月，
+  source_path: sources/ziping/《三命通会》.md
+  source_line: 300
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 59
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 子平之术，由来尚矣。自唐李虚中以年月日立命，至宋徐子平兼用时辰，而后八字之法定。其理本于阴阳五行，推究气运之盛衰，以定人之祸福寿夭。然世传诸书，或繁而无要，或简而疏漏，讹谬杂出，初学茫然。 余涉猎子平有年，参究古法，删繁举要，辑为此编，名曰《子平真诠》。诠者，诠解命理之真义也。务使格局用神之理，条分缕析，一目了然，为后学入道之阶。非敢自诩精微，聊以正俗书之讹而已。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 5
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 41
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 天地之间，一气而已。惟有动静，遂分阴阳；有老少，遂分四象。老者极动极静，为太阳太阴；少者初动初静，为少阳少阴。四象既定，由是生五行：水太阴也，火太阳也，木少阳也，金少阴也，土寄于四季，统摄四气。 五行布于天干地支，天干十：甲丙戊庚壬为阳干，乙丁己辛癸为阴干；地支十二：子寅辰午申戌阳支，丑卯巳未酉亥阴支。
+    甲乙属木，甲阳乙阴；丙丁属火，丙阳丁阴；戊己属土，戊阳己阴；庚辛属金，庚阳辛阴；壬癸属水，壬阳癸阴。 寅卯木，巳午火，申酉金，亥子水，辰戌丑未土。天干行天之气，地支凝地之形。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 10
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 33
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 以气论，阳干气盛；以质论，阴干质坚。俗以甲为大树宜斫、乙为小苗难伤，乃附会谬说，不足取。学命必先明干支阴阳本源。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 14
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 21
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 四时气运，相生轮转：木生火，火生土，土生金，金生水，水复生木，循环无端。 相克之理：木克土，土克水，水克火，火克金，金克木。相生为和顺，相克为制伏。 生之中有克，克之中有生。如木生火，木多火窒；火克金，金旺火熄。生克贵在中和，太过不及，皆为病。命理取用，全凭生克权衡旺衰。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 17
+  matched_rule_id: ZP-SRC-20260617-090
+  match_score: 41
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 五行寄生十二宫：长生、沐浴、冠带、临官、帝旺、衰、病、死、墓、绝、胎、养，循环十二地支。 长生者，气始生；帝旺者，气极盛；墓者气收藏；绝者气尽灭。阳干顺行，阴干逆行，乃阴阳消长自然之理。 如甲木长生在亥，顺行十二宫；乙木长生在午，逆行十二宫。古法以生死定旺衰，不可执泥死绝便作衰弱，须看全局干支帮扶制化。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 22
+  matched_rule_id: ZP-SRC-20260617-121
+  match_score: 34
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 十干五合：甲己合土，乙庚合金，丙辛合水，丁壬合木，戊癸合火。合有正合、化合之分。 得月令之气则化，不得月令只作牵绊。天干相合，改变原干性情：甲用辛官，逢丙合辛，则官星被合无用；甲用己财，己被他甲合去，则财星落空。
+    吉神被合则失用，凶神被合则化凶。男命财为妻，财被合夺；女命官为夫，官被合离，皆六亲不合之象。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 27
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 43
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 干合而不能化，谓之合而不合。一者化合无根，不得月令化神之气；二者中间隔干，被他干冲克；三者地支冲破合局。 如甲己相逢，月令非土，地支寅木冲破，虽合不化，只作羁绊。凡合而不化，原干五行依旧论生克，不可妄作化格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 32
+  matched_rule_id: ZP-SRC-20260617-017
+  match_score: 32
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 旺衰以月令为提纲，然得地得助，虽失令亦不弱；失地无助，虽得令亦不强。 甲木生申月失令，地支寅卯成林，则身旺；甲木生寅月得令，地支申酉重重克伐，则身弱。 故断旺衰，月令为本，干支帮扶为辅，不可单执月令定强弱。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 36
+  matched_rule_id: ZP-SRC-20260617-070
+  match_score: 30
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 地支有六合、六冲、三刑、三会、三合。 六合：子丑合、寅亥合、卯戌合、辰酉合、巳申合、午未合；六冲：子午冲、丑未冲、寅申冲、卯酉冲、辰戌冲、巳亥冲。 三会聚一方之气，三合成局。冲则散局，合则解冲。如子午相冲，逢丑合子、逢未合午，即解冲。刑者，无恩之刑、恃势之刑、无礼之刑，刑破格局则损用神。
+    解法全在合神、制神，以合解冲，以克解刑。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 41
+  matched_rule_id: ZP-CLEAN-20260618-002
+  match_score: 31
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 用神者，八字全局之关键，补日主之偏枯，定格局之成败。月令为用神第一出处，月令透出之干、藏干可用者，即为正用。 日主旺，用神取克泄；日主弱，用神取生扶。用神一立，全造吉凶以此定。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 48
+  matched_rule_id: ZP-CLEAN-20260618-002
+  match_score: 37
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 用神喜生扶、忌克破。用神被克为败，有干支制克用神之物、护卫用神，谓之救应。 如甲木日主，月令酉官为用，透出丁火伤官克官，逢壬水合丁护辛，则救应成格；无壬水救护，伤官破官，格局破败。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 52
+  matched_rule_id: ZP-SRC-20260617-009
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 用神随干支组合变换格局，正用可变偏用。月令本为官星，财多生官变财格；月令本为财星，官多护财变官格。 因地支会合、天干透干，用神随时改换，不可死守月令原气。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 56
+  matched_rule_id: ZP-SRC-20260617-009
+  match_score: 45
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 纯者，用神一气专一，无他神混杂；杂者，别神透出干扰用神。 官格见财印相生为纯，混杂伤官七杀则杂。格纯则贵，格杂则贫贱多波折。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 60
+  matched_rule_id: ZP-SRC-20260617-009
+  match_score: 40
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 用神有情、护卫周全则格高；用神无情、克泄交加则格低。 有情者，顺生相辅；无情者，逆克相伐。同是官格，财生官、印护官为上格，伤官破官、七杀混官为下格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 64
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 格局本成，运岁克破用神则由成转败；格局本破，运岁补救用神则由败转成。 原局官格被伤，大运逢印制伤护官，败局复成；原局用神完备，大运忌神冲破，成局变败。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 68
+  matched_rule_id: ZP-SRC-20260617-162
+  match_score: 37
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 用神兼顾四时气候，冬寒喜火调候，夏燥喜水润燥，调候为急，大于扶抑。 水冷金寒，虽日主身旺，首取火暖局，次论克泄；炎燥木枯，先取水润土，再定用神。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 72
+  matched_rule_id: ZP-SRC-20260617-035
+  match_score: 34
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 相神者，辅佐用神成格之神，如君王之辅相。官格用财生官，财为相；煞格用食制煞，食为相。 伤用神祸轻，伤相神祸重，相神一损，全局崩塌。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 76
+  matched_rule_id: ZP-SRC-20260617-142
+  match_score: 39
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 辰戌丑未为杂气，藏天地余气，分本气、余气、墓气。取杂气用神，以透出天干、地支会局为准，不透不聚，难作正用。 辰藏戊乙癸，透戊取土格，透乙取木格，透癸取水格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 80
+  matched_rule_id: ZP-SRC-20260617-006
+  match_score: 28
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 墓库藏余气，静则收藏，冲则库开，余气透出。辰戌相冲开水土库，丑未相冲开木金库。 宜冲则冲开取用，忌冲则冲破用神。身弱用神在库，逢冲出库帮身则吉；身旺用神藏库，逢冲破库损用则凶。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 84
+  matched_rule_id: ZP-SRC-20260617-007
+  match_score: 29
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 官、印、财、食为四吉神，用之得法成格，用之失宜反破格。 官多身弱，官星克身破身格；财多身弱，财星耗身破格；印多身旺，印旺滞食破格；食神过旺泄身，食神破格。吉神泛滥，反为祸患。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 88
+  matched_rule_id: ZP-SRC-20260617-010
+  match_score: 31
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 杀、伤、枭、刃为四凶神，制化得宜反成贵格。七杀逢食神制，杀格成名；伤官配印，伤官成格；枭神制旺食，枭为我用；阳刃用官杀制伏，刃格显贵。凶神有制，化凶为吉。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 92
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 纳音、神煞、二十八星宿，不关乎格局用神。命理以五行生克、格局用神为正宗，拘泥神煞星辰，误入旁门。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 99
+  matched_rule_id: ZP-CLEAN-20260618-006
+  match_score: 19
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 月令无可用之神，别位干支成局取用，名为外格。专旺、从强、从财、从杀，皆属外格。 日主真从则顺其旺势，不能真从仍作正格，从格最忌破格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 102
+  matched_rule_id: ZP-SRC-20260617-145
+  match_score: 43
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 男命以财为妻，财星有根无冲破，妻贤寿安；财星被劫合，刑妻克偶。女命以官为夫，官星纯粹无伤，夫君显贵；官星混杂受克，夫缘浅薄。时柱为子女宫，食伤旺而无破，儿女昌盛。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 109
+  matched_rule_id: ZP-CLEAN-20260618-067
+  match_score: 44
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 原局格局已定，大运干支改变生克，可成格、可变格。原局破败，运补用神则成；原局完美，运破用神则败。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 115
+  matched_rule_id: ZP-CLEAN-20260618-007
+  match_score: 26
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 天干主表面，地支主内里。天干喜神外露，外有贵人；地支喜神藏根，内享福泽。天干忌神在外，多招是非；地支忌神藏根，暗受灾祸。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 118
+  matched_rule_id: ZP-SRC-20260617-150
+  match_score: 25
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 地支藏干喜忌，大运引出透干，谓之透清。藏中用神，运岁透出，格局显用；藏中忌神，运岁透出，祸患显现。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 121
+  matched_rule_id: ZP-SRC-20260617-008
+  match_score: 30
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 坊间命书多承袭谬论，如甲木必喜庚、乙木必喜辛，五行定格死板，不知旺衰制化，不可盲从俗说。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 127
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 28
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 正官乃克我阴阳相配之神，扶身律己，最喜财生、印护。官星纯粹，无杀混杂、无伤官破损，正官成格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 130
+  matched_rule_id: ZP-SRC-20260617-009
+  match_score: 39
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 官格行运，喜财印生扶，忌伤官七杀旺运破官。身弱官旺，喜印绶化官生身；身旺官轻，喜财运生官。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 134
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 45
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 我克者为财，正财阴克阳、偏财阳克阴。财喜食神生、官星护，忌比肩劫财夺财。财旺身弱，难任财帛；身旺财弱，财薄清贫。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 137
+  matched_rule_id: ZP-SRC-20260617-133
+  match_score: 32
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 财格运喜食伤生财、官星护财，忌比劫夺财、枭神克食。身弱财旺，宜印运扶身担财。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 140
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 42
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 生我者为印，正印阴生阳、偏印阳生阴。印护身，喜官星生印，忌财星破印、食伤泄印。印旺身强，喜食伤吐秀。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 143
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 30
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 印格身弱喜官印运，身旺喜食伤运泄秀，忌财运坏印。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 146
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 我生者为食神，阴生阴、阳生阳。食神生财、制杀，喜身旺有根，忌枭神夺食。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 149
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 26
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 食神格喜财运泄食生财，忌枭印破食。身弱食神过旺，喜印运护身。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 152
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 32
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 156
+  matched_rule_id: ZP-SRC-20260617-142
+  match_score: 32
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 杀格运喜食伤制杀、印绶化杀，忌财生杀旺攻身。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 159
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 39
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 我生异类为伤官，阴生阳、阳生阴。伤官生财为用，伤官配印为贵，伤官无制见官则祸。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 162
+  matched_rule_id: ZP-SRC-20260617-011
+  match_score: 30
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 伤官格喜财运生伤、印运制伤，忌官星来混格局。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 165
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 38
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 日主帝旺之地为阳刃，身旺刃旺喜官杀制刃，刃无制则凶狠破败。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 168
+  matched_rule_id: ZP-CLEAN-20260618-010
+  match_score: 24
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 刃格喜官杀运制刃，忌比劫帮刃、食伤泄刃。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 171
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 33
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 月令日主得禄为建禄，同气比肩为月劫。禄劫无财官取用，喜财官透出成格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 174
+  matched_rule_id: ZP-SRC-20260617-005
+  match_score: 36
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 禄劫格喜财官运，用财则官护财，用官则财生官。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 177
+  matched_rule_id: ZP-SRC-20260617-122
+  match_score: 33
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 天干五合有从化，化气真者，弃日主之本气，从所化之五行。甲己化土，日主甲乙，干支土旺无木气根气，方为真化；地支有寅卯木根，不能从化，只作干合牵绊。 化格最喜助化神之运，忌破化之本气。甲己化土格，喜火土运，忌水木破化。凡假化之造，仍以本日主五行论格局，不可作化格取用。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 187
+  matched_rule_id: ZP-SRC-20260617-157
+  match_score: 37
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 从势者，日主无根，全局五行聚成一方旺势，日主不得已而从之。从财、从杀、从食皆是从势。 从格分真从、假从。日主一点根气全无，满盘尽是财杀，为真从；地支藏根、余气暗藏帮扶日主，即为假从。真从喜助旺势，忌生扶日主破格；假从逢帮身运，即破从格。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 191
+  matched_rule_id: ZP-SRC-20260617-131
+  match_score: 42
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 曲直、炎上、稼穑、从革、润下，谓之五专旺格。一气独旺，日主根深，满局助身，不能克泄，顺其旺势为贵。 曲直木旺，满局木气；炎上火旺，巳午成局；稼穑土厚，辰戌丑未；从革金盛，申酉成群；润下水旺，亥子相连。专旺格忌官杀来克，克则破格多灾，喜泄秀助旺。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 195
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 47
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 四时气候寒热燥湿，为八字第一要务，调候重于扶抑用神。 春木余寒，必先火暖局；夏火燥热，必先水润局；秋金气凉，酌火驱寒；冬水冷寒，非火不生。纵使身旺身弱，先救气候，再论日主旺衰取用。 寒无火、燥无水，纵财官齐备，格局亦难显贵。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 199
+  matched_rule_id: ZP-SRC-20260617-031
+  match_score: 42
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 财多身弱，取印生身，以担旺财；官多身衰，取印化官护身；财少身旺，喜食伤生财；官轻身强，喜财星生官。 财官叠叠日主不能任，虽有财官亦是身弱难享，多为劳碌破财。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 204
+  matched_rule_id: ZP-SRC-20260617-134
+  match_score: 37
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 胎元以出生月份天干顺推一位、地支顺推三位，古法辅助参看气运。然格局吉凶重在四柱干支生克，胎元只作旁参，不可定祸福主体。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 208
+  matched_rule_id: ZP-SRC-20260617-139
+  match_score: 35
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 命宫起法，以生时与生月折算，古法辅助断六亲运势。子平正宗以四柱格局为凭，命宫神煞只作点缀，舍五行而论命宫，舍本逐末。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 211
+  matched_rule_id: ZP-SRC-20260617-148
+  match_score: 27
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+- source_excerpt: 俗书有言：甲木生于春必旺，庚金生于秋必强。不知春木逢金多克伐，虽寅月亦弱；秋金逢火重重煅炼，虽申月亦衰。旺衰重在地支根气、干支帮扶，不可以月令单定强弱。
+  source_path: sources/ziping/《子平真诠》.md
+  source_line: 215
+  matched_rule_id: ZP-SRC-20260617-090
+  match_score: 32
+  reason:
+  - already_covered_by_rule_X
+  - semantic_equivalent
+coverage_report:
+  source_segment_count: 594
+  rulelike_segment_count: 438
+  matched_or_paraphrase_segment_count: 438
+  true_missing_count: 0
+  false_gap_candidate_count: 438
+  coverage_ratio: 1.0
+  true_missing_ratio: 0.0
+  paraphrase_noise_ratio: 1.0
+final_marker: NO_MISSING_RULES_FOUND

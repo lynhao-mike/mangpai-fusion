@@ -1,0 +1,2309 @@
+ZipingModel:
+  schema_version: ziping-structure-consolidation-2026-06-18
+  source_inputs:
+  - theory/ziping/_cleaned/index_cleaned.yaml
+  - theory/_ir/ziping_rule_ir.yaml#ZP-SRC-20260617-* as ZP-GAP new_rules
+  constraints:
+    no_new_rules: true
+    no_gap_mining: true
+    operation: structure_modeling_only
+  layers:
+  - primitive
+  - mechanism
+  - context
+  - projection
+  layer_definitions:
+    primitive:
+    - 用神
+    - 格局
+    - 十神
+    mechanism:
+    - 生克顺序
+    - 显隐机制
+    - 权重体系
+    context:
+    - 环境变量
+    - 时间变量
+    - 空间变量
+    projection:
+    - 性格
+    - 外貌
+    - 医学
+  rules:
+    mapped_rules:
+    - rule_id: ZP-CLEAN-20260618-001
+      source: cleaned_index
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - ten_gods_context_available
+      - domain_scope=事业,财富,学业,性格,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-002
+      source: cleaned_index
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,学业,健康
+    - rule_id: ZP-CLEAN-20260618-003
+      source: cleaned_index
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,健康,婚姻
+    - rule_id: ZP-CLEAN-20260618-004
+      source: cleaned_index
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,性格,仕途,名望
+    - rule_id: ZP-CLEAN-20260618-005
+      source: cleaned_index
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,婚姻,财富
+    - rule_id: ZP-CLEAN-20260618-006
+      source: cleaned_index
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,性格,名望
+    - rule_id: ZP-CLEAN-20260618-007
+      source: cleaned_index
+      layer: context
+      function_type: time_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-008
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=财富,事业
+    - rule_id: ZP-CLEAN-20260618-009
+      source: cleaned_index
+      layer: projection
+      function_type: medical_health_projection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-010
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=家庭,财富,健康,婚姻,子女
+    - rule_id: ZP-CLEAN-20260618-011
+      source: cleaned_index
+      layer: mechanism
+      function_type: manifest_hidden_mechanism
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,健康,性格,子女
+    - rule_id: ZP-CLEAN-20260618-012
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,婚姻,财富
+    - rule_id: ZP-CLEAN-20260618-013
+      source: cleaned_index
+      layer: projection
+      function_type: medical_health_projection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - seasonal_environment_available
+      - domain_scope=健康,性格,事业
+    - rule_id: ZP-CLEAN-20260618-014
+      source: cleaned_index
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,财富,婚姻
+    - rule_id: ZP-CLEAN-20260618-015
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,学业
+    - rule_id: ZP-CLEAN-20260618-016
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,健康,竞争类事务
+    - rule_id: ZP-CLEAN-20260618-017
+      source: cleaned_index
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - domain_scope=全域
+    - rule_id: ZP-CLEAN-20260618-018
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - domain_scope=事业,财富,健康,性格
+    - rule_id: ZP-CLEAN-20260618-019
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,婚姻,财富,健康
+    - rule_id: ZP-CLEAN-20260618-020
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,财富,学业
+    - rule_id: ZP-CLEAN-20260618-021
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,财富,子息,晚景
+    - rule_id: ZP-CLEAN-20260618-022
+      source: cleaned_index
+      layer: projection
+      function_type: medical_health_projection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=财富,事业,健康
+    - rule_id: ZP-CLEAN-20260618-023
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=子息,晚景,事业,健康
+    - rule_id: ZP-CLEAN-20260618-024
+      source: cleaned_index
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,婚姻,学业
+    - rule_id: ZP-CLEAN-20260618-025
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=婚姻,子息,家庭,财富
+    - rule_id: ZP-CLEAN-20260618-026
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,健康,财富,性格
+    - rule_id: ZP-CLEAN-20260618-027
+      source: cleaned_index
+      layer: mechanism
+      function_type: mechanism_evaluation
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,财富,健康
+    - rule_id: ZP-CLEAN-20260618-028
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-029
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-030
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,性格
+    - rule_id: ZP-CLEAN-20260618-031
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,健康,家庭
+    - rule_id: ZP-CLEAN-20260618-032
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-033
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,性格
+    - rule_id: ZP-CLEAN-20260618-034
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-035
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,性格,婚姻
+    - rule_id: ZP-CLEAN-20260618-036
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-037
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,性格,财富
+    - rule_id: ZP-CLEAN-20260618-038
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,健康,性格
+    - rule_id: ZP-CLEAN-20260618-039
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,财富,健康,性格
+    - rule_id: ZP-CLEAN-20260618-040
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,健康,性格
+    - rule_id: ZP-CLEAN-20260618-041
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,健康
+    - rule_id: ZP-CLEAN-20260618-042
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,健康,家庭
+    - rule_id: ZP-CLEAN-20260618-043
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-044
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,学业
+    - rule_id: ZP-CLEAN-20260618-045
+      source: cleaned_index
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,财富,健康
+    - rule_id: ZP-CLEAN-20260618-046
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,财富
+    - rule_id: ZP-CLEAN-20260618-047
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=事业,健康,性格,学业
+    - rule_id: ZP-CLEAN-20260618-048
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,健康,财富,性格
+    - rule_id: ZP-CLEAN-20260618-049
+      source: cleaned_index
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,健康
+    - rule_id: ZP-CLEAN-20260618-050
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - seasonal_environment_available
+      - domain_scope=事业,健康,学业,性格
+    - rule_id: ZP-CLEAN-20260618-051
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - timing_context_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-052
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - timing_context_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-053
+      source: cleaned_index
+      layer: mechanism
+      function_type: mechanism_evaluation
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - timing_context_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-054
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,健康,婚姻
+    - rule_id: ZP-CLEAN-20260618-055
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-056
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-057
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,婚姻,健康,性格
+    - rule_id: ZP-CLEAN-20260618-058
+      source: cleaned_index
+      layer: mechanism
+      function_type: generation_control_sequence
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-059
+      source: cleaned_index
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-060
+      source: cleaned_index
+      layer: context
+      function_type: context_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=事业,健康,性格
+    - rule_id: ZP-CLEAN-20260618-061
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=婚姻,家庭,性格
+    - rule_id: ZP-CLEAN-20260618-062
+      source: cleaned_index
+      layer: mechanism
+      function_type: weighting_priority
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - domain_scope=事业,婚姻,健康
+    - rule_id: ZP-CLEAN-20260618-063
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - interaction_evidence_available
+      - domain_scope=财富,事业,健康
+    - rule_id: ZP-CLEAN-20260618-064
+      source: cleaned_index
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,财富,性格
+    - rule_id: ZP-CLEAN-20260618-065
+      source: cleaned_index
+      layer: projection
+      function_type: medical_health_projection
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=健康,家庭,子女
+    - rule_id: ZP-CLEAN-20260618-066
+      source: cleaned_index
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - domain_scope=健康,家庭,子女
+    - rule_id: ZP-CLEAN-20260618-067
+      source: cleaned_index
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=婚姻,子女,性格
+    - rule_id: ZP-CLEAN-20260618-068
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,性格,财富
+    - rule_id: ZP-CLEAN-20260618-069
+      source: cleaned_index
+      layer: context
+      function_type: spatial_variable_adjustment
+      activation_condition:
+      - source_clean_rule_present
+      - original_rules_available
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=事业,学业,性格
+    - rule_id: ZP-SRC-20260617-001
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,marriage,fate
+    - rule_id: ZP-SRC-20260617-002
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=marriage,fate
+    - rule_id: ZP-SRC-20260617-003
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-004
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - interaction_evidence_available
+      - domain_scope=career,marriage,health,fate
+    - rule_id: ZP-SRC-20260617-005
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,fate
+    - rule_id: ZP-SRC-20260617-006
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-007
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,health,fate
+    - rule_id: ZP-SRC-20260617-008
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,marriage,health,fate
+    - rule_id: ZP-SRC-20260617-009
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-010
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=wealth,career,fate
+    - rule_id: ZP-SRC-20260617-011
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-012
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,health,fate
+    - rule_id: ZP-SRC-20260617-013
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-014
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,fate
+    - rule_id: ZP-SRC-20260617-015
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-016
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - domain_scope=wealth,career,fate
+    - rule_id: ZP-SRC-20260617-017
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: use_god_selection
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - geju_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=career,marriage,fate
+    - rule_id: ZP-SRC-20260617-018
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - domain_scope=wealth,career,fate
+    - rule_id: ZP-SRC-20260617-019
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-020
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,career,health,fate
+    - rule_id: ZP-SRC-20260617-021
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-022
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-023
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-024
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-025
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-026
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-027
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-028
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-029
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-030
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-031
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-032
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-033
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-034
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-035
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-036
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-037
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-038
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-039
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-040
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-041
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-042
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-043
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-044
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-045
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-046
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-047
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-048
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-049
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-050
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-051
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-052
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-053
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-054
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,health,fate
+    - rule_id: ZP-SRC-20260617-055
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-056
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,health,fate
+    - rule_id: ZP-SRC-20260617-057
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-058
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-059
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-060
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-061
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-062
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-063
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-064
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-065
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-066
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-067
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-068
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-069
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-070
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-071
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=fate,health,career
+    - rule_id: ZP-SRC-20260617-072
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-073
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-074
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-075
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-076
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-077
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-078
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-079
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-080
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-081
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-082
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-083
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-084
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-085
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-086
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-087
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-088
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-089
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-090
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-091
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-092
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-093
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-094
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-095
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-096
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-097
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-098
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-099
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-100
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-101
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-102
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-103
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-104
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-105
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-106
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-107
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-108
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-109
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: time_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - timing_context_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-110
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-111
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-112
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-113
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-114
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-115
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-116
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-117
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-118
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - domain_scope=fate,career,wealth,health
+    - rule_id: ZP-SRC-20260617-119
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=fate,career,wealth
+    - rule_id: ZP-SRC-20260617-120
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=fate,career,health
+    - rule_id: ZP-SRC-20260617-121
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-122
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health,wealth
+    - rule_id: ZP-SRC-20260617-123
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-124
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-125
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-126
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-127
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-128
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - domain_scope=career,fate,family
+    - rule_id: ZP-SRC-20260617-129
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-130
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-131
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health,personality
+    - rule_id: ZP-SRC-20260617-132
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,family
+    - rule_id: ZP-SRC-20260617-133
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth,health
+    - rule_id: ZP-SRC-20260617-134
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth,health
+    - rule_id: ZP-SRC-20260617-135
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - interaction_evidence_available
+      - domain_scope=career,fate,health
+    - rule_id: ZP-SRC-20260617-136
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=career,fate,wealth,health
+    - rule_id: ZP-SRC-20260617-137
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-138
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-139
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-140
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-141
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-142
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-143
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-144
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,fate,health
+    - rule_id: ZP-SRC-20260617-145
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=wealth,fate
+    - rule_id: ZP-SRC-20260617-146
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-147
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-148
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: primitive_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth,family
+    - rule_id: ZP-SRC-20260617-149
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-150
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate,health
+    - rule_id: ZP-SRC-20260617-151
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-152
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-153
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-154
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - seasonal_environment_available
+      - domain_scope=career,fate,wealth
+    - rule_id: ZP-SRC-20260617-155
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate
+    - rule_id: ZP-SRC-20260617-156
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-157
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: pattern_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - timing_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,health,personality
+    - rule_id: ZP-SRC-20260617-158
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-159
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - geju_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,wealth,fate
+    - rule_id: ZP-SRC-20260617-160
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,wealth,personality
+    - rule_id: ZP-SRC-20260617-161
+      source: ZP-GAP:new_rules
+      layer: primitive
+      function_type: ten_gods_classification
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - ten_gods_context_available
+      - interaction_evidence_available
+      - domain_scope=fate,career,personality,health
+    - rule_id: ZP-SRC-20260617-162
+      source: ZP-GAP:new_rules
+      layer: context
+      function_type: environment_variable_adjustment
+      activation_condition:
+      - source_gap_rule_present
+      - rule_status_active
+      - yongshen_or_quyong_context_available
+      - ten_gods_context_available
+      - seasonal_environment_available
+      - interaction_evidence_available
+      - domain_scope=career,fate,personality,health
+  summary:
+    cleaned_rule_count: 69
+    zp_gap_new_rule_count: 162
+    mapped_rule_count: 231
+    layer_counts:
+      primitive: 67
+      context: 142
+      mechanism: 18
+      projection: 4
+    source_counts:
+      cleaned_index: 69
+      ZP-GAP:new_rules: 162

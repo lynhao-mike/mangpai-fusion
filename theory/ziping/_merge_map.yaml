@@ -1,0 +1,206 @@
+source_file: theory/ziping/index.yaml
+cluster_id_to_rule_ids:
+  ZP-CLEAN-CLUSTER-001: &id001
+  - ZP-PROD-20260605-001
+  - ZP-PROD-20260605-005
+  ZP-CLEAN-CLUSTER-002: &id002
+  - ZP-PROD-20260605-003
+  - ZP-PROD-20260606-002
+  ZP-CLEAN-CLUSTER-003: &id003
+  - ZP-PROD-20260605-004
+  - ZP-PROD-20260606-004
+  ZP-CLEAN-CLUSTER-004: &id004
+  - ZP-PROD-20260605-007
+  - ZP-PROD-20260605-013
+  ZP-CLEAN-CLUSTER-005: &id005
+  - ZP-PROD-20260605-008
+  - ZP-PROD-20260605-015
+  ZP-CLEAN-CLUSTER-006: &id006
+  - ZP-PROD-20260605-014
+  - ZP-PROD-20260606-010
+  ZP-CLEAN-CLUSTER-007: &id007
+  - ZP-PROD-20260605-016
+  - ZP-PROD-20260606-011
+  ZP-CLEAN-CLUSTER-008: &id008
+  - ZP-PROD-20260605-002
+  - ZP-PROD-20260605-017
+  ZP-CLEAN-CLUSTER-009: &id009
+  - ZP-PROD-20260606-030
+  - ZP-PROD-20260606-032
+  ZP-CLEAN-CLUSTER-010: &id010
+  - ZP-PROD-20260618-019
+  - ZP-PROD-20260618-020
+  - ZP-PROD-20260618-021
+  ZP-CLEAN-CLUSTER-011: &id011
+  - ZP-PROD-20260618-014
+  - ZP-PROD-20260618-015
+merge_clusters:
+- cluster_id: ZP-CLEAN-CLUSTER-001
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-001
+    statement: 子平判断应先定位用神，并围绕用神是否成立、受护或受破来评估格局成败、整体吉凶与事业财富层次。
+    source_rules: *id001
+  preservation:
+    original_rule_ids: *id001
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-001
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神者，八字全局之关键，补日主之偏枯，定格局之成败。
+    - rule_id: ZP-PROD-20260605-005
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神一立，全造吉凶以此定。
+  merge_reason: claim语义等价：均以用神为全局裁断核心，结论均指向格局成败与整体吉凶。
+- cluster_id: ZP-CLEAN-CLUSTER-002
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-002
+    statement: 子平取用与成格先后应优先依据月令提纲，并结合透干、藏干、旺相休囚与通月气情况判断。
+    source_rules: *id002
+  preservation:
+    original_rule_ids: *id002
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-003
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 月令为用神第一出处，月令透出之干、藏干可用者，即为正用。
+    - rule_id: ZP-PROD-20260606-002
+      path: sources/ziping/《三命通会》.md
+      excerpt: 月令提纲、旺相休囚、四时进退
+  merge_reason: claim语义等价：月令、提纲均作为旺衰取用与先后次序的核心依据。
+- cluster_id: ZP-CLEAN-CLUSTER-003
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-003
+    statement: 普通格局须先判日主强弱，再按日主承载力、十神状态、通月气与制化关系决定取用方向，不可只按十神名义定吉凶。
+    source_rules: *id003
+  preservation:
+    original_rule_ids: *id003
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-004
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 日主旺，用神取克泄；日主弱，用神取生扶。
+    - rule_id: ZP-PROD-20260606-004
+      path: sources/ziping/《三命通会》.md
+      excerpt: 正官、偏官、正财、偏财、印绶、伤官、食神
+  merge_reason: 十神结构一致但表达不同：均要求以身强身弱和制化状态决定取用。
+- cluster_id: ZP-CLEAN-CLUSTER-004
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-004
+    statement: 格局或官格判断须看清纯与混杂：结构纯一、财印相生和护卫顺畅者层级较高，伤官七杀或异神混杂且无制化者层次下降。
+    source_rules: *id004
+  preservation:
+    original_rule_ids: *id004
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-007
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 纯者，用神一气专一，无他神混杂；杂者，别神透出干扰用神。格纯则贵，格杂则贫贱多波折。
+    - rule_id: ZP-PROD-20260605-013
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 官格见财印相生为纯，混杂伤官七杀则杂。格纯则贵，格杂则贫贱多波折。
+  merge_reason: 格局判断重复表达：一条为格局纯杂总则，一条为正官格清纯的条件化展开。
+- cluster_id: ZP-CLEAN-CLUSTER-005
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-005
+    statement: 格局层级应综合用神有情、纯杂、相神、护卫与救应判断；用神顺接且护卫周全者层级提高，单点证据不足时不宜定高低。
+    source_rules: *id005
+  preservation:
+    original_rule_ids: *id005
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-008
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神有情、护卫周全则格高；用神无情、克泄交加则格低。
+    - rule_id: ZP-PROD-20260605-015
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神有情、护卫周全则格高；用神无情、克泄交加则格低。
+  merge_reason: 条件不同但结论相同：均指向格局高低不能单看用神存在，而要看有情、护卫、纯杂与救应。
+- cluster_id: ZP-CLEAN-CLUSTER-006
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-006
+    statement: 从格、化格、从势、专旺及飞天禄马、壬骑龙背、魁罡、合化等特殊格须先验真成、得令与未破，再决定是否另按特殊取用和贵气判断。
+    source_rules: *id006
+  preservation:
+    original_rule_ids: *id006
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-014
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 论从化、论从势、论专旺。
+    - rule_id: ZP-PROD-20260606-010
+      path: sources/ziping/《三命通会》.md
+      excerpt: 飞天禄马、壬骑龙背、魁罡、合化诸格
+  merge_reason: 条件不同但结论相同：均强调特殊格不能机械套普通扶抑或见名即贵，必须先辨真伪破成。
+- cluster_id: ZP-CLEAN-CLUSTER-007
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-007
+    statement: 原局成败须与大运流年分层处理，运岁可放大、修复或逆转用神、相神、忌神、库与合冲刑害所对应的成败状态。
+    source_rules: *id007
+  preservation:
+    original_rule_ids: *id007
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-016
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 用神因成得败，因败得成。
+    - rule_id: ZP-PROD-20260606-011
+      path: sources/ziping/《三命通会》.md
+      excerpt: 行运与命局相应，则成败易见；行运悖于命局，则吉凶倒置
+  merge_reason: claim语义等价：均表达静态格局不能替代动态运岁判断，成败可随运岁转化。
+- cluster_id: ZP-CLEAN-CLUSTER-008
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-008
+    statement: 财星、官星的多少只提供结构信息，财富和事业判断仍须回到身财承载、取用、制化、生护与成格条件。
+    source_rules: *id008
+  preservation:
+    original_rule_ids: *id008
+    source_excerpts:
+    - rule_id: ZP-PROD-20260605-002
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 财喜食神生、官星护，忌比肩劫财夺财。财旺身弱，难任财帛；身旺财弱，财薄清贫。
+    - rule_id: ZP-PROD-20260605-017
+      path: sources/ziping/《子平真诠》.md
+      excerpt: 论财官多寡取用。
+  merge_reason: 条件不同但结论相同：均反对只看财官数量，要求回到承载、取用、制化和成格。
+- cluster_id: ZP-CLEAN-CLUSTER-009
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-009
+    statement: 金局用火须分阶段：金未成器时喜适度火炼成形，金已成器后再遇强火则需提示过度锻炼、压力变形或伤损风险。
+    source_rules: *id009
+  preservation:
+    original_rule_ids: *id009
+    source_excerpts:
+    - rule_id: ZP-PROD-20260606-030
+      path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+      excerpt: 金无火链，不能成器，金重火轻，执事繁难，金轻火重，煆炼消亡。
+    - rule_id: ZP-PROD-20260606-032
+      path: sources/ziping/穷通宝鉴-明-余春台_part2.md
+      excerpt: 金成则火灭，故金未成器，欲得见火，金已成器，不欲见火。
+  merge_reason: conditional_variation：一条说明金需火炼成器，一条限定成器后不欲再火，合并为阶段性规则。
+- cluster_id: ZP-CLEAN-CLUSTER-010
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-010
+    statement: 六亲、配偶与子息判断须看对应星位或宫位所坐之地及生助冲克；坐生旺库、禄马、贵人、官印且受生者助力提高，坐空亡、刑克煞、羊刃、死绝、冲败者风险提高。
+    source_rules: *id010
+  preservation:
+    original_rule_ids: *id010
+    source_excerpts:
+    - rule_id: ZP-PROD-20260618-019
+      path: sources/ziping/《三命通会》.md
+      excerpt: 经云：以年为祖业，月为父母兄弟门户，日为妻妾己身，时为子息。须看四柱之中父母兄弟妻子星具何地？论旺相休囚而言其吉凶。如父母星坐长生旺库禄马贵人之地，则主父母富贵福寿荣耀；如坐空刑克煞死亡衰败交并之地，则主父母贫薄破伤刑夭，或死于外及不善终。
+    - rule_id: ZP-PROD-20260618-020
+      path: sources/ziping/《三命通会》.md
+      excerpt: 如妻妾星坐生旺库禄马贵人之地，或有物以生之，主妻妾富贵荣华，美貌多才；如坐空刑克煞羊刃死绝冲败之地，则主妻妾贫薄丑貌刑夭淫乱、残疾或产亡不得力。
+    - rule_id: ZP-PROD-20260618-021
+      path: sources/ziping/《三命通会》.md
+      excerpt: 如子息星坐生旺禄马贵人官印之地，有物以相生，主子息荣华聪明，多得送老；如坐禄马贵人居于死绝之地，虽有聪明俊秀，不送老也。
+  merge_reason: 十神结构一致但对象不同：父母兄弟、妻妾、子息均使用星位坐地旺衰贵煞与生助冲克结构。
+- cluster_id: ZP-CLEAN-CLUSTER-011
+  merged_rule:
+    rule_id: ZP-CLEAN-20260618-011
+    statement: 七煞与时上偏官须校验数量、清透、身旺身弱与制伏轻重；一位清透且制伏得宜可成权用，重见或制伏失衡则劳碌受限，制太过者喜煞旺运恢复权用。
+    source_rules: *id011
+  preservation:
+    original_rule_ids: *id011
+    source_excerpts:
+    - rule_id: ZP-PROD-20260618-014
+      path: sources/ziping/《三命通会》.md
+      excerpt: 若七煞止一，而制伏有二三处，喜行煞旺地，倘运再遇制伏，则尽法无民，虽猛如虎狼，亦不能逞其技矣。是又不可专言制伏，要轻重得所。
+    - rule_id: ZP-PROD-20260618-015
+      path: sources/ziping/《三命通会》.md
+      excerpt: 时上偏官，要干上透出，只一位为妙，年月日重见，反主辛苦劳碌，若身旺，煞制太过，喜行煞旺运，或三合煞运，如无制伏，要行制伏运方发。
+  merge_reason: partial_overlap：时上偏官规则内含七煞制伏太过喜煞旺运，与七煞制伏轻重规则重复。
+total_clusters_found: 11
