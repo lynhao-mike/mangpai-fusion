@@ -1,0 +1,328 @@
+- id: ZP-PROD-20260618-017
+  status: active
+  expert_system: ziping
+  title: 小儿命以根苗花果与中和定易养
+  topic: xiaoer_genmiao_huaguo_zhonghe
+  domains:
+  - 健康
+  - 家庭
+  - 子女
+  axis_refs:
+  - AXIS-04
+  - AXIS-05
+  - AXIS-08
+  claim: 推小儿命须以年为根、月为苗、日为花、时为果；日干有气、月令生扶、年上栽根、印绶无伤、财官有制、七煞得化、伤官遇合且无刑冲破害者，主易养长寿；反见煞重身轻、财多身弱、伤食叠逢、旺甚无依或柔弱少印并刑冲破害者，主难养促寿。
+  conditions:
+    trigger: child_chart_health_assessment
+    required:
+    - 命例处于小儿、早年养育或幼年健康判断语境
+    - 可按年根、月苗、日花、时果定位四柱层级
+    - 可判断日干有气、月令生扶、年根、印绶、财官、七煞、伤官与刑冲破害状态
+    optional:
+    - 日干旺甚无依或太柔少印
+    - 财多身弱、煞重身轻、伤官食神叠见
+    exclusions:
+    - 非幼年健康与养育风险判断时不可直接套用促寿断语
+    - 原局虽有凶项但有强印化煞、合伤或岁运救应时须降低凶断
+  output:
+    statement: 子平规则参与：小儿命先看四柱根苗花果与日主中和，吉链完整则偏易养长寿，身轻煞财伤食重并刑冲破害则提高难养早年健康风险。
+    falsifiable: 若小儿命根苗花果与中和链不能区分幼年易养、常病或夭促反馈，则此条需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 人之八字，以年为根，月为苗，日为花，时为果，其理皆然。故推小儿之命，要日干有气，月令生扶，年上栽根，印绶无伤，财官有制，七煞得化，伤官遇合，气禀中和，不值刑冲破害，此则易养长寿之命。如煞重身轻，财多身弱，伤官叠遇，食神重逢，日干或旺甚无依，或太柔少印，气失中和，柱中有刑冲破害，此则难养促寿之命。
+  review:
+    notes: 来源章节：小儿命。是否新增结构维度：是，新增幼年命局根苗花果与易养难养判断层。是否影响用神体系：是，强调印绶、化煞、制财官伤食与中和为幼年用忌判据。是否影响财富/事业/婚姻判断链：主要影响健康与家庭养育判断，间接影响父母子女链，不直接影响财富婚姻。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.72
+    posterior: 0.72
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-018
+  status: active
+  expert_system: ziping
+  title: 小儿关煞以时辰为正再看格局
+  topic: xiaoer_guansha_shichen_geju
+  domains:
+  - 健康
+  - 家庭
+  - 子女
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 小儿命论关煞应以时辰为正，先看关煞再看格局；日主强且财官旺、有关无煞者可养，日主弱而财官少者虽常病仍易养，日干弱而财官多且有煞有关者则难养。
+  conditions:
+    trigger: child_chart_guansha
+    required:
+    - 命例处于小儿或早年健康判断语境
+    - 可按时辰定位关煞，并区分有煞、有关或有煞有关
+    - 可判断日主强弱及财官旺少多寡
+    optional:
+    - 时柱同时受刑冲破害或有关煞临身
+    - 原局有印绶、食伤合制或贵人解救
+    exclusions:
+    - 未能定位时辰或关煞时不适用
+    - 成人事业格局判断不可直接按小儿关煞轻重断凶
+  output:
+    statement: 子平规则参与：小儿早年健康须以时辰关煞为入口，再叠加日主强弱与财官多寡，弱身多财官且关煞并重者列为难养高风险。
+    falsifiable: 若小儿关煞按时辰与日主财官分层不能改善早年病弱、难养反馈识别，则此条需复核。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 小儿之命，当论时辰为正，先看关煞，次看格局。日主强财官旺，有关无煞，日主弱财官少，常病易养；日干弱财官多，有煞有关，难养。
+  review:
+    notes: 来源章节：小儿命。是否新增结构维度：是，新增小儿时辰关煞优先级与财官强弱分层。是否影响用神体系：是，日主强弱与财官多寡决定关煞风险权重。是否影响财富/事业/婚姻判断链：主要影响健康和家庭养育判断，财富事业婚姻仅作后续成长背景参考。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.70
+    posterior: 0.70
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-019
+  status: active
+  expert_system: ziping
+  title: 六亲星以坐地旺衰贵煞定福薄
+  topic: liuqin_xing_zuodi_wangshuai
+  domains:
+  - 家庭
+  - 财富
+  - 健康
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 判断父母兄弟等六亲，不只看星名有无，还须看六亲星所坐之地；坐长生、旺、库、禄马、贵人之地，主该六亲富贵福寿荣耀；坐空亡、刑、克煞、死、亡、衰败交并之地，主该六亲贫薄破伤刑夭或不得善终。
+  conditions:
+    trigger: liuqin_star_location_assessment
+    required:
+    - 可定位父母、兄弟等六亲星或对应宫位
+    - 可判断六亲星所坐十二长生、旺衰、库、禄马、贵人、空亡、刑克煞等状态
+    - 可将受作用对象映射到具体六亲事项
+    optional:
+    - 六亲星同时受岁运冲合刑害触发
+    - 六亲星受印比生扶或被财官煞伤食破坏
+    exclusions:
+    - 无法定位六亲星或坐地状态时不适用
+    - 仅凭单一神煞而无六亲星宫证据时不可重断生死刑夭
+  output:
+    statement: 子平规则参与：六亲判断须把星位坐地纳入权重，坐生旺禄马贵人提高六亲助力与福寿，坐空刑克煞死绝衰败提高六亲薄弱和破伤风险。
+    falsifiable: 若六亲星坐地旺衰贵煞不能解释父母兄弟等六亲富薄、寿夭或助力差异，则此条需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 经云：以年为祖业，月为父母兄弟门户，日为妻妾己身，时为子息。须看四柱之中父母兄弟妻子星具何地？论旺相休囚而言其吉凶。如父母星坐长生旺库禄马贵人之地，则主父母富贵福寿荣耀；如坐空刑克煞死亡衰败交并之地，则主父母贫薄破伤刑夭，或死于外及不善终。
+  review:
+    notes: 来源章节：六亲。是否新增结构维度：是，新增六亲星坐地旺衰贵煞的细分判断层。是否影响用神体系：间接影响，六亲星受生旺或空刑克煞会改变亲缘助力与忌象权重。是否影响财富/事业/婚姻判断链：影响家庭六亲与祖业父母助力，间接影响财富事业资源链，婚姻另按妻妾星细断。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.71
+    posterior: 0.71
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-020
+  status: active
+  expert_system: ziping
+  title: 妻妾星坐生旺受生则得力空刑刃绝则损
+  topic: qiqie_xing_shengwang_kongxing
+  domains:
+  - 婚姻
+  - 家庭
+  - 健康
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 婚姻判断须看妻妾星所坐之地及是否受生；妻妾星坐生旺库、禄马、贵人或有物生助，主配偶得力、富贵荣华与才貌；坐空亡、刑克煞、羊刃、死绝、冲败之地，则主配偶贫薄、刑夭、残疾、产亡或不得力。
+  conditions:
+    trigger: spouse_star_location_assessment
+    required:
+    - 可定位妻星、妾星、配偶星或婚姻宫
+    - 可判断配偶星坐地是否生旺库禄马贵人或空刑克煞羊刃死绝冲败
+    - 可检查是否有生助配偶星之物或冲刑破坏之物
+    optional:
+    - 配偶星与日支同受岁运触发
+    - 配偶星关联财星、官星或子息生产风险
+    exclusions:
+    - 女命夫星判断需改按官杀夫星链，不可机械套用妻妾星
+    - 有明确合解、生扶或贵人救应时须降低刑夭残疾断语强度
+  output:
+    statement: 子平规则参与：婚姻配偶质量与助力须看配偶星坐地，生旺受生者配偶得力，空刑刃绝冲败者提高婚姻不利、配偶健康和生产风险提示。
+    falsifiable: 若妻妾星坐地生旺或空刑刃绝不能区分配偶助力、婚姻稳定和配偶健康反馈，则此条需复核。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 如妻妾星坐生旺库禄马贵人之地，或有物以生之，主妻妾富贵荣华，美貌多才；如坐空刑克煞羊刃死绝冲败之地，则主妻妾贫薄丑貌刑夭淫乱、残疾或产亡不得力。
+  review:
+    notes: 来源章节：六亲。是否新增结构维度：是，新增妻妾星坐地与受生受冲的配偶得力判断层。是否影响用神体系：间接影响，配偶星受生旺或刑刃死绝会改变婚姻宫用忌权重。是否影响财富/事业/婚姻判断链：重点影响婚姻判断链，并通过配偶资源影响财富家庭链。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.70
+    posterior: 0.70
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-021
+  status: active
+  expert_system: ziping
+  title: 子息星生旺有生则送老死绝则不得力
+  topic: zixi_xing_shengwang_sijue
+  domains:
+  - 子女
+  - 家庭
+  - 健康
+  axis_refs:
+  - AXIS-04
+  - AXIS-07
+  - AXIS-08
+  claim: 子息判断须看子息星坐地与生助；子息星坐生旺、禄马、贵人、官印之地且有物相生，主子息荣华聪明并能送老；若子息星虽带禄马贵人却居死绝，或受空刑克害，则虽可见聪明俊秀，也主不得送老或子息不得力。
+  conditions:
+    trigger: children_star_location_assessment
+    required:
+    - 可定位子息星、时柱或子女宫
+    - 可判断子息星坐地是否生旺、禄马、贵人、官印、死绝或空刑克害
+    - 可检查是否有生助子息星之物
+    optional:
+    - 子息星与时柱同时受岁运冲合刑害触发
+    - 子息星虽有贵气但落死绝，形成才秀而不送老分支
+    exclusions:
+    - 无法定位子息星或时柱子女宫时不适用
+    - 仅见禄马贵人但同时死绝受克时不可直接断子女有靠
+  output:
+    statement: 子平规则参与：子女判断须看子息星坐地与生助，生旺官印贵人且受生者子息有靠，死绝空刑者提高子息不得力或不送老风险。
+    falsifiable: 若子息星坐地不能区分子女助力、养老支持或子女健康成就反馈，则此条需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 如子息星坐生旺禄马贵人官印之地，有物以相生，主子息荣华聪明，多得送老；如坐禄马贵人居于死绝之地，虽有聪明俊秀，不送老也。
+  review:
+    notes: 来源章节：六亲。是否新增结构维度：是，新增子息星坐地生旺死绝与送老能力判断层。是否影响用神体系：间接影响，时柱子息星的生扶受克会改变子女宫用忌权重。是否影响财富/事业/婚姻判断链：主要影响子女家庭和晚年支持链，间接影响财富养老与婚姻家庭稳定。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.70
+    posterior: 0.70
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-022
+  status: active
+  expert_system: ziping
+  title: 女命先推夫子再辨日时轻重
+  topic: nvming_fuzi_rishi_qingzhong
+  domains:
+  - 婚姻
+  - 子女
+  - 性格
+  axis_refs:
+  - AXIS-04
+  - AXIS-05
+  - AXIS-07
+  claim: 女命判断应先推夫星与子息兴衰，再辨日时轻重；官星得地而夫荣，伤官无克而子贵，日主太旺则易夺夫权而孤苦，月令休囚反能安分守本，月气中和最宜。
+  conditions:
+    trigger: female_chart_spouse_children_assessment
+    required:
+    - 命主为女命或明确进入女命婚育判断语境
+    - 可定位官星夫星、食伤子息、日主旺衰、月令气势与日时轻重
+    - 可判断官星得地、伤官是否受克、日主是否太旺或月令休囚中和
+    optional:
+    - 财旺生官形成夫荣链
+    - 印盛克食伤造成子息受抑
+    exclusions:
+    - 非女命婚育语境不适用本条优先级
+    - 官星受克、官煞混杂或食伤重伤官星时须转入对应规则细断
+  output:
+    statement: 子平规则参与：女命先以夫星子息为主轴，再看日主与月令中和；官得地夫荣、伤官无克子贵，日主过旺则提高婚姻权争与孤苦风险。
+    falsifiable: 若女命夫子优先级与日时轻重不能提升婚姻、子女和性格反馈命中率，则此条需复核。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 凡观阴命，先推夫子兴衰，欲究荣枯，次辨日时轻重。官为夫，财为父，财旺夫荣；食为子，印为母，印盛子衰，日干不宜太旺，月气务禀中和。日主旺相，夺夫权而孤苦；月令休囚，安本分而持身。官星得地，夫主荣华；伤官无克，子当贵显。
+  review:
+    notes: 来源章节：女命总断。是否新增结构维度：是，新增女命夫子优先级与日时轻重裁决层。是否影响用神体系：是，女命以官星、食伤、财印及日主中和重排婚育用忌权重。是否影响财富/事业/婚姻判断链：重点影响婚姻与子女判断链，财富通过财旺生官与父缘资源间接参与。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.71
+    posterior: 0.71
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-023
+  status: active
+  expert_system: ziping
+  title: 六乙鼠贵须无庚辛丑午冲绊方成
+  topic: liuyi_shugui_chengge_jiji
+  domains:
+  - 事业
+  - 性格
+  - 财富
+  axis_refs:
+  - AXIS-04
+  - AXIS-05
+  - AXIS-07
+  claim: 乙日丙子时论六乙鼠贵，须柱中不见庚辛且无丑绊、午冲，方能以丙暗邀辛、化煞为权成贵格；若见庚辛或丑午冲绊破格，则不按鼠贵清格断贵。
+  conditions:
+    trigger: has_yi_day_bingzi_hour
+    required:
+    - 日柱天干为乙且时柱为丙子
+    - 可检查四柱是否出现庚、辛
+    - 可检查是否有丑绊或午冲破坏子时暗邀结构
+    optional:
+    - 月令通气或日主有根以承受化煞为权
+    - 行运引动庚辛、丑午时触发破格或权力变化
+    exclusions:
+    - 非乙日丙子时不适用
+    - 见庚辛、丑绊或午冲时不可仅凭格名断贵
+  output:
+    statement: 子平规则参与：六乙鼠贵必须验乙日丙子和庚辛丑午禁忌，成格偏事业权贵，破格则转为普通伤官官煞冲绊结构。
+    falsifiable: 若乙日丙子且无庚辛丑午者不呈现较高事业权柄，或犯忌者仍稳定应贵，则此条需降权。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 乙日丙子时，六乙鼠贵。乙用庚为官，死于子；见丙为伤，丙暗邀辛化煞为权，柱中不见庚辛，无丑绊午冲，方成格，贵。
+  review:
+    notes: 来源章节：六乙日丙子时断。是否新增结构维度：是，新增六乙鼠贵的成格禁忌细则。是否影响用神体系：是，丙伤暗邀辛化煞为权改变伤官与官煞取用。是否影响财富/事业/婚姻判断链：主要影响事业权柄与贵气判断，财富随官权间接判断，婚姻不作主断。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.69
+    posterior: 0.69
+    variance: 0.06
+    sample_n: 1
+- id: ZP-PROD-20260618-024
+  status: active
+  expert_system: ziping
+  title: 六阴朝阳忌丙丁午冲破通旺方贵
+  topic: liuyin_chaoyang_chengge_jiji
+  domains:
+  - 事业
+  - 学业
+  - 性格
+  axis_refs:
+  - AXIS-04
+  - AXIS-05
+  - AXIS-07
+  claim: 辛日戊子时论六阴朝阳，须柱中不见丙、丁、午字冲破，并通身旺月，方可按大贵和学堂秀气断；若见丙丁午犯格或身月不旺，则不以六阴朝阳贵格论。
+  conditions:
+    trigger: has_xin_day_wuzi_hour
+    required:
+    - 日柱天干为辛且时柱为戊子
+    - 可检查四柱是否出现丙、丁、午字冲破
+    - 可判断是否通身旺月及辛金子上长生学堂条件
+    optional:
+    - 印食结构清透，学业、文职、名誉领域被引动
+    - 行运引动丙丁午或扶旺辛金子水
+    exclusions:
+    - 非辛日戊子时不适用
+    - 见丙丁午冲破或身月不旺时不可见格名即断大贵
+  output:
+    statement: 子平规则参与：六阴朝阳须同时满足辛日戊子、避丙丁午冲破、通身旺月，成格主学堂秀气与事业贵显，犯忌则降为普通印食冲破结构。
+    falsifiable: 若六阴朝阳成格禁忌不能区分学业名誉、事业贵显和破格平常反馈，则此条需复核。
+  source:
+    path: sources/ziping/《三命通会》.md
+    excerpt: 辛日戊子时，六阴朝阳。辛金子上长生学堂。辛以戊为印。癸为食，时上明戊暗癸，柱中不见丙丁午字，冲开；通身旺月，大贵；犯者不贵。
+  review:
+    notes: 来源章节：六辛日戊子时断。是否新增结构维度：是，新增六阴朝阳的冲破禁忌与身旺月令门槛。是否影响用神体系：是，印食与长生学堂须以避冲破和身旺为用。是否影响财富/事业/婚姻判断链：主要影响学业名誉和事业贵气，财富随事业层级间接判断，婚姻不作主断。
+  layer: 互补
+  confidence:
+    star: 4
+    percent: 0.69
+    posterior: 0.69
+    variance: 0.06
+    sample_n: 1
