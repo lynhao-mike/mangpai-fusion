@@ -1,10 +1,10 @@
 schema_version: ziping-alignment-report-2026-06-17
 theory_id: ziping
-rule_count: 128
+rule_count: 219
 structure_coverage:
-  pattern: 66.41
-  ten_gods: 23.44
-  use_god: 68.75
+  pattern: 80.37
+  ten_gods: 33.79
+  use_god: 79.91
 missing_structures: []
 ambiguity_cases:
 - rule_id: ZP-PROD-20260605-005
@@ -178,7 +178,7 @@ source_text_extraction:
   - sources/ziping/《三命通会》.md
   - sources/ziping/穷通宝鉴-明-余春台_part1.md
   - sources/ziping/穷通宝鉴-明-余春台_part2.md
-  added_rule_count: 71
+  added_rule_count: 162
   added_rule_ids:
   - ZP-SRC-20260617-001
   - ZP-SRC-20260617-002
@@ -251,6 +251,97 @@ source_text_extraction:
   - ZP-SRC-20260617-069
   - ZP-SRC-20260617-070
   - ZP-SRC-20260617-071
+  - ZP-SRC-20260617-072
+  - ZP-SRC-20260617-073
+  - ZP-SRC-20260617-074
+  - ZP-SRC-20260617-075
+  - ZP-SRC-20260617-076
+  - ZP-SRC-20260617-077
+  - ZP-SRC-20260617-078
+  - ZP-SRC-20260617-079
+  - ZP-SRC-20260617-080
+  - ZP-SRC-20260617-081
+  - ZP-SRC-20260617-082
+  - ZP-SRC-20260617-083
+  - ZP-SRC-20260617-084
+  - ZP-SRC-20260617-085
+  - ZP-SRC-20260617-086
+  - ZP-SRC-20260617-087
+  - ZP-SRC-20260617-088
+  - ZP-SRC-20260617-089
+  - ZP-SRC-20260617-090
+  - ZP-SRC-20260617-091
+  - ZP-SRC-20260617-092
+  - ZP-SRC-20260617-093
+  - ZP-SRC-20260617-094
+  - ZP-SRC-20260617-095
+  - ZP-SRC-20260617-096
+  - ZP-SRC-20260617-097
+  - ZP-SRC-20260617-098
+  - ZP-SRC-20260617-099
+  - ZP-SRC-20260617-100
+  - ZP-SRC-20260617-101
+  - ZP-SRC-20260617-102
+  - ZP-SRC-20260617-103
+  - ZP-SRC-20260617-104
+  - ZP-SRC-20260617-105
+  - ZP-SRC-20260617-106
+  - ZP-SRC-20260617-107
+  - ZP-SRC-20260617-108
+  - ZP-SRC-20260617-109
+  - ZP-SRC-20260617-110
+  - ZP-SRC-20260617-111
+  - ZP-SRC-20260617-112
+  - ZP-SRC-20260617-113
+  - ZP-SRC-20260617-114
+  - ZP-SRC-20260617-115
+  - ZP-SRC-20260617-116
+  - ZP-SRC-20260617-117
+  - ZP-SRC-20260617-118
+  - ZP-SRC-20260617-119
+  - ZP-SRC-20260617-120
+  - ZP-SRC-20260617-121
+  - ZP-SRC-20260617-122
+  - ZP-SRC-20260617-123
+  - ZP-SRC-20260617-124
+  - ZP-SRC-20260617-125
+  - ZP-SRC-20260617-126
+  - ZP-SRC-20260617-127
+  - ZP-SRC-20260617-128
+  - ZP-SRC-20260617-129
+  - ZP-SRC-20260617-130
+  - ZP-SRC-20260617-131
+  - ZP-SRC-20260617-132
+  - ZP-SRC-20260617-133
+  - ZP-SRC-20260617-134
+  - ZP-SRC-20260617-135
+  - ZP-SRC-20260617-136
+  - ZP-SRC-20260617-137
+  - ZP-SRC-20260617-138
+  - ZP-SRC-20260617-139
+  - ZP-SRC-20260617-140
+  - ZP-SRC-20260617-141
+  - ZP-SRC-20260617-142
+  - ZP-SRC-20260617-143
+  - ZP-SRC-20260617-144
+  - ZP-SRC-20260617-145
+  - ZP-SRC-20260617-146
+  - ZP-SRC-20260617-147
+  - ZP-SRC-20260617-148
+  - ZP-SRC-20260617-149
+  - ZP-SRC-20260617-150
+  - ZP-SRC-20260617-151
+  - ZP-SRC-20260617-152
+  - ZP-SRC-20260617-153
+  - ZP-SRC-20260617-154
+  - ZP-SRC-20260617-155
+  - ZP-SRC-20260617-156
+  - ZP-SRC-20260617-157
+  - ZP-SRC-20260617-158
+  - ZP-SRC-20260617-159
+  - ZP-SRC-20260617-160
+  - ZP-SRC-20260617-161
+  - ZP-SRC-20260617-162
   selection_policy: Cumulative bounded batches extracted from 子平 source-only details not already represented by production/raw candidate rules; duplicates were skipped by rule_id.
   boundary:
     theory_id: ziping
@@ -356,3 +447,122 @@ source_text_extraction:
     - ZP-SRC-20260617-069
     - ZP-SRC-20260617-070
     - ZP-SRC-20260617-071
+  - batch_id: source_text_batch_007
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part2.md
+    added_rule_ids:
+    - ZP-SRC-20260617-072
+    - ZP-SRC-20260617-073
+    - ZP-SRC-20260617-074
+    - ZP-SRC-20260617-075
+    - ZP-SRC-20260617-076
+    - ZP-SRC-20260617-077
+    - ZP-SRC-20260617-078
+    - ZP-SRC-20260617-079
+    - ZP-SRC-20260617-080
+    - ZP-SRC-20260617-081
+    - ZP-SRC-20260617-082
+    - ZP-SRC-20260617-083
+    - ZP-SRC-20260617-084
+    - ZP-SRC-20260617-085
+    - ZP-SRC-20260617-086
+    - ZP-SRC-20260617-087
+  - batch_id: source_text_batch_008
+    source_files:
+    - sources/ziping/穷通宝鉴-明-余春台_part2.md
+    added_rule_ids:
+    - ZP-SRC-20260617-088
+    - ZP-SRC-20260617-089
+    - ZP-SRC-20260617-090
+    - ZP-SRC-20260617-091
+    - ZP-SRC-20260617-092
+    - ZP-SRC-20260617-093
+    - ZP-SRC-20260617-094
+    - ZP-SRC-20260617-095
+  - batch_id: source_text_batch_009
+    source_files:
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-096
+    - ZP-SRC-20260617-097
+    - ZP-SRC-20260617-098
+    - ZP-SRC-20260617-099
+    - ZP-SRC-20260617-100
+    - ZP-SRC-20260617-101
+    - ZP-SRC-20260617-102
+    - ZP-SRC-20260617-103
+    - ZP-SRC-20260617-104
+    - ZP-SRC-20260617-105
+  - batch_id: source_text_batch_010
+    source_files:
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-106
+    - ZP-SRC-20260617-107
+    - ZP-SRC-20260617-108
+    - ZP-SRC-20260617-109
+    - ZP-SRC-20260617-110
+    - ZP-SRC-20260617-111
+    - ZP-SRC-20260617-112
+    - ZP-SRC-20260617-113
+    - ZP-SRC-20260617-114
+    - ZP-SRC-20260617-115
+    - ZP-SRC-20260617-116
+    - ZP-SRC-20260617-117
+  - batch_id: source_text_batch_011
+    source_files:
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-118
+    - ZP-SRC-20260617-119
+    - ZP-SRC-20260617-120
+    - ZP-SRC-20260617-121
+    - ZP-SRC-20260617-122
+    - ZP-SRC-20260617-123
+    - ZP-SRC-20260617-124
+    - ZP-SRC-20260617-125
+    - ZP-SRC-20260617-126
+    - ZP-SRC-20260617-127
+    - ZP-SRC-20260617-128
+    - ZP-SRC-20260617-129
+    - ZP-SRC-20260617-130
+    - ZP-SRC-20260617-131
+    - ZP-SRC-20260617-132
+  - batch_id: source_text_batch_012
+    source_files:
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-133
+    - ZP-SRC-20260617-134
+    - ZP-SRC-20260617-135
+    - ZP-SRC-20260617-136
+    - ZP-SRC-20260617-137
+    - ZP-SRC-20260617-138
+    - ZP-SRC-20260617-139
+    - ZP-SRC-20260617-140
+    - ZP-SRC-20260617-141
+    - ZP-SRC-20260617-142
+    - ZP-SRC-20260617-143
+    - ZP-SRC-20260617-144
+    - ZP-SRC-20260617-145
+    - ZP-SRC-20260617-146
+    - ZP-SRC-20260617-147
+  - batch_id: source_text_batch_013
+    source_files:
+    - sources/ziping/《三命通会》.md
+    added_rule_ids:
+    - ZP-SRC-20260617-148
+    - ZP-SRC-20260617-149
+    - ZP-SRC-20260617-150
+    - ZP-SRC-20260617-151
+    - ZP-SRC-20260617-152
+    - ZP-SRC-20260617-153
+    - ZP-SRC-20260617-154
+    - ZP-SRC-20260617-155
+    - ZP-SRC-20260617-156
+    - ZP-SRC-20260617-157
+    - ZP-SRC-20260617-158
+    - ZP-SRC-20260617-159
+    - ZP-SRC-20260617-160
+    - ZP-SRC-20260617-161
+    - ZP-SRC-20260617-162
