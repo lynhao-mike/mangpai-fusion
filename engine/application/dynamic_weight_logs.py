@@ -88,15 +88,16 @@ def read_jsonl(path: str | Path) -> list[dict[str, Any]]:
     if not target.exists():
         return []
     rows: list[dict[str, Any]] = []
-    for line in target.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(row, dict):
-            rows.append(row)
+    with target.open(encoding="utf-8") as _fh:
+        for line in _fh:
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(row, dict):
+                rows.append(row)
     return rows
 
 

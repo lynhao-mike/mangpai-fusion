@@ -167,6 +167,6 @@ def file_sha256(path: Path) -> str:
     """流式计算文件 sha256，保持历史 1MiB 分块行为。"""
     h = hashlib.sha256()
     with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+        while chunk := f.read(1024 * 1024):
             h.update(chunk)
     return h.hexdigest()
