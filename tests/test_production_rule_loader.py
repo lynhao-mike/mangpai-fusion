@@ -19,9 +19,9 @@ def test_load_default_production_library_loads_ziping_and_ditiansui() -> None:
     library = load_default_production_library()
 
     assert set(library.rule_sets) == {"ziping", "tiaohou_ditiansui"}
-    assert len(library.rule_sets["ziping"].rules) == 57
+    assert len(library.rule_sets["ziping"].rules) == 81
     assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 255
-    assert len(library.rules) == 312
+    assert len(library.rules) == 336
     assert [rule.id for rule in library.rule_sets["ziping"].rules[:2]] == [
         "ZP-PROD-20260605-001",
         "ZP-PROD-20260605-002",

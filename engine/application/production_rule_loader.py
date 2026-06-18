@@ -29,6 +29,7 @@ ALLOWED_PRODUCTION_EXPERT_SYSTEMS: tuple[ProductionExpertSystem, ...] = (
 ALLOWED_TOP_LEVEL_STATUS = "active"
 ALLOWED_SOURCE_SCOPE = "production_rules"
 ALLOWED_RULE_STATUS = "active"
+_DEFAULT_LIBRARY_CACHE: "Optional[ProductionRuleLibrary]" = None  # 模块级缓存，避免重复 YAML 解析
 DEFAULT_PRODUCTION_FILES: dict[ProductionExpertSystem, Path] = {
     "ziping": Path("theory/ziping/index.yaml"),
     "tiaohou_ditiansui": Path("theory/tiaohou_ditiansui/index.yaml"),
@@ -278,18 +279,32 @@ def load_production_rule_set(
 
 
 def load_default_production_library(*, workspace_root: str | Path = ".") -> ProductionRuleLibrary:
-    """加载默认子平 / 滴天髓正式生产规则库。"""
+    """加载默认子平 / 滴天髓正式生产规则库（同一进程内缓存，避免重复 YAML IO）。
 
-    return ProductionRuleLibrary(
-        rule_sets={
-            expert_system: load_production_rule_set(
+    单个规则集加载失败时记录警告并跳过，不阻断其余派别加载。
+    """
+    import logging as _logging
+    _log = _logging.getLogger(__name__)
+
+    global _DEFAULT_LIBRARY_CACHE
+    if _DEFAULT_LIBRARY_CACHE is not None and str(workspace_root) == ".":
+        return _DEFAULT_LIBRARY_CACHE
+
+    rule_sets: dict[ProductionExpertSystem, "ProductionRuleSet"] = {}
+    for expert_system, path in DEFAULT_PRODUCTION_FILES.items():
+        try:
+            rule_sets[expert_system] = load_production_rule_set(
                 path,
                 expected_expert_system=expert_system,
                 workspace_root=workspace_root,
             )
-            for expert_system, path in DEFAULT_PRODUCTION_FILES.items()
-        }
-    )
+        except Exception as exc:  # noqa: BLE001
+            _log.warning("生产规则集 %s 加载跳过：%s", expert_system, exc)
+
+    lib = ProductionRuleLibrary(rule_sets=rule_sets)
+    if str(workspace_root) == ".":
+        _DEFAULT_LIBRARY_CACHE = lib
+    return lib
 
 
 def load_production_library(
@@ -381,7 +396,7 @@ def _rule_triggered(
     if trigger == "has_zhi_chong":
         return _has_zhi_chong(parsed)
     if trigger == "has_energy_structure":
-        return bool(getattr(energy, "tiyong", None) and getattr(energy, "layer_count", 0) >= 0)
+        return bool(getattr(energy, "tiyong", None) and getattr(energy, "layer_count", 0) >= 1)
     return False
 
 
@@ -390,9 +405,13 @@ def _is_wuxing_imbalanced(parsed: Optional[ParsedInput]) -> bool:
         return False
     counts = {"木": 0, "火": 0, "土": 0, "金": 0, "水": 0}
     for _, gan in parsed.bazi.all_gans():
-        counts[GAN_TO_WUXING[gan]] += 1
+        wuxing = GAN_TO_WUXING.get(gan)
+        if wuxing:
+            counts[wuxing] = counts.get(wuxing, 0) + 1
     for _, zhi in parsed.bazi.all_zhis():
-        counts[ZHI_TO_WUXING[zhi]] += 1
+        wuxing = ZHI_TO_WUXING.get(zhi)
+        if wuxing:
+            counts[wuxing] = counts.get(wuxing, 0) + 1
     values = list(counts.values())
     return max(values) - min(values) >= 2 or any(value == 0 for value in values)
 
