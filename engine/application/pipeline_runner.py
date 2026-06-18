@@ -8,8 +8,15 @@ from typing import Literal, Optional, Union
 
 from engine.application.candidates import _extract_candidates
 from engine.application.dual_engine_adapter import analyze_dual_engine
+from engine.application.fusion_engine_v2 import build_final_prediction
 from engine.application.integration import integrate
 from engine.application.ports import PipelineAdapters
+from engine.application.prediction_layer import build_prediction_output
+from engine.application.prediction_signals import (
+    extract_dtt_signal,
+    extract_mp_signal,
+    extract_ziping_signal,
+)
 from engine.application.timing import PIPELINE_THRESHOLD_SECONDS, PipelineTiming
 from engine.domain.analysis import AnalysisOutput
 from engine.energy.evaluator import evaluate_energy
@@ -99,11 +106,26 @@ def run_pipeline(
         object.__setattr__(output, "blind_findings", blind_findings)
         object.__setattr__(output, "fusion_findings", fusion_findings)
         object.__setattr__(output, "parallel_analysis", fusion_findings.parallel_analysis)
+
+        # v4.2 预测层：三流派信号 → 融合决策 → PredictionOutput
+        try:
+            with timing.step("prediction"):
+                ziping_sig = extract_ziping_signal(energy, theory_findings)
+                dtt_sig = extract_dtt_signal(picture)
+                mp_sig = extract_mp_signal(gate_results)
+                final_pred = build_final_prediction(ziping_sig, dtt_sig, mp_sig)
+                prediction = build_prediction_output(final_pred, fusion_findings, gate_results)
+            object.__setattr__(output, "prediction", prediction)
+        except Exception as _pe:  # noqa: BLE001
+            logger.warning("v4.2 prediction layer 失败：%s", _pe)
+            object.__setattr__(output, "prediction", None)
+
     except Exception as e:  # noqa: BLE001
         logger.warning("dual engine adapter 失败：%s", e)
         object.__setattr__(output, "theory_findings", None)
         object.__setattr__(output, "blind_findings", None)
         object.__setattr__(output, "fusion_findings", None)
+        object.__setattr__(output, "prediction", None)
 
     # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output
     try:

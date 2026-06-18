@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from engine.application.feedback_parser import StatementFeedback
+from engine.infrastructure.weight_repository import load_expert_weights, save_expert_weights
 
 ALPHA_RULE = 0.05
 ALPHA_FAMILY = 0.02
@@ -15,6 +16,13 @@ BETA_FAMILY = 0.05
 DEFAULT_CONFIDENCE = 0.5
 LEARNING_LOG_FILENAME = "learning_log.json"
 CONFIDENCE_STATE_FILENAME = "updated_confidence_state.json"
+
+# ── v4.2 流派级权重 RL 参数 ──────────────────────────────────
+ALPHA_SCHOOL = 0.03
+BETA_SCHOOL = 0.05
+_MIN_SCHOOL_WEIGHT = 0.05
+_MAX_SCHOOL_WEIGHT = 0.70
+PREDICTION_FEEDBACK_LOG = "prediction_feedback.jsonl"
 _VALID_PHASE_A_VERDICTS = {"y", "n", "partial", "skip"}
 _EMOJI_RE = re.compile(r"[\U0001F300-\U0001FAFF\u2600-\u27BF]")
 
@@ -268,3 +276,86 @@ def _clamp(value: Any) -> float:
 
 def _has_structured_feedback(feedbacks: list[Any]) -> bool:
     return bool(feedbacks)
+
+
+# ── v4.2 流派级 RL 权重更新 ──────────────────────────────────
+
+
+def update_school_weights(
+    *,
+    domain: str,
+    school: str,
+    verdict: str,              # "y" = 命中，"n" = 失败，其余跳过
+    dry_run: bool = False,
+) -> dict[str, float] | None:
+    """v4.2 强化学习：根据预测验证结果更新 expert-weights.yaml 中指定领域的流派权重。
+
+    - 预测命中（verdict="y"）→ 对应流派 +ALPHA_SCHOOL；其余流派按比例降低
+    - 预测失败（verdict="n"）→ 对应流派 -BETA_SCHOOL；其余流派按比例提升
+    - 权重归一化后写回 expert-weights.yaml（max_delta ≤ constraints.max_single_round_delta）
+
+    Returns:
+        更新后的 {school: weight} dict，或 None（verdict="skip"）。
+    """
+    if verdict not in ("y", "n"):
+        return None
+
+    data = load_expert_weights()
+    domain_weights: dict[str, float] = data.get("weights", {}).get(domain, {})
+    if not domain_weights:
+        return None
+
+    # 尊重 constraints.max_single_round_delta
+    max_delta = float(
+        (data.get("constraints") or {}).get("max_single_round_delta", BETA_SCHOOL)
+    )
+    delta = min(ALPHA_SCHOOL if verdict == "y" else BETA_SCHOOL, max_delta)
+
+    before = {k: float(v) for k, v in domain_weights.items()}
+    updated = dict(before)
+
+    if school in updated:
+        if verdict == "y":
+            updated[school] = min(updated[school] + delta, _MAX_SCHOOL_WEIGHT)
+        else:
+            updated[school] = max(updated[school] - delta, _MIN_SCHOOL_WEIGHT)
+
+    # 归一化（其余流派按比例补足）
+    total = sum(updated.values())
+    if total > 0:
+        updated = {k: round(v / total, 6) for k, v in updated.items()}
+
+    if not dry_run:
+        data.setdefault("weights", {})[domain] = updated
+        save_expert_weights(data)
+
+    return updated
+
+
+def log_prediction_feedback(
+    *,
+    case_dir: Path,
+    learning_feedback_id: str,
+    predicted_event: str,
+    actual_result: str,
+    school: str,
+    domain: str,
+    verdict: str,
+    school_weights_before: dict[str, float],
+    school_weights_after: dict[str, float] | None,
+) -> None:
+    """向 prediction_feedback.jsonl 追加一条预测反馈记录（append-only）。"""
+    log_path = case_dir / PREDICTION_FEEDBACK_LOG
+    entry = {
+        "timestamp": utc_now(),
+        "learning_feedback_id": learning_feedback_id,
+        "predicted_event": predicted_event,
+        "actual_result": actual_result,
+        "school": school,
+        "domain": domain,
+        "verdict": verdict,
+        "school_weights_before": school_weights_before,
+        "school_weights_after": school_weights_after or {},
+    }
+    with log_path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
