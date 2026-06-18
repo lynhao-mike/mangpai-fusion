@@ -227,6 +227,9 @@ class AnalysisOutput:
     blind_findings: Optional[Any] = None  # BlindFindings（避免循环导入）
     fusion_findings: Optional[Any] = None  # FusionFindings（避免循环导入）
 
+    # v4.2 · 预测层（不参与 hash 链；run_pipeline 注入）
+    prediction: Optional[Any] = None  # PredictionOutput（避免循环导入）
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
@@ -278,6 +281,12 @@ class AnalysisOutput:
                 and hasattr(self.fusion_findings, "to_dict")
                 else None
             ),
+            "prediction": (
+                self.prediction.to_dict()
+                if self.prediction is not None
+                and hasattr(self.prediction, "to_dict")
+                else None
+            ),
         }
 
     @classmethod
@@ -311,6 +320,7 @@ class AnalysisOutput:
             theory_findings=_load_theory_findings(d.get("theory_findings")),
             blind_findings=_load_blind_findings(d.get("blind_findings")),
             fusion_findings=_load_fusion_findings(d.get("fusion_findings")),
+            prediction=d.get("prediction"),  # PredictionOutput 不做反序列化（避免循环导入）
         )
 
     def to_json(self, *, indent: Optional[int] = 2) -> str:

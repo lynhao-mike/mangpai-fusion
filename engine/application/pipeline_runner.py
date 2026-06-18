@@ -102,30 +102,28 @@ def run_pipeline(
             gate_results=gate_results,
             support=support,
         )
-        object.__setattr__(output, "theory_findings", theory_findings)
-        object.__setattr__(output, "blind_findings", blind_findings)
-        object.__setattr__(output, "fusion_findings", fusion_findings)
-        object.__setattr__(output, "parallel_analysis", fusion_findings.parallel_analysis)
-
-        # v4.2 预测层：三流派信号 → 融合决策 → PredictionOutput
-        try:
-            with timing.step("prediction"):
-                ziping_sig = extract_ziping_signal(energy, theory_findings)
-                dtt_sig = extract_dtt_signal(picture)
-                mp_sig = extract_mp_signal(gate_results)
-                final_pred = build_final_prediction(ziping_sig, dtt_sig, mp_sig)
-                prediction = build_prediction_output(final_pred, fusion_findings, gate_results)
-            object.__setattr__(output, "prediction", prediction)
-        except Exception as _pe:  # noqa: BLE001
-            logger.warning("v4.2 prediction layer 失败：%s", _pe)
-            object.__setattr__(output, "prediction", None)
-
+        output.theory_findings = theory_findings
+        output.blind_findings = blind_findings
+        output.fusion_findings = fusion_findings
+        output.parallel_analysis = fusion_findings.parallel_analysis
     except Exception as e:  # noqa: BLE001
         logger.warning("dual engine adapter 失败：%s", e)
-        object.__setattr__(output, "theory_findings", None)
-        object.__setattr__(output, "blind_findings", None)
-        object.__setattr__(output, "fusion_findings", None)
-        object.__setattr__(output, "prediction", None)
+        output.theory_findings = None
+        output.blind_findings = None
+        output.fusion_findings = None
+
+    # v4.2 预测层：独立隔离，失败不影响三派 findings
+    try:
+        with timing.step("prediction"):
+            ziping_sig = extract_ziping_signal(energy, output.theory_findings)
+            dtt_sig = extract_dtt_signal(picture)
+            mp_sig = extract_mp_signal(gate_results)
+            final_pred = build_final_prediction(ziping_sig, dtt_sig, mp_sig)
+            prediction = build_prediction_output(final_pred, output.fusion_findings, gate_results)
+        output.prediction = prediction
+    except Exception as _pe:  # noqa: BLE001
+        logger.warning("v4.2 prediction layer 失败：%s", _pe)
+        output.prediction = None
 
     # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output
     try:

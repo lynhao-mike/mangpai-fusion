@@ -1,7 +1,7 @@
 {
   "schema_version": "1.4.0",
   "pipeline_version": "1.4.0",
-  "generated_at": "2026-06-18T13:43:31Z",
+  "generated_at": "2026-06-18T15:45:06Z",
   "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
   "analysis_date": "2026-06-18",
   "energy": {
@@ -377,9 +377,7 @@
         }
       ]
     },
-    "wealth_level": {
-      "framework": "power_hierarchy"
-    },
+    "wealth_level": {},
     "huosi_wuxing": {
       "木": "死木",
       "金": "寒金",
@@ -390,15 +388,7 @@
       "公门/国企",
       "文教/管理"
     ],
-    "industry_path": {
-      "P_institutional": 0.85,
-      "primary_path": "institutional",
-      "signals": [
-        "公门",
-        "国企"
-      ],
-      "source": "engine.pipeline._infer_industry_path"
-    },
+    "industry_path": {},
     "marriage_picture": {
       "初婚最佳窗口": [
         22,
@@ -1432,7 +1422,7 @@
       "falsifiable": ""
     },
     {
-      "conclusion_id": "CC-D4-GENERA",
+      "conclusion_id": "CC-D4-000",
       "statement": "[旁证]general域 boost +0.18",
       "domain": "general",
       "layer": "互补",
@@ -1602,7 +1592,7 @@
       "falsifiable": ""
     },
     {
-      "conclusion_id": "CC-D4-CAREER",
+      "conclusion_id": "CC-D4-001",
       "statement": "[旁证]career域 boost +0.20",
       "domain": "career",
       "layer": "互补",
@@ -1784,7 +1774,7 @@
       "falsifiable": ""
     },
     {
-      "conclusion_id": "CC-D4-WEALTH",
+      "conclusion_id": "CC-D4-002",
       "statement": "[旁证]wealth域 boost +0.07",
       "domain": "wealth",
       "layer": "互补",
@@ -1930,7 +1920,7 @@
       "falsifiable": ""
     },
     {
-      "conclusion_id": "CC-D4-HEALTH",
+      "conclusion_id": "CC-D4-004",
       "statement": "[旁证]health域 boost +0.13",
       "domain": "health",
       "layer": "互补",
@@ -2144,8 +2134,7 @@
   },
   "hash_chain_valid": true,
   "hash_chain_notes": [
-    "生产规则加载跳过：F:\\综合盲派\\mangpai-fusion\\theory\\tiaohou_ditiansui\\index.yaml 顶层必须是 YAML mapping。",
-    "多专家功能域分析跳过：F:\\综合盲派\\mangpai-fusion\\theory\\tiaohou_ditiansui\\index.yaml 顶层必须是 YAML mapping。"
+    "生产规则加载跳过：F:\\综合盲派\\mangpai-fusion\\theory\\tiaohou_ditiansui\\index.yaml 顶层必须是 YAML mapping。"
   ],
   "retrospective": {
     "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
@@ -2896,5 +2885,6 @@
   "parallel_analysis": null,
   "theory_findings": null,
   "blind_findings": null,
-  "fusion_findings": null
+  "fusion_findings": null,
+  "prediction": null
 }

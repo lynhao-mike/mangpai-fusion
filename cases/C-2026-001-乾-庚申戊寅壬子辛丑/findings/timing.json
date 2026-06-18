@@ -2,10 +2,10 @@
   "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
   "run_id": "",
   "timing_type": "pipeline",
-  "generated_at": "2026-06-18T13:43:32Z",
+  "generated_at": "2026-06-18T15:45:06Z",
   "pipeline_version": "1.2.1",
   "threshold_seconds": 60.0,
-  "total_seconds": 1.6572,
+  "total_seconds": 0.7537,
   "exceeded_threshold": false,
   "step_names": [
     "preflight",
@@ -22,33 +22,39 @@
     "picture": 0.0015,
     "yingqi": 0.0,
     "pangzheng": 0.0008,
-    "integrate": 1.6545
+    "integrate": 0.751,
+    "prediction": 0.0
   },
   "step_details": [
     {
       "name": "energy",
       "seconds": 0.0004,
-      "started_at": "2026-06-18T13:43:29.596878Z"
+      "started_at": "2026-06-18T15:45:05.301980Z"
     },
     {
       "name": "picture",
       "seconds": 0.0015,
-      "started_at": "2026-06-18T13:43:29.597275Z"
+      "started_at": "2026-06-18T15:45:05.302376Z"
     },
     {
       "name": "yingqi",
       "seconds": 0.0,
-      "started_at": "2026-06-18T13:43:29.598813Z"
+      "started_at": "2026-06-18T15:45:05.303930Z"
     },
     {
       "name": "pangzheng",
       "seconds": 0.0008,
-      "started_at": "2026-06-18T13:43:29.598833Z"
+      "started_at": "2026-06-18T15:45:05.303950Z"
     },
     {
       "name": "integrate",
-      "seconds": 1.6545,
-      "started_at": "2026-06-18T13:43:29.599680Z"
+      "seconds": 0.751,
+      "started_at": "2026-06-18T15:45:05.304788Z"
+    },
+    {
+      "name": "prediction",
+      "seconds": 0.0,
+      "started_at": "2026-06-18T15:45:06.903908Z"
     }
   ]
 }
