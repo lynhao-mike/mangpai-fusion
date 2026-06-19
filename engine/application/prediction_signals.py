@@ -24,11 +24,14 @@ def extract_ziping_signal(
     theory: TheoryFindings,
 ) -> ZipingPredictionSignal:
     """从 D1 能量 + 理论触发规则提取子平预测信号。"""
-    dms = theory.day_master_strength  # 0-1，来自 calc_gan_strength
+    dms = max(0.0, min(1.0, theory.day_master_strength))  # 强制 [0,1] 区间
 
     # 身强 → 事业压力大（须外泄），身弱 → 财运压力大
     career_pressure = dms if dms >= 0.5 else (1.0 - dms) * 0.6
-    wealth_activity = energy.energy_level.score * (1.0 - abs(dms - 0.5))
+    
+    # 防御 energy_level.score 越界
+    energy_score = max(0.0, min(1.0, energy.energy_level.score))
+    wealth_activity = energy_score * (1.0 - abs(dms - 0.5))
 
     # 冲突规则比例 → 婚姻张力
     ziping_count = theory.rule_count_by_system.get("ziping", 0)
@@ -36,9 +39,9 @@ def extract_ziping_signal(
     relationship_tension = min(ziping_count / total_count, 1.0) * 0.8
 
     return ZipingPredictionSignal(
-        career_pressure=min(career_pressure, 1.0),
-        wealth_activity=min(wealth_activity, 1.0),
-        relationship_tension=relationship_tension,
+        career_pressure=min(max(career_pressure, 0.0), 1.0),
+        wealth_activity=min(max(wealth_activity, 0.0), 1.0),
+        relationship_tension=min(max(relationship_tension, 0.0), 1.0),
         day_master_strength=dms,
         rule_signal_count=total_count,
     )
@@ -55,16 +58,24 @@ def extract_dtt_signal(picture: PictureFindings) -> DttPredictionSignal:
         )
 
     # tiaohou 有 balance_score（越接近1越平衡）
-    balance = getattr(tiaohou, "balance_score", 0.5)
+    balance = getattr(tiaohou, "balance_score", None)
+    if balance is None:
+        # balance_score 缺失时降级：返回中性信号
+        return DttPredictionSignal(
+            imbalance_index=0.5,
+            seasonal_pressure=0.5,
+            transformation_likelihood=0.0,
+        )
+    
     imbalance = 1.0 - float(balance)
 
     # 五合成化数量 → 转化概率
-    wuhe_count = len(picture.wuhe_relations)
+    wuhe_count = len(picture.wuhe_relations) if picture.wuhe_relations else 0
     transformation = min(wuhe_count * 0.25, 1.0)
 
     # 调候缺失的五行数 → 季节压力
     missing = getattr(tiaohou, "missing_elements", [])
-    seasonal = min(len(missing) * 0.2, 1.0)
+    seasonal = min(len(missing) * 0.2, 1.0) if missing else 0.0
 
     return DttPredictionSignal(
         imbalance_index=min(imbalance, 1.0),
@@ -90,16 +101,20 @@ def extract_mp_signal(gate_results: list[GateResult]) -> MpPredictionSignal:
     if not gate_results:
         return MpPredictionSignal()
 
-    max_layers = max(g.passed_layers for g in gate_results)
+    max_layers = max((g.passed_layers for g in gate_results), default=0)
     events: list[SymbolicEventCandidate] = []
 
     for gate in gate_results:
         if gate.passed_layers < 1:
             continue
         symbol = f"{gate.candidate_event}({gate.year}年)"
-        weight = gate.passed_layers / 3.0
+        weight = max(0.0, min(1.0, gate.passed_layers / 3.0))
+        
+        # confidence.percent 需边界检查
         if gate.confidence is not None:
-            weight = (weight + gate.confidence.percent) / 2.0
+            confidence_pct = max(0.0, min(1.0, gate.confidence.percent))
+            weight = (weight + confidence_pct) / 2.0
+        
         meanings = (
             list(gate.event_type_hypotheses)
             if gate.event_type_hypotheses
@@ -108,7 +123,7 @@ def extract_mp_signal(gate_results: list[GateResult]) -> MpPredictionSignal:
         events.append(SymbolicEventCandidate(
             symbol=symbol,
             meaning_candidates=meanings,
-            probability_weight=min(weight, 1.0),
+            probability_weight=min(max(weight, 0.0), 1.0),
         ))
 
     return MpPredictionSignal(symbolic_events=events, max_passed_layers=max_layers)

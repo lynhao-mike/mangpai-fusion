@@ -21,13 +21,18 @@ def _estimate_time_window(gate_results: list[GateResult]) -> TimeWindow:
     L3 全通的 gate 年份优先。
     """
     current_year = datetime.now(timezone.utc).year
-    passed = [g for g in gate_results if g.passed_layers >= 1]
+    
+    # 防御：过滤无效 gate_results
+    valid_gates = [g for g in gate_results if hasattr(g, 'passed_layers') and hasattr(g, 'year')]
+    passed = [g for g in valid_gates if g.passed_layers >= 1]
+    
     if not passed:
         return TimeWindow(current_year, current_year + 3, current_year + 1)
 
     # 优先选 L3 全通
     full_pass = [g for g in passed if g.passed_layers == 3]
-    anchor = (full_pass or passed)
+    anchor = full_pass if full_pass else passed
+    
     # 取最近未来年份 or 最高层年份
     future = [g for g in anchor if g.year >= current_year]
     if future:
@@ -35,17 +40,22 @@ def _estimate_time_window(gate_results: list[GateResult]) -> TimeWindow:
     else:
         peak_gate = max(anchor, key=lambda g: g.passed_layers)
 
+    peak_year = peak_gate.year
     return TimeWindow(
-        start_year=peak_gate.year - 1,
-        end_year=peak_gate.year + 2,
-        peak_year=peak_gate.year,
+        start_year=max(current_year, peak_year - 1),  # 不早于当前年
+        end_year=peak_year + 2,
+        peak_year=peak_year,
     )
 
 
 def _make_feedback_id(case_id: str) -> str:
-    """生成 learning_feedback_id：UUID4 + case_id 短 hash。"""
+    """生成 learning_feedback_id：UUID4 + case_id 短 hash + timestamp。
+    
+    增加 timestamp 降低碰撞风险，确保同一 case 多次预测生成不同 ID。
+    """
     short = hashlib.sha1(case_id.encode()).hexdigest()[:8]
-    return f"PFID-{short}-{uuid.uuid4().hex[:8]}"
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    return f"PFID-{short}-{timestamp}-{uuid.uuid4().hex[:6]}"
 
 
 def build_prediction_output(
