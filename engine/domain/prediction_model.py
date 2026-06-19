@@ -39,13 +39,9 @@ class SignalExtractor:
     version: str = "v4.2.0"
     
     def validate_output(self, value: float) -> float:
-        """验证输出值是否在合法区间内。"""
+        """验证并 clamp 输出值到合法区间。"""
         min_val, max_val = self.output_range
-        if not (min_val <= value <= max_val):
-            raise SignalExtractionError(
-                f"Signal {self.signal_id} output {value} out of range [{min_val}, {max_val}]"
-            )
-        return value
+        return max(min_val, min(value, max_val))
 
 
 @dataclass(frozen=True)
@@ -102,7 +98,7 @@ class ModelSnapshot:
     metadata: dict[str, Any] = field(default_factory=dict)
     
     def extract_signal(self, signal_id: str, context: dict[str, Any]) -> float:
-        """执行信号提取（P1 阶段实现，当前为占位）。
+        """执行信号提取。
         
         Args:
             signal_id: 信号 ID
@@ -120,18 +116,55 @@ class ModelSnapshot:
         
         extractor = self.extractors[signal_id]
         
-        # 验证所有输入字段存在
+        # 验证所有输入字段存在并构建 eval 命名空间
+        eval_namespace: dict[str, Any] = {}
         for input_path in extractor.inputs:
-            if not self._get_nested(context, input_path):
+            value = self._get_nested(context, input_path)
+            if value is None:
                 raise MissingSignalInputError(
                     f"Signal {signal_id} requires input: {input_path}"
                 )
+            # 将嵌套路径映射为扁平变量名，如 "energy.score" → "energy_score"
+            var_name = input_path.replace(".", "_")
+            eval_namespace[var_name] = value
         
-        # P1 阶段实现：eval(extractor.formula, context)
-        # P0 阶段占位：返回默认值
-        raise NotImplementedError(
-            "Signal extraction via formula eval will be implemented in P1 phase"
-        )
+        # 执行公式求值
+        try:
+            # 预处理公式：将嵌套路径替换为扁平变量名
+            processed_formula = extractor.formula
+            for input_path in extractor.inputs:
+                var_name = input_path.replace(".", "_")
+                processed_formula = processed_formula.replace(input_path, var_name)
+            
+            # 构建安全的全局命名空间：只暴露必要的内置函数
+            safe_builtins = {
+                "abs": abs,
+                "min": min,
+                "max": max,
+                "len": len,
+                "int": int,
+                "float": float,
+                "bool": bool,
+                "str": str,
+            }
+            
+            # 在受限命名空间中执行 eval
+            result = eval(processed_formula, {"__builtins__": safe_builtins}, eval_namespace)
+            
+            if not isinstance(result, (int, float)):
+                raise SignalExtractionError(
+                    f"Signal {signal_id} formula returned non-numeric type: {type(result)}"
+                )
+            
+            # 验证输出范围（自动 clamp）
+            return extractor.validate_output(float(result))
+            
+        except Exception as exc:
+            if isinstance(exc, (MissingSignalInputError, SignalExtractionError)):
+                raise
+            raise SignalExtractionError(
+                f"Signal {signal_id} formula evaluation failed: {exc}"
+            ) from exc
     
     def fuse_signals(
         self,
@@ -207,7 +240,7 @@ class ModelSnapshot:
         }
     
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> ModelSnapshot:
+    def from_dict(cls, data: dict[str, Any]) -> "ModelSnapshot":
         """从字典反序列化（用于 YAML 加载）。"""
         return cls(
             version=data["version"],
@@ -244,3 +277,50 @@ class ModelSnapshot:
             school_weights=data.get("school_weights", {}),
             metadata=data.get("metadata", {}),
         )
+    
+    @classmethod
+    def load(cls, yaml_path: str) -> "ModelSnapshot":
+        """从 YAML 文件加载模型快照。
+        
+        Args:
+            yaml_path: YAML 文件路径（相对于项目根目录）
+            
+        Returns:
+            ModelSnapshot 实例
+            
+        Raises:
+            FileNotFoundError: 文件不存在
+            yaml.YAMLError: YAML 解析失败
+        """
+        import yaml
+        from pathlib import Path
+        
+        path = Path(yaml_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Model snapshot file not found: {yaml_path}")
+        
+        with open(path, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        
+        return cls.from_dict(data)
+    
+    def save(self, yaml_path: str) -> None:
+        """保存模型快照到 YAML 文件。
+        
+        Args:
+            yaml_path: YAML 文件路径（相对于项目根目录）
+        """
+        import yaml
+        from pathlib import Path
+        
+        path = Path(yaml_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(path, "w", encoding="utf-8") as f:
+            yaml.dump(
+                self.to_dict(),
+                f,
+                allow_unicode=True,
+                default_flow_style=False,
+                sort_keys=False,
+            )

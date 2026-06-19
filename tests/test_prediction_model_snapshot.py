@@ -179,7 +179,7 @@ def test_baseline_model_metadata_present(baseline_yaml_path: Path) -> None:
 
 
 def test_signal_extractor_output_range_validation() -> None:
-    """测试 SignalExtractor.validate_output() 边界检查。"""
+    """测试 SignalExtractor.validate_output() 边界检查（自动 clamp）。"""
     extractor = SignalExtractor(
         signal_id="test_signal",
         formula="x * 2",
@@ -193,14 +193,11 @@ def test_signal_extractor_output_range_validation() -> None:
     assert extractor.validate_output(0.5) == 0.5
     assert extractor.validate_output(1.0) == 1.0
     
-    # 越界值
-    from engine.domain.prediction_model import SignalExtractionError
-    
-    with pytest.raises(SignalExtractionError, match="out of range"):
-        extractor.validate_output(-0.1)
-    
-    with pytest.raises(SignalExtractionError, match="out of range"):
-        extractor.validate_output(1.1)
+    # 越界值自动 clamp 到有效范围
+    assert extractor.validate_output(-0.1) == 0.0  # clamp 到下界
+    assert extractor.validate_output(1.1) == 1.0   # clamp 到上界
+    assert extractor.validate_output(2.0) == 1.0   # 极端越界也 clamp
+    assert extractor.validate_output(-5.0) == 0.0
 
 
 def test_model_snapshot_missing_signal_raises_error() -> None:

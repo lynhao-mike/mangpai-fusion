@@ -1,7 +1,7 @@
 version: v4.2.0
 extractors:
   ziping_career_pressure:
-    formula: dms if dms >= 0.5 else (1.0 - dms) * 0.6
+    formula: day_master_strength if day_master_strength >= 0.5 else (1.0 - day_master_strength) * 0.6
     inputs:
     - day_master_strength
     output_range:
@@ -10,7 +10,7 @@ extractors:
     rationale: 身强需外泄能量，事业压力大；身弱则事业压力小
     version: v4.2.0
   ziping_wealth_activity:
-    formula: energy_score * (1.0 - abs(dms - 0.5))
+    formula: energy_level_score * (1.0 - abs(day_master_strength - 0.5))
     inputs:
     - energy_level.score
     - day_master_strength
@@ -20,17 +20,17 @@ extractors:
     rationale: 能量水平 × 身强弱平衡度，越接近中和财运越活跃
     version: v4.2.0
   ziping_relationship_tension:
-    formula: min(ziping_count / total_count, 1.0) * 0.8
+    formula: min(rule_count_by_system_ziping / max(rule_count_by_system_ziping + rule_count_by_system_ditiansui, 1), 1.0) * 0.8
     inputs:
     - rule_count_by_system.ziping
-    - rule_count_by_system.total
+    - rule_count_by_system.ditiansui
     output_range:
     - 0.0
     - 0.8
-    rationale: 子平规则占比 × 0.8 系数，反映婚姻张力
+    rationale: 子平规则占比 × 0.8 系数，反映婚姻张力（total = ziping + ditiansui）
     version: v4.2.0
   dtt_imbalance_index:
-    formula: 1.0 - balance_score
+    formula: 1.0 - tiaohou_balance_score
     inputs:
     - tiaohou.balance_score
     output_range:
@@ -39,7 +39,7 @@ extractors:
     rationale: 调候平衡度反转，越不平衡越高
     version: v4.2.0
   dtt_seasonal_pressure:
-    formula: min(len(missing_elements) * 0.2, 1.0)
+    formula: min(len(tiaohou_missing_elements) * 0.2, 1.0)
     inputs:
     - tiaohou.missing_elements
     output_range:

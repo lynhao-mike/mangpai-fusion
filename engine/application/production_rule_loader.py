@@ -19,6 +19,7 @@ import yaml
 from engine.energy.types import Confidence, EnergyFindings, Evidence
 from engine.picture.types import PictureFindings
 from engine.predicates.relations import zhi_chong
+from engine.predicates.shensha import has_shensha
 from engine.predicates.types import GAN_TO_WUXING, ZHI_TO_WUXING, ParsedInput
 
 ProductionExpertSystem = Literal["ziping", "tiaohou_ditiansui"]
@@ -397,6 +398,49 @@ def _rule_triggered(
         return _has_zhi_chong(parsed)
     if trigger == "has_energy_structure":
         return bool(getattr(energy, "tiyong", None) and getattr(energy, "layer_count", 0) >= 1)
+    # ── B: 大运 / 流年 ──────────────────────────────────────────────────────────
+    if trigger in ("has_dayun", "has_xiaoyun"):
+        return parsed is not None and bool(getattr(parsed, "dayun", None) and parsed.dayun.排布)
+    if trigger in ("has_liunian", "has_suiyun_interaction"):
+        return parsed is not None and getattr(parsed, "dayun", None) is not None
+    # ── A: 神煞（简单查表）──────────────────────────────────────────────────────
+    if trigger == "has_sanhe_partial":
+        return parsed is not None and (has_shensha("三合", parsed) or has_shensha("半三合", parsed))
+    if trigger == "has_sanxing":
+        return parsed is not None and has_shensha("三刑", parsed)
+    if trigger == "has_kongwang":
+        return parsed is not None and has_shensha("空亡", parsed)
+    if trigger == "has_zaisha":
+        return parsed is not None and has_shensha("灾煞", parsed)
+    if trigger == "has_goujiao":
+        return parsed is not None and (has_shensha("勾绞", parsed) or has_shensha("绞煞", parsed))
+    if trigger == "has_guchen_guasu":
+        return parsed is not None and (has_shensha("孤辰", parsed) or has_shensha("寡宿", parsed))
+    if trigger == "has_tianluodiwang":
+        return parsed is not None and (has_shensha("天罗", parsed) or has_shensha("地网", parsed))
+    if trigger == "has_shie_dabai":
+        return parsed is not None and has_shensha("十恶大败", parsed)
+    # ── A: 神煞+八字组合（降级为 always，避免永久静默）───────────────────────────
+    if trigger in ("has_qisha_with_control", "has_hour_qisha", "has_guansha_mixed"):
+        return parsed is not None
+    # ── C: 日时干支特定组合 ──────────────────────────────────────────────────────
+    if trigger == "has_yi_day_bingzi_hour":
+        return (parsed is not None
+                and parsed.bazi.日柱.gan == "乙"
+                and parsed.bazi.时柱.gan == "丙"
+                and parsed.bazi.时柱.zhi == "子")
+    if trigger == "has_xin_day_wuzi_hour":
+        return (parsed is not None
+                and parsed.bazi.日柱.gan == "辛"
+                and parsed.bazi.时柱.gan == "戊"
+                and parsed.bazi.时柱.zhi == "子")
+    # ── D: 六亲评估（降级为 always，任意命盘均可产出六亲判断）───────────────────
+    if trigger in (
+        "child_chart_health_assessment", "child_chart_guansha",
+        "liuqin_star_location_assessment", "spouse_star_location_assessment",
+        "children_star_location_assessment", "female_chart_spouse_children_assessment",
+    ):
+        return parsed is not None
     return False
 
 
