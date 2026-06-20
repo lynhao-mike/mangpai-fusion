@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import ast
 import json
@@ -130,7 +130,7 @@ def test_current_contract_entrypoints_match_implementation() -> None:
 
     assert "render_from_output" in pipeline_flow
     assert "variant=\"standard\"" in pipeline_flow
-    assert "templates/report-v1.3.md" in pipeline_flow
+    assert "templates/report-v5.md" in pipeline_flow
     assert "master/client" not in pipeline_flow
 
     assert "适用分支：`main`" in naming

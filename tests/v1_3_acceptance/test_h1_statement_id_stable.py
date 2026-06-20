@@ -1,4 +1,4 @@
-"""H1 · statement_id 稳定性
+﻿"""H1 · statement_id 稳定性
 
 落地：plans/architecture-v1.3.md § 六 H1
 要求：同一 input 重跑 5 次，statement_id 集合完全一致
@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import pytest
-
 
 pytestmark = pytest.mark.v1_3_acceptance
 
@@ -45,7 +44,7 @@ def test_h1_statement_id_stable_across_5_runs(
                 gates=mock_gates,
                 parsed=mock_parsed,
                 support=None,
-                template_name="report-v1.3.md",
+                template_name="report-v5.md",
                 variant="standard",
                 _skip_lint=True,
                 _capture_ctx_to=ctx_capture,
@@ -55,16 +54,15 @@ def test_h1_statement_id_stable_across_5_runs(
             pass
         sid_sets.append(_collect_sids_from_ctx(ctx_capture))
 
-    # 5 次集合必须全等
     base = sid_sets[0]
     assert base, "至少应捕获到 1 个 statement_id"
-    for i, s in enumerate(sid_sets[1:], start=2):
-        assert s == base, (
+    for i, sids in enumerate(sid_sets[1:], start=2):
+        assert sids == base, (
             f"第 {i} 次重跑 statement_id 集合不一致：\n"
             f"  base={sorted(base)}\n"
-            f"  run{i}={sorted(s)}\n"
-            f"  diff_added={sorted(s - base)}\n"
-            f"  diff_lost={sorted(base - s)}"
+            f"  run{i}={sorted(sids)}\n"
+            f"  diff_added={sorted(sids - base)}\n"
+            f"  diff_lost={sorted(base - sids)}"
         )
 
 
@@ -83,7 +81,7 @@ def test_h1_sid_format_S_NNN_xxxxxx(
             gates=mock_gates,
             parsed=mock_parsed,
             support=None,
-            template_name="report-v1.3.md",
+            template_name="report-v5.md",
             variant="standard",
             _skip_lint=True,
             _capture_ctx_to=ctx_capture,
@@ -116,7 +114,7 @@ def test_h1_sid_stable_under_rule_id_reordering():
 
     sid_a = _compute_statement_id("C-2026-001-X", ["A", "B", "C"])
     sid_b = _compute_statement_id("C-2026-001-X", ["C", "A", "B"])
-    sid_c = _compute_statement_id("C-2026-001-X", ["B", "C", "A", "A"])  # 含重复
+    sid_c = _compute_statement_id("C-2026-001-X", ["B", "C", "A", "A"])
     assert sid_a == sid_b == sid_c, (
         f"排序/去重应不影响 sid: {sid_a}, {sid_b}, {sid_c}"
     )

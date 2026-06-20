@@ -174,7 +174,7 @@ def run_pipeline_e2e(
     cases_index_path: Optional[Union[str, Path]] = None,
     do_render: bool = False,
     do_self_iter: bool = False,
-    template_name: str = "report-v1.3.md",
+    template_name: str = "report-v5.md",
     report_variant: str = "standard",
     threshold_seconds: float = PIPELINE_THRESHOLD_SECONDS,
     adapters: Optional[PipelineAdapters] = None,
@@ -202,7 +202,7 @@ def run_pipeline_e2e(
         cases_index_path:  cases-index.md 路径，传给 preflight 做指纹防重。
         do_render:         是否调用 render_report 渲染 Markdown 报告。
         do_self_iter:      是否调用 feedback_loop 自迭代。
-        template_name:     兼容参数；渲染统一收敛到 report-v1.3.md 标准模板。
+        template_name:     兼容参数；渲染统一收敛到 report-v5.md 标准模板。
         report_variant:    兼容参数；e2e/生产统一收敛到 standard。
         threshold_seconds: 端到端总耗时阈值（默认 60s）。
         error_policy:      ``"tolerant"``（默认）：render/self_iter/findings 失败仅

@@ -8,7 +8,7 @@
 |---|---|
 | 入口 | `tools/render_report.py render_from_output(analysis_output, variant="standard")` |
 | 输入 | `AnalysisOutput`（lint 通过后） |
-| 输出 | Markdown 报告；固定使用 `templates/report-v1.3.md` 的 C-2026-025 命理师内部版结构 |
+| 输出 | Markdown 报告；固定使用 `templates/report-v5.md` 的五派命理推理操作系统统一版结构 |
 | 落盘 | `reports/C-XXX-{乾/坤}-{干支}-analyst-report.md` 与 `cases/C-XXX-{乾/坤}-{干支}/analysis.md` |
 | 对象映射 | `cases/C-XXX-{乾/坤}-{干支}/statement_index.json`，顶层 `statements` 为列表 |
 

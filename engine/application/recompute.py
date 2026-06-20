@@ -24,7 +24,7 @@ class RecomputeRequest:
     cases_dir: Path = Path("cases")
     reports_dir: Path = Path("reports")
     cases_index_path: Path | None = None
-    template_name: str = "report-v1.3.md"
+    template_name: str = "report-v5.md"
     report_variant: str = "standard"
     require_statement_index: bool = True
 

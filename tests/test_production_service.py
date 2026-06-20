@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
@@ -22,7 +22,7 @@ def test_sqlite_store_roundtrip(tmp_path: Path) -> None:
         cache_key="cache-1",
         engine_version="1.3.0",
         render=True,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
         created_at="2026-05-30T00:00:00Z",
         started_at="2026-05-30T00:00:00Z",
     )
@@ -32,7 +32,7 @@ def test_sqlite_store_roundtrip(tmp_path: Path) -> None:
 
     completed = store.complete_job(
         analysis_id="AN-test",
-        case_id="C-2026-999-乾-甲子乙丑丙寅丁卯",
+        case_id="C-2026-999-X",
         summary={"final_conclusions_count": 3},
         completed_at="2026-05-30T00:00:01Z",
         artifacts=[
@@ -59,17 +59,17 @@ def test_cache_key_changes_when_render_options_change(tmp_path: Path) -> None:
     key_a = service.compute_cache_key(
         input_sha256="abc",
         render=True,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
     )
     key_b = service.compute_cache_key(
         input_sha256="abc",
         render=False,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
     )
     key_c = service.compute_cache_key(
         input_sha256="abc",
         render=True,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
     )
 
     assert key_a != key_b
@@ -78,7 +78,7 @@ def test_cache_key_changes_when_render_options_change(tmp_path: Path) -> None:
 
 
 def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Path) -> None:
-    case_dir = tmp_path / "cases" / "C-2026-999-乾-甲子乙丑丙寅丁卯"
+    case_dir = tmp_path / "cases" / "C-2026-999-X"
     findings_dir = case_dir / "findings"
     reports_dir = tmp_path / "reports"
     findings_dir.mkdir(parents=True)
@@ -87,7 +87,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     input_path.write_text("demo input", encoding="utf-8")
 
     class FakeOutput:
-        case_id = "C-2026-999-乾-甲子乙丑丙寅丁卯"
+        case_id = "C-2026-999-X"
         analysis_date = "2026-05-30"
         final_conclusions = []
         conflicts = []
@@ -104,7 +104,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     def fake_run_pipeline_e2e(*args, **kwargs):
         calls["count"] += 1
         assert kwargs.get("report_variant") == "standard"
-        assert kwargs.get("template_name") == "report-v1.3.md"
+        assert kwargs.get("template_name") == "report-v5.md"
         for filename in (
             "energy.json",
             "picture.json",
@@ -144,7 +144,7 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert calls["count"] == 1
     assert any(a["kind"] == "report" for a in first["artifacts"])
     assert any(a["kind"] == "statement_rule_map" for a in first["artifacts"])
-    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-content-report.md").exists()
+    assert (reports_dir / "C-2026-999-X-content-report.md").exists()
 
 
 def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:
@@ -157,7 +157,7 @@ def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:
         cache_key="cache-a",
         engine_version="1.3.0",
         render=True,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
         created_at="2026-05-30T00:00:00Z",
         status="completed",
         case_id="C-A",
@@ -169,7 +169,7 @@ def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:
         cache_key="cache-b",
         engine_version="1.3.0",
         render=True,
-        template_name="report-v1.3.md",
+        template_name="report-v5.md",
         created_at="2026-05-30T00:00:01Z",
         status="failed",
         case_id="C-B",
@@ -185,7 +185,7 @@ def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:
 
 
 def test_enqueue_creates_queued_job(tmp_path: Path) -> None:
-    case_dir = tmp_path / "cases" / "C-2026-998-乾-甲子乙丑丙寅丁卯"
+    case_dir = tmp_path / "cases" / "C-2026-998-X"
     case_dir.mkdir(parents=True)
     input_path = case_dir / "input.md"
     input_path.write_text("demo input", encoding="utf-8")
@@ -205,14 +205,14 @@ def test_enqueue_creates_queued_job(tmp_path: Path) -> None:
 
 
 def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) -> None:
-    case_dir = tmp_path / "cases" / "C-2026-997-乾-甲子乙丑丙寅丁卯"
+    case_dir = tmp_path / "cases" / "C-2026-997-X"
     findings_dir = case_dir / "findings"
     findings_dir.mkdir(parents=True)
     input_path = case_dir / "input.md"
     input_path.write_text("demo input", encoding="utf-8")
 
     class FakeOutput:
-        case_id = "C-2026-997-乾-甲子乙丑丙寅丁卯"
+        case_id = "C-2026-997-X"
         analysis_date = "2026-05-30"
         final_conclusions: list[Any] = []
         conflicts: list[Any] = []
@@ -255,18 +255,18 @@ def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) ->
     assert completed.status == "completed"
     assert completed.started_at is not None
     assert completed.completed_at is not None
-    assert completed.summary["case_id"] == "C-2026-997-乾-甲子乙丑丙寅丁卯"
+    assert completed.summary["case_id"] == "C-2026-997-X"
 
 
 def test_submit_hard_fails_when_required_artifact_is_missing(monkeypatch, tmp_path: Path) -> None:
-    case_dir = tmp_path / "cases" / "C-2026-996-乾-甲子乙丑丙寅丁卯"
+    case_dir = tmp_path / "cases" / "C-2026-996-X"
     findings_dir = case_dir / "findings"
     findings_dir.mkdir(parents=True)
     input_path = case_dir / "input.md"
     input_path.write_text("demo input", encoding="utf-8")
 
     class FakeOutput:
-        case_id = "C-2026-996-乾-甲子乙丑丙寅丁卯"
+        case_id = "C-2026-996-X"
         analysis_date = "2026-05-30"
         final_conclusions: list[Any] = []
         conflicts: list[Any] = []

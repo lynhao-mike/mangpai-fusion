@@ -38,6 +38,7 @@ from typing import Any, Literal, Optional, Union
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from engine.detail_expansion import DETAIL_DOMAINS, build_detail_expansions
 from engine.domain.ids import compute_statement_id
 from engine.energy.types import EnergyFindings
 from engine.statement_runtime import write_statement_records
@@ -136,7 +137,7 @@ def render_from_output(
 
     Args:
         analysis_output: engine.pipeline.AnalysisOutput 实例。
-        template_name:   兼容参数；None 或任意历史模板名均收敛到 report-v1.3.md。
+        template_name:   兼容参数；None 或任意历史模板名均收敛到 report-v5.md。
         variant:         兼容参数；历史 master/client/v1.2/v1.4 均收敛到 standard。
         lint_before:     是否启用双护栏 lint（默认 True；测试时可关闭）。
         cases_dir:       cases/ 目录路径（None = 仓库根 cases/）。
@@ -586,17 +587,67 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
         "health": _from_band("健康", "待补｜健康风险待三派裁判补齐", "体检、作息、压力和疾病反馈待校准"),
         "personality": _from_band("性格", "待补｜性格层级待三派裁判补齐", "行为风格、抗压和执行力待反馈校准"),
     }
+    expansions = ctx.get("detail_expansions") or {}
     out: dict[str, str] = {}
     for key, (layer, meaning, boundary, evidence) in specs.items():
+        expansion = expansions.get(key)
+        evidence_score = float(getattr(getattr(expansion, "evidence_score", None), "value", 0.0) or 0.0)
+        confidence_score = float(getattr(getattr(expansion, "confidence_score", None), "value", 0.0) or 0.0)
+        inference_type = str(getattr(expansion, "inference_type", "待反馈校准") if expansion else "待反馈校准")
+        uncertainty = str(getattr(expansion, "uncertainty", "需通过现实反馈校准") if expansion else "需通过现实反馈校准")
+        sources = "、".join(getattr(expansion, "theory_sources", []) or ["命局结构", "生产规则"])
+        detail_level = str(getattr(expansion, "level_label", "L0 粗粒度结论") if expansion else "L0 粗粒度结论")
+        detail_items = "、".join(getattr(expansion, "detail_items", []) or ["L0 粗粒度结论"])
+        confidence_text = (
+            f"EvidenceScore {evidence_score:.2f}；ConfidenceScore {confidence_score:.2f}；"
+            f"{inference_type}；{uncertainty}"
+        )
+        process = (
+            f"DetailExpansion={detail_level}（{detail_items}）；理论来源：{sources}；"
+            f"{inference_type}口径，不把理论共识计作案例验证"
+        )
         out[f"{key}_15tier_layer"] = layer
         out[f"{key}_15tier_meaning"] = meaning
         out[f"{key}_15tier_boundary"] = boundary
-        out[f"{key}_15tier_evidence"] = evidence
-        out[f"{key}_15tier_confidence"] = "待反馈校准"
+        out[f"{key}_15tier_evidence"] = f"{evidence}；理论来源：{sources}"
+        out[f"{key}_15tier_confidence"] = confidence_text
         out[f"{key}_15tier_timing"] = "随大运与流年反馈复盘"
         out[f"{key}_15tier_boundary_explain"] = _boundary_explain(str(boundary))
-        out[f"{key}_domain_process"] = "三派逐域判断待运行时裁判补齐；当前以命局底盘、生产规则与反馈校准为主"
+        out[f"{key}_domain_process"] = process
     return out
+
+
+def _detail_policy_allows(item: dict[str, Any], expansions: dict[str, Any]) -> bool:
+    """Allow low-confidence visible details only when evidence is explicitly sufficient."""
+    if item.get("star", 0) >= 4:
+        return True
+    domain = str(item.get("domain", ""))
+    for key, expansion in expansions.items():
+        label = getattr(expansion, "label", "")
+        if key in domain or (label and label in domain):
+            return bool(getattr(expansion, "allow_theory_detail", False))
+    return False
+
+
+def _annotate_theory_detail(item: dict[str, Any], expansions: dict[str, Any]) -> dict[str, Any]:
+    domain = str(item.get("domain", ""))
+    expansion = None
+    for key, candidate in expansions.items():
+        label = getattr(candidate, "label", "")
+        if key in domain or (label and label in domain):
+            expansion = candidate
+            break
+    if not expansion or item.get("star", 0) >= 4:
+        return item
+    evidence_score = getattr(getattr(expansion, "evidence_score", None), "value", 0.0)
+    confidence_score = getattr(getattr(expansion, "confidence_score", None), "value", 0.0)
+    item = dict(item)
+    marker = (
+        f"理论推断｜EvidenceScore {evidence_score:.2f} / "
+        f"ConfidenceScore {confidence_score:.2f}｜{getattr(expansion, 'uncertainty', '')}"
+    )
+    item["statement"] = f"{item.get('statement', '')}（{marker}）"
+    return item
 
 
 def _build_retrospective_vm(retrospective: Optional[Any]) -> dict:
@@ -1509,7 +1560,7 @@ def render(
         gates:         D3 GateResult 列表（已过滤 passed_layers >= 1）
         parsed:        ParsedInput（含 bazi / dayun / birth）
         support:       D4 SupportFindings（Optional，Track-D 未合入时传 None）
-        template_name: 兼容参数；输出始终使用 templates/report-v1.3.md。
+        template_name: 兼容参数；输出始终使用 templates/report-v5.md。
         variant:       兼容参数；输出始终收敛为 standard。
         _skip_lint:    内部标志，跳过 lint（仅供测试 / render_from_output 内部协调用）
         _capture_ctx_to: 内部协调用：若传入 dict，则把构建好的 ctx 复制进去
@@ -1524,7 +1575,7 @@ def render(
     """
     # 唯一标准模板：当前默认作为命理师报告结构基线。
     # template_name / variant 仅保留为兼容旧调用的入参，不再默认生成用户报告。
-    template_name = "report-v1.3.md"
+    template_name = "report-v5.md"
     variant = "standard"
     tpl_path = ROOT / "templates" / template_name
     if not tpl_path.exists():
@@ -1574,8 +1625,30 @@ def render(
     # F8 · §0 命局核心结构总览
     ctx.update(_build_section_zero_vm(energy, picture, parsed))
 
-    # F5 · §B.6 15 层五维定位
+    # F5 · §B.6 15 层五维定位 + EvidenceScore / ConfidenceScore 双指标
     ctx.update(_build_15tier_vm(picture))
+    detail_expansions = build_detail_expansions(
+        energy=energy,
+        picture=picture,
+        gates=gates,
+        support=support,
+        final_conclusions=final_conclusions,
+        known_facts=getattr(parsed, "known_facts", None) if parsed else None,
+    )
+    ctx["detail_expansions"] = detail_expansions
+    ctx["detail_expansion_rows"] = [
+        {
+            "domain": expansion.domain,
+            "label": expansion.label,
+            "level_label": expansion.level_label,
+            "evidence_score_value": f"{expansion.evidence_score.value:.2f}",
+            "confidence_score_value": f"{expansion.confidence_score.value:.2f}",
+            "inference_type": expansion.inference_type,
+            "theory_sources": "、".join(expansion.theory_sources),
+            "uncertainty": expansion.uncertainty,
+        }
+        for expansion in (detail_expansions[key] for key in DETAIL_DOMAINS)
+    ]
     ctx.update(_build_v2_15tier_display_defaults(ctx))
 
     # F9 · 大运全表
@@ -1587,10 +1660,18 @@ def render(
     # v1.5 · 多专家功能域裁判
     ctx.update(_build_parallel_analysis_vm(parallel_analysis, case_id=ctx["case_id"]))
 
-    # 命理师内容报告（统一版）：保留可回测主线与低置信旁路结论，便于后续反馈校准。
-    ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if p.get("star", 0) >= 4]
-    ctx["consensus_conclusions"] = [c for c in ctx.get("consensus_conclusions", []) if c.get("star", 0) >= 4]
-    ctx["complementary_conclusions"] = [c for c in ctx.get("complementary_conclusions", []) if c.get("star", 0) >= 4]
+    # 命理师内容报告（统一版）：高置信主线直出；低置信但高证据项以“理论推断”透明保留。
+    ctx["zuogong_paths"] = [p for p in ctx.get("zuogong_paths", []) if _detail_policy_allows(p, detail_expansions)]
+    ctx["consensus_conclusions"] = [
+        _annotate_theory_detail(c, detail_expansions)
+        for c in ctx.get("consensus_conclusions", [])
+        if _detail_policy_allows(c, detail_expansions)
+    ]
+    ctx["complementary_conclusions"] = [
+        _annotate_theory_detail(c, detail_expansions)
+        for c in ctx.get("complementary_conclusions", [])
+        if _detail_policy_allows(c, detail_expansions)
+    ]
     ctx["production_rule_conclusions"] = [
         c for c in ctx.get("complementary_conclusions", [])
         if any(tag in c.get("schools_str", "") for tag in ("子平", "滴天髓"))
@@ -1600,8 +1681,16 @@ def render(
         c for c in ctx.get("complementary_conclusions", [])
         if c.get("statement_id") not in production_ids
     ]
-    ctx["gate_results"] = [g for g in ctx.get("gate_results", []) if g.get("star", 0) >= 4]
-    ctx["iron_gates"] = [g for g in ctx.get("iron_gates", []) if g.get("star", 0) >= 4]
+    ctx["gate_results"] = [
+        _annotate_theory_detail(g, detail_expansions)
+        for g in ctx.get("gate_results", [])
+        if _detail_policy_allows(g, detail_expansions)
+    ]
+    ctx["iron_gates"] = [
+        _annotate_theory_detail(g, detail_expansions)
+        for g in ctx.get("iron_gates", [])
+        if _detail_policy_allows(g, detail_expansions)
+    ]
     ctx["support_health"] = [h for h in ctx.get("support_health", []) if h.get("risk_ordinal") in ("强", "中")]
     ctx["parallel_domain_conclusions"] = [
         c for c in ctx.get("parallel_domain_conclusions", []) if c.get("star", 0) >= 1

@@ -31,7 +31,7 @@ from engine.infrastructure.analysis_store import (
 )
 
 
-DEFAULT_TEMPLATE_NAME = "report-v1.3.md"
+DEFAULT_TEMPLATE_NAME = "report-v5.md"
 STANDARD_REPORT_VARIANT = "standard"
 SERVICE_NAME = "mangpai-fusion-production-api"
 

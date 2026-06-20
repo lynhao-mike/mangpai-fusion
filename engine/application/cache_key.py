@@ -13,7 +13,7 @@ import json
 
 from engine import FINDINGS_SCHEMA_VERSION, PIPELINE_SCHEMA_VERSION, __version__
 
-DEFAULT_TEMPLATE_NAME = "report-v1.3.md"
+DEFAULT_TEMPLATE_NAME = "report-v5.md"
 
 
 def compute_cache_key(

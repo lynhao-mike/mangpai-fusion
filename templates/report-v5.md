@@ -207,6 +207,16 @@
 | accident_risk | {{ health_accident_level }} / {{ health_accident_range }} | {{ health_accident_mapping }} | {{ health_accident_evidence_chain }} | {{ health_accident_confidence }} | {{ health_accident_timing }} | {{ health_accident_feedback_fields }}；{{ health_accident_falsifier }} |
 | longevity_risk | {{ health_longevity_level }} / {{ health_longevity_range }} | {{ health_longevity_mapping }} | {{ health_longevity_evidence_chain }} | {{ health_longevity_confidence }} | {{ health_longevity_timing }} | {{ health_longevity_feedback_fields }}；{{ health_longevity_falsifier }} |
 
+### DetailExpansion 展开策略
+
+> 本表只决定首轮报告可展开到多细，不改变案例验证置信度；当 EvidenceScore 高而 ConfidenceScore 低时，细节必须按“理论推断”展示，并保留不确定性说明。
+
+| 领域 | 展开等级 | EvidenceScore | ConfidenceScore | 输出口径 | 理论来源 | 不确定性说明 |
+|---|---|---|---|---|---|---|
+{% for r in detail_expansion_rows %}
+| {{ r.label }} | {{ r.level_label }} | {{ r.evidence_score_value }} | {{ r.confidence_score_value }} | {{ r.inference_type }} | {{ r.theory_sources }} | {{ r.uncertainty }} |
+{% endfor %}
+
 ---
 
 ## 学业与学习能力
