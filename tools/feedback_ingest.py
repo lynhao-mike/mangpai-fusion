@@ -376,6 +376,7 @@ def fanout_to_rules(
                     section=str(context_source.get("section") or ""),
                     year=context_source.get("year"),
                     domain=str(context_source.get("domain") or ""),
+                    role=str(context_source.get("role") or "unknown"),
                     statement_ids=sorted(set(prev_sids + [fb.statement_id])),
                 )
                 rule_verdicts[rid] = (fb.verdict, vctx)

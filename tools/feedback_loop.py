@@ -48,6 +48,7 @@ from engine.domain.ids import RULE_ID_RE, RULE_ID_RE_RELAX
 from tools.drift_detect import detect_drift
 from tools.rule_lifecycle import (
     AppliedCase,
+    DomainRoleStats,
     LifecycleConfig,
     Rule,
     RuleStatus,
@@ -449,6 +450,7 @@ class VerdictContext:
     section: str = ""
     year: Optional[int] = None
     domain: str = ""
+    role: str = "unknown"
     statement_ids: list[str] = field(default_factory=list)
 
 
@@ -718,10 +720,14 @@ def _apply_rule_verdicts(
             f" | sids={','.join(vctx.statement_ids[:3])}"
             if vctx.statement_ids else ""
         )
-        note = f"{vctx.section} | {vctx.domain}{sid_str}".strip(" |")
+        role = str(vctx.role or "unknown").strip() or "unknown"
+        note = f"{vctx.section} | {vctx.domain} | role={role}{sid_str}".strip(" |")
+        domain_bucket: DomainRoleStats = rule.domain_role_bucket(vctx.domain, role)
 
         if verdict == "hit":
             rule.hits += 1
+            domain_bucket.hits += 1
+            domain_bucket.update_recent_window(True, window_size=cfg.drift_window_size)
             rule.update_recent_window(True, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
                 case_id=case_id,
@@ -732,6 +738,8 @@ def _apply_rule_verdicts(
             ))
         elif verdict == "miss":
             rule.misses += 1
+            domain_bucket.misses += 1
+            domain_bucket.update_recent_window(False, window_size=cfg.drift_window_size)
             rule.update_recent_window(False, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
                 case_id=case_id,
@@ -742,10 +750,12 @@ def _apply_rule_verdicts(
             ))
         elif verdict == "abstain":
             rule.abstained += 1
+            domain_bucket.abstained += 1
         else:
             # no_data → 跳过完全
             continue
 
+        domain_bucket.recompute_confidence(variance_threshold=cfg.variance_threshold)
         new_conf = rule.recompute_confidence(variance_threshold=cfg.variance_threshold)
 
         # 升降级 + 漂移
@@ -786,7 +796,7 @@ def _apply_rule_verdicts(
             status_before=old_status,
             status_after=rule.status,
             verdict=verdict,
-            note=vctx.section,
+            note=note,
         ))
 
         if not dry_run:

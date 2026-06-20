@@ -14,7 +14,8 @@
     status, status_history, status_changed_at,
     hits, misses, abstained,
     misses_at_confirmed, misses_at_flagged,
-    recent_5, applied_cases, confidence_cache
+    recent_5, applied_cases, confidence_cache,
+    domain_role_stats
 
 其他字段（id / school / topic / title / conclusion / raw_*）一律只读。
 
@@ -237,6 +238,63 @@ class AppliedCase:
 
 
 @dataclass
+class DomainRoleStats:
+    """单条规律在某个 domain/role 下的独立反馈账本。"""
+    hits: int = 0
+    misses: int = 0
+    abstained: int = 0
+    recent_5: list[bool] = field(default_factory=list)
+    confidence_cache: Optional[Confidence] = None
+
+    @property
+    def n(self) -> int:
+        return self.hits + self.misses
+
+    @property
+    def hit_rate(self) -> float:
+        return (self.hits / self.n) if self.n > 0 else 0.0
+
+    def update_recent_window(self, hit: bool, *, window_size: int = 5) -> None:
+        self.recent_5.append(bool(hit))
+        if len(self.recent_5) > window_size:
+            self.recent_5 = self.recent_5[-window_size:]
+
+    def recompute_confidence(
+        self, *, variance_threshold: float = 0.15
+    ) -> Confidence:
+        c = compute_rule_confidence(
+            self.hits, self.misses, variance_threshold=variance_threshold
+        )
+        self.confidence_cache = c
+        return c
+
+    def to_dict(self) -> dict[str, Any]:
+        data: dict[str, Any] = {
+            "hits": int(self.hits),
+            "misses": int(self.misses),
+            "abstained": int(self.abstained),
+            "recent_5": list(self.recent_5),
+        }
+        if self.confidence_cache is not None:
+            data["confidence_cache"] = self.confidence_cache.to_dict()
+        return data
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> "DomainRoleStats":
+        conf_raw = d.get("confidence_cache")
+        conf: Optional[Confidence] = (
+            Confidence.from_dict(conf_raw) if isinstance(conf_raw, dict) else None
+        )
+        return cls(
+            hits=int(d.get("hits", 0)),
+            misses=int(d.get("misses", 0)),
+            abstained=int(d.get("abstained", 0)),
+            recent_5=[bool(x) for x in d.get("recent_5", [])],
+            confidence_cache=conf,
+        )
+
+
+@dataclass
 class Rule:
     """theory/{school}/index.yaml 中一条规律的 Track-G 视图。
 
@@ -270,6 +328,9 @@ class Rule:
     # 置信度缓存
     confidence_cache: Optional[Confidence] = None
 
+    # v1.5：domain/role 维度独立账本；顶层 hits/misses 保留为兼容汇总。
+    domain_role_stats: dict[str, dict[str, DomainRoleStats]] = field(default_factory=dict)
+
     # v1.4 V1：quantifiable=False 表示框架性心法（不参与 hit/miss 计数）
     # v1.4 V2：domain_restriction 非空表示仅在列出的域内 ingest 时计 hit/miss
     quantifiable: bool = True
@@ -302,6 +363,12 @@ class Rule:
         )
         self.confidence_cache = c
         return c
+
+    def domain_role_bucket(self, domain: str, role: str) -> DomainRoleStats:
+        domain_key = str(domain or "unknown").strip() or "unknown"
+        role_key = str(role or "unknown").strip() or "unknown"
+        domain_bucket = self.domain_role_stats.setdefault(domain_key, {})
+        return domain_bucket.setdefault(role_key, DomainRoleStats())
 
 
 # ============================================================
@@ -491,6 +558,18 @@ def _entry_to_rule(entry: dict[str, Any]) -> Rule:
         Confidence.from_dict(conf_raw) if isinstance(conf_raw, dict) else None
     )
 
+    domain_role_stats_raw = entry.get("domain_role_stats") or {}
+    domain_role_stats: dict[str, dict[str, DomainRoleStats]] = {}
+    if isinstance(domain_role_stats_raw, dict):
+        for domain, roles in domain_role_stats_raw.items():
+            if not isinstance(roles, dict):
+                continue
+            domain_role_stats[str(domain)] = {
+                str(role): DomainRoleStats.from_dict(stats)
+                for role, stats in roles.items()
+                if isinstance(stats, dict)
+            }
+
     rule = Rule(
         id=str(entry["id"]),
         school=str(entry.get("school", "")),
@@ -510,6 +589,7 @@ def _entry_to_rule(entry: dict[str, Any]) -> Rule:
         recent_5=[bool(x) for x in entry.get("recent_5", [])],
         applied_cases=applied,
         confidence_cache=conf,
+        domain_role_stats=domain_role_stats,
         # v1.4 V1/V2：兼容旧 yaml（无字段时默认 quantifiable=True / 空 domain_restriction）
         quantifiable=bool(entry.get("quantifiable", True)),
         domain_restriction=list(entry.get("domain_restriction", []) or []),
@@ -542,6 +622,17 @@ def _rule_to_entry(rule: Rule) -> dict[str, Any]:
         d = rule.confidence_cache.to_dict()
         d["last_updated"] = _dt.date.today().isoformat()
         entry["confidence_cache"] = d
+    if rule.domain_role_stats:
+        entry["domain_role_stats"] = {
+            domain: {
+                role: stats.to_dict()
+                for role, stats in roles.items()
+                if stats.n > 0 or stats.abstained > 0
+            }
+            for domain, roles in rule.domain_role_stats.items()
+        }
+    elif "domain_role_stats" in entry:
+        entry.pop("domain_role_stats", None)
     # v1.4 V1/V2：仅在显式标注（非默认值）时写入 yaml，保持旧 yaml 干净
     if rule.quantifiable is not True:
         entry["quantifiable"] = rule.quantifiable
