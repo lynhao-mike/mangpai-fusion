@@ -1,0 +1,1405 @@
+{
+  "schema_version": "5.0.0-five-school-mvp",
+  "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+  "chart": {
+    "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+    "sex": "乾造",
+    "solar": "1984-11-05 20:25:00",
+    "pillars": [
+      "甲子",
+      "甲戌",
+      "癸卯",
+      "壬戌"
+    ],
+    "day_master": "癸",
+    "month_command": "戌月，戊土司令",
+    "current_luck": "己卯，2025-2034",
+    "luck_sequence": [
+      "乙亥",
+      "丙子",
+      "丁丑",
+      "戊寅",
+      "己卯",
+      "庚辰",
+      "辛巳",
+      "壬午",
+      "癸未"
+    ],
+    "known_feedback": "暂无命主现实反馈"
+  },
+  "claims": [
+    {
+      "claim_id": "v5-034-ziping-structure-001",
+      "school": "ziping",
+      "school_role": "structure_law",
+      "domain": "总体",
+      "claim": "癸水生戌月，戊土司令，年支子禄与时干壬劫使日主有根有帮；年月甲木、日支卯木泄秀，双戌藏官印财，结构为身有根、食伤旺、官杀暗重、财藏待引。",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.8,
+        "note": "子平结构证据清晰，但暂无现实反馈"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-zp-001",
+          "source": "input.md",
+          "text": "四柱甲子、甲戌、癸卯、壬戌；戌月戊土司令；子为癸禄，壬水帮身。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "ZP-STRUCTURE"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [],
+      "probabilistic": false,
+      "falsifiable": "若现实长期无表达/技术/项目输出特征，则食伤主线需降权。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-ziping-career-001",
+      "school": "ziping",
+      "school_role": "structure_law",
+      "domain": "事业",
+      "claim": "事业不宜按单纯自由才艺看，应按伤官食神输出纳入官杀规则平台论；2015-2034 官杀运连续，是责任、职位、项目与合规压力递增期。",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "positive",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.78,
+        "note": "大运与原局同向"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-zp-career",
+          "source": "input.md",
+          "text": "戊寅、己卯两步官杀运接续，原局甲卯食伤成势、双戌官库重。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "ZP-LUCK-CAREER"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2015-2034",
+          "type": "dayun"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若2015后完全无责任、岗位、项目或规则压力变化，则此命题需回调。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-ditiansui-structure-001",
+      "school": "ditiansui",
+      "school_role": "qi_momentum",
+      "domain": "总体",
+      "claim": "戌月癸水重在润燥与通关；局中子壬可润、甲卯可泄，双戌使土燥成病。成败关键是先有水源与制度承载，再引财火，不可火土燥烈而失衡。",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.76,
+        "note": "调候病药明确"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-dts-001",
+          "source": "input.md",
+          "text": "戌月燥土、双戌夹卯，子水壬水为润源，甲卯泄秀引火。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "DTS-QI-FLOW"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [],
+      "probabilistic": false,
+      "falsifiable": "若火土旺年反而无钱事/健康/压力同题，则火土风险需降权。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-ditiansui-health-001",
+      "school": "ditiansui",
+      "school_role": "qi_momentum",
+      "domain": "健康",
+      "claim": "健康判断不宜铁口重疾，应降级为燥土压力型风险：脾胃代谢、睡眠焦虑、炎症、血压血脂与水系统恢复力管理。",
+      "claim_type": "counter_claim",
+      "stance": "support",
+      "polarity": "negative",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.68,
+        "note": "有结构风险但无病史反馈"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-dts-health",
+          "source": "input.md",
+          "text": "戌月戊土司令、双戌燥土，癸水被甲卯泄，子壬仍可恢复。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "DTS-HEALTH-BOUNDARY"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2024-2027",
+          "type": "liunian_cluster"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若2024-2027无体检异常、睡眠压力或脾胃炎症问题，则该风险窗口需降权。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-gao-work-001",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "做功路径在水木输出打土中财官：以技能、方案、内容、销售、产品、项目协调、工程流程或资源整合变现，越到中年越需要合同、流程与交付边界。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "positive",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.79,
+        "note": "做功路径与既有报告一致"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-gao-work",
+          "source": "input.md",
+          "text": "年柱甲子、月柱甲戌、日坐癸卯、时柱壬戌形成水木输出与双戌责任库。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "GAO-ZUOGONG"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2025-2034",
+          "type": "dayun"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若职业完全不依赖输出、项目、客户或规则平台，则做功取象需复核。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-gao-wealth-001",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "财富",
+      "claim": "财在双戌库中，靠项目、客户、房土、合作、火土年份引出；2026-2027 财星透旺，机会与支出压力并见，忌高杠杆、担保与口头合伙。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "财库与流年触发明确"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-gao-wealth",
+          "source": "input.md",
+          "text": "丙丁财藏戌，2026丙午、2027丁未引财，未戌刑动库。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "GAO-WEALTH-VAULT"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2026-2027",
+          "type": "liunian"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若2026-2027无收入、投资、家庭资产或大额支出议题，则财库触发需降权。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-duan-event-001",
+      "school": "duan_jianye",
+      "school_role": "event_framework",
+      "domain": "婚姻",
+      "claim": "乾造以财为妻，财藏双戌，夫妻宫卯合戌火，婚缘有但不轻松，多与房宅、钱事、父母家族、事业节奏和责任绑定；2025-2027 为关系财务沟通重点期。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.69,
+        "note": "婚姻需现实状态反馈校准"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-duan-marriage",
+          "source": "input.md",
+          "text": "日支卯、月时双戌、卯戌合火，财星藏戌，日柱红鸾、年支桃花。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "DUAN-MARRIAGE-PALACE"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2025-2027",
+          "type": "liunian_cluster"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若婚恋、家宅、财务责任完全不绑定，则婚姻事件取象需回调。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-duan-career-001",
+      "school": "duan_jianye",
+      "school_role": "event_framework",
+      "domain": "事业",
+      "claim": "事业宫甲戌显示伤官坐官库：有专业判断和表达能力，也容易与规则、上级、合同、流程发生拉扯；适合把观点变成制度化交付。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.77,
+        "note": "宫位与十神落点明确"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-duan-career",
+          "source": "input.md",
+          "text": "月柱甲戌为事业环境，伤官临官库；时柱壬戌为后续资源责任。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "DUAN-CAREER-PALACE"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2015-2034",
+          "type": "dayun"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若长期无上级/制度/合同/交付矛盾，则官库压力需降权。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-yang-image-001",
+      "school": "yang_qingjuan",
+      "school_role": "image_detail",
+      "domain": "性格",
+      "claim": "命主聪明、反应快、有表达欲和方案意识，外柔内倔，讲逻辑也讲感受；压力大时容易话直、焦虑、睡眠和脾胃先受影响。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "mixed",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.82,
+        "note": "画像证据集中但仍待反馈"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-yang-personality",
+          "source": "input.md",
+          "text": "年月两甲伤官，日坐卯食神，年支子禄，时干壬劫，月时双戌。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "YANG-IMAGE"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [],
+      "probabilistic": false,
+      "falsifiable": "若命主现实长期不表现表达欲、主见和规则敏感，则画像需修正。",
+      "metadata": {}
+    },
+    {
+      "claim_id": "v5-034-yang-family-health-001",
+      "school": "yang_qingjuan",
+      "school_role": "image_detail",
+      "domain": "健康",
+      "claim": "2024-2027 易出现钱事、家宅、关系、压力与身体管理同题，重点关注体检、睡眠、脾胃代谢、炎症、牙齿皮肤与筋骨。",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "negative",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.66,
+        "note": "细节风险需反馈验证"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-034-yang-health",
+          "source": "input.md",
+          "text": "2024甲辰冲戌，2025乙巳、2026丙午、2027丁未火土渐旺，原局双戌燥土。",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "YANG-HEALTH-DETAIL"
+          ],
+          "metadata": {}
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "window": "2024-2027",
+          "type": "liunian_cluster"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若该阶段无压力体感、体检或家宅钱事同题，则健康细节取象需降权。",
+      "metadata": {}
+    }
+  ],
+  "structure_graph": {
+    "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+    "nodes": [
+      {
+        "id": "chart:root",
+        "type": "chart",
+        "label": "甲子甲戌癸卯壬戌",
+        "payload": {
+          "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+          "sex": "乾造",
+          "solar": "1984-11-05 20:25:00",
+          "pillars": [
+            "甲子",
+            "甲戌",
+            "癸卯",
+            "壬戌"
+          ],
+          "day_master": "癸",
+          "month_command": "戌月，戊土司令",
+          "current_luck": "己卯，2025-2034",
+          "luck_sequence": [
+            "乙亥",
+            "丙子",
+            "丁丑",
+            "戊寅",
+            "己卯",
+            "庚辰",
+            "辛巳",
+            "壬午",
+            "癸未"
+          ],
+          "known_feedback": "暂无命主现实反馈"
+        }
+      },
+      {
+        "id": "domain:总体",
+        "type": "domain",
+        "label": "总体"
+      },
+      {
+        "id": "claim:v5-034-ziping-structure-001",
+        "type": "claim",
+        "label": "癸水生戌月，戊土司令，年支子禄与时干壬劫使日主有根有帮；年月甲木、日支卯木泄秀，双戌藏官印财，结构为身有根、食伤旺、官杀暗重、财藏待引。",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-zp-001",
+        "type": "evidence",
+        "label": "四柱甲子、甲戌、癸卯、壬戌；戌月戊土司令；子为癸禄，壬水帮身。",
+        "source": "input.md"
+      },
+      {
+        "id": "domain:事业",
+        "type": "domain",
+        "label": "事业"
+      },
+      {
+        "id": "claim:v5-034-ziping-career-001",
+        "type": "claim",
+        "label": "事业不宜按单纯自由才艺看，应按伤官食神输出纳入官杀规则平台论；2015-2034 官杀运连续，是责任、职位、项目与合规压力递增期。",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-zp-career",
+        "type": "evidence",
+        "label": "戊寅、己卯两步官杀运接续，原局甲卯食伤成势、双戌官库重。",
+        "source": "input.md"
+      },
+      {
+        "id": "claim:v5-034-ditiansui-structure-001",
+        "type": "claim",
+        "label": "戌月癸水重在润燥与通关；局中子壬可润、甲卯可泄，双戌使土燥成病。成败关键是先有水源与制度承载，再引财火，不可火土燥烈而失衡。",
+        "school": "ditiansui",
+        "school_role": "qi_momentum",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-dts-001",
+        "type": "evidence",
+        "label": "戌月燥土、双戌夹卯，子水壬水为润源，甲卯泄秀引火。",
+        "source": "input.md"
+      },
+      {
+        "id": "domain:健康",
+        "type": "domain",
+        "label": "健康"
+      },
+      {
+        "id": "claim:v5-034-ditiansui-health-001",
+        "type": "claim",
+        "label": "健康判断不宜铁口重疾，应降级为燥土压力型风险：脾胃代谢、睡眠焦虑、炎症、血压血脂与水系统恢复力管理。",
+        "school": "ditiansui",
+        "school_role": "qi_momentum",
+        "claim_type": "counter_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-dts-health",
+        "type": "evidence",
+        "label": "戌月戊土司令、双戌燥土，癸水被甲卯泄，子壬仍可恢复。",
+        "source": "input.md"
+      },
+      {
+        "id": "claim:v5-034-gao-work-001",
+        "type": "claim",
+        "label": "做功路径在水木输出打土中财官：以技能、方案、内容、销售、产品、项目协调、工程流程或资源整合变现，越到中年越需要合同、流程与交付边界。",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-gao-work",
+        "type": "evidence",
+        "label": "年柱甲子、月柱甲戌、日坐癸卯、时柱壬戌形成水木输出与双戌责任库。",
+        "source": "input.md"
+      },
+      {
+        "id": "domain:财富",
+        "type": "domain",
+        "label": "财富"
+      },
+      {
+        "id": "claim:v5-034-gao-wealth-001",
+        "type": "claim",
+        "label": "财在双戌库中，靠项目、客户、房土、合作、火土年份引出；2026-2027 财星透旺，机会与支出压力并见，忌高杠杆、担保与口头合伙。",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-gao-wealth",
+        "type": "evidence",
+        "label": "丙丁财藏戌，2026丙午、2027丁未引财，未戌刑动库。",
+        "source": "input.md"
+      },
+      {
+        "id": "domain:婚姻",
+        "type": "domain",
+        "label": "婚姻"
+      },
+      {
+        "id": "claim:v5-034-duan-event-001",
+        "type": "claim",
+        "label": "乾造以财为妻，财藏双戌，夫妻宫卯合戌火，婚缘有但不轻松，多与房宅、钱事、父母家族、事业节奏和责任绑定；2025-2027 为关系财务沟通重点期。",
+        "school": "duan_jianye",
+        "school_role": "event_framework",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-duan-marriage",
+        "type": "evidence",
+        "label": "日支卯、月时双戌、卯戌合火，财星藏戌，日柱红鸾、年支桃花。",
+        "source": "input.md"
+      },
+      {
+        "id": "claim:v5-034-duan-career-001",
+        "type": "claim",
+        "label": "事业宫甲戌显示伤官坐官库：有专业判断和表达能力，也容易与规则、上级、合同、流程发生拉扯；适合把观点变成制度化交付。",
+        "school": "duan_jianye",
+        "school_role": "event_framework",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-duan-career",
+        "type": "evidence",
+        "label": "月柱甲戌为事业环境，伤官临官库；时柱壬戌为后续资源责任。",
+        "source": "input.md"
+      },
+      {
+        "id": "domain:性格",
+        "type": "domain",
+        "label": "性格"
+      },
+      {
+        "id": "claim:v5-034-yang-image-001",
+        "type": "claim",
+        "label": "命主聪明、反应快、有表达欲和方案意识，外柔内倔，讲逻辑也讲感受；压力大时容易话直、焦虑、睡眠和脾胃先受影响。",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-yang-personality",
+        "type": "evidence",
+        "label": "年月两甲伤官，日坐卯食神，年支子禄，时干壬劫，月时双戌。",
+        "source": "input.md"
+      },
+      {
+        "id": "claim:v5-034-yang-family-health-001",
+        "type": "claim",
+        "label": "2024-2027 易出现钱事、家宅、关系、压力与身体管理同题，重点关注体检、睡眠、脾胃代谢、炎症、牙齿皮肤与筋骨。",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-034-yang-health",
+        "type": "evidence",
+        "label": "2024甲辰冲戌，2025乙巳、2026丙午、2027丁未火土渐旺，原局双戌燥土。",
+        "source": "input.md"
+      }
+    ],
+    "edges": [
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-ziping-structure-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-ziping-structure-001",
+        "target": "domain:总体",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-zp-001",
+        "target": "claim:v5-034-ziping-structure-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-ziping-career-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-ziping-career-001",
+        "target": "domain:事业",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-zp-career",
+        "target": "claim:v5-034-ziping-career-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-ditiansui-structure-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-ditiansui-structure-001",
+        "target": "domain:总体",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-dts-001",
+        "target": "claim:v5-034-ditiansui-structure-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-ditiansui-health-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-ditiansui-health-001",
+        "target": "domain:健康",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-dts-health",
+        "target": "claim:v5-034-ditiansui-health-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-gao-work-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-gao-work-001",
+        "target": "domain:事业",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-gao-work",
+        "target": "claim:v5-034-gao-work-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-gao-wealth-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-gao-wealth-001",
+        "target": "domain:财富",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-gao-wealth",
+        "target": "claim:v5-034-gao-wealth-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-duan-event-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-duan-event-001",
+        "target": "domain:婚姻",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-duan-marriage",
+        "target": "claim:v5-034-duan-event-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-duan-career-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-duan-career-001",
+        "target": "domain:事业",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-duan-career",
+        "target": "claim:v5-034-duan-career-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-yang-image-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-yang-image-001",
+        "target": "domain:性格",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-yang-personality",
+        "target": "claim:v5-034-yang-image-001",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5-034-yang-family-health-001",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5-034-yang-family-health-001",
+        "target": "domain:健康",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-034-yang-health",
+        "target": "claim:v5-034-yang-family-health-001",
+        "type": "supports"
+      }
+    ]
+  },
+  "arbitration_results": [
+    {
+      "domain": "事业",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [
+        "ziping",
+        "gao_dechen"
+      ],
+      "minority_claims": [],
+      "support_score": 2.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "事业",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [
+        "gao_dechen",
+        "duan_jianye"
+      ],
+      "minority_claims": [],
+      "support_score": 2.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "事业",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [
+        "ziping",
+        "gao_dechen",
+        "duan_jianye"
+      ],
+      "minority_claims": [],
+      "support_score": 3.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "健康",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [
+        "ditiansui"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "健康",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [
+        "yang_qingjuan"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "健康",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [
+        "ditiansui",
+        "yang_qingjuan"
+      ],
+      "minority_claims": [],
+      "support_score": 2.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "婚姻",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "婚姻",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [
+        "duan_jianye"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "婚姻",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [
+        "duan_jianye"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "性格",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "性格",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [
+        "yang_qingjuan"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "性格",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "总体",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [
+        "ziping",
+        "ditiansui"
+      ],
+      "minority_claims": [],
+      "support_score": 2.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "总体",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "总体",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "财富",
+      "stage": "structure_legality",
+      "conclusion": "结构合法性仲裁已形成候选结论。",
+      "winning_schools": [
+        "gao_dechen"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "财富",
+      "stage": "event_realization",
+      "conclusion": "事件落地仲裁已形成候选结论。",
+      "winning_schools": [
+        "gao_dechen"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.6,
+        "note": "MVP 仲裁，尚未接入历史校准"
+      },
+      "rationale": "高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+      "probabilistic_allowed": true
+    },
+    {
+      "domain": "财富",
+      "stage": "probability_timing",
+      "conclusion": "仅白名单事件且具备时间窗与反馈标签时允许概率化。",
+      "winning_schools": [
+        "gao_dechen"
+      ],
+      "minority_claims": [],
+      "support_score": 1.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★",
+        "score": 0.4,
+        "note": "概率层 MVP 只登记许可，不伪精确"
+      },
+      "rationale": "性格、格局高低、宽泛气质描述不进入概率层。",
+      "probabilistic_allowed": true
+    }
+  ],
+  "prediction_ledger": {
+    "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+    "predictions": [
+      {
+        "prediction_id": "v5pred-0640c057b743",
+        "domain": "事业",
+        "event_label": "事业不宜按单纯自由才艺看，应按伤官食神输出纳入官杀规则平台论；2015-2034 官杀运连续，是责任、职位、项目与合规压力递增期。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2015-2034",
+          "type": "dayun"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-fc87f3b75f3b",
+        "domain": "健康",
+        "event_label": "健康判断不宜铁口重疾，应降级为燥土压力型风险：脾胃代谢、睡眠焦虑、炎症、血压血脂与水系统恢复力管理。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2024-2027",
+          "type": "liunian_cluster"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-4d6b7cc6ceb1",
+        "domain": "事业",
+        "event_label": "做功路径在水木输出打土中财官：以技能、方案、内容、销售、产品、项目协调、工程流程或资源整合变现，越到中年越需要合同、流程与交付边界。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2025-2034",
+          "type": "dayun"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-25d9e402b8e2",
+        "domain": "财富",
+        "event_label": "财在双戌库中，靠项目、客户、房土、合作、火土年份引出；2026-2027 财星透旺，机会与支出压力并见，忌高杠杆、担保与口头合伙。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2026-2027",
+          "type": "liunian"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-005778e95410",
+        "domain": "婚姻",
+        "event_label": "乾造以财为妻，财藏双戌，夫妻宫卯合戌火，婚缘有但不轻松，多与房宅、钱事、父母家族、事业节奏和责任绑定；2025-2027 为关系财务沟通重点期。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2025-2027",
+          "type": "liunian_cluster"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-ee7b1322ae98",
+        "domain": "事业",
+        "event_label": "事业宫甲戌显示伤官坐官库：有专业判断和表达能力，也容易与规则、上级、合同、流程发生拉扯；适合把观点变成制度化交付。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2015-2034",
+          "type": "dayun"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-a289d212df57",
+        "domain": "健康",
+        "event_label": "2024-2027 易出现钱事、家宅、关系、压力与身体管理同题，重点关注体检、睡眠、脾胃代谢、炎症、牙齿皮肤与筋骨。",
+        "probability_range": [
+          0.35,
+          0.55
+        ],
+        "confidence": {
+          "tier": "★★",
+          "score": 0.4,
+          "note": "MVP 概率范围，需反馈校准"
+        },
+        "time_window": {
+          "window": "2024-2027",
+          "type": "liunian_cluster"
+        },
+        "calibration_note": "由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
+        "feedback_state": "pending"
+      }
+    ]
+  },
+  "learning_signals": [
+    {
+      "signal_id": "v5sig-9c238923fe02",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-ziping-structure-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-76420d51ad85",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-ziping-career-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-19512122fc2f",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-ditiansui-structure-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-72a83b24d05d",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-ditiansui-health-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-f4a0fcea84e2",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-gao-work-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-9cfe727f13f6",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-gao-wealth-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-45301fada532",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-duan-event-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-f76ba22f6582",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-duan-career-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-2991433b0407",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-yang-image-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-05a96b7d6176",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5-034-yang-family-health-001",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-203b896dbcb1",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-0640c057b743",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-04e0211a3da9",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-fc87f3b75f3b",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-93ed83e49ff7",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-4d6b7cc6ceb1",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-9eb4049d55f5",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-25d9e402b8e2",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-a6b2ddf9043c",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-005778e95410",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-146796925899",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-ee7b1322ae98",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-37e378149dd2",
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "target_id": "v5pred-a289d212df57",
+      "signal_type": "prediction_registered",
+      "value": "pending_feedback",
+      "note": "受限概率预测已登记，等待反馈校准。",
+      "metadata": {}
+    }
+  ]
+}

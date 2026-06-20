@@ -15,6 +15,7 @@
 | [`pangzheng/`](pangzheng/) | D4 高派：神煞、健康、旁证补强。 |
 | [`predicates/`](predicates/) | 共用干支、五行、宫位、关系、强弱等基础谓词。 |
 | [`contracts/`](contracts/) | 架构契约与跨模块数据交换约定。 |
+| [`v5/`](v5/) | ZiPing Fusion Engine v5 并行核心：五派命题、结构图、三段式仲裁、受限概率账本。 |
 
 ## 运行时配置
 
