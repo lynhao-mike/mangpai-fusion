@@ -112,17 +112,24 @@ def run_pipeline(
         output.blind_findings = None
         output.fusion_findings = None
 
-    # v4.2 预测层：独立隔离，失败不影响三派 findings
+    # v4.2 预测层（增强版）：独立隔离，失败不影响三派 findings
     try:
         with timing.step("prediction"):
             ziping_sig = extract_ziping_signal(energy, output.theory_findings)
             dtt_sig = extract_dtt_signal(picture)
             mp_sig = extract_mp_signal(gate_results)
             final_pred = build_final_prediction(ziping_sig, dtt_sig, mp_sig)
-            prediction = build_prediction_output(final_pred, output.fusion_findings, gate_results)
+            # v4.2 增强：传递 parsed_input 用于大运信息提取和概率校准
+            prediction = build_prediction_output(
+                final_pred,
+                output.fusion_findings,
+                gate_results,
+                use_calibration=True,   # 启用概率校准
+                parsed_input=parsed,     # 传递 parsed_input 给增强时间窗推理
+            )
         output.prediction = prediction
     except Exception as _pe:  # noqa: BLE001
-        logger.warning("v4.2 prediction layer 失败：%s", _pe)
+        logger.warning("v4.2 prediction layer（增强版）失败：%s", _pe)
         output.prediction = None
 
     # F6 · 流年回溯（截止当前年份）—— 不参与 hash 链，独立挂载到 output

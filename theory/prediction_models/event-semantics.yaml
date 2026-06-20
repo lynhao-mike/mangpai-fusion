@@ -1,0 +1,289 @@
+# event-semantics.yaml · v4.2 事件语义配置
+#
+# 用途：外部化三流派预测系统的事件领域语义映射
+# 替代：engine/application/prediction_signals.py 中的硬编码 _DOMAIN_MEANINGS
+#
+# 设计原则：
+# 1. 分层语义：每个领域含 通用/轻微/严重 三级语义
+# 2. 流派差异：不同流派对同一领域的解读可以不同
+# 3. 概率权重：每个语义候选含默认概率（0-1），可被 RL 动态调整
+# 4. 应期敏感度：标注事件的时间窗口特性（窄/中/宽）
+#
+# 版本历史：
+# - v1.0 (2026-06-20): 初始版本，从 prediction_signals.py 迁移
+
+schema_version: "event_semantics.v1"
+
+# ── 通用事件语义库 ────────────────────────────────────────
+# 结构：领域 → 语义列表（含概率权重 + 时间敏感度）
+#
+# 字段说明：
+#   - meaning: 事件语义描述
+#   - weight: 默认概率权重（0-1），RL 可覆盖
+#   - urgency: 时间敏感度 [critical=极窄, high=窄, medium=中, low=宽]
+#   - schools: 支持该语义的流派列表 [ziping, dtt, mp]
+
+domains:
+  婚姻:
+    semantics:
+      - meaning: "婚变/离合"
+        weight: 0.6
+        urgency: high
+        schools: [ziping, dtt, mp]
+        notes: "冲克夫妻宫、配偶星被伤"
+      
+      - meaning: "情感纠葛"
+        weight: 0.5
+        urgency: high
+        schools: [ziping, mp]
+        notes: "桃花劫、多角关系"
+      
+      - meaning: "配偶健康"
+        weight: 0.4
+        urgency: critical
+        schools: [ziping, dtt]
+        notes: "夫妻宫逢煞、配偶星入墓"
+      
+      - meaning: "婚姻转机"
+        weight: 0.3
+        urgency: medium
+        schools: [mp]
+        notes: "红鸾/天喜应期、合化解冲"
+
+  财运:
+    semantics:
+      - meaning: "财源增减"
+        weight: 0.7
+        urgency: medium
+        schools: [ziping, dtt, mp]
+        notes: "财星得令/失令、食伤生财"
+      
+      - meaning: "投资置业"
+        weight: 0.5
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "财库应期、三合财局"
+      
+      - meaning: "破财风险"
+        weight: 0.6
+        urgency: high
+        schools: [ziping, dtt, mp]
+        notes: "劫财临门、财库被冲"
+      
+      - meaning: "意外之财"
+        weight: 0.2
+        urgency: high
+        schools: [mp]
+        notes: "偏财应期、财星暗合"
+
+  事业:
+    semantics:
+      - meaning: "职位变动"
+        weight: 0.6
+        urgency: medium
+        schools: [ziping, dtt, mp]
+        notes: "官星动、印星显、伤官见官"
+      
+      - meaning: "创业机遇"
+        weight: 0.4
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "食伤生财、驿马应期"
+      
+      - meaning: "事业受挫"
+        weight: 0.5
+        urgency: medium
+        schools: [ziping, dtt, mp]
+        notes: "官杀混杂、印星被伤"
+      
+      - meaning: "官非诉讼"
+        weight: 0.3
+        urgency: high
+        schools: [mp]
+        notes: "官符/牢狱煞应期、伤官见官"
+      
+      - meaning: "考核晋升"
+        weight: 0.5
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "天乙/文昌应期、正印扶身"
+
+  健康:
+    semantics:
+      - meaning: "伤病风险"
+        weight: 0.7
+        urgency: critical
+        schools: [ziping, dtt, mp]
+        notes: "食伤过旺、七杀攻身"
+      
+      - meaning: "手术外伤"
+        weight: 0.5
+        urgency: critical
+        schools: [mp]
+        notes: "白虎/灾煞应期、金木交战"
+      
+      - meaning: "慢性耗损"
+        weight: 0.4
+        urgency: medium
+        schools: [dtt]
+        notes: "季节失衡、气势耗泄"
+      
+      - meaning: "精神压力"
+        weight: 0.3
+        urgency: high
+        schools: [ziping, dtt]
+        notes: "伤官透干、木气郁结"
+      
+      - meaning: "病愈转机"
+        weight: 0.2
+        urgency: medium
+        schools: [dtt, mp]
+        notes: "天医应期、失衡得调"
+
+  学业:
+    semantics:
+      - meaning: "考学升迁"
+        weight: 0.7
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "文昌/印星应期、食神生财"
+      
+      - meaning: "学业受阻"
+        weight: 0.5
+        urgency: medium
+        schools: [ziping, dtt]
+        notes: "伤官夺印、比劫争财"
+      
+      - meaning: "出国深造"
+        weight: 0.3
+        urgency: medium
+        schools: [mp]
+        notes: "驿马/华盖应期、印星透干"
+      
+      - meaning: "转学/辍学"
+        weight: 0.2
+        urgency: high
+        schools: [mp]
+        notes: "印星被伤、官杀混杂"
+
+  六亲:
+    semantics:
+      - meaning: "六亲变故"
+        weight: 0.6
+        urgency: critical
+        schools: [ziping, dtt, mp]
+        notes: "父母星入墓、子女星被冲"
+      
+      - meaning: "人际争端"
+        weight: 0.5
+        urgency: high
+        schools: [mp]
+        notes: "比劫争财、羊刃临门"
+      
+      - meaning: "贵人助力"
+        weight: 0.4
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "天乙/月德应期、印星扶身"
+      
+      - meaning: "子女喜讯"
+        weight: 0.3
+        urgency: medium
+        schools: [ziping, mp]
+        notes: "食神/子女星应期、时柱逢生"
+      
+      - meaning: "父母健康"
+        weight: 0.5
+        urgency: critical
+        schools: [ziping, dtt]
+        notes: "印星/父母星被伤、年柱冲克"
+
+  其他:
+    semantics:
+      - meaning: "意外变化"
+        weight: 0.5
+        urgency: high
+        schools: [mp]
+        notes: "驿马/劫煞应期、变动之年"
+      
+      - meaning: "诉讼纠纷"
+        weight: 0.4
+        urgency: high
+        schools: [mp]
+        notes: "官符/牢狱煞、伤官见官"
+      
+      - meaning: "迁居搬家"
+        weight: 0.3
+        urgency: medium
+        schools: [mp]
+        notes: "驿马应期、月令变动"
+      
+      - meaning: "风水调整"
+        weight: 0.2
+        urgency: low
+        schools: [mp]
+        notes: "方位煞、宅运变动"
+
+# ── 流派特殊语义（覆盖通用配置）────────────────────────────
+# 当不同流派对同一领域有显著不同的解读时，在此覆盖
+
+school_overrides:
+  ziping:
+    # 子平派：侧重格局成败、十神生克
+    事业:
+      focus: "格局高低决定事业成败，官印相生为上格"
+      extra_semantics:
+        - meaning: "格局破败"
+          weight: 0.6
+          urgency: medium
+          notes: "伤官见官、比劫争财、七杀无制"
+  
+  dtt:
+    # 滴天髓派：侧重季节调候、气势转化
+    健康:
+      focus: "五行失衡导致健康问题，调候为先"
+      extra_semantics:
+        - meaning: "寒暖失调"
+          weight: 0.7
+          urgency: critical
+          notes: "冬火被克、夏金无水"
+        - meaning: "气势逆转"
+          weight: 0.5
+          urgency: high
+          notes: "顺势变逆、忌神得势"
+  
+  mp:
+    # 盲派：侧重象法、神煞应期
+    其他:
+      focus: "象法直断，神煞应期精准定位"
+      extra_semantics:
+        - meaning: "血光之灾"
+          weight: 0.6
+          urgency: critical
+          notes: "白虎/血刃应期、金木交战"
+        - meaning: "牢狱之灾"
+          weight: 0.4
+          urgency: critical
+          notes: "牢狱煞应期、官杀混杂无制"
+
+# ── RL 动态权重调整历史（追加写入，不覆盖）────────────────
+# 由 tools/batch_rl_backtest.py 在反馈闭环后追加
+# 格式：{domain}_{meaning}_{timestamp}: {new_weight}
+#
+# 示例（系统自动追加）：
+# rl_adjustments:
+#   婚姻_婚变离合_20260620: 0.72  # 原 0.6 → 经 5 案验证上调
+#   事业_职位变动_20260620: 0.55  # 原 0.6 → 经 3 案验证下调
+
+rl_adjustments: {}
+
+# ── 元数据 ────────────────────────────────────────────────
+metadata:
+  created_at: "2026-06-20T03:40:00Z"
+  last_updated: "2026-06-20T03:40:00Z"
+  total_domains: 7
+  total_semantics: 38
+  rl_update_count: 0
+  notes: |
+    本配置文件由 v4.2 增强方案创建，从 prediction_signals.py 迁移而来。
+    后续所有事件语义变更应直接修改本文件，而非硬编码。
