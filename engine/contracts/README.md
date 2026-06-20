@@ -5,7 +5,7 @@
 
 ---
 
-## 契约清单（11 份）
+## 契约清单（12 份）
 
 | 编号 | 文件 | 状态 | 摘要 |
 |---|---|---|---|
@@ -20,6 +20,7 @@
 | 08 | [08-agent-handoff](./08-agent-handoff.md) | ✅ W1.4 已交付 · **契约冻结** | 8 agent 边界 + 集成日 + 回归测试清单 |
 | 09 | [09-naming-convention](./09-naming-convention.md) | ✅ W1.1 已交付 | 文件命名规范 + 旧案重命名清单 |
 | 10 | [10-ziping-fusion-v5](./10-ziping-fusion-v5.md) | ✅ v5 并行核心契约 | 子平类 / 滴天髓类 / 高德臣 / 段建业 / 杨清娟五派命题图推理操作系统 |
+| 11 | [11-outcome-taxonomy-v1](./11-outcome-taxonomy-v1.md) | ✅ outcome taxonomy 契约 | 可训练、可量化、可回归校准的一级领域 / 二级指标 / L0-L14 / 描述 / 案例映射标签本体 |
 
 ---
 

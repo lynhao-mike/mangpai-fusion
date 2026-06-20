@@ -203,7 +203,7 @@ V5-V8（PictureFindings.industry_path / wealth_level.framework / 报告耦合提
 
 ```
 engine/
-├── contracts/                    ← 本目录（10 份契约）
+├── contracts/                    ← 本目录（12 份契约，00-09 为 v1.x 基础契约，10-11 为 v5/taxonomy 扩展契约）
 │   ├── 00-OVERVIEW.md           ← 本文件（架构总览）
 │   ├── 01-input-schema.md       ← 命主输入严格 schema（问真APP格式）
 │   ├── 02-predicate-library.md  ← 60 个 Python 谓词函数签名
@@ -213,7 +213,9 @@ engine/
 │   ├── 06-confidence-model.md   ← Beta 分布置信度算法
 │   ├── 07-pipeline-flow.md      ← 3+1 流水线数据流详细
 │   ├── 08-agent-handoff.md      ← 8 个 agent 的契约边界
-│   └── 09-naming-convention.md  ← 文件命名规范（含干支）
+│   ├── 09-naming-convention.md  ← 文件命名规范（含干支）
+│   ├── 10-ziping-fusion-v5.md   ← 五派命理推理操作系统契约
+│   └── 11-outcome-taxonomy-v1.md ← 可训练 outcome taxonomy 契约
 │
 ├── energy/                      ← Track-A 段派 D1 引擎（Python 包）
 │   ├── __init__.py

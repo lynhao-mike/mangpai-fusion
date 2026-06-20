@@ -1,0 +1,136 @@
+{
+  "schema_version": "outcome-taxonomy-v1",
+  "taxonomy_path": "mapping/outcome-taxonomy-v1.yaml",
+  "contract_path": "engine/contracts/11-outcome-taxonomy-v1.md",
+  "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+  "generated_at": "2026-06-20",
+  "source_report_path": "reports/C-2026-034-乾-甲子甲戌癸卯壬戌-content-report.md",
+  "feedback_status": "pending",
+  "domains": {
+    "education": {
+      "domain_level": "L7",
+      "level_range": ["L6", "L8"],
+      "label": "普通至良好教育承载，偏应用、证照、技能和方案型学习",
+      "confidence": {"star": "★★★", "percent": 66},
+      "uncertainty": 0.28,
+      "school_probabilities": {
+        "ziping": 0.68,
+        "ditiansui": 0.62,
+        "gao_dechen": 0.60,
+        "duan_jianye": 0.58,
+        "yang_qingjuan": 0.70
+      },
+      "indicators": {
+        "degree_level": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "专科、普通本科、应用型本科或同等证照能力候选", "confidence_percent": 66},
+        "institution_level": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通专科、本科或区域较好平台候选", "confidence_percent": 62},
+        "learning_ability": {"level": "L8", "level_range": ["L7", "L9"], "display_mapping": "良好应用学习、总结、表达和迁移能力", "confidence_percent": 74},
+        "exam_ability": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通上沿至良好，适合证照型提升", "confidence_percent": 64},
+        "academic_achievement": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "常规证照、应用成果或专业积累候选", "confidence_percent": 68},
+        "field_type": {"categorical_values": ["applied_skill", "project_management", "communication_business"], "display_mapping": "偏应用型、技能型、方案型、项目型"}
+      },
+      "evidence": ["年月两甲伤官", "日支卯食神", "子禄壬帮", "文昌、天乙、福星、德秀辅助"],
+      "feedback_fields": ["highest_degree", "graduation_school", "school_tier", "exam_scores", "certificate_records", "major"],
+      "falsifier": "若反馈为初中及以下且无证照或后续教育，则 degree_level 与 education domain 下修至 L3-L5。"
+    },
+    "career": {
+      "domain_level": "L8",
+      "level_range": ["L7", "L9"],
+      "label": "技术、项目、基层管理、小经营或中层管理候选",
+      "confidence": {"star": "★★★★", "percent": 78},
+      "uncertainty": 0.22,
+      "school_probabilities": {
+        "ziping": 0.76,
+        "ditiansui": 0.70,
+        "gao_dechen": 0.82,
+        "duan_jianye": 0.78,
+        "yang_qingjuan": 0.66
+      },
+      "indicators": {
+        "occupation_level": {"level": "L8", "level_range": ["L7", "L9"], "display_mapping": "技术岗、专业岗、基层管理、小经营或中层管理候选", "confidence_percent": 78},
+        "organization_level": {"level": "L8", "level_range": ["L7", "L9"], "display_mapping": "普通公司、事业单位、稳定经营平台至较好平台候选", "confidence_percent": 67},
+        "management_level": {"level": "L8", "level_range": ["L7", "L9"], "display_mapping": "小团队、项目、基层管理或部门协调候选", "confidence_percent": 69},
+        "authority_level": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通职级至基层负责人候选", "confidence_percent": 66},
+        "achievement_level": {"level": "L8", "level_range": ["L7", "L9"], "display_mapping": "项目交付、专业壁垒、资源协调和合同化变现", "confidence_percent": 80},
+        "social_influence": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "小范围客户、团队、项目或社群影响候选", "confidence_percent": 62}
+      },
+      "evidence": ["甲卯食伤成势", "双戌官杀财库重", "戊寅、己卯官杀运接续", "月柱甲戌为事业宫"],
+      "feedback_fields": ["occupation", "job_title", "organization_type", "team_size", "budget_scope", "major_projects", "business_scale"],
+      "falsifier": "若 2015 后完全无岗位、项目、上级、合同、规则压力或责任变化，则 career domain 下修。"
+    },
+    "wealth": {
+      "domain_level": "L7",
+      "level_range": ["L6", "L8"],
+      "label": "中等至较好收入资产候选，财富来自项目、客户、房土、合作与专业输出",
+      "confidence": {"star": "★★★", "percent": 65},
+      "uncertainty": 0.30,
+      "school_probabilities": {
+        "ziping": 0.64,
+        "ditiansui": 0.58,
+        "gao_dechen": 0.76,
+        "duan_jianye": 0.70,
+        "yang_qingjuan": 0.60
+      },
+      "indicators": {
+        "wealth_level": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通至较好积累候选", "confidence_percent": 65},
+        "income_level": {"level": "L8", "level_range": ["L7", "L10"], "display_mapping": "20w-300w 年收入候选，需反馈行业和经营规模", "confidence_percent": 65},
+        "asset_level": {"level": "L8", "level_range": ["L7", "L10"], "display_mapping": "200w-5000w 净资产候选，房宅和长期合同权重较高", "confidence_percent": 61},
+        "wealth_source": {"categorical_values": ["professional_service", "business", "real_estate", "commission"], "display_mapping": "项目、客户、专业服务、房土、合作与分成类收入"},
+        "wealth_stability": {"level": "L7", "level_range": ["L6", "L9"], "display_mapping": "周期性波动但可持续，边界清楚则稳步增长", "confidence_percent": 77}
+      },
+      "evidence": ["丙丁财星藏双戌", "卯戌合火引财", "甲木食伤生财", "财与婚宅事业责任绑定"],
+      "feedback_fields": ["annual_income_band", "net_asset_band", "debt_status", "property_assets", "income_sources", "cashflow_events"],
+      "falsifier": "若 2026-2027 无收入、投资、家庭资产或大额支出议题，则财库触发降权；若高负债无净资产，则 wealth_level 下修。"
+    },
+    "marriage": {
+      "domain_level": "L6",
+      "level_range": ["L5", "L7"],
+      "label": "缘分不弱但受现实责任牵动，迟婚、分合、再婚或婚后规则压力需反馈",
+      "confidence": {"star": "★★★", "percent": 64},
+      "uncertainty": 0.34,
+      "school_probabilities": {
+        "ziping": 0.62,
+        "ditiansui": 0.56,
+        "gao_dechen": 0.58,
+        "duan_jianye": 0.70,
+        "yang_qingjuan": 0.68
+      },
+      "indicators": {
+        "romance_profile": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "有缘分但受现实责任牵动", "confidence_percent": 66},
+        "relationship_status": {"level": "L6", "level_range": ["L5", "L7"], "display_mapping": "迟婚、分合、多段关系或再婚候选", "confidence_percent": 64},
+        "marriage_stability": {"level": "L6", "level_range": ["L5", "L8"], "display_mapping": "普通稳定至波动候选，核心在钱、房、父母责任边界", "confidence_percent": 67},
+        "marriage_quality": {"level": "L7", "level_range": ["L5", "L9"], "display_mapping": "规则清楚可趋和谐，边界混乱则不稳", "confidence_percent": 69},
+        "spouse_quality": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通至较好配偶画像，偏现实、责任和敏感沟通", "confidence_percent": 62},
+        "family_structure": {"categorical_values": ["nuclear_family", "property_tied_family", "parental_finance_pressure"], "display_mapping": "易与房宅、父母、资产、贷款或事业节奏相连"}
+      },
+      "evidence": ["乾造财为妻", "丙丁财星藏双戌", "夫妻宫卯合戌火", "日柱红鸾、年支桃花", "寡宿、吊客提示责任与沟通压力"],
+      "feedback_fields": ["marital_status", "marriage_year", "divorce_records", "relationship_history", "spouse_education", "spouse_career", "family_pressure"],
+      "falsifier": "若反馈为稳定早婚且长期低冲突，则 relationship_status 与 marriage_stability 上调并取消迟婚候选。"
+    },
+    "health": {
+      "domain_level": "L7",
+      "level_range": ["L6", "L8"],
+      "label": "普通健康承载，有恢复力；重点管理脾胃代谢、睡眠压力、炎症与火土年份",
+      "confidence": {"star": "★★★", "percent": 66},
+      "uncertainty": 0.30,
+      "school_probabilities": {
+        "ziping": 0.64,
+        "ditiansui": 0.72,
+        "gao_dechen": 0.58,
+        "duan_jianye": 0.60,
+        "yang_qingjuan": 0.74
+      },
+      "no_death_age_prediction": true,
+      "indicators": {
+        "physical_condition": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通至较好，有恢复力但不宜透支", "confidence_percent": 68},
+        "major_disease_risk": {"level": "L7", "level_range": ["L6", "L8"], "risk_types": ["digestive", "endocrine", "kidney", "cardiovascular"], "display_mapping": "普通风险或可管理风险", "confidence_percent": 66},
+        "chronic_risk": {"level": "L6", "level_range": ["L5", "L7"], "display_mapping": "阶段性亚健康、睡眠、脾胃和代谢风险需管理", "confidence_percent": 66},
+        "mental_health": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "压力焦虑、睡眠敏感，但可通过管理改善", "confidence_percent": 72},
+        "accident_risk": {"level": "L7", "level_range": ["L6", "L8"], "display_mapping": "普通事故风险，火土旺年注意交通、外伤和手术", "confidence_percent": 60},
+        "longevity_risk": {"level": "L8", "level_range": ["L6", "L10"], "display_mapping": "平均至较低风险候选；管理得当有长寿倾向，不输出具体寿元年龄", "confidence_percent": 63}
+      },
+      "evidence": ["戌月燥土重", "双戌燥土", "癸水有子壬为恢复力", "伤官旺带压力与睡眠敏感"],
+      "feedback_fields": ["constitution", "medical_history", "diagnoses", "family_history", "sleep_quality", "stress_level", "major_health_events", "lifestyle"],
+      "falsifier": "若反馈有重大病史、长期慢病、明确心理诊断或严重事故，则对应健康指标按事实下修；禁止反推具体死亡年龄。"
+    }
+  }
+}
