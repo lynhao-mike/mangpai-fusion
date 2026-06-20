@@ -22,7 +22,7 @@
       / evidence_chain trace_id（v1.2 之后才规范化）。
     - 但 feedback.md 中明确写了"应验/失验"标签 + 派别引用（M2-Y-068 等）。
     - 所以本期 ingest_feedback 采用"启发式抽取"：
-        · 从 analysis.md 找 "M[1-3]-[DYRG]-\d+" / "G-[A-Z]+-\d+"  形式的规律 ID
+        · 从 analysis.md 找 "M[1-3]-[DYRG]-\\d+" / "G-[A-Z]+-\\d+"  形式的规律 ID
         · 从 feedback.md 表格行抽出对应断语 + 应验状态
         · "完全失验" / "失验" / "❌" → miss
         · "应验" / "✅" / "铁应验" → hit
@@ -694,19 +694,17 @@ def _apply_rule_verdicts(
             )
             continue
 
-        # v1.4 V2：domain_restriction 非空且当前 domain 不在列表中 → 跳过该规律的本次计分
-        # 触发场景：M3-R-031 仅适用于"应期"域，被错误引用到"婚姻"域时不计 miss
-        # 注意：vctx.domain 为空时不强制（无法判定域）→ 仍计分，由上层决断力合并兜底
+        misapplied = False
         if (
             rule.domain_restriction
             and vctx.domain
             and vctx.domain not in rule.domain_restriction
         ):
+            misapplied = True
             diff.notes.append(
-                f"[v1.4-V2] 跳过 {rid}: domain={vctx.domain!r} ∉ "
-                f"domain_restriction={rule.domain_restriction}"
+                f"[domain-role] 错域记录 {rid}: domain={vctx.domain!r} ∉ "
+                f"domain_restriction={rule.domain_restriction}，写入 role=misapplied，不污染顶层 hit/miss"
             )
-            continue
 
         hits_before = rule.hits
         misses_before = rule.misses
@@ -720,15 +718,16 @@ def _apply_rule_verdicts(
             f" | sids={','.join(vctx.statement_ids[:3])}"
             if vctx.statement_ids else ""
         )
-        role = str(vctx.role or "unknown").strip() or "unknown"
+        role = "misapplied" if misapplied else (str(vctx.role or "unknown").strip() or "unknown")
         note = f"{vctx.section} | {vctx.domain} | role={role}{sid_str}".strip(" |")
         domain_bucket: DomainRoleStats = rule.domain_role_bucket(vctx.domain, role)
 
         if verdict == "hit":
-            rule.hits += 1
+            if not misapplied:
+                rule.hits += 1
+                rule.update_recent_window(True, window_size=cfg.drift_window_size)
             domain_bucket.hits += 1
             domain_bucket.update_recent_window(True, window_size=cfg.drift_window_size)
-            rule.update_recent_window(True, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
                 case_id=case_id,
                 year=vctx.year,
@@ -737,10 +736,11 @@ def _apply_rule_verdicts(
                 note=note,
             ))
         elif verdict == "miss":
-            rule.misses += 1
+            if not misapplied:
+                rule.misses += 1
+                rule.update_recent_window(False, window_size=cfg.drift_window_size)
             domain_bucket.misses += 1
             domain_bucket.update_recent_window(False, window_size=cfg.drift_window_size)
-            rule.update_recent_window(False, window_size=cfg.drift_window_size)
             rule.applied_cases.append(AppliedCase(
                 case_id=case_id,
                 year=vctx.year,
@@ -749,7 +749,8 @@ def _apply_rule_verdicts(
                 note=note,
             ))
         elif verdict == "abstain":
-            rule.abstained += 1
+            if not misapplied:
+                rule.abstained += 1
             domain_bucket.abstained += 1
         else:
             # no_data → 跳过完全
@@ -761,16 +762,18 @@ def _apply_rule_verdicts(
         # 升降级 + 漂移
         new_status: Optional[RuleStatus] = None
         reason = ""
-        up = maybe_upgrade(rule, cfg=cfg)
+        up = None if misapplied else maybe_upgrade(rule, cfg=cfg)
         if up is not None:
             new_status = up
             reason = f"auto-upgrade (n={rule.n} rate={rule.hit_rate:.2f})"
-        if new_status is None:
+        if new_status is None and not cfg.freeze_auto_demotion and not misapplied:
             down = maybe_downgrade(rule, cfg=cfg)
             if down is not None:
                 new_status = down
                 reason = f"auto-downgrade (累计 misses 触发缓冲阈值)"
-        if new_status is None:
+        elif cfg.freeze_auto_demotion and not misapplied:
+            diff.notes.append("freeze_auto_demotion=true，跳过自动降级")
+        if new_status is None and not cfg.freeze_auto_demotion and not misapplied:
             drift = detect_drift(rule, cfg=cfg)
             if drift is not None:
                 new_status = drift

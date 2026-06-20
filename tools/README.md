@@ -24,6 +24,7 @@
 | [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |
 | [`feedback_review_gate.py`](feedback_review_gate.py:1) | 反馈复核包摄入前置闸门 | 只读检查 `META/feedback-closure-review-pack-*.json` 是否已完成人工裁决 |
 | [`feedback_impact_report.py`](feedback_impact_report.py:1) | 反馈影响路径与置信度调整可视化 | dry-run 计算断语→规则→置信度变化，输出 Markdown + Mermaid |
+| [`domain_role_audit.py`](domain_role_audit.py:1) | 规则 domain/role 分账审计矩阵 | 只读输出 `rule_id × domain × role` 命中率，验证错域样本是否进入 `misapplied` |
 | [`late_feedback.py`](late_feedback.py:1) | 应期延迟反馈：±1 年窗口 | v1.3 D7 |
 | [`boundary_miner.py`](boundary_miner.py:1) | ≥5 miss 后自动挖候选边界 | v1.3 D3 |
 | [`veto_miner.py`](veto_miner.py:1) | 候选否决兜底：低后验 + 无边界 → review | v1.3 D4 |

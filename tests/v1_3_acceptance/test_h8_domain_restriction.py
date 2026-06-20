@@ -1,14 +1,15 @@
-"""H8 · domain_restriction 跳过域不匹配
+"""H8 · domain_restriction 域感知分账
 
 落地：plans/architecture-v1.4.md § 六 H8（v1.4 W1 决策 V2）
 契约：engine/contracts/05-rule-lifecycle.md § 6.1 V2 跳过策略
 
 要求：
-    1. domain_restriction 非空 + 当前 domain ∉ list → 跳过该规律本次计分，
-       notes 标 "[v1.4-V2]"
-    2. domain ∈ domain_restriction → 正常计 hit/miss
+    1. domain_restriction 非空 + 当前 domain ∉ list → 写入 role=misapplied，
+       但不污染顶层 hits/misses/recent_5 与生命周期状态
+    2. domain ∈ domain_restriction → 正常计 hit/miss，并同步写入 domain/role 分账
     3. domain 为空（无法判定）→ 不强制（仍计分），由上层决断力合并兜底
     4. 默认 domain_restriction=[] → 所有域都计分（向后兼容）
+    5. freeze_auto_demotion=True → 继续记录样本，但冻结自动降级与漂移降级
 """
 from __future__ import annotations
 
@@ -43,8 +44,8 @@ def patched_loader(monkeypatch):
     return store
 
 
-def test_h8_domain_mismatch_skips(patched_loader):
-    """V2 主断言：M3-R-031 domain_restriction=[应期]，在"婚姻"域 ingest → 跳过。"""
+def test_h8_domain_mismatch_goes_to_misapplied_bucket(patched_loader):
+    """V2 主断言：应期规则在婚姻域 ingest → 只记 misapplied 分账，不污染顶层。"""
     from tools.feedback_loop import _apply_rule_verdicts, VerdictContext
     from tools.rule_lifecycle import LifecycleConfig
 
@@ -57,12 +58,19 @@ def test_h8_domain_mismatch_skips(patched_loader):
         {"M3-R-031-FAKE": ("miss", VerdictContext(section="婚姻段", domain="婚姻"))},
         cfg=LifecycleConfig(), today="2026-05-26", dry_run=True,
     )
-    assert diff.rule_updates == [], \
-        f"婚姻域应被跳过，但有更新：{[u.rule_id for u in diff.rule_updates]}"
-    assert any("[v1.4-V2]" in n for n in diff.notes), \
-        f"notes 未含 [v1.4-V2] 标记：{diff.notes}"
-    assert fake.hits == 5  # 不变
+    assert len(diff.rule_updates) == 1
+    u = diff.rule_updates[0]
+    assert u.hits_before == 5 and u.hits_after == 5
+    assert u.misses_before == 3 and u.misses_after == 3
+    assert "role=misapplied" in u.note
+    assert any("[domain-role] 错域记录" in n for n in diff.notes), \
+        f"notes 未含错域记录标记：{diff.notes}"
+    assert fake.hits == 5
     assert fake.misses == 3
+    bucket = fake.domain_role_stats["婚姻"]["misapplied"]
+    assert bucket.hits == 0
+    assert bucket.misses == 1
+    assert bucket.n == 1
 
 
 def test_h8_domain_match_counts_hit(patched_loader):
@@ -145,13 +153,18 @@ def test_h8_multi_domain_restriction(patched_loader):
     )
     assert len(diff.rule_updates) == 1
 
-    # 婚姻 → 跳过
+    # 婚姻 → 错域分账，不污染顶层
+    top_hits_before = fake.hits
+    top_misses_before = fake.misses
     diff = _apply_rule_verdicts(
         "C-H8-G", {"MULTI-DOMAIN": ("hit", VerdictContext(domain="婚姻"))},
         cfg=LifecycleConfig(), today="2026-05-26", dry_run=True,
     )
-    assert diff.rule_updates == []
-    assert any("[v1.4-V2]" in n for n in diff.notes)
+    assert len(diff.rule_updates) == 1
+    assert fake.hits == top_hits_before
+    assert fake.misses == top_misses_before
+    assert fake.domain_role_stats["婚姻"]["misapplied"].hits == 1
+    assert any("[domain-role] 错域记录" in n for n in diff.notes)
 
 
 def test_h8_v1_takes_precedence_over_v2(patched_loader):
@@ -177,3 +190,29 @@ def test_h8_v1_takes_precedence_over_v2(patched_loader):
     v2_notes = [n for n in diff.notes if "[v1.4-V2]" in n]
     assert v1_notes and not v2_notes, \
         f"V1 应先于 V2 生效。V1={v1_notes}, V2={v2_notes}"
+
+
+def test_h8_freeze_auto_demotion_records_without_status_downshift(patched_loader):
+    """freeze_auto_demotion=True：顶层样本仍记录，但自动降级被冻结。"""
+    from tools.feedback_loop import _apply_rule_verdicts, VerdictContext
+    from tools.rule_lifecycle import LifecycleConfig
+
+    fake = _make_fake_rule("FREEZE-DEMOTE", domain_restriction=["应期"],
+                            hits=10, misses=2, status="confirmed")
+    fake.misses_at_confirmed = 0
+    patched_loader["FREEZE-DEMOTE"] = fake
+
+    diff = _apply_rule_verdicts(
+        "C-H8-I",
+        {"FREEZE-DEMOTE": ("miss", VerdictContext(section="应期段", domain="应期", role="trigger"))},
+        cfg=LifecycleConfig(confirmed_demote_misses=3, freeze_auto_demotion=True),
+        today="2026-05-26",
+        dry_run=True,
+    )
+
+    assert len(diff.rule_updates) == 1
+    assert fake.misses == 3
+    assert fake.status == "confirmed"
+    assert diff.status_changes == []
+    assert fake.domain_role_stats["应期"]["trigger"].misses == 1
+    assert any("freeze_auto_demotion=true" in n for n in diff.notes)

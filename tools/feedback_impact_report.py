@@ -17,9 +17,12 @@ import sys
 from collections import defaultdict
 from typing import Any
 
+REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from tools.feedback_ingest import find_case_dir, ingest, parse_statement_feedback
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPORTS_DIR = REPO_ROOT / "reports"
 
 _VERDICT_LABELS = {

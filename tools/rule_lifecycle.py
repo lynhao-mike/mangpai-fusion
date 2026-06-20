@@ -390,6 +390,7 @@ class LifecycleConfig:
     variance_threshold: float = 0.15
     cross_school_every_n_cases: int = 10
     freeze_iteration: bool = False
+    freeze_auto_demotion: bool = False
 
     @classmethod
     def from_yaml(cls, path: Optional[pathlib.Path] = None) -> "LifecycleConfig":
@@ -412,6 +413,7 @@ class LifecycleConfig:
             variance_threshold=float(data.get("variance_threshold", 0.15)),
             cross_school_every_n_cases=int(data.get("cross_school_every_n_cases", 10)),
             freeze_iteration=bool(data.get("freeze_iteration", False)),
+            freeze_auto_demotion=bool(data.get("freeze_auto_demotion", False)),
         )
 
 
