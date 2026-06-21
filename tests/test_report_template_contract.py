@@ -139,6 +139,7 @@ def test_report_templates_keep_v77_time_standard() -> None:
             assert token not in text, f"{template.name}: {token}"
 
 
+def test_report_templates_do_not_show_machine_field_names() -> None:
     """报告模板展示文本不得出现裸机器字段名。"""
 
     import re
