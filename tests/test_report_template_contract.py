@@ -75,13 +75,14 @@ def _template_text(path: Path = TEMPLATE_V5) -> str:
 
 
 def test_report_templates_keep_unified_headings() -> None:
-    """防止统一报告模板漂移掉 v7.6 标准章节契约。"""
+    """防止统一报告模板漂移掉 v7.7 标准章节契约。"""
 
     for template in (TEMPLATE_V5, TEMPLATE_V6):
         text = _template_text(template)
         for heading in REQUIRED_UNIFIED_HEADINGS:
             assert heading in text, f"{template.name}: {heading}"
-        assert "分析版本：v7.6" in text
+        assert "分析版本：v7.7" in text
+        assert "时间标准：公历（YYYY–YYYY年）+ 年龄（XX–XX岁）" in text
 
 
 def test_report_v5_keeps_input_context_compatibility_rows() -> None:
@@ -104,6 +105,7 @@ def test_report_v5_keeps_key_year_table() -> None:
     assert "## 待反馈关键流年与事件" in text
     assert "| 领域 | 时间窗口 | 具体应事 | 回访要点 |" in text
     assert "{{ 反馈一领域 }}" in text
+    assert "{{ 健康反馈窗口 }}" in text
 
 
 def test_report_templates_keep_outcome_taxonomy_cn_fields() -> None:
@@ -117,7 +119,26 @@ def test_report_templates_keep_outcome_taxonomy_cn_fields() -> None:
         assert "反馈必须能回写系统" in text
 
 
-def test_report_templates_do_not_show_machine_field_names() -> None:
+def test_report_templates_keep_v77_time_standard() -> None:
+    """模板必须固定 v7.7 数字时间标准，禁止回退到中文数字年份。"""
+
+    forbidden_time_terms = [
+        "二零二五年",
+        "二零三五年",
+        "二至十一岁",
+        "十二至二十一岁",
+        "二十二至三十一岁",
+    ]
+    for template in (TEMPLATE_V5, TEMPLATE_V6):
+        text = _template_text(template)
+        assert "YYYY–YYYY年" in text
+        assert "XX–XX岁" in text
+        assert "{{ 运.年份范围 }}（{{ 运.年龄范围 }}）" in text
+        assert "所有时间窗口必须使用“YYYY–YYYY年（XX–XX岁）”或“YYYY–YYYY年”格式" in text
+        for token in forbidden_time_terms:
+            assert token not in text, f"{template.name}: {token}"
+
+
     """报告模板展示文本不得出现裸机器字段名。"""
 
     import re
