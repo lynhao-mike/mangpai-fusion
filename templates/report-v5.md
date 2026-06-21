@@ -2,8 +2,8 @@
 
 > 适用范围：基于 ZiPing Fusion Engine v5 并行核心生成《命理师内容报告（统一版）》。  
 > 五派：子平类 / 滴天髓类 / 高德臣 / 段建业 / 杨清娟。  
-> 模板原则：五派独立命题 → 结构图统一 → 三段式仲裁 → 受限概率提示 → 性格行为模式单列 → outcome taxonomy 等级映射 → 反馈闭环。
-> Taxonomy 事实源：`engine/contracts/11-outcome-taxonomy-v1.md` + `mapping/outcome-taxonomy-v1.yaml`。本模板只引用，不定义训练标签。
+> 模板原则：五派独立命题 → 结构图统一 → 三段式仲裁 → 受限概率提示 → 性格行为模式单列 → 结果分类等级映射 → 反馈闭环。
+> 结果分类事实源：`engine/contracts/11-outcome-taxonomy-v1.md` + `mapping/outcome-taxonomy-v1.yaml`。本模板只引用，不定义训练标签。
 > 展示层禁显：禁止暴露 claim_id、prediction_id、statement_id、statement_index、内部结构图 ID、仲裁索引、学习信号编号、Agent 工作记录。
 
 ---
@@ -14,8 +14,8 @@
 2. 本模板是命理师内容报告，不是命主可读精简报告；除非用户明确要求“用户报告 / 客户报告 / 对外报告”，不得另行生成第二份可读报告。
 3. 五派结论必须先经过角色化仲裁，不得把五派原始命题直接堆叠成报告。
 4. 性格、格局层次、总体气质默认不概率化；只有事业、财富、婚姻、健康、学业等可反馈事件可进入受限概率提示。
-5. 性格与行为模式单独成章，置于主要事项表之前；学业、事业、财富、婚姻、健康等主要事项必须引用 outcome taxonomy，输出领域等级、二级指标等级、候选范围、现实映射、五派支持摘要、证据链、置信度、应期和反馈字段。
-6. 报告只展示 taxonomy 结果的命理师可读摘要，不展示机器字段全集、内部编号或裸概率矩阵。
+5. 性格与行为模式单独成章，置于主要事项表之前；学业、事业、财富、婚姻、健康等主要事项必须引用结果分类事实源，输出领域等级、二级指标等级、候选范围、现实映射、五派支持摘要、证据链、置信度、应期和反馈字段。
+6. 报告只展示结果分类的命理师可读摘要，不展示机器字段全集、内部编号或裸概率矩阵。
 7. 报告结尾必须记录统一报告归档路径、case 目录与反馈入口，但不得展示内部编号。
 
 ---
@@ -137,81 +137,81 @@
 
 ---
 
-## 主要事项 outcome taxonomy 判断表
+## 主要事项结果分类判断表
 
 > 本表引用 `engine/contracts/11-outcome-taxonomy-v1.md` 与 `mapping/outcome-taxonomy-v1.yaml`。训练标签的事实源不在本模板；报告只展示领域等级、二级指标等级、现实映射、证据链、置信度、应期、证伪条件与反馈字段。反馈不足时允许输出 2-3 个候选等级并标注“待反馈校准”。
 
 ### 领域总览
 
-| 领域 | 领域等级 / 候选范围 | 现实映射说明 | 五派支持摘要 | 置信度 | 应期 / 反馈窗口 |
-|---|---|---|---|---|---|
-| education | {{ education_domain_level }} / {{ education_level_range }} | {{ education_display_mapping }} | {{ education_school_support_summary }} | {{ education_confidence }} | {{ education_timing }} |
-| career | {{ career_domain_level }} / {{ career_level_range }} | {{ career_display_mapping }} | {{ career_school_support_summary }} | {{ career_confidence }} | {{ career_timing }} |
-| wealth | {{ wealth_domain_level }} / {{ wealth_level_range }} | {{ wealth_display_mapping }} | {{ wealth_school_support_summary }} | {{ wealth_confidence }} | {{ wealth_timing }} |
-| marriage | {{ marriage_domain_level }} / {{ marriage_level_range }} | {{ marriage_display_mapping }} | {{ marriage_school_support_summary }} | {{ marriage_confidence }} | {{ marriage_timing }} |
-| health | {{ health_domain_level }} / {{ health_level_range }} | {{ health_display_mapping }} | {{ health_school_support_summary }} | {{ health_confidence }} | {{ health_timing }} |
-
-### 学业（education）
-
-| 指标 | Taxonomy 等级 / 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+| 领域 | 领域等级 | 候选范围 | 现实映射说明 | 五派支持摘要 | 置信度 | 应期 / 反馈窗口 |
 |---|---|---|---|---|---|---|
-| degree_level | {{ education_degree_level }} / {{ education_degree_range }} | {{ education_degree_mapping }} | {{ education_degree_evidence_chain }} | {{ education_degree_confidence }} | {{ education_degree_timing }} | {{ education_degree_feedback_fields }}；{{ education_degree_falsifier }} |
-| institution_level | {{ education_institution_level }} / {{ education_institution_range }} | {{ education_institution_mapping }} | {{ education_institution_evidence_chain }} | {{ education_institution_confidence }} | {{ education_institution_timing }} | {{ education_institution_feedback_fields }}；{{ education_institution_falsifier }} |
-| learning_ability | {{ education_learning_level }} / {{ education_learning_range }} | {{ education_learning_mapping }} | {{ education_learning_evidence_chain }} | {{ education_learning_confidence }} | {{ education_learning_timing }} | {{ education_learning_feedback_fields }}；{{ education_learning_falsifier }} |
-| exam_ability | {{ education_exam_level }} / {{ education_exam_range }} | {{ education_exam_mapping }} | {{ education_exam_evidence_chain }} | {{ education_exam_confidence }} | {{ education_exam_timing }} | {{ education_exam_feedback_fields }}；{{ education_exam_falsifier }} |
-| academic_achievement | {{ education_academic_level }} / {{ education_academic_range }} | {{ education_academic_mapping }} | {{ education_academic_evidence_chain }} | {{ education_academic_confidence }} | {{ education_academic_timing }} | {{ education_academic_feedback_fields }}；{{ education_academic_falsifier }} |
-| field_type | {{ education_field_type }} | {{ education_field_mapping }} | {{ education_field_evidence_chain }} | {{ education_field_confidence }} | {{ education_field_timing }} | {{ education_field_feedback_fields }}；{{ education_field_falsifier }} |
+| 学业 | {{ education_domain_level }} | {{ education_level_range }} | {{ education_display_mapping }} | {{ education_school_support_summary }} | {{ education_confidence }} | {{ education_timing }} |
+| 事业 | {{ career_domain_level }} | {{ career_level_range }} | {{ career_display_mapping }} | {{ career_school_support_summary }} | {{ career_confidence }} | {{ career_timing }} |
+| 财富 | {{ wealth_domain_level }} | {{ wealth_level_range }} | {{ wealth_display_mapping }} | {{ wealth_school_support_summary }} | {{ wealth_confidence }} | {{ wealth_timing }} |
+| 婚姻 | {{ marriage_domain_level }} | {{ marriage_level_range }} | {{ marriage_display_mapping }} | {{ marriage_school_support_summary }} | {{ marriage_confidence }} | {{ marriage_timing }} |
+| 健康 | {{ health_domain_level }} | {{ health_level_range }} | {{ health_display_mapping }} | {{ health_school_support_summary }} | {{ health_confidence }} | {{ health_timing }} |
 
-### 事业（career）
+### 学业
 
-| 指标 | Taxonomy 等级 / 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
-|---|---|---|---|---|---|---|
-| occupation_level | {{ career_occupation_level }} / {{ career_occupation_range }} | {{ career_occupation_mapping }} | {{ career_occupation_evidence_chain }} | {{ career_occupation_confidence }} | {{ career_occupation_timing }} | {{ career_occupation_feedback_fields }}；{{ career_occupation_falsifier }} |
-| organization_level | {{ career_organization_level }} / {{ career_organization_range }} | {{ career_organization_mapping }} | {{ career_organization_evidence_chain }} | {{ career_organization_confidence }} | {{ career_organization_timing }} | {{ career_organization_feedback_fields }}；{{ career_organization_falsifier }} |
-| management_level | {{ career_management_level }} / {{ career_management_range }} | {{ career_management_mapping }} | {{ career_management_evidence_chain }} | {{ career_management_confidence }} | {{ career_management_timing }} | {{ career_management_feedback_fields }}；{{ career_management_falsifier }} |
-| authority_level | {{ career_authority_level }} / {{ career_authority_range }} | {{ career_authority_mapping }} | {{ career_authority_evidence_chain }} | {{ career_authority_confidence }} | {{ career_authority_timing }} | {{ career_authority_feedback_fields }}；{{ career_authority_falsifier }} |
-| achievement_level | {{ career_achievement_level }} / {{ career_achievement_range }} | {{ career_achievement_mapping }} | {{ career_achievement_evidence_chain }} | {{ career_achievement_confidence }} | {{ career_achievement_timing }} | {{ career_achievement_feedback_fields }}；{{ career_achievement_falsifier }} |
-| social_influence | {{ career_social_influence_level }} / {{ career_social_influence_range }} | {{ career_social_influence_mapping }} | {{ career_social_influence_evidence_chain }} | {{ career_social_influence_confidence }} | {{ career_social_influence_timing }} | {{ career_social_influence_feedback_fields }}；{{ career_social_influence_falsifier }} |
+| 指标 | 等级 | 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+|---|---|---|---|---|---|---|---|
+| 学历层次 | {{ education_degree_level }} | {{ education_degree_range }} | {{ education_degree_mapping }} | {{ education_degree_evidence_chain }} | {{ education_degree_confidence }} | {{ education_degree_timing }} | {{ education_degree_feedback_fields }}；{{ education_degree_falsifier }} |
+| 学校 / 平台层次 | {{ education_institution_level }} | {{ education_institution_range }} | {{ education_institution_mapping }} | {{ education_institution_evidence_chain }} | {{ education_institution_confidence }} | {{ education_institution_timing }} | {{ education_institution_feedback_fields }}；{{ education_institution_falsifier }} |
+| 学习能力 | {{ education_learning_level }} | {{ education_learning_range }} | {{ education_learning_mapping }} | {{ education_learning_evidence_chain }} | {{ education_learning_confidence }} | {{ education_learning_timing }} | {{ education_learning_feedback_fields }}；{{ education_learning_falsifier }} |
+| 考试能力 | {{ education_exam_level }} | {{ education_exam_range }} | {{ education_exam_mapping }} | {{ education_exam_evidence_chain }} | {{ education_exam_confidence }} | {{ education_exam_timing }} | {{ education_exam_feedback_fields }}；{{ education_exam_falsifier }} |
+| 学业成就 | {{ education_academic_level }} | {{ education_academic_range }} | {{ education_academic_mapping }} | {{ education_academic_evidence_chain }} | {{ education_academic_confidence }} | {{ education_academic_timing }} | {{ education_academic_feedback_fields }}；{{ education_academic_falsifier }} |
+| 专业 / 方向类型 | {{ education_field_type }} | — | {{ education_field_mapping }} | {{ education_field_evidence_chain }} | {{ education_field_confidence }} | {{ education_field_timing }} | {{ education_field_feedback_fields }}；{{ education_field_falsifier }} |
 
-### 财富（wealth）
+### 事业
 
-| 指标 | Taxonomy 等级 / 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
-|---|---|---|---|---|---|---|
-| wealth_level | {{ wealth_overall_level }} / {{ wealth_overall_range }} | {{ wealth_overall_mapping }} | {{ wealth_overall_evidence_chain }} | {{ wealth_overall_confidence }} | {{ wealth_overall_timing }} | {{ wealth_overall_feedback_fields }}；{{ wealth_overall_falsifier }} |
-| income_level | {{ wealth_income_level }} / {{ wealth_income_range }} | {{ wealth_income_mapping }} | {{ wealth_income_evidence_chain }} | {{ wealth_income_confidence }} | {{ wealth_income_timing }} | {{ wealth_income_feedback_fields }}；{{ wealth_income_falsifier }} |
-| asset_level | {{ wealth_asset_level }} / {{ wealth_asset_range }} | {{ wealth_asset_mapping }} | {{ wealth_asset_evidence_chain }} | {{ wealth_asset_confidence }} | {{ wealth_asset_timing }} | {{ wealth_asset_feedback_fields }}；{{ wealth_asset_falsifier }} |
-| wealth_source | {{ wealth_source_type }} | {{ wealth_source_mapping }} | {{ wealth_source_evidence_chain }} | {{ wealth_source_confidence }} | {{ wealth_source_timing }} | {{ wealth_source_feedback_fields }}；{{ wealth_source_falsifier }} |
-| wealth_stability | {{ wealth_stability_level }} / {{ wealth_stability_range }} | {{ wealth_stability_mapping }} | {{ wealth_stability_evidence_chain }} | {{ wealth_stability_confidence }} | {{ wealth_stability_timing }} | {{ wealth_stability_feedback_fields }}；{{ wealth_stability_falsifier }} |
+| 指标 | 等级 | 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+|---|---|---|---|---|---|---|---|
+| 职业层次 | {{ career_occupation_level }} | {{ career_occupation_range }} | {{ career_occupation_mapping }} | {{ career_occupation_evidence_chain }} | {{ career_occupation_confidence }} | {{ career_occupation_timing }} | {{ career_occupation_feedback_fields }}；{{ career_occupation_falsifier }} |
+| 组织 / 平台层次 | {{ career_organization_level }} | {{ career_organization_range }} | {{ career_organization_mapping }} | {{ career_organization_evidence_chain }} | {{ career_organization_confidence }} | {{ career_organization_timing }} | {{ career_organization_feedback_fields }}；{{ career_organization_falsifier }} |
+| 管理层级 | {{ career_management_level }} | {{ career_management_range }} | {{ career_management_mapping }} | {{ career_management_evidence_chain }} | {{ career_management_confidence }} | {{ career_management_timing }} | {{ career_management_feedback_fields }}；{{ career_management_falsifier }} |
+| 权责 / 权威层级 | {{ career_authority_level }} | {{ career_authority_range }} | {{ career_authority_mapping }} | {{ career_authority_evidence_chain }} | {{ career_authority_confidence }} | {{ career_authority_timing }} | {{ career_authority_feedback_fields }}；{{ career_authority_falsifier }} |
+| 职业成就 | {{ career_achievement_level }} | {{ career_achievement_range }} | {{ career_achievement_mapping }} | {{ career_achievement_evidence_chain }} | {{ career_achievement_confidence }} | {{ career_achievement_timing }} | {{ career_achievement_feedback_fields }}；{{ career_achievement_falsifier }} |
+| 社会影响力 | {{ career_social_influence_level }} | {{ career_social_influence_range }} | {{ career_social_influence_mapping }} | {{ career_social_influence_evidence_chain }} | {{ career_social_influence_confidence }} | {{ career_social_influence_timing }} | {{ career_social_influence_feedback_fields }}；{{ career_social_influence_falsifier }} |
 
-### 婚姻（marriage）
+### 财富
 
-| 指标 | Taxonomy 等级 / 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
-|---|---|---|---|---|---|---|
-| romance_profile | {{ marriage_romance_level }} / {{ marriage_romance_range }} | {{ marriage_romance_mapping }} | {{ marriage_romance_evidence_chain }} | {{ marriage_romance_confidence }} | {{ marriage_romance_timing }} | {{ marriage_romance_feedback_fields }}；{{ marriage_romance_falsifier }} |
-| relationship_status | {{ marriage_relationship_level }} / {{ marriage_relationship_range }} | {{ marriage_relationship_mapping }} | {{ marriage_relationship_evidence_chain }} | {{ marriage_relationship_confidence }} | {{ marriage_relationship_timing }} | {{ marriage_relationship_feedback_fields }}；{{ marriage_relationship_falsifier }} |
-| marriage_stability | {{ marriage_stability_level }} / {{ marriage_stability_range }} | {{ marriage_stability_mapping }} | {{ marriage_stability_evidence_chain }} | {{ marriage_stability_confidence }} | {{ marriage_stability_timing }} | {{ marriage_stability_feedback_fields }}；{{ marriage_stability_falsifier }} |
-| marriage_quality | {{ marriage_quality_level }} / {{ marriage_quality_range }} | {{ marriage_quality_mapping }} | {{ marriage_quality_evidence_chain }} | {{ marriage_quality_confidence }} | {{ marriage_quality_timing }} | {{ marriage_quality_feedback_fields }}；{{ marriage_quality_falsifier }} |
-| spouse_quality | {{ marriage_spouse_level }} / {{ marriage_spouse_range }} | {{ marriage_spouse_mapping }} | {{ marriage_spouse_evidence_chain }} | {{ marriage_spouse_confidence }} | {{ marriage_spouse_timing }} | {{ marriage_spouse_feedback_fields }}；{{ marriage_spouse_falsifier }} |
-| family_structure | {{ marriage_family_structure }} | {{ marriage_family_mapping }} | {{ marriage_family_evidence_chain }} | {{ marriage_family_confidence }} | {{ marriage_family_timing }} | {{ marriage_family_feedback_fields }}；{{ marriage_family_falsifier }} |
+| 指标 | 等级 | 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+|---|---|---|---|---|---|---|---|
+| 财富层级 | {{ wealth_overall_level }} | {{ wealth_overall_range }} | {{ wealth_overall_mapping }} | {{ wealth_overall_evidence_chain }} | {{ wealth_overall_confidence }} | {{ wealth_overall_timing }} | {{ wealth_overall_feedback_fields }}；{{ wealth_overall_falsifier }} |
+| 收入层级 | {{ wealth_income_level }} | {{ wealth_income_range }} | {{ wealth_income_mapping }} | {{ wealth_income_evidence_chain }} | {{ wealth_income_confidence }} | {{ wealth_income_timing }} | {{ wealth_income_feedback_fields }}；{{ wealth_income_falsifier }} |
+| 资产层级 | {{ wealth_asset_level }} | {{ wealth_asset_range }} | {{ wealth_asset_mapping }} | {{ wealth_asset_evidence_chain }} | {{ wealth_asset_confidence }} | {{ wealth_asset_timing }} | {{ wealth_asset_feedback_fields }}；{{ wealth_asset_falsifier }} |
+| 财富来源类型 | {{ wealth_source_type }} | — | {{ wealth_source_mapping }} | {{ wealth_source_evidence_chain }} | {{ wealth_source_confidence }} | {{ wealth_source_timing }} | {{ wealth_source_feedback_fields }}；{{ wealth_source_falsifier }} |
+| 财富稳定度 | {{ wealth_stability_level }} | {{ wealth_stability_range }} | {{ wealth_stability_mapping }} | {{ wealth_stability_evidence_chain }} | {{ wealth_stability_confidence }} | {{ wealth_stability_timing }} | {{ wealth_stability_feedback_fields }}；{{ wealth_stability_falsifier }} |
 
-### 健康（health）
+### 婚姻
 
-> 健康章禁止预测具体死亡年龄；`longevity_risk` 只表达风险等级、风险窗口或长寿倾向。
+| 指标 | 等级 | 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+|---|---|---|---|---|---|---|---|
+| 恋爱画像 | {{ marriage_romance_level }} | {{ marriage_romance_range }} | {{ marriage_romance_mapping }} | {{ marriage_romance_evidence_chain }} | {{ marriage_romance_confidence }} | {{ marriage_romance_timing }} | {{ marriage_romance_feedback_fields }}；{{ marriage_romance_falsifier }} |
+| 关系状态 | {{ marriage_relationship_level }} | {{ marriage_relationship_range }} | {{ marriage_relationship_mapping }} | {{ marriage_relationship_evidence_chain }} | {{ marriage_relationship_confidence }} | {{ marriage_relationship_timing }} | {{ marriage_relationship_feedback_fields }}；{{ marriage_relationship_falsifier }} |
+| 婚姻稳定度 | {{ marriage_stability_level }} | {{ marriage_stability_range }} | {{ marriage_stability_mapping }} | {{ marriage_stability_evidence_chain }} | {{ marriage_stability_confidence }} | {{ marriage_stability_timing }} | {{ marriage_stability_feedback_fields }}；{{ marriage_stability_falsifier }} |
+| 婚姻质量 | {{ marriage_quality_level }} | {{ marriage_quality_range }} | {{ marriage_quality_mapping }} | {{ marriage_quality_evidence_chain }} | {{ marriage_quality_confidence }} | {{ marriage_quality_timing }} | {{ marriage_quality_feedback_fields }}；{{ marriage_quality_falsifier }} |
+| 配偶条件 | {{ marriage_spouse_level }} | {{ marriage_spouse_range }} | {{ marriage_spouse_mapping }} | {{ marriage_spouse_evidence_chain }} | {{ marriage_spouse_confidence }} | {{ marriage_spouse_timing }} | {{ marriage_spouse_feedback_fields }}；{{ marriage_spouse_falsifier }} |
+| 家庭结构 | {{ marriage_family_structure }} | — | {{ marriage_family_mapping }} | {{ marriage_family_evidence_chain }} | {{ marriage_family_confidence }} | {{ marriage_family_timing }} | {{ marriage_family_feedback_fields }}；{{ marriage_family_falsifier }} |
 
-| 指标 | Taxonomy 等级 / 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
-|---|---|---|---|---|---|---|
-| physical_condition | {{ health_physical_level }} / {{ health_physical_range }} | {{ health_physical_mapping }} | {{ health_physical_evidence_chain }} | {{ health_physical_confidence }} | {{ health_physical_timing }} | {{ health_physical_feedback_fields }}；{{ health_physical_falsifier }} |
-| major_disease_risk | {{ health_major_disease_level }} / {{ health_major_disease_range }} | {{ health_major_disease_mapping }} | {{ health_major_disease_evidence_chain }} | {{ health_major_disease_confidence }} | {{ health_major_disease_timing }} | {{ health_major_disease_feedback_fields }}；{{ health_major_disease_falsifier }} |
-| chronic_risk | {{ health_chronic_level }} / {{ health_chronic_range }} | {{ health_chronic_mapping }} | {{ health_chronic_evidence_chain }} | {{ health_chronic_confidence }} | {{ health_chronic_timing }} | {{ health_chronic_feedback_fields }}；{{ health_chronic_falsifier }} |
-| mental_health | {{ health_mental_level }} / {{ health_mental_range }} | {{ health_mental_mapping }} | {{ health_mental_evidence_chain }} | {{ health_mental_confidence }} | {{ health_mental_timing }} | {{ health_mental_feedback_fields }}；{{ health_mental_falsifier }} |
-| accident_risk | {{ health_accident_level }} / {{ health_accident_range }} | {{ health_accident_mapping }} | {{ health_accident_evidence_chain }} | {{ health_accident_confidence }} | {{ health_accident_timing }} | {{ health_accident_feedback_fields }}；{{ health_accident_falsifier }} |
-| longevity_risk | {{ health_longevity_level }} / {{ health_longevity_range }} | {{ health_longevity_mapping }} | {{ health_longevity_evidence_chain }} | {{ health_longevity_confidence }} | {{ health_longevity_timing }} | {{ health_longevity_feedback_fields }}；{{ health_longevity_falsifier }} |
+### 健康
 
-### DetailExpansion 展开策略
+> 健康章禁止预测具体死亡年龄；长寿风险只表达风险等级、风险窗口或长寿倾向。
 
-> 本表只决定首轮报告可展开到多细，不改变案例验证置信度；当 EvidenceScore 高而 ConfidenceScore 低时，细节必须按“理论推断”展示，并保留不确定性说明。
+| 指标 | 等级 | 候选范围 | 展示描述 / 案例映射 | 证据链 | 置信度 | 应期 | 反馈字段 / 证伪条件 |
+|---|---|---|---|---|---|---|---|
+| 身体底盘 | {{ health_physical_level }} | {{ health_physical_range }} | {{ health_physical_mapping }} | {{ health_physical_evidence_chain }} | {{ health_physical_confidence }} | {{ health_physical_timing }} | {{ health_physical_feedback_fields }}；{{ health_physical_falsifier }} |
+| 重大疾病风险 | {{ health_major_disease_level }} | {{ health_major_disease_range }} | {{ health_major_disease_mapping }} | {{ health_major_disease_evidence_chain }} | {{ health_major_disease_confidence }} | {{ health_major_disease_timing }} | {{ health_major_disease_feedback_fields }}；{{ health_major_disease_falsifier }} |
+| 慢性风险 | {{ health_chronic_level }} | {{ health_chronic_range }} | {{ health_chronic_mapping }} | {{ health_chronic_evidence_chain }} | {{ health_chronic_confidence }} | {{ health_chronic_timing }} | {{ health_chronic_feedback_fields }}；{{ health_chronic_falsifier }} |
+| 心理 / 压力状态 | {{ health_mental_level }} | {{ health_mental_range }} | {{ health_mental_mapping }} | {{ health_mental_evidence_chain }} | {{ health_mental_confidence }} | {{ health_mental_timing }} | {{ health_mental_feedback_fields }}；{{ health_mental_falsifier }} |
+| 意外风险 | {{ health_accident_level }} | {{ health_accident_range }} | {{ health_accident_mapping }} | {{ health_accident_evidence_chain }} | {{ health_accident_confidence }} | {{ health_accident_timing }} | {{ health_accident_feedback_fields }}；{{ health_accident_falsifier }} |
+| 长寿 / 衰弱风险 | {{ health_longevity_level }} | {{ health_longevity_range }} | {{ health_longevity_mapping }} | {{ health_longevity_evidence_chain }} | {{ health_longevity_confidence }} | {{ health_longevity_timing }} | {{ health_longevity_feedback_fields }}；{{ health_longevity_falsifier }} |
 
-| 领域 | 展开等级 | EvidenceScore | ConfidenceScore | 输出口径 | 理论来源 | 不确定性说明 |
+### 细节展开策略
+
+> 本表只决定首轮报告可展开到多细，不改变案例验证置信度；当证据强度高而反馈置信低时，细节必须按“理论推断”展示，并保留不确定性说明。
+
+| 领域 | 展开等级 | 证据强度 | 反馈置信 | 输出口径 | 理论来源 | 不确定性说明 |
 |---|---|---|---|---|---|---|
 {% for r in detail_expansion_rows %}
 | {{ r.label }} | {{ r.level_label }} | {{ r.evidence_score_value }} | {{ r.confidence_score_value }} | {{ r.inference_type }} | {{ r.theory_sources }} | {{ r.uncertainty }} |
@@ -397,7 +397,7 @@
 | 五派齐备 | 子平类、滴天髓类、高德臣、段建业、杨清娟均有结论或明确 abstain 原因 |
 | 三段仲裁 | 每个主要领域至少覆盖结构合法性、事件落地、概率应期三段 |
 | 六大事项 | 性格与行为模式单列，学业、事业、财富、婚姻、健康必须进入主要事项分域表 |
-| 分域枚举判断 | 学业拆 degree_level / institution_level / academic_performance / field_type；事业拆 occupation_level / organization_level / authority_level / achievement_level；财富拆 income_level / asset_level / wealth_stability；婚姻拆 relationship_status / marriage_quality / spouse_quality / family_structure；健康拆 physical_condition / major_disease_risk / mental_health / longevity |
+| 分域枚举判断 | 学业拆学历层次、学校 / 平台层次、学业成就、专业 / 方向类型；事业拆职业层次、组织 / 平台层次、权责 / 权威层级、职业成就；财富拆收入层级、资产层级、财富稳定度；婚姻拆关系状态、婚姻质量、配偶条件、家庭结构；健康拆身体底盘、重大疾病风险、心理 / 压力状态、长寿 / 衰弱风险 |
 | 证据链 | 每个主要事项必须写明五派或有效主派证据链 |
 | 置信度 | 使用“★★★★ / 80%”等双轨样式；概率另用区间 |
 | 应期 | 必须给年份、阶段或长期结构说明；不得只写“未来” |

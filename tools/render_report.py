@@ -599,7 +599,7 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
         detail_level = str(getattr(expansion, "level_label", "L0 粗粒度结论") if expansion else "L0 粗粒度结论")
         detail_items = "、".join(getattr(expansion, "detail_items", []) or ["L0 粗粒度结论"])
         confidence_text = (
-            f"EvidenceScore {evidence_score:.2f}；ConfidenceScore {confidence_score:.2f}；"
+            f"证据强度 {evidence_score:.2f}；反馈置信 {confidence_score:.2f}；"
             f"{inference_type}；{uncertainty}"
         )
         process = (
@@ -643,8 +643,8 @@ def _annotate_theory_detail(item: dict[str, Any], expansions: dict[str, Any]) ->
     confidence_score = getattr(getattr(expansion, "confidence_score", None), "value", 0.0)
     item = dict(item)
     marker = (
-        f"理论推断｜EvidenceScore {evidence_score:.2f} / "
-        f"ConfidenceScore {confidence_score:.2f}｜{getattr(expansion, 'uncertainty', '')}"
+        f"理论推断｜证据强度 {evidence_score:.2f} / "
+        f"反馈置信 {confidence_score:.2f}｜{getattr(expansion, 'uncertainty', '')}"
     )
     item["statement"] = f"{item.get('statement', '')}（{marker}）"
     return item
@@ -1625,7 +1625,7 @@ def render(
     # F8 · §0 命局核心结构总览
     ctx.update(_build_section_zero_vm(energy, picture, parsed))
 
-    # F5 · §B.6 15 层五维定位 + EvidenceScore / ConfidenceScore 双指标
+    # F5 · §B.6 15 层五维定位 + 证据强度 / 反馈置信双指标
     ctx.update(_build_15tier_vm(picture))
     detail_expansions = build_detail_expansions(
         energy=energy,
