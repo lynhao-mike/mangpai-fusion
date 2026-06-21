@@ -767,14 +767,20 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
     required = [
         ("分析版本：v7.7", "E-V77-SCHEMA", "缺少 v7.7 展示规范标识"),
         ("时间标准：公历（YYYY–YYYY年）+ 年龄（XX–XX岁）", "E-V77-TIME-STANDARD", "缺少 v7.7 时间标准标识"),
+        ("## 相关引用文档", "E-V77-LINK-INDEX", "缺少相关引用文档结构化索引"),
         ("## 五派裁决与共识融合总论", "E-V76-SCHOOLS", "缺少五派裁决与共识融合总论"),
         ("## 命局做功与人生主线", "E-V76-MAINLINE", "缺少命局做功与人生主线"),
         ("## 主要事项结构", "E-V76-DOMAINS", "缺少主要事项结构"),
         ("## 受限概率系统", "E-V76-PROB", "缺少受限概率系统"),
         ("## 待反馈关键流年与事件", "E-V76-FEEDBACK", "缺少待反馈关键流年与事件"),
+        ("### 待反馈（已发生验证项）", "E-V77-FEEDBACK-DONE", "缺少已发生验证项反馈分区"),
+        ("### 待反馈（预测验证项）", "E-V77-FEEDBACK-FUTURE", "缺少预测验证项反馈分区"),
         ("## 系统级约束", "E-V76-CONSTRAINTS", "缺少系统级约束"),
+        ("| 柱位 | 天干 | 地支 | 十神主轴 | 藏干 | 长生 | 神煞 |", "E-V77-PILLAR-TABLE", "四柱结构未使用逐柱神煞展示表头"),
         ("| 事件领域 | 具体应事 | 时间窗口 | 概率 | 置信状态 | 星级 |", "E-V76-PROB-TABLE", "受限概率表头未使用 v7.7 中文字段"),
-        ("| 指标 | 稳定枚举 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 |", "E-V76-DOMAIN-TABLE", "缺少 v7.7 领域中文结构表头"),
+        ("| 指标 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 | 稳定枚举 |", "E-V77-DOMAIN-TABLE", "缺少稳定枚举末列的领域中文结构表头"),
+        ("| 优先级 | 领域 | 时间窗口 | 具体应事 | 回访要点 |", "E-V77-FEEDBACK-PRIORITY", "待反馈表缺少受限概率星级优先级列"),
+        ("置信状态（星级）", "E-V77-CONFIDENCE-FORMAT", "缺少受限概率系统置信度展示格式说明"),
         ("全部展示字段必须中文化", "E-V76-CN-CONSTRAINT", "缺少全中文字段约束"),
     ]
     for needle, code, message in required:
@@ -795,6 +801,8 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         "| domain |", "| level |", "| confidence |", "| probability |",
         "| explanation |", "| evidence |", "| prior |", "| likelihood |", "| posterior |",
         "case_id", "schema", "outcome taxonomy", "baseline", "boost",
+        "| 指标 | 稳定枚举 | 判断结果 |", "| 领域 | 时间窗口 | 具体应事 | 回访要点 |",
+        "中置信，三星", "中高置信，四星", "中低置信，二星",
     )
     lowered = md.lower()
     for header in forbidden_headers:
@@ -805,6 +813,30 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
                 f"v7.7 展示层禁止英文术语或编码字段：{header}",
                 suggestion="将展示字段、结构字段和说明全部改为中文，不在括号中保留英文编码。",
             )
+
+    if re.search(r"\| 神煞 \|[^\n]*、[^\n]*\|", md):
+        res.add(
+            Severity.ERROR,
+            "E-V77-SHENSHA-VERTICAL",
+            "四柱神煞仍存在横向顿号堆叠",
+            suggestion="将每柱神煞改为逐项竖向排列，例如使用 <br> 分隔。",
+        )
+
+    if not re.search(r"\[[^\]]+\]\([^)]+\)", md.split("## 四柱结构", 1)[0]):
+        res.add(
+            Severity.ERROR,
+            "E-V77-LINK-CLICKABLE",
+            "报告开头相关引用文档缺少可点击链接",
+            suggestion="在归档信息后添加 Markdown 链接格式的相关引用文档索引。",
+        )
+
+    if not re.search(r"[高中低]{1,2}（[★☆]{5}）", md):
+        res.add(
+            Severity.ERROR,
+            "E-V77-CONFIDENCE-STAR",
+            "置信度未使用“置信状态（星级）”格式",
+            suggestion="将置信度改为受限概率系统定义的格式，例如：中（★★★☆☆）。",
+        )
 
     if re.search(r"\{\{\s*[^{}]+?\s*\}\}", md):
         res.add(
@@ -822,7 +854,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
         if len(cells) < 3:
             continue
-        probability_cell = cells[2]
+        probability_cell = cells[3] if len(cells) > 3 else cells[2]
         for m in re.finditer(r"(\d{1,3})%", probability_cell):
             pct = int(m.group(1))
             if pct < 55:
