@@ -474,6 +474,24 @@ def _build_section_zero_vm(
         {"name": "日", "gan": day_gan, "zhi": day_zhi, "is_master": True},
         {"name": "时", "gan": hour_gan, "zhi": hour_zhi},
     ]
+
+    def _format_canggan_item(item: Any) -> str:
+        if isinstance(item, dict):
+            gan = item.get("干", "")
+            item_type = item.get("类型", "")
+        else:
+            gan = getattr(item, "干", "")
+            item_type = getattr(item, "类型", "")
+        return f"{gan}({item_type})" if item_type else str(gan or item)
+
+    canggan_raw = getattr(parsed, "canggan", {}) or {}
+    canggan_by_branch = {}
+    for key in ("年支", "月支", "日支", "时支"):
+        raw_items = canggan_raw.get(key, []) if isinstance(canggan_raw, dict) else getattr(canggan_raw, key, []) or []
+        canggan_by_branch[key] = [_format_canggan_item(item) for item in raw_items]
+    changsheng_by_branch = getattr(parsed, "twelve_changsheng", {}) or {}
+    shensha_by_pillar = getattr(parsed, "shensha", {}) or {}
+
     # 体用结构
     ty = energy.tiyong if energy and energy.tiyong else None
     body_str = "、".join(f"{x.char}({x.role})" for x in ty.body) if ty and ty.body else "—"
@@ -517,6 +535,9 @@ def _build_section_zero_vm(
         "sz_wealth_ceiling": getattr(energy, "wealth_ceiling", "—"),
         "sz_anyin_brief": anyin_brief or "—",
         "sz_shensha_brief": shensha_brief or "—",
+        "canggan_by_branch": canggan_by_branch,
+        "changsheng_by_branch": changsheng_by_branch,
+        "shensha_by_pillar": shensha_by_pillar,
     }
 
 
@@ -667,6 +688,21 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
     return out
 
 
+def _vertical_cell(items: Any, *, empty: str = "—", separator: str = "<br>") -> str:
+    """Render report table cells as vertical Markdown-safe text."""
+    if items is None:
+        return empty
+    if isinstance(items, str):
+        raw_items = re.split(r"[、,，/／\s]+", items)
+    else:
+        try:
+            raw_items = list(items)
+        except TypeError:
+            raw_items = [items]
+    cleaned = [str(item).strip() for item in raw_items if str(item).strip() and str(item).strip() not in {"—", "-", "无"}]
+    return separator.join(cleaned) if cleaned else empty
+
+
 def normalize_v6_probability_band(
     raw: tuple[int, int] | tuple[float, float] | None,
     *,
@@ -744,6 +780,25 @@ def build_v6_display_context(
                 "标记": row.get("marker", ""),
             })
 
+    shensha_by_pillar = ctx.get("shensha_by_pillar") or {}
+    canggan_by_branch = ctx.get("canggan_by_branch") or {}
+    changsheng_by_branch = ctx.get("changsheng_by_branch") or {}
+
+    def _pillar_shensha(name: str) -> str:
+        if isinstance(shensha_by_pillar, dict):
+            return _vertical_cell(shensha_by_pillar.get(name))
+        return "—"
+
+    def _pillar_canggan(name: str) -> str:
+        if isinstance(canggan_by_branch, dict):
+            return _vertical_cell(canggan_by_branch.get(name))
+        return "—"
+
+    def _pillar_changsheng(name: str) -> str:
+        if isinstance(changsheng_by_branch, dict):
+            return _vertical_cell(changsheng_by_branch.get(name))
+        return "—"
+
     out.update({
         "案例编号": ctx.get("case_id", "待引擎补全"),
         "命式": ctx.get("qian_kun", "待引擎补全"),
@@ -762,6 +817,22 @@ def build_v6_display_context(
         "月支": ctx.get("month_zhi", "待引擎补全"),
         "日支": ctx.get("day_zhi", "待引擎补全"),
         "时支": ctx.get("hour_zhi", "待引擎补全"),
+        "年柱十神主轴": ctx.get("year_tengod_axis", "待反馈校准"),
+        "月柱十神主轴": ctx.get("month_tengod_axis", "待反馈校准"),
+        "日柱十神主轴": ctx.get("day_tengod_axis", "日主"),
+        "时柱十神主轴": ctx.get("hour_tengod_axis", "待反馈校准"),
+        "年柱藏干": _pillar_canggan("年支"),
+        "月柱藏干": _pillar_canggan("月支"),
+        "日柱藏干": _pillar_canggan("日支"),
+        "时柱藏干": _pillar_canggan("时支"),
+        "年柱长生": _pillar_changsheng("年支"),
+        "月柱长生": _pillar_changsheng("月支"),
+        "日柱长生": _pillar_changsheng("日支"),
+        "时柱长生": _pillar_changsheng("时支"),
+        "年柱神煞": _pillar_shensha("年柱"),
+        "月柱神煞": _pillar_shensha("月柱"),
+        "日柱神煞": _pillar_shensha("日柱"),
+        "时柱神煞": _pillar_shensha("时柱"),
         "大运列表": dayun_items,
         "大运速览": ctx.get("dayun_str", "待引擎补全"),
         "体结构资源": ctx.get("sz_body_str", "待引擎补全"),
