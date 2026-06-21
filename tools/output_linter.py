@@ -801,7 +801,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         "| domain |", "| level |", "| confidence |", "| probability |",
         "| explanation |", "| evidence |", "| prior |", "| likelihood |", "| posterior |",
         "case_id", "schema", "outcome taxonomy", "baseline", "boost",
-        "| 指标 | 稳定枚举 | 判断结果 |", "| 领域 | 时间窗口 | 具体应事 | 回访要点 |",
+        "| 指标 | 稳定枚举 | 判断结果 |",
         "中置信，三星", "中高置信，四星", "中低置信，二星",
     )
     lowered = md.lower()
@@ -813,6 +813,13 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
                 f"v7.7 展示层禁止英文术语或编码字段：{header}",
                 suggestion="将展示字段、结构字段和说明全部改为中文，不在括号中保留英文编码。",
             )
+    if re.search(r"(?m)^\|\s*领域\s*\|\s*时间窗口\s*\|\s*具体应事\s*\|\s*回访要点\s*\|\s*$", md):
+        res.add(
+            Severity.ERROR,
+            "E-V76-CN-FIELDS",
+            "v7.7 展示层禁止旧版待反馈表头：| 领域 | 时间窗口 | 具体应事 | 回访要点 |",
+            suggestion="将待反馈表头补齐为：| 优先级 | 领域 | 时间窗口 | 具体应事 | 回访要点 |。",
+        )
 
     if re.search(r"\| 神煞 \|[^\n]*、[^\n]*\|", md):
         res.add(
