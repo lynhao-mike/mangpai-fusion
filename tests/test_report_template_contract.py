@@ -21,6 +21,8 @@ REQUIRED_UNIFIED_HEADINGS = [
     "### 健康结构",
     "## 受限概率系统",
     "## 待反馈关键流年与事件",
+    "### 待反馈（已发生验证项）",
+    "### 待反馈（预测验证项）",
     "## 系统级约束",
 ]
 
@@ -93,8 +95,12 @@ def test_report_v5_keeps_input_context_compatibility_rows() -> None:
     assert "- 案例编号：{{ 案例编号 }}" in text
     assert "- 命式：{{ 命式 }}造" in text
     assert "- 当前大运：{{ 当前大运 }}" in text
-    assert "| 天干 | {{ 年干 }} | {{ 月干 }} | {{ 日干 }} | {{ 时干 }} |" in text
-    assert "| 地支 | {{ 年支 }} | {{ 月支 }} | {{ 日支 }} | {{ 时支 }} |" in text
+    assert "## 相关引用文档" in text
+    assert "[打开报告文件]({{ 报告路径 }})" in text
+    assert "[打开案例目录]({{ 案例目录 }})" in text
+    assert "[打开反馈文件]({{ 反馈入口 }})" in text
+    assert "| 柱位 | 天干 | 地支 | 十神主轴 | 藏干 | 长生 | 神煞 |" in text
+    assert "| 年柱 | {{ 年干 }} | {{ 年支 }} | {{ 年柱十神主轴 }} | {{ 年柱藏干 }} | {{ 年柱长生 }} | {{ 年柱神煞 }} |" in text
 
 
 def test_report_v5_keeps_key_year_table() -> None:
@@ -103,9 +109,11 @@ def test_report_v5_keeps_key_year_table() -> None:
     text = _template_text(TEMPLATE_V5)
 
     assert "## 待反馈关键流年与事件" in text
-    assert "| 领域 | 时间窗口 | 具体应事 | 回访要点 |" in text
-    assert "{{ 反馈一领域 }}" in text
-    assert "{{ 健康反馈窗口 }}" in text
+    assert "### 待反馈（已发生验证项）" in text
+    assert "### 待反馈（预测验证项）" in text
+    assert "| 优先级 | 领域 | 时间窗口 | 具体应事 | 回访要点 |" in text
+    assert "{{ 已发生反馈一优先级 }}" in text
+    assert "{{ 预测反馈一优先级 }}" in text
 
 
 def test_report_templates_keep_outcome_taxonomy_cn_fields() -> None:
@@ -117,6 +125,12 @@ def test_report_templates_keep_outcome_taxonomy_cn_fields() -> None:
             assert token in text, f"{template.name}: {token}"
         assert "全部展示字段必须中文化" in text
         assert "反馈必须能回写系统" in text
+
+
+        assert "| 指标 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 | 稳定枚举 |" in text
+        assert "| 指标 | 稳定枚举 | 判断结果 |" not in text
+        assert "置信状态（星级）" in text
+        assert "中（★★★☆☆）" in text
 
 
 def test_report_templates_keep_v77_time_standard() -> None:
