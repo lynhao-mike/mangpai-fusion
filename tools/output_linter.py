@@ -502,6 +502,7 @@ def lint(
         _lint_portrait_box_style(full_text, res)
         # Phase C · parallel-domain markdown 输出门禁
         _lint_parallel_domain_markdown(full_text, res)
+        _lint_v6_report_structure(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -756,6 +757,59 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
                 location=loc,
                 suggestion="补充专家冲突解释；即使无强冲突，也必须显式写入“无专家强冲突”。",
             )
+
+
+def _lint_v6_report_structure(md: str, res: LintResult) -> None:
+    """Validate v6 display-only report structure without blocking legacy markdown."""
+    if not md.startswith("# 📁 归档信息（可点击导航）"):
+        return
+
+    required = [
+        ("# 📊 受限概率提示（校准增强版）", "E-V6-PROB", "缺少 v6 受限概率提示独立模块"),
+        ("# 📌 待反馈关键流年与事件（重点校准区）", "E-V6-FEEDBACK", "缺少待反馈关键流年与事件独立模块"),
+        ("| 事件领域 | 时间窗口 | 概率（0–100%） | 置信状态 | 星级 | 说明 |", "E-V6-PROB-TABLE", "受限概率表头未使用 v6 中文字段"),
+    ]
+    for needle, code, message in required:
+        if needle not in md:
+            res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 report_schema='v6'。")
+
+    forbidden_headers = ("| domain |", "| level |", "| confidence |", "| probability |")
+    lowered = md.lower()
+    for header in forbidden_headers:
+        if header in lowered:
+            res.add(
+                Severity.ERROR,
+                "E-V6-CN-FIELDS",
+                f"v6 展示层表格主字段禁止英文：{header}",
+                suggestion="将展示字段映射为中文主字段，可在括号中保留英文术语。",
+            )
+
+    if re.search(r"\{\{\s*[^{}]+?\s*\}\}", md):
+        res.add(
+            Severity.ERROR,
+            "E-V6-UNRENDERED-VAR",
+            "v6 正式报告存在未渲染模板变量",
+            suggestion="补齐 render_report 上下文字段，或使用默认展示文本兜底后重渲染。",
+        )
+
+    probability_section = md.split("# 📊 受限概率提示（校准增强版）", 1)[-1].split("---", 1)[0]
+    for line in probability_section.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|") or "---" in stripped or "事件领域" in stripped:
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if len(cells) < 3:
+            continue
+        probability_cell = cells[2]
+        for m in re.finditer(r"(\d{1,3})%", probability_cell):
+            pct = int(m.group(1))
+            if pct < 45:
+                res.add(
+                    Severity.ERROR,
+                    "E-V6-PROB-BASELINE",
+                    f"v6 受限概率低于 45% baseline：{pct}%",
+                    suggestion="按 baseline / prior boost 规则重算展示概率。",
+                )
 
 
 def _lint_global_text(
