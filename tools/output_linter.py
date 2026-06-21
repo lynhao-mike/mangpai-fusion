@@ -760,25 +760,26 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
 
 
 def _lint_v6_report_structure(md: str, res: LintResult) -> None:
-    """Validate v7.6 display-only report structure without blocking legacy markdown."""
+    """Validate v7.7 display-only report structure without blocking legacy markdown."""
     if not md.startswith("# 📌 归档信息与命盘结构"):
         return
 
     required = [
-        ("分析版本：v7.6", "E-V76-SCHEMA", "缺少 v7.6 展示规范标识"),
+        ("分析版本：v7.7", "E-V77-SCHEMA", "缺少 v7.7 展示规范标识"),
+        ("时间标准：公历（YYYY–YYYY年）+ 年龄（XX–XX岁）", "E-V77-TIME-STANDARD", "缺少 v7.7 时间标准标识"),
         ("## 五派裁决与共识融合总论", "E-V76-SCHOOLS", "缺少五派裁决与共识融合总论"),
         ("## 命局做功与人生主线", "E-V76-MAINLINE", "缺少命局做功与人生主线"),
         ("## 主要事项结构", "E-V76-DOMAINS", "缺少主要事项结构"),
         ("## 受限概率系统", "E-V76-PROB", "缺少受限概率系统"),
         ("## 待反馈关键流年与事件", "E-V76-FEEDBACK", "缺少待反馈关键流年与事件"),
         ("## 系统级约束", "E-V76-CONSTRAINTS", "缺少系统级约束"),
-        ("| 事件领域 | 具体应事 | 时间窗口 | 概率 | 置信状态 | 星级 |", "E-V76-PROB-TABLE", "受限概率表头未使用 v7.6 中文字段"),
-        ("| 指标 | 稳定枚举 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 |", "E-V76-DOMAIN-TABLE", "缺少 v7.6 领域中文结构表头"),
+        ("| 事件领域 | 具体应事 | 时间窗口 | 概率 | 置信状态 | 星级 |", "E-V76-PROB-TABLE", "受限概率表头未使用 v7.7 中文字段"),
+        ("| 指标 | 稳定枚举 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 |", "E-V76-DOMAIN-TABLE", "缺少 v7.7 领域中文结构表头"),
         ("全部展示字段必须中文化", "E-V76-CN-CONSTRAINT", "缺少全中文字段约束"),
     ]
     for needle, code, message in required:
         if needle not in md:
-            res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 v7.6 中文字段模板。")
+            res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 v7.7 中文字段与时间标准模板。")
 
     domain_sections = ("### 学业结构", "### 事业结构", "### 财富结构", "### 婚姻结构", "### 健康结构")
     for section in domain_sections:
@@ -786,7 +787,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
             res.add(
                 Severity.ERROR,
                 "E-V76-DOMAIN-INDEPENDENT",
-                f"v7.6 缺少独立领域结构：{section}",
+                f"v7.7 缺少独立领域结构：{section}",
                 suggestion="按学业 / 事业 / 财富 / 婚姻 / 健康分别输出同级结构。",
             )
 
@@ -801,7 +802,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
             res.add(
                 Severity.ERROR,
                 "E-V76-CN-FIELDS",
-                f"v7.6 展示层禁止英文术语或编码字段：{header}",
+                f"v7.7 展示层禁止英文术语或编码字段：{header}",
                 suggestion="将展示字段、结构字段和说明全部改为中文，不在括号中保留英文编码。",
             )
 
@@ -809,7 +810,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         res.add(
             Severity.ERROR,
             "E-V76-UNRENDERED-VAR",
-            "v7.6 正式报告存在未渲染模板变量",
+            "v7.7 正式报告存在未渲染模板变量",
             suggestion="补齐 render_report 上下文字段，或使用默认展示文本兜底后重渲染。",
         )
 
