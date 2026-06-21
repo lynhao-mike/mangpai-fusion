@@ -606,7 +606,7 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
             f"{inference_type}；{uncertainty}"
         )
         process = (
-            f"DetailExpansion={detail_level}（{detail_items}）；理论来源：{sources}；"
+            f"细分层级：{detail_level}（{detail_items}）；理论来源：{sources}；"
             f"{inference_type}口径，不把理论共识计作案例验证"
         )
         out[f"{key}_15tier_layer"] = layer
@@ -617,6 +617,53 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
         out[f"{key}_15tier_timing"] = "随大运与流年反馈复盘"
         out[f"{key}_15tier_boundary_explain"] = _boundary_explain(str(boundary))
         out[f"{key}_domain_process"] = process
+
+    outcome_defaults = {
+        "education_degree_result": "学历层次待结合最高学历反馈校准",
+        "education_degree_range": "小学至海外顶尖按反馈映射",
+        "education_institution_result": "学校层次待结合毕业院校与录取类型校准",
+        "education_institution_range": "普通、省重点、国家重点、双一流、211、985、C9、清北、海外前五十、海外前十",
+        "education_performance_result": "成绩水平待结合考试成绩、排名与竞赛反馈校准",
+        "education_performance_range": "差、中下、普通、中上、优秀、尖子生、竞赛级",
+        "education_field_result": "专业或方向类型待结合现实专业与职业路径校准",
+        "education_field_range": "人文、财经、工程、技术、医学、法律、教育、艺术、商业、公职服务或其他",
+        "career_occupation_result": "职业层级待结合岗位、头衔、经营规模校准",
+        "career_occupation_range": "无业、普通工人、技术员、技工、职员、基层管理、中层管理、高层管理、小创业者、中型创业者、大型创业者、本地名人、行业领袖、全国级、世界级",
+        "career_organization_result": "单位层级待结合组织性质、平台规模校准",
+        "career_organization_range": "小民企、中民企、上市公司、国企、央企、政府、事业单位、头部公司、世界五百强",
+        "career_authority_result": "权力层级待结合正式任命、管理半径和资源调度校准",
+        "career_authority_range": "无、组长、部门经理、主任、局级、厅级、省级、部级",
+        "career_achievement_result": "成就层级待结合项目、业绩、奖项与行业影响校准",
+        "career_achievement_range": "普通成果、稳定业绩、区域成果、行业成果、全国级成果、世界级成果",
+        "wealth_income_result": "年收入待结合真实收入区间校准",
+        "wealth_income_range": "五万以下、五到十万、十到二十万、二十到五十万、五十到一百万、一百万到三百万、三百万到一千万、一千万到三千万、三千万以上",
+        "wealth_asset_result": "资产等级待结合净资产、房产、投资与负债校准",
+        "wealth_asset_range": "负资产、零到五十万、五十到二百万、二百万到五百万、五百万到一千万、一千万到五千万、五千万到一亿、一亿到十亿、十亿以上",
+        "wealth_stability_result": "财富稳定性待结合现金流、负债与收入波动校准",
+        "wealth_stability_range": "不稳定、波动、稳定、稳定增长、爆发式增长、周期性",
+        "marriage_relationship_result": "感情状态待结合恋爱、结婚、离异、再婚反馈校准",
+        "marriage_relationship_range": "单身、多段关系、晚婚、早婚、离异、再婚、终身单身",
+        "marriage_quality_result": "婚姻质量待结合满意度、冲突频率与支持度校准",
+        "marriage_quality_range": "差、不稳定、普通、和谐、优秀",
+        "marriage_spouse_education_result": "配偶教育层次待反馈校准",
+        "marriage_spouse_career_result": "配偶事业层次待反馈校准",
+        "marriage_spouse_wealth_result": "配偶财富层次待反馈校准",
+        "marriage_spouse_appearance_result": "配偶外貌气质待反馈校准",
+        "marriage_spouse_appearance_range": "普通、有吸引力、漂亮或英俊、出众",
+        "marriage_spouse_temperament_result": "配偶性情气质待反馈校准",
+        "marriage_family_result": "家庭结构待结合子女、居住、再婚与双方家庭牵连校准",
+        "marriage_family_range": "核心家庭、大家庭、重组家庭、异地、同居稳定、分居、有子女、无子女或其他",
+        "health_physical_result": "体质待结合体检、病史与运动水平校准",
+        "health_physical_range": "弱、普通、强、运动型",
+        "health_disease_result": "疾病风险待结合体检与家族史校准",
+        "health_disease_range": "心血管、消化、呼吸、内分泌、肝、肾、神经、癌症、意外",
+        "health_mental_result": "心理健康待结合压力、睡眠、情绪与诊疗反馈校准",
+        "health_mental_range": "压力明显、普通可调节、韧性较强、稳定性强",
+        "health_longevity_result": "寿元风险只表达风险等级或长寿倾向，不预测具体死亡年龄",
+        "health_longevity_range": "低风险、普通、高风险、长寿倾向",
+    }
+    for key, value in outcome_defaults.items():
+        out.setdefault(key, value)
     return out
 
 
@@ -626,9 +673,9 @@ def normalize_v6_probability_band(
     consensus_count: int = 0,
     is_primary: bool = True,
 ) -> str:
-    """Normalize v6 probability bands with baseline, primary range and prior boost."""
+    """Normalize v6.2 probability bands with 55% baseline, primary range and prior boost."""
     if raw is None:
-        low, high = (55, 75) if is_primary else (45, 65)
+        low, high = (65, 85) if is_primary else (55, 70)
     else:
         low, high = raw
         if isinstance(low, float) and low <= 1:
@@ -636,14 +683,14 @@ def normalize_v6_probability_band(
         if isinstance(high, float) and high <= 1:
             high = int(round(high * 100))
         low, high = int(low), int(high)
-    low = max(low, 45)
+    low = max(low, 55)
     high = max(high, low)
     if is_primary:
-        low = max(low, 55)
-        high = max(high, 75)
+        low = max(low, 65)
+        high = max(high, 85)
     if consensus_count >= 5:
-        low = min(100, low + 10)
-        high = min(100, high + 20)
+        low = min(100, low + 8)
+        high = min(100, high + 10)
     return f"{low}%–{high}%"
 
 
@@ -653,13 +700,13 @@ def build_v6_display_context(
     parallel_analysis: Optional[Any] = None,
     support: Optional[Any] = None,
 ) -> dict[str, str]:
-    """Build v6 report-facing display fields while keeping legacy pipeline inputs stable."""
+    """Build v6.2 report-facing display fields while keeping legacy pipeline inputs stable."""
     domain_defaults = {
         "education": (normalize_v6_probability_band((55, 68), is_primary=False), "中置信", "★★★☆☆"),
-        "career": (normalize_v6_probability_band((50, 58), consensus_count=5), "中高置信", "★★★★☆"),
-        "wealth": (normalize_v6_probability_band((58, 75)), "中置信", "★★★★☆"),
-        "marriage": (normalize_v6_probability_band((55, 72)), "中置信", "★★★☆☆"),
-        "health": (normalize_v6_probability_band((55, 70)), "中置信", "★★★☆☆"),
+        "career": (normalize_v6_probability_band((65, 75), consensus_count=5), "中高置信", "★★★★☆"),
+        "wealth": (normalize_v6_probability_band((65, 78)), "中置信", "★★★★☆"),
+        "marriage": (normalize_v6_probability_band((65, 75)), "中置信", "★★★☆☆"),
+        "health": (normalize_v6_probability_band((55, 70), is_primary=False), "中置信", "★★★☆☆"),
     }
     out: dict[str, str] = {}
     for key, (probability, confidence_state, star) in domain_defaults.items():
@@ -670,25 +717,25 @@ def build_v6_display_context(
     out.update({
         "probability_event_1_domain": "事业变化",
         "probability_event_1_window": "2025–2027",
-        "probability_event_1_range": "60%–78%",
+        "probability_event_1_range": normalize_v6_probability_band((65, 78), consensus_count=5),
         "probability_event_1_confidence_state": "中高置信",
         "probability_event_1_star": "★★★★☆",
-        "probability_event_1_explanation": "五派一致支持事业跃迁，已按 prior boost 上调，未低于 45% baseline",
+        "probability_event_1_explanation": "五派一致支持事业跃迁，已按结构先验上调，未低于 55% baseline",
         "probability_event_2_domain": "财富变化",
         "probability_event_2_window": "2025–2027",
-        "probability_event_2_range": "58%–75%",
+        "probability_event_2_range": normalize_v6_probability_band((65, 75)),
         "probability_event_2_confidence_state": "中置信",
         "probability_event_2_star": "★★★★☆",
         "probability_event_2_explanation": "财库与食伤生财结构成立，按主候选区间展示并保留反馈校准",
         "probability_event_3_domain": "婚姻变化",
         "probability_event_3_window": "2026–2027",
-        "probability_event_3_range": "55%–72%",
+        "probability_event_3_range": normalize_v6_probability_band((65, 72)),
         "probability_event_3_confidence_state": "中置信",
         "probability_event_3_star": "★★★☆☆",
-        "probability_event_3_explanation": "夫妻宫受冲合影响，按受限概率展示关系压力窗口",
+        "probability_event_3_explanation": "夫妻宫受冲合影响，按主候选概率区间展示关系压力窗口",
     })
-    out["report_schema_version"] = "v6"
-    out["display_policy"] = "归档置顶、中文主字段、概率 baseline、五派一致 prior boost、待反馈关键流年独立输出"
+    out["report_schema_version"] = "v6.2"
+    out["display_policy"] = "归档置顶、中文主字段、55% baseline、主候选 65%–85%、五派一致 prior boost、待反馈关键流年独立输出"
     return out
 
 

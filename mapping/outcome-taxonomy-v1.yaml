@@ -54,35 +54,61 @@ domains:
       L12-L14: 顶层教育平台、顶级竞赛或学术稀缺成果
     indicators:
       degree_level:
-        label: 学历/学位层级
+        label: 学历层次
+        display_only_cn: true
+        allowed_values_cn: [文盲, 小学, 初中, 中专, 普高, 高职高专, 大专, 民办本科, 普通本科, 一本, 省重点, "211", "985", C9, 清北, 硕士, 博士, 海外顶尖]
         levels:
-          L0-L2: 低学历或学历严重受阻
-          L3-L5: 初高中、中职、技能学历或同等经验
-          L6-L8: 专科、普通本科、应用型本科或同等证照能力
-          L9-L11: 重点本科、硕士或高质量专业训练
-          L12-L14: 顶级院校、博士、海外头部或顶尖学术路径
-        examples:
-          L6: vocational_college_or_junior_college
-          L8: ordinary_undergrad
-          L10: key_undergrad_or_master
-          L12: project_985_or_c9_candidate
-          L14: top_global_or_tsinghua_peking_with_strong_feedback
+          L0-L2: 文盲、小学或学历严重受阻
+          L3-L5: 初中、中专、普高或技能学历
+          L6-L8: 高职高专、大专、民办本科或普通本科
+          L9-L11: 一本、省重点、211、985、硕士或高质量专业训练
+          L12-L14: C9、清北、博士、海外顶尖或等价顶层学术路径
+        examples_cn:
+          L0: 文盲
+          L2: 小学
+          L3: 初中
+          L4: 中专
+          L5: 普高
+          L6: 高职高专或大专
+          L8: 普通本科
+          L10: 一本、省重点或硕士
+          L11: 211 或 985 候选
+          L12: C9 或博士候选
+          L14: 清北或海外顶尖
         feedback_fields: [highest_degree, graduation_school, degree_year, certificate_records]
         falsifier: 反馈为初中及以下且无证照或后续教育时，下修至 L3-L5。
       institution_level:
-        label: 学校/教育平台层级
+        label: 学校层次
+        display_only_cn: true
+        allowed_values_cn: [普通, 省重点, 国家重点, 双一流, "211", "985", C9, 清北, 海外前五十, 海外前十]
         levels:
           L0-L5: 普通或弱平台
-          L6-L8: 普通专科、本科或区域较好平台
-          L9-L11: 省重点、双一流、211/985 候选平台
-          L12-L14: C9、清北、海外头部或等价顶级平台
-        examples:
-          L8: ordinary_undergrad
-          L10: provincial_key_or_double_first_class
-          L11: project_211_or_985_candidate
-          L13: c9_or_top_global_candidate
+          L6-L8: 普通专科、本科、国家重点职业院校或区域较好平台
+          L9-L11: 省重点、国家重点、双一流、211/985 候选平台
+          L12-L14: C9、清北、海外前五十、海外前十或等价顶级平台
+        examples_cn:
+          L6: 普通
+          L8: 国家重点职业院校或区域较好平台
+          L10: 省重点、国家重点或双一流
+          L11: 211 或 985 候选
+          L13: C9、清北或海外前五十候选
+          L14: 海外前十候选
         feedback_fields: [school_name, school_tier, admission_type]
-        falsifier: 反馈学校平台明显低于候选区间时，下修该指标，不必同步下修学习能力。
+        falsifier: 反馈学校平台明显低于候选区间时，下修该指标，不必同步下修学历层次。
+      academic_performance:
+        label: 成绩水平
+        display_only_cn: true
+        allowed_values_cn: [差, 中下, 普通, 中上, 优秀, 尖子生, 竞赛级]
+        levels:
+          L0-L3: 差或长期低于同阶段要求
+          L4-L5: 中下
+          L6-L7: 普通
+          L8-L9: 中上
+          L10-L11: 优秀
+          L12-L13: 尖子生
+          L14: 竞赛级
+        feedback_fields: [exam_scores, class_rank, competition_records, learning_feedback]
+        falsifier: 关键考试、排名或竞赛反馈长期低于候选区间时下修。
       learning_ability:
         label: 学习理解与迁移能力
         levels:
@@ -122,6 +148,8 @@ domains:
       field_type:
         label: 专业/方向类型
         categorical: true
+        display_only_cn: true
+        allowed_values_cn: [人文, 财经, 工程, 技术, 医学, 法律, 教育, 艺术, 商业, 公职服务, 其他]
         allowed_values: [humanities, finance, engineering, technology, medicine, law, education, art, business, public_service, other]
         feedback_fields: [major, field, occupation_relation]
 
@@ -136,7 +164,9 @@ domains:
       L12-L14: 行业头部、全国级影响或世界级成就
     indicators:
       occupation_level:
-        label: 职业身份/岗位层级
+        label: 职业层级
+        display_only_cn: true
+        allowed_values_cn: [无业, 普通工人, 技术员, 技工, 职员, 基层管理, 中层管理, 高层管理, 小创业者, 中型创业者, 大型创业者, 本地名人, 行业领袖, 全国级, 世界级]
         levels:
           L0-L5: 无业、普通执行岗或低技能岗位
           L6-L8: 技术岗、专业岗、基层管理或小经营
@@ -150,7 +180,9 @@ domains:
         feedback_fields: [occupation, job_title, business_scale]
         falsifier: 长期只处于普通执行岗且无项目/管理权时下修。
       organization_level:
-        label: 组织/平台层级
+        label: 单位层级
+        display_only_cn: true
+        allowed_values_cn: [小民企, 中民企, 上市公司, 国企, 央企, 政府, 事业单位, 头部公司, 世界五百强]
         levels:
           L0-L5: 小平台或不稳定组织
           L6-L8: 普通公司、事业单位、稳定经营平台
@@ -176,7 +208,9 @@ domains:
         feedback_fields: [team_size, budget_scope, management_title]
         falsifier: 无团队、无预算、无项目决策权时下修。
       authority_level:
-        label: 正式权力/职级层级
+        label: 权力层级
+        display_only_cn: true
+        allowed_values_cn: [无, 组长, 部门经理, 主任, 局级, 厅级, 省级, 部级]
         levels:
           L0-L6: 无正式权力或普通职级
           L7-L9: 基层负责人、科室/部门权限
@@ -188,7 +222,7 @@ domains:
         feedback_fields: [rank, formal_authority, appointment_records]
         falsifier: 无正式任命或制度权限时不得高估。
       achievement_level:
-        label: 事业成果层级
+        label: 成就层级
         levels:
           L0-L5: 成果弱或职责不稳定
           L6-L8: 常规业绩、项目完成或稳定专业积累
@@ -238,7 +272,9 @@ domains:
         feedback_fields: [annual_income_band, net_asset_band, debt_status]
         falsifier: 高收入但高负债且无净资产时，不得高估综合财富。
       income_level:
-        label: 年收入区间
+        label: 年收入
+        display_only_cn: true
+        allowed_values_cn: [五万以下, 五到十万, 十到二十万, 二十到五十万, 五十到一百万, 一百万到三百万, 三百万到一千万, 一千万到三千万, 三千万以上]
         levels:
           L0-L3: 低收入或收入缺失
           L4-L6: 低至普通收入
@@ -256,7 +292,9 @@ domains:
         feedback_fields: [annual_income_band, income_sources]
         falsifier: 实际年收入低于候选两档以上时下修。
       asset_level:
-        label: 净资产区间
+        label: 资产等级
+        display_only_cn: true
+        allowed_values_cn: [负资产, 零到五十万, 五十到二百万, 二百万到五百万, 五百万到一千万, 一千万到五千万, 五千万到一亿, 一亿到十亿, 十亿以上]
         levels:
           L0-L3: 负资产或低资产
           L4-L6: 基础资产积累
@@ -282,6 +320,8 @@ domains:
         feedback_fields: [income_sources, asset_sources]
       wealth_stability:
         label: 财富稳定性
+        display_only_cn: true
+        allowed_values_cn: [不稳定, 波动, 稳定, 稳定增长, 爆发式增长, 周期性]
         levels:
           L0-L5: 不稳定、负债或大起大落
           L6-L8: 基本稳定，有周期性波动
@@ -319,7 +359,9 @@ domains:
         feedback_fields: [relationship_history, dating_pattern, key_relationship_years]
         falsifier: 长期无恋爱且无婚姻反馈时下修缘分机会。
       relationship_status:
-        label: 关系/婚姻状态
+        label: 感情状态
+        display_only_cn: true
+        allowed_values_cn: [单身, 多段关系, 晚婚, 早婚, 离异, 再婚, 终身单身]
         levels:
           L0-L5: 单身、离异、反复分合或关系未稳
           L6-L8: 稳定恋爱、婚姻或迟婚后稳定候选
@@ -347,6 +389,8 @@ domains:
         falsifier: 已离异或长期分居时下修稳定性。
       marriage_quality:
         label: 婚姻质量
+        display_only_cn: true
+        allowed_values_cn: [差, 不稳定, 普通, 和谐, 优秀]
         levels:
           L0-L5: 低质量、消耗或明显不满
           L6-L8: 普通至较好，需现实经营
@@ -360,7 +404,14 @@ domains:
         feedback_fields: [relationship_satisfaction, support_level, conflict_frequency]
         falsifier: 反馈长期冷战、家暴或重大背叛时下修。
       spouse_quality:
-        label: 配偶综合质量
+        label: 配偶层次
+        display_only_cn: true
+        sub_indicators:
+          spouse_education: {label: 配偶教育, maps_to: education.degree_level}
+          spouse_career: {label: 配偶事业, maps_to: career.occupation_level}
+          spouse_wealth: {label: 配偶财富, maps_to: wealth.asset_level}
+          spouse_appearance: {label: 配偶外貌, allowed_values_cn: [普通, 有吸引力, 漂亮/英俊, 出众]}
+          spouse_temperament: {label: 配偶气质}
         levels:
           L0-L5: 配偶资源或支持不足
           L6-L8: 普通至较好配偶画像
@@ -374,6 +425,8 @@ domains:
       family_structure:
         label: 家庭结构
         categorical: true
+        display_only_cn: true
+        allowed_values_cn: [核心家庭, 大家庭, 重组家庭, 异地, 同居稳定, 分居, 再婚家庭, 无子女, 有子女, 其他]
         allowed_values: [nuclear_family, extended_family, blended_family, long_distance, cohabitation, separated, remarried_family, childless, with_children, other]
         feedback_fields: [children, living_arrangement, family_pressure]
 
@@ -389,7 +442,9 @@ domains:
       L12-L14: 强体质、长寿倾向或健康管理极佳
     indicators:
       physical_condition:
-        label: 体质/基础健康
+        label: 体质
+        display_only_cn: true
+        allowed_values_cn: [弱, 普通, 强, 运动型]
         levels:
           L0-L5: 弱、易病或基础承载不足
           L6-L8: 普通至较好，注意阶段性风险
@@ -403,7 +458,9 @@ domains:
         feedback_fields: [constitution, medical_history, exercise_level]
         falsifier: 重大病史或长期体弱反馈时下修。
       major_disease_risk:
-        label: 重大疾病风险
+        label: 疾病风险
+        display_only_cn: true
+        risk_types_cn: [心血管, 消化, 呼吸, 内分泌, 肝, 肾, 神经, 癌症, 意外]
         levels:
           L0-L3: 高风险或已有重大病史
           L4-L6: 偏高风险，需长期筛查
@@ -425,7 +482,8 @@ domains:
         feedback_fields: [chronic_conditions, sleep, digestion, metabolic_records]
         falsifier: 长期慢病且影响生活时下修。
       mental_health:
-        label: 心理/情绪健康
+        label: 心理健康
+        display_only_cn: true
         levels:
           L0-L5: 情绪压力、焦虑抑郁或睡眠问题明显
           L6-L8: 普通压力水平，可调节
@@ -450,6 +508,8 @@ domains:
         falsifier: 已发生严重事故时按事实更新风险窗口。
       longevity_risk:
         label: 寿元风险/长寿倾向
+        display_only_cn: true
+        allowed_values_cn: [低风险, 普通, 高风险, 长寿倾向]
         no_death_age_prediction: true
         levels:
           L0-L3: 高健康风险，不输出具体年龄

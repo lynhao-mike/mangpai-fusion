@@ -105,6 +105,16 @@
 
 ---
 
+## 性格与行为模式
+
+| 指标 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|
+| 行为模式 | {{ personality_15tier_layer }}；{{ personality_15tier_meaning }} | {{ personality_15tier_evidence }} | {{ personality_15tier_confidence }} | {{ personality_15tier_timing }} | 长期行为模式、关键决策、压力反应 |
+
+> 性格只作为结构解释变量，不进入主要事项概率层，也不作为 outcome taxonomy 主标签。
+
+---
+
 # 📊 受限概率提示（校准增强版）
 
 > 概率仅用于可反馈事件，统一按 0%–100% 区间展示；初始概率 baseline 不低于 45%，无反馈主候选默认进入 55%–75% 区间。五派一致时触发 prior boost，禁止全局低置信压缩策略。性格、格局高低、总体气质不进入概率层。
@@ -119,16 +129,57 @@
 
 ## 主要事项结果分类判断表
 
-> 本表采用当前引擎已稳定产出的 15 层判断字段，并按 v6 要求使用中文主字段；每个事项同时展示判断结果、证据链、置信度与应期。
+> 本表按 outcome taxonomy 拆成五大现实事项与可反馈二级指标。报告只展示中文字段；机器标签仅保留在契约、映射与内部结构中，不在报告正文显示。
 
-| 事项 | 判断结果 | 概率 | 置信状态 | 星级 | 证据链 | 应期 | 证伪 / 反馈 |
-|---|---|---|---|---|---|---|---|
-| 学业 | {{ education_15tier_layer }}；{{ education_15tier_meaning }}；界限：{{ education_15tier_boundary }}，{{ education_15tier_boundary_explain }} | {{ education_probability_range }} | {{ education_confidence_state }} | {{ education_star_display }} | {{ education_15tier_evidence }} | {{ education_15tier_timing }} | 以学历层次、考试节点、专业路径与学习反馈校准 |
-| 事业 | {{ career_15tier_layer }}；{{ career_15tier_meaning }}；界限：{{ career_15tier_boundary }}，{{ career_15tier_boundary_explain }} | {{ career_probability_range }} | {{ career_confidence_state }} | {{ career_star_display }} | {{ career_15tier_evidence }} | {{ career_15tier_timing }} | 以职业平台、权责变化、收入结构与岗位变化校准 |
-| 财富 | {{ wealth_15tier_layer }}；{{ wealth_15tier_meaning }}；界限：{{ wealth_15tier_boundary }}，{{ wealth_15tier_boundary_explain }} | {{ wealth_probability_range }} | {{ wealth_confidence_state }} | {{ wealth_star_display }} | {{ wealth_15tier_evidence }} | {{ wealth_15tier_timing }} | 以收入、资产、现金流与负债状态校准 |
-| 婚姻 | {{ marriage_15tier_layer }}；{{ marriage_15tier_meaning }}；界限：{{ marriage_15tier_boundary }}，{{ marriage_15tier_boundary_explain }} | {{ marriage_probability_range }} | {{ marriage_confidence_state }} | {{ marriage_star_display }} | {{ marriage_15tier_evidence }} | {{ marriage_15tier_timing }} | 以恋爱、结婚、分合、家庭结构反馈校准 |
-| 健康 | {{ health_15tier_layer }}；{{ health_15tier_meaning }}；界限：{{ health_15tier_boundary }}，{{ health_15tier_boundary_explain }} | {{ health_probability_range }} | {{ health_confidence_state }} | {{ health_star_display }} | {{ health_15tier_evidence }} | {{ health_15tier_timing }} | 以体检、慢病、意外、作息与压力反馈校准 |
-| 性格 | {{ personality_15tier_layer }}；{{ personality_15tier_meaning }}；界限：{{ personality_15tier_boundary }}，{{ personality_15tier_boundary_explain }} | 不进入概率层 | {{ personality_15tier_confidence }} | {{ energy_star }} | {{ personality_15tier_evidence }} | {{ personality_15tier_timing }} | 以长期行为模式与关键决策反馈校准 |
+### 学业
+
+| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|---|
+| 学历层次 | {{ education_degree_result }} | {{ education_degree_range }} | {{ education_15tier_evidence }} | {{ education_15tier_confidence }} | {{ education_15tier_timing }} | 最高学历、毕业时间、证照、升学节点 |
+| 学校层次 | {{ education_institution_result }} | {{ education_institution_range }} | {{ education_domain_process }} | {{ education_15tier_confidence }} | {{ education_15tier_timing }} | 学校名称、学校层级、录取方式、转学或深造记录 |
+| 成绩水平 | {{ education_performance_result }} | {{ education_performance_range }} | {{ education_domain_process }} | {{ education_15tier_confidence }} | {{ education_15tier_timing }} | 分数、排名、竞赛、证书、长期学习反馈 |
+| 专业/方向类型 | {{ education_field_result }} | {{ education_field_range }} | {{ education_domain_process }} | {{ education_15tier_confidence }} | {{ education_15tier_timing }} | 专业方向、职业关联、后续技能迁移 |
+
+### 事业
+
+| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|---|
+| 职业层级 | {{ career_occupation_result }} | {{ career_occupation_range }} | {{ career_15tier_evidence }} | {{ career_15tier_confidence }} | {{ career_15tier_timing }} | 职业、岗位、头衔、经营规模、转岗记录 |
+| 单位层级 | {{ career_organization_result }} | {{ career_organization_range }} | {{ career_domain_process }} | {{ career_15tier_confidence }} | {{ career_15tier_timing }} | 单位性质、平台规模、组织层级、行业地位 |
+| 权力层级 | {{ career_authority_result }} | {{ career_authority_range }} | 官命取法 {{ guanming_type }}；{{ career_domain_process }} | {{ career_15tier_confidence }} | {{ career_15tier_timing }} | 正式任命、管理半径、预算权、资源调度权 |
+| 成就层级 | {{ career_achievement_result }} | {{ career_achievement_range }} | 行业方向 {{ industry_pointers_str }}；{{ career_domain_process }} | {{ career_15tier_confidence }} | {{ career_15tier_timing }} | 项目成果、业绩、奖项、客户或行业影响 |
+
+### 财富
+
+| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|---|
+| 年收入 | {{ wealth_income_result }} | {{ wealth_income_range }} | {{ wealth_15tier_evidence }} | {{ wealth_15tier_confidence }} | {{ wealth_15tier_timing }} | 年收入区间、收入来源、经营流水、薪酬变化 |
+| 资产等级 | {{ wealth_asset_result }} | {{ wealth_asset_range }} | 财富天花板 {{ wealth_ceiling }}；{{ wealth_domain_process }} | {{ wealth_15tier_confidence }} | {{ wealth_15tier_timing }} | 净资产、房产、投资、负债、现金储备 |
+| 财富稳定性 | {{ wealth_stability_result }} | {{ wealth_stability_range }} | 财富等级 {{ caifu_type }}（第 {{ caifu_rank }} 等）；{{ wealth_domain_process }} | {{ wealth_15tier_confidence }} | {{ wealth_15tier_timing }} | 现金流波动、负债压力、收入周期、风险事件 |
+
+### 婚姻
+
+| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|---|
+| 感情状态 | {{ marriage_relationship_result }} | {{ marriage_relationship_range }} | {{ marriage_15tier_evidence }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 恋爱次数、结婚时间、分合、离异、再婚 |
+| 婚姻质量 | {{ marriage_quality_result }} | {{ marriage_quality_range }} | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 满意度、冲突频率、支持度、长期稳定性 |
+| 配偶教育 | {{ marriage_spouse_education_result }} | 参考学业层次映射 | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 配偶学历、毕业院校、证照与学习背景 |
+| 配偶事业 | {{ marriage_spouse_career_result }} | 参考事业层级映射 | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 配偶职业、单位、权责、事业稳定性 |
+| 配偶财富 | {{ marriage_spouse_wealth_result }} | 参考财富层级映射 | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 配偶收入、资产、家庭资源与负债状态 |
+| 配偶外貌 | {{ marriage_spouse_appearance_result }} | {{ marriage_spouse_appearance_range }} | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 外貌吸引力、身形气质、现实反馈 |
+| 配偶气质 | {{ marriage_spouse_temperament_result }} | 温和、强势、稳重、活跃、敏感等中文画像 | {{ marriage_domain_process }} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 性情、沟通方式、压力反应、相处模式 |
+| 家庭结构 | {{ marriage_family_result }} | {{ marriage_family_range }} | {% if marriage_picture %}初婚窗口 {{ marriage_window_str }}；{{ marriage_picture_extra }}{% endif %}{% if not marriage_picture %}待结合反馈补充{% endif %} | {{ marriage_15tier_confidence }} | {{ marriage_15tier_timing }} | 子女、居住结构、双方家庭牵连、再婚或同居状态 |
+
+### 健康
+
+> 健康章禁止预测具体死亡年龄；寿元只表达风险等级、健康管理窗口或长寿倾向。
+
+| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |
+|---|---|---|---|---|---|---|
+| 体质 | {{ health_physical_result }} | {{ health_physical_range }} | {{ health_15tier_evidence }} | {{ health_15tier_confidence }} | {{ health_15tier_timing }} | 体检、病史、运动水平、恢复力 |
+| 疾病风险 | {{ health_disease_result }} | {{ health_disease_range }} | {% if support_health %}见健康旁证{% endif %}{% if not support_health %}需结合体检继续校准{% endif %}；{{ health_domain_process }} | {{ health_15tier_confidence }} | {{ health_15tier_timing }} | 体检异常、家族史、慢病、意外伤病 |
+| 心理健康 | {{ health_mental_result }} | {{ health_mental_range }} | {{ health_domain_process }} | {{ health_15tier_confidence }} | {{ health_15tier_timing }} | 压力、睡眠、情绪、心理诊疗或长期状态 |
+| 寿元风险/长寿倾向 | {{ health_longevity_result }} | {{ health_longevity_range }} | {{ health_domain_process }} | {{ health_15tier_confidence }} | {{ health_15tier_timing }} | 重大健康事件、生活方式、家族长寿反馈；禁止反推死亡年龄 |
 
 ---
 

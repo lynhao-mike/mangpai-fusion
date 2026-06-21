@@ -760,27 +760,46 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
 
 
 def _lint_v6_report_structure(md: str, res: LintResult) -> None:
-    """Validate v6 display-only report structure without blocking legacy markdown."""
+    """Validate v6.2 display-only report structure without blocking legacy markdown."""
     if not md.startswith("# 📁 归档信息（可点击导航）"):
         return
 
     required = [
-        ("# 📊 受限概率提示（校准增强版）", "E-V6-PROB", "缺少 v6 受限概率提示独立模块"),
+        ("v6.2", "E-V6-SCHEMA", "缺少 v6.2 展示规范标识"),
+        ("# 📊 受限概率提示（校准增强版）", "E-V6-PROB", "缺少 v6.2 受限概率提示独立模块"),
         ("# 📌 待反馈关键流年与事件（重点校准区）", "E-V6-FEEDBACK", "缺少待反馈关键流年与事件独立模块"),
-        ("| 事件领域 | 时间窗口 | 概率（0–100%） | 置信状态 | 星级 | 说明 |", "E-V6-PROB-TABLE", "受限概率表头未使用 v6 中文字段"),
+        ("## 一、重点流年（必须回访）", "E-V6-FEEDBACK-YEARS", "缺少重点流年回访子模块"),
+        ("## 二、关键事件验证点", "E-V6-FEEDBACK-EVENTS", "缺少关键事件验证点子模块"),
+        ("## 三、反馈优先级", "E-V6-FEEDBACK-PRIORITY", "缺少反馈优先级子模块"),
+        ("| 事件领域 | 时间窗口 | 概率（0–100%） | 置信状态 | 星级 | 说明 |", "E-V6-PROB-TABLE", "受限概率表头未使用 v6.2 中文字段"),
+        ("| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |", "E-V6-DOMAIN-TABLE", "缺少 v6.2 领域中文分项表头"),
+        ("- ⭐⭐⭐⭐⭐ 高优先：事业 / 财富 / 婚姻变化", "E-V6-FEEDBACK-HIGH", "缺少高优先反馈项"),
     ]
     for needle, code, message in required:
         if needle not in md:
             res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 report_schema='v6'。")
 
-    forbidden_headers = ("| domain |", "| level |", "| confidence |", "| probability |")
+    domain_sections = ("### 学业", "### 事业", "### 财富", "### 婚姻", "### 健康")
+    for section in domain_sections:
+        if section not in md:
+            res.add(
+                Severity.ERROR,
+                "E-V6-DOMAIN-INDEPENDENT",
+                f"v6.2 缺少独立领域表格：{section}",
+                suggestion="按学业 / 事业 / 财富 / 婚姻 / 健康分别输出独立表格。",
+            )
+
+    forbidden_headers = (
+        "| domain |", "| level |", "| confidence |", "| probability |",
+        "| explanation |", "| evidence |", "| prior |", "| likelihood |", "| posterior |",
+    )
     lowered = md.lower()
     for header in forbidden_headers:
         if header in lowered:
             res.add(
                 Severity.ERROR,
                 "E-V6-CN-FIELDS",
-                f"v6 展示层表格主字段禁止英文：{header}",
+                f"v6.2 展示层表格主字段禁止英文：{header}",
                 suggestion="将展示字段映射为中文主字段，可在括号中保留英文术语。",
             )
 
@@ -788,7 +807,7 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         res.add(
             Severity.ERROR,
             "E-V6-UNRENDERED-VAR",
-            "v6 正式报告存在未渲染模板变量",
+            "v6.2 正式报告存在未渲染模板变量",
             suggestion="补齐 render_report 上下文字段，或使用默认展示文本兜底后重渲染。",
         )
 
@@ -803,12 +822,12 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         probability_cell = cells[2]
         for m in re.finditer(r"(\d{1,3})%", probability_cell):
             pct = int(m.group(1))
-            if pct < 45:
+            if pct < 55:
                 res.add(
                     Severity.ERROR,
                     "E-V6-PROB-BASELINE",
-                    f"v6 受限概率低于 45% baseline：{pct}%",
-                    suggestion="按 baseline / prior boost 规则重算展示概率。",
+                    f"v6.2 受限概率低于 55% baseline：{pct}%",
+                    suggestion="按 55% baseline / 65%–85% 主候选 / prior boost 规则重算展示概率。",
                 )
 
 
