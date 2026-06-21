@@ -760,58 +760,60 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
 
 
 def _lint_v6_report_structure(md: str, res: LintResult) -> None:
-    """Validate v6.2 display-only report structure without blocking legacy markdown."""
-    if not md.startswith("# 📁 归档信息（可点击导航）"):
+    """Validate v7.6 display-only report structure without blocking legacy markdown."""
+    if not md.startswith("# 📌 归档信息与命盘结构"):
         return
 
     required = [
-        ("v6.2", "E-V6-SCHEMA", "缺少 v6.2 展示规范标识"),
-        ("# 📊 受限概率提示（校准增强版）", "E-V6-PROB", "缺少 v6.2 受限概率提示独立模块"),
-        ("# 📌 待反馈关键流年与事件（重点校准区）", "E-V6-FEEDBACK", "缺少待反馈关键流年与事件独立模块"),
-        ("## 一、重点流年（必须回访）", "E-V6-FEEDBACK-YEARS", "缺少重点流年回访子模块"),
-        ("## 二、关键事件验证点", "E-V6-FEEDBACK-EVENTS", "缺少关键事件验证点子模块"),
-        ("## 三、反馈优先级", "E-V6-FEEDBACK-PRIORITY", "缺少反馈优先级子模块"),
-        ("| 事件领域 | 时间窗口 | 概率（0–100%） | 置信状态 | 星级 | 说明 |", "E-V6-PROB-TABLE", "受限概率表头未使用 v6.2 中文字段"),
-        ("| 指标 | 判断结果 | 候选范围 | 证据链 | 置信度 | 应期 | 反馈校准 |", "E-V6-DOMAIN-TABLE", "缺少 v6.2 领域中文分项表头"),
-        ("- ⭐⭐⭐⭐⭐ 高优先：事业 / 财富 / 婚姻变化", "E-V6-FEEDBACK-HIGH", "缺少高优先反馈项"),
+        ("分析版本：v7.6", "E-V76-SCHEMA", "缺少 v7.6 展示规范标识"),
+        ("## 五派裁决与共识融合总论", "E-V76-SCHOOLS", "缺少五派裁决与共识融合总论"),
+        ("## 命局做功与人生主线", "E-V76-MAINLINE", "缺少命局做功与人生主线"),
+        ("## 主要事项结构", "E-V76-DOMAINS", "缺少主要事项结构"),
+        ("## 受限概率系统", "E-V76-PROB", "缺少受限概率系统"),
+        ("## 待反馈关键流年与事件", "E-V76-FEEDBACK", "缺少待反馈关键流年与事件"),
+        ("## 系统级约束", "E-V76-CONSTRAINTS", "缺少系统级约束"),
+        ("| 事件领域 | 具体应事 | 时间窗口 | 概率 | 置信状态 | 星级 |", "E-V76-PROB-TABLE", "受限概率表头未使用 v7.6 中文字段"),
+        ("| 指标 | 稳定枚举 | 判断结果 | 证据链 | 置信度 | 应期 | 反馈回写 |", "E-V76-DOMAIN-TABLE", "缺少 v7.6 领域中文结构表头"),
+        ("全部展示字段必须中文化", "E-V76-CN-CONSTRAINT", "缺少全中文字段约束"),
     ]
     for needle, code, message in required:
         if needle not in md:
-            res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 report_schema='v6'。")
+            res.add(Severity.ERROR, code, message, suggestion="重跑 render_report 并使用 v7.6 中文字段模板。")
 
-    domain_sections = ("### 学业", "### 事业", "### 财富", "### 婚姻", "### 健康")
+    domain_sections = ("### 学业结构", "### 事业结构", "### 财富结构", "### 婚姻结构", "### 健康结构")
     for section in domain_sections:
         if section not in md:
             res.add(
                 Severity.ERROR,
-                "E-V6-DOMAIN-INDEPENDENT",
-                f"v6.2 缺少独立领域表格：{section}",
-                suggestion="按学业 / 事业 / 财富 / 婚姻 / 健康分别输出独立表格。",
+                "E-V76-DOMAIN-INDEPENDENT",
+                f"v7.6 缺少独立领域结构：{section}",
+                suggestion="按学业 / 事业 / 财富 / 婚姻 / 健康分别输出同级结构。",
             )
 
     forbidden_headers = (
         "| domain |", "| level |", "| confidence |", "| probability |",
         "| explanation |", "| evidence |", "| prior |", "| likelihood |", "| posterior |",
+        "case_id", "schema", "outcome taxonomy", "baseline", "boost",
     )
     lowered = md.lower()
     for header in forbidden_headers:
         if header in lowered:
             res.add(
                 Severity.ERROR,
-                "E-V6-CN-FIELDS",
-                f"v6.2 展示层表格主字段禁止英文：{header}",
-                suggestion="将展示字段映射为中文主字段，可在括号中保留英文术语。",
+                "E-V76-CN-FIELDS",
+                f"v7.6 展示层禁止英文术语或编码字段：{header}",
+                suggestion="将展示字段、结构字段和说明全部改为中文，不在括号中保留英文编码。",
             )
 
     if re.search(r"\{\{\s*[^{}]+?\s*\}\}", md):
         res.add(
             Severity.ERROR,
-            "E-V6-UNRENDERED-VAR",
-            "v6.2 正式报告存在未渲染模板变量",
+            "E-V76-UNRENDERED-VAR",
+            "v7.6 正式报告存在未渲染模板变量",
             suggestion="补齐 render_report 上下文字段，或使用默认展示文本兜底后重渲染。",
         )
 
-    probability_section = md.split("# 📊 受限概率提示（校准增强版）", 1)[-1].split("---", 1)[0]
+    probability_section = md.split("## 受限概率系统", 1)[-1].split("---", 1)[0]
     for line in probability_section.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|") or "---" in stripped or "事件领域" in stripped:
@@ -825,9 +827,9 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
             if pct < 55:
                 res.add(
                     Severity.ERROR,
-                    "E-V6-PROB-BASELINE",
-                    f"v6.2 受限概率低于 55% baseline：{pct}%",
-                    suggestion="按 55% baseline / 65%–85% 主候选 / prior boost 规则重算展示概率。",
+                    "E-V76-PROB-BASELINE",
+                    f"v7.6 受限概率低于 55% 基线：{pct}%",
+                    suggestion="按中文概率基线与主候选区间重算展示概率。",
                 )
 
 

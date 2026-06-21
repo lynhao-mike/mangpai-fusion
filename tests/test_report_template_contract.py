@@ -9,46 +9,44 @@ EVENT_ARCHIVE = ROOT / "tools" / "event_archive.py"
 
 
 REQUIRED_UNIFIED_HEADINGS = [
-    "# 命理师内容报告（统一版）",
-    "## 基本盘面",
-    "## 五派总论",
+    "# 📌 归档信息与命盘结构",
+    "## 五派裁决与共识融合总论",
+    "## 命局做功与人生主线",
     "## 性格与行为模式",
-    "## 主要事项结果分类判断表",
-    "### 学业",
-    "### 事业",
-    "### 财富",
-    "### 婚姻",
-    "### 健康",
-    "## 多派共识与互补结论",
-    "# 📌 待反馈关键流年与事件（重点校准区）",
-    "## 报告边界与风险提示",
-    "## 归档与反馈入口",
+    "## 主要事项结构",
+    "### 学业结构",
+    "### 事业结构",
+    "### 财富结构",
+    "### 婚姻结构",
+    "### 健康结构",
+    "## 受限概率系统",
+    "## 待反馈关键流年与事件",
+    "## 系统级约束",
 ]
 
 REQUIRED_OUTCOME_CN_FIELDS = [
     "学历层次",
-    "学校层次",
-    "成绩水平",
-    "专业/方向类型",
+    "学校层级",
+    "学业表现",
+    "学科倾向",
     "职业层级",
     "单位层级",
     "权力层级",
-    "成就层级",
-    "年收入",
-    "资产等级",
-    "财富稳定性",
+    "成就等级",
+    "收入层级",
+    "资产层级",
+    "财富状态",
     "感情状态",
     "婚姻质量",
-    "配偶教育",
+    "配偶学历",
     "配偶事业",
     "配偶财富",
     "配偶外貌",
     "配偶气质",
-    "家庭结构",
     "体质",
     "疾病风险",
-    "心理健康",
-    "寿元风险/长寿倾向",
+    "健康状态",
+    "寿元倾向",
 ]
 
 FORBIDDEN_REPORT_MACHINE_FIELDS = [
@@ -77,48 +75,46 @@ def _template_text(path: Path = TEMPLATE_V5) -> str:
 
 
 def test_report_templates_keep_unified_headings() -> None:
-    """防止统一报告模板漂移掉标准章节契约。"""
+    """防止统一报告模板漂移掉 v7.6 标准章节契约。"""
 
     for template in (TEMPLATE_V5, TEMPLATE_V6):
         text = _template_text(template)
         for heading in REQUIRED_UNIFIED_HEADINGS:
-            if heading == "## 五派总论":
-                assert "## 命局核心结论" in text or "## v6.2 五派裁决总论" in text
-                continue
             assert heading in text, f"{template.name}: {heading}"
-        assert "命理师内容报告（统一版）" in text
+        assert "分析版本：v7.6" in text
 
 
 def test_report_v5_keeps_input_context_compatibility_rows() -> None:
-    """render_from_output 必须能被静态模板保障输出四柱和大运上下文。"""
+    """静态模板必须保障输出四柱、大运与归档上下文。"""
 
     text = _template_text(TEMPLATE_V5)
 
-    assert "| 案例编号 | {{ case_id }} |" in text
-    assert "| 命式 | {{ qian_kun }}造 |" in text
-    assert "| 大运 | {{ dayun_str }} |" in text
-    assert "# 命理师内容报告（统一版）· {{ case_id }} · {{ qian_kun }}" in text
+    assert "- 案例编号：{{ 案例编号 }}" in text
+    assert "- 命式：{{ 命式 }}造" in text
+    assert "- 当前大运：{{ 当前大运 }}" in text
+    assert "| 天干 | {{ 年干 }} | {{ 月干 }} | {{ 日干 }} | {{ 时干 }} |" in text
+    assert "| 地支 | {{ 年支 }} | {{ 月支 }} | {{ 日支 }} | {{ 时支 }} |" in text
 
 
 def test_report_v5_keeps_key_year_table() -> None:
-    """关键年份表必须保留年份首列，供 smoke 与后续解析器稳定抽取。"""
+    """关键反馈表必须保留时间窗口，供后续解析器稳定抽取。"""
 
     text = _template_text(TEMPLATE_V5)
 
-    assert "# 📌 待反馈关键流年与事件（重点校准区）" in text
-    assert "| 优先级 | 反馈主题 | 时间窗口 | 需要确认的事实 | 校准用途 |" in text
-    assert "{{ probability_event_1_domain }}" in text
+    assert "## 待反馈关键流年与事件" in text
+    assert "| 领域 | 时间窗口 | 具体应事 | 回访要点 |" in text
+    assert "{{ 反馈一领域 }}" in text
 
 
 def test_report_templates_keep_outcome_taxonomy_cn_fields() -> None:
-    """模板必须按中文二级指标展示 outcome taxonomy。"""
+    """模板必须按中文二级指标展示可训练事项分类。"""
 
     for template in (TEMPLATE_V5, TEMPLATE_V6):
         text = _template_text(template)
         for token in REQUIRED_OUTCOME_CN_FIELDS:
             assert token in text, f"{template.name}: {token}"
-        assert "报告只展示中文字段" in text
-        assert "机器标签仅保留在契约、映射与内部结构中" in text
+        assert "全部展示字段必须中文化" in text
+        assert "反馈必须能回写系统" in text
 
 
 def test_report_templates_do_not_show_machine_field_names() -> None:
