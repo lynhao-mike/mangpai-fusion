@@ -185,6 +185,42 @@ def case_report_files(case_dir: Path) -> list[Path]:
     return sorted(set(found))
 
 
+def _group_rows_by_case(rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    by_case: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        by_case[row["case_id"]].append(row)
+    return by_case
+
+
+def _build_case_cache(dirs: list[Path], rows_by_case: dict[str, list[dict[str, Any]]]) -> dict[str, dict[str, Any]]:
+    cache: dict[str, dict[str, Any]] = {}
+    for d in dirs:
+        reports_in_case = case_report_files(d)
+        reports_external = report_files_for_case(d.name)
+        by_sid, normalized_map = load_record_maps(d)
+        idx_ids = statement_index_ids(d)
+        report_v_files = list(d.glob("report_v*.md"))
+        has_records = (d / "statement_records.json").exists()
+        cache[d.name] = {
+            "case_dir": d,
+            "by_sid": by_sid,
+            "normalized_map": normalized_map,
+            "idx_ids": idx_ids,
+            "reports": reports_external + reports_in_case,
+            "trace": {
+                "case_id": d.name,
+                "feedback_rows": len(rows_by_case.get(d.name, [])),
+                "has_report_md": (d / "report.md").exists(),
+                "has_report_v": bool(report_v_files),
+                "has_statement_index": (d / "statement_index.json").exists(),
+                "has_statement_records": has_records,
+                "external_report_count": len(reports_external),
+                "can_trace_to_report": bool(reports_in_case or reports_external),
+            },
+        }
+    return cache
+
+
 def main() -> None:
     META_ROOT.mkdir(parents=True, exist_ok=True)
     dirs = case_dirs()
@@ -192,7 +228,8 @@ def main() -> None:
     for d in dirs:
         rows.extend(extract_feedback_rows(d))
 
-    case_by_id = {d.name: d for d in dirs}
+    rows_by_case = _group_rows_by_case(rows)
+    case_cache = _build_case_cache(dirs, rows_by_case)
     join_stats = Counter()
     root_causes = Counter()
     recoverability = Counter()
@@ -200,31 +237,15 @@ def main() -> None:
     source_stats = Counter()
     verdict_stats = Counter()
 
-    case_trace_rows: list[dict[str, Any]] = []
-    for d in dirs:
-        reports_in_case = case_report_files(d)
-        reports_external = report_files_for_case(d.name)
-        case_rows = [r for r in rows if r["case_id"] == d.name]
-        has_report = bool(reports_in_case or reports_external)
-        has_index = (d / "statement_index.json").exists()
-        has_records = (d / "statement_records.json").exists()
-        case_trace_rows.append({
-            "case_id": d.name,
-            "feedback_rows": len(case_rows),
-            "has_report_md": (d / "report.md").exists(),
-            "has_report_v": bool(list(d.glob("report_v*.md"))),
-            "has_statement_index": has_index,
-            "has_statement_records": has_records,
-            "external_report_count": len(reports_external),
-            "can_trace_to_report": has_report,
-        })
+    case_trace_rows = [case_cache[d.name]["trace"] for d in dirs]
 
     for row in rows:
         verdict_stats[row["verdict"]] += 1
         source_stats[row["source"]] += 1
         reference_stats[row["reference_class"]] += 1
-        d = case_by_id[row["case_id"]]
-        by_sid, normalized_map = load_record_maps(d)
+        cached_case = case_cache[row["case_id"]]
+        by_sid = cached_case["by_sid"]
+        normalized_map = cached_case["normalized_map"]
         sid = row["statement_id"]
         joined = False
         join_reason = ""
@@ -240,11 +261,11 @@ def main() -> None:
         elif normalize_sid(sid) in normalized_map:
             join_reason = "JOIN_B"
         else:
-            idx_ids = statement_index_ids(d)
-            reports = report_files_for_case(d.name) + case_report_files(d)
+            idx_ids = cached_case["idx_ids"]
+            reports = cached_case["reports"]
             if sid in idx_ids and reports:
                 join_reason = "JOIN_D"
-            elif not (d / "statement_records.json").exists():
+            elif not cached_case["trace"]["has_statement_records"]:
                 join_reason = "JOIN_E"
             else:
                 join_reason = "JOIN_A"
@@ -252,7 +273,7 @@ def main() -> None:
         row["join_reason"] = join_reason
         join_stats[join_reason] += 1
 
-        report_trace = next(x for x in case_trace_rows if x["case_id"] == row["case_id"])
+        report_trace = cached_case["trace"]
         if joined:
             rc = "HIGH_RECOVERABLE"
             cause = "JOIN_OK"
@@ -277,7 +298,10 @@ def main() -> None:
         root_causes[cause] += 1
 
     # empty/legacy/unknown source verdict supplement
-    empty_feedback_files = sum(1 for d in dirs if (d / "feedback.md").exists() and not (d / "feedback.md").read_text(encoding="utf-8", errors="ignore").strip())
+    empty_feedback_files = sum(
+        1 for d in dirs
+        if (d / "feedback.md").exists() and not rows_by_case.get(d.name)
+    )
     source_verdict_rows = Counter(verdict_stats)
     source_verdict_rows["empty"] = empty_feedback_files
     source_verdict_rows["legacy"] = source_stats["legacy_unmapped_line"]
