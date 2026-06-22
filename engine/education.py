@@ -12,6 +12,7 @@ from engine.domain.social_clock import build_education_timeline
 SchoolSystem = Literal["ziping", "tiaohou_ditiansui", "blind"]
 SignalKind = Literal["ability", "environment", "exam_pressure", "degree_direct", "interference"]
 Polarity = Literal["positive", "negative", "mixed"]
+EducationMode = Literal["prediction", "calibration"]
 
 METHODOLOGY: dict[SchoolSystem, dict[str, str]] = {
     "ziping": {
@@ -53,6 +54,9 @@ class EducationProfile:
     degree_verdict: str
     institution_verdict: str
     usable_for_final_degree: bool
+    mode: EducationMode
+    probability_range: tuple[int, int] | None = None
+    calibration_notes: list[str] = field(default_factory=list)
     risks: list[str] = field(default_factory=list)
     methodology: dict[SchoolSystem, dict[str, str]] = field(default_factory=lambda: METHODOLOGY)
 
@@ -66,6 +70,9 @@ class EducationProfile:
             "degree_verdict": self.degree_verdict,
             "institution_verdict": self.institution_verdict,
             "usable_for_final_degree": self.usable_for_final_degree,
+            "mode": self.mode,
+            "probability_range": self.probability_range,
+            "calibration_notes": list(self.calibration_notes),
             "risks": list(self.risks),
             "methodology": self.methodology,
         }
@@ -77,10 +84,7 @@ def analyze_education(
     signals: list[EducationSignal | dict[str, Any]],
     anchors: dict[str, Any] | None = None,
 ) -> EducationProfile:
-    """融合子平、滴天髓、盲派信号，输出可用但保守的学业分析。
-
-    核心硬约束：无现实锚点时，不给确定学历/学校层级。
-    """
+    """双模式学业分析：无反馈=概率预测；有反馈=结构解释与校准。"""
     normalized = [_as_signal(item) for item in signals]
     anchors = anchors or {}
     anchor_count = sum(bool(anchors.get(key)) for key in ANCHOR_KEYS)
@@ -100,8 +104,17 @@ def analyze_education(
         risks.append("财星/干扰信号较强：学习能力可能不等于学历兑现。")
 
     usable = anchor_count >= 3
-    degree = _anchored_degree(anchors) if usable else "待反馈候选：仅可判断学习能力，不能确定学历层级"
-    institution = _anchored_institution(anchors) if usable else "待反馈候选：缺录取批次、学校名称或毕业记录"
+    mode: EducationMode = "calibration" if usable else "prediction"
+    if usable:
+        degree = _anchored_degree(anchors)
+        institution = _anchored_institution(anchors)
+        probability = None
+        calibration_notes = _calibration_notes(anchors, ability, environment, exam_pressure, interference)
+    else:
+        probability = _probability_range(ability, environment, exam_pressure, interference, bool(direct_degree))
+        degree = f"概率预测候选：学历兑现概率约 {probability[0]}%–{probability[1]}%，需反馈校准，不能确定学历层级"
+        institution = "概率预测候选：学校层级缺录取批次、学校名称或毕业记录，暂不输出"
+        calibration_notes = []
 
     return EducationProfile(
         timeline=build_education_timeline(birth_year),
@@ -112,6 +125,9 @@ def analyze_education(
         degree_verdict=degree,
         institution_verdict=institution,
         usable_for_final_degree=usable,
+        mode=mode,
+        probability_range=probability,
+        calibration_notes=calibration_notes,
         risks=risks,
     )
 
@@ -133,6 +149,41 @@ def _score(signals: list[EducationSignal], kind: SignalKind) -> float:
     if not values:
         return 0.0
     return round(max(0.0, min(1.0, sum(values) / len(values))), 3)
+
+
+def _probability_range(
+    ability: float,
+    environment: float,
+    exam_pressure: float,
+    interference: float,
+    has_direct_degree_signal: bool,
+) -> tuple[int, int]:
+    score = 0.35 + ability * 0.25 + environment * 0.15 + exam_pressure * 0.10 - interference * 0.10
+    if has_direct_degree_signal:
+        score += 0.05
+    mid = max(35, min(85, int(round(score * 100))))
+    return max(30, mid - 8), min(90, mid + 8)
+
+
+def _calibration_notes(
+    anchors: dict[str, Any],
+    ability: float,
+    environment: float,
+    exam_pressure: float,
+    interference: float,
+) -> list[str]:
+    notes = ["已进入反馈校准模式：现实学历优先于理论信号。"]
+    if anchors.get("highest_degree"):
+        notes.append(f"最高学历反馈：{anchors['highest_degree']}。")
+    if anchors.get("school") or anchors.get("admission"):
+        notes.append(f"学校/录取反馈：{_anchored_institution(anchors)}。")
+    if ability >= 0.6 and not anchors.get("graduation"):
+        notes.append("学习能力信号不弱，但缺毕业年份，学历兑现仍需补证。")
+    if interference >= 0.6:
+        notes.append("干扰信号较强：若现实学历低于能力信号，优先解释为兑现受阻。")
+    if environment < 0.45:
+        notes.append("学习环境分偏低：若现实阶段波动，优先从调候/环境压力解释。")
+    return notes
 
 
 def _anchored_degree(anchors: dict[str, Any]) -> str:

@@ -16,7 +16,9 @@ def test_education_without_anchors_never_outputs_final_degree() -> None:
     assert profile.timeline[3]["stage"] == "大学阶段"
     assert profile.timeline[3]["year_range"] == (2002, 2006)
     assert profile.usable_for_final_degree is False
-    assert "待反馈候选" in profile.degree_verdict
+    assert "概率预测候选" in profile.degree_verdict
+    assert profile.mode == "prediction"
+    assert profile.probability_range is not None
     assert any("禁止" in risk for risk in profile.risks)
 
 
@@ -37,5 +39,8 @@ def test_education_with_anchors_can_output_degree_candidate() -> None:
     )
 
     assert profile.usable_for_final_degree is True
+    assert profile.mode == "calibration"
+    assert profile.probability_range is None
     assert profile.degree_verdict == "本科"
     assert "某本科院校" in profile.institution_verdict
+    assert profile.calibration_notes
