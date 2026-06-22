@@ -255,7 +255,11 @@ class V5ArbitrationResult:
 
 @dataclass(frozen=True)
 class V5Prediction:
-    """受限概率预测条目。"""
+    """受限概率预测条目。
+
+    prediction-first 要求主要事件先登记预测，再等待反馈校准。
+    因此预测条目必须携带时间窗、触发条件、证伪口径与反馈状态。
+    """
 
     prediction_id: str
     domain: str
@@ -263,6 +267,8 @@ class V5Prediction:
     probability_range: tuple[float, float]
     confidence: V5Confidence
     time_window: dict[str, Any] = field(default_factory=dict)
+    trigger_conditions: list[str] = field(default_factory=list)
+    falsifier: str = ""
     calibration_note: str = ""
     feedback_state: V5FeedbackState = "pending"
 
@@ -274,6 +280,8 @@ class V5Prediction:
             "probability_range": list(self.probability_range),
             "confidence": self.confidence.to_dict(),
             "time_window": dict(self.time_window),
+            "trigger_conditions": list(self.trigger_conditions),
+            "falsifier": self.falsifier,
             "calibration_note": self.calibration_note,
             "feedback_state": self.feedback_state,
         }
@@ -288,6 +296,8 @@ class V5Prediction:
             probability_range=(float(raw_range[0]), float(raw_range[1])),
             confidence=V5Confidence.from_dict(data.get("confidence")),
             time_window=dict(data.get("time_window", {})),
+            trigger_conditions=[str(x) for x in data.get("trigger_conditions", [])],
+            falsifier=str(data.get("falsifier", "")),
             calibration_note=str(data.get("calibration_note", "")),
             feedback_state=data.get("feedback_state", "pending"),
         )

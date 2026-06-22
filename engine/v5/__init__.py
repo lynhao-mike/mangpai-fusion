@@ -17,6 +17,7 @@ from engine.v5.domain import (
     V5PredictionLedger,
     V5StructureGraph,
 )
+from engine.v5.report_view import build_report_v6_context, render_report_v6_from_output
 from engine.v5.runner import run_v5
 
 __all__ = [
@@ -29,5 +30,7 @@ __all__ = [
     "V5Prediction",
     "V5PredictionLedger",
     "V5StructureGraph",
+    "build_report_v6_context",
+    "render_report_v6_from_output",
     "run_v5",
 ]

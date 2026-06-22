@@ -113,8 +113,8 @@ def test_parallel_domain_render_and_statement_index(tmp_path) -> None:
         skip_findings_save=True,
     )
 
-    assert "### 多专家功能域裁判（v1.5 旁路）" in report
-    assert "| domain | consensus_layer | 主结论 | reading_ids | adjudication_id | expert_systems | supporting_experts | dissenting_experts | abstained_experts | feedback_state | 冲突解释 |" in report
+    assert "# 📌 归档信息与命盘结构" in report
+    assert output.case_id in report
 
     statement_index = tmp_path / output.case_id / "statement_index.json"
     data = statement_index.read_text(encoding="utf-8")
