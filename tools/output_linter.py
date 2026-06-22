@@ -767,7 +767,6 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
     required = [
         ("分析版本：v7.7", "E-V77-SCHEMA", "缺少 v7.7 展示规范标识"),
         ("时间标准：公历（YYYY–YYYY年）+ 年龄（XX–XX岁）", "E-V77-TIME-STANDARD", "缺少 v7.7 时间标准标识"),
-        ("## 相关引用文档", "E-V77-LINK-INDEX", "缺少相关引用文档结构化索引"),
         ("## 五派裁决与共识融合总论", "E-V76-SCHOOLS", "缺少五派裁决与共识融合总论"),
         ("## 命局做功与人生主线", "E-V76-MAINLINE", "缺少命局做功与人生主线"),
         ("## 主要事项结构", "E-V76-DOMAINS", "缺少主要事项结构"),
@@ -834,8 +833,17 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
         res.add(
             Severity.ERROR,
             "E-V77-LINK-CLICKABLE",
-            "报告开头相关引用文档缺少可点击链接",
-            suggestion="在归档信息后添加 Markdown 链接格式的相关引用文档索引。",
+            "报告开头归档信息缺少可点击链接",
+            suggestion="在报告路径、案例目录或反馈入口中保留 Markdown 链接。",
+        )
+
+    pillar_section = md.split("## 四柱结构", 1)[-1].split("## 大运速览", 1)[0]
+    if "十神主轴" in pillar_section:
+        res.add(
+            Severity.ERROR,
+            "E-V77-PILLAR-NO-TENGOD-AXIS",
+            "四柱结构中不得展示十神主轴",
+            suggestion="删除四柱结构中的十神主轴行，仅保留天干、地支、藏干、长生、神煞。",
         )
 
     if not re.search(r"[高中低]{1,2}（[★☆]{5}）", md):

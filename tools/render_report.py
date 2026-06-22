@@ -718,6 +718,11 @@ def _confidence_cell(state: Any, star: Any = None, *, empty: str = "待反馈校
     return state_text
 
 
+def _nowrap_cell(value: Any) -> str:
+    """Keep compact table cells such as time windows on one visual line."""
+    return str(value or "").strip().replace(" ", "&nbsp;")
+
+
 def normalize_v6_probability_band(
     raw: tuple[int, int] | tuple[float, float] | None,
     *,
@@ -788,11 +793,12 @@ def build_v6_display_context(
     dayun_items = []
     for row in ctx.get("dayun_full_table", []) or []:
         if isinstance(row, dict):
+            is_current = bool(row.get("marker"))
             dayun_items.append({
-                "干支": row.get("ganzhi", "待引擎补全"),
-                "年龄范围": row.get("age_range", "待引擎补全"),
-                "年份范围": row.get("year_range", "待引擎补全"),
-                "标记": row.get("marker", ""),
+                "干支": f"**{row.get('ganzhi', '待引擎补全')}**" if is_current else row.get("ganzhi", "待引擎补全"),
+                "年龄范围": f"**{_nowrap_cell(row.get('age_range', '待引擎补全'))}**" if is_current else _nowrap_cell(row.get("age_range", "待引擎补全")),
+                "年份范围": f"**{_nowrap_cell(row.get('year_range', '待引擎补全'))}**" if is_current else _nowrap_cell(row.get("year_range", "待引擎补全")),
+                "标记": f"**{row.get('marker', '')}**" if is_current else row.get("marker", ""),
             })
 
     shensha_by_pillar = ctx.get("shensha_by_pillar") or {}
@@ -897,50 +903,50 @@ def build_v6_display_context(
         "健康应期": ctx.get("health_15tier_timing", "待反馈校准"),
         "概率事件一领域": ctx.get("probability_event_1_domain", "事业"),
         "概率事件一应事": ctx.get("probability_event_1_explanation", "待反馈校准"),
-        "概率事件一窗口": ctx.get("probability_event_1_window", "待反馈校准"),
+        "概率事件一窗口": _nowrap_cell(ctx.get("probability_event_1_window", "待反馈校准")),
         "概率事件一数值": ctx.get("probability_event_1_range", "待反馈校准"),
         "概率事件一置信状态": _confidence_cell(ctx.get("probability_event_1_confidence_state", "中高"), ctx.get("probability_event_1_star", "★★★★☆")),
         "概率事件一星级": ctx.get("probability_event_1_star", "待反馈校准"),
         "概率事件二领域": ctx.get("probability_event_2_domain", "财富"),
         "概率事件二应事": ctx.get("probability_event_2_explanation", "待反馈校准"),
-        "概率事件二窗口": ctx.get("probability_event_2_window", "待反馈校准"),
+        "概率事件二窗口": _nowrap_cell(ctx.get("probability_event_2_window", "待反馈校准")),
         "概率事件二数值": ctx.get("probability_event_2_range", "待反馈校准"),
         "概率事件二置信状态": _confidence_cell(ctx.get("probability_event_2_confidence_state", "中"), ctx.get("probability_event_2_star", "★★★★☆")),
         "概率事件二星级": ctx.get("probability_event_2_star", "待反馈校准"),
         "概率事件三领域": ctx.get("probability_event_3_domain", "婚姻"),
         "概率事件三应事": ctx.get("probability_event_3_explanation", "待反馈校准"),
-        "概率事件三窗口": ctx.get("probability_event_3_window", "待反馈校准"),
+        "概率事件三窗口": _nowrap_cell(ctx.get("probability_event_3_window", "待反馈校准")),
         "概率事件三数值": ctx.get("probability_event_3_range", "待反馈校准"),
         "概率事件三置信状态": _confidence_cell(ctx.get("probability_event_3_confidence_state", "中"), ctx.get("probability_event_3_star", "★★★☆☆")),
         "概率事件三星级": ctx.get("probability_event_3_star", "待反馈校准"),
         "已发生反馈一优先级": "高",
         "已发生反馈一领域": ctx.get("probability_event_1_domain", "事业"),
-        "已发生反馈一窗口": ctx.get("probability_event_1_window", "待反馈校准"),
+        "已发生反馈一窗口": _nowrap_cell(ctx.get("probability_event_1_window", "待反馈校准")),
         "已发生反馈一应事": ctx.get("probability_event_1_explanation", "待反馈校准"),
         "已发生反馈一要点": "职位、平台、职责、行业或工作模式是否明显变化",
         "已发生反馈二优先级": "中",
         "已发生反馈二领域": ctx.get("probability_event_2_domain", "财富"),
-        "已发生反馈二窗口": ctx.get("probability_event_2_window", "待反馈校准"),
+        "已发生反馈二窗口": _nowrap_cell(ctx.get("probability_event_2_window", "待反馈校准")),
         "已发生反馈二应事": ctx.get("probability_event_2_explanation", "待反馈校准"),
         "已发生反馈二要点": "收入结构、资产配置、现金流或负债是否变化",
         "已发生反馈三优先级": "中",
         "已发生反馈三领域": ctx.get("probability_event_3_domain", "婚姻"),
-        "已发生反馈三窗口": ctx.get("probability_event_3_window", "待反馈校准"),
+        "已发生反馈三窗口": _nowrap_cell(ctx.get("probability_event_3_window", "待反馈校准")),
         "已发生反馈三应事": ctx.get("probability_event_3_explanation", "待反馈校准"),
         "已发生反馈三要点": "恋爱、婚姻、分合、家庭结构或关系压力是否出现",
         "预测反馈一优先级": "高",
         "预测反馈一领域": ctx.get("probability_event_1_domain", "事业"),
-        "预测反馈一窗口": ctx.get("probability_event_1_window", "待反馈校准"),
+        "预测反馈一窗口": _nowrap_cell(ctx.get("probability_event_1_window", "待反馈校准")),
         "预测反馈一应事": ctx.get("probability_event_1_explanation", "待反馈校准"),
         "预测反馈一要点": "职位、平台、职责、行业或工作模式是否明显变化",
         "预测反馈二优先级": "中",
         "预测反馈二领域": ctx.get("probability_event_2_domain", "财富"),
-        "预测反馈二窗口": ctx.get("probability_event_2_window", "待反馈校准"),
+        "预测反馈二窗口": _nowrap_cell(ctx.get("probability_event_2_window", "待反馈校准")),
         "预测反馈二应事": ctx.get("probability_event_2_explanation", "待反馈校准"),
         "预测反馈二要点": "收入结构、资产配置、现金流或负债是否变化",
         "预测反馈三优先级": "中",
         "预测反馈三领域": ctx.get("probability_event_3_domain", "婚姻"),
-        "预测反馈三窗口": ctx.get("probability_event_3_window", "待反馈校准"),
+        "预测反馈三窗口": _nowrap_cell(ctx.get("probability_event_3_window", "待反馈校准")),
         "预测反馈三应事": ctx.get("probability_event_3_explanation", "待反馈校准"),
         "预测反馈三要点": "恋爱、婚姻、分合、家庭结构或关系压力是否出现",
         "健康反馈窗口": ctx.get("health_feedback_window", "当前大运数字区间及未来三年"),
