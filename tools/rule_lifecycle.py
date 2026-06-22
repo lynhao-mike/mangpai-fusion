@@ -48,6 +48,7 @@ RuleStatus = Literal[
 
 # 旧 v1.0 状态名兼容映射 → v1.2 5 状态
 LEGACY_STATUS_MAP: dict[str, RuleStatus] = {
+    "active": "confirmed",
     "promoted": "confirmed",
     "candidate": "candidate",
     "frozen": "deprecated",
@@ -59,7 +60,9 @@ THEORY_DIR = pathlib.Path(__file__).resolve().parent.parent / "theory"
 # 派别目录映射（contracts 用单字"段杨高任"，目录用 duan/yang/gao/ren）
 SCHOOL_DIR_MAP: dict[str, str] = {
     "段": "duan", "杨": "yang", "高": "gao", "任": "ren",
+    "子平": "ziping", "滴天髓": "tiaohou_ditiansui",
     "duan": "duan", "yang": "yang", "gao": "gao", "ren": "ren",
+    "ziping": "ziping", "tiaohou_ditiansui": "tiaohou_ditiansui",
     # ── 预留流派入口（第 5/6 派）──────────────────────────────
     # 启用时把 "ext1"/"ext2" 改为真实目录名，"预留一"/"预留二" 改为中文派名。
     "预留一": "ext1", "ext1": "ext1",
@@ -68,6 +71,7 @@ SCHOOL_DIR_MAP: dict[str, str] = {
 
 SCHOOL_TO_CN: dict[str, str] = {
     "duan": "段", "yang": "杨", "gao": "高", "ren": "任",
+    "ziping": "子平", "tiaohou_ditiansui": "滴天髓",
     # ── 预留流派（启用时改为真实派名）─────────────────────────
     "ext1": "预留一", "ext2": "预留二",
 }
@@ -501,7 +505,7 @@ def _index_yaml_for_school(school: str) -> pathlib.Path:
 def _all_index_yamls() -> list[pathlib.Path]:
     return [
         THEORY_DIR / sub / "index.yaml"
-        for sub in ("duan", "yang", "gao", "ren")
+        for sub in ("duan", "yang", "gao", "ren", "ziping", "tiaohou_ditiansui")
         if (THEORY_DIR / sub / "index.yaml").exists()
     ]
 
@@ -574,7 +578,7 @@ def _entry_to_rule(entry: dict[str, Any]) -> Rule:
 
     rule = Rule(
         id=str(entry["id"]),
-        school=str(entry.get("school", "")),
+        school=str(entry.get("school") or entry.get("expert_system") or ""),
         topic=str(entry.get("topic", "")),
         status=status,
         status_changed_at=entry.get("status_changed_at"),
@@ -604,9 +608,13 @@ def _rule_to_entry(rule: Rule) -> dict[str, Any]:
     """Rule → yaml dict。覆盖 self-iter 字段，其他字段从 _raw 透传。"""
     entry: dict[str, Any] = dict(rule._raw)  # 透传 title/conclusion/raw_* etc.
     entry["id"] = rule.id
-    entry["school"] = rule.school
+    if "expert_system" not in entry:
+        entry["school"] = rule.school
     entry["topic"] = rule.topic
-    entry["status"] = rule.status
+    if str(entry.get("expert_system", "")) in {"ziping", "tiaohou_ditiansui"}:
+        entry["status"] = "active"
+    else:
+        entry["status"] = rule.status
     if rule.status_changed_at is not None:
         entry["status_changed_at"] = rule.status_changed_at
     entry["status_history"] = [h.to_dict() for h in rule.status_history]

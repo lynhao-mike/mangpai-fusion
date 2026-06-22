@@ -75,13 +75,21 @@ def test_v5_output_round_trip():
     assert restored.hash() == output.hash()
 
 
-def test_run_v5_stub_outputs_all_five_schools():
-    output = run_v5({"case_id": "C-TEST-STUB", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+def test_run_v5_default_loads_ziping_production_rules_and_keeps_other_schools_stubbed():
+    output = run_v5({"case_id": "C-TEST-ZIPING", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+
+    ziping_claims = [claim for claim in output.claims if claim.school == "ziping"]
+    stub_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "stub"]
+
+    assert len(ziping_claims) == 933
     assert {claim.school for claim in output.claims} == set(V5_SCHOOLS)
-    assert all(claim.stance == "abstain" for claim in output.claims)
-    assert len(output.arbitration_results) == 3
-    assert output.prediction_ledger == V5PredictionLedger(case_id="C-TEST-STUB")
-    assert len(output.learning_signals) == 5
+    assert all(claim.stance == "support" for claim in ziping_claims)
+    assert all(claim.metadata.get("runner_state") == "production_rule" for claim in ziping_claims)
+    assert all(claim.metadata.get("source_scope") == "production_rules" for claim in ziping_claims)
+    assert not any(claim.metadata.get("rule_id", "").startswith("ZP-CAND-") for claim in ziping_claims)
+    assert {claim.school for claim in stub_claims} == set(V5_SCHOOLS) - {"ziping"}
+    assert output.prediction_ledger == V5PredictionLedger(case_id="C-TEST-ZIPING")
+    assert len(output.learning_signals) == len(output.claims)
 
 
 def test_run_v5_probability_whitelist_creates_ledger_entry():

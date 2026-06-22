@@ -19,18 +19,23 @@ def test_load_default_production_library_loads_ziping_and_ditiansui() -> None:
     library = load_default_production_library()
 
     assert set(library.rule_sets) == {"ziping", "tiaohou_ditiansui"}
-    assert len(library.rule_sets["ziping"].rules) == 81
-    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 255
-    assert len(library.rules) == 336
+    assert len(library.rule_sets["ziping"].rules) == 933
+    assert len(library.rule_sets["tiaohou_ditiansui"].rules) == 1108
+    assert len(library.rules) == 2041
     assert [rule.id for rule in library.rule_sets["ziping"].rules[:2]] == [
-        "ZP-PROD-20260605-001",
-        "ZP-PROD-20260605-002",
+        "ZP-PROD-20260622-001",
+        "ZP-PROD-20260622-002",
     ]
     assert [rule.id for rule in library.rule_sets["tiaohou_ditiansui"].rules[:2]] == [
-        "DTS-PROD-20260605-001",
-        "DTS-PROD-20260605-002",
+        "DTS-PROD-20260622-001",
+        "DTS-PROD-20260622-002",
     ]
     assert all(rule.status == "active" for rule in library.rules)
+    assert not any(rule.id.startswith(("ZP-CAND-", "DTS-CAND-")) for rule in library.rules)
+    assert all(rule.rule_type for rule in library.rules)
+    assert all(isinstance(rule.quantifiable, bool) for rule in library.rules)
+    assert any(rule.quantifiable for rule in library.rules)
+    assert any(not rule.quantifiable for rule in library.rules)
 
 
 def test_pipeline_injects_production_rule_conclusions() -> None:
@@ -44,8 +49,8 @@ def test_pipeline_injects_production_rule_conclusions() -> None:
         for evidence in conclusion.evidence
         if evidence.rule_id.startswith(("ZP-PROD-", "DTS-PROD-"))
     }
-    assert "ZP-PROD-20260605-001" in production_ids
-    assert "DTS-PROD-20260605-001" in production_ids
+    assert "ZP-PROD-20260622-001" in production_ids
+    assert "DTS-PROD-20260622-001" in production_ids
     assert any("子平规则参与" in c.statement for c in output.final_conclusions)
     assert any("滴天髓规则参与" in c.statement for c in output.final_conclusions)
 
@@ -98,6 +103,8 @@ def _write_production_yaml(
                 "axis_refs": ["AXIS-TEST"],
                 "claim": "测试 claim",
                 "layer": "互补",
+                "rule_type": "STRUCTURE",
+                "quantifiable": True,
                 "conditions": {
                     "trigger": "always",
                     "required": ["存在测试条件"],

@@ -679,6 +679,9 @@ def _apply_rule_verdicts(
     save_one = save_rule if store is None else store.save_rule
 
     for rid, (verdict, vctx) in rule_verdicts.items():
+        if not rid or rid == "UNMAPPED" or rid.startswith("UNMAPPED"):
+            diff.notes.append(f"[bridge] 跳过 {rid or 'EMPTY'}: 未映射规则不进入学习")
+            continue
         try:
             rule = load_one(rid)
         except RuleNotFoundError:

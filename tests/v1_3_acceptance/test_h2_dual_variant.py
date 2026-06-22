@@ -188,7 +188,7 @@ def test_h2_statement_index_uses_025_list_schema(
     assert isinstance(index["statements"], list)
     assert index["statements"]
     for item in index["statements"]:
-        assert set(item) == {
+        assert {
             "statement_id",
             "domain",
             "summary",
@@ -196,7 +196,12 @@ def test_h2_statement_index_uses_025_list_schema(
             "section",
             "rule_ids",
             "schools",
-        }
+            "rule_id",
+            "family_id",
+            "school",
+            "canon",
+            "rule_type",
+        }.issubset(set(item))
         assert item["statement_id"].startswith("S-")
         assert item["status"] == "pending"
         assert isinstance(item["rule_ids"], list)

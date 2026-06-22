@@ -42,7 +42,7 @@ from engine.detail_expansion import DETAIL_DOMAINS, build_detail_expansions
 from engine.domain.ids import compute_statement_id
 from engine.domain.social_clock import build_education_timeline
 from engine.energy.types import EnergyFindings
-from engine.statement_runtime import write_statement_records
+from engine.statement_runtime import resolve_rule_metadata, write_statement_records
 from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
 from engine.predicates.types import ParsedInput
@@ -892,9 +892,9 @@ def build_v6_display_context(
         "起运时间": ctx.get("luck_start", "待引擎补全"),
         "时间标准": "公历（YYYY–YYYY年）+ 年龄（XX–XX岁）",
         "分析状态": ctx.get("case_status", "正式分析 / 待反馈校准"),
-        "报告路径": f"reports/{ctx.get('report_filename', '待引擎补全')}",
-        "案例目录": f"cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/",
-        "反馈入口": f"cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/feedback.md",
+        "报告路径": f"[reports/{ctx.get('report_filename', '待引擎补全')}](reports/{ctx.get('report_filename', '待引擎补全')})",
+        "案例目录": f"[cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/](cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/)",
+        "反馈入口": f"[cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/feedback.md](cases/{ctx.get('case_dir', ctx.get('case_id', '待引擎补全'))}/feedback.md)",
         "年干": ctx.get("year_gan", "待引擎补全"),
         "月干": ctx.get("month_gan", "待引擎补全"),
         "日干": ctx.get("day_gan", "待引擎补全"),
@@ -1761,6 +1761,8 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
             schools = sorted({str(e.get("school", "")).strip() for e in ev_list if isinstance(e, dict) and e.get("school")})
             if not rule_ids and item.get("rule_id"):
                 rule_ids = [str(item.get("rule_id"))]
+            primary_rule_id = next((rid for rid in rule_ids if rid), "UNMAPPED")
+            metadata = resolve_rule_metadata(primary_rule_id, ev_list[0] if ev_list else {}, item)
             row = {
                 "statement_id": sid,
                 "domain": str(domain or "综合"),
@@ -1769,6 +1771,11 @@ def _build_statement_index(ctx: dict, case_id: str) -> dict:
                 "section": section,
                 "rule_ids": rule_ids,
                 "schools": schools,
+                "rule_id": primary_rule_id,
+                "family_id": metadata["family_id"],
+                "school": metadata["school"],
+                "canon": metadata["canon"],
+                "rule_type": metadata["rule_type"],
             }
             if section == "parallel_domain_adjudication":
                 conflict_explanations = list(item.get("conflict_explanations", [])) or [

@@ -134,31 +134,19 @@ def test_h3_fanout_decisive_priority():
         fanout_to_rules,
     )
 
-    statement_index = {
-        "case_id": "C-2026-001-乾-甲子乙丑丙寅丁卯",
-        "generated_at": "2026-05-30",
-        "statements": [
-            {
-                "statement_id": "S-001-aaaaaa",
-                "domain": "婚姻",
-                "summary": "婚姻晚",
-                "status": "pending",
-                "rule_ids": ["M1-D-001", "M2-Y-068"],  # 兼容历史 fanout 扩展字段
-            },
-            {
-                "statement_id": "S-001-bbbbbb",
-                "domain": "事业",
-                "summary": "公职",
-                "status": "pending",
-                "rule_ids": ["M1-D-001"],
-            },
+    statement_records = {
+        "records": [
+            {"statement_id": "S-001-aaaaaa", "rule_id": "M1-D-001", "family_id": "FAM-M1", "school": "段", "canon": "duan", "rule_type": "runtime_rule", "domain": "婚姻"},
+            {"statement_id": "S-001-cccccc", "rule_id": "M2-Y-068", "family_id": "FAM-M2", "school": "杨", "canon": "yang", "rule_type": "runtime_rule", "domain": "婚姻"},
+            {"statement_id": "S-001-bbbbbb", "rule_id": "M1-D-001", "family_id": "FAM-M1", "school": "段", "canon": "duan", "rule_type": "runtime_rule", "domain": "事业"},
         ],
     }
     feedbacks = [
-        StatementFeedback("S-001-aaaaaa", "y", "hit"),  # 婚姻 hit
-        StatementFeedback("S-001-bbbbbb", "n", "miss"),  # 公职 miss
+        StatementFeedback("S-001-aaaaaa", "y", "hit"),
+        StatementFeedback("S-001-cccccc", "y", "hit"),
+        StatementFeedback("S-001-bbbbbb", "n", "miss"),
     ]
-    rule_verdicts, unknown = fanout_to_rules(feedbacks, statement_index)
+    rule_verdicts, unknown = fanout_to_rules(feedbacks, statement_records)
     # M1-D-001 同时被 hit + miss 标注的两条断语支撑 → miss 优先
     assert rule_verdicts["M1-D-001"][0] == "miss", (
         "M1-D-001 应取 miss（决断力优先），实得 "
@@ -169,8 +157,8 @@ def test_h3_fanout_decisive_priority():
     assert unknown == []
 
 
-def test_h3_standard_list_schema_without_rule_ids_is_accepted():
-    """025 标准 list schema 不强制携带 rule_ids；反馈登记不应判 unknown。"""
+def test_h3_standard_list_schema_without_rule_ids_is_blocked_from_learning():
+    """无 statement_records 规则桥时阻断规则学习。"""
     from tools.feedback_ingest import StatementFeedback, fanout_to_rules
 
     statement_index = {
@@ -190,45 +178,24 @@ def test_h3_standard_list_schema_without_rule_ids_is_accepted():
         statement_index,
     )
     assert rule_verdicts == {}
-    assert unknown == []
+    assert unknown == ["S-025-d1a001"]
 
 
-def test_h3_statement_rule_map_enables_standard_schema_fanout():
-    """旁路 statement_rule_map 可在不破坏标准 list schema 时恢复规则级 fanout。"""
-    from tools.feedback_ingest import (
-        StatementFeedback,
-        _merge_statement_rule_map,
-        fanout_to_rules,
-    )
+def test_h3_statement_records_enable_fanout():
+    """statement_records 是规则级 fanout 唯一来源。"""
+    from tools.feedback_ingest import StatementFeedback, fanout_to_rules
 
-    statement_index = {
-        "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
-        "generated_at": "2026-05-30",
-        "statements": [
-            {
-                "statement_id": "S-025-d1a001",
-                "domain": "事业/财富",
-                "summary": "财厚劫透，适合资源整合，忌人情财务混杂",
-                "status": "pending",
-            }
-        ],
+    statement_records = {
+        "records": [
+            {"statement_id": "S-025-d1a001", "rule_id": "M1-D-013", "family_id": "FAM-M1", "school": "段", "canon": "duan", "rule_type": "runtime_rule", "section": "Step 1"},
+        ]
     }
-    rule_map = {
-        "statements": {
-            "S-025-d1a001": {
-                "rule_ids": ["M1-D-013", "M2-Y-021"],
-                "section": "Step 1",
-            }
-        }
-    }
-
-    merged = _merge_statement_rule_map(statement_index, rule_map)
     rule_verdicts, unknown = fanout_to_rules(
         [StatementFeedback("S-025-d1a001", "y", "hit")],
-        merged,
+        statement_records,
     )
 
-    assert set(rule_verdicts) == {"M1-D-013", "M2-Y-021"}
+    assert set(rule_verdicts) == {"M1-D-013"}
     assert all(v[0] == "hit" for v in rule_verdicts.values())
     assert unknown == []
 

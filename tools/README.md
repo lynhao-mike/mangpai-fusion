@@ -63,14 +63,18 @@
 | [`drift_detect.py`](drift_detect.py:1) | 滑动窗漂移检测 | 由反馈闭环调用 |
 | [`check_archive_links.py`](check_archive_links.py:1) | 检查 case/report 归档互链是否可追踪 | 归档质量检查；通常在报告批量归档后运行 |
 | [`fix_archive_links.py`](fix_archive_links.py:1) | 规范化 case/report Markdown 互链 | 维护辅助；会改写归档链接，运行前建议先检查 diff |
+| [`_audit_p6a1.py`](_audit_p6a1.py:1) | P6-A1 新案反馈可追踪性审计 | 保留审计脚本；非日常入口 |
+| [`_build_rule_graph.py`](_build_rule_graph.py:1) | 构建规则图谱 IR | 内部生成物维护 |
+| [`_generate_unified_rule_ir.py`](_generate_unified_rule_ir.py:1) | 汇总多派规则为统一 IR | 内部生成物维护 |
+| [`_verify_production_rules.py`](_verify_production_rules.py:1) | 生产规则校验 | 内部审计 |
+| [`feedback_statement_trace_audit.py`](feedback_statement_trace_audit.py:1) | 反馈断语追踪审计 | 内部审计 |
+| [`feedback_v2_preprocess.py`](feedback_v2_preprocess.py:1) | v2 反馈预处理 | 历史反馈治理辅助 |
 
 ---
 
 ## deprecated · 历史入口，默认禁用
 
-| 工具 | 状态 | 替代方案 |
-|---|---|---|
-| [`calibrate.py`](calibrate.py:1) | **deprecated v1.3.0+**；v1.0 反馈入口，字段名 / 状态机与 v1.2+ 不兼容，默认 guard 退出 | 用 [`feedback_ingest.py`](feedback_ingest.py:1) + [`feedback_loop.py`](feedback_loop.py:1) |
+当前无保留的 deprecated 可执行入口；旧 `calibrate.py` 已删除，反馈入口统一使用 [`feedback_ingest.py`](feedback_ingest.py:1) + [`feedback_loop.py`](feedback_loop.py:1)。
 
 ---
 
@@ -95,6 +99,11 @@
 | [`normalize_wenzhen_fixed_cases.py`](normalize_wenzhen_fixed_cases.py:1) | 规范化已修复问真无效干支 case | 问真迁移修复辅助；同步结构化四柱/性别/大运字段 |
 | [`generate_wenzhen_fixed_reports.py`](generate_wenzhen_fixed_reports.py:1) | 为已修复问真无效干支 case 生成统一报告 | 问真迁移修复辅助；不运行反馈摄入 |
 | [`promote_candidate_rules_to_production.py`](promote_candidate_rules_to_production.py:1) | 候选规则迁移为生产规则 | 历史迁移辅助；非日常反馈入口 |
+| [`batch_rl_backtest.py`](batch_rl_backtest.py:1) | 批量 RL 回溯训练 | 保留为候选训练/审计入口；不得直接写 production |
+| [`export_prediction_model_snapshot.py`](export_prediction_model_snapshot.py:1) | 导出预测模型快照 | 预测模型迁移/审计辅助 |
+| [`extract_ditiansui_production_rules.py`](extract_ditiansui_production_rules.py:1) | 抽取滴天髓生产规则 | 理论源迁移辅助 |
+| [`extract_ziping_production_rules.py`](extract_ziping_production_rules.py:1) | 抽取子平生产规则 | 理论源迁移辅助 |
+| [`historical_mapping_recovery.py`](historical_mapping_recovery.py:1) | 历史映射恢复 | 历史追溯辅助 |
 
 ---
 

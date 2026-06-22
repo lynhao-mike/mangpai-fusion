@@ -10,6 +10,7 @@ import hashlib
 from collections import defaultdict
 from typing import Any
 
+from engine.application.production_rule_loader import ProductionRule, load_default_production_library
 from engine.v5.domain import (
     V5ArbitrationResult,
     V5Claim,
@@ -43,11 +44,79 @@ def _chart_label(chart: dict[str, Any]) -> str:
     return str(pillars)
 
 
-def build_abstain_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
-    """为五派生成独立占位命题，保证 v5 骨架可运行。
+def _confidence_from_production_rule(rule: ProductionRule) -> V5Confidence:
+    tier = "★" * max(1, min(5, int(rule.confidence.star)))
+    return V5Confidence(
+        tier=tier,
+        score=float(rule.confidence.posterior),
+        note=f"来自生产规则库；N={rule.confidence.sample_n}。",
+    )
 
-    后续真实 school runner 接入后，应传入实际 claims 覆盖该占位输出。
-    """
+
+def _claim_type_from_production_rule(rule: ProductionRule) -> str:
+    trigger = rule.conditions.trigger
+    if trigger in {"has_dayun", "has_xiaoyun", "has_liunian", "has_suiyun_interaction"}:
+        return "timing_claim"
+    return "structure_claim"
+
+
+def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
+    """把子平正式生产规则转为 v5 structure_law 命题。"""
+
+    library = load_default_production_library(workspace_root=workspace_root)
+    ziping_rules = library.rule_sets.get("ziping")
+    if not ziping_rules:
+        return []
+
+    claims: list[V5Claim] = []
+    for rule in ziping_rules.rules:
+        evidence = V5Evidence(
+            evidence_id=_stable_id("v5ev", case_id, rule.id),
+            source=rule.source.path,
+            text=rule.source.excerpt,
+            node_refs=["chart:root"],
+            rule_ids=[rule.id],
+            metadata={
+                "expert_system": rule.expert_system,
+                "topic": rule.topic,
+                "trigger": rule.conditions.trigger,
+                "source_scope": "production_rules",
+            },
+        )
+        claims.append(
+            V5Claim(
+                claim_id=_stable_id("v5cl", case_id, rule.id),
+                school="ziping",
+                domain=rule.domains[0] if rule.domains else "总体",
+                claim=rule.output.statement,
+                claim_type=_claim_type_from_production_rule(rule),  # type: ignore[arg-type]
+                stance="support",
+                polarity="neutral",
+                confidence=_confidence_from_production_rule(rule),
+                evidence=[evidence],
+                probabilistic=False,
+                falsifiable=rule.output.falsifiable,
+                metadata={
+                    "case_id": case_id,
+                    "rule_id": rule.id,
+                    "topic": rule.topic,
+                    "layer": rule.layer,
+                    "review_notes": rule.review_notes,
+                    "source_scope": "production_rules",
+                    "runner_state": "production_rule",
+                },
+            )
+        )
+    return claims
+
+
+def build_abstain_claims(
+    chart: dict[str, Any],
+    case_id: str,
+    *,
+    schools: tuple[str, ...] = V5_SCHOOLS,
+) -> list[V5Claim]:
+    """为尚未接入真实规则的流派生成占位命题。"""
 
     label = _chart_label(chart)
     school_claim_text = {
@@ -65,7 +134,7 @@ def build_abstain_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
         "yang_qingjuan": "event_claim",
     }
     claims: list[V5Claim] = []
-    for school in V5_SCHOOLS:
+    for school in schools:
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, school, label),
             source="chart_model",
@@ -86,10 +155,20 @@ def build_abstain_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
                 evidence=[evidence],
                 probabilistic=False,
                 falsifiable="接入真实五派 runner 后，占位命题应消失。",
-                metadata={"case_id": case_id, "school_role": "see V5_SCHOOL_ROLES"},
+                metadata={"case_id": case_id, "school_role": "see V5_SCHOOL_ROLES", "runner_state": "stub"},
             )
         )
     return claims
+
+
+def build_default_claims(chart: dict[str, Any], case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
+    """默认运行真实子平生产规则，其余流派暂用占位命题。"""
+
+    ziping_claims = build_ziping_production_claims(case_id, workspace_root=workspace_root)
+    stub_schools = tuple(school for school in V5_SCHOOLS if ziping_claims and school != "ziping")
+    if not ziping_claims:
+        stub_schools = V5_SCHOOLS
+    return ziping_claims + build_abstain_claims(chart, case_id, schools=stub_schools)
 
 
 def build_structure_graph(case_id: str, chart: dict[str, Any], claims: list[V5Claim]) -> V5StructureGraph:
@@ -275,17 +354,23 @@ def run_v5(
     *,
     case_id: str = "",
     claims: list[V5Claim] | None = None,
+    workspace_root: str = ".",
 ) -> V5Output:
     """运行 v5 五派命题图最小闭环。
 
     参数：
     - chart：五派共享的标准命盘对象。
     - case_id：案例 ID；缺省时从 chart.case_id 推断。
-    - claims：外部真实 school runner 产出的命题；缺省时生成五派弃权占位命题。
+    - claims：外部真实 school runner 产出的命题；传入时完全覆盖默认生产规则。
+    - workspace_root：生产规则库根目录；测试隔离时使用。
     """
 
     resolved_case_id = case_id or str(chart.get("case_id", "V5-UNTRACKED"))
-    resolved_claims = list(claims) if claims is not None else build_abstain_claims(chart, resolved_case_id)
+    resolved_claims = (
+        list(claims)
+        if claims is not None
+        else build_default_claims(chart, resolved_case_id, workspace_root=workspace_root)
+    )
     graph = build_structure_graph(resolved_case_id, chart, resolved_claims)
     arbitration_results = arbitrate_claims(resolved_claims)
     ledger = build_prediction_ledger(resolved_case_id, resolved_claims)

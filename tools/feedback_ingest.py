@@ -33,10 +33,9 @@ fanout_to_rules(statement_feedbacks, statement_records)
 build_learning_samples(statement_feedbacks, statement_records)
     → list[dict]，仅输出已映射且 verdict 非 pending/no_data 的学习样本。
 
-注意：本工具优先消费 v1.4+ 结构化路径（statement_records.json + 标注式 feedback.md）。
-若 statement_records.json 不存在或 feedback.md 中无 `[S-...]` 标注，
-回退给 feedback_loop.ingest_feedback 走 v1.0 启发式路径。legacy
-statement_index.json / statement_rule_map.json 不再作为 Dynamic Confidence fanout 来源。
+注意：本工具只允许 v1.4+ 结构化路径（statement_records.json + 标注式 feedback.md）进入规则学习。
+若 statement_records.json 不存在或 feedback.md 中无 `[S-...]` 标注，只登记完成反馈，不再回退到 v1.0 启发式规则学习。
+legacy statement_index.json / statement_rule_map.json 不再作为 Dynamic Confidence fanout 来源。
 
 作者：Track-G v1.3
 """
@@ -346,27 +345,19 @@ def fanout_to_rules(
     feedbacks: list[StatementFeedback],
     statement_records: Mapping[str, Any],
 ) -> tuple[dict[str, tuple[Verdict, VerdictContext]], list[str]]:
-    """把 statement-level verdict 通过 statement_records / legacy statement_index fanout 到 rule-level。"""
+    """把 statement-level verdict 通过 statement_records fanout 到 rule-level。"""
 
     records = _record_map(statement_records)
-    legacy_statements = _statement_map(dict(statement_records)) if isinstance(statement_records, Mapping) else {}
     rule_verdicts: dict[str, tuple[Verdict, VerdictContext]] = {}
     unknown_sids: list[str] = []
 
     for fb in feedbacks:
         info = records.get(fb.statement_id)
-        legacy_info = legacy_statements.get(fb.statement_id)
-        if _record_is_mapped(info):
-            rule_ids = [str(info.get("rule_id") or "").strip()]
-            context_source = info or {}
-        elif legacy_info is not None:
-            rule_ids = [str(rid).strip() for rid in (legacy_info.get("rule_ids", []) or []) if str(rid).strip()]
-            context_source = legacy_info
-            if not rule_ids:
-                continue
-        else:
+        if not _record_is_mapped(info):
             unknown_sids.append(fb.statement_id)
             continue
+        rule_ids = [str(info.get("rule_id") or "").strip()]
+        context_source = info or {}
 
         for rid in rule_ids:
             existing = rule_verdicts.get(rid)
@@ -791,12 +782,10 @@ def ingest(
 
     # 3. 决策路径选择
     if not feedbacks or not _record_map(statement_records):
-        # 退回 v1.0 启发式路径（feedback_loop.ingest_feedback）
-        from tools.feedback_loop import ingest_feedback as _legacy_ingest
-        with timing.step("apply_rules"):
-            diff = _legacy_ingest(full_case_id, cfg=cfg, today=today, dry_run=dry_run)
+        diff = IterationDiff(case_id=full_case_id, ts=_dt.datetime.now().isoformat(timespec="seconds"), case_count=total_case_count())
+        diff.notes.append("无结构化 statement_records 映射，已阻断 v1.0 启发式规则学习。")
         skipped_no_index = True
-        # 仍然把这个案纳入完成反馈计数（哪怕走了启发式）
+        # 仍然把这个案纳入完成反馈计数（仅登记反馈完成，不更新规则）
         result = IngestResult(
             case_id=full_case_id,
             feedback_count=len(feedbacks),

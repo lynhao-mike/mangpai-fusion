@@ -381,6 +381,15 @@ def test_F_render_from_output_writes_statement_records(tmp_path):
         assert record["family_id"]
         assert record["school"]
         assert record["canon"]
+        assert record["rule_type"]
+
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    assert any(item.get("rule_id") not in (None, "", "UNMAPPED") for item in index["statements"])
+    for item in index["statements"]:
+        assert "rule_id" in item
+        assert "family_id" in item
+        assert "canon" in item
+        assert "rule_type" in item
 
 
 def test_F_support_none_graceful(c001_findings):

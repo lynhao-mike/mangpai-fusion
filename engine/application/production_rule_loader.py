@@ -122,6 +122,8 @@ class ProductionRule:
     source: ProductionRuleSource
     confidence: Confidence
     layer: str = "互补"
+    rule_type: str = "GENERAL_PRINCIPLE"
+    quantifiable: bool = False
     review_notes: str = ""
 
     @property
@@ -151,6 +153,8 @@ class ProductionRule:
             "source": self.source.to_dict(),
             "confidence": self.confidence.to_dict(),
             "layer": self.layer,
+            "rule_type": self.rule_type,
+            "quantifiable": self.quantifiable,
             "review": {"notes": self.review_notes},
         }
 
@@ -188,6 +192,8 @@ class ProductionRule:
                 sample_n=int(conf.get("sample_n", 1)),
             ),
             layer=str(data.get("layer", "互补")),
+            rule_type=str(data.get("rule_type", "GENERAL_PRINCIPLE")),
+            quantifiable=bool(data.get("quantifiable", False)),
             review_notes=str(data.get("review", {}).get("notes", "")),
         )
 
