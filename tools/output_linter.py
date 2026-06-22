@@ -30,9 +30,11 @@ from engine.domain.confidence import (
     percent_to_star,
 )
 from engine.domain.social_clock import (
+    EDUCATION_STAGE_RULES,
     INSTITUTIONAL_KEYWORDS,
     SOCIAL_CLOCK_RULES,
     SOCIAL_CLOCK_TOLERANCE,
+    build_education_timeline,
 )
 
 try:
@@ -821,6 +823,8 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
             suggestion="将待反馈表头补齐为：| 优先级 | 领域 | 时间窗口 | 具体应事 | 回访要点 |。",
         )
 
+    _lint_v77_education_timeline(md, res)
+
     if re.search(r"\| 神煞 \|[^\n]*、[^\n]*\|", md):
         res.add(
             Severity.ERROR,
@@ -880,6 +884,54 @@ def _lint_v6_report_structure(md: str, res: LintResult) -> None:
                     f"v7.6 受限概率低于 55% 基线：{pct}%",
                     suggestion="按中文概率基线与主候选区间重算展示概率。",
                 )
+
+
+def _lint_v77_education_timeline(md: str, res: LintResult) -> None:
+    """v7.7 学业结构必须有阶段时间轴、大学阶段和合法因果链提示。"""
+    if "### 学业结构" not in md:
+        return
+
+    edu_section = md.split("### 学业结构", 1)[-1].split("### 事业结构", 1)[0]
+    timeline = build_education_timeline(0)
+    required_stage_names = [str(item["stage"]) for item in timeline]
+    for stage_name in required_stage_names[:4]:
+        if stage_name not in edu_section:
+            res.add(
+                Severity.ERROR,
+                "E-V77-EDU-STAGE-MISSING",
+                f"学业结构缺少教育阶段时间轴：{stage_name}",
+                suggestion="在学业结构内补充小学、初中、高中、大学四阶段，并写明年份、年龄、大运和校验项。",
+            )
+    if "教育阶段时间轴" not in edu_section:
+        res.add(
+            Severity.ERROR,
+            "E-V77-EDU-TIMELINE-MISSING",
+            "学业结构缺少“教育阶段时间轴”小节",
+            suggestion="在学业结构表后增加“教育阶段时间轴”表，逐段列出小学/初中/高中/大学/毕业或证照兑现。",
+        )
+    if "高考" not in edu_section or "录取" not in edu_section or "毕业" not in edu_section:
+        res.add(
+            Severity.ERROR,
+            "E-V77-EDU-CAUSAL-CHAIN",
+            "学业结构缺少高考/录取/毕业因果链节点",
+            suggestion="按“学习能力 → 考试表现 → 录取/学校层级 → 学历或毕业兑现”补齐因果链。",
+        )
+    if "1996–2004年" in edu_section or "1996-2004" in edu_section:
+        res.add(
+            Severity.ERROR,
+            "E-V77-EDU-BLANKET-WINDOW",
+            "学业结构仍存在 1996–2004 笼统覆盖学生阶段",
+            suggestion="拆分为初中、高中、大学阶段，并额外覆盖 2005–2008 年大学后半段/毕业兑现窗口。",
+        )
+    if any(phrase in edu_section for phrase in ("倾向大专", "倾向普通院校", "普通院校至省重点院校")):
+        has_chain_guard = "不能由学习能力直接推出学历" in edu_section or "待反馈候选" in edu_section
+        if not has_chain_guard:
+            res.add(
+                Severity.ERROR,
+                "E-V77-EDU-DEGREE-OVERINFERENCE",
+                "学业结构疑似在现实锚点不足时输出确定学历/学校区间",
+                suggestion="改为待反馈候选，并明确禁止由学习能力直接推出学历。",
+            )
 
 
 def _lint_global_text(

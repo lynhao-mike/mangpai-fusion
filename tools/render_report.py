@@ -40,6 +40,7 @@ sys.path.insert(0, str(ROOT))
 
 from engine.detail_expansion import DETAIL_DOMAINS, build_detail_expansions
 from engine.domain.ids import compute_statement_id
+from engine.domain.social_clock import build_education_timeline
 from engine.energy.types import EnergyFindings
 from engine.statement_runtime import write_statement_records
 from engine.picture.types import PictureFindings
@@ -636,17 +637,19 @@ def _build_v2_15tier_display_defaults(ctx: dict[str, Any]) -> dict[str, str]:
         out[f"{key}_15tier_evidence"] = f"{evidence}；理论来源：{sources}"
         out[f"{key}_15tier_confidence"] = confidence_text
         out[f"{key}_15tier_timing"] = "随大运与流年反馈复盘"
+        if key == "education":
+            out[f"{key}_15tier_timing"] = "小学、初中、高中、大学、毕业或证照兑现分段校验；不得用单一笼统窗口覆盖"
         out[f"{key}_15tier_boundary_explain"] = _boundary_explain(str(boundary))
         out[f"{key}_domain_process"] = process
 
     outcome_defaults = {
-        "education_degree_result": "学历层次待结合最高学历反馈校准",
+        "education_degree_result": "待反馈候选：学历层次必须结合高考、录取、毕业年份与最高学历反馈校准；不能由学习能力直接推出学历",
         "education_degree_range": "小学至海外顶尖按反馈映射",
-        "education_institution_result": "学校层次待结合毕业院校与录取类型校准",
+        "education_institution_result": "待反馈候选：学校层级必须结合录取批次、学校名称、转学/复读和毕业记录校准",
         "education_institution_range": "普通、省重点、国家重点、双一流、211、985、C9、清北、海外前五十、海外前十",
-        "education_performance_result": "成绩水平待结合考试成绩、排名与竞赛反馈校准",
+        "education_performance_result": "待反馈候选：成绩水平必须结合考试成绩、排名、竞赛和证照结果校准",
         "education_performance_range": "差、中下、普通、中上、优秀、尖子生、竞赛级",
-        "education_field_result": "专业或方向类型待结合现实专业与职业路径校准",
+        "education_field_result": "待反馈候选：专业或方向类型需结合现实专业、录取专业与职业路径校准",
         "education_field_range": "人文、财经、工程、技术、医学、法律、教育、艺术、商业、公职服务或其他",
         "career_occupation_result": "职业层级待结合岗位、头衔、经营规模校准",
         "career_occupation_range": "无业、普通工人、技术员、技工、职员、基层管理、中层管理、高层管理、小创业者、中型创业者、大型创业者、本地名人、行业领袖、全国级、世界级",
@@ -721,6 +724,68 @@ def _confidence_cell(state: Any, star: Any = None, *, empty: str = "待反馈校
 def _nowrap_cell(value: Any) -> str:
     """Keep compact table cells such as time windows on one visual line."""
     return str(value or "").strip().replace(" ", "&nbsp;")
+
+
+def _format_year_range(year_range: Any) -> str:
+    try:
+        start, end = year_range
+        return f"{int(start)}–{int(end)}年"
+    except Exception:
+        return "待反馈校准"
+
+
+def _format_age_range(age_range: Any) -> str:
+    try:
+        start, end = age_range
+        return f"{int(start)}–{int(end)}岁"
+    except Exception:
+        return "待反馈校准"
+
+
+def _dayun_slice_for_year_range(ctx: dict[str, Any], year_range: Any) -> str:
+    try:
+        start, end = year_range
+        start = int(start)
+        end = int(end)
+    except Exception:
+        return "待反馈校准"
+    hits: list[str] = []
+    for row in ctx.get("dayun_full_table", []) or []:
+        if not isinstance(row, dict):
+            continue
+        raw = str(row.get("year_range", ""))
+        match = re.search(r"(\d{4})[–-](\d{4})", raw)
+        if not match:
+            continue
+        dy_start, dy_end = int(match.group(1)), int(match.group(2))
+        if start < dy_end and end > dy_start:
+            hits.append(f"{row.get('ganzhi', '待补')}运（{raw}）")
+    return "；".join(hits) if hits else "待反馈校准"
+
+
+def _build_education_timeline_display(ctx: dict[str, Any]) -> dict[str, str]:
+    solar_birth = str(ctx.get("solar_birth") or ctx.get("birth_date") or "")
+    match = re.search(r"(\d{4})", solar_birth)
+    if not match:
+        return {}
+    birth_year = int(match.group(1))
+    timeline = build_education_timeline(birth_year)
+    stage_map = {
+        "小学阶段": "小学",
+        "初中阶段": "初中",
+        "高中阶段": "高中",
+        "大学阶段": "大学",
+        "毕业或证照兑现": "毕业",
+    }
+    out: dict[str, str] = {}
+    for item in timeline:
+        key = stage_map.get(str(item.get("stage")))
+        if not key:
+            continue
+        out[f"学业{key}年份"] = _format_year_range(item.get("year_range"))
+        out[f"学业{key}年龄"] = _format_age_range(item.get("age_range"))
+        out[f"学业{key}大运"] = _dayun_slice_for_year_range(ctx, item.get("year_range"))
+    return out
 
 
 def normalize_v6_probability_band(
@@ -2028,10 +2093,12 @@ def render(
         for expansion in (detail_expansions[key] for key in DETAIL_DOMAINS)
     ]
     ctx.update(_build_v2_15tier_display_defaults(ctx))
-    ctx.update(build_v6_display_context(ctx, gates, parallel_analysis, support))
 
     # F9 · 大运全表
     ctx["dayun_full_table"] = _dayun_full_table(parsed) if parsed else []
+
+    ctx.update(build_v6_display_context(ctx, gates, parallel_analysis, support))
+    ctx.update(_build_education_timeline_display(ctx))
 
     # F6 · §C.0 流年回溯
     ctx.update(_build_retrospective_vm(retrospective))
