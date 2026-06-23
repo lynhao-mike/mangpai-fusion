@@ -8,7 +8,10 @@ from __future__ import annotations
 
 import hashlib
 from collections import defaultdict
+from pathlib import Path
 from typing import Any
+
+import yaml
 
 from engine.application.production_rule_loader import ProductionRule, load_default_production_library
 from engine.v5.domain import (
@@ -27,6 +30,35 @@ from engine.v5.domain import (
 PROBABILISTIC_DOMAIN_WHITELIST = {"学业", "事业", "财富", "婚姻", "健康"}
 STRUCTURE_SCHOOLS = {"ziping", "ditiansui", "gao_dechen"}
 EVENT_SCHOOLS = {"gao_dechen", "duan_jianye", "yang_qingjuan"}
+
+BLIND_SCHOOL_INDEX_FILES: dict[str, str] = {
+    "gao_dechen": "theory/gao/index.yaml",
+    "duan_jianye": "theory/duan/index.yaml",
+    "yang_qingjuan": "theory/yang/index.yaml",
+}
+BLIND_SCHOOL_SOURCE_IDS: dict[str, str] = {
+    "gao_dechen": "gao",
+    "duan_jianye": "duan",
+    "yang_qingjuan": "yang",
+}
+BLIND_TOPIC_DOMAINS: dict[str, str] = {
+    "caiyun": "财富",
+    "wealth": "财富",
+    "career": "事业",
+    "zhiye": "事业",
+    "guan": "事业",
+    "hunyin": "婚姻",
+    "marriage": "婚姻",
+    "jiankang": "健康",
+    "health": "健康",
+    "xueye": "学业",
+    "education": "学业",
+    "shensha": "健康",
+    "dayun": "事业",
+    "lifa": "总体",
+    "xiangfa": "性格",
+    "mingong": "总体",
+}
 
 
 def _stable_id(prefix: str, *parts: object) -> str:
@@ -292,6 +324,120 @@ def build_minimal_ditiansui_claims(chart: dict[str, Any], case_id: str) -> list[
     ]
 
 
+def _load_blind_school_rules(school: str, *, workspace_root: str = ".") -> list[dict[str, Any]]:
+    """加载三盲派 index.yaml 规则。"""
+
+    rel = BLIND_SCHOOL_INDEX_FILES[school]
+    root = Path(workspace_root).resolve()
+    path = (root / rel).resolve()
+    if not path.exists():
+        return []
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    rules = data.get("rules", [])
+    return [item for item in rules if isinstance(item, dict)]
+
+
+def _blind_rule_domain(rule: dict[str, Any]) -> str:
+    topic = str(rule.get("topic", "")).lower()
+    topic_label = str(rule.get("topic_label", "")).lower()
+    title = str(rule.get("title", ""))
+    conclusion = str(rule.get("conclusion", ""))
+    haystack = " ".join([topic, topic_label, title, conclusion]).lower()
+    for key, domain in BLIND_TOPIC_DOMAINS.items():
+        if key.lower() in haystack:
+            return domain
+    if any(token in title + conclusion for token in ("财", "资产", "收入")):
+        return "财富"
+    if any(token in title + conclusion for token in ("官", "事业", "职业", "工作")):
+        return "事业"
+    if any(token in title + conclusion for token in ("婚", "配偶", "夫妻")):
+        return "婚姻"
+    if any(token in title + conclusion for token in ("病", "灾", "血", "寿", "健康")):
+        return "健康"
+    if any(token in title + conclusion for token in ("学", "文昌", "词馆")):
+        return "学业"
+    return "总体"
+
+
+def _blind_rule_rank(rule: dict[str, Any]) -> tuple[int, float, str]:
+    status = str(rule.get("status", "candidate"))
+    status_rank = {"confirmed": 0, "promoted": 1, "active": 1, "candidate": 2}.get(status, 3)
+    score = float(rule.get("candidate_score", 0.0) or 0.0)
+    return (status_rank, -score, str(rule.get("id", "")))
+
+
+def build_blind_school_rule_claims(
+    chart: dict[str, Any],
+    case_id: str,
+    *,
+    school: str,
+    workspace_root: str = ".",
+    limit: int = 4,
+) -> list[V5Claim]:
+    """把三盲派 index.yaml 规则筛选为 v5 命题。"""
+
+    raw_rules = _load_blind_school_rules(school, workspace_root=workspace_root)
+    if not raw_rules:
+        return []
+    source_school = BLIND_SCHOOL_SOURCE_IDS[school]
+    selected = [
+        rule for rule in raw_rules
+        if str(rule.get("school", "")) == source_school
+        and str(rule.get("status", "candidate")) not in {"deprecated", "rejected"}
+    ]
+    selected.sort(key=_blind_rule_rank)
+    claims: list[V5Claim] = []
+    for rule in selected[:limit]:
+        rule_id = str(rule.get("id", _stable_id("blindrule", school, rule.get("title", ""))))
+        conclusion = str(rule.get("conclusion") or rule.get("title") or "三盲派规则参与。")
+        domain = _blind_rule_domain(rule)
+        evidence = V5Evidence(
+            evidence_id=_stable_id("v5ev", case_id, rule_id),
+            source=str(rule.get("raw_file") or BLIND_SCHOOL_INDEX_FILES[school]),
+            text=conclusion,
+            node_refs=["chart:root"],
+            rule_ids=[rule_id],
+            metadata={
+                "school": school,
+                "topic": str(rule.get("topic", "")),
+                "status": str(rule.get("status", "")),
+                "source_scope": "school_index_rules",
+            },
+        )
+        claims.append(
+            V5Claim(
+                claim_id=_stable_id("v5cl", case_id, rule_id),
+                school=school,  # type: ignore[arg-type]
+                domain=domain,
+                claim=f"{SCHOOL_DISPLAY_NAMES.get(school, school)}规则参与：{conclusion}",
+                claim_type="event_claim" if domain in PROBABILISTIC_DOMAIN_WHITELIST else "structure_claim",  # type: ignore[arg-type]
+                stance="support",
+                polarity="neutral",
+                confidence=V5Confidence(tier="★★★", score=0.55, note="三盲派 index.yaml 规则筛选接入"),
+                evidence=[evidence],
+                timing_hints=[{"label": f"{chart.get('current_year', '当前流年')} 至下一交运前", "basis": str(chart.get("current_dayun") or "当前大运")}],
+                probabilistic=domain in PROBABILISTIC_DOMAIN_WHITELIST,
+                falsifiable="若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+                metadata={
+                    "case_id": case_id,
+                    "rule_id": rule_id,
+                    "topic": str(rule.get("topic", "")),
+                    "source_scope": "school_index_rules",
+                    "runner_state": "school_rule",
+                    "selection": "v6_preprod_blind_limited",
+                },
+            )
+        )
+    return claims
+
+
+SCHOOL_DISPLAY_NAMES = {
+    "gao_dechen": "高德臣",
+    "duan_jianye": "段建业",
+    "yang_qingjuan": "杨清娟",
+}
+
+
 def build_minimal_three_blind_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
     """高德臣 / 段建业 / 杨清娟三派 MVP 事件 runner。
 
@@ -459,13 +605,16 @@ def build_abstain_claims(
 
 
 def build_default_claims(chart: dict[str, Any], case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
-    """默认运行子平生产规则 + 三盲派 MVP 事件 runner，其余流派占位。"""
+    """默认运行子平 / 滴天髓生产规则 + 三盲派规则筛选 runner。"""
 
     ziping_claims = build_ziping_production_claims(case_id, workspace_root=workspace_root)
     ditiansui_claims = build_ditiansui_production_claims(chart, case_id, workspace_root=workspace_root)
     if not ditiansui_claims:
         ditiansui_claims = build_minimal_ditiansui_claims(chart, case_id)
-    blind_claims = build_minimal_three_blind_claims(chart, case_id)
+    blind_rule_claims: list[V5Claim] = []
+    for school in ("gao_dechen", "duan_jianye", "yang_qingjuan"):
+        blind_rule_claims.extend(build_blind_school_rule_claims(chart, case_id, school=school, workspace_root=workspace_root))
+    blind_claims = blind_rule_claims or build_minimal_three_blind_claims(chart, case_id)
     active_schools = {claim.school for claim in ziping_claims + ditiansui_claims + blind_claims}
     stub_schools = tuple(school for school in V5_SCHOOLS if school not in active_schools)
     return ziping_claims + ditiansui_claims + blind_claims + build_abstain_claims(chart, case_id, schools=stub_schools)

@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Literal
@@ -39,6 +40,17 @@ REPORTS_DIR = REPO_ROOT / "reports"
 
 V5FeedbackVerdict = Literal["hit", "miss", "partial", "skipped"]
 VALID_VERDICTS: set[str] = {"hit", "miss", "partial", "skipped"}
+
+PREDICTION_FEEDBACK_RE = re.compile(
+    r"\[PRED:(?P<prediction_id>v5pred-[A-Za-z0-9_-]+)\]\s*\[(?P<mark>y|n|\?|skip)\]",
+    re.IGNORECASE,
+)
+MARK_TO_VERDICT: dict[str, str] = {
+    "y": "hit",
+    "n": "miss",
+    "?": "skipped",
+    "skip": "skipped",
+}
 
 _VERDICT_LABELS: dict[str, str] = {
     "hit": "命中",
@@ -119,6 +131,17 @@ def list_predictions(case_id: str, *, v5_json_path: str | Path | None = None) ->
             )
         )
     return result
+
+
+def parse_prediction_feedback(text: str) -> list[tuple[str, V5FeedbackVerdict]]:
+    """解析 feedback.md 中的 [PRED:v5pred-xxx] [y/n/?/skip] 标注。"""
+
+    parsed: list[tuple[str, V5FeedbackVerdict]] = []
+    for match in PREDICTION_FEEDBACK_RE.finditer(text):
+        mark = match.group("mark").lower()
+        verdict = MARK_TO_VERDICT[mark]
+        parsed.append((match.group("prediction_id"), verdict))  # type: ignore[arg-type]
+    return parsed
 
 
 def apply_prediction_feedback(

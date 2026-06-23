@@ -26,8 +26,8 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert "## 十五层判断摘要" in report_text
     assert "## 主要事件预测账本（prediction-first）" in report_text
     assert "滴天髓规则参与" in report_text
-    assert "段建业事件框架" in report_text
-    assert "杨清娟象法" in report_text
+    assert "段建业" in report_text
+    assert "杨清娟" in report_text
     assert "{{" not in report_text
     assert "{%" not in report_text
 

@@ -24,6 +24,7 @@ from engine.application.artifact_inventory import (
 )
 from engine.application.cache_key import compute_cache_key as _compute_cache_key
 from engine.application.pipeline_runner import run_pipeline_e2e
+from engine.v5.preprod import render_v6_preprod_case
 from engine.infrastructure.analysis_store import (
     AnalysisArtifactRecord,
     AnalysisJobRecord,
@@ -44,6 +45,7 @@ class SubmitAnalysisRequest:
     render: bool = True
     force: bool = False
     template_name: str = DEFAULT_TEMPLATE_NAME
+    render_v6_preprod: bool = False
     cases_dir: Optional[Path] = None
     reports_dir: Optional[Path] = None
     cases_index_path: Optional[Path] = None
@@ -155,7 +157,15 @@ class ProductionAnalysisService:
                 error_policy="strict",
             )
             case_id = str(output.case_id or "")
+            if normalized.render_v6_preprod:
+                render_v6_preprod_case(
+                    normalized.input_path,
+                    reports_dir=normalized.reports_dir or self.workspace_root / "reports",
+                    workspace_root=self.workspace_root,
+                )
             summary = self._build_summary(output, timing)
+            if normalized.render_v6_preprod:
+                summary["v6_preprod_rendered"] = True
             artifacts = self._collect_artifacts(
                 case_id=case_id,
                 output=output,
@@ -220,6 +230,7 @@ class ProductionAnalysisService:
             input_sha256=input_sha256,
             render=normalized.render,
             template_name=normalized.template_name,
+            render_v6_preprod=normalized.render_v6_preprod,
         )
         return normalized, input_sha256, cache_key
 
@@ -229,11 +240,13 @@ class ProductionAnalysisService:
         input_sha256: str,
         render: bool,
         template_name: str,
+        render_v6_preprod: bool = False,
     ) -> str:
         return _compute_cache_key(
             input_sha256=input_sha256,
             render=render,
             template_name=template_name,
+            render_v6_preprod=render_v6_preprod,
         )
 
     def new_analysis_id(self, now: Optional[str] = None) -> str:
@@ -301,6 +314,7 @@ class ProductionAnalysisService:
             render=bool(request.render),
             force=bool(request.force),
             template_name=DEFAULT_TEMPLATE_NAME,
+            render_v6_preprod=bool(request.render_v6_preprod),
             cases_dir=cases_dir,
             reports_dir=reports_dir,
             cases_index_path=cases_index_path,
@@ -326,7 +340,7 @@ class ProductionAnalysisService:
         request: SubmitAnalysisRequest,
         completed_at: str,
     ) -> list[AnalysisArtifactRecord]:
-        return collect_analysis_artifacts(
+        artifacts = collect_analysis_artifacts(
             case_id=case_id,
             output=output,
             render=request.render,
@@ -335,6 +349,21 @@ class ProductionAnalysisService:
             workspace_root=self.workspace_root,
             created_at=completed_at,
         )
+        if request.render_v6_preprod:
+            reports_dir = request.reports_dir or self.workspace_root / "reports"
+            self._append_artifact_if_exists(
+                artifacts,
+                kind="v6_preprod_report",
+                path=reports_dir / f"{case_id}-v6-preprod-content-report.md",
+                created_at=completed_at,
+            )
+            self._append_artifact_if_exists(
+                artifacts,
+                kind="v5_prediction_ledger",
+                path=reports_dir / f"{case_id}-v6-preprod-content-report.v5.json",
+                created_at=completed_at,
+            )
+        return artifacts
 
     def _write_report_artifact(self, *, case_id: str, report_md: str, reports_dir: Path) -> Path:
         return write_report_artifact(case_id=case_id, report_md=report_md, reports_dir=reports_dir)
@@ -388,6 +417,7 @@ def request_from_dict(payload: dict[str, Any]) -> SubmitAnalysisRequest:
         render=bool(payload.get("render", True)),
         force=bool(payload.get("force", False)),
         template_name=DEFAULT_TEMPLATE_NAME,
+        render_v6_preprod=bool(payload.get("render_v6_preprod", False)),
         cases_dir=Path(str(payload["cases_dir"])) if payload.get("cases_dir") else None,
         reports_dir=Path(str(payload["reports_dir"])) if payload.get("reports_dir") else None,
         cases_index_path=(

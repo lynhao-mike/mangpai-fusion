@@ -81,6 +81,7 @@ from tools.feedback_loop import (
     write_snapshot,
 )
 from tools.rule_lifecycle import LifecycleConfig
+from tools.v5_prediction_feedback import apply_prediction_feedback, parse_prediction_feedback
 
 # ============================================================
 # 一、路径常量
@@ -764,10 +765,28 @@ def ingest(
     if not feedback_path.exists():
         raise FileNotFoundError(f"feedback.md 不存在: {feedback_path}")
 
-    # 1. 解析 statement-level 标注
+    # 1. 解析 statement-level 标注 + v5 prediction-first 标注
     with timing.step("parse_feedback"):
         feedback_text = feedback_path.read_text(encoding="utf-8")
         feedbacks = parse_statement_feedback(feedback_text)
+        prediction_feedbacks = parse_prediction_feedback(feedback_text)
+
+    prediction_feedback_summary: dict[str, Any] = {
+        "parsed_count": len(prediction_feedbacks),
+        "applied_count": 0,
+        "missing_prediction_ids": [],
+    }
+    if prediction_feedbacks:
+        with timing.step("v5_prediction_feedback"):
+            for prediction_id, verdict in prediction_feedbacks:
+                try:
+                    ok = apply_prediction_feedback(full_case_id, prediction_id, verdict, dry_run=dry_run)
+                except FileNotFoundError:
+                    ok = False
+                if ok:
+                    prediction_feedback_summary["applied_count"] += 1
+                else:
+                    prediction_feedback_summary["missing_prediction_ids"].append(prediction_id)
 
     # 2. 读 statement_records。legacy statement_index / statement_rule_map 不再作为 bridge fanout 来源。
     records_path = case_dir / "statement_records.json"
@@ -798,6 +817,7 @@ def ingest(
                 unmapped_rows=len(feedbacks),
                 needs_mapping_repair_rows=len(feedbacks),
             ),
+            phase_a_learning_summary={"v5_prediction_feedback": prediction_feedback_summary},
         )
         if not dry_run:
             with timing.step("bump_state"):
@@ -868,7 +888,10 @@ def ingest(
         iteration_diff=diff,
         learning_sample_count=len(learning_samples),
         bridge_mapping_stats=bridge_stats,
-        phase_a_learning_summary=phase_a_learning_summary,
+        phase_a_learning_summary={
+            **phase_a_learning_summary,
+            "v5_prediction_feedback": prediction_feedback_summary,
+        },
     )
     if not dry_run:
         with timing.step("bump_state"):

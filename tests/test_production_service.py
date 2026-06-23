@@ -3,6 +3,8 @@
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parents[1]
+
 from engine.application.production_service import (
     ProductionAnalysisService,
     SubmitAnalysisRequest,
@@ -71,9 +73,16 @@ def test_cache_key_changes_when_render_options_change(tmp_path: Path) -> None:
         render=True,
         template_name="report-v5.md",
     )
+    key_d = service.compute_cache_key(
+        input_sha256="abc",
+        render=True,
+        template_name="report-v5.md",
+        render_v6_preprod=True,
+    )
 
     assert key_a != key_b
     assert key_a == key_c
+    assert key_a != key_d
     assert len(key_a) == 64
 
 
@@ -145,6 +154,88 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
     assert any(a["kind"] == "report" for a in first["artifacts"])
     assert any(a["kind"] == "statement_rule_map" for a in first["artifacts"])
     assert (reports_dir / "C-2026-999-X-content-report.md").exists()
+
+
+def test_submit_can_render_v6_preprod_artifacts(monkeypatch, tmp_path: Path) -> None:
+    case_dir = tmp_path / "cases" / "C-2026-999-乾-甲子乙丑丙寅丁卯"
+    findings_dir = case_dir / "findings"
+    reports_dir = tmp_path / "reports"
+    templates_dir = tmp_path / "templates"
+    findings_dir.mkdir(parents=True)
+    reports_dir.mkdir()
+    templates_dir.mkdir()
+    (templates_dir / "report-v6.md").write_text(
+        (ROOT / "templates" / "report-v6.md").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    input_path = case_dir / "input.md"
+    input_path.write_text(
+        "# C-2026-999-乾-甲子乙丑丙寅丁卯 · 输入信息\n\n"
+        "| **性别** | 男（乾造） |\n"
+        "| **起运/交运** | 出生后 8 年起运 |\n\n"
+        "| 柱别 | 主星 | 天干 | 地支 | 藏干 | 星运 | 空亡 | 纳音 | 神煞 |\n"
+        "|---|---|---|---|---|---|---|---|---|\n"
+        "| **年柱** | — | 甲 | 子 | — | — | — | — | — |\n"
+        "| **月柱** | — | 乙 | 丑 | — | — | — | — | — |\n"
+        "| **日柱** | — | 丙 | 寅 | — | — | — | — | — |\n"
+        "| **时柱** | — | 丁 | 卯 | — | — | — | — | — |\n"
+        "| 0 | 8-18 岁 | 2030-2040 | **戊辰** | — |\n",
+        encoding="utf-8",
+    )
+
+    class FakeOutput:
+        case_id = "C-2026-999-乾-甲子乙丑丙寅丁卯"
+        analysis_date = "2026-05-30"
+        final_conclusions = []
+        conflicts = []
+        gate_results = []
+        hash_chain_valid = True
+        overall_confidence = None
+        report_md = "# fake report\n"
+
+    class FakeTiming:
+        total_seconds = 0.01
+
+    def fake_run_pipeline_e2e(*args, **kwargs):
+        for filename in (
+            "energy.json",
+            "picture.json",
+            "gate_results.json",
+            "support.json",
+            "analysis_output.json",
+            "timing.json",
+        ):
+            (findings_dir / filename).write_text("{}", encoding="utf-8")
+        (case_dir / "statement_index.json").write_text("{}", encoding="utf-8")
+        (case_dir / "statement_rule_map.json").write_text("{}", encoding="utf-8")
+        return FakeOutput(), FakeTiming()
+
+    monkeypatch.setattr(
+        "engine.application.production_service.run_pipeline_e2e",
+        fake_run_pipeline_e2e,
+    )
+
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+    result = service.submit(
+        SubmitAnalysisRequest(
+            input_path=input_path,
+            render=True,
+            render_v6_preprod=True,
+            cases_dir=tmp_path / "cases",
+            reports_dir=reports_dir,
+        )
+    )
+
+    assert result["status"] == "completed", result.get("error")
+    assert result["summary"]["v6_preprod_rendered"] is True
+    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.md").exists()
+    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.v5.json").exists()
+    kinds = {artifact["kind"] for artifact in result["artifacts"]}
+    assert "v6_preprod_report" in kinds
+    assert "v5_prediction_ledger" in kinds
 
 
 def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:

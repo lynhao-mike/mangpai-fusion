@@ -21,6 +21,7 @@ def compute_cache_key(
     input_sha256: str,
     render: bool,
     template_name: str,
+    render_v6_preprod: bool = False,
 ) -> str:
     """根据输入指纹与渲染选项派生稳定缓存键。
 
@@ -34,6 +35,7 @@ def compute_cache_key(
         "input_sha256": input_sha256,
         "render": bool(render),
         "template_name": template_name or DEFAULT_TEMPLATE_NAME,
+        "render_v6_preprod": bool(render_v6_preprod),
     }
     raw = json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()

@@ -79,7 +79,7 @@ def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
 
     ziping_claims = [claim for claim in output.claims if claim.school == "ziping"]
     ditiansui_claims = [claim for claim in output.claims if claim.school == "ditiansui"]
-    mvp_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "mvp"]
+    blind_rule_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "school_rule"]
     stub_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "stub"]
 
     assert len(ziping_claims) == 933
@@ -91,7 +91,8 @@ def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
     assert all(claim.metadata.get("runner_state") == "production_rule" for claim in ditiansui_claims)
     assert all(claim.metadata.get("selection") == "v6_preprod_limited" for claim in ditiansui_claims)
     assert not any(claim.metadata.get("rule_id", "").startswith("ZP-CAND-") for claim in ziping_claims)
-    assert {claim.school for claim in mvp_claims} >= {"gao_dechen", "duan_jianye", "yang_qingjuan"}
+    assert {claim.school for claim in blind_rule_claims} >= {"gao_dechen", "duan_jianye", "yang_qingjuan"}
+    assert all(claim.metadata.get("selection") == "v6_preprod_blind_limited" for claim in blind_rule_claims)
     assert stub_claims == []
     assert len(output.prediction_ledger.predictions) >= 5
     assert len(output.learning_signals) == len(output.claims) + len(output.prediction_ledger.predictions)

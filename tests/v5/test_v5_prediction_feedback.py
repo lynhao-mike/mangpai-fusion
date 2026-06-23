@@ -15,15 +15,15 @@ ROOT = Path(__file__).resolve().parents[2]
 CASE_INPUT = ROOT / "cases" / "C-2026-001-乾-庚申戊寅壬子辛丑" / "input.md"
 
 
-def test_list_predictions_returns_five_entries(tmp_path: Path) -> None:
+def test_list_predictions_returns_prediction_entries(tmp_path: Path) -> None:
     report_path = tmp_path / "v6-report.md"
     _, json_path = render_case(CASE_INPUT, output_path=report_path)
 
     predictions = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=json_path)
-    assert len(predictions) == 5
+    assert len(predictions) >= 5
 
     domains = {p.domain for p in predictions}
-    assert {"事业", "财富", "婚姻", "健康", "学业"} == domains
+    assert {"事业", "财富", "婚姻", "健康", "学业"}.issubset(domains)
 
     for p in predictions:
         assert p.feedback_state == "pending"
