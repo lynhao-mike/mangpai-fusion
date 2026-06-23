@@ -82,7 +82,7 @@ def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
     blind_rule_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "school_rule"]
     stub_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "stub"]
 
-    assert len(ziping_claims) == 933
+    assert len(ziping_claims) == 267
     assert 1 <= len(ditiansui_claims) <= 12
     assert {claim.school for claim in output.claims} == set(V5_SCHOOLS)
     assert all(claim.stance == "support" for claim in ziping_claims)

@@ -22,13 +22,13 @@ def test_list_predictions_returns_prediction_entries(tmp_path: Path) -> None:
     predictions = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=json_path)
     assert len(predictions) >= 5
 
-    domains = {p.domain for p in predictions}
+    domains = {p["domain"] for p in predictions}
     assert {"事业", "财富", "婚姻", "健康", "学业"}.issubset(domains)
 
     for p in predictions:
-        assert p.feedback_state == "pending"
-        assert p.prediction_id.startswith("v5pred-")
-        assert p.falsifier
+        assert p["feedback_state"] == "pending"
+        assert p["prediction_id"].startswith("v5pred-")
+        assert p["falsifier"]
 
 
 def test_apply_prediction_feedback_updates_json(tmp_path: Path) -> None:

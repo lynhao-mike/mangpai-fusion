@@ -12,6 +12,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from engine.v5.report_view import render_report_v6_from_output
 from engine.v5.runner import run_v5
 
@@ -100,11 +102,67 @@ def _parse_current_year(text: str) -> str:
     return "当前流年"
 
 
+def _extract_yaml_front_matter(text: str) -> dict[str, Any] | None:
+    """提取 ```yaml ... ``` 段；这是最懒且最稳的 input 解析入口。"""
+
+    match = re.search(r"```yaml\s*(.*?)\s*```", text, flags=re.DOTALL)
+    if not match:
+        return None
+    payload = yaml.safe_load(match.group(1))
+    return payload if isinstance(payload, dict) else None
+
+
 def build_chart_from_input(input_path: str | Path) -> dict[str, Any]:
-    """从 case input.md 构造 v5 chart DTO。"""
+    """从 case input.md 构造 v5 chart DTO。
+
+    ponytail: 先吃 YAML front matter，失败再回退旧正则表格解析。
+    """
 
     path = Path(input_path)
     text = _read_text(path)
+    payload = _extract_yaml_front_matter(text)
+    if payload:
+        birth = payload.get("birth", {}) or {}
+        sizhu = payload.get("四柱", {}) or {}
+        dayun = payload.get("大运", {}) or {}
+        paida = dayun.get("排布", []) or []
+        current_dayun = paida[0].get("干支", "待补充") if paida else "待补充"
+        if paida:
+            for item in paida:
+                try:
+                    start_year = int(str(item.get("起讫", "")).split("-")[0])
+                except Exception:
+                    continue
+                if start_year <= 2026:
+                    current_dayun = str(item.get("干支", current_dayun))
+        chart = {
+            "case_id": str(payload.get("case_meta", {}).get("case_id") or _parse_case_id(path, text)),
+            "gender_marker": _parse_gender_marker(path.parent.name, text),
+            "current_dayun": current_dayun,
+            "current_year": _parse_current_year(text),
+            "start_luck": f"出生后 {dayun.get('起运岁', '待补充')} 年起运" if dayun.get("起运岁") is not None else "待补充",
+            "dayun_summary": "；".join(
+                f"{item.get('干支', '')}运：{item.get('起讫', '')}（{item.get('起岁', '')}-{item.get('止岁', '')} 岁）"
+                for item in paida[:10]
+            ) or "见案例输入",
+            "source_input": str(path.as_posix()),
+            "year_stem": str(sizhu.get("年柱", "")[:1]),
+            "year_branch": str(sizhu.get("年柱", "")[1:]),
+            "month_stem": str(sizhu.get("月柱", "")[:1]),
+            "month_branch": str(sizhu.get("月柱", "")[1:]),
+            "day_stem": str(sizhu.get("日柱", "")[:1]),
+            "day_branch": str(sizhu.get("日柱", "")[1:]),
+            "hour_stem": str(sizhu.get("时柱", "")[:1]),
+            "hour_branch": str(sizhu.get("时柱", "")[1:]),
+        }
+        chart["pillars"] = {
+            "year": str(sizhu.get("年柱", "")),
+            "month": str(sizhu.get("月柱", "")),
+            "day": str(sizhu.get("日柱", "")),
+            "hour": str(sizhu.get("时柱", "")),
+        }
+        return chart
+
     fields = _parse_fields(text)
     chart: dict[str, Any] = {
         "case_id": _parse_case_id(path, text),

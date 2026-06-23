@@ -41,7 +41,7 @@ BLIND_SCHOOL_SOURCE_IDS: dict[str, str] = {
     "duan_jianye": "duan",
     "yang_qingjuan": "yang",
 }
-BLIND_TOPIC_DOMAINS: dict[str, str] = {
+BLIND_TOPIC_DOMAINS: dict[str, str] = {  # ponytail: 按实测覆盖调整，后续有遗漏再加
     "caiyun": "财富",
     "wealth": "财富",
     "career": "事业",
@@ -55,7 +55,7 @@ BLIND_TOPIC_DOMAINS: dict[str, str] = {
     "education": "学业",
     "shensha": "健康",
     "dayun": "事业",
-    "lifa": "总体",
+    "lifa": "事业",
     "xiangfa": "性格",
     "mingong": "总体",
 }
@@ -93,7 +93,11 @@ def _claim_type_from_production_rule(rule: ProductionRule) -> str:
 
 
 def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
-    """把子平正式生产规则转为 v5 structure_law 命题。"""
+    """把子平正式生产规则转为 v5 structure_law 命题。
+
+    ponytail: 只输出 quantifiable=True 的规则；False 的规则保留在 YAML 中
+    作为 knowledge base 备查，不进入裁判器命题池。
+    """
 
     library = load_default_production_library(workspace_root=workspace_root)
     ziping_rules = library.rule_sets.get("ziping")
@@ -102,6 +106,8 @@ def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".") -
 
     claims: list[V5Claim] = []
     for rule in ziping_rules.rules:
+        if not rule.quantifiable:
+            continue
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, rule.id),
             source=rule.source.path,
@@ -216,8 +222,8 @@ def build_ditiansui_production_claims(
 ) -> list[V5Claim]:
     """筛选滴天髓生产规则转为 v5 气势命题。
 
-    滴天髓规则库体量较大，v6 预生产阶段只接入少量可触发、可展示、
-    可反馈的结构命题，避免把报告变成原文堆叠。
+    ponytail: 只输出 quantifiable=True 的规则；False 的规则是纯原文堆叠，
+    保留在 YAML 中作为 knowledge base 备查，不进入裁判器命题池。
     """
 
     library = load_default_production_library(workspace_root=workspace_root)
@@ -225,7 +231,7 @@ def build_ditiansui_production_claims(
     if not rule_set:
         return []
 
-    selected = [rule for rule in rule_set.rules if _ditiansui_rule_triggered(rule, chart)]
+    selected = [rule for rule in rule_set.rules if rule.quantifiable and _ditiansui_rule_triggered(rule, chart)]
     selected.sort(key=lambda rule: (_domain_rank(rule), 0 if rule.quantifiable else 1, -rule.confidence.posterior, rule.id))
     claims: list[V5Claim] = []
     for rule in selected[:limit]:
@@ -372,7 +378,7 @@ def build_blind_school_rule_claims(
     *,
     school: str,
     workspace_root: str = ".",
-    limit: int = 4,
+    limit: int = 8,
 ) -> list[V5Claim]:
     """把三盲派 index.yaml 规则筛选为 v5 命题。"""
 

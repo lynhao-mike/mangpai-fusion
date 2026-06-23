@@ -31,9 +31,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
-from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REPORTS_DIR = REPO_ROOT / "reports"
@@ -61,31 +60,22 @@ _VERDICT_LABELS: dict[str, str] = {
 }
 
 
-@dataclass
-class PredictionSummary:
-    prediction_id: str
-    domain: str
-    event_label: str
-    time_window: str
-    trigger_conditions: list[str]
-    probability_range: list[float]
-    confidence_tier: str
-    falsifier: str
-    feedback_state: str
-
-    def display(self) -> str:
-        label = _VERDICT_LABELS.get(self.feedback_state, self.feedback_state)
-        prob = f"{int(self.probability_range[0]*100)}%–{int(self.probability_range[1]*100)}%"
-        lines = [
-            f"  ID:     {self.prediction_id}",
-            f"  领域:   {self.domain}",
-            f"  应事:   {self.event_label}",
-            f"  时间窗: {self.time_window}",
-            f"  概率:   {prob} ({self.confidence_tier})",
-            f"  证伪:   {self.falsifier}",
-            f"  状态:   {label}",
-        ]
-        return "\n".join(lines)
+def _prediction_display(item: dict[str, Any]) -> str:
+    label = _VERDICT_LABELS.get(str(item.get("feedback_state", "pending")), str(item.get("feedback_state", "pending")))
+    prob_range = item.get("probability_range", [0.0, 0.0])
+    prob = f"{int(float(prob_range[0])*100)}%–{int(float(prob_range[1])*100)}%"
+    tw = item.get("time_window", {})
+    time_label = tw.get("label", str(tw)) if isinstance(tw, dict) else str(tw)
+    tier = item.get("confidence", {}).get("tier", "")
+    return "\n".join([
+        f"  ID:     {item.get('prediction_id', '')}",
+        f"  领域:   {item.get('domain', '')}",
+        f"  应事:   {item.get('event_label', '')}",
+        f"  时间窗: {time_label}",
+        f"  概率:   {prob} ({tier})",
+        f"  证伪:   {item.get('falsifier', '')}",
+        f"  状态:   {label}",
+    ])
 
 
 def _find_v5_json(case_id: str) -> Path | None:
@@ -102,35 +92,18 @@ def _find_v5_json(case_id: str) -> Path | None:
     return None
 
 
-def list_predictions(case_id: str, *, v5_json_path: str | Path | None = None) -> list[PredictionSummary]:
+def list_predictions(case_id: str, *, v5_json_path: str | Path | None = None) -> list[dict[str, Any]]:
     """列出当前 case 的 prediction ledger 条目。
 
     v5_json_path 可选：显式指定 JSON 路径；不传则从 reports/ 自动查找。
+    返回 dict 列表，直接对应 v5 prediction ledger 条目。
     """
 
     v5_path = Path(v5_json_path) if v5_json_path is not None else _find_v5_json(case_id)
     if v5_path is None:
         return []
     raw = json.loads(v5_path.read_text(encoding="utf-8"))
-    predictions = raw.get("prediction_ledger", {}).get("predictions", [])
-    result: list[PredictionSummary] = []
-    for item in predictions:
-        tw = item.get("time_window", {})
-        time_label = tw.get("label", str(tw)) if isinstance(tw, dict) else str(tw)
-        result.append(
-            PredictionSummary(
-                prediction_id=str(item.get("prediction_id", "")),
-                domain=str(item.get("domain", "")),
-                event_label=str(item.get("event_label", "")),
-                time_window=time_label,
-                trigger_conditions=list(item.get("trigger_conditions", [])),
-                probability_range=[float(x) for x in item.get("probability_range", [0.0, 0.0])],
-                confidence_tier=str(item.get("confidence", {}).get("tier", "")),
-                falsifier=str(item.get("falsifier", "")),
-                feedback_state=str(item.get("feedback_state", "pending")),
-            )
-        )
-    return result
+    return list(raw.get("prediction_ledger", {}).get("predictions", []))
 
 
 def parse_prediction_feedback(text: str) -> list[tuple[str, V5FeedbackVerdict]]:
@@ -218,18 +191,18 @@ def main(argv: list[str] | None = None) -> int:
         if not predictions:
             print(f"[WARN] 未找到 case {args.case_id!r} 的 v5 JSON 或 prediction 账本为空。")
             return 0
-        pending = [p for p in predictions if p.feedback_state == "pending"]
-        done = [p for p in predictions if p.feedback_state != "pending"]
+        pending = [p for p in predictions if p.get("feedback_state") == "pending"]
+        done = [p for p in predictions if p.get("feedback_state") != "pending"]
         print(f"=== v5 预测账本：{args.case_id} ===\n")
         if pending:
             print(f"待反馈 ({len(pending)} 条):")
             for p in pending:
-                print(p.display())
+                print(_prediction_display(p))
                 print()
         if done:
             print(f"已反馈 ({len(done)} 条):")
             for p in done:
-                print(p.display())
+                print(_prediction_display(p))
                 print()
         return 0
 
