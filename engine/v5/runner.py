@@ -92,7 +92,7 @@ def _claim_type_from_production_rule(rule: ProductionRule) -> str:
     return "structure_claim"
 
 
-def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
+def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".", chart: dict[str, Any] | None = None) -> list[V5Claim]:
     """把子平正式生产规则转为 v5 structure_law 命题。
 
     ponytail: 只输出 quantifiable=True 的规则；False 的规则保留在 YAML 中
@@ -104,10 +104,12 @@ def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".") -
     if not ziping_rules:
         return []
 
+    selected = [rule for rule in ziping_rules.rules if rule.quantifiable]
+    if chart is not None:
+        selected.sort(key=lambda rule: _production_rule_rank(rule, chart))
+
     claims: list[V5Claim] = []
-    for rule in ziping_rules.rules:
-        if not rule.quantifiable:
-            continue
+    for rule in selected:
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, rule.id),
             source=rule.source.path,
@@ -194,6 +196,39 @@ def _chart_has_zhi_chong(chart: dict[str, Any]) -> bool:
     return any(left in text and right in text for left, right in (("子", "午"), ("丑", "未"), ("寅", "申"), ("卯", "酉"), ("辰", "戌"), ("巳", "亥")))
 
 
+def _production_rule_text(rule: ProductionRule) -> str:
+    return "".join(
+        [
+            rule.id,
+            rule.topic,
+            rule.title,
+            rule.output.statement,
+            rule.source.excerpt,
+            rule.conditions.trigger,
+        ]
+    )
+
+
+def _production_rule_chart_score(rule: ProductionRule, chart: dict[str, Any]) -> int:
+    """按命盘文本给生产规则轻量排序分。
+
+    ponytail: 不新增命理判断，只让已存在规则中明示的干支、冲合、岁运词优先。
+    """
+
+    rule_text = _production_rule_text(rule)
+    chart_text = _chart_pillars_text(chart) + str(chart.get("current_dayun") or "") + str(chart.get("current_year") or "")
+    score = sum(1 for char in set(chart_text) if char in "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥" and char in rule_text)
+    if _chart_has_zhi_chong(chart) and any(token in rule_text for token in ("冲", "刑", "穿", "破", "悖")):
+        score += 3
+    if any(token in rule.conditions.trigger for token in ("dayun", "liunian", "suiyun", "xiaoyun")) or any(token in rule_text for token in ("大运", "流年", "岁运", "应期")):
+        score += 2
+    return score
+
+
+def _production_rule_rank(rule: ProductionRule, chart: dict[str, Any]) -> tuple[int, int, float, str]:
+    return (-_production_rule_chart_score(rule, chart), _domain_rank(rule), -rule.confidence.posterior, rule.id)
+
+
 def _ditiansui_rule_triggered(rule: ProductionRule, chart: dict[str, Any]) -> bool:
     trigger = rule.conditions.trigger
     if trigger in {"always", "has_energy_structure", "has_tiaohou_advice"}:
@@ -232,7 +267,7 @@ def build_ditiansui_production_claims(
         return []
 
     selected = [rule for rule in rule_set.rules if rule.quantifiable and _ditiansui_rule_triggered(rule, chart)]
-    selected.sort(key=lambda rule: (_domain_rank(rule), 0 if rule.quantifiable else 1, -rule.confidence.posterior, rule.id))
+    selected.sort(key=lambda rule: _production_rule_rank(rule, chart))
     claims: list[V5Claim] = []
     for rule in selected[:limit]:
         evidence = V5Evidence(
@@ -372,6 +407,27 @@ def _blind_rule_rank(rule: dict[str, Any]) -> tuple[int, float, str]:
     return (status_rank, -score, str(rule.get("id", "")))
 
 
+def _blind_rule_chart_score(rule: dict[str, Any], chart: dict[str, Any]) -> int:
+    """按命盘文本给三盲派规则一个轻量触发分。
+
+    ponytail: 不写新命理规则，只让 index.yaml 中明确提到的干支、冲合、岁运词优先。
+    """
+
+    rule_text = "".join(str(rule.get(key, "")) for key in ("topic", "topic_label", "title", "conclusion"))
+    chart_text = _chart_pillars_text(chart) + str(chart.get("current_dayun") or "") + str(chart.get("current_year") or "")
+    score = sum(1 for char in set(chart_text) if char in "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥" and char in rule_text)
+    if _chart_has_zhi_chong(chart) and any(token in rule_text for token in ("冲", "刑", "穿", "破")):
+        score += 3
+    if any(token in chart_text for token in ("大运", "流年", "运")) and any(token in rule_text for token in ("大运", "流年", "应期", "交运")):
+        score += 2
+    return score
+
+
+def _blind_rule_chart_rank(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[int, int, float, str]:
+    status_rank, neg_score, rule_id = _blind_rule_rank(rule)
+    return (-_blind_rule_chart_score(rule, chart), status_rank, neg_score, rule_id)
+
+
 def build_blind_school_rule_claims(
     chart: dict[str, Any],
     case_id: str,
@@ -391,7 +447,7 @@ def build_blind_school_rule_claims(
         if str(rule.get("school", "")) == source_school
         and str(rule.get("status", "candidate")) not in {"deprecated", "rejected"}
     ]
-    selected.sort(key=_blind_rule_rank)
+    selected.sort(key=lambda rule: _blind_rule_chart_rank(rule, chart))
     claims: list[V5Claim] = []
     for rule in selected[:limit]:
         rule_id = str(rule.get("id", _stable_id("blindrule", school, rule.get("title", ""))))
@@ -611,9 +667,18 @@ def build_abstain_claims(
 
 
 def build_default_claims(chart: dict[str, Any], case_id: str, *, workspace_root: str = ".") -> list[V5Claim]:
-    """默认运行子平 / 滴天髓生产规则 + 三盲派规则筛选 runner。"""
+    """默认运行子平 / 滴天髓生产规则 + 三盲派规则筛选 runner。
 
-    ziping_claims = build_ziping_production_claims(case_id, workspace_root=workspace_root)
+    ponytail: 子平独立分析的两层结构命题（月令旺衰 + 格局用神）以最高优先级
+    前置，让结构合法性仲裁拿到更精确的定性命题，不依赖旧生产规则平铺顺序。
+    """
+
+    from engine.v5.ziping_runner import run_ziping_independent  # ponytail: lazy import，避免循环
+    ziping_independent_claims = run_ziping_independent(chart, case_id)
+
+    ziping_claims = build_ziping_production_claims(case_id, workspace_root=workspace_root, chart=chart)
+    # 去重：独立分析命题与生产规则命题可能覆盖同一 domain，但 claim_id 不同，保留两者。
+    ziping_claims = ziping_independent_claims + ziping_claims
     ditiansui_claims = build_ditiansui_production_claims(chart, case_id, workspace_root=workspace_root)
     if not ditiansui_claims:
         ditiansui_claims = build_minimal_ditiansui_claims(chart, case_id)
@@ -822,8 +887,24 @@ def build_prediction_ledger(case_id: str, claims: list[V5Claim], chart: dict[str
     """
 
     predictions: list[V5Prediction] = []
+    for spec in _default_prediction_specs(chart or {}):
+        predictions.append(
+            V5Prediction(
+                prediction_id=_stable_id("v5pred", case_id, spec["domain"], spec["event_label"]),
+                domain=spec["domain"],
+                event_label=spec["event_label"],
+                probability_range=spec["probability_range"],
+                confidence=V5Confidence(tier=spec["tier"], score=spec["score"], note="prediction-first MVP 默认主要事件槽位"),
+                time_window=spec["time_window"],
+                trigger_conditions=list(spec["trigger_conditions"]),
+                falsifier=spec["falsifier"],
+                calibration_note="默认主要事件预测；后续由五派 runner、反馈样本与事件 taxonomy 校准。",
+            )
+        )
+
+    existing_domains = {item.domain for item in predictions}
     for claim in claims:
-        if not claim.probabilistic or claim.domain not in PROBABILISTIC_DOMAIN_WHITELIST:
+        if not claim.probabilistic or claim.domain not in PROBABILISTIC_DOMAIN_WHITELIST or claim.domain in existing_domains:
             continue
         time_window = dict(claim.timing_hints[0]) if claim.timing_hints else {}
         predictions.append(
@@ -839,24 +920,7 @@ def build_prediction_ledger(case_id: str, claims: list[V5Claim], chart: dict[str
                 calibration_note="由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
             )
         )
-
-    existing_domains = {item.domain for item in predictions}
-    for spec in _default_prediction_specs(chart or {}):
-        if spec["domain"] in existing_domains:
-            continue
-        predictions.append(
-            V5Prediction(
-                prediction_id=_stable_id("v5pred", case_id, spec["domain"], spec["event_label"]),
-                domain=spec["domain"],
-                event_label=spec["event_label"],
-                probability_range=spec["probability_range"],
-                confidence=V5Confidence(tier=spec["tier"], score=spec["score"], note="prediction-first MVP 默认主要事件槽位"),
-                time_window=spec["time_window"],
-                trigger_conditions=list(spec["trigger_conditions"]),
-                falsifier=spec["falsifier"],
-                calibration_note="默认主要事件预测；后续由五派 runner、反馈样本与事件 taxonomy 校准。",
-            )
-        )
+        existing_domains.add(claim.domain)
     return V5PredictionLedger(case_id=case_id, predictions=predictions)
 
 

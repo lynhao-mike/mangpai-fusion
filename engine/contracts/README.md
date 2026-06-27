@@ -16,7 +16,7 @@
 | 04 | [04-gate-protocol](./04-gate-protocol.md) | ✅ W1.3 已交付 | 应期三层门接口 + 6 触发判定 + 12 道门 |
 | 05 | [05-rule-lifecycle](./05-rule-lifecycle.md) | ✅ W1.3 已交付 | 规律生命周期 5 状态机 + Beta + 3 次降级缓冲 |
 | 06 | [06-confidence-model](./06-confidence-model.md) | ✅ W1.3 已交付 | 双轨置信度精确公式 + 联立聚合 + gate 限顶 |
-| 07 | [07-pipeline-flow](./07-pipeline-flow.md) | ✅ W1.4 已交付 | W1-W4 流水线数据流精确定义 + 性能约束 |
+| 07 | [07-pipeline-flow](./07-pipeline-flow.md) | ✅ W1.4 已交付 · 兼容流程 | 旧 W1-W4 兼容入口数据流 + 性能约束；目标主流程见 10 |
 | 08 | [08-agent-handoff](./08-agent-handoff.md) | ✅ W1.4 已交付 · **契约冻结** | 8 agent 边界 + 集成日 + 回归测试清单 |
 | 09 | [09-naming-convention](./09-naming-convention.md) | ✅ W1.1 已交付 | 文件命名规范 + 旧案重命名清单 |
 | 10 | [10-ziping-fusion-v5](./10-ziping-fusion-v5.md) | ✅ v5 并行核心契约 | 子平类 / 滴天髓类 / 高德臣 / 段建业 / 杨清娟五派命题图推理操作系统 |

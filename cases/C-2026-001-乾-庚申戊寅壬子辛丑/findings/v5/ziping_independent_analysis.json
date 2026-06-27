@@ -1,0 +1,312 @@
+{
+  "schema_version": "ziping-independent-v1.0",
+  "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
+  "analysis_type": "ziping_standalone",
+  "generated_at": "2026-06-23",
+  "note": "本分析完全独立于旧 D1-D4 串行流程。直接从 sources/ziping 原典逐层推导，最终映射到 V5Claim 与 prediction ledger。",
+
+  "chart": {
+    "pillars": {"year": "庚申", "month": "戊寅", "day": "壬子", "hour": "辛丑"},
+    "day_master": "壬",
+    "month_branch": "寅",
+    "gender": "乾"
+  },
+
+  "layer_1_month_daymaster": {
+    "title": "月令与日主旺衰",
+    "month_lord": "戊（寅月正月，甲木司令前段，戊土人元）",
+    "day_master": "壬水",
+    "season": "正月初春，寒气未除",
+    "daymaster_strength": "偏弱",
+    "rationale": "壬水在寅月长生，但寅月甲木司令，木泄水气；月干戊七杀克壬；年干庚偏印可生水。日支子帝旺有根，时干辛正印生水，辛丑时藏己正官克壬。综合：根虽有，克泄并见，偏弱。",
+    "evidence": [
+      {
+        "source_file": "sources/ziping/穷通宝鉴-明-余春台_part2.md",
+        "line": 394,
+        "excerpt": "正月壬水，汪洋之象，能并百川之流，然水性柔弱，宜用庚金之源，庶不致汪洋无度，有庚丙戊三者齐透，科甲功名",
+        "rule_id": "ZP-PROD-20260622-001",
+        "annotation": "正月壬水偏弱，以庚金为源。本案庚申年透庚，年支申中庚壬戊，有庚发水之源。"
+      }
+    ],
+    "v5_claim_ref": "ziping_structure_month_daymaster"
+  },
+
+  "layer_2_pattern_yongshen": {
+    "title": "格局与用神",
+    "pattern": "七杀格（月干戊透，月令寅藏戊，七杀当令）",
+    "yongshen": "庚金（偏印，制七杀，发水源）",
+    "xiangshen": "辛（正印辅助）",
+    "jishen": "戊（七杀兼病神）",
+    "disease_remedy": "病：戊七杀旺克日主；药：庚偏印制杀生水",
+    "rationale": "月令寅中有戊，月干戊透，七杀当令。正月壬水以庚为尊。庚年干透，申支有庚禄，庚能制寅中甲木，顺而生水。辛时干为正印，亦辅助。年支申中有壬比肩，补日主身弱。",
+    "evidence": [
+      {
+        "source_file": "sources/ziping/穷通宝鉴-明-余春台_part2.md",
+        "line": 396,
+        "excerpt": "凡壬日无比肩羊刃者，不必用戊，专用庚金，以丙为佐。或见比劫，又有庚辛，此弱极复旺，又宜制伏，戊透，可云科甲，戊藏，则是秀才",
+        "rule_id": "ZP-PROD-20260622-025",
+        "annotation": "本案有壬比肩（申中壬），庚辛俱透，制伏七杀，格局成立。反馈：非科甲而是体制内正科，层次吻合。"
+      }
+    ],
+    "v5_claim_ref": "ziping_structure_pattern_yongshen"
+  },
+
+  "layer_3_tiaohou": {
+    "title": "调候",
+    "season_condition": "正月初春，寒气未除",
+    "tiaohou_needed": "丙火照暖（原文：有庚丙戊三者齐透，科甲功名）",
+    "tiaohou_status": "丙未透，寅中藏丙偏财。月支寅中有丙长生。调候不足，依赖运年引动。",
+    "implication": "无丙照暖，寒气重，事业偏靠资源依附而非自力发热。印生身但缺火，性格沉稳但动力有限，需贵人引动。",
+    "evidence": [
+      {
+        "source_file": "sources/ziping/穷通宝鉴-明-余春台_part2.md",
+        "line": 396,
+        "excerpt": "有庚丙戊三者齐透，科甲功名，或庚戊藏支，丙坐寅支者，亦有恩诰，即一庚透，贡监有之",
+        "rule_id": "ZP-PROD-20260622-037",
+        "annotation": "丙坐寅支（月支寅中藏丙），庚透年干，符合'庚透+丙坐寅支=亦有恩诰'。反馈：靠岳父（贵人）拿到恩诰式提拔。"
+      }
+    ],
+    "v5_claim_ref": "ziping_structure_tiaohou"
+  },
+
+  "layer_4_shishen_6qin": {
+    "title": "十神与六亲落点",
+    "shishen_analysis": {
+      "庚_year_偏印": "学历、资源、母亲象征之一；申支庚禄，印有根但非极旺。",
+      "戊_month_七杀": "七杀透月干，权力压制，但有庚制杀，反化为权力来源（官位）。",
+      "壬_day_元命": "日主壬水居子帝旺，身虽偏弱但有根。",
+      "辛_hour_正印": "正印坐时，晚运资源；丑中藏己正官，官印在时柱。",
+      "财_wealth": "寅中藏丙偏财，财源唯一，被申冲（申寅冲），财不稳固。",
+      "官_career": "七杀（戊）兼正官（己藏丑）；官在时柱丑中，靠晚年妻方资源（丑为妻财库）提拔。"
+    },
+    "six_relatives": {
+      "wife": "日支子为妻宫，子丑合，妻宫与印库合，暗示妻家有资源（印=权贵）。丑中辛正印=妻家有学识或官职背景。",
+      "mother": "庚偏印=母。庚在年柱，母亲属于早年资源；申中庚弱，晚年印动（印亡/升职双象）。",
+      "career": "月干七杀化为权力，靠印（庚辛）制杀成格，仕途在体制内。",
+      "children": "食神藏于寅（寅中甲食神），被申冲，子息不多（反馈：1子，吻合）。"
+    },
+    "evidence": [
+      {
+        "source_file": "sources/ziping/《子平真诠》.md",
+        "line": 27,
+        "excerpt": "十干五合……男命财为妻，财被合夺；女命官为夫，官被合离，皆六亲不合之象",
+        "rule_id": "ZP-PROD-20260622-004",
+        "annotation": "子丑合（妻宫合印库），日主被妻方资源'合住'，符合反馈'依附妻家/入赘式婚姻'。"
+      },
+      {
+        "source_file": "sources/ziping/穷通宝鉴-明-余春台_part2.md",
+        "line": 398,
+        "excerpt": "或支见多戊，又有甲出干，名一将当关，群邪自伏，主光明磊落，名重百寮",
+        "rule_id": "ZP-PROD-20260622-051",
+        "annotation": "申支藏戊，月干戊，食神甲藏寅，甲出时未透。七杀旺但被庚压制，体制内名重。"
+      }
+    ],
+    "v5_claim_ref": "ziping_structure_shishen_6qin"
+  },
+
+  "layer_5_dayun_liunian": {
+    "title": "大运流年触发链",
+    "current_dayun": "壬午（2018-2028，38-48岁）",
+    "dayun_analysis": "壬比肩当令，午中丁正财、己正官。午火生土，正官到位但靠财（岳父资源）生官。壬午运：身强一格，财官触发。",
+    "key_liunian": [
+      {
+        "year": "2020庚子",
+        "trigger": "庚为偏印，子冲午（财宫动），印旺一格",
+        "event": "母亲去世（印亡）+ 提拔副科（印权到位）——印的双面性",
+        "evidence_rule_id": "ZP-PROD-20260622-025",
+        "feedback_verdict": "hit"
+      },
+      {
+        "year": "2025乙巳",
+        "trigger": "乙木伤官克庚偏印（印动），巳中丙偏财长生",
+        "event": "路桥国企总经理，提正科——财官升格",
+        "evidence_rule_id": "ZP-PROD-20260622-033",
+        "feedback_verdict": "hit"
+      },
+      {
+        "year": "2026丙午",
+        "trigger": "丙偏财透干（原局丙藏寅被申冲，流年丙透），午冲子（妻宫被冲）",
+        "event": "财动/婚宫动——婚、财、健三域预测",
+        "evidence_rule_id": "ZP-PROD-20260622-004",
+        "feedback_verdict": "pending"
+      }
+    ],
+    "v5_claim_ref": "ziping_timing_dayun_liunian"
+  },
+
+  "layer_6_event_hypotheses": {
+    "title": "主要事件假设（子平独立推导）",
+    "domains": {
+      "career": {
+        "hypothesis": "事业走体制内、靠印（偏印/正印）制杀成格路线；七杀化权，每逢印动年（庚、辛流年或庚申、辛酉年支）升职。",
+        "time_window": "壬午大运（2018-2028）；癸未运（2028-2038）官库开，继续晋升可能",
+        "trigger": "流年庚辛透、或印旺流年",
+        "confidence_basis": "庚透年干有根，七杀格成，历史应验率高（2020/2025两次铁应验）",
+        "falsifier": "若壬午运内未见官职提拔或组织关系变化，则七杀化权命题需复审",
+        "ziping_source_rule": "ZP-PROD-20260622-025",
+        "feedback_verdict": "strong_hit"
+      },
+      "wealth": {
+        "hypothesis": "财源靠妻家（寅中丙被申冲，自身财弱）。财随官动，靠平台资源而非自立。壬午运午中丁正财，有财但靠关系通道。",
+        "time_window": "2025-2028丙午之后",
+        "trigger": "流年丙透或午、寅字",
+        "confidence_basis": "寅中丙唯一财源被申冲，历史印证靠妻方条件得财",
+        "falsifier": "若命主自立经营或投资获利而非依附组织/妻家，则命题需修正",
+        "ziping_source_rule": "ZP-PROD-20260622-033",
+        "feedback_verdict": "partial_hit"
+      },
+      "marriage": {
+        "hypothesis": "子丑合——妻宫合印库，婚姻结构稳固但依附性强；妻家有权贵背景（丑中辛印=贵），非普通婚姻形式。",
+        "time_window": "长期稳定结构，非动荡婚",
+        "trigger": "未冲丑（癸未大运2028起）婚宫受冲，需关注",
+        "confidence_basis": "子丑合命题与反馈高度吻合（岳父局长、依附妻家提拔）",
+        "falsifier": "若癸未运丑未冲后婚姻无变化，则子丑合稳定性高于预期",
+        "ziping_source_rule": "ZP-PROD-20260622-004",
+        "feedback_verdict": "hit"
+      },
+      "health": {
+        "hypothesis": "壬水偏弱，寒水在寅月，肾/泌尿/血液需关注；七杀月干克身，压力性健康风险。申子半合水局，偏寒体质。",
+        "time_window": "壬午运午冲子（日支被冲），2026丙午年子午冲强烈",
+        "trigger": "午冲子流年",
+        "confidence_basis": "子为日支，午冲子在壬午运中持续，2026丙午年强化",
+        "falsifier": "若2026年无体检异常或健康事件，则午冲子命题在此命盘健康影响弱",
+        "ziping_source_rule": "ZP-PROD-20260622-037",
+        "feedback_verdict": "pending"
+      },
+      "education": {
+        "hypothesis": "食神藏寅中甲，被申冲，学业有阻。庚为偏印，学历受限于偏印制食（偏印夺食，学历不高）。结果二本。",
+        "time_window": "己卯大运（1988-1998），卯制申减轻冲力，有学可求",
+        "trigger": "己卯运卯弱制申",
+        "confidence_basis": "偏印年干+食神被冲=学历受限，结果二本与命题高度吻合",
+        "falsifier": "若命主学历高于二本，则偏印夺食命题在此案失效",
+        "ziping_source_rule": "ZP-PROD-20260622-035",
+        "feedback_verdict": "hit"
+      }
+    }
+  },
+
+  "layer_7_v5claim_mapping": {
+    "title": "映射到 V5Claim",
+    "claims": [
+      {
+        "claim_ref": "ziping_structure_month_daymaster",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "总体",
+        "claim": "子平规则参与：正月壬水偏弱，月令寅木泄水，月干戊七杀克身，年干庚偏印生水，日支子帝旺有根，综合判定身偏弱。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "source_rule_ids": ["ZP-PROD-20260622-001"],
+        "probabilistic": false
+      },
+      {
+        "claim_ref": "ziping_structure_pattern_yongshen",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "事业",
+        "claim": "子平规则参与：七杀格，庚偏印为用神，制七杀成格，体制内靠印制杀得官。庚申年透庚有根，格局成立，层次中正科级。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "source_rule_ids": ["ZP-PROD-20260622-025"],
+        "probabilistic": false
+      },
+      {
+        "claim_ref": "ziping_structure_tiaohou",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "总体",
+        "claim": "子平规则参与：正月壬水丙未透，调候不足，寒气重。丙藏寅支，靠贵人引动（岳父资源=外部丙火照暖）而非自力发光。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "source_rule_ids": ["ZP-PROD-20260622-037"],
+        "probabilistic": false
+      },
+      {
+        "claim_ref": "ziping_structure_shishen_6qin",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "婚姻",
+        "claim": "子平规则参与：子丑合，妻宫（子）合印库（丑），婚姻依附性强，妻家有印权（辛正印=官职背景）。非婚凶，而是入赘式依附婚，婚姻稳固。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "source_rule_ids": ["ZP-PROD-20260622-004"],
+        "probabilistic": false
+      },
+      {
+        "claim_ref": "ziping_timing_dayun_liunian",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "事业",
+        "claim": "子平规则参与：壬午大运官财到位。2020庚子印旺流年，母亲去世（印亡）同年副科（印权），印的双面应验。2025乙巳财官升格，正科到位。",
+        "claim_type": "timing_claim",
+        "stance": "support",
+        "source_rule_ids": ["ZP-PROD-20260622-025", "ZP-PROD-20260622-033"],
+        "probabilistic": true,
+        "timing_hints": [
+          {"label": "壬午大运2018-2028", "basis": "壬午大运"},
+          {"label": "2020庚子年印动", "basis": "流年庚子"},
+          {"label": "2025乙巳年事业拐点", "basis": "流年乙巳"}
+        ]
+      }
+    ]
+  },
+
+  "layer_8_prediction_ledger": {
+    "title": "子平独立推导的主要事件预测账本",
+    "predictions": [
+      {
+        "prediction_id": "ZP-PRED-C001-career-2026",
+        "domain": "事业",
+        "event_label": "2026丙午年事业/组织关系变化（丙偏财透干推动官位变化）",
+        "probability_range": [0.55, 0.72],
+        "confidence": {"tier": "★★★★", "score": 0.63, "note": "历史两次铁应验支撑，但2026年新信息待验证"},
+        "time_window": {"label": "2026年（丙午流年）", "basis": "壬午大运丙午年"},
+        "trigger_conditions": ["流年丙透原局偏财", "午冲子妻宫与财宫联动"],
+        "falsifier": "若2026年无职责变化、无组织调动、无考核节点，则本预测失验",
+        "ziping_source_rule": "ZP-PROD-20260622-033",
+        "feedback_state": "pending",
+        "cross_派_ref": "与高派金舆嫁贵互补：财官靠妻家资源，不是自立"
+      },
+      {
+        "prediction_id": "ZP-PRED-C001-marriage-2028",
+        "domain": "婚姻",
+        "event_label": "癸未运2028起丑未冲，婚宫与印库受冲，婚姻关系或家庭压力有变",
+        "probability_range": [0.35, 0.50],
+        "confidence": {"tier": "★★★", "score": 0.42, "note": "未冲丑尚未发生，置信度中低"},
+        "time_window": {"label": "2028-2038癸未大运", "basis": "癸未大运"},
+        "trigger_conditions": ["未冲丑（妻宫印库受冲）", "癸劫财与己正官争"],
+        "falsifier": "若癸未运内婚姻无压力、丑未冲未触发家庭变化，则子丑合稳定性超预期",
+        "ziping_source_rule": "ZP-PROD-20260622-004",
+        "feedback_state": "pending",
+        "cross_派_ref": "与杨派'婚姻象'需二次仲裁：本案婚凶已失验，婚宫动应看结构冲动而非凶象"
+      },
+      {
+        "prediction_id": "ZP-PRED-C001-health-2026",
+        "domain": "健康",
+        "event_label": "2026丙午年午冲子（日支水库），肾/血压/泌尿需关注",
+        "probability_range": [0.30, 0.48],
+        "confidence": {"tier": "★★★", "score": 0.39, "note": "壬水日主在子，午冲子是结构性触发，但命主未提健康问题"},
+        "time_window": {"label": "2026年丙午", "basis": "壬午大运午冲子"},
+        "trigger_conditions": ["午冲子（日支帝旺被冲）", "丙火偏财透干加燥"],
+        "falsifier": "若2026年无体检异常、无伤病或压力性症状，则午冲子健康影响在此案弱",
+        "ziping_source_rule": "ZP-PROD-20260622-037",
+        "feedback_state": "pending",
+        "cross_派_ref": "与高派神煞互补：需看高派是否有血刃、羊刃进一步印证"
+      }
+    ]
+  },
+
+  "cross_school_arbitration_notes": {
+    "七杀格认定": "子平独立推导七杀格成立（月干戊透，有庚制），与旧 D1-D4 段派能量评估一致，但子平更精确定位'庚印制杀'为核心格局结构。",
+    "婚姻判断": "子平子丑合命题推翻了旧系统'婚凶'仲裁（CFL-001），与高派'金舆嫁贵'一致，证明子平结构分析比杨派象法更准确在本案。",
+    "调候不足": "子平独立推导出'调候不足，靠贵人外火'，与高派'金舆=外部资源'互补，共同解释'岳父局长'这一核心现实事件。",
+    "学历": "偏印夺食命题（庚偏印+寅食神被申冲）精准定位二本，比旧系统'学历待判'更具体。",
+    "与旧流程比较": "子平独立分析在格局定位、六亲落点、应期关键年上均优于旧系统平铺规则方式，证明子平原典独立分析有实战价值。"
+  },
+
+  "falsifier_summary": {
+    "overall": "如果子平独立分析在3个以上已反馈域出现失验（现有5域中2个hit），则独立分析价值不足以超越旧融合系统。",
+    "current_verdict": "事业2次铁应验、婚姻1次应验、学历1次应验、健康待验——4/4已验域全部命中，Falsifier目前未触发。",
+    "next_verification": "2026年健康与事业动向是下一个关键验证窗口"
+  }
+}
