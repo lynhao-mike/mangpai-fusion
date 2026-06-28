@@ -1,0 +1,336 @@
+schema_version: review-draft-2026-06-28
+status: review_draft
+source_scope: bypass_candidate_rules
+expert_system: ziping
+notes: >
+  《千里命稿》前 10 条候选 YAML 草案；不接入生产引擎；不写入 theory/ziping/index.yaml；
+  其中 evidence_only 条目只作报告表达/治理旁证，不进入 hit/miss 计分。
+rules:
+  - id: ZP-CAND-QLMG-20260628-009
+    status: candidate
+    expert_system: ziping
+    title: 正官格成于身官财印平衡
+    topic: official_career
+    domains:
+      - 事业
+      - 婚姻
+      - 学业
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+      - AXIS-06
+    claim: 正官格的成立依赖日主承载、财印配合与官杀清纯，不可只因见官即断贵。
+    conditions:
+      required:
+        - 命局已识别正官格候选
+        - 日主强弱已判定
+        - 可判断财印是否生扶官星或护卫日主
+      optional:
+        - 官星得月令或有根
+        - 官星得财生或印护
+      exclusions:
+        - 七杀混杂而未清
+        - 仅见官星名号、无承载与配套结构时不可直接定格
+    output:
+      statement: 正官格需看身官财印是否平衡、官杀是否清纯，再判断事业层级与婚姻稳定性。
+      falsifiable: 若大量官杀混杂或财印失衡命局仍稳定表现为正官清贵，则本规则需复审。
+    source:
+      path: sources/qianliminggao/千里命稿_part3.md
+      excerpt: 正官格为（一）日干强，又有财来生官。（二）日干弱，正官强，有印生身。（三）正官不见七杀混杂。
+      line: 111
+    review:
+      notes: 来自《千里命稿》前 10 条优先候选；可直接绑定 official_career_hit 与 marriage_hit。
+
+  - id: ZP-CAND-QLMG-20260628-010
+    status: candidate
+    expert_system: ziping
+    title: 财格成于能任能生能护
+    topic: wealth_structure
+    domains:
+      - 财富
+      - 事业
+      - 婚姻
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+      - AXIS-06
+    claim: 财格判断不能只看财星多少，必须同时判断日主能否任财、财是否有源、是否有官护或食伤生财。
+    conditions:
+      required:
+        - 命局已识别财格候选或财星成势
+        - 日主旺衰已判定
+      optional:
+        - 食伤生财
+        - 官星护财
+        - 印比助身任财
+      exclusions:
+        - 财星仅见而无根无源无护时不可直接断富
+    output:
+      statement: 财格需同时审查身财承载、财源生护与破财风险，不能因财多即断富裕。
+      falsifiable: 若大量财旺身弱且无结构补救命局长期稳定富足，则本规则需降权。
+    source:
+      path: sources/qianliminggao/千里命稿_part3.md
+      excerpt: 偏正财为格（一）日干强，财亦强，再见官星。（二）日干弱，财星强，有印比护身。（三）日干强，财星弱，有伤食生财。
+      line: 116
+    review:
+      notes: 前 10 条保留；优先绑定 wealth_hit。
+
+  - id: ZP-CAND-QLMG-20260628-013
+    status: candidate
+    expert_system: ziping
+    title: 七杀格贵在制化与清纯
+    topic: official_career
+    domains:
+      - 事业
+      - 健康
+      - 灾厄
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+      - AXIS-08
+    claim: 七杀并非纯凶，关键在食制、印化、身杀平衡与不混官；制化得当可成权柄，不当则生风险。
+    conditions:
+      required:
+        - 命局已识别七杀格候选或七杀成势
+        - 可判断是否有食制杀或印化杀
+      optional:
+        - 身杀两停
+        - 七杀得令或有根
+      exclusions:
+        - 官杀混杂而未分清
+        - 只见七杀名号不可直接断权或断灾
+    output:
+      statement: 七杀结构应先审查制杀、化杀与身杀平衡，再判断权力机会与健康灾厄风险。
+      falsifiable: 若无制无化七杀结构长期稳定应吉，或制化充足却长期显著失验，则需复审。
+    source:
+      path: sources/qianliminggao/千里命稿_part3.md
+      excerpt: 七杀为格（一）身强（二）日干强，杀尤过之，有食制杀。（三）日干弱，杀旺。有印生身。（四）杀身两停，无官混杀。
+      line: 128
+    review:
+      notes: 绑定 official_career_hit 与 health_risk_hit；风险表达应保持低权重审查口径。
+
+  - id: ZP-CAND-QLMG-20260628-014
+    status: candidate
+    expert_system: ziping
+    title: 伤官格须看生财配印驾杀
+    topic: wealth_structure
+    domains:
+      - 事业
+      - 财富
+      - 婚姻
+      - 性格
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+      - AXIS-06
+      - AXIS-08
+    claim: 伤官的效应需区分生财、配印、驾杀与见官破局，不可把伤官一概视为凶神。
+    conditions:
+      required:
+        - 命局已识别伤官格候选或伤官透出成势
+        - 日主强弱已判定
+      optional:
+        - 有财可承伤官生财
+        - 有印可护身制伤
+        - 杀重可供驾杀
+      exclusions:
+        - 只见伤官无配套结构时不可直接断事业婚姻吉凶
+    output:
+      statement: 伤官结构需分辨其是生财、配印、驾杀还是破官，再映射到事业、财富与婚姻判断。
+      falsifiable: 若伤官路径细分不能提升多域反馈命中率，则该规则需合并回更粗粒度的伤官总纲。
+    source:
+      path: sources/qianliminggao/千里命稿_part3.md
+      excerpt: 伤官为格（一）日干强，伤官生财。（二）日干弱伤官泄气，有印护身。（三）日干弱，伤官旺，而杀印双透。（四）日干强，杀重，伤官驾杀。
+      line: 133
+    review:
+      notes: 绑定 official_career_hit、wealth_hit、marriage_hit；适合作多域候选。
+
+  - id: ZP-CAND-QLMG-20260628-016
+    status: candidate
+    expert_system: ziping
+    title: 外格必须一气专旺且有规矩
+    topic: yongshen_pattern
+    domains:
+      - 总体
+      - 事业
+      - 财富
+    axis_refs:
+      - AXIS-01
+      - AXIS-04
+    claim: 从格、化格、专旺格必须具备一气成势、秩序清楚、少逆杂破坏，否则不可轻判外格。
+    conditions:
+      required:
+        - 命局存在从格、化格、专旺或外格候选
+        - 可判断是否一气专旺且少逆杂破坏
+      optional:
+        - 成局成方
+        - 月令与全局同气
+      exclusions:
+        - 结构杂乱无章
+        - 仅局部偏旺不可直接判外格
+    output:
+      statement: 外格应先验真假与边界，再谈人生层级与稳定性，避免把杂乱结构误判为高格。
+      falsifiable: 若大量被判假外格的命局长期表现为高层级稳定成就，则需重估外格边界。
+    source:
+      path: sources/qianliminggao/千里命稿_part3.md
+      excerpt: 考八字有外格之设，无非为其越出常情也。然越出常情，亦得有规矩存焉。否则杂乱无章，直为下命耳。
+      line: 434
+    review:
+      notes: 优先用于防误判，不直接追求多产出结论。
+
+  - id: ZP-CAND-QLMG-20260628-021
+    status: candidate
+    expert_system: ziping
+    title: 女命重夫子与自身三者兼顾
+    topic: marriage_family
+    domains:
+      - 婚姻
+      - 子女
+      - 家庭
+    axis_refs:
+      - AXIS-04
+      - AXIS-08
+    claim: 坤命婚育判断不能只看夫星或子星单点，需同时审查夫星、子星与日主承载三轨。
+    conditions:
+      required:
+        - 命局为坤命
+        - 可识别夫星、子星与日主强弱
+      optional:
+        - 宫位受冲合信息
+        - 夫子星有根有救
+      exclusions:
+        - 只以单一官杀或食伤数量机械断婚育
+    output:
+      statement: 坤命婚姻子女判断应同时检查夫星、子星与自身承载，再给出婚育家庭结论。
+      falsifiable: 若三轨并看不能优于单看夫星或子星，则本规则需简化。
+    source:
+      path: sources/qianliminggao/千里命稿_part4.md
+      excerpt: 女命看法，与男命无大异。惟女重夫子二星。取用之道。能夫子，自身，三者兼顾最妙。
+      line: 88
+    review:
+      notes: 绑定 marriage_hit 与 children_hit；现代解释需避免价值判断过满。
+
+  - id: ZP-CAND-QLMG-20260628-023
+    status: candidate
+    expert_system: ziping
+    title: 女命伤食多须财印调停
+    topic: marriage_family
+    domains:
+      - 婚姻
+      - 子女
+      - 性格
+      - 财富
+    axis_refs:
+      - AXIS-04
+      - AXIS-06
+      - AXIS-08
+    claim: 坤命伤食多时，应先审查财能否泄伤生官、印能否制伤护官，以及是否仍保子星与日主承载。
+    conditions:
+      required:
+        - 命局为坤命
+        - 伤食明显偏旺
+      optional:
+        - 有财泄伤
+        - 有印制伤
+        - 有比劫保身
+      exclusions:
+        - 只凭伤食多即断婚差或子难
+    output:
+      statement: 坤命伤食多需看财印调停后再判断婚育、财富与性格表达，不宜机械铁断。
+      falsifiable: 若财印调停对婚育财富反馈没有稳定修正作用，则本规则需降权。
+    source:
+      path: sources/qianliminggao/千里命稿_part4.md
+      excerpt: （一）日主强，伤食多，取财为用。（二）日主强，伤食多，无财，取印为用。……（十六）日主弱，伤食多，取印为用。
+      line: 92
+    review:
+      notes: 与 021 成组；优先绑定 marriage_hit、children_hit、wealth_hit。
+
+  - id: ZP-CAND-QLMG-20260628-026
+    status: candidate
+    expert_system: ziping
+    title: 食伤为子女星但须看旺衰破救
+    topic: marriage_family
+    domains:
+      - 子女
+      - 家庭
+      - 婚姻
+    axis_refs:
+      - AXIS-04
+      - AXIS-08
+    claim: 子女判断不能只看食伤有无，还要看食伤是否适度、是否遭冲克、是否为用以及是否太过不及。
+    conditions:
+      required:
+        - 已识别食伤状态
+        - 可判断食伤是否受冲克或过旺过弱
+      optional:
+        - 食伤为用神
+        - 时柱或子女宫有配套信息
+      exclusions:
+        - 现代主观不育选择未标注前，不可把子女事实直接计为规则失验
+    output:
+      statement: 子女星需结合旺衰、冲克、太过不及与是否为用，再判断子女有无、子女缘与子女得力。
+      falsifiable: 若食伤旺衰破救与子女反馈长期弱相关，则本规则需缩减适用域。
+    source:
+      path: sources/qianliminggao/千里命稿_part4.md
+      excerpt: 食伤不遭冲克，必有子。食伤遭冲克，无子。食伤受扶太过，无子。食伤受抑太过，无子。
+      line: 33
+    review:
+      notes: children_hit 直接绑定项；需在反馈中标记主观选择因素。
+
+  - id: ZP-CAND-QLMG-20260628-029
+    status: candidate
+    expert_system: ziping
+    title: 喜忌需要解释制化链而非只列五行
+    topic: ziping_general
+    domains:
+      - 全域
+      - 报告结构
+    axis_refs:
+      - AXIS-04
+    claim: 喜忌输出应说明五行之间的制化链与作用路径，而不是只给出孤立的喜木火忌金水列表。
+    conditions:
+      required:
+        - 已确定用神与喜忌方向
+        - 可解释喜忌对应的制化链
+      optional:
+        - 可连接到岁运影响
+      exclusions:
+        - 不作为命理结论计分项
+    output:
+      statement: 报告中的喜忌应附带为什么喜、为什么忌的制化链解释，减少孤立五行口号。
+      falsifiable: 若加入制化链解释不能提升报告理解度或复盘质量，则本条仅保留为写作建议。
+    source:
+      path: sources/qianliminggao/千里命稿_part5.md
+      excerpt: 既用甲木，自喜木火助用助身，不畏土之泄火。水之克水，盖土有木制，水有木当也，然亦非所喜耳。最忌金为生水助虐。克木则伤用。
+      line: 15
+    review:
+      notes: evidence_only；只绑定 report_quality_hit，不进入 hit/miss 计分。
+
+  - id: ZP-CAND-QLMG-20260628-030
+    status: candidate
+    expert_system: ziping
+    title: 命例可作规则边界反证不作权威铁断
+    topic: ziping_general
+    domains:
+      - 健康
+      - 应期
+      - 规则治理
+    axis_refs:
+      - AXIS-08
+    claim: 历史命例更适合作为规则边界与反证样本，不应直接迁移成面向新案的生死灾厄铁断模板。
+    conditions:
+      required:
+        - 使用历史命例支撑规则说明或风险表达
+      optional:
+        - 同时有现代反馈样本复核
+      exclusions:
+        - 不作为单独命理断语计分项
+    output:
+      statement: 历史命例应作为规则边界反证与风险表达约束，避免把生死灾厄叙述直接外推成铁断。
+      falsifiable: 若边界反证原则明显削弱关键风险提示质量，则需重新调整其治理权重。
+    source:
+      path: sources/qianliminggao/千里命稿_part6.md
+      excerpt: 论命者。论休咎而已。断生决死。有验有不验。盖生寄死归。有梦必醒。生则未必为吉。死则未必为凶耳。
+      line: 67
+    review:
+      notes: evidence_only；用于 health_risk_hit 与 report_quality_hit 的治理护栏。

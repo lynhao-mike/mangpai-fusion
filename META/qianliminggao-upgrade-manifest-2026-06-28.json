@@ -1,0 +1,34 @@
+{
+  "id": "qianliminggao-upgrade-2026-06-28",
+  "source_dir": "sources/qianliminggao",
+  "source_title": "千里命稿",
+  "source_author": "韦千里",
+  "target_system": "ziping",
+  "stage": "candidate_review_bundle",
+  "production_rule_modified": false,
+  "files": {
+    "candidate_report": "theory/raw/ziping/extracted/子平_千里命稿_候选理论提取_2026-06-28.md",
+    "review_checklist": "META/qianliminggao-upgrade-review-2026-06-28.md",
+    "feedback_bindings": "META/qianliminggao-feedback-bindings-2026-06-28.jsonl",
+    "execution_checklist": "META/qianliminggao-upgrade-checklist-2026-06-28.md"
+  },
+  "counts": {
+    "candidate_rules": 30,
+    "recommended_feedback_bindings": 10
+  },
+  "next_gate": {
+    "name": "manual_review_before_candidate_yaml",
+    "required": [
+      "30 candidates have keep/merge/drop/evidence_only decisions",
+      "merge items point to existing candidate or production rules",
+      "evidence_only items are excluded from hit/miss scoring",
+      "top 10 bindings have human-approved hit/miss criteria"
+    ]
+  },
+  "blocked_actions": [
+    "do_not_write_directly_to_theory_ziping_index_yaml",
+    "do_not_create_we_qianli_as_new_school",
+    "do_not_promote_historical_cases_as_general_rules",
+    "do_not_score_evidence_only_items"
+  ]
+}
