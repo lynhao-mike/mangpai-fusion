@@ -263,22 +263,41 @@ def _identify_geju_type(chart: dict[str, Any], l1: dict[str, Any], l2: dict[str,
         if any(ch in pillars_text for ch in chars)
     )
 
+    # favor / avoid：机器可读的十神方向，供仲裁器过滤矛盾事件命题
     if wuxing_present <= 2 and strength_score >= 0.75:
         geju_type = "特殊格（一气偏旺）"
         constraint = "从旺、专旺方向，忌克泄，喜比印或流通"
+        favor = ["比肩", "劫财", "正印", "偏印"]
+        avoid = ["正官", "七杀", "正财", "偏财"]
         confidence = 0.55
     elif strength_score < 0.32 and pattern_shen in _CONG_GE_SHISHEN:
         geju_type = "从格"
         constraint = f"从{pattern_shen}方向，喜{pattern_shen}类生助，忌印比反克"
+        # 从格：顺从旺神方向，喜财官食伤，忌印比帮身
+        favor = ["正官", "七杀", "正财", "偏财", "食神", "伤官"]
+        avoid = ["比肩", "劫财", "正印", "偏印"]
         confidence = 0.58
     else:
         geju_type = "正格"
         constraint = f"取{l2.get('yongshen','待判')}为用，日主{l1.get('strength','中和')}方向调配"
+        # 正格：偏弱喜印比，偏旺喜财官食伤
+        strength = str(l1.get("strength", "中和"))
+        if strength == "偏弱":
+            favor = ["正印", "偏印", "比肩", "劫财"]
+            avoid = ["正官", "七杀", "正财", "偏财"]
+        elif strength == "偏旺":
+            favor = ["正官", "七杀", "正财", "偏财", "食神", "伤官"]
+            avoid = ["正印", "偏印", "比肩", "劫财"]
+        else:
+            favor = []  # 中和格局不强约束事件方向
+            avoid = []
         confidence = 0.65
 
     return {
         "geju_type": geju_type,
         "constraint": constraint,
+        "favor": favor,
+        "avoid": avoid,
         "confidence": confidence,
         "rationale": f"日主{day_master}（{dm_wx}），旺衰分={strength_score:.2f}，"
                      f"五行覆盖={wuxing_present}种，格局大类={geju_type}",
@@ -326,12 +345,24 @@ def _identify_bingyao(chart: dict[str, Any], l1: dict[str, Any], l2: dict[str, A
         bing_list.append("命局无显著极端偏差，主要矛盾在岁运引动")
         yao_list.append("重点观察大运流年是否引动格神或用神")
 
+    # 药方向十神（供仲裁器给对应事件命题加分）
+    yao_favor_shishen: list[str] = []
+    if strength == "偏弱" and strength_score < 0.38:
+        yao_favor_shishen.extend(["正印", "偏印", "比肩", "劫财"])
+    if strength == "偏旺" and strength_score > 0.72:
+        yao_favor_shishen.extend(["正官", "七杀", "食神", "伤官"])
+    if pattern_shen in ("七杀", "正官") and strength == "偏弱":
+        yao_favor_shishen.extend(["正印", "偏印"])
+    if "从格" in geju_type:
+        yao_favor_shishen.extend([pattern_shen])
+
     bing = "；".join(bing_list)
     yao = "；".join(yao_list)
 
     return {
         "bing": bing,
         "yao": yao,
+        "yao_favor_shishen": list(dict.fromkeys(yao_favor_shishen)),  # 去重
         "rationale": f"病={bing}｜药={yao}",
         "confidence": 0.60 if len(bing_list) >= 2 else 0.52,
     }
@@ -349,9 +380,17 @@ def _make_claim(
     confidence_note: str,
     rule_note: str,
     probabilistic: bool = False,
+    extra_metadata: dict[str, Any] | None = None,
 ) -> V5Claim:
     eid = _stable_id("ev", case_id, domain, claim[:30])
     cid = _stable_id("cl", case_id, domain, claim[:30])
+    metadata: dict[str, Any] = {
+        "case_id": case_id,
+        "runner_state": "ziping_independent",
+        "source_scope": "ziping_independent_runner",
+    }
+    if extra_metadata:
+        metadata.update(extra_metadata)
     return V5Claim(
         claim_id=cid,
         school="ziping",
@@ -373,11 +412,7 @@ def _make_claim(
         ],
         probabilistic=probabilistic,
         falsifiable="若反馈显示该结构条件长期不能提升对应领域命中率，则本命题需降权。",
-        metadata={
-            "case_id": case_id,
-            "runner_state": "ziping_independent",
-            "source_scope": "ziping_independent_runner",
-        },
+        metadata=metadata,
     )
 
 
@@ -439,12 +474,19 @@ def run_ziping_independent(chart: dict[str, Any], case_id: str) -> list[V5Claim]
     claims.append(_make_claim(
         case_id=case_id,
         domain="总体",
-        claim=f"格局大类裁决：{geju_type}。约束方向：{constraint}。{l3_rationale}",
+        claim=f"格局大类裁决：{geju_type}。约束方向:{constraint}。{l3_rationale}",
         claim_type="structure_claim",
         confidence_score=l3_score,
         confidence_tier=l3_tier,
         confidence_note="子平独立 L3 格局类型识别；正格/从格/特殊格为后续事件判断设定约束",
         rule_note=l3_rationale,
+        extra_metadata={
+            "layer": "L3_geju_type",
+            "geju_type": geju_type,
+            "favor_shishen": list(l3.get("favor", [])),
+            "avoid_shishen": list(l3.get("avoid", [])),
+            "constraint_text": constraint,
+        },
     ))
 
     # L5: 病药识别（命局核心矛盾 + 解决方向）
@@ -464,6 +506,10 @@ def run_ziping_independent(chart: dict[str, Any], case_id: str) -> list[V5Claim]
         confidence_tier=l5_tier,
         confidence_note="子平独立 L5 病药识别；命局核心矛盾与解决方向，约束所有事件命题",
         rule_note=l5_rationale,
+        extra_metadata={
+            "layer": "L5_bingyao",
+            "yao_favor_shishen": list(l5.get("yao_favor_shishen", [])),
+        },
     ))
 
     return claims

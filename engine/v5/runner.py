@@ -526,14 +526,18 @@ def build_default_claims(chart: dict[str, Any], case_id: str, *, workspace_root:
     """
 
     from engine.v5.ziping_runner import run_ziping_independent  # ponytail: lazy import，避免循环
+    from engine.v5.ditiansui_runner import run_ditiansui_independent  # ponytail: lazy import
     ziping_independent_claims = run_ziping_independent(chart, case_id)
+    ditiansui_independent_claims = run_ditiansui_independent(chart, case_id)
 
     ziping_claims = build_ziping_production_claims(case_id, workspace_root=workspace_root, chart=chart)
     # 去重：独立分析命题与生产规则命题可能覆盖同一 domain，但 claim_id 不同，保留两者。
     ziping_claims = ziping_independent_claims + ziping_claims
-    ditiansui_claims = build_ditiansui_production_claims(chart, case_id, workspace_root=workspace_root)
-    if not ditiansui_claims:
-        ditiansui_claims = build_minimal_ditiansui_claims(chart, case_id)
+    ditiansui_prod_claims = build_ditiansui_production_claims(chart, case_id, workspace_root=workspace_root)
+    if not ditiansui_prod_claims:
+        ditiansui_prod_claims = build_minimal_ditiansui_claims(chart, case_id)
+    # 独立 runner + 生产规则拼接；独立结构命题优先前置
+    ditiansui_claims = ditiansui_independent_claims + ditiansui_prod_claims
     blind_rule_claims: list[V5Claim] = []
     for school in ("gao_dechen", "duan_jianye", "yang_qingjuan"):
         blind_rule_claims.extend(build_blind_school_rule_claims(chart, case_id, school=school, workspace_root=workspace_root))
@@ -635,6 +639,137 @@ def _apply_structure_gate(claims: list[V5Claim]) -> list[V5Claim]:
     return patched
 
 
+# 十神家族：用于把事件命题文本映射到方向标签（favor/avoid/yao）
+_SHISHEN_TOKENS = (
+    "比肩", "劫财", "食神", "伤官",
+    "正财", "偏财", "正官", "七杀",
+    "正印", "偏印",
+)
+
+
+def _extract_shishen_from_claim(claim_text: str) -> set[str]:
+    """从事件命题文本中提取涉及的十神名。
+
+    ponytail: 事件 runner 输出的自由文本没有结构化十神字段，只能靠关键词匹配。
+    命中率低于结构化字段但覆盖所有派别产出。
+    """
+    return {token for token in _SHISHEN_TOKENS if token in claim_text}
+
+
+def _collect_geju_directives(claims: list[V5Claim]) -> dict[str, Any]:
+    """收集 L3 格局命题和 L5 病药命题的方向十神。
+
+    返回：
+        favor: 顺格局/顺药方向的十神集合（事件命题涉及这些十神应加分）
+        avoid: 逆格局方向的十神集合（事件命题涉及这些十神应降权或翻转）
+        geju_type: 格局类型标签
+        yao_favor: 药方向十神集合（专门用于 P1 加分）
+    """
+    favor: set[str] = set()
+    avoid: set[str] = set()
+    yao_favor: set[str] = set()
+    geju_type = ""
+    for c in claims:
+        meta = c.metadata or {}
+        layer = str(meta.get("layer", ""))
+        if layer == "L3_geju_type":
+            favor.update(meta.get("favor_shishen", []) or [])
+            avoid.update(meta.get("avoid_shishen", []) or [])
+            geju_type = geju_type or str(meta.get("geju_type", ""))
+        elif layer == "L5_bingyao":
+            yao_favor.update(meta.get("yao_favor_shishen", []) or [])
+    return {
+        "favor": favor,
+        "avoid": avoid,
+        "yao_favor": yao_favor,
+        "geju_type": geju_type,
+    }
+
+
+def _apply_geju_yao_constraints(claims: list[V5Claim]) -> list[V5Claim]:
+    """P0b + P1：让 L3 格局约束和 L5 药方向真正过滤/加分事件命题。
+
+    规则：
+      - 事件命题涉及 avoid 十神 → 置信度 × 0.5，polarity 翻负，打标 "geju_conflict"
+      - 事件命题涉及 favor 十神 → 置信度 × 1.15（上限 0.85）
+      - 事件命题涉及 yao_favor 十神 → 置信度 × 1.10（上限 0.85），叠加 favor 效果
+      - 不涉及任何十神 → 不变（无法判断方向的命题不能误伤）
+      - 结构命题不受影响
+    """
+    directives = _collect_geju_directives(claims)
+    favor = directives["favor"]
+    avoid = directives["avoid"]
+    yao_favor = directives["yao_favor"]
+    geju_type = directives["geju_type"]
+
+    if not favor and not avoid and not yao_favor:
+        return claims  # 无约束，直接放行
+
+    patched: list[V5Claim] = []
+    for c in claims:
+        if c.claim_type != "event_claim":
+            patched.append(c)
+            continue
+
+        involved = _extract_shishen_from_claim(c.claim)
+        if not involved:
+            patched.append(c)
+            continue
+
+        hit_avoid = involved & avoid
+        hit_favor = involved & favor
+        hit_yao = involved & yao_favor
+
+        if not (hit_avoid or hit_favor or hit_yao):
+            patched.append(c)
+            continue
+
+        new_score = c.confidence.score
+        new_polarity = c.polarity
+        new_stance = c.stance
+        marks: list[str] = []
+
+        if hit_avoid:
+            new_score = round(new_score * 0.5, 3)
+            new_polarity = "negative"  # type: ignore[assignment]
+            new_stance = "oppose"  # type: ignore[assignment]
+            marks.append(f"geju_conflict[{geju_type}]:avoid={sorted(hit_avoid)}")
+        if hit_favor:
+            new_score = round(min(0.85, new_score * 1.15), 3)
+            marks.append(f"geju_align:favor={sorted(hit_favor)}")
+        if hit_yao:
+            new_score = round(min(0.85, new_score * 1.10), 3)
+            marks.append(f"yao_align:yao_favor={sorted(hit_yao)}")
+
+        new_tier = "★★★★★" if new_score >= 0.75 else "★★★★" if new_score >= 0.6 else "★★★" if new_score >= 0.45 else "★★" if new_score >= 0.3 else "★"
+        patched_meta = dict(c.metadata)
+        patched_meta["geju_constraint"] = "；".join(marks)
+
+        patched.append(
+            V5Claim(
+                claim_id=c.claim_id,
+                school=c.school,
+                domain=c.domain,
+                claim=c.claim,
+                claim_type=c.claim_type,
+                stance=new_stance,
+                polarity=new_polarity,
+                confidence=V5Confidence(
+                    tier=new_tier,
+                    score=new_score,
+                    note=f"格局约束调整（原={c.confidence.score:.2f}）：{'；'.join(marks)}",
+                ),
+                evidence=c.evidence,
+                counter_evidence=c.counter_evidence,
+                timing_hints=c.timing_hints,
+                probabilistic=c.probabilistic and not hit_avoid,  # 冲突命题禁止进入概率层
+                falsifiable=c.falsifiable,
+                metadata=patched_meta,
+            )
+        )
+    return patched
+
+
 def _extract_structure_verdict(structure_claims: list[V5Claim]) -> str:
     """从子平/滴天髓结构命题中提取可读 verdict，替代硬编码固定字符串。"""
     if not structure_claims:
@@ -677,6 +812,8 @@ def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
     """
     # 结构门禁：无结构基础则 event_claim 强制降权
     gated_claims = _apply_structure_gate(claims)
+    # P0b + P1：格局约束和药方向真正过滤 / 加分事件命题
+    gated_claims = _apply_geju_yao_constraints(gated_claims)
 
     # 全局结构命题（跨domain，用于判断整体结构基础是否建立）
     global_structure_claims = [
@@ -872,50 +1009,78 @@ def _default_prediction_specs(chart: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+def _prediction_from_claim(case_id: str, claim: V5Claim) -> V5Prediction:
+    """把经过格局约束调整的真实事件命题转成受限概率预测。
+
+    ponytail: 概率范围直接由命题置信度派生，不再用硬编码固定区间，
+    让格局约束（P0b/P1）对置信度的调整真正传导到预测层。
+    """
+    score = claim.confidence.score
+    # 置信度 → 概率区间：以 score 为中心，±0.1 带宽，clamp 到 [0.1, 0.9]
+    low = round(max(0.1, score - 0.1), 2)
+    high = round(min(0.9, score + 0.1), 2)
+    time_window = dict(claim.timing_hints[0]) if claim.timing_hints else {}
+    geju_note = claim.metadata.get("geju_constraint", "") if claim.metadata else ""
+    calib = "由真实事件命题登记；概率区间随格局约束调整。"
+    if geju_note:
+        calib += f"（格局约束：{geju_note}）"
+    return V5Prediction(
+        prediction_id=_stable_id("v5pred", case_id, claim.claim_id, claim.domain),
+        domain=claim.domain,
+        event_label=claim.claim,
+        probability_range=(low, high),
+        confidence=claim.confidence,
+        time_window=time_window,
+        trigger_conditions=["真实事件命题", "白名单领域", "已过结构门禁与格局约束"],
+        falsifier=claim.falsifiable or "若时间窗内未发生该事件，则本预测失验。",
+        calibration_note=calib,
+    )
+
+
 def build_prediction_ledger(case_id: str, claims: list[V5Claim], chart: dict[str, Any] | None = None) -> V5PredictionLedger:
     """从可概率化命题生成受限概率 ledger。
 
-    v5 概率层只登记具体、可反馈、处于白名单领域的事件命题；
-    性格、总体结构、无时间窗的宽泛判断不生成概率条目。
-    若 runner 尚未产生足够可概率化命题，则生成主要事件 MVP 预测槽位，
-    保证 prediction-first 闭环可见。
+    P2：优先消费真实事件命题（已过结构门禁 + 格局约束），
+    每个白名单域取置信度最高的支持性事件命题生成预测；
+    缺失真实命题的白名单域才用默认槽位兜底，保证 prediction-first 闭环可见。
     """
 
     predictions: list[V5Prediction] = []
+    filled_domains: set[str] = set()
+
+    # 1. 优先消费真实事件命题：每个白名单域取最强支持命题
+    claims_by_domain: dict[str, list[V5Claim]] = defaultdict(list)
+    for claim in claims:
+        if (
+            claim.probabilistic
+            and claim.domain in PROBABILISTIC_DOMAIN_WHITELIST
+            and claim.stance == "support"
+            and claim.confidence.score >= 0.35
+        ):
+            claims_by_domain[claim.domain].append(claim)
+
+    for domain, domain_claims in claims_by_domain.items():
+        top = max(domain_claims, key=lambda c: c.confidence.score)
+        predictions.append(_prediction_from_claim(case_id, top))
+        filled_domains.add(domain)
+
+    # 2. 缺失的白名单域用默认槽位兜底
     for spec in _default_prediction_specs(chart or {}):
+        if spec["domain"] in filled_domains:
+            continue
         predictions.append(
             V5Prediction(
                 prediction_id=_stable_id("v5pred", case_id, spec["domain"], spec["event_label"]),
                 domain=spec["domain"],
                 event_label=spec["event_label"],
                 probability_range=spec["probability_range"],
-                confidence=V5Confidence(tier=spec["tier"], score=spec["score"], note="prediction-first MVP 默认主要事件槽位"),
+                confidence=V5Confidence(tier=spec["tier"], score=spec["score"], note="prediction-first 默认槽位（无真实事件命题兜底）"),
                 time_window=spec["time_window"],
                 trigger_conditions=list(spec["trigger_conditions"]),
                 falsifier=spec["falsifier"],
-                calibration_note="默认主要事件预测；后续由五派 runner、反馈样本与事件 taxonomy 校准。",
+                calibration_note="该域暂无真实事件命题，用默认槽位保证反馈闭环；有命题后自动替换。",
             )
         )
-
-    existing_domains = {item.domain for item in predictions}
-    for claim in claims:
-        if not claim.probabilistic or claim.domain not in PROBABILISTIC_DOMAIN_WHITELIST or claim.domain in existing_domains:
-            continue
-        time_window = dict(claim.timing_hints[0]) if claim.timing_hints else {}
-        predictions.append(
-            V5Prediction(
-                prediction_id=_stable_id("v5pred", case_id, claim.claim_id, claim.domain),
-                domain=claim.domain,
-                event_label=claim.claim,
-                probability_range=(0.35, 0.55),
-                confidence=V5Confidence(tier="★★", score=0.4, note="MVP 概率范围，需反馈校准"),
-                time_window=time_window,
-                trigger_conditions=["可概率化命题", "白名单领域", "等待反馈校准"],
-                falsifier=claim.falsifiable or "若时间窗内未发生该事件，则本预测失验。",
-                calibration_note="由可概率化 V5Claim 登记；样本不足，暂不伪精确。",
-            )
-        )
-        existing_domains.add(claim.domain)
     return V5PredictionLedger(case_id=case_id, predictions=predictions)
 
 
