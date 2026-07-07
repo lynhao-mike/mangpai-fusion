@@ -228,6 +228,115 @@ def _identify_pattern_yongshen(chart: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+# ── L3: 格局类型识别（正格 / 从格 / 特殊格）────────────────────────────────────
+
+# 从格判断依据：日主在四柱中几乎无根且无印比帮扶
+_CONG_GE_SHISHEN = frozenset(("七杀", "正官", "偏财", "正财", "食神", "伤官"))
+_FU_SHEN_SHISHEN = frozenset(("比肩", "劫财", "正印", "偏印"))
+
+
+def _identify_geju_type(chart: dict[str, Any], l1: dict[str, Any], l2: dict[str, Any]) -> dict[str, Any]:
+    """识别格局大类：正格 / 从格 / 特殊格。
+
+    正格：日主有根、有印比帮扶，月令格神成立。
+    从格：日主极弱（score<0.32），无印比、无根，全局一色。
+    特殊格：一气专旺（曲直/炎上/稼穑/从革/润下）等。
+    """
+    strength_score = float(l1.get("score", 0.5))
+    pattern_shen = str(l2.get("pattern_shen", ""))
+    day_master = str(l1.get("day_master", ""))
+    dm_wx = {"甲": "木", "乙": "木", "丙": "火", "丁": "火", "戊": "土",
+             "己": "土", "庚": "金", "辛": "金", "壬": "水", "癸": "水"}.get(day_master, "")
+
+    # 一气专旺特殊格粗判（四柱五行只有1-2种）
+    pillars_raw = chart.get("pillars") or {}
+    if isinstance(pillars_raw, list):
+        pillars_text = "".join(str(p) for p in pillars_raw)
+    elif isinstance(pillars_raw, dict):
+        pillars_text = "".join(str(v) for v in pillars_raw.values())
+    else:
+        pillars_text = ""
+
+    wuxing_present = sum(
+        1 for wx, chars in [("木","甲乙寅卯"),("火","丙丁巳午"),("土","戊己辰戌丑未"),
+                             ("金","庚辛申酉"),("水","壬癸亥子")]
+        if any(ch in pillars_text for ch in chars)
+    )
+
+    if wuxing_present <= 2 and strength_score >= 0.75:
+        geju_type = "特殊格（一气偏旺）"
+        constraint = "从旺、专旺方向，忌克泄，喜比印或流通"
+        confidence = 0.55
+    elif strength_score < 0.32 and pattern_shen in _CONG_GE_SHISHEN:
+        geju_type = "从格"
+        constraint = f"从{pattern_shen}方向，喜{pattern_shen}类生助，忌印比反克"
+        confidence = 0.58
+    else:
+        geju_type = "正格"
+        constraint = f"取{l2.get('yongshen','待判')}为用，日主{l1.get('strength','中和')}方向调配"
+        confidence = 0.65
+
+    return {
+        "geju_type": geju_type,
+        "constraint": constraint,
+        "confidence": confidence,
+        "rationale": f"日主{day_master}（{dm_wx}），旺衰分={strength_score:.2f}，"
+                     f"五行覆盖={wuxing_present}种，格局大类={geju_type}",
+    }
+
+
+# ── L5: 病药识别（命局核心矛盾 + 解决方向）────────────────────────────────────
+
+def _identify_bingyao(chart: dict[str, Any], l1: dict[str, Any], l2: dict[str, Any], l3: dict[str, Any]) -> dict[str, Any]:
+    """识别命局核心矛盾（病）和解决方向（药）。
+
+    八层框架第五层：只有找准病，才能定药；病药是所有事件判断的基础约束。
+    """
+    strength = str(l1.get("strength", "中和"))
+    strength_score = float(l1.get("score", 0.5))
+    pattern_shen = str(l2.get("pattern_shen", ""))
+    yongshen = str(l2.get("yongshen", "待判"))
+    geju_type = str(l3.get("geju_type", "正格"))
+
+    bing_list: list[str] = []
+    yao_list: list[str] = []
+
+    # 病1：日主偏弱无依
+    if strength == "偏弱" and strength_score < 0.38:
+        bing_list.append("日主偏弱，缺乏根基与印比帮扶")
+        yao_list.append("需印比扶身，忌财官过重消耗")
+
+    # 病2：日主偏旺无制
+    if strength == "偏旺" and strength_score > 0.72:
+        bing_list.append("日主偏旺，需官杀或食伤流通制化")
+        yao_list.append("以官杀为药（制旺）或食伤流通为药")
+
+    # 病3：官杀混杂
+    if pattern_shen in ("七杀", "正官") and strength == "偏弱":
+        bing_list.append("官杀透出而日主弱，官杀为病")
+        yao_list.append("以印化杀（正印/偏印）为药")
+
+    # 病4：从格误用扶身
+    if "从格" in geju_type:
+        bing_list.append("从格命局若强行扶身则逆势为病")
+        yao_list.append(f"顺势取{pattern_shen}方向，以顺用为药")
+
+    # 无明确病时给出通用描述
+    if not bing_list:
+        bing_list.append("命局无显著极端偏差，主要矛盾在岁运引动")
+        yao_list.append("重点观察大运流年是否引动格神或用神")
+
+    bing = "；".join(bing_list)
+    yao = "；".join(yao_list)
+
+    return {
+        "bing": bing,
+        "yao": yao,
+        "rationale": f"病={bing}｜药={yao}",
+        "confidence": 0.60 if len(bing_list) >= 2 else 0.52,
+    }
+
+
 # ── claim 构造 ────────────────────────────────────────────────────────────────
 
 def _make_claim(
@@ -317,6 +426,44 @@ def run_ziping_independent(chart: dict[str, Any], case_id: str) -> list[V5Claim]
         confidence_tier="★★★",
         confidence_note="子平独立 L2 格局用神识别，轻量推导，需结合五派仲裁复核",
         rule_note=l2_rationale,
+    ))
+
+    # L3: 格局类型（正格 / 从格 / 特殊格）
+    l3 = _identify_geju_type(chart, l1, l2)
+    l3_rationale = str(l3.get("rationale", ""))
+    geju_type = str(l3.get("geju_type", "正格"))
+    constraint = str(l3.get("constraint", ""))
+    l3_score = float(l3.get("confidence", 0.55))
+    l3_tier = "★★★★" if l3_score >= 0.65 else "★★★"
+
+    claims.append(_make_claim(
+        case_id=case_id,
+        domain="总体",
+        claim=f"格局大类裁决：{geju_type}。约束方向：{constraint}。{l3_rationale}",
+        claim_type="structure_claim",
+        confidence_score=l3_score,
+        confidence_tier=l3_tier,
+        confidence_note="子平独立 L3 格局类型识别；正格/从格/特殊格为后续事件判断设定约束",
+        rule_note=l3_rationale,
+    ))
+
+    # L5: 病药识别（命局核心矛盾 + 解决方向）
+    l5 = _identify_bingyao(chart, l1, l2, l3)
+    l5_rationale = str(l5.get("rationale", ""))
+    bing = str(l5.get("bing", ""))
+    yao = str(l5.get("yao", ""))
+    l5_score = float(l5.get("confidence", 0.52))
+    l5_tier = "★★★★" if l5_score >= 0.65 else "★★★"
+
+    claims.append(_make_claim(
+        case_id=case_id,
+        domain="总体",
+        claim=f"病药裁决——病：{bing}。药：{yao}。",
+        claim_type="structure_claim",
+        confidence_score=l5_score,
+        confidence_tier=l5_tier,
+        confidence_note="子平独立 L5 病药识别；命局核心矛盾与解决方向，约束所有事件命题",
+        rule_note=l5_rationale,
     ))
 
     return claims

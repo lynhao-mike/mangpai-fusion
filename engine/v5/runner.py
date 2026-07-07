@@ -14,6 +14,11 @@ from typing import Any
 import yaml
 
 from engine.application.production_rule_loader import ProductionRule, load_default_production_library
+from engine.predicates.condition_evaluator import (
+    evaluate_trigger,
+    rank_blind_rule,
+    score_blind_rule,
+)
 from engine.v5.domain import (
     V5ArbitrationResult,
     V5Claim,
@@ -209,35 +214,29 @@ def _production_rule_text(rule: ProductionRule) -> str:
     )
 
 
-def _production_rule_chart_score(rule: ProductionRule, chart: dict[str, Any]) -> int:
-    """按命盘文本给生产规则轻量排序分。
+def _production_rule_chart_score(rule: ProductionRule, chart: dict[str, Any]) -> float:
+    """用谓词求值替代字符袋计数给生产规则排序分。
 
-    ponytail: 不新增命理判断，只让已存在规则中明示的干支、冲合、岁运词优先。
+    ponytail: 触发器匹配 + condition_evaluator 打分，不写新命理。
     """
+    # 触发器不匹配直接返回 0，不浪费排序权重
+    if not evaluate_trigger(rule.conditions.trigger, chart):
+        return 0.0
+    # 基础分 = 置信度后验
+    base = float(rule.confidence.posterior)
+    # 触发器涉及大运流年的规则在有岁运时额外加分
+    if any(tok in rule.conditions.trigger for tok in ("dayun", "liunian", "suiyun", "xiaoyun")):
+        base += 0.05
+    return base
 
-    rule_text = _production_rule_text(rule)
-    chart_text = _chart_pillars_text(chart) + str(chart.get("current_dayun") or "") + str(chart.get("current_year") or "")
-    score = sum(1 for char in set(chart_text) if char in "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥" and char in rule_text)
-    if _chart_has_zhi_chong(chart) and any(token in rule_text for token in ("冲", "刑", "穿", "破", "悖")):
-        score += 3
-    if any(token in rule.conditions.trigger for token in ("dayun", "liunian", "suiyun", "xiaoyun")) or any(token in rule_text for token in ("大运", "流年", "岁运", "应期")):
-        score += 2
-    return score
 
-
-def _production_rule_rank(rule: ProductionRule, chart: dict[str, Any]) -> tuple[int, int, float, str]:
+def _production_rule_rank(rule: ProductionRule, chart: dict[str, Any]) -> tuple[float, int, float, str]:
     return (-_production_rule_chart_score(rule, chart), _domain_rank(rule), -rule.confidence.posterior, rule.id)
 
 
 def _ditiansui_rule_triggered(rule: ProductionRule, chart: dict[str, Any]) -> bool:
-    trigger = rule.conditions.trigger
-    if trigger in {"always", "has_energy_structure", "has_tiaohou_advice"}:
-        return True
-    if trigger == "wuxing_imbalanced":
-        return bool(_missing_wuxing(_wuxing_counts(_chart_pillars_text(chart))))
-    if trigger == "has_zhi_chong":
-        return _chart_has_zhi_chong(chart)
-    return False
+    """用 evaluate_trigger 替代硬编码 4 条触发器。"""
+    return evaluate_trigger(rule.conditions.trigger, chart)
 
 
 def _domain_rank(rule: ProductionRule) -> int:
@@ -312,57 +311,13 @@ def build_ditiansui_production_claims(
 
 
 def build_minimal_ditiansui_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
-    """滴天髓 / 调候 MVP runner。
+    """滴天髓候补 runner：无生产规则时返回空列表。
 
-    重点先输出结构合法性命题：五行偏全、寒暖燥湿、气势顺逆、冲合流通。
+    ponytail: 原来的 if/else 文本模板不是推理，是字符串生成。
+    无真实规则时诚实返回空列表，让结构门禁正确处理"无结构基础"情况，
+    比输出无根据的结构命题更有利于仲裁器准确性。
     """
-
-    pillars = _chart_pillars_text(chart)
-    current_dayun = str(chart.get("current_dayun") or "当前大运")
-    current_year = str(chart.get("current_year") or "当前流年")
-    counts = _wuxing_counts(pillars)
-    dominant, dominant_count = _dominant_wuxing(counts)
-    missing = _missing_wuxing(counts)
-    has_chong = ("寅" in pillars and "申" in pillars) or ("子" in pillars and "午" in (pillars + current_dayun + current_year)) or ("丑" in pillars and "未" in (pillars + current_dayun + current_year))
-    has_flow = len([name for name, count in counts.items() if count > 0]) >= 4
-
-    if missing:
-        structure = f"五行有缺项（{','.join(missing)}），气势偏枯，事件判断需降级并寻找岁运补偏。"
-        polarity = "negative"
-        score = 0.56
-    elif dominant_count >= 4:
-        structure = f"{dominant}气偏旺，命局重在流通与制化，不能只按单一旺神取断。"
-        polarity = "mixed"
-        score = 0.58
-    else:
-        structure = "五行分布相对可流通，重点看顺逆、有情无情与岁运引动。"
-        polarity = "positive"
-        score = 0.6
-
-    flow_note = "有冲动，流通与破格并见。" if has_chong else "冲动不显，先看原局气势顺逆。"
-    if has_flow:
-        flow_note += " 五行覆盖较全，具备流通讨论基础。"
-    else:
-        flow_note += " 五行覆盖不足，偏枯风险较高。"
-
-    return [
-        V5Claim(
-            claim_id=_stable_id("v5cl", case_id, "ditiansui", pillars, current_dayun),
-            school="ditiansui",
-            domain="总体",
-            claim=f"滴天髓气势裁判：{structure}{flow_note}",
-            claim_type="structure_claim",
-            stance="support",
-            polarity=polarity,  # type: ignore[arg-type]
-            confidence=V5Confidence(tier="★★★", score=score, note="滴天髓 MVP 气势 / 偏枯 / 流通 runner"),
-            evidence=[_evidence(case_id, "ditiansui_mvp", f"五行统计={counts}；{flow_note}", pillars, rule_id="DTS-MVP-001")],
-            counter_evidence=[],
-            timing_hints=[{"label": f"{current_year} 至下一交运前", "basis": current_dayun}],
-            probabilistic=False,
-            falsifiable="若反馈显示该偏枯、流通或顺逆判断不能解释主要事件落地，则滴天髓 MVP 命题需降权或重写。",
-            metadata={"runner_state": "mvp", "school_role": "qi_momentum", "wuxing_counts": counts},
-        )
-    ]
+    return []  # ponytail: 无生产规则 → 无命题，不造假结论
 
 
 def _load_blind_school_rules(school: str, *, workspace_root: str = ".") -> list[dict[str, Any]]:
@@ -407,25 +362,9 @@ def _blind_rule_rank(rule: dict[str, Any]) -> tuple[int, float, str]:
     return (status_rank, -score, str(rule.get("id", "")))
 
 
-def _blind_rule_chart_score(rule: dict[str, Any], chart: dict[str, Any]) -> int:
-    """按命盘文本给三盲派规则一个轻量触发分。
-
-    ponytail: 不写新命理规则，只让 index.yaml 中明确提到的干支、冲合、岁运词优先。
-    """
-
-    rule_text = "".join(str(rule.get(key, "")) for key in ("topic", "topic_label", "title", "conclusion"))
-    chart_text = _chart_pillars_text(chart) + str(chart.get("current_dayun") or "") + str(chart.get("current_year") or "")
-    score = sum(1 for char in set(chart_text) if char in "甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥" and char in rule_text)
-    if _chart_has_zhi_chong(chart) and any(token in rule_text for token in ("冲", "刑", "穿", "破")):
-        score += 3
-    if any(token in chart_text for token in ("大运", "流年", "运")) and any(token in rule_text for token in ("大运", "流年", "应期", "交运")):
-        score += 2
-    return score
-
-
-def _blind_rule_chart_rank(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[int, int, float, str]:
-    status_rank, neg_score, rule_id = _blind_rule_rank(rule)
-    return (-_blind_rule_chart_score(rule, chart), status_rank, neg_score, rule_id)
+def _blind_rule_chart_rank(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[float, int, str]:
+    """用 condition_evaluator.rank_blind_rule 替代字符袋排名器。"""
+    return rank_blind_rule(rule, chart)
 
 
 def build_blind_school_rule_claims(
@@ -434,9 +373,16 @@ def build_blind_school_rule_claims(
     *,
     school: str,
     workspace_root: str = ".",
-    limit: int = 8,
+    limit: int = 15,
+    min_candidate_score: float = 0.5,
 ) -> list[V5Claim]:
-    """把三盲派 index.yaml 规则筛选为 v5 命题。"""
+    """把三盲派 index.yaml 规则筛选为 v5 命题。
+
+    变更：
+    - limit 从 8 提升到 15，覆盖更多高质量规则
+    - 用 score_blind_rule() 谓词评分替代固定 0.55 置信度
+    - 加 min_candidate_score 门槛过滤低质候选
+    """
 
     raw_rules = _load_blind_school_rules(school, workspace_root=workspace_root)
     if not raw_rules:
@@ -446,6 +392,7 @@ def build_blind_school_rule_claims(
         rule for rule in raw_rules
         if str(rule.get("school", "")) == source_school
         and str(rule.get("status", "candidate")) not in {"deprecated", "rejected"}
+        and float(rule.get("candidate_score") or 0.0) >= min_candidate_score
     ]
     selected.sort(key=lambda rule: _blind_rule_chart_rank(rule, chart))
     claims: list[V5Claim] = []
@@ -453,6 +400,10 @@ def build_blind_school_rule_claims(
         rule_id = str(rule.get("id", _stable_id("blindrule", school, rule.get("title", ""))))
         conclusion = str(rule.get("conclusion") or rule.get("title") or "三盲派规则参与。")
         domain = _blind_rule_domain(rule)
+        # 用谓词评分驱动置信度，而非硬编码
+        relevance_score = score_blind_rule(rule, chart)
+        star_count = max(2, min(5, round(relevance_score * 5)))
+        tier = "★" * star_count
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, rule_id),
             source=str(rule.get("raw_file") or BLIND_SCHOOL_INDEX_FILES[school]),
@@ -464,6 +415,7 @@ def build_blind_school_rule_claims(
                 "topic": str(rule.get("topic", "")),
                 "status": str(rule.get("status", "")),
                 "source_scope": "school_index_rules",
+                "relevance_score": round(relevance_score, 3),
             },
         )
         claims.append(
@@ -475,7 +427,11 @@ def build_blind_school_rule_claims(
                 claim_type="event_claim" if domain in PROBABILISTIC_DOMAIN_WHITELIST else "structure_claim",  # type: ignore[arg-type]
                 stance="support",
                 polarity="neutral",
-                confidence=V5Confidence(tier="★★★", score=0.55, note="三盲派 index.yaml 规则筛选接入"),
+                confidence=V5Confidence(
+                    tier=tier,
+                    score=relevance_score,
+                    note=f"谓词评分={relevance_score:.2f}；candidate_score={rule.get('candidate_score', 0)}",
+                ),
                 evidence=[evidence],
                 timing_hints=[{"label": f"{chart.get('current_year', '当前流年')} 至下一交运前", "basis": str(chart.get("current_dayun") or "当前大运")}],
                 probabilistic=domain in PROBABILISTIC_DOMAIN_WHITELIST,
@@ -486,7 +442,8 @@ def build_blind_school_rule_claims(
                     "topic": str(rule.get("topic", "")),
                     "source_scope": "school_index_rules",
                     "runner_state": "school_rule",
-                    "selection": "v6_preprod_blind_limited",
+                    "selection": "v6_preprod_blind_predicate",
+                    "relevance_score": round(relevance_score, 3),
                 },
             )
         )
@@ -501,118 +458,13 @@ SCHOOL_DISPLAY_NAMES = {
 
 
 def build_minimal_three_blind_claims(chart: dict[str, Any], case_id: str) -> list[V5Claim]:
-    """高德臣 / 段建业 / 杨清娟三派 MVP 事件 runner。
+    """盲派三校候补 runner：无 index.yaml 规则命中时返回空列表。
 
-    该实现只使用 chart DTO，可在旧 ParsedInput 未接入时先产出真实可裁判命题。
-    后续可替换为各派完整 runner。
+    ponytail: 原 if/else 字符串模板（"子午冲就输出健康压力"）不是命理推理，是文本生成。
+    无真实规则时诚实返回空列表，让结构门禁正确处理"无事件基础"情况。
+    有真实规则时由 build_blind_school_rule_claims() 负责，不在此重复。
     """
-
-    pillars = _chart_pillars_text(chart)
-    current_dayun = str(chart.get("current_dayun") or "当前大运")
-    current_year = str(chart.get("current_year") or "当前流年")
-    claims: list[V5Claim] = []
-
-    has_zi_wu = "子" in pillars and "午" in (pillars + current_dayun + current_year)
-    has_yin_shen = "寅" in pillars and "申" in pillars
-    has_zi_chou = "子" in pillars and "丑" in pillars
-    has_metal_water = any(x in pillars for x in ("庚", "辛", "申")) and any(x in pillars for x in ("壬", "癸", "子"))
-
-    # 高德臣：旁证、神煞、健康灾厄、贵人资源。
-    gao_evidence = []
-    if has_zi_wu:
-        gao_evidence.append("子午冲或运年冲日支信号，健康、婚姻与压力事件需入预测账本")
-    if has_yin_shen:
-        gao_evidence.append("寅申冲动月令，事业环境与外部资源易被触发")
-    if not gao_evidence:
-        gao_evidence.append("高派 MVP 未发现强冲，先登记神煞旁证待完整 runner 接入")
-    claims.append(
-        V5Claim(
-            claim_id=_stable_id("v5cl", case_id, "gao_dechen", pillars, current_dayun),
-            school="gao_dechen",
-            domain="健康" if has_zi_wu else "事业",
-            claim="高德臣旁证：" + "；".join(gao_evidence),
-            claim_type="event_claim",
-            stance="support",
-            polarity="mixed",
-            confidence=V5Confidence(tier="★★★", score=0.58, note="高派 MVP 旁证 runner，待神煞库全量接入"),
-            evidence=[_evidence(case_id, "gao_dechen_mvp", "；".join(gao_evidence), pillars, rule_id="G-MVP-001")],
-            timing_hints=[{"label": f"{current_year} 至下一交运前", "basis": current_dayun}],
-            probabilistic=True,
-            falsifiable="若时间窗内无健康、压力、外部环境或资源事件，则本旁证预测降权。",
-            metadata={"runner_state": "mvp", "school_role": "work_transformation"},
-        )
-    )
-
-    # 段建业：体用、做功、事业财富落地。
-    duan_text = "段建业事件框架："
-    duan_points = []
-    if has_metal_water:
-        duan_points.append("印比资源明显，宜走平台、资质、组织身份与规则系统")
-    if has_yin_shen:
-        duan_points.append("月令被冲，事业做功有折损，成事更依赖外部结构和阶段性机会")
-    if not duan_points:
-        duan_points.append("做功路径待完整段派 runner 接入，本轮先登记事业财富可反馈槽位")
-    claims.append(
-        V5Claim(
-            claim_id=_stable_id("v5cl", case_id, "duan_jianye", pillars, current_dayun),
-            school="duan_jianye",
-            domain="事业",
-            claim=duan_text + "；".join(duan_points),
-            claim_type="event_claim",
-            stance="support",
-            polarity="neutral",
-            confidence=V5Confidence(tier="★★★", score=0.6, note="段派 MVP 事业财富 runner，待做功层数接入"),
-            evidence=[_evidence(case_id, "duan_jianye_mvp", "；".join(duan_points), pillars, rule_id="M1-MVP-001")],
-            timing_hints=[{"label": f"{current_year} 至下一交运前", "basis": current_dayun}],
-            probabilistic=True,
-            falsifiable="若时间窗内无事业职责、平台、项目、财富或资源变化，则本事业预测降权。",
-            metadata={"runner_state": "mvp", "school_role": "event_framework"},
-        )
-    )
-    claims.append(
-        V5Claim(
-            claim_id=_stable_id("v5cl", case_id, "duan_jianye", "wealth", pillars),
-            school="duan_jianye",
-            domain="财富",
-            claim="段建业财富落地：财富先随事业平台、项目资源与组织身份变化，不先断投机暴发。",
-            claim_type="event_claim",
-            stance="support",
-            polarity="neutral",
-            confidence=V5Confidence(tier="★★", score=0.48, note="MVP 财富事件槽位"),
-            evidence=[_evidence(case_id, "duan_jianye_mvp", "财富随事业平台与项目资源落地", pillars, rule_id="M1-MVP-002")],
-            timing_hints=[{"label": f"{current_year} 至下一交运前", "basis": current_dayun}],
-            probabilistic=True,
-            falsifiable="若时间窗内收入、资产、项目资金和重大支出均无变化，则本预测失验。",
-            metadata={"runner_state": "mvp", "school_role": "event_framework"},
-        )
-    )
-
-    # 杨清娟：婚姻、人物画面、关系资源。
-    yang_points = []
-    if has_zi_chou:
-        yang_points.append("子丑合提示婚姻、家庭责任或资源绑定，不宜简单等同婚破")
-    if has_yin_shen:
-        yang_points.append("寅申冲提示关系中的外部环境、迁动或资源变化")
-    if not yang_points:
-        yang_points.append("人物关系画面待完整象法 runner 接入，本轮先登记婚姻家庭反馈槽位")
-    claims.append(
-        V5Claim(
-            claim_id=_stable_id("v5cl", case_id, "yang_qingjuan", pillars, current_dayun),
-            school="yang_qingjuan",
-            domain="婚姻",
-            claim="杨清娟象法：" + "；".join(yang_points),
-            claim_type="event_claim",
-            stance="support",
-            polarity="mixed",
-            confidence=V5Confidence(tier="★★★", score=0.56, note="杨派 MVP 婚姻家庭 runner，待象法规则全量接入"),
-            evidence=[_evidence(case_id, "yang_qingjuan_mvp", "；".join(yang_points), pillars, rule_id="M2-MVP-001")],
-            timing_hints=[{"label": f"{current_year} 至下一交运前", "basis": current_dayun}],
-            probabilistic=True,
-            falsifiable="若时间窗内婚恋关系、家庭责任、配偶资源或关系压力均无变化，则本预测失验。",
-            metadata={"runner_state": "mvp", "school_role": "image_detail"},
-        )
-    )
-    return claims
+    return []  # ponytail: 无规则 → 无命题，结构门禁将降权悬空的事件判断
 
 
 def build_abstain_claims(
@@ -732,83 +584,226 @@ def build_structure_graph(case_id: str, chart: dict[str, Any], claims: list[V5Cl
     return V5StructureGraph(case_id=case_id, nodes=nodes, edges=edges)
 
 
-def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
-    """生成最小三段式仲裁结果。
+def _apply_structure_gate(claims: list[V5Claim]) -> list[V5Claim]:
+    """结构门禁：无子平/滴天髓 structure_claim 时，event_claim 置信度强制降权。
 
-    MVP 只根据 claim_type、stance、school role 形成可解释骨架；真实权重、生命周期、
-    历史命中率与冲突分类后续接入。
+    八层框架原则"基础决定上层"的工程实现：
+    事件落地判断必须建立在格局/旺衰结构命题已存在的前提上。
     """
+    active_structure = [
+        c for c in claims
+        if c.claim_type == "structure_claim"
+        and c.school in STRUCTURE_SCHOOLS
+        and c.stance not in ("abstain",)
+        and c.confidence.score >= 0.4
+    ]
+    if active_structure:
+        return claims  # 有结构基础，放行
+
+    # 无结构基础 → event_claim 降权 60%，打标记
+    patched: list[V5Claim] = []
+    for c in claims:
+        if c.claim_type == "event_claim":
+            new_score = round(c.confidence.score * 0.4, 3)
+            new_tier = "★" if new_score < 0.3 else "★★"
+            patched_meta = dict(c.metadata)
+            patched_meta["structure_gate"] = "downgraded_no_structure_foundation"
+            patched.append(
+                V5Claim(
+                    claim_id=c.claim_id,
+                    school=c.school,
+                    domain=c.domain,
+                    claim=c.claim,
+                    claim_type=c.claim_type,
+                    stance=c.stance,
+                    polarity=c.polarity,
+                    confidence=V5Confidence(
+                        tier=new_tier,
+                        score=new_score,
+                        note=f"结构门禁降权（原={c.confidence.score:.2f}）：无子平/滴天髓结构命题作为基础",
+                    ),
+                    evidence=c.evidence,
+                    counter_evidence=c.counter_evidence,
+                    timing_hints=c.timing_hints,
+                    probabilistic=False,  # 无结构基础不允许概率化
+                    falsifiable=c.falsifiable,
+                    metadata=patched_meta,
+                )
+            )
+        else:
+            patched.append(c)
+    return patched
+
+
+def _extract_structure_verdict(structure_claims: list[V5Claim]) -> str:
+    """从子平/滴天髓结构命题中提取可读 verdict，替代硬编码固定字符串。"""
+    if not structure_claims:
+        return "无有效结构命题，事件判断缺乏基础。"
+    active = [c for c in structure_claims if c.stance == "support" and c.confidence.score >= 0.4]
+    if not active:
+        return "结构命题均为弃权或低置信，事件判断需降级。"
+    # 提取核心断言（取置信度最高的命题文本）
+    top = max(active, key=lambda c: c.confidence.score)
+    # 统计支持方向
+    support_n = len([c for c in structure_claims if c.stance == "support"])
+    oppose_n = len([c for c in structure_claims if c.stance == "oppose"])
+    conflict_note = f"；有{oppose_n}条反证" if oppose_n else ""
+    return f"结构裁决（{support_n}条支持{conflict_note}）：{top.claim[:80]}…"
+
+
+def _extract_event_verdict(event_claims: list[V5Claim], structure_verdict: str, has_structure: bool) -> str:
+    """从事件命题中提取可读 verdict，以结构裁决为约束前提。"""
+    if not event_claims:
+        return "无有效事件命题。"
+    if not has_structure:
+        return f"事件命题因结构门禁降权，仅供参考（结构基础：{structure_verdict[:40]}）。"
+    active = [c for c in event_claims if c.stance == "support" and c.confidence.score >= 0.35]
+    if not active:
+        return "事件命题均为低置信，不形成强事件结论。"
+    top = max(active, key=lambda c: c.confidence.score)
+    support_n = len([c for c in event_claims if c.stance == "support"])
+    oppose_n = len([c for c in event_claims if c.stance == "oppose"])
+    conflict_note = f"；有{oppose_n}条反证" if oppose_n else ""
+    return f"事件裁决（{support_n}条支持{conflict_note}，基于结构基础）：{top.claim[:80]}…"
+
+
+def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
+    """角色化三段式仲裁器。
+
+    替换原有"数 support/oppose 数量 + 输出固定字符串"的假仲裁。
+    实现"基础决定上层"：
+      段1 结构合法性（子平+滴天髓）→ 段2 事件落地（三盲派，以段1为前提）
+      → 段3 概率应期（只接受通过段2的命题）
+    """
+    # 结构门禁：无结构基础则 event_claim 强制降权
+    gated_claims = _apply_structure_gate(claims)
+
+    # 全局结构命题（跨domain，用于判断整体结构基础是否建立）
+    global_structure_claims = [
+        c for c in gated_claims
+        if c.claim_type == "structure_claim"
+        and c.school in STRUCTURE_SCHOOLS
+        and c.stance not in ("abstain",)
+    ]
+    has_global_structure = len(global_structure_claims) >= 1
 
     claims_by_domain: dict[str, list[V5Claim]] = defaultdict(list)
-    for claim in claims:
+    for claim in gated_claims:
         claims_by_domain[claim.domain].append(claim)
 
     results: list[V5ArbitrationResult] = []
     for domain, domain_claims in sorted(claims_by_domain.items()):
-        support_claims = [c for c in domain_claims if c.stance == "support"]
         oppose_claims = [c for c in domain_claims if c.stance == "oppose"]
-        abstain_claims = [c for c in domain_claims if c.stance == "abstain"]
-        structure_claims = [c for c in domain_claims if c.school in STRUCTURE_SCHOOLS or c.claim_type == "structure_claim"]
-        event_claims = [c for c in domain_claims if c.school in EVENT_SCHOOLS or c.claim_type == "event_claim"]
-        probabilistic_allowed = domain in PROBABILISTIC_DOMAIN_WHITELIST and any(c.probabilistic for c in domain_claims)
-        conflict_type = "stance_conflict" if support_claims and oppose_claims else "none"
-
-        structure_winners = [c.school for c in structure_claims if c.stance != "abstain"]
-        event_winners = [c.school for c in event_claims if c.stance != "abstain"]
         minority = [c.claim_id for c in oppose_claims]
 
-        if len(abstain_claims) == len(domain_claims):
-            structure_conclusion = "五派 runner 尚未产生可仲裁结构命题。"
-            event_conclusion = "五派 runner 尚未产生可仲裁事件命题。"
-            confidence = V5Confidence(tier="★", score=0.1, note="全员弃权，占位输出")
-        else:
-            structure_conclusion = "结构合法性仲裁已形成候选结论。"
-            event_conclusion = "事件落地仲裁已形成候选结论。"
-            confidence = V5Confidence(tier="★★★", score=0.6, note="MVP 仲裁，尚未接入历史校准")
+        # ── 段1：结构合法性（子平+滴天髓 structure_claim）─────────────────────
+        structure_claims = [
+            c for c in domain_claims
+            if (c.school in STRUCTURE_SCHOOLS or c.claim_type == "structure_claim")
+            and c.stance != "abstain"
+        ]
+        # 补充全局结构命题（总体域的结构命题可作为所有域的基础）
+        if domain != "总体":
+            for gc in global_structure_claims:
+                if gc.domain == "总体" and gc not in structure_claims:
+                    structure_claims.append(gc)
+
+        has_domain_structure = len([c for c in structure_claims if c.stance == "support"]) >= 1
+        structure_verdict = _extract_structure_verdict(structure_claims)
+        structure_winners = list({c.school for c in structure_claims if c.stance == "support"})
+        struct_support = len([c for c in structure_claims if c.stance == "support"])
+        struct_oppose = len([c for c in structure_claims if c.stance == "oppose"])
+        struct_confidence_score = min(0.85, 0.45 + struct_support * 0.08) if struct_support else 0.2
+        struct_confidence_tier = "★★★★" if struct_confidence_score >= 0.7 else "★★★" if struct_confidence_score >= 0.5 else "★★"
+        struct_conflict = "stance_conflict" if struct_support and struct_oppose else "none"
 
         results.append(
             V5ArbitrationResult(
                 domain=domain,
                 stage="structure_legality",
-                conclusion=structure_conclusion,
+                conclusion=structure_verdict,
                 winning_schools=structure_winners,
                 minority_claims=minority,
-                support_score=float(len([c for c in structure_claims if c.stance == "support"])),
-                opposition_score=float(len([c for c in structure_claims if c.stance == "oppose"])),
-                conflict_type=conflict_type,
-                confidence=confidence,
-                rationale="子平类、滴天髓类与高德臣优先参与结构合法性判断。",
+                support_score=float(struct_support),
+                opposition_score=float(struct_oppose),
+                conflict_type=struct_conflict,
+                confidence=V5Confidence(
+                    tier=struct_confidence_tier,
+                    score=struct_confidence_score,
+                    note=f"子平+滴天髓结构命题={struct_support}条；结构门禁={'通过' if has_domain_structure or has_global_structure else '未通过'}",
+                ),
+                rationale=f"子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：{'已建立' if has_domain_structure or has_global_structure else '缺失，事件命题已降权'}。",
                 probabilistic_allowed=False,
             )
         )
+
+        # ── 段2：事件落地（三盲派，以段1为前提）─────────────────────────────
+        event_claims = [
+            c for c in domain_claims
+            if (c.school in EVENT_SCHOOLS or c.claim_type == "event_claim")
+            and c.stance != "abstain"
+        ]
+        event_verdict = _extract_event_verdict(event_claims, structure_verdict, has_domain_structure or has_global_structure)
+        event_winners = list({c.school for c in event_claims if c.stance == "support"})
+        event_support = len([c for c in event_claims if c.stance == "support"])
+        event_oppose = len([c for c in event_claims if c.stance == "oppose"])
+        # 无结构基础则事件置信度上限 0.45
+        event_base_score = min(0.80, 0.40 + event_support * 0.07) if event_support else 0.2
+        if not (has_domain_structure or has_global_structure):
+            event_base_score = min(0.45, event_base_score)
+        event_tier = "★★★★" if event_base_score >= 0.7 else "★★★" if event_base_score >= 0.5 else "★★" if event_base_score >= 0.35 else "★"
+        event_conflict = "stance_conflict" if event_support and event_oppose else "none"
+        probabilistic_allowed = domain in PROBABILISTIC_DOMAIN_WHITELIST and any(c.probabilistic for c in domain_claims)
+
         results.append(
             V5ArbitrationResult(
                 domain=domain,
                 stage="event_realization",
-                conclusion=event_conclusion,
+                conclusion=event_verdict,
                 winning_schools=event_winners,
                 minority_claims=minority,
-                support_score=float(len([c for c in event_claims if c.stance == "support"])),
-                opposition_score=float(len([c for c in event_claims if c.stance == "oppose"])),
-                conflict_type=conflict_type,
-                confidence=confidence,
-                rationale="高德臣、段建业、杨清娟优先参与事件落地判断，子平/滴天髓提供结构约束。",
+                support_score=float(event_support),
+                opposition_score=float(event_oppose),
+                conflict_type=event_conflict,
+                confidence=V5Confidence(
+                    tier=event_tier,
+                    score=event_base_score,
+                    note=f"事件命题={event_support}条；结构前提={'满足' if has_domain_structure or has_global_structure else '不满足，已降权'}",
+                ),
+                rationale=f"高德臣、段建业、杨清娟参与事件落地；结构约束来自：{structure_verdict[:40]}。",
                 probabilistic_allowed=probabilistic_allowed,
             )
+        )
+
+        # ── 段3：概率应期（只接受通过段2、在白名单域、有时间窗的命题）────────
+        prob_claims = [
+            c for c in domain_claims
+            if c.probabilistic
+            and domain in PROBABILISTIC_DOMAIN_WHITELIST
+            and (has_domain_structure or has_global_structure)
+        ]
+        prob_conclusion = (
+            f"概率应期：{len(prob_claims)}条命题允许进入受限概率层，需有时间窗与反馈标签。"
+            if prob_claims
+            else "概率应期：无满足条件的命题（需结构基础 + 白名单域 + 可反馈时间窗）。"
         )
         results.append(
             V5ArbitrationResult(
                 domain=domain,
                 stage="probability_timing",
-                conclusion="仅白名单事件且具备时间窗与反馈标签时允许概率化。",
-                winning_schools=[c.school for c in domain_claims if c.probabilistic],
+                conclusion=prob_conclusion,
+                winning_schools=list({c.school for c in prob_claims}),
                 minority_claims=[],
-                support_score=float(len([c for c in domain_claims if c.probabilistic])),
+                support_score=float(len(prob_claims)),
                 opposition_score=0.0,
                 conflict_type="none",
-                confidence=V5Confidence(tier="★★", score=0.4, note="概率层 MVP 只登记许可，不伪精确"),
-                rationale="性格、格局高低、宽泛气质描述不进入概率层。",
-                probabilistic_allowed=probabilistic_allowed,
+                confidence=V5Confidence(
+                    tier="★★★" if prob_claims else "★",
+                    score=0.55 if prob_claims else 0.15,
+                    note="性格、格局高低、宽泛气质描述不进入概率层。",
+                ),
+                rationale="仅白名单事件（学业/事业/财富/婚姻/健康）且有结构基础时允许概率化。",
+                probabilistic_allowed=bool(prob_claims),
             )
         )
     return results
