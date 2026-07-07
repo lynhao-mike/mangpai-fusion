@@ -374,7 +374,7 @@ def build_blind_school_rule_claims(
     school: str,
     workspace_root: str = ".",
     limit: int = 15,
-    min_candidate_score: float = 0.5,
+    min_candidate_score: float = 0.0,
 ) -> list[V5Claim]:
     """把三盲派 index.yaml 规则筛选为 v5 命题。
 
@@ -1053,6 +1053,7 @@ def build_prediction_ledger(case_id: str, claims: list[V5Claim], chart: dict[str
     for claim in claims:
         if (
             claim.probabilistic
+            and claim.claim_type == "event_claim"  # 只有具体事件命题可占概率槽；结构命题不进概率层
             and claim.domain in PROBABILISTIC_DOMAIN_WHITELIST
             and claim.stance == "support"
             and claim.confidence.score >= 0.35

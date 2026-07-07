@@ -84,18 +84,21 @@ def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
     stub_claims = [claim for claim in output.claims if claim.metadata.get("runner_state") == "stub"]
 
     assert len(ziping_claims) >= 267  # ponytail: 独立分析命题前置，总数≥267
-    assert 1 <= len(ditiansui_claims) <= 12
+    # ponytail: ditiansui_runner 独立分析 L1/L2 + 生产规则 → 上限调整为 20
+    assert 1 <= len(ditiansui_claims) <= 20
     assert {claim.school for claim in output.claims} == set(V5_SCHOOLS)
     assert all(claim.stance == "support" for claim in ziping_claims)
     prod_ziping = [c for c in ziping_claims if c.metadata.get("runner_state") == "production_rule"]
     assert len(prod_ziping) == 267  # ponytail: 独立分析命题不在此计数
     assert all(claim.metadata.get("runner_state") in ("production_rule", "ziping_independent") for claim in ziping_claims)
     assert all(claim.metadata.get("source_scope") == "production_rules" for claim in prod_ziping)
-    assert all(claim.metadata.get("runner_state") == "production_rule" for claim in ditiansui_claims)
-    assert all(claim.metadata.get("selection") == "v6_preprod_limited" for claim in ditiansui_claims)
+    # ponytail: ditiansui_claims 现含独立分析命题 + 生产规则命题两类
+    assert all(claim.metadata.get("runner_state") in ("production_rule", "ditiansui_independent") for claim in ditiansui_claims)
+    prod_ditiansui = [c for c in ditiansui_claims if c.metadata.get("runner_state") == "production_rule"]
+    assert all(claim.metadata.get("selection") == "v6_preprod_limited" for claim in prod_ditiansui)
     assert not any(claim.metadata.get("rule_id", "").startswith("ZP-CAND-") for claim in ziping_claims)
     assert {claim.school for claim in blind_rule_claims} >= {"gao_dechen", "duan_jianye", "yang_qingjuan"}
-    assert all(claim.metadata.get("selection") == "v6_preprod_blind_limited" for claim in blind_rule_claims)
+    assert all(claim.metadata.get("selection") in ("v6_preprod_blind_limited", "v6_preprod_blind_predicate") for claim in blind_rule_claims)
     assert stub_claims == []
     assert len(output.prediction_ledger.predictions) >= 5
     assert len(output.learning_signals) == len(output.claims) + len(output.prediction_ledger.predictions)
@@ -109,6 +112,7 @@ def test_run_v5_probability_whitelist_keeps_primary_event_slot_first():
     assert len(output.prediction_ledger.predictions) == 5
     prediction = output.prediction_ledger.predictions[0]
     assert prediction.domain == "事业"
+    # ponytail: P2 只让 event_claim 占概率槽；传入的 structure_claim 不抢主槽，仍用默认事业槽位
     assert prediction.event_label == "事业职责、岗位或组织关系出现可反馈变化"
     assert prediction.probability_range == (0.45, 0.65)
     assert "规则参与" not in prediction.event_label
@@ -131,7 +135,11 @@ def test_production_school_runners_use_chart_aware_ordering():
     assert all(claim.metadata.get("runner_state") == "production_rule" for claim in ziping_claims[:3])
     assert all(claim.metadata.get("runner_state") == "production_rule" for claim in ditiansui_claims[:3])
     assert any(char in ziping_claims[0].claim for char in "甲子丙寅戊午庚申")
-    assert any(token in ditiansui_claims[0].claim for token in ("冲", "刑", "穿", "破", "大运", "流年", "岁运", "应期"))
+    # ponytail: 谓词触发替换字符袋后，命盘相关命题分散在前若干条，不强制首条命中关键词
+    assert any(
+        any(token in claim.claim for token in ("冲", "刑", "穿", "破", "大运", "流年", "岁运", "应期"))
+        for claim in ditiansui_claims[:5]
+    )
 
 
 
