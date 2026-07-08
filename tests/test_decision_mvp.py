@@ -8,8 +8,10 @@ from engine.decision import (
     build_school_claims,
     build_structural_verdicts,
     build_timing_probabilities,
+    route_schools,
     run_decision_mvp,
 )
+from engine.decision.models import SchoolClaim
 
 
 def test_decision_mvp_builds_unbroken_l0_to_l7_trace() -> None:
@@ -113,3 +115,48 @@ def test_l0_context_ledger_keeps_free_text_out_of_chart_facts() -> None:
     assert context.known_fact_text == "已知事业变化"
     assert context.analysis_focus_text == "事业"
     assert context.preserved_text_blocks == ["$EXTRA\n原文保留"]
+
+
+def test_l1_router_assigns_roles_and_abstains_irrelevant_schools() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+$FOCUS
+事业
+""".strip())
+
+    routed = {item.school: item for item in route_schools(run.chart_ledger, run.context_ledger)}
+
+    assert routed["ziping"].role == "lead"
+    assert routed["ditiansui"].role == "lead"
+    assert routed["duan_jianye"].role == "co_lead"
+    assert routed["gao_dechen"].role == "abstain"
+    assert routed["gao_dechen"].blockers
+    assert all(item.reasons for item in routed.values())
+
+
+def test_l3_structure_can_reject_very_low_confidence_claim() -> None:
+    verdict = build_structural_verdicts(
+        "C-TEST",
+        [
+            SchoolClaim(
+                claim_id="claim-low",
+                school="ziping",
+                role_granted_by_l1="lead",
+                domain="事业",
+                claim_type="structure",
+                statement="低置信结构命题",
+                confidence=0.05,
+            )
+        ],
+    )[0]
+
+    assert verdict.verdict == "reject"
+    assert verdict.blocking_factors

@@ -18,7 +18,9 @@ def build_structural_verdicts(case_id: str, claims: list[SchoolClaim]) -> list[S
     verdicts: list[StructuralVerdict] = []
     for claim in claims:
         verdict = "pass" if claim.claim_type == "structure" and claim.confidence >= 0.5 else "weaken"
-        if claim.claim_type in {"event", "timing"}:
+        if claim.confidence <= 0.1:
+            verdict = "reject"
+        elif claim.claim_type in {"event", "timing"}:
             verdict = "unknown"
         verdicts.append(
             StructuralVerdict(
