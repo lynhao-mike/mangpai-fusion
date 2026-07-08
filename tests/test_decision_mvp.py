@@ -11,7 +11,15 @@ from engine.decision import (
     route_schools,
     run_decision_mvp,
 )
-from engine.decision.models import SchoolClaim
+from engine.decision.models import (
+    ArbitrationDecision,
+    CalibrationAction,
+    EventHypothesis,
+    FeedbackAttribution,
+    FeedbackSignal,
+    SchoolClaim,
+    TimingProbability,
+)
 
 
 def test_decision_mvp_builds_unbroken_l0_to_l7_trace() -> None:
@@ -160,3 +168,182 @@ def test_l3_structure_can_reject_very_low_confidence_claim() -> None:
 
     assert verdict.verdict == "reject"
     assert verdict.blocking_factors
+
+
+def test_l3_marks_evidence_claim_as_unknown_not_structural_weaken() -> None:
+    verdict = build_structural_verdicts(
+        "C-TEST",
+        [
+            SchoolClaim(
+                claim_id="claim-evidence",
+                school="gao_dechen",
+                role_granted_by_l1="evidence_only",
+                domain="健康",
+                claim_type="evidence",
+                statement="旁证命题只提供补强材料。",
+                confidence=0.8,
+            )
+        ],
+    )[0]
+
+    assert verdict.verdict == "unknown"
+    assert "旁证" in verdict.structural_reason
+
+
+
+def test_l5_probability_range_follows_event_confidence() -> None:
+    base = dict(
+        source_verdict_ids=["v1"],
+        domain="事业",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+    )
+
+    low = EventHypothesis(event_id="e-low", confidence=0.2, **base)
+    mid = EventHypothesis(event_id="e-mid", confidence=0.5, **base)
+    high = EventHypothesis(event_id="e-high", confidence=0.7, **base)
+
+    timings = build_timing_probabilities("C-TEST", [low, mid, high])
+
+    assert [item.probability_range for item in timings] == [(0.1, 0.3), (0.3, 0.6), (0.6, 0.8)]
+    assert [item.event_id for item in timings] == ["e-low", "e-mid", "e-high"]
+
+
+
+def test_l6_arbitration_supports_non_winner_results() -> None:
+    base = dict(
+        source_verdict_ids=["v1"],
+        domain="事业",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+    )
+
+    coexist = build_arbitration_decisions(
+        "C-TEST",
+        [EventHypothesis(event_id="e1", confidence=0.5, **base), EventHypothesis(event_id="e2", confidence=0.53, **base)],
+        [],
+    )[0]
+    unresolved = build_arbitration_decisions(
+        "C-TEST",
+        [EventHypothesis(event_id="e1", confidence=0.8, **base), EventHypothesis(event_id="e2", confidence=0.2, **base)],
+        [],
+    )[0]
+    rejected = build_arbitration_decisions(
+        "C-TEST",
+        [EventHypothesis(event_id="e1", confidence=0.05, **base), EventHypothesis(event_id="e2", confidence=0.1, **base)],
+        [],
+    )[0]
+
+    assert coexist.result == "coexist"
+    assert unresolved.result == "unresolved"
+    assert rejected.result == "reject_all"
+
+
+def test_l4_does_not_turn_evidence_only_claim_into_event() -> None:
+    evidence_claim = SchoolClaim(
+        claim_id="claim-evidence",
+        school="gao_dechen",
+        role_granted_by_l1="evidence_only",
+        domain="健康",
+        claim_type="evidence",
+        statement="神煞旁证只能补强，不能单独落成事件。",
+        confidence=0.8,
+    )
+
+    events = build_event_hypotheses("C-TEST", [], [evidence_claim])
+
+    assert events == []
+
+
+
+def test_l4_fallback_does_not_turn_evidence_verdict_into_event() -> None:
+    evidence_claim = SchoolClaim(
+        claim_id="claim-evidence",
+        school="gao_dechen",
+        role_granted_by_l1="evidence_only",
+        domain="健康",
+        claim_type="evidence",
+        statement="旁证只作为补强材料。",
+        confidence=0.8,
+    )
+    verdicts = build_structural_verdicts("C-TEST", [evidence_claim])
+
+    events = build_event_hypotheses("C-TEST", verdicts, [evidence_claim])
+
+    assert events == []
+
+
+
+def test_l7_report_items_follow_each_arbitration_decision_and_matching_timing() -> None:
+    decision_a = ArbitrationDecision(
+        decision_id="d-a",
+        domain="事业",
+        competing_event_ids=["e-a"],
+        result="winner",
+        winner_ids=["e-a"],
+    )
+    decision_b = ArbitrationDecision(
+        decision_id="d-b",
+        domain="财富",
+        competing_event_ids=["e-b"],
+        result="winner",
+        winner_ids=["e-b"],
+    )
+    timing_b = TimingProbability(prediction_id="t-b", event_id="e-b")
+    timing_a = TimingProbability(prediction_id="t-a", event_id="e-a")
+
+    items = build_report_items("C-TEST", [decision_a, decision_b], [timing_b, timing_a])
+
+    assert [item.decision_id for item in items] == ["d-a", "d-b"]
+    assert [item.prediction_id for item in items] == ["t-a", "t-b"]
+    assert all(item.display_text for item in items)
+
+
+
+def test_decision_run_validate_trace_checks_l8_l9_links() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+
+    broken_feedback = FeedbackSignal(feedback_id="fb-broken", report_item_id="missing-report", verdict="unknown")
+    broken_attr = FeedbackAttribution(
+        attribution_id="attr-broken",
+        feedback_id="missing-feedback",
+        affected_layer="L8",
+        affected_object_id="x",
+        attribution_reason="test",
+    )
+    broken_action = CalibrationAction(
+        action_id="cal-broken",
+        target_type="report_policy",
+        target_id="x",
+        action="review",
+        reason="test",
+        evidence_feedback_ids=["missing-feedback"],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "feedback_signals": [broken_feedback],
+            "feedback_attributions": [broken_attr],
+            "calibration_actions": [broken_action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L8 feedback signal" in issue for issue in issues)
+    assert any("L8 attribution" in issue for issue in issues)
+    assert any("L9 calibration action" in issue for issue in issues)

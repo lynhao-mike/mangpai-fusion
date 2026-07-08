@@ -327,6 +327,9 @@ class DecisionRun:
         events = {item.event_id for item in self.event_hypotheses}
         timings = {item.prediction_id for item in self.timing_probabilities}
         decisions = {item.decision_id for item in self.arbitration_decisions}
+        report_items = {item.report_item_id for item in self.report_items}
+        feedbacks = {item.feedback_id for item in self.feedback_signals}
+        attributions = {item.attribution_id for item in self.feedback_attributions}
 
         if not self.raw_payload.raw_hash or self.chart_ledger.raw_source_hash != self.raw_payload.raw_hash:
             issues.append("L0 raw payload 与 chart ledger 未绑定")
@@ -354,6 +357,16 @@ class DecisionRun:
                 issues.append(f"L7 report item 未绑定 L6 decision: {item.report_item_id}")
             if item.prediction_id and item.prediction_id not in timings:
                 issues.append(f"L7 report item 未绑定 L5 timing: {item.report_item_id}")
+        for signal in self.feedback_signals:
+            if signal.report_item_id not in report_items:
+                issues.append(f"L8 feedback signal 未绑定 L7 report item: {signal.feedback_id}")
+        for attribution in self.feedback_attributions:
+            if attribution.feedback_id not in feedbacks:
+                issues.append(f"L8 attribution 未绑定 feedback signal: {attribution.attribution_id}")
+        for action in self.calibration_actions:
+            missing = [item for item in action.evidence_feedback_ids if item not in feedbacks]
+            if missing:
+                issues.append(f"L9 calibration action 未绑定 feedback signal: {action.action_id}")
         return issues
 
     def to_dict(self) -> dict[str, Any]:

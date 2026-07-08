@@ -29,7 +29,20 @@ def attribute_feedback(signal: FeedbackSignal) -> FeedbackAttribution:
     真正精细归因等反馈字段稳定后再做。
     """
 
-    if signal.verdict == "miss":
+    text = f"{signal.observed_fact}\n{signal.observed_time}\n{signal.notes}"
+    if "事件类型" in text or "类型错" in text:
+        layer = "L4"
+        reason = "反馈指出事件类型错误，优先回打事件落地层。"
+        review = True
+    elif "年份偏差" in text or "时间偏差" in text or "应期" in text:
+        layer = "L5"
+        reason = "反馈指出时间或应期偏差，优先回打应期概率层。"
+        review = True
+    elif "表达" in text or "太绝对" in text:
+        layer = "L7"
+        reason = "反馈指出报告表达失真，优先回打报告表达层。"
+        review = True
+    elif signal.verdict == "miss":
         layer = "L6"
         reason = "结论失验，优先复核仲裁是否选错路径；若事件正确但时间错，再下钻 L5。"
         review = True

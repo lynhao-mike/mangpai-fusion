@@ -17,7 +17,7 @@ def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], clai
 
     claim_by_id = {item.claim_id: item for item in claims}
     passed = [item.verdict_id for item in verdicts if item.verdict in {"pass", "weaken"}]
-    event_claims = [item for item in claims if item.claim_type in {"event", "evidence"}]
+    event_claims = [item for item in claims if item.claim_type == "event" and item.role_granted_by_l1 != "evidence_only"]
     events: list[EventHypothesis] = []
     for claim in event_claims[:2]:
         events.append(
@@ -34,6 +34,8 @@ def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], clai
         )
     if not events and verdicts:
         claim = claim_by_id[verdicts[0].claim_id]
+        if claim.claim_type != "structure":
+            return []
         events.append(
             EventHypothesis(
                 event_id=_stable_id("dev", case_id, claim.claim_id, "fallback"),

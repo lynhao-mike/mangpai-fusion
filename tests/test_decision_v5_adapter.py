@@ -33,3 +33,55 @@ def test_l8_l9_turn_miss_into_review_action() -> None:
     assert attribution.requires_human_review is True
     assert actions[0].target_type == "arbitration_policy"
     assert actions[0].action == "review"
+
+
+def test_l8_notes_can_route_to_l4_or_l7() -> None:
+    from engine.decision import attribute_feedback
+    from engine.decision.models import FeedbackSignal
+
+    event_type = attribute_feedback(
+        FeedbackSignal(feedback_id="fb-l4", report_item_id="rv", verdict="miss", notes="事件类型错")
+    )
+    expression = attribute_feedback(
+        FeedbackSignal(feedback_id="fb-l7", report_item_id="rv", verdict="partial", notes="表达太绝对")
+    )
+
+    assert event_type.affected_layer == "L4"
+    assert expression.affected_layer == "L7"
+
+
+def test_l8_time_deviation_notes_route_to_l5() -> None:
+    from engine.decision import attribute_feedback
+    from engine.decision.models import FeedbackSignal
+
+    attribution = attribute_feedback(
+        FeedbackSignal(feedback_id="fb-l5", report_item_id="rv", verdict="miss", observed_time="年份偏差两年")
+    )
+
+    assert attribution.affected_layer == "L5"
+    assert attribution.requires_human_review is True
+
+
+
+def test_l9_freezes_repeated_review_target() -> None:
+    from engine.decision import build_calibration_actions
+    from engine.decision.models import FeedbackAttribution
+
+    attributions = [
+        FeedbackAttribution(
+            attribution_id=f"attr-{idx}",
+            feedback_id=f"fb-{idx}",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="重复失验",
+            requires_human_review=True,
+        )
+        for idx in range(3)
+    ]
+
+    actions = build_calibration_actions("C-TEST", attributions)
+
+    assert len(actions) == 1
+    assert actions[0].action == "freeze"
+    assert actions[0].target_id == "same-target"
+    assert actions[0].evidence_feedback_ids == ["fb-0", "fb-1", "fb-2"]

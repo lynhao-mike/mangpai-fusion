@@ -18,16 +18,36 @@ def build_arbitration_decisions(case_id: str, events: list[EventHypothesis], app
     if not events:
         return []
     first = events[0]
+    if all(item.confidence <= 0.1 for item in events):
+        result = "reject_all"
+        winner_ids: list[str] = []
+        rejected_ids = [item.event_id for item in events]
+        unresolved_ids: list[str] = []
+    elif len(events) == 1:
+        result = "winner"
+        winner_ids = [first.event_id]
+        rejected_ids = []
+        unresolved_ids = []
+    elif max(item.confidence for item in events) - min(item.confidence for item in events) <= 0.05:
+        result = "coexist"
+        winner_ids = [item.event_id for item in events]
+        rejected_ids = []
+        unresolved_ids = []
+    else:
+        result = "unresolved"
+        winner_ids = []
+        rejected_ids = []
+        unresolved_ids = [item.event_id for item in events]
     return [
         ArbitrationDecision(
             decision_id=_stable_id("dad", case_id, first.domain),
             domain=first.domain,
             competing_event_ids=[item.event_id for item in events],
-            result="winner",
-            winner_ids=[first.event_id],
-            rejected_ids=[],
-            unresolved_ids=[item.event_id for item in events[1:]],
-            arbitration_rule="MVP：优先选择结构链路完整且置信度最高的事件；不做全局综合评分。",
+            result=result,  # type: ignore[arg-type]
+            winner_ids=winner_ids,
+            rejected_ids=rejected_ids,
+            unresolved_ids=unresolved_ids,
+            arbitration_rule="MVP：按事件置信差距选择 winner / coexist / unresolved / reject_all；不做全局综合评分。",
             school_applicability_snapshot=applicability,
             reason="L6 是裁判层，不是融合层；冲突不写成中庸话术。",
         )
