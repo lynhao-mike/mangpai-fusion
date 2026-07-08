@@ -15,40 +15,45 @@ def _stable_id(prefix: str, *parts: object) -> str:
 def build_arbitration_decisions(case_id: str, events: list[EventHypothesis], applicability: list[SchoolApplicability]) -> list[ArbitrationDecision]:
     """L6 是裁判层，不做融合话术。"""
 
-    if not events:
-        return []
-    first = events[0]
-    if all(item.confidence <= 0.1 for item in events):
-        result = "reject_all"
-        winner_ids: list[str] = []
-        rejected_ids = [item.event_id for item in events]
-        unresolved_ids: list[str] = []
-    elif len(events) == 1:
-        result = "winner"
-        winner_ids = [first.event_id]
-        rejected_ids = []
-        unresolved_ids = []
-    elif max(item.confidence for item in events) - min(item.confidence for item in events) <= 0.05:
-        result = "coexist"
-        winner_ids = [item.event_id for item in events]
-        rejected_ids = []
-        unresolved_ids = []
-    else:
-        result = "unresolved"
-        winner_ids = []
-        rejected_ids = []
-        unresolved_ids = [item.event_id for item in events]
-    return [
-        ArbitrationDecision(
-            decision_id=_stable_id("dad", case_id, first.domain),
-            domain=first.domain,
-            competing_event_ids=[item.event_id for item in events],
-            result=result,  # type: ignore[arg-type]
-            winner_ids=winner_ids,
-            rejected_ids=rejected_ids,
-            unresolved_ids=unresolved_ids,
-            arbitration_rule="MVP：按事件置信差距选择 winner / coexist / unresolved / reject_all；不做全局综合评分。",
-            school_applicability_snapshot=applicability,
-            reason="L6 是裁判层，不是融合层；冲突不写成中庸话术。",
+    events_by_domain: dict[str, list[EventHypothesis]] = {}
+    for event in events:
+        events_by_domain.setdefault(event.domain, []).append(event)
+
+    decisions: list[ArbitrationDecision] = []
+    for domain, domain_events in events_by_domain.items():
+        first = domain_events[0]
+        if all(item.confidence <= 0.1 for item in domain_events):
+            result = "reject_all"
+            winner_ids: list[str] = []
+            rejected_ids = [item.event_id for item in domain_events]
+            unresolved_ids: list[str] = []
+        elif len(domain_events) == 1:
+            result = "winner"
+            winner_ids = [first.event_id]
+            rejected_ids = []
+            unresolved_ids = []
+        elif max(item.confidence for item in domain_events) - min(item.confidence for item in domain_events) <= 0.05:
+            result = "coexist"
+            winner_ids = [item.event_id for item in domain_events]
+            rejected_ids = []
+            unresolved_ids = []
+        else:
+            result = "unresolved"
+            winner_ids = []
+            rejected_ids = []
+            unresolved_ids = [item.event_id for item in domain_events]
+        decisions.append(
+            ArbitrationDecision(
+                decision_id=_stable_id("dad", case_id, domain),
+                domain=domain,
+                competing_event_ids=[item.event_id for item in domain_events],
+                result=result,  # type: ignore[arg-type]
+                winner_ids=winner_ids,
+                rejected_ids=rejected_ids,
+                unresolved_ids=unresolved_ids,
+                arbitration_rule="MVP：按同一领域内事件置信差距选择 winner / coexist / unresolved / reject_all；不做全局综合评分。",
+                school_applicability_snapshot=applicability,
+                reason="L6 是裁判层，不跨领域混合仲裁；冲突不写成中庸话术。",
+            )
         )
-    ]
+    return decisions

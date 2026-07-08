@@ -243,6 +243,30 @@ def test_l6_arbitration_supports_non_winner_results() -> None:
     assert rejected.result == "reject_all"
 
 
+def test_l6_arbitration_groups_events_by_domain() -> None:
+    base = dict(
+        source_verdict_ids=["v1"],
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+        confidence=0.6,
+    )
+
+    decisions = build_arbitration_decisions(
+        "C-TEST",
+        [
+            EventHypothesis(event_id="career", domain="事业", **base),
+            EventHypothesis(event_id="wealth", domain="财富", **base),
+        ],
+        [],
+    )
+
+    assert [item.domain for item in decisions] == ["事业", "财富"]
+    assert [item.competing_event_ids for item in decisions] == [["career"], ["wealth"]]
+
+
+
 def test_l4_does_not_turn_evidence_only_claim_into_event() -> None:
     evidence_claim = SchoolClaim(
         claim_id="claim-evidence",
