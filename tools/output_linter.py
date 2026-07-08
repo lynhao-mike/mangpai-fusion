@@ -509,21 +509,28 @@ def lint(
         d = _analysis_to_dict(analysis_output)
         full_text = ""
         conclusions = []
-        for i, c in enumerate(d.get("final_conclusions") or []):
-            if isinstance(c, dict):
-                conclusions.append(_conclusion_from_dict(c, i))
-        for i, g in enumerate(d.get("gate_results") or []):
-            if isinstance(g, dict):
-                co = _conclusion_from_dict(g, len(conclusions))
-                co.is_yingqi = True
-                conclusions.append(co)
-        if len(conclusions) < 5:
-            res.add(
-                Severity.WARNING, "W11",
-                f"conclusion 总数 {len(conclusions)} < 5（策略 B 最少建议）",
-            )
-        _lint_dataclass_global(d, res)
-        _lint_parallel_domain_traceability(d, res)
+
+        # V5Output 识别：含 schema_version 且无旧 D1-D4 picture/energy 字段
+        _is_v5 = bool(d.get("schema_version") or d.get("arbitration_results") is not None) and "energy" not in d
+
+        if not _is_v5:
+            for i, c in enumerate(d.get("final_conclusions") or []):
+                if isinstance(c, dict):
+                    conclusions.append(_conclusion_from_dict(c, i))
+            for i, g in enumerate(d.get("gate_results") or []):
+                if isinstance(g, dict):
+                    co = _conclusion_from_dict(g, len(conclusions))
+                    co.is_yingqi = True
+                    conclusions.append(co)
+            if len(conclusions) < 5:
+                res.add(
+                    Severity.WARNING, "W11",
+                    f"conclusion 总数 {len(conclusions)} < 5（策略 B 最少建议）",
+                )
+            _lint_dataclass_global(d, res)
+            _lint_parallel_domain_traceability(d, res)
+
+        _lint_v5_arbitration_results(d, res)
 
     # 逐条 lint
     for c in conclusions:
@@ -758,6 +765,51 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
                 "parallel-domain statement 缺 conflict_explanations",
                 location=loc,
                 suggestion="补充专家冲突解释；即使无强冲突，也必须显式写入“无专家强冲突”。",
+            )
+
+
+def _lint_v5_arbitration_results(d: dict[str, Any], res: LintResult) -> None:
+    """V5Output 结构化校验：主要域至少包含结构/事件两段仲裁。"""
+    arbitration_results = d.get("arbitration_results") or []
+    if not isinstance(arbitration_results, list) or not arbitration_results:
+        return
+
+    whitelist_domains = {"学业", "事业", "财富", "婚姻", "健康"}
+    grouped: dict[str, dict[str, dict[str, Any]]] = {}
+    for item in arbitration_results:
+        if not isinstance(item, dict):
+            continue
+        domain = str(item.get("domain", ""))
+        stage = str(item.get("stage", ""))
+        if not domain or not stage:
+            continue
+        grouped.setdefault(domain, {})[stage] = item
+
+    for domain in sorted(whitelist_domains):
+        stages = grouped.get(domain, {})
+        if "structure_legality" not in stages:
+            res.add(
+                Severity.ERROR,
+                "E-V5-STRUCTURE-STAGE",
+                f"{domain} 缺少 structure_legality 仲裁",
+                location=domain,
+                suggestion="补齐结构合法性仲裁后再进入展示层渲染。",
+            )
+        if "event_realization" not in stages:
+            res.add(
+                Severity.ERROR,
+                "E-V5-EVENT-STAGE",
+                f"{domain} 缺少 event_realization 仲裁",
+                location=domain,
+                suggestion="补齐事件落地仲裁后再进入展示层渲染。",
+            )
+        if "event_realization" in stages and "structure_legality" not in stages:
+            res.add(
+                Severity.WARNING,
+                "W-V5-STRUCTURE-MISSING",
+                f"{domain} 存在事件仲裁但无结构基础",
+                location=domain,
+                suggestion="按三段式顺序先产出结构裁决，再评估事件落地。",
             )
 
 

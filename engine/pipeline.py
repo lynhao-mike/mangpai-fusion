@@ -48,6 +48,7 @@ from engine.infrastructure.findings_repository import _save_findings, save_findi
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    # --- 现行公开 API ---
     "AnalysisOutput",
     "ConclusionLayer",
     "CrossSchoolConflict",
@@ -67,13 +68,14 @@ __all__ = [
     "_infer_wealth_framework",
     "_load_retrospective",
     "_save_findings",
-    "analyze_dual_engine",
-    "build_blind_findings",
-    "build_fusion_findings",
-    "build_theory_findings",
     "integrate",
     "run_pipeline",
     "run_pipeline_e2e",
     "save_findings",
     "verify_hash_chain",
+    # --- deprecated：计划 v6 移除，请迁移到 engine.v5.runner.run_v5 ---
+    "analyze_dual_engine",
+    "build_blind_findings",
+    "build_fusion_findings",
+    "build_theory_findings",
 ]

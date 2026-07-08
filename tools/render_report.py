@@ -46,6 +46,8 @@ from engine.statement_runtime import resolve_rule_metadata, write_statement_reco
 from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
 from engine.predicates.types import ParsedInput
+from engine.v5.domain import V5Output
+from engine.v5.report_view import build_report_v6_context, render_report_v6_from_output
 from engine.yingqi.types import GateResult
 
 
@@ -119,6 +121,70 @@ def save_findings(
 
     return _save_findings(output, cases_dir=cases_dir)
 
+def render_from_v5_output(
+    v5_output: V5Output,
+    *,
+    template_name: Optional[str] = None,
+    lint_before: bool = True,
+    cases_dir: Optional[Union[str, Path]] = None,
+) -> str:
+    """V5 渲染入口：直接消费 V5Output，产出 report-v6 Markdown。"""
+    resolved_template = template_name or "report-v6.md"
+    if resolved_template == "report-v5.md":
+        resolved_template = "report-v6.md"
+
+    cases_root = Path(cases_dir) if cases_dir else ROOT / "cases"
+    case_id = getattr(v5_output, "case_id", None) or "UNKNOWN"
+    idx_dir = cases_root / case_id
+    idx_dir.mkdir(parents=True, exist_ok=True)
+    report_path = ROOT / "reports" / f"{case_id}-content-report.md"
+    feedback_path = idx_dir / "feedback.md"
+
+    template_path = ROOT / "templates" / resolved_template
+    # 路径字段格式化为可点击 Markdown 链接（linter E-V77-LINK-CLICKABLE 要求）
+    report_path_md = f"[{report_path.name}]({report_path.as_posix()})"
+    case_dir_md = f"[{idx_dir.name}]({idx_dir.as_posix()})"
+    feedback_path_md = f"[feedback.md]({feedback_path.as_posix()})"
+    captured_ctx = build_report_v6_context(
+        v5_output,
+        template_text=template_path.read_text(encoding="utf-8"),
+        report_path=report_path_md,
+        case_dir=case_dir_md,
+        feedback_path=feedback_path_md,
+    )
+    report = render_report_v6_from_output(
+        v5_output,
+        template_path=template_path,
+        report_path=report_path_md,
+        case_dir=case_dir_md,
+        feedback_path=feedback_path_md,
+    )
+
+    try:
+        idx = _build_statement_index(captured_ctx, case_id)
+        idx_text = json.dumps(idx, ensure_ascii=False, indent=2)
+        _write_text_if_changed(idx_dir / "statement_index.json", idx_text)
+    except Exception as exc:
+        warnings.warn(
+            f"v5 statement index write failed for {case_id}: {exc}",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+
+    if lint_before:
+        from tools.output_linter import lint
+
+        lint_result = lint(v5_output)
+        if not lint_result.passed:
+            raise RenderGuardrailError(lint_result, report)
+        lint_result = lint(report)
+        if not lint_result.passed:
+            raise RenderGuardrailError(lint_result, report)
+
+    return report
+
+
+
 def render_from_output(
     analysis_output: Any,
     *,
@@ -129,28 +195,15 @@ def render_from_output(
     skip_findings_save: bool = False,
     report_schema: Literal["v5", "v6"] = "v6",
 ) -> str:
-    """高级渲染入口：接受 AnalysisOutput，完成全链路。
+    """高级渲染入口：接受 AnalysisOutput 或 V5Output，完成全链路。"""
+    if isinstance(analysis_output, V5Output):
+        return render_from_v5_output(
+            analysis_output,
+            template_name=template_name,
+            lint_before=lint_before,
+            cases_dir=cases_dir,
+        )
 
-    流程（按当前默认命理师报告标准）：
-        1. 将 D1-D4 JSON 落盘到 cases/C-XXX/findings/
-        2. 调用 render() 生成命理师报告 Markdown
-        3. 落盘 cases/C-XXX/statement_index.json（statements 列表）
-        4. 调用 output_linter.lint()；如有 ERROR 则抛 RenderGuardrailError
-
-    Args:
-        analysis_output: engine.pipeline.AnalysisOutput 实例。
-        template_name:   兼容参数；None 默认收敛到 report-v6.md；report-v5.md 作为兼容 alias。
-        variant:         兼容参数；历史 master/client/v1.2/v1.4 均收敛到 standard。
-        lint_before:     是否启用双护栏 lint（默认 True；测试时可关闭）。
-        cases_dir:       cases/ 目录路径（None = 仓库根 cases/）。
-        report_schema:   展示层 schema；默认 v6，v5 仅保留旧系统兼容。
-
-    Returns:
-        通过 lint 的 Markdown 报告字符串。
-
-    Raises:
-        RenderGuardrailError: lint 返回任何 ERROR 时。
-    """
     # Step 1: 落盘 findings JSON。e2e 可跳过，避免重复写盘。
     if not skip_findings_save:
         try:

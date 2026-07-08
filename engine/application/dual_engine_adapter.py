@@ -2,8 +2,24 @@
 
 该服务复用现有 D1-D4 findings、子平/滴天髓生产规则与多专家功能域裁判，
 生成 TheoryFindings、BlindFindings、FusionFindings 三层聚合输出。
+
+.. deprecated::
+    本模块为 v4/v5 迁移前的过渡适配器，仅供 engine/pipeline.py 向下兼容导出。
+    新代码请使用 engine.v5.runner.run_v5 + tools.render_report.render_from_output。
+    计划在 v6 正式移除，届时所有 analyze_dual_engine / build_theory_findings /
+    build_blind_findings / build_fusion_findings 均将不再可用。
 """
 from __future__ import annotations
+
+import warnings as _warnings
+
+_warnings.warn(
+    "engine.application.dual_engine_adapter is deprecated. "
+    "Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. "
+    "This adapter will be removed in v6.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 from typing import Optional
 
