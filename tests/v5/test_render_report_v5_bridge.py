@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from engine.v5 import run_v5
+from engine.v5 import V5RunSnapshot, run_v5
 from tools.output_linter import lint
 from tools.render_report import render_from_output
 
@@ -40,3 +40,36 @@ def test_render_from_output_accepts_v5_output(tmp_path) -> None:
 
     statement_index = tmp_path / output.case_id / "statement_index.json"
     assert statement_index.exists()
+
+
+def test_render_from_output_accepts_v5_run_snapshot(tmp_path) -> None:
+    output = run_v5(
+        {
+            "case_id": "C-TEST-V5-SNAPSHOT-REPORT",
+            "pillars": ["甲子", "乙丑", "丙寅", "丁卯"],
+            "gender_marker": "乾",
+        }
+    )
+    snapshot = V5RunSnapshot.from_output(output)
+
+    report = render_from_output(snapshot, lint_before=False, cases_dir=tmp_path)
+
+    assert "## 五派裁决与共识融合总论" in report
+    assert "C-TEST-V5-SNAPSHOT-REPORT" in report
+    assert (tmp_path / output.case_id / "statement_index.json").exists()
+
+
+def test_render_from_output_lints_v5_run_snapshot_by_default(tmp_path) -> None:
+    output = run_v5(
+        {
+            "case_id": "C-TEST-V5-SNAPSHOT-LINTED-REPORT",
+            "pillars": ["甲子", "乙丑", "丙寅", "丁卯"],
+            "gender_marker": "乾",
+        }
+    )
+    snapshot = V5RunSnapshot.from_output(output)
+
+    report = render_from_output(snapshot, cases_dir=tmp_path)
+
+    assert "C-TEST-V5-SNAPSHOT-LINTED-REPORT" in report
+    assert lint(report).passed

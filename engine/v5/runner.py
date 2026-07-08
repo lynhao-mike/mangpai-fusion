@@ -27,6 +27,7 @@ from engine.v5.domain import (
     V5LearningSignal,
     V5Output,
     V5Prediction,
+    V5RunSnapshot,
     V5PredictionLedger,
     V5StructureGraph,
     V5_SCHOOLS,
@@ -1148,4 +1149,22 @@ def run_v5(
         arbitration_results=arbitration_results,
         prediction_ledger=ledger,
         learning_signals=learning_signals,
+    )
+
+
+def run_v5_snapshot(
+    chart: dict[str, Any],
+    *,
+    case_id: str = "",
+    claims: list[V5Claim] | None = None,
+    workspace_root: str = ".",
+    engine_version: str = "",
+    artifact_bindings: dict[str, str] | None = None,
+) -> V5RunSnapshot:
+    """运行 v5 并返回 run-centric 快照。"""
+
+    return V5RunSnapshot.from_output(
+        run_v5(chart, case_id=case_id, claims=claims, workspace_root=workspace_root),
+        engine_version=engine_version,
+        artifact_bindings=artifact_bindings,
     )

@@ -46,7 +46,7 @@ from engine.statement_runtime import resolve_rule_metadata, write_statement_reco
 from engine.picture.types import PictureFindings
 from engine.predicates.cycles import get_dayun_at_year, liunian_ganzhi
 from engine.predicates.types import ParsedInput
-from engine.v5.domain import V5Output
+from engine.v5.domain import V5Output, V5RunSnapshot
 from engine.v5.report_view import build_report_v6_context, render_report_v6_from_output
 from engine.yingqi.types import GateResult
 
@@ -195,7 +195,14 @@ def render_from_output(
     skip_findings_save: bool = False,
     report_schema: Literal["v5", "v6"] = "v6",
 ) -> str:
-    """高级渲染入口：接受 AnalysisOutput 或 V5Output，完成全链路。"""
+    """高级渲染入口：接受 AnalysisOutput、V5Output 或 V5RunSnapshot，完成全链路。"""
+    if isinstance(analysis_output, V5RunSnapshot):
+        return render_from_v5_output(
+            analysis_output.to_output(),
+            template_name=template_name,
+            lint_before=lint_before,
+            cases_dir=cases_dir,
+        )
     if isinstance(analysis_output, V5Output):
         return render_from_v5_output(
             analysis_output,

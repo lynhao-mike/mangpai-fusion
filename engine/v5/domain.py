@@ -13,6 +13,8 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 V5_SCHEMA_VERSION = "5.0.0-five-school-mvp"
+V5_RUN_SNAPSHOT_SCHEMA_VERSION = "run-snapshot-v1"
+V5_CASE_MANIFEST_SCHEMA_VERSION = "case-manifest-v1"
 
 V5School = Literal[
     "ziping",
@@ -358,6 +360,203 @@ class V5LearningSignal:
             note=str(data.get("note", "")),
             metadata=dict(data.get("metadata", {})),
         )
+
+
+@dataclass(frozen=True)
+class V5RunSnapshot:
+    """以一次分析运行为中心的最小快照。
+
+    ponytail: 先复用 V5Output 的结构化段落，不另造存储层；等 case/report/feedback
+    都实际消费快照后，再拆 artifact binding 的持久化。
+    """
+
+    run_id: str
+    case_id: str
+    canonical_input: dict[str, Any] = field(default_factory=dict)
+    claims: list[V5Claim] = field(default_factory=list)
+    structure_graph: V5StructureGraph = field(default_factory=lambda: V5StructureGraph(case_id=""))
+    arbitration_results: list[V5ArbitrationResult] = field(default_factory=list)
+    prediction_ledger: V5PredictionLedger = field(default_factory=lambda: V5PredictionLedger(case_id=""))
+    learning_signals: list[V5LearningSignal] = field(default_factory=list)
+    artifact_bindings: dict[str, str] = field(default_factory=dict)
+    engine_version: str = ""
+    output_schema_version: str = V5_SCHEMA_VERSION
+    snapshot_schema_version: str = V5_RUN_SNAPSHOT_SCHEMA_VERSION
+    output_hash: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_output(
+        cls,
+        output: "V5Output",
+        *,
+        engine_version: str = "",
+        artifact_bindings: dict[str, str] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> "V5RunSnapshot":
+        output_hash = output.hash()
+        raw_run_id = f"{output.case_id}|{output.schema_version}|{output_hash}"
+        run_id = "run-" + hashlib.sha256(raw_run_id.encode("utf-8")).hexdigest()[:12]
+        return cls(
+            run_id=run_id,
+            case_id=output.case_id,
+            canonical_input=dict(output.chart),
+            claims=list(output.claims),
+            structure_graph=output.structure_graph,
+            arbitration_results=list(output.arbitration_results),
+            prediction_ledger=output.prediction_ledger,
+            learning_signals=list(output.learning_signals),
+            artifact_bindings=dict(artifact_bindings or {}),
+            engine_version=engine_version,
+            output_schema_version=output.schema_version,
+            output_hash=output_hash,
+            metadata=dict(metadata or {}),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "snapshot_schema_version": self.snapshot_schema_version,
+            "run_id": self.run_id,
+            "case_id": self.case_id,
+            "canonical_input": dict(self.canonical_input),
+            "engine_version": self.engine_version,
+            "output_schema_version": self.output_schema_version,
+            "output_hash": self.output_hash,
+            "claims": [item.to_dict() for item in self.claims],
+            "structure_graph": self.structure_graph.to_dict(),
+            "arbitration_results": [item.to_dict() for item in self.arbitration_results],
+            "prediction_ledger": self.prediction_ledger.to_dict(),
+            "learning_signals": [item.to_dict() for item in self.learning_signals],
+            "artifact_bindings": dict(self.artifact_bindings),
+            "metadata": dict(self.metadata),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "V5RunSnapshot":
+        case_id = str(data.get("case_id", ""))
+        return cls(
+            run_id=str(data["run_id"]),
+            case_id=case_id,
+            canonical_input=dict(data.get("canonical_input", {})),
+            claims=[V5Claim.from_dict(x) for x in data.get("claims", [])],
+            structure_graph=V5StructureGraph.from_dict(data.get("structure_graph", {"case_id": case_id})),
+            arbitration_results=[V5ArbitrationResult.from_dict(x) for x in data.get("arbitration_results", [])],
+            prediction_ledger=V5PredictionLedger.from_dict(data.get("prediction_ledger", {"case_id": case_id})),
+            learning_signals=[V5LearningSignal.from_dict(x) for x in data.get("learning_signals", [])],
+            artifact_bindings={str(k): str(v) for k, v in data.get("artifact_bindings", {}).items()},
+            engine_version=str(data.get("engine_version", "")),
+            output_schema_version=str(data.get("output_schema_version", V5_SCHEMA_VERSION)),
+            snapshot_schema_version=str(data.get("snapshot_schema_version", V5_RUN_SNAPSHOT_SCHEMA_VERSION)),
+            output_hash=str(data.get("output_hash", "")),
+            metadata=dict(data.get("metadata", {})),
+        )
+
+    def to_output(self) -> "V5Output":
+        return V5Output(
+            case_id=self.case_id,
+            chart=dict(self.canonical_input),
+            claims=list(self.claims),
+            structure_graph=self.structure_graph,
+            arbitration_results=list(self.arbitration_results),
+            prediction_ledger=self.prediction_ledger,
+            learning_signals=list(self.learning_signals),
+            schema_version=self.output_schema_version,
+        )
+
+    def output_hash_matches(self) -> bool:
+        return self.output_hash == self.to_output().hash()
+
+    def to_json(self, *, indent: int | None = 2) -> str:
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+
+    @classmethod
+    def from_json(cls, value: str) -> "V5RunSnapshot":
+        return cls.from_dict(json.loads(value))
+
+    def hash(self) -> str:
+        canonical = json.dumps(self.to_dict(), ensure_ascii=False, sort_keys=True)
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+
+
+@dataclass(frozen=True)
+class V5CaseManifest:
+    """case 事实容器与 run 快照的最小绑定。"""
+
+    case_id: str
+    case_path: str
+    run_ids: list[str] = field(default_factory=list)
+    artifact_paths: dict[str, str] = field(default_factory=dict)
+    active_run_id: str = ""
+    manifest_schema_version: str = V5_CASE_MANIFEST_SCHEMA_VERSION
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_run_snapshot(
+        cls,
+        snapshot: V5RunSnapshot,
+        *,
+        case_path: str = "",
+        artifact_paths: dict[str, str] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> "V5CaseManifest":
+        paths = dict(snapshot.artifact_bindings)
+        paths.update(artifact_paths or {})
+        return cls(
+            case_id=snapshot.case_id,
+            case_path=case_path or f"cases/{snapshot.case_id}",
+            run_ids=[snapshot.run_id],
+            artifact_paths=paths,
+            active_run_id=snapshot.run_id,
+            metadata=dict(metadata or {}),
+        )
+
+    def bind_run(self, snapshot: V5RunSnapshot) -> "V5CaseManifest":
+        if snapshot.case_id != self.case_id:
+            raise ValueError(f"snapshot case_id {snapshot.case_id!r} does not match manifest case_id {self.case_id!r}")
+        run_ids = list(self.run_ids)
+        if snapshot.run_id not in run_ids:
+            run_ids.append(snapshot.run_id)
+        paths = dict(self.artifact_paths)
+        paths.update(snapshot.artifact_bindings)
+        return V5CaseManifest(
+            case_id=self.case_id,
+            case_path=self.case_path,
+            run_ids=run_ids,
+            artifact_paths=paths,
+            active_run_id=snapshot.run_id,
+            manifest_schema_version=self.manifest_schema_version,
+            metadata=dict(self.metadata),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "manifest_schema_version": self.manifest_schema_version,
+            "case_id": self.case_id,
+            "case_path": self.case_path,
+            "run_ids": list(self.run_ids),
+            "active_run_id": self.active_run_id,
+            "artifact_paths": dict(self.artifact_paths),
+            "metadata": dict(self.metadata),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "V5CaseManifest":
+        return cls(
+            case_id=str(data.get("case_id", "")),
+            case_path=str(data.get("case_path", "")),
+            run_ids=[str(x) for x in data.get("run_ids", [])],
+            active_run_id=str(data.get("active_run_id", "")),
+            artifact_paths={str(k): str(v) for k, v in data.get("artifact_paths", {}).items()},
+            manifest_schema_version=str(data.get("manifest_schema_version", V5_CASE_MANIFEST_SCHEMA_VERSION)),
+            metadata=dict(data.get("metadata", {})),
+        )
+
+    def to_json(self, *, indent: int | None = 2) -> str:
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+
+    @classmethod
+    def from_json(cls, value: str) -> "V5CaseManifest":
+        return cls.from_dict(json.loads(value))
 
 
 @dataclass(frozen=True)

@@ -15,3 +15,4 @@
 - 正式报告的“归档信息”必须挂载对应 `*-events.md` 与 `cases/*/events.md` 的可点击链接
 - 报告侧 `*-events.md` 必须挂载对应 `cases/*/analysis.md` 的可点击链接；对应 `analysis.md` 的“归档信息”必须反向挂载 `reports/*-events.md`
 - `cases/C-YYYY-NNN-{乾/坤}-{四柱}/events.md` 保留为“命理分析过程记录”，不存放临时问答原文
+- v6 预生产渲染会在报告旁路生成 `*.v5.json`（兼容结构化输出）与 `*.run.json`（run snapshot，可校验 `output_hash`），二者均为报告派生结构化产物，不替代 `cases/*/input.md` / `feedback.md` / `statement_index.json`

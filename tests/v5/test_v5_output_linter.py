@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from engine.v5 import V5RunSnapshot, run_v5
 from tools.output_linter import lint
 
 
@@ -25,3 +26,12 @@ def test_v5_output_linter_requires_structure_and_event_stages() -> None:
     assert "E-V5-STRUCTURE-STAGE" in codes
     assert "W-V5-STRUCTURE-MISSING" in codes
     assert "E-V5-EVENT-STAGE" not in codes
+
+
+def test_v5_output_linter_accepts_run_snapshot() -> None:
+    output = run_v5({"case_id": "C-TEST-V5-SNAPSHOT-LINT", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    snapshot = V5RunSnapshot.from_output(output)
+
+    result = lint(snapshot)
+
+    assert result.passed, result.format()

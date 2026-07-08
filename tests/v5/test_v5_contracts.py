@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-from engine.v5 import run_v5
+from engine.v5 import run_v5, run_v5_snapshot
 from engine.v5.runner import build_blind_school_rule_claims, build_ditiansui_production_claims, build_ziping_production_claims
 from engine.v5.domain import (
+    V5CaseManifest,
     V5Claim,
     V5Confidence,
     V5Evidence,
     V5Output,
+    V5RunSnapshot,
     V5_SCHOOLS,
 )
 
@@ -73,6 +75,86 @@ def test_v5_output_round_trip():
     restored = V5Output.from_json(output.to_json())
     assert restored == output
     assert restored.hash() == output.hash()
+
+
+def test_v5_run_snapshot_wraps_output_without_new_pipeline():
+    output = run_v5({"case_id": "C-TEST-RUN", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+
+    snapshot = V5RunSnapshot.from_output(
+        output,
+        engine_version="test-engine",
+        artifact_bindings={"report": "reports/C-TEST-RUN-content-report.md"},
+    )
+    restored = V5RunSnapshot.from_json(snapshot.to_json())
+
+    assert restored == snapshot
+    assert snapshot.run_id.startswith("run-")
+    assert snapshot.case_id == output.case_id
+    assert snapshot.canonical_input == output.chart
+    assert snapshot.output_hash == output.hash()
+    assert snapshot.output_hash_matches()
+    assert snapshot.structure_graph == output.structure_graph
+    assert restored.to_output().structure_graph == output.structure_graph
+    assert snapshot.artifact_bindings["report"] == "reports/C-TEST-RUN-content-report.md"
+    assert snapshot.hash() == restored.hash()
+    assert restored.output_hash_matches()
+
+
+def test_v5_run_snapshot_output_hash_detects_tampering():
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-RUN-TAMPER", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    payload = snapshot.to_dict()
+    payload["canonical_input"]["pillars"] = ["戊辰", "己巳", "庚午", "辛未"]
+    tampered = V5RunSnapshot.from_dict(payload)
+
+    assert not tampered.output_hash_matches()
+
+
+def test_run_v5_snapshot_returns_run_centric_snapshot():
+    snapshot = run_v5_snapshot(
+        {"case_id": "C-TEST-RUN-ENTRY", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]},
+        engine_version="test-engine",
+        artifact_bindings={"report": "reports/C-TEST-RUN-ENTRY-content-report.md"},
+    )
+
+    assert snapshot.case_id == "C-TEST-RUN-ENTRY"
+    assert snapshot.run_id.startswith("run-")
+    assert snapshot.engine_version == "test-engine"
+    assert snapshot.artifact_bindings["report"] == "reports/C-TEST-RUN-ENTRY-content-report.md"
+    assert snapshot.to_output().case_id == snapshot.case_id
+
+
+def test_v5_case_manifest_binds_run_snapshot_without_filesystem_write():
+    output = run_v5({"case_id": "C-TEST-MANIFEST", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    snapshot = V5RunSnapshot.from_output(
+        output,
+        artifact_bindings={
+            "input": "cases/C-TEST-MANIFEST/input.md",
+            "report": "reports/C-TEST-MANIFEST-content-report.md",
+        },
+    )
+
+    manifest = V5CaseManifest.from_run_snapshot(snapshot)
+    restored = V5CaseManifest.from_json(manifest.to_json())
+
+    assert restored == manifest
+    assert manifest.case_id == snapshot.case_id
+    assert manifest.case_path == "cases/C-TEST-MANIFEST"
+    assert manifest.active_run_id == snapshot.run_id
+    assert manifest.run_ids == [snapshot.run_id]
+    assert manifest.artifact_paths["input"] == "cases/C-TEST-MANIFEST/input.md"
+
+
+def test_v5_case_manifest_rejects_cross_case_run_binding():
+    left = run_v5({"case_id": "C-TEST-MANIFEST-A", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    right = run_v5({"case_id": "C-TEST-MANIFEST-B", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    manifest = V5CaseManifest.from_run_snapshot(V5RunSnapshot.from_output(left))
+
+    try:
+        manifest.bind_run(V5RunSnapshot.from_output(right))
+    except ValueError as exc:
+        assert "does not match manifest case_id" in str(exc)
+    else:  # pragma: no cover
+        raise AssertionError("cross-case run binding should fail")
 
 
 def test_run_v5_default_loads_production_rules_and_mvp_school_runners():

@@ -15,6 +15,7 @@ from typing import Any
 import yaml
 
 from engine.v5.report_view import render_report_v6_from_output
+from engine.v5.domain import V5RunSnapshot
 from engine.v5.runner import run_v5
 
 PILLAR_RE = re.compile(r"\| \*\*(年柱|月柱|日柱|时柱)\*\* \|[^|]*\|\s*([^|\s]+)\s*\|\s*([^|\s]+)\s*\|")
@@ -226,6 +227,7 @@ def render_v6_preprod_case(
             report_file = root / report_file
     report_file = report_file.resolve()
     json_file = report_file.with_suffix(".v5.json")
+    run_json_file = report_file.with_suffix(".run.json")
 
     chart = build_chart_from_input(input_file)
     case_id = str(chart["case_id"])
@@ -242,6 +244,18 @@ def render_v6_preprod_case(
     report_file.parent.mkdir(parents=True, exist_ok=True)
     report_file.write_text(report_md, encoding="utf-8")
     json_file.write_text(output.to_json(), encoding="utf-8")
+    run_json_file.write_text(
+        V5RunSnapshot.from_output(
+            output,
+            artifact_bindings={
+                "report": _display_path(report_file, workspace_root=root),
+                "v5_json": _display_path(json_file, workspace_root=root),
+                "input": _display_path(input_file, workspace_root=root),
+                "feedback": _display_path(feedback_path, workspace_root=root),
+            },
+        ).to_json(),
+        encoding="utf-8",
+    )
     return report_file, json_file
 
 

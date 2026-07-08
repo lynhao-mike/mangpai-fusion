@@ -8,29 +8,34 @@ from __future__ import annotations
 
 from engine.v5.domain import (
     V5ArbitrationResult,
+    V5CaseManifest,
     V5Claim,
     V5Confidence,
     V5Evidence,
     V5LearningSignal,
     V5Output,
+    V5RunSnapshot,
     V5Prediction,
     V5PredictionLedger,
     V5StructureGraph,
 )
 from engine.v5.report_view import build_report_v6_context, render_report_v6_from_output
-from engine.v5.runner import run_v5
+from engine.v5.runner import run_v5, run_v5_snapshot
 
 __all__ = [
     "V5ArbitrationResult",
+    "V5CaseManifest",
     "V5Claim",
     "V5Confidence",
     "V5Evidence",
     "V5LearningSignal",
     "V5Output",
     "V5Prediction",
+    "V5RunSnapshot",
     "V5PredictionLedger",
     "V5StructureGraph",
     "build_report_v6_context",
     "render_report_v6_from_output",
     "run_v5",
+    "run_v5_snapshot",
 ]

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from engine.v5 import V5RunSnapshot
+
 from tools.render_report_v6 import render_case, render_cases
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -18,6 +20,8 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert rendered_report == report_path
     assert rendered_report.exists()
     assert rendered_json.exists()
+    rendered_run_json = rendered_report.with_suffix(".run.json")
+    assert rendered_run_json.exists()
 
     report_text = rendered_report.read_text(encoding="utf-8")
     json_text = rendered_json.read_text(encoding="utf-8")
@@ -35,6 +39,11 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert '"expert_system": "tiaohou_ditiansui"' in json_text
     assert '"selection": "v6_preprod_limited"' in json_text
     assert '"prediction_ledger"' in json_text
+
+    run_snapshot = V5RunSnapshot.from_json(rendered_run_json.read_text(encoding="utf-8"))
+    assert run_snapshot.case_id == "C-2026-001-乾-庚申戊寅壬子辛丑"
+    assert run_snapshot.output_hash_matches()
+    assert run_snapshot.artifact_bindings["v5_json"].endswith(rendered_json.as_posix())
 
 
 def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> None:
