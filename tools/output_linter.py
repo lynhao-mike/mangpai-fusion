@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import dataclasses
+import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -510,6 +511,10 @@ def lint(
         full_text = ""
         conclusions = []
 
+        if d.get("schema_version") == "decision-run-v1":
+            _lint_decision_run(d, res)
+            return res
+
         # V5Output 识别：含 schema_version 且无旧 D1-D4 picture/energy 字段
         _is_v5 = bool(d.get("schema_version") or d.get("arbitration_results") is not None) and "energy" not in d
 
@@ -766,6 +771,79 @@ def _lint_parallel_domain_traceability(d: dict[str, Any], res: LintResult) -> No
                 location=loc,
                 suggestion="补充专家冲突解释；即使无强冲突，也必须显式写入“无专家强冲突”。",
             )
+
+
+def _lint_decision_run(d: dict[str, Any], res: LintResult) -> None:
+    """DecisionRun 结构化门禁：检查 L0-L9 关键链路不断。"""
+
+    required_lists = (
+        "school_applicability",
+        "school_claims",
+        "structural_verdicts",
+        "event_hypotheses",
+        "timing_probabilities",
+        "arbitration_decisions",
+        "report_items",
+        "feedback_signals",
+        "feedback_attributions",
+    )
+    for key in required_lists:
+        value = d.get(key)
+        if not isinstance(value, list) or not value:
+            res.add(
+                Severity.ERROR,
+                "E-DR-MISSING-LAYER",
+                f"DecisionRun 缺少或为空：{key}",
+                location=key,
+                suggestion="重跑 decision adapter，确保 L0-L9 账本完整落盘。",
+            )
+
+    raw = d.get("raw_payload") if isinstance(d.get("raw_payload"), dict) else {}
+    chart = d.get("chart_ledger") if isinstance(d.get("chart_ledger"), dict) else {}
+    if raw.get("raw_hash") != chart.get("raw_source_hash"):
+        res.add(
+            Severity.ERROR,
+            "E-DR-L0-BINDING",
+            "DecisionRun L0 raw_payload 与 chart_ledger hash 未绑定",
+            location="L0",
+        )
+
+    schools = {str(item.get("school")) for item in d.get("school_applicability", []) if isinstance(item, dict)}
+    claims = {str(item.get("claim_id")) for item in d.get("school_claims", []) if isinstance(item, dict)}
+    verdicts = {str(item.get("verdict_id")) for item in d.get("structural_verdicts", []) if isinstance(item, dict)}
+    events = {str(item.get("event_id")) for item in d.get("event_hypotheses", []) if isinstance(item, dict)}
+    timings = {str(item.get("prediction_id")) for item in d.get("timing_probabilities", []) if isinstance(item, dict)}
+    decisions = {str(item.get("decision_id")) for item in d.get("arbitration_decisions", []) if isinstance(item, dict)}
+
+    for item in d.get("school_claims", []):
+        if isinstance(item, dict) and str(item.get("school")) not in schools:
+            res.add(Severity.ERROR, "E-DR-L2-L1", "L2 claim 未绑定 L1 school_applicability", location=str(item.get("claim_id")))
+    for item in d.get("structural_verdicts", []):
+        if isinstance(item, dict) and str(item.get("claim_id")) not in claims:
+            res.add(Severity.ERROR, "E-DR-L3-L2", "L3 verdict 未绑定 L2 claim", location=str(item.get("verdict_id")))
+    for item in d.get("event_hypotheses", []):
+        if not isinstance(item, dict):
+            continue
+        missing = [ref for ref in item.get("source_verdict_ids", []) if str(ref) not in verdicts]
+        if missing:
+            res.add(Severity.ERROR, "E-DR-L4-L3", "L4 event 未绑定 L3 verdict", location=str(item.get("event_id")))
+    for item in d.get("timing_probabilities", []):
+        if isinstance(item, dict) and str(item.get("event_id")) not in events:
+            res.add(Severity.ERROR, "E-DR-L5-L4", "L5 timing 未绑定 L4 event", location=str(item.get("prediction_id")))
+    for item in d.get("arbitration_decisions", []):
+        if not isinstance(item, dict):
+            continue
+        missing = [ref for ref in item.get("competing_event_ids", []) if str(ref) not in events]
+        if missing:
+            res.add(Severity.ERROR, "E-DR-L6-L4", "L6 decision 未绑定 L4 event", location=str(item.get("decision_id")))
+    for item in d.get("report_items", []):
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("decision_id")) not in decisions:
+            res.add(Severity.ERROR, "E-DR-L7-L6", "L7 report item 未绑定 L6 decision", location=str(item.get("report_item_id")))
+        prediction_id = str(item.get("prediction_id") or "")
+        if prediction_id and prediction_id not in timings:
+            res.add(Severity.ERROR, "E-DR-L7-L5", "L7 report item 未绑定 L5 timing", location=str(item.get("report_item_id")))
 
 
 def _lint_v5_arbitration_results(d: dict[str, Any], res: LintResult) -> None:
@@ -1488,8 +1566,12 @@ if __name__ == "__main__":  # pragma: no cover
         print("without REPORT_MD_PATH, runs built-in smoke checks")
         sys.exit(0)
     if len(sys.argv) >= 2:
-        text = Path(sys.argv[1]).read_text(encoding="utf-8")
-        r = lint(text)
+        path = Path(sys.argv[1])
+        text = path.read_text(encoding="utf-8")
+        if path.suffix.lower() == ".json":
+            r = lint(json.loads(text))
+        else:
+            r = lint(text)
         print(r.format())
         sys.exit(0 if r.passed else 1)
     else:

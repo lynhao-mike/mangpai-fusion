@@ -19,9 +19,11 @@
 | [`batch_intake.py`](batch_intake.py:1) | 批量入库：inbox → cases/pipeline | v1.3 D6 |
 | [`batch_review.py`](batch_review.py:1) | 批量复盘：已填 feedback.md → ingest | v1.3 D6 |
 | [`render_report.py`](render_report.py:1) | 渲染 C-2026-025 唯一标准报告 | 固定使用 `templates/report-v1.3.md`，由 output_linter 兜底 |
+| [`render_report_v6.py`](render_report_v6.py:1) | v6 预生产五派报告渲染 | 旁路生成 `*.v5.json` 与只读 `*.run.json`，CLI 显示 report / v5 json / run json 路径 |
 | [`output_linter.py`](output_linter.py:1) | 报告出口 lint / 禁越界输出 | 兜底护栏 #2 |
 | [`three_layer_check.py`](three_layer_check.py:1) | 应期三层门检查 | v1.2 W3 护栏 |
 | [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |
+| [`v5_prediction_feedback.py`](v5_prediction_feedback.py:1) | v5 prediction-first 预测反馈 | 可读 `.v5.json` / `.run.json`；只写 `.v5.json`，拒绝写 run snapshot |
 | [`feedback_review_gate.py`](feedback_review_gate.py:1) | 反馈复核包摄入前置闸门 | 只读检查 `META/feedback-closure-review-pack-*.json` 是否已完成人工裁决 |
 | [`feedback_impact_report.py`](feedback_impact_report.py:1) | 反馈影响路径与置信度调整可视化 | dry-run 计算断语→规则→置信度变化，输出 Markdown + Mermaid |
 | [`domain_role_audit.py`](domain_role_audit.py:1) | 规则 domain/role 分账审计矩阵 | 只读输出 `rule_id × domain × role` 命中率，验证错域样本是否进入 `misapplied` |

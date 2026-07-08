@@ -363,6 +363,12 @@ class ProductionAnalysisService:
                 path=reports_dir / f"{case_id}-v6-preprod-content-report.v5.json",
                 created_at=completed_at,
             )
+            self._append_artifact_if_exists(
+                artifacts,
+                kind="decision_run_ledger",
+                path=reports_dir / f"{case_id}-v6-preprod-content-report.decision-run.json",
+                created_at=completed_at,
+            )
         return artifacts
 
     def _write_report_artifact(self, *, case_id: str, report_md: str, reports_dir: Path) -> Path:

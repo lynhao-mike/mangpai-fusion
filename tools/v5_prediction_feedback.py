@@ -1,7 +1,8 @@
 """tools.v5_prediction_feedback · v5 prediction-first 账本反馈回写工具。
 
 prediction-first 闭环：先预测（V5Prediction），再等待反馈，再校准。
-本工具负责把命主反馈标注写回到 v5.json 的 prediction_ledger 条目中。
+本工具负责读取 v5.json / run snapshot 的 prediction_ledger，并把命主反馈标注写回 v5.json。
+.run.json 是带 output_hash 的只读快照，不在本工具内写回。
 
 不依赖旧 statement_index / statement_records 系统。
 不改旧 feedback_ingest.py。
@@ -9,10 +10,10 @@ prediction-first 闭环：先预测（V5Prediction），再等待反馈，再校
 公开 API
 --------
 list_predictions(case_id)
-    列出当前案例 prediction ledger，用于查看待反馈条目。
+    列出当前案例 prediction ledger，用于查看待反馈条目；显式传入路径时可读 .v5.json 或 .run.json。
 
 apply_prediction_feedback(case_id, prediction_id, verdict, *, note="")
-    把反馈标注写回 prediction ledger JSON。
+    把反馈标注写回 .v5.json；拒绝写 .run.json，避免 output_hash 失真。
 
 verdict 合法值：
     hit      命中
@@ -129,6 +130,7 @@ def apply_prediction_feedback(
     """把反馈标注写回 v5 JSON 的 prediction_ledger 条目。
 
     v5_json_path 可选：显式指定 JSON 路径；不传则从 reports/ 自动查找。
+    ponytail: .run.json 是带 output_hash 的快照，当前只读，不在这里双写。
     返回 True 表示成功更新，False 表示未找到对应 prediction_id。
     """
 
@@ -139,6 +141,8 @@ def apply_prediction_feedback(
         v5_path = Path(v5_json_path)
     else:
         v5_path = _find_v5_json(case_id)
+    if v5_path is not None and v5_path.suffix == ".json" and v5_path.name.endswith(".run.json"):
+        raise ValueError(".run.json 是只读 run snapshot；请写回对应 .v5.json，避免 output_hash 失真。")
     if v5_path is None:
         raise FileNotFoundError(f"未找到 case {case_id!r} 的 v5 JSON；请先运行 render_report_v6 生成报告。")
 

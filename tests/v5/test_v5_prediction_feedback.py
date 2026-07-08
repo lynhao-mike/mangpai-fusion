@@ -31,6 +31,31 @@ def test_list_predictions_returns_prediction_entries(tmp_path: Path) -> None:
         assert p["falsifier"]
 
 
+def test_list_predictions_accepts_run_snapshot_json(tmp_path: Path) -> None:
+    report_path = tmp_path / "v6-report.md"
+    render_case(CASE_INPUT, output_path=report_path)
+    run_json_path = report_path.with_suffix(".run.json")
+
+    predictions = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=run_json_path)
+
+    assert len(predictions) >= 5
+    assert all(p["prediction_id"].startswith("v5pred-") for p in predictions)
+
+
+def test_apply_prediction_feedback_rejects_run_snapshot_json(tmp_path: Path) -> None:
+    report_path = tmp_path / "v6-report.md"
+    render_case(CASE_INPUT, output_path=report_path)
+    run_json_path = report_path.with_suffix(".run.json")
+    pid = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=run_json_path)[0]["prediction_id"]
+
+    try:
+        apply_prediction_feedback("C-2026-001-乾-庚申戊寅壬子辛丑", pid, "hit", v5_json_path=run_json_path)
+    except ValueError as exc:
+        assert ".run.json 是只读 run snapshot" in str(exc)
+    else:  # pragma: no cover
+        raise AssertionError(".run.json feedback write should fail")
+
+
 def test_apply_prediction_feedback_updates_json(tmp_path: Path) -> None:
     report_path = tmp_path / "v6-report.md"
     _, json_path = render_case(CASE_INPUT, output_path=report_path)

@@ -233,9 +233,11 @@ def test_submit_can_render_v6_preprod_artifacts(monkeypatch, tmp_path: Path) -> 
     assert result["summary"]["v6_preprod_rendered"] is True
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.md").exists()
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.v5.json").exists()
+    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.decision-run.json").exists()
     kinds = {artifact["kind"] for artifact in result["artifacts"]}
     assert "v6_preprod_report" in kinds
     assert "v5_prediction_ledger" in kinds
+    assert "decision_run_ledger" in kinds
 
 
 def test_list_jobs_supports_status_and_case_filters(tmp_path: Path) -> None:

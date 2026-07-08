@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from engine.decision import decision_run_from_v5
 from engine.v5 import V5RunSnapshot, run_v5
 from tools.output_linter import lint
 
@@ -35,3 +36,23 @@ def test_v5_output_linter_accepts_run_snapshot() -> None:
     result = lint(snapshot)
 
     assert result.passed, result.format()
+
+
+def test_output_linter_accepts_decision_run_payload() -> None:
+    output = run_v5({"case_id": "C-TEST-DECISION-LINT", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    decision_run = decision_run_from_v5(output)
+
+    result = lint(decision_run.to_dict())
+
+    assert result.passed, result.format()
+
+
+def test_output_linter_rejects_broken_decision_run_trace() -> None:
+    output = run_v5({"case_id": "C-TEST-DECISION-LINT-BROKEN", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    payload = decision_run_from_v5(output).to_dict()
+    payload["timing_probabilities"][0]["event_id"] = "missing-event"
+
+    result = lint(payload)
+
+    codes = {issue.code for issue in result.errors}
+    assert "E-DR-L5-L4" in codes

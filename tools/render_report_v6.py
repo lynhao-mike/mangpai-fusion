@@ -82,12 +82,16 @@ def main(argv: list[str] | None = None) -> int:
         report_path, json_path = render_case(args.input[0], output_path=args.output, template_path=args.template)
         print(f"[OK] report: {_display_path(report_path)}")
         print(f"[OK] v5 json: {_display_path(json_path)}")
+        print(f"[OK] run json: {_display_path(report_path.with_suffix('.run.json'))}")
+        print(f"[OK] decision run json: {_display_path(report_path.with_suffix('.decision-run.json'))}")
         return 0
 
     rendered = render_cases(args.input, output_dir=args.output_dir, template_path=args.template)
     for report_path, json_path in rendered:
         print(f"[OK] report: {_display_path(report_path)}")
         print(f"[OK] v5 json: {_display_path(json_path)}")
+        print(f"[OK] run json: {_display_path(report_path.with_suffix('.run.json'))}")
+        print(f"[OK] decision run json: {_display_path(report_path.with_suffix('.decision-run.json'))}")
     print(f"[OK] rendered {len(rendered)} reports")
     return 0
 
