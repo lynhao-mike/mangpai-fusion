@@ -17,7 +17,7 @@ import yaml
 
 from engine.decision import decision_run_from_v5
 from engine.v5.report_view import render_report_v6_from_output
-from engine.v5.domain import V5RunSnapshot
+from engine.v5.domain import V5CaseManifest, V5RunSnapshot
 from engine.v5.runner import run_v5
 
 PILLAR_RE = re.compile(r"\| \*\*(年柱|月柱|日柱|时柱)\*\* \|[^|]*\|\s*([^|\s]+)\s*\|\s*([^|\s]+)\s*\|")
@@ -250,14 +250,22 @@ def render_v6_preprod_case(
     artifact_bindings = {
         "report": _display_path(report_file, workspace_root=root),
         "v5_json": _display_path(json_file, workspace_root=root),
+        "run_json": _display_path(run_json_file, workspace_root=root),
         "decision_run_json": _display_path(decision_json_file, workspace_root=root),
         "input": _display_path(input_file, workspace_root=root),
         "feedback": _display_path(feedback_path, workspace_root=root),
     }
-    run_json_file.write_text(
-        V5RunSnapshot.from_output(output, artifact_bindings=artifact_bindings).to_json(),
-        encoding="utf-8",
-    )
+    snapshot = V5RunSnapshot.from_output(output, artifact_bindings=artifact_bindings)
+    run_json_file.write_text(snapshot.to_json(), encoding="utf-8")
+    manifest_path = case_dir / "manifest.json"
+    if manifest_path.exists():
+        manifest = V5CaseManifest.from_json(manifest_path.read_text(encoding="utf-8")).bind_run(snapshot)
+    else:
+        manifest = V5CaseManifest.from_run_snapshot(
+            snapshot,
+            case_path=_display_path(case_dir, workspace_root=root),
+        )
+    manifest_path.write_text(manifest.to_json(), encoding="utf-8")
     decision_json_file.write_text(
         json.dumps(decision_run_from_v5(output).to_dict(), ensure_ascii=False, indent=2),
         encoding="utf-8",

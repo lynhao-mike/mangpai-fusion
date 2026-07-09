@@ -321,6 +321,13 @@ class DecisionRun:
         """返回链路断点；空列表表示 L7→L0 最小链路不断。"""
 
         issues: list[str] = []
+        valid_roles = {"lead", "co_lead", "evidence_only", "abstain"}
+        valid_verdicts = {"pass", "weaken", "reject", "unknown"}
+        valid_results = {"winner", "coexist", "unresolved", "reject_all"}
+        valid_feedback_verdicts = {"hit", "miss", "partial", "unknown", "skipped"}
+        valid_layers = {"L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9"}
+        valid_target_types = {"rule", "school_profile", "router", "structure_policy", "event_mapping", "timing_policy", "arbitration_policy", "report_policy"}
+        valid_actions = {"upgrade", "downgrade", "freeze", "deprecate", "split", "merge", "review"}
         applicability = {item.school for item in self.school_applicability}
         claims = {item.claim_id for item in self.school_claims}
         verdicts = {item.verdict_id for item in self.structural_verdicts}
@@ -335,6 +342,36 @@ class DecisionRun:
         attributed_feedbacks = {item.feedback_id for item in self.feedback_attributions}
         attributions = {item.attribution_id for item in self.feedback_attributions}
 
+        def duplicated(values: list[str]) -> list[str]:
+            seen: set[str] = set()
+            dupes: set[str] = set()
+            for value in values:
+                if not value:
+                    continue
+                if value in seen:
+                    dupes.add(value)
+                seen.add(value)
+            return sorted(dupes)
+
+        for value in duplicated([item.claim_id for item in self.school_claims]):
+            issues.append(f"L2 claim_id 重复: {value}")
+        for value in duplicated([item.verdict_id for item in self.structural_verdicts]):
+            issues.append(f"L3 verdict_id 重复: {value}")
+        for value in duplicated([item.event_id for item in self.event_hypotheses]):
+            issues.append(f"L4 event_id 重复: {value}")
+        for value in duplicated([item.prediction_id for item in self.timing_probabilities]):
+            issues.append(f"L5 prediction_id 重复: {value}")
+        for value in duplicated([item.decision_id for item in self.arbitration_decisions]):
+            issues.append(f"L6 decision_id 重复: {value}")
+        for value in duplicated([item.report_item_id for item in self.report_items]):
+            issues.append(f"L7 report_item_id 重复: {value}")
+        for value in duplicated([item.feedback_id for item in self.feedback_signals]):
+            issues.append(f"L8 feedback_id 重复: {value}")
+        for value in duplicated([item.attribution_id for item in self.feedback_attributions]):
+            issues.append(f"L8 attribution_id 重复: {value}")
+        for value in duplicated([item.action_id for item in self.calibration_actions]):
+            issues.append(f"L9 action_id 重复: {value}")
+
         if not self.run_id:
             issues.append("DecisionRun 缺少 run_id")
         if not self.case_id:
@@ -346,16 +383,34 @@ class DecisionRun:
         for item in self.school_applicability:
             if not item.school:
                 issues.append("L1 school_applicability 缺少 school")
+            if item.role not in valid_roles:
+                issues.append(f"L1 role 非法: {item.school}")
+            if item.applicability_score < 0.0 or item.applicability_score > 1.0:
+                issues.append(f"L1 applicability_score 非法: {item.school}")
+            if item.confidence < 0.0 or item.confidence > 1.0:
+                issues.append(f"L1 confidence 非法: {item.school}")
         for claim in self.school_claims:
             if not claim.claim_id:
                 issues.append("L2 claim 缺少 claim_id")
             if claim.school not in applicability:
                 issues.append(f"L2 claim 未绑定 L1 school_applicability: {claim.claim_id}")
+            if claim.role_granted_by_l1 not in valid_roles:
+                issues.append(f"L2 role_granted_by_l1 非法: {claim.claim_id}")
             if claim.role_granted_by_l1 == "abstain":
                 issues.append(f"L2 claim 使用 abstain 流派发言: {claim.claim_id}")
+            if not claim.domain:
+                issues.append(f"L2 claim 缺少 domain: {claim.claim_id}")
+            if claim.confidence < 0.0 or claim.confidence > 1.0:
+                issues.append(f"L2 confidence 非法: {claim.claim_id}")
         for verdict in self.structural_verdicts:
+            if not verdict.verdict_id:
+                issues.append("L3 verdict 缺少 verdict_id")
+            if verdict.verdict not in valid_verdicts:
+                issues.append(f"L3 verdict 非法: {verdict.verdict_id}")
             if verdict.claim_id not in claims:
                 issues.append(f"L3 verdict 未绑定 L2 claim: {verdict.verdict_id}")
+            if verdict.confidence < 0.0 or verdict.confidence > 1.0:
+                issues.append(f"L3 confidence 非法: {verdict.verdict_id}")
         for event in self.event_hypotheses:
             if not event.event_id:
                 issues.append("L4 event 缺少 event_id")
@@ -373,6 +428,8 @@ class DecisionRun:
             ]
             if blocked:
                 issues.append(f"L4 event 绑定未通过的 L3 verdict: {event.event_id}")
+            if event.confidence < 0.0 or event.confidence > 1.0:
+                issues.append(f"L4 confidence 非法: {event.event_id}")
         for timing in self.timing_probabilities:
             if not timing.prediction_id:
                 issues.append("L5 timing 缺少 prediction_id")
@@ -381,7 +438,15 @@ class DecisionRun:
             low, high = timing.probability_range
             if low > high or low < 0.0 or high > 1.0:
                 issues.append(f"L5 probability_range 非法: {timing.prediction_id}")
+            if timing.confidence < 0.0 or timing.confidence > 1.0:
+                issues.append(f"L5 confidence 非法: {timing.prediction_id}")
         for decision in self.arbitration_decisions:
+            if not decision.decision_id:
+                issues.append("L6 decision 缺少 decision_id")
+            if not decision.domain:
+                issues.append(f"L6 decision 缺少 domain: {decision.decision_id}")
+            if decision.result not in valid_results:
+                issues.append(f"L6 result 非法: {decision.decision_id}")
             if decision.result == "winner" and not decision.winner_ids:
                 issues.append(f"L6 winner 裁决缺少 winner_ids: {decision.decision_id}")
             if decision.result == "reject_all" and not decision.rejected_ids:
@@ -399,6 +464,8 @@ class DecisionRun:
             if outside_competing:
                 issues.append(f"L6 decision 结果 ID 不在 competing_event_ids: {decision.decision_id}")
         for item in self.report_items:
+            if not item.report_item_id:
+                issues.append("L7 report item 缺少 report_item_id")
             if item.decision_id not in decisions:
                 issues.append(f"L7 report item 未绑定 L6 decision: {item.report_item_id}")
             if item.prediction_id and item.prediction_id not in timings:
@@ -406,20 +473,40 @@ class DecisionRun:
             elif item.prediction_id and timing_event_by_prediction[item.prediction_id] not in event_ids_by_decision.get(item.decision_id, set()):
                 issues.append(f"L7 report item 的 L5 timing 不属于 L6 decision: {item.report_item_id}")
         for signal in self.feedback_signals:
+            if not signal.feedback_id:
+                issues.append("L8 feedback signal 缺少 feedback_id")
+            if signal.verdict not in valid_feedback_verdicts:
+                issues.append(f"L8 feedback verdict 非法: {signal.feedback_id}")
             if signal.report_item_id not in report_items:
                 issues.append(f"L8 feedback signal 未绑定 L7 report item: {signal.feedback_id}")
         for attribution in self.feedback_attributions:
+            if not attribution.attribution_id:
+                issues.append("L8 attribution 缺少 attribution_id")
+            if not attribution.attribution_reason:
+                issues.append(f"L8 attribution 缺少 attribution_reason: {attribution.attribution_id}")
+            if attribution.affected_layer not in valid_layers:
+                issues.append(f"L8 affected_layer 非法: {attribution.attribution_id}")
             if attribution.feedback_id not in feedbacks:
                 issues.append(f"L8 attribution 未绑定 feedback signal: {attribution.attribution_id}")
             if attribution.affected_object_id and attribution.affected_object_id not in report_items:
                 issues.append(f"L8 attribution 未绑定 L7 report item: {attribution.attribution_id}")
             if attribution.affected_layer == "L8" and attribution.requires_human_review:
                 issues.append(f"L8 attribution 不应要求人工治理: {attribution.attribution_id}")
+            if attribution.confidence < 0.0 or attribution.confidence > 1.0:
+                issues.append(f"L8 attribution confidence 非法: {attribution.attribution_id}")
         for action in self.calibration_actions:
             if not action.action_id:
                 issues.append("L9 calibration action 缺少 action_id")
             if not action.target_id:
                 issues.append("L9 calibration action 缺少 target_id")
+            if action.target_type not in valid_target_types:
+                issues.append(f"L9 target_type 非法: {action.action_id}")
+            if action.action not in valid_actions:
+                issues.append(f"L9 action 非法: {action.action_id}")
+            if not action.reason:
+                issues.append(f"L9 calibration action 缺少 reason: {action.action_id}")
+            if not action.evidence_feedback_ids:
+                issues.append(f"L9 calibration action 缺少 evidence_feedback_ids: {action.action_id}")
             missing = [item for item in action.evidence_feedback_ids if item not in feedbacks]
             if missing:
                 issues.append(f"L9 calibration action 未绑定 feedback signal: {action.action_id}")

@@ -32,16 +32,20 @@ def _stable_id(prefix: str, *parts: object) -> str:
     return f"{prefix}-{hashlib.sha256(raw.encode('utf-8')).hexdigest()[:12]}"
 
 
+def _clamp_confidence(value: float) -> float:
+    return min(1.0, max(0.0, value))
+
+
 def _chart_to_ledger(output: V5Output, raw_hash: str) -> ChartFactLedger:
     chart = output.chart
     pillars = chart.get("pillars") or chart.get("四柱") or {}
     if isinstance(pillars, list):
-        four = dict(zip(("year", "month", "day", "hour"), [str(item) for item in pillars]))
+        four = {key: value for key, value in zip(("year", "month", "day", "hour"), [str(item) for item in pillars]) if value.strip() and value.strip() != "_"}
     elif isinstance(pillars, dict):
-        four = {str(k): str(v) for k, v in pillars.items()}
+        four = {str(k): str(v) for k, v in pillars.items() if str(v).strip() and str(v).strip() != "_"}
     else:
         four = {}
-    missing = [f"$FOUR.{key}" for key in ("year", "month", "day", "hour") if key not in four or not four[key]]
+    missing = [f"$FOUR.{key}" for key in ("year", "month", "day", "hour") if key not in four or not four[key].strip() or four[key].strip() == "_"]
     return ChartFactLedger(
         sex_marker=str(chart.get("gender_marker") or chart.get("命式") or chart.get("sex") or ""),
         solar_datetime=str(chart.get("solar_datetime") or chart.get("公历") or ""),
@@ -61,7 +65,7 @@ def _school_applicability(output: V5Output) -> list[SchoolApplicability]:
         claims = [claim for claim in output.claims if claim.school == school and claim.claim_id]
         domains = sorted({claim.domain for claim in claims if claim.domain})
         abstain = all(claim.stance == "abstain" for claim in claims)
-        score = max((claim.confidence.score for claim in claims), default=0.0)
+        score = max((_clamp_confidence(claim.confidence.score) for claim in claims), default=0.0)
         result.append(
             SchoolApplicability(
                 school=school,
@@ -88,12 +92,12 @@ def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[
             claim_type=claim.claim_type,
             statement=claim.claim,
             evidence_refs=[evidence.evidence_id for evidence in claim.evidence],
-            confidence=claim.confidence.score,
+            confidence=_clamp_confidence(claim.confidence.score),
             falsifier=claim.falsifiable,
             dependencies=[f"v5:{claim.claim_id}"],
         )
         for claim in output.claims
-        if claim.claim_id and claim.school and role_by_school.get(claim.school) != "abstain"
+        if claim.claim_id and claim.school and claim.domain and role_by_school.get(claim.school) != "abstain"
     ]
 
 
@@ -120,13 +124,25 @@ def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict
     return result
 
 
-def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict]) -> list[EventHypothesis]:
-    source_ids = [item.verdict_id for item in verdicts if item.verdict in {"pass", "weaken"}]
-    if not source_ids:
+def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict], claims: list[SchoolClaim]) -> list[EventHypothesis]:
+    claim_domain_by_id = {item.claim_id: item.domain for item in claims}
+    source_ids_by_domain: dict[str, list[str]] = {}
+    for verdict in verdicts:
+        if verdict.verdict not in {"pass", "weaken"}:
+            continue
+        domain = claim_domain_by_id.get(verdict.claim_id, "")
+        if domain:
+            source_ids_by_domain.setdefault(domain, []).append(verdict.verdict_id)
+    if not source_ids_by_domain:
         return []
     events: list[EventHypothesis] = []
     for prediction in output.prediction_ledger.predictions:
         if not prediction.prediction_id or not prediction.domain:
+            continue
+        if prediction.probability_range[0] > prediction.probability_range[1] or prediction.probability_range[0] < 0.0 or prediction.probability_range[1] > 1.0:
+            continue
+        source_ids = source_ids_by_domain.get(prediction.domain, [])
+        if not source_ids:
             continue
         events.append(
             EventHypothesis(
@@ -137,7 +153,7 @@ def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict]) -
                 subject=prediction.domain,
                 concrete_event=prediction.event_label,
                 landing_path="由 v5 prediction ledger 迁移为 L4 事件假设。",
-                confidence=prediction.confidence.score,
+                confidence=_clamp_confidence(prediction.confidence.score),
             )
         )
     return events
@@ -151,11 +167,11 @@ def _timings(case_id: str, output: V5Output, event_by_prediction: dict[str, str]
             time_window=dict(prediction.time_window),
             trigger_conditions=list(prediction.trigger_conditions),
             probability_range=prediction.probability_range,
-            confidence=prediction.confidence.score,
+            confidence=_clamp_confidence(prediction.confidence.score),
             falsifier=prediction.falsifier,
         )
         for prediction in output.prediction_ledger.predictions
-        if prediction.prediction_id in event_by_prediction
+        if prediction.prediction_id in event_by_prediction and prediction.probability_range[0] <= prediction.probability_range[1] and 0.0 <= prediction.probability_range[0] and prediction.probability_range[1] <= 1.0
     ]
 
 
@@ -170,14 +186,30 @@ def _decisions(case_id: str, output: V5Output, events: list[EventHypothesis], ap
         competing = events_by_domain.get(result.domain, [])
         if not competing:
             continue
+        if result.winning_schools:
+            decision_result = "winner"
+            winner_ids = competing
+            rejected_ids: list[str] = []
+            unresolved_ids: list[str] = []
+        elif result.opposition_score > result.support_score:
+            decision_result = "reject_all"
+            winner_ids = []
+            rejected_ids = competing
+            unresolved_ids = []
+        else:
+            decision_result = "unresolved"
+            winner_ids = []
+            rejected_ids = []
+            unresolved_ids = competing
         decisions.append(
             ArbitrationDecision(
                 decision_id=_stable_id("dad", case_id, result.domain, result.stage, idx),
                 domain=result.domain,
                 competing_event_ids=competing,
-                result="winner" if result.winning_schools else "unresolved",
-                winner_ids=competing if result.winning_schools else [],
-                unresolved_ids=[] if result.winning_schools else competing,
+                result=decision_result,  # type: ignore[arg-type]
+                winner_ids=winner_ids,
+                rejected_ids=rejected_ids,
+                unresolved_ids=unresolved_ids,
                 arbitration_rule="由 v5 event_realization 仲裁结果迁移。",
                 school_applicability_snapshot=applicability,
                 reason=result.rationale or result.conclusion,
@@ -190,7 +222,7 @@ def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: l
     timing_by_domain = {timing.event_id: timing for timing in timings}
     items: list[ReportViewItem] = []
     for decision in decisions:
-        event_ids = decision.winner_ids or decision.competing_event_ids
+        event_ids = decision.rejected_ids if decision.result == "reject_all" else decision.winner_ids or decision.competing_event_ids
         for idx, event_id in enumerate(event_ids, start=1):
             timing = timing_by_domain.get(event_id)
             items.append(
@@ -218,15 +250,18 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
     claims = _claims(output, applicability)
     case_id = output.case_id or "V5-UNKNOWN"
     verdicts = _verdicts(case_id, claims)
-    events = _events(case_id, output, verdicts)
+    events = _events(case_id, output, verdicts, claims)
     valid_predictions = [
         prediction
         for prediction in output.prediction_ledger.predictions
-        if prediction.prediction_id and prediction.domain
+        if prediction.prediction_id and prediction.domain and prediction.probability_range[0] <= prediction.probability_range[1] and 0.0 <= prediction.probability_range[0] and prediction.probability_range[1] <= 1.0
     ]
+    event_ids = {event.event_id for event in events}
     event_by_prediction = {
-        prediction.prediction_id: event.event_id
-        for prediction, event in zip(valid_predictions, events)
+        prediction.prediction_id: event_id
+        for prediction in valid_predictions
+        for event_id in [_stable_id("dev", case_id, prediction.prediction_id)]
+        if event_id in event_ids
     }
     timings = _timings(case_id, output, event_by_prediction)
     decisions = _decisions(case_id, output, events, applicability)

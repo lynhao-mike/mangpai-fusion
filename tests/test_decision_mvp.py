@@ -1006,6 +1006,330 @@ $DY_LOOP
 
 
 
+def test_decision_run_validate_trace_checks_more_required_layer_ids() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    event_id = run.event_hypotheses[0].event_id
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "school_claims": [type(run.school_claims[0])(**{**run.school_claims[0].__dict__, "domain": ""})],
+            "structural_verdicts": [type(run.structural_verdicts[0])(**{**run.structural_verdicts[0].__dict__, "verdict_id": ""})],
+            "arbitration_decisions": [
+                ArbitrationDecision(
+                    decision_id="",
+                    domain="",
+                    competing_event_ids=[event_id],
+                    result="winner",
+                    winner_ids=[event_id],
+                )
+            ],
+            "report_items": [ReportViewItem(report_item_id="", decision_id="")],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L2 claim 缺少 domain" in issue for issue in issues)
+    assert any("L3 verdict 缺少 verdict_id" in issue for issue in issues)
+    assert any("L6 decision 缺少 decision_id" in issue for issue in issues)
+    assert any("L6 decision 缺少 domain" in issue for issue in issues)
+    assert any("L7 report item 缺少 report_item_id" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_confidence_ranges() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "school_applicability": [type(run.school_applicability[0])(**{**run.school_applicability[0].__dict__, "applicability_score": 1.2, "confidence": -0.1})],
+            "school_claims": [type(run.school_claims[0])(**{**run.school_claims[0].__dict__, "confidence": 1.1})],
+            "structural_verdicts": [type(run.structural_verdicts[0])(**{**run.structural_verdicts[0].__dict__, "confidence": -0.1})],
+            "event_hypotheses": [type(run.event_hypotheses[0])(**{**run.event_hypotheses[0].__dict__, "confidence": 1.1})],
+            "timing_probabilities": [],
+            "arbitration_decisions": [],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L1 applicability_score 非法" in issue for issue in issues)
+    assert any("L1 confidence 非法" in issue for issue in issues)
+    assert any("L2 confidence 非法" in issue for issue in issues)
+    assert any("L3 confidence 非法" in issue for issue in issues)
+    assert any("L4 confidence 非法" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_more_confidence_ranges() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    report_item_id = run.report_items[0].report_item_id
+    feedback = FeedbackSignal(feedback_id="fb-confidence", report_item_id=report_item_id, verdict="miss")
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "timing_probabilities": [type(run.timing_probabilities[0])(**{**run.timing_probabilities[0].__dict__, "confidence": 1.1})],
+            "arbitration_decisions": [],
+            "report_items": [ReportViewItem(report_item_id=report_item_id, decision_id="")],
+            "feedback_signals": [feedback],
+            "feedback_attributions": [
+                FeedbackAttribution(
+                    attribution_id="attr-confidence",
+                    feedback_id="fb-confidence",
+                    affected_layer="L6",
+                    affected_object_id=report_item_id,
+                    attribution_reason="test",
+                    confidence=-0.1,
+                    requires_human_review=True,
+                )
+            ],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L5 confidence 非法" in issue for issue in issues)
+    assert any("L8 attribution confidence 非法" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_enum_values() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    report_item_id = run.report_items[0].report_item_id
+    feedback = FeedbackSignal(feedback_id="fb-enum", report_item_id=report_item_id, verdict="bad")  # type: ignore[arg-type]
+    attribution = FeedbackAttribution(
+        attribution_id="attr-enum",
+        feedback_id="fb-enum",
+        affected_layer="LX",  # type: ignore[arg-type]
+        affected_object_id=report_item_id,
+        attribution_reason="test",
+    )
+    action = CalibrationAction(
+        action_id="cal-enum",
+        target_type="bad_target",  # type: ignore[arg-type]
+        target_id="target",
+        action="bad_action",  # type: ignore[arg-type]
+        reason="test",
+        evidence_feedback_ids=["fb-enum"],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "school_applicability": [type(run.school_applicability[0])(**{**run.school_applicability[0].__dict__, "role": "bad"})],
+            "school_claims": [type(run.school_claims[0])(**{**run.school_claims[0].__dict__, "role_granted_by_l1": "bad"})],
+            "structural_verdicts": [type(run.structural_verdicts[0])(**{**run.structural_verdicts[0].__dict__, "verdict": "bad"})],
+            "event_hypotheses": [],
+            "timing_probabilities": [],
+            "arbitration_decisions": [type(run.arbitration_decisions[0])(**{**run.arbitration_decisions[0].__dict__, "result": "bad"})],
+            "report_items": [ReportViewItem(report_item_id=report_item_id, decision_id=run.arbitration_decisions[0].decision_id)],
+            "feedback_signals": [feedback],
+            "feedback_attributions": [attribution],
+            "calibration_actions": [action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L1 role 非法" in issue for issue in issues)
+    assert any("L2 role_granted_by_l1 非法" in issue for issue in issues)
+    assert any("L3 verdict 非法" in issue for issue in issues)
+    assert any("L6 result 非法" in issue for issue in issues)
+    assert any("L8 feedback verdict 非法" in issue for issue in issues)
+    assert any("L8 affected_layer 非法" in issue for issue in issues)
+    assert any("L9 target_type 非法" in issue for issue in issues)
+    assert any("L9 action 非法" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_feedback_and_attribution_required_ids() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    report_item_id = run.report_items[0].report_item_id
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "feedback_signals": [FeedbackSignal(feedback_id="", report_item_id=report_item_id, verdict="miss")],
+            "feedback_attributions": [
+                FeedbackAttribution(
+                    attribution_id="",
+                    feedback_id="",
+                    affected_layer="L6",
+                    affected_object_id=report_item_id,
+                    attribution_reason="",
+                    requires_human_review=True,
+                )
+            ],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L8 feedback signal 缺少 feedback_id" in issue for issue in issues)
+    assert any("L8 attribution 缺少 attribution_id" in issue for issue in issues)
+    assert any("L8 attribution 缺少 attribution_reason" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_more_l9_required_fields() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    feedback = FeedbackSignal(feedback_id="fb-l9", report_item_id=run.report_items[0].report_item_id, verdict="miss")
+    attribution = FeedbackAttribution(
+        attribution_id="attr-l9",
+        feedback_id="fb-l9",
+        affected_layer="L6",
+        affected_object_id=feedback.report_item_id,
+        attribution_reason="test",
+        requires_human_review=True,
+    )
+    action = CalibrationAction(
+        action_id="cal-empty-fields",
+        target_type="arbitration_policy",
+        target_id="target",
+        action="review",
+        reason="",
+        evidence_feedback_ids=[],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "feedback_signals": [feedback],
+            "feedback_attributions": [attribution],
+            "calibration_actions": [action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L9 calibration action 缺少 reason" in issue for issue in issues)
+    assert any("L9 calibration action 缺少 evidence_feedback_ids" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_duplicate_ids() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    feedback = FeedbackSignal(feedback_id="fb-dup", report_item_id=run.report_items[0].report_item_id, verdict="miss")
+    attribution = FeedbackAttribution(
+        attribution_id="attr-dup",
+        feedback_id="fb-dup",
+        affected_layer="L6",
+        affected_object_id=feedback.report_item_id,
+        attribution_reason="test",
+    )
+    action = CalibrationAction(
+        action_id="cal-dup",
+        target_type="arbitration_policy",
+        target_id="target",
+        action="review",
+        reason="test",
+        evidence_feedback_ids=["fb-dup"],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "school_claims": [run.school_claims[0], run.school_claims[0]],
+            "structural_verdicts": [run.structural_verdicts[0], run.structural_verdicts[0]],
+            "event_hypotheses": [run.event_hypotheses[0], run.event_hypotheses[0]],
+            "timing_probabilities": [run.timing_probabilities[0], run.timing_probabilities[0]],
+            "arbitration_decisions": [run.arbitration_decisions[0], run.arbitration_decisions[0]],
+            "report_items": [run.report_items[0], run.report_items[0]],
+            "feedback_signals": [feedback, feedback],
+            "feedback_attributions": [attribution, attribution],
+            "calibration_actions": [action, action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L2 claim_id 重复" in issue for issue in issues)
+    assert any("L3 verdict_id 重复" in issue for issue in issues)
+    assert any("L4 event_id 重复" in issue for issue in issues)
+    assert any("L5 prediction_id 重复" in issue for issue in issues)
+    assert any("L6 decision_id 重复" in issue for issue in issues)
+    assert any("L7 report_item_id 重复" in issue for issue in issues)
+    assert any("L8 feedback_id 重复" in issue for issue in issues)
+    assert any("L8 attribution_id 重复" in issue for issue in issues)
+    assert any("L9 action_id 重复" in issue for issue in issues)
+
+
+
 def test_decision_run_validate_trace_checks_l8_l9_semantics() -> None:
     run = run_decision_mvp("""
 $BASE

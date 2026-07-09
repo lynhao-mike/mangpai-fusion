@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from tools.render_report_v6 import render_case
@@ -15,9 +16,16 @@ ROOT = Path(__file__).resolve().parents[2]
 CASE_INPUT = ROOT / "cases" / "C-2026-001-乾-庚申戊寅壬子辛丑" / "input.md"
 
 
+def _copy_case_input(tmp_path: Path) -> Path:
+    case_dir = tmp_path / CASE_INPUT.parent.name
+    shutil.copytree(CASE_INPUT.parent, case_dir, ignore=shutil.ignore_patterns("manifest.json"))
+    return case_dir / "input.md"
+
+
 def test_list_predictions_returns_prediction_entries(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    _, json_path = render_case(CASE_INPUT, output_path=report_path)
+    _, json_path = render_case(case_input, output_path=report_path)
 
     predictions = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=json_path)
     assert len(predictions) >= 5
@@ -32,8 +40,9 @@ def test_list_predictions_returns_prediction_entries(tmp_path: Path) -> None:
 
 
 def test_list_predictions_accepts_run_snapshot_json(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    render_case(CASE_INPUT, output_path=report_path)
+    render_case(case_input, output_path=report_path)
     run_json_path = report_path.with_suffix(".run.json")
 
     predictions = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=run_json_path)
@@ -43,8 +52,9 @@ def test_list_predictions_accepts_run_snapshot_json(tmp_path: Path) -> None:
 
 
 def test_apply_prediction_feedback_rejects_run_snapshot_json(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    render_case(CASE_INPUT, output_path=report_path)
+    render_case(case_input, output_path=report_path)
     run_json_path = report_path.with_suffix(".run.json")
     pid = list_predictions("C-2026-001-乾-庚申戊寅壬子辛丑", v5_json_path=run_json_path)[0]["prediction_id"]
 
@@ -57,8 +67,9 @@ def test_apply_prediction_feedback_rejects_run_snapshot_json(tmp_path: Path) -> 
 
 
 def test_apply_prediction_feedback_updates_json(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    _, json_path = render_case(CASE_INPUT, output_path=report_path)
+    _, json_path = render_case(case_input, output_path=report_path)
 
     raw = json.loads(json_path.read_text(encoding="utf-8"))
     first_prediction = raw["prediction_ledger"]["predictions"][0]
@@ -83,8 +94,9 @@ def test_apply_prediction_feedback_updates_json(tmp_path: Path) -> None:
 
 
 def test_apply_prediction_feedback_invalid_prediction_id_returns_false(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    _, json_path = render_case(CASE_INPUT, output_path=report_path)
+    _, json_path = render_case(case_input, output_path=report_path)
 
     ok = apply_prediction_feedback(
         "C-2026-001-乾-庚申戊寅壬子辛丑",
@@ -96,8 +108,9 @@ def test_apply_prediction_feedback_invalid_prediction_id_returns_false(tmp_path:
 
 
 def test_apply_prediction_feedback_dry_run_does_not_write(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
-    _, json_path = render_case(CASE_INPUT, output_path=report_path)
+    _, json_path = render_case(case_input, output_path=report_path)
 
     raw_before = json_path.read_text(encoding="utf-8")
     raw = json.loads(raw_before)

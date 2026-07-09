@@ -5,18 +5,26 @@ from __future__ import annotations
 from pathlib import Path
 
 import json
+import shutil
 
-from engine.v5 import V5RunSnapshot
+from engine.v5 import V5CaseManifest, V5RunSnapshot
 from tools.render_report_v6 import main, render_case, render_cases
 
 ROOT = Path(__file__).resolve().parents[2]
 CASE_INPUT = ROOT / "cases" / "C-2026-001-乾-庚申戊寅壬子辛丑" / "input.md"
 
 
+def _copy_case_input(tmp_path: Path) -> Path:
+    case_dir = tmp_path / CASE_INPUT.parent.name
+    shutil.copytree(CASE_INPUT.parent, case_dir, ignore=shutil.ignore_patterns("manifest.json"))
+    return case_dir / "input.md"
+
+
 def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "v6-report.md"
 
-    rendered_report, rendered_json = render_case(CASE_INPUT, output_path=report_path)
+    rendered_report, rendered_json = render_case(case_input, output_path=report_path)
 
     assert rendered_report == report_path
     assert rendered_report.exists()
@@ -46,8 +54,21 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     run_snapshot = V5RunSnapshot.from_json(rendered_run_json.read_text(encoding="utf-8"))
     assert run_snapshot.case_id == "C-2026-001-乾-庚申戊寅壬子辛丑"
     assert run_snapshot.output_hash_matches()
-    assert run_snapshot.artifact_bindings["v5_json"].endswith(rendered_json.as_posix())
-    assert run_snapshot.artifact_bindings["decision_run_json"].endswith(rendered_decision_json.as_posix())
+    expected_artifacts = {
+        "report": rendered_report.as_posix(),
+        "v5_json": rendered_json.as_posix(),
+        "run_json": rendered_run_json.as_posix(),
+        "decision_run_json": rendered_decision_json.as_posix(),
+        "input": case_input.as_posix(),
+        "feedback": (case_input.parent / "feedback.md").as_posix(),
+    }
+    assert run_snapshot.artifact_bindings == expected_artifacts
+    manifest_path = case_input.parent / "manifest.json"
+    manifest = V5CaseManifest.from_json(manifest_path.read_text(encoding="utf-8"))
+    assert manifest.case_id == run_snapshot.case_id
+    assert manifest.active_run_id == run_snapshot.run_id
+    assert run_snapshot.run_id in manifest.run_ids
+    assert manifest.artifact_paths == expected_artifacts
     decision_payload = json.loads(rendered_decision_json.read_text(encoding="utf-8"))
     assert decision_payload["schema_version"] == "decision-run-v1"
     assert decision_payload["case_id"] == "C-2026-001-乾-庚申戊寅壬子辛丑"
@@ -55,9 +76,10 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
 
 
 def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> None:
+    case_input = _copy_case_input(tmp_path)
     output_dir = tmp_path / "batch"
 
-    rendered = render_cases([CASE_INPUT, CASE_INPUT], output_dir=output_dir)
+    rendered = render_cases([case_input, case_input], output_dir=output_dir)
 
     assert len(rendered) == 2
     for report_path, json_path in rendered:
@@ -76,9 +98,10 @@ def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> No
 
 
 def test_render_report_v6_cli_prints_run_json_path(tmp_path: Path, capsys) -> None:
+    case_input = _copy_case_input(tmp_path)
     report_path = tmp_path / "cli-report.md"
 
-    code = main([str(CASE_INPUT), "--output", str(report_path)])
+    code = main([str(case_input), "--output", str(report_path)])
     captured = capsys.readouterr().out
 
     assert code == 0
