@@ -11,7 +11,7 @@ from typing import Any
 
 from engine.decision.l1_school_router import route_schools
 from engine.decision.l8_feedback_attribution import build_feedback_attributions, build_feedback_signals
-from engine.decision.l9_calibration import build_calibration_actions
+from engine.decision.l9_calibration import build_calibration_actions, build_router_calibration_actions
 from engine.decision.models import (
     ArbitrationDecision,
     ChartFactLedger,
@@ -257,6 +257,9 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
     feedback_signals = build_feedback_signals(case_id, report_items)
     feedback_attributions = build_feedback_attributions(feedback_signals)
     calibration_actions = build_calibration_actions(case_id, feedback_attributions)
+    calibration_actions = calibration_actions + build_router_calibration_actions(
+        case_id, report_items, decisions, feedback_signals
+    )
     return DecisionRun(
         run_id=_stable_id("drun", case_id, raw_hash),
         case_id=case_id,
