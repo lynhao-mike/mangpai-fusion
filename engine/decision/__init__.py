@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from engine.decision.accuracy_report import AccuracyReport, build_accuracy_report, render_accuracy_markdown
 from engine.decision.models import (
     ArbitrationDecision,
     CalibrationAction,
@@ -33,6 +34,7 @@ from engine.decision.orchestrator import run_decision_mvp
 from engine.decision.v5_adapter import decision_run_from_snapshot, decision_run_from_v5
 
 __all__ = [
+    "AccuracyReport",
     "ArbitrationDecision",
     "CalibrationAction",
     "ChartFactLedger",
@@ -49,6 +51,7 @@ __all__ = [
     "TimingProbability",
     "attribute_feedback",
     "build_arbitration_decisions",
+    "build_accuracy_report",
     "build_context_ledger",
     "build_calibration_actions",
     "build_router_calibration_actions",
@@ -60,6 +63,7 @@ __all__ = [
     "build_structural_verdicts",
     "build_timing_probabilities",
     "parse_wenzhen_l0",
+    "render_accuracy_markdown",
     "route_schools",
     "decision_run_from_snapshot",
     "decision_run_from_v5",

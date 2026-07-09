@@ -811,6 +811,8 @@ engine/decision/
 
 ### Phase R4：分层准确率看板
 
+> 状态：聚合与渲染已完成（build_accuracy_report + render_accuracy_markdown，按 verdict / 层 / 域 / 事件类型统计，见 tests/test_accuracy_report.py）。真实反馈样本接入与 L5 timing distance 等需真实发生时间的指标尚未实现，依赖数据而非代码重构。
+
 目标：用 §16 指标按层、按域、按事件类型统计，而非单一总准确率。
 
 验收：能回答“哪一层准确、哪一层拖后腿”，为 L9 提供校准依据。
