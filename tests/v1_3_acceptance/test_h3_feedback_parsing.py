@@ -491,3 +491,63 @@ def test_ingest_includes_v5_feedback_attachment_summary_without_unblocking_learn
     assert result.learning_sample_count == 0
     assert result.phase_a_learning_summary["v5_feedback_attachment"]["status"] == "ok"
     assert result.phase_a_learning_summary["v5_feedback_attachment"]["run_id"] == snapshot.run_id
+
+
+def test_v5_feedback_attachment_validation_selects_matching_run_id_in_multi_run_case(tmp_path):
+    from dataclasses import replace
+
+    from engine.v5 import V5FeedbackAttachment, run_v5_snapshot
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-MULTIRUN"
+    case_dir.mkdir()
+    right = run_v5_snapshot({"case_id": "C-TEST-ATTACH-MULTIRUN", "pillars": ["鐢插瓙", "涔欎笐", "涓欏瘏", "涓佸嵂"]})
+    wrong = replace(right, run_id="run-wrong-newer")
+    right_path = case_dir / "right.run.json"
+    wrong_path = case_dir / "wrong.run.json"
+    attachment_path = case_dir / "case.feedback-attachment.json"
+    right_path.write_text(right.to_json(), encoding="utf-8")
+    wrong_path.write_text(wrong.to_json(), encoding="utf-8")
+    attachment_path.write_text(V5FeedbackAttachment.from_run_snapshot(right).to_json(), encoding="utf-8")
+    # Make the wrong snapshot newer; old implementation picked this and reported mismatch.
+    wrong_path.touch()
+
+    summary = _validate_v5_feedback_attachment(case_dir, "C-TEST-ATTACH-MULTIRUN")
+
+    assert summary["status"] == "ok"
+    assert summary["run_id"] == right.run_id
+    assert summary["run_snapshot_path"] == right_path.as_posix()
+    assert summary["issues"] == []
+
+
+def test_v5_feedback_attachment_validation_reports_no_matching_run_id(tmp_path):
+    from dataclasses import replace
+
+    from engine.v5 import V5FeedbackAttachment, run_v5_snapshot
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-NO-RUN-MATCH"
+    case_dir.mkdir()
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-ATTACH-NO-RUN-MATCH", "pillars": ["鐢插瓙", "涔欎笐", "涓欏瘏", "涓佸嵂"]})
+    wrong = replace(snapshot, run_id="run-not-the-attachment")
+    (case_dir / "wrong.run.json").write_text(wrong.to_json(), encoding="utf-8")
+    (case_dir / "case.feedback-attachment.json").write_text(
+        V5FeedbackAttachment.from_run_snapshot(snapshot).to_json(),
+        encoding="utf-8",
+    )
+
+    summary = _validate_v5_feedback_attachment(case_dir, "C-TEST-ATTACH-NO-RUN-MATCH")
+
+    assert summary["status"] == "mismatch"
+    assert summary["attachment_path"] == (case_dir / "case.feedback-attachment.json").as_posix()
+    assert summary["run_snapshot_path"] == ""
+    assert summary["case_id"] == "C-TEST-ATTACH-NO-RUN-MATCH"
+    assert summary["run_id"] == snapshot.run_id
+    assert summary["target_counts"] == {
+        "claims": len(snapshot.claims),
+        "predictions": len(snapshot.prediction_ledger.predictions),
+        "signals": len(snapshot.learning_signals),
+    }
+    assert summary["issues"] == [
+        f"run snapshot for feedback attachment run_id not found: {snapshot.run_id}"
+    ]

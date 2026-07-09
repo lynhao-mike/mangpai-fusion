@@ -739,25 +739,62 @@ def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) 
     if not attachments:
         return _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="feedback attachment not found")
     attachment_path = attachments[0]
-    run_snapshots = sorted(case_dir.glob("*.run.json"), key=lambda path: path.stat().st_mtime, reverse=True)
-    if not run_snapshots:
-        summary = _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="run snapshot not found")
-        summary["attachment_path"] = attachment_path.as_posix()
-        return summary
-    run_snapshot_path = run_snapshots[0]
-
     try:
         attachment = V5FeedbackAttachment.from_json(attachment_path.read_text(encoding="utf-8"))
-        snapshot = V5RunSnapshot.from_json(run_snapshot_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
         return {
             "status": "invalid",
             "attachment_path": attachment_path.as_posix(),
-            "run_snapshot_path": run_snapshot_path.as_posix(),
+            "run_snapshot_path": "",
             "case_id": full_case_id,
             "run_id": "",
             "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
             "issues": [f"invalid v5 feedback attachment payload: {exc}"],
+        }
+
+    run_snapshots = sorted(case_dir.glob("*.run.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    if not run_snapshots:
+        summary = _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="run snapshot not found")
+        summary["attachment_path"] = attachment_path.as_posix()
+        summary["case_id"] = attachment.case_id
+        summary["run_id"] = attachment.run_id
+        summary["target_counts"] = {
+            "claims": len(attachment.target_claim_ids),
+            "predictions": len(attachment.target_prediction_ids),
+            "signals": len(attachment.target_signal_ids),
+        }
+        return summary
+
+    snapshot = None
+    run_snapshot_path: pathlib.Path | None = None
+    invalid_run_issues: list[str] = []
+    for candidate in run_snapshots:
+        try:
+            candidate_snapshot = V5RunSnapshot.from_json(candidate.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+            invalid_run_issues.append(f"invalid run snapshot {candidate.as_posix()}: {exc}")
+            continue
+        if candidate_snapshot.run_id == attachment.run_id:
+            snapshot = candidate_snapshot
+            run_snapshot_path = candidate
+            break
+
+    if snapshot is None or run_snapshot_path is None:
+        return {
+            "status": "mismatch",
+            "attachment_path": attachment_path.as_posix(),
+            "run_snapshot_path": "",
+            "case_id": attachment.case_id,
+            "run_id": attachment.run_id,
+            "target_counts": {
+                "claims": len(attachment.target_claim_ids),
+                "predictions": len(attachment.target_prediction_ids),
+                "signals": len(attachment.target_signal_ids),
+            },
+            "issues": [
+                f"run snapshot for feedback attachment run_id not found: {attachment.run_id}",
+                *invalid_run_issues,
+            ],
         }
 
     issues: list[str] = []
