@@ -7,7 +7,7 @@ from pathlib import Path
 import json
 import shutil
 
-from engine.v5 import V5CaseManifest, V5RunSnapshot
+from engine.v5 import V5CaseManifest, V5FeedbackAttachment, V5RunSnapshot
 from tools.render_report_v6 import main, render_case, render_cases
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -31,8 +31,10 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert rendered_json.exists()
     rendered_run_json = rendered_report.with_suffix(".run.json")
     rendered_decision_json = rendered_report.with_suffix(".decision-run.json")
+    rendered_feedback_attachment_json = rendered_report.with_suffix(".feedback-attachment.json")
     assert rendered_run_json.exists()
     assert rendered_decision_json.exists()
+    assert rendered_feedback_attachment_json.exists()
 
     report_text = rendered_report.read_text(encoding="utf-8")
     json_text = rendered_json.read_text(encoding="utf-8")
@@ -59,6 +61,7 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
         "v5_json": rendered_json.as_posix(),
         "run_json": rendered_run_json.as_posix(),
         "decision_run_json": rendered_decision_json.as_posix(),
+        "feedback_attachment": rendered_feedback_attachment_json.as_posix(),
         "input": case_input.as_posix(),
         "feedback": (case_input.parent / "feedback.md").as_posix(),
     }
@@ -69,6 +72,11 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert manifest.active_run_id == run_snapshot.run_id
     assert run_snapshot.run_id in manifest.run_ids
     assert manifest.artifact_paths == expected_artifacts
+    attachment = V5FeedbackAttachment.from_json(rendered_feedback_attachment_json.read_text(encoding="utf-8"))
+    assert attachment.case_id == run_snapshot.case_id
+    assert attachment.run_id == run_snapshot.run_id
+    assert attachment.feedback_path == (case_input.parent / "feedback.md").as_posix()
+    assert attachment.validate_targets(run_snapshot) == []
     decision_payload = json.loads(rendered_decision_json.read_text(encoding="utf-8"))
     assert decision_payload["schema_version"] == "decision-run-v1"
     assert decision_payload["case_id"] == "C-2026-001-乾-庚申戊寅壬子辛丑"
@@ -88,8 +96,10 @@ def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> No
         assert json_path.exists()
         run_json_path = report_path.with_suffix(".run.json")
         decision_json_path = report_path.with_suffix(".decision-run.json")
+        feedback_attachment_path = report_path.with_suffix(".feedback-attachment.json")
         assert run_json_path.exists()
         assert decision_json_path.exists()
+        assert feedback_attachment_path.exists()
         run_snapshot = V5RunSnapshot.from_json(run_json_path.read_text(encoding="utf-8"))
         assert run_snapshot.output_hash_matches()
         report_text = report_path.read_text(encoding="utf-8")
@@ -111,3 +121,4 @@ def test_render_report_v6_cli_prints_run_json_path(tmp_path: Path, capsys) -> No
     assert "[OK] decision run json:" in captured
     assert report_path.with_suffix(".run.json").exists()
     assert report_path.with_suffix(".decision-run.json").exists()
+    assert report_path.with_suffix(".feedback-attachment.json").exists()

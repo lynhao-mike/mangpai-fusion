@@ -560,6 +560,90 @@ class V5CaseManifest:
 
 
 @dataclass(frozen=True)
+class V5FeedbackAttachment:
+    """feedback.md 对一次 run 的最小挂载清单。
+
+    ponytail: 只记录目标 ID，不解析 Markdown，不写反馈数据库；先证明反馈
+    可以绑定 run snapshot，而不是绑定报告文本片段。
+    """
+
+    case_id: str
+    run_id: str
+    feedback_path: str = ""
+    target_claim_ids: list[str] = field(default_factory=list)
+    target_prediction_ids: list[str] = field(default_factory=list)
+    target_signal_ids: list[str] = field(default_factory=list)
+    attachment_schema_version: str = "feedback-attachment-v1"
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_run_snapshot(
+        cls,
+        snapshot: V5RunSnapshot,
+        *,
+        feedback_path: str = "",
+        metadata: dict[str, Any] | None = None,
+    ) -> "V5FeedbackAttachment":
+        return cls(
+            case_id=snapshot.case_id,
+            run_id=snapshot.run_id,
+            feedback_path=feedback_path,
+            target_claim_ids=[item.claim_id for item in snapshot.claims],
+            target_prediction_ids=[item.prediction_id for item in snapshot.prediction_ledger.predictions],
+            target_signal_ids=[item.signal_id for item in snapshot.learning_signals],
+            metadata=dict(metadata or {}),
+        )
+
+    def validate_targets(self, snapshot: V5RunSnapshot) -> list[str]:
+        issues: list[str] = []
+        claim_ids = {item.claim_id for item in snapshot.claims}
+        prediction_ids = {item.prediction_id for item in snapshot.prediction_ledger.predictions}
+        signal_ids = {item.signal_id for item in snapshot.learning_signals}
+        for claim_id in self.target_claim_ids:
+            if claim_id not in claim_ids:
+                issues.append(f"feedback target claim_id not found in run snapshot: {claim_id}")
+        for prediction_id in self.target_prediction_ids:
+            if prediction_id not in prediction_ids:
+                issues.append(f"feedback target prediction_id not found in run snapshot: {prediction_id}")
+        for signal_id in self.target_signal_ids:
+            if signal_id not in signal_ids:
+                issues.append(f"feedback target signal_id not found in run snapshot: {signal_id}")
+        return issues
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "attachment_schema_version": self.attachment_schema_version,
+            "case_id": self.case_id,
+            "run_id": self.run_id,
+            "feedback_path": self.feedback_path,
+            "target_claim_ids": list(self.target_claim_ids),
+            "target_prediction_ids": list(self.target_prediction_ids),
+            "target_signal_ids": list(self.target_signal_ids),
+            "metadata": dict(self.metadata),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "V5FeedbackAttachment":
+        return cls(
+            case_id=str(data.get("case_id", "")),
+            run_id=str(data.get("run_id", "")),
+            feedback_path=str(data.get("feedback_path", "")),
+            target_claim_ids=[str(x) for x in data.get("target_claim_ids", [])],
+            target_prediction_ids=[str(x) for x in data.get("target_prediction_ids", [])],
+            target_signal_ids=[str(x) for x in data.get("target_signal_ids", [])],
+            attachment_schema_version=str(data.get("attachment_schema_version", "feedback-attachment-v1")),
+            metadata=dict(data.get("metadata", {})),
+        )
+
+    def to_json(self, *, indent: int | None = 2) -> str:
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+
+    @classmethod
+    def from_json(cls, value: str) -> "V5FeedbackAttachment":
+        return cls.from_dict(json.loads(value))
+
+
+@dataclass(frozen=True)
 class V5Output:
     """v5 并行核心完整输出。"""
 

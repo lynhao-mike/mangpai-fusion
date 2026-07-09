@@ -9,6 +9,7 @@ from engine.v5.domain import (
     V5Claim,
     V5Confidence,
     V5Evidence,
+    V5FeedbackAttachment,
     V5Output,
     V5RunSnapshot,
     V5_SCHOOLS,
@@ -155,6 +156,40 @@ def test_v5_case_manifest_rejects_cross_case_run_binding():
         assert "does not match manifest case_id" in str(exc)
     else:  # pragma: no cover
         raise AssertionError("cross-case run binding should fail")
+
+
+def test_v5_feedback_attachment_binds_to_run_targets_without_report_markdown():
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-FEEDBACK-ATTACH", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+
+    attachment = V5FeedbackAttachment.from_run_snapshot(
+        snapshot,
+        feedback_path="cases/C-TEST-FEEDBACK-ATTACH/feedback.md",
+    )
+    restored = V5FeedbackAttachment.from_json(attachment.to_json())
+
+    assert restored == attachment
+    assert attachment.case_id == snapshot.case_id
+    assert attachment.run_id == snapshot.run_id
+    assert attachment.feedback_path == "cases/C-TEST-FEEDBACK-ATTACH/feedback.md"
+    assert attachment.target_claim_ids == [claim.claim_id for claim in snapshot.claims]
+    assert attachment.target_prediction_ids == [item.prediction_id for item in snapshot.prediction_ledger.predictions]
+    assert attachment.target_signal_ids == [item.signal_id for item in snapshot.learning_signals]
+    assert attachment.validate_targets(snapshot) == []
+
+
+def test_v5_feedback_attachment_reports_missing_targets():
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-FEEDBACK-MISSING", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    payload = V5FeedbackAttachment.from_run_snapshot(snapshot).to_dict()
+    payload["target_claim_ids"].append("missing-claim")
+    payload["target_prediction_ids"].append("missing-prediction")
+    payload["target_signal_ids"].append("missing-signal")
+    attachment = V5FeedbackAttachment.from_dict(payload)
+
+    assert attachment.validate_targets(snapshot) == [
+        "feedback target claim_id not found in run snapshot: missing-claim",
+        "feedback target prediction_id not found in run snapshot: missing-prediction",
+        "feedback target signal_id not found in run snapshot: missing-signal",
+    ]
 
 
 def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
