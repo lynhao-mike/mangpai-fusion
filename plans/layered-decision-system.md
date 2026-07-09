@@ -7,6 +7,86 @@
 > 核心结论：系统不应继续走“多派融合成一个大杂烩”的路线，而应建立“分层决策模型”：输入事实、流派适用性、独立命题、结构审查、事件落地、应期概率、冲突仲裁、报告表达、反馈归因、校准治理逐层分权。
 >
 > 吸收原则：传统“数据先于判断、基础决定上层、理论分层、多证据验证、动态岁运、结果可解释”具有参考性；但必须从“多流派综合评分”改造为“流派适用性路由 + 分层裁判 + 分层反馈校准”。
+>
+> 本文以仓库现有代码为事实源：[`engine/decision/models.py`](../engine/decision/models.py:301)、[`engine/decision/orchestrator.py`](../engine/decision/orchestrator.py:34)、[`engine/decision/v5_adapter.py`](../engine/decision/v5_adapter.py:70)、[`engine/decision/l1_school_router.py`](../engine/decision/l1_school_router.py:52)、[`engine/v5/domain.py`](../engine/v5/domain.py:365)。编写顺序固定为：**geju 定靶心 → ponytail 压范围 → writing-plans 阶段化 → verification-before-completion 事实校验 → requesting-code-review + ponytail-review 最终审查**。
+
+---
+
+## 0. 格局判断（geju）
+
+### 0.1 Thesis
+
+**L0-L9 分层决策模型不需要“重新设计”，它已经在 [`engine/decision/`](../engine/decision/) 完整落地并带链路自校验。真正要做的重构只有一件事：把生产主链路上“先让流派发言、再反推谁适用”的倒置依赖，改成“先路由、后授权发言”。**
+
+一句话：**方向已对，管道装反了。**
+
+### 0.2 Confidence
+
+**高置信度（针对问题定位）；中置信度（针对学习闭环成熟度）。**
+
+高置信度的代码事实：
+
+1. [`DecisionRun.validate_trace()`](../engine/decision/models.py:320) 已实现 L2→L1、L3→L2、L4→L3（且必须绑定 pass/weaken 的 verdict）、L5→L4、L6→L4、L7→L6、L8→L7、L9→L8 的全链路强校验，`abstain` 流派发言会被判非法。
+2. [`route_schools()`](../engine/decision/l1_school_router.py:52) 已实现真正的规则式适用性路由：按四柱完整性、大运有无、分析焦点交集产出 `lead / co_lead / evidence_only / abstain`。
+3. [`run_decision_mvp()`](../engine/decision/orchestrator.py:34) 已能从一段问真文本跑通 L0→L9 内存 DecisionRun。
+
+中置信度的原因：
+
+1. L1 路由是静态规则启发式，尚未由反馈驱动学习（falsifier 文案已写，学习回路未接）。
+2. 生产报告默认入口仍是 legacy [`tools/render_report.py`](../tools/render_report.py:1)，run-centric 链路是 preprod。
+
+### 0.3 The Trap（核心陷阱：倒置的路由依赖）
+
+生产 v5→decision 适配路径 [`_school_applicability()`](../engine/decision/v5_adapter.py:70) 的实现是：
+
+```text
+schools = {claim.school for claim in output.claims}   # 先看谁已经发言
+→ 再给这些已发言流派补一个 co_lead / abstain 适用性快照
+```
+
+这正是本文要杀死的“多流派大杂烩”换皮：**流派先无条件发言、系统事后追认适用性**。它与真正的路由器 [`route_schools()`](../engine/decision/l1_school_router.py:52)（先判资格、后决定谁能发言）方向相反，而后者当前只接在独立 MVP，未进生产。
+
+| 继承形态 | 表象 | 是否真实约束 | 判断 |
+|---|---|---|---|
+| v5 五派固定角色（[`V5_SCHOOL_ROLES`](../engine/v5/domain.py:43)） | 每派天生一个角色 | 不真实 | 固定角色违反“没有万能流派”；角色必须由 L1 按盘、按域动态给。 |
+| `_school_applicability` 反推适用性 | 迁移期快照，看着无害 | 不真实 | 它让 L1 沦为橡皮图章，是倒置依赖的根源，应删除。 |
+| v5 与 decision 两套 run 模型并存 | 似乎要长期双轨 | 部分真实 | 二者不平权：[`V5RunSnapshot`](../engine/v5/domain.py:365) 是“各派说了什么”的事实快照，[`DecisionRun`](../engine/decision/models.py:301) 是“如何裁决”的账本。快照是源，账本是派生。 |
+| L0-L9 看似未落地 | 文档写成未来工作 | 不真实 | 已落地；继续把它当规划会导致重复造轮子。 |
+
+### 0.4 一主两辅
+
+| 线路 | 角色 | 保留原则 |
+|---|---|---|
+| DecisionRun 裁判主线 | 正式目标主线 | 围绕 [`DecisionRun`](../engine/decision/models.py:301) 收口；L1 路由必须前置于 L2。 |
+| V5RunSnapshot 事实快照 | 事实源辅线 | 保留“各派命题事实”，作为 DecisionRun 的输入，不作第二事实源。 |
+| legacy render_report | 兼容辅线 | 保稳定，不承载新领域能力。 |
+
+### 0.5 Kill / Merge / Split（ponytail 边界）
+
+Kill：
+
+1. 杀掉 [`_school_applicability()`](../engine/decision/v5_adapter.py:70) 的“从命题反推适用性”，改为调用真正路由。
+2. 杀掉“五派固定角色即适用性”的观念。
+3. 杀掉“L0-L9 待建设”的叙事。
+
+Merge：把 v5 输出通过 L1 路由后再进 L2，L2 只接受被授权流派的命题。
+
+Split：`V5RunSnapshot`（事实）与 `DecisionRun`（裁判）职责分离，不做平权双事实源。
+
+明确不做：
+
+1. 不新增第三套 run / decision 模型。
+2. 不现在切生产默认报告入口。
+3. 不现在大搬目录。
+4. 不把静态路由一步做成完整学习系统；先接反馈信号回路，再谈自动升降级。
+
+### 0.6 Options
+
+| Option | 描述 | Verdict |
+|---|---|---|
+| Conservative | 保留 `_school_applicability` 反推，只补文档 | Reject：倒置依赖不除，等于没改。 |
+| Clean target | 生产直接切 route_schools 前置 + 默认入口切换 | Not now：迁移面大，先证纵切片。 |
+| Staged clean | 先让 route_schools 前置于 v5 命题生成、在 preprod 证明链路不断，再逐步降级旧路径 | **Recommend** |
 
 ---
 
@@ -635,26 +715,29 @@ candidate
 
 ---
 
-## 17. 建议代码结构
+## 17. 代码结构现状与定位
 
-长期建议新增：
+分层结构已在 [`engine/decision/`](../engine/decision/) 落地，不是待建设项：
 
 ```text
 engine/decision/
-  models.py
-  l0_wenzhen.py
-  l0_context.py
-  l1_school_router.py
-  l2_claims.py
-  l3_structure.py
-  l4_events.py
-  l5_timing.py
-  l6_arbitration.py
-  l7_report_view.py
-  l8_feedback_attribution.py
-  l9_calibration.py
-  orchestrator.py
+  models.py                  已落地 · L0-L9 数据契约 + DecisionRun.validate_trace 全链路校验
+  l0_wenzhen.py              已落地 · 问真文本解析
+  l0_context.py              已落地 · 自由文本事实账本
+  l1_school_router.py        已落地 · route_schools 规则式适用性路由（尚未进生产）
+  l2_claims.py               已落地 · 授权流派命题
+  l3_structure.py            已落地 · 结构合法性
+  l4_events.py               已落地 · 事件落地
+  l5_timing.py               已落地 · 应期概率
+  l6_arbitration.py          已落地 · 冲突仲裁
+  l7_report_view.py          已落地 · 报告视图
+  l8_feedback_attribution.py 已落地 · 反馈归因
+  l9_calibration.py          已落地 · 校准动作
+  orchestrator.py            已落地 · run_decision_mvp 内存 L0-L9 证明物
+  v5_adapter.py              需重构 · _school_applicability 反推适用性，是倒置依赖根源
 ```
+
+核心待办不是新增文件，而是修 [`v5_adapter.py`](../engine/decision/v5_adapter.py:70)：让 L1 路由前置于 L2，删除“从命题反推适用性”。
 
 现有模块重新定位：
 
@@ -675,130 +758,81 @@ engine/decision/
 
 ---
 
-## 18. 分阶段落地路线
+## 18. 分阶段落地路线（基于现状）
 
-### Phase 1：立契约，不改行为
+前提：L0-L9 数据契约、各层实现、`run_decision_mvp` 与 `validate_trace` 已落地。以下阶段不是从零建设，而是把倒置的生产路径扳正、再逐步接学习回路。已完成项不重复建设。
 
-目标：先定边界，防止继续混乱。
+### 已完成（现状核对）
 
-产物：
+1. L0-L9 数据模型：[`engine/decision/models.py`](../engine/decision/models.py:31)。
+2. 全链路校验：[`DecisionRun.validate_trace()`](../engine/decision/models.py:320)。
+3. 规则式 L1 路由：[`route_schools()`](../engine/decision/l1_school_router.py:52)。
+4. 内存 L0-L9 证明物：[`run_decision_mvp()`](../engine/decision/orchestrator.py:34)。
+5. preprod 已消费 decision 派生：[`engine/v5/preprod.py`](../engine/v5/preprod.py:18)。
 
-1. L0 到 L9 数据模型草案。
-2. 每层输入 / 输出 / 禁止事项。
-3. 流派适用性路由规则草案。
-4. 分层反馈归因规则草案。
+### Phase R1：扳正生产路由依赖（核心）
 
-不做：
+> 状态：已完成（route_schools 已前置于生产 v5→decision，_school_applicability 已删除，回归测试见 tests/test_decision_v5_adapter.py）。
 
-1. 不切生产入口。
-2. 不改旧报告。
-3. 不删除旧 pipeline。
+目标：删除“先发言后追认适用性”，让 L1 前置。
 
-### Phase 2：实现 L0 问真事实账本
+动作：
 
-目标：接收问真专业文本，输出 L0 事实账本。
+1. 在生产 v5→decision 链路中，先用真实适用性路由决定授权流派，再让 L2 只接受被授权流派命题。
+2. 删除或降级 [`_school_applicability()`](../engine/decision/v5_adapter.py:70) 的“从命题池反推”逻辑。
+3. `abstain` 流派命题被 `validate_trace()` 判非法，作为回归护栏。
 
-验收：
+验收：生产链路产出的 DecisionRun，其 L1 适用性来自路由而非命题池；`validate_trace()` 返回空。
 
-1. 能解析 `$BASE`。
-2. 能解析 `$FOUR`。
-3. 能解析 `$DY_LOOP`。
-4. `_` 登记为缺失但合法。
-5. 未知区块原样保留。
-6. 自由文本事实单独保存。
-7. 不输出命理判断。
+不做：不切默认报告入口，不改 legacy render_report 行为。
 
-### Phase 3：实现 L1 流派适用性路由
+### Phase R2：路由输入从盘面事实取信号
 
-目标：先决定哪些流派有资格发言。
+目标：让 L1 路由不只看四柱完整性，还能按盘面结构特征区分“该用哪派”。
 
-验收：
+动作：把结构、气势、做功、取象、应期等可判定的盘面信号接入 [`route_schools()`](../engine/decision/l1_school_router.py:52) 的打分。
 
-1. 每个流派都有 role。
-2. 至少支持 lead、co_lead、evidence_only、abstain。
-3. abstain 流派不进入后续裁判。
-4. evidence_only 流派只能提供旁证。
-5. 每个 role 都有 reasons 和 blockers。
+验收：不同结构类型的命盘产出不同的 lead / evidence_only 分布，且每个 role 有 reasons 与 blockers。
 
-### Phase 4：L2 独立命题账本
+### Phase R3：反馈归因回打到路由与层
 
-目标：被授权流派独立输出 SchoolClaim。
+目标：把 L8 归因结果接回 L1 适用性画像与 L9 校准动作。
 
-验收：
+动作：
 
-1. 每条 claim 有 school、domain、statement、evidence、falsifier。
-2. 不输出最终综合结论。
-3. 不提前融合。
+1. 反馈按层归因（已有 [`FeedbackAttribution`](../engine/decision/models.py:266)）。
+2. 某派在特定结构 / 域 / 事件类型连续失验，触发 L9 对 `school_profile` / `router` 的 downgrade / review。
 
-### Phase 5：L3 到 L6 裁判链最小闭环
+验收：`CalibrationAction` 能以 feedback 证据下调流派路由角色，且 evidence_feedback_ids 绑定到已归因反馈。
 
-目标：先实现可追踪，不追求完美。
+### Phase R4：分层准确率看板
 
-最小要求：
+目标：用 §16 指标按层、按域、按事件类型统计，而非单一总准确率。
 
-1. L3 能 pass / weaken / reject。
-2. L4 能生成事件假设。
-3. L5 能生成时间窗和概率。
-4. L6 能处理 winner / coexist / unresolved / reject_all。
-
-### Phase 6：L7 报告只读裁判结果
-
-目标：报告层不再补推理。
-
-验收：
-
-1. 每个报告条目有链路 ID。
-2. 报告句子可反查到 L0 原始事实。
-3. 报告不生成无来源断语。
-
-### Phase 7：L8 / L9 学习闭环
-
-目标：从命中 / 失验升级到分层归因和治理动作。
-
-验收：
-
-1. 反馈能归因到层。
-2. 反馈能更新流派适用性。
-3. 反馈能更新规则或裁判策略。
-4. 长期失效对象可降级、冻结、淘汰。
+验收：能回答“哪一层准确、哪一层拖后腿”，为 L9 提供校准依据。
 
 ---
 
-## 19. 第一证明物
+## 19. 第一证明物与证伪口径
 
-最小证明物不是完整系统，而是一个内存中的 DecisionRun。
+内存 DecisionRun 证明物已由 [`run_decision_mvp()`](../engine/decision/orchestrator.py:34) 落地，链路校验由 [`DecisionRun.validate_trace()`](../engine/decision/models.py:320) 保证。因此本轮重构的第一证明物不是“再跑一次 MVP”，而是证明**生产路径的 L1 路由是前置的、不是反推的**。
 
-输入：一段问真专业文本。
+### 19.1 First Proof Point（最小、可证）
 
-输出：
+用一个正式 case 跑生产 v5→decision 链路，断言：
 
-```text
-DecisionRun
-- L0: ChartFactLedger
-- L1: SchoolApplicabilityMatrix
-- L2: 至少 3 条 SchoolClaim
-- L3: 至少 3 条 StructuralVerdict
-- L4: 至少 2 条 EventHypothesis
-- L5: 至少 1 条 TimingProbability
-- L6: 至少 1 条 ArbitrationDecision
-- L7: 至少 1 条 ReportViewItem
-```
+1. DecisionRun 的 `school_applicability` 来自真实路由（含 `abstain` / `evidence_only` 分布），而非“命题池里出现过的流派全部 co_lead”。
+2. 存在至少一个流派被路由为 `abstain`，且其没有任何 L2 claim。
+3. [`validate_trace()`](../engine/decision/models.py:320) 返回空列表。
 
-验收链路：
+这是最小改动就能证明方向的切片：只要生产链路的 L1 不再由命题反推，方向即成立。
 
-```text
-ReportViewItem
-→ ArbitrationDecision
-→ TimingProbability
-→ EventHypothesis
-→ StructuralVerdict
-→ SchoolClaim
-→ SchoolApplicability
-→ ChartFactLedger
-→ RawWenzhenPayload
-```
+### 19.2 Falsifier（什么情况说明方向错了）
 
-如果链路不断，架构方向正确。
+1. 真实路由接入后，几乎所有命盘所有流派仍恒为 `lead / co_lead`，说明路由无区分力，L1 只是换了个橡皮图章。
+2. 路由前置后主要事件准确率不升反降，且 L8 归因显示错误集中在 L1，说明“先路由”假设本身有问题，需要回到 geju 重判。
+
+链路能追溯（L7→L0）只是必要条件；L1 有真实区分力且能被反馈校准，才是充分条件。
 
 ---
 
@@ -823,15 +857,17 @@ ReportViewItem
 
 ## 21. 近期最短行动清单
 
-1. 确认 L0 到 L9 分层命名和职责。
-2. 定义核心数据对象。
-3. 定义问真专业文本 L0 输入契约。
-4. 定义 SchoolApplicabilityMatrix。
-5. 定义 DecisionRun 链路追踪格式。
-6. 做 L0 parser 的最小实现。
-7. 做 L1 rule-based router 的最小实现。
-8. 做一个样例 DecisionRun。
-9. 再决定是否迁移现有 v5 runner。
+前 8 项已在 [`engine/decision/`](../engine/decision/) 落地，不重复建设。当前起点是第 9 项之后的“扳正生产路由”。
+
+已完成：L0-L9 命名与职责、核心数据对象、L0 输入契约、SchoolApplicabilityMatrix、DecisionRun 链路追踪与校验、L0 parser、L1 rule-based router、样例 DecisionRun。
+
+下一步（对应 Phase R1）：
+
+1. 在生产 v5→decision 链路让 [`route_schools()`](../engine/decision/l1_school_router.py:52) 前置，替换 [`_school_applicability()`](../engine/decision/v5_adapter.py:70) 的命题反推。
+2. 让 L2 只接受被 L1 授权的流派命题；`abstain` 流派不得产出 claim。
+3. 用一个正式 case 验证 §19.1 三条断言，并跑 [`validate_trace()`](../engine/decision/models.py:320) 返回空。
+4. 增加回归测试：断言生产链路不再从命题池反推适用性。
+5. 通过后再评估 Phase R2（路由信号增强）与是否迁移默认入口。
 
 ---
 

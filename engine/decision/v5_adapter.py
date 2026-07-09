@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
+from engine.decision.l1_school_router import route_schools
 from engine.decision.l8_feedback_attribution import build_feedback_attributions, build_feedback_signals
 from engine.decision.l9_calibration import build_calibration_actions
 from engine.decision.models import (
@@ -65,29 +66,6 @@ def _chart_to_ledger(output: V5Output, raw_hash: str) -> ChartFactLedger:
         missing_fields=missing,
         raw_source_hash=raw_hash,
     )
-
-
-def _school_applicability(output: V5Output) -> list[SchoolApplicability]:
-    schools = sorted({claim.school for claim in output.claims if claim.school and claim.claim_id})
-    result: list[SchoolApplicability] = []
-    for school in schools:
-        claims = [claim for claim in output.claims if claim.school == school and claim.claim_id]
-        domains = sorted({claim.domain for claim in claims if claim.domain})
-        abstain = all(claim.stance == "abstain" for claim in claims)
-        score = max((_clamp_confidence(claim.confidence.score) for claim in claims), default=0.0)
-        result.append(
-            SchoolApplicability(
-                school=school,
-                role="abstain" if abstain else "co_lead",
-                applicable_domains=domains,
-                applicability_score=round(score, 3),
-                reasons=["由 v5 命题池反推的迁移期适用性快照。"],
-                blockers=["v5 未显式提供 L1 路由，需后续替换为真实 router。"] if not abstain else ["v5 runner 弃权。"],
-                confidence=0.35,
-                falsifier="若 L1 router 接入后与该快照冲突，以显式 L1 路由为准。",
-            )
-        )
-    return result
 
 
 def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[SchoolClaim]:
@@ -255,7 +233,8 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
     raw_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
     payload = RawWenzhenPayload(raw_text=raw, raw_hash=raw_hash, parser_version="decision-v5-adapter")
     chart = _chart_to_ledger(output, raw_hash)
-    applicability = _school_applicability(output)
+    context = ContextFactLedger(preserved_text_blocks=["v5_adapter"])
+    applicability = route_schools(chart, context)
     claims = _claims(output, applicability)
     case_id = output.case_id or "V5-UNKNOWN"
     verdicts = _verdicts(case_id, claims)
@@ -283,7 +262,7 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
         case_id=case_id,
         raw_payload=payload,
         chart_ledger=chart,
-        context_ledger=ContextFactLedger(preserved_text_blocks=["v5_adapter"]),
+        context_ledger=context,
         school_applicability=applicability,
         school_claims=claims,
         structural_verdicts=verdicts,

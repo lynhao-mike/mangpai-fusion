@@ -15,7 +15,12 @@ def test_decision_run_from_v5_preserves_trace() -> None:
     assert run.case_id == output.case_id
     assert run.raw_payload.parser_version == "decision-v5-adapter"
     assert len(run.school_applicability) >= 5
-    assert len(run.school_claims) == len([c for c in output.claims if c.stance != "abstain"])
+    abstained_schools = {item.school for item in run.school_applicability if item.role == "abstain"}
+    expected_claims = [
+        c for c in output.claims
+        if c.claim_id and c.school and c.domain and c.school not in abstained_schools
+    ]
+    assert len(run.school_claims) == len(expected_claims)
     assert len(run.timing_probabilities) == len(output.prediction_ledger.predictions)
     assert run.report_items
     assert len(run.feedback_signals) == len(run.report_items)
@@ -119,7 +124,7 @@ def test_v5_adapter_filters_blank_school_claim_id_prediction_id_and_domain() -> 
 
     run = decision_run_from_v5(output)
 
-    assert [item.school for item in run.school_applicability] == ["duan_jianye"]
+    assert "duan_jianye" in {item.school for item in run.school_applicability}
     assert [item.claim_id for item in run.school_claims] == ["c-ok"]
     assert [item.event_id for item in run.event_hypotheses] == [run.event_hypotheses[0].event_id]
     assert [item.prediction_id for item in run.timing_probabilities] == ["p-ok"]
@@ -182,7 +187,7 @@ def test_v5_adapter_clamps_dirty_confidence_scores_to_trace_range() -> None:
 
     run = decision_run_from_v5(output)
 
-    assert run.school_applicability[0].applicability_score == 1.0
+    assert all(0.0 <= item.applicability_score <= 1.0 for item in run.school_applicability)
     assert run.school_claims[0].confidence == 1.0
     assert run.event_hypotheses[0].confidence == 0.0
     assert run.timing_probabilities[0].confidence == 0.0
@@ -719,3 +724,25 @@ def test_l9_freezes_repeated_review_target() -> None:
     assert actions[0].action == "freeze"
     assert actions[0].target_id == "same-target"
     assert actions[0].evidence_feedback_ids == ["fb-0", "fb-1", "fb-2"]
+
+
+def test_l1_applicability_comes_from_router_not_claim_pool() -> None:
+    output = run_v5({"case_id": "C-TEST-L1-ROUTER", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+
+    run = decision_run_from_v5(output)
+
+    applicability_schools = {item.school for item in run.school_applicability}
+    claim_schools = {item.school for item in run.school_claims}
+
+    assert "ren_fuhong" in applicability_schools
+    assert "ren_fuhong" not in claim_schools
+    assert run.validate_trace() == []
+
+
+def test_l1_router_reasons_are_not_claim_pool_placeholder() -> None:
+    output = run_v5({"case_id": "C-TEST-L1-REASON", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+
+    run = decision_run_from_v5(output)
+
+    joined_reasons = " ".join(reason for item in run.school_applicability for reason in item.reasons)
+    assert "命题池反推" not in joined_reasons
