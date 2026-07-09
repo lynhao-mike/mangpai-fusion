@@ -324,8 +324,11 @@ class DecisionRun:
         applicability = {item.school for item in self.school_applicability}
         claims = {item.claim_id for item in self.school_claims}
         verdicts = {item.verdict_id for item in self.structural_verdicts}
+        verdict_by_id = {item.verdict_id: item for item in self.structural_verdicts}
         events = {item.event_id for item in self.event_hypotheses}
         timings = {item.prediction_id for item in self.timing_probabilities}
+        timing_event_by_prediction = {item.prediction_id: item.event_id for item in self.timing_probabilities}
+        event_ids_by_decision = {item.decision_id: set(item.competing_event_ids) for item in self.arbitration_decisions}
         decisions = {item.decision_id for item in self.arbitration_decisions}
         report_items = {item.report_item_id for item in self.report_items}
         feedbacks = {item.feedback_id for item in self.feedback_signals}
@@ -342,9 +345,18 @@ class DecisionRun:
             if verdict.claim_id not in claims:
                 issues.append(f"L3 verdict 未绑定 L2 claim: {verdict.verdict_id}")
         for event in self.event_hypotheses:
+            if not event.source_verdict_ids:
+                issues.append(f"L4 event 缺少 L3 verdict 来源: {event.event_id}")
             missing = [item for item in event.source_verdict_ids if item not in verdicts]
             if missing:
                 issues.append(f"L4 event 未绑定 L3 verdict: {event.event_id}")
+            blocked = [
+                item
+                for item in event.source_verdict_ids
+                if item in verdict_by_id and verdict_by_id[item].verdict not in {"pass", "weaken"}
+            ]
+            if blocked:
+                issues.append(f"L4 event 绑定未通过的 L3 verdict: {event.event_id}")
         for timing in self.timing_probabilities:
             if timing.event_id not in events:
                 issues.append(f"L5 timing 未绑定 L4 event: {timing.prediction_id}")
@@ -352,11 +364,20 @@ class DecisionRun:
             missing = [item for item in decision.competing_event_ids if item not in events]
             if missing:
                 issues.append(f"L6 decision 未绑定 L4 event: {decision.decision_id}")
+            result_missing = [
+                item
+                for item in decision.winner_ids + decision.rejected_ids + decision.unresolved_ids
+                if item not in events
+            ]
+            if result_missing:
+                issues.append(f"L6 decision 结果 ID 未绑定 L4 event: {decision.decision_id}")
         for item in self.report_items:
             if item.decision_id not in decisions:
                 issues.append(f"L7 report item 未绑定 L6 decision: {item.report_item_id}")
             if item.prediction_id and item.prediction_id not in timings:
                 issues.append(f"L7 report item 未绑定 L5 timing: {item.report_item_id}")
+            elif item.prediction_id and timing_event_by_prediction[item.prediction_id] not in event_ids_by_decision.get(item.decision_id, set()):
+                issues.append(f"L7 report item 的 L5 timing 不属于 L6 decision: {item.report_item_id}")
         for signal in self.feedback_signals:
             if signal.report_item_id not in report_items:
                 issues.append(f"L8 feedback signal 未绑定 L7 report item: {signal.feedback_id}")

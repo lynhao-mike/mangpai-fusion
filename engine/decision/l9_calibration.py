@@ -16,9 +16,9 @@ def build_calibration_actions(case_id: str, attributions: list[FeedbackAttributi
         for item in attributions
         if item.requires_human_review and item.affected_layer in {"L1", "L2", "L3", "L4", "L5", "L6", "L7"}
     ]
-    by_target: dict[str, list[FeedbackAttribution]] = {}
+    by_target: dict[tuple[str, str], list[FeedbackAttribution]] = {}
     for item in reviewable:
-        by_target.setdefault(item.affected_object_id, []).append(item)
+        by_target.setdefault((item.affected_layer, item.affected_object_id), []).append(item)
 
     actions: list[CalibrationAction] = []
     for idx, items in enumerate(by_target.values(), start=1):

@@ -120,12 +120,14 @@ def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict
 
 def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict]) -> list[EventHypothesis]:
     source_ids = [item.verdict_id for item in verdicts if item.verdict in {"pass", "weaken"}]
+    if not source_ids:
+        return []
     events: list[EventHypothesis] = []
     for prediction in output.prediction_ledger.predictions:
         events.append(
             EventHypothesis(
                 event_id=_stable_id("dev", case_id, prediction.prediction_id),
-                source_verdict_ids=source_ids[:3] or [verdicts[0].verdict_id],
+                source_verdict_ids=source_ids[:3],
                 domain=prediction.domain,
                 event_type="v5_prediction",
                 subject=prediction.domain,
@@ -149,6 +151,7 @@ def _timings(case_id: str, output: V5Output, event_by_prediction: dict[str, str]
             falsifier=prediction.falsifier,
         )
         for prediction in output.prediction_ledger.predictions
+        if prediction.prediction_id in event_by_prediction
     ]
 
 
@@ -157,7 +160,7 @@ def _decisions(case_id: str, output: V5Output, events: list[EventHypothesis], ap
     for event in events:
         events_by_domain.setdefault(event.domain, []).append(event.event_id)
     decisions: list[ArbitrationDecision] = []
-    for result in output.arbitration_results:
+    for idx, result in enumerate(output.arbitration_results, start=1):
         if result.stage != "event_realization":
             continue
         competing = events_by_domain.get(result.domain, [])
@@ -165,11 +168,11 @@ def _decisions(case_id: str, output: V5Output, events: list[EventHypothesis], ap
             continue
         decisions.append(
             ArbitrationDecision(
-                decision_id=_stable_id("dad", case_id, result.domain, result.stage),
+                decision_id=_stable_id("dad", case_id, result.domain, result.stage, idx),
                 domain=result.domain,
                 competing_event_ids=competing,
                 result="winner" if result.winning_schools else "unresolved",
-                winner_ids=competing[:1] if result.winning_schools else [],
+                winner_ids=competing if result.winning_schools else [],
                 unresolved_ids=[] if result.winning_schools else competing,
                 arbitration_rule="由 v5 event_realization 仲裁结果迁移。",
                 school_applicability_snapshot=applicability,
@@ -183,19 +186,20 @@ def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: l
     timing_by_domain = {timing.event_id: timing for timing in timings}
     items: list[ReportViewItem] = []
     for decision in decisions:
-        event_id = decision.winner_ids[0] if decision.winner_ids else decision.competing_event_ids[0]
-        timing = timing_by_domain.get(event_id)
-        items.append(
-            ReportViewItem(
-                report_item_id=_stable_id("drv", case_id, decision.decision_id),
-                decision_id=decision.decision_id,
-                prediction_id=timing.prediction_id if timing else "",
-                display_text=f"{decision.domain}：{decision.reason}",
-                confidence_display="迁移期，以 v5 置信度为准",
-                evidence_summary="L7 只读 v5→decision 适配后的 L6/L5 结果。",
-                feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
+        event_ids = decision.winner_ids or decision.competing_event_ids
+        for idx, event_id in enumerate(event_ids, start=1):
+            timing = timing_by_domain.get(event_id)
+            items.append(
+                ReportViewItem(
+                    report_item_id=_stable_id("drv", case_id, decision.decision_id, idx),
+                    decision_id=decision.decision_id,
+                    prediction_id=timing.prediction_id if timing else "",
+                    display_text=f"{decision.domain}：{decision.reason}",
+                    confidence_display="迁移期，以 v5 置信度为准",
+                    evidence_summary="L7 只读 v5→decision 适配后的 L6/L5 结果。",
+                    feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
+                )
             )
-        )
     return items
 
 

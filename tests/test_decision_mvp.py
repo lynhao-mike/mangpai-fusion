@@ -17,7 +17,9 @@ from engine.decision.models import (
     EventHypothesis,
     FeedbackAttribution,
     FeedbackSignal,
+    ReportViewItem,
     SchoolClaim,
+    StructuralVerdict,
     TimingProbability,
 )
 
@@ -150,6 +152,72 @@ $FOCUS
     assert all(item.reasons for item in routed.values())
 
 
+def test_l2_evidence_only_role_does_not_emit_structure_claim() -> None:
+    from engine.decision.models import ChartFactLedger, SchoolApplicability
+
+    claims = build_school_claims(
+        "C-TEST",
+        [
+            SchoolApplicability(
+                school="ziping",
+                role="evidence_only",
+                applicable_domains=["事业"],
+                applicability_score=0.35,
+            )
+        ],
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}),
+    )
+
+    assert len(claims) == 1
+    assert claims[0].claim_type == "evidence"
+    assert "旁证" in claims[0].statement
+
+
+
+def test_l2_evidence_only_role_does_not_emit_timing_claim() -> None:
+    from engine.decision.models import ChartFactLedger, SchoolApplicability
+
+    claims = build_school_claims(
+        "C-TEST",
+        [
+            SchoolApplicability(
+                school="ren_fuhong",
+                role="evidence_only",
+                applicable_domains=["应期"],
+                applicability_score=0.35,
+            )
+        ],
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}),
+    )
+
+    assert len(claims) == 1
+    assert claims[0].claim_type == "evidence"
+    assert "旁证" in claims[0].statement
+
+
+
+def test_l2_evidence_only_role_does_not_emit_event_claim() -> None:
+    from engine.decision.models import ChartFactLedger, SchoolApplicability
+
+    claims = build_school_claims(
+        "C-TEST",
+        [
+            SchoolApplicability(
+                school="duan_jianye",
+                role="evidence_only",
+                applicable_domains=["事业"],
+                applicability_score=0.4,
+            )
+        ],
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}),
+    )
+
+    assert len(claims) == 1
+    assert claims[0].claim_type == "evidence"
+    assert "旁证" in claims[0].statement
+
+
+
 def test_l3_structure_can_reject_very_low_confidence_claim() -> None:
     verdict = build_structural_verdicts(
         "C-TEST",
@@ -267,6 +335,28 @@ def test_l6_arbitration_groups_events_by_domain() -> None:
 
 
 
+def test_l4_requires_passed_or_weakened_verdict_for_event_claim() -> None:
+    event_claim = SchoolClaim(
+        claim_id="claim-event",
+        school="duan_jianye",
+        role_granted_by_l1="co_lead",
+        domain="事业",
+        claim_type="event",
+        statement="事业事件命题。",
+        confidence=0.7,
+    )
+    rejected = StructuralVerdict(
+        verdict_id="verdict-reject",
+        claim_id="claim-event",
+        verdict="reject",
+        structural_reason="结构不成立。",
+    )
+
+    assert build_event_hypotheses("C-TEST", [], [event_claim]) == []
+    assert build_event_hypotheses("C-TEST", [rejected], [event_claim]) == []
+
+
+
 def test_l4_does_not_turn_evidence_only_claim_into_event() -> None:
     evidence_claim = SchoolClaim(
         claim_id="claim-evidence",
@@ -325,6 +415,125 @@ def test_l7_report_items_follow_each_arbitration_decision_and_matching_timing() 
     assert [item.decision_id for item in items] == ["d-a", "d-b"]
     assert [item.prediction_id for item in items] == ["t-a", "t-b"]
     assert all(item.display_text for item in items)
+
+
+
+def test_decision_run_validate_trace_checks_l4_event_source_verdict_status() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    rejected = StructuralVerdict(
+        verdict_id="verdict-reject",
+        claim_id=run.school_claims[0].claim_id,
+        verdict="reject",
+        structural_reason="结构不成立。",
+    )
+    empty_source_event = EventHypothesis(
+        event_id="event-empty-source",
+        source_verdict_ids=[],
+        domain="事业",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+    )
+    rejected_source_event = EventHypothesis(
+        event_id="event-rejected-source",
+        source_verdict_ids=["verdict-reject"],
+        domain="事业",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "structural_verdicts": [rejected],
+            "event_hypotheses": [empty_source_event, rejected_source_event],
+            "timing_probabilities": [],
+            "arbitration_decisions": [],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L4 event 缺少 L3 verdict 来源" in issue for issue in issues)
+    assert any("L4 event 绑定未通过的 L3 verdict" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_l6_result_ids_and_l7_prediction_scope() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    event_ids = [item.event_id for item in run.event_hypotheses]
+    assert len(event_ids) >= 2
+    decision = ArbitrationDecision(
+        decision_id="d-broken-scope",
+        domain="事业",
+        competing_event_ids=[event_ids[0]],
+        result="winner",
+        winner_ids=["missing-winner"],
+        rejected_ids=["missing-rejected"],
+        unresolved_ids=["missing-unresolved"],
+    )
+    timing = TimingProbability(prediction_id="t-other-event", event_id=event_ids[1])
+    report_item = ReportViewItem(report_item_id="rv-wrong-scope", decision_id="d-broken-scope", prediction_id="t-other-event")
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "arbitration_decisions": [decision],
+            "timing_probabilities": [timing],
+            "report_items": [report_item],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L6 decision 结果 ID 未绑定 L4 event" in issue for issue in issues)
+    assert any("L7 report item 的 L5 timing 不属于 L6 decision" in issue for issue in issues)
+
+
+
+def test_l7_coexist_decision_keeps_each_winner_feedback_point() -> None:
+    decision = ArbitrationDecision(
+        decision_id="d-coexist",
+        domain="事业",
+        competing_event_ids=["e-a", "e-b"],
+        result="coexist",
+        winner_ids=["e-a", "e-b"],
+    )
+    timing_a = TimingProbability(prediction_id="t-a", event_id="e-a")
+    timing_b = TimingProbability(prediction_id="t-b", event_id="e-b")
+
+    items = build_report_items("C-TEST", [decision], [timing_a, timing_b])
+
+    assert [item.prediction_id for item in items] == ["t-a", "t-b"]
+    assert [item.decision_id for item in items] == ["d-coexist", "d-coexist"]
 
 
 

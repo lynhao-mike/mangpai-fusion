@@ -19,11 +19,11 @@ def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], clai
     passed = [item.verdict_id for item in verdicts if item.verdict in {"pass", "weaken"}]
     event_claims = [item for item in claims if item.claim_type == "event" and item.role_granted_by_l1 != "evidence_only"]
     events: list[EventHypothesis] = []
-    for claim in event_claims[:2]:
+    for claim in event_claims[:2] if passed else []:
         events.append(
             EventHypothesis(
                 event_id=_stable_id("dev", case_id, claim.claim_id),
-                source_verdict_ids=passed[:2] or [_stable_id("dsv", case_id, claim.claim_id)],
+                source_verdict_ids=passed[:2],
                 domain=claim.domain,
                 event_type="可反馈现实事件",
                 subject=claim.school,

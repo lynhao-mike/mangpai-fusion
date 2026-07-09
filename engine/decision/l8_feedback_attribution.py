@@ -30,11 +30,35 @@ def attribute_feedback(signal: FeedbackSignal) -> FeedbackAttribution:
     """
 
     text = f"{signal.observed_fact}\n{signal.observed_time}\n{signal.notes}"
-    if "事件类型" in text or "类型错" in text:
+    if "输入矛盾" in text or "事实矛盾" in text or "补充事实" in text or "事实录入错" in text:
+        layer = "L0"
+        reason = "反馈指出输入事实或补充事实存在矛盾，优先回打输入事实层。"
+        review = True
+    elif "流派选错" in text or "流派不适用" in text or "主审连续失验" in text or "主审失验" in text:
+        layer = "L1"
+        reason = "反馈指出流派路由或主审选择可能失误，优先回打流派适用性层。"
+        review = True
+    elif "原命题" in text or "命题弱" in text or "命题不成立" in text:
+        layer = "L2"
+        reason = "反馈指出原始命题基础较弱，优先回打派别独立命题层。"
+        review = True
+    elif "结构基础" in text or "结构弱" in text or "结构不成立" in text or "结构审查" in text:
+        layer = "L3"
+        reason = "反馈指出结构基础或结构审查存在问题，优先回打结构合法性层。"
+        review = True
+    elif "事件类型" in text or "类型错" in text or "事件落点错" in text:
         layer = "L4"
         reason = "反馈指出事件类型错误，优先回打事件落地层。"
         review = True
-    elif "年份偏差" in text or "时间偏差" in text or "应期" in text:
+    elif "两派冲突" in text or "选错一方" in text or "仲裁选错" in text:
+        layer = "L6"
+        reason = "反馈指出冲突仲裁可能选错路径，优先回打仲裁策略层。"
+        review = True
+    elif "只是倾向" in text or "实际只是倾向" in text or "报告失真" in text or "措辞过满" in text:
+        layer = "L7"
+        reason = "反馈指出报告表达过度确定，优先回打报告表达层。"
+        review = True
+    elif "年份偏差" in text or "月份偏差" in text or "时间偏差" in text or "时间窗错" in text or "应期" in text:
         layer = "L5"
         reason = "反馈指出时间或应期偏差，优先回打应期概率层。"
         review = True

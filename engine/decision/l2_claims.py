@@ -29,6 +29,9 @@ def build_school_claims(case_id: str, applicability: list[SchoolApplicability], 
         if item.role == "abstain":
             continue
         domain, claim_type, text = templates[item.school]
+        if item.role == "evidence_only" and claim_type in {"structure", "event", "timing"}:
+            claim_type = "evidence"
+            text = f"旁证参考：{text}"
         claims.append(
             SchoolClaim(
                 claim_id=_stable_id("dcl", case_id, item.school, domain, claim_type),
