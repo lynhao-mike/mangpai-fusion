@@ -798,6 +798,8 @@ engine/decision/
 
 ### Phase R3：反馈归因回打到路由与层
 
+> 状态：部分完成（单 run 内 miss 反馈已能回打到责任流派、产出 router 校准动作，见 [`tests/test_l9_router_calibration.py`](../tests/test_l9_router_calibration.py)）。跨 case 连续失验的聚合与真正改变未来路由属 R4，尚未实现。
+
 目标：把 L8 归因结果接回 L1 适用性画像与 L9 校准动作。
 
 动作：
