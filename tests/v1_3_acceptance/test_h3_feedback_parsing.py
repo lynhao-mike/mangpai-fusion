@@ -468,3 +468,26 @@ def test_v5_feedback_attachment_validation_reports_target_mismatch(tmp_path):
 
     assert summary["status"] == "mismatch"
     assert "feedback target prediction_id not found in run snapshot: missing-prediction" in summary["issues"]
+
+
+def test_ingest_includes_v5_feedback_attachment_summary_without_unblocking_learning(tmp_path, monkeypatch):
+    import tools.feedback_ingest as fi
+    from engine.v5 import V5FeedbackAttachment, run_v5_snapshot
+
+    case_dir = tmp_path / "C-TEST-INGEST-ATTACH"
+    case_dir.mkdir()
+    (case_dir / "feedback.md").write_text("鍙嶉锛歔S-ATTACH-001] [y]", encoding="utf-8")
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-INGEST-ATTACH", "pillars": ["鐢插瓙", "涔欎笐", "涓欏瘏", "涓佸嵂"]})
+    (case_dir / "case.run.json").write_text(snapshot.to_json(), encoding="utf-8")
+    (case_dir / "case.feedback-attachment.json").write_text(
+        V5FeedbackAttachment.from_run_snapshot(snapshot).to_json(),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(fi, "find_case_dir", lambda case_id: case_dir)
+
+    result = fi.ingest("C-TEST-INGEST-ATTACH", dry_run=True)
+
+    assert result.skipped_no_index is True
+    assert result.learning_sample_count == 0
+    assert result.phase_a_learning_summary["v5_feedback_attachment"]["status"] == "ok"
+    assert result.phase_a_learning_summary["v5_feedback_attachment"]["run_id"] == snapshot.run_id

@@ -825,6 +825,7 @@ def ingest(
 
     case_dir = find_case_dir(case_id)
     full_case_id = case_dir.name
+    v5_feedback_attachment_summary = _validate_v5_feedback_attachment(case_dir, full_case_id)
 
     feedback_path = case_dir / "feedback.md"
     if not feedback_path.exists():
@@ -882,7 +883,10 @@ def ingest(
                 unmapped_rows=len(feedbacks),
                 needs_mapping_repair_rows=len(feedbacks),
             ),
-            phase_a_learning_summary={"v5_prediction_feedback": prediction_feedback_summary},
+            phase_a_learning_summary={
+                "v5_prediction_feedback": prediction_feedback_summary,
+                "v5_feedback_attachment": v5_feedback_attachment_summary,
+            },
         )
         if not dry_run:
             with timing.step("bump_state"):
@@ -956,6 +960,7 @@ def ingest(
         phase_a_learning_summary={
             **phase_a_learning_summary,
             "v5_prediction_feedback": prediction_feedback_summary,
+            "v5_feedback_attachment": v5_feedback_attachment_summary,
         },
     )
     if not dry_run:
