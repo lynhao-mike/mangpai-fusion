@@ -44,6 +44,78 @@ def test_v5_adapter_builds_one_report_item_per_event_realization_decision() -> N
 
 
 
+def test_v5_adapter_falls_back_blank_case_id_and_records_incomplete_pillars() -> None:
+    output = V5Output(
+        case_id="",
+        chart={"pillars": ["甲子", "乙丑"]},
+    )
+
+    run = decision_run_from_v5(output)
+
+    assert run.case_id == "V5-UNKNOWN"
+    assert run.run_id
+    assert run.chart_ledger.four_pillars == {"year": "甲子", "month": "乙丑"}
+    assert "$FOUR.day" in run.chart_ledger.missing_fields
+    assert "$FOUR.hour" in run.chart_ledger.missing_fields
+    assert run.validate_trace() == []
+
+
+
+def test_v5_adapter_filters_blank_school_claim_id_prediction_id_and_domain() -> None:
+    output = V5Output(
+        case_id="C-TEST-V5-BLANKS",
+        claims=[
+            V5Claim(
+                claim_id="",
+                school="ziping",
+                domain="事业",
+                claim="空 claim_id 应跳过",
+                claim_type="event_claim",
+                confidence=V5Confidence(score=0.7),
+            ),
+            V5Claim(
+                claim_id="c-blank-school",
+                school="",  # type: ignore[arg-type]
+                domain="事业",
+                claim="空 school 应跳过",
+                claim_type="event_claim",
+                confidence=V5Confidence(score=0.7),
+            ),
+            V5Claim(
+                claim_id="c-ok",
+                school="duan_jianye",
+                domain="事业",
+                claim="有效命题",
+                claim_type="event_claim",
+                confidence=V5Confidence(score=0.7),
+            ),
+        ],
+        arbitration_results=[
+            V5ArbitrationResult(domain="", stage="event_realization", conclusion="空领域仲裁", winning_schools=["duan_jianye"]),
+            V5ArbitrationResult(domain="事业", stage="event_realization", conclusion="事业成立", winning_schools=["duan_jianye"]),
+        ],
+        prediction_ledger=V5PredictionLedger(
+            case_id="C-TEST-V5-BLANKS",
+            predictions=[
+                V5Prediction(prediction_id="", domain="事业", event_label="空 prediction_id", probability_range=(0.3, 0.6), confidence=V5Confidence(score=0.5)),
+                V5Prediction(prediction_id="p-blank-domain", domain="", event_label="空 domain", probability_range=(0.3, 0.6), confidence=V5Confidence(score=0.5)),
+                V5Prediction(prediction_id="p-ok", domain="事业", event_label="有效预测", probability_range=(0.3, 0.6), confidence=V5Confidence(score=0.5)),
+            ],
+        ),
+    )
+
+    run = decision_run_from_v5(output)
+
+    assert [item.school for item in run.school_applicability] == ["duan_jianye"]
+    assert [item.claim_id for item in run.school_claims] == ["c-ok"]
+    assert [item.event_id for item in run.event_hypotheses] == [run.event_hypotheses[0].event_id]
+    assert [item.prediction_id for item in run.timing_probabilities] == ["p-ok"]
+    assert len(run.arbitration_decisions) == 1
+    assert run.arbitration_decisions[0].domain == "事业"
+    assert run.validate_trace() == []
+
+
+
 def test_v5_adapter_does_not_create_orphan_events_without_claims() -> None:
     output = V5Output(
         case_id="C-TEST-V5-NO-CLAIMS",

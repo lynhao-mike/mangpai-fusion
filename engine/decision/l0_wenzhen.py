@@ -47,7 +47,7 @@ def _parse_base(text: str, missing: list[str]) -> dict[str, str]:
         key = match.group("key").strip()
         value = match.group("value").strip()
         data[key] = value
-        if value == "_":
+        if value in {"", "_"}:
             missing.append(f"$BASE.{key}")
     return data
 
@@ -64,7 +64,7 @@ def _parse_four(text: str, missing: list[str]) -> dict[str, str]:
         key = PILLAR_KEYS[match.group("pillar")]
         body = match.group("body").strip()
         four[key] = body
-        if body == "_":
+        if body in {"", "_"}:
             missing.append(f"$FOUR.{key}")
     for marker, key in PILLAR_KEYS.items():
         if key not in four:
@@ -102,6 +102,8 @@ def parse_wenzhen_l0(raw_text: str, *, captured_at: str = "") -> tuple[RawWenzhe
     for required in ("BASE", "FOUR", "DY_LOOP"):
         if required not in blocks:
             missing.append(f"${required}")
+    if "BASE" not in blocks:
+        missing.append("$BASE.命式")
 
     base = _parse_base(blocks.get("BASE", ""), missing)
     four = _parse_four(blocks.get("FOUR", ""), missing)

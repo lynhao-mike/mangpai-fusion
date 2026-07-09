@@ -17,6 +17,8 @@ def build_arbitration_decisions(case_id: str, events: list[EventHypothesis], app
 
     events_by_domain: dict[str, list[EventHypothesis]] = {}
     for event in events:
+        if not event.domain:
+            continue
         events_by_domain.setdefault(event.domain, []).append(event)
 
     decisions: list[ArbitrationDecision] = []

@@ -35,4 +35,5 @@ def build_timing_probabilities(case_id: str, events: list[EventHypothesis]) -> l
             falsifier="若时间窗内该事件无现实对应，则 L5 失验；若事件类型也错，则回打 L4。",
         )
         for event in events
+        if event.event_id
     ]

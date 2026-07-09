@@ -12,7 +12,7 @@ def build_context_ledger(blocks: dict[str, str], unknown_blocks: list[str]) -> C
     """从 L0 文本区块构造上下文账本。"""
 
     return ContextFactLedger(
-        known_fact_text=blocks.get("KNOWN_FACTS", ""),
-        analysis_focus_text=blocks.get("FOCUS", ""),
+        known_fact_text=blocks.get("KNOWN_FACTS", "").strip(),
+        analysis_focus_text=blocks.get("FOCUS", "").strip(),
         preserved_text_blocks=[f"${name}\n{blocks[name]}" for name in unknown_blocks],
     )

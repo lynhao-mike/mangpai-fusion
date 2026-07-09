@@ -16,14 +16,19 @@ def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], clai
     """把结构审查后的命题落成可反馈事件；不改写结构裁决。"""
 
     claim_by_id = {item.claim_id: item for item in claims}
-    passed = [item.verdict_id for item in verdicts if item.verdict in {"pass", "weaken"}]
+    claim_domain_by_id = {item.claim_id: item.domain for item in claims}
+    passed_by_domain: dict[str, list[str]] = {}
+    for verdict in verdicts:
+        if verdict.verdict in {"pass", "weaken"}:
+            passed_by_domain.setdefault(claim_domain_by_id.get(verdict.claim_id, ""), []).append(verdict.verdict_id)
     event_claims = [item for item in claims if item.claim_type == "event" and item.role_granted_by_l1 != "evidence_only"]
     events: list[EventHypothesis] = []
-    for claim in event_claims[:2] if passed else []:
+    supported_event_claims = [item for item in event_claims if passed_by_domain.get(item.domain) or passed_by_domain.get("总体")]
+    for claim in supported_event_claims[:2]:
         events.append(
             EventHypothesis(
                 event_id=_stable_id("dev", case_id, claim.claim_id),
-                source_verdict_ids=passed[:2],
+                source_verdict_ids=(passed_by_domain.get(claim.domain) or passed_by_domain.get("总体") or [])[:2],
                 domain=claim.domain,
                 event_type="可反馈现实事件",
                 subject=claim.school,
@@ -32,7 +37,7 @@ def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], clai
                 confidence=min(0.65, claim.confidence),
             )
         )
-    if not events and verdicts:
+    if not events and verdicts and not event_claims:
         claim = claim_by_id[verdicts[0].claim_id]
         if claim.claim_type != "structure":
             return []

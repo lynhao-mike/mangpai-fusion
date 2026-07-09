@@ -28,6 +28,8 @@ def build_school_claims(case_id: str, applicability: list[SchoolApplicability], 
     for item in applicability:
         if item.role == "abstain":
             continue
+        if item.school not in templates:
+            continue
         domain, claim_type, text = templates[item.school]
         if item.role == "evidence_only" and claim_type in {"structure", "event", "timing"}:
             claim_type = "evidence"

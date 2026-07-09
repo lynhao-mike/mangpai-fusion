@@ -116,6 +116,58 @@ $DY_LOOP
     assert run.validate_trace() == []
 
 
+def test_l0_records_child_missing_fields_when_required_sections_are_absent() -> None:
+    run = run_decision_mvp("")
+
+    assert "$BASE" in run.chart_ledger.missing_fields
+    assert "$BASE.命式" in run.chart_ledger.missing_fields
+    assert "$FOUR" in run.chart_ledger.missing_fields
+    assert "$FOUR.Y" in run.chart_ledger.missing_fields
+    assert "$FOUR.M" in run.chart_ledger.missing_fields
+    assert "$FOUR.D" in run.chart_ledger.missing_fields
+    assert "$FOUR.H" in run.chart_ledger.missing_fields
+    assert "$DY_LOOP" in run.chart_ledger.missing_fields
+
+
+
+def test_l0_treats_empty_base_and_four_values_as_missing() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式:
+$FOUR
+Y:
+M:乙丑
+D:丙寅
+H:丁卯
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+
+    assert "$BASE.命式" in run.chart_ledger.missing_fields
+    assert "$FOUR.year" in run.chart_ledger.missing_fields
+
+
+
+def test_l0_context_strips_known_facts_and_focus_text() -> None:
+    context = build_context_ledger(
+        {"KNOWN_FACTS": "  已知事业变化  ", "FOCUS": "  事业  "},
+        [],
+    )
+
+    assert context.known_fact_text == "已知事业变化"
+    assert context.analysis_focus_text == "事业"
+
+
+
+def test_l0_preserves_captured_at_on_raw_payload() -> None:
+    from engine.decision import parse_wenzhen_l0
+
+    payload, _, _ = parse_wenzhen_l0("", captured_at="2026-07-09T00:00:00Z")
+
+    assert payload.captured_at == "2026-07-09T00:00:00Z"
+
+
+
 def test_l0_context_ledger_keeps_free_text_out_of_chart_facts() -> None:
     context = build_context_ledger(
         {"KNOWN_FACTS": "已知事业变化", "FOCUS": "事业", "EXTRA": "原文保留"},
@@ -150,6 +202,65 @@ $FOCUS
     assert routed["gao_dechen"].role == "abstain"
     assert routed["gao_dechen"].blockers
     assert all(item.reasons for item in routed.values())
+
+
+def test_l1_incomplete_four_pillars_downgrades_non_abstain_schools_to_evidence_only() -> None:
+    from engine.decision.models import ChartFactLedger, ContextFactLedger
+
+    routed = route_schools(
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "_", "day": "丙寅", "hour": "丁卯"}),
+        ContextFactLedger(analysis_focus_text="事业"),
+    )
+
+    assert all(item.role in {"evidence_only", "abstain"} for item in routed)
+    assert any(item.role == "evidence_only" for item in routed)
+
+
+
+def test_l1_focus_domains_understands_health_synonyms() -> None:
+    from engine.decision.models import ChartFactLedger, ContextFactLedger
+
+    routed = {item.school: item for item in route_schools(
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}),
+        ContextFactLedger(analysis_focus_text="身体疾病"),
+    )}
+
+    assert routed["ren_fuhong"].role != "abstain"
+
+
+
+def test_l2_skips_unknown_school_profile() -> None:
+    from engine.decision.models import ChartFactLedger, SchoolApplicability
+
+    claims = build_school_claims(
+        "C-TEST",
+        [SchoolApplicability(school="unknown_school", role="co_lead", applicable_domains=["事业"])],  # type: ignore[arg-type]
+        ChartFactLedger(four_pillars={"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}),
+    )
+
+    assert claims == []
+
+
+
+def test_l3_reject_confidence_stays_low() -> None:
+    verdict = build_structural_verdicts(
+        "C-TEST",
+        [
+            SchoolClaim(
+                claim_id="claim-low-confidence",
+                school="ziping",
+                role_granted_by_l1="lead",
+                domain="事业",
+                claim_type="structure",
+                statement="极低置信结构命题。",
+                confidence=0.05,
+            )
+        ],
+    )[0]
+
+    assert verdict.verdict == "reject"
+    assert verdict.confidence <= 0.1
+
 
 
 def test_l2_evidence_only_role_does_not_emit_structure_claim() -> None:
@@ -335,6 +446,100 @@ def test_l6_arbitration_groups_events_by_domain() -> None:
 
 
 
+def test_l4_event_claim_uses_only_same_domain_structural_support() -> None:
+    career_claim = SchoolClaim(
+        claim_id="claim-career-event",
+        school="duan_jianye",
+        role_granted_by_l1="co_lead",
+        domain="事业",
+        claim_type="event",
+        statement="事业事件命题。",
+        confidence=0.7,
+    )
+    health_structure = SchoolClaim(
+        claim_id="claim-health-structure",
+        school="ditiansui",
+        role_granted_by_l1="lead",
+        domain="健康",
+        claim_type="structure",
+        statement="健康结构命题。",
+        confidence=0.7,
+    )
+    verdict = build_structural_verdicts("C-TEST", [health_structure])[0]
+
+    assert build_event_hypotheses("C-TEST", [verdict], [career_claim, health_structure]) == []
+
+
+
+def test_decision_run_validate_trace_checks_required_ids_and_domains() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "school_applicability": [type(run.school_applicability[0])(**{**run.school_applicability[0].__dict__, "school": ""})],
+            "school_claims": [type(run.school_claims[0])(**{**run.school_claims[0].__dict__, "claim_id": ""})],
+            "event_hypotheses": [type(run.event_hypotheses[0])(**{**run.event_hypotheses[0].__dict__, "event_id": "", "domain": ""})],
+            "timing_probabilities": [type(run.timing_probabilities[0])(**{**run.timing_probabilities[0].__dict__, "prediction_id": ""})],
+            "arbitration_decisions": [],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L1 school_applicability 缺少 school" in issue for issue in issues)
+    assert any("L2 claim 缺少 claim_id" in issue for issue in issues)
+    assert any("L4 event 缺少 event_id" in issue for issue in issues)
+    assert any("L4 event 缺少 domain" in issue for issue in issues)
+    assert any("L5 timing 缺少 prediction_id" in issue for issue in issues)
+
+
+
+def test_l5_skips_event_without_event_id() -> None:
+    event = EventHypothesis(
+        event_id="",
+        source_verdict_ids=["v1"],
+        domain="事业",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+        confidence=0.5,
+    )
+
+    assert build_timing_probabilities("C-TEST", [event]) == []
+
+
+
+def test_l6_skips_events_without_domain() -> None:
+    event = EventHypothesis(
+        event_id="event-no-domain",
+        source_verdict_ids=["v1"],
+        domain="",
+        event_type="test",
+        subject="test",
+        concrete_event="test",
+        landing_path="test",
+        confidence=0.5,
+    )
+
+    assert build_arbitration_decisions("C-TEST", [event], []) == []
+
+
+
 def test_l4_requires_passed_or_weakened_verdict_for_event_claim() -> None:
     event_claim = SchoolClaim(
         claim_id="claim-event",
@@ -392,6 +597,215 @@ def test_l4_fallback_does_not_turn_evidence_verdict_into_event() -> None:
 
 
 
+def test_decision_run_validate_trace_checks_required_run_and_l9_ids() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    feedback = FeedbackSignal(feedback_id="fb-action", report_item_id=run.report_items[0].report_item_id, verdict="miss")
+    attribution = FeedbackAttribution(
+        attribution_id="attr-action",
+        feedback_id="fb-action",
+        affected_layer="L6",
+        affected_object_id=feedback.report_item_id,
+        attribution_reason="test",
+        requires_human_review=True,
+    )
+    action = CalibrationAction(
+        action_id="",
+        target_type="arbitration_policy",
+        target_id="",
+        action="review",
+        reason="test",
+        evidence_feedback_ids=["fb-action"],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "run_id": "",
+            "case_id": "",
+            "schema_version": "",
+            "feedback_signals": [feedback],
+            "feedback_attributions": [attribution],
+            "calibration_actions": [action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("DecisionRun 缺少 run_id" in issue for issue in issues)
+    assert any("DecisionRun 缺少 case_id" in issue for issue in issues)
+    assert any("DecisionRun 缺少 schema_version" in issue for issue in issues)
+    assert any("L9 calibration action 缺少 action_id" in issue for issue in issues)
+    assert any("L9 calibration action 缺少 target_id" in issue for issue in issues)
+
+
+
+def test_decision_run_to_dict_contains_l0_to_l9_keys() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+
+    assert set(run.to_dict()) == {
+        "schema_version",
+        "run_id",
+        "case_id",
+        "raw_payload",
+        "chart_ledger",
+        "context_ledger",
+        "school_applicability",
+        "school_claims",
+        "structural_verdicts",
+        "event_hypotheses",
+        "timing_probabilities",
+        "arbitration_decisions",
+        "report_items",
+        "feedback_signals",
+        "feedback_attributions",
+        "calibration_actions",
+    }
+
+
+
+def test_l9_merges_reasons_for_same_target_stably() -> None:
+    from engine.decision import build_calibration_actions
+
+    attributions = [
+        FeedbackAttribution(
+            attribution_id="attr-b",
+            feedback_id="fb-b",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="原因B",
+            requires_human_review=True,
+        ),
+        FeedbackAttribution(
+            attribution_id="attr-a",
+            feedback_id="fb-a",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="原因A",
+            requires_human_review=True,
+        ),
+    ]
+
+    actions = build_calibration_actions("C-TEST", attributions)
+
+    assert actions[0].reason == "原因A；原因B"
+
+
+
+def test_l7_skips_decision_without_competing_events() -> None:
+    decision = ArbitrationDecision(
+        decision_id="d-empty",
+        domain="事业",
+        competing_event_ids=[],
+        result="unresolved",
+    )
+
+    assert build_report_items("C-TEST", [decision], []) == []
+
+
+
+def test_l7_reject_all_uses_rejected_ids_as_feedback_points() -> None:
+    decision = ArbitrationDecision(
+        decision_id="d-reject-all",
+        domain="事业",
+        competing_event_ids=["e-a", "e-b"],
+        result="reject_all",
+        rejected_ids=["e-b"],
+    )
+    timing_b = TimingProbability(prediction_id="t-b", event_id="e-b")
+
+    items = build_report_items("C-TEST", [decision], [timing_b])
+
+    assert [item.prediction_id for item in items] == ["t-b"]
+
+
+
+def test_l8_build_feedback_signals_skips_empty_report_item_id() -> None:
+    from engine.decision import build_feedback_signals
+
+    signals = build_feedback_signals(
+        "C-TEST",
+        [ReportViewItem(report_item_id="", decision_id="d-empty")],
+    )
+
+    assert signals == []
+
+
+
+def test_l8_skipped_feedback_stays_in_l8_without_review() -> None:
+    from engine.decision import attribute_feedback
+
+    attribution = attribute_feedback(FeedbackSignal(feedback_id="fb-skip", report_item_id="rv", verdict="skipped"))
+
+    assert attribution.affected_layer == "L8"
+    assert attribution.requires_human_review is False
+
+
+
+def test_l9_ignores_non_review_attributions_and_sorts_evidence_feedback_ids() -> None:
+    from engine.decision import build_calibration_actions
+
+    attributions = [
+        FeedbackAttribution(
+            attribution_id="attr-no-review",
+            feedback_id="fb-no-review",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="命中样本。",
+            requires_human_review=False,
+        ),
+        FeedbackAttribution(
+            attribution_id="attr-2",
+            feedback_id="fb-2",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="重复失验。",
+            requires_human_review=True,
+        ),
+        FeedbackAttribution(
+            attribution_id="attr-0",
+            feedback_id="fb-0",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="重复失验。",
+            requires_human_review=True,
+        ),
+        FeedbackAttribution(
+            attribution_id="attr-1",
+            feedback_id="fb-1",
+            affected_layer="L6",
+            affected_object_id="same-target",
+            attribution_reason="重复失验。",
+            requires_human_review=True,
+        ),
+    ]
+
+    actions = build_calibration_actions("C-TEST", attributions)
+
+    assert len(actions) == 1
+    assert actions[0].action == "freeze"
+    assert actions[0].evidence_feedback_ids == ["fb-0", "fb-1", "fb-2"]
+
+
+
 def test_l7_report_items_follow_each_arbitration_decision_and_matching_timing() -> None:
     decision_a = ArbitrationDecision(
         decision_id="d-a",
@@ -415,6 +829,225 @@ def test_l7_report_items_follow_each_arbitration_decision_and_matching_timing() 
     assert [item.decision_id for item in items] == ["d-a", "d-b"]
     assert [item.prediction_id for item in items] == ["t-a", "t-b"]
     assert all(item.display_text for item in items)
+
+
+
+def test_l8_build_feedback_signals_returns_empty_for_empty_report_items() -> None:
+    from engine.decision import build_feedback_signals
+
+    assert build_feedback_signals("C-TEST", []) == []
+
+
+
+def test_decision_run_validate_trace_checks_l6_result_ids_stay_inside_competing_events() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    event_ids = [item.event_id for item in run.event_hypotheses]
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "arbitration_decisions": [
+                ArbitrationDecision(
+                    decision_id="d-outside-result",
+                    domain="事业",
+                    competing_event_ids=[event_ids[0]],
+                    result="winner",
+                    winner_ids=[event_ids[1]],
+                    rejected_ids=[event_ids[1]],
+                    unresolved_ids=[event_ids[1]],
+                )
+            ],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L6 decision 结果 ID 不在 competing_event_ids" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_l8_layer_is_not_reviewable() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    feedback = FeedbackSignal(feedback_id="fb-l8", report_item_id=run.report_items[0].report_item_id, verdict="unknown")
+    attribution = FeedbackAttribution(
+        attribution_id="attr-l8-review",
+        feedback_id="fb-l8",
+        affected_layer="L8",
+        affected_object_id=feedback.report_item_id,
+        attribution_reason="反馈不足。",
+        requires_human_review=True,
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "feedback_signals": [feedback],
+            "feedback_attributions": [attribution],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L8 attribution 不应要求人工治理" in issue for issue in issues)
+
+
+
+def test_l9_does_not_create_action_for_empty_target_id() -> None:
+    from engine.decision import build_calibration_actions
+
+    actions = build_calibration_actions(
+        "C-TEST",
+        [
+            FeedbackAttribution(
+                attribution_id="attr-empty-target",
+                feedback_id="fb-empty-target",
+                affected_layer="L6",
+                affected_object_id="",
+                attribution_reason="无目标。",
+                requires_human_review=True,
+            )
+        ],
+    )
+
+    assert actions == []
+
+
+
+def test_decision_run_validate_trace_checks_l6_result_semantics() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    event_id = run.event_hypotheses[0].event_id
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "arbitration_decisions": [
+                ArbitrationDecision(decision_id="d-winner-empty", domain="事业", competing_event_ids=[event_id], result="winner"),
+                ArbitrationDecision(decision_id="d-reject-empty", domain="事业", competing_event_ids=[event_id], result="reject_all"),
+                ArbitrationDecision(decision_id="d-unresolved-empty", domain="事业", competing_event_ids=[event_id], result="unresolved"),
+            ],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L6 winner 裁决缺少 winner_ids" in issue for issue in issues)
+    assert any("L6 reject_all 裁决缺少 rejected_ids" in issue for issue in issues)
+    assert any("L6 unresolved 裁决缺少 unresolved_ids" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_l5_probability_range() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    event_id = run.event_hypotheses[0].event_id
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "timing_probabilities": [
+                TimingProbability(prediction_id="t-reversed", event_id=event_id, probability_range=(0.8, 0.6)),
+                TimingProbability(prediction_id="t-out-of-range", event_id=event_id, probability_range=(-0.1, 1.2)),
+            ],
+            "arbitration_decisions": [],
+            "report_items": [],
+            "feedback_signals": [],
+            "feedback_attributions": [],
+            "calibration_actions": [],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L5 probability_range 非法" in issue for issue in issues)
+
+
+
+def test_decision_run_validate_trace_checks_l8_l9_semantics() -> None:
+    run = run_decision_mvp("""
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip())
+    feedback = FeedbackSignal(feedback_id="fb-ok", report_item_id=run.report_items[0].report_item_id, verdict="miss")
+    attribution = FeedbackAttribution(
+        attribution_id="attr-bad-object",
+        feedback_id="fb-ok",
+        affected_layer="L6",
+        affected_object_id="missing-report-item",
+        attribution_reason="test",
+        requires_human_review=True,
+    )
+    action = CalibrationAction(
+        action_id="cal-without-attribution",
+        target_type="arbitration_policy",
+        target_id="x",
+        action="review",
+        reason="test",
+        evidence_feedback_ids=["fb-without-attribution"],
+    )
+    patched = type(run)(
+        **{
+            **run.__dict__,
+            "feedback_signals": [feedback, FeedbackSignal(feedback_id="fb-without-attribution", report_item_id=feedback.report_item_id, verdict="miss")],
+            "feedback_attributions": [attribution],
+            "calibration_actions": [action],
+        }
+    )
+
+    issues = patched.validate_trace()
+
+    assert any("L8 attribution 未绑定 L7 report item" in issue for issue in issues)
+    assert any("L9 calibration action 未绑定 L8 attribution" in issue for issue in issues)
 
 
 

@@ -18,7 +18,7 @@ def build_report_items(case_id: str, decisions: list[ArbitrationDecision], timin
     timing_by_event = {item.event_id: item for item in timings}
     items: list[ReportViewItem] = []
     for decision in decisions:
-        event_ids = decision.winner_ids or decision.competing_event_ids
+        event_ids = decision.rejected_ids if decision.result == "reject_all" else decision.winner_ids or decision.competing_event_ids
         for idx, event_id in enumerate(event_ids, start=1):
             timing = timing_by_event.get(event_id)
             items.append(

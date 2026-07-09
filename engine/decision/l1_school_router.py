@@ -44,6 +44,8 @@ def _focus_domains(context: ContextFactLedger) -> set[str]:
         domains.add("财富")
     if any(token in text for token in ("结婚", "离婚", "配偶", "感情")):
         domains.add("婚姻")
+    if any(token in text for token in ("身体", "疾病", "生病", "病灾")):
+        domains.add("健康")
     return domains
 
 
@@ -78,6 +80,8 @@ def route_schools(chart: ChartFactLedger, context: ContextFactLedger) -> list[Sc
             score = 0.2
 
         if not has_four:
+            if role != "abstain":
+                role = "evidence_only"
             blockers.append("四柱事实不完整，所有上层判断只能降级。")
             score = min(score, 0.35)
 

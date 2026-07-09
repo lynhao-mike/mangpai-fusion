@@ -30,7 +30,7 @@ def build_structural_verdicts(case_id: str, claims: list[SchoolClaim]) -> list[S
                 structural_reason="L3 只审查结构基础；事件、应期与旁证命题不得在本层直接定案。",
                 blocking_factors=[] if verdict == "pass" else ["需要结构命题继续支撑"],
                 required_support=["ziping", "ditiansui"] if verdict != "pass" else [],
-                confidence=0.6 if verdict == "pass" else 0.35,
+                confidence=claim.confidence if verdict == "reject" else 0.6 if verdict == "pass" else 0.35,
             )
         )
     return verdicts

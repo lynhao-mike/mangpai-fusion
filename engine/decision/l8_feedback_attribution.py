@@ -19,6 +19,7 @@ def build_feedback_signals(case_id: str, report_items: list[ReportViewItem]) -> 
             notes="等待命中 / 失验 / 半命中 / 跳过反馈。",
         )
         for idx, item in enumerate(report_items, start=1)
+        if item.report_item_id
     ]
 
 

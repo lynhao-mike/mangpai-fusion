@@ -19,6 +19,7 @@ from engine.decision.models import (
     TimingProbability,
 )
 from engine.decision.l0_context import build_context_ledger
+from engine.decision.l0_wenzhen import parse_wenzhen_l0
 from engine.decision.l1_school_router import route_schools
 from engine.decision.l2_claims import build_school_claims
 from engine.decision.l3_structure import build_structural_verdicts
@@ -57,6 +58,7 @@ __all__ = [
     "build_school_claims",
     "build_structural_verdicts",
     "build_timing_probabilities",
+    "parse_wenzhen_l0",
     "route_schools",
     "decision_run_from_v5",
     "run_decision_mvp",

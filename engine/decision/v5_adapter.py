@@ -41,6 +41,7 @@ def _chart_to_ledger(output: V5Output, raw_hash: str) -> ChartFactLedger:
         four = {str(k): str(v) for k, v in pillars.items()}
     else:
         four = {}
+    missing = [f"$FOUR.{key}" for key in ("year", "month", "day", "hour") if key not in four or not four[key]]
     return ChartFactLedger(
         sex_marker=str(chart.get("gender_marker") or chart.get("命式") or chart.get("sex") or ""),
         solar_datetime=str(chart.get("solar_datetime") or chart.get("公历") or ""),
@@ -48,15 +49,16 @@ def _chart_to_ledger(output: V5Output, raw_hash: str) -> ChartFactLedger:
         start_luck=str(chart.get("start_luck") or chart.get("起运时间") or ""),
         dayun_steps=list(chart.get("dayun_steps") or []),
         liunian_steps=list(chart.get("liunian_steps") or []),
+        missing_fields=missing,
         raw_source_hash=raw_hash,
     )
 
 
 def _school_applicability(output: V5Output) -> list[SchoolApplicability]:
-    schools = sorted({claim.school for claim in output.claims})
+    schools = sorted({claim.school for claim in output.claims if claim.school and claim.claim_id})
     result: list[SchoolApplicability] = []
     for school in schools:
-        claims = [claim for claim in output.claims if claim.school == school]
+        claims = [claim for claim in output.claims if claim.school == school and claim.claim_id]
         domains = sorted({claim.domain for claim in claims if claim.domain})
         abstain = all(claim.stance == "abstain" for claim in claims)
         score = max((claim.confidence.score for claim in claims), default=0.0)
@@ -91,7 +93,7 @@ def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[
             dependencies=[f"v5:{claim.claim_id}"],
         )
         for claim in output.claims
-        if role_by_school.get(claim.school) != "abstain"
+        if claim.claim_id and claim.school and role_by_school.get(claim.school) != "abstain"
     ]
 
 
@@ -124,6 +126,8 @@ def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict]) -
         return []
     events: list[EventHypothesis] = []
     for prediction in output.prediction_ledger.predictions:
+        if not prediction.prediction_id or not prediction.domain:
+            continue
         events.append(
             EventHypothesis(
                 event_id=_stable_id("dev", case_id, prediction.prediction_id),
@@ -161,7 +165,7 @@ def _decisions(case_id: str, output: V5Output, events: list[EventHypothesis], ap
         events_by_domain.setdefault(event.domain, []).append(event.event_id)
     decisions: list[ArbitrationDecision] = []
     for idx, result in enumerate(output.arbitration_results, start=1):
-        if result.stage != "event_realization":
+        if result.stage != "event_realization" or not result.domain:
             continue
         competing = events_by_domain.get(result.domain, [])
         if not competing:
@@ -206,27 +210,33 @@ def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: l
 def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun:
     """把 V5Output 包成 DecisionRun，不改变 v5 行为。"""
 
-    raw = raw_text or output.to_json(indent=None)
+    raw = raw_text or repr(output)
     raw_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
     payload = RawWenzhenPayload(raw_text=raw, raw_hash=raw_hash, parser_version="decision-v5-adapter")
     chart = _chart_to_ledger(output, raw_hash)
     applicability = _school_applicability(output)
     claims = _claims(output, applicability)
-    verdicts = _verdicts(output.case_id, claims)
-    events = _events(output.case_id, output, verdicts)
+    case_id = output.case_id or "V5-UNKNOWN"
+    verdicts = _verdicts(case_id, claims)
+    events = _events(case_id, output, verdicts)
+    valid_predictions = [
+        prediction
+        for prediction in output.prediction_ledger.predictions
+        if prediction.prediction_id and prediction.domain
+    ]
     event_by_prediction = {
         prediction.prediction_id: event.event_id
-        for prediction, event in zip(output.prediction_ledger.predictions, events)
+        for prediction, event in zip(valid_predictions, events)
     }
-    timings = _timings(output.case_id, output, event_by_prediction)
-    decisions = _decisions(output.case_id, output, events, applicability)
-    report_items = _report_items(output.case_id, decisions, timings)
-    feedback_signals = build_feedback_signals(output.case_id, report_items)
+    timings = _timings(case_id, output, event_by_prediction)
+    decisions = _decisions(case_id, output, events, applicability)
+    report_items = _report_items(case_id, decisions, timings)
+    feedback_signals = build_feedback_signals(case_id, report_items)
     feedback_attributions = build_feedback_attributions(feedback_signals)
-    calibration_actions = build_calibration_actions(output.case_id, feedback_attributions)
+    calibration_actions = build_calibration_actions(case_id, feedback_attributions)
     return DecisionRun(
-        run_id=_stable_id("drun", output.case_id, output.hash()),
-        case_id=output.case_id,
+        run_id=_stable_id("drun", case_id, raw_hash),
+        case_id=case_id,
         raw_payload=payload,
         chart_ledger=chart,
         context_ledger=ContextFactLedger(preserved_text_blocks=["v5_adapter"]),

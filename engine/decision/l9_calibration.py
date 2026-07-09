@@ -14,7 +14,7 @@ def build_calibration_actions(case_id: str, attributions: list[FeedbackAttributi
     reviewable = [
         item
         for item in attributions
-        if item.requires_human_review and item.affected_layer in {"L1", "L2", "L3", "L4", "L5", "L6", "L7"}
+        if item.requires_human_review and item.affected_layer in {"L1", "L2", "L3", "L4", "L5", "L6", "L7"} and item.affected_object_id
     ]
     by_target: dict[tuple[str, str], list[FeedbackAttribution]] = {}
     for item in reviewable:
@@ -39,8 +39,8 @@ def build_calibration_actions(case_id: str, attributions: list[FeedbackAttributi
                 target_type=target_type,  # type: ignore[arg-type]
                 target_id=item.affected_object_id,
                 action=action,
-                reason=item.attribution_reason,
-                evidence_feedback_ids=[entry.feedback_id for entry in items],
+                reason="；".join(sorted({entry.attribution_reason for entry in items if entry.attribution_reason})),
+                evidence_feedback_ids=sorted(entry.feedback_id for entry in items),
             )
         )
     return actions
