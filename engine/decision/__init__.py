@@ -30,7 +30,7 @@ from engine.decision.l7_report_view import build_report_items
 from engine.decision.l8_feedback_attribution import attribute_feedback, build_feedback_attributions, build_feedback_signals
 from engine.decision.l9_calibration import build_calibration_actions
 from engine.decision.orchestrator import run_decision_mvp
-from engine.decision.v5_adapter import decision_run_from_v5
+from engine.decision.v5_adapter import decision_run_from_snapshot, decision_run_from_v5
 
 __all__ = [
     "ArbitrationDecision",
@@ -60,6 +60,7 @@ __all__ = [
     "build_timing_probabilities",
     "parse_wenzhen_l0",
     "route_schools",
+    "decision_run_from_snapshot",
     "decision_run_from_v5",
     "run_decision_mvp",
 ]

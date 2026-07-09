@@ -7,7 +7,8 @@ from pathlib import Path
 import json
 import shutil
 
-from engine.v5 import V5CaseManifest, V5FeedbackAttachment, V5RunSnapshot
+from engine.decision import decision_run_from_snapshot
+from engine.v5 import V5CaseManifest, V5FeedbackAttachment, V5Output, V5RunSnapshot
 from tools.render_report_v6 import main, render_case, render_cases
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,6 +82,11 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert decision_payload["schema_version"] == "decision-run-v1"
     assert decision_payload["case_id"] == "C-2026-001-乾-庚申戊寅壬子辛丑"
     assert decision_payload["feedback_signals"]
+    v5_output = V5Output.from_json(rendered_json.read_text(encoding="utf-8"))
+    assert run_snapshot.to_output().to_dict() == v5_output.to_dict()
+    decision_run = decision_run_from_snapshot(run_snapshot)
+    assert decision_run.to_dict() == decision_payload
+    assert decision_run.validate_trace() == []
 
 
 def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> None:
@@ -119,6 +125,7 @@ def test_render_report_v6_cli_prints_run_json_path(tmp_path: Path, capsys) -> No
     assert "[OK] v5 json:" in captured
     assert "[OK] run json:" in captured
     assert "[OK] decision run json:" in captured
+    assert "[OK] feedback attachment json:" in captured
     assert report_path.with_suffix(".run.json").exists()
     assert report_path.with_suffix(".decision-run.json").exists()
     assert report_path.with_suffix(".feedback-attachment.json").exists()

@@ -18,8 +18,8 @@
 | [`preflight.py`](preflight.py:1) | input.md schema 校验与解析 | 新案入口护栏 |
 | [`batch_intake.py`](batch_intake.py:1) | 批量入库：inbox → cases/pipeline | v1.3 D6 |
 | [`batch_review.py`](batch_review.py:1) | 批量复盘：已填 feedback.md → ingest | v1.3 D6 |
-| [`render_report.py`](render_report.py:1) | 渲染 C-2026-025 唯一标准报告 | 固定使用 `templates/report-v1.3.md`，由 output_linter 兜底 |
-| [`render_report_v6.py`](render_report_v6.py:1) | v6 预生产五派报告渲染 | 旁路生成 `*.v5.json` 与只读 `*.run.json`，CLI 显示 report / v5 json / run json 路径 |
+| [`render_report.py`](render_report.py:1) | legacy standard report 渲染入口 | 当前正式兼容入口；固定使用 `templates/report-v1.3.md`，由 output_linter 兜底；不承载新增 run-centric 字段 |
+| [`render_report_v6.py`](render_report_v6.py:1) | run-centric preprod 五派报告渲染 | 旁路生成 report / `*.v5.json` / `*.run.json` / `*.decision-run.json` / `*.feedback-attachment.json`；新增报告字段必须先进入 run / decision 结构，再渲染 |
 | [`output_linter.py`](output_linter.py:1) | 报告出口 lint / 禁越界输出 | 兜底护栏 #2 |
 | [`three_layer_check.py`](three_layer_check.py:1) | 应期三层门检查 | v1.2 W3 护栏 |
 | [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |
@@ -32,17 +32,11 @@
 | [`veto_miner.py`](veto_miner.py:1) | 候选否决兜底：低后验 + 无边界 → review | v1.3 D4 |
 | [`iteration_report.py`](iteration_report.py:1) | 每 10 完成反馈案产出迭代报告 | v1.3 D8 |
 | [`cross_school_scan.py`](cross_school_scan.py:1) | 每 10 案跨派一致性扫描 | v1.3 自迭代 |
-| [`cross_domain_consistency_check.py`](cross_domain_consistency_check.py:1) | 历史报告跨维度输出耦合 W9 回溯扫描 | v1.4 V8 / CFL-C015-002 |
 | [`extract_predictions.py`](extract_predictions.py:1) | 抽取 ★4+ 应期到 predictions/ | 预测封存现行入口 |
 | [`timing_report.py`](timing_report.py:1) | 聚合 pipeline、batch、feedback、iteration timing.json | v1.2.1+ metrics；同时扫描 `cases/*/findings/timing.json` 与 `META/timings/*.json` |
 | [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存；高并发场景后续演进为 job queue |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
-| [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 多派别 Markdown 教材入口；支持 `--dry-run` |
-| [`case_feedback_intake.py`](case_feedback_intake.py:1) | 真实案例反馈语料抽取：原文归档、候选拆分、质量分级、JSONL 输出 | 处理 `cases/实战案例反馈990个案例_part*.md`；支持 `--dry-run` |
-| [`recompute_wenzhen_case.py`](recompute_wenzhen_case.py:1) | 问真补盘正式 case hard-gated 重算 | 运行严格 pipeline，校验 `statement_index.json`，产出 school verdict / conclusion diff / confidence delta / feedback binding 检查 |
-| [`case_feedback_promote.py`](case_feedback_promote.py:1) | A/B 级真实反馈样本转 case draft | 只生成 `cases/raw_feedback/case_drafts/RF-.../` 待补排盘草稿；不写正式 `cases-index.md` |
-| [`case_feedback_repan_index.py`](case_feedback_repan_index.py:1) | 问真排盘补录索引生成器 | 汇总 `case_drafts/RF-.../input.md` 的出生信息与排盘粘贴占位区；支持 `--dry-run` |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
 
 ---
@@ -51,6 +45,8 @@
 
 - [`tools/`](README.md:1) 作为 CLI / adapter 层：负责文件入口、人工日志、批处理与审计落盘。
 - 当前 D1-D4 核心编排优先查看 [`engine/application/pipeline_runner.py`](../engine/application/pipeline_runner.py:1)，生产同步封装查看 [`engine/application/production_service.py`](../engine/application/production_service.py:1)。
+- [`render_report.py`](render_report.py:1) 是 legacy standard report 兼容入口；[`render_report_v6.py`](render_report_v6.py:1) 是 run-centric preprod 证明入口。两者并存期间，不从 Markdown 反推结构化状态。
+- 新报告字段必须先进入 [`V5RunSnapshot`](../engine/v5/domain.py:366) / [`DecisionRun`](../engine/decision/models.py:302) 等结构化对象，再由报告视图渲染；不得把新领域能力直接塞进 [`tools/`](README.md:1)。
 - 新代码不应把 [`engine/application`](../engine/application:1) 继续扩大为依赖 [`tools/`](README.md:1) 的工具集合；涉及长期 API / queue / storage 时应下沉到 application / infrastructure 层。
 
 ---
@@ -71,6 +67,7 @@
 | [`_verify_production_rules.py`](_verify_production_rules.py:1) | 生产规则校验 | 内部审计 |
 | [`feedback_statement_trace_audit.py`](feedback_statement_trace_audit.py:1) | 反馈断语追踪审计 | 内部审计 |
 | [`feedback_v2_preprocess.py`](feedback_v2_preprocess.py:1) | v2 反馈预处理 | 历史反馈治理辅助 |
+| [`v6_preprod_coverage_audit.py`](v6_preprod_coverage_audit.py:1) | v6 preprod 报告覆盖审计 | 只读审计报告与配套 artifact，用于切默认入口前的证据积累 |
 
 ---
 
@@ -84,6 +81,12 @@
 
 | 工具 | 用途 | 说明 |
 |---|---|---|
+| [`case_feedback_intake.py`](case_feedback_intake.py:1) | 真实案例反馈语料抽取：原文归档、候选拆分、质量分级、JSONL 输出 | 真实反馈语料迁移 / 抽取辅助；支持 `--dry-run`，非日常反馈入口 |
+| [`case_feedback_promote.py`](case_feedback_promote.py:1) | A/B 级真实反馈样本转 case draft | 只生成 `cases/raw_feedback/case_drafts/RF-.../` 待补排盘草稿；不写正式 `cases-index.md` |
+| [`case_feedback_repan_index.py`](case_feedback_repan_index.py:1) | 问真排盘补录索引生成器 | 汇总 `case_drafts/RF-.../input.md` 的出生信息与排盘粘贴占位区；支持 `--dry-run` |
+| [`cross_domain_consistency_check.py`](cross_domain_consistency_check.py:1) | 历史报告跨维度输出耦合 W9 回溯扫描 | 历史回溯审计辅助；非日常入口 |
+| [`materials_intake.py`](materials_intake.py:1) | 教材入库前置闸门：扫 `sources/inbox/*.md` → 归档 `sources/{school}/` + 生成 `theory/raw/{school}/extracted/` 抽取骨架 | 理论材料迁移 / 入库辅助；支持 `--dry-run` |
+| [`recompute_wenzhen_case.py`](recompute_wenzhen_case.py:1) | 问真补盘正式 case hard-gated 重算 | 问真补盘修复 / 重算辅助；非默认报告入口 |
 | [`build_indexes.py`](build_indexes.py:1) | 构建 / 重建索引 | 迁移与维护场景使用 |
 | [`build_multi_school_backtest_report.py`](build_multi_school_backtest_report.py:1) | 生成问真 READY 案例多流派回测报告 | 问真批处理阶段性辅助；非日常反馈入口 |
 | [`build_wenzhen_first5_promotion_plan.py`](build_wenzhen_first5_promotion_plan.py:1) | 生成问真首批 5 案转正式 case 的 dry-run 计划 | 问真批处理阶段性辅助；新流程优先使用 READY 批处理链路 |

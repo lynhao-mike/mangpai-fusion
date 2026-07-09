@@ -9,7 +9,12 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from engine.v5.preprod import (
     build_chart_from_input,
@@ -17,7 +22,6 @@ from engine.v5.preprod import (
     render_v6_preprod_cases,
 )
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEMPLATE = REPO_ROOT / "templates" / "report-v6.md"
 
 
@@ -84,6 +88,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[OK] v5 json: {_display_path(json_path)}")
         print(f"[OK] run json: {_display_path(report_path.with_suffix('.run.json'))}")
         print(f"[OK] decision run json: {_display_path(report_path.with_suffix('.decision-run.json'))}")
+        print(f"[OK] feedback attachment json: {_display_path(report_path.with_suffix('.feedback-attachment.json'))}")
         return 0
 
     rendered = render_cases(args.input, output_dir=args.output_dir, template_path=args.template)
@@ -92,6 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[OK] v5 json: {_display_path(json_path)}")
         print(f"[OK] run json: {_display_path(report_path.with_suffix('.run.json'))}")
         print(f"[OK] decision run json: {_display_path(report_path.with_suffix('.decision-run.json'))}")
+        print(f"[OK] feedback attachment json: {_display_path(report_path.with_suffix('.feedback-attachment.json'))}")
     print(f"[OK] rendered {len(rendered)} reports")
     return 0
 

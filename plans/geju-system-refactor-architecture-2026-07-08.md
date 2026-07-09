@@ -1,344 +1,445 @@
 # 格局判断 · mangpai-fusion 全系统总架构重构方案
 
-> 基于当前事实源 [`META/project-state.json`](../META/project-state.json)、[`engine/contracts/00-OVERVIEW.md`](../engine/contracts/00-OVERVIEW.md)、[`tools/README.md`](../tools/README.md)、[`handoff.md`](../handoff.md) 与现有方案 [`plans/geju-bazi-analysis-redesign.md`](geju-bazi-analysis-redesign.md)、[`plans/production-system-geju-judgment.md`](production-system-geju-judgment.md) 的进一步拔高版判断。
+> 重写日期：2026-07-09。  
+> 本方案以 [`META/project-state.json`](../META/project-state.json)、[`AGENTS.md`](../AGENTS.md)、[`STATUS.md`](../STATUS.md)、[`tools/README.md`](../tools/README.md)、[`engine/contracts/00-OVERVIEW.md`](../engine/contracts/00-OVERVIEW.md)、[`engine/v5/`](../engine/v5/) 与 [`engine/decision/`](../engine/decision/) 为当前事实源。  
+> 编写顺序固定为：**geju 定新版架构靶心 → ponytail 压缩范围 → writing-plans 阶段化落地 → verification-before-completion 事实校验 → requesting-code-review + ponytail-review 最终审查**。
 
 ---
 
-## Thesis
+## 0. 使用方式
 
-**这个系统不该再被组织成一个以 [`engine/`](../engine/) 为核心、[`tools/`](../tools/) 为外围、[`cases/`](../cases/) 和 [`reports/`](../reports/) 为归档目录的脚本仓库；它应该被重构为一个 以 判案 为中心 的 推理工厂。**
+这份文档不是“架构感想”，而是后续全系统重构的中心方案。后续所有重构任务必须按以下顺序推进：
 
-更直接地说：当前仓库的真正主对象不是规则、不是工具、也不是报告，而是一次次可复现、可裁决、可反馈、可升级的“分析运行”。因此，正确的目标模型应是：**`Run` 作为唯一主生命周期，`engine` 只负责纯推理，`tools` 只负责入口编排，`theory` 只负责知识供给，`cases` 只负责事实沉淀，`reports` 只负责派生视图。**
+1. **geju**：先定新版架构靶心，判断系统到底应该成为什么。
+2. **ponytail**：再压缩范围，防止方案变成大而空的总纲。
+3. **writing-plans**：把重写内容变成阶段化、可执行、可验收的方案。
+4. **verification-before-completion**：写完前用现有代码事实校验，不凭感觉声称完成。
+5. **requesting-code-review + ponytail-review**：最终做正确性审查和删繁审查。
+
+一句话：**先用 geju 打开格局，再用 ponytail 把它压成最短可执行路径，最后用 writing-plans 和 verification-before-completion 把文档变成可落地的工程路线。**
 
 ---
 
-## Confidence
+## 1. geju：定新版架构靶心
+
+### 1.1 Thesis
+
+**mangpai-fusion 的长期主对象不是规则、工具、报告或 case 目录，而是一次可复现、可裁决、可反馈、可升级的分析运行：`Run`。**
+
+系统的目标形态不是“更干净的 Python 脚本仓库”，而是一个以 `Run` 为中心的命理推理工厂：
+
+```text
+Knowledge Plane  ->  Inference Plane  ->  Artifact Plane
+                         ^                    |
+                         |                    v
+                   Operations Plane  <-  Feedback / Learning
+```
+
+### 1.2 当前完成度判断
+
+| 口径 | 完成度 | 判断 |
+|---|---:|---|
+| 目标架构完成度 | 68% | `Run` 中心、artifact binding、case manifest、feedback attachment、decision ledger 都已有实体；四层边界、工具收口、默认入口切换尚未完成。 |
+| 工程落地完成度 | 58% | v5/v6 预生产链路已能生成报告、run json、decision-run json、feedback attachment、manifest；但正式入口仍以旧 [`tools/render_report.py`](../tools/render_report.py) 与旧反馈链为主。 |
+
+### 1.3 Confidence
 
 **中高置信度。**
 
-之所以不是高置信度，是因为当前仓库已经存在两轮重构叠加：
+置信度来自三类代码事实：
 
-- 一轮是 [`engine/pipeline.py`](../engine/pipeline.py) 背后的旧兼容主线
-- 一轮是 [`engine/v5/runner.py`](../engine/v5/runner.py) 与 [`engine/contracts/10-ziping-fusion-v5.md`](../engine/contracts/10-ziping-fusion-v5.md) 背后的新目标主线
-- 再叠加一层生产/归档/反馈工具现实，形成“契约比实现更先进”的状态
+1. [`engine/v5/__init__.py`](../engine/v5/__init__.py) 已明确 v5 是 staged clean path：可运行、可测试、可落盘，但不替换旧正式出口。
+2. [`engine/v5/domain.py`](../engine/v5/domain.py) 已存在 [`V5RunSnapshot`](../engine/v5/domain.py)、[`V5CaseManifest`](../engine/v5/domain.py)、[`V5FeedbackAttachment`](../engine/v5/domain.py) 三件套。
+3. [`engine/decision/models.py`](../engine/decision/models.py) 已存在 [`DecisionRun`](../engine/decision/models.py) 与 [`DecisionRun.validate_trace()`](../engine/decision/models.py)，能表达 L0-L9 裁判链路。
 
-所以这个判断很可能是对的方向，但具体切分点仍需用一次小规模 proof 验证。
+不判高置信度，是因为：
 
----
+1. 默认生产报告入口仍是 [`tools/render_report.py`](../tools/render_report.py)，而不是 [`tools/render_report_v6.py`](../tools/render_report_v6.py)。
+2. [`META/project-state.json`](../META/project-state.json) 仍把 active report entrypoints 标为 [`tools/render_report.py`](../tools/render_report.py) 与 [`tools/output_linter.py`](../tools/output_linter.py)。
+3. 真实 case 的 run-centric proof slice 尚未作为正式验收物归档。
+4. v6 预生产报告是否完整覆盖正式统一报告要求，还需要真实案例验证。
 
-## The Trap
+### 1.4 The Trap
 
-### 被继承的约束
+真正陷阱不是代码脏，而是：
 
-当前系统容易被以下历史形态绑住：
+1. 把文件夹当领域边界。
+2. 把历史入口当长期架构。
+3. 把 Markdown 报告当事实源。
+4. 把 CLI 工具数量当系统能力。
+5. 把过渡适配器写成永久层。
 
-1. [`engine/pipeline.py`](../engine/pipeline.py) 仍像总入口，所以大家会默认它是架构中心
-2. [`tools/render_report.py`](../tools/render_report.py) 与 [`tools/output_linter.py`](../tools/output_linter.py) 已经很重，于是展示出口反过来塑造了内部结构
-3. [`cases/`](../cases/) 与 [`reports/`](../reports/) 同时承担归档、事实、回放、审计、工作流入口，边界混在一起
-4. [`tools/README.md`](../tools/README.md) 中 active 工具很多，说明“系统能力”正被 CLI 集合代替，而不是被明确领域边界承接
-5. 旧 D1-D4、v2、v5、并行 domain、production MVP 几条线并行存在，导致仓库像一层层沉积，而不是一个清晰终态
+| 继承形态 | 表象 | 是否真实 | 判断 |
+|---|---|---|---|
+| 旧 [`engine/pipeline.py`](../engine/pipeline.py) 像主入口 | 大量旧工具和报告链路依赖它 | 部分真实 | 它是真实兼容入口，不是长期架构中心。 |
+| [`tools/`](../tools/) 很多 active 工具 | 似乎工具越多能力越强 | 不真实 | 这是 Operations Plane 膨胀信号。 |
+| [`cases/`](../cases/) 与 [`reports/`](../reports/) 已沉淀大量文件 | 似乎它们就是事实源 | 部分真实 | 它们是真实归档，不应继续承担推理真相。 |
+| v5 / decision / legacy 并存 | 似乎应继续多线兼容 | 不真实 | 多主线会稀释判断，应收口为一主两辅。 |
+| 物理目录不理想 | 似乎必须先大搬目录 | 不真实 | 先治理生命周期和事实源，后讨论目录。 |
 
-### 这些约束是真是假
-
-| 约束 | 是否真实 | 判断 |
-|---|---|---|
-| 必须保留历史入口兼容一段时间 | 是 | 因为已有大量 [`tools/*.py`](../tools/README.md) 调用链和测试绑定 |
-| `cases/` 与 `reports/` 必须继续存在 | 是 | 它们是产品工作流和归档可追踪性的真实契约 |
-| 旧 [`engine/pipeline.py`](../engine/pipeline.py) 必须继续作为长期主心骨 | 否 | 这是兼容外观，不是真正目标模型 |
-| 报告 Markdown 必须主导内部数据结构 | 否 | 报告是派生物，不应反向规定推理核心 |
-| 工具目录越全越说明架构成熟 | 否 | 很可能恰恰说明领域职责没收口，工具在替代应用层 |
-
-### 真陷阱
-
-真正的陷阱不是技术债本身，而是**把文件形态误认为领域模型，把历史入口误认为长期边界，把 CLI 流程误认为系统架构。**
-
----
-
-## High-格局 Direction
-
-### 核心判断
-
-目标不是继续把仓库整理得更像一个“干净的 Python 项目”，而是要把它重构成一个**四层分明的命理推理工厂**：
-
-1. **Knowledge Plane**：理论与规则供给面
-2. **Inference Plane**：分析运行与裁决面
-3. **Artifact Plane**：报告、案例、预测、反馈等派生产物面
-4. **Operations Plane**：CLI、批处理、API、审计、迁移等运维面
-
-当前仓库最大的问题不是代码脏，而是**这四个面发生了穿透**。
-
-- [`theory/`](../theory/) 不只是知识，还隐含生命周期状态
-- [`engine/`](../engine/) 不只是推理，还背着归档与兼容负担
-- [`tools/`](../tools/) 不只是入口，还代替 application 做了很多长期编排
-- [`cases/`](../cases/) 不只是样本，还承载输入、反馈、事件、追踪、回灌
-- [`reports/`](../reports/) 不只是视图，还在实践中充当事实快照
-
-所以总架构的正确重构不是微调模块，而是**先重画边界，再决定迁移**。
-
-### 目标模型
+### 1.5 Target Model
 
 ```text
 Knowledge Plane
-  theory sources -> extracted rules -> production rules -> school registry
+  theory sources
+  extracted rules
+  normalized rule registry
+  production rule pack
+  school profile / applicability signal
 
 Inference Plane
-  canonical input -> run -> claims -> arbitration -> prediction ledger -> run snapshot
+  canonical input
+  run snapshot
+  school claims
+  structure graph
+  arbitration
+  prediction ledger
+  decision ledger
+  learning signal
 
 Artifact Plane
-  case file <- binds to run
-  report file <- renders from run snapshot
-  prediction file <- extracts from prediction ledger
-  feedback file <- attaches to case and updates learning signal
+  case manifest
+  report view
+  prediction export
+  feedback attachment
+  archived proof bundle
 
 Operations Plane
-  cli / batch / api / audits / migrations
-    only orchestrate
-    never define domain truth
+  CLI
+  batch
+  API
+  audit
+  migration
+  registry checks
 ```
 
-### 推荐的目录心智模型
+### 1.6 Source-of-Truth Matrix
 
-```text
-repo/
-  knowledge/       理论原文、抽取、规则注册、生命周期
-  inference/       纯推理内核与契约
-  artifacts/       case、report、prediction、feedback 的结构化归档
-  operations/      cli、api、batch、审计、迁移
-  docs/            README、STATUS、plans、contracts 人类文档
-```
+| 对象 | 事实源 | 派生物 / 禁止误用 |
+|---|---|---|
+| 产品版本 | [`VERSION`](../VERSION) | 不从阶段名或计划文档推断。 |
+| 项目状态 | [`META/project-state.json`](../META/project-state.json) | 不从旧 handoff 推断长期状态。 |
+| 工具状态 | [`tools/README.md`](../tools/README.md) + [`tools/tool_registry.py`](../tools/tool_registry.py) | 不把 missing / historical 当 active。 |
+| 规则状态 | [`tools/rule_status_scan.py`](../tools/rule_status_scan.py) 运行时扫描 | 不在普通文档硬编码易漂移数量。 |
+| Run 事实快照 | [`V5RunSnapshot`](../engine/v5/domain.py) | 报告 Markdown 不是推理事实源。 |
+| Case 绑定 | [`V5CaseManifest`](../engine/v5/domain.py) | case 目录不是数据库，也不是推理执行器。 |
+| 反馈挂载 | [`V5FeedbackAttachment`](../engine/v5/domain.py) | feedback 不应只绑定自然语言段落。 |
+| 裁判链路 | [`DecisionRun`](../engine/decision/models.py) | 它是 decision ledger，不是第二个事实 run。 |
+| 报告出口 | report view model -> Markdown | Markdown 只读消费结构化输出。 |
 
-这不一定要求立刻物理改目录，但**必须先按这个心智模型治理现有目录**：
+### 1.7 一主两辅
 
-- [`theory/`](../theory/) ≈ `knowledge/`
-- [`engine/`](../engine/) ≈ `inference/`
-- [`cases/`](../cases/)、[`reports/`](../reports/)、[`predictions/`](../predictions/) ≈ `artifacts/`
-- [`tools/`](../tools/) ≈ `operations/`
-- [`plans/`](./)、[`README.md`](../README.md)、[`STATUS.md`](../STATUS.md)、[`AGENTS.md`](../AGENTS.md) ≈ `docs/`
+| 线路 | 角色 | 保留原则 |
+|---|---|---|
+| run-centric inference | 正式目标主线 | 围绕 [`V5RunSnapshot`](../engine/v5/domain.py) 与 [`DecisionRun`](../engine/decision/models.py) 收口。 |
+| legacy facade | 兼容辅线 | 保留旧入口稳定性，但不新增长期领域能力。 |
+| incubation | 实验辅线 | 新派别、新规则、新裁判策略先旁路验证，成功后并入主线。 |
 
----
-
-## Frame-Opening Move
-
-### Move used
-
-- zero-legacy thought experiment
-- kill the wrong concept
-- end-state backcasting
-
-### 它揭示了什么
-
-如果今天从零开始，不带任何历史包袱设计这个系统，没有人会把它命名为“一个有很多工具脚本、顺便有个引擎目录、再加若干报告模板的仓库”。
-
-从零设计时，你会天然得到：
-
-- 一个可复现的分析运行对象
-- 一个统一的知识供给入口
-- 一个与运行绑定的案例/反馈系统
-- 一个只读消费运行快照的报告系统
-- 一个不拥有真相、只负责编排的 operations 层
-
-这说明当前很多概念应该被杀掉，而不是继续修补：
-
-- “工具即能力” 这个概念要杀
-- “报告即结果” 这个概念要杀
-- “case 目录即事实源” 这个概念要杀
-- “pipeline 兼容层即系统核心” 这个概念要杀
+超过这三条线的叙事都应删除或合并。
 
 ---
 
-## Bold Takes
+## 2. ponytail：压缩范围，防止大而空
 
-### 1. 把 `Run` 提升为系统第一实体
+### 2.1 最懒可行原则
 
-全系统应该围绕一个统一运行实体重构，例如 `AnalysisRun` 或 `InferenceRun`，它至少拥有：
+后续重构不追求“看起来最完整”，只追求“最短路径证明架构方向”。
 
-- canonical input
-- engine version
-- schema version
-- selected rule snapshot
-- school claims
-- arbitration result
-- prediction ledger
-- statement ledger
-- artifact bindings
-- learning signals
+优先级如下：
 
-没有这个第一实体，系统就会继续散落在 [`cases/`](../cases/)、[`reports/`](../reports/)、[`predictions/`](../predictions/)、[`tools/`](../tools/) 之间互相影射。
+1. 复用现有 [`V5RunSnapshot`](../engine/v5/domain.py)，不新建第三套 run 模型。
+2. 复用现有 [`V5CaseManifest`](../engine/v5/domain.py)，不另写 case binding 框架。
+3. 复用现有 [`V5FeedbackAttachment`](../engine/v5/domain.py)，不另写反馈挂载协议。
+4. 复用现有 [`DecisionRun`](../engine/decision/models.py)，把它定位成 decision ledger，而不是事实源。
+5. 复用现有 [`tools/render_report_v6.py`](../tools/render_report_v6.py) 做 proof，不先切默认入口。
+6. 不大搬目录，先用现有目录承载四层心智模型。
 
-### 2. `engine` 必须去归档化、去工具化、去展示化
+### 2.2 Kill / Merge / Split / Reframe
 
-[`engine/`](../engine/) 只应该做三件事：
+#### Kill
 
-- 读取标准输入
-- 运行推理和裁决
-- 返回稳定结构化输出
+1. 杀掉“工具即能力”的概念。
+2. 杀掉“报告即结果”的概念。
+3. 杀掉“case 目录即事实源”的概念。
+4. 杀掉“pipeline 兼容层即系统核心”的概念。
+5. 杀掉“新增 shim 就等于兼容完成”的概念。
 
-不应该再让 [`engine/`](../engine/) 隐式知道：
+#### Merge
 
-- 报告 Markdown 怎么拼
-- case 目录怎么命名
-- 哪个 batch 工具会调用它
-- 哪些历史文件要兼容写回
+1. 把 run snapshot 草案合并到现有 [`V5RunSnapshot`](../engine/v5/domain.py)。
+2. 把 case manifest 草案合并到现有 [`V5CaseManifest`](../engine/v5/domain.py)。
+3. 把反馈挂载草案合并到现有 [`V5FeedbackAttachment`](../engine/v5/domain.py)。
+4. 把 L0-L9 裁判账本合并为 [`DecisionRun`](../engine/decision/models.py) 的定位说明。
 
-### 3. `tools` 不是产品层，`tools` 是运维层
+#### Split
 
-[`tools/README.md`](../tools/README.md) 展示了一个明显信号：工具数量非常多，而且很多工具已经承担“流程定义”职责。这个趋势如果继续，仓库会变成“脚本编排平台”，而不是“推理系统”。
+1. Split `Run Snapshot` 与 `DecisionRun`：前者是结构化事实快照，后者是裁判链路视图。
+2. Split artifact 与 truth：report / prediction export / feedback file 是 artifact，不是推理真相。
+3. Split CLI 与 domain：[`tools/`](../tools/) 只编排，领域逻辑回到 [`engine/`](../engine/)。
+4. Split legacy 与 target：旧入口保稳定，新入口做 proof，不混成一锅。
 
-所以应明确：
+#### Reframe
 
-- [`tools/`](../tools/) 只允许编排，不允许沉淀长期领域逻辑
-- 凡是被两个以上工具复用的稳定逻辑，都应下沉到应用层或基础设施层
-- `active` 工具的数量应该长期下降，而不是继续增长
+1. [`engine/`](../engine/) 不是“总入口目录”，而是 Inference Plane。
+2. [`tools/`](../tools/) 不是产品层，而是 Operations Plane。
+3. [`reports/`](../reports/) 不是结果数据库，而是视图归档。
+4. [`cases/`](../cases/) 不是推理系统，而是事实容器和 run binding。
+5. [`theory/`](../theory/) 不是静态资料库，而是 Knowledge Plane。
 
-### 4. `cases` 不应再同时扮演五种角色
+### 2.3 明确不做
 
-[`cases/`](../cases/) 目前实际上混合了：
+1. 不新增第三套 run 模型。
+2. 不现在大搬目录。
+3. 不把 [`DecisionRun`](../engine/decision/models.py) 与 [`V5RunSnapshot`](../engine/v5/domain.py) 做成两个平权事实源。
+4. 不继续把新领域能力塞进 [`tools/`](../tools/)。
+5. 不从 Markdown 报告反推结构化状态。
+6. 不把兼容 shim 写成永久架构层。
+7. 不在普通文档硬编码 git HEAD、N_eff、规则状态数量、flagged 清单。
+8. 不把 [`META/project-state.json`](../META/project-state.json) 的 `current_phase` 当产品版本。
 
-- 输入归档
-- 分析绑定
-- 反馈入口
-- 审计定位
-- 学习样本
-
-这五件事最好通过一个 `case manifest + run binding` 机制拆开。case 是事实容器，不是推理执行器。
-
-### 5. `reports` 只能是派生视图，不能是事实源
-
-任何需要从 [`reports/*.md`](../reports/README.md) 反向恢复领域状态的地方，原则上都是架构错误。报告只消费 run snapshot 或 report view model。
-
-### 6. `theory` 不是静态资料库，而是受治理的知识平面
-
-[`theory/`](../theory/) 目前已经接近知识平面，但还混有抽取产物、对齐 IR、cleaning 报告、生产规则状态。下一步不该只是继续塞文件，而是明确四层：
-
-- source material
-- extraction workspace
-- normalized rule registry
-- production rule pack
-
-### 7. 旧线不要长期共存三套，只允许 一主两辅
-
-现状近似：
-
-- 旧 [`engine/pipeline.py`](../engine/pipeline.py)
-- v2 子系统 [`engine/v2/`](../engine/v2/)
-- v5 子系统 [`engine/v5/`](../engine/v5/)
-- 一批 application 并行组件
-
-这不是演进态，这是认知负担。应尽快收口为：
-
-- **一条正式主线**：run-centric inference
-- **一条兼容辅线**：legacy facade
-- **一条实验辅线**：new school/rule incubation
-
-超过三条线，就会持续稀释判断力。
-
----
-
-## Options
+### 2.4 Options
 
 | Option | Description | 优点 | 代价 | Verdict |
 |---|---|---|---|---|
-| Conservative path | 保留现目录结构，仅继续在 [`engine/application/`](../engine/application/) 与 [`tools/`](../tools/) 内局部清理 | 改动最小，短期风险低 | 不解决边界错位，工具继续膨胀，v5 继续像附线 | reject |
-| Clean target | 直接围绕 `Run` 重画全仓边界，按 knowledge / inference / artifacts / operations 重构目录与心智模型 | 终态最清晰，长期成本最低 | 初期迁移面大，需要强迁移纪律 | recommend |
-| Staged clean path | 先不大搬目录，先引入统一 `Run` 契约、artifact manifest、tool boundary，再分期移动物理目录 | 兼顾方向正确与落地可控 | 一段时间内会出现“新边界 + 旧目录”双语期 | strongest practical recommendation |
+| Conservative path | 保留现目录和旧主线，只在 [`tools/`](../tools/) 与旧 pipeline 上继续补丁 | 风险最低 | 工具继续膨胀，run-centric 永远旁路 | Reject |
+| Clean target | 直接物理重排为 knowledge / inference / artifacts / operations，并切换默认入口 | 终态最干净 | 迁移面大，容易破坏现有报告和反馈闭环 | Not now |
+| Staged clean path | 不大搬目录，先以 [`V5RunSnapshot`](../engine/v5/domain.py) + [`DecisionRun`](../engine/decision/models.py) 跑通纵切片，再逐步降级旧入口 | 最短、可验、风险可控 | 会有一段双轨期 | Recommend |
 
-### 结论
+**结论：选 Staged clean path。**
 
-推荐 **Staged clean path**，但前提是**目标模型按 Clean target 定**，不能为了迁移方便把目标降级成“继续在旧目录上打补丁”。
-
----
-
-## What Not To Do
-
-### 不要做的事
-
-1. 不要继续把新逻辑塞进 [`engine/application/`](../engine/application/) 而不先说明它属于 inference、operations 还是 artifact binding
-2. 不要继续新增只被单个流程调用的重型工具脚本来承接长期职责
-3. 不要为了保留 [`engine/pipeline.py`](../engine/pipeline.py) 的表面稳定性，而让新主流程永远挂在旁边
-4. 不要从 Markdown 报告反推结构化状态
-5. 不要把 [`cases/`](../cases/) 当数据库、把 [`reports/`](../reports/) 当审计账本、把 [`tools/`](../tools/) 当应用层
-6. 不要同时维护旧 D1-D4 叙事、v2 叙事、v5 叙事、production MVP 叙事四套对外心智模型
-7. 不要再增加“过渡适配器永久化”的代码，例如只为避免改调用方而长期保留的 shim
+目标模型按 Clean target 定，但第一阶段按 ponytail 原则执行：不大搬目录，不造新模型，不扩工具，只证明纵切片。
 
 ---
 
-## First Proof Point
+## 3. writing-plans：阶段化、可执行、可验收
 
-最小验证物不应是“大搬目录”，而应是**先做一个以 `Run` 为中心的纵切片**。
+### 3.1 P0：正式 case 的 run-centric proof slice
 
-### 建议 proof slice
-
-选一个正式案例，跑通以下链路：
+目标：用一个正式 case 跑通：
 
 ```text
 input.md
-  -> canonical input
-  -> single run snapshot.json
-  -> report render
-  -> case binding
-  -> feedback attach
-  -> learning signal append
+  -> V5Output
+  -> .run.json
+  -> .decision-run.json
+  -> report markdown
+  -> manifest.json
+  -> .feedback-attachment.json
 ```
 
-要求是：
+最小动作：
 
-1. 报告来自 run snapshot，而不是来自旧拼接中间产物
-2. case 只保存事实与绑定，不保存推理真相副本
-3. feedback 绑定到 run / statement，而不是绑定到 Markdown 片段
-4. [`tools/render_report.py`](../tools/render_report.py) 与 [`tools/output_linter.py`](../tools/output_linter.py) 只消费新视图层
-5. 能证明 [`engine/pipeline.py`](../engine/pipeline.py) 可退化为 facade，而不是继续做中枢
+1. 选一个现有正式 case input。
+2. 用 [`tools/render_report_v6.py`](../tools/render_report_v6.py) 生成预生产报告与 JSON 产物。
+3. 校验 [`V5RunSnapshot.output_hash_matches()`](../engine/v5/domain.py)。
+4. 校验 [`V5FeedbackAttachment.validate_targets()`](../engine/v5/domain.py)。
+5. 校验 [`DecisionRun.validate_trace()`](../engine/decision/models.py)。
+6. 归档 proof 结果，不切默认入口。
 
-如果这个 slice 成功，整个重构方向基本成立。
+完成标准：artifact binding 能定位 report、v5 json、run json、decision-run json、feedback attachment、input、feedback，且三个校验为空。
+
+### 3.2 P1：标记 legacy / preprod 入口边界
+
+目标：停止把旧入口当新能力承载点。
+
+最小动作：
+
+1. 在 [`tools/README.md`](../tools/README.md) 明确 [`tools/render_report.py`](../tools/render_report.py) 是 legacy standard report。
+2. 在 [`tools/README.md`](../tools/README.md) 明确 [`tools/render_report_v6.py`](../tools/render_report_v6.py) 是 run-centric preprod。
+3. 新增约束：新报告字段必须先进入 run / decision 结构，再渲染。
+
+完成标准：工具索引能清楚回答哪个入口是 legacy，哪个入口是 preprod。
+
+### 3.3 P2：反馈闭环绑定 run attachment
+
+目标：反馈先绑定 run / prediction / claim，再进入学习。
+
+最小动作：
+
+1. 继续使用 [`V5FeedbackAttachment`](../engine/v5/domain.py)。
+2. 在反馈入口中优先发现 case 目录下的 `.feedback-attachment.json` 与 `.run.json`。
+3. 先做只读校验和 summary，不重写整条反馈摄入链。
+
+完成标准：反馈可证明命中了 run_id 与 prediction_id / claim_id，而不是只命中 Markdown 段落。
+
+### 3.4 P3：固化 [`V5RunSnapshot`](../engine/v5/domain.py) / [`DecisionRun`](../engine/decision/models.py) 关系
+
+目标：避免双事实源。
+
+最小动作：
+
+1. 文档明确 [`V5RunSnapshot`](../engine/v5/domain.py) 是 run-centric 结构化事实快照。
+2. 文档明确 [`DecisionRun`](../engine/decision/models.py) 是裁判派生账本。
+3. 测试或 proof 中展示 v5 output / run snapshot 可派生 decision-run，并可校验链路。
+
+完成标准：任何新贡献者能从文档判断：Run Snapshot 是事实对象，DecisionRun 是裁判视图。
+
+### 3.5 P4：工具层瘦身
+
+目标：把 Operations Plane 拉回“只编排”。
+
+最小动作：
+
+1. 扫 [`tools/README.md`](../tools/README.md) active 工具。
+2. 标为三类：正式入口、预生产入口、迁移 / 历史入口。
+3. 把只服务历史迁移的 active 工具降为 historical。
+4. 被两个以上工具复用的长期逻辑，下沉到 [`engine/`](../engine/) 或现有 application / infrastructure 层。
+
+完成标准：active 工具数下降，每个 active 工具都能说明它只编排什么。
+
+### 3.6 P5：最后才讨论物理目录迁移
+
+目标：先证明边界，再搬目录。
+
+最小动作：
+
+1. 继续用现目录承载四层心智模型。
+2. 只有当 P0-P4 证明目录结构阻碍边界表达时，才讨论物理迁移。
+3. 迁移目标必须是减少长期歧义，而不是让仓库看起来更干净。
+
+完成标准：没有证据证明目录阻碍 run-centric 主线时，不搬目录。
+
+### 3.7 Next Executable Todo
+
+- [x] 选择一个正式 case input，作为 P0 proof slice 样本。（C-2026-001-乾-庚申戊寅壬子辛丑）
+- [x] 运行 [`tools/render_report_v6.py`](../tools/render_report_v6.py) 生成预生产 artifact bundle。
+- [x] 读取 `.run.json` 并校验 [`V5RunSnapshot.output_hash_matches()`](../engine/v5/domain.py)。
+- [x] 读取 `.feedback-attachment.json` 并校验 [`V5FeedbackAttachment.validate_targets()`](../engine/v5/domain.py)。
+- [x] 读取 `.decision-run.json` 并校验 `decision-run-v1` 基本结构。
+- [x] 如可由现有适配器重建 [`DecisionRun`](../engine/decision/models.py)，运行 [`DecisionRun.validate_trace()`](../engine/decision/models.py)。（已改为 `decision_run_from_snapshot` 从 snapshot 派生）
+- [x] 把 proof 结果写入一份短报告，作为是否推进 P1 的依据。（[`META/run-centric-proof-slice-2026-07-09.md`](../META/run-centric-proof-slice-2026-07-09.md)）
+- [x] 更新 [`tools/README.md`](../tools/README.md) 标记 legacy / preprod 入口边界。
+- [x] P2：反馈入口优先通过 manifest 发现 `.feedback-attachment.json` / `.run.json`，输出 target_samples summary。
+- [x] P3：新增 `decision_run_from_snapshot()`，preprod 写 decision-run 改为由 snapshot 派生并 validate_trace。
+- [x] P4：工具层瘦身，6 个迁移辅助工具从 active 移入 historical，active 列表聚焦正式入口。
 
 ---
 
-## Falsifier
+## 4. verification-before-completion：用现有代码事实校验
 
-以下证据会推翻或显著削弱本 thesis：
+> 不在本文硬编码易漂移状态；需要数量、HEAD、规则状态时运行事实源工具。
 
-1. 发现大量真实工作流必须直接依赖 [`cases/`](../cases/) 目录中的非结构化人工编辑态，且无法被 run snapshot 替代
-2. 发现报告生成本身就是主要产品，而结构化输出只是临时中间态，那就不能把 report 降为纯派生物
-3. 发现 v5 契约无法覆盖现有主要事项、反馈链和归档要求，说明 `Run` 中心设计还不够承载全系统
-4. 发现多数 active 工具的差异并非编排层，而是不可抽象的独特领域逻辑，那说明 operations/inference 分界现在定得过理想化
-5. 发现生产使用永远只是单机、单命理师、低频批处理，且长期不需要 run-level reproducibility，那么大规模系统化重构收益会下降
+### 4.1 Proof Slice 必须验证
+
+1. `.run.json` 可被 [`V5RunSnapshot.from_json()`](../engine/v5/domain.py) 读取。
+2. [`V5RunSnapshot.output_hash_matches()`](../engine/v5/domain.py) 返回 true。
+3. `.feedback-attachment.json` 可被 [`V5FeedbackAttachment.from_json()`](../engine/v5/domain.py) 读取。
+4. [`V5FeedbackAttachment.validate_targets()`](../engine/v5/domain.py) 返回空列表。
+5. `.decision-run.json` 符合 `decision-run-v1`。
+6. [`DecisionRun.validate_trace()`](../engine/decision/models.py) 返回空列表或列出可解释的迁移期断点。
+
+### 4.2 项目元数据
+
+```bash
+pytest tests/test_project_metadata.py -q
+```
+
+### 4.3 v5 / run snapshot / report proof
+
+```bash
+pytest tests/v5/test_render_report_v6.py tests/v5/test_v5_contracts.py tests/v5/test_v5_prediction_feedback.py -q
+```
+
+### 4.4 decision ledger
+
+```bash
+pytest tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+```
+
+### 4.5 工具索引与规则状态
+
+```bash
+python tools/tool_registry.py --check
+python tools/rule_status_scan.py --check
+```
+
+### 4.6 完整相关验证
+
+```bash
+pytest tests/test_decision_mvp.py tests/test_decision_v5_adapter.py tests/v5/test_v5_output_linter.py tests/v5/test_render_report_v6.py tests/test_production_service.py tests/test_project_metadata.py -q
+```
+
+### 4.7 Falsifiers
+
+以下证据会推翻或削弱本方案：
+
+1. 真实工作流必须依赖 [`cases/`](../cases/) 中非结构化人工编辑态，且无法被 run snapshot / manifest 替代。
+2. 报告 Markdown 本身才是主要产品事实源，结构化输出只是临时中间态。
+3. v6 / v5 输出无法覆盖正式统一报告要求的主要事项、十五层判断、反馈链和归档要求。
+4. [`DecisionRun.validate_trace()`](../engine/decision/models.py) 在真实 v5 输出上经常断链，且断点不是迁移期可解释问题。
+5. 多数 active 工具包含不可下沉的独特领域逻辑，说明 Operations / Inference 分界过于理想化。
+6. 生产使用长期只是单机、单命理师、低频批处理，且不需要 run-level reproducibility，那么系统化重构收益会下降。
 
 ---
 
-## 建议执行顺序
+## 5. requesting-code-review + ponytail-review：正确性与删繁审查
 
-1. 先冻结目标词汇：统一采用 `Run / Knowledge / Artifact / Operations` 四层话语
-2. 定义统一 `Run Snapshot` 契约，作为新系统第一事实对象
-3. 定义 `Case Manifest` 与 `Artifact Binding`，把 [`cases/`](../cases/) 从混合角色中解耦
-4. 让 [`tools/render_report.py`](../tools/render_report.py) 只消费新的 report view model
-5. 让 [`tools/README.md`](../tools/README.md) 中 active 工具按四层边界重新分类
-6. 把 [`engine/pipeline.py`](../engine/pipeline.py) 明确降级为 legacy facade
-7. 最后再讨论是否需要物理搬迁目录
+### 5.1 requesting-code-review 审查清单
+
+完成任一阶段后，必须审查：
+
+1. 是否违反 [`AGENTS.md`](../AGENTS.md) 的事实源矩阵。
+2. 是否把 [`META/project-state.json`](../META/project-state.json) 的 `current_phase` 当产品版本。
+3. 是否绕过 [`tools/README.md`](../tools/README.md) / [`tools/tool_registry.py`](../tools/tool_registry.py) 自行判断工具状态。
+4. 是否让报告 Markdown 反向定义结构化事实。
+5. 是否让旧 [`engine/pipeline.py`](../engine/pipeline.py) 继续承担新主线职责。
+6. 是否有测试或 proof 输出支撑“已完成”声明。
+
+### 5.2 ponytail-review 审查清单
+
+完成任一阶段后，必须删繁：
+
+1. 能复用 [`V5RunSnapshot`](../engine/v5/domain.py) 时，不新增 run 模型。
+2. 能复用 [`V5CaseManifest`](../engine/v5/domain.py) 时，不新增 manifest 框架。
+3. 能复用 [`V5FeedbackAttachment`](../engine/v5/domain.py) 时，不新增反馈绑定协议。
+4. 能在 [`tools/README.md`](../tools/README.md) 调整分类时，不新增工具。
+5. 能通过 proof slice 验证时，不先做物理目录迁移。
+6. 能保留 legacy facade 时，不为了“干净”删除生产入口。
+
+### 5.3 Review Gate
+
+任一阶段进入下一阶段前，需要回答：
+
+| 问题 | 必须答案 |
+|---|---|
+| 是否有可运行验证？ | 有命令和输出，或明确说明未运行原因。 |
+| 是否新增了不必要模型？ | 没有；如有，必须说明为什么现有模型不能承载。 |
+| 是否扩大 [`tools/`](../tools/) active 面？ | 没有；如有，必须说明为什么不能下沉。 |
+| 是否让 artifact 变成事实源？ | 没有。 |
+| 是否能回滚？ | 能回到 legacy facade 或 preprod 旁路。 |
 
 ---
 
-## 给下一模式的可执行 todo
+## 6. Open Decisions
 
-- [ ] 盘点全仓所有“事实对象”并归类为 knowledge / inference / artifact / operations
-- [ ] 产出 `Run Snapshot` 最小字段草案，映射现有 [`engine/v5/domain.py`](../engine/v5/domain.py)
-- [ ] 产出 `Case Manifest` 草案，映射 [`cases/`](../cases/) 当前最小必需文件
-- [ ] 梳理 [`tools/README.md`](../tools/README.md) 中 active/internal 工具，标出应下沉与应删除项
-- [ ] 识别 [`engine/pipeline.py`](../engine/pipeline.py) 到 [`engine/v5/runner.py`](../engine/v5/runner.py) 的真实兼容边界
-- [ ] 设计一个单案例纵切片验证方案，验证 run-centric 架构可行性
+| 决策 | 当前建议 | 何时裁决 | 状态 |
+|---|---|---|---|
+| 何时切默认报告入口 | v6 preprod 覆盖 9 个正式 case、output_linter errors=0、覆盖审计 9/9 通过后，建议切换 | 完成一个正式 case proof 后 | **证据充分，可启动切换讨论**：9 个 case 全通过覆盖审计，output_linter errors=0，建议讨论切换计划 |
+| [`DecisionRun`](../engine/decision/models.py) 是否从 `.run.json` 而不是 v5 output 派生 | 倾向从 run snapshot 派生 | P0 / P3 阶段验证后 | **已裁决**：P3 已落地 `decision_run_from_snapshot()`，由 snapshot 派生 |
+| 旧 [`engine/pipeline.py`](../engine/pipeline.py) 何时降级 | 先标 legacy，不删除 | v6 preprod 覆盖正式报告要求后 | **条件已满足**：v6 preprod 已覆盖 9 个正式 case，output_linter 0 error；可进入 pipeline 降级讨论 |
+| [`tools/`](../tools/) active 工具如何瘦身 | 先分类，再降级历史迁移工具 | P4 阶段 | **已裁决**：P4 已落地，6 个工具移入 historical |
+| 是否物理迁移目录 | 暂不迁移 | P0-P4 完成且证明目录阻碍边界后 | **待裁决**：P0-P4 完成，无目录阻碍证据，继续不迁移 |
 
 ---
 
-## Mermaid · 新边界总览
+## 7. Mermaid · 新边界总览
 
 ```mermaid
 flowchart LR
-    K[Knowledge Plane] --> I[Inference Plane]
-    I --> A[Artifact Plane]
-    O[Operations Plane] --> K
+    K[Knowledge Plane\ntheory / mapping / production rules] --> I[Inference Plane\nV5RunSnapshot / DecisionRun]
+    I --> A[Artifact Plane\ncases / reports / predictions / feedback]
+    O[Operations Plane\ntools / batch / api / audit] --> K
     O --> I
     O --> A
-
-    K1[theory rules registry] --> K
-    I1[run claims arbitration] --> I
-    A1[cases reports predictions feedback] --> A
-    O1[cli api batch audit migrate] --> O
+    A --> L[Learning Signal]
+    L --> K
+    L --> I
 ```
+
+---
+
+## 8. Final Call
+
+**目标架构按 geju 的 Clean target 定，执行路径按 ponytail 的 Staged clean path 走，落地方式按 writing-plans 的 P0-P5 阶段推进，完成声明必须经过 verification-before-completion，最终进入 requesting-code-review + ponytail-review。**
+
+当前最短、最稳、也最有格局的第一步是：不切默认入口、不大搬目录、不发明新模型，先用现有 [`V5RunSnapshot`](../engine/v5/domain.py)、[`V5CaseManifest`](../engine/v5/domain.py)、[`V5FeedbackAttachment`](../engine/v5/domain.py)、[`DecisionRun`](../engine/decision/models.py) 证明一次完整的 run-centric 分析运行。

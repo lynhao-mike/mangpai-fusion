@@ -720,6 +720,26 @@ class IterationState:
         )
 
 
+def _v5_attachment_target_summary(attachment: V5FeedbackAttachment | None = None) -> dict[str, Any]:
+    if attachment is None:
+        return {
+            "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
+            "target_samples": {"claims": [], "predictions": [], "signals": []},
+        }
+    return {
+        "target_counts": {
+            "claims": len(attachment.target_claim_ids),
+            "predictions": len(attachment.target_prediction_ids),
+            "signals": len(attachment.target_signal_ids),
+        },
+        "target_samples": {
+            "claims": attachment.target_claim_ids[:3],
+            "predictions": attachment.target_prediction_ids[:3],
+            "signals": attachment.target_signal_ids[:3],
+        },
+    }
+
+
 def _empty_v5_attachment_summary(status: str, *, case_id: str, issue: str = "") -> dict[str, Any]:
     return {
         "status": status,
@@ -727,15 +747,38 @@ def _empty_v5_attachment_summary(status: str, *, case_id: str, issue: str = "") 
         "run_snapshot_path": "",
         "case_id": case_id,
         "run_id": "",
-        "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
+        **_v5_attachment_target_summary(),
         "issues": [issue] if issue else [],
     }
+
+
+def _manifest_artifact_path(case_dir: pathlib.Path, key: str) -> pathlib.Path | None:
+    manifest_path = case_dir / "manifest.json"
+    if not manifest_path.exists():
+        return None
+    try:
+        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, TypeError, ValueError):
+        return None
+    raw_path = payload.get("artifact_paths", {}).get(key)
+    if not raw_path:
+        return None
+    path = pathlib.Path(str(raw_path))
+    return (path if path.is_absolute() else REPO_ROOT / path).resolve()
+
+
+def _v5_artifact_candidates(case_dir: pathlib.Path, *, manifest_key: str, pattern: str) -> list[pathlib.Path]:
+    candidates = sorted((path.resolve() for path in case_dir.glob(pattern)), key=lambda path: path.stat().st_mtime, reverse=True)
+    manifest_candidate = _manifest_artifact_path(case_dir, manifest_key)
+    if manifest_candidate and manifest_candidate.exists():
+        candidates = [manifest_candidate, *[path for path in candidates if path != manifest_candidate]]
+    return candidates
 
 
 def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) -> dict[str, Any]:
     """只读校验 feedback-attachment.json 与 run snapshot 的绑定关系。"""
 
-    attachments = sorted(case_dir.glob("*.feedback-attachment.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    attachments = _v5_artifact_candidates(case_dir, manifest_key="feedback_attachment", pattern="*.feedback-attachment.json")
     if not attachments:
         return _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="feedback attachment not found")
     attachment_path = attachments[0]
@@ -748,21 +791,17 @@ def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) 
             "run_snapshot_path": "",
             "case_id": full_case_id,
             "run_id": "",
-            "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
+            **_v5_attachment_target_summary(),
             "issues": [f"invalid v5 feedback attachment payload: {exc}"],
         }
 
-    run_snapshots = sorted(case_dir.glob("*.run.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    run_snapshots = _v5_artifact_candidates(case_dir, manifest_key="run_json", pattern="*.run.json")
     if not run_snapshots:
         summary = _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="run snapshot not found")
         summary["attachment_path"] = attachment_path.as_posix()
         summary["case_id"] = attachment.case_id
         summary["run_id"] = attachment.run_id
-        summary["target_counts"] = {
-            "claims": len(attachment.target_claim_ids),
-            "predictions": len(attachment.target_prediction_ids),
-            "signals": len(attachment.target_signal_ids),
-        }
+        summary.update(_v5_attachment_target_summary(attachment))
         return summary
 
     snapshot = None
@@ -786,11 +825,7 @@ def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) 
             "run_snapshot_path": "",
             "case_id": attachment.case_id,
             "run_id": attachment.run_id,
-            "target_counts": {
-                "claims": len(attachment.target_claim_ids),
-                "predictions": len(attachment.target_prediction_ids),
-                "signals": len(attachment.target_signal_ids),
-            },
+            **_v5_attachment_target_summary(attachment),
             "issues": [
                 f"run snapshot for feedback attachment run_id not found: {attachment.run_id}",
                 *invalid_run_issues,
@@ -812,11 +847,7 @@ def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) 
         "run_snapshot_path": run_snapshot_path.as_posix(),
         "case_id": attachment.case_id,
         "run_id": attachment.run_id,
-        "target_counts": {
-            "claims": len(attachment.target_claim_ids),
-            "predictions": len(attachment.target_prediction_ids),
-            "signals": len(attachment.target_signal_ids),
-        },
+        **_v5_attachment_target_summary(attachment),
         "issues": issues,
     }
 

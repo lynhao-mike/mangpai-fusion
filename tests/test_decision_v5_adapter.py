@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from engine.decision import decision_run_from_v5
+from engine.decision import decision_run_from_snapshot, decision_run_from_v5
 from engine.v5 import run_v5
 from engine.decision.models import ArbitrationDecision, TimingProbability
 from engine.decision.v5_adapter import _report_items
-from engine.v5.domain import V5ArbitrationResult, V5Claim, V5Confidence, V5Output, V5Prediction, V5PredictionLedger
+from engine.v5.domain import V5ArbitrationResult, V5Claim, V5Confidence, V5Output, V5Prediction, V5PredictionLedger, V5RunSnapshot
 
 
 def test_decision_run_from_v5_preserves_trace() -> None:
@@ -22,6 +22,17 @@ def test_decision_run_from_v5_preserves_trace() -> None:
     assert len(run.feedback_attributions) == len(run.feedback_signals)
     assert run.calibration_actions == []
     assert run.validate_trace() == []
+
+
+def test_decision_run_from_snapshot_matches_v5_output_adapter() -> None:
+    output = run_v5({"case_id": "C-TEST-DECISION-SNAPSHOT", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    snapshot = V5RunSnapshot.from_output(output)
+
+    from_snapshot = decision_run_from_snapshot(snapshot)
+    from_output = decision_run_from_v5(snapshot.to_output())
+
+    assert from_snapshot.to_dict() == from_output.to_dict()
+    assert from_snapshot.validate_trace() == []
 
 
 def test_v5_adapter_keeps_prediction_probability_ranges() -> None:

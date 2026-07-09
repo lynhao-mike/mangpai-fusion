@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from engine.decision import decision_run_from_v5
+from engine.decision import decision_run_from_snapshot
 from engine.v5.report_view import render_report_v6_from_output
 from engine.v5.domain import V5CaseManifest, V5FeedbackAttachment, V5RunSnapshot
 from engine.v5.runner import run_v5
@@ -234,6 +234,7 @@ def render_v6_preprod_case(
     feedback_attachment_file = report_file.with_suffix(".feedback-attachment.json")
 
     chart = build_chart_from_input(input_file)
+    chart["source_input"] = _display_path(input_file, workspace_root=root)
     case_id = str(chart["case_id"])
     case_dir = input_file.parent
     feedback_path = case_dir / "feedback.md"
@@ -275,8 +276,12 @@ def render_v6_preprod_case(
             case_path=_display_path(case_dir, workspace_root=root),
         )
     manifest_path.write_text(manifest.to_json(), encoding="utf-8")
+    decision_run = decision_run_from_snapshot(snapshot)
+    decision_issues = decision_run.validate_trace()
+    if decision_issues:
+        raise ValueError(f"decision run trace validation failed: {decision_issues}")
     decision_json_file.write_text(
-        json.dumps(decision_run_from_v5(output).to_dict(), ensure_ascii=False, indent=2),
+        json.dumps(decision_run.to_dict(), ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
     return report_file, json_file

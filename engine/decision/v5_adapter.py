@@ -24,7 +24,7 @@ from engine.decision.models import (
     StructuralVerdict,
     TimingProbability,
 )
-from engine.v5.domain import V5Output
+from engine.v5.domain import V5Output, V5RunSnapshot
 
 
 def _stable_id(prefix: str, *parts: object) -> str:
@@ -34,6 +34,15 @@ def _stable_id(prefix: str, *parts: object) -> str:
 
 def _clamp_confidence(value: float) -> float:
     return min(1.0, max(0.0, value))
+
+
+def _raw_text_from_output(output: V5Output) -> str:
+    """生成迁移期 L0 raw_text；脏测试对象无法完整序列化时降级为最小结构。"""
+
+    try:
+        return output.to_json(indent=None)
+    except (KeyError, TypeError, ValueError):
+        return f"{output.schema_version}|{output.case_id}|{sorted(output.chart)}"
 
 
 def _chart_to_ledger(output: V5Output, raw_hash: str) -> ChartFactLedger:
@@ -242,7 +251,7 @@ def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: l
 def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun:
     """把 V5Output 包成 DecisionRun，不改变 v5 行为。"""
 
-    raw = raw_text or repr(output)
+    raw = raw_text or _raw_text_from_output(output)
     raw_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
     payload = RawWenzhenPayload(raw_text=raw, raw_hash=raw_hash, parser_version="decision-v5-adapter")
     chart = _chart_to_ledger(output, raw_hash)
@@ -286,3 +295,10 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
         feedback_attributions=feedback_attributions,
         calibration_actions=calibration_actions,
     )
+
+
+def decision_run_from_snapshot(snapshot: V5RunSnapshot) -> DecisionRun:
+    """从 run snapshot 派生裁判账本，保持 snapshot 是事实源。"""
+
+    output = snapshot.to_output()
+    return decision_run_from_v5(output, raw_text=output.to_json(indent=None))
