@@ -80,6 +80,7 @@ from tools.feedback_loop import (
     total_case_count,
     write_snapshot,
 )
+from engine.v5.domain import V5FeedbackAttachment, V5RunSnapshot
 from tools.rule_lifecycle import LifecycleConfig
 from tools.v5_prediction_feedback import apply_prediction_feedback, parse_prediction_feedback
 
@@ -717,6 +718,70 @@ class IterationState:
             ),
             encoding="utf-8",
         )
+
+
+def _empty_v5_attachment_summary(status: str, *, case_id: str, issue: str = "") -> dict[str, Any]:
+    return {
+        "status": status,
+        "attachment_path": "",
+        "run_snapshot_path": "",
+        "case_id": case_id,
+        "run_id": "",
+        "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
+        "issues": [issue] if issue else [],
+    }
+
+
+def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) -> dict[str, Any]:
+    """只读校验 feedback-attachment.json 与 run snapshot 的绑定关系。"""
+
+    attachments = sorted(case_dir.glob("*.feedback-attachment.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    if not attachments:
+        return _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="feedback attachment not found")
+    attachment_path = attachments[0]
+    run_snapshots = sorted(case_dir.glob("*.run.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    if not run_snapshots:
+        summary = _empty_v5_attachment_summary("missing", case_id=full_case_id, issue="run snapshot not found")
+        summary["attachment_path"] = attachment_path.as_posix()
+        return summary
+    run_snapshot_path = run_snapshots[0]
+
+    try:
+        attachment = V5FeedbackAttachment.from_json(attachment_path.read_text(encoding="utf-8"))
+        snapshot = V5RunSnapshot.from_json(run_snapshot_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+        return {
+            "status": "invalid",
+            "attachment_path": attachment_path.as_posix(),
+            "run_snapshot_path": run_snapshot_path.as_posix(),
+            "case_id": full_case_id,
+            "run_id": "",
+            "target_counts": {"claims": 0, "predictions": 0, "signals": 0},
+            "issues": [f"invalid v5 feedback attachment payload: {exc}"],
+        }
+
+    issues: list[str] = []
+    if attachment.case_id != full_case_id:
+        issues.append(f"feedback attachment case_id mismatch: {attachment.case_id} != {full_case_id}")
+    if snapshot.case_id != full_case_id:
+        issues.append(f"run snapshot case_id mismatch: {snapshot.case_id} != {full_case_id}")
+    if attachment.run_id != snapshot.run_id:
+        issues.append(f"feedback attachment run_id mismatch: {attachment.run_id} != {snapshot.run_id}")
+    issues.extend(attachment.validate_targets(snapshot))
+
+    return {
+        "status": "mismatch" if issues else "ok",
+        "attachment_path": attachment_path.as_posix(),
+        "run_snapshot_path": run_snapshot_path.as_posix(),
+        "case_id": attachment.case_id,
+        "run_id": attachment.run_id,
+        "target_counts": {
+            "claims": len(attachment.target_claim_ids),
+            "predictions": len(attachment.target_prediction_ids),
+            "signals": len(attachment.target_signal_ids),
+        },
+        "issues": issues,
+    }
 
 
 # ============================================================

@@ -398,3 +398,73 @@ def test_h3_apply_weight_proposal_requires_confirmation_to_write(tmp_path):
     payload = json.loads(output_path.read_text(encoding="utf-8"))
     assert payload["status"] == "human_confirmed"
     assert round(sum(payload["weights"]["事业"].values()), 6) == 1.0
+
+
+def test_v5_feedback_attachment_validation_ok(tmp_path):
+    from engine.v5 import V5FeedbackAttachment, V5RunSnapshot, run_v5_snapshot
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-OK"
+    case_dir.mkdir()
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-ATTACH-OK", "pillars": ["鐢插瓙", "涔欎笐", "涓欏瘏", "涓佸嵂"]})
+    run_path = case_dir / "case.run.json"
+    attachment_path = case_dir / "case.feedback-attachment.json"
+    run_path.write_text(snapshot.to_json(), encoding="utf-8")
+    attachment_path.write_text(
+        V5FeedbackAttachment.from_run_snapshot(snapshot, feedback_path=(case_dir / "feedback.md").as_posix()).to_json(),
+        encoding="utf-8",
+    )
+
+    summary = _validate_v5_feedback_attachment(case_dir, "C-TEST-ATTACH-OK")
+
+    assert summary == {
+        "status": "ok",
+        "attachment_path": attachment_path.as_posix(),
+        "run_snapshot_path": run_path.as_posix(),
+        "case_id": "C-TEST-ATTACH-OK",
+        "run_id": snapshot.run_id,
+        "target_counts": {
+            "claims": len(snapshot.claims),
+            "predictions": len(snapshot.prediction_ledger.predictions),
+            "signals": len(snapshot.learning_signals),
+        },
+        "issues": [],
+    }
+
+
+def test_v5_feedback_attachment_validation_missing(tmp_path):
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-MISSING"
+    case_dir.mkdir()
+
+    summary = _validate_v5_feedback_attachment(case_dir, "C-TEST-ATTACH-MISSING")
+
+    assert summary["status"] == "missing"
+    assert summary["attachment_path"] == ""
+    assert summary["run_snapshot_path"] == ""
+    assert summary["case_id"] == "C-TEST-ATTACH-MISSING"
+    assert summary["run_id"] == ""
+    assert summary["target_counts"] == {"claims": 0, "predictions": 0, "signals": 0}
+    assert summary["issues"] == ["feedback attachment not found"]
+
+
+def test_v5_feedback_attachment_validation_reports_target_mismatch(tmp_path):
+    from engine.v5 import V5FeedbackAttachment, run_v5_snapshot
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-MISMATCH"
+    case_dir.mkdir()
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-ATTACH-MISMATCH", "pillars": ["鐢插瓙", "涔欎笐", "涓欏瘏", "涓佸嵂"]})
+    payload = V5FeedbackAttachment.from_run_snapshot(snapshot).to_dict()
+    payload["target_prediction_ids"].append("missing-prediction")
+    (case_dir / "case.run.json").write_text(snapshot.to_json(), encoding="utf-8")
+    (case_dir / "case.feedback-attachment.json").write_text(
+        V5FeedbackAttachment.from_dict(payload).to_json(),
+        encoding="utf-8",
+    )
+
+    summary = _validate_v5_feedback_attachment(case_dir, "C-TEST-ATTACH-MISMATCH")
+
+    assert summary["status"] == "mismatch"
+    assert "feedback target prediction_id not found in run snapshot: missing-prediction" in summary["issues"]
