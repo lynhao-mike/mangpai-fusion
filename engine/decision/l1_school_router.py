@@ -5,7 +5,37 @@
 
 from __future__ import annotations
 
+from collections import Counter
+
 from engine.decision.models import ChartFactLedger, ContextFactLedger, SchoolApplicability
+
+def _chart_signals(chart: ChartFactLedger) -> dict[str, object]:
+    """只从 four_pillars 派生结构信号。"""
+
+    from engine.predicates.ganzhi import gan_to_wuxing, is_gan, is_zhi, zhi_to_wuxing
+    from engine.predicates.relations import zhi_chong
+
+    gans: list[str] = []
+    zhis: list[str] = []
+    for value in chart.four_pillars.values():
+        text = (value or "").strip()
+        if len(text) >= 2 and is_gan(text[0]) and is_zhi(text[1]):
+            gans.append(text[0])
+            zhis.append(text[1])
+
+    elements = [gan_to_wuxing(g) for g in gans] + [zhi_to_wuxing(z) for z in zhis]
+    distribution = Counter(elements)
+    missing_count = len({"木", "火", "土", "金", "水"} - set(distribution))
+    total = len(elements)
+    dominant = max(distribution.values()) if distribution else 0
+
+    return {
+        "complete": len(gans) == 4,
+        "skewed": bool(total and (dominant / total >= 0.5 or missing_count >= 2)),
+        "missing_count": missing_count,
+        "has_chong": any(zhi_chong(zhis[i], zhis[j]) for i in range(len(zhis)) for j in range(i + 1, len(zhis))),
+    }
+
 
 SCHOOL_PROFILES: dict[str, dict[str, object]] = {
     "ziping": {
@@ -55,6 +85,7 @@ def route_schools(chart: ChartFactLedger, context: ContextFactLedger) -> list[Sc
     focus = _focus_domains(context)
     has_four = len([v for v in chart.four_pillars.values() if v and v != "_"]) == 4
     has_dayun = bool(chart.dayun_steps)
+    signals = _chart_signals(chart)
     result: list[SchoolApplicability] = []
 
     for school, profile in SCHOOL_PROFILES.items():
@@ -74,6 +105,14 @@ def route_schools(chart: ChartFactLedger, context: ContextFactLedger) -> list[Sc
         if school == "gao_dechen":
             role = "evidence_only"
             reasons.append("神煞与旁证不能孤证主审大结论。")
+        if signals["skewed"] and school == "ditiansui":
+            score += 0.1
+            reasons.append("五行偏枯或缺行明显，调候气势派更适用。")
+        if signals["has_chong"] and signals["complete"] and school in {"duan_jianye", "ren_fuhong"}:
+            score += 0.05
+            if role == "co_lead":
+                role = "lead"
+            reasons.append("地支见冲，做功 / 应期派可主审事件触发。")
         if focus and not overlap and school not in {"ziping", "ditiansui"}:
             role = "abstain"
             blockers.append("当前分析焦点与该派初始适用域无交集。")

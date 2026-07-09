@@ -198,7 +198,7 @@ $FOCUS
 
     assert routed["ziping"].role == "lead"
     assert routed["ditiansui"].role == "lead"
-    assert routed["duan_jianye"].role == "co_lead"
+    assert routed["duan_jianye"].role in {"co_lead", "lead"}
     assert routed["gao_dechen"].role == "abstain"
     assert routed["gao_dechen"].blockers
     assert all(item.reasons for item in routed.values())

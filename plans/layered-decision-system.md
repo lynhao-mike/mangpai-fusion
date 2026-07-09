@@ -788,6 +788,8 @@ engine/decision/
 
 ### Phase R2：路由输入从盘面事实取信号
 
+> 状态：已完成（route_schools 已接入 _chart_signals：五行偏枯提升 ditiansui 分数、地支冲提升 duan_jianye / ren_fuhong 角色；区分力护栏见 tests/test_l1_structural_signals.py）。R2 仅从 four_pillars 派生信号，未读取未填充字段。
+
 目标：让 L1 路由不只看四柱完整性，还能按盘面结构特征区分“该用哪派”。
 
 动作：把结构、气势、做功、取象、应期等可判定的盘面信号接入 [`route_schools()`](../engine/decision/l1_school_router.py:52) 的打分。
