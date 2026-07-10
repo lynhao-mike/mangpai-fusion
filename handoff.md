@@ -8,7 +8,7 @@
 
 ## 0. 一句话现状
 
-我们在把一个八字分析系统从"多派融合大杂烩"重构成"分层决策学习系统（L0-L9）"。核心病灶已诊断清楚、R1-R9 九个重构阶段已全部落地并通过验证。**当前不卡在代码，卡在数据**——真正的下一步（跨案学习、真实准确率）需要积累真实反馈样本，不是继续写代码。
+我们在把一个八字分析系统从"多派融合大杂烩"重构成"分层决策学习系统（L0-L9）"。核心病灶已诊断清楚、R1-R9 九个重构阶段已全部落地并通过验证。**排期（用户 2026-07-10 定）：先做完 R 系列——即 R10 北极星（v5 runner 下沉 L2、删除 v5_adapter 事后转录）——再启动 K 系列命理建模；真实反馈样本收集全程并行。** R10 是要动代码的硬骨头；跨案学习与 K 系列校准则卡在真实反馈样本积累。
 
 ---
 
@@ -90,29 +90,34 @@ C-2026-035（1988-11-15 男，甲戌日）已建立标准 case：
 
 ## 4. 当前卡在哪
 
-**不卡在代码，卡在数据与两个大工程决策。**
+**R1-R9 已全部落地；剩下 R10（北极星）与 K 系列（命理建模）两个大工程，外加一个数据瓶颈。**
 
-R1-R9 都是"配管 + 消费 v5 已有结论"的重构。剩下的是真正的硬骨头，且需要前置条件：
+R1-R9 都是"配管 + 消费 v5 已有结论"的重构。往后按**先 R 系列收尾、再 K 系列**的排期推进（用户 2026-07-10 定）：
 
-1. **跨案学习需要真实反馈样本**。R5 只做了注入端（learned_prior 能改路由），但"从真实反馈聚合出 learned_prior"（R5-B）依赖足够的有效反馈。经测算需要按 `school×domain×role` 分桶，每桶至少 5-20 条有效反馈才能启动，全域生产级需 1500+ 条。当前真实反馈样本 = C-2026-035 的一份（还没填）。
+1. **R10 北极星（R 系列收尾，先做）**：v5 runner 尚未下沉为 L2、`v5_adapter` 的"事后转录"定位尚未删除。目前 DecisionRun 仍是从 V5Output 派生的账本，且 L3/L4 判断（`_extract_geju_profile` / `classify_event_type`）寄生在 adapter 内。彻底扳正需让 v5 五派 runner 直接作 L2 命题供应器、判断归位分层链、报告全链路由 L7 驱动。工程量最大、风险最高。详见 [`plans/layered-decision-system.md`](plans/layered-decision-system.md) §R10（含 thesis / kill / options / 证明物 / 证伪）。
 
-2. **L3/L4 仍是"消费 v5 结论"，不是"从命局结构原生推导"**。R8 的 event_type 是文本关键词分类；R9 的 L3 审查是读 v5 已算的格局用忌神——都不是分层链自己长出来的命理判断。真正的 L3 命局审查（独立判旺衰/用神/神煞孤证）是一整套命理知识建模，是独立大工程。
+2. **K 系列命理建模（R10 完成后启动）**：L3/L4 目前仍是"消费 v5 结论"，不是"从命局结构原生推导"（R8 event_type 是文本分类、R9 L3 审查是读 v5 已算格局）。真正的原生命局判断（多域格局裁决 / 旺衰独立校验 / 五派结构交叉验证）是独立命理知识建模，见 plan §18bis K1-K3。**依赖 R10 下沉后 L3 才有原生输入通道，故排在 R10 之后。**
 
-3. **北极星未动：v5 runner 尚未下沉为 L2、v5_adapter 的"事后转录"定位尚未删除**。目前 DecisionRun 仍是从 V5Output 派生的账本。彻底扳正需要让 v5 五派 runner 直接作为 L2 命题供应器，报告全链路由 L7 驱动。工程量最大、风险最高。
+3. **数据瓶颈（贯穿始终、可并行积累）**：跨案学习（R5-B）与 K 系列校准都需真实反馈样本。R5 只做了注入端（learned_prior 能改路由），"从真实反馈聚合出 learned_prior"依赖足够有效反馈——按 `school×domain×role` 分桶、每桶 5-20 条起步、全域生产级需 1500+ 条。当前真实样本 = C-2026-035 一份（还没填）。
 
 ---
 
-## 5. 下一步计划（按优先级）
+## 5. 下一步计划（按排期）
 
-### 5.1 立即可做（不需要新代码）
-- **收集真实反馈**：让命主填 [`cases/C-2026-035-.../feedback.md`](cases/)，用 `python -m tools.feedback_ingest C-2026-035-乾-戊辰癸亥甲戌庚午` 摄入。多跑几个真实命盘，积累样本。
+> 排期总纲（用户 2026-07-10 定）：**先做完 R 系列（即 R10）→ 再启动 K 系列**；真实反馈样本收集全程并行。
 
-### 5.2 数据够了再做（R5-B）
-- 从真实反馈聚合出 `learned_prior`（`school×domain×role` 命中率），持久化回灌 `route_schools`。方向文档已写：[`docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md`](docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md)。**推荐复用现有 `tools/feedback_loop.py` + `DomainRoleStats` 的 Beta 生命周期，不要新建平行学习系统。**
+### 5.1 并行·立即可做（不需要新代码）
+- **收集真实反馈**：让命主填 [`cases/C-2026-035-.../feedback.md`](cases/)，用 `python -m tools.feedback_ingest C-2026-035-乾-戊辰癸亥甲戌庚午` 摄入。多跑几个真实命盘，积累样本。这是 R5-B 与 K 系列校准的共同前置，越早开始越好。
 
-### 5.3 独立立项（不要顺着 R 序列惯性推）
-- **L3 真实命局审查建模**：独立判旺衰/用神/神煞孤证，不再只消费 v5。需要命理知识工程，建议单独用 geju 立项。
-- **v5 runner 下沉为 L2**：删除 v5_adapter 事后转录定位，报告全链路由 L7 驱动。这是终局北极星。
+### 5.2 R 系列收尾·先做（R10 北极星）
+- 按 plan §R10.5 做**纵切片**：让子平派·事业域 runner 原生产出 L2 `SchoolClaim`，该域 DecisionRun 不经 `v5_adapter` 反推。验收四条断言（L1/L3/L4 由链内层产出、报告与 decision-run.json 一致、`validate_trace()` 返回空、信息量不低于 R6 基线）。
+- 纵切片证明"链内原生推理"可行后，逐派逐域迁移，最后删 `v5_adapter` 转录定位、切生产默认报告入口。
+- 建议开工前用 geju 对 R10 单独开题，writing-plans 拆成 bite-sized TDD 执行计划。
+
+### 5.3 R 完成后启动（K 系列命理建模 + R5-B）
+- **R5-B 跨案学习**（数据够了即可做）：从真实反馈聚合 `learned_prior`（`school×domain×role` 命中率）持久化回灌 `route_schools`。方向文档：[`docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md`](docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md)。**复用 `tools/feedback_loop.py` + `DomainRoleStats` 的 Beta 生命周期，不要新建平行学习系统。**
+- **K 系列**（R10 下沉后启动）：K1 多域格局裁决 → K2 旺衰独立校验 → K3 五派结构交叉验证。每项独立用 geju 立项，不与 R10 配管混做。铁律：产出可被 L3/L4 消费的独立判断，但不得让 adapter 或报告层凭空发明命理。
+- **同步更新 HANDOFF**：R10 落地后，把本文件 §3/§4/§5 的状态推进到"R 系列全完成、K 系列进行中"。
 
 ---
 

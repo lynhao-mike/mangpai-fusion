@@ -724,7 +724,7 @@ engine/decision/
   models.py                  已落地 · L0-L9 数据契约 + DecisionRun.validate_trace 全链路校验
   l0_wenzhen.py              已落地 · 问真文本解析
   l0_context.py              已落地 · 自由文本事实账本
-  l1_school_router.py        已落地 · route_schools 规则式适用性路由（尚未进生产）
+  l1_school_router.py        已落地 · route_schools 规则式适用性路由（R1 起已前置生产）
   l2_claims.py               已落地 · 授权流派命题
   l3_structure.py            已落地 · 结构合法性
   l4_events.py               已落地 · 事件落地
@@ -734,10 +734,10 @@ engine/decision/
   l8_feedback_attribution.py 已落地 · 反馈归因
   l9_calibration.py          已落地 · 校准动作
   orchestrator.py            已落地 · run_decision_mvp 内存 L0-L9 证明物
-  v5_adapter.py              需重构 · _school_applicability 反推适用性，是倒置依赖根源
+  v5_adapter.py              待删除 · R1 已删 _school_applicability 反推；现为 V5Output→DecisionRun 事后转录层，是倒置的最后寄生处（R10 终局删除，判断归位 L3/L4）
 ```
 
-核心待办不是新增文件，而是修 [`v5_adapter.py`](../engine/decision/v5_adapter.py:70)：让 L1 路由前置于 L2，删除“从命题反推适用性”。
+R1 已删除 [`v5_adapter.py`](../engine/decision/v5_adapter.py:1) 的“从命题反推适用性”，L1 路由已前置生产。当前 adapter 仍是 `V5Output→DecisionRun` 的事后转录层，并寄生了本该属于 L3/L4 的判断（`_extract_geju_profile` / `classify_event_type`）。核心待办不再是修 adapter，而是 §R10 的终局：让 v5 runner 下沉为 L2 命题供应器、判断归位分层链、删除 adapter 转录定位。
 
 现有模块重新定位：
 
@@ -860,6 +860,70 @@ engine/decision/
 
 > 状态：已落地（L3 消费 v5 已算出的格局 favor/avoid 十神方向，对依赖忌神且无 favor 支撑的命题降级，低置信再 reject；无格局裁决时零回归，见 tests/test_l3_geju_review.py）。**这是消费 v5 已算出的格局结论做一致性审查，不是 L3 自行判定旺衰/用神**。C-2026-035 重跑实测：L3 verdict 分布由 R9 前 pass 287 / weaken 41 变为 pass 277 / weaken 51 / unknown 2（10 条依赖忌神命题被降级），validate_trace 仍为空。当前覆盖度取决于 v5 产出的格局裁决数量（仅事业域有格局裁决）。扩大覆盖（多域格局裁决、旺衰独立校验）属后续命局知识建模工作。
 
+### Phase R10：北极星终局——v5 runner 下沉为 L2、删除 v5_adapter 事后转录
+
+> 状态：未开始。这是 §0 与 §22 反复指向的北极星，也是 R1-R9 全部完成后**唯一未扳正的根部倒置**。R6 让报告改读 L7（输出端扳正），但 [`DecisionRun`](../engine/decision/models.py:301) 仍由 [`v5_adapter.py`](../engine/decision/v5_adapter.py:1)（现 405 行）从 `V5Output` 事后转录派生。代码事实核对（2026-07-10）：`_school_applicability` 已删除、`route_schools` 已前置、`_extract_geju_profile` / `classify_event_type` 均在 adapter 内——即 L3/L4/L1 的"命理判断"仍寄生在转录层，不是分层链原生推理。
+
+#### R10.0 Thesis
+
+**把"v5 推理 + L0-L9 抄写"扳正为"分层链原生推理"的终局，不是再补一层适配，而是删除 `v5_adapter` 的"事后转录"定位本身。** v5 五派 runner 应直接作为 L2 命题供应器，向 DecisionRun 投喂 `SchoolClaim`；L3-L7 在链内原生推理，不再从成品 `V5Output` 反向拆解。一句话：**adapter 是过渡期的脚手架，终局是拆掉脚手架，不是加固它。**
+
+#### R10.1 Confidence
+
+**高置信度（针对倒置定位与删除方向）；中置信度（针对一次性可迁移的工程量）。** 高置信：adapter 承载了本该属于 L1/L3/L4 的判断（代码已核实）。中置信：v5 runner 内部结构（旺衰/用神/做功路径）能否被 L2/L3 直接消费而不丢信息，需先做纵切片证明。
+
+#### R10.2 The Trap（继承约束辨析）
+
+| 继承形态 | 表象 | 是否真实约束 | 判断 |
+|---|---|---|---|
+| `v5_adapter` 事后转录 | 迁移期必要桥 | 不真实 | R1-R9 已把桥两端都扳正，桥本身成了倒置的最后寄生处，应删除而非加固。 |
+| v5 runner 产出成品 `V5Output` | runner 天生输出报告级结论 | 不真实 | runner 应产出 L2 级 `SchoolClaim`（原子命题 + 证据 + 置信 + 证伪），成品化是历史耦合。 |
+| L3/L4 判断寄生在 adapter | `_extract_geju_profile` / `classify_event_type` 在 adapter 内 | 不真实 | 命理判断必须归位到 L3/L4 层内，adapter 不应承载任何判断。 |
+| legacy `render_report` 默认入口 | 生产仍走旧渲染 | 部分真实 | 有稳定性契约，属真实约束；迁移默认入口是 R10 的收尾，不是前置。 |
+
+#### R10.3 Kill / Merge / Split（ponytail 边界）
+
+Kill：删除 `v5_adapter` 的"从 `V5Output` 反推 L1/L3/L4"逻辑；删除"runner 必须产出成品结论"的耦合。
+
+Merge：`_extract_geju_profile`、`classify_event_type` 等判断从 adapter 归位到 L3/L4 层内原生实现。
+
+Split：v5 五派 runner 拆为"L2 命题供应"与"legacy 报告渲染"两职责，前者进 DecisionRun，后者随默认入口迁移时一并退役。
+
+明确不做：不新建第三套 run 模型；不在 runner 下沉未证明前切默认入口；不把 R10 与 K 系列命理建模混做（配管 vs 命理逻辑分离）。
+
+#### R10.4 Options
+
+| Option | 描述 | Verdict |
+|---|---|---|
+| Conservative | 保留 adapter，继续在其内补 L3/L4 判断 | Reject：倒置的最后寄生处不除，等于 R6 只做了一半。 |
+| Clean target | 一次性让全部五派 runner 下沉 L2 + 删 adapter + 切默认入口 | Not now：工程量最大、风险最高，缺纵切片证据。 |
+| Staged clean | 先让**一派一域**（如子平·事业）runner 原生产出 L2 SchoolClaim，DecisionRun 不经 adapter 转录该切片，证明"链内原生推理"信息不丢，再逐派逐域迁移，最后删 adapter、切默认入口 | **Recommend** |
+
+#### R10.5 First Proof Point（最小、可证）
+
+子平派·事业域：`ziping_runner` 直接产出 L2 `SchoolClaim`，该域 DecisionRun 不经 `v5_adapter` 的反推逻辑；断言 (1) 该域 L1 角色、L3 verdict、L4 event_type 均由链内层产出而非 adapter 派生；(2) 报告事业域文本与 decision-run.json 一致；(3) [`validate_trace()`](../engine/decision/models.py:320) 返回空；(4) 相对 R6 基线，该域五派依据与 15 层判断信息量不减。
+
+#### R10.6 Falsifier
+
+1. runner 下沉后，L2 `SchoolClaim` 丢失 v5 内部结构（旺衰/用神/做功路径），L3/L4 拿不到足够信息产出有区分力的 verdict —— 说明 v5 runner 与 L2 契约不匹配，Clean target 代价被低估，回本节重判。
+2. 纵切片报告信息量低于 R6 基线（依据变薄、15 层判断塌陷）—— 说明下沉损失信息，需先加厚 L2/L7 契约再迁移。
+
+---
+
+## 18bis. 独立命局知识建模工程（K 系列）
+
+> 定位：R 系列扳正的是**决策链管道**（谁先发言、谁驱动报告、判断归哪层）；K 系列建的是**命理知识本身**（如何原生判旺衰/用神/格局/交叉验证）。两者正交：K 系列为 R10 之后的 L3/L4 提供"链内原生推理"所需的命理引擎，不与配管工作混做。**铁律不变：K 系列产出可被 L3/L4 消费的独立判断，但不得让 adapter 或报告层凭空发明命理。** 每项独立立项，建议各自用 geju 单独开题。
+
+| 工程 | 目标 | 现状缺口 | 依赖 |
+|---|---|---|---|
+| K1 多域格局裁决 | 格局用忌神裁决从"仅事业域"扩到学业/事业/财富/婚姻/健康全域 | R9 的 L3 一致性审查只覆盖 v5 有格局裁决的事业域 | 独立命理建模，非配管 |
+| K2 旺衰独立校验 | L3 原生判旺衰/用神，不再只消费 v5 已算结论 | 当前 L3 是"消费 v5 格局方向"的一致性审查，非独立推导 | 命理知识工程 + R10 下沉后 L3 才有原生输入 |
+| K3 五派结构交叉验证 | 多派对同一结构的判断做交叉一致性校验，冲突入 L6 而非事后追认 | 当前无跨派结构级交叉验证，冲突仲裁只在事件层 | K1/K2 提供可比较的结构级判断 |
+
+**K 系列证伪口径**：若任一 K 工程产出的"独立命理判断"在真实反馈上准确率不高于"消费 v5 结论"的基线，说明独立建模未带来增量，应回退到消费 v5 并重估 K 工程 ROI。
+
+**排序建议**：K 系列依赖真实反馈样本校准（同 HANDOFF §4 的数据瓶颈），且 K2/K3 依赖 R10 下沉后 L3 有原生输入通道。因此近期不与 R10 并行启动；R10 纵切片证明"链内原生推理"可行后，再按 K1→K2→K3 逐项立项。
+
 ---
 
 ## 19. 第一证明物与证伪口径
@@ -906,17 +970,15 @@ engine/decision/
 
 ## 21. 近期最短行动清单
 
-前 8 项已在 [`engine/decision/`](../engine/decision/) 落地，不重复建设。当前起点是第 9 项之后的“扳正生产路由”。
+R1-R9 已在 [`engine/decision/`](../engine/decision/) 全部落地并通过验证（状态见 §18 各 Phase）。当前系统**不卡在代码，卡在两处**：真实反馈样本不足，以及北极星（R10）与命理建模（K 系列）尚未启动。不要顺着 R 序列惯性把已完成阶段再做一遍。
 
-已完成：L0-L9 命名与职责、核心数据对象、L0 输入契约、SchoolApplicabilityMatrix、DecisionRun 链路追踪与校验、L0 parser、L1 rule-based router、样例 DecisionRun。
+已完成：L0-L9 数据契约与链路校验、L1 规则路由前置生产、路由结构信号、单 run 反馈回打、分层准确率看板、学习先验注入端、报告改读 L7、L4 事件类型分类、L3 格局一致性审查。
 
-下一步（对应 Phase R1）：
+当前真实起点（按优先级）：
 
-1. 在生产 v5→decision 链路让 [`route_schools()`](../engine/decision/l1_school_router.py:52) 前置，替换 [`_school_applicability()`](../engine/decision/v5_adapter.py:70) 的命题反推。
-2. 让 L2 只接受被 L1 授权的流派命题；`abstain` 流派不得产出 claim。
-3. 用一个正式 case 验证 §19.1 三条断言，并跑 [`validate_trace()`](../engine/decision/models.py:320) 返回空。
-4. 增加回归测试：断言生产链路不再从命题池反推适用性。
-5. 通过后再评估 Phase R2（路由信号增强）与是否迁移默认入口。
+1. **积累真实反馈样本（立即可做、不需新代码）**：让命主填 case 的 `feedback.md`，用 `python -m tools.feedback_ingest <case_id>` 摄入。R5-B 跨案学习、K 系列命理建模校准都卡在此，需按 `school×domain×role` 分桶、每桶 5-20 条起步。
+2. **R10 纵切片（北极星第一步）**：按 §R10.5 让子平派·事业域 runner 原生产出 L2 `SchoolClaim`，该域不经 `v5_adapter` 反推，验证四条断言。这是删除 adapter 事后转录、把倒置彻底扳正的第一证明物。
+3. **暂不启动的**：K 系列命理建模（依赖真实样本 + R10 下沉后 L3 原生输入通道），以及切换生产默认报告入口（R10 收尾项）。各自独立立项，用 geju 单独开题，不与 R10 配管混做。
 
 ---
 
