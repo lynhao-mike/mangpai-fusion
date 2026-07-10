@@ -506,6 +506,8 @@ def lint(
         # Phase C · parallel-domain markdown 输出门禁
         _lint_parallel_domain_markdown(full_text, res)
         _lint_v6_report_structure(full_text, res)
+        # E13 · 公历年—干支一致性校验
+        _lint_year_ganzhi_consistency(full_text, res)
     else:
         d = _analysis_to_dict(analysis_output)
         full_text = ""
@@ -1061,6 +1063,54 @@ def _lint_v77_education_timeline(md: str, res: LintResult) -> None:
                 "E-V77-EDU-DEGREE-OVERINFERENCE",
                 "学业结构疑似在现实锚点不足时输出确定学历/学校区间",
                 suggestion="改为待反馈候选，并明确禁止由学习能力直接推出学历。",
+            )
+
+
+# ============================================================
+# E13 · 公历年—干支一致性校验
+# ============================================================
+
+_JIAZI_60: list[str] = [
+    "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
+    "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
+    "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
+    "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
+    "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
+    "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥",
+]
+
+def _ganzhi_for_year_linter(year: int) -> str:
+    return _JIAZI_60[(year - 4) % 60]
+
+
+# 匹配「YYYY 干支」或「YYYY干支」模式。
+# 场景：markdown 表格「| 2029 | 己酉·正财 |」或散文「2029 己亥年」
+# 排除：
+#   - YYYY-YYYY（区间两端）：年份前有 "-" 或后紧跟 "-"
+#   - YYYY【干支】（大运格式）
+#   - YYYY-YYYY 干支（范围+大运名）
+# 实现：
+#   (?<!-) 确保年份前面不是 "-"（区间末端排除）
+#   (?!-)  确保年份后面不是 "-"（区间首端排除）
+#   (?!【) 确保后面不是 "【"（大运格式排除）
+_YEAR_GZ_RE = re.compile(
+    r"(?<!-)(?<!\d)(1[6-9]\d{2}|2[0-1]\d{2})(?![-【\d])[ \t|（]{0,4}([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])"
+)
+
+
+def _lint_year_ganzhi_consistency(md: str, res: LintResult) -> None:
+    """E13：报告中出现「YYYY 干支」时，干支必须与公历年对应。"""
+    for m in _YEAR_GZ_RE.finditer(md):
+        year = int(m.group(1))
+        reported_gz = m.group(2)
+        expected_gz = _ganzhi_for_year_linter(year)
+        if reported_gz != expected_gz:
+            res.add(
+                Severity.ERROR,
+                "E13",
+                f"公历年干支不符：{year} 年应为「{expected_gz}」，报告写的是「{reported_gz}」",
+                location=f"pos:{m.start()}",
+                suggestion=f"将「{year} {reported_gz}」改为「{year} {expected_gz}」",
             )
 
 
