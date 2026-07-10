@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -10,8 +11,14 @@ import pytest
 from engine.decision import v5_adapter
 from engine.decision.l1_school_router import route_schools
 from engine.decision.l4_events import build_event_hypotheses
-from engine.decision.models import ChartFactLedger, ContextFactLedger
+from engine.decision.models import (
+    ChartFactLedger,
+    ContextFactLedger,
+    SchoolApplicability,
+    SchoolClaim,
+)
 from engine.decision.r10_ziping_career import apply_ziping_career_slice
+from engine.v5.domain import V5Claim, V5Confidence, V5Output
 from engine.v5.runner import run_v5
 
 BASELINE_PATH = Path("tests/r10/fixtures/r6_ziping_career_baseline.json")
@@ -145,3 +152,175 @@ def test_ziping_career_slice_never_sends_target_claims_to_adapter() -> None:
         for claim in output.claims
         if claim.claim_id in non_target_ids
     }
+
+
+def _v5_claim(
+    claim_id: str,
+    school: str,
+    domain: str,
+    statement: str,
+) -> V5Claim:
+    return V5Claim(
+        claim_id=claim_id,
+        school=school,  # type: ignore[arg-type]
+        domain=domain,
+        claim=statement,
+        claim_type="event_claim",
+        confidence=V5Confidence(score=0.7),
+    )
+
+
+def _applicability(school: str, role: str = "co_lead") -> SchoolApplicability:
+    return SchoolApplicability(school=school, role=role)  # type: ignore[arg-type]
+
+
+def _legacy_claim(claim_id: str, school: str, domain: str) -> SchoolClaim:
+    return SchoolClaim(
+        claim_id=claim_id,
+        school=school,
+        role_granted_by_l1="co_lead",
+        domain=domain,
+        claim_type="event_claim",
+        statement=f"legacy:{claim_id}",
+    )
+
+
+@pytest.mark.parametrize(
+    "applicability",
+    [
+        [_applicability("ziping", "lead"), _applicability("ziping", "co_lead")],
+        [_applicability("ziping", "co_lead"), _applicability("ziping", "lead")],
+    ],
+)
+def test_slice_rejects_duplicate_ziping_applicability_in_any_order(
+    applicability: list[SchoolApplicability],
+) -> None:
+    output = V5Output(
+        case_id="duplicate-applicability",
+        claims=[
+            _v5_claim("other", "ditiansui", "事业", "非目标"),
+            _v5_claim("target", "ziping", "事业", "目标"),
+        ],
+    )
+
+    with pytest.raises(ValueError, match="duplicate ziping applicability"):
+        apply_ziping_career_slice(output, applicability)
+
+
+@pytest.mark.parametrize("ziping_role", [None, "abstain"])
+def test_missing_or_abstain_ziping_only_suppresses_targets(
+    ziping_role: str | None,
+) -> None:
+    target = _v5_claim("target", "ziping", "事业", "目标")
+    other = _v5_claim("other", "ditiansui", "事业", "非目标")
+    output = V5Output(case_id="suppression", claims=[target, other])
+    applicability = [_applicability("ditiansui")]
+    if ziping_role is not None:
+        applicability.append(_applicability("ziping", ziping_role))
+    preserved = _legacy_claim("other", "ditiansui", "事业")
+
+    with patch("engine.decision.v5_adapter._claims", return_value=[preserved]) as adapter:
+        claims, verdicts, _ = apply_ziping_career_slice(output, applicability)
+
+    assert claims == [preserved]
+    assert [verdict.claim_id for verdict in verdicts] == ["other"]
+    assert adapter.call_args.args[0].claims == [other]
+    assert adapter.call_args.args[1] is applicability
+
+
+@pytest.mark.parametrize(
+    "claims",
+    [
+        [
+            _v5_claim("same-id", "ditiansui", "事业", "非目标"),
+            _v5_claim("same-id", "ziping", "事业", "目标"),
+        ],
+        [
+            _v5_claim("same-id", "ziping", "事业", "完全重复"),
+            _v5_claim("same-id", "ziping", "事业", "完全重复"),
+        ],
+        [
+            _v5_claim("same-id", "ziping", "总体", "内容甲"),
+            _v5_claim("same-id", "ziping", "事业", "内容乙"),
+        ],
+    ],
+)
+def test_slice_rejects_duplicate_merged_l2_claim_ids_with_id_in_error(
+    claims: list[V5Claim],
+) -> None:
+    output = V5Output(case_id="duplicate-l2", claims=claims)
+    applicability = [_applicability("ziping", "lead"), _applicability("ditiansui")]
+
+    with pytest.raises(ValueError, match="same-id"):
+        apply_ziping_career_slice(output, applicability)
+
+
+def test_slice_filters_legacy_by_position_and_preserves_adapter_contract_and_results() -> None:
+    other_school = _v5_claim("other-school", "ditiansui", "事业", "其他派")
+    target_a = _v5_claim("target-a", "ziping", "事业", "目标甲")
+    ziping_wealth = _v5_claim("ziping-wealth", "ziping", "财富", "子平财富")
+    target_b = _v5_claim("target-b", "ziping", "总体", "目标乙")
+    output = V5Output(
+        case_id="isolation",
+        chart={"marker": object()},
+        claims=[other_school, target_a, ziping_wealth, target_b],
+        structure_graph=V5Output(case_id="graph-sentinel").structure_graph,
+        arbitration_results=[],
+        prediction_ledger=V5Output(case_id="ledger-sentinel").prediction_ledger,
+        learning_signals=[],
+        schema_version="test-schema",
+    )
+    applicability = [_applicability("ziping", "lead"), _applicability("ditiansui")]
+    legacy_a = _legacy_claim("other-school", "ditiansui", "事业")
+    legacy_b = _legacy_claim("ziping-wealth", "ziping", "财富")
+    adapter_result = [legacy_a, legacy_b]
+
+    with patch("engine.decision.v5_adapter._claims", return_value=adapter_result) as adapter:
+        claims, verdicts, events = apply_ziping_career_slice(output, applicability)
+
+    adapter.assert_called_once()
+    adapted_output, adapted_applicability = adapter.call_args.args
+    assert adapted_output.claims == [other_school, ziping_wealth]
+    assert adapted_applicability is applicability
+    assert replace(adapted_output, claims=output.claims) == output
+    assert claims[:2] == adapter_result
+    assert claims[0] is legacy_a
+    assert claims[1] is legacy_b
+    assert [claim.claim_id for claim in claims] == [
+        "other-school",
+        "ziping-wealth",
+        "target-a",
+        "target-b",
+    ]
+    assert len(claims) == len(verdicts)
+    assert len({claim.claim_id for claim in claims}) == len(claims)
+    assert len({verdict.verdict_id for verdict in verdicts}) == len(verdicts)
+    assert [verdict.claim_id for verdict in verdicts] == [claim.claim_id for claim in claims]
+    assert events == build_event_hypotheses(output.case_id, verdicts, claims)
+
+
+def test_equal_but_distinct_target_objects_are_not_removed_by_equality_side_effects() -> None:
+    target = _v5_claim("duplicate-target", "ziping", "事业", "相同目标")
+    equal_distinct_target = replace(target)
+    assert equal_distinct_target == target
+    assert equal_distinct_target is not target
+    output = V5Output(case_id="equal-distinct", claims=[target, equal_distinct_target])
+
+    with pytest.raises(ValueError, match="duplicate-target"):
+        apply_ziping_career_slice(output, [_applicability("ziping", "lead")])
+
+
+def test_same_id_with_different_content_is_rejected_before_l3() -> None:
+    output = V5Output(
+        case_id="same-id-different-content",
+        claims=[
+            _v5_claim("collision", "ziping", "事业", "目标内容"),
+            _v5_claim("collision", "ditiansui", "财富", "不同内容"),
+        ],
+    )
+
+    with pytest.raises(ValueError, match="collision"):
+        apply_ziping_career_slice(
+            output,
+            [_applicability("ziping", "lead"), _applicability("ditiansui")],
+        )
