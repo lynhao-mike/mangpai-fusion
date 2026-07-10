@@ -17,7 +17,10 @@ from engine.decision.models import (
     SchoolApplicability,
     SchoolClaim,
 )
-from engine.decision.r10_ziping_career import apply_ziping_career_slice
+from engine.decision.r10_ziping_career import (
+    apply_ziping_career_slice,
+    build_ziping_career_decision_run,
+)
 from engine.v5.domain import V5Claim, V5Confidence, V5Output
 from engine.v5.runner import run_v5
 
@@ -65,6 +68,56 @@ def test_r6_frozen_gate_rejects_degraded_fixture(tmp_path: Path, monkeypatch: py
 
     with pytest.raises(AssertionError):
         test_r6_baseline_is_frozen_and_nonempty()
+
+
+def test_ziping_career_decision_run_has_complete_trace() -> None:
+    output = run_v5(CHART, case_id="C-R10-ZIPING")
+    run = build_ziping_career_decision_run(output)
+
+    assert run.validate_trace() == []
+    assert any(item.domain == "事业" for item in run.school_claims)
+    decision_by_id = {item.decision_id: item for item in run.arbitration_decisions}
+    assert any(decision_by_id[item.decision_id].domain == "事业" for item in run.report_items)
+
+
+def test_career_l7_text_is_serialized_verbatim() -> None:
+    output = run_v5(CHART, case_id="C-R10-ZIPING")
+    run = build_ziping_career_decision_run(output)
+    serialized = run.to_dict()
+    decision_by_id = {item.decision_id: item.domain for item in run.arbitration_decisions}
+    career_items = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] == "事业"
+    ]
+    serialized_items = {
+        item["report_item_id"]: item["display_text"]
+        for item in serialized["report_items"]
+    }
+
+    assert career_items
+    for item in career_items:
+        assert serialized_items[item.report_item_id] == item.display_text
+
+
+def test_preprod_builds_r10_run_from_exact_input_text(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from engine.v5 import preprod
+
+    input_path = Path("cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md")
+    input_text = input_path.read_text(encoding="utf-8")
+    calls: list[str] = []
+    real_builder = build_ziping_career_decision_run
+
+    def recording_builder(output: V5Output, raw_text: str = ""):
+        calls.append(raw_text)
+        return real_builder(output, raw_text=raw_text)
+
+    monkeypatch.setattr(preprod, "build_ziping_career_decision_run", recording_builder)
+    preprod.render_v6_preprod_case(input_path, reports_dir=tmp_path, workspace_root=".")
+
+    assert calls == [input_text]
 
 
 def test_ziping_career_slice_never_sends_target_claims_to_adapter() -> None:

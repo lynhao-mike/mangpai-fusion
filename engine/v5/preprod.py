@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from engine.decision import decision_run_from_snapshot
+from engine.decision.r10_ziping_career import build_ziping_career_decision_run
 from engine.v5.report_view import render_report_v6_from_output
 from engine.v5.domain import V5CaseManifest, V5FeedbackAttachment, V5RunSnapshot
 from engine.v5.runner import run_v5
@@ -234,6 +234,7 @@ def render_v6_preprod_case(
     decision_json_file = report_file.with_suffix(".decision-run.json")
     feedback_attachment_file = report_file.with_suffix(".feedback-attachment.json")
 
+    input_text = _read_text(input_file)
     chart = build_chart_from_input(input_file)
     chart["source_input"] = _display_path(input_file, workspace_root=root)
     case_id = str(chart["case_id"])
@@ -250,7 +251,7 @@ def render_v6_preprod_case(
         "feedback": _display_path(feedback_path, workspace_root=root),
     }
     snapshot = V5RunSnapshot.from_output(output, artifact_bindings=artifact_bindings)
-    decision_run = decision_run_from_snapshot(snapshot)
+    decision_run = build_ziping_career_decision_run(output, raw_text=input_text)
     decision_issues = decision_run.validate_trace()
     if decision_issues:
         raise ValueError(f"decision run trace validation failed: {decision_issues}")
