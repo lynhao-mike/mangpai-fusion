@@ -6,8 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from engine.decision import l3_structure, v5_adapter
+from engine.decision import l3_structure, l4_events, v5_adapter
 from engine.decision.l3_structure import build_structural_verdicts
+from engine.decision.l4_events import build_event_hypotheses
 from engine.decision.models import SchoolClaim, StructuralVerdict
 
 
@@ -190,3 +191,98 @@ def test_geju_profile_reads_only_canonical_fields() -> None:
     )
 
     assert profile == {"geju_type": "正格", "favor": {"食神"}, "avoid": {"正印"}}
+
+
+def test_l4_classifies_existing_career_event_and_binds_its_l3_verdict() -> None:
+    unrelated_claim = _claim("unrelated", "同域结构命题")
+    event_claim = _claim(
+        "career-event",
+        "组织内有升职与职级提升机会",
+        claim_type="event_claim",
+        confidence=0.72,
+    )
+    unrelated_verdict = StructuralVerdict(
+        verdict_id="verdict-unrelated",
+        claim_id=unrelated_claim.claim_id,
+        verdict="pass",
+        structural_reason="同域其他命题通过。",
+        confidence=0.6,
+    )
+    event_verdict = StructuralVerdict(
+        verdict_id="verdict-career-event",
+        claim_id=event_claim.claim_id,
+        verdict="weaken",
+        structural_reason="消费 L2 结构方向后保留。",
+        confidence=0.5,
+    )
+
+    events = build_event_hypotheses(
+        "C-R10",
+        [unrelated_verdict, event_verdict],
+        [unrelated_claim, event_claim],
+    )
+
+    assert len(events) == 1
+    assert events[0].event_type == "升迁"
+    assert events[0].source_verdict_ids == [event_verdict.verdict_id]
+    assert events[0].concrete_event == event_claim.statement
+
+
+def test_l4_does_not_invent_event_from_structure_claim_only() -> None:
+    claim = _claim("structure-only", "七杀格，用神正印")
+    verdict = StructuralVerdict(
+        verdict_id="verdict-structure-only",
+        claim_id=claim.claim_id,
+        verdict="pass",
+        structural_reason="结构通过。",
+        confidence=0.6,
+    )
+
+    assert build_event_hypotheses("C-R10", [verdict], [claim]) == []
+
+
+def test_adapter_event_classifier_alias_is_exact_l4_function() -> None:
+    assert v5_adapter.classify_event_type is l4_events.classify_event_type
+
+
+def test_l4_import_gate_excludes_runner_theory_and_adapter() -> None:
+    source_path = Path(l4_events.__file__)
+    tree = ast.parse(source_path.read_text(encoding="utf-8"))
+    imported_modules = {
+        alias.name
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Import)
+        for alias in node.names
+    } | {
+        node.module or ""
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom)
+    }
+
+    forbidden = ("engine.v5", "runner", "theory", "v5_adapter")
+    assert not {
+        module
+        for module in imported_modules
+        if any(part in module for part in forbidden)
+    }
+
+
+def test_l4_does_not_emit_evidence_only_event_claim() -> None:
+    claim = SchoolClaim(
+        claim_id="evidence-event",
+        school="duan_jianye",
+        role_granted_by_l1="evidence_only",
+        domain="事业",
+        claim_type="event_claim",
+        statement="有升职机会",
+        confidence=0.72,
+    )
+    verdict = StructuralVerdict(
+        verdict_id="verdict-evidence-event",
+        claim_id=claim.claim_id,
+        verdict="pass",
+        structural_reason="旁证命题通过。",
+        confidence=0.6,
+    )
+
+    assert build_event_hypotheses("C-R10", [verdict], [claim]) == []

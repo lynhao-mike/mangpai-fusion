@@ -12,45 +12,65 @@ def _stable_id(prefix: str, *parts: object) -> str:
     return f"{prefix}-{hashlib.sha256(raw.encode('utf-8')).hexdigest()[:12]}"
 
 
-def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], claims: list[SchoolClaim]) -> list[EventHypothesis]:
-    """把结构审查后的命题落成可反馈事件；不改写结构裁决。"""
+# 从已有事件命题文本分类的启发式映射，不从命局结构推导事件。
+_EVENT_TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
+    ("车祸", ("车祸", "交通", "撞")),
+    ("手术", ("手术", "开刀")),
+    ("疾病", ("疾病", "病", "体检", "慢病", "伤病", "健康问题")),
+    ("婚变", ("离婚", "再婚", "晚婚", "多婚", "婚变", "分手")),
+    ("结婚", ("结婚", "婚姻", "配偶", "婚恋", "成家")),
+    ("发财", ("发财", "暴富", "冲开", "财库")),
+    ("破财", ("破财", "亏损", "负债", "支出压力", "损失")),
+    ("升迁", ("升迁", "升职", "职级", "提拔")),
+    ("换岗", ("换岗", "调动", "岗位", "组织关系")),
+    ("创业", ("创业", "自主", "合伙", "开业")),
+    ("学历", ("学历", "考试", "证照", "培训", "技能升级", "学位")),
+]
 
-    claim_by_id = {item.claim_id: item for item in claims}
-    claim_domain_by_id = {item.claim_id: item.domain for item in claims}
-    passed_by_domain: dict[str, list[str]] = {}
-    for verdict in verdicts:
-        if verdict.verdict in {"pass", "weaken"}:
-            passed_by_domain.setdefault(claim_domain_by_id.get(verdict.claim_id, ""), []).append(verdict.verdict_id)
-    event_claims = [item for item in claims if item.claim_type == "event" and item.role_granted_by_l1 != "evidence_only"]
-    events: list[EventHypothesis] = []
-    supported_event_claims = [item for item in event_claims if passed_by_domain.get(item.domain) or passed_by_domain.get("总体")]
-    for claim in supported_event_claims[:2]:
-        events.append(
-            EventHypothesis(
-                event_id=_stable_id("dev", case_id, claim.claim_id),
-                source_verdict_ids=(passed_by_domain.get(claim.domain) or passed_by_domain.get("总体") or [])[:2],
-                domain=claim.domain,
-                event_type="可反馈现实事件",
-                subject=claim.school,
-                concrete_event=claim.statement,
-                landing_path="L4 只把通过结构审查的命题落成现实事件，不改写结构裁决。",
-                confidence=min(0.65, claim.confidence),
-            )
+_DOMAIN_GENERIC_EVENT: dict[str, str] = {
+    "事业": "事业变动",
+    "财富": "财务变动",
+    "婚姻": "婚恋变动",
+    "健康": "健康风险",
+    "学业": "学习节点",
+}
+
+
+def classify_event_type(event_label: str, domain: str) -> str:
+    """把已有事件命题的字符串语义归为事件标签。"""
+
+    text = event_label or ""
+    for event_type, keywords in _EVENT_TYPE_KEYWORDS:
+        if any(keyword in text for keyword in keywords):
+            return event_type
+    return _DOMAIN_GENERIC_EVENT.get(domain, "待具体化事件")
+
+
+def build_event_hypotheses(case_id: str, verdicts: list[StructuralVerdict], claims: list[SchoolClaim]) -> list[EventHypothesis]:
+    """把已有且通过自身结构审查的事件命题落成可反馈事件。"""
+
+    supported_verdict_by_claim = {
+        verdict.claim_id: verdict
+        for verdict in verdicts
+        if verdict.verdict in {"pass", "weaken"}
+    }
+    event_claims = [
+        claim
+        for claim in claims
+        if claim.claim_type in {"event", "event_claim"}
+        and claim.role_granted_by_l1 != "evidence_only"
+        and claim.claim_id in supported_verdict_by_claim
+    ]
+    return [
+        EventHypothesis(
+            event_id=_stable_id("dev", case_id, claim.claim_id),
+            source_verdict_ids=[supported_verdict_by_claim[claim.claim_id].verdict_id],
+            domain=claim.domain,
+            event_type=classify_event_type(claim.statement, claim.domain),
+            subject=claim.school,
+            concrete_event=claim.statement,
+            landing_path="L4 只把通过自身结构审查的已有事件命题落成现实事件。",
+            confidence=min(0.65, claim.confidence),
         )
-    if not events and verdicts and not event_claims:
-        claim = claim_by_id[verdicts[0].claim_id]
-        if claim.claim_type != "structure":
-            return []
-        events.append(
-            EventHypothesis(
-                event_id=_stable_id("dev", case_id, claim.claim_id, "fallback"),
-                source_verdict_ids=[verdicts[0].verdict_id],
-                domain=claim.domain,
-                event_type="待具体化事件",
-                subject=claim.school,
-                concrete_event="结构命题已登记，但事件层仍需真实 runner 接入。",
-                landing_path="兜底事件槽位，仅证明链路，不作为正式断语。",
-                confidence=0.3,
-            )
-        )
-    return events
+        for claim in event_claims[:2]
+    ]
