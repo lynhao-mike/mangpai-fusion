@@ -2,8 +2,17 @@ from __future__ import annotations
 
 import pytest
 
-from engine.decision.l2_v5_claims import to_school_claim
+from engine.decision.l2_v5_claims import build_ziping_career_claims, to_school_claim
+from engine.decision.models import SchoolApplicability
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence
+
+
+CHART = {
+    "case_id": "C-R10-ZIPING",
+    "pillars": {"year": "庚申", "month": "戊寅", "day": "壬子", "hour": "辛丑"},
+    "current_dayun": "壬午",
+    "current_year": "丙午（2026 年）",
+}
 
 
 def test_to_school_claim_preserves_v5_reasoning_paths_exactly() -> None:
@@ -146,3 +155,32 @@ def test_to_school_claim_does_not_invent_missing_reasoning_paths() -> None:
             "probabilistic": source.probabilistic,
         }
     }
+
+
+def test_build_ziping_career_claims_uses_l1_role_and_keeps_global_context() -> None:
+    applicability = [
+        SchoolApplicability(
+            school="ziping",
+            role="lead",
+            applicable_domains=["事业"],
+            applicability_score=0.9,
+            confidence=0.9,
+        )
+    ]
+
+    claims = build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
+
+    assert claims
+    assert {claim.school for claim in claims} == {"ziping"}
+    assert {claim.domain for claim in claims} == {"总体", "事业"}
+    assert {claim.role_granted_by_l1 for claim in claims} == {"lead"}
+    assert any("旺衰" in claim.statement for claim in claims)
+    assert any("用神=" in claim.statement for claim in claims)
+    assert all(claim.metadata["source_scope"] == "ziping_independent_runner" for claim in claims)
+
+
+def test_build_ziping_career_claims_emits_nothing_when_l1_abstains_or_is_missing() -> None:
+    applicability = [SchoolApplicability(school="ziping", role="abstain")]
+
+    assert build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability) == []
+    assert build_ziping_career_claims(CHART, "C-R10-ZIPING", []) == []

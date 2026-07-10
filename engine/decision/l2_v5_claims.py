@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from engine.decision.models import SchoolClaim, SchoolRole
+from engine.decision.models import SchoolApplicability, SchoolClaim, SchoolRole
 from engine.v5.domain import V5Claim
+from engine.v5.ziping_runner import run_ziping_independent
 
 
 def to_school_claim(claim: V5Claim, role: SchoolRole) -> SchoolClaim:
@@ -44,3 +45,20 @@ def to_school_claim(claim: V5Claim, role: SchoolRole) -> SchoolClaim:
         dependencies=[f"v5:{claim.claim_id}"],
         metadata=metadata,
     )
+
+
+def build_ziping_career_claims(
+    chart: dict[str, object],
+    case_id: str,
+    applicability: list[SchoolApplicability],
+) -> list[SchoolClaim]:
+    """把 L1 授权的子平总体结构与事业命题直接供应给 L2。"""
+
+    role = next((item.role for item in applicability if item.school == "ziping"), "abstain")
+    if role == "abstain":
+        return []
+    return [
+        to_school_claim(claim, role)
+        for claim in run_ziping_independent(chart, case_id)
+        if claim.school == "ziping" and claim.domain in {"总体", "事业"}
+    ]
