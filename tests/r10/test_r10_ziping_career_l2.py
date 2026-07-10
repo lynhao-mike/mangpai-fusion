@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+import engine.decision.l1_school_router as l1_school_router
 import engine.decision.l2_v5_claims as l2_v5_claims
 from engine.decision.l2_v5_claims import build_ziping_career_claims, to_school_claim
 from engine.decision.models import SchoolApplicability
@@ -211,20 +212,34 @@ def test_build_ziping_career_claims_uses_exact_passed_applicability_without_rero
     monkeypatch: pytest.MonkeyPatch,
     role: str,
 ) -> None:
-    monkeypatch.setattr(
-        l2_v5_claims,
-        "route_schools",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("must not reroute")),
-        raising=False,
-    )
+    def reject_unexpected_reroute(*args: object, **kwargs: object) -> None:
+        raise AssertionError("unexpected L2 reroute through the real L1 router module")
+
+    monkeypatch.setattr(l1_school_router, "route_schools", reject_unexpected_reroute)
     monkeypatch.setattr(
         l2_v5_claims,
         "run_ziping_independent",
         lambda chart, case_id: [_claim("target", "ziping", "事业")],
     )
     applicability = [SchoolApplicability(school="ziping", role=role)]
+    real_builder = l2_v5_claims.build_ziping_career_claims
 
-    claims = build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
+    def rerouting_builder(
+        chart: dict[str, object],
+        case_id: str,
+        passed_applicability: list[SchoolApplicability],
+    ) -> list[object]:
+        from engine.decision.l1_school_router import route_schools
+
+        route_schools(None, None)  # type: ignore[arg-type]
+        return real_builder(chart, case_id, passed_applicability)
+
+    monkeypatch.setattr(l2_v5_claims, "build_ziping_career_claims", rerouting_builder)
+    with pytest.raises(AssertionError, match="unexpected L2 reroute"):
+        l2_v5_claims.build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
+
+    monkeypatch.setattr(l2_v5_claims, "build_ziping_career_claims", real_builder)
+    claims = l2_v5_claims.build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
 
     assert [claim.role_granted_by_l1 for claim in claims] == [role]
 
