@@ -817,6 +817,10 @@ engine/decision/
 
 验收：能回答“哪一层准确、哪一层拖后腿”，为 L9 提供校准依据。
 
+### Phase R5：流派适用性学习先验注入（注入端）
+
+> 状态：注入端已完成（route_schools 支持可选 learned_prior，缺省零回归，低命中先验可下调对应流派角色与分数，见 tests/test_l1_learned_prior.py）。真实反馈聚合出 learned_prior 并持久化回灌（R5-B）尚未实现，依赖真实反馈样本与 tools 层落盘，属数据工程而非纯路由重构。方向依据见 docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md。
+
 ---
 
 ## 19. 第一证明物与证伪口径

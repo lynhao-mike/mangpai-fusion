@@ -118,6 +118,8 @@ R1-R4 是架构 §18 明确定义的四阶段闭环，已全部交付。**§18 �
 
 ## 9. First Proof Point（最小证明物）
 
+> 状态：已落地。route_schools(chart, context, *, learned_prior=None) 已实现，缺省零回归、合成低命中先验能下调对应流派，见 tests/test_l1_learned_prior.py 与执行计划 docs/superpowers/plans/2026-07-09-r5-learned-prior-injection-refactor.md。R5-B（真实反馈聚合 + 持久化回灌）待启动。
+
 **不是"跑通完整学习"，而是证明"注入学习先验能改变路由、且缺省时零影响"。**
 
 最小切片（未来 R5 实现计划的验收锚点）：

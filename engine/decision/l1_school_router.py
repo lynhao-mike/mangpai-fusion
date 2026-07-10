@@ -9,6 +9,38 @@ from collections import Counter
 
 from engine.decision.models import ChartFactLedger, ContextFactLedger, SchoolApplicability
 
+_ROLE_LADDER = ("lead", "co_lead", "evidence_only", "abstain")
+_PRIOR_MIN_SAMPLE = 5
+_PRIOR_LOW_HIT_RATE = 0.35
+_PRIOR_SCORE_PENALTY = 0.2
+
+
+def _downgrade_role(role: str) -> str:
+    try:
+        idx = _ROLE_LADDER.index(role)
+    except ValueError:
+        return role
+    return _ROLE_LADDER[min(idx + 1, len(_ROLE_LADDER) - 1)]
+
+
+def _apply_learned_prior(
+    school: str,
+    role: str,
+    score: float,
+    learned_prior: dict[str, tuple[float, int]] | None,
+) -> tuple[str, float, list[str]]:
+    if not learned_prior or school not in learned_prior:
+        return role, score, []
+    hit_rate, sample_n = learned_prior[school]
+    if sample_n < _PRIOR_MIN_SAMPLE or hit_rate >= _PRIOR_LOW_HIT_RATE:
+        return role, score, []
+    return (
+        _downgrade_role(role),
+        max(0.0, round(score - _PRIOR_SCORE_PENALTY, 3)),
+        [f"学习先验：该派历史命中率 {hit_rate}（样本 {sample_n}）偏低，下调路由角色。"],
+    )
+
+
 def _chart_signals(chart: ChartFactLedger) -> dict[str, object]:
     """只从 four_pillars 派生结构信号。"""
 
@@ -79,7 +111,12 @@ def _focus_domains(context: ContextFactLedger) -> set[str]:
     return domains
 
 
-def route_schools(chart: ChartFactLedger, context: ContextFactLedger) -> list[SchoolApplicability]:
+def route_schools(
+    chart: ChartFactLedger,
+    context: ContextFactLedger,
+    *,
+    learned_prior: dict[str, tuple[float, int]] | None = None,
+) -> list[SchoolApplicability]:
     """生成 L1 SchoolApplicabilityMatrix。"""
 
     focus = _focus_domains(context)
@@ -123,6 +160,9 @@ def route_schools(chart: ChartFactLedger, context: ContextFactLedger) -> list[Sc
                 role = "evidence_only"
             blockers.append("四柱事实不完整，所有上层判断只能降级。")
             score = min(score, 0.35)
+
+        role, score, prior_reasons = _apply_learned_prior(school, role, score, learned_prior)
+        reasons += prior_reasons
 
         result.append(
             SchoolApplicability(
