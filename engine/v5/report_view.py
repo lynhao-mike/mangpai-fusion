@@ -154,6 +154,32 @@ def _prediction_feedback(prediction: V5Prediction | None) -> str:
     return mapping.get(prediction.feedback_state, str(prediction.feedback_state))
 
 
+def _get(obj: Any, key: str) -> Any:
+    """兼容 dict 与 dataclass 两种形态的字段读取。"""
+
+    if isinstance(obj, dict):
+        return obj.get(key)
+    return getattr(obj, key, None)
+
+
+def _l7_conclusion_for_domain(domain: str, report_items: list, arbitration_decisions: list) -> str | None:
+    """从 L7 report_items 取指定域的裁决文本；找不到返回 None（触发缺省回退）。"""
+
+    if not report_items:
+        return None
+    domain_by_decision = {
+        _get(d, "decision_id"): _get(d, "domain")
+        for d in (arbitration_decisions or [])
+    }
+    for item in report_items:
+        decision_id = _get(item, "decision_id")
+        if domain_by_decision.get(decision_id) == domain:
+            text = _get(item, "display_text")
+            if text:
+                return str(text)
+    return None
+
+
 def _domain_context(output: V5Output, domain: str) -> dict[str, str]:
     arbitrations = _arbitration_by_domain(output).get(domain, {})
     event_result = arbitrations.get("event_realization")
@@ -180,7 +206,16 @@ def _domain_context(output: V5Output, domain: str) -> dict[str, str]:
     }
 
 
-def build_report_v6_context(output: V5Output, *, template_text: str, report_path: str = "", case_dir: str = "", feedback_path: str = "") -> dict[str, str]:
+def build_report_v6_context(
+    output: V5Output,
+    *,
+    template_text: str,
+    report_path: str = "",
+    case_dir: str = "",
+    feedback_path: str = "",
+    report_items: list | None = None,
+    arbitration_decisions: list | None = None,
+) -> dict[str, str]:
     """构造 report-v6 渲染上下文。"""
 
     context = default_context_for_template(template_text)
@@ -225,6 +260,11 @@ def build_report_v6_context(output: V5Output, *, template_text: str, report_path
             items = claims.get((domain, school)) or claims.get(("总体", school)) or ["待接入"]
             context[f"{domain}{suffix}"] = "；".join(items[:2])
         context.update(_domain_context(output, domain))
+
+    l7_career = _l7_conclusion_for_domain("事业", report_items or [], arbitration_decisions or [])
+    if l7_career:
+        context["事业裁决结论"] = l7_career
+        context["事业共识结论"] = l7_career
 
     # 主要事项结构字段：适度复用领域裁决结果，避免模板空洞。
     context.update(
@@ -301,7 +341,16 @@ def build_report_v6_context(output: V5Output, *, template_text: str, report_path
     return {key: str(value) for key, value in context.items()}
 
 
-def render_report_v6_from_output(output: V5Output, *, template_path: str | Path = "templates/report-v6.md", report_path: str = "", case_dir: str = "", feedback_path: str = "") -> str:
+def render_report_v6_from_output(
+    output: V5Output,
+    *,
+    template_path: str | Path = "templates/report-v6.md",
+    report_path: str = "",
+    case_dir: str = "",
+    feedback_path: str = "",
+    report_items: list | None = None,
+    arbitration_decisions: list | None = None,
+) -> str:
     """从 V5Output 渲染 report-v6 Markdown。"""
 
     template_text = Path(template_path).read_text(encoding="utf-8")
@@ -311,5 +360,7 @@ def render_report_v6_from_output(output: V5Output, *, template_path: str | Path 
         report_path=report_path,
         case_dir=case_dir,
         feedback_path=feedback_path,
+        report_items=report_items,
+        arbitration_decisions=arbitration_decisions,
     )
     return render_template_text(template_text, context)

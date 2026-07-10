@@ -821,6 +821,37 @@ engine/decision/
 
 > 状态：注入端已完成（route_schools 支持可选 learned_prior，缺省零回归，低命中先验可下调对应流派角色与分数，见 tests/test_l1_learned_prior.py）。真实反馈聚合出 learned_prior 并持久化回灌（R5-B）尚未实现，依赖真实反馈样本与 tools 层落盘，属数据工程而非纯路由重构。方向依据见 docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md。
 
+### Phase R6：扶正主干——让分层链驱动报告（核心方向）
+
+> 状态：第一证明物已落地（事业域报告改读 L7 ReportViewItem，缺省零回归，见 tests/v5/test_report_reads_l7.py）。其余五域仍走旧渲染（双轨期）。北极星仍是 v5 runner 下沉为 L2、报告全域读 L7、L3 接真实命局审查。
+
+**核心判断**：真实案例 C-2026-035 跑通后暴露一个根本倒置——当前 v5 在推理，L0-L9 在抄写。命主看的报告 Markdown 走 [`render_report_v6_from_output(output)`](../engine/v5/report_view.py:304) 从 V5Output 直渲染；[`DecisionRun`](../engine/decision/models.py:301) 是并列旁路派生物（[`engine/v5/preprod.py`](../engine/v5/preprod.py:242) 两条路互不消费）。所以分层裁判链从未真正决定过报告里的任何一句话。
+
+这与 R1 的"先发言后追认适用性"是同一种倒置的不同部位。R1 扳正了 L1 路由；R6 要扳正的是"报告主干"。
+
+**四个已验证缺口（同一病灶的四个部位）**：
+
+| 缺口 | 根因 | 性质 |
+|---|---|---|
+| L1 无 abstain | v5 chart 只有 dayun_summary 字符串、无 dayun_steps 列表，[`v5_adapter.py`](../engine/decision/v5_adapter.py:64) 取到空列表 | 配管 |
+| L3 无 reject（0/330） | [`l3_structure.py`](../engine/decision/l3_structure.py:20) 只按 confidence<=0.1 reject，无真实命局审查 | 架构 + 命理逻辑 |
+| L4 event_type 全为 v5_prediction | [`v5_adapter.py`](../engine/decision/v5_adapter.py:139) 硬编码占位符，未从结构推导事件 | 架构 |
+| 报告与 L7 分离 | 报告 Markdown 不消费 L7 ReportViewItem，走旧 V5Output 渲染 | 架构（最根本） |
+
+**目标模型**：让 DecisionRun 成为主干，v5 五派 runner 降为 L2 命题供应器，报告只读 L7、L7 只读 L6，逐层向下到 L0，删除 v5_adapter 的"事后转录"定位。
+
+**分步取舍**：
+
+1. Option A 补丁四缺口 → Reject（四个治标叠加仍是"v5推理+抄写"）。
+2. Option B 一次性扶正主干大重构 → 北极星，Not now（工程量大、风险高）。
+3. Option C 单向扶正切片 → Recommend：先让报告的一个域（事业）改读 L7 ReportViewItem，证明"分层能驱动报告"，再逐域迁移。
+
+**第一证明物**：C-2026-035 报告"事业"域改读 L7 ReportViewItem，其余五域暂保持旧渲染（双轨期），验证报告文本与 decision-run.json 事业裁决一致。
+
+**证伪口径**：若 L7 ViewModel 太贫瘠（只有"事业 winner"无五派依据/15 层判断），或 L3/L4 拿不到 v5 中间结构（旺衰/用神/做功路径）无法产出有信息量的 verdict，则 Option B 代价被低估，需回到本节重判。
+
+**与 R1-R5 的关系**：R1-R5 扳正并强化了 L1 路由与反馈学习（输入端与学习端）；R6 扳正报告主干（输出端）。三者合起来才让"事实→路由→命题→结构→事件→应期→裁判→报告→反馈→校准"成为一条真正由分层链驱动、而非 v5 事后抄写的闭环。L3 真实命局审查是其中唯一的纯命理逻辑难点，应独立建模，不与配管工作混做。
+
 ---
 
 ## 19. 第一证明物与证伪口径
@@ -908,3 +939,5 @@ engine/decision/
 ```
 
 系统的核心能力应从“生成报告”升级为“持续学习哪类八字该用哪套方法”。
+
+补充（2026-07-10，真实案例 C-2026-035 验证后）：这一升级的前提是**报告本身必须由分层裁判链驱动**。当前系统仍是“v5 推理、L0-L9 抄写”的倒置状态（详见 §18 Phase R6 与 [`plans/l0-l9-refactor-geju-judgment-2026-07-10.md`](l0-l9-refactor-geju-judgment-2026-07-10.md)）。因此路线补一条压轴：**先让报告改读 L7、把 v5 各派 runner 降为 L2 命题供应器，让分层链真正当家，再谈跨案学习。** 否则学习学的只是 v5 的账，不是分层裁判的账。
