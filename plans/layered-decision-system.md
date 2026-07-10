@@ -823,7 +823,7 @@ engine/decision/
 
 ### Phase R6：扶正主干——让分层链驱动报告（核心方向）
 
-> 状态：第一证明物已落地（事业域报告改读 L7 ReportViewItem，缺省零回归，见 tests/v5/test_report_reads_l7.py）。其余五域仍走旧渲染（双轨期）。北极星仍是 v5 runner 下沉为 L2、报告全域读 L7、L3 接真实命局审查。
+> 状态：全域已落地（学业/事业/财富/婚姻/健康五域报告裁决结论均改读 L7 ReportViewItem；L7 display_text 已加厚，聚合各派最高置信依据；缺省零回归，见 tests/v5/test_report_reads_l7.py）。北极星仍是 v5 runner 下沉为 L2、L3 接真实命局审查、L4 从结构推导事件类型。
 
 **核心判断**：真实案例 C-2026-035 跑通后暴露一个根本倒置——当前 v5 在推理，L0-L9 在抄写。命主看的报告 Markdown 走 [`render_report_v6_from_output(output)`](../engine/v5/report_view.py:304) 从 V5Output 直渲染；[`DecisionRun`](../engine/decision/models.py:301) 是并列旁路派生物（[`engine/v5/preprod.py`](../engine/v5/preprod.py:242) 两条路互不消费）。所以分层裁判链从未真正决定过报告里的任何一句话。
 

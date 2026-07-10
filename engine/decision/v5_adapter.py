@@ -205,11 +205,52 @@ def _decisions(case_id: str, output: V5Output, events: list[EventHypothesis], ap
     return decisions
 
 
-def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: list[TimingProbability]) -> list[ReportViewItem]:
+_SCHOOL_ZH = {
+    "ziping": "子平类",
+    "ditiansui": "滴天髓类",
+    "gao_dechen": "高德臣",
+    "duan_jianye": "段建业",
+    "yang_qingjuan": "杨清娟",
+    "ren_fuhong": "任付红",
+}
+
+
+def _domain_evidence(domain: str, claims: list[SchoolClaim]) -> tuple[list[str], list[str], int]:
+    domain_claims = [claim for claim in claims if claim.domain == domain and claim.statement]
+    best_by_school: dict[str, SchoolClaim] = {}
+    for claim in domain_claims:
+        current = best_by_school.get(claim.school)
+        if current is None or claim.confidence > current.confidence:
+            best_by_school[claim.school] = claim
+
+    schools: list[str] = []
+    evidences: list[str] = []
+    for school, claim in best_by_school.items():
+        name = _SCHOOL_ZH.get(school, school)
+        snippet = claim.statement.strip().replace("\n", " ")
+        if len(snippet) > 40:
+            snippet = snippet[:40] + "…"
+        schools.append(name)
+        evidences.append(f"{name}：{snippet}")
+    return schools, evidences, len(domain_claims)
+
+
+def _report_items(
+    case_id: str,
+    decisions: list[ArbitrationDecision],
+    timings: list[TimingProbability],
+    claims: list[SchoolClaim] | None = None,
+) -> list[ReportViewItem]:
     timing_by_domain = {timing.event_id: timing for timing in timings}
     items: list[ReportViewItem] = []
     for decision in decisions:
         event_ids = decision.rejected_ids if decision.result == "reject_all" else decision.winner_ids or decision.competing_event_ids
+        schools, evidences, claim_count = _domain_evidence(decision.domain, claims or [])
+        display_text = f"{decision.domain}：{decision.reason}"
+        if schools:
+            display_text += "｜参与流派：" + "、".join(schools)
+        if evidences:
+            display_text += "｜依据：" + "；".join(evidences)
         for idx, event_id in enumerate(event_ids, start=1):
             timing = timing_by_domain.get(event_id)
             items.append(
@@ -217,9 +258,9 @@ def _report_items(case_id: str, decisions: list[ArbitrationDecision], timings: l
                     report_item_id=_stable_id("drv", case_id, decision.decision_id, idx),
                     decision_id=decision.decision_id,
                     prediction_id=timing.prediction_id if timing else "",
-                    display_text=f"{decision.domain}：{decision.reason}",
+                    display_text=display_text,
                     confidence_display="迁移期，以 v5 置信度为准",
-                    evidence_summary="L7 只读 v5→decision 适配后的 L6/L5 结果。",
+                    evidence_summary=f"本域共 {claim_count} 条流派命题参与结构裁决。" if claim_count else "L7 只读 v5→decision 适配后的 L6/L5 结果。",
                     feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
                 )
             )
@@ -253,7 +294,7 @@ def decision_run_from_v5(output: V5Output, *, raw_text: str = "") -> DecisionRun
     }
     timings = _timings(case_id, output, event_by_prediction)
     decisions = _decisions(case_id, output, events, applicability)
-    report_items = _report_items(case_id, decisions, timings)
+    report_items = _report_items(case_id, decisions, timings, claims)
     feedback_signals = build_feedback_signals(case_id, report_items)
     feedback_attributions = build_feedback_attributions(feedback_signals)
     calibration_actions = build_calibration_actions(case_id, feedback_attributions)

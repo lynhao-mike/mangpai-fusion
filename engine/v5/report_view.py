@@ -261,10 +261,11 @@ def build_report_v6_context(
             context[f"{domain}{suffix}"] = "；".join(items[:2])
         context.update(_domain_context(output, domain))
 
-    l7_career = _l7_conclusion_for_domain("事业", report_items or [], arbitration_decisions or [])
-    if l7_career:
-        context["事业裁决结论"] = l7_career
-        context["事业共识结论"] = l7_career
+    for domain in DOMAINS:
+        l7_text = _l7_conclusion_for_domain(domain, report_items or [], arbitration_decisions or [])
+        if l7_text:
+            context[f"{domain}裁决结论"] = l7_text
+            context[f"{domain}共识结论"] = l7_text
 
     # 主要事项结构字段：适度复用领域裁决结果，避免模板空洞。
     context.update(

@@ -85,3 +85,53 @@ def test_preprod_career_report_matches_l7(tmp_path):
     )
     assert career_text, "事业域应有 L7 report_item"
     assert career_text in report_text
+
+
+def test_report_items_display_text_carries_school_evidence():
+    from engine.decision.v5_adapter import _report_items
+    from engine.decision.models import ArbitrationDecision, SchoolClaim
+
+    decisions = [
+        ArbitrationDecision(
+            decision_id="d-career", domain="事业", competing_event_ids=["e1"],
+            result="winner", winner_ids=["e1"], reason="事业裁决",
+        )
+    ]
+    claims = [
+        SchoolClaim(claim_id="c1", school="ziping", role_granted_by_l1="lead", domain="事业", claim_type="structure", statement="正印格用食伤", confidence=0.8),
+        SchoolClaim(claim_id="c2", school="duan_jianye", role_granted_by_l1="lead", domain="事业", claim_type="event", statement="做功制用明显", confidence=0.7),
+    ]
+
+    items = _report_items("C-T", decisions, [], claims)
+    text = items[0].display_text
+
+    assert "事业" in text
+    assert "参与流派" in text
+    assert "依据：" in text
+    assert "正印格用食伤" in text or "做功制用明显" in text
+    assert "c1" not in text and "d-career" not in text
+    assert items[0].evidence_summary == "本域共 2 条流派命题参与结构裁决。"
+
+
+def test_context_all_domains_use_l7_when_provided():
+    from engine.v5 import run_v5
+    from engine.v5.report_view import build_report_v6_context
+
+    output = run_v5({"case_id": "C-TEST-R7", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    template_text = "{{ 事业裁决结论 }}|{{ 健康裁决结论 }}|{{ 财富裁决结论 }}"
+    report_items = [
+        {"report_item_id": "r1", "decision_id": "d-c", "display_text": "事业：L7事业。"},
+        {"report_item_id": "r2", "decision_id": "d-h", "display_text": "健康：L7健康。"},
+        {"report_item_id": "r3", "decision_id": "d-w", "display_text": "财富：L7财富。"},
+    ]
+    decisions = [
+        {"decision_id": "d-c", "domain": "事业"},
+        {"decision_id": "d-h", "domain": "健康"},
+        {"decision_id": "d-w", "domain": "财富"},
+    ]
+
+    ctx = build_report_v6_context(output, template_text=template_text, report_items=report_items, arbitration_decisions=decisions)
+
+    assert ctx["事业裁决结论"] == "事业：L7事业。"
+    assert ctx["健康裁决结论"] == "健康：L7健康。"
+    assert ctx["财富裁决结论"] == "财富：L7财富。"
