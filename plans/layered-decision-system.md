@@ -856,6 +856,10 @@ engine/decision/
 
 > 状态：已落地（L4 event_type 从占位符 v5_prediction 改为从 event_label 关键词分类，匹配不到回退按域通用类型，见 tests/test_l4_event_type.py）。**这是文本分类过渡，不是从命局结构推导事件**——真正的结构推导依赖 L3 真实审查（仍是占位），属后续阶段。分类关键词表 _EVENT_TYPE_KEYWORDS 是可迭代启发式，不是命理终态。
 
+### Phase R9：L3 结构审查消费格局用忌神（一致性审查）
+
+> 状态：已落地（L3 消费 v5 已算出的格局 favor/avoid 十神方向，对依赖忌神且无 favor 支撑的命题降级，低置信再 reject；无格局裁决时零回归，见 tests/test_l3_geju_review.py）。**这是消费 v5 已算出的格局结论做一致性审查，不是 L3 自行判定旺衰/用神**。C-2026-035 重跑实测：L3 verdict 分布由 R9 前 pass 287 / weaken 41 变为 pass 277 / weaken 51 / unknown 2（10 条依赖忌神命题被降级），validate_trace 仍为空。当前覆盖度取决于 v5 产出的格局裁决数量（仅事业域有格局裁决）。扩大覆盖（多域格局裁决、旺衰独立校验）属后续命局知识建模工作。
+
 ---
 
 ## 19. 第一证明物与证伪口径

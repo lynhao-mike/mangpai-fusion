@@ -123,6 +123,7 @@ class SchoolClaim:
     confidence: float = 0.0
     falsifier: str = ""
     dependencies: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -136,6 +137,7 @@ class SchoolClaim:
             "confidence": self.confidence,
             "falsifier": self.falsifier,
             "dependencies": list(self.dependencies),
+            "metadata": dict(self.metadata),
         }
 
 

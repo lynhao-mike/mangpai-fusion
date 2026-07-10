@@ -82,13 +82,40 @@ def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[
             confidence=_clamp_confidence(claim.confidence.score),
             falsifier=claim.falsifiable,
             dependencies=[f"v5:{claim.claim_id}"],
+            metadata=dict(claim.metadata),
         )
         for claim in output.claims
         if claim.claim_id and claim.school and claim.domain and role_by_school.get(claim.school) != "abstain"
     ]
 
 
+def _extract_geju_profile(claims: list[SchoolClaim]) -> dict | None:
+    """从带 geju_type metadata 的格局裁决 claim 提取用忌神方向。
+
+    R9：只消费 v5 已算出的格局结论，不自行判定旺衰/用神。找不到返回 None。
+    """
+
+    for claim in claims:
+        meta = claim.metadata or {}
+        if meta.get("geju_type"):
+            return {
+                "geju_type": str(meta.get("geju_type")),
+                "favor": {str(x) for x in meta.get("favor_shishen", [])},
+                "avoid": {str(x) for x in meta.get("avoid_shishen", [])},
+            }
+    return None
+
+
+_SHISHEN_NAMES = ("正官", "七杀", "正财", "偏财", "食神", "伤官", "正印", "偏印", "比肩", "劫财")
+
+
+def _shishen_in_statement(statement: str) -> set[str]:
+    text = statement or ""
+    return {name for name in _SHISHEN_NAMES if name in text}
+
+
 def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict]:
+    profile = _extract_geju_profile(claims)
     result: list[StructuralVerdict] = []
     for claim in claims:
         if claim.claim_type == "structure_claim":
@@ -97,13 +124,30 @@ def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict
             verdict = "weaken"
         else:
             verdict = "unknown"
+
+        reason = "由 v5 claim_type 与 confidence 映射的迁移期结构审查。"
+        blocking = [] if verdict == "pass" else ["需真实 L3 结构策略复核"]
+
+        # R9：用 v5 已算出的格局用忌神方向做一致性审查（不发明命理）。
+        if profile and verdict in {"pass", "weaken"}:
+            shishen = _shishen_in_statement(claim.statement)
+            hits_avoid = shishen & profile["avoid"]
+            hits_favor = shishen & profile["favor"]
+            if hits_avoid and not hits_favor:
+                reason = f"命题依赖格局忌神 {sorted(hits_avoid)}（{profile['geju_type']}），与用神方向不一致，降级。"
+                blocking = [f"忌神方向：{sorted(hits_avoid)}"]
+                if verdict == "pass":
+                    verdict = "weaken"
+                elif verdict == "weaken" and claim.confidence < 0.3:
+                    verdict = "reject"
+
         result.append(
             StructuralVerdict(
                 verdict_id=_stable_id("dsv", case_id, claim.claim_id),
                 claim_id=claim.claim_id,
                 verdict=verdict,  # type: ignore[arg-type]
-                structural_reason="由 v5 claim_type 与 confidence 映射的迁移期结构审查。",
-                blocking_factors=[] if verdict == "pass" else ["需真实 L3 结构策略复核"],
+                structural_reason=reason,
+                blocking_factors=blocking,
                 required_support=[] if verdict == "pass" else ["L3 structure policy"],
                 confidence=min(0.7, max(0.2, claim.confidence)),
             )
