@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from engine.decision.l2_v5_claims import to_school_claim
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence
 
@@ -74,6 +76,47 @@ def test_to_school_claim_preserves_v5_reasoning_paths_exactly() -> None:
     assert source.metadata["nested"]["items"] == [1, 2]
     assert source.counter_evidence[0].metadata["nested"]["weight"] == 0.2
     assert source.timing_hints[0]["window"]["start"] == 2026
+
+
+@pytest.mark.parametrize("score", [1.25, -0.01])
+def test_to_school_claim_rejects_out_of_range_confidence_with_claim_context(score: float) -> None:
+    source = V5Claim(
+        claim_id=f"v5cl-invalid-confidence-{score}",
+        school="ziping",
+        domain="事业",
+        claim="越界置信度不得进入 L2。",
+        claim_type="structure_claim",
+        confidence=V5Confidence(score=score),
+    )
+
+    with pytest.raises(ValueError) as exc_info:
+        to_school_claim(source, "lead")
+
+    message = str(exc_info.value)
+    assert source.claim_id in message
+    assert str(score) in message
+    assert "confidence" in message.lower()
+
+
+def test_to_school_claim_rejects_reserved_v5_payload_in_source_metadata() -> None:
+    reserved_payload = {"source_owned": {"nested": ["must-not-overwrite"]}}
+    source = V5Claim(
+        claim_id="v5cl-reserved-payload-conflict",
+        school="ziping",
+        domain="事业",
+        claim="来源 metadata 使用了边界保留键。",
+        claim_type="structure_claim",
+        confidence=V5Confidence(score=0.6),
+        metadata={"v5_payload": reserved_payload, "other": {"kept": True}},
+    )
+
+    with pytest.raises(ValueError) as exc_info:
+        to_school_claim(source, "co_lead")
+
+    message = str(exc_info.value)
+    assert source.claim_id in message
+    assert "v5_payload" in message
+    assert source.metadata["v5_payload"] == reserved_payload
 
 
 def test_to_school_claim_does_not_invent_missing_reasoning_paths() -> None:
