@@ -54,7 +54,10 @@ def build_ziping_career_claims(
 ) -> list[SchoolClaim]:
     """把 L1 授权的子平总体结构与事业命题直接供应给 L2。"""
 
-    role = next((item.role for item in applicability if item.school == "ziping"), "abstain")
+    ziping_applicability = [item for item in applicability if item.school == "ziping"]
+    if len(ziping_applicability) > 1:
+        raise ValueError("duplicate ziping applicability")
+    role = ziping_applicability[0].role if ziping_applicability else "abstain"
     if role == "abstain":
         return []
     return [

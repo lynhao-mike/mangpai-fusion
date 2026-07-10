@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+import engine.decision.l2_v5_claims as l2_v5_claims
 from engine.decision.l2_v5_claims import build_ziping_career_claims, to_school_claim
 from engine.decision.models import SchoolApplicability
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence
@@ -184,3 +185,116 @@ def test_build_ziping_career_claims_emits_nothing_when_l1_abstains_or_is_missing
 
     assert build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability) == []
     assert build_ziping_career_claims(CHART, "C-R10-ZIPING", []) == []
+
+
+def _claim(
+    claim_id: str,
+    school: str,
+    domain: str,
+    *,
+    source_scope: str | None = None,
+) -> V5Claim:
+    metadata = {} if source_scope is None else {"source_scope": source_scope}
+    return V5Claim(
+        claim_id=claim_id,
+        school=school,
+        domain=domain,
+        claim=f"{school}-{domain}-{claim_id}",
+        claim_type="structure_claim",
+        confidence=V5Confidence(score=0.63),
+        metadata=metadata,
+    )
+
+
+@pytest.mark.parametrize("role", ["co_lead", "evidence_only"])
+def test_build_ziping_career_claims_uses_exact_passed_applicability_without_rerouting(
+    monkeypatch: pytest.MonkeyPatch,
+    role: str,
+) -> None:
+    monkeypatch.setattr(
+        l2_v5_claims,
+        "route_schools",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("must not reroute")),
+        raising=False,
+    )
+    monkeypatch.setattr(
+        l2_v5_claims,
+        "run_ziping_independent",
+        lambda chart, case_id: [_claim("target", "ziping", "事业")],
+    )
+    applicability = [SchoolApplicability(school="ziping", role=role)]
+
+    claims = build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
+
+    assert [claim.role_granted_by_l1 for claim in claims] == [role]
+
+
+def test_build_ziping_career_claims_filters_runner_output_by_school_and_domain(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    runner_claims = [
+        _claim("ziping-global", "ziping", "总体"),
+        _claim("ziping-career", "ziping", "事业"),
+        _claim("ziping-wealth", "ziping", "财富"),
+        _claim("other-career", "ren", "事业"),
+    ]
+    monkeypatch.setattr(
+        l2_v5_claims,
+        "run_ziping_independent",
+        lambda chart, case_id: runner_claims,
+    )
+
+    claims = build_ziping_career_claims(
+        CHART,
+        "C-R10-ZIPING",
+        [SchoolApplicability(school="ziping", role="lead")],
+    )
+
+    assert [claim.claim_id for claim in claims] == ["ziping-global", "ziping-career"]
+
+
+def test_build_ziping_career_claims_preserves_source_scope_without_inventing_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    runner_claims = [
+        _claim("global", "ziping", "总体", source_scope="scope-global"),
+        _claim("career", "ziping", "事业", source_scope="scope-career"),
+        _claim("missing", "ziping", "事业"),
+    ]
+    monkeypatch.setattr(
+        l2_v5_claims,
+        "run_ziping_independent",
+        lambda chart, case_id: runner_claims,
+    )
+
+    claims = build_ziping_career_claims(
+        CHART,
+        "C-R10-ZIPING",
+        [SchoolApplicability(school="ziping", role="lead")],
+    )
+
+    by_id = {claim.claim_id: claim for claim in claims}
+    assert by_id["global"].metadata["source_scope"] == "scope-global"
+    assert by_id["career"].metadata["source_scope"] == "scope-career"
+    assert "source_scope" not in by_id["missing"].metadata
+
+
+@pytest.mark.parametrize(
+    "applicability",
+    [
+        [
+            SchoolApplicability(school="ziping", role="lead"),
+            SchoolApplicability(school="ziping", role="co_lead"),
+        ],
+        [
+            SchoolApplicability(school="ren", role="lead"),
+            SchoolApplicability(school="ziping", role="evidence_only"),
+            SchoolApplicability(school="ziping", role="lead"),
+        ],
+    ],
+)
+def test_build_ziping_career_claims_rejects_duplicate_ziping_applicability(
+    applicability: list[SchoolApplicability],
+) -> None:
+    with pytest.raises(ValueError, match=r"(?i)(ziping.*duplicate|duplicate.*ziping|子平.*重复|重复.*子平)"):
+        build_ziping_career_claims(CHART, "C-R10-ZIPING", applicability)
