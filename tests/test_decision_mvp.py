@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from engine.decision import (
     build_arbitration_decisions,
+    build_calibration_actions,
     build_context_ledger,
     build_event_hypotheses,
+    build_feedback_attributions,
+    build_feedback_signals,
     build_report_items,
     build_school_claims,
     build_structural_verdicts,
@@ -22,6 +25,57 @@ from engine.decision.models import (
     StructuralVerdict,
     TimingProbability,
 )
+
+
+_VALID_RAW = """
+$BASE
+命式: 乾
+$FOUR
+Y:庚午
+M:戊寅
+D:壬子
+H:辛丑
+$DY_LOOP
+# 1998-2007 辛巳
+""".strip()
+
+
+def _valid_nonempty_decision_run():
+    """生成事件逐一绑定自身 pass/weaken verdict 的合法非空链。"""
+
+    run = run_decision_mvp(_VALID_RAW)
+    verdicts_by_claim = {item.claim_id: item for item in run.structural_verdicts}
+    for index, claim in enumerate(item for item in run.school_claims if item.claim_type in {"event", "event_claim"}):
+        verdicts_by_claim[claim.claim_id] = StructuralVerdict(
+            verdict_id=f"verdict-event-{index}",
+            claim_id=claim.claim_id,
+            verdict="weaken" if index == 0 else "pass",
+            structural_reason="测试夹具显式确认该事件命题通过自身结构审查。",
+            confidence=claim.confidence,
+        )
+    verdicts = list(verdicts_by_claim.values())
+    events = build_event_hypotheses(run.case_id, verdicts, run.school_claims)
+    timings = build_timing_probabilities(run.case_id, events)
+    decisions = build_arbitration_decisions(run.case_id, events, run.school_applicability)
+    report_items = build_report_items(run.case_id, decisions, timings)
+    feedback_signals = build_feedback_signals(run.case_id, report_items)
+    feedback_attributions = build_feedback_attributions(feedback_signals)
+    calibration_actions = build_calibration_actions(run.case_id, feedback_attributions)
+    valid_run = type(run)(
+        **{
+            **run.__dict__,
+            "structural_verdicts": verdicts,
+            "event_hypotheses": events,
+            "timing_probabilities": timings,
+            "arbitration_decisions": decisions,
+            "report_items": report_items,
+            "feedback_signals": feedback_signals,
+            "feedback_attributions": feedback_attributions,
+            "calibration_actions": calibration_actions,
+        }
+    )
+    assert valid_run.validate_trace() == []
+    return valid_run
 
 
 def test_decision_mvp_builds_unbroken_l0_to_l7_trace() -> None:
@@ -58,12 +112,13 @@ $EXTRA
     assert len(run.school_applicability) >= 6
     assert len(run.school_claims) >= 3
     assert len(run.structural_verdicts) >= 3
-    assert len(run.event_hypotheses) >= 2
-    assert len(run.timing_probabilities) >= 1
-    assert len(run.arbitration_decisions) >= 1
-    assert len(run.report_items) >= 1
-    assert len(run.feedback_signals) == len(run.report_items)
-    assert len(run.feedback_attributions) == len(run.feedback_signals)
+    assert run.event_hypotheses == []
+    assert run.timing_probabilities == []
+    assert run.arbitration_decisions == []
+    assert run.report_items == []
+    assert run.feedback_signals == []
+    assert run.feedback_attributions == []
+    assert run.calibration_actions == []
     assert run.validate_trace() == []
 
 
@@ -82,6 +137,17 @@ $DY_LOOP
 
     claims = build_school_claims(run.case_id, run.school_applicability, run.chart_ledger)
     verdicts = build_structural_verdicts(run.case_id, claims)
+    event_claims = [claim for claim in claims if claim.claim_type in {"event", "event_claim"}]
+    verdicts.extend(
+        StructuralVerdict(
+            verdict_id=f"verdict-composable-{index}",
+            claim_id=claim.claim_id,
+            verdict="weaken" if index == 0 else "pass",
+            structural_reason="模块组合测试显式确认事件自身结构审查结果。",
+            confidence=claim.confidence,
+        )
+        for index, claim in enumerate(event_claims)
+    )
     events = build_event_hypotheses(run.case_id, verdicts, claims)
     timings = build_timing_probabilities(run.case_id, events)
     decisions = build_arbitration_decisions(run.case_id, events, run.school_applicability)
@@ -472,17 +538,7 @@ def test_l4_event_claim_uses_only_same_domain_structural_support() -> None:
 
 
 def test_decision_run_validate_trace_checks_required_ids_and_domains() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     patched = type(run)(
         **{
             **run.__dict__,
@@ -598,17 +654,7 @@ def test_l4_fallback_does_not_turn_evidence_verdict_into_event() -> None:
 
 
 def test_decision_run_validate_trace_checks_required_run_and_l9_ids() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     feedback = FeedbackSignal(feedback_id="fb-action", report_item_id=run.report_items[0].report_item_id, verdict="miss")
     attribution = FeedbackAttribution(
         attribution_id="attr-action",
@@ -840,17 +886,7 @@ def test_l8_build_feedback_signals_returns_empty_for_empty_report_items() -> Non
 
 
 def test_decision_run_validate_trace_checks_l6_result_ids_stay_inside_competing_events() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     event_ids = [item.event_id for item in run.event_hypotheses]
     patched = type(run)(
         **{
@@ -880,17 +916,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_l8_layer_is_not_reviewable() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     feedback = FeedbackSignal(feedback_id="fb-l8", report_item_id=run.report_items[0].report_item_id, verdict="unknown")
     attribution = FeedbackAttribution(
         attribution_id="attr-l8-review",
@@ -937,17 +963,7 @@ def test_l9_does_not_create_action_for_empty_target_id() -> None:
 
 
 def test_decision_run_validate_trace_checks_l6_result_semantics() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     event_id = run.event_hypotheses[0].event_id
     patched = type(run)(
         **{
@@ -973,17 +989,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_l5_probability_range() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     event_id = run.event_hypotheses[0].event_id
     patched = type(run)(
         **{
@@ -1007,17 +1013,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_more_required_layer_ids() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     event_id = run.event_hypotheses[0].event_id
     patched = type(run)(
         **{
@@ -1051,17 +1047,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_confidence_ranges() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     patched = type(run)(
         **{
             **run.__dict__,
@@ -1089,17 +1075,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_more_confidence_ranges() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     report_item_id = run.report_items[0].report_item_id
     feedback = FeedbackSignal(feedback_id="fb-confidence", report_item_id=report_item_id, verdict="miss")
     patched = type(run)(
@@ -1132,17 +1108,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_enum_values() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     report_item_id = run.report_items[0].report_item_id
     feedback = FeedbackSignal(feedback_id="fb-enum", report_item_id=report_item_id, verdict="bad")  # type: ignore[arg-type]
     attribution = FeedbackAttribution(
@@ -1190,17 +1156,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_feedback_and_attribution_required_ids() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     report_item_id = run.report_items[0].report_item_id
     patched = type(run)(
         **{
@@ -1229,17 +1185,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_more_l9_required_fields() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     feedback = FeedbackSignal(feedback_id="fb-l9", report_item_id=run.report_items[0].report_item_id, verdict="miss")
     attribution = FeedbackAttribution(
         attribution_id="attr-l9",
@@ -1274,17 +1220,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_duplicate_ids() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     feedback = FeedbackSignal(feedback_id="fb-dup", report_item_id=run.report_items[0].report_item_id, verdict="miss")
     attribution = FeedbackAttribution(
         attribution_id="attr-dup",
@@ -1331,17 +1267,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_l8_l9_semantics() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     feedback = FeedbackSignal(feedback_id="fb-ok", report_item_id=run.report_items[0].report_item_id, verdict="miss")
     attribution = FeedbackAttribution(
         attribution_id="attr-bad-object",
@@ -1376,17 +1302,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_l4_event_source_verdict_status() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     rejected = StructuralVerdict(
         verdict_id="verdict-reject",
         claim_id=run.school_claims[0].claim_id,
@@ -1433,17 +1349,7 @@ $DY_LOOP
 
 
 def test_decision_run_validate_trace_checks_l6_result_ids_and_l7_prediction_scope() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
     event_ids = [item.event_id for item in run.event_hypotheses]
     assert len(event_ids) >= 2
     decision = ArbitrationDecision(
@@ -1495,17 +1401,7 @@ def test_l7_coexist_decision_keeps_each_winner_feedback_point() -> None:
 
 
 def test_decision_run_validate_trace_checks_l8_l9_links() -> None:
-    run = run_decision_mvp("""
-$BASE
-命式: 乾
-$FOUR
-Y:庚午
-M:戊寅
-D:壬子
-H:辛丑
-$DY_LOOP
-# 1998-2007 辛巳
-""".strip())
+    run = _valid_nonempty_decision_run()
 
     broken_feedback = FeedbackSignal(feedback_id="fb-broken", report_item_id="missing-report", verdict="unknown")
     broken_attr = FeedbackAttribution(
