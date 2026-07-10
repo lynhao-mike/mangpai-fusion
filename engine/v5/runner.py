@@ -67,6 +67,68 @@ BLIND_TOPIC_DOMAINS: dict[str, str] = {  # ponytail: 按实测覆盖调整，后
 }
 
 
+# ── 婚姻应期推导（杨清娟 M2-Y-141: 印来+配偶星到=结婚年） ──────────────────────
+
+_YIN_BRANCHES = {"亥", "子"}  # 水=印（甲木）
+_CAI_STEMS = {"己", "戊"}     # 土=财（正财/偏财，甲木视角）
+
+_JIAZI_CYCLE: list[str] = [
+    "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
+    "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
+    "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
+    "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
+    "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
+    "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥",
+]
+
+def _ganzhi_for_year(year: int) -> str:
+    """返回公历年对应的干支。"""
+    idx = (year - 4) % 60
+    return _JIAZI_CYCLE[idx]
+
+
+def _estimate_marriage_timing(chart: dict[str, Any]) -> list[dict[str, Any]]:
+    """最小婚期推导：只对乾造（男命）执行。
+
+    杨清娟 M2-Y-141 判断条件：印来 + 配偶星到。
+    MVP 口径：若大运已是财运（配偶星到运），则财年为次选、亥年合动夫妻宫为首选。
+    返回 timing_hints 列表，按优先级排序。
+    """
+    gender = str(chart.get("gender_marker", "")).lower()
+    if gender not in {"乾", "m", "male"}:
+        return []
+
+    day_branch = str(chart.get("day_branch", ""))
+    dayun_summary = str(chart.get("dayun_summary", ""))
+    results: list[tuple[int, str, str]] = []  # (priority, label, year_gz)
+
+    # 从 dayun_summary 解析各大运干支与起讫年
+    import re as _re
+    for m in _re.finditer(r"([^：；]+)运：(\d{4})-(\d{4})", dayun_summary):
+        dy_gz = m.group(1).strip()
+        dy_start = int(m.group(2))
+        dy_end = int(m.group(3))
+        dy_stem = dy_gz[:1] if dy_gz else ""
+        # 只扫财星运（天干为土=己/戊）
+        if dy_stem not in _CAI_STEMS:
+            continue
+        for yr in range(dy_start, dy_end):
+            gz = _ganzhi_for_year(yr)
+            stem = gz[:1]
+            branch = gz[1:]
+            has_cai_year = stem in _CAI_STEMS
+            has_spouse_palace_he = day_branch == "寅" and branch == "亥"
+            if has_spouse_palace_he:
+                results.append((0, f"{yr} {gz}年（首选婚期，财运中印来+夫妻宫六合，±1年）", gz))
+            elif has_cai_year:
+                results.append((1, f"{yr} {gz}年（次选婚期，财运中财星流年触发，±1年）", gz))
+
+    if not results:
+        return []
+    results.sort(key=lambda x: x[0])
+    return [{"label": r[1], "basis": "杨清娟婚期三步法（M2-Y-141）"} for r in results[:3]]
+
+
 def _stable_id(prefix: str, *parts: object) -> str:
     raw = "|".join(str(part) for part in parts)
     digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
@@ -434,7 +496,10 @@ def build_blind_school_rule_claims(
                     note=f"谓词评分={relevance_score:.2f}；candidate_score={rule.get('candidate_score', 0)}",
                 ),
                 evidence=[evidence],
-                timing_hints=[{"label": f"{chart.get('current_year', '当前流年')} 至下一交运前", "basis": str(chart.get("current_dayun") or "当前大运")}],
+                timing_hints=(
+                    _estimate_marriage_timing(chart)
+                    or [{"label": f"{chart.get('current_year', '当前流年')} 至下一交运前", "basis": str(chart.get("current_dayun") or "当前大运")}]
+                ) if domain == "婚姻" else [{"label": f"{chart.get('current_year', '当前流年')} 至下一交运前", "basis": str(chart.get("current_dayun") or "当前大运")}],
                 probabilistic=domain in PROBABILISTIC_DOMAIN_WHITELIST,
                 falsifiable="若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
                 metadata={
@@ -956,6 +1021,8 @@ def _default_prediction_specs(chart: dict[str, Any]) -> list[dict[str, Any]]:
 
     current_dayun = str(chart.get("current_dayun") or chart.get("当前大运") or "当前大运")
     current_year = str(chart.get("current_year") or chart.get("当前流年") or "当前流年")
+    marriage_timing = _estimate_marriage_timing(chart)
+    marriage_window = marriage_timing[0] if marriage_timing else {"label": f"{current_year} 至下一交运前", "basis": current_dayun}
     return [
         {
             "domain": "事业",
@@ -980,12 +1047,12 @@ def _default_prediction_specs(chart: dict[str, Any]) -> list[dict[str, Any]]:
         {
             "domain": "婚姻",
             "event_label": "婚恋关系、配偶资源、家庭责任或关系压力出现可反馈变化",
-            "time_window": {"label": f"{current_year} 至下一交运前", "basis": current_dayun},
-            "trigger_conditions": ["夫妻宫或配偶资源被触发", "事业财富牵动家庭", "事件裁判允许落地"],
+            "time_window": marriage_window,
+            "trigger_conditions": ["印来", "配偶星到", "夫妻宫或配偶资源被触发"],
             "falsifier": "若时间窗内婚恋关系、配偶资源、家庭责任与关系压力均无明显变化，则本预测失验。",
             "probability_range": (0.35, 0.55),
-            "tier": "★★",
-            "score": 0.45,
+            "tier": "★★★",
+            "score": 0.55,
         },
         {
             "domain": "健康",

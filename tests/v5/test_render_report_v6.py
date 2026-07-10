@@ -9,6 +9,7 @@ import shutil
 
 from engine.decision import decision_run_from_snapshot
 from engine.v5 import V5CaseManifest, V5FeedbackAttachment, V5Output, V5RunSnapshot
+from engine.v5.preprod import build_chart_from_input
 from tools.render_report_v6 import main, render_case, render_cases
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -19,6 +20,37 @@ def _copy_case_input(tmp_path: Path) -> Path:
     case_dir = tmp_path / CASE_INPUT.parent.name
     shutil.copytree(CASE_INPUT.parent, case_dir, ignore=shutil.ignore_patterns("manifest.json"))
     return case_dir / "input.md"
+
+def test_build_chart_from_input_merges_multiple_yaml_blocks() -> None:
+    chart = build_chart_from_input(ROOT / "cases" / "C-2026-036-乾-辛巳壬辰甲寅乙丑" / "input.md")
+
+    assert chart["year_stem"] == "辛"
+    assert chart["year_branch"] == "巳"
+    assert chart["month_stem"] == "壬"
+    assert chart["month_branch"] == "辰"
+    assert chart["day_stem"] == "甲"
+    assert chart["day_branch"] == "寅"
+    assert chart["hour_stem"] == "乙"
+    assert chart["hour_branch"] == "丑"
+    assert chart["pillars"] == {
+        "year": "辛巳",
+        "month": "壬辰",
+        "day": "甲寅",
+        "hour": "乙丑",
+    }
+
+
+def test_render_report_v6_includes_marriage_timing_for_c2026036(tmp_path: Path) -> None:
+    case_input = ROOT / "cases" / "C-2026-036-乾-辛巳壬辰甲寅乙丑" / "input.md"
+    report_path = tmp_path / "c2026036-v6.md"
+
+    rendered_report, _ = render_case(case_input, output_path=report_path)
+    report_text = rendered_report.read_text(encoding="utf-8")
+
+    assert "2031 辛亥" in report_text
+    assert "首选婚期" in report_text
+    assert "车像" not in report_text
+
 
 
 def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:

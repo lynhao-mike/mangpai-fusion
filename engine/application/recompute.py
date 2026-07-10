@@ -97,6 +97,11 @@ def recompute_wenzhen_case(
     feedback_binding = _build_feedback_binding_check(case_dir, statement_index)
 
     report_path = reports_dir / f"{case_id}-content-report.md"
+    report_md = getattr(output, "report_md", None)
+    if report_md:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(str(report_md), encoding="utf-8")
+
     artifacts = {
         "findings_before": case_dir / "findings.before.json",
         "findings_after": case_dir / "findings.after.json",

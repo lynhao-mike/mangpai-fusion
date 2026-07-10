@@ -106,13 +106,14 @@ def _parse_current_year(text: str) -> str:
 
 
 def _extract_yaml_front_matter(text: str) -> dict[str, Any] | None:
-    """提取 ```yaml ... ``` 段；这是最懒且最稳的 input 解析入口。"""
+    """提取并合并 input.md 中所有 ```yaml ... ``` 段。"""
 
-    match = re.search(r"```yaml\s*(.*?)\s*```", text, flags=re.DOTALL)
-    if not match:
-        return None
-    payload = yaml.safe_load(match.group(1))
-    return payload if isinstance(payload, dict) else None
+    payload: dict[str, Any] = {}
+    for match in re.finditer(r"```yaml\s*(.*?)\s*```", text, flags=re.DOTALL):
+        block = yaml.safe_load(match.group(1))
+        if isinstance(block, dict):
+            payload.update(block)
+    return payload or None
 
 
 def build_chart_from_input(input_path: str | Path) -> dict[str, Any]:

@@ -4,46 +4,46 @@
   "chart": {
     "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
     "gender_marker": "乾",
-    "current_dayun": "待补充",
+    "current_dayun": "己丑",
     "current_year": "当前流年",
-    "start_luck": "待补充",
-    "dayun_summary": "见案例输入",
+    "start_luck": "出生后 5 年起运",
+    "dayun_summary": "辛卯运：2006-2016（6-15 岁）；庚寅运：2016-2026（16-25 岁）；己丑运：2026-2036（26-35 岁）；戊子运：2036-2046（36-45 岁）；丁亥运：2046-2056（46-55 岁）；丙戌运：2056-2066（56-65 岁）；乙酉运：2066-2076（66-75 岁）；甲申运：2076-2086（76-85 岁）；癸未运：2086-2096（86-95 岁）",
     "source_input": "cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/input.md",
-    "year_stem": "",
-    "year_branch": "",
-    "month_stem": "",
-    "month_branch": "",
-    "day_stem": "",
-    "day_branch": "",
-    "hour_stem": "",
-    "hour_branch": "",
+    "year_stem": "辛",
+    "year_branch": "巳",
+    "month_stem": "壬",
+    "month_branch": "辰",
+    "day_stem": "甲",
+    "day_branch": "寅",
+    "hour_stem": "乙",
+    "hour_branch": "丑",
     "pillars": {
-      "year": "",
-      "month": "",
-      "day": "",
-      "hour": ""
+      "year": "辛巳",
+      "month": "壬辰",
+      "day": "甲寅",
+      "hour": "乙丑"
     }
   },
   "claims": [
     {
-      "claim_id": "zipcl-0790307f32d6",
+      "claim_id": "zipcl-92daec0b8197",
       "school": "ziping",
       "school_role": "structure_law",
       "domain": "总体",
-      "claim": "子平独立推导：日主月令旺衰判定=中和（得分0.50）。日主或月支未知",
+      "claim": "子平独立推导：日主甲月令旺衰判定=中和（得分0.61）。日主甲（木），月令辰司令戊（土），月支帮扶=False，综合得分0.61→中和",
       "claim_type": "structure_claim",
       "stance": "support",
       "polarity": "neutral",
       "confidence": {
         "tier": "★★★",
-        "score": 0.55,
+        "score": 0.5940000000000001,
         "note": "子平独立 L1 旺衰判断，基于月令/四干/藏干轻量权重"
       },
       "evidence": [
         {
-          "evidence_id": "zipcl-f381ffa3d209",
+          "evidence_id": "zipcl-8518cbcdd816",
           "source": "engine/v5/ziping_runner.py",
-          "text": "日主或月支未知",
+          "text": "日主甲（木），月令辰司令戊（土），月支帮扶=False，综合得分0.61→中和",
           "node_refs": [
             "chart:root"
           ],
@@ -64,11 +64,11 @@
       }
     },
     {
-      "claim_id": "zipcl-b4e7724e4e4a",
+      "claim_id": "zipcl-622e19b88b28",
       "school": "ziping",
       "school_role": "structure_law",
       "domain": "事业",
-      "claim": "子平独立推导：未知，用神=待判。信息不足",
+      "claim": "子平独立推导：偏印格，用神=食神/伤官。月干壬为偏印，月令辰主气戊为偏财，格局=偏印格，用神=食神/伤官",
       "claim_type": "structure_claim",
       "stance": "support",
       "polarity": "neutral",
@@ -79,9 +79,9 @@
       },
       "evidence": [
         {
-          "evidence_id": "zipcl-05bee4af3fb7",
+          "evidence_id": "zipcl-546ae14d7f2c",
           "source": "engine/v5/ziping_runner.py",
-          "text": "信息不足",
+          "text": "月干壬为偏印，月令辰主气戊为偏财，格局=偏印格，用神=食神/伤官",
           "node_refs": [
             "chart:root"
           ],
@@ -102,11 +102,11 @@
       }
     },
     {
-      "claim_id": "zipcl-239b5fd487b8",
+      "claim_id": "zipcl-4cd902da44d1",
       "school": "ziping",
       "school_role": "structure_law",
       "domain": "总体",
-      "claim": "格局大类裁决：正格。约束方向:取待判为用，日主中和方向调配。日主（），旺衰分=0.50，五行覆盖=0种，格局大类=正格",
+      "claim": "格局大类裁决：正格。约束方向:取食神/伤官为用，日主中和方向调配。日主甲（木），旺衰分=0.61，五行覆盖=5种，格局大类=正格",
       "claim_type": "structure_claim",
       "stance": "support",
       "polarity": "neutral",
@@ -117,9 +117,9 @@
       },
       "evidence": [
         {
-          "evidence_id": "zipcl-1113b79c12f1",
+          "evidence_id": "zipcl-870ab82f3a52",
           "source": "engine/v5/ziping_runner.py",
-          "text": "日主（），旺衰分=0.50，五行覆盖=0种，格局大类=正格",
+          "text": "日主甲（木），旺衰分=0.61，五行覆盖=5种，格局大类=正格",
           "node_refs": [
             "chart:root"
           ],
@@ -141,7 +141,7 @@
         "geju_type": "正格",
         "favor_shishen": [],
         "avoid_shishen": [],
-        "constraint_text": "取待判为用，日主中和方向调配"
+        "constraint_text": "取食神/伤官为用，日主中和方向调配"
       }
     },
     {
@@ -12734,24 +12734,24 @@
       }
     },
     {
-      "claim_id": "dtscl-72a89b3497aa",
+      "claim_id": "dtscl-3e5eea4026ac",
       "school": "ditiansui",
       "school_role": "qi_momentum",
       "domain": "总体",
-      "claim": "滴天髓气势裁决：偏枯不通。缺木,火,土,金,水，气势不周流，喜岁运补偏。五行统计={'木': 0, '火': 0, '土': 0, '金': 0, '水': 0}；覆盖=0种；主气=木(0)；缺=['木', '火', '土', '金', '水']；气势=偏枯不通",
+      "claim": "滴天髓气势裁决：流通畅达。五行流通有情，格局清正，喜岁运不逆气势。五行统计={'木': 3, '火': 1, '土': 2, '金': 1, '水': 1}；覆盖=5种；主气=木(3)；缺=[]；气势=流通畅达",
       "claim_type": "structure_claim",
       "stance": "support",
       "polarity": "neutral",
       "confidence": {
-        "tier": "★★★",
-        "score": 0.58,
+        "tier": "★★★★",
+        "score": 0.65,
         "note": "滴天髓独立 L1 气势/流通判断"
       },
       "evidence": [
         {
-          "evidence_id": "dtscl-43c3f703653d",
+          "evidence_id": "dtscl-00e03546cbff",
           "source": "engine/v5/ditiansui_runner.py",
-          "text": "五行统计={'木': 0, '火': 0, '土': 0, '金': 0, '水': 0}；覆盖=0种；主气=木(0)；缺=['木', '火', '土', '金', '水']；气势=偏枯不通",
+          "text": "五行统计={'木': 3, '火': 1, '土': 2, '金': 1, '水': 1}；覆盖=5种；主气=木(3)；缺=[]；气势=流通畅达",
           "node_refs": [
             "chart:root"
           ],
@@ -12770,15 +12770,9 @@
         "runner_state": "ditiansui_independent",
         "source_scope": "ditiansui_independent_runner",
         "layer": "DTS_L1_qi_flow",
-        "qi_pattern": "偏枯不通",
+        "qi_pattern": "流通畅达",
         "dominant_wuxing": "木",
-        "missing_wuxing": [
-          "木",
-          "火",
-          "土",
-          "金",
-          "水"
-        ]
+        "missing_wuxing": []
       }
     },
     {
@@ -12786,7 +12780,7 @@
       "school": "ditiansui",
       "school_role": "qi_momentum",
       "domain": "总体",
-      "claim": "滴天髓调候裁决：寒暖失衡=无。补救方向：寒暖燥湿基本平衡，重点看岁运引动。月支(/)；日主()；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
+      "claim": "滴天髓调候裁决：寒暖失衡=无。补救方向：寒暖燥湿基本平衡，重点看岁运引动。月支辰(温/湿)；日主甲(木)；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
       "claim_type": "structure_claim",
       "stance": "support",
       "polarity": "neutral",
@@ -12799,7 +12793,7 @@
         {
           "evidence_id": "dtscl-810c9ff5a7c3",
           "source": "engine/v5/ditiansui_runner.py",
-          "text": "月支(/)；日主()；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
+          "text": "月支辰(温/湿)；日主甲(木)；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
           "node_refs": [
             "chart:root"
           ],
@@ -13399,695 +13393,6 @@
       }
     },
     {
-      "claim_id": "v5cl-1cab258bc279",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "事业",
-      "claim": "高德臣规则参与：阳主克阴主生 / 同性相克力大异性相克力小 / 异性相生力大同性相生力小；如丙戊同现流年甲主克乙主生",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★★",
-        "score": 0.74,
-        "note": "谓词评分=0.74；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-1cab258bc279",
-          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
-          "text": "阳主克阴主生 / 同性相克力大异性相克力小 / 异性相生力大同性相生力小；如丙戊同现流年甲主克乙主生",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-DY-019"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "dayun",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.74
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-DY-019",
-        "topic": "dayun",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.74
-      }
-    },
-    {
-      "claim_id": "v5cl-19cde9711df1",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "事业",
-      "claim": "高德臣规则参与：原局有合以冲为应；原局有冲以合为应；流年合大运=合动；流年冲大运=当运为冲去不当运为冲起；六合三合三会三刑一字空缺填实应吉应凶",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★★",
-        "score": 0.74,
-        "note": "谓词评分=0.74；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-19cde9711df1",
-          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
-          "text": "原局有合以冲为应；原局有冲以合为应；流年合大运=合动；流年冲大运=当运为冲去不当运为冲起；六合三合三会三刑一字空缺填实应吉应凶",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-DY-026"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "dayun",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.74
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-DY-026",
-        "topic": "dayun",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.74
-      }
-    },
-    {
-      "claim_id": "v5cl-b36746d8a37f",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-b36746d8a37f",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-004"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-004",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-be3e6df2d147",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：亥卯未流年须纳音属木+小限在子才是真桃花；申子辰流年须纳音属水+小限在酉；寅午戌流年须纳音属火+小限在卯；巳酉丑流年须纳音属金+小限在午",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-be3e6df2d147",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "亥卯未流年须纳音属木+小限在子才是真桃花；申子辰流年须纳音属水+小限在酉；寅午戌流年须纳音属火+小限在卯；巳酉丑流年须纳音属金+小限在午",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-005"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-005",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-2e29664d441e",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-2e29664d441e",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-011"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-011",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-66894001d352",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：大限+小限落同一宫位=凶(类似岁运并临但更严重)；每人24周岁必有一关(第一步大限15年在命宫+小限也在命宫)；第二步之后机会极少",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-66894001d352",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "大限+小限落同一宫位=凶(类似岁运并临但更严重)；每人24周岁必有一关(第一步大限15年在命宫+小限也在命宫)；第二步之后机会极少",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-013"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-013",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-6893b871d4fc",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：太岁(中)/青龙(吉)/丧门(小凶)/六合(吉)/官符(中)/小耗(小凶)/大耗(大凶)/朱雀(大凶)/白虎(大凶)/贵神(吉)/吊客(小凶)/病符(小凶)；以流年地支起太岁",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-6893b871d4fc",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "太岁(中)/青龙(吉)/丧门(小凶)/六合(吉)/官符(中)/小耗(小凶)/大耗(大凶)/朱雀(大凶)/白虎(大凶)/贵神(吉)/吊客(小凶)/病符(小凶)；以流年地支起太岁",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-019"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-019",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-e144526699e1",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：①旺衰以大运地支决定；②吉凶配看同柱或大运旺神；③大运所临12神为全年根本；④旺星主导弱星辅/过弱反用；⑤流年只起太极点不配12神；⑥天干代表上半季/地支代表下半季",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-e144526699e1",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "①旺衰以大运地支决定；②吉凶配看同柱或大运旺神；③大运所临12神为全年根本；④旺星主导弱星辅/过弱反用；⑤流年只起太极点不配12神；⑥天干代表上半季/地支代表下半季",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-022"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-022",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-4c3691f33e55",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：①流年地支起太岁看一年；②大运地支起太岁看十年；③日干通地支起太岁看一生祸福",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-4c3691f33e55",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "①流年地支起太岁看一年；②大运地支起太岁看十年；③日干通地支起太岁看一生祸福",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-024"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-024",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-2f2bbf646596",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "健康",
-      "claim": "高德臣规则参与：以流年天干查红艳所落宫位→看该年小限是否在该宫位=验证该年是否发生婚外恋/感情事件",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-2f2bbf646596",
-          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
-          "text": "以流年天干查红艳所落宫位→看该年小限是否在该宫位=验证该年是否发生婚外恋/感情事件",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-BD-027"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "shensha",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-BD-027",
-        "topic": "shensha",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-db392be59c1d",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "婚姻",
-      "claim": "高德臣规则参与：地支连排金水湿土=车像基因，大运流年引动为应期",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-db392be59c1d",
-          "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md",
-          "text": "地支连排金水湿土=车像基因，大运流年引动为应期",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-CH-003"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "hunyin",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-CH-003",
-        "topic": "hunyin",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-c64e6ad14e39",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "婚姻",
-      "claim": "高德臣规则参与：①原局看长短岁运看应期②寿元星受严重伤害=短寿③刑冲穿合反复冲+阴阳失衡④金木怕太弱火怕过旺水怕弱极土怕旺极⑤空亡忌煞（墓病死绝）看生死",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-c64e6ad14e39",
-          "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md",
-          "text": "①原局看长短岁运看应期②寿元星受严重伤害=短寿③刑冲穿合反复冲+阴阳失衡④金木怕太弱火怕过旺水怕弱极土怕旺极⑤空亡忌煞（墓病死绝）看生死",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-CH-011"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "hunyin",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-CH-011",
-        "topic": "hunyin",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
-      "claim_id": "v5cl-c5929bebbfec",
-      "school": "gao_dechen",
-      "school_role": "work_transformation",
-      "domain": "婚姻",
-      "claim": "高德臣规则参与：①流年三合六合来串宫配偶入宫②天干五合来串宫财官合入③星宫有合岁运冲其合/入墓刑冲其墓为应期④无财官以日支透出或元神禄到位为婚期",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-c5929bebbfec",
-          "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md",
-          "text": "①流年三合六合来串宫配偶入宫②天干五合来串宫财官合入③星宫有合岁运冲其合/入墓刑冲其墓为应期④无财官以日支透出或元神禄到位为婚期",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "G-CH-021"
-          ],
-          "metadata": {
-            "school": "gao_dechen",
-            "topic": "hunyin",
-            "status": "candidate",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.66
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-CH-021",
-        "topic": "hunyin",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
-      }
-    },
-    {
       "claim_id": "v5cl-55d95c39e4f5",
       "school": "gao_dechen",
       "school_role": "work_transformation",
@@ -14097,9 +13402,9 @@
       "stance": "support",
       "polarity": "neutral",
       "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
+        "tier": "★★★★",
+        "score": 0.815,
+        "note": "谓词评分=0.81；candidate_score=0.6"
       },
       "evidence": [
         {
@@ -14117,7 +13422,7 @@
             "topic": "caiyun",
             "status": "candidate",
             "source_scope": "school_index_rules",
-            "relevance_score": 0.66
+            "relevance_score": 0.815
           }
         }
       ],
@@ -14125,7 +13430,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14137,40 +13442,40 @@
         "source_scope": "school_index_rules",
         "runner_state": "school_rule",
         "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
+        "relevance_score": 0.815
       }
     },
     {
-      "claim_id": "v5cl-b13a5c158522",
+      "claim_id": "v5cl-2e29664d441e",
       "school": "gao_dechen",
       "school_role": "work_transformation",
-      "domain": "财富",
-      "claim": "高德臣规则参与：①渠道到位(合/冲/送可达) ②工具到位(禄星/比劫/食伤到大运) ③对财星生扶或刑冲克合=发财；注意主要用神不能坏",
+      "domain": "健康",
+      "claim": "高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环",
       "claim_type": "event_claim",
       "stance": "support",
       "polarity": "neutral",
       "confidence": {
-        "tier": "★★★",
-        "score": 0.6599999999999999,
-        "note": "谓词评分=0.66；candidate_score=0.6"
+        "tier": "★★★★",
+        "score": 0.8099999999999999,
+        "note": "谓词评分=0.81；candidate_score=0.6"
       },
       "evidence": [
         {
-          "evidence_id": "v5ev-b13a5c158522",
-          "source": "theory/raw/gao/extracted/高派_财运事业断法_候选规律提取_2026-05-19.md",
-          "text": "①渠道到位(合/冲/送可达) ②工具到位(禄星/比劫/食伤到大运) ③对财星生扶或刑冲克合=发财；注意主要用神不能坏",
+          "evidence_id": "v5ev-2e29664d441e",
+          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
+          "text": "命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环",
           "node_refs": [
             "chart:root"
           ],
           "rule_ids": [
-            "G-CS-010"
+            "G-BD-011"
           ],
           "metadata": {
             "school": "gao_dechen",
-            "topic": "caiyun",
+            "topic": "shensha",
             "status": "candidate",
             "source_scope": "school_index_rules",
-            "relevance_score": 0.66
+            "relevance_score": 0.81
           }
         }
       ],
@@ -14178,19 +13483,708 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
       "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
       "metadata": {
         "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "G-CS-010",
+        "rule_id": "G-BD-011",
+        "topic": "shensha",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.81
+      }
+    },
+    {
+      "claim_id": "v5cl-c45cbf7c46ae",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：①交接之年前后两步大运兼看 ②行运换甲最关键（换好是人换不好是鬼）③换甲忌岁运伏吟反吟刑冲 ④大运与限运（年=1-2步 / 月=3-4步 / 日=5-6步 / 时=7-8步）发生刑冲穿绝必有大灾",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.8099999999999999,
+        "note": "谓词评分=0.81；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-c45cbf7c46ae",
+          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
+          "text": "①交接之年前后两步大运兼看 ②行运换甲最关键（换好是人换不好是鬼）③换甲忌岁运伏吟反吟刑冲 ④大运与限运（年=1-2步 / 月=3-4步 / 日=5-6步 / 时=7-8步）发生刑冲穿绝必有大灾",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-DY-014"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "dayun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.81
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-DY-014",
+        "topic": "dayun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.81
+      }
+    },
+    {
+      "claim_id": "v5cl-4c59391a78c1",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：①阴阳感应 ②阴阳对立（天干动可生克 / 地支静须遇引动）③阴阳转化（寒暖转化为最直观，大运令五行阴阳消长）④阴阳消长（命局中阴阳二气在大运中的变化 + 吉凶消长）⑤阴阳互根（六合就是阴阳互根）⑥阴阳依存（干支相互依存 / 同属性甲乙互相依存：甲是乙的气、乙是甲的质）",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.8099999999999999,
+        "note": "谓词评分=0.81；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-4c59391a78c1",
+          "source": "theory/raw/gao/extracted/高派_理法篇_候选规律提取_2026-05-19.md",
+          "text": "①阴阳感应 ②阴阳对立（天干动可生克 / 地支静须遇引动）③阴阳转化（寒暖转化为最直观，大运令五行阴阳消长）④阴阳消长（命局中阴阳二气在大运中的变化 + 吉凶消长）⑤阴阳互根（六合就是阴阳互根）⑥阴阳依存（干支相互依存 / 同属性甲乙互相依存：甲是乙的气、乙是甲的质）",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-LF-021"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "lifa",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.81
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-LF-021",
+        "topic": "lifa",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.81
+      }
+    },
+    {
+      "claim_id": "v5cl-f68159a2d890",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：①长生遇杀最有灾（长生的杀非日干的杀）②沐浴冲宫怕刑伤（官星不可太旺/不可败地/不可刑穿/不可伤官）③截路空亡（甲己申酉/乙庚午未/丙辛辰巳/丁壬寅卯/戊癸子丑）④大运临十二长生喜忌 ⑤断关口秘诀（长生怕劫/沐浴怕比/冠带怕禄/死怕官/墓怕杀）⑥金衰木绝土怕养火病水死口诀 ⑦火怕牛角水漂羊金走午上木走坎",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.8,
+        "note": "谓词评分=0.80；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-f68159a2d890",
+          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
+          "text": "①长生遇杀最有灾（长生的杀非日干的杀）②沐浴冲宫怕刑伤（官星不可太旺/不可败地/不可刑穿/不可伤官）③截路空亡（甲己申酉/乙庚午未/丙辛辰巳/丁壬寅卯/戊癸子丑）④大运临十二长生喜忌 ⑤断关口秘诀（长生怕劫/沐浴怕比/冠带怕禄/死怕官/墓怕杀）⑥金衰木绝土怕养火病水死口诀 ⑦火怕牛角水漂羊金走午上木走坎",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-DY-028"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "dayun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.8
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-DY-028",
+        "topic": "dayun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.8
+      }
+    },
+    {
+      "claim_id": "v5cl-2f2bbf646596",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "健康",
+      "claim": "高德臣规则参与：以流年天干查红艳所落宫位→看该年小限是否在该宫位=验证该年是否发生婚外恋/感情事件",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.76,
+        "note": "谓词评分=0.76；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-2f2bbf646596",
+          "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md",
+          "text": "以流年天干查红艳所落宫位→看该年小限是否在该宫位=验证该年是否发生婚外恋/感情事件",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-BD-027"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "shensha",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.76
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-BD-027",
+        "topic": "shensha",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.76
+      }
+    },
+    {
+      "claim_id": "v5cl-3ecc18ac7210",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：运支力量决定运干力量，决定吉凶大方向；运支对运干起损益作用（甲申运甲被截脚 / 甲寅运甲得禄）",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.76,
+        "note": "谓词评分=0.76；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-3ecc18ac7210",
+          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
+          "text": "运支力量决定运干力量，决定吉凶大方向；运支对运干起损益作用（甲申运甲被截脚 / 甲寅运甲得禄）",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-DY-003"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "dayun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.76
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-DY-003",
+        "topic": "dayun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.76
+      }
+    },
+    {
+      "claim_id": "v5cl-5c12c79af070",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：①运字在原局是否有根（有根有力无根力微）②有根是否受伤（受伤无力）③原局火为用仅壬寅为受伤即使丙运也无用",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.76,
+        "note": "谓词评分=0.76；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-5c12c79af070",
+          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
+          "text": "①运字在原局是否有根（有根有力无根力微）②有根是否受伤（受伤无力）③原局火为用仅壬寅为受伤即使丙运也无用",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-DY-010"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "dayun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.76
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-DY-010",
+        "topic": "dayun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.76
+      }
+    },
+    {
+      "claim_id": "v5cl-5145d4368121",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "性格",
+      "claim": "高德臣规则参与：①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / 见不得光的连结』",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.755,
+        "note": "谓词评分=0.76；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-5145d4368121",
+          "source": "theory/raw/gao/extracted/高派_象法篇_候选规律提取_2026-05-19.md",
+          "text": "①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / 见不得光的连结』",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-XF-009"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "xiangfa",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.755
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": false,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-XF-009",
+        "topic": "xiangfa",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.755
+      }
+    },
+    {
+      "claim_id": "v5cl-136f1344e555",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "财富",
+      "claim": "高德臣规则参与：①禄当财看(禄头财=偏财/体力求财辛苦) ②食伤当财(靠智力/级别更大) ③我宫派出工具所克制/控制的也是财(即使原局有财也不当财看)",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-136f1344e555",
+          "source": "theory/raw/gao/extracted/高派_财运事业断法_候选规律提取_2026-05-19.md",
+          "text": "①禄当财看(禄头财=偏财/体力求财辛苦) ②食伤当财(靠智力/级别更大) ③我宫派出工具所克制/控制的也是财(即使原局有财也不当财看)",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-CS-008"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "caiyun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-CS-008",
         "topic": "caiyun",
         "source_scope": "school_index_rules",
         "runner_state": "school_rule",
         "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.66
+        "relevance_score": 0.75
+      }
+    },
+    {
+      "claim_id": "v5cl-0c868138d046",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "财富",
+      "claim": "高德臣规则参与：伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-0c868138d046",
+          "source": "theory/raw/gao/extracted/高派_财运篇_候选规律提取_2026-05-19.md",
+          "text": "伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-CY-018"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "caiyun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-CY-018",
+        "topic": "caiyun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.75
+      }
+    },
+    {
+      "claim_id": "v5cl-7a62ad06c538",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "事业",
+      "claim": "高德臣规则参与：命局有甲→流年寅有根卯不是根；命局有乙→流年卯有根寅不是根；命局有亥→流年寅卯都有根；三合局以阳干看",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-7a62ad06c538",
+          "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md",
+          "text": "命局有甲→流年寅有根卯不是根；命局有乙→流年卯有根寅不是根；命局有亥→流年寅卯都有根；三合局以阳干看",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-DY-017"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "dayun",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-DY-017",
+        "topic": "dayun",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.75
+      }
+    },
+    {
+      "claim_id": "v5cl-2f399e1dc676",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "总体",
+      "claim": "高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖+空亡+孤寡=适合学易 ⑨羊刃+命旺无依=性刚易冲动 ⑩灾杀大耗官符值命宫=祖业漂荡",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-2f399e1dc676",
+          "source": "theory/raw/gao/extracted/高派_命宫长生诀择日篇_候选规律提取_2026-05-19.md",
+          "text": "①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖+空亡+孤寡=适合学易 ⑨羊刃+命旺无依=性刚易冲动 ⑩灾杀大耗官符值命宫=祖业漂荡",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-MG-006"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "mingong",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": false,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-MG-006",
+        "topic": "mingong",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.75
+      }
+    },
+    {
+      "claim_id": "v5cl-497c35a3fbdf",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "总体",
+      "claim": "高德臣规则参与：①红砂大煞（四孟月金鸡四仲蛇四季丑）②十恶大败日（十干无禄日）③杨公忌日（正月十三/二月初一…共13日）④日时不可三煞年命 ⑤岁破月破日 ⑥日时不可冲事主年命 + 四绝日/四离日",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-497c35a3fbdf",
+          "source": "theory/raw/gao/extracted/高派_命宫长生诀择日篇_候选规律提取_2026-05-19.md",
+          "text": "①红砂大煞（四孟月金鸡四仲蛇四季丑）②十恶大败日（十干无禄日）③杨公忌日（正月十三/二月初一…共13日）④日时不可三煞年命 ⑤岁破月破日 ⑥日时不可冲事主年命 + 四绝日/四离日",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-MG-024"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "mingong",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": false,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-MG-024",
+        "topic": "mingong",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.75
+      }
+    },
+    {
+      "claim_id": "v5cl-992d14ce02ac",
+      "school": "gao_dechen",
+      "school_role": "work_transformation",
+      "domain": "健康",
+      "claim": "高德臣规则参与：①与贵人干支相合 ②年日互见贵人 ③有禄马相扶 ④财官印相配 ⑤无冲刑空破死绝 ⑥食神干支合贵也富贵",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.75,
+        "note": "谓词评分=0.75；candidate_score=0.6"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-992d14ce02ac",
+          "source": "theory/raw/gao/extracted/高派_神煞篇_候选规律提取_2026-05-19.md",
+          "text": "①与贵人干支相合 ②年日互见贵人 ③有禄马相扶 ④财官印相配 ⑤无冲刑空破死绝 ⑥食神干支合贵也富贵",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "G-SS-001"
+          ],
+          "metadata": {
+            "school": "gao_dechen",
+            "topic": "shensha",
+            "status": "candidate",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.75
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "G-SS-001",
+        "topic": "shensha",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.75
       }
     },
     {
@@ -14231,7 +14225,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14284,7 +14278,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14337,7 +14331,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14390,7 +14384,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14443,7 +14437,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14496,7 +14490,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14549,7 +14543,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14602,7 +14596,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14655,7 +14649,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14708,7 +14702,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14761,7 +14755,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14814,7 +14808,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14867,7 +14861,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14920,7 +14914,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14973,7 +14967,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -14999,8 +14993,8 @@
       "polarity": "neutral",
       "confidence": {
         "tier": "★★★",
-        "score": 0.58,
-        "note": "谓词评分=0.58；candidate_score=0"
+        "score": 0.655,
+        "note": "谓词评分=0.66；candidate_score=0"
       },
       "evidence": [
         {
@@ -15018,7 +15012,7 @@
             "topic": "lifa",
             "status": "promoted",
             "source_scope": "school_index_rules",
-            "relevance_score": 0.58
+            "relevance_score": 0.655
           }
         }
       ],
@@ -15026,7 +15020,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -15038,7 +15032,166 @@
         "source_scope": "school_index_rules",
         "runner_state": "school_rule",
         "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.58
+        "relevance_score": 0.655
+      }
+    },
+    {
+      "claim_id": "v5cl-298169a047c6",
+      "school": "yang_qingjuan",
+      "school_role": "image_detail",
+      "domain": "事业",
+      "claim": "杨清娟规则参与：合=轻松得到；克=辛苦取；层次差距=天地之别",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.65,
+        "note": "谓词评分=0.65；candidate_score=0"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-298169a047c6",
+          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
+          "text": "合=轻松得到；克=辛苦取；层次差距=天地之别",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "M2-Y-005"
+          ],
+          "metadata": {
+            "school": "yang_qingjuan",
+            "topic": "lifa",
+            "status": "promoted",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.65
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "M2-Y-005",
+        "topic": "lifa",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.65
+      }
+    },
+    {
+      "claim_id": "v5cl-2a1f00b30a18",
+      "school": "yang_qingjuan",
+      "school_role": "image_detail",
+      "domain": "财富",
+      "claim": "杨清娟规则参与：多财生一官=官统财；日主为中神=承上启下控制力大；辰库双藏=双重财源",
+      "claim_type": "event_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.65,
+        "note": "谓词评分=0.65；candidate_score=0"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-2a1f00b30a18",
+          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
+          "text": "多财生一官=官统财；日主为中神=承上启下控制力大；辰库双藏=双重财源",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "M2-Y-072"
+          ],
+          "metadata": {
+            "school": "yang_qingjuan",
+            "topic": "jiaoyu",
+            "status": "promoted",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.65
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": true,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "M2-Y-072",
+        "topic": "jiaoyu",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.65
+      }
+    },
+    {
+      "claim_id": "v5cl-6907c573a8aa",
+      "school": "yang_qingjuan",
+      "school_role": "image_detail",
+      "domain": "总体",
+      "claim": "杨清娟规则参与：§5.2",
+      "claim_type": "structure_claim",
+      "stance": "support",
+      "polarity": "neutral",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.575,
+        "note": "谓词评分=0.57；candidate_score=0"
+      },
+      "evidence": [
+        {
+          "evidence_id": "v5ev-6907c573a8aa",
+          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
+          "text": "§5.2",
+          "node_refs": [
+            "chart:root"
+          ],
+          "rule_ids": [
+            "M2-Y-127"
+          ],
+          "metadata": {
+            "school": "yang_qingjuan",
+            "topic": "unmapped",
+            "status": "promoted",
+            "source_scope": "school_index_rules",
+            "relevance_score": 0.575
+          }
+        }
+      ],
+      "counter_evidence": [],
+      "timing_hints": [
+        {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        }
+      ],
+      "probabilistic": false,
+      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+      "metadata": {
+        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+        "rule_id": "M2-Y-127",
+        "topic": "unmapped",
+        "source_scope": "school_index_rules",
+        "runner_state": "school_rule",
+        "selection": "v6_preprod_blind_predicate",
+        "relevance_score": 0.575
       }
     },
     {
@@ -15078,8 +15231,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15131,8 +15292,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15185,7 +15354,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -15238,7 +15407,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -15291,7 +15460,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": false,
@@ -15344,7 +15513,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -15397,7 +15566,7 @@
       "timing_hints": [
         {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         }
       ],
       "probabilistic": true,
@@ -15449,8 +15618,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15502,8 +15679,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15555,8 +15740,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15608,8 +15801,16 @@
       "counter_evidence": [],
       "timing_hints": [
         {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2043 癸亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
+        },
+        {
+          "label": "2028 戊申年（次选婚期，财运中财星流年触发，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         }
       ],
       "probabilistic": true,
@@ -15623,165 +15824,6 @@
         "selection": "v6_preprod_blind_predicate",
         "relevance_score": 0.56
       }
-    },
-    {
-      "claim_id": "v5cl-f86fbbd901ee",
-      "school": "yang_qingjuan",
-      "school_role": "image_detail",
-      "domain": "婚姻",
-      "claim": "杨清娟规则参与：六亲灾应期=和\"我\"相关的流年(比劫/禄被引动)而非六亲星",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.56,
-        "note": "谓词评分=0.56；candidate_score=0"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-f86fbbd901ee",
-          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
-          "text": "六亲灾应期=和\"我\"相关的流年(比劫/禄被引动)而非六亲星",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "M2-Y-069"
-          ],
-          "metadata": {
-            "school": "yang_qingjuan",
-            "topic": "hunyin",
-            "status": "promoted",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.56
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "M2-Y-069",
-        "topic": "hunyin",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.56
-      }
-    },
-    {
-      "claim_id": "v5cl-f345c5e4817a",
-      "school": "yang_qingjuan",
-      "school_role": "image_detail",
-      "domain": "财富",
-      "claim": "杨清娟规则参与：劫财见财/枭神夺食/伤官见官/财坏印=所有灾难来源",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.56,
-        "note": "谓词评分=0.56；candidate_score=0"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-f345c5e4817a",
-          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
-          "text": "劫财见财/枭神夺食/伤官见官/财坏印=所有灾难来源",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "M2-Y-093"
-          ],
-          "metadata": {
-            "school": "yang_qingjuan",
-            "topic": "caiyun",
-            "status": "promoted",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.56
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "M2-Y-093",
-        "topic": "caiyun",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.56
-      }
-    },
-    {
-      "claim_id": "v5cl-afb6fb5e6712",
-      "school": "yang_qingjuan",
-      "school_role": "image_detail",
-      "domain": "事业",
-      "claim": "杨清娟规则参与：层次=先天富贵等级；格局=做功配置完整度；气数=大运长短",
-      "claim_type": "event_claim",
-      "stance": "support",
-      "polarity": "neutral",
-      "confidence": {
-        "tier": "★★★",
-        "score": 0.56,
-        "note": "谓词评分=0.56；candidate_score=0"
-      },
-      "evidence": [
-        {
-          "evidence_id": "v5ev-afb6fb5e6712",
-          "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md",
-          "text": "层次=先天富贵等级；格局=做功配置完整度；气数=大运长短",
-          "node_refs": [
-            "chart:root"
-          ],
-          "rule_ids": [
-            "M2-Y-101"
-          ],
-          "metadata": {
-            "school": "yang_qingjuan",
-            "topic": "lifa",
-            "status": "promoted",
-            "source_scope": "school_index_rules",
-            "relevance_score": 0.56
-          }
-        }
-      ],
-      "counter_evidence": [],
-      "timing_hints": [
-        {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        }
-      ],
-      "probabilistic": true,
-      "falsifiable": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-      "metadata": {
-        "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-        "rule_id": "M2-Y-101",
-        "topic": "lifa",
-        "source_scope": "school_index_rules",
-        "runner_state": "school_rule",
-        "selection": "v6_preprod_blind_predicate",
-        "relevance_score": 0.56
-      }
     }
   ],
   "structure_graph": {
@@ -15790,28 +15832,28 @@
       {
         "id": "chart:root",
         "type": "chart",
-        "label": "{'year': '', 'month': '', 'day': '', 'hour': ''}",
+        "label": "辛巳壬辰甲寅乙丑",
         "payload": {
           "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
           "gender_marker": "乾",
-          "current_dayun": "待补充",
+          "current_dayun": "己丑",
           "current_year": "当前流年",
-          "start_luck": "待补充",
-          "dayun_summary": "见案例输入",
+          "start_luck": "出生后 5 年起运",
+          "dayun_summary": "辛卯运：2006-2016（6-15 岁）；庚寅运：2016-2026（16-25 岁）；己丑运：2026-2036（26-35 岁）；戊子运：2036-2046（36-45 岁）；丁亥运：2046-2056（46-55 岁）；丙戌运：2056-2066（56-65 岁）；乙酉运：2066-2076（66-75 岁）；甲申运：2076-2086（76-85 岁）；癸未运：2086-2096（86-95 岁）",
           "source_input": "cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/input.md",
-          "year_stem": "",
-          "year_branch": "",
-          "month_stem": "",
-          "month_branch": "",
-          "day_stem": "",
-          "day_branch": "",
-          "hour_stem": "",
-          "hour_branch": "",
+          "year_stem": "辛",
+          "year_branch": "巳",
+          "month_stem": "壬",
+          "month_branch": "辰",
+          "day_stem": "甲",
+          "day_branch": "寅",
+          "hour_stem": "乙",
+          "hour_branch": "丑",
           "pillars": {
-            "year": "",
-            "month": "",
-            "day": "",
-            "hour": ""
+            "year": "辛巳",
+            "month": "壬辰",
+            "day": "甲寅",
+            "hour": "乙丑"
           }
         }
       },
@@ -15821,17 +15863,17 @@
         "label": "总体"
       },
       {
-        "id": "claim:zipcl-0790307f32d6",
+        "id": "claim:zipcl-92daec0b8197",
         "type": "claim",
-        "label": "子平独立推导：日主月令旺衰判定=中和（得分0.50）。日主或月支未知",
+        "label": "子平独立推导：日主甲月令旺衰判定=中和（得分0.61）。日主甲（木），月令辰司令戊（土），月支帮扶=False，综合得分0.61→中和",
         "school": "ziping",
         "school_role": "structure_law",
         "claim_type": "structure_claim"
       },
       {
-        "id": "evidence:zipcl-f381ffa3d209",
+        "id": "evidence:zipcl-8518cbcdd816",
         "type": "evidence",
-        "label": "日主或月支未知",
+        "label": "日主甲（木），月令辰司令戊（土），月支帮扶=False，综合得分0.61→中和",
         "source": "engine/v5/ziping_runner.py"
       },
       {
@@ -15840,31 +15882,31 @@
         "label": "事业"
       },
       {
-        "id": "claim:zipcl-b4e7724e4e4a",
+        "id": "claim:zipcl-622e19b88b28",
         "type": "claim",
-        "label": "子平独立推导：未知，用神=待判。信息不足",
+        "label": "子平独立推导：偏印格，用神=食神/伤官。月干壬为偏印，月令辰主气戊为偏财，格局=偏印格，用神=食神/伤官",
         "school": "ziping",
         "school_role": "structure_law",
         "claim_type": "structure_claim"
       },
       {
-        "id": "evidence:zipcl-05bee4af3fb7",
+        "id": "evidence:zipcl-546ae14d7f2c",
         "type": "evidence",
-        "label": "信息不足",
+        "label": "月干壬为偏印，月令辰主气戊为偏财，格局=偏印格，用神=食神/伤官",
         "source": "engine/v5/ziping_runner.py"
       },
       {
-        "id": "claim:zipcl-239b5fd487b8",
+        "id": "claim:zipcl-4cd902da44d1",
         "type": "claim",
-        "label": "格局大类裁决：正格。约束方向:取待判为用，日主中和方向调配。日主（），旺衰分=0.50，五行覆盖=0种，格局大类=正格",
+        "label": "格局大类裁决：正格。约束方向:取食神/伤官为用，日主中和方向调配。日主甲（木），旺衰分=0.61，五行覆盖=5种，格局大类=正格",
         "school": "ziping",
         "school_role": "structure_law",
         "claim_type": "structure_claim"
       },
       {
-        "id": "evidence:zipcl-1113b79c12f1",
+        "id": "evidence:zipcl-870ab82f3a52",
         "type": "evidence",
-        "label": "日主（），旺衰分=0.50，五行覆盖=0种，格局大类=正格",
+        "label": "日主甲（木），旺衰分=0.61，五行覆盖=5种，格局大类=正格",
         "source": "engine/v5/ziping_runner.py"
       },
       {
@@ -19640,23 +19682,23 @@
         "source": "sources/ziping/穷通宝鉴-明-余春台_part1.md"
       },
       {
-        "id": "claim:dtscl-72a89b3497aa",
+        "id": "claim:dtscl-3e5eea4026ac",
         "type": "claim",
-        "label": "滴天髓气势裁决：偏枯不通。缺木,火,土,金,水，气势不周流，喜岁运补偏。五行统计={'木': 0, '火': 0, '土': 0, '金': 0, '水': 0}；覆盖=0种；主气=木(0)；缺=['木', '火', '土', '金', '水']；气势=偏枯不通",
+        "label": "滴天髓气势裁决：流通畅达。五行流通有情，格局清正，喜岁运不逆气势。五行统计={'木': 3, '火': 1, '土': 2, '金': 1, '水': 1}；覆盖=5种；主气=木(3)；缺=[]；气势=流通畅达",
         "school": "ditiansui",
         "school_role": "qi_momentum",
         "claim_type": "structure_claim"
       },
       {
-        "id": "evidence:dtscl-43c3f703653d",
+        "id": "evidence:dtscl-00e03546cbff",
         "type": "evidence",
-        "label": "五行统计={'木': 0, '火': 0, '土': 0, '金': 0, '水': 0}；覆盖=0种；主气=木(0)；缺=['木', '火', '土', '金', '水']；气势=偏枯不通",
+        "label": "五行统计={'木': 3, '火': 1, '土': 2, '金': 1, '水': 1}；覆盖=5种；主气=木(3)；缺=[]；气势=流通畅达",
         "source": "engine/v5/ditiansui_runner.py"
       },
       {
         "id": "claim:dtscl-f59987b155ea",
         "type": "claim",
-        "label": "滴天髓调候裁决：寒暖失衡=无。补救方向：寒暖燥湿基本平衡，重点看岁运引动。月支(/)；日主()；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
+        "label": "滴天髓调候裁决：寒暖失衡=无。补救方向：寒暖燥湿基本平衡，重点看岁运引动。月支辰(温/湿)；日主甲(木)；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
         "school": "ditiansui",
         "school_role": "qi_momentum",
         "claim_type": "structure_claim"
@@ -19664,7 +19706,7 @@
       {
         "id": "evidence:dtscl-810c9ff5a7c3",
         "type": "evidence",
-        "label": "月支(/)；日主()；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
+        "label": "月支辰(温/湿)；日主甲(木)；失衡=无；补救=寒暖燥湿基本平衡，重点看岁运引动",
         "source": "engine/v5/ditiansui_runner.py"
       },
       {
@@ -19836,60 +19878,18 @@
         "source": "sources/tiaohou_ditiansui/滴天髓_part3.md"
       },
       {
-        "id": "claim:v5cl-1cab258bc279",
+        "id": "claim:v5cl-55d95c39e4f5",
         "type": "claim",
-        "label": "高德臣规则参与：阳主克阴主生 / 同性相克力大异性相克力小 / 异性相生力大同性相生力小；如丙戊同现流年甲主克乙主生",
+        "label": "高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-1cab258bc279",
+        "id": "evidence:v5ev-55d95c39e4f5",
         "type": "evidence",
-        "label": "阳主克阴主生 / 同性相克力大异性相克力小 / 异性相生力大同性相生力小；如丙戊同现流年甲主克乙主生",
-        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
-      },
-      {
-        "id": "claim:v5cl-19cde9711df1",
-        "type": "claim",
-        "label": "高德臣规则参与：原局有合以冲为应；原局有冲以合为应；流年合大运=合动；流年冲大运=当运为冲去不当运为冲起；六合三合三会三刑一字空缺填实应吉应凶",
-        "school": "gao_dechen",
-        "school_role": "work_transformation",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-19cde9711df1",
-        "type": "evidence",
-        "label": "原局有合以冲为应；原局有冲以合为应；流年合大运=合动；流年冲大运=当运为冲去不当运为冲起；六合三合三会三刑一字空缺填实应吉应凶",
-        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
-      },
-      {
-        "id": "claim:v5cl-b36746d8a37f",
-        "type": "claim",
-        "label": "高德臣规则参与：金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事",
-        "school": "gao_dechen",
-        "school_role": "work_transformation",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-b36746d8a37f",
-        "type": "evidence",
-        "label": "金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
-      },
-      {
-        "id": "claim:v5cl-be3e6df2d147",
-        "type": "claim",
-        "label": "高德臣规则参与：亥卯未流年须纳音属木+小限在子才是真桃花；申子辰流年须纳音属水+小限在酉；寅午戌流年须纳音属火+小限在卯；巳酉丑流年须纳音属金+小限在午",
-        "school": "gao_dechen",
-        "school_role": "work_transformation",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-be3e6df2d147",
-        "type": "evidence",
-        "label": "亥卯未流年须纳音属木+小限在子才是真桃花；申子辰流年须纳音属水+小限在酉；寅午戌流年须纳音属火+小限在卯；巳酉丑流年须纳音属金+小限在午",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
+        "label": "日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
+        "source": "theory/raw/gao/extracted/高派_财运事业断法_候选规律提取_2026-05-19.md"
       },
       {
         "id": "claim:v5cl-2e29664d441e",
@@ -19906,60 +19906,46 @@
         "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-66894001d352",
+        "id": "claim:v5cl-c45cbf7c46ae",
         "type": "claim",
-        "label": "高德臣规则参与：大限+小限落同一宫位=凶(类似岁运并临但更严重)；每人24周岁必有一关(第一步大限15年在命宫+小限也在命宫)；第二步之后机会极少",
+        "label": "高德臣规则参与：①交接之年前后两步大运兼看 ②行运换甲最关键（换好是人换不好是鬼）③换甲忌岁运伏吟反吟刑冲 ④大运与限运（年=1-2步 / 月=3-4步 / 日=5-6步 / 时=7-8步）发生刑冲穿绝必有大灾",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-66894001d352",
+        "id": "evidence:v5ev-c45cbf7c46ae",
         "type": "evidence",
-        "label": "大限+小限落同一宫位=凶(类似岁运并临但更严重)；每人24周岁必有一关(第一步大限15年在命宫+小限也在命宫)；第二步之后机会极少",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
+        "label": "①交接之年前后两步大运兼看 ②行运换甲最关键（换好是人换不好是鬼）③换甲忌岁运伏吟反吟刑冲 ④大运与限运（年=1-2步 / 月=3-4步 / 日=5-6步 / 时=7-8步）发生刑冲穿绝必有大灾",
+        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-6893b871d4fc",
+        "id": "claim:v5cl-4c59391a78c1",
         "type": "claim",
-        "label": "高德臣规则参与：太岁(中)/青龙(吉)/丧门(小凶)/六合(吉)/官符(中)/小耗(小凶)/大耗(大凶)/朱雀(大凶)/白虎(大凶)/贵神(吉)/吊客(小凶)/病符(小凶)；以流年地支起太岁",
+        "label": "高德臣规则参与：①阴阳感应 ②阴阳对立（天干动可生克 / 地支静须遇引动）③阴阳转化（寒暖转化为最直观，大运令五行阴阳消长）④阴阳消长（命局中阴阳二气在大运中的变化 + 吉凶消长）⑤阴阳互根（六合就是阴阳互根）⑥阴阳依存（干支相互依存 / 同属性甲乙互相依存：甲是乙的气、乙是甲的质）",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-6893b871d4fc",
+        "id": "evidence:v5ev-4c59391a78c1",
         "type": "evidence",
-        "label": "太岁(中)/青龙(吉)/丧门(小凶)/六合(吉)/官符(中)/小耗(小凶)/大耗(大凶)/朱雀(大凶)/白虎(大凶)/贵神(吉)/吊客(小凶)/病符(小凶)；以流年地支起太岁",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
+        "label": "①阴阳感应 ②阴阳对立（天干动可生克 / 地支静须遇引动）③阴阳转化（寒暖转化为最直观，大运令五行阴阳消长）④阴阳消长（命局中阴阳二气在大运中的变化 + 吉凶消长）⑤阴阳互根（六合就是阴阳互根）⑥阴阳依存（干支相互依存 / 同属性甲乙互相依存：甲是乙的气、乙是甲的质）",
+        "source": "theory/raw/gao/extracted/高派_理法篇_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-e144526699e1",
+        "id": "claim:v5cl-f68159a2d890",
         "type": "claim",
-        "label": "高德臣规则参与：①旺衰以大运地支决定；②吉凶配看同柱或大运旺神；③大运所临12神为全年根本；④旺星主导弱星辅/过弱反用；⑤流年只起太极点不配12神；⑥天干代表上半季/地支代表下半季",
+        "label": "高德臣规则参与：①长生遇杀最有灾（长生的杀非日干的杀）②沐浴冲宫怕刑伤（官星不可太旺/不可败地/不可刑穿/不可伤官）③截路空亡（甲己申酉/乙庚午未/丙辛辰巳/丁壬寅卯/戊癸子丑）④大运临十二长生喜忌 ⑤断关口秘诀（长生怕劫/沐浴怕比/冠带怕禄/死怕官/墓怕杀）⑥金衰木绝土怕养火病水死口诀 ⑦火怕牛角水漂羊金走午上木走坎",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-e144526699e1",
+        "id": "evidence:v5ev-f68159a2d890",
         "type": "evidence",
-        "label": "①旺衰以大运地支决定；②吉凶配看同柱或大运旺神；③大运所临12神为全年根本；④旺星主导弱星辅/过弱反用；⑤流年只起太极点不配12神；⑥天干代表上半季/地支代表下半季",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
-      },
-      {
-        "id": "claim:v5cl-4c3691f33e55",
-        "type": "claim",
-        "label": "高德臣规则参与：①流年地支起太岁看一年；②大运地支起太岁看十年；③日干通地支起太岁看一生祸福",
-        "school": "gao_dechen",
-        "school_role": "work_transformation",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-4c3691f33e55",
-        "type": "evidence",
-        "label": "①流年地支起太岁看一年；②大运地支起太岁看十年；③日干通地支起太岁看一生祸福",
-        "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
+        "label": "①长生遇杀最有灾（长生的杀非日干的杀）②沐浴冲宫怕刑伤（官星不可太旺/不可败地/不可刑穿/不可伤官）③截路空亡（甲己申酉/乙庚午未/丙辛辰巳/丁壬寅卯/戊癸子丑）④大运临十二长生喜忌 ⑤断关口秘诀（长生怕劫/沐浴怕比/冠带怕禄/死怕官/墓怕杀）⑥金衰木绝土怕养火病水死口诀 ⑦火怕牛角水漂羊金走午上木走坎",
+        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
       },
       {
         "id": "claim:v5cl-2f2bbf646596",
@@ -19976,74 +19962,135 @@
         "source": "theory/raw/gao/extracted/高派_神煞应用宝典_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-db392be59c1d",
+        "id": "claim:v5cl-3ecc18ac7210",
         "type": "claim",
-        "label": "高德臣规则参与：地支连排金水湿土=车像基因，大运流年引动为应期",
+        "label": "高德臣规则参与：运支力量决定运干力量，决定吉凶大方向；运支对运干起损益作用（甲申运甲被截脚 / 甲寅运甲得禄）",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-db392be59c1d",
+        "id": "evidence:v5ev-3ecc18ac7210",
         "type": "evidence",
-        "label": "地支连排金水湿土=车像基因，大运流年引动为应期",
-        "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md"
+        "label": "运支力量决定运干力量，决定吉凶大方向；运支对运干起损益作用（甲申运甲被截脚 / 甲寅运甲得禄）",
+        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-c64e6ad14e39",
+        "id": "claim:v5cl-5c12c79af070",
         "type": "claim",
-        "label": "高德臣规则参与：①原局看长短岁运看应期②寿元星受严重伤害=短寿③刑冲穿合反复冲+阴阳失衡④金木怕太弱火怕过旺水怕弱极土怕旺极⑤空亡忌煞（墓病死绝）看生死",
+        "label": "高德臣规则参与：①运字在原局是否有根（有根有力无根力微）②有根是否受伤（受伤无力）③原局火为用仅壬寅为受伤即使丙运也无用",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-c64e6ad14e39",
+        "id": "evidence:v5ev-5c12c79af070",
         "type": "evidence",
-        "label": "①原局看长短岁运看应期②寿元星受严重伤害=短寿③刑冲穿合反复冲+阴阳失衡④金木怕太弱火怕过旺水怕弱极土怕旺极⑤空亡忌煞（墓病死绝）看生死",
-        "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md"
+        "label": "①运字在原局是否有根（有根有力无根力微）②有根是否受伤（受伤无力）③原局火为用仅壬寅为受伤即使丙运也无用",
+        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-c5929bebbfec",
+        "id": "domain:性格",
+        "type": "domain",
+        "label": "性格"
+      },
+      {
+        "id": "claim:v5cl-5145d4368121",
         "type": "claim",
-        "label": "高德臣规则参与：①流年三合六合来串宫配偶入宫②天干五合来串宫财官合入③星宫有合岁运冲其合/入墓刑冲其墓为应期④无财官以日支透出或元神禄到位为婚期",
+        "label": "高德臣规则参与：①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / 见不得光的连结』",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-5145d4368121",
+        "type": "evidence",
+        "label": "①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / 见不得光的连结』",
+        "source": "theory/raw/gao/extracted/高派_象法篇_候选规律提取_2026-05-19.md"
+      },
+      {
+        "id": "claim:v5cl-136f1344e555",
+        "type": "claim",
+        "label": "高德臣规则参与：①禄当财看(禄头财=偏财/体力求财辛苦) ②食伤当财(靠智力/级别更大) ③我宫派出工具所克制/控制的也是财(即使原局有财也不当财看)",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-c5929bebbfec",
+        "id": "evidence:v5ev-136f1344e555",
         "type": "evidence",
-        "label": "①流年三合六合来串宫配偶入宫②天干五合来串宫财官合入③星宫有合岁运冲其合/入墓刑冲其墓为应期④无财官以日支透出或元神禄到位为婚期",
-        "source": "theory/raw/gao/extracted/高派_车祸婚姻篇_候选规律提取_2026-05-19.md"
-      },
-      {
-        "id": "claim:v5cl-55d95c39e4f5",
-        "type": "claim",
-        "label": "高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
-        "school": "gao_dechen",
-        "school_role": "work_transformation",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-55d95c39e4f5",
-        "type": "evidence",
-        "label": "日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
+        "label": "①禄当财看(禄头财=偏财/体力求财辛苦) ②食伤当财(靠智力/级别更大) ③我宫派出工具所克制/控制的也是财(即使原局有财也不当财看)",
         "source": "theory/raw/gao/extracted/高派_财运事业断法_候选规律提取_2026-05-19.md"
       },
       {
-        "id": "claim:v5cl-b13a5c158522",
+        "id": "claim:v5cl-0c868138d046",
         "type": "claim",
-        "label": "高德臣规则参与：①渠道到位(合/冲/送可达) ②工具到位(禄星/比劫/食伤到大运) ③对财星生扶或刑冲克合=发财；注意主要用神不能坏",
+        "label": "高德臣规则参与：伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库",
         "school": "gao_dechen",
         "school_role": "work_transformation",
         "claim_type": "event_claim"
       },
       {
-        "id": "evidence:v5ev-b13a5c158522",
+        "id": "evidence:v5ev-0c868138d046",
         "type": "evidence",
-        "label": "①渠道到位(合/冲/送可达) ②工具到位(禄星/比劫/食伤到大运) ③对财星生扶或刑冲克合=发财；注意主要用神不能坏",
-        "source": "theory/raw/gao/extracted/高派_财运事业断法_候选规律提取_2026-05-19.md"
+        "label": "伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库",
+        "source": "theory/raw/gao/extracted/高派_财运篇_候选规律提取_2026-05-19.md"
+      },
+      {
+        "id": "claim:v5cl-7a62ad06c538",
+        "type": "claim",
+        "label": "高德臣规则参与：命局有甲→流年寅有根卯不是根；命局有乙→流年卯有根寅不是根；命局有亥→流年寅卯都有根；三合局以阳干看",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-7a62ad06c538",
+        "type": "evidence",
+        "label": "命局有甲→流年寅有根卯不是根；命局有乙→流年卯有根寅不是根；命局有亥→流年寅卯都有根；三合局以阳干看",
+        "source": "theory/raw/gao/extracted/高派_大运流年篇_候选规律提取_2026-05-19.md"
+      },
+      {
+        "id": "claim:v5cl-2f399e1dc676",
+        "type": "claim",
+        "label": "高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖+空亡+孤寡=适合学易 ⑨羊刃+命旺无依=性刚易冲动 ⑩灾杀大耗官符值命宫=祖业漂荡",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-2f399e1dc676",
+        "type": "evidence",
+        "label": "①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖+空亡+孤寡=适合学易 ⑨羊刃+命旺无依=性刚易冲动 ⑩灾杀大耗官符值命宫=祖业漂荡",
+        "source": "theory/raw/gao/extracted/高派_命宫长生诀择日篇_候选规律提取_2026-05-19.md"
+      },
+      {
+        "id": "claim:v5cl-497c35a3fbdf",
+        "type": "claim",
+        "label": "高德臣规则参与：①红砂大煞（四孟月金鸡四仲蛇四季丑）②十恶大败日（十干无禄日）③杨公忌日（正月十三/二月初一…共13日）④日时不可三煞年命 ⑤岁破月破日 ⑥日时不可冲事主年命 + 四绝日/四离日",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-497c35a3fbdf",
+        "type": "evidence",
+        "label": "①红砂大煞（四孟月金鸡四仲蛇四季丑）②十恶大败日（十干无禄日）③杨公忌日（正月十三/二月初一…共13日）④日时不可三煞年命 ⑤岁破月破日 ⑥日时不可冲事主年命 + 四绝日/四离日",
+        "source": "theory/raw/gao/extracted/高派_命宫长生诀择日篇_候选规律提取_2026-05-19.md"
+      },
+      {
+        "id": "claim:v5cl-992d14ce02ac",
+        "type": "claim",
+        "label": "高德臣规则参与：①与贵人干支相合 ②年日互见贵人 ③有禄马相扶 ④财官印相配 ⑤无冲刑空破死绝 ⑥食神干支合贵也富贵",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-992d14ce02ac",
+        "type": "evidence",
+        "label": "①与贵人干支相合 ②年日互见贵人 ③有禄马相扶 ④财官印相配 ⑤无冲刑空破死绝 ⑥食神干支合贵也富贵",
+        "source": "theory/raw/gao/extracted/高派_神煞篇_候选规律提取_2026-05-19.md"
       },
       {
         "id": "claim:v5cl-395c9f7a248e",
@@ -20270,6 +20317,48 @@
         "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
       },
       {
+        "id": "claim:v5cl-298169a047c6",
+        "type": "claim",
+        "label": "杨清娟规则参与：合=轻松得到；克=辛苦取；层次差距=天地之别",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-298169a047c6",
+        "type": "evidence",
+        "label": "合=轻松得到；克=辛苦取；层次差距=天地之别",
+        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
+      },
+      {
+        "id": "claim:v5cl-2a1f00b30a18",
+        "type": "claim",
+        "label": "杨清娟规则参与：多财生一官=官统财；日主为中神=承上启下控制力大；辰库双藏=双重财源",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "claim_type": "event_claim"
+      },
+      {
+        "id": "evidence:v5ev-2a1f00b30a18",
+        "type": "evidence",
+        "label": "多财生一官=官统财；日主为中神=承上启下控制力大；辰库双藏=双重财源",
+        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
+      },
+      {
+        "id": "claim:v5cl-6907c573a8aa",
+        "type": "claim",
+        "label": "杨清娟规则参与：§5.2",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "claim_type": "structure_claim"
+      },
+      {
+        "id": "evidence:v5ev-6907c573a8aa",
+        "type": "evidence",
+        "label": "§5.2",
+        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
+      },
+      {
         "id": "claim:v5cl-a0873b8dcbcc",
         "type": "claim",
         "label": "杨清娟规则参与：①印运+配偶星到②趋于一方找反向③夫妻宫半合翻法④找家里另五行⑤正星得正位⑥体与配偶星发生关系",
@@ -20422,94 +20511,52 @@
         "type": "evidence",
         "label": "比劫力>财力+妻宫冲穿=必离婚；力≤+宫未动=外遇不离",
         "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
-      },
-      {
-        "id": "claim:v5cl-f86fbbd901ee",
-        "type": "claim",
-        "label": "杨清娟规则参与：六亲灾应期=和\"我\"相关的流年(比劫/禄被引动)而非六亲星",
-        "school": "yang_qingjuan",
-        "school_role": "image_detail",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-f86fbbd901ee",
-        "type": "evidence",
-        "label": "六亲灾应期=和\"我\"相关的流年(比劫/禄被引动)而非六亲星",
-        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
-      },
-      {
-        "id": "claim:v5cl-f345c5e4817a",
-        "type": "claim",
-        "label": "杨清娟规则参与：劫财见财/枭神夺食/伤官见官/财坏印=所有灾难来源",
-        "school": "yang_qingjuan",
-        "school_role": "image_detail",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-f345c5e4817a",
-        "type": "evidence",
-        "label": "劫财见财/枭神夺食/伤官见官/财坏印=所有灾难来源",
-        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
-      },
-      {
-        "id": "claim:v5cl-afb6fb5e6712",
-        "type": "claim",
-        "label": "杨清娟规则参与：层次=先天富贵等级；格局=做功配置完整度；气数=大运长短",
-        "school": "yang_qingjuan",
-        "school_role": "image_detail",
-        "claim_type": "event_claim"
-      },
-      {
-        "id": "evidence:v5ev-afb6fb5e6712",
-        "type": "evidence",
-        "label": "层次=先天富贵等级；格局=做功配置完整度；气数=大运长短",
-        "source": "theory\\raw\\yang\\promoted\\m2-rules-registry.md"
       }
     ],
     "edges": [
       {
         "source": "chart:root",
-        "target": "claim:zipcl-0790307f32d6",
+        "target": "claim:zipcl-92daec0b8197",
         "type": "feeds"
       },
       {
-        "source": "claim:zipcl-0790307f32d6",
+        "source": "claim:zipcl-92daec0b8197",
         "target": "domain:总体",
         "type": "targets"
       },
       {
-        "source": "evidence:zipcl-f381ffa3d209",
-        "target": "claim:zipcl-0790307f32d6",
+        "source": "evidence:zipcl-8518cbcdd816",
+        "target": "claim:zipcl-92daec0b8197",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:zipcl-b4e7724e4e4a",
+        "target": "claim:zipcl-622e19b88b28",
         "type": "feeds"
       },
       {
-        "source": "claim:zipcl-b4e7724e4e4a",
+        "source": "claim:zipcl-622e19b88b28",
         "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:zipcl-05bee4af3fb7",
-        "target": "claim:zipcl-b4e7724e4e4a",
+        "source": "evidence:zipcl-546ae14d7f2c",
+        "target": "claim:zipcl-622e19b88b28",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:zipcl-239b5fd487b8",
+        "target": "claim:zipcl-4cd902da44d1",
         "type": "feeds"
       },
       {
-        "source": "claim:zipcl-239b5fd487b8",
+        "source": "claim:zipcl-4cd902da44d1",
         "target": "domain:总体",
         "type": "targets"
       },
       {
-        "source": "evidence:zipcl-1113b79c12f1",
-        "target": "claim:zipcl-239b5fd487b8",
+        "source": "evidence:zipcl-870ab82f3a52",
+        "target": "claim:zipcl-4cd902da44d1",
         "type": "supports"
       },
       {
@@ -24534,17 +24581,17 @@
       },
       {
         "source": "chart:root",
-        "target": "claim:dtscl-72a89b3497aa",
+        "target": "claim:dtscl-3e5eea4026ac",
         "type": "feeds"
       },
       {
-        "source": "claim:dtscl-72a89b3497aa",
+        "source": "claim:dtscl-3e5eea4026ac",
         "target": "domain:总体",
         "type": "targets"
       },
       {
-        "source": "evidence:dtscl-43c3f703653d",
-        "target": "claim:dtscl-72a89b3497aa",
+        "source": "evidence:dtscl-00e03546cbff",
+        "target": "claim:dtscl-3e5eea4026ac",
         "type": "supports"
       },
       {
@@ -24744,62 +24791,17 @@
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-1cab258bc279",
+        "target": "claim:v5cl-55d95c39e4f5",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-1cab258bc279",
-        "target": "domain:事业",
+        "source": "claim:v5cl-55d95c39e4f5",
+        "target": "domain:财富",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-1cab258bc279",
-        "target": "claim:v5cl-1cab258bc279",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-19cde9711df1",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-19cde9711df1",
-        "target": "domain:事业",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-19cde9711df1",
-        "target": "claim:v5cl-19cde9711df1",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-b36746d8a37f",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-b36746d8a37f",
-        "target": "domain:健康",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-b36746d8a37f",
-        "target": "claim:v5cl-b36746d8a37f",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-be3e6df2d147",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-be3e6df2d147",
-        "target": "domain:健康",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-be3e6df2d147",
-        "target": "claim:v5cl-be3e6df2d147",
+        "source": "evidence:v5ev-55d95c39e4f5",
+        "target": "claim:v5cl-55d95c39e4f5",
         "type": "supports"
       },
       {
@@ -24819,62 +24821,47 @@
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-66894001d352",
+        "target": "claim:v5cl-c45cbf7c46ae",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-66894001d352",
-        "target": "domain:健康",
+        "source": "claim:v5cl-c45cbf7c46ae",
+        "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-66894001d352",
-        "target": "claim:v5cl-66894001d352",
+        "source": "evidence:v5ev-c45cbf7c46ae",
+        "target": "claim:v5cl-c45cbf7c46ae",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-6893b871d4fc",
+        "target": "claim:v5cl-4c59391a78c1",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-6893b871d4fc",
-        "target": "domain:健康",
+        "source": "claim:v5cl-4c59391a78c1",
+        "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-6893b871d4fc",
-        "target": "claim:v5cl-6893b871d4fc",
+        "source": "evidence:v5ev-4c59391a78c1",
+        "target": "claim:v5cl-4c59391a78c1",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-e144526699e1",
+        "target": "claim:v5cl-f68159a2d890",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-e144526699e1",
-        "target": "domain:健康",
+        "source": "claim:v5cl-f68159a2d890",
+        "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-e144526699e1",
-        "target": "claim:v5cl-e144526699e1",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-4c3691f33e55",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-4c3691f33e55",
-        "target": "domain:健康",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-4c3691f33e55",
-        "target": "claim:v5cl-4c3691f33e55",
+        "source": "evidence:v5ev-f68159a2d890",
+        "target": "claim:v5cl-f68159a2d890",
         "type": "supports"
       },
       {
@@ -24894,77 +24881,137 @@
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-db392be59c1d",
+        "target": "claim:v5cl-3ecc18ac7210",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-db392be59c1d",
-        "target": "domain:婚姻",
+        "source": "claim:v5cl-3ecc18ac7210",
+        "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-db392be59c1d",
-        "target": "claim:v5cl-db392be59c1d",
+        "source": "evidence:v5ev-3ecc18ac7210",
+        "target": "claim:v5cl-3ecc18ac7210",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-c64e6ad14e39",
+        "target": "claim:v5cl-5c12c79af070",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-c64e6ad14e39",
-        "target": "domain:婚姻",
+        "source": "claim:v5cl-5c12c79af070",
+        "target": "domain:事业",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-c64e6ad14e39",
-        "target": "claim:v5cl-c64e6ad14e39",
+        "source": "evidence:v5ev-5c12c79af070",
+        "target": "claim:v5cl-5c12c79af070",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-c5929bebbfec",
+        "target": "claim:v5cl-5145d4368121",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-c5929bebbfec",
-        "target": "domain:婚姻",
+        "source": "claim:v5cl-5145d4368121",
+        "target": "domain:性格",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-c5929bebbfec",
-        "target": "claim:v5cl-c5929bebbfec",
+        "source": "evidence:v5ev-5145d4368121",
+        "target": "claim:v5cl-5145d4368121",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-55d95c39e4f5",
+        "target": "claim:v5cl-136f1344e555",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-55d95c39e4f5",
+        "source": "claim:v5cl-136f1344e555",
         "target": "domain:财富",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-55d95c39e4f5",
-        "target": "claim:v5cl-55d95c39e4f5",
+        "source": "evidence:v5ev-136f1344e555",
+        "target": "claim:v5cl-136f1344e555",
         "type": "supports"
       },
       {
         "source": "chart:root",
-        "target": "claim:v5cl-b13a5c158522",
+        "target": "claim:v5cl-0c868138d046",
         "type": "feeds"
       },
       {
-        "source": "claim:v5cl-b13a5c158522",
+        "source": "claim:v5cl-0c868138d046",
         "target": "domain:财富",
         "type": "targets"
       },
       {
-        "source": "evidence:v5ev-b13a5c158522",
-        "target": "claim:v5cl-b13a5c158522",
+        "source": "evidence:v5ev-0c868138d046",
+        "target": "claim:v5cl-0c868138d046",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-7a62ad06c538",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-7a62ad06c538",
+        "target": "domain:事业",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-7a62ad06c538",
+        "target": "claim:v5cl-7a62ad06c538",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-2f399e1dc676",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-2f399e1dc676",
+        "target": "domain:总体",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-2f399e1dc676",
+        "target": "claim:v5cl-2f399e1dc676",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-497c35a3fbdf",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-497c35a3fbdf",
+        "target": "domain:总体",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-497c35a3fbdf",
+        "target": "claim:v5cl-497c35a3fbdf",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-992d14ce02ac",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-992d14ce02ac",
+        "target": "domain:健康",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-992d14ce02ac",
+        "target": "claim:v5cl-992d14ce02ac",
         "type": "supports"
       },
       {
@@ -25209,6 +25256,51 @@
       },
       {
         "source": "chart:root",
+        "target": "claim:v5cl-298169a047c6",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-298169a047c6",
+        "target": "domain:事业",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-298169a047c6",
+        "target": "claim:v5cl-298169a047c6",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-2a1f00b30a18",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-2a1f00b30a18",
+        "target": "domain:财富",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-2a1f00b30a18",
+        "target": "claim:v5cl-2a1f00b30a18",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
+        "target": "claim:v5cl-6907c573a8aa",
+        "type": "feeds"
+      },
+      {
+        "source": "claim:v5cl-6907c573a8aa",
+        "target": "domain:总体",
+        "type": "targets"
+      },
+      {
+        "source": "evidence:v5ev-6907c573a8aa",
+        "target": "claim:v5cl-6907c573a8aa",
+        "type": "supports"
+      },
+      {
+        "source": "chart:root",
         "target": "claim:v5cl-a0873b8dcbcc",
         "type": "feeds"
       },
@@ -25371,51 +25463,6 @@
         "source": "evidence:v5ev-fd8455e5e818",
         "target": "claim:v5cl-fd8455e5e818",
         "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-f86fbbd901ee",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-f86fbbd901ee",
-        "target": "domain:婚姻",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-f86fbbd901ee",
-        "target": "claim:v5cl-f86fbbd901ee",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-f345c5e4817a",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-f345c5e4817a",
-        "target": "domain:财富",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-f345c5e4817a",
-        "target": "claim:v5cl-f345c5e4817a",
-        "type": "supports"
-      },
-      {
-        "source": "chart:root",
-        "target": "claim:v5cl-afb6fb5e6712",
-        "type": "feeds"
-      },
-      {
-        "source": "claim:v5cl-afb6fb5e6712",
-        "target": "domain:事业",
-        "type": "targets"
-      },
-      {
-        "source": "evidence:v5ev-afb6fb5e6712",
-        "target": "claim:v5cl-afb6fb5e6712",
-        "type": "supports"
       }
     ]
   },
@@ -25423,20 +25470,20 @@
     {
       "domain": "事业",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（242条支持）：高德臣规则参与：阳主克阴主生 / 同性相克力大异性相克力小 / 异性相生力大同性相生力小；如丙戊同现流年甲主克乙主生…",
+      "conclusion": "结构裁决（248条支持）：高德臣规则参与：①交接之年前后两步大运兼看 ②行运换甲最关键（换好是人换不好是鬼）③换甲忌岁运伏吟反吟刑冲 ④大运与限运（年=1-2步 / 月=3-4步 / 日…",
       "winning_schools": [
         "ziping",
-        "ditiansui",
-        "gao_dechen"
+        "gao_dechen",
+        "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 242.0,
+      "support_score": 248.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=242条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=248条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
@@ -25444,35 +25491,35 @@
     {
       "domain": "事业",
       "stage": "event_realization",
-      "conclusion": "事件裁决（23条支持，基于结构基础）：段建业规则参与：体的分类 — 工具（日干/比劫/印/禄/刃）…",
+      "conclusion": "事件裁决（27条支持，基于结构基础）：段建业规则参与：体的分类 — 工具（日干/比劫/印/禄/刃）…",
       "winning_schools": [
-        "yang_qingjuan",
         "duan_jianye",
+        "yang_qingjuan",
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 23.0,
+      "support_score": 27.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.8,
-        "note": "事件命题=23条；结构前提=满足"
+        "note": "事件命题=27条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（242条支持）：高德臣规则参与：阳主克阴主生 / 同性相克力大异性相克。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（248条支持）：高德臣规则参与：①交接之年前后两步大运兼看 ②行运换甲。",
       "probabilistic_allowed": true
     },
     {
       "domain": "事业",
       "stage": "probability_timing",
-      "conclusion": "概率应期：23条命题允许进入受限概率层，需有时间窗与反馈标签。",
+      "conclusion": "概率应期：27条命题允许进入受限概率层，需有时间窗与反馈标签。",
       "winning_schools": [
-        "yang_qingjuan",
         "duan_jianye",
+        "yang_qingjuan",
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 23.0,
+      "support_score": 27.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
@@ -25486,20 +25533,20 @@
     {
       "domain": "健康",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（20条支持）：子平规则参与：四柱纯粹，无刑冲破害，空亡死绝，更有福神互为之助方为吉命，反此则凶。…",
+      "conclusion": "结构裁决（17条支持）：高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环…",
       "winning_schools": [
         "ziping",
-        "ditiansui",
-        "gao_dechen"
+        "gao_dechen",
+        "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 20.0,
+      "support_score": 17.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=20条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=17条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
@@ -25507,31 +25554,31 @@
     {
       "domain": "健康",
       "stage": "event_realization",
-      "conclusion": "事件裁决（8条支持，基于结构基础）：高德臣规则参与：金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事…",
+      "conclusion": "事件裁决（3条支持，基于结构基础）：高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环…",
       "winning_schools": [
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 8.0,
+      "support_score": 3.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
-        "tier": "★★★★",
-        "score": 0.8,
-        "note": "事件命题=8条；结构前提=满足"
+        "tier": "★★★",
+        "score": 0.6100000000000001,
+        "note": "事件命题=3条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（20条支持）：子平规则参与：四柱纯粹，无刑冲破害，空亡死绝，更有福神互。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（17条支持）：高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流。",
       "probabilistic_allowed": true
     },
     {
       "domain": "健康",
       "stage": "probability_timing",
-      "conclusion": "概率应期：8条命题允许进入受限概率层，需有时间窗与反馈标签。",
+      "conclusion": "概率应期：3条命题允许进入受限概率层，需有时间窗与反馈标签。",
       "winning_schools": [
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 8.0,
+      "support_score": 3.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
@@ -25545,20 +25592,20 @@
     {
       "domain": "婚姻",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（36条支持）：子平规则参与：及其水之聚而形质化，莫不备阴阳之气在中而后成。故物之小而味苦者，火之兆也；物熟则甘，土之味也。甘极而后淡，淡，本也。然人禀父母阴阳生成之化，故先生…",
+      "conclusion": "结构裁决（35条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖…",
       "winning_schools": [
         "ziping",
-        "ditiansui",
-        "gao_dechen"
+        "gao_dechen",
+        "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 36.0,
+      "support_score": 35.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=36条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=35条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
@@ -25566,33 +25613,31 @@
     {
       "domain": "婚姻",
       "stage": "event_realization",
-      "conclusion": "事件裁决（10条支持，基于结构基础）：高德臣规则参与：地支连排金水湿土=车像基因，大运流年引动为应期…",
+      "conclusion": "事件裁决（6条支持，基于结构基础）：杨清娟规则参与：①印运+配偶星到②趋于一方找反向③夫妻宫半合翻法④找家里另五行⑤正星得正位⑥体与配偶星发生关系…",
       "winning_schools": [
-        "yang_qingjuan",
-        "gao_dechen"
+        "yang_qingjuan"
       ],
       "minority_claims": [],
-      "support_score": 10.0,
+      "support_score": 6.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.8,
-        "note": "事件命题=10条；结构前提=满足"
+        "note": "事件命题=6条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（36条支持）：子平规则参与：及其水之聚而形质化，莫不备阴阳之气在中而后。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（35条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿。",
       "probabilistic_allowed": true
     },
     {
       "domain": "婚姻",
       "stage": "probability_timing",
-      "conclusion": "概率应期：10条命题允许进入受限概率层，需有时间窗与反馈标签。",
+      "conclusion": "概率应期：6条命题允许进入受限概率层，需有时间窗与反馈标签。",
       "winning_schools": [
-        "yang_qingjuan",
-        "gao_dechen"
+        "yang_qingjuan"
       ],
       "minority_claims": [],
-      "support_score": 10.0,
+      "support_score": 6.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
@@ -25606,19 +25651,20 @@
     {
       "domain": "学业",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（8条支持）：子平规则参与：三春乙木，为芝兰蒿草之物，丙癸不可离也，春乙见丙，卉木向阳，万象回春，须癸滋养根基。丙癸齐透天干，无化合制克，自然登科及第，故书云：乙木根荄种得深…",
+      "conclusion": "结构裁决（10条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖…",
       "winning_schools": [
         "ziping",
+        "gao_dechen",
         "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 8.0,
+      "support_score": 10.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=8条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=10条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
@@ -25637,7 +25683,7 @@
         "score": 0.2,
         "note": "事件命题=0条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（8条支持）：子平规则参与：三春乙木，为芝兰蒿草之物，丙癸不可离也，春乙。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（10条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿。",
       "probabilistic_allowed": false
     },
     {
@@ -25658,32 +25704,32 @@
       "probabilistic_allowed": false
     },
     {
-      "domain": "总体",
+      "domain": "性格",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（9条支持）：子平规则参与：运以月令起，阳年男顺排、阴年男逆排；阴年女顺排、阳年女逆排。大运管十年吉凶，流年司一岁祸福。…",
+      "conclusion": "结构裁决（10条支持）：高德臣规则参与：①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / …",
       "winning_schools": [
-        "yang_qingjuan",
         "ziping",
+        "gao_dechen",
         "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 9.0,
+      "support_score": 10.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=9条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=10条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
     },
     {
-      "domain": "总体",
+      "domain": "性格",
       "stage": "event_realization",
-      "conclusion": "事件裁决（1条支持，基于结构基础）：杨清娟规则参与：§9.2…",
+      "conclusion": "事件裁决（1条支持，基于结构基础）：高德臣规则参与：①通合（如午亥暗合 = 丁壬暗合）②通禄合（如寅丑暗合 = 甲己暗合）③天干与地支通禄合（如丁亥 = 丁壬合）—— 暗合主『私情 / 隐瞒 / …",
       "winning_schools": [
-        "yang_qingjuan"
+        "gao_dechen"
       ],
       "minority_claims": [],
       "support_score": 1.0,
@@ -25694,7 +25740,66 @@
         "score": 0.47000000000000003,
         "note": "事件命题=1条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（9条支持）：子平规则参与：运以月令起，阳年男顺排、阴年男逆排；阴年女顺。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（10条支持）：高德臣规则参与：①通合（如午亥暗合 = 丁壬暗合）②通禄。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "性格",
+      "stage": "probability_timing",
+      "conclusion": "概率应期：无满足条件的命题（需结构基础 + 白名单域 + 可反馈时间窗）。",
+      "winning_schools": [],
+      "minority_claims": [],
+      "support_score": 0.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★",
+        "score": 0.15,
+        "note": "性格、格局高低、宽泛气质描述不进入概率层。"
+      },
+      "rationale": "仅白名单事件（学业/事业/财富/婚姻/健康）且有结构基础时允许概率化。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "总体",
+      "stage": "structure_legality",
+      "conclusion": "结构裁决（12条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖…",
+      "winning_schools": [
+        "ziping",
+        "yang_qingjuan",
+        "gao_dechen",
+        "ditiansui"
+      ],
+      "minority_claims": [],
+      "support_score": 12.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★★",
+        "score": 0.85,
+        "note": "子平+滴天髓结构命题=12条；结构门禁=通过"
+      },
+      "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
+      "probabilistic_allowed": false
+    },
+    {
+      "domain": "总体",
+      "stage": "event_realization",
+      "conclusion": "事件裁决（4条支持，基于结构基础）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿马=远走他乡 ④桃花+红艳=色灾 ⑤孤辰寡宿=不利婚 ⑥元辰=大难横祸 ⑦亡神劫煞白虎大耗=病灾 ⑧华盖…",
+      "winning_schools": [
+        "yang_qingjuan",
+        "gao_dechen"
+      ],
+      "minority_claims": [],
+      "support_score": 4.0,
+      "opposition_score": 0.0,
+      "conflict_type": "none",
+      "confidence": {
+        "tier": "★★★",
+        "score": 0.68,
+        "note": "事件命题=4条；结构前提=满足"
+      },
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（12条支持）：高德臣规则参与：①天乙贵人=福气深厚 ②桃花=风流 ③驿。",
       "probabilistic_allowed": false
     },
     {
@@ -25717,20 +25822,20 @@
     {
       "domain": "财富",
       "stage": "structure_legality",
-      "conclusion": "结构裁决（21条支持）：子平规则参与：我生者为食神，阴生阴、阳生阳。食神生财、制杀，喜身旺有根，忌枭神夺食。…",
+      "conclusion": "结构裁决（24条支持）：高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)…",
       "winning_schools": [
         "ziping",
-        "ditiansui",
-        "gao_dechen"
+        "gao_dechen",
+        "ditiansui"
       ],
       "minority_claims": [],
-      "support_score": 21.0,
+      "support_score": 24.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★★",
         "score": 0.85,
-        "note": "子平+滴天髓结构命题=21条；结构门禁=通过"
+        "note": "子平+滴天髓结构命题=24条；结构门禁=通过"
       },
       "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
       "probabilistic_allowed": false
@@ -25738,33 +25843,33 @@
     {
       "domain": "财富",
       "stage": "event_realization",
-      "conclusion": "事件裁决（3条支持，基于结构基础）：高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)…",
+      "conclusion": "事件裁决（4条支持，基于结构基础）：高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)…",
       "winning_schools": [
         "yang_qingjuan",
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 3.0,
+      "support_score": 4.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
         "tier": "★★★",
-        "score": 0.6100000000000001,
-        "note": "事件命题=3条；结构前提=满足"
+        "score": 0.68,
+        "note": "事件命题=4条；结构前提=满足"
       },
-      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（21条支持）：子平规则参与：我生者为食神，阴生阴、阳生阳。食神生财、制。",
+      "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（24条支持）：高德臣规则参与：日干所合不是财就是官；合化=得到变质/合。",
       "probabilistic_allowed": true
     },
     {
       "domain": "财富",
       "stage": "probability_timing",
-      "conclusion": "概率应期：3条命题允许进入受限概率层，需有时间窗与反馈标签。",
+      "conclusion": "概率应期：4条命题允许进入受限概率层，需有时间窗与反馈标签。",
       "winning_schools": [
         "yang_qingjuan",
         "gao_dechen"
       ],
       "minority_claims": [],
-      "support_score": 3.0,
+      "support_score": 4.0,
       "opposition_score": 0.0,
       "conflict_type": "none",
       "confidence": {
@@ -25780,6 +25885,58 @@
     "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
     "predictions": [
       {
+        "prediction_id": "v5pred-9ca4e03c82cf",
+        "domain": "财富",
+        "event_label": "高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
+        "probability_range": [
+          0.71,
+          0.9
+        ],
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.815,
+          "note": "谓词评分=0.81；candidate_score=0.6"
+        },
+        "time_window": {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        },
+        "trigger_conditions": [
+          "真实事件命题",
+          "白名单领域",
+          "已过结构门禁与格局约束"
+        ],
+        "falsifier": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+        "calibration_note": "由真实事件命题登记；概率区间随格局约束调整。",
+        "feedback_state": "pending"
+      },
+      {
+        "prediction_id": "v5pred-ac7ef8435035",
+        "domain": "健康",
+        "event_label": "高德臣规则参与：命宫位起生年支逆数到流年支=小限地支；流年神煞用流年天干起(阳刃/飞刃/桃花/天德月德/天乙贵人)而非12神循环",
+        "probability_range": [
+          0.71,
+          0.9
+        ],
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.8099999999999999,
+          "note": "谓词评分=0.81；candidate_score=0.6"
+        },
+        "time_window": {
+          "label": "当前流年 至下一交运前",
+          "basis": "己丑"
+        },
+        "trigger_conditions": [
+          "真实事件命题",
+          "白名单领域",
+          "已过结构门禁与格局约束"
+        ],
+        "falsifier": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
+        "calibration_note": "由真实事件命题登记；概率区间随格局约束调整。",
+        "feedback_state": "pending"
+      },
+      {
         "prediction_id": "v5pred-424023a11fdc",
         "domain": "事业",
         "event_label": "段建业规则参与：体的分类 — 工具（日干/比劫/印/禄/刃）",
@@ -25794,7 +25951,7 @@
         },
         "time_window": {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         },
         "trigger_conditions": [
           "真实事件命题",
@@ -25806,73 +25963,21 @@
         "feedback_state": "pending"
       },
       {
-        "prediction_id": "v5pred-4f511de0d2eb",
-        "domain": "健康",
-        "event_label": "高德臣规则参与：金舆=五阳干衰地/五阴干沐浴；国印=与金舆相冲；四柱有金舆→看终身大运有无国印→有则断车祸(反之亦然)；看宫位定六亲而非必日主出事",
-        "probability_range": [
-          0.56,
-          0.76
-        ],
-        "confidence": {
-          "tier": "★★★",
-          "score": 0.6599999999999999,
-          "note": "谓词评分=0.66；candidate_score=0.6"
-        },
-        "time_window": {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        },
-        "trigger_conditions": [
-          "真实事件命题",
-          "白名单领域",
-          "已过结构门禁与格局约束"
-        ],
-        "falsifier": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-        "calibration_note": "由真实事件命题登记；概率区间随格局约束调整。",
-        "feedback_state": "pending"
-      },
-      {
-        "prediction_id": "v5pred-2b67e77961d8",
+        "prediction_id": "v5pred-c909210de547",
         "domain": "婚姻",
-        "event_label": "高德臣规则参与：地支连排金水湿土=车像基因，大运流年引动为应期",
+        "event_label": "杨清娟规则参与：①印运+配偶星到②趋于一方找反向③夫妻宫半合翻法④找家里另五行⑤正星得正位⑥体与配偶星发生关系",
         "probability_range": [
-          0.56,
-          0.76
+          0.46,
+          0.66
         ],
         "confidence": {
           "tier": "★★★",
-          "score": 0.6599999999999999,
-          "note": "谓词评分=0.66；candidate_score=0.6"
+          "score": 0.56,
+          "note": "谓词评分=0.56；candidate_score=0"
         },
         "time_window": {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
-        },
-        "trigger_conditions": [
-          "真实事件命题",
-          "白名单领域",
-          "已过结构门禁与格局约束"
-        ],
-        "falsifier": "若反馈显示该规则不能解释对应领域事件，则该规则需降权、合并或转入反证清单。",
-        "calibration_note": "由真实事件命题登记；概率区间随格局约束调整。",
-        "feedback_state": "pending"
-      },
-      {
-        "prediction_id": "v5pred-9ca4e03c82cf",
-        "domain": "财富",
-        "event_label": "高德臣规则参与：日干所合不是财就是官；合化=得到变质/合走=送走/想合合不住=干扰星搅局；大运流年来合≠得到(须看地支配合)",
-        "probability_range": [
-          0.56,
-          0.76
-        ],
-        "confidence": {
-          "tier": "★★★",
-          "score": 0.6599999999999999,
-          "note": "谓词评分=0.66；candidate_score=0.6"
-        },
-        "time_window": {
-          "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "label": "2031 辛亥年（首选婚期，财运中印来+夫妻宫六合，±1年）",
+          "basis": "杨清娟婚期三步法（M2-Y-141）"
         },
         "trigger_conditions": [
           "真实事件命题",
@@ -25898,7 +26003,7 @@
         },
         "time_window": {
           "label": "当前流年 至下一交运前",
-          "basis": "待补充"
+          "basis": "己丑"
         },
         "trigger_conditions": [
           "印星或学习类结构触发",
@@ -25913,27 +26018,27 @@
   },
   "learning_signals": [
     {
-      "signal_id": "v5sig-15a7d453511e",
+      "signal_id": "v5sig-aaf135403337",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "zipcl-0790307f32d6",
+      "target_id": "zipcl-92daec0b8197",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-ec6dc676fb4f",
+      "signal_id": "v5sig-0b235d170857",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "zipcl-b4e7724e4e4a",
+      "target_id": "zipcl-622e19b88b28",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-fdb61621a60a",
+      "signal_id": "v5sig-1255bc680120",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "zipcl-239b5fd487b8",
+      "target_id": "zipcl-4cd902da44d1",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
@@ -28352,9 +28457,9 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-1782c3fc2898",
+      "signal_id": "v5sig-faf6947dab93",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "dtscl-72a89b3497aa",
+      "target_id": "dtscl-3e5eea4026ac",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
@@ -28478,36 +28583,9 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-5b63244c3559",
+      "signal_id": "v5sig-1925be112da9",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-1cab258bc279",
-      "signal_type": "claim_trace_registered",
-      "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-3fac7ea4f752",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-19cde9711df1",
-      "signal_type": "claim_trace_registered",
-      "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-d8ad87a3e898",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-b36746d8a37f",
-      "signal_type": "claim_trace_registered",
-      "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-1c8f43056675",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-be3e6df2d147",
+      "target_id": "v5cl-55d95c39e4f5",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
@@ -28523,36 +28601,27 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-a08b568feb7a",
+      "signal_id": "v5sig-9fe1052b2f57",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-66894001d352",
+      "target_id": "v5cl-c45cbf7c46ae",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-7fd08a5942b0",
+      "signal_id": "v5sig-a39bb1dc95db",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-6893b871d4fc",
+      "target_id": "v5cl-4c59391a78c1",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-869d7856664f",
+      "signal_id": "v5sig-970b6c585645",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-e144526699e1",
-      "signal_type": "claim_trace_registered",
-      "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-ebf734eca3b8",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-4c3691f33e55",
+      "target_id": "v5cl-f68159a2d890",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
@@ -28568,45 +28637,81 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-992b5b0576c9",
+      "signal_id": "v5sig-85a31ff38bc2",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-db392be59c1d",
+      "target_id": "v5cl-3ecc18ac7210",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-88933e8f625a",
+      "signal_id": "v5sig-59a922b6c621",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-c64e6ad14e39",
+      "target_id": "v5cl-5c12c79af070",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-9482e62e15d5",
+      "signal_id": "v5sig-cd80bf0c95b6",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-c5929bebbfec",
+      "target_id": "v5cl-5145d4368121",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-1925be112da9",
+      "signal_id": "v5sig-efe1a69f6dc4",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-55d95c39e4f5",
+      "target_id": "v5cl-136f1344e555",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-20a30c5e2f3d",
+      "signal_id": "v5sig-1cd29ac4511e",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-b13a5c158522",
+      "target_id": "v5cl-0c868138d046",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-19d1bd54dd2f",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-7a62ad06c538",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-f0d0753cf33b",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-2f399e1dc676",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-443de6e7b42a",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-497c35a3fbdf",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-ebaafbd72b45",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-992d14ce02ac",
       "signal_type": "claim_trace_registered",
       "value": "pending_feedback",
       "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
@@ -28757,6 +28862,33 @@
       "metadata": {}
     },
     {
+      "signal_id": "v5sig-08a94fc34696",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-298169a047c6",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-93ce5270079e",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-2a1f00b30a18",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
+      "signal_id": "v5sig-b3158ef0319e",
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "target_id": "v5cl-6907c573a8aa",
+      "signal_type": "claim_trace_registered",
+      "value": "pending_feedback",
+      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "metadata": {}
+    },
+    {
       "signal_id": "v5sig-364885b9d3fa",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
       "target_id": "v5cl-a0873b8dcbcc",
@@ -28856,30 +28988,21 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-a8feae73fb16",
+      "signal_id": "v5sig-c225614bd296",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-f86fbbd901ee",
-      "signal_type": "claim_trace_registered",
+      "target_id": "v5pred-9ca4e03c82cf",
+      "signal_type": "prediction_registered",
       "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "note": "受限概率预测已登记，等待反馈校准。",
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-0b74d52cd666",
+      "signal_id": "v5sig-2ef86f5a3f12",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-f345c5e4817a",
-      "signal_type": "claim_trace_registered",
+      "target_id": "v5pred-ac7ef8435035",
+      "signal_type": "prediction_registered",
       "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-b4fdde2bd39b",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5cl-afb6fb5e6712",
-      "signal_type": "claim_trace_registered",
-      "value": "pending_feedback",
-      "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+      "note": "受限概率预测已登记，等待反馈校准。",
       "metadata": {}
     },
     {
@@ -28892,27 +29015,9 @@
       "metadata": {}
     },
     {
-      "signal_id": "v5sig-714f083cb620",
+      "signal_id": "v5sig-19e6947a0e59",
       "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5pred-4f511de0d2eb",
-      "signal_type": "prediction_registered",
-      "value": "pending_feedback",
-      "note": "受限概率预测已登记，等待反馈校准。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-add28af9bbba",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5pred-2b67e77961d8",
-      "signal_type": "prediction_registered",
-      "value": "pending_feedback",
-      "note": "受限概率预测已登记，等待反馈校准。",
-      "metadata": {}
-    },
-    {
-      "signal_id": "v5sig-c225614bd296",
-      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
-      "target_id": "v5pred-9ca4e03c82cf",
+      "target_id": "v5pred-c909210de547",
       "signal_type": "prediction_registered",
       "value": "pending_feedback",
       "note": "受限概率预测已登记，等待反馈校准。",

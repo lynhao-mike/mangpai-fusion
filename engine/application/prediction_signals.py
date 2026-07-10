@@ -49,7 +49,7 @@ def extract_ziping_signal(
 
 def extract_dtt_signal(picture: PictureFindings) -> DttPredictionSignal:
     """从 D2 画像（调候、五合）提取滴天髓预测信号。"""
-    tiaohou = picture.tiaohou
+    tiaohou = getattr(picture, "tiaohou_advice", None)
     if tiaohou is None:
         return DttPredictionSignal(
             imbalance_index=0.5,
@@ -57,8 +57,8 @@ def extract_dtt_signal(picture: PictureFindings) -> DttPredictionSignal:
             transformation_likelihood=0.0,
         )
 
-    # tiaohou 有 balance_score（越接近1越平衡）
-    balance = getattr(tiaohou, "balance_score", None)
+    # tiaohou_advice 可为 dict；balance_score 越接近 1 越平衡。
+    balance = tiaohou.get("balance_score") if isinstance(tiaohou, dict) else getattr(tiaohou, "balance_score", None)
     if balance is None:
         # balance_score 缺失时降级：返回中性信号
         return DttPredictionSignal(
@@ -74,7 +74,7 @@ def extract_dtt_signal(picture: PictureFindings) -> DttPredictionSignal:
     transformation = min(wuhe_count * 0.25, 1.0)
 
     # 调候缺失的五行数 → 季节压力
-    missing = getattr(tiaohou, "missing_elements", [])
+    missing = tiaohou.get("missing_elements", []) if isinstance(tiaohou, dict) else getattr(tiaohou, "missing_elements", [])
     seasonal = min(len(missing) * 0.2, 1.0) if missing else 0.0
 
     return DttPredictionSignal(
