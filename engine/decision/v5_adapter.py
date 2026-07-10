@@ -111,6 +111,40 @@ def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict
     return result
 
 
+# R8: 从 event_label 文本分类的启发式过渡实现；不是从命局结构推导事件类型。
+_EVENT_TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
+    ("车祸", ("车祸", "交通", "撞")),
+    ("手术", ("手术", "开刀")),
+    ("疾病", ("疾病", "病", "体检", "慢病", "伤病", "健康问题")),
+    ("婚变", ("离婚", "再婚", "晚婚", "多婚", "婚变", "分手")),
+    ("结婚", ("结婚", "婚姻", "配偶", "婚恋", "成家")),
+    ("发财", ("发财", "暴富", "冲开", "财库")),
+    ("破财", ("破财", "亏损", "负债", "支出压力", "损失")),
+    ("升迁", ("升迁", "升职", "职级", "提拔")),
+    ("换岗", ("换岗", "调动", "岗位", "组织关系")),
+    ("创业", ("创业", "自主", "合伙", "开业")),
+    ("学历", ("学历", "考试", "证照", "培训", "技能升级", "学位")),
+]
+
+_DOMAIN_GENERIC_EVENT: dict[str, str] = {
+    "事业": "事业变动",
+    "财富": "财务变动",
+    "婚姻": "婚恋变动",
+    "健康": "健康风险",
+    "学业": "学习节点",
+}
+
+
+def classify_event_type(event_label: str, domain: str) -> str:
+    """从 event_label 可读语义分类事件类型；匹配不到回退按域通用类型。"""
+
+    text = event_label or ""
+    for event_type, keywords in _EVENT_TYPE_KEYWORDS:
+        if any(keyword in text for keyword in keywords):
+            return event_type
+    return _DOMAIN_GENERIC_EVENT.get(domain, "待具体化事件")
+
+
 def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict], claims: list[SchoolClaim]) -> list[EventHypothesis]:
     claim_domain_by_id = {item.claim_id: item.domain for item in claims}
     source_ids_by_domain: dict[str, list[str]] = {}
@@ -136,7 +170,7 @@ def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict], c
                 event_id=_stable_id("dev", case_id, prediction.prediction_id),
                 source_verdict_ids=source_ids[:3],
                 domain=prediction.domain,
-                event_type="v5_prediction",
+                event_type=classify_event_type(prediction.event_label, prediction.domain),
                 subject=prediction.domain,
                 concrete_event=prediction.event_label,
                 landing_path="由 v5 prediction ledger 迁移为 L4 事件假设。",
