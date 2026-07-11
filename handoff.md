@@ -79,12 +79,17 @@ L0 输入事实 → L1 流派适用性路由 → L2 各派独立命题 → L3 �
 - [`engine/decision/v5_adapter.py`](engine/decision/v5_adapter.py)：`_claims` 透传 metadata；新增 `_extract_geju_profile`（提取格局用忌神）、`_shishen_in_statement`；`_verdicts` 叠加格局一致性审查。
 - 实测效果：C-2026-035 的 L3 verdict 从"pass 287 / weaken 41 / reject 0"变为"pass 277 / weaken 51 / unknown 2"——**10 条依赖格局忌神的命题被正确降级**，L3 首次从"通道"变成有区分力的"关口"。
 
-### 3.4 R10 第一证明物已完成（子平 × 事业原生 L2-L4 纵切片）
+### 3.4 R10 第一证明物已完成（子平 × 事业原生 L2-L7 纵切片）
 
-- 已完成 R10 第一证明物：子平 × 事业原生 L2-L4 纵切片。
-- 已证明目标路径不调用 adapter 的 L2 反推、L3 或 L4 判断；`validate_trace()` 返回空；报告与 decision-run JSON 同源；信息量不低于 R6 基线。
+- 已完成 R10 第一证明物：子平 × 事业原生 L2-L4 纵切片 + L7 事业域单源渲染。
+- 已证明目标路径不调用 adapter 的 L2 反推、L3 或 L4 判断；`validate_trace()` 返回空；报告事业域全部占位符（五派列 + 裁决 + 共识 + 冲突）仅从 L7 `ReportViewItem` 的结构化 `school_evidence` 派生，不存在 V5 claims 直读旁路；decision-run JSON 无损序列化同一 L7 内容；信息量 ≥ R6 基线（270 claims / 5 schools / 270 evidence，逐派逐域守住下限）。
+- L3/L4 判断（`_extract_geju_profile` / `classify_event_type`）已从 adapter 归位到 `l3_structure.py` / `l4_events.py`；adapter 仅保留非目标流派/领域的迁移期桥。
 - 这只证明第一条纵切片可行，**不表示 R10 全完成**：其他流派 / 领域迁移、adapter 全删、生产默认切换均未完成。
 - K 系列尚未启动；当前 L3 / L4 只消费上游命题，不发明命理判断。
+- **已知架构债（PRE_EXISTING_DEBT，来自 R9，非本分支引入）**：
+  - L3 格局 profile 以全局 scope 应用于全体 claims（含非目标流派/域）；
+  - L3 对 `event_claim` 无条件发 `weaken`，使无结构依据的事件命题获得 L4 进入资格。
+  - 两项均为 R9 既有行为（本分支只做了位置迁移，行为等价），待 K 系列或后续迁移时收窄 scope。
 
 ### 3.5 真实案例闭环已跑通
 

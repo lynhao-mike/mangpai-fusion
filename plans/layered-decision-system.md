@@ -862,7 +862,7 @@ R1 已删除 [`v5_adapter.py`](../engine/decision/v5_adapter.py:1) 的“从命�
 
 ### Phase R10：北极星终局——v5 runner 下沉为 L2、删除 v5_adapter 事后转录
 
-> 状态：未开始。这是 §0 与 §22 反复指向的北极星，也是 R1-R9 全部完成后**唯一未扳正的根部倒置**。R6 让报告改读 L7（输出端扳正），但 [`DecisionRun`](../engine/decision/models.py:301) 仍由 [`v5_adapter.py`](../engine/decision/v5_adapter.py:1)（现 405 行）从 `V5Output` 事后转录派生。代码事实核对（2026-07-10）：`_school_applicability` 已删除、`route_schools` 已前置、`_extract_geju_profile` / `classify_event_type` 均在 adapter 内——即 L3/L4/L1 的"命理判断"仍寄生在转录层，不是分层链原生推理。
+> 状态：**第一证明物已完成**（2026-07-11，分支 `feature/r10-ziping-career-l2-slice`，21 commits，200 passed）。子平 × 事业纵切片已证明：目标 L2-L4 原生产出、唯一 `DecisionRun` 驱动报告、`validate_trace()` 返回空、报告事业域全部占位符（五派列 + 裁决 + 共识 + 冲突）仅从 L7 `ReportViewItem` 派生（含结构化 `school_evidence`）、信息量 ≥ R6 基线（270/5/270）。L3/L4 判断（`_extract_geju_profile` / `classify_event_type`）已从 adapter 归位到 `l3_structure.py` / `l4_events.py`；adapter 仅保留非目标流派/领域的迁移期桥。**后续迁移待做**：其他流派/领域逐域迁移、adapter 全删、生产默认入口切换。**已知架构债（PRE_EXISTING_DEBT，来自 R9）**：L3 格局 profile 全局 scope 污染非目标流派/域；L3 对 `event_claim` 无条件发 `weaken`——均需 K 系列或后续迁移时收窄 scope。
 
 #### R10.0 Thesis
 
