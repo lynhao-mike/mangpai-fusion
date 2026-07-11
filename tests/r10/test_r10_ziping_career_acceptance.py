@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from dataclasses import replace
 from pathlib import Path
@@ -38,6 +39,18 @@ def load_r6_baseline() -> dict[str, object]:
     return json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
 
 
+def _run_formal_case():
+    from engine.v5.preprod import build_chart_from_input
+
+    input_path = Path("cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md")
+    chart = build_chart_from_input(input_path)
+    output = run_v5(chart, case_id=str(chart["case_id"]), workspace_root=".")
+    return output, build_ziping_career_decision_run(
+        output,
+        raw_text=input_path.read_text(encoding="utf-8"),
+    )
+
+
 def test_r6_baseline_is_frozen_and_nonempty() -> None:
     baseline = load_r6_baseline()
     assert baseline["case_id"] == "C-2026-035-乾-戊辰癸亥甲戌庚午"
@@ -68,6 +81,80 @@ def test_r6_frozen_gate_rejects_degraded_fixture(tmp_path: Path, monkeypatch: py
 
     with pytest.raises(AssertionError):
         test_r6_baseline_is_frozen_and_nonempty()
+
+
+def test_falsifier_l2_keeps_real_runner_wangshuai_yongshen_and_source_metadata() -> None:
+    output, run = _run_formal_case()
+    source_claims = [
+        item
+        for item in output.claims
+        if item.school == "ziping" and item.domain in TARGET_DOMAINS
+    ]
+    ziping_claims = [
+        item
+        for item in run.school_claims
+        if item.school == "ziping" and item.domain in TARGET_DOMAINS
+    ]
+
+    independent_claims = [
+        item
+        for item in ziping_claims
+        if item.metadata.get("source_scope") == "ziping_independent_runner"
+    ]
+    assert independent_claims
+    assert any("旺衰" in item.statement for item in independent_claims)
+    assert any("用神=" in item.statement for item in independent_claims)
+    assert any(item.metadata.get("geju_type") for item in ziping_claims)
+    assert any("yao_favor_shishen" in item.metadata for item in ziping_claims)
+    by_source_id = {item.claim_id: item for item in source_claims}
+    for item in ziping_claims:
+        source = by_source_id[item.claim_id]
+        assert item.evidence_refs == [evidence.evidence_id for evidence in source.evidence]
+        assert item.confidence == source.confidence.score
+        assert item.falsifier == source.falsifiable
+        assert {
+            key: value for key, value in item.metadata.items() if key != "v5_payload"
+        } == source.metadata
+        assert item.metadata["v5_payload"] == {
+            "stance": source.stance,
+            "polarity": source.polarity,
+            "counter_evidence": [value.to_dict() for value in source.counter_evidence],
+            "timing_hints": source.timing_hints,
+            "probabilistic": source.probabilistic,
+        }
+
+
+def test_falsifier_career_information_is_not_thinner_than_r6() -> None:
+    baseline = load_r6_baseline()
+    _, run = _run_formal_case()
+    claims = [item for item in run.school_claims if item.domain in TARGET_DOMAINS]
+    assert len(claims) >= int(baseline["career_claim_count"])
+    assert len({item.school for item in claims}) >= int(baseline["career_school_count"])
+    assert sum(len(item.evidence_refs) for item in claims) >= int(
+        baseline["career_evidence_count"]
+    )
+
+
+def test_falsifier_report_keeps_all_fifteen_judgment_layers(tmp_path: Path) -> None:
+    from engine.v5.preprod import render_v6_preprod_case
+
+    baseline = load_r6_baseline()
+    report_path, _ = render_v6_preprod_case(
+        "cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md",
+        reports_dir=tmp_path,
+        workspace_root=".",
+    )
+    report_text = Path(report_path).read_text(encoding="utf-8")
+    template_text = Path("templates/report-v6.md").read_text(encoding="utf-8")
+    row_pattern = re.compile(r"^\|\s*(\d{1,2})\s*\|", re.MULTILINE)
+    template_layers = [int(value) for value in row_pattern.findall(template_text)]
+    report_layers = [int(value) for value in row_pattern.findall(report_text)]
+
+    assert template_layers == list(range(1, 16))
+    assert report_layers == template_layers
+    assert len(report_layers) == int(baseline["career_fifteen_layer_count"])
+    for sentinel in baseline["required_text_sentinels"]:
+        assert str(sentinel) in report_text
 
 
 def test_ziping_career_decision_run_has_complete_trace() -> None:

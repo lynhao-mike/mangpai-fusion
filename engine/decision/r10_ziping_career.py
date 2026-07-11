@@ -97,10 +97,7 @@ def build_ziping_career_decision_run(
     )
     # ponytail: 仅复用迁移桥的 chart DTO 映射，不参与 L1-L4 判断；R10 全迁移时删除。
     chart = v5_adapter._chart_to_ledger(output, raw_hash)
-    context = ContextFactLedger(
-        analysis_focus_text="事业",
-        preserved_text_blocks=["r10_ziping_career"],
-    )
+    context = ContextFactLedger(preserved_text_blocks=["r10_ziping_career"])
     applicability = route_schools(chart, context)
     claims, verdicts, events = apply_ziping_career_slice(output, applicability)
     case_id = output.case_id or "V5-UNKNOWN"
