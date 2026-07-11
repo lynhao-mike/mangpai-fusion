@@ -204,21 +204,19 @@ def _l7_conflict_for_domain(
 
 
 def _l7_conclusion_for_domain(domain: str, report_items: list, arbitration_decisions: list) -> str | None:
-    """从 L7 report_items 取指定域的裁决文本；找不到返回 None（触发缺省回退）。"""
+    """聚合 L7 report_items 中指定域的全部裁决文本；找不到返回 None。"""
 
-    if not report_items:
-        return None
     domain_by_decision = {
         _get(d, "decision_id"): _get(d, "domain")
         for d in (arbitration_decisions or [])
     }
-    for item in report_items:
-        decision_id = _get(item, "decision_id")
-        if domain_by_decision.get(decision_id) == domain:
-            text = _get(item, "display_text")
-            if text:
-                return str(text)
-    return None
+    conclusions = [
+        str(text)
+        for item in report_items or []
+        if domain_by_decision.get(_get(item, "decision_id")) == domain
+        if (text := _get(item, "display_text"))
+    ]
+    return "；".join(conclusions) if conclusions else None
 
 
 def _domain_context(output: V5Output, domain: str) -> dict[str, str]:
@@ -308,12 +306,19 @@ def build_report_v6_context(
             context[f"{domain}冲突状态"] = _l7_conflict_for_domain(
                 domain, report_items or [], arbitration_decisions or []
             )
+            l7_text = _l7_conclusion_for_domain(
+                domain, report_items or [], arbitration_decisions or []
+            ) or "待接入"
+            context[f"{domain}裁决结论"] = l7_text
+            context[f"{domain}共识结论"] = l7_text
             continue
         for school, suffix in SCHOOL_PLACEHOLDER_SUFFIX.items():
             items = claims.get((domain, school)) or claims.get(("总体", school)) or ["待接入"]
             context[f"{domain}{suffix}"] = "；".join(items[:2])
 
     for domain in DOMAINS:
+        if domain == "事业":
+            continue
         l7_text = _l7_conclusion_for_domain(domain, report_items or [], arbitration_decisions or [])
         if l7_text:
             context[f"{domain}裁决结论"] = l7_text

@@ -239,6 +239,136 @@ def test_career_l7_text_is_serialized_verbatim() -> None:
         )
 
 
+def test_falsifier_career_l7_structures_all_r6_school_evidence_losslessly() -> None:
+    baseline = load_r6_baseline()
+    _, run = _run_formal_case()
+    decision_by_id = {item.decision_id: item.domain for item in run.arbitration_decisions}
+    career_items = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] == "事业"
+    ]
+    l2_statements = {
+        school: [
+            claim.statement
+            for claim in run.school_claims
+            if claim.school == school and claim.domain in TARGET_DOMAINS
+        ]
+        for school in baseline["career_claim_count_per_school"]
+    }
+
+    assert career_items, "正式 case 必须生成事业域 L7 ReportViewItem"
+    for item in career_items:
+        assert hasattr(item, "school_evidence"), (
+            "事业 L7 ReportViewItem 缺少按 school 分组的结构化 school_evidence；"
+            "扁平 evidence_summary 不能无损承载 R6 五派广度"
+        )
+        for school, expected_statements in l2_statements.items():
+            actual_statements = item.school_evidence.get(school, [])
+            assert actual_statements == expected_statements, (
+                f"事业 L7 的 {school} 依据必须逐条等于 L2 statement 原文；"
+                "不得截断、改写、丢失或重排"
+            )
+
+    for school, minimum in baseline["career_claim_count_per_school"].items():
+        assert l2_statements[school], f"事业 L2 缺少 {school} 依据"
+        assert len(l2_statements[school]) >= int(minimum), (
+            f"事业 L2 的 {school} 依据少于 R6 冻结基线："
+            f"{len(l2_statements[school])} < {minimum}"
+        )
+
+    serialized_by_id = {
+        item["report_item_id"]: item
+        for item in run.to_dict()["report_items"]
+        if decision_by_id[item["decision_id"]] == "事业"
+    }
+    for item in career_items:
+        assert serialized_by_id[item.report_item_id]["school_evidence"] == item.school_evidence
+
+
+def test_falsifier_career_report_columns_and_conflict_disappear_without_l7() -> None:
+    from engine.v5.report_view import build_report_v6_context
+
+    output, run = _run_formal_case()
+    template_text = Path("templates/report-v6.md").read_text(encoding="utf-8")
+    decision_by_id = {item.decision_id: item.domain for item in run.arbitration_decisions}
+    career_items = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] == "事业"
+    ]
+    without_career_l7 = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] != "事业"
+    ]
+
+    assert career_items, "证伪变体需要先确认正式 run 存在事业 L7 item"
+    full_context = build_report_v6_context(
+        output,
+        template_text=template_text,
+        report_items=run.report_items,
+        arbitration_decisions=run.arbitration_decisions,
+    )
+    stripped_context = build_report_v6_context(
+        output,
+        template_text=template_text,
+        report_items=without_career_l7,
+        arbitration_decisions=run.arbitration_decisions,
+    )
+
+    career_placeholders = [
+        "事业裁决结论",
+        "事业共识结论",
+        "事业子平类",
+        "事业滴天髓类",
+        "事业高德臣",
+        "事业段建业",
+        "事业杨清娟",
+        "事业冲突状态",
+    ]
+    for placeholder in career_placeholders:
+        assert full_context[placeholder] not in {"", "待接入", "待补充", "待判"}
+        assert stripped_context[placeholder] != full_context[placeholder], (
+            f"移除事业 L7 后 {placeholder} 仍保留原内容，证明报告仍从 V5 旁路取值："
+            f"{full_context[placeholder]}"
+        )
+    for placeholder in ["事业裁决结论", "事业共识结论"]:
+        assert stripped_context[placeholder] == "待接入", (
+            f"移除事业 L7 后 {placeholder} 必须明确缺省，不得回落到 V5 arbitration："
+            f"{stripped_context[placeholder]}"
+        )
+
+
+def test_falsifier_career_verdict_and_consensus_aggregate_all_l7_items() -> None:
+    from engine.v5.report_view import build_report_v6_context
+
+    output, run = _run_formal_case()
+    template_text = Path("templates/report-v6.md").read_text(encoding="utf-8")
+    decision_by_id = {item.decision_id: item.domain for item in run.arbitration_decisions}
+    career_items = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] == "事业"
+    ]
+    assert len(career_items) >= 2, "证伪变体需要至少两个事业 L7 item"
+
+    distinct_items = [
+        replace(item, display_text=f"事业 L7 聚合哨兵 {index}")
+        for index, item in enumerate(career_items, start=1)
+    ]
+    non_career_items = [
+        item for item in run.report_items
+        if decision_by_id[item.decision_id] != "事业"
+    ]
+    context = build_report_v6_context(
+        output,
+        template_text=template_text,
+        report_items=[*non_career_items, *distinct_items],
+        arbitration_decisions=run.arbitration_decisions,
+    )
+    expected = "；".join(item.display_text for item in distinct_items)
+
+    assert context["事业裁决结论"] == expected
+    assert context["事业共识结论"] == expected
+
+
 def test_preprod_builds_r10_run_from_exact_input_text(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
