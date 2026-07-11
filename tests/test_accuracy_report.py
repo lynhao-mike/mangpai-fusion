@@ -2,8 +2,18 @@ from __future__ import annotations
 
 import dataclasses
 
-from engine.decision import run_decision_mvp
+from engine.decision import (
+    build_arbitration_decisions,
+    build_event_hypotheses,
+    build_feedback_attributions,
+    build_feedback_signals,
+    build_report_items,
+    build_structural_verdicts,
+    build_timing_probabilities,
+    run_decision_mvp,
+)
 from engine.decision.accuracy_report import AccuracyReport, build_accuracy_report
+from engine.decision.models import StructuralVerdict
 
 
 WENZHEN = """
@@ -23,12 +33,51 @@ $FOCUS
 
 def _run_with_verdicts(*verdicts: str):
     run = run_decision_mvp(WENZHEN)
-    signals = list(run.feedback_signals)
+    structural_by_claim = {
+        item.claim_id: item
+        for item in build_structural_verdicts(run.case_id, run.school_claims)
+    }
+    event_claims = [
+        item for item in run.school_claims if item.claim_type in {"event", "event_claim"}
+    ]
+    for index, claim in enumerate(event_claims):
+        structural_by_claim[claim.claim_id] = StructuralVerdict(
+            verdict_id=f"accuracy-verdict-{index}",
+            claim_id=claim.claim_id,
+            verdict="pass",
+            structural_reason="accuracy fixture 显式确认自身事件命题通过结构审查。",
+            confidence=claim.confidence,
+        )
+    structural_verdicts = list(structural_by_claim.values())
+    events = build_event_hypotheses(run.case_id, structural_verdicts, run.school_claims)
+    timings = build_timing_probabilities(run.case_id, events)
+    decisions = build_arbitration_decisions(run.case_id, events, run.school_applicability)
+    report_items = build_report_items(run.case_id, decisions, timings)
+    signals = build_feedback_signals(run.case_id, report_items)
     assert len(signals) >= len(verdicts), "样例反馈信号不足以注入所需 verdict"
     for i, verdict in enumerate(verdicts):
         notes = "流派选错 主审失验" if verdict == "miss" else ""
         signals[i] = dataclasses.replace(signals[i], verdict=verdict, notes=notes)
-    return dataclasses.replace(run, feedback_signals=signals)
+    attributions = build_feedback_attributions(signals)
+    rebuilt = dataclasses.replace(
+        run,
+        structural_verdicts=structural_verdicts,
+        event_hypotheses=events,
+        timing_probabilities=timings,
+        arbitration_decisions=decisions,
+        report_items=report_items,
+        feedback_signals=signals,
+        feedback_attributions=attributions,
+        calibration_actions=[],
+    )
+    verdict_by_claim = {item.claim_id: item.verdict_id for item in structural_verdicts}
+    for event in events:
+        source_claim_id = next(
+            item.claim_id for item in run.school_claims if item.statement == event.concrete_event
+        )
+        assert event.source_verdict_ids == [verdict_by_claim[source_claim_id]]
+    assert rebuilt.validate_trace() == []
+    return rebuilt
 
 
 def test_report_counts_verdicts_and_excludes_unknown_from_scored() -> None:

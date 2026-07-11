@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
@@ -57,6 +58,14 @@ def test_r6_baseline_is_frozen_and_nonempty() -> None:
     assert int(baseline["career_claim_count"]) == 270
     assert int(baseline["career_school_count"]) == 5
     assert int(baseline["career_evidence_count"]) == 270
+    assert baseline["career_claim_count_per_school"] == {
+        "ditiansui": 14,
+        "duan_jianye": 15,
+        "gao_dechen": 5,
+        "yang_qingjuan": 9,
+        "ziping": 227,
+    }
+    assert baseline["career_claim_count_per_domain"] == {"事业": 261, "总体": 9}
     assert int(baseline["career_fifteen_layer_count"]) == 15
     assert baseline["required_text_sentinels"] == ["事业", "依据", "置信度", "应期"]
 
@@ -83,8 +92,24 @@ def test_r6_frozen_gate_rejects_degraded_fixture(tmp_path: Path, monkeypatch: py
         test_r6_baseline_is_frozen_and_nonempty()
 
 
+def _assert_independent_runner_canonical_claims(output: V5Output) -> None:
+    independent = [
+        item
+        for item in output.claims
+        if item.school == "ziping"
+        and item.domain in TARGET_DOMAINS
+        and item.metadata.get("source_scope") == "ziping_independent_runner"
+    ]
+    assert any("旺衰判定=" in item.claim for item in independent)
+    assert any("用神=" in item.claim for item in independent)
+    assert any(item.metadata.get("geju_type") for item in independent)
+    assert any(item.metadata.get("yao_favor_shishen") for item in independent)
+    assert all("zuogong_path" not in item.metadata for item in independent)
+
+
 def test_falsifier_l2_keeps_real_runner_wangshuai_yongshen_and_source_metadata() -> None:
     output, run = _run_formal_case()
+    _assert_independent_runner_canonical_claims(output)
     source_claims = [
         item
         for item in output.claims
@@ -124,6 +149,16 @@ def test_falsifier_l2_keeps_real_runner_wangshuai_yongshen_and_source_metadata()
         }
 
 
+def test_independent_runner_canonical_gate_rejects_deleted_source_claim() -> None:
+    output, _ = _run_formal_case()
+    mutated = replace(
+        output,
+        claims=[item for item in output.claims if "旺衰判定=" not in item.claim],
+    )
+    with pytest.raises(AssertionError):
+        _assert_independent_runner_canonical_claims(mutated)
+
+
 def test_falsifier_career_information_is_not_thinner_than_r6() -> None:
     baseline = load_r6_baseline()
     _, run = _run_formal_case()
@@ -132,6 +167,12 @@ def test_falsifier_career_information_is_not_thinner_than_r6() -> None:
     assert len({item.school for item in claims}) >= int(baseline["career_school_count"])
     assert sum(len(item.evidence_refs) for item in claims) >= int(
         baseline["career_evidence_count"]
+    )
+    assert Counter(item.school for item in claims) >= Counter(
+        baseline["career_claim_count_per_school"]
+    )
+    assert Counter(item.domain for item in claims) >= Counter(
+        baseline["career_claim_count_per_domain"]
     )
 
 
@@ -145,13 +186,20 @@ def test_falsifier_report_keeps_all_fifteen_judgment_layers(tmp_path: Path) -> N
         workspace_root=".",
     )
     report_text = Path(report_path).read_text(encoding="utf-8")
-    template_text = Path("templates/report-v6.md").read_text(encoding="utf-8")
-    row_pattern = re.compile(r"^\|\s*(\d{1,2})\s*\|", re.MULTILINE)
-    template_layers = [int(value) for value in row_pattern.findall(template_text)]
-    report_layers = [int(value) for value in row_pattern.findall(report_text)]
+    career_section = re.search(
+        r"^### 事业结构\s*$([\s\S]*?)(?=^### 财富结构\s*$)",
+        report_text,
+        re.MULTILINE,
+    )
+    assert career_section is not None
+    career_level_row = re.search(
+        r"^\|\s*职业层级\s*\|.*?\|\s*([^|]+?)\s*\|$",
+        career_section.group(1),
+        re.MULTILINE,
+    )
+    assert career_level_row is not None
+    report_layers = [value.strip() for value in career_level_row.group(1).split("/")]
 
-    assert template_layers == list(range(1, 16))
-    assert report_layers == template_layers
     assert len(report_layers) == int(baseline["career_fifteen_layer_count"])
     for sentinel in baseline["required_text_sentinels"]:
         assert str(sentinel) in report_text
@@ -184,6 +232,11 @@ def test_career_l7_text_is_serialized_verbatim() -> None:
     assert career_items
     for item in career_items:
         assert serialized_items[item.report_item_id] == item.display_text
+        assert all(value in item.display_text for value in ["事业", "依据", "置信度", "应期"])
+        assert all(
+            school in item.display_text
+            for school in ["滴天髓类", "段建业", "高德臣", "杨清娟", "子平类"]
+        )
 
 
 def test_preprod_builds_r10_run_from_exact_input_text(

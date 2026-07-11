@@ -240,13 +240,21 @@ def _report_items(
             display_text += "｜依据：" + "；".join(evidences)
         for idx, event_id in enumerate(event_ids, start=1):
             timing = timing_by_domain.get(event_id)
+            confidence_text = "迁移期，以 v5 置信度为准"
+            timing_text = "未形成 L5 时间窗"
+            if timing:
+                confidence_text = f"{timing.confidence:.0%}"
+                timing_text = str(timing.time_window or "未标定")
+            item_display_text = (
+                f"{display_text}｜置信度：{confidence_text}｜应期：{timing_text}"
+            )
             items.append(
                 ReportViewItem(
                     report_item_id=_stable_id("drv", case_id, decision.decision_id, idx),
                     decision_id=decision.decision_id,
                     prediction_id=timing.prediction_id if timing else "",
-                    display_text=display_text,
-                    confidence_display="迁移期，以 v5 置信度为准",
+                    display_text=item_display_text,
+                    confidence_display=confidence_text,
                     evidence_summary=f"本域共 {claim_count} 条流派命题参与结构裁决。" if claim_count else "L7 只读 v5→decision 适配后的 L6/L5 结果。",
                     feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
                 )
