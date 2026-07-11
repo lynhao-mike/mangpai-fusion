@@ -79,7 +79,19 @@ L0 输入事实 → L1 流派适用性路由 → L2 各派独立命题 → L3 �
 - [`engine/decision/v5_adapter.py`](engine/decision/v5_adapter.py)：`_claims` 透传 metadata；新增 `_extract_geju_profile`（提取格局用忌神）、`_shishen_in_statement`；`_verdicts` 叠加格局一致性审查。
 - 实测效果：C-2026-035 的 L3 verdict 从"pass 287 / weaken 41 / reject 0"变为"pass 277 / weaken 51 / unknown 2"——**10 条依赖格局忌神的命题被正确降级**，L3 首次从"通道"变成有区分力的"关口"。
 
-### 3.4 真实案例闭环已跑通
+### 3.4 R10 第一证明物已完成（子平 × 事业原生 L2-L7 纵切片）
+
+- 已完成 R10 第一证明物：子平 × 事业原生 L2-L4 纵切片 + L7 事业域单源渲染。
+- 已证明目标路径不调用 adapter 的 L2 反推、L3 或 L4 判断；`validate_trace()` 返回空；报告事业域全部占位符（五派列 + 裁决 + 共识 + 冲突）仅从 L7 `ReportViewItem` 的结构化 `school_evidence` 派生，不存在 V5 claims 直读旁路；decision-run JSON 无损序列化同一 L7 内容；信息量 ≥ R6 基线（270 claims / 5 schools / 270 evidence，逐派逐域守住下限）。
+- L3/L4 判断（`_extract_geju_profile` / `classify_event_type`）已从 adapter 归位到 `l3_structure.py` / `l4_events.py`；adapter 仅保留非目标流派/领域的迁移期桥。
+- 这只证明第一条纵切片可行，**不表示 R10 全完成**：其他流派 / 领域迁移、adapter 全删、生产默认切换均未完成。
+- K 系列尚未启动；当前 L3 / L4 只消费上游命题，不发明命理判断。
+- **已知架构债（PRE_EXISTING_DEBT，来自 R9，非本分支引入）**：
+  - L3 格局 profile 以全局 scope 应用于全体 claims（含非目标流派/域）；
+  - L3 对 `event_claim` 无条件发 `weaken`，使无结构依据的事件命题获得 L4 进入资格。
+  - 两项均为 R9 既有行为（本分支只做了位置迁移，行为等价），待 K 系列或后续迁移时收窄 scope。
+
+### 3.5 真实案例闭环已跑通
 
 C-2026-035（1988-11-15 男，甲戌日）已建立标准 case：
 - 输入：[`cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md`](cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md)
@@ -90,13 +102,13 @@ C-2026-035（1988-11-15 男，甲戌日）已建立标准 case：
 
 ## 4. 当前卡在哪
 
-**R1-R9 已全部落地；剩下 R10（北极星）与 K 系列（命理建模）两个大工程，外加一个数据瓶颈。**
+**R1-R9 已全部落地；R10 已完成第一证明物，但尚未完成全部迁移。剩下 R10 后续迁移、K 系列（命理建模）两个大工程，外加一个数据瓶颈。**
 
-R1-R9 都是"配管 + 消费 v5 已有结论"的重构。往后按**先 R 系列收尾、再 K 系列**的排期推进（用户 2026-07-10 定）：
+R1-R9 都是"配管 + 消费 v5 已有结论"的重构。R10 第一证明物已证明子平 × 事业纵切片可行；往后按**先完成 R 系列后续迁移、再启动 K 系列**的排期推进（用户 2026-07-10 定）：
 
-1. **R10 北极星（R 系列收尾，先做）**：v5 runner 尚未下沉为 L2、`v5_adapter` 的"事后转录"定位尚未删除。目前 DecisionRun 仍是从 V5Output 派生的账本，且 L3/L4 判断（`_extract_geju_profile` / `classify_event_type`）寄生在 adapter 内。彻底扳正需让 v5 五派 runner 直接作 L2 命题供应器、判断归位分层链、报告全链路由 L7 驱动。工程量最大、风险最高。详见 [`plans/layered-decision-system.md`](plans/layered-decision-system.md) §R10（含 thesis / kill / options / 证明物 / 证伪）。
+1. **R10 北极星（第一证明物已完成，后续迁移待做）**：子平 × 事业目标路径已经由原生 L2-L4 分层链产出，不调用 adapter 的 L2 反推、L3 或 L4 判断；但其他流派 / 领域尚未迁移，`v5_adapter` 尚未全删，生产默认入口尚未切换。下一步应沿已验证纵切片逐派逐域迁移，最终删除 adapter 的事后转录定位并切换生产默认报告入口。详见 [`plans/layered-decision-system.md`](plans/layered-decision-system.md) §R10（含 thesis / kill / options / 证明物 / 证伪）。
 
-2. **K 系列命理建模（R10 完成后启动）**：L3/L4 目前仍是"消费 v5 结论"，不是"从命局结构原生推导"（R8 event_type 是文本分类、R9 L3 审查是读 v5 已算格局）。真正的原生命局判断（多域格局裁决 / 旺衰独立校验 / 五派结构交叉验证）是独立命理知识建模，见 plan §18bis K1-K3。**依赖 R10 下沉后 L3 才有原生输入通道，故排在 R10 之后。**
+2. **K 系列命理建模（未启动）**：L3/L4 目前仍只消费上游已有命题，不自行发明命理判断。真正的原生命局判断（多域格局裁决 / 旺衰独立校验 / 五派结构交叉验证）是独立命理知识建模，见 plan §18bis K1-K3；须等 R10 后续迁移完成后再启动。
 
 3. **数据瓶颈（贯穿始终、可并行积累）**：跨案学习（R5-B）与 K 系列校准都需真实反馈样本。R5 只做了注入端（learned_prior 能改路由），"从真实反馈聚合出 learned_prior"依赖足够有效反馈——按 `school×domain×role` 分桶、每桶 5-20 条起步、全域生产级需 1500+ 条。当前真实样本 = C-2026-035 一份（还没填）。
 
@@ -104,20 +116,20 @@ R1-R9 都是"配管 + 消费 v5 已有结论"的重构。往后按**先 R 系列
 
 ## 5. 下一步计划（按排期）
 
-> 排期总纲（用户 2026-07-10 定）：**先做完 R 系列（即 R10）→ 再启动 K 系列**；真实反馈样本收集全程并行。
+> 排期总纲（用户 2026-07-10 定）：**R10 第一证明物之后继续完成其他流派 / 领域迁移、adapter 全删与生产默认切换 → 再启动 K 系列**；真实反馈样本收集全程并行。
 
 ### 5.1 并行·立即可做（不需要新代码）
 - **收集真实反馈**：让命主填 [`cases/C-2026-035-.../feedback.md`](cases/)，用 `python -m tools.feedback_ingest C-2026-035-乾-戊辰癸亥甲戌庚午` 摄入。多跑几个真实命盘，积累样本。这是 R5-B 与 K 系列校准的共同前置，越早开始越好。
 
-### 5.2 R 系列收尾·先做（R10 北极星）
-- 按 plan §R10.5 做**纵切片**：让子平派·事业域 runner 原生产出 L2 `SchoolClaim`，该域 DecisionRun 不经 `v5_adapter` 反推。验收四条断言（L1/L3/L4 由链内层产出、报告与 decision-run.json 一致、`validate_trace()` 返回空、信息量不低于 R6 基线）。
-- 纵切片证明"链内原生推理"可行后，逐派逐域迁移，最后删 `v5_adapter` 转录定位、切生产默认报告入口。
-- 建议开工前用 geju 对 R10 单独开题，writing-plans 拆成 bite-sized TDD 执行计划。
+### 5.2 R 系列收尾·继续做（R10 北极星）
+- 子平派 × 事业域第一证明物已经完成：该目标路径原生产出 L2 `SchoolClaim`，不经 `v5_adapter` 做 L2 反推、L3 或 L4 判断；报告与 decision-run JSON 同源，`validate_trace()` 返回空，信息量不低于 R6 基线。
+- 继续逐派逐域迁移，最后删除 `v5_adapter` 转录定位、切生产默认报告入口；在这些工作完成前，不得写成 R10 或 R 系列全完成。
+- L3 / L4 继续遵守"只消费、不发明"；K 系列未启动，不得与 R10 配管迁移混做。
 
 ### 5.3 R 完成后启动（K 系列命理建模 + R5-B）
 - **R5-B 跨案学习**（数据够了即可做）：从真实反馈聚合 `learned_prior`（`school×domain×role` 命中率）持久化回灌 `route_schools`。方向文档：[`docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md`](docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md)。**复用 `tools/feedback_loop.py` + `DomainRoleStats` 的 Beta 生命周期，不要新建平行学习系统。**
 - **K 系列**（R10 下沉后启动）：K1 多域格局裁决 → K2 旺衰独立校验 → K3 五派结构交叉验证。每项独立用 geju 立项，不与 R10 配管混做。铁律：产出可被 L3/L4 消费的独立判断，但不得让 adapter 或报告层凭空发明命理。
-- **同步更新 HANDOFF**：R10 落地后，把本文件 §3/§4/§5 的状态推进到"R 系列全完成、K 系列进行中"。
+- **同步更新 handoff**：只有 R10 其他流派 / 领域迁移、adapter 全删与生产默认切换全部落地后，才能把本文件 §3/§4/§5 推进到"R 系列全完成"；K 系列须实际启动后才能写"K 系列进行中"。
 
 ---
 

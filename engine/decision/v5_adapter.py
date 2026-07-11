@@ -10,6 +10,8 @@ import hashlib
 from typing import Any
 
 from engine.decision.l1_school_router import route_schools
+from engine.decision.l3_structure import build_structural_verdicts, extract_geju_profile
+from engine.decision.l4_events import classify_event_type
 from engine.decision.l8_feedback_attribution import build_feedback_attributions, build_feedback_signals
 from engine.decision.l9_calibration import build_calibration_actions, build_router_calibration_actions
 from engine.decision.models import (
@@ -89,104 +91,11 @@ def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[
     ]
 
 
-def _extract_geju_profile(claims: list[SchoolClaim]) -> dict | None:
-    """从带 geju_type metadata 的格局裁决 claim 提取用忌神方向。
-
-    R9：只消费 v5 已算出的格局结论，不自行判定旺衰/用神。找不到返回 None。
-    """
-
-    for claim in claims:
-        meta = claim.metadata or {}
-        if meta.get("geju_type"):
-            return {
-                "geju_type": str(meta.get("geju_type")),
-                "favor": {str(x) for x in meta.get("favor_shishen", [])},
-                "avoid": {str(x) for x in meta.get("avoid_shishen", [])},
-            }
-    return None
-
-
-_SHISHEN_NAMES = ("正官", "七杀", "正财", "偏财", "食神", "伤官", "正印", "偏印", "比肩", "劫财")
-
-
-def _shishen_in_statement(statement: str) -> set[str]:
-    text = statement or ""
-    return {name for name in _SHISHEN_NAMES if name in text}
+_extract_geju_profile = extract_geju_profile
 
 
 def _verdicts(case_id: str, claims: list[SchoolClaim]) -> list[StructuralVerdict]:
-    profile = _extract_geju_profile(claims)
-    result: list[StructuralVerdict] = []
-    for claim in claims:
-        if claim.claim_type == "structure_claim":
-            verdict = "pass" if claim.confidence >= 0.4 else "weaken"
-        elif claim.claim_type == "event_claim":
-            verdict = "weaken"
-        else:
-            verdict = "unknown"
-
-        reason = "由 v5 claim_type 与 confidence 映射的迁移期结构审查。"
-        blocking = [] if verdict == "pass" else ["需真实 L3 结构策略复核"]
-
-        # R9：用 v5 已算出的格局用忌神方向做一致性审查（不发明命理）。
-        if profile and verdict in {"pass", "weaken"}:
-            shishen = _shishen_in_statement(claim.statement)
-            hits_avoid = shishen & profile["avoid"]
-            hits_favor = shishen & profile["favor"]
-            if hits_avoid and not hits_favor:
-                reason = f"命题依赖格局忌神 {sorted(hits_avoid)}（{profile['geju_type']}），与用神方向不一致，降级。"
-                blocking = [f"忌神方向：{sorted(hits_avoid)}"]
-                if verdict == "pass":
-                    verdict = "weaken"
-                elif verdict == "weaken" and claim.confidence < 0.3:
-                    verdict = "reject"
-
-        result.append(
-            StructuralVerdict(
-                verdict_id=_stable_id("dsv", case_id, claim.claim_id),
-                claim_id=claim.claim_id,
-                verdict=verdict,  # type: ignore[arg-type]
-                structural_reason=reason,
-                blocking_factors=blocking,
-                required_support=[] if verdict == "pass" else ["L3 structure policy"],
-                confidence=min(0.7, max(0.2, claim.confidence)),
-            )
-        )
-    return result
-
-
-# R8: 从 event_label 文本分类的启发式过渡实现；不是从命局结构推导事件类型。
-_EVENT_TYPE_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
-    ("车祸", ("车祸", "交通", "撞")),
-    ("手术", ("手术", "开刀")),
-    ("疾病", ("疾病", "病", "体检", "慢病", "伤病", "健康问题")),
-    ("婚变", ("离婚", "再婚", "晚婚", "多婚", "婚变", "分手")),
-    ("结婚", ("结婚", "婚姻", "配偶", "婚恋", "成家")),
-    ("发财", ("发财", "暴富", "冲开", "财库")),
-    ("破财", ("破财", "亏损", "负债", "支出压力", "损失")),
-    ("升迁", ("升迁", "升职", "职级", "提拔")),
-    ("换岗", ("换岗", "调动", "岗位", "组织关系")),
-    ("创业", ("创业", "自主", "合伙", "开业")),
-    ("学历", ("学历", "考试", "证照", "培训", "技能升级", "学位")),
-]
-
-_DOMAIN_GENERIC_EVENT: dict[str, str] = {
-    "事业": "事业变动",
-    "财富": "财务变动",
-    "婚姻": "婚恋变动",
-    "健康": "健康风险",
-    "学业": "学习节点",
-}
-
-
-def classify_event_type(event_label: str, domain: str) -> str:
-    """从 event_label 可读语义分类事件类型；匹配不到回退按域通用类型。"""
-
-    text = event_label or ""
-    for event_type, keywords in _EVENT_TYPE_KEYWORDS:
-        if any(keyword in text for keyword in keywords):
-            return event_type
-    return _DOMAIN_GENERIC_EVENT.get(domain, "待具体化事件")
+    return build_structural_verdicts(case_id, claims)
 
 
 def _events(case_id: str, output: V5Output, verdicts: list[StructuralVerdict], claims: list[SchoolClaim]) -> list[EventHypothesis]:
@@ -293,24 +202,26 @@ _SCHOOL_ZH = {
 }
 
 
-def _domain_evidence(domain: str, claims: list[SchoolClaim]) -> tuple[list[str], list[str], int]:
-    domain_claims = [claim for claim in claims if claim.domain == domain and claim.statement]
-    best_by_school: dict[str, SchoolClaim] = {}
+def _domain_evidence(
+    domain: str,
+    claims: list[SchoolClaim],
+) -> tuple[list[str], list[str], int, dict[str, list[str]]]:
+    evidence_domains = {"总体", "事业"} if domain == "事业" else {domain}
+    domain_claims = [
+        claim
+        for claim in claims
+        if claim.domain in evidence_domains and claim.statement
+    ]
+    school_evidence: dict[str, list[str]] = {}
     for claim in domain_claims:
-        current = best_by_school.get(claim.school)
-        if current is None or claim.confidence > current.confidence:
-            best_by_school[claim.school] = claim
+        school_evidence.setdefault(claim.school, []).append(claim.statement)
 
-    schools: list[str] = []
-    evidences: list[str] = []
-    for school, claim in best_by_school.items():
-        name = _SCHOOL_ZH.get(school, school)
-        snippet = claim.statement.strip().replace("\n", " ")
-        if len(snippet) > 40:
-            snippet = snippet[:40] + "…"
-        schools.append(name)
-        evidences.append(f"{name}：{snippet}")
-    return schools, evidences, len(domain_claims)
+    schools = [_SCHOOL_ZH.get(school, school) for school in school_evidence]
+    evidences = [
+        f"{_SCHOOL_ZH.get(school, school)}：{'；'.join(statements)}"
+        for school, statements in school_evidence.items()
+    ]
+    return schools, evidences, len(domain_claims), school_evidence
 
 
 def _report_items(
@@ -323,7 +234,9 @@ def _report_items(
     items: list[ReportViewItem] = []
     for decision in decisions:
         event_ids = decision.rejected_ids if decision.result == "reject_all" else decision.winner_ids or decision.competing_event_ids
-        schools, evidences, claim_count = _domain_evidence(decision.domain, claims or [])
+        schools, evidences, claim_count, school_evidence = _domain_evidence(
+            decision.domain, claims or []
+        )
         display_text = f"{decision.domain}：{decision.reason}"
         if schools:
             display_text += "｜参与流派：" + "、".join(schools)
@@ -331,14 +244,23 @@ def _report_items(
             display_text += "｜依据：" + "；".join(evidences)
         for idx, event_id in enumerate(event_ids, start=1):
             timing = timing_by_domain.get(event_id)
+            confidence_text = "迁移期，以 v5 置信度为准"
+            timing_text = "未形成 L5 时间窗"
+            if timing:
+                confidence_text = f"{timing.confidence:.0%}"
+                timing_text = str(timing.time_window or "未标定")
+            item_display_text = (
+                f"{display_text}｜置信度：{confidence_text}｜应期：{timing_text}"
+            )
             items.append(
                 ReportViewItem(
                     report_item_id=_stable_id("drv", case_id, decision.decision_id, idx),
                     decision_id=decision.decision_id,
                     prediction_id=timing.prediction_id if timing else "",
-                    display_text=display_text,
-                    confidence_display="迁移期，以 v5 置信度为准",
+                    display_text=item_display_text,
+                    confidence_display=confidence_text,
                     evidence_summary=f"本域共 {claim_count} 条流派命题参与结构裁决。" if claim_count else "L7 只读 v5→decision 适配后的 L6/L5 结果。",
+                    school_evidence=school_evidence,
                     feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
                 )
             )

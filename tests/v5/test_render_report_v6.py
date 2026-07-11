@@ -7,7 +7,7 @@ from pathlib import Path
 import json
 import shutil
 
-from engine.decision import decision_run_from_snapshot
+from engine.decision.r10_ziping_career import build_ziping_career_decision_run
 from engine.v5 import V5CaseManifest, V5FeedbackAttachment, V5Output, V5RunSnapshot
 from engine.v5.preprod import build_chart_from_input
 from tools.render_report_v6 import main, render_case, render_cases
@@ -116,9 +116,12 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert decision_payload["feedback_signals"]
     v5_output = V5Output.from_json(rendered_json.read_text(encoding="utf-8"))
     assert run_snapshot.to_output().to_dict() == v5_output.to_dict()
-    decision_run = decision_run_from_snapshot(run_snapshot)
-    assert decision_run.to_dict() == decision_payload
-    assert decision_run.validate_trace() == []
+    expected = build_ziping_career_decision_run(
+        run_snapshot.to_output(),
+        raw_text=case_input.read_text(encoding="utf-8"),
+    )
+    assert expected.to_dict() == decision_payload
+    assert expected.validate_trace() == []
 
 
 def test_render_report_v6_batch_generates_multiple_reports(tmp_path: Path) -> None:
