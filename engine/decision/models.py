@@ -245,10 +245,17 @@ class ReportViewItem:
     display_text: str = ""
     confidence_display: str = ""
     evidence_summary: str = ""
+    school_evidence: dict[str, list[str]] = field(default_factory=dict)
     feedback_prompt: str = ""
 
     def to_dict(self) -> dict[str, Any]:
-        return dict(self.__dict__)
+        return {
+            **self.__dict__,
+            "school_evidence": {
+                school: list(evidence)
+                for school, evidence in self.school_evidence.items()
+            },
+        }
 
 
 @dataclass(frozen=True)

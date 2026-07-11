@@ -162,6 +162,47 @@ def _get(obj: Any, key: str) -> Any:
     return getattr(obj, key, None)
 
 
+def _l7_school_evidence_for_domain(
+    domain: str,
+    report_items: list,
+    arbitration_decisions: list,
+) -> dict[str, list[str]]:
+    domain_by_decision = {
+        _get(decision, "decision_id"): _get(decision, "domain")
+        for decision in (arbitration_decisions or [])
+    }
+    grouped: dict[str, list[str]] = {}
+    for item in report_items or []:
+        if domain_by_decision.get(_get(item, "decision_id")) != domain:
+            continue
+        evidence = _get(item, "school_evidence") or {}
+        for school, statements in evidence.items():
+            bucket = grouped.setdefault(str(school), [])
+            for statement in statements:
+                text = str(statement)
+                if text not in bucket:
+                    bucket.append(text)
+    return grouped
+
+
+def _l7_conflict_for_domain(
+    domain: str,
+    report_items: list,
+    arbitration_decisions: list,
+) -> str:
+    item_decision_ids = {
+        _get(item, "decision_id")
+        for item in report_items or []
+    }
+    results = [
+        str(_get(decision, "result"))
+        for decision in arbitration_decisions or []
+        if _get(decision, "domain") == domain
+        and _get(decision, "decision_id") in item_decision_ids
+    ]
+    return "、".join(results) if results else "待判"
+
+
 def _l7_conclusion_for_domain(domain: str, report_items: list, arbitration_decisions: list) -> str | None:
     """从 L7 report_items 取指定域的裁决文本；找不到返回 None（触发缺省回退）。"""
 
@@ -256,10 +297,21 @@ def build_report_v6_context(
     )
 
     for domain in DOMAINS:
+        context.update(_domain_context(output, domain))
+        if domain == "事业":
+            career_evidence = _l7_school_evidence_for_domain(
+                domain, report_items or [], arbitration_decisions or []
+            )
+            for school, suffix in SCHOOL_PLACEHOLDER_SUFFIX.items():
+                items = career_evidence.get(school) or ["待接入"]
+                context[f"{domain}{suffix}"] = "；".join(items)
+            context[f"{domain}冲突状态"] = _l7_conflict_for_domain(
+                domain, report_items or [], arbitration_decisions or []
+            )
+            continue
         for school, suffix in SCHOOL_PLACEHOLDER_SUFFIX.items():
             items = claims.get((domain, school)) or claims.get(("总体", school)) or ["待接入"]
             context[f"{domain}{suffix}"] = "；".join(items[:2])
-        context.update(_domain_context(output, domain))
 
     for domain in DOMAINS:
         l7_text = _l7_conclusion_for_domain(domain, report_items or [], arbitration_decisions or [])

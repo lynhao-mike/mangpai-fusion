@@ -202,24 +202,26 @@ _SCHOOL_ZH = {
 }
 
 
-def _domain_evidence(domain: str, claims: list[SchoolClaim]) -> tuple[list[str], list[str], int]:
-    domain_claims = [claim for claim in claims if claim.domain == domain and claim.statement]
-    best_by_school: dict[str, SchoolClaim] = {}
+def _domain_evidence(
+    domain: str,
+    claims: list[SchoolClaim],
+) -> tuple[list[str], list[str], int, dict[str, list[str]]]:
+    evidence_domains = {"总体", "事业"} if domain == "事业" else {domain}
+    domain_claims = [
+        claim
+        for claim in claims
+        if claim.domain in evidence_domains and claim.statement
+    ]
+    school_evidence: dict[str, list[str]] = {}
     for claim in domain_claims:
-        current = best_by_school.get(claim.school)
-        if current is None or claim.confidence > current.confidence:
-            best_by_school[claim.school] = claim
+        school_evidence.setdefault(claim.school, []).append(claim.statement)
 
-    schools: list[str] = []
-    evidences: list[str] = []
-    for school, claim in best_by_school.items():
-        name = _SCHOOL_ZH.get(school, school)
-        snippet = claim.statement.strip().replace("\n", " ")
-        if len(snippet) > 40:
-            snippet = snippet[:40] + "…"
-        schools.append(name)
-        evidences.append(f"{name}：{snippet}")
-    return schools, evidences, len(domain_claims)
+    schools = [_SCHOOL_ZH.get(school, school) for school in school_evidence]
+    evidences = [
+        f"{_SCHOOL_ZH.get(school, school)}：{'；'.join(statements)}"
+        for school, statements in school_evidence.items()
+    ]
+    return schools, evidences, len(domain_claims), school_evidence
 
 
 def _report_items(
@@ -232,7 +234,9 @@ def _report_items(
     items: list[ReportViewItem] = []
     for decision in decisions:
         event_ids = decision.rejected_ids if decision.result == "reject_all" else decision.winner_ids or decision.competing_event_ids
-        schools, evidences, claim_count = _domain_evidence(decision.domain, claims or [])
+        schools, evidences, claim_count, school_evidence = _domain_evidence(
+            decision.domain, claims or []
+        )
         display_text = f"{decision.domain}：{decision.reason}"
         if schools:
             display_text += "｜参与流派：" + "、".join(schools)
@@ -256,6 +260,7 @@ def _report_items(
                     display_text=item_display_text,
                     confidence_display=confidence_text,
                     evidence_summary=f"本域共 {claim_count} 条流派命题参与结构裁决。" if claim_count else "L7 只读 v5→decision 适配后的 L6/L5 结果。",
+                    school_evidence=school_evidence,
                     feedback_prompt="按预测账本反馈命中、失验、半命中或跳过。",
                 )
             )
