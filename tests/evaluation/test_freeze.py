@@ -116,6 +116,7 @@ def test_reveal_returns_valid_labels_for_exact_freeze_hash(tmp_path: Path) -> No
                 "confidence_grade": "A",
                 "quantifiable": True,
                 "conflict_state": "none",
+                "reviewer": "reviewer-fixture",
             }],
         }),
         encoding="utf-8",

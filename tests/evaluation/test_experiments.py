@@ -34,7 +34,7 @@ def _output(school: str, probability: float, *, state: str = "claim", case_id: s
 
 
 def _label(value: str = "yes", *, case_id: str = "C-1") -> RevealedLabel:
-    return RevealedLabel(case_id, "education.credentials", value, "2026-01-01", "feedback", "A", True, "none")
+    return RevealedLabel(case_id, "education.credentials", value, "2026-01-01", "feedback", "A", True, "none", "reviewer-fixture")
 
 
 def _run(outputs, labels=None, tasks=None, eligible=ELIGIBLE):

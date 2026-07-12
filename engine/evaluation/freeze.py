@@ -77,7 +77,7 @@ def reveal_labels(run: FrozenBlindRun, labels_path: Path) -> list[RevealedLabel]
     raw_labels = document["labels"]
     if not isinstance(raw_labels, list):
         raise ValueError("labels must be a list")
-    required = {"case_id", "task_id", "label", "observed_at", "source", "confidence_grade", "quantifiable", "conflict_state"}
+    required = {"case_id", "task_id", "label", "observed_at", "source", "confidence_grade", "quantifiable", "conflict_state", "reviewer"}
     labels = []
     seen = set()
     for item in raw_labels:

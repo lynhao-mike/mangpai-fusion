@@ -95,6 +95,7 @@ def _label(
         confidence_grade="A",
         quantifiable=quantifiable,
         conflict_state="none",
+        reviewer="reviewer-fixture",
     )
 
 
@@ -182,7 +183,7 @@ def test_score_output_dispatches_time_window_and_ordinal_methods() -> None:
     timing = score_output(
         _output(prediction=_prediction(time_window={"start_year": 2020, "end_year": 2022})),
         _task("time_window"),
-        _label(2021),
+        _label({"occurred": True, "year": 2021}),
     )
     assert timing.timing_score == 1.0
 
@@ -215,7 +216,7 @@ def test_score_output_requires_label_output_and_task_identity_to_match() -> None
         score_output(_output(task_id="other.task"), _task(), _label("observed"))
 
 
-@pytest.mark.parametrize("method,label", [("binary_probability", "observed"), ("time_window", 2021), ("ordinal", "high")])
+@pytest.mark.parametrize("method,label", [("binary_probability", "observed"), ("time_window", {"occurred": True, "year": 2021}), ("ordinal", "high")])
 def test_single_prediction_methods_reject_multiple_predictions(method: str, label: object) -> None:
     predictions = [_prediction(), _prediction(event_label="other")]
     with pytest.raises(ValueError, match="exactly one prediction"):
@@ -310,8 +311,8 @@ def test_binary_probability_rejects_invalid_label_schema(schema: dict[str, objec
 def test_time_window_score_rejects_non_integer_observed_year(observed: object) -> None:
     with pytest.raises(ValueError, match="observed_year"):
         time_window_score({"start_year": 2020, "end_year": 2022}, observed)  # type: ignore[arg-type]
-    with pytest.raises(ValueError, match="observed_year"):
-        score_output(_output(prediction=_prediction(time_window={"start_year": 2020, "end_year": 2022})), _task("time_window"), _label(observed))
+    with pytest.raises(ValueError, match="year"):
+        score_output(_output(prediction=_prediction(time_window={"start_year": 2020, "end_year": 2022})), _task("time_window"), _label({"occurred": True, "year": observed}))
 
 
 @pytest.mark.parametrize("args", [(True, 1, 3), (1, True, 3), (1, 1, True), (1.0, 1, 3), (1, 1.0, 3), (1, 1, 3.0)])

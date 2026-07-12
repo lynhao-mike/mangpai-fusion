@@ -165,10 +165,12 @@ class RevealedLabel(PersistedContract):
     confidence_grade: str
     quantifiable: bool
     conflict_state: str
+    reviewer: str
 
     def __post_init__(self) -> None:
         _require(self.case_id, "case_id")
         _require(self.task_id, "task_id")
+        _require(self.reviewer, "reviewer")
         object.__setattr__(self, "label", _freeze(self.label))
 
 

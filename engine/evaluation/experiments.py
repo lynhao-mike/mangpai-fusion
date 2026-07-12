@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
+from decimal import Decimal, ROUND_HALF_UP
 from collections.abc import Collection, Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 
@@ -16,6 +17,9 @@ class ExperimentRow:
     probability: float | None
     score: float | None
     utility: float | None = None
+    requested_members: tuple[str, ...] = ()
+    contributing_members: tuple[str, ...] = ()
+    excluded_members: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -61,6 +65,10 @@ def _unique_map(items: Sequence, key, name: str) -> dict:
     return result
 
 
+def _round_half_up(value: float) -> int:
+    return int(Decimal(str(value)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
 def _fuse(outputs: list[BlindSchoolOutput], task: BlindTask, baseline: float | None = None) -> BlindSchoolOutput | None:
     claims = [output for output in outputs if output.state == "claim"]
     if not claims and baseline is None:
@@ -81,6 +89,22 @@ def _fuse(outputs: list[BlindSchoolOutput], task: BlindTask, baseline: float | N
         if task.scoring_method == "binary_probability":
             values = [prediction.probability for prediction in source] + ([] if baseline is None else [baseline])
             predictions = [BlindPrediction("fused", source[0].event_label if source else str(task.label_schema["positive_label"]), sum(values) / len(values), source[0].time_window if source else {}, (), "evaluation fusion")]
+        elif task.scoring_method == "ordinal" and source:
+            labels = tuple(task.label_schema["labels"])
+            ranks = [labels.index(item.event_label) + 1 for item in source]
+            rank = _round_half_up(sum(ranks) / len(ranks))
+            predictions = [BlindPrediction("fused", labels[rank - 1], 1.0, {}, (), "evaluation fusion")]
+        elif task.scoring_method == "time_window" and source:
+            starts = [item.time_window["start_year"] for item in source]
+            ends = [item.time_window["end_year"] for item in source]
+            start, end = _round_half_up(sum(starts) / len(starts)), _round_half_up(sum(ends) / len(ends))
+            if start > end:
+                raise ValueError("fused window requires start_year <= end_year")
+            predictions = [BlindPrediction("fused", source[0].event_label, 1.0, {"start_year": start, "end_year": end}, (), "evaluation fusion")]
+        elif task.scoring_method == "portrait_agreement" and source:
+            counts = Counter(item.event_label for item in source)
+            winner = min(counts, key=lambda item: (-counts[item], item))
+            predictions = [BlindPrediction("fused", winner, 1.0, {}, (), "evaluation fusion")]
         elif source:
             predictions = [source[0]]
         else:
@@ -88,17 +112,22 @@ def _fuse(outputs: list[BlindSchoolOutput], task: BlindTask, baseline: float | N
     return BlindSchoolOutput("fused", "group", task.task_id, "claim", "equal-weight evaluation fusion", predictions)
 
 
-def _proper_value(output: BlindSchoolOutput | None, task: BlindTask, label: RevealedLabel | None) -> tuple[float | None, float | None]:
+def _proper_value(output: BlindSchoolOutput | None, task: BlindTask, label: RevealedLabel | None) -> tuple[float | None, float | None, float | None]:
     if output is None or label is None:
-        return None, None
+        return None, None, None
     bound_output = BlindSchoolOutput(label.case_id, output.school_id, task.task_id, output.state, output.rationale, output.predictions)
     record = score_output(bound_output, task, label)
     value = next((item for item in (record.probability_score, record.timing_score, record.ordinal_score, record.portrait_agreement) if item is not None), None)
-    utility = value
-    if task.high_risk and record.observed_positive is False and value is not None:
-        utility = 1.0 - HIGH_RISK_FALSE_POSITIVE_MULTIPLIER * (1.0 - value)
+    if task.scoring_method == "portrait_agreement":
+        utility = None
+    elif task.scoring_method in {"time_window", "multiclass_probability"} and record.utility is not None:
+        utility = record.utility
+    else:
+        utility = value
+        if task.high_risk and record.observed_positive is False and value is not None:
+            utility = 1.0 - HIGH_RISK_FALSE_POSITIVE_MULTIPLIER * (1.0 - value)
     probability = output.predictions[0].probability if task.scoring_method == "binary_probability" else None
-    return probability, utility
+    return probability, value, utility
 
 
 def run_four_group_experiment(
@@ -140,8 +169,11 @@ def run_four_group_experiment(
         for group_id, group_outputs in sorted(groups.items()):
             group_baseline = baseline if group_id.startswith("baseline_plus_school:") and task.scoring_method == "binary_probability" else None
             fused = _fuse(group_outputs, task, group_baseline)
-            probability, proper = _proper_value(fused, task, label_map.get((case_id, task_id)))
-            rows.append(ExperimentRow(group_id, case_id, task_id, probability, proper, proper))
+            probability, score, utility = _proper_value(fused, task, label_map.get((case_id, task_id)))
+            requested = tuple(sorted(output.school_id for output in group_outputs))
+            contributing = tuple(sorted(output.school_id for output in group_outputs if output.state == "claim"))
+            excluded = tuple(sorted(set(requested) - set(contributing)))
+            rows.append(ExperimentRow(group_id, case_id, task_id, probability, score, utility, requested, contributing, excluded))
 
     utilities: dict[str, list[float]] = defaultdict(list)
     for row in rows:

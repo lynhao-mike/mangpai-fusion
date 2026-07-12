@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping
 from typing import Any
 
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, RevealedLabel, ScoreRecord
@@ -112,7 +113,10 @@ def score_output(
     if output.state == "unsupported":
         return _base_record(output, task)
     if output.state == "abstain":
-        utility = -ABSTENTION_OPPORTUNITY_COST if label_is_valid and labels is not None and labels.quantifiable else None
+        if label_is_valid and labels is not None and labels.quantifiable:
+            utility = 0.0 if task.scoring_method == "time_window" and isinstance(labels.label, Mapping) and labels.label.get("occurred") is False else -ABSTENTION_OPPORTUNITY_COST
+        else:
+            utility = None
         return _base_record(output, task, utility=utility)
     if not label_is_valid or labels is None:
         return _base_record(output, task)
@@ -147,9 +151,18 @@ def score_output(
         )
     if task.scoring_method == "time_window":
         _require_prediction_count(output, 1, 1)
-        if type(observed) is not int:
-            raise ValueError("observed_year must be an integer")
-        return _base_record(output, task, timing_score=time_window_score(output.predictions[0].time_window, observed))
+        if not isinstance(observed, Mapping) or type(observed.get("occurred")) is not bool:
+            raise ValueError("time_window label requires occurred boolean and year")
+        if observed["occurred"] is False:
+            if observed.get("year") is not None:
+                raise ValueError("year must be null when occurred is false")
+            utility = -HIGH_RISK_FALSE_POSITIVE_MULTIPLIER if task.high_risk else -1.0
+            return _base_record(output, task, timing_score=0.0, utility=utility, observed_positive=False)
+        year = observed.get("year")
+        if type(year) is not int:
+            raise ValueError("year must be an integer when occurred is true")
+        timing = time_window_score(output.predictions[0].time_window, year)
+        return _base_record(output, task, timing_score=timing, utility=timing, observed_positive=True)
     if task.scoring_method == "ordinal":
         _require_prediction_count(output, 1, 1)
         prediction = output.predictions[0]
@@ -186,11 +199,21 @@ def score_output(
             for label in schema_labels
         ) / len(schema_labels)
         observed_prediction = next(prediction for prediction in output.predictions if prediction.event_label == observed)
+        utility = observed_prediction.probability
+        observed_positive = True
+        if task.high_risk:
+            high_risk_labels = task.label_schema.get("high_risk_labels")
+            if not isinstance(high_risk_labels, (list, tuple)) or not high_risk_labels or any(item not in schema_labels for item in high_risk_labels):
+                raise ValueError("high-risk multiclass schema requires valid high_risk_labels")
+            argmax_label = min(schema_labels, key=lambda item: (-probabilities[item], item))
+            observed_positive = observed in high_risk_labels
+            if argmax_label in high_risk_labels and not observed_positive:
+                utility = -HIGH_RISK_FALSE_POSITIVE_MULTIPLIER * probabilities[argmax_label]
         return _base_record(
             output,
             task,
             probability_score=round(1.0 - mean_brier, 12),
-            utility=observed_prediction.probability,
-            observed_positive=True,
+            utility=utility,
+            observed_positive=observed_positive,
         )
     raise ValueError(f"unsupported scoring method: {task.scoring_method}")

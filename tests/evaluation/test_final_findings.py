@@ -74,7 +74,7 @@ def _output(
 
 
 def _label(value: object = "yes", *, case_id: str = "C-1", task_id: str = TASK_ID) -> RevealedLabel:
-    return RevealedLabel(case_id, task_id, value, "2026-01-01", "fixture", "A", True, "none")
+    return RevealedLabel(case_id, task_id, value, "2026-01-01", "fixture", "A", True, "none", "reviewer-fixture")
 
 
 def _score(case_id: str, probability_score: float, observed: bool) -> ScoreRecord:
@@ -96,6 +96,7 @@ def test_reveal_labels_v1_rejects_unknown_top_level_record_keys_non_list_and_dup
     valid = {
         "case_id": "C-1", "task_id": TASK_ID, "label": "yes", "observed_at": "2026-01-01",
         "source": "fixture", "confidence_grade": "A", "quantifiable": True, "conflict_state": "none",
+        "reviewer": "reviewer-fixture",
     }
     documents = [
         {"schema_version": "school-capability-labels/v1", "freeze_hash": run.freeze_hash, "labels": [], "extra": 1},
@@ -125,7 +126,7 @@ def test_experiment_supports_all_formal_scoring_methods() -> None:
             _prediction("academic", 0.6), _prediction("vocational", 0.3), _prediction("other", 0.1),
         ], "academic"),
         "ordinal": ([_prediction("4", 0.8)], "4"),
-        "time_window": ([_prediction("event", 0.8)], 2021),
+        "time_window": ([_prediction("event", 0.8)], {"occurred": True, "year": 2021}),
         "portrait_agreement": ([_prediction("profile", 0.8)], 0.75),
     }
     for method, (predictions, observed) in examples.items():
@@ -183,14 +184,14 @@ def test_report_never_emits_go_defaults_hold_and_deduplicates_posterior_rows() -
 
 def test_report_only_allows_ready_or_stop_with_complete_explicit_gate_evidence() -> None:
     ready = render_capability_report({}, {}, [], gate_evidence={
-        "manifest_complete": True, "eligible_grid_complete": True,
-        "provenance_complete": True, "quality_gate_passed": True,
-        "stop_condition": False,
+        "coverage_complete": True, "calibration_acceptable": True,
+        "incremental_non_negative": True, "high_risk_safe": True,
+        "provenance_valid": True,
     })
     stopped = render_capability_report({}, {}, [], gate_evidence={
-        "manifest_complete": True, "eligible_grid_complete": True,
-        "provenance_complete": True, "quality_gate_passed": False,
-        "stop_condition": True,
+        "coverage_complete": True, "calibration_acceptable": True,
+        "incremental_non_negative": False, "high_risk_safe": True,
+        "provenance_valid": True,
     })
     assert "**READY_FOR_MANUAL_REVIEW**" in ready
     assert "**STOP**" in stopped

@@ -114,7 +114,7 @@ def test_all_persisted_contracts_round_trip_without_aliasing() -> None:
     audit = CaseAuditRecord("C-TEST-001", True, True, True, False, True, ["report"], "eligible", ["complete"])
     output = BlindSchoolOutput("C-TEST-001", "ziping", "career.change", "claim", "supported", [_prediction()], ["counter"])
     run = FrozenBlindRun("catalog-v1", "snapshot-1", "2026-07-11T00:00:00Z", [output], "abc")
-    label = RevealedLabel("C-TEST-001", "career.change", {"changed": True}, "2020", "feedback", "E2", True, "none")
+    label = RevealedLabel("C-TEST-001", "career.change", {"changed": True}, "2020", "feedback", "E2", True, "none", "reviewer-fixture")
     score = ScoreRecord(
         case_id="C-TEST-001", school_id="ziping", task_id="career.change", claim_type="binary_event",
         state="claim", probability_score=0.8, utility=-0.1, observed_positive=True,

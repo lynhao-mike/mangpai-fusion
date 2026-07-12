@@ -38,7 +38,7 @@ tasks:
     high_risk: false
     allowed_time_horizons: [ten_year, annual]
     required_input_fields: [four_pillars, sex_marker]
-    label_schema: {type: time_window, event: marriage_change}
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: marriage_change}
     evaluation_note: 评价婚恋重大事件窗口命中情况
   - task_id: wealth.income_band
     domain: 财富
@@ -78,7 +78,7 @@ tasks:
     high_risk: true
     allowed_time_horizons: [ten_year, annual]
     required_input_fields: [four_pillars]
-    label_schema: {type: time_window, event: major_financial_loss}
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: major_financial_loss}
     evaluation_note: 评价重大财务损失窗口
   - task_id: career.path_type
     domain: 事业
@@ -108,7 +108,7 @@ tasks:
     high_risk: false
     allowed_time_horizons: [ten_year, annual]
     required_input_fields: [four_pillars]
-    label_schema: {type: time_window, event: career_change}
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: career_change}
     evaluation_note: 评价职业变化窗口命中情况
   - task_id: education.attainment_band
     domain: 学业
@@ -138,7 +138,7 @@ tasks:
     high_risk: true
     allowed_time_horizons: [lifetime, ten_year]
     required_input_fields: [four_pillars, sex_marker]
-    label_schema: {type: categorical, labels: [low, moderate, high]}
+    label_schema: {type: categorical, labels: [low, moderate, high], high_risk_labels: [high]}
     evaluation_note: 仅作盲测风险分层，不替代医学诊断
   - task_id: health.event_window
     domain: 健康
@@ -148,7 +148,7 @@ tasks:
     high_risk: true
     allowed_time_horizons: [ten_year, annual]
     required_input_fields: [four_pillars, sex_marker]
-    label_schema: {type: time_window, event: significant_health_event}
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: significant_health_event}
     evaluation_note: 评价有记录的显著健康事件窗口
   - task_id: personality.decision_style
     domain: 性格

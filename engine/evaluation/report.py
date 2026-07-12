@@ -23,11 +23,11 @@ def render_capability_report(
     """Render a cautious baseline view; it never promotes production expertise."""
     posterior_rows = [item if isinstance(item, Mapping) else item.to_dict() for item in posteriors]
     all_below_threshold = all(float(item.get("n_eff", 0.0)) < _INITIAL_REVIEW_N_EFF for item in posterior_rows)
-    required_gate_keys = {"manifest_complete", "eligible_grid_complete", "provenance_complete", "quality_gate_passed", "stop_condition"}
+    required_gate_keys = {"coverage_complete", "calibration_acceptable", "incremental_non_negative", "high_risk_safe", "provenance_valid"}
     complete_gate = gate_evidence is not None and set(gate_evidence) == required_gate_keys and all(type(value) is bool for value in gate_evidence.values())
-    if complete_gate and gate_evidence["stop_condition"]:
+    if complete_gate and gate_evidence["incremental_non_negative"] is False and all(gate_evidence[key] for key in required_gate_keys - {"incremental_non_negative"}):
         recommendation = "STOP"
-    elif complete_gate and all(gate_evidence[key] for key in required_gate_keys - {"stop_condition"}):
+    elif complete_gate and all(gate_evidence.values()):
         recommendation = "READY_FOR_MANUAL_REVIEW"
     else:
         recommendation = "HOLD"
@@ -69,8 +69,8 @@ def render_capability_report(
         "## 3. 任务覆盖与三态输出",
         "输出状态为 claim / abstain / unsupported；缺失输出不得视为错误预测。",
         "",
-        "## 4. 五维能力基线",
-        "按覆盖、区分度、准确度、校准与增量收益观察，不合成为生产权重。",
+        "## 4. 六维条件切片下的五维能力基线",
+        "在 school / task / chart prototype / claim type / time horizon / evidence completeness 六维条件切片下，按覆盖、区分度、准确度、校准与增量收益五个能力指标观察，不合成为生产权重。",
         "详细后验仅在下一节展示，避免重复发布。",
         "",
         "## 5. 四组增量实验",
