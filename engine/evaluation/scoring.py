@@ -117,6 +117,14 @@ def score_output(
         prediction = output.predictions[0]
         positive_label = task.label_schema.get("positive_label")
         negative_label = task.label_schema.get("negative_label")
+        if (
+            not isinstance(positive_label, str)
+            or not positive_label
+            or not isinstance(negative_label, str)
+            or not negative_label
+            or positive_label == negative_label
+        ):
+            raise ValueError("binary label schema requires distinct non-empty string positive_label and negative_label")
         if observed == positive_label:
             observed_positive = True
         elif observed == negative_label:
@@ -154,18 +162,26 @@ def score_output(
             ordinal_score=ordinal_score(predicted_rank, observed_rank, len(labels_in_order)),
         )
     if task.scoring_method == "multiclass_probability":
-        _require_prediction_count(output, 2)
+        schema_labels = task.label_schema.get("labels")
+        if (
+            not isinstance(schema_labels, list)
+            or len(schema_labels) < 2
+            or any(not isinstance(label, str) or not label for label in schema_labels)
+            or len(set(schema_labels)) != len(schema_labels)
+        ):
+            raise ValueError("multiclass schema labels must contain at least two unique non-empty strings")
         labels = [prediction.event_label for prediction in output.predictions]
-        if len(set(labels)) != len(labels):
-            raise ValueError("multiclass event_label values must be unique")
+        if len(labels) != len(schema_labels) or set(labels) != set(schema_labels):
+            raise ValueError("multiclass prediction event_label set must exactly match schema labels")
         if not math.isclose(sum(prediction.probability for prediction in output.predictions), 1.0, rel_tol=0.0, abs_tol=1e-9):
             raise ValueError("multiclass probabilities must sum to 1")
-        if observed not in labels:
-            raise ValueError("observed label must be one of the predicted categories")
+        if observed not in schema_labels:
+            raise ValueError("observed label must be one of the schema labels")
+        probabilities = {prediction.event_label: prediction.probability for prediction in output.predictions}
         mean_brier = sum(
-            (prediction.probability - float(prediction.event_label == observed)) ** 2
-            for prediction in output.predictions
-        ) / len(output.predictions)
+            (probabilities[label] - float(label == observed)) ** 2
+            for label in schema_labels
+        ) / len(schema_labels)
         observed_prediction = next(prediction for prediction in output.predictions if prediction.event_label == observed)
         return _base_record(
             output,

@@ -46,3 +46,20 @@
    - 结果：`60 passed in 0.57s`。
 5. 格式验证：`git diff --check`
    - 结果：退出码 0。
+
+## 最后定向修复：schema 闭环
+
+- `multiclass_probability` 强制 `label_schema.labels` 为至少两个唯一、非空字符串；预测类别集合必须与 schema 严格相等，observed 必须属于 schema，并按 schema 全类别计算 mean Brier。
+- `binary_probability` 强制 schema 同时提供互异的非空字符串 `positive_label`、`negative_label`；observed 仅允许精确等于二者之一。
+- 新增缺失 labels、少类、schema 外类、重复/空类别，以及 binary 缺 key、None、同值、空值测试。
+
+### 最后修复 TDD 与回归证据
+
+1. RED：`python -m pytest tests/evaluation/test_scoring.py -q`
+   - 结果：`13 failed, 28 passed`；失败均对应缺失的 schema 完整性与集合闭环校验。
+2. GREEN：`python -m pytest tests/evaluation/test_scoring.py -q`
+   - 结果：`41 passed in 0.12s`。
+3. 全 evaluation 回归：`python -m pytest tests/evaluation -q`
+   - 结果：`73 passed in 0.57s`。
+4. 格式验证：`git diff --check`
+   - 结果：退出码 0。

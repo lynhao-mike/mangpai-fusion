@@ -21,12 +21,15 @@ def _task(
     *,
     quantifiable: bool = True,
     high_risk: bool = False,
+    label_schema: dict[str, object] | None = None,
 ) -> BlindTask:
     schema = {"type": "boolean", "positive_label": "observed", "negative_label": "not_observed"} if quantifiable else {}
     if scoring_method == "ordinal":
         schema = {"type": "ordinal", "labels": ["low", "medium", "high"]}
     elif scoring_method == "multiclass_probability":
         schema = {"type": "categorical", "labels": ["academic", "vocational", "mixed"]}
+    if label_schema is not None:
+        schema = label_schema
     return BlindTask(
         task_id="test.task",
         domain="test",
@@ -230,15 +233,71 @@ def test_multiclass_probability_uses_complete_mean_brier_score() -> None:
 @pytest.mark.parametrize(
     "predictions,label,error",
     [
-        ([_prediction(1.0, event_label="academic")], "academic", "at least two"),
-        ([_prediction(0.5, event_label="academic"), _prediction(0.5, event_label="academic")], "academic", "unique"),
-        ([_prediction(0.6, event_label="academic"), _prediction(0.5, event_label="vocational")], "academic", "sum"),
-        ([_prediction(0.5, event_label="academic"), _prediction(0.5, event_label="vocational")], "mixed", "observed label"),
+        ([_prediction(1.0, event_label="academic")], "academic", "schema labels"),
+        ([_prediction(0.5, event_label="academic"), _prediction(0.5, event_label="academic")], "academic", "schema labels"),
+        (
+            [_prediction(0.6, event_label="academic"), _prediction(0.3, event_label="vocational"), _prediction(0.2, event_label="mixed")],
+            "academic",
+            "sum",
+        ),
+        (
+            [_prediction(0.5, event_label="academic"), _prediction(0.3, event_label="vocational"), _prediction(0.2, event_label="mixed")],
+            "outside",
+            "observed label",
+        ),
     ],
 )
 def test_multiclass_probability_validates_protocol(predictions: list[BlindPrediction], label: str, error: str) -> None:
     with pytest.raises(ValueError, match=error):
         score_output(_output(predictions=predictions), _task("multiclass_probability"), _label(label))
+
+
+@pytest.mark.parametrize(
+    "schema",
+    [
+        {"type": "categorical"},
+        {"type": "categorical", "labels": ["academic"]},
+        {"type": "categorical", "labels": ["academic", "academic"]},
+        {"type": "categorical", "labels": ["academic", ""]},
+    ],
+)
+def test_multiclass_probability_rejects_invalid_schema_labels(schema: dict[str, object]) -> None:
+    predictions = [_prediction(0.5, event_label="academic"), _prediction(0.5, event_label="vocational")]
+    with pytest.raises(ValueError, match="schema labels"):
+        score_output(_output(predictions=predictions), _task("multiclass_probability", label_schema=schema), _label("academic"))
+
+
+@pytest.mark.parametrize(
+    "predictions",
+    [
+        [_prediction(1.0, event_label="academic")],
+        [
+            _prediction(0.5, event_label="academic"),
+            _prediction(0.25, event_label="vocational"),
+            _prediction(0.25, event_label="outside"),
+        ],
+    ],
+)
+def test_multiclass_probability_requires_predictions_to_match_schema_exactly(predictions: list[BlindPrediction]) -> None:
+    with pytest.raises(ValueError, match="schema labels"):
+        score_output(_output(predictions=predictions), _task("multiclass_probability"), _label("academic"))
+
+
+@pytest.mark.parametrize(
+    "schema",
+    [
+        {"type": "boolean", "negative_label": "not_observed"},
+        {"type": "boolean", "positive_label": "observed"},
+        {"type": "boolean", "positive_label": None, "negative_label": "not_observed"},
+        {"type": "boolean", "positive_label": "observed", "negative_label": None},
+        {"type": "boolean", "positive_label": "same", "negative_label": "same"},
+        {"type": "boolean", "positive_label": "", "negative_label": "not_observed"},
+        {"type": "boolean", "positive_label": "observed", "negative_label": ""},
+    ],
+)
+def test_binary_probability_rejects_invalid_label_schema(schema: dict[str, object]) -> None:
+    with pytest.raises(ValueError, match="binary label schema"):
+        score_output(_output(), _task(label_schema=schema), _label("observed"))
 
 
 @pytest.mark.parametrize("observed", [True, 2021.0, "2021"])
