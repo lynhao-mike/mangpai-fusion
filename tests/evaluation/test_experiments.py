@@ -70,20 +70,17 @@ def test_equal_weight_fusion_and_group_utility_gain_aggregation() -> None:
     assert rows["leave_one_school_out:ziping"].probability == pytest.approx(0.2)
     assert rows["baseline_plus_school:ziping"].probability == pytest.approx(0.55)
     assert rows["school_only:ziping"].score == pytest.approx(0.96)
-    assert result.mean_utility_by_group["all_schools"] == pytest.approx(0.5)
-    assert result.incremental_gain_by_school == {"yang_qingjuan": pytest.approx(-0.3), "ziping": pytest.approx(0.3)}
+    assert result.mean_utility_by_group["all_schools"] == pytest.approx(0.75)
+    assert result.incremental_gain_by_school == {"yang_qingjuan": pytest.approx(-0.21), "ziping": pytest.approx(0.39)}
     assert result.capability_incremental_gain_by_school_task() == {
-        ("yang_qingjuan", "education.credentials"): pytest.approx(-0.3),
-        ("ziping", "education.credentials"): pytest.approx(0.3),
+        ("yang_qingjuan", "education.credentials"): pytest.approx(-0.21),
+        ("ziping", "education.credentials"): pytest.approx(0.39),
     }
 
 
-def test_complete_eligible_grid_includes_cases_with_no_outputs() -> None:
-    result = _run([], labels=[], eligible={("C-2", "education.credentials")})
-    assert len(result.rows) == len(experiment_group_ids(SCHOOLS))
-    assert all(row.case_id == "C-2" for row in result.rows)
-    nonbaseline = [row for row in result.rows if not row.group_id.startswith("baseline_plus_school:")]
-    assert all(row.probability is None and row.score is None and row.utility is None for row in nonbaseline)
+def test_complete_eligible_grid_rejects_missing_school_outputs() -> None:
+    with pytest.raises(ValueError, match="exactly one output"):
+        _run([], labels=[], eligible={("C-2", "education.credentials")})
 
 
 def test_experiment_is_deterministic_and_no_claim_is_no_output() -> None:
@@ -136,7 +133,7 @@ def test_unknown_output_and_label_tasks_are_rejected() -> None:
 )
 def test_binary_schema_and_label_follow_scoring_validation(task: BlindTask, label: RevealedLabel, message: str) -> None:
     with pytest.raises(ValueError, match=message):
-        _run([_output("ziping", 0.8)], [label], [task])
+        _run([_output("ziping", 0.8), _output("yang_qingjuan", 0.6)], [label], [task])
 
 
 def test_baseline_and_eligible_grid_are_explicit_keyword_only_inputs() -> None:

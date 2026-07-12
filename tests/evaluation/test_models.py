@@ -146,7 +146,7 @@ def test_all_persisted_contracts_round_trip_without_aliasing() -> None:
 
     task_data = task.to_dict()
     task_data["label_schema"]["values"].append("mutated")
-    assert task.label_schema == {"values": [True, False]}
+    assert task.to_dict()["label_schema"] == {"values": [True, False]}
     label_data = label.to_dict()
     label_data["label"]["changed"] = False
     assert label.label == {"changed": True}

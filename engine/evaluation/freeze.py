@@ -68,6 +68,24 @@ def verify_frozen_run(run: FrozenBlindRun) -> None:
 def reveal_labels(run: FrozenBlindRun, labels_path: Path) -> list[RevealedLabel]:
     verify_frozen_run(run)
     document = json.loads(labels_path.read_text(encoding="utf-8"))
-    if document.get("freeze_hash") != run.freeze_hash:
+    if not isinstance(document, dict) or set(document) != {"schema_version", "freeze_hash", "labels"}:
+        raise ValueError("labels document must contain exactly schema_version, freeze_hash, and labels")
+    if document["schema_version"] != "school-capability-labels/v1":
+        raise ValueError("labels schema_version must be school-capability-labels/v1")
+    if document["freeze_hash"] != run.freeze_hash:
         raise ValueError("labels freeze_hash does not match frozen run")
-    return [RevealedLabel.from_dict(item) for item in document.get("labels", [])]
+    raw_labels = document["labels"]
+    if not isinstance(raw_labels, list):
+        raise ValueError("labels must be a list")
+    required = {"case_id", "task_id", "label", "observed_at", "source", "confidence_grade", "quantifiable", "conflict_state"}
+    labels = []
+    seen = set()
+    for item in raw_labels:
+        if not isinstance(item, dict) or set(item) != required:
+            raise ValueError("label record has invalid schema")
+        identity = item["case_id"], item["task_id"]
+        if identity in seen:
+            raise ValueError("duplicate label identity")
+        seen.add(identity)
+        labels.append(RevealedLabel.from_dict(item))
+    return labels

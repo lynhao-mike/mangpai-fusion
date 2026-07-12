@@ -75,7 +75,21 @@ def _evaluation_config() -> dict:
     }
 
 
-def _write_score_inputs(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
+def _manifest() -> dict:
+    return {
+        "schema_version": "school-capability-case-manifest/v1",
+        "generated_at": "2026-07-12T00:00:00Z",
+        "expected_schools": ["ziping"],
+        "records": [{
+            "case_id": "C-TEST-001", "has_input": True, "has_feedback": True,
+            "has_statement_index": False, "has_existing_report": False,
+            "feedback_quantifiable": True, "contamination_flags": [],
+            "eligibility": "blind_candidate", "evidence_notes": [],
+        }],
+    }
+
+
+def _write_score_inputs(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path]:
     run = freeze_outputs([_output()], "tasks-v1", "rules-v1")
     frozen_path = tmp_path / "frozen.json"
     frozen_path.write_text(json.dumps(run.to_dict()), encoding="utf-8")
@@ -93,7 +107,9 @@ def _write_score_inputs(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
     tasks_path.write_text(json.dumps(_task_document()), encoding="utf-8")
     config_path = tmp_path / "evaluation-config.json"
     config_path.write_text(json.dumps(_evaluation_config()), encoding="utf-8")
-    return frozen_path, labels_path, tasks_path, config_path
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()), encoding="utf-8")
+    return frozen_path, labels_path, tasks_path, config_path, manifest_path
 
 
 def test_cli_audit_writes_manifest_without_mutating_cases(tmp_path: Path) -> None:
@@ -153,9 +169,12 @@ def test_cli_score_verifies_frozen_run_before_reading_labels(tmp_path: Path) -> 
 
     config_path = tmp_path / "config.json"
     config_path.write_text(json.dumps(_evaluation_config()), encoding="utf-8")
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()), encoding="utf-8")
     result = _run(
         "score",
         "--frozen-run", str(frozen_path),
+        "--manifest", str(manifest_path),
         "--labels", str(tmp_path / "missing-labels.json"),
         "--tasks", "mapping/school-capability-task-catalog-v1.yaml",
         "--evaluation-config", str(config_path),
@@ -168,11 +187,11 @@ def test_cli_score_verifies_frozen_run_before_reading_labels(tmp_path: Path) -> 
 
 
 def test_cli_score_binary_json_contract_is_explicit_and_computed(tmp_path: Path) -> None:
-    frozen_path, labels_path, tasks_path, config_path = _write_score_inputs(tmp_path)
+    frozen_path, labels_path, tasks_path, config_path, manifest_path = _write_score_inputs(tmp_path)
     output = tmp_path / "scores.json"
 
     result = _run(
-        "score", "--frozen-run", str(frozen_path), "--labels", str(labels_path),
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path), "--labels", str(labels_path),
         "--tasks", str(tasks_path), "--evaluation-config", str(config_path), "--out", str(output),
     )
 

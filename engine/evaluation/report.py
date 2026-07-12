@@ -17,11 +17,20 @@ def render_capability_report(
     manifest_summary: Mapping[str, int],
     experiment_summary: Mapping[str, Any],
     posteriors: Sequence[Mapping[str, Any] | object],
+    *,
+    gate_evidence: Mapping[str, bool] | None = None,
 ) -> str:
     """Render a cautious baseline view; it never promotes production expertise."""
     posterior_rows = [item if isinstance(item, Mapping) else item.to_dict() for item in posteriors]
     all_below_threshold = all(float(item.get("n_eff", 0.0)) < _INITIAL_REVIEW_N_EFF for item in posterior_rows)
-    recommendation = "HOLD" if all_below_threshold else "GO（仅进入人工复核，不进入生产校准）"
+    required_gate_keys = {"manifest_complete", "eligible_grid_complete", "provenance_complete", "quality_gate_passed", "stop_condition"}
+    complete_gate = gate_evidence is not None and set(gate_evidence) == required_gate_keys and all(type(value) is bool for value in gate_evidence.values())
+    if complete_gate and gate_evidence["stop_condition"]:
+        recommendation = "STOP"
+    elif complete_gate and all(gate_evidence[key] for key in required_gate_keys - {"stop_condition"}):
+        recommendation = "READY_FOR_MANUAL_REVIEW"
+    else:
+        recommendation = "HOLD"
     manifest_lines = [f"- {name}: {count}" for name, count in sorted(manifest_summary.items())] or ["- 无案例记录"]
     experiment_lines: list[str] = []
     for group, summary in sorted(experiment_summary.items()):
@@ -62,7 +71,7 @@ def render_capability_report(
         "",
         "## 4. 五维能力基线",
         "按覆盖、区分度、准确度、校准与增量收益观察，不合成为生产权重。",
-        *posterior_lines,
+        "详细后验仅在下一节展示，避免重复发布。",
         "",
         "## 5. 四组增量实验",
         *experiment_lines,
@@ -77,8 +86,8 @@ def render_capability_report(
         "历史报告、已知反馈与规则开发材料可能造成标签泄漏；污染案例不得作为盲评证据。",
         "初始样本不能证明稳定专长，结论必须由独立前瞻样本证伪或复现。",
         "",
-        "## 9. GO / HOLD / STOP 建议",
+        "## 9. 评估门禁建议",
         f"**{recommendation}**",
-        "所有条件后验 N_eff 均低于初始复核门槛时默认 HOLD。" if all_below_threshold else "存在达到门槛的条件后验，仍须人工复核。",
+        "缺少完整、显式、可复核的 gate evidence 时一律 HOLD；正式出口仅允许人工复核、停止或保持。",
         "",
     ])

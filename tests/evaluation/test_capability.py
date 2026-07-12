@@ -94,7 +94,7 @@ def test_capability_uses_explicit_claim_probability_eligible_cases_weights_and_g
     assert posterior.discrimination_score == pytest.approx(0.2054804668)
     assert posterior.accuracy_score == pytest.approx((0.96 + 0.5 * 0.36) / 1.5)
     assert posterior.n_eff == pytest.approx(1.5)
-    assert posterior.posterior_mean == pytest.approx((1 + 0.96 + 0.5 * 0.36) / 3.5)
+    assert posterior.posterior_mean == pytest.approx((1 + 1.5) / 3.5)
     assert posterior.incremental_gain == pytest.approx(0.125)
 
 

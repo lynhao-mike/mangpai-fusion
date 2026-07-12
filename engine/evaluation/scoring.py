@@ -167,7 +167,7 @@ def score_output(
     if task.scoring_method == "multiclass_probability":
         schema_labels = task.label_schema.get("labels")
         if (
-            not isinstance(schema_labels, list)
+            not isinstance(schema_labels, (list, tuple))
             or len(schema_labels) < 2
             or any(not isinstance(label, str) or not label for label in schema_labels)
             or len(set(schema_labels)) != len(schema_labels)

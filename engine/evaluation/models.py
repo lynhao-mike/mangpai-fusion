@@ -1,16 +1,35 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field, fields
+from types import MappingProxyType
 from typing import Any, Literal, TypeVar
 
 OutputState = Literal["claim", "abstain", "unsupported"]
 _T = TypeVar("_T", bound="PersistedContract")
 
 
+def _freeze(value: Any) -> Any:
+    if isinstance(value, dict):
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze(item) for item in value)
+    return value
+
+
+def _thaw(value: Any) -> Any:
+    if isinstance(value, PersistedContract):
+        return value.to_dict()
+    if isinstance(value, MappingProxyType):
+        return {key: _thaw(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw(item) for item in value]
+    return deepcopy(value)
+
+
 class PersistedContract:
     def to_dict(self) -> dict[str, Any]:
-        return deepcopy(asdict(self))
+        return {item.name: _thaw(getattr(self, item.name)) for item in fields(self)}
 
     @classmethod
     def from_dict(cls: type[_T], data: dict[str, Any]) -> _T:
@@ -46,6 +65,9 @@ class BlindTask(PersistedContract):
         _require(self.scoring_method, "scoring_method")
         if self.quantifiable and not self.label_schema:
             raise ValueError("quantifiable task requires non-empty label_schema")
+        object.__setattr__(self, "allowed_time_horizons", _freeze(self.allowed_time_horizons))
+        object.__setattr__(self, "required_input_fields", _freeze(self.required_input_fields))
+        object.__setattr__(self, "label_schema", _freeze(self.label_schema))
 
 
 @dataclass(frozen=True)
@@ -62,6 +84,8 @@ class CaseAuditRecord(PersistedContract):
 
     def __post_init__(self) -> None:
         _require(self.case_id, "case_id")
+        object.__setattr__(self, "contamination_flags", _freeze(self.contamination_flags))
+        object.__setattr__(self, "evidence_notes", _freeze(self.evidence_notes))
 
 
 @dataclass(frozen=True)
@@ -77,6 +101,8 @@ class BlindPrediction(PersistedContract):
         _rate(self.probability, "probability")
         _require(self.event_label, "event_label")
         _require(self.falsifier, "falsifier")
+        object.__setattr__(self, "time_window", _freeze(self.time_window))
+        object.__setattr__(self, "evidence_refs", _freeze(self.evidence_refs))
 
 
 @dataclass(frozen=True)
@@ -100,6 +126,8 @@ class BlindSchoolOutput(PersistedContract):
         if self.state != "claim" and self.predictions:
             raise ValueError(f"{self.state} cannot contain predictions")
         _require(self.rationale, "rationale")
+        object.__setattr__(self, "predictions", _freeze(self.predictions))
+        object.__setattr__(self, "counter_evidence", _freeze(self.counter_evidence))
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> BlindSchoolOutput:
@@ -116,6 +144,9 @@ class FrozenBlindRun(PersistedContract):
     outputs: list[BlindSchoolOutput]
     freeze_hash: str
     schema_version: str = "school-capability-frozen-run/v1"
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "outputs", _freeze(self.outputs))
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> FrozenBlindRun:
@@ -138,6 +169,7 @@ class RevealedLabel(PersistedContract):
     def __post_init__(self) -> None:
         _require(self.case_id, "case_id")
         _require(self.task_id, "task_id")
+        object.__setattr__(self, "label", _freeze(self.label))
 
 
 @dataclass(frozen=True)

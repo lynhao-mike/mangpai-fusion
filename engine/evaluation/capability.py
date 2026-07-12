@@ -96,9 +96,15 @@ def build_capability_posteriors(
                 weight = 1.0 if score_weights is None else score_weights.get(key, 1.0)
                 weighted_scores.append((record.probability_score, weight))
 
-        hits = sum(score * weight for score, weight in weighted_scores)
+        proper_total = sum(score * weight for score, weight in weighted_scores)
         n_eff = sum(weight for _, weight in weighted_scores)
-        posterior_mean, interval = beta_posterior(hits, n_eff - hits)
+        discrete_hits = 0.0
+        for record, probability in claims_with_probabilities:
+            if record.probability_score is None or record.observed_positive is None:
+                continue
+            weight = 1.0 if score_weights is None else score_weights.get(_score_key(record), 1.0)
+            discrete_hits += weight * float(record.observed_positive == (probability >= 0.5))
+        posterior_mean, interval = beta_posterior(discrete_hits, n_eff - discrete_hits)
         raw_probabilities = [probability for _, probability in claims_with_probabilities]
         school_id, task_id, prototype, claim_type, horizon, completeness = identity
         posteriors.append(
@@ -111,7 +117,7 @@ def build_capability_posteriors(
                 evidence_completeness_band=completeness,
                 coverage_rate=len({record.case_id for record in records if record.state != "unsupported"} & eligible_set) / len(eligible_set),
                 discrimination_score=pstdev(raw_probabilities) if len(raw_probabilities) >= 2 else 0.0,
-                accuracy_score=hits / n_eff if n_eff else 0.0,
+                accuracy_score=proper_total / n_eff if n_eff else 0.0,
                 calibration_error=_calibration_error(claims_with_probabilities),
                 posterior_mean=posterior_mean,
                 credible_interval=interval,

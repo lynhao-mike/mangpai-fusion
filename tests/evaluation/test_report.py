@@ -22,7 +22,7 @@ def test_report_refuses_to_publish_permanent_expertise_language() -> None:
         "四组增量实验",
         "条件化能力后验",
         "校准与高风险误差",
-        "GO / HOLD / STOP 建议",
+        "评估门禁建议",
     ):
         assert heading in text
 
