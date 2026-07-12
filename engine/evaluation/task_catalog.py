@@ -30,6 +30,14 @@ def load_task_catalog(path: Path) -> list[BlindTask]:
     for item in items:
         if not isinstance(item, dict):
             raise ValueError("each task must be a mapping")
+        domain = item.get("domain")
+        if not isinstance(domain, str) or not domain.strip():
+            raise ValueError("domain must be a non-empty string")
+        scoring_method = item.get("scoring_method")
+        if scoring_method not in _SUPPORTED_SCORING_METHODS:
+            raise ValueError(f"unsupported scoring_method: {scoring_method}")
+        if not isinstance(item.get("label_schema"), dict):
+            raise ValueError("label_schema must be a mapping")
         task = BlindTask.from_dict(item)
         if task.task_id in seen:
             raise ValueError(f"duplicate task_id: {task.task_id}")

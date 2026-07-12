@@ -5,6 +5,34 @@ import pytest
 from engine.evaluation.task_catalog import load_task_catalog, task_by_id
 
 
+def _write_task_catalog(tmp_path: Path, **overrides: object) -> Path:
+    task = {
+        "task_id": "marriage.divorce",
+        "domain": "婚姻",
+        "claim_type": "binary_event",
+        "scoring_method": "binary_probability",
+        "quantifiable": True,
+        "high_risk": True,
+        "allowed_time_horizons": ["lifetime"],
+        "required_input_fields": ["four_pillars"],
+        "label_schema": {"type": "boolean"},
+        "evaluation_note": "test",
+        **overrides,
+    }
+    path = tmp_path / "tasks.yaml"
+    import yaml
+
+    path.write_text(
+        yaml.safe_dump(
+            {"schema_version": "school-capability-tasks/v1", "tasks": [task]},
+            allow_unicode=True,
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
 def test_catalog_has_unique_ids_and_supported_scorers() -> None:
     tasks = load_task_catalog(Path("mapping/school-capability-task-catalog-v1.yaml"))
     assert 15 <= len(tasks) <= 25
@@ -61,7 +89,29 @@ def test_catalog_rejects_duplicate_task_ids(tmp_path: Path) -> None:
         load_task_catalog(path)
 
 
+@pytest.mark.parametrize("domain", ["", None, 42])
+def test_catalog_rejects_empty_null_or_non_string_domain(tmp_path: Path, domain: object) -> None:
+    with pytest.raises(ValueError, match="domain must be a non-empty string"):
+        load_task_catalog(_write_task_catalog(tmp_path, domain=domain))
+
+
+def test_catalog_rejects_unsupported_scorer(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="unsupported scoring_method: made_up_scorer"):
+        load_task_catalog(_write_task_catalog(tmp_path, scoring_method="made_up_scorer"))
+
+
+def test_catalog_rejects_non_mapping_label_schema(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="label_schema must be a mapping"):
+        load_task_catalog(_write_task_catalog(tmp_path, label_schema=["truthy"]))
+
+
 def test_task_by_id_indexes_tasks() -> None:
     tasks = load_task_catalog(Path("mapping/school-capability-task-catalog-v1.yaml"))
     indexed = task_by_id(tasks)
     assert indexed["marriage.late_marriage"] is tasks[0]
+
+
+def test_task_by_id_rejects_duplicate_ids() -> None:
+    task = load_task_catalog(Path("mapping/school-capability-task-catalog-v1.yaml"))[0]
+    with pytest.raises(ValueError, match=f"duplicate task_id: {task.task_id}"):
+        task_by_id([task, task])
