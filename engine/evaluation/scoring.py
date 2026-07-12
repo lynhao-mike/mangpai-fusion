@@ -32,6 +32,8 @@ def time_window_score(predicted: dict[str, int], observed_year: int) -> float:
     end = predicted.get("end_year")
     if type(start) is not int or type(end) is not int or start > end:
         raise ValueError("window requires integer start_year <= end_year")
+    if type(observed_year) is not int:
+        raise ValueError("observed_year must be an integer")
     if start <= observed_year <= end:
         return 1.0
     distance = start - observed_year if observed_year < start else observed_year - end
@@ -39,6 +41,8 @@ def time_window_score(predicted: dict[str, int], observed_year: int) -> float:
 
 
 def ordinal_score(predicted_rank: int, observed_rank: int, max_rank: int) -> float:
+    if any(type(value) is not int for value in (predicted_rank, observed_rank, max_rank)):
+        raise ValueError("predicted_rank, observed_rank, and max_rank must be integers")
     if max_rank <= 1:
         raise ValueError("max_rank must be greater than 1")
     if not 1 <= predicted_rank <= max_rank or not 1 <= observed_rank <= max_rank:
@@ -46,8 +50,23 @@ def ordinal_score(predicted_rank: int, observed_rank: int, max_rank: int) -> flo
     return 1.0 - abs(predicted_rank - observed_rank) / (max_rank - 1)
 
 
-def _valid_label(label: RevealedLabel | None, task: BlindTask) -> bool:
-    return label is not None and label.case_id.strip() != "" and label.task_id == task.task_id
+def _validate_label_identity(label: RevealedLabel | None, output: BlindSchoolOutput, task: BlindTask) -> bool:
+    if label is None:
+        return False
+    if label.case_id != output.case_id:
+        raise ValueError("label and output case_id must match")
+    if label.task_id != output.task_id or output.task_id != task.task_id:
+        raise ValueError("label, output, and task task_id must match")
+    return True
+
+
+def _require_prediction_count(output: BlindSchoolOutput, minimum: int, maximum: int | None = None) -> None:
+    count = len(output.predictions)
+    if count < minimum:
+        quantity = "two" if minimum == 2 else str(minimum)
+        raise ValueError(f"scoring method requires at least {quantity} predictions")
+    if maximum is not None and count > maximum:
+        raise ValueError("scoring method requires exactly one prediction")
 
 
 def _base_record(output: BlindSchoolOutput, task: BlindTask, **scores: Any) -> ScoreRecord:
@@ -70,7 +89,7 @@ def score_output(
 ) -> ScoreRecord:
     if output.task_id != task.task_id:
         raise ValueError("output and task task_id must match")
-    label_is_valid = _valid_label(labels, task)
+    label_is_valid = _validate_label_identity(labels, output, task)
 
     if output.state == "unsupported":
         return _base_record(output, task)
@@ -80,18 +99,30 @@ def score_output(
     if not label_is_valid or labels is None:
         return _base_record(output, task)
 
-    prediction = output.predictions[0]
     observed = labels.label
     if task.scoring_method == "portrait_agreement":
-        agreement = float(observed)
-        if not 0.0 <= agreement <= 1.0:
-            raise ValueError("portrait agreement must be between 0 and 1")
+        _require_prediction_count(output, 1, 1)
+        if type(observed) in (int, float):
+            agreement = float(observed)
+            if not 0.0 <= agreement <= 1.0:
+                raise ValueError("portrait agreement must be between 0 and 1")
+        else:
+            agreement = float(output.predictions[0].event_label == observed)
         return _base_record(output, task, portrait_agreement=agreement)
     if not task.quantifiable or not labels.quantifiable:
         return _base_record(output, task)
 
     if task.scoring_method == "binary_probability":
-        observed_positive = bool(observed)
+        _require_prediction_count(output, 1, 1)
+        prediction = output.predictions[0]
+        positive_label = task.label_schema.get("positive_label")
+        negative_label = task.label_schema.get("negative_label")
+        if observed == positive_label:
+            observed_positive = True
+        elif observed == negative_label:
+            observed_positive = False
+        else:
+            raise ValueError("binary label must match positive_label or negative_label")
         accuracy = 1.0 - brier_score(prediction.probability, observed_positive)
         utility = prediction.probability if observed_positive else -prediction.probability
         if task.high_risk and not observed_positive:
@@ -104,8 +135,13 @@ def score_output(
             observed_positive=observed_positive,
         )
     if task.scoring_method == "time_window":
-        return _base_record(output, task, timing_score=time_window_score(prediction.time_window, int(observed)))
+        _require_prediction_count(output, 1, 1)
+        if type(observed) is not int:
+            raise ValueError("observed_year must be an integer")
+        return _base_record(output, task, timing_score=time_window_score(output.predictions[0].time_window, observed))
     if task.scoring_method == "ordinal":
+        _require_prediction_count(output, 1, 1)
+        prediction = output.predictions[0]
         labels_in_order = task.label_schema.get("labels", [])
         try:
             predicted_rank = labels_in_order.index(prediction.event_label) + 1
@@ -118,16 +154,24 @@ def score_output(
             ordinal_score=ordinal_score(predicted_rank, observed_rank, len(labels_in_order)),
         )
     if task.scoring_method == "multiclass_probability":
-        observed_positive = prediction.event_label == observed
-        accuracy = 1.0 - brier_score(prediction.probability, observed_positive)
-        utility = prediction.probability if observed_positive else -prediction.probability
-        if task.high_risk and not observed_positive:
-            utility *= HIGH_RISK_FALSE_POSITIVE_MULTIPLIER
+        _require_prediction_count(output, 2)
+        labels = [prediction.event_label for prediction in output.predictions]
+        if len(set(labels)) != len(labels):
+            raise ValueError("multiclass event_label values must be unique")
+        if not math.isclose(sum(prediction.probability for prediction in output.predictions), 1.0, rel_tol=0.0, abs_tol=1e-9):
+            raise ValueError("multiclass probabilities must sum to 1")
+        if observed not in labels:
+            raise ValueError("observed label must be one of the predicted categories")
+        mean_brier = sum(
+            (prediction.probability - float(prediction.event_label == observed)) ** 2
+            for prediction in output.predictions
+        ) / len(output.predictions)
+        observed_prediction = next(prediction for prediction in output.predictions if prediction.event_label == observed)
         return _base_record(
             output,
             task,
-            probability_score=accuracy,
-            utility=utility,
-            observed_positive=observed_positive,
+            probability_score=round(1.0 - mean_brier, 12),
+            utility=observed_prediction.probability,
+            observed_positive=True,
         )
     raise ValueError(f"unsupported scoring method: {task.scoring_method}")
