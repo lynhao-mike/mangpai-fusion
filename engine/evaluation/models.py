@@ -163,6 +163,8 @@ class ScoreRecord(PersistedContract):
         _require(self.case_id, "case_id")
         _require(self.school_id, "school_id")
         _require(self.task_id, "task_id")
+        if self.state not in ("claim", "abstain", "unsupported"):
+            raise ValueError("state must be claim, abstain, or unsupported")
         for name in ("probability_score", "timing_score", "ordinal_score", "portrait_agreement"):
             _rate(getattr(self, name), name)
 

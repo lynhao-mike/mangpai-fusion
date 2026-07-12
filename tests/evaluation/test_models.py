@@ -152,6 +152,17 @@ def test_all_persisted_contracts_round_trip_without_aliasing() -> None:
     assert label.label == {"changed": True}
 
 
+def test_score_record_rejects_invalid_state_on_construction_and_restore() -> None:
+    values = dict(
+        case_id="C", school_id="S", task_id="T", claim_type="binary", state="invalid",
+        abstained=False, knowledge_coverage=True,
+    )
+    with pytest.raises(ValueError, match="state must be claim, abstain, or unsupported"):
+        ScoreRecord(**values)
+    with pytest.raises(ValueError, match="state must be claim, abstain, or unsupported"):
+        ScoreRecord.from_dict(values)
+
+
 def test_score_defaults_and_negative_fields_are_supported() -> None:
     score = ScoreRecord(
         case_id="C", school_id="S", task_id="T", claim_type="binary", state="abstain",
