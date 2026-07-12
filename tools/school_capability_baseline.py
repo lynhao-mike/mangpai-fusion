@@ -4,24 +4,30 @@ JSON contracts used by this phase:
 - freeze --outputs: {"schema_version":"school-capability-outputs/v1","outputs":[BlindSchoolOutput...]}
 - freeze --tasks: {"task_catalog_version":"..."}
 - freeze --rule-snapshot: {"rule_snapshot_id":"..."}
-- score --tasks: {"schema_version":"school-capability-cli-tasks/v1","tasks":[BlindTask...],
-  "eligible_case_tasks":[[case_id,task_id]...],"score_weights":{"case|task|school":0|0.5|1}}
-- score output: binary_probability tasks only, with explicit eligible grid, claim probabilities and weights.
-- report --scores accepts the score output plus optional experiment_summary and posteriors.
+- score --tasks: {"schema_version":"school-capability-cli-tasks/v1","tasks":[BlindTask...]}
+- score --evaluation-config: explicit eligible grid, development baseline prevalence, six-dimensional
+  case/output metadata, evidence grade, evaluation time, and 0/0.5/1 score weights.
+- score output: computed individual scores, four-group rows/summary, gains, and posteriors.
+- report --scores requires computed posteriors (an explicitly computed empty list is valid).
 
 This tool audits and evaluates fixtures/artifacts. It never calibrates production rules or weights.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import tempfile
-from collections import Counter
+from collections import Counter, defaultdict
+from dataclasses import replace
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from engine.evaluation.capability import build_capability_posteriors
 from engine.evaluation.case_audit import audit_cases
+from engine.evaluation.experiments import run_four_group_experiment
 from engine.evaluation.freeze import freeze_outputs, reveal_labels, verify_frozen_run
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, CapabilityPosterior, FrozenBlindRun
 from engine.evaluation.report import render_capability_report
@@ -40,14 +46,17 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def _safe_output(path: Path) -> Path:
+    if path.is_symlink():
+        raise ValueError(f"output target must not be a symlink: {path}")
     resolved = path.resolve()
     if resolved in _FORBIDDEN_FILES or any(resolved == directory or directory in resolved.parents for directory in _FORBIDDEN_DIRS):
         raise ValueError(f"forbidden output path: {resolved}")
     return resolved
 
 
-def _atomic_write(path: Path, content: str) -> None:
-    target = _safe_output(path)
+def _atomic_write(target: Path, content: str) -> None:
+    if not target.is_absolute():
+        raise ValueError("atomic writer requires a validated absolute path")
     target.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(prefix=f".{target.name}.", suffix=".tmp", dir=target.parent)
     try:
@@ -55,6 +64,8 @@ def _atomic_write(path: Path, content: str) -> None:
             stream.write(content)
             stream.flush()
             os.fsync(stream.fileno())
+        if target.is_symlink() or target.parent.resolve() != target.parent:
+            raise ValueError("output path changed or became a symlink before replace")
         os.replace(temporary, target)
     except BaseException:
         try:
@@ -74,18 +85,21 @@ def _require_schema(document: dict[str, Any], expected: str) -> None:
 
 
 def _audit(args: argparse.Namespace) -> None:
+    target = _safe_output(Path(args.out))
     cases_dir = Path(args.cases_dir)
     reports_dir = Path(args.reports_dir)
     if not cases_dir.is_dir() or not reports_dir.is_dir():
         raise ValueError("cases-dir and reports-dir must be existing directories")
     records = audit_cases(cases_dir, reports_dir)
-    _write_json(Path(args.out), {
+    _write_json(target, {
         "schema_version": "school-capability-case-manifest/v1",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "records": [record.to_dict() for record in records],
     })
 
 
 def _freeze(args: argparse.Namespace) -> None:
+    target = _safe_output(Path(args.out))
     outputs_doc = _read_json(Path(args.outputs))
     _require_schema(outputs_doc, "school-capability-outputs/v1")
     raw_outputs = outputs_doc.get("outputs")
@@ -97,8 +111,11 @@ def _freeze(args: argparse.Namespace) -> None:
     snapshot_id = snapshot_doc.get("rule_snapshot_id")
     if not isinstance(task_version, str) or not task_version or not isinstance(snapshot_id, str) or not snapshot_id:
         raise ValueError("task_catalog_version and rule_snapshot_id must be non-empty strings")
-    run = freeze_outputs([BlindSchoolOutput.from_dict(item) for item in raw_outputs], task_version, snapshot_id)
-    _write_json(Path(args.out), run.to_dict())
+    canonical = lambda document: json.dumps(document, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    task_identity = f"{task_version}@sha256:{hashlib.sha256(canonical(tasks_doc)).hexdigest()}"
+    snapshot_identity = f"{snapshot_id}@sha256:{hashlib.sha256(canonical(snapshot_doc)).hexdigest()}"
+    run = freeze_outputs([BlindSchoolOutput.from_dict(item) for item in raw_outputs], task_identity, snapshot_identity)
+    _write_json(target, run.to_dict())
 
 
 def _parse_key(key: str) -> tuple[str, str, str]:
@@ -109,14 +126,17 @@ def _parse_key(key: str) -> tuple[str, str, str]:
 
 
 def _score(args: argparse.Namespace) -> None:
+    target = _safe_output(Path(args.out))
     run = FrozenBlindRun.from_dict(_read_json(Path(args.frozen_run)))
     verify_frozen_run(run)  # Identity/freeze gate must precede any labels file access.
     labels = reveal_labels(run, Path(args.labels))
     tasks_doc = _read_json(Path(args.tasks))
     _require_schema(tasks_doc, "school-capability-cli-tasks/v1")
+    config = _read_json(Path(args.evaluation_config))
+    _require_schema(config, "school-capability-evaluation-config/v1")
     raw_tasks = tasks_doc.get("tasks")
-    raw_grid = tasks_doc.get("eligible_case_tasks")
-    raw_weights = tasks_doc.get("score_weights")
+    raw_grid = config.get("eligible_case_tasks")
+    raw_weights = config.get("score_weights")
     if not isinstance(raw_tasks, list) or not isinstance(raw_grid, list) or not isinstance(raw_weights, dict):
         raise ValueError("tasks, eligible_case_tasks, and score_weights are required")
     tasks = [BlindTask.from_dict(item) for item in raw_tasks]
@@ -140,7 +160,30 @@ def _score(args: argparse.Namespace) -> None:
     if len(label_map) != len(labels):
         raise ValueError("duplicate label identity")
     grid_set = set(grid)
+    unknown_grid_tasks = {task_id for _, task_id in grid if task_id not in task_map}
+    if unknown_grid_tasks:
+        raise ValueError(f"unknown task in eligible grid: {sorted(unknown_grid_tasks)[0]}")
+    if any((label.case_id, label.task_id) not in grid_set for label in labels):
+        raise ValueError("label is outside eligible grid")
+    output_keys = {(output.case_id, output.task_id, output.school_id) for output in run.outputs}
+    if len(output_keys) != len(run.outputs):
+        raise ValueError("duplicate output identity")
+    if any((case_id, task_id) not in grid_set or task_id not in task_map for case_id, task_id, _ in weights):
+        raise ValueError("score weight references grid outside or unknown task")
+    if any(key not in output_keys for key in weights):
+        raise ValueError("score weight references nonexistent output")
+    metadata = config.get("case_metadata")
+    baseline = config.get("baseline_prevalence_by_task")
+    evidence_grade, evaluated_at = config.get("evidence_grade"), config.get("evaluated_at")
+    if not isinstance(metadata, dict) or not isinstance(baseline, dict) or not isinstance(evidence_grade, str) or not evidence_grade or not isinstance(evaluated_at, str) or not evaluated_at:
+        raise ValueError("case_metadata, baseline_prevalence_by_task, evidence_grade, and evaluated_at are required")
+    metadata_keys = {_parse_key(key) for key in metadata}
+    if metadata_keys != output_keys:
+        raise ValueError("case_metadata must exactly cover frozen outputs")
+    if set(baseline) != {task_id for _, task_id in grid}:
+        raise ValueError("baseline_prevalence_by_task must exactly cover eligible tasks")
     scores = []
+    score_objects = []
     probabilities: dict[str, float] = {}
     for output in run.outputs:
         identity = (output.case_id, output.task_id)
@@ -148,26 +191,43 @@ def _score(args: argparse.Namespace) -> None:
             raise ValueError(f"output is outside eligible grid: {identity}")
         if output.task_id not in task_map:
             raise ValueError(f"unknown task: {output.task_id}")
-        score = score_output(output, task_map[output.task_id], label_map.get(identity))
+        key = (output.case_id, output.task_id, output.school_id)
+        raw_metadata = metadata.get("|".join(key))
+        if not isinstance(raw_metadata, dict) or any(not isinstance(raw_metadata.get(name), str) or not raw_metadata[name] for name in ("chart_prototype_id", "time_horizon", "evidence_completeness_band")):
+            raise ValueError(f"missing six-dimensional metadata for {key}")
+        score = replace(score_output(output, task_map[output.task_id], label_map.get(identity)), **raw_metadata)
+        score_objects.append(score)
         scores.append(score.to_dict())
         if output.state == "claim":
             if len(output.predictions) != 1:
                 raise ValueError("binary score input requires exactly one prediction")
             probabilities["|".join((output.case_id, output.task_id, output.school_id))] = output.predictions[0].probability
-    _write_json(Path(args.out), {
-        "schema_version": "school-capability-scores/v1",
-        "freeze_hash": run.freeze_hash,
-        "eligible_case_tasks": [list(item) for item in sorted(grid)],
-        "scores": scores,
+    schools = sorted({output.school_id for output in run.outputs})
+    experiment = run_four_group_experiment(run.outputs, labels, tasks, schools, eligible_case_tasks=grid, baseline_prevalence=baseline)
+    gains_by_school_task = experiment.capability_incremental_gain_by_school_task()
+    eligible_by_identity: dict[tuple[str, str, str, str, str, str], set[str]] = defaultdict(set)
+    gains_by_identity = {}
+    for score in score_objects:
+        identity6 = (score.school_id, score.task_id, score.chart_prototype_id, score.claim_type, score.time_horizon, score.evidence_completeness_band)
+        eligible_by_identity[identity6].update(case_id for case_id, task_id in grid if task_id == score.task_id)
+        gains_by_identity[identity6] = gains_by_school_task.get((score.school_id, score.task_id), 0.0)
+    probability_map = {_parse_key(key): value for key, value in probabilities.items()}
+    posteriors = build_capability_posteriors(score_objects, evidence_grade, evaluated_at, claim_probabilities=probability_map, eligible_case_ids=eligible_by_identity, score_weights=weights, incremental_gains=gains_by_identity)
+    rows = [row.__dict__ for row in experiment.rows]
+    serialized_gains = {"|".join(identity): value for identity, value in sorted(gains_by_identity.items())}
+    _write_json(target, {
+        "schema_version": "school-capability-scores/v1", "freeze_hash": run.freeze_hash,
+        "eligible_case_tasks": [list(item) for item in sorted(grid)], "scores": scores,
         "claim_probabilities": dict(sorted(probabilities.items())),
         "score_weights": {"|".join(key): value for key, value in sorted(weights.items())},
-        "incremental_gains": {},
-        "experiment_summary": {},
-        "posteriors": [],
+        "experiment_rows": rows, "experiment_summary": dict(experiment.mean_utility_by_group),
+        "incremental_gains": serialized_gains, "posteriors_computed": True,
+        "posteriors": [posterior.to_dict() for posterior in posteriors],
     })
 
 
 def _report(args: argparse.Namespace) -> None:
+    target = _safe_output(Path(args.out))
     scores_doc = _read_json(Path(args.scores))
     _require_schema(scores_doc, "school-capability-scores/v1")
     manifest_doc = _read_json(Path(args.manifest))
@@ -176,15 +236,17 @@ def _report(args: argparse.Namespace) -> None:
     if not isinstance(records, list):
         raise ValueError("manifest records must be a list")
     summary = Counter(record.get("eligibility", "unknown") for record in records if isinstance(record, dict))
-    raw_posteriors = scores_doc.get("posteriors", [])
-    if not isinstance(raw_posteriors, list):
-        raise ValueError("posteriors must be a list")
+    if "posteriors" not in scores_doc or not isinstance(scores_doc["posteriors"], list):
+        raise ValueError("posteriors must be present and be a list")
+    raw_posteriors = scores_doc["posteriors"]
+    if not raw_posteriors and scores_doc.get("posteriors_computed") is not True:
+        raise ValueError("empty posteriors require posteriors_computed: true")
     posteriors = [CapabilityPosterior.from_dict(item) for item in raw_posteriors]
     experiment_summary = scores_doc.get("experiment_summary", {})
     if not isinstance(experiment_summary, dict):
         raise ValueError("experiment_summary must be an object")
     text = render_capability_report(summary, experiment_summary, posteriors)
-    _atomic_write(Path(args.out), text)
+    _atomic_write(target, text)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -205,6 +267,7 @@ def _parser() -> argparse.ArgumentParser:
     score.add_argument("--frozen-run", required=True)
     score.add_argument("--labels", required=True)
     score.add_argument("--tasks", required=True)
+    score.add_argument("--evaluation-config", required=True)
     score.add_argument("--out", required=True)
     score.set_defaults(handler=_score)
     report = commands.add_parser("report")

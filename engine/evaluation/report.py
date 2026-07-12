@@ -33,14 +33,20 @@ def render_capability_report(
     if not experiment_lines:
         experiment_lines.append("- 尚无可发布的实验结果")
     posterior_lines = [
-        "- {school}/{task}: posterior={mean}, N_eff={n_eff}, evidence={grade}".format(
-            school=item.get("school_id", "unknown"),
-            task=item.get("task_id", "unknown"),
+        "- {school}/{task}: coverage={coverage}, discrimination={discrimination}, "
+        "accuracy={accuracy}, calibration={calibration}, incremental_gain={gain}, "
+        "posterior={mean}, interval=[{low}, {high}], N_eff={n_eff}, evidence={grade}".format(
+            school=item.get("school_id", "unknown"), task=item.get("task_id", "unknown"),
+            coverage=_number(item.get("coverage_rate", "n/a")),
+            discrimination=_number(item.get("discrimination_score", "n/a")),
+            accuracy=_number(item.get("accuracy_score", "n/a")),
+            calibration=_number(item.get("calibration_error", "n/a")),
+            gain=_number(item.get("incremental_gain", "n/a")),
             mean=_number(item.get("posterior_mean", "n/a")),
-            n_eff=_number(item.get("n_eff", 0.0)),
-            grade=item.get("evidence_grade", "unknown"),
-        )
-        for item in posterior_rows
+            low=_number(item.get("credible_interval", ["n/a", "n/a"])[0]),
+            high=_number(item.get("credible_interval", ["n/a", "n/a"])[1]),
+            n_eff=_number(item.get("n_eff", 0.0)), grade=item.get("evidence_grade", "unknown"),
+        ) for item in posterior_rows
     ] or ["- 尚无条件化后验"]
     return "\n".join([
         "# 学派能力暂定能力基线",
@@ -56,6 +62,7 @@ def render_capability_report(
         "",
         "## 4. 五维能力基线",
         "按覆盖、区分度、准确度、校准与增量收益观察，不合成为生产权重。",
+        *posterior_lines,
         "",
         "## 5. 四组增量实验",
         *experiment_lines,
