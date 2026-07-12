@@ -460,3 +460,58 @@ capability_snapshot_id
 本文批准后，第一推进单元不是全面重构，而是建立流派能力评估协议与最小盲测数据包，先验证“流派专长是否真实存在、存在于什么颗粒度”。只有该能力假设获得证据后，才实现复杂的适用性路由器。
 
 具体假设、实验、阶段门禁、失败处理和迁移顺序见 [`plans/bazi-intelligence-platform-roadmap.md`](../../../plans/bazi-intelligence-platform-roadmap.md)。
+
+## 附录 A：2026-07-12 as-built 审计与评估框架落地
+
+> 本附录记录一次代码级审计的稳定结论，用于把“目标架构”与“当前真实实现”之间的差距钉死为可执行判断。附录只陈述结论性事实与由此产生的架构原则；易变的阶段状态、样本量与门禁进度仍以 [`plans/bazi-intelligence-platform-roadmap.md`](../../../plans/bazi-intelligence-platform-roadmap.md) 为准。
+
+### A.1 as-built 真实实现结论
+
+审计区分了“契约与词汇”与“真正运行的内核”，结论如下：
+
+1. **主干仍是串行管线，而非多流派并行竞争。** [`engine/application/pipeline_runner.py`](../../../engine/application/pipeline_runner.py) 的实际路径是 `energy(段) → picture(杨) → yingqi(任) → pangzheng(高) → integrate`，各派承担不同工序，彼此不就同一命题竞争或否决。这是工位流水线，不是专家会诊。
+2. **v5 五派并行是骨架，命题多为人工写入。** [`engine/v5/runner.py`](../../../engine/v5/runner.py) 自述“只建立最小闭环”；案例中的 school-claims 带有人工手写 ID 与整段命理话术（如 `v5-034-ziping-structure-001`）。据此评估准确率，评估的是人的水平而非系统能力。
+3. **理论规则以原文转录为主。** [`theory/ziping/index.yaml`](../../../theory/ziping/index.yaml)、[`theory/tiaohou_ditiansui/index.yaml`](../../../theory/tiaohou_ditiansui/index.yaml) 的 `claim` 字段是整段古籍原文；三盲派多为 `promoted` 但缺可判别 `trigger`；高派规则大量停留在 `candidate`。违反 §3.2 判别力原则。
+4. **L6 仲裁无命理逻辑。** [`engine/decision/l6_arbitration.py`](../../../engine/decision/l6_arbitration.py) 仅按置信度差距选 winner/coexist/unresolved，`arbitration_rule` 字段存的是说明性文字而非可执行逻辑；未实现 §4.7 的结构/事件/应期三段裁决。
+5. **L1 路由静态、L9 学习线性。** [`engine/decision/l1_school_router.py`](../../../engine/decision/l1_school_router.py) 的 `SCHOOL_PROFILES` 是硬编码领域分配 + 全局命中率降权；学习闭环仅做 rule/family 两级 alpha/beta 线性加减，无 §6.2 的条件化能力张量更新。
+6. **反馈数据尚未成型。** 多数案例 `feedback.md` 的标注位仍为空 `[ ]`，学习闭环缺乏真实标签燃料。
+
+### A.2 差距的四个致命项
+
+对照 §4 十层目标，以下四层是决定“能否越来越懂什么八字用什么法”的核心缺口，须优先补齐：
+
+- **L1 适用性不可学习**（最核心）：系统无法根据命局类型动态决定信谁。
+- **L2 命题非引擎推导**：命题人工写入，导致学习闭环从源头失真。
+- **L6 仲裁缺命理逻辑**：只比数字，不做分段裁决与矛盾对撞。
+- **L9 学习是“拧螺丝”非“学模型”**：线性微调规则权重，学不到条件化适用性。
+
+### A.3 评估框架已落地（合并入 main）
+
+流派能力盲测评估框架已作为第一推进单元完成并合并（见路线 §15）：
+
+- 位置 [`engine/evaluation/`](../../../engine/evaluation/) 与只读 CLI [`tools/school_capability_baseline.py`](../../../tools/school_capability_baseline.py)；
+- 覆盖盲测冻结、任务型评分、六维条件化能力后验、四组增量实验、报告门禁重算；
+- 经七任务 + 三轮整体验收，147 项 evaluation 测试通过；
+- 它是本平台**唯一的能力验收基座**：后续每个升级阶段“是否真的变准了”，都由它的六维能力后验与盲测门禁裁定。
+
+### A.4 由 as-built 结论新增的架构原则
+
+**A.4.1 命局特征向量是全平台脊椎。** L1 分型、L6 加权、L9 条件化学习必须共享同一份由 Fact 组成的结构化命局特征向量（对应 §5.5 ChartPrototype 的可计算化落地）。没有它，“什么八字用什么法”无法工程化。
+
+**A.4.2 能力回流飞轮是最高杠杆动作。** 评估框架产出的六维能力后验（§5.13）必须存在一条通往 L1 路由的回流通道：`评估六维后验 → L9 条件化更新 → L1 分型权重`。当前该通道完全断开；接通它是把“称”变成“会自我改进的厨师”的关键。任何升级排序都应优先保证该飞轮闭合。
+
+**A.4.3 命题引擎化是评估有效性的前提。** 在 L2 命题仍由人工写入期间，能力后验只反映人工水平；因此 L2 引擎化必须先于或同步于 L1 学习化，否则飞轮学到的是噪声。
+
+### A.5 升级方向指导文档索引
+
+本附录派生出一组可供强模型独立执行的详细实施指导，统一存放于 [`plans/upgrade-guides/`](../../../plans/upgrade-guides/)：
+
+| 编号 | 主题 | 对应缺口 |
+|---|---|---|
+| 00 | 升级方向总览与依赖排序 | 全局 |
+| 01 | 命局特征向量层 | A.4.1 脊椎 |
+| 02 | L2 命题引擎化 | L2 |
+| 03 | 评估数据地基与真实标注 | A.3 燃料 |
+| 04 | L1 可学习路由与回流飞轮 | A.4.2 飞轮 |
+| 05 | L6 分段仲裁与矛盾对撞 | L6 |
+| 06 | L9 条件化学习与校准治理 | L9 |

@@ -508,4 +508,83 @@ next_irreversible_decision
 updated_at
 ```
 
-当前状态：设计完成，实施尚未开始。下一不可逆决策是批准第一推进单元的详细实施计划。
+当前状态：第一推进单元（流派能力评估协议与最小盲测框架）已实现并合并。下一不可逆决策是启动 Phase 0 真实标注数据地基，并打通"能力后验 → L1 路由"回流飞轮。
+
+## 17. As-Built 审计与阶段状态（2026-07-12）
+
+> 本节由 2026-07-12 系统级深度调研补入，记录第一推进单元合并后的真实实现状态与后续升级方向。属易变状态，以仓库唯一事实源为准，不覆盖第 1–15 节的目标原则。
+
+### 17.1 第一推进单元交付事实
+
+流派能力评估框架已实现并合并（merge commit `063e72a`），位于 [`engine/evaluation/`](../engine/evaluation/)，包含：
+
+- [`models.py`](../engine/evaluation/models.py)：八个冻结持久化对象与三态命题契约；
+- [`task_catalog.py`](../engine/evaluation/task_catalog.py) + [`mapping/school-capability-task-catalog-v1.yaml`](../mapping/school-capability-task-catalog-v1.yaml)：18 项可验证任务目录；
+- [`case_audit.py`](../engine/evaluation/case_audit.py)：案例污染审计与盲测资格分级；
+- [`freeze.py`](../engine/evaluation/freeze.py)：预测冻结与标签揭示门禁；
+- [`scoring.py`](../engine/evaluation/scoring.py)：任务型评分与克制效用；
+- [`capability.py`](../engine/evaluation/capability.py)：六维条件化能力后验；
+- [`experiments.py`](../engine/evaluation/experiments.py)：四组增量实验；
+- [`report.py`](../engine/evaluation/report.py) + [`tools/school_capability_baseline.py`](../tools/school_capability_baseline.py)：基线报告与只读 CLI；
+- 147 项测试覆盖；经 7 任务双阶段审查 + 3 轮整体验收。
+
+阶段状态：
+
+```text
+phase: 第一推进单元（能力评估协议与盲测框架）
+status: GO
+evidence_artifacts: engine/evaluation/ · tests/evaluation/ (147 passed) · merge 063e72a
+accepted_hypotheses: 盲测冻结/任务型评分/六维能力后验/四组实验 工程可实现
+rejected_hypotheses: 无
+known_risks: 尚无真实标注数据喂入；能力后验尚未回流 L1
+next_irreversible_decision: 启动 Phase 0 真实标注数据地基
+updated_at: 2026-07-12
+```
+
+### 17.2 As-Built 真实实现审计发现
+
+调研确认当前运行内核与目标架构的主要差距（证据来自源码通读）：
+
+| 层 | 目标 | As-Built 现状 | 定级 |
+|---|---|---|---|
+| L0 事实 | 命局特征结构化 | [`engine/predicates/`](../engine/predicates/) 可算干支/十神/冲合；无统一"命局特征向量"对象 | 🟡 |
+| L1 适用性 | 可学习"什么八字用什么法" | [`engine/decision/l1_school_router.py`](../engine/decision/l1_school_router.py) 的 `SCHOOL_PROFILES` 静态硬编码 + 全局命中率降权 | 🔴 |
+| L2 命题 | 各派独立推导 + 证据链 | 子平 runner 仅月令旺衰+格局两层；三盲派靠 `theory/*/index.yaml` 原文触发；`school-claims.json` 存在人工手写命题 | 🔴 |
+| L3 结构 | 结构一致性交叉校验 | 子平两层 + 滴天髓原文；无跨派结构对撞 | 🟡 |
+| L4 事件 | 命题→事件类型 | v5 有 event_realization 阶段但多为模板文案 | 🟡 |
+| L5 应期 | 概率+时间窗 | 有 whitelist 域与时间窗槽位；概率为固定档位非学习所得 | 🔴 |
+| L6 仲裁 | 三段分离裁决 | [`engine/decision/l6_arbitration.py`](../engine/decision/l6_arbitration.py) 仅按置信差距选 winner/coexist/unresolved | 🔴 |
+| L7 报告 | 结论表达 | [`tools/render_report.py`](../tools/render_report.py) + output_linter 成熟 | 🟢 |
+| L8 归因 | 反馈归因到规则 | statement→rule→family 映射链存在 | 🟡 |
+| L9 校准 | 权重优化/迭代 | `update_confidence` 仅 rule/family 两级线性 alpha/beta 加减 | 🔴 |
+
+主干流水线 [`engine/application/pipeline_runner.py`](../engine/application/pipeline_runner.py) 实际为 `energy(段派)→picture(杨派)→yingqi(任派)→pangzheng(高派)→integrate` 串行工位链，非多派竞争。
+
+理论库现状：[`theory/ziping`](../theory/ziping/index.yaml) / [`theory/tiaohou_ditiansui`](../theory/tiaohou_ditiansui/index.yaml) 为 production-active 但 `claim` 字段多为古籍原文整段；高派 261 条全为 candidate；段/杨/任派多为 promoted 但缺可判别 trigger。
+
+### 17.3 四个致命差距（决定"越来越懂什么八字用什么法"）
+
+1. **L1 适用性不可学习**：只有静态领域表 + 全局命中率，评估框架的六维能力后验没有回流通道。
+2. **L2 命题非引擎生成**：有价值命题人工写入 JSON，导致盲测评估的其实是人的水平而非系统水平。
+3. **L6 仲裁无命理逻辑**：只比置信数字，无结构/事件/应期分段裁决与矛盾对撞。
+4. **L9 学习是拧螺丝不是学模型**：线性加减无法学到"某类结构下某派更可信"的条件化知识。
+
+### 17.4 最高杠杆判断：回流飞轮
+
+评估框架（已建成）产出"某派在某六维格子下的能力后验" → L9 转成"命局特征→流派权重"更新 → L1 下次分型更准。**这条 `评估 → L9 → L1` 回流通道目前完全断开，接通它是全局最高杠杆动作**，也是 Phase 2/3 的前置。评估框架当前唯一缺的是真实标注数据（Phase 0）与这条回流线。
+
+### 17.5 后续升级方向与详细指导文档
+
+按依赖排序拆分为独立可执行升级单元，每个单元有专属详细指导文档，见 [`plans/upgrade-guides/`](upgrade-guides/)：
+
+| 序 | 升级单元 | 指导文档 | 前置 |
+|---|---|---|---|
+| 00 | 升级方向总览与依赖图 | [`00-overview-and-sequencing.md`](upgrade-guides/00-overview-and-sequencing.md) | — |
+| 01 | 命局特征向量层（脊椎） | [`01-chart-feature-vector.md`](upgrade-guides/01-chart-feature-vector.md) | — |
+| 02 | L2 命题引擎化 | [`02-claim-engine.md`](upgrade-guides/02-claim-engine.md) | 01 |
+| 03 | 评估数据地基与真实标注 | [`03-evaluation-data-foundation.md`](upgrade-guides/03-evaluation-data-foundation.md) | 02 |
+| 04 | L1 可学习路由与回流飞轮 | [`04-learnable-routing-flywheel.md`](upgrade-guides/04-learnable-routing-flywheel.md) | 01,03 |
+| 05 | L6 分段仲裁与矛盾对撞 | [`05-segmented-arbitration.md`](upgrade-guides/05-segmented-arbitration.md) | 02 |
+| 06 | L9 条件化学习与校准治理 | [`06-conditional-learning-governance.md`](upgrade-guides/06-conditional-learning-governance.md) | 03,04 |
+
+胜负手是 **04**：它第一次让系统用独立盲测数据证明"学过之后 L1 分型命中率 > 静态表基线"。此假设成立，则平台目标成立。
