@@ -1,0 +1,32 @@
+{
+  "schema_version": "school-capability-cli-tasks/v1",
+  "task_catalog_version": "tasks-v1-development-baseline",
+  "tasks": [
+    {
+      "task_id": "career.change_window",
+      "domain": "事业",
+      "claim_type": "event_timing",
+      "scoring_method": "time_window",
+      "quantifiable": true,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "object",
+        "required": [
+          "occurred",
+          "year"
+        ],
+        "occurred": "boolean",
+        "year": "integer_or_null",
+        "event": "career_change"
+      },
+      "evaluation_note": "评价职业变化窗口命中情况"
+    }
+  ]
+}
