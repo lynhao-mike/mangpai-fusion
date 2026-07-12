@@ -5,7 +5,7 @@ from collections.abc import Collection, Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, RevealedLabel
-from engine.evaluation.scoring import brier_score
+from engine.evaluation.scoring import binary_observed_value, brier_score
 
 
 @dataclass(frozen=True)
@@ -68,14 +68,6 @@ def _unique_map(items: Sequence, key, name: str) -> dict:
     return result
 
 
-def _binary_labels(task: BlindTask) -> tuple[str, str]:
-    positive = task.label_schema.get("positive_label")
-    negative = task.label_schema.get("negative_label")
-    if not isinstance(positive, str) or not positive or not isinstance(negative, str) or not negative or positive == negative:
-        raise ValueError("binary label schema requires distinct non-empty string positive_label and negative_label")
-    return positive, negative
-
-
 def _claim_probability(output: BlindSchoolOutput) -> float | None:
     if output.state != "claim":
         return None
@@ -95,22 +87,24 @@ def run_four_group_experiment(
 ) -> ExperimentResult:
     """Run deterministic equal-weight evaluation baselines over an explicit grid."""
     ordered_schools = _schools(schools)
+    eligible_grid = tuple(eligible_case_tasks)
+    if len(set(eligible_grid)) != len(eligible_grid):
+        raise ValueError("duplicate eligible case-task identity")
     task_map = _unique_map(tasks, lambda task: task.task_id, "task")
     label_map = _unique_map(labels, lambda label: (label.case_id, label.task_id), "label")
     output_map = _unique_map(outputs, lambda output: (output.case_id, output.task_id, output.school_id), "output")
 
     known_tasks = set(task_map)
-    referenced_tasks = {task_id for _, task_id in eligible_case_tasks} | {label.task_id for label in labels} | {output.task_id for output in outputs}
+    referenced_tasks = {task_id for _, task_id in eligible_grid} | {label.task_id for label in labels} | {output.task_id for output in outputs}
     unknown = referenced_tasks - known_tasks
     if unknown:
         raise ValueError(f"unknown task: {sorted(unknown)[0]}")
 
     rows: list[ExperimentRow] = []
-    for case_id, task_id in sorted(set(eligible_case_tasks)):
+    for case_id, task_id in sorted(eligible_grid):
         task = task_map[task_id]
         if task.scoring_method != "binary_probability":
             continue
-        positive_label, negative_label = _binary_labels(task)
         if task_id not in baseline_prevalence:
             raise ValueError(f"missing development baseline prevalence for {task_id}")
         baseline = baseline_prevalence[task_id]
@@ -119,12 +113,7 @@ def run_four_group_experiment(
         label = label_map.get((case_id, task_id))
         observed_positive = None
         if label is not None and label.quantifiable:
-            if label.label == positive_label:
-                observed_positive = True
-            elif label.label == negative_label:
-                observed_positive = False
-            else:
-                raise ValueError("binary label must match positive_label or negative_label")
+            observed_positive = binary_observed_value(task, label.label)
 
         school_probabilities = {
             school: _claim_probability(output_map[(case_id, task_id, school)])

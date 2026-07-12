@@ -62,7 +62,12 @@ def build_capability_posteriors(
     incremental_gains: Mapping[Identity, float] | None = None,
 ) -> list[CapabilityPosterior]:
     grouped: dict[Identity, list[ScoreRecord]] = defaultdict(list)
+    seen_score_keys: set[ScoreKey] = set()
     for score in scores:
+        key = _score_key(score)
+        if key in seen_score_keys:
+            raise ValueError("duplicate score identity")
+        seen_score_keys.add(key)
         grouped[_identity(score)].append(score)
 
     posteriors: list[CapabilityPosterior] = []

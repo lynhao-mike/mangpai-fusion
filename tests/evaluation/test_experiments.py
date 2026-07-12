@@ -113,6 +113,11 @@ def test_duplicate_identities_and_unknown_eligible_task_are_rejected(outputs, la
         _run(outputs, labels, tasks, eligible)
 
 
+def test_duplicate_eligible_case_task_identity_is_rejected_instead_of_deduplicated() -> None:
+    with pytest.raises(ValueError, match="duplicate eligible case-task identity"):
+        _run([], labels=[], eligible=[("C-1", "education.credentials"), ("C-1", "education.credentials")])
+
+
 def test_unknown_output_and_label_tasks_are_rejected() -> None:
     unknown_output = replace(_output("ziping", 0.8), task_id="unknown")
     unknown_label = replace(_label(), task_id="unknown")

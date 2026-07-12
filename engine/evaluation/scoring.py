@@ -14,6 +14,24 @@ def _validate_probability(probability: float) -> None:
         raise ValueError("probability must be between 0 and 1")
 
 
+def binary_observed_value(task: BlindTask, label: object) -> bool:
+    positive_label = task.label_schema.get("positive_label")
+    negative_label = task.label_schema.get("negative_label")
+    if (
+        not isinstance(positive_label, str)
+        or not positive_label
+        or not isinstance(negative_label, str)
+        or not negative_label
+        or positive_label == negative_label
+    ):
+        raise ValueError("binary label schema requires distinct non-empty string positive_label and negative_label")
+    if label == positive_label:
+        return True
+    if label == negative_label:
+        return False
+    raise ValueError("binary label must match positive_label or negative_label")
+
+
 def brier_score(probability: float, observed: bool) -> float:
     _validate_probability(probability)
     return round((probability - float(observed)) ** 2, 12)
@@ -115,22 +133,7 @@ def score_output(
     if task.scoring_method == "binary_probability":
         _require_prediction_count(output, 1, 1)
         prediction = output.predictions[0]
-        positive_label = task.label_schema.get("positive_label")
-        negative_label = task.label_schema.get("negative_label")
-        if (
-            not isinstance(positive_label, str)
-            or not positive_label
-            or not isinstance(negative_label, str)
-            or not negative_label
-            or positive_label == negative_label
-        ):
-            raise ValueError("binary label schema requires distinct non-empty string positive_label and negative_label")
-        if observed == positive_label:
-            observed_positive = True
-        elif observed == negative_label:
-            observed_positive = False
-        else:
-            raise ValueError("binary label must match positive_label or negative_label")
+        observed_positive = binary_observed_value(task, observed)
         accuracy = 1.0 - brier_score(prediction.probability, observed_positive)
         utility = prediction.probability if observed_positive else -prediction.probability
         if task.high_risk and not observed_positive:

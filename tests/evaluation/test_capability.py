@@ -119,6 +119,12 @@ def test_claim_probability_must_exist_and_be_in_range(probability: float) -> Non
         _build([score], claim_probabilities={})
 
 
+def test_duplicate_score_identity_is_rejected_before_n_eff_can_be_double_counted() -> None:
+    score = _score("C-1", probability_score=0.8, observed_positive=True)
+    with pytest.raises(ValueError, match="duplicate score identity"):
+        _build([score, score])
+
+
 @pytest.mark.parametrize("eligible", [{}, {IDENTITY: set()}])
 def test_eligible_identity_must_exist_and_be_nonempty(eligible: dict) -> None:
     with pytest.raises(ValueError, match="eligible"):

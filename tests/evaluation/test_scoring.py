@@ -8,6 +8,7 @@ from engine.evaluation.models import BlindPrediction, BlindSchoolOutput, BlindTa
 from engine.evaluation.scoring import (
     ABSTENTION_OPPORTUNITY_COST,
     HIGH_RISK_FALSE_POSITIVE_MULTIPLIER,
+    binary_observed_value,
     brier_score,
     log_loss,
     ordinal_score,
@@ -194,10 +195,15 @@ def test_score_output_dispatches_time_window_and_ordinal_methods() -> None:
 
 
 def test_binary_labels_are_explicitly_mapped_and_unknown_values_are_rejected() -> None:
-    negative = score_output(_output(), _task(), _label("not_observed"))
+    task = _task()
+    assert binary_observed_value(task, "observed") is True
+    assert binary_observed_value(task, "not_observed") is False
+    negative = score_output(_output(), task, _label("not_observed"))
     assert negative.observed_positive is False
     with pytest.raises(ValueError, match="binary label"):
-        score_output(_output(), _task(), _label("unknown"))
+        binary_observed_value(task, "unknown")
+    with pytest.raises(ValueError, match="binary label"):
+        score_output(_output(), task, _label("unknown"))
 
 
 def test_score_output_requires_label_output_and_task_identity_to_match() -> None:
