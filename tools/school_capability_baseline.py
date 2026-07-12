@@ -30,7 +30,7 @@ from engine.evaluation.case_audit import audit_cases
 from engine.evaluation.experiments import run_four_group_experiment
 from engine.evaluation.freeze import freeze_outputs, reveal_labels, verify_frozen_run
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, CapabilityPosterior, FrozenBlindRun
-from engine.evaluation.report import render_capability_report
+from engine.evaluation.report import compute_gate_evidence, render_capability_report
 from engine.evaluation.scoring import score_output
 
 _ROOT = Path(__file__).resolve().parents[1]
@@ -320,23 +320,27 @@ def _score(args: argparse.Namespace) -> None:
     high_risk_by_task = {task_id: [score for score in high_risk_scores if score.task_id == task_id] for task_id in high_risk_tasks}
     high_risk_assessable = [score for score in high_risk_scores if score.utility is not None]
     high_risk_unassessable = [score for score in high_risk_scores if score.utility is None]
-    computed_gate_evidence = {} if not gate_complete else {
-        "coverage_complete": len(score_objects) == len(expected_outputs) and bool(coverage_by_identity) and all(value >= coverage_threshold for value in coverage_by_identity.values()),
-        "calibration_acceptable": bool(calibration_counts) and all(count >= calibration_min_samples for count in calibration_counts.values()) and all(posterior.calibration_error is not None and posterior.calibration_error <= calibration_max_error for posterior in posteriors),
-        "incremental_non_negative": bool(gains_by_identity) and all(value >= 0 for value in gains_by_identity.values()),
-        "high_risk_safe": bool(high_risk_by_task) and not high_risk_unassessable and all(rows and all(score.utility is not None and score.utility >= gate_thresholds["high_risk_min_utility"] for score in rows) for rows in high_risk_by_task.values()),
-        "provenance_valid": all("@sha256:" in value for value in (run.task_catalog_version, run.rule_snapshot_id)) and len(run.freeze_hash) == 64 and len(manifest_digest) == 64,
-    }
+    provenance = {"manifest_digest": f"sha256:{manifest_digest}", "task_catalog": run.task_catalog_version, "rule_snapshot": run.rule_snapshot_id, "freeze_hash": run.freeze_hash}
+    gate_input_summary = {"expected_output_count": len(expected_outputs), "quantified_count": len(quantified), "probability_sample_count": len(probability_scores), "calibration_sample_count_by_identity": calibration_counts, "calibration_by_identity": calibration_by_identity, "coverage_by_identity": coverage_by_identity, "high_risk_task_ids": sorted(high_risk_tasks), "high_risk_assessable_count": len(high_risk_assessable), "high_risk_unassessable_count": len(high_risk_unassessable), "high_risk_unassessable_task_ids": sorted({score.task_id for score in high_risk_unassessable}), "high_risk_utilities": [score.utility for score in high_risk_assessable], "rule_snapshot_digest": f"sha256:{snapshot_digest}", "gate_thresholds": gate_thresholds}
+    computed_gate_evidence = {} if not gate_complete else compute_gate_evidence(
+        posteriors=posteriors,
+        incremental_gains=serialized_gains,
+        experiment_summary=experiment.mean_utility_by_group,
+        high_risk_audit_summary=gate_input_summary,
+        coverage_summary=gate_input_summary,
+        gate_thresholds=gate_thresholds,
+        provenance=provenance,
+    )
     payload = {
         "schema_version": "school-capability-scores/v1", "freeze_hash": run.freeze_hash,
-        "provenance": {"manifest_digest": f"sha256:{manifest_digest}", "task_catalog": run.task_catalog_version, "rule_snapshot": run.rule_snapshot_id, "freeze_hash": run.freeze_hash},
+        "provenance": provenance,
         "eligible_case_tasks": [list(item) for item in sorted(grid)], "scores": scores,
         "claim_probabilities": dict(sorted(probabilities.items())),
         "score_weights": {"|".join(key): value for key, value in sorted(weights.items())},
         "experiment_rows": rows, "experiment_summary": dict(experiment.mean_utility_by_group),
         "incremental_gains": serialized_gains, "posteriors_computed": True,
         "gate_complete": gate_complete, "computed_gate_evidence": computed_gate_evidence,
-        "gate_input_summary": {"expected_output_count": len(expected_outputs), "quantified_count": len(quantified), "probability_sample_count": len(probability_scores), "calibration_sample_count_by_identity": calibration_counts, "calibration_by_identity": calibration_by_identity, "coverage_by_identity": coverage_by_identity, "high_risk_task_ids": sorted(high_risk_tasks), "high_risk_assessable_count": len(high_risk_assessable), "high_risk_unassessable_count": len(high_risk_unassessable), "high_risk_unassessable_task_ids": sorted({score.task_id for score in high_risk_unassessable}), "rule_snapshot_digest": f"sha256:{snapshot_digest}", "gate_thresholds": gate_thresholds},
+        "gate_input_summary": gate_input_summary,
         "posteriors": [posterior.to_dict() for posterior in posteriors],
     }
     payload["artifact_digest"] = f"sha256:{_canonical_digest(payload)}"
@@ -362,6 +366,7 @@ def _report(args: argparse.Namespace) -> None:
     experiment_summary = scores_doc.get("experiment_summary", {})
     if not isinstance(experiment_summary, dict):
         raise ValueError("experiment_summary must be an object")
+    # Consistency checksum only: this detects accidental mismatch, not malicious rewriting and is not a signature.
     artifact_digest = scores_doc.get("artifact_digest")
     unsigned_scores = dict(scores_doc)
     unsigned_scores.pop("artifact_digest", None)
@@ -376,10 +381,24 @@ def _report(args: argparse.Namespace) -> None:
     _artifact_identity(provenance["rule_snapshot"], "rule snapshot")
     if provenance["manifest_digest"] != f"sha256:{_canonical_digest(manifest_doc)}":
         raise ValueError("manifest digest mismatch")
-    gate_evidence = scores_doc.get("computed_gate_evidence") if scores_doc.get("gate_complete") is True else {}
-    if not isinstance(gate_evidence, dict):
-        raise ValueError("computed_gate_evidence must be present")
-    text = render_capability_report(summary, experiment_summary, posteriors, gate_evidence=gate_evidence)
+    gate_input_summary = scores_doc.get("gate_input_summary", {})
+    incremental_gains = scores_doc.get("incremental_gains", {})
+    if not isinstance(gate_input_summary, dict) or not isinstance(incremental_gains, dict):
+        raise ValueError("gate base facts must be objects")
+    gate_thresholds = gate_input_summary.get("gate_thresholds", {})
+    recomputed_gate = {} if scores_doc.get("gate_complete") is not True else compute_gate_evidence(
+        posteriors=raw_posteriors,
+        incremental_gains=incremental_gains,
+        experiment_summary=experiment_summary,
+        high_risk_audit_summary=gate_input_summary,
+        coverage_summary=gate_input_summary,
+        gate_thresholds=gate_thresholds if isinstance(gate_thresholds, dict) else {},
+        provenance=provenance,
+    )
+    stored_gate = scores_doc.get("computed_gate_evidence")
+    if stored_gate is not None and stored_gate != recomputed_gate:
+        raise ValueError("computed_gate_evidence mismatch with recomputed base facts")
+    text = render_capability_report(summary, experiment_summary, posteriors, gate_evidence=recomputed_gate)
     _atomic_write(target, text)
 
 

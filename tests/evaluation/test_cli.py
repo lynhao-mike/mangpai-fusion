@@ -402,6 +402,36 @@ def test_cli_report_rejects_tampered_manifest_and_hand_written_gate(tmp_path: Pa
     assert "scores artifact digest mismatch" in rejected.stderr
 
 
+def test_cli_report_recomputes_derived_gate_after_tamper_and_checksum_refresh(tmp_path: Path) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    scores_path = tmp_path / "scores.json"
+    scored = _run("score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path), "--labels", str(labels_path), "--tasks", str(tasks_path), "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path), "--out", str(scores_path))
+    assert scored.returncode == 0, scored.stderr
+
+    from tools.school_capability_baseline import _canonical_digest
+    scores = json.loads(scores_path.read_text(encoding="utf-8"))
+    scores["computed_gate_evidence"] = {
+        "coverage_complete": True,
+        "calibration_acceptable": True,
+        "incremental_non_negative": True,
+        "high_risk_safe": True,
+        "provenance_valid": True,
+    }
+    scores.pop("artifact_digest")
+    scores["artifact_digest"] = f"sha256:{_canonical_digest(scores)}"
+    scores_path.write_text(json.dumps(scores), encoding="utf-8")
+
+    report_path = tmp_path / "report.md"
+    reported = _run("report", "--scores", str(scores_path), "--manifest", str(manifest_path), "--out", str(report_path))
+
+    if reported.returncode == 0:
+        text = report_path.read_text(encoding="utf-8")
+        assert "**HOLD**" in text
+        assert "READY_FOR_MANUAL_REVIEW" not in text
+    else:
+        assert "computed_gate_evidence mismatch" in reported.stderr
+
+
 def test_cli_score_rejects_tampered_rule_snapshot_artifact(tmp_path: Path) -> None:
     frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))

@@ -183,12 +183,16 @@ def test_report_never_emits_go_defaults_hold_and_deduplicates_posterior_rows() -
 
 
 def test_report_only_allows_ready_or_stop_with_complete_explicit_gate_evidence() -> None:
-    ready = render_capability_report({}, {}, [], gate_evidence={
+    sufficient = CapabilityPosterior(
+        "ziping", TASK_ID, "prototype-a", "binary_event", "lifetime", "complete",
+        1.0, 0.0, 0.9, 0.1, 0.8, (0.6, 0.95), 5.0, "A", "now", 0.1,
+    )
+    ready = render_capability_report({}, {}, [sufficient], gate_evidence={
         "coverage_complete": True, "calibration_acceptable": True,
         "incremental_non_negative": True, "high_risk_safe": True,
         "provenance_valid": True,
     })
-    stopped = render_capability_report({}, {}, [], gate_evidence={
+    stopped = render_capability_report({}, {}, [sufficient], gate_evidence={
         "coverage_complete": True, "calibration_acceptable": True,
         "incremental_non_negative": False, "high_risk_safe": True,
         "provenance_valid": True,

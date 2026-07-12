@@ -7,6 +7,41 @@ from typing import Any
 _INITIAL_REVIEW_N_EFF = 5.0
 
 
+def compute_gate_evidence(
+    *,
+    posteriors: Sequence[Mapping[str, Any] | object],
+    incremental_gains: Mapping[str, Any],
+    experiment_summary: Mapping[str, Any],
+    high_risk_audit_summary: Mapping[str, Any],
+    coverage_summary: Mapping[str, Any],
+    gate_thresholds: Mapping[str, Any],
+    provenance: Mapping[str, Any],
+) -> dict[str, bool]:
+    """Recompute derived gate evidence solely from persisted base facts."""
+    required = {"coverage_complete", "calibration_min_samples", "calibration_max_error", "high_risk_min_utility"}
+    if set(gate_thresholds) != required:
+        return {}
+    rows = [item if isinstance(item, Mapping) else item.to_dict() for item in posteriors]
+    coverage = coverage_summary.get("coverage_by_identity", {})
+    calibration_counts = coverage_summary.get("calibration_sample_count_by_identity", {})
+    high_risk_tasks = high_risk_audit_summary.get("high_risk_task_ids", [])
+    high_risk_utilities = high_risk_audit_summary.get("high_risk_utilities", [])
+    provenance_valid = (
+        all(isinstance(provenance.get(key), str) and provenance[key] for key in ("manifest_digest", "task_catalog", "rule_snapshot", "freeze_hash"))
+        and str(provenance["manifest_digest"]).startswith("sha256:")
+        and "@sha256:" in str(provenance["task_catalog"])
+        and "@sha256:" in str(provenance["rule_snapshot"])
+        and len(str(provenance["freeze_hash"])) == 64
+    )
+    return {
+        "coverage_complete": bool(coverage) and all(float(value) >= float(gate_thresholds["coverage_complete"]) for value in coverage.values()),
+        "calibration_acceptable": bool(calibration_counts) and all(int(count) >= int(gate_thresholds["calibration_min_samples"]) for count in calibration_counts.values()) and all(item.get("calibration_error") is not None and float(item["calibration_error"]) <= float(gate_thresholds["calibration_max_error"]) for item in rows),
+        "incremental_non_negative": bool(incremental_gains) and all(float(value) >= 0.0 for value in incremental_gains.values()),
+        "high_risk_safe": bool(high_risk_tasks) and int(high_risk_audit_summary.get("high_risk_unassessable_count", 0)) == 0 and bool(high_risk_utilities) and all(float(value) >= float(gate_thresholds["high_risk_min_utility"]) for value in high_risk_utilities),
+        "provenance_valid": provenance_valid,
+    }
+
+
 def _number(value: object) -> str:
     if isinstance(value, float):
         return f"{value:.3f}"
@@ -27,7 +62,7 @@ def render_capability_report(
     complete_gate = gate_evidence is not None and set(gate_evidence) == required_gate_keys and all(type(value) is bool for value in gate_evidence.values())
     if complete_gate and gate_evidence["incremental_non_negative"] is False and all(gate_evidence[key] for key in required_gate_keys - {"incremental_non_negative"}):
         recommendation = "STOP"
-    elif complete_gate and all(gate_evidence.values()):
+    elif not all_below_threshold and complete_gate and all(gate_evidence.values()):
         recommendation = "READY_FOR_MANUAL_REVIEW"
     else:
         recommendation = "HOLD"
