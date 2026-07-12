@@ -57,3 +57,35 @@
    - 结果：`99 passed in 0.37s`。
 4. 格式验证：`git diff --check`
    - 结果：退出码 0。
+
+---
+
+## Task 6 最后定向修复追加记录（2026-07-12）
+
+### 修复内容
+
+- `run_four_group_experiment` 先物化 eligible grid，并对重复 `(case_id, task_id)` 抛出 `ValueError`；不再通过 `set` 静默去重。
+- `build_capability_posteriors` 在聚合前拒绝重复 `(case_id, task_id, school_id)` score identity，防止同一 score 重复累计 N_eff。
+- 在 `scoring.py` 提取公开纯函数 `binary_observed_value(task, label) -> bool`，集中执行 binary schema 校验与 observed label 映射。
+- `score_output` 与 `run_four_group_experiment` 共同调用该函数，删除实验模块中的重复映射实现；错误语义与外部评分语义不变。
+- 对上述三个行为补充 scoring、capability、experiments 回归测试。
+
+### 严格 TDD 证据
+
+1. RED（共享函数）：`python -m pytest tests/evaluation/test_scoring.py tests/evaluation/test_capability.py tests/evaluation/test_experiments.py -q`
+   - 结果：收集阶段因 `binary_observed_value` 尚不存在而失败，符合预期。
+2. RED（两个重复 identity）：分别运行两个新增测试。
+   - 结果：`2 failed`，均为预期的 `DID NOT RAISE ValueError`。
+3. 专项 GREEN：`python -m pytest tests/evaluation/test_scoring.py tests/evaluation/test_capability.py tests/evaluation/test_experiments.py -q`
+   - 结果：`69 passed in 0.28s`。
+4. 全 evaluation GREEN：`python -m pytest tests/evaluation -q`
+   - 结果：`101 passed in 0.38s`。
+5. 格式验证：`git diff --check`
+   - 结果：退出码 0。
+
+### 提交与范围
+
+- 定向修复提交：`19e3e65 fix: reject duplicate evaluation identities`。
+- 提交仅包含三个 evaluation 实现文件及其三个专项测试文件。
+- 既有 `.superpowers/sdd/task-1-report.md` 与 `.superpowers/sdd/task-4-report.md` 工作树修改保持未触碰、未纳入提交。
+- 本追加报告在功能提交后按要求更新，单独纳入报告提交。
