@@ -1,0 +1,30 @@
+{
+  "schema_version": "school-capability-blind-output/v1",
+  "task_catalog_version": "tasks-v1",
+  "rule_snapshot_id": "rules-v1",
+  "outputs": [
+    {
+      "case_id": "C-YYYY-NNN",
+      "school_id": "school-id",
+      "task_id": "domain.task",
+      "state": "claim",
+      "rationale": "Blind rationale based only on permitted inputs.",
+      "predictions": [
+        {
+          "prediction_id": "P-001",
+          "event_label": "predicted-event",
+          "probability": 0.5,
+          "time_window": {
+            "start_year": 2000,
+            "end_year": 2001
+          },
+          "evidence_refs": [
+            "F-001"
+          ],
+          "falsifier": "Observation that would falsify this prediction."
+        }
+      ],
+      "counter_evidence": []
+    }
+  ]
+}

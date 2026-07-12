@@ -1,0 +1,182 @@
+schema_version: school-capability-tasks/v1
+tasks:
+  - task_id: marriage.late_marriage
+    domain: 婚姻
+    claim_type: binary_event
+    scoring_method: binary_probability
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: boolean, positive_label: occurred, negative_label: not_observed}
+    evaluation_note: 评价是否晚婚，以统一年龄阈值标注
+  - task_id: marriage.divorce_or_remarriage
+    domain: 婚姻
+    claim_type: binary_event
+    scoring_method: binary_probability
+    quantifiable: true
+    high_risk: true
+    allowed_time_horizons: [lifetime, ten_year]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: boolean, positive_label: occurred, negative_label: not_observed}
+    evaluation_note: 只评价是否发生，不把关系压力自动等同离婚
+  - task_id: marriage.relationship_pressure
+    domain: 婚姻
+    claim_type: ordinal_state
+    scoring_method: ordinal
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: ordinal, labels: [low, medium, high]}
+    evaluation_note: 评价可观察的关系压力等级
+  - task_id: marriage.event_window
+    domain: 婚姻
+    claim_type: event_timing
+    scoring_method: time_window
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: marriage_change}
+    evaluation_note: 评价婚恋重大事件窗口命中情况
+  - task_id: wealth.income_band
+    domain: 财富
+    claim_type: ordinal_state
+    scoring_method: ordinal
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars]
+    label_schema: {type: ordinal, labels: [low, medium, high]}
+    evaluation_note: 按统一口径评价收入层级
+  - task_id: wealth.volatility
+    domain: 财富
+    claim_type: ordinal_state
+    scoring_method: ordinal
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars]
+    label_schema: {type: ordinal, labels: [stable, moderate, volatile]}
+    evaluation_note: 评价收入或资产波动程度
+  - task_id: wealth.debt
+    domain: 财富
+    claim_type: binary_event
+    scoring_method: binary_probability
+    quantifiable: true
+    high_risk: true
+    allowed_time_horizons: [lifetime, ten_year]
+    required_input_fields: [four_pillars]
+    label_schema: {type: boolean, positive_label: occurred, negative_label: not_observed}
+    evaluation_note: 评价显著债务是否发生
+  - task_id: wealth.major_loss_window
+    domain: 财富
+    claim_type: event_timing
+    scoring_method: time_window
+    quantifiable: true
+    high_risk: true
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars]
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: major_financial_loss}
+    evaluation_note: 评价重大财务损失窗口
+  - task_id: career.path_type
+    domain: 事业
+    claim_type: categorical_state
+    scoring_method: multiclass_probability
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [lifetime, ten_year]
+    required_input_fields: [four_pillars]
+    label_schema: {type: categorical, labels: [employment, entrepreneurship, mixed]}
+    evaluation_note: 评价主要职业路径类型
+  - task_id: career.role_change
+    domain: 事业
+    claim_type: binary_event
+    scoring_method: binary_probability
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars]
+    label_schema: {type: boolean, positive_label: occurred, negative_label: not_observed}
+    evaluation_note: 评价显著岗位或职业角色变化
+  - task_id: career.change_window
+    domain: 事业
+    claim_type: event_timing
+    scoring_method: time_window
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars]
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: career_change}
+    evaluation_note: 评价职业变化窗口命中情况
+  - task_id: education.attainment_band
+    domain: 学业
+    claim_type: ordinal_state
+    scoring_method: ordinal
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars]
+    label_schema: {type: ordinal, labels: [basic, secondary, tertiary, postgraduate]}
+    evaluation_note: 评价最高教育程度区间
+  - task_id: education.continuing_credentials
+    domain: 学业
+    claim_type: binary_event
+    scoring_method: binary_probability
+    quantifiable: true
+    high_risk: false
+    allowed_time_horizons: [lifetime, ten_year]
+    required_input_fields: [four_pillars]
+    label_schema: {type: boolean, positive_label: occurred, negative_label: not_observed}
+    evaluation_note: 评价继续教育或职业资质取得情况
+  - task_id: health.system_risk
+    domain: 健康
+    claim_type: categorical_state
+    scoring_method: multiclass_probability
+    quantifiable: true
+    high_risk: true
+    allowed_time_horizons: [lifetime, ten_year]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: categorical, labels: [low, moderate, high], high_risk_labels: [high]}
+    evaluation_note: 仅作盲测风险分层，不替代医学诊断
+  - task_id: health.event_window
+    domain: 健康
+    claim_type: event_timing
+    scoring_method: time_window
+    quantifiable: true
+    high_risk: true
+    allowed_time_horizons: [ten_year, annual]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {type: object, required: [occurred, year], occurred: boolean, year: integer_or_null, event: significant_health_event}
+    evaluation_note: 评价有记录的显著健康事件窗口
+  - task_id: personality.decision_style
+    domain: 性格
+    claim_type: portrait
+    scoring_method: portrait_agreement
+    quantifiable: false
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars]
+    label_schema: {}
+    evaluation_note: 通过独立画像协议评价决策风格一致度
+  - task_id: personality.pressure_response
+    domain: 性格
+    claim_type: portrait
+    scoring_method: portrait_agreement
+    quantifiable: false
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars]
+    label_schema: {}
+    evaluation_note: 通过独立画像协议评价压力反应一致度
+  - task_id: portrait.partner_profile
+    domain: 婚姻
+    claim_type: portrait
+    scoring_method: portrait_agreement
+    quantifiable: false
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars, sex_marker]
+    label_schema: {}
+    evaluation_note: 通过独立画像协议评价伴侣特征一致度

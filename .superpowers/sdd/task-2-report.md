@@ -1,81 +1,96 @@
-# Task 2 Report: Attach validation summary to ingest result without changing learning logic
+# Task 2 实现报告
 
-## 实现内容
+## 状态
 
-- 在 `tools/feedback_ingest.py` 的 `ingest()` 中，在解析 `case_dir` 与 `full_case_id` 后调用已有 helper：
-  - `_validate_v5_feedback_attachment(case_dir, full_case_id)`
-- 在 `ingest()` 的 early-return 分支中，将 `v5_feedback_attachment` 挂入 `IngestResult.phase_a_learning_summary`。
-- 在 `ingest()` 的 normal 分支中，将 `v5_feedback_attachment` 挂入合并后的 `phase_a_learning_summary`。
-- 未修改以下学习逻辑与计数字段：
-  - `feedback_count`
-  - `rule_count`
-  - `learning_sample_count`
-  - `_apply_rule_verdicts()` 调用行为
-  - `statement_records.json` 规则学习事实源
-- 未解析 report Markdown。
-- 未将 attachment 用作 rule-learning source。
-- 未新增 service/repository/helper 文件。
+完成。
 
-## TDD RED 证据
+## 变更文件
 
-先按 brief 在 `tests/v1_3_acceptance/test_h3_feedback_parsing.py` 添加 ingest 级测试：
+- `mapping/school-capability-task-catalog-v1.yaml`：新增 18 项统一盲测任务目录，覆盖婚姻、财富、事业、学业、健康、性格六个领域。
+- `engine/evaluation/task_catalog.py`：新增严格目录加载器 `load_task_catalog()` 与唯一 ID 索引 `task_by_id()`。
+- `tests/evaluation/test_task_catalog.py`：新增目录内容、空标签模式、重复 ID 和索引行为测试。
 
-```bash
-pytest tests/v1_3_acceptance/test_h3_feedback_parsing.py::test_ingest_includes_v5_feedback_attachment_summary_without_unblocking_learning -q
-```
+未提交 `.superpowers/sdd` 文件；未修改 brief 限定范围外的生产文件。工作树中既有 `.superpowers/sdd/task-1-report.md` 修改未纳入本提交。
 
-结果：失败，符合预期。
+## RED
+
+命令：
 
 ```text
-FAILED tests/v1_3_acceptance/test_h3_feedback_parsing.py::test_ingest_includes_v5_feedback_attachment_summary_without_unblocking_learning
-E   KeyError: 'v5_feedback_attachment'
-1 failed, 1 warning in 11.38s
+pytest tests/evaluation/test_task_catalog.py -v
 ```
 
-## TDD GREEN 证据
+结果：退出码 2；测试收集阶段按预期失败，错误为 `ModuleNotFoundError: No module named 'engine.evaluation.task_catalog'`，证明待实现 loader 缺失。
 
-接入 `v5_feedback_attachment` summary 后运行同一测试：
+## GREEN
 
-```bash
-pytest tests/v1_3_acceptance/test_h3_feedback_parsing.py::test_ingest_includes_v5_feedback_attachment_summary_without_unblocking_learning -q
-```
-
-结果：通过。
+命令：
 
 ```text
-1 passed, 1 warning in 12.81s
+pytest tests/evaluation/test_task_catalog.py -v
 ```
 
-## 回归测试
+结果：退出码 0；4 passed。
 
-运行完整 H3 feedback parsing acceptance 文件：
-
-```bash
-pytest tests/v1_3_acceptance/test_h3_feedback_parsing.py -q
-```
-
-结果：通过。
+提交前扩展验证命令：
 
 ```text
-18 passed, 1 warning in 12.42s
+pytest tests/evaluation/test_task_catalog.py tests/evaluation/test_models.py -v
 ```
 
-警告为既有 `engine.application.dual_engine_adapter` deprecation warning，与本任务无关。
+结果：退出码 0；12 passed in 0.17s。
 
-## 修改文件
+附加检查：`git diff --check` 与 `git diff --cached --check` 均退出码 0。
 
-- `tools/feedback_ingest.py`
-- `tests/v1_3_acceptance/test_h3_feedback_parsing.py`
-- `.superpowers/sdd/task-2-report.md`
+## 提交
+
+- 提交哈希：`fb5f7a5ea458174297d2e9590a214e3c032c931f`
+- 提交信息：`feat: define school capability task catalog`
 
 ## 自审
 
-- early-return 分支覆盖：无 `statement_records.json` / 无可学习映射时，仍返回 `skipped_no_index=True` 与 `learning_sample_count=0`，仅在 summary 中展示 attachment 校验状态。
-- normal 分支覆盖：保留原 `phase_a_learning_summary` 内容，追加 `v5_prediction_feedback` 与 `v5_feedback_attachment`。
-- summary-only 约束满足：attachment 校验结果不参与 fanout、不参与 learning samples、不影响规则更新与计数。
-- 没有实现 Task 3。
+- YAML 正好包含 brief 指定的 18 个 task_id。
+- 每项完整映射 `BlindTask` 的十个字段。
+- 性格与画像任务均使用 `portrait_agreement` 且 `quantifiable: false`。
+- loader 使用已有 `yaml.safe_load`，未新增依赖。
+- loader 校验 schema 版本、tasks 列表、任务映射、重复 ID、空领域、不支持的评分方法，以及可量化任务的非空标签模式。
+- `task_by_id()` 对重复 ID 也执行防御性拒绝，避免静默覆盖。
+- 提交仅包含 brief 指定的三个文件。
 
-## 疑虑 / concerns
+## 疑虑
 
-- brief 提供的测试字符串与 pillars 是 mojibake 文本；按原文执行，测试可通过。
-- 工作区已有未跟踪的 `.superpowers/sdd/progress.md`、`.superpowers/sdd/task-1-brief.md`、`.superpowers/sdd/task-1-review-package.md`、`.superpowers/sdd/task-2-brief.md`，非本任务创建，提交时未纳入。
+无阻塞疑虑。轻微注意点：`BlindTask.__post_init__()` 已先于 loader 的显式检查拒绝空领域和空量化标签，因此相关异常文本部分来自模型契约；行为满足严格拒绝要求。
+
+---
+
+## Task 2 定向修复证据（2026-07-12）
+
+### 修复范围
+
+- `engine/evaluation/task_catalog.py`：在 `BlindTask.from_dict()` 前验证 `domain` 为非空字符串、`scoring_method` 属于支持集合、`label_schema` 为 mapping，保证畸形目录统一抛出语义清楚的 `ValueError`。
+- `tests/evaluation/test_task_catalog.py`：新增非法 scorer、空/null/非字符串 domain、truthy 非 mapping label_schema，以及 `task_by_id()` 重复 ID 的回归测试。
+- 未修改 `models.py` 或其他生产文件。
+
+### RED 证据
+
+命令：
+
+```text
+python -m pytest tests/evaluation/test_task_catalog.py -v
+```
+
+结果：退出码 1；10 项中 4 项失败。空字符串 domain 的异常文本不符合严格 loader 契约；null/整数 domain 泄漏 `AttributeError`；truthy list 类型的 `label_schema` 未被拒绝。非法 scorer 与 `task_by_id()` 重复 ID 测试已由既有防御逻辑通过。
+
+### 最小实现
+
+仅在构造 `BlindTask` 前增加三项字段检查；保留构造后的既有业务校验与重复 ID 检查，不改模型契约。
+
+### GREEN 证据
+
+命令：
+
+```text
+python -m pytest tests/evaluation/test_task_catalog.py tests/evaluation/test_models.py -v
+```
+
+结果：退出码 0；18 passed in 0.22s。
