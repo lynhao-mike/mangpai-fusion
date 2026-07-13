@@ -541,6 +541,21 @@ next_irreversible_decision: 启动 Phase 0 真实标注数据地基
 updated_at: 2026-07-12
 ```
 
+### 17.1B Phase 0 真实标注数据地基状态（2026-07-13）
+
+```text
+phase: Phase 0 真实标注数据地基
+status: HOLD
+evidence_artifacts: META/school-capability-case-inventory.json · META/school-capability-data-foundation-summary-2026-07-12.md · tools/school_capability_dataset.py
+accepted_hypotheses: 保守污染分级、结构化标签、reviewed manifest/config、冻结后揭示、前瞻登记与白名单隔离可工程化
+rejected_hypotheses: 现有 990/Top30 feedback-first 案例可改名为 historical blind；宽泛领域命题可直接冒充精确评估任务
+known_risks: 133 个现有案例 blind eligible=0；现有引擎缺显式 task-specific 事件绑定；无法由代码补造 30 个真实前瞻案例
+next_irreversible_decision: 使用 prospective-intake + prepare-blind 对后续真实新案执行预测先冻结，累计至少 30 案后重跑 score/report 门禁
+updated_at: 2026-07-13
+```
+
+HOLD 是 Phase 0 §5.4 规定的正确结果：样本不足时不得用污染案例凑数。代码侧采集与隔离基础设施已落地，但“≥30 个真实 prospective 案例”是外部事实采集门槛，不能通过并行 agent、复制同案或手写输出合法满足。
+
 ### 17.2 As-Built 真实实现审计发现
 
 调研确认当前运行内核与目标架构的主要差距（证据来自源码通读）：

@@ -2,17 +2,61 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import hmac
 import json
+import os
+import re
+import shutil
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from engine.evaluation.case_audit import audit_cases
+from engine.evaluation.freeze import verify_frozen_run
+from engine.evaluation.manifest_validation import (
+    GATE_THRESHOLDS_POLICY,
+    validate_reviewed_manifest,
+    validate_routes,
+)
+from engine.evaluation.models import FrozenBlindRun
 
 _INVENTORY_SCHEMA = "school-capability-case-inventory/v1"
 _DECISIONS_SCHEMA = "school-capability-review-decisions/v1"
 _LABELS_SCHEMA = "school-capability-labels-unbound/v1"
+_MANIFEST_SCHEMA = "school-capability-case-manifest/v1"
+_CONFIG_SCHEMA = "school-capability-evaluation-config/v1"
+_BOUND_LABELS_SCHEMA = "school-capability-labels/v1"
+_PROSPECTIVE_SCHEMA = "school-capability-prospective-intake/v1"
+_BLIND_BUNDLE_SCHEMA = "school-capability-blind-bundle/v1"
 _CLEAN = {"historical_blind", "prospective"}
+_FORBIDDEN_INTAKE_MARKERS = ("feedback", "labels", "report", "known facts", "known_facts", "known-facts")
+_ELIGIBILITIES = {"blind_candidate", "historical_blind_candidate", "development_only"}
+_EVIDENCE_GRADES = {"A", "B", "C"}
+_ROUTE_FIELDS = {"school_id", "task_id", "chart_prototype_id", "claim_type", "time_horizon", "evidence_completeness_band"}
+_MANIFEST_RECORD_FIELDS = {"case_id", "has_input", "has_feedback", "has_statement_index", "has_existing_report", "feedback_quantifiable", "contamination_flags", "eligibility", "evidence_notes", "eligible_routes"}
+_INTAKE_RECORD_FIELDS = {"case_id", "input_file", "input_sha256", "subject_id_hash", "task_ids"}
+_TASK_BUNDLE_FIELDS = (
+    "task_id", "domain", "claim_type", "scoring_method", "quantifiable", "high_risk",
+    "allowed_time_horizons", "required_input_fields", "label_schema",
+)
+_WITNESS_SCHEMA = "school-capability-witness-registry/v1"
+_WITNESS_PAYLOAD_FIELDS = {
+    "registered": {
+        "case_id", "subject_id_hash", "canonical_chart_sha256",
+        "task_catalog_sha256", "rule_snapshot_sha256",
+    },
+    "prepared": {"case_id", "bundle_sha256"},
+    "freeze": {"case_id", "freeze_hash"},
+    "reveal": {"case_id", "freeze_hash", "unbound_labels_sha256"},
+}
+_STEMS = "甲乙丙丁戊己庚辛壬癸"
+_BRANCHES = "子丑寅卯辰巳午未申酉戌亥"
+_VALID_PILLARS = {
+    _STEMS[index % 10] + _BRANCHES[index % 12]
+    for index in range(60)
+}
 _REQUIRED_LABEL_FIELDS = {
     "case_id", "task_id", "label", "source", "observed_at", "confidence_grade",
     "quantifiable", "conflict_state", "reviewer",
@@ -83,6 +127,15 @@ def build_inventory(cases_dir: Path, reports_dir: Path, review_decisions: dict[s
     return {"schema_version": _INVENTORY_SCHEMA, "generated_at": _now(), "records": records}
 
 
+def _is_utc_timestamp(value: object) -> bool:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        return False
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00").tzinfo == timezone.utc
+    except ValueError:
+        return False
+
+
 def _task_map(catalog: dict[str, Any]) -> dict[str, dict[str, Any]]:
     tasks = catalog.get("tasks")
     if not isinstance(tasks, list):
@@ -145,15 +198,666 @@ def build_unbound_labels(observations: list[dict[str, Any]], task_catalog: dict[
     return {"schema_version": _LABELS_SCHEMA, "generated_at": _now(), "labels": labels}
 
 
+def _human_reviewer(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip()) and not value.lower().startswith(("automated", "agent", "ai-"))
+
+
+def _validate_routes(routes: object) -> list[dict[str, str]]:
+    return validate_routes(routes)
+
+
+def build_reviewed_manifest(inventory: dict[str, Any], reviewed_by: str, expected_schools: list[str], routes_by_case: dict[str, list[dict[str, str]]] | None = None) -> dict[str, Any]:
+    if inventory.get("schema_version") != _INVENTORY_SCHEMA or not isinstance(inventory.get("records"), list):
+        raise ValueError(f"inventory must use {_INVENTORY_SCHEMA}")
+    if not _human_reviewer(reviewed_by):
+        raise ValueError("automated reviewer cannot promote cases")
+    if not expected_schools or any(not isinstance(item, str) or not item for item in expected_schools) or len(set(expected_schools)) != len(expected_schools):
+        raise ValueError("expected_schools must be unique non-empty strings")
+    routes_by_case = routes_by_case or {}
+    if not isinstance(routes_by_case, dict):
+        raise ValueError("routes_by_case must be an object")
+    inventory_case_ids = {
+        item.get("case_id") for item in inventory["records"] if isinstance(item, dict)
+    }
+    unknown_route_cases = set(routes_by_case) - inventory_case_ids
+    if unknown_route_cases:
+        raise ValueError(f"routes_by_case references unknown case: {sorted(unknown_route_cases)[0]}")
+    records = []
+    seen_cases = set()
+    for source in inventory["records"]:
+        if not isinstance(source, dict) or not isinstance(source.get("case_id"), str) or not source["case_id"].strip() or source["case_id"] in seen_cases:
+            raise ValueError("inventory record requires unique case_id")
+        seen_cases.add(source["case_id"])
+        clean = source.get("classification") in _CLEAN and source.get("development_contaminated") is False
+        if clean:
+            if not _human_reviewer(source.get("reviewed_by")) or not _is_utc_timestamp(source.get("reviewed_at")) or not isinstance(source.get("provenance_evidence"), list) or not source["provenance_evidence"] or any(not isinstance(item, str) or ":" not in item for item in source["provenance_evidence"]):
+                raise ValueError("clean inventory requires human review provenance")
+            if "human_clean_review_missing" in source.get("contamination_evidence", []):
+                raise ValueError("clean inventory contains human_clean_review_missing")
+        routes = _validate_routes(routes_by_case.get(source["case_id"], [])) if clean else []
+        records.append({
+            "case_id": source["case_id"], "has_input": bool(source.get("birth_info_complete")),
+            "has_feedback": bool(source.get("feedback_present")), "has_statement_index": False,
+            "has_existing_report": False, "feedback_quantifiable": source.get("feedback_grade") in {"A", "B"},
+            "contamination_flags": list(source.get("contamination_evidence", [])),
+            "eligibility": "historical_blind_candidate" if source.get("classification") == "historical_blind" and clean else "blind_candidate" if source.get("classification") == "prospective" and clean else "development_only",
+            "evidence_notes": [source["notes"]] if source.get("notes") else [], "eligible_routes": routes,
+        })
+    return {"schema_version": _MANIFEST_SCHEMA, "generated_at": _now(), "reviewed_by": reviewed_by, "expected_schools": expected_schools, "records": records}
+
+
+def _validate_manifest(manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    return validate_reviewed_manifest(manifest)
+
+
+def build_evaluation_config(
+    manifest: dict[str, Any], baseline_prevalence_by_task: dict[str, float],
+    evidence_grade: str, evaluated_at: str, task_catalog: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    records = _validate_manifest(manifest)
+    tasks_by_id = _task_map(task_catalog) if task_catalog is not None else None
+    if evidence_grade not in _EVIDENCE_GRADES:
+        raise ValueError("evidence_grade must be A, B, or C")
+    if not _is_utc_timestamp(evaluated_at):
+        raise ValueError("evaluated_at must be an ISO 8601 UTC timestamp")
+    grid: set[tuple[str, str]] = set()
+    metadata: dict[str, Any] = {}
+    weights: dict[str, int] = {}
+    for row in records:
+        if row["eligibility"] not in {"blind_candidate", "historical_blind_candidate"}:
+            continue
+        for route in row["eligible_routes"]:
+            if tasks_by_id is not None:
+                task = tasks_by_id.get(route["task_id"])
+                if task is None or route["claim_type"] != task.get("claim_type") or route["time_horizon"] not in task.get("allowed_time_horizons", []):
+                    raise ValueError("route does not match task catalog")
+            grid.add((row["case_id"], route["task_id"]))
+            key = "|".join((row["case_id"], route["task_id"], route["school_id"]))
+            metadata[key] = {field: route[field] for field in ("chart_prototype_id", "time_horizon", "evidence_completeness_band")}
+            weights[key] = 1
+    tasks = {task_id for _, task_id in grid}
+    if set(baseline_prevalence_by_task) != tasks or any(type(value) not in (int, float) or type(value) is bool or not 0 <= value <= 1 for value in baseline_prevalence_by_task.values()):
+        raise ValueError("baseline prevalence must exactly cover eligible tasks")
+    return {"schema_version": _CONFIG_SCHEMA, "eligible_case_tasks": [list(item) for item in sorted(grid)], "baseline_prevalence_by_task": baseline_prevalence_by_task, "case_metadata": metadata, "evidence_grade": evidence_grade, "evaluated_at": evaluated_at, "score_weights": weights, "gate_thresholds": dict(GATE_THRESHOLDS_POLICY)}
+
+
+def _verified_run(document: dict[str, Any]) -> FrozenBlindRun:
+    run = FrozenBlindRun.from_dict(document)
+    verify_frozen_run(run)
+    return run
+
+
+def bind_labels_after_freeze(unbound_labels: dict[str, Any], frozen_run: dict[str, Any]) -> dict[str, Any]:
+    if set(unbound_labels) != {"schema_version", "generated_at", "labels"} and set(unbound_labels) != {"schema_version", "labels"}:
+        raise ValueError("unbound labels schema is invalid")
+    if unbound_labels.get("schema_version") != _LABELS_SCHEMA or not isinstance(unbound_labels.get("labels"), list):
+        raise ValueError("unbound labels schema is invalid")
+    run = _verified_run(frozen_run)
+    return {"schema_version": _BOUND_LABELS_SCHEMA, "freeze_hash": run.freeze_hash, "labels": unbound_labels["labels"]}
+
+
+def validate_dataset(
+    manifest: dict[str, Any], labels: dict[str, Any], frozen_run: dict[str, Any],
+    prospective_intake: dict[str, Any] | None = None,
+    blind_bundle_manifest: dict[str, Any] | None = None,
+    reveal_provenance: dict[str, Any] | None = None,
+    blind_bundle_root: Path | None = None,
+    witness_registry: dict[str, Any] | None = None,
+    witness_key: bytes | None = None,
+) -> dict[str, Any]:
+    records = _validate_manifest(manifest)
+    run = _verified_run(frozen_run)
+    if not _is_utc_timestamp(run.frozen_at):
+        raise ValueError("frozen_at must be an ISO 8601 UTC timestamp")
+    if set(labels) != {"schema_version", "freeze_hash", "labels"} or labels.get("schema_version") != _BOUND_LABELS_SCHEMA or not isinstance(labels.get("labels"), list):
+        raise ValueError("bound labels schema is invalid")
+    if labels.get("freeze_hash") != run.freeze_hash:
+        raise ValueError("revealed labels freeze hash does not match frozen run")
+    routes = {(row["case_id"], route["task_id"], route["school_id"]) for row in records if row["eligibility"] in {"blind_candidate", "historical_blind_candidate"} for route in row["eligible_routes"]}
+    outputs = {(output.case_id, output.task_id, output.school_id) for output in run.outputs}
+    if outputs != routes or len(outputs) != len(run.outputs):
+        raise ValueError("frozen outputs must exactly cover manifest routes")
+    eligible = {row["case_id"] for row in records if row["eligibility"] in {"blind_candidate", "historical_blind_candidate"}}
+    route_tasks = {(case_id, task_id) for case_id, task_id, _ in routes}
+    identities = set()
+    for item in labels["labels"]:
+        if not isinstance(item, dict) or set(item) != _REQUIRED_LABEL_FIELDS:
+            raise ValueError("label record has invalid schema")
+        identity = item["case_id"], item["task_id"]
+        if identity in identities:
+            raise ValueError("duplicate label identity")
+        if identity not in route_tasks:
+            raise ValueError("label must correspond to an eligible manifest route")
+        identities.add(identity)
+    labelled_cases = {case_id for case_id, _ in identities if case_id in eligible}
+    reasons = []
+    if prospective_intake is None or blind_bundle_manifest is None or reveal_provenance is None:
+        reasons.append("prospective intake, blind bundle manifest, and reveal provenance are required for GO")
+    else:
+        _validate_go_provenance(
+            records, labels, run, prospective_intake, blind_bundle_manifest,
+            reveal_provenance, Path(blind_bundle_root) if blind_bundle_root is not None else None,
+        )
+    if blind_bundle_root is None:
+        reasons.append("actual blind bundle root is required for GO")
+    if witness_registry is None or not witness_key:
+        reasons.append("witness registry and external witness key are required for GO")
+    else:
+        verify_witness_registry(witness_registry, witness_key)
+        if prospective_intake is None or blind_bundle_manifest is None:
+            reasons.append("prospective intake and blind bundle manifest are required for witness validation")
+        else:
+            _validate_witness_timeline(
+                records, run, reveal_provenance, witness_registry,
+                prospective_intake, blind_bundle_manifest,
+            )
+    if len(eligible) < 30:
+        reasons.append("fewer than 30 blind eligible cases")
+    if len(labelled_cases) < 30:
+        reasons.append("fewer than 30 labelled blind eligible cases")
+    return {"status": "GO" if not reasons else "HOLD", "blind_eligible_count": len(eligible), "labelled_count": len(labelled_cases), "reasons": reasons}
+
+
+def _sha256(content: bytes) -> str:
+    return hashlib.sha256(content).hexdigest()
+
+
+
+def _canonical_sha(value: object) -> str:
+    return _sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+
+
+def _parse_utc(value: object, name: str) -> datetime:
+    if not _is_utc_timestamp(value):
+        raise ValueError(f"{name} must be an ISO 8601 UTC timestamp")
+    return datetime.fromisoformat(str(value)[:-1] + "+00:00")
+
+
+def _is_sha256(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def _validate_witness_event(event: object, *, stored: bool) -> dict[str, Any]:
+    envelope = {"event_type", "occurred_at", "payload"}
+    if stored:
+        envelope |= {"previous_hash", "event_hash", "hmac_sha256"}
+    if not isinstance(event, dict) or set(event) != envelope:
+        raise ValueError("witness event schema is invalid")
+    event_type = event.get("event_type")
+    payload = event.get("payload")
+    if event_type not in _WITNESS_PAYLOAD_FIELDS or not _is_utc_timestamp(event.get("occurred_at")):
+        raise ValueError("witness event schema is invalid")
+    if not isinstance(payload, dict) or set(payload) != _WITNESS_PAYLOAD_FIELDS[event_type]:
+        raise ValueError("witness event payload schema is invalid")
+    _validate_case_id(payload.get("case_id"))
+    if any(not _is_sha256(value) for key, value in payload.items() if key != "case_id"):
+        raise ValueError("witness event payload digest is invalid")
+    if stored and any(not _is_sha256(event.get(key)) for key in ("previous_hash", "event_hash", "hmac_sha256")):
+        raise ValueError("witness event authentication schema is invalid")
+    return event
+
+
+def append_witness_event(
+    registry: dict[str, Any] | None, event: dict[str, Any], witness_key: bytes,
+) -> dict[str, Any]:
+    """Return a new append-only HMAC authenticated hash-chain registry."""
+    if not isinstance(witness_key, bytes) or not witness_key:
+        raise ValueError("witness key must be non-empty bytes")
+    current = {"schema_version": _WITNESS_SCHEMA, "events": []} if registry is None else json.loads(json.dumps(registry))
+    verify_witness_registry(current, witness_key)
+    _validate_witness_event(event, stored=False)
+    previous_hash = current["events"][-1]["event_hash"] if current["events"] else "0" * 64
+    unsigned = {**event, "previous_hash": previous_hash}
+    event_hash = _canonical_sha(unsigned)
+    signature = hmac.new(witness_key, event_hash.encode("ascii"), hashlib.sha256).hexdigest()
+    current["events"].append({**unsigned, "event_hash": event_hash, "hmac_sha256": signature})
+    return current
+
+
+def verify_witness_registry(registry: dict[str, Any], witness_key: bytes) -> bool:
+    """Verify registry schema, chain continuity, event hashes, and HMACs."""
+    if not isinstance(witness_key, bytes) or not witness_key:
+        raise ValueError("witness key must be non-empty bytes")
+    if not isinstance(registry, dict) or set(registry) != {"schema_version", "events"} or registry.get("schema_version") != _WITNESS_SCHEMA or not isinstance(registry.get("events"), list):
+        raise ValueError("witness registry schema is invalid")
+    previous_hash = "0" * 64
+    for event in registry["events"]:
+        _validate_witness_event(event, stored=True)
+        if event["previous_hash"] != previous_hash:
+            raise ValueError("witness hash chain is broken")
+        unsigned = {key: value for key, value in event.items() if key not in {"event_hash", "hmac_sha256"}}
+        expected_hash = _canonical_sha(unsigned)
+        expected_hmac = hmac.new(witness_key, expected_hash.encode("ascii"), hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(str(event["hmac_sha256"]), expected_hmac):
+            raise ValueError("witness HMAC verification failed")
+        if not hmac.compare_digest(str(event["event_hash"]), expected_hash):
+            raise ValueError("witness event hash is invalid")
+        previous_hash = expected_hash
+    return True
+
+
+def _validate_witness_timeline(
+    records: list[dict[str, Any]], run: FrozenBlindRun,
+    provenance: dict[str, Any] | None, registry: dict[str, Any],
+    intake: dict[str, Any], bundle: dict[str, Any],
+) -> None:
+    if provenance is None:
+        raise ValueError("reveal provenance is required for witness validation")
+    intake_by_case = {row["case_id"]: row for row in intake["records"]}
+    for row in records:
+        if row["eligibility"] != "blind_candidate":
+            continue
+        case_id = row["case_id"]
+        events = [event for event in registry["events"] if event["payload"]["case_id"] == case_id]
+        by_type = {
+            event_type: [event for event in events if event["event_type"] == event_type]
+            for event_type in _WITNESS_PAYLOAD_FIELDS
+        }
+        if any(len(by_type[event_type]) != 1 for event_type in _WITNESS_PAYLOAD_FIELDS) or len(events) != 4:
+            raise ValueError(f"witness requires exactly one registered, prepared, freeze, reveal: {case_id}")
+        registered, prepared, freeze, reveal = (
+            by_type[event_type][0]
+            for event_type in ("registered", "prepared", "freeze", "reveal")
+        )
+        times = [
+            _parse_utc(event["occurred_at"], f"witness {event['event_type']} occurred_at")
+            for event in (registered, prepared, freeze, reveal)
+        ]
+        if not times[0] < times[1] < times[2] < times[3]:
+            raise ValueError(f"witness times must strictly increase registered -> prepared -> freeze -> reveal: {case_id}")
+        intake_row = intake_by_case[case_id]
+        expected_registered = {
+            "case_id": case_id,
+            "subject_id_hash": intake_row["subject_id_hash"],
+            "canonical_chart_sha256": bundle["files"][f"cases/{case_id}/chart.json"],
+            "task_catalog_sha256": bundle["files"]["tasks.json"],
+            "rule_snapshot_sha256": bundle["files"]["rule-snapshot.json"],
+        }
+        if registered["payload"] != expected_registered:
+            raise ValueError(f"witness registered payload does not match actual intake/bundle: {case_id}")
+        if prepared["payload"] != {"case_id": case_id, "bundle_sha256": bundle["bundle_sha256"]}:
+            raise ValueError(f"witness prepared payload does not match actual bundle: {case_id}")
+        if freeze["payload"] != {"case_id": case_id, "freeze_hash": run.freeze_hash} or times[2] != _parse_utc(run.frozen_at, "frozen_at"):
+            raise ValueError(f"witness freeze payload does not match frozen run: {case_id}")
+        expected_reveal = {
+            "case_id": case_id, "freeze_hash": run.freeze_hash,
+            "unbound_labels_sha256": provenance["unbound_labels_sha256"],
+        }
+        if reveal["payload"] != expected_reveal or times[3] != _parse_utc(provenance.get("bound_at"), "bound_at"):
+            raise ValueError(f"witness reveal payload does not match reveal provenance: {case_id}")
+
+
+def _verify_actual_bundle(bundle_root: Path, expected_manifest: dict[str, Any]) -> None:
+    _reject_symlink(bundle_root, "bundle root")
+    if not bundle_root.is_dir():
+        raise ValueError("actual bundle root must be a directory")
+    manifest_path = bundle_root / "bundle-manifest.json"
+    _reject_symlink(manifest_path, "actual bundle manifest")
+    try:
+        actual_manifest = _read_json(manifest_path)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+        raise ValueError("actual bundle manifest is missing or invalid") from error
+    if actual_manifest != expected_manifest:
+        raise ValueError("actual bundle manifest does not canonically match supplied manifest")
+    expected_files = expected_manifest["files"]
+    actual_names = {
+        relative
+        for path in bundle_root.rglob("*")
+        if path.is_file()
+        for relative in (path.relative_to(bundle_root).as_posix(),)
+        if relative != "bundle-manifest.json"
+    }
+    if actual_names != set(expected_files):
+        raise ValueError("actual bundle files do not match manifest")
+    for name, expected_hash in expected_files.items():
+        path = bundle_root / name
+        _reject_symlink(path, "actual bundle file")
+        if _sha256(path.read_bytes()) != expected_hash:
+            raise ValueError(f"actual bundle file hash mismatch: {name}")
+
+
+def _validate_go_provenance(
+    records: list[dict[str, Any]], labels: dict[str, Any], run: FrozenBlindRun,
+    intake: dict[str, Any], bundle: dict[str, Any], provenance: dict[str, Any],
+    bundle_root: Path | None,
+) -> None:
+    if set(intake) != {"schema_version", "generated_at", "operator", "schools", "task_catalog_sha256", "records"} or intake.get("schema_version") != _PROSPECTIVE_SCHEMA or not isinstance(intake.get("records"), list):
+        raise ValueError("prospective intake schema is invalid")
+    _parse_utc(intake.get("generated_at"), "intake generated_at")
+    intake_rows: dict[str, dict[str, Any]] = {}
+    subjects: set[str] = set()
+    for row in intake["records"]:
+        if not isinstance(row, dict) or set(row) != _INTAKE_RECORD_FIELDS:
+            raise ValueError("prospective intake record is invalid")
+        case_id = _validate_case_id(row["case_id"])
+        if case_id in intake_rows:
+            raise ValueError("prospective intake requires unique cases")
+        if not isinstance(row["input_sha256"], str) or not isinstance(row["subject_id_hash"], str) or len(row["subject_id_hash"]) != 64 or row["subject_id_hash"] in subjects or not isinstance(row["task_ids"], list) or not row["task_ids"] or len(set(row["task_ids"])) != len(row["task_ids"]):
+            raise ValueError("prospective intake record values or duplicate subject are invalid")
+        subjects.add(row["subject_id_hash"])
+        intake_rows[case_id] = row
+    prospective = {row["case_id"]: row for row in records if row["eligibility"] == "blind_candidate"}
+    if set(prospective) != set(intake_rows):
+        raise ValueError("eligible cases must exactly match prospective intake records")
+    if set(bundle) != {"schema_version", "bundle_sha256", "files"} or bundle.get("schema_version") != _BLIND_BUNDLE_SCHEMA or not isinstance(bundle.get("files"), dict):
+        raise ValueError("blind bundle manifest schema is invalid")
+    files = bundle["files"]
+    expected_files = {"tasks.json", "rule-snapshot.json"} | {f"cases/{case_id}/chart.json" for case_id in intake_rows}
+    if set(files) != expected_files or any(not isinstance(value, str) or len(value) != 64 for value in files.values()):
+        raise ValueError("blind bundle files do not exactly match intake")
+    if bundle["bundle_sha256"] != _canonical_sha(files):
+        raise ValueError("blind bundle hash mismatch")
+    if bundle_root is not None:
+        _verify_actual_bundle(bundle_root, bundle)
+    if run.task_catalog_version != files["tasks.json"]:
+        raise ValueError("frozen task catalog hash does not match bundle")
+    if run.rule_snapshot_id != files["rule-snapshot.json"]:
+        raise ValueError("frozen rule snapshot hash does not match bundle")
+    for case_id, row in intake_rows.items():
+        if bundle_root is not None:
+            chart = validate_canonical_chart(
+                _read_json(bundle_root / f"cases/{case_id}/chart.json"), case_id,
+            )
+            subject_id_hash = _canonical_sha({
+                key: chart[key] for key in ("four_pillars", "sex_marker")
+            })
+            if subject_id_hash != row["subject_id_hash"]:
+                raise ValueError(f"case canonical chart does not match intake subject: {case_id}")
+        route_tasks = {route["task_id"] for route in prospective[case_id]["eligible_routes"]}
+        if route_tasks != set(row["task_ids"]):
+            raise ValueError(f"case tasks do not match intake: {case_id}")
+    if set(provenance) != {"freeze_hash", "bound_at", "unbound_labels_sha256"}:
+        raise ValueError("reveal provenance schema is invalid")
+    if provenance["freeze_hash"] != run.freeze_hash:
+        raise ValueError("reveal provenance freeze hash does not match frozen run")
+    if _parse_utc(provenance["bound_at"], "bound_at") < _parse_utc(run.frozen_at, "frozen_at"):
+        raise ValueError("bound_at must not be earlier than frozen_at")
+    unbound = {"schema_version": _LABELS_SCHEMA, "labels": labels["labels"]}
+    if provenance["unbound_labels_sha256"] != _canonical_sha(unbound):
+        raise ValueError("unbound labels hash does not match revealed labels")
+
+
+def _reject_symlink(path: Path, description: str) -> None:
+    absolute = path.absolute()
+    for candidate in (absolute, *absolute.parents):
+        if candidate.is_symlink():
+            raise ValueError(f"{description} must not be or traverse a symlink: {path}")
+
+
+def _contains_forbidden_field(value: object) -> bool:
+    if isinstance(value, dict):
+        return any(
+            any(marker in str(key).lower().replace("_", " ").replace("-", " ") for marker in _FORBIDDEN_INTAKE_MARKERS)
+            or _contains_forbidden_field(item)
+            for key, item in value.items()
+        )
+    if isinstance(value, list):
+        return any(_contains_forbidden_field(item) for item in value)
+    if isinstance(value, str):
+        normalized = value.lower().replace("_", " ").replace("-", " ")
+        return any(marker.lower().replace("_", " ").replace("-", " ") in normalized for marker in _FORBIDDEN_INTAKE_MARKERS)
+    return False
+
+
+def _validate_case_id(case_id: object) -> str:
+    if not isinstance(case_id, str) or not case_id or case_id in {".", ".."} or "/" in case_id or "\\" in case_id or Path(case_id).name != case_id:
+        raise ValueError("case_id must be a safe path component")
+    return case_id
+
+
+def validate_canonical_chart(chart: object, expected_case_id: str) -> dict[str, Any]:
+    """Validate the exact canonical chart contract and its expected case binding."""
+    expected_case_id = _validate_case_id(expected_case_id)
+    if not isinstance(chart, dict) or set(chart) != {"case_id", "four_pillars", "sex_marker"}:
+        raise ValueError(f"case canonical chart schema is invalid: {expected_case_id}")
+    try:
+        case_id = _validate_case_id(chart["case_id"])
+    except ValueError as error:
+        raise ValueError(f"case canonical chart case_id is invalid: {expected_case_id}") from error
+    pillars = chart["four_pillars"]
+    if (
+        case_id != expected_case_id
+        or not isinstance(pillars, list)
+        or len(pillars) != 4
+        or any(not isinstance(pillar, str) or pillar not in _VALID_PILLARS for pillar in pillars)
+        or chart["sex_marker"] not in {"乾", "坤"}
+    ):
+        raise ValueError(f"case canonical chart values are invalid: {expected_case_id}")
+    return chart
+
+
+def _canonical_chart(content: str, case_id: str) -> dict[str, Any]:
+    pillar_matches = re.findall(r"^\s*四柱\s*[：:]\s*([^\r\n]+?)\s*$", content, re.MULTILINE)
+    sex_matches = re.findall(r"^\s*(?:性别|命式)\s*[：:]\s*([^\s\r\n]+)\s*$", content, re.MULTILINE)
+    if len(pillar_matches) != 1 or len(sex_matches) != 1:
+        raise ValueError(f"cannot strictly extract canonical chart: {case_id}")
+    return validate_canonical_chart({
+        "case_id": case_id,
+        "four_pillars": pillar_matches[0].split(),
+        "sex_marker": sex_matches[0],
+    }, case_id)
+
+
+def register_prospective_intake(
+    input_files: list[Path],
+    tasks: dict[str, Any],
+    schools: list[str],
+    operator: str,
+    *,
+    tasks_by_case: dict[str, list[str]] | None = None,
+) -> dict[str, Any]:
+    """Register prediction-first cases while rejecting known outcomes and labels."""
+    if not input_files:
+        raise ValueError("prospective intake requires input files")
+    if not _human_reviewer(operator):
+        raise ValueError("operator must be a named human")
+    if not schools or len(set(schools)) != len(schools) or any(not isinstance(item, str) or not item for item in schools):
+        raise ValueError("schools must be unique non-empty strings")
+    if _contains_forbidden_field(tasks):
+        raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields")
+    task_ids = set(_task_map(tasks))
+    tasks_by_case = tasks_by_case or {}
+    records = []
+    seen: set[str] = set()
+    seen_subjects: set[str] = set()
+    for raw_path in input_files:
+        path = Path(raw_path)
+        _reject_symlink(path, "input source")
+        if not path.is_file() or path.name.lower() != "input.md":
+            raise ValueError(f"input file must be a regular input.md: {path}")
+        if any(marker in part.lower().replace("_", " ").replace("-", " ") for part in path.parts for marker in _FORBIDDEN_INTAKE_MARKERS):
+            raise ValueError(f"input path contains forbidden feedback/labels/report/known facts marker: {path}")
+        content = path.read_bytes()
+        text = content.decode("utf-8")
+        lowered = text.lower().replace("_", " ").replace("-", " ")
+        if any(marker.replace("_", " ").replace("-", " ") in lowered for marker in _FORBIDDEN_INTAKE_MARKERS):
+            raise ValueError(f"input contains forbidden feedback/labels/report/known facts content: {path}")
+        case_id = _validate_case_id(path.parent.name)
+        if case_id in seen:
+            raise ValueError(f"duplicate case: {case_id}")
+        seen.add(case_id)
+        chart = _canonical_chart(text, case_id)
+        subject_id_hash = _canonical_sha({key: chart[key] for key in ("four_pillars", "sex_marker")})
+        if subject_id_hash in seen_subjects:
+            raise ValueError(f"duplicate subject: {case_id}")
+        seen_subjects.add(subject_id_hash)
+        selected = tasks_by_case.get(case_id, sorted(task_ids))
+        if not selected or len(set(selected)) != len(selected):
+            raise ValueError(f"case tasks must be unique and non-empty: {case_id}")
+        unknown = set(selected) - task_ids
+        if unknown:
+            raise ValueError(f"unknown task: {sorted(unknown)[0]}")
+        records.append({
+            "case_id": case_id,
+            "input_file": str(path.absolute()),
+            "input_sha256": _sha256(content),
+            "subject_id_hash": subject_id_hash,
+            "task_ids": sorted(selected),
+        })
+    unknown_cases = set(tasks_by_case) - seen
+    if unknown_cases:
+        raise ValueError(f"tasks_by_case references unknown case: {sorted(unknown_cases)[0]}")
+    clean_tasks = [{field: task[field] for field in _TASK_BUNDLE_FIELDS} for task in tasks["tasks"]]
+    bundle_tasks = {"schema_version": tasks.get("schema_version"), "tasks": clean_tasks}
+    return {
+        "schema_version": _PROSPECTIVE_SCHEMA,
+        "generated_at": _now(),
+        "operator": operator,
+        "schools": schools,
+        "task_catalog_sha256": _canonical_sha(bundle_tasks),
+        "records": sorted(records, key=lambda item: item["case_id"]),
+    }
+
+
+def prepare_blind_bundle(
+    intake: dict[str, Any], tasks: Path, rule_snapshot: Path, target_dir: Path, *, dry_run: bool = False,
+) -> dict[str, Any]:
+    """Create a whitelist-only bundle of canonical charts and artifact references."""
+    if intake.get("schema_version") != _PROSPECTIVE_SCHEMA or not isinstance(intake.get("records"), list):
+        raise ValueError("prospective intake schema is invalid")
+    if _contains_forbidden_field(intake):
+        raise ValueError("intake contains forbidden feedback/labels/report/known facts fields")
+    target = Path(target_dir)
+    _reject_symlink(target, "bundle target")
+    if target.exists():
+        raise ValueError(f"bundle target must not exist: {target}")
+    files: dict[str, bytes] = {}
+    task_source, rule_source = Path(tasks), Path(rule_snapshot)
+    for source in (task_source, rule_source):
+        _reject_symlink(source, "bundle source")
+        if not source.is_file():
+            raise ValueError(f"bundle source must be a regular file: {source}")
+    task_bytes, rule_bytes = task_source.read_bytes(), rule_source.read_bytes()
+    task_document = json.loads(task_bytes.decode("utf-8"))
+    rule_document = json.loads(rule_bytes.decode("utf-8"))
+    if _contains_forbidden_field(task_document):
+        raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields or strings")
+    known_tasks = set(_task_map(task_document))
+    try:
+        clean_tasks = [{field: task[field] for field in _TASK_BUNDLE_FIELDS} for task in task_document["tasks"]]
+    except KeyError as error:
+        raise ValueError(f"task catalog missing scoring field: {error.args[0]}") from error
+    snapshot_id = rule_document.get("rule_snapshot_id")
+    if not isinstance(snapshot_id, str) or not snapshot_id:
+        raise ValueError("rule snapshot requires rule_snapshot_id")
+    files["tasks.json"] = json.dumps(
+        {"schema_version": task_document.get("schema_version"), "tasks": clean_tasks},
+        ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode("utf-8")
+    if intake.get("task_catalog_sha256") != _sha256(files["tasks.json"]):
+        raise ValueError("intake task catalog hash does not match canonical bundled tasks")
+    files["rule-snapshot.json"] = json.dumps(
+        {"rule_snapshot_id": snapshot_id, "sha256": _sha256(rule_bytes)},
+        ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode("utf-8")
+    seen: set[str] = set()
+    seen_subjects: set[str] = set()
+    for row in intake["records"]:
+        if not isinstance(row, dict) or set(row) != _INTAKE_RECORD_FIELDS:
+            raise ValueError("prospective intake record is invalid")
+        case_id = _validate_case_id(row["case_id"])
+        if case_id in seen:
+            raise ValueError(f"duplicate case: {case_id}")
+        seen.add(case_id)
+        if set(row["task_ids"]) - known_tasks:
+            raise ValueError(f"unknown task in case: {case_id}")
+        source = Path(row["input_file"])
+        _reject_symlink(source, "case input source")
+        if not source.is_file() or source.name != "input.md":
+            raise ValueError(f"case input source must be a regular input.md: {case_id}")
+        if source.parent.name != case_id:
+            raise ValueError(f"case input parent must equal case_id: {case_id}")
+        content = source.read_bytes()
+        try:
+            normalized = content.decode("utf-8").lower().replace("_", " ").replace("-", " ")
+        except UnicodeDecodeError as error:
+            raise ValueError(f"case input must be UTF-8 text: {case_id}") from error
+        if any(marker.replace("_", " ").replace("-", " ") in normalized for marker in _FORBIDDEN_INTAKE_MARKERS):
+            raise ValueError(f"case input contains forbidden feedback/labels/report/known facts content: {case_id}")
+        if _sha256(content) != row["input_sha256"]:
+            raise ValueError(f"case input hash changed: {case_id}")
+        chart = _canonical_chart(content.decode("utf-8"), case_id)
+        subject_hash = _canonical_sha({key: chart[key] for key in ("four_pillars", "sex_marker")})
+        if subject_hash != row["subject_id_hash"]:
+            raise ValueError(f"case subject hash changed: {case_id}")
+        if subject_hash in seen_subjects:
+            raise ValueError(f"duplicate subject: {case_id}")
+        seen_subjects.add(subject_hash)
+        files[f"cases/{case_id}/chart.json"] = json.dumps(
+            chart, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+        ).encode("utf-8")
+    hashes = {name: _sha256(content) for name, content in sorted(files.items())}
+    bundle_hash = _sha256(json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+    manifest = {"schema_version": _BLIND_BUNDLE_SCHEMA, "bundle_sha256": bundle_hash, "files": hashes}
+    if dry_run:
+        return manifest
+    target.parent.mkdir(parents=True, exist_ok=True)
+    _reject_symlink(target, "bundle target")
+    temporary = Path(tempfile.mkdtemp(prefix=f".{target.name}.", dir=target.parent))
+    try:
+        for name, content in files.items():
+            destination = temporary / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(content)
+        (temporary / "bundle-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        if target.exists() or target.is_symlink():
+            raise ValueError(f"bundle target must not exist: {target}")
+        os.replace(temporary, target)
+    except BaseException:
+        shutil.rmtree(temporary, ignore_errors=True)
+        raise
+    return manifest
+
+
+def _safe_output(path: Path) -> Path:
+    if path.is_symlink():
+        raise ValueError(f"output target must not be a symlink: {path}")
+    resolved = path.resolve()
+    if path.parent.resolve() != path.parent:
+        raise ValueError("output parent must not be a symlink")
+    return resolved
+
+
 def _write(path: Path, payload: dict[str, Any], dry_run: bool) -> None:
     text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     if dry_run:
         print(text, end="")
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(text, encoding="utf-8")
-    temporary.replace(path)
+    target = _safe_output(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{target.name}.", suffix=".tmp", dir=target.parent)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as stream:
+            stream.write(text)
+            stream.flush()
+            os.fsync(stream.fileno())
+        if target.is_symlink() or target.parent.resolve() != target.parent:
+            raise ValueError("output path changed or became a symlink before replace")
+        os.replace(temporary, target)
+    except BaseException:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+        raise
+
+
+def _prospective_intake_command(args: argparse.Namespace) -> None:
+    assignments = _read_json(Path(args.tasks_by_case)) if args.tasks_by_case else None
+    payload = register_prospective_intake(
+        [Path(item) for item in args.input], _read_json(Path(args.tasks)), args.school,
+        args.operator, tasks_by_case=assignments,
+    )
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _prepare_blind_command(args: argparse.Namespace) -> None:
+    payload = prepare_blind_bundle(
+        _read_json(Path(args.intake)), Path(args.tasks), Path(args.rule_snapshot),
+        Path(args.target_dir), dry_run=args.dry_run,
+    )
+    if args.dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 def _inventory_command(args: argparse.Namespace) -> None:
@@ -167,9 +871,78 @@ def _labels_command(args: argparse.Namespace) -> None:
     _write(Path(args.out), payload, args.dry_run)
 
 
+def _manifest_command(args: argparse.Namespace) -> None:
+    routes = _read_json(Path(args.routes)).get("routes_by_case", {}) if args.routes else {}
+    payload = build_reviewed_manifest(_read_json(Path(args.inventory)), args.reviewed_by, args.expected_school, routes)
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _config_command(args: argparse.Namespace) -> None:
+    payload = build_evaluation_config(
+        _read_json(Path(args.manifest)), _read_json(Path(args.baseline)),
+        args.evidence_grade, args.evaluated_at,
+        _read_json(Path(args.tasks)) if args.tasks else None,
+    )
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _bind_command(args: argparse.Namespace) -> None:
+    payload = bind_labels_after_freeze(_read_json(Path(args.labels)), _read_json(Path(args.frozen_run)))
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _environment_witness_key(variable: str) -> bytes:
+    value = os.environ.get(variable)
+    if not value:
+        raise ValueError(f"witness key environment variable is missing: {variable}")
+    return value.encode("utf-8")
+
+
+def _witness_append_command(args: argparse.Namespace) -> None:
+    existing = _read_json(Path(args.registry)) if args.registry else None
+    payload = append_witness_event(existing, _read_json(Path(args.event)), _environment_witness_key(args.witness_key_env))
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _witness_verify_command(args: argparse.Namespace) -> None:
+    verify_witness_registry(_read_json(Path(args.registry)), _environment_witness_key(args.witness_key_env))
+    print("VALID")
+
+
+def _validate_command(args: argparse.Namespace) -> int:
+    key_value = os.environ.get(args.witness_key_env) if args.witness_key_env else None
+    result = validate_dataset(
+        _read_json(Path(args.manifest)), _read_json(Path(args.labels)), _read_json(Path(args.frozen_run)),
+        _read_json(Path(args.prospective_intake)) if args.prospective_intake else None,
+        _read_json(Path(args.blind_bundle_manifest)) if args.blind_bundle_manifest else None,
+        _read_json(Path(args.reveal_provenance)) if args.reveal_provenance else None,
+        Path(args.blind_bundle_root) if args.blind_bundle_root else None,
+        _read_json(Path(args.witness_registry)) if args.witness_registry else None,
+        key_value.encode("utf-8") if key_value else None,
+    )
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if result["status"] == "GO" else 2
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    prospective = commands.add_parser("prospective-intake")
+    prospective.add_argument("--input", action="append", required=True)
+    prospective.add_argument("--tasks", required=True)
+    prospective.add_argument("--school", action="append", required=True)
+    prospective.add_argument("--operator", required=True)
+    prospective.add_argument("--tasks-by-case")
+    prospective.add_argument("--out", required=True)
+    prospective.add_argument("--dry-run", action="store_true")
+    prospective.set_defaults(handler=_prospective_intake_command)
+    blind = commands.add_parser("prepare-blind")
+    blind.add_argument("--intake", required=True)
+    blind.add_argument("--tasks", required=True)
+    blind.add_argument("--rule-snapshot", required=True)
+    blind.add_argument("--target-dir", required=True)
+    blind.add_argument("--dry-run", action="store_true")
+    blind.set_defaults(handler=_prepare_blind_command)
     inventory = commands.add_parser("inventory")
     inventory.add_argument("--cases-dir", required=True)
     inventory.add_argument("--reports-dir", required=True)
@@ -183,13 +956,63 @@ def _parser() -> argparse.ArgumentParser:
     labels.add_argument("--out", required=True)
     labels.add_argument("--dry-run", action="store_true")
     labels.set_defaults(handler=_labels_command)
+    manifest = commands.add_parser("manifest")
+    manifest.add_argument("--inventory", required=True)
+    manifest.add_argument("--reviewed-by", required=True)
+    manifest.add_argument("--expected-school", action="append", required=True)
+    manifest.add_argument("--routes")
+    manifest.add_argument("--out", required=True)
+    manifest.add_argument("--dry-run", action="store_true")
+    manifest.set_defaults(handler=_manifest_command)
+    config = commands.add_parser("evaluation-config")
+    config.add_argument("--manifest", required=True)
+    config.add_argument("--baseline", required=True)
+    config.add_argument("--tasks")
+    config.add_argument("--evidence-grade", required=True)
+    config.add_argument("--evaluated-at", required=True)
+    config.add_argument("--out", required=True)
+    config.add_argument("--dry-run", action="store_true")
+    config.set_defaults(handler=_config_command)
+    bind = commands.add_parser("bind-labels")
+    bind.add_argument("--labels", required=True)
+    bind.add_argument("--frozen-run", required=True)
+    bind.add_argument("--out", required=True)
+    bind.add_argument("--dry-run", action="store_true")
+    bind.set_defaults(handler=_bind_command)
+    witness_append = commands.add_parser("witness-append")
+    witness_append.add_argument("--registry")
+    witness_append.add_argument("--event", required=True)
+    witness_append.add_argument("--out", required=True)
+    witness_append.add_argument("--witness-key-env", default="SCHOOL_CAPABILITY_WITNESS_KEY")
+    witness_append.add_argument("--dry-run", action="store_true")
+    witness_append.set_defaults(handler=_witness_append_command)
+    witness_verify = commands.add_parser("witness-verify")
+    witness_verify.add_argument("--registry", required=True)
+    witness_verify.add_argument("--witness-key-env", default="SCHOOL_CAPABILITY_WITNESS_KEY")
+    witness_verify.set_defaults(handler=_witness_verify_command)
+    validate = commands.add_parser("validate")
+    validate.add_argument("--manifest", required=True)
+    validate.add_argument("--labels", required=True)
+    validate.add_argument("--frozen-run", required=True)
+    validate.add_argument("--prospective-intake")
+    validate.add_argument("--blind-bundle-manifest")
+    validate.add_argument("--blind-bundle-root")
+    validate.add_argument("--reveal-provenance")
+    validate.add_argument("--witness-registry")
+    validate.add_argument("--witness-key-env", default="SCHOOL_CAPABILITY_WITNESS_KEY")
+    validate.set_defaults(handler=_validate_command)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parser().parse_args(argv)
-    args.handler(args)
-    return 0
+    parser = _parser()
+    args = parser.parse_args(argv)
+    try:
+        result = args.handler(args)
+        return result if isinstance(result, int) else 0
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+        print(f"INVALID: {error}", file=__import__("sys").stderr)
+        return 1
 
 
 if __name__ == "__main__":

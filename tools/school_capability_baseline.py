@@ -28,6 +28,7 @@ from typing import Any
 from engine.evaluation.capability import build_capability_posteriors
 from engine.evaluation.case_audit import audit_cases
 from engine.evaluation.experiments import run_four_group_experiment
+from engine.evaluation.manifest_validation import GATE_THRESHOLDS_POLICY, validate_reviewed_manifest
 from engine.evaluation.freeze import freeze_outputs, reveal_labels, verify_frozen_run
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, CapabilityPosterior, FrozenBlindRun
 from engine.evaluation.report import compute_gate_evidence, render_capability_report
@@ -99,22 +100,26 @@ def _artifact_identity(value: str, name: str) -> tuple[str, str]:
     return identifier, digest
 
 
+def _is_utc_z_timestamp(value: object) -> bool:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        return False
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00").tzinfo == timezone.utc
+    except ValueError:
+        return False
+
+
 def _validated_gate_thresholds(raw: object) -> tuple[dict[str, float | int], bool]:
     if not isinstance(raw, dict):
         raise ValueError("gate_thresholds must be explicitly configured")
-    required = {"coverage_complete", "calibration_min_samples", "calibration_max_error", "high_risk_min_utility"}
-    unknown = set(raw) - required
+    unknown = set(raw) - set(GATE_THRESHOLDS_POLICY)
     if unknown:
         raise ValueError(f"unknown gate_thresholds field: {sorted(unknown)[0]}")
-    for name in set(raw) & {"coverage_complete", "calibration_max_error"}:
-        value = raw[name]
-        if type(value) not in (int, float) or not 0.0 <= value <= 1.0:
-            raise ValueError(f"{name} must be a number between 0 and 1")
-    if "calibration_min_samples" in raw and (type(raw["calibration_min_samples"]) is not int or raw["calibration_min_samples"] < 1):
-        raise ValueError("calibration_min_samples must be a positive integer")
-    if "high_risk_min_utility" in raw and (type(raw["high_risk_min_utility"]) not in (int, float) or not -2.0 <= raw["high_risk_min_utility"] <= 1.0):
-        raise ValueError("high_risk_min_utility must be a number between -2 and 1")
-    return raw, set(raw) == required
+    if set(raw) != set(GATE_THRESHOLDS_POLICY):
+        return raw, False
+    if any(type(raw[name]) is not type(expected) or raw[name] != expected for name, expected in GATE_THRESHOLDS_POLICY.items()):
+        raise ValueError("gate_thresholds must exactly match the fixed safety policy")
+    return raw, True
 
 
 def _audit(args: argparse.Namespace) -> None:
@@ -162,26 +167,21 @@ def _score(args: argparse.Namespace) -> None:
     run = FrozenBlindRun.from_dict(_read_json(Path(args.frozen_run)))
     verify_frozen_run(run)  # Identity/freeze gate must precede any other input artifact access.
     manifest = _read_json(Path(args.manifest))
-    if set(manifest) != {"schema_version", "generated_at", "reviewed_by", "expected_schools", "records"} or manifest.get("schema_version") != "school-capability-case-manifest/v1":
-        raise ValueError("manifest top-level schema is invalid")
-    if not isinstance(manifest.get("reviewed_by"), str) or not manifest["reviewed_by"].strip():
-        raise ValueError("reviewed manifest requires non-empty reviewed_by")
-    records = manifest["records"]
+    records = validate_reviewed_manifest(manifest)
     expected_schools = manifest["expected_schools"]
-    record_fields = {"case_id", "has_input", "has_feedback", "has_statement_index", "has_existing_report", "feedback_quantifiable", "contamination_flags", "eligibility", "evidence_notes", "eligible_routes"}
-    route_fields = {"school_id", "task_id", "chart_prototype_id", "claim_type", "time_horizon", "evidence_completeness_band"}
-    if not isinstance(records, list) or any(not isinstance(record, dict) or set(record) != record_fields for record in records):
-        raise ValueError("manifest records have invalid schema")
-    if any(not isinstance(record["eligible_routes"], list) or any(not isinstance(route, dict) or set(route) != route_fields or any(not isinstance(route[field], str) or not route[field] for field in route_fields) for route in record["eligible_routes"]) for record in records):
-        raise ValueError("manifest eligible_routes must provide all six-dimensional route fields")
-    if not isinstance(expected_schools, list) or not expected_schools or any(not isinstance(school, str) or not school for school in expected_schools) or len(set(expected_schools)) != len(expected_schools):
-        raise ValueError("expected_schools must be a unique non-empty string list")
     eligible_cases = {record["case_id"] for record in records if record["eligibility"] in {"blind_candidate", "historical_blind_candidate"}}
     manifest_digest = _canonical_digest(manifest)
     labels = reveal_labels(run, Path(args.labels))
     tasks_doc = _read_json(Path(args.tasks))
     _require_schema(tasks_doc, "school-capability-cli-tasks/v1")
     config = _read_json(Path(args.evaluation_config))
+    config_fields = {
+        "schema_version", "eligible_case_tasks", "baseline_prevalence_by_task",
+        "case_metadata", "evidence_grade", "evaluated_at", "score_weights",
+        "gate_thresholds",
+    }
+    if set(config) != config_fields:
+        raise ValueError("evaluation config top-level fields are invalid")
     _require_schema(config, "school-capability-evaluation-config/v1")
     gate_thresholds, gate_complete = _validated_gate_thresholds(config.get("gate_thresholds"))
     raw_tasks = tasks_doc.get("tasks")
@@ -215,8 +215,8 @@ def _score(args: argparse.Namespace) -> None:
     if any(case_id not in eligible_cases for case_id, _ in grid):
         raise ValueError("eligible grid contains a case not eligible in manifest")
     weights = {_parse_key(key): value for key, value in raw_weights.items()}
-    if any(value not in (0, 0.5, 1) for value in weights.values()):
-        raise ValueError("score weight must be one of 0, 0.5, or 1")
+    if any(type(value) not in (int, float) or value not in (0, 0.5, 1) for value in weights.values()):
+        raise ValueError("score weight must be a numeric 0, 0.5, or 1")
     label_map = {(label.case_id, label.task_id): label for label in labels}
     if len(label_map) != len(labels):
         raise ValueError("duplicate label identity")
@@ -236,8 +236,17 @@ def _score(args: argparse.Namespace) -> None:
     metadata = config.get("case_metadata")
     baseline = config.get("baseline_prevalence_by_task")
     evidence_grade, evaluated_at = config.get("evidence_grade"), config.get("evaluated_at")
-    if not isinstance(metadata, dict) or not isinstance(baseline, dict) or not isinstance(evidence_grade, str) or not evidence_grade or not isinstance(evaluated_at, str) or not evaluated_at:
-        raise ValueError("case_metadata, baseline_prevalence_by_task, evidence_grade, and evaluated_at are required")
+    if not isinstance(metadata, dict) or not isinstance(baseline, dict):
+        raise ValueError("case_metadata and baseline_prevalence_by_task are required")
+    if any(type(value) not in (int, float) or not 0.0 <= value <= 1.0 for value in baseline.values()):
+        raise ValueError("baseline prevalence must be numeric and between 0 and 1")
+    if evidence_grade not in {"A", "B", "C"}:
+        raise ValueError("evidence_grade must be A, B, or C")
+    if not _is_utc_z_timestamp(evaluated_at):
+        raise ValueError("evaluated_at must be a parseable ISO 8601 UTC Z timestamp")
+    metadata_fields = {"chart_prototype_id", "time_horizon", "evidence_completeness_band"}
+    if any(not isinstance(entry, dict) or set(entry) != metadata_fields for entry in metadata.values()):
+        raise ValueError("case_metadata entries must have exact fields")
     metadata_keys = {_parse_key(key) for key in metadata}
     if metadata_keys != output_keys:
         raise ValueError("case_metadata must exactly cover frozen outputs")
@@ -352,11 +361,8 @@ def _report(args: argparse.Namespace) -> None:
     scores_doc = _read_json(Path(args.scores))
     _require_schema(scores_doc, "school-capability-scores/v1")
     manifest_doc = _read_json(Path(args.manifest))
-    _require_schema(manifest_doc, "school-capability-case-manifest/v1")
-    records = manifest_doc.get("records")
-    if not isinstance(records, list):
-        raise ValueError("manifest records must be a list")
-    summary = Counter(record.get("eligibility", "unknown") for record in records if isinstance(record, dict))
+    records = validate_reviewed_manifest(manifest_doc)
+    summary = Counter(record["eligibility"] for record in records)
     if "posteriors" not in scores_doc or not isinstance(scores_doc["posteriors"], list):
         raise ValueError("posteriors must be present and be a list")
     raw_posteriors = scores_doc["posteriors"]
@@ -385,14 +391,14 @@ def _report(args: argparse.Namespace) -> None:
     incremental_gains = scores_doc.get("incremental_gains", {})
     if not isinstance(gate_input_summary, dict) or not isinstance(incremental_gains, dict):
         raise ValueError("gate base facts must be objects")
-    gate_thresholds = gate_input_summary.get("gate_thresholds", {})
-    recomputed_gate = {} if scores_doc.get("gate_complete") is not True else compute_gate_evidence(
+    gate_thresholds, gate_complete = _validated_gate_thresholds(gate_input_summary.get("gate_thresholds", {}))
+    recomputed_gate = {} if scores_doc.get("gate_complete") is not True or not gate_complete else compute_gate_evidence(
         posteriors=raw_posteriors,
         incremental_gains=incremental_gains,
         experiment_summary=experiment_summary,
         high_risk_audit_summary=gate_input_summary,
         coverage_summary=gate_input_summary,
-        gate_thresholds=gate_thresholds if isinstance(gate_thresholds, dict) else {},
+        gate_thresholds=gate_thresholds,
         provenance=provenance,
     )
     stored_gate = scores_doc.get("computed_gate_evidence")

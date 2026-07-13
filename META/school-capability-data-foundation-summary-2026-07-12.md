@@ -26,11 +26,28 @@
 
 ## 提高准确度的最小后续路径
 
-1. 对每个新案，在反馈填写前自动生成并冻结受限任务预测。
-2. 后续反馈只追加 revealed labels，并绑定 frozen hash。
-3. 累积到至少 5 个同六维身份样本后首次观察 posterior；少于 5 保持 HOLD。
-4. 人工只处理冲突来源、高风险标签和自动映射低置信项；低歧义年份事件自动摄入。
-5. 达到 ≥30 个 prospective 案例后，才把阶段 03 从数据准备完成提升为真实能力基线完成。
+1. 对每个新案，在反馈填写前使用 `prospective-intake` 登记，并用 `prepare-blind` 只复制 input、tasks、rule snapshot 到隔离目录。
+2. 引擎输出经保守 adapter 转为三态输出；没有显式 task 语义绑定时只允许 abstain/unsupported，不把宽泛领域判断冒充精确事件。
+3. 使用现有 baseline CLI 冻结输出；后续反馈只追加 revealed labels，并绑定 frozen hash。
+4. 累积到至少 5 个同六维身份样本后首次观察 posterior；少于 5 保持 HOLD。
+5. 人工只处理冲突来源、高风险标签和自动映射低置信项；低歧义年份事件自动摄入。
+6. 达到 ≥30 个真实 prospective 案例后，才把阶段 03 从数据准备完成提升为真实能力基线完成。
+
+## 2026-07-13 阻断复核
+
+- 全仓 inventory：133 案，blind eligible 为 0。
+- `predictions/` 只有 1 个案例候选，且缺初始不可变 hash、同日已有历史反馈，不能保守计入盲测。
+- 历史 Top30 与 990 案均为 feedback-first，逐案 provenance 已记录 `feedback_predates_system_prediction`。
+- 因此“≥30 真实盲测/前瞻案例”当前无法通过代码或并行任务补造；强行将历史反馈改名为 blind 会构成标签泄漏。
+- 已落地可执行采集基础设施：reviewed manifest、evaluation config、GO/HOLD/INVALID validate、freeze 后 bind-labels、prospective intake、blind bundle 白名单隔离、保守 BlindSchoolOutput adapter。
+- **阶段状态仍为 HOLD（真实样本采集阻断），不是代码失败。**
+
+## Known Limitations（待有真实样本时修复）
+
+1. `_report()` 出口未绑定 witness 链：当前 report 从 scores `artifact_digest` 验证内部一致性，但 `artifact_digest` 是本地无密钥校验，不能抵御完全替换所有制品后刷新 digest 的攻击。待有真实 prospective 样本时，`_report()` 应重新验证 scores provenance 与 witness registry，而不仅依赖 manifest 内容校验。
+2. `render_capability_report()` N_eff 门槛按"全部 posterior < 5"判断；待有 ≥1 posterior 时，应改为每个被发布切片均须达标。
+3. score weight 若缺失则静默默认 1.0；有实际输出时应要求精确覆盖 frozen outputs。
+4. prospective `blind_candidate` 允许 `has_existing_report=true`；有实际 prospective 样本时应拒绝（已有报告的 case 不能是真正的前瞻盲测）。
 
 ## 风险
 

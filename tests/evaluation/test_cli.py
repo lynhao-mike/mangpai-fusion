@@ -72,7 +72,7 @@ def _evaluation_config() -> dict:
         "evidence_grade": "A",
         "evaluated_at": "2026-07-12T00:00:00Z",
         "score_weights": {"C-TEST-001|marriage.divorce_or_remarriage|ziping": 0.5},
-        "gate_thresholds": {"coverage_complete": 1.0, "calibration_min_samples": 1, "calibration_max_error": 1.0, "high_risk_min_utility": -2.0},
+        "gate_thresholds": {"coverage_complete": 1.0, "calibration_min_samples": 5, "calibration_max_error": 0.2, "high_risk_min_utility": 0.0},
     }
 
 
@@ -97,7 +97,7 @@ def _manifest() -> dict:
             "case_id": "C-TEST-001", "has_input": True, "has_feedback": True,
             "has_statement_index": False, "has_existing_report": False,
             "feedback_quantifiable": True, "contamination_flags": [],
-            "eligibility": "blind_candidate", "evidence_notes": [],
+            "eligibility": "historical_blind_candidate", "evidence_notes": [],
             "eligible_routes": [_route()],
         }],
     }
@@ -213,6 +213,62 @@ def test_cli_score_verifies_frozen_run_before_reading_labels(tmp_path: Path) -> 
     assert "missing-labels" not in result.stderr
 
 
+@pytest.mark.parametrize(
+    ("field", "value", "error"),
+    [
+        ("baseline_prevalence_by_task", {"marriage.divorce_or_remarriage": True}, "baseline prevalence"),
+        ("baseline_prevalence_by_task", {"marriage.divorce_or_remarriage": -0.01}, "baseline prevalence"),
+        ("baseline_prevalence_by_task", {"marriage.divorce_or_remarriage": 1.01}, "baseline prevalence"),
+        ("baseline_prevalence_by_task", {"marriage.divorce_or_remarriage": "0.25"}, "baseline prevalence"),
+        ("evidence_grade", "excellent", "evidence_grade"),
+        ("evaluated_at", "2026-07-12T00:00:00+00:00", "evaluated_at"),
+        ("evaluated_at", "not-a-timestampZ", "evaluated_at"),
+        ("score_weights", {"C-TEST-001|marriage.divorce_or_remarriage|ziping": True}, "score weight"),
+        ("score_weights", {"C-TEST-001|marriage.divorce_or_remarriage|ziping": "0.5"}, "score weight"),
+        ("score_weights", {"C-TEST-001|marriage.divorce_or_remarriage|ziping": 0.25}, "score weight"),
+    ],
+)
+def test_cli_score_rejects_attacker_controlled_config_value_types_and_domains(
+    tmp_path: Path, field: str, value: object, error: str,
+) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config[field] = value
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(tmp_path / "scores.json"),
+    )
+
+    assert result.returncode != 0
+    assert error in result.stderr
+
+
+@pytest.mark.parametrize("location", ["top_level", "case_metadata"])
+def test_cli_score_rejects_extra_evaluation_config_fields(tmp_path: Path, location: str) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if location == "top_level":
+        config["unexpected"] = True
+    else:
+        metadata = config["case_metadata"]["C-TEST-001|marriage.divorce_or_remarriage|ziping"]
+        metadata["unexpected"] = "forged"
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(tmp_path / "scores.json"),
+    )
+
+    assert result.returncode != 0
+    assert "evaluation config" in result.stderr or "case_metadata" in result.stderr
+
+
 def test_cli_score_binary_json_contract_is_explicit_and_computed(tmp_path: Path) -> None:
     frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
     output = tmp_path / "scores.json"
@@ -237,7 +293,7 @@ def test_cli_score_binary_json_contract_is_explicit_and_computed(tmp_path: Path)
     assert payload["posteriors"][0]["n_eff"] == 0.5
     identity = "ziping|marriage.divorce_or_remarriage|strong_day_master|event|lifetime|complete"
     assert payload["gate_input_summary"]["calibration_by_identity"][identity] == {
-        "available": 1, "required": 1, "coverage": 1.0, "status": "available",
+        "available": 1, "required": 5, "coverage": 0.2, "status": "insufficient",
     }
     assert payload["gate_input_summary"]["coverage_by_identity"][identity] == 1.0
     assert payload["gate_input_summary"]["rule_snapshot_digest"].startswith("sha256:")
@@ -283,7 +339,7 @@ def test_cli_freeze_and_report_round_trip(tmp_path: Path) -> None:
     assert frozen.returncode == 0, frozen.stderr
 
     manifest_path = tmp_path / "manifest.json"
-    manifest = {"schema_version": "school-capability-case-manifest/v1", "records": [{"eligibility": "development_only"}]}
+    manifest = _manifest()
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     from tools.school_capability_baseline import _canonical_digest
     scores_path = tmp_path / "scores.json"
@@ -317,7 +373,7 @@ def test_cli_report_rejects_uncomputed_or_invalid_posteriors(tmp_path: Path, sco
     scores_path = tmp_path / "scores.json"
     scores_path.write_text(json.dumps(scores), encoding="utf-8")
     manifest_path = tmp_path / "manifest.json"
-    manifest_path.write_text(json.dumps({"schema_version": "school-capability-case-manifest/v1", "generated_at": "now", "records": []}), encoding="utf-8")
+    manifest_path.write_text(json.dumps(_manifest()), encoding="utf-8")
     result = _run("report", "--scores", str(scores_path), "--manifest", str(manifest_path), "--out", str(tmp_path / "report.md"))
     assert result.returncode != 0
     assert "posteriors" in result.stderr
@@ -357,7 +413,7 @@ def test_cli_score_rejects_forged_task_artifact_digest(tmp_path: Path) -> None:
 @pytest.mark.parametrize("mutation,error", [
     (lambda thresholds: thresholds.pop("high_risk_min_utility"), "gate_complete"),
     (lambda thresholds: thresholds.__setitem__("unknown", 1), "unknown"),
-    (lambda thresholds: thresholds.__setitem__("coverage_complete", True), "coverage_complete"),
+    (lambda thresholds: thresholds.__setitem__("coverage_complete", True), "fixed safety policy"),
 ])
 def test_gate_threshold_schema_is_strict_but_missing_field_yields_hold_artifact(tmp_path: Path, mutation, error: str) -> None:
     frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
@@ -376,9 +432,139 @@ def test_gate_threshold_schema_is_strict_but_missing_field_yields_hold_artifact(
         assert error in result.stderr
 
 
+@pytest.mark.parametrize(
+    ("field", "downgraded"),
+    [
+        ("coverage_complete", 0.99),
+        ("calibration_min_samples", 4),
+        ("calibration_max_error", 0.21),
+        ("high_risk_min_utility", -0.01),
+    ],
+)
+def test_cli_score_rejects_any_gate_policy_downgrade(tmp_path: Path, field: str, downgraded: object) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["gate_thresholds"][field] = downgraded
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(tmp_path / "scores.json"),
+    )
+
+    assert result.returncode != 0
+    assert "fixed safety policy" in result.stderr
+
+
+@pytest.mark.parametrize(
+    ("mutation", "error"),
+    [
+        (lambda manifest: manifest["records"][0].update(has_input=False), "input"),
+        (lambda manifest: manifest["records"][0]["contamination_flags"].append("known_outcome"), "contamination"),
+        (lambda manifest: manifest["records"][0].update(has_feedback=False), "quantifiable feedback"),
+        (lambda manifest: manifest["records"][0].update(feedback_quantifiable=False), "quantifiable feedback"),
+        (lambda manifest: manifest.update(generated_at="2026-07-12"), "generated_at"),
+        (lambda manifest: manifest.update(reviewed_by="automated-bot"), "human reviewer"),
+        (lambda manifest: manifest["records"].append(dict(manifest["records"][0])), "unique case_id"),
+        (lambda manifest: manifest["records"][0]["eligible_routes"].append(dict(_route())), "unique"),
+    ],
+)
+def test_cli_score_rejects_polluted_or_forged_manifest(tmp_path: Path, mutation, error: str) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    mutation(manifest)
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    result = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(tmp_path / "scores.json"),
+    )
+
+    assert result.returncode != 0
+    assert error in result.stderr
+
+
+def test_cli_score_rejects_feedback_on_prospective_manifest_candidate(tmp_path: Path) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["records"][0]["eligibility"] = "blind_candidate"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    result = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(tmp_path / "scores.json"),
+    )
+
+    assert result.returncode != 0
+    assert "prospective candidate" in result.stderr
+
+
 def test_reviewed_manifest_template_has_exact_cli_schema() -> None:
     template = json.loads(Path("templates/school-capability-case-manifest.json").read_text(encoding="utf-8"))
     assert set(template) == {"schema_version", "generated_at", "reviewed_by", "expected_schools", "records"}
+
+
+def test_cli_report_rejects_polluted_manifest_even_when_digests_are_synchronized(tmp_path: Path) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    scores_path = tmp_path / "scores.json"
+    scored = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(scores_path),
+    )
+    assert scored.returncode == 0, scored.stderr
+
+    from tools.school_capability_baseline import _canonical_digest
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["records"][0]["contamination_flags"] = ["known_outcome"]
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    scores = json.loads(scores_path.read_text(encoding="utf-8"))
+    scores["provenance"]["manifest_digest"] = f"sha256:{_canonical_digest(manifest)}"
+    scores.pop("artifact_digest")
+    scores["artifact_digest"] = f"sha256:{_canonical_digest(scores)}"
+    scores_path.write_text(json.dumps(scores), encoding="utf-8")
+
+    rejected = _run(
+        "report", "--scores", str(scores_path), "--manifest", str(manifest_path),
+        "--out", str(tmp_path / "report.md"),
+    )
+
+    assert rejected.returncode != 0
+    assert "contamination" in rejected.stderr
+
+
+def test_cli_report_rejects_downgraded_gate_threshold_with_refreshed_artifact_digest(tmp_path: Path) -> None:
+    frozen_path, labels_path, tasks_path, config_path, manifest_path, snapshot_path = _write_score_inputs(tmp_path)
+    scores_path = tmp_path / "scores.json"
+    scored = _run(
+        "score", "--frozen-run", str(frozen_path), "--manifest", str(manifest_path),
+        "--labels", str(labels_path), "--tasks", str(tasks_path),
+        "--rule-snapshot", str(snapshot_path), "--evaluation-config", str(config_path),
+        "--out", str(scores_path),
+    )
+    assert scored.returncode == 0, scored.stderr
+
+    from tools.school_capability_baseline import _canonical_digest
+    scores = json.loads(scores_path.read_text(encoding="utf-8"))
+    scores["gate_input_summary"]["gate_thresholds"]["calibration_min_samples"] = 1
+    scores.pop("artifact_digest")
+    scores["artifact_digest"] = f"sha256:{_canonical_digest(scores)}"
+    scores_path.write_text(json.dumps(scores), encoding="utf-8")
+
+    rejected = _run(
+        "report", "--scores", str(scores_path), "--manifest", str(manifest_path),
+        "--out", str(tmp_path / "report.md"),
+    )
+
+    assert rejected.returncode != 0
+    assert "fixed safety policy" in rejected.stderr
 
 
 def test_cli_report_rejects_tampered_manifest_and_hand_written_gate(tmp_path: Path) -> None:

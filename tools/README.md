@@ -37,7 +37,7 @@
 | [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存；高并发场景后续演进为 job queue |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
-| [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory 与结构化标签准备 | 数据治理辅助；自动 reviewer 只能产出 `development_only`，不会生成预测、提升盲测资格、更新生产规则或权重；支持 `--dry-run` |
+| [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件；`prepare-blind` 仅复制 case `input.md`、tasks 与 rule snapshot，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
 
@@ -137,6 +137,27 @@ python tools/rule_status_scan.py --check
 
 - 工具索引漂移检查以 [`tool_registry.py`](tool_registry.py:1) 为准。
 - 规则状态、N_eff、flagged/deprecated 清单以 [`rule_status_scan.py`](rule_status_scan.py:1) 为准；文档只引用扫描结果，不复制长期数字。
+
+---
+
+## 学派能力 prospective / blind 隔离
+
+```bash
+python -m tools.school_capability_dataset prospective-intake --input cases/C-P-001/input.md --tasks META/school-capability-tasks.json --school ziping --operator human-a --out META/prospective-intake.json --dry-run
+python -m tools.school_capability_dataset prepare-blind --intake META/prospective-intake.json --tasks META/school-capability-tasks.json --rule-snapshot META/rule-snapshot.json --target-dir META/blind-bundle --dry-run
+```
+
+- `prospective-intake` 的输入只能是名为 `input.md` 的普通文件；case ID 取父目录名，禁止重复 case、未知 task、symlink，以及路径、内容或 JSON 字段中的 feedback / labels / report / known facts 标记。
+- `prepare-blind` 使用显式白名单生成全新目录：`cases/<case_id>/input.md`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json`。同目录中的诱饵 feedback 或其他文件不会进入 bundle。
+- manifest 记录内容 SHA-256；bundle hash 只由白名单文件的相对路径和内容 hash 决定，因此不受时间、源目录或目标目录影响。
+- 源文件及其路径链、目标路径链均拒绝 symlink；目标目录必须不存在。`--dry-run` 只打印计划或制品 JSON，不创建输出。
+
+### Witness HMAC 信任边界
+
+- witness HMAC key holder 是**受信独立见证边界**，必须独立于被评估系统及其本地管理员保管密钥并签署事件。
+- 本地完整性模型用于发现未持有 witness key 的本地篡改；**密钥泄漏**或**恶意见证**不在本地完整性模型覆盖范围内。
+- witness registry 的 `registry root` 应由见证方做**外部备份**或锚定，以便发现本地 registry 被替换或回滚。
+- 该机制提供可验证的职责分离与篡改证据，不是无限防恶意管理员；同时控制本地系统、witness key 与外部 registry root 的管理员超出此模型的安全假设。
 
 ---
 
