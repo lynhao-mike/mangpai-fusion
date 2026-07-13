@@ -508,7 +508,22 @@ next_irreversible_decision
 updated_at
 ```
 
-当前状态：第一推进单元（流派能力评估协议与最小盲测框架）已实现并合并。下一不可逆决策是启动 Phase 0 真实标注数据地基，并打通"能力后验 → L1 路由"回流飞轮。
+当前状态：第一推进单元（流派能力评估协议与最小盲测框架）与 `cfv-v1` 命局特征向量脊椎已实现。下一不可逆决策是基于共享特征推进 L2 命题引擎化，并在真实前瞻标注达到门槛后打通"能力后验 → L1 路由"回流飞轮。
+
+### 16.1 升级单元 01 · 命局特征向量层（2026-07-13）
+
+```text
+phase: 升级单元 01 · 命局特征向量层
+status: GO
+evidence_artifacts: engine/features/ · tests/features/test_chart_feature_vector.py
+accepted_hypotheses: cfv-v1 可从 ChartFactLedger 确定性派生五行能量、十神、月令多口径信号、支关系、寒暖燥湿与完整度；可覆盖旧 L1 临时结构信号
+rejected_hypotheses: 在 L0 特征层裁定唯一身强身弱；在本单元直接替换 L1 路由
+known_risks: 寒暖燥湿轴为工程默认系数，后续须用独立数据校准；cfv-v1 尚未承担 L1/L6/L9 的业务决策
+next_irreversible_decision: 升级单元 02 让各派 runner 消费 cfv-v1 产生可评估命题
+updated_at: 2026-07-13
+```
+
+`cfv-v1` 覆盖：身份与稳定哈希、五行本气计数与含藏干能量、日主/月令中立信号、十神计数与结构布尔、冲合刑害及冲突强度、寒暖燥湿轴、输入完整度。共享入口为 `engine.features.build_chart_feature_vector()`；子平 runner 的旧 `_shishen()` 已收敛到共用谓词算法。
 
 ## 17. As-Built 审计与阶段状态（2026-07-12）
 
@@ -562,7 +577,7 @@ HOLD 是 Phase 0 §5.4 规定的正确结果：样本不足时不得用污染案
 
 | 层 | 目标 | As-Built 现状 | 定级 |
 |---|---|---|---|
-| L0 事实 | 命局特征结构化 | [`engine/predicates/`](../engine/predicates/) 可算干支/十神/冲合；无统一"命局特征向量"对象 | 🟡 |
+| L0 事实 | 命局特征结构化 | [`engine/features/`](../engine/features/) 已提供版本化 `cfv-v1`，统一派生五行、十神、月令、支关系、气候与完整度信号 | 🟢 |
 | L1 适用性 | 可学习"什么八字用什么法" | [`engine/decision/l1_school_router.py`](../engine/decision/l1_school_router.py) 的 `SCHOOL_PROFILES` 静态硬编码 + 全局命中率降权 | 🔴 |
 | L2 命题 | 各派独立推导 + 证据链 | 子平 runner 仅月令旺衰+格局两层；三盲派靠 `theory/*/index.yaml` 原文触发；`school-claims.json` 存在人工手写命题 | 🔴 |
 | L3 结构 | 结构一致性交叉校验 | 子平两层 + 滴天髓原文；无跨派结构对撞 | 🟡 |

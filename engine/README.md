@@ -14,6 +14,7 @@
 | [`yingqi/`](yingqi/) | 旧 D3 任系素材：三层门、触发器、应期候选；后续作为 timing enhancer。 |
 | [`pangzheng/`](pangzheng/) | 旧 D4 高派素材：神煞、健康、旁证补强；后续作为结构旁证与事件反证素材。 |
 | [`predicates/`](predicates/) | 共用干支、五行、宫位、关系、强弱等基础谓词。 |
+| [`features/`](features/) | L0 共享派生层；从 `ChartFactLedger` 确定性构建版本化 `ChartFeatureVector`，供路由、仲裁与学习层复用。 |
 | [`contracts/`](contracts/) | 架构契约与跨模块数据交换约定。 |
 | [`v5/`](v5/) | ZiPing Fusion Engine v5 并行核心：五派命题、结构图、三段式仲裁、受限概率账本。 |
 

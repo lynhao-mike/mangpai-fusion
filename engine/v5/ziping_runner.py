@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
+from engine.predicates.palace import get_shishen
 from engine.predicates.types import (
     GAN_TO_WUXING,
     ZHI_CANGGAN_TABLE,
@@ -41,12 +42,7 @@ _MONTH_ZHI_LORD: dict[str, str] = {
     "戌": "戊", "亥": "壬",
 }
 
-# 十神映射：日主天干 × 对方天干 → 十神名称
 _GAN_WUXING = GAN_TO_WUXING  # 复用
-_GAN_YINYANG: dict[str, str] = {
-    "甲": "阳", "乙": "阴", "丙": "阳", "丁": "阴", "戊": "阳",
-    "己": "阴", "庚": "阳", "辛": "阴", "壬": "阳", "癸": "阴",
-}
 
 # 五行相生：a → b（a 生 b）
 _SHENG: dict[str, str] = {"木": "火", "火": "土", "土": "金", "金": "水", "水": "木"}
@@ -55,23 +51,8 @@ _KE: dict[str, str] = {"木": "土", "土": "水", "水": "火", "火": "金", "
 
 
 def _shishen(day_master: str, target: str) -> str:
-    """计算 target 天干相对于 day_master 的十神。"""
-    dm_wx = _GAN_WUXING.get(day_master, "")
-    t_wx = _GAN_WUXING.get(target, "")
-    dm_yin = _GAN_YINYANG.get(day_master, "")
-    t_yin = _GAN_YINYANG.get(target, "")
-
-    if dm_wx == t_wx:
-        return "比肩" if dm_yin == t_yin else "劫财"
-    if _SHENG.get(dm_wx) == t_wx:
-        return "食神" if dm_yin == t_yin else "伤官"
-    if _KE.get(dm_wx) == t_wx:
-        return "偏财" if dm_yin == t_yin else "正财"
-    if _SHENG.get(t_wx) == dm_wx:
-        return "偏印" if dm_yin == t_yin else "正印"
-    if _KE.get(t_wx) == dm_wx:
-        return "七杀" if dm_yin == t_yin else "正官"
-    return "未知"
+    """兼容旧私有入口；十神算法统一复用共用谓词。"""
+    return get_shishen(target, day_master)  # type: ignore[arg-type]
 
 
 def _stable_id(*parts: object) -> str:
