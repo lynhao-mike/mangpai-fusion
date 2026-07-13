@@ -22,6 +22,10 @@ from engine.predicates.types import (
     ZHI_CANGGAN_TABLE,
     ZHI_TO_WUXING,
 )
+from engine.claims import Claim, Evidence, TaskUnsupported, stable_claim_id, validate_claim_evidence
+from engine.decision.models import ChartFactLedger
+from engine.evaluation.models import BlindTask
+from engine.features import ChartFeatureVector
 from engine.v5.domain import (
     V5Claim,
     V5Confidence,
@@ -171,8 +175,19 @@ def _identify_pattern_yongshen(chart: dict[str, Any]) -> dict[str, Any]:
     month_zhi_full = pillars.get("month", "") if pillars.get("month") else ""
     month_zhi = month_zhi_full[1] if len(month_zhi_full) >= 2 else str(chart.get("month_branch", ""))
 
-    if not day_gan or not month_gan or not month_zhi:
-        return {"pattern": "未知", "yongshen": "待判", "rationale": "信息不足"}
+    if (
+        day_gan not in _GAN_WUXING
+        or month_gan not in _GAN_WUXING
+        or month_zhi not in _MONTH_ZHIS
+    ):
+        return {
+            "pattern": "未知",
+            "pattern_shen": "",
+            "yongshen": "待判",
+            "month_gan_shen": "未知",
+            "month_lord_shen": "未知",
+            "rationale": "干支信息不足或包含无效字符",
+        }
 
     # 月干十神
     month_gan_shen = _shishen(day_gan, month_gan)
@@ -492,6 +507,106 @@ def run_ziping_independent(chart: dict[str, Any], case_id: str) -> list[V5Claim]
             "yao_favor_shishen": list(l5.get("yao_favor_shishen", [])),
         },
     ))
+
+    return claims
+
+
+# ── L2 统一命题契约 ──────────────────────────────────────────────────────────
+
+_ZIPING_STRUCTURE_TASKS = {"structure.overview"}
+
+
+def _claim_evidence(
+    features: ChartFeatureVector,
+    *,
+    rule_id: str,
+    feature_refs: tuple[str, ...],
+    text: str,
+) -> Evidence:
+    raw = "|".join((features.chart_id, rule_id, *feature_refs))
+    return Evidence(
+        evidence_id="evidence-" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20],
+        fact_refs=("four_pillars.day", "four_pillars.month"),
+        feature_refs=feature_refs,
+        rule_id=rule_id,
+        text=text,
+    )
+
+
+def generate_claims(
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    task: BlindTask,
+) -> list[Claim]:
+    """仅从冻结命盘与 cfv-v1 推导子平结构命题。"""
+    if task.task_id not in _ZIPING_STRUCTURE_TASKS:
+        raise TaskUnsupported(f"ziping does not support task: {task.task_id}")
+    if features.evidence_completeness != "full":
+        return []
+
+    claims: list[Claim] = []
+    balance = features.supporting_count - features.draining_count
+    strength_rule = "ZIPING-STRENGTH-V1"
+    if balance <= -3 and features.rooted_count <= 1:
+        strength = "身弱"
+    elif balance >= 3 and features.rooted_count >= 2:
+        strength = "身强"
+    else:
+        strength = ""
+    if strength:
+        evidence = _claim_evidence(
+            features,
+            rule_id=strength_rule,
+            feature_refs=("supporting_count", "draining_count", "rooted_count", "monthly_command_favorable"),
+            text=(f"生扶计数={features.supporting_count}，克泄耗计数={features.draining_count}，"
+                  f"通根数={features.rooted_count}，月令帮扶={features.monthly_command_favorable}。"),
+        )
+        claim = Claim(
+            claim_id=stable_claim_id("ziping", task.task_id, features.chart_id, strength_rule),
+            school_id="ziping",
+            task_id=task.task_id,
+            claim_type="structure_claim",
+            stance="support",
+            statement=f"子平旺衰主线判为{strength}结构。",
+            evidence=(evidence,),
+            falsifier=f"若按同一子平口径独立复核不呈{strength}，则本结构命题证伪。",
+            time_window=None,
+            confidence_basis="旺衰由 cfv-v1 的生扶/克泄耗差、通根与月令信号共同形成。",
+            applicability_snapshot={
+                "supporting_count": features.supporting_count,
+                "draining_count": features.draining_count,
+                "rooted_count": features.rooted_count,
+                "monthly_command_favorable": features.monthly_command_favorable,
+            },
+        )
+        validate_claim_evidence(claim, chart, features)
+        claims.append(claim)
+
+    relation_rule = "ZIPING-OUTPUT-OFFICIAL-V1"
+    output_count = features.ten_god_counts.get("食神", 0) + features.ten_god_counts.get("伤官", 0)
+    official_count = features.ten_god_counts.get("正官", 0) + features.ten_god_counts.get("七杀", 0)
+    if output_count and official_count:
+        evidence = _claim_evidence(
+            features,
+            rule_id=relation_rule,
+            feature_refs=("ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正官", "ten_god_counts.七杀"),
+            text=f"食伤计数={output_count}，官杀计数={official_count}，两组结构同时存在。",
+        )
+        claim = Claim(
+            claim_id=stable_claim_id("ziping", task.task_id, features.chart_id, relation_rule),
+            school_id="ziping",
+            task_id=task.task_id,
+            claim_type="structure_claim",
+            stance="support",
+            statement="食伤与官杀并见，格局成立需审查制化与破格关系。",
+            evidence=(evidence,),
+            falsifier="若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。",
+            time_window=None,
+            confidence_basis="仅陈述十神结构并见，不把并见直接判成唯一现实事件。",
+            applicability_snapshot={"output_count": output_count, "official_count": official_count},
+        )
+        validate_claim_evidence(claim, chart, features)
+        claims.append(claim)
 
     return claims
 

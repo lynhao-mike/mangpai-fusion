@@ -108,7 +108,8 @@ def test_catalog_rejects_non_mapping_label_schema(tmp_path: Path) -> None:
 def test_task_by_id_indexes_tasks() -> None:
     tasks = load_task_catalog(Path("mapping/school-capability-task-catalog-v1.yaml"))
     indexed = task_by_id(tasks)
-    assert indexed["marriage.late_marriage"] is tasks[0]
+    expected = next(task for task in tasks if task.task_id == "marriage.late_marriage")
+    assert indexed["marriage.late_marriage"] is expected
 
 
 def test_task_by_id_rejects_duplicate_ids() -> None:

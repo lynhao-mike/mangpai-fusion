@@ -1,5 +1,15 @@
 schema_version: school-capability-tasks/v1
 tasks:
+  - task_id: structure.overview
+    domain: 总体
+    claim_type: structure_claim
+    scoring_method: portrait_agreement
+    quantifiable: false
+    high_risk: false
+    allowed_time_horizons: [lifetime]
+    required_input_fields: [four_pillars]
+    label_schema: {}
+    evaluation_note: 子平结构命题盲审任务；不概率化，仅评估独立结构复核一致度
   - task_id: marriage.late_marriage
     domain: 婚姻
     claim_type: binary_event

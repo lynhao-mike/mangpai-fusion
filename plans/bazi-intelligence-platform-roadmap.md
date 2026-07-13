@@ -508,7 +508,7 @@ next_irreversible_decision
 updated_at
 ```
 
-当前状态：第一推进单元（流派能力评估协议与最小盲测框架）与 `cfv-v1` 命局特征向量脊椎已实现。下一不可逆决策是基于共享特征推进 L2 命题引擎化，并在真实前瞻标注达到门槛后打通"能力后验 → L1 路由"回流飞轮。
+当前状态：第一推进单元（流派能力评估协议与最小盲测框架）、`cfv-v1` 命局特征向量脊椎，以及 L2 子平结构 / 任派应期两派最小命题闭环已实现。下一不可逆决策是建立真实前瞻标注地基，并在门槛满足后打通“能力后验 → L1 路由”回流飞轮。
 
 ### 16.1 升级单元 01 · 命局特征向量层（2026-07-13）
 
@@ -524,6 +524,21 @@ updated_at: 2026-07-13
 ```
 
 `cfv-v1` 覆盖：身份与稳定哈希、五行本气计数与含藏干能量、日主/月令中立信号、十神计数与结构布尔、冲合刑害及冲突强度、寒暖燥湿轴、输入完整度。共享入口为 `engine.features.build_chart_feature_vector()`；子平 runner 的旧 `_shishen()` 已收敛到共用谓词算法。
+
+### 16.2 升级单元 02 · L2 命题引擎化（2026-07-13）
+
+```text
+phase: 升级单元 02 · L2 命题引擎化
+status: GO
+evidence_artifacts: engine/claims/ · engine/v5/ziping_runner.py · engine/v5/ren_runner.py · tests/claims/test_claim_engine.py
+accepted_hypotheses: 子平可从 cfv-v1 推导旺衰与食伤/官杀结构命题；任派可从 ChartFactLedger 岁运事实推导可复现年度时间窗；默认评估编排可从 Chart→feature→task 直接生成 claim/abstain/unsupported 并冻结，且不读取 v5 自由命题、反馈、报告或人工 school-claims JSON
+rejected_hypotheses: 继续把人工 school-claims JSON 当作两派目标任务的能力评估输入；证据只挂 chart:root 即视为可追溯；无触发时强行输出固定应期；从旧 V5Claim 池按领域相似度适配精确评估任务
+known_risks: 当前仅覆盖两派少量任务；任派时间窗只完成冲合刑穿/伏吟最小触发，legacy 报告链保持不动；概率仅为盲测适配冷启动值，不是已校准生产概率
+next_irreversible_decision: 升级单元 03 使用 generate_frozen_claim_run 建立独立真实标签与能力基线，再用盲测证据决定 L1 回流路由
+updated_at: 2026-07-13
+```
+
+统一契约入口为 `engine.claims`；默认评估编排入口为 `engine.claims.orchestrator.generate_blind_outputs()`，冻结入口为 `generate_frozen_claim_run()`。子平 `generate_claims()` 支持任务目录的 `structure.overview` 并在残缺盘 abstain；任派 `generate_claims()` 支持四类时间窗任务并在无岁运触发时 abstain。两者及编排器输入 DTO 均不含反馈与报告字段，静态隔离测试禁止导入反馈/报告模块。
 
 ## 17. As-Built 审计与阶段状态（2026-07-12）
 
