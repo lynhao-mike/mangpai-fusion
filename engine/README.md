@@ -21,6 +21,8 @@
 | [`decision/l1_school_router.py`](decision/l1_school_router.py) | L1 并行路由入口：默认保留 `static`；显式 `learned` 时按能力效用、不确定性与互补增益生成逐任务路由。 |
 | [`decision/routing_holdout.py`](decision/routing_holdout.py) | learned/static 留出集对照门禁：强制训练集隔离，并检查效用、校准误差与高风险假阳性。 |
 | [`decision/routing_holdout_artifacts.py`](decision/routing_holdout_artifacts.py) | 留出制品治理：按性别+四柱分组确定性切分、用 cfv-v1 重算原型，并审计同案同任务多流派可评分竞争覆盖。 |
+| [`decision/l6_staged_arbitration.py`](decision/l6_staged_arbitration.py) | L6 对照入口：消费 L2 Claim 与 L1 权重，执行结构/事件/应期三段裁决、显式对立消解和结构优先级传播；不替换旧生产入口。 |
+| [`decision/conflict-rules.yaml`](decision/conflict-rules.yaml) | L6 显式冲突规则集：能力加权、证据完整度与高风险保守兜底。 |
 | [`contracts/`](contracts/) | 架构契约与跨模块数据交换约定。 |
 | [`v5/`](v5/) | ZiPing Fusion Engine v5 并行核心：五派命题、结构图、三段式仲裁、受限概率账本。 |
 

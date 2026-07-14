@@ -106,6 +106,32 @@ def test_low_sample_exact_cell_shrinks_to_prototype_backoff_with_wider_interval(
     assert result.credible_interval[1] > 0.84
 
 
+def test_low_sample_prototype_continues_to_usable_task_backoff(tmp_path: Path) -> None:
+    module = _module()
+    rows = [
+        _posterior("ziping", "career.role_change", "prototype-balanced", mean=0.95, interval=(0.8, 1.0), n_eff=2),
+        _posterior("ziping", "career.role_change", "prototype-other", mean=0.7, interval=(0.55, 0.82), n_eff=8),
+    ]
+
+    result = _query(module.CapabilityRegistry.from_snapshot(_snapshot(tmp_path, rows)))
+
+    assert result.shrink_level == "task_backoff"
+    assert result.n_eff == 8
+
+
+def test_low_sample_task_continues_to_usable_domain_prior(tmp_path: Path) -> None:
+    module = _module()
+    rows = [
+        _posterior("ziping", "career.role_change", "prototype-balanced", mean=0.95, interval=(0.8, 1.0), n_eff=2),
+        _posterior("ziping", "career.path_type", "prototype-other", mean=0.7, interval=(0.55, 0.82), n_eff=8, claim_type="categorical_state"),
+    ]
+
+    result = _query(module.CapabilityRegistry.from_snapshot(_snapshot(tmp_path, rows)))
+
+    assert result.shrink_level == "domain_prior"
+    assert result.n_eff == 8
+
+
 def test_missing_prototype_backs_off_to_task_then_domain_prior(tmp_path: Path) -> None:
     module = _module()
     task_rows = [

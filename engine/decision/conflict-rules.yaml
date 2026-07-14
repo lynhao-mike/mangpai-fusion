@@ -1,0 +1,37 @@
+schema_version: l6-conflict-rules/v1
+rules:
+  - rule_id: CR-STRUCT-EVIDENCE-001
+    applies_to_stage: structure
+    conflict_type: polarity_opposition
+    target_claim_type: structure_claim
+    resolution_strategy: evidence_completeness
+    min_weight_gap: 0.0
+    falsifier: 若证据更完整一方在同类盲测中持续劣于对立方，则停用本规则。
+
+  - rule_id: CR-EVENT-CAPABILITY-001
+    applies_to_stage: event
+    conflict_type: occurrence_opposition
+    target_claim_type: event_claim
+    resolution_strategy: capability_weighted
+    min_weight_gap: 0.15
+    falsifier: 若能力加权胜方在事件盲测中持续劣于对立方，则停用本规则。
+
+  - rule_id: CR-EVENT-HIGH-RISK-001
+    applies_to_stage: event
+    conflict_type: occurrence_opposition
+    target_claim_type: event_claim
+    resolution_strategy: conservative_high_risk
+    min_weight_gap: 0.0
+    domains:
+      - 健康
+      - 灾厄
+      - 婚姻
+    falsifier: 若治理政策或高风险任务成本模型变更，则重新审核本规则。
+
+  - rule_id: CR-TIMING-CAPABILITY-001
+    applies_to_stage: timing
+    conflict_type: occurrence_opposition
+    target_claim_type: timing_claim
+    resolution_strategy: capability_weighted
+    min_weight_gap: 0.15
+    falsifier: 若能力加权胜方在应期盲测中持续劣于对立方，则停用本规则。

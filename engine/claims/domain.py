@@ -9,6 +9,7 @@ from typing import Any, Literal, Mapping
 
 ClaimType = Literal["structure_claim", "event_claim", "timing_claim", "portrait_claim"]
 ClaimStance = Literal["support", "oppose"]
+ClaimPolarity = Literal["positive", "negative", "neutral"]
 
 
 def stable_claim_id(school_id: str, task_id: str, chart_signature: str, rule_id: str) -> str:
@@ -76,6 +77,10 @@ class Claim:
     time_window: TimeWindow | None
     confidence_basis: str
     applicability_snapshot: Mapping[str, Any]
+    domain: str = "总体"
+    polarity: ClaimPolarity = "neutral"
+    magnitude: float | None = None
+    confidence: float = 1.0
 
     def __post_init__(self) -> None:
         for name in ("claim_id", "school_id", "task_id", "statement", "falsifier", "confidence_basis"):
@@ -85,6 +90,14 @@ class Claim:
             raise ValueError("invalid claim_type")
         if self.stance not in {"support", "oppose"}:
             raise ValueError("invalid stance")
+        if not self.domain.strip():
+            raise ValueError("domain is required")
+        if self.polarity not in {"positive", "negative", "neutral"}:
+            raise ValueError("invalid polarity")
+        if self.magnitude is not None and not 0.0 <= self.magnitude <= 1.0:
+            raise ValueError("magnitude must be between 0 and 1")
+        if not 0.0 <= self.confidence <= 1.0:
+            raise ValueError("confidence must be between 0 and 1")
         if not self.evidence:
             raise ValueError("claim evidence must be non-empty")
         if self.claim_type in {"event_claim", "timing_claim"} and self.time_window is None:
@@ -107,6 +120,10 @@ class Claim:
             "time_window": self.time_window.to_dict() if self.time_window else None,
             "confidence_basis": self.confidence_basis,
             "applicability_snapshot": dict(self.applicability_snapshot),
+            "domain": self.domain,
+            "polarity": self.polarity,
+            "magnitude": self.magnitude,
+            "confidence": self.confidence,
         }
 
 

@@ -49,10 +49,10 @@ def test_rewrite_score_prototypes_uses_cfv_mapping_and_preserves_other_fields() 
 
 def test_competitive_coverage_requires_two_scorable_schools_per_case_task() -> None:
     rows = [
-        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ziping", "utility": 0.7},
-        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ren", "utility": None},
-        {"case_id": "C-2", "task_id": "career.role_change", "school_id": "ziping", "utility": 0.6},
-        {"case_id": "C-2", "task_id": "career.role_change", "school_id": "ren", "utility": 0.5},
+        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ziping", "state": "claim", "utility": 0.7},
+        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ren", "state": "unsupported", "utility": None},
+        {"case_id": "C-2", "task_id": "career.role_change", "school_id": "ziping", "state": "claim", "utility": 0.6},
+        {"case_id": "C-2", "task_id": "career.role_change", "school_id": "ren", "state": "claim", "utility": 0.5},
     ]
 
     audit = audit_competitive_coverage(rows, holdout_case_ids={"C-1", "C-2"}, minimum_competitive_cases=2)
@@ -64,7 +64,7 @@ def test_competitive_coverage_requires_two_scorable_schools_per_case_task() -> N
 
 def test_competitive_coverage_goes_ready_only_after_minimum_is_met() -> None:
     rows = [
-        {"case_id": case_id, "task_id": "career.role_change", "school_id": school, "utility": utility}
+        {"case_id": case_id, "task_id": "career.role_change", "school_id": school, "state": "claim", "utility": utility}
         for case_id in ("C-1", "C-2")
         for school, utility in (("ziping", 0.7), ("ren", 0.5))
     ]
@@ -73,3 +73,16 @@ def test_competitive_coverage_goes_ready_only_after_minimum_is_met() -> None:
 
     assert audit.status == "READY"
     assert audit.competitive_case_task_count == 2
+
+
+def test_abstain_is_a_scorable_routing_decision_not_missing_coverage() -> None:
+    """有标签时 abstain 带机会成本，是路由器必须比较的合法克制行为。"""
+    rows = [
+        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ziping", "state": "claim", "utility": 0.65},
+        {"case_id": "C-1", "task_id": "career.role_change", "school_id": "ren", "state": "abstain", "utility": -0.1},
+    ]
+
+    audit = audit_competitive_coverage(rows, holdout_case_ids={"C-1"}, minimum_competitive_cases=1)
+
+    assert audit.status == "READY"
+    assert audit.competitive_case_task_count == 1

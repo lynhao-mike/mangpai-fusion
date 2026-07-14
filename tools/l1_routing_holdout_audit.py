@@ -14,6 +14,7 @@ from typing import Any
 from engine.decision.routing_holdout_artifacts import (
     audit_competitive_coverage,
     build_deterministic_case_split,
+    compare_static_learned_routes,
     rewrite_score_prototypes,
 )
 
@@ -50,6 +51,13 @@ def build_audit_artifact(
     for row in rewritten:
         if row["case_id"] in labelled_ids:
             prototype_by_case[row["case_id"]] = row["chart_prototype_id"]
+    comparison = compare_static_learned_routes(
+        rewritten,
+        training_case_ids=set(split.training_case_ids),
+        holdout_case_ids=set(split.holdout_case_ids),
+        static_school_by_task={"career.role_change": "ziping"},
+        minimum_holdout_cases=minimum_competitive_cases,
+    )
     return {
         "schema_version": "l1-routing-holdout-audit/v1",
         "source_freeze_hash": scores["freeze_hash"],
@@ -68,14 +76,28 @@ def build_audit_artifact(
             "competitive_identities": list(audit.competitive_identities),
             "reasons": list(audit.reasons),
         },
-        "gate_status": "HOLD" if audit.status != "READY" else "READY_FOR_COMPARISON",
+        "route_comparison": {
+            "status": comparison.status,
+            "record_count": len(comparison.records),
+            "static_mean_utility": comparison.static_mean_utility,
+            "learned_mean_utility": comparison.learned_mean_utility,
+            "reasons": list(comparison.reasons),
+        },
+        "gate_status": comparison.status if audit.status == "READY" else "HOLD",
     }
 
 
 def render_audit_report(artifact: dict[str, Any]) -> str:
     split = artifact["split"]
     coverage = artifact["competitive_coverage"]
-    reasons = coverage["reasons"] or ["竞争覆盖达到最低要求，可进入 static/learned 同案对照。"]
+    comparison = artifact["route_comparison"]
+    reasons = [*coverage["reasons"], *comparison["reasons"]]
+    reasons.extend([
+        "本批是 historical blind candidate，不是前瞻 untouched 测试集。",
+        "当前 career.role_change 标签均为 occurred 正例，无法检验负例判别力与假阳性。",
+        "本次仅覆盖一个任务、两个流派；不得外推为全领域路由能力。",
+        "早期探索曾检查多个 seed；当前批次只作方法修复证据，不能用于 GO。",
+    ])
     return "\n".join([
         "# L1 可学习路由留出集对照",
         "",
@@ -90,14 +112,20 @@ def render_audit_report(artifact: dict[str, Any]) -> str:
         "## 竞争覆盖",
         f"- 留出集中已有评分的 case/task：{coverage['scored_case_task_count']}",
         f"- 同案同任务至少两派均可评分：{coverage['competitive_case_task_count']}",
-        "- 只有后一类记录才允许比较 static 与 learned 路由，单派可评分记录不得冒充路由增益。",
+        "- claim 与有标签的 abstain 都是合法可评分决策；unsupported/no_data 不计竞争覆盖。",
+        "",
+        "## 路由效用对照",
+        f"- 可比较记录：{comparison['record_count']}",
+        f"- 静态基线平均效用：{comparison['static_mean_utility']:.4f}",
+        f"- learned 平均效用：{comparison['learned_mean_utility']:.4f}",
+        f"- 来源冻结哈希：`{artifact['source_freeze_hash']}`",
         "",
         "## 判定依据",
         *(f"- {reason}" for reason in reasons),
         "",
         "## 结论",
-        "当前若为 HOLD，阻塞点不是代码连线，而是冻结盲测输出的同任务多流派能力覆盖不足。"
-        "必须扩充至少两派能对同一可量化任务独立产生命题/克制且可评分的前瞻留出案例，之后才能计算真实路由效用、校准误差和高风险假阳性。",
+        "GO 仅在 learned 至少改变一个路由选择且留出效用不低于静态基线时成立；"
+        "若两者选择完全相同则保持 HOLD，不把等价重放冒充学习增量。",
         "",
     ])
 

@@ -13,10 +13,13 @@ from engine.predicates.relations import zhi_chong, zhi_chuan, zhi_liuhe, zhi_xin
 
 _SUPPORTED_TASKS = {
     "career.change_window": "职业变化",
+    "career.role_change": "职业角色变动",
     "marriage.event_window": "婚恋重大变化",
     "wealth.major_loss_window": "重大财务变化",
     "health.event_window": "显著健康变化",
 }
+
+_BINARY_EVENT_TASKS = {"career.role_change"}
 
 
 def _ganzhi(step: dict[str, Any]) -> str:
@@ -68,6 +71,104 @@ def _trigger(step: dict[str, Any], chart: ChartFactLedger) -> tuple[str, tuple[s
     return "；".join(descriptions), tuple(refs)
 
 
+def _dayun_trigger(chart: ChartFactLedger) -> tuple[int, dict[str, Any], str, tuple[str, ...]] | None:
+    """历史批次缺流年时，从大运支与原局四支关系提取最强结构触发。"""
+    candidates: list[tuple[int, int, dict[str, Any], str, tuple[str, ...]]] = []
+    for index, step in enumerate(chart.dayun_steps):
+        ganzhi = _ganzhi(step)
+        if len(ganzhi) < 2:
+            continue
+        branch = ganzhi[1]
+        refs: list[str] = []
+        descriptions: list[str] = []
+        for palace in ("year", "month", "day", "hour"):
+            pillar = str(chart.four_pillars.get(palace, ""))
+            if len(pillar) < 2:
+                continue
+            relation = _relation(branch, pillar[1])
+            if relation:
+                refs.append(f"four_pillars.{palace}")
+                descriptions.append(f"大运{branch}与{palace}支{pillar[1]}{relation}")
+        if descriptions:
+            description = "；".join(descriptions)
+            strength = sum(description.count(token) for token in ("冲", "刑", "穿", "伏吟", "合"))
+            candidates.append((-strength, index, step, description, tuple(refs)))
+    if not candidates:
+        return None
+    _, index, step, description, refs = min(candidates, key=lambda item: (item[0], item[1]))
+    return index, step, description, refs
+
+
+def _find_strongest_trigger(
+    chart: ChartFactLedger, features: ChartFeatureVector,
+) -> tuple[int, dict[str, Any], str, tuple[str, ...]] | None:
+    """找出岁运列表中最强的触发年份。"""
+    candidates: list[tuple[int, int, dict[str, Any], str, tuple[str, ...]]] = []
+    for index, step in enumerate(chart.liunian_steps):
+        year = _year(step)
+        trigger = _trigger(step, chart)
+        if year is None or trigger is None:
+            continue
+        description, fact_refs = trigger
+        strength = sum(description.count(token) for token in ("冲", "刑", "穿", "伏吟", "合"))
+        candidates.append((-strength, year, step, description, fact_refs))
+    if not candidates:
+        return None
+    _, year, step, description, referenced_pillars = min(candidates, key=lambda item: (item[0], item[1]))
+    return year, step, description, referenced_pillars
+
+
+def _generate_binary_career_claim(
+    chart: ChartFactLedger, features: ChartFeatureVector, task: BlindTask,
+) -> list[Claim]:
+    """任派二元事件命题：岁运有冲合刑穿触发 → 支持发生职业变动。"""
+    result = _find_strongest_trigger(chart, features) if chart.liunian_steps else None
+    if result is not None:
+        year, step, description, referenced_pillars = result
+        index = chart.liunian_steps.index(step)
+        fact_refs = (f"liunian_steps.{index}", *referenced_pillars)
+        window = TimeWindow(start_year=year, end_year=year, label="annual")
+        trigger_label = f"{year} 年岁运"
+    else:
+        dayun_result = _dayun_trigger(chart)
+        if dayun_result is None:
+            return []
+        index, step, description, referenced_pillars = dayun_result
+        year = 0
+        fact_refs = (f"dayun_steps.{index}", *referenced_pillars)
+        window = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
+        trigger_label = "大运结构"
+    rule_id = "REN-BINARY-CAREER-TRIGGER-V1"
+    evidence_raw = f"{features.chart_id}|{task.task_id}|{year}|{description}"
+    evidence = Evidence(
+        evidence_id="evidence-" + hashlib.sha256(evidence_raw.encode("utf-8")).hexdigest()[:20],
+        fact_refs=fact_refs,
+        feature_refs=("branch_conflict_intensity", "evidence_completeness"),
+        rule_id=rule_id,
+        text=f"{trigger_label}触发职业变动信号：{description}。",
+    )
+    claim = Claim(
+        claim_id=stable_claim_id("ren", task.task_id, features.chart_id, f"{rule_id}:{year}"),
+        school_id="ren",
+        task_id=task.task_id,
+        claim_type="event_claim",
+        stance="support",
+        statement=f"任派{trigger_label}指向存在显著职业角色变动：{description}。",
+        evidence=(evidence,),
+        falsifier="若该时间窗内未发生显著职业角色或岗位变化，则本命题证伪。",
+        time_window=window,
+        confidence_basis="基于输入流年与原局/大运的可计算冲合刑穿或伏吟关系推导。",
+        applicability_snapshot={
+            "year": year or None,
+            "trigger_ganzhi": _ganzhi(step),
+            "branch_conflict_intensity": features.branch_conflict_intensity,
+            "evidence_completeness": features.evidence_completeness,
+        },
+    )
+    validate_claim_evidence(claim, chart, features)
+    return [claim]
+
+
 def generate_claims(
     chart: ChartFactLedger,
     features: ChartFeatureVector,
@@ -76,6 +177,8 @@ def generate_claims(
     """按输入岁运列表生成最多一条最强年度触发命题；无触发即 abstain。"""
     if task.task_id not in _SUPPORTED_TASKS:
         raise TaskUnsupported(f"ren does not support task: {task.task_id}")
+    if task.task_id in _BINARY_EVENT_TASKS:
+        return _generate_binary_career_claim(chart, features, task)
     if not chart.liunian_steps:
         return []
 

@@ -1,0 +1,115 @@
+{
+  "schema_version": "l1-training-capability-snapshot/v1",
+  "snapshot_id": "cap-train-24f504f1c054bb68b022",
+  "training_case_ids": [
+    "P-2026-001-乾-戊申癸亥戊戌癸亥",
+    "P-2026-002-乾-壬子戊申壬午己酉",
+    "P-2026-003-乾-乙卯己卯乙亥己卯",
+    "P-2026-004-乾-丁未丙午壬戌乙巳",
+    "P-2026-011-乾-戊午丙辰甲子甲子",
+    "P-2026-032-乾-壬子乙巳庚戌庚辰",
+    "P-2026-045-乾-戊午辛酉癸巳甲寅",
+    "P-2026-047-乾-丁巳己酉乙酉丁丑",
+    "P-2026-051-乾-庚申丁亥辛丑己亥",
+    "P-2026-054-乾-庚申甲申癸酉乙卯"
+  ],
+  "evaluated_at": "2026-07-14T15:45:00Z",
+  "posteriors": [
+    {
+      "school_id": "ren",
+      "task_id": "career.role_change",
+      "chart_prototype_id": "prototype-official-kill-mixed",
+      "claim_type": "binary_event",
+      "time_horizon": "ten_year",
+      "evidence_completeness_band": "complete",
+      "coverage_rate": 1.0,
+      "discrimination_score": 0.0,
+      "accuracy_score": 0.8775,
+      "calibration_error": null,
+      "posterior_mean": 0.6666666666666666,
+      "credible_interval": [
+        0.2046902362914556,
+        1.0
+      ],
+      "n_eff": 1.0,
+      "evidence_grade": "B",
+      "last_evaluated_at": "2026-07-14T15:45:00Z",
+      "incremental_gain": 0.0
+    },
+    {
+      "school_id": "ziping",
+      "task_id": "career.role_change",
+      "chart_prototype_id": "prototype-climate-cold",
+      "claim_type": "binary_event",
+      "time_horizon": "ten_year",
+      "evidence_completeness_band": "partial",
+      "coverage_rate": 1.0,
+      "discrimination_score": 0.0,
+      "accuracy_score": 0.8775,
+      "calibration_error": null,
+      "posterior_mean": 0.6666666666666666,
+      "credible_interval": [
+        0.2046902362914556,
+        1.0
+      ],
+      "n_eff": 1.0,
+      "evidence_grade": "B",
+      "last_evaluated_at": "2026-07-14T15:45:00Z",
+      "incremental_gain": 0.0
+    },
+    {
+      "school_id": "ziping",
+      "task_id": "career.role_change",
+      "chart_prototype_id": "prototype-official-kill-mixed",
+      "claim_type": "binary_event",
+      "time_horizon": "ten_year",
+      "evidence_completeness_band": "complete",
+      "coverage_rate": 1.0,
+      "discrimination_score": 0.0,
+      "accuracy_score": 0.8775,
+      "calibration_error": null,
+      "posterior_mean": 0.6666666666666666,
+      "credible_interval": [
+        0.2046902362914556,
+        1.0
+      ],
+      "n_eff": 1.0,
+      "evidence_grade": "B",
+      "last_evaluated_at": "2026-07-14T15:45:00Z",
+      "incremental_gain": 0.0
+    },
+    {
+      "school_id": "ziping",
+      "task_id": "career.role_change",
+      "chart_prototype_id": "prototype-official-kill-mixed",
+      "claim_type": "binary_event",
+      "time_horizon": "ten_year",
+      "evidence_completeness_band": "partial",
+      "coverage_rate": 1.0,
+      "discrimination_score": 0.0,
+      "accuracy_score": 0.8775,
+      "calibration_error": null,
+      "posterior_mean": 0.75,
+      "credible_interval": [
+        0.37044763207167314,
+        1.0
+      ],
+      "n_eff": 2.0,
+      "evidence_grade": "B",
+      "last_evaluated_at": "2026-07-14T15:45:00Z",
+      "incremental_gain": 0.0
+    }
+  ],
+  "holdout_case_ids": [
+    "P-2026-006-乾-壬戌辛亥戊戌庚申",
+    "P-2026-012-乾-壬戌庚戌戊子甲寅",
+    "P-2026-013-乾-丙午乙未壬辰壬寅",
+    "P-2026-014-坤-乙卯辛巳甲子戊辰",
+    "P-2026-017-乾-甲寅庚午辛卯癸巳",
+    "P-2026-018-乾-甲子甲戌辛卯丁酉",
+    "P-2026-019-乾-乙卯辛巳丙子辛卯",
+    "P-2026-046-乾-丙寅庚寅辛丑己丑",
+    "P-2026-060-乾-乙丑己丑丙辰丙申",
+    "P-2026-065-乾-丁卯壬寅壬辰甲辰"
+  ]
+}

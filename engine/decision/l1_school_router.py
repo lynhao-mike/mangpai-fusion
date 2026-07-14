@@ -263,9 +263,12 @@ def _is_supported(query: CapabilityQuery, task: BlindTask, risk: RoutingRiskConf
 
 def _route_score(query: CapabilityQuery, risk: RoutingRiskConfig) -> float:
     uncertainty = query.credible_interval[1] - query.credible_interval[0]
-    # 增量价值用于判断反证/互补角色；主力排序保持“能力效用 - 不确定性惩罚”，
-    # 避免高 complementarity 的反证派反客为主。
-    return round(query.posterior_mean - risk.risk_factor * uncertainty, 6)
+    return round(
+        query.posterior_mean
+        - risk.risk_factor * uncertainty
+        + query.incremental_gain,
+        6,
+    )
 
 
 def _build_task_route(
@@ -317,7 +320,7 @@ def _build_task_route(
     counter_candidates = [school for school in eligible if school not in primary and queries[school].incremental_gain > 0.0]
     counter = max(counter_candidates, key=lambda school: (queries[school].incremental_gain, scores[school], school), default=None)
     rationale = (
-        f"原型 {assignment.prototype_id}；按 expected_utility - risk×uncertainty + complementarity_gain 排序，"
+        f"原型 {assignment.prototype_id}；按 posterior_mean - risk×uncertainty + incremental_gain 排序，"
         f"主力为 {', '.join(primary)}" + (f"，反证为 {counter}。" if counter else "。")
     )
     return TaskRoute(

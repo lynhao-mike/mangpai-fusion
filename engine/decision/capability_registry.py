@@ -131,24 +131,21 @@ class CapabilityRegistry:
         if prototype_usable:
             resolved = {**requested, "time_horizon": "*", "evidence_completeness_band": "*"}
             return self._aggregate(prototype_usable, "prototype_backoff", resolved)
-        if prototype_rows:
-            # 保留“已有但样本不足”与“完全 unsupported”的区别，交由路由层 abstain。
-            resolved = {**requested, "time_horizon": "*", "evidence_completeness_band": "*"}
-            return self._aggregate(prototype_rows, "prototype_backoff", resolved)
-
         task_rows = [row for row in school_rows if row.task_id == task_id]
         task_usable = [row for row in task_rows if row.n_eff >= _MIN_N_EFF]
         if task_usable:
             resolved = {"school_id": school_id, "task_id": task_id, "chart_prototype_id": "*", "claim_type": "*", "time_horizon": "*", "evidence_completeness_band": "*"}
             return self._aggregate(task_usable, "task_backoff", resolved)
-        if task_rows:
-            resolved = {"school_id": school_id, "task_id": task_id, "chart_prototype_id": "*", "claim_type": "*", "time_horizon": "*", "evidence_completeness_band": "*"}
-            return self._aggregate(task_rows, "task_backoff", resolved)
-
         domain = task_id.split(".", 1)[0]
         domain_rows = [row for row in school_rows if row.task_id.split(".", 1)[0] == domain and row.n_eff >= _MIN_N_EFF]
         if domain_rows:
             resolved = {"school_id": school_id, "domain": domain, "task_id": "*", "chart_prototype_id": "*", "claim_type": "*", "time_horizon": "*", "evidence_completeness_band": "*"}
             return self._aggregate(domain_rows, "domain_prior", resolved)
 
+        # 有覆盖记录但所有层级均低样本：保留审计身份与 N_eff，供 L1 输出 abstain；
+        # 完全无该派证据时才是 unsupported/global prior。
+        low_sample_rows = task_rows or prototype_rows or exact
+        if low_sample_rows:
+            resolved = {"school_id": school_id, "task_id": task_id, "chart_prototype_id": "*", "claim_type": "*", "time_horizon": "*", "evidence_completeness_band": "*"}
+            return self._aggregate(low_sample_rows, "task_backoff", resolved)
         return CapabilityQuery(0.5, (0.0, 1.0), 0.0, 0.0, "E0", "global_prior", {"school_id": school_id, "domain": "global"})

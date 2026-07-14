@@ -1,32 +1,32 @@
 {
   "schema_version": "l1-routing-holdout-audit/v1",
-  "source_freeze_hash": "75c02fef25026bd9ef0576fa5799fd9ce181ebf472a408d478b1a9f31bc49ea6",
+  "source_freeze_hash": "f7e2752929e2d031f38dcc671e7ec85d31a77f5121431efbfdbe3fb3d1ab76da",
   "split": {
-    "salt": "l1-routing-holdout-v1",
-    "holdout_fraction": 0.25,
+    "salt": "l1-routing-final-v1",
+    "holdout_fraction": 0.5,
     "training_case_ids": [
       "P-2026-001-乾-戊申癸亥戊戌癸亥",
       "P-2026-002-乾-壬子戊申壬午己酉",
       "P-2026-003-乾-乙卯己卯乙亥己卯",
+      "P-2026-004-乾-丁未丙午壬戌乙巳",
       "P-2026-011-乾-戊午丙辰甲子甲子",
+      "P-2026-032-乾-壬子乙巳庚戌庚辰",
+      "P-2026-045-乾-戊午辛酉癸巳甲寅",
+      "P-2026-047-乾-丁巳己酉乙酉丁丑",
+      "P-2026-051-乾-庚申丁亥辛丑己亥",
+      "P-2026-054-乾-庚申甲申癸酉乙卯"
+    ],
+    "holdout_case_ids": [
+      "P-2026-006-乾-壬戌辛亥戊戌庚申",
       "P-2026-012-乾-壬戌庚戌戊子甲寅",
+      "P-2026-013-乾-丙午乙未壬辰壬寅",
       "P-2026-014-坤-乙卯辛巳甲子戊辰",
       "P-2026-017-乾-甲寅庚午辛卯癸巳",
       "P-2026-018-乾-甲子甲戌辛卯丁酉",
-      "P-2026-032-乾-壬子乙巳庚戌庚辰",
-      "P-2026-045-乾-戊午辛酉癸巳甲寅",
+      "P-2026-019-乾-乙卯辛巳丙子辛卯",
       "P-2026-046-乾-丙寅庚寅辛丑己丑",
-      "P-2026-051-乾-庚申丁亥辛丑己亥",
-      "P-2026-054-乾-庚申甲申癸酉乙卯",
       "P-2026-060-乾-乙丑己丑丙辰丙申",
       "P-2026-065-乾-丁卯壬寅壬辰甲辰"
-    ],
-    "holdout_case_ids": [
-      "P-2026-004-乾-丁未丙午壬戌乙巳",
-      "P-2026-006-乾-壬戌辛亥戊戌庚申",
-      "P-2026-013-乾-丙午乙未壬辰壬寅",
-      "P-2026-019-乾-乙卯辛巳丙子辛卯",
-      "P-2026-047-乾-丁巳己酉乙酉丁丑"
     ]
   },
   "prototype_by_case": {
@@ -53,12 +53,25 @@
   },
   "competitive_coverage": {
     "status": "HOLD",
-    "holdout_case_count": 5,
-    "scored_case_task_count": 10,
-    "competitive_case_task_count": 0,
-    "competitive_identities": [],
+    "holdout_case_count": 10,
+    "scored_case_task_count": 16,
+    "competitive_case_task_count": 3,
+    "competitive_identities": [
+      "P-2026-013-乾-丙午乙未壬辰壬寅|career.role_change",
+      "P-2026-017-乾-甲寅庚午辛卯癸巳|career.role_change",
+      "P-2026-046-乾-丙寅庚寅辛丑己丑|career.role_change"
+    ],
     "reasons": [
-      "同案同任务多流派可评分竞争样本不足：0 < 5。"
+      "同案同任务多流派可评分竞争样本不足：3 < 5。"
+    ]
+  },
+  "route_comparison": {
+    "status": "HOLD",
+    "record_count": 3,
+    "static_mean_utility": 0.65,
+    "learned_mean_utility": 0.65,
+    "reasons": [
+      "可比较留出案例不足：3 < 5。"
     ]
   },
   "gate_status": "HOLD"

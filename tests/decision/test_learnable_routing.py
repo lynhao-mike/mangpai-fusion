@@ -115,6 +115,18 @@ def test_high_capability_low_uncertainty_school_becomes_primary(tmp_path: Path) 
     assert "prototype-balanced" in plan.route_rationale
 
 
+def test_positive_incremental_gain_contributes_to_primary_route_score(tmp_path: Path) -> None:
+    registry = _registry(tmp_path, [_row("ziping", 0.7, (0.6, 0.8), gain=0.0), _row("ren", 0.68, (0.58, 0.78), gain=0.08)])
+
+    route = build_route_plan(
+        feature_vector=_vector(), tasks=[_task()], evidence_completeness_band="complete", registry=registry,
+        risk_config=RoutingRiskConfig(schools=("ziping", "ren"), risk_factor=0.45),
+    ).per_task_routes["career.role_change"]
+
+    assert route.primary_schools[0] == "ren"
+    assert route.school_scores["ren"] > route.school_scores["ziping"]
+
+
 def test_high_mean_wide_interval_is_penalized_below_calibrated_school(tmp_path: Path) -> None:
     registry = _registry(tmp_path, [_row("ziping", 0.9, (0.1, 1.0)), _row("ren", 0.72, (0.64, 0.8))])
 
@@ -132,7 +144,7 @@ def test_positive_incremental_gain_selects_counter_school(tmp_path: Path) -> Non
         tmp_path,
         [
             _row("ziping", 0.82, (0.72, 0.9), gain=0.02),
-            _row("ren", 0.7, (0.6, 0.8), gain=0.16),
+            _row("ren", 0.62, (0.52, 0.72), gain=0.08),
             _row("gao_dechen", 0.55, (0.45, 0.65), gain=-0.1),
         ],
     )

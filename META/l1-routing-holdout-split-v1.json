@@ -1,0 +1,17 @@
+{
+  "schema_version": "l1-routing-holdout-split/v1",
+  "status": "preregistered-after-method-repair",
+  "created_at": "2026-07-14T15:43:00Z",
+  "grouping_identity": "sex_marker+four_pillars",
+  "salt": "l1-routing-final-v1",
+  "holdout_fraction": 0.5,
+  "minimum_competitive_cases": 5,
+  "policy": "This split configuration is immutable for the next evidence batch. The current historical batch remains exploratory because earlier seeds were inspected. A GO decision requires a new untouched batch collected after this preregistration.",
+  "go_metrics": [
+    "learned_utility_gte_static",
+    "calibration_error_not_worse",
+    "high_risk_false_positives_not_increased",
+    "at_least_one_route_changed",
+    "stable_task_prototype_increment"
+  ]
+}

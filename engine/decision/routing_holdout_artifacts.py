@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 from collections import defaultdict
 from dataclasses import dataclass
+from statistics import fmean
 from typing import Any, Iterable, Mapping
 
 from engine.decision.chart_prototype import classify_prototype
@@ -27,6 +28,25 @@ class CompetitiveCoverageAudit:
     scored_case_task_count: int
     competitive_case_task_count: int
     competitive_identities: tuple[str, ...]
+    reasons: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class RouteComparisonRecord:
+    case_id: str
+    task_id: str
+    static_school: str
+    learned_school: str
+    static_utility: float
+    learned_utility: float
+
+
+@dataclass(frozen=True)
+class RouteComparisonResult:
+    status: str
+    records: tuple[RouteComparisonRecord, ...]
+    static_mean_utility: float
+    learned_mean_utility: float
     reasons: tuple[str, ...]
 
 
@@ -104,7 +124,11 @@ def audit_competitive_coverage(
     holdout_case_ids: set[str] | frozenset[str],
     minimum_competitive_cases: int = 5,
 ) -> CompetitiveCoverageAudit:
-    """检查留出集是否有同 case/task 至少两派可评分，防止伪对照。"""
+    """检查留出集是否有同 case/task 至少两派可评分，防止伪对照。
+
+    有真实标签时，claim 与 abstain 均会产生 utility；abstain 是受治理的
+    合法路由决策而非缺失数据。只有 unsupported / no_data 不计竞争覆盖。
+    """
     if minimum_competitive_cases < 1:
         raise ValueError("minimum_competitive_cases must be positive")
     grouped: dict[tuple[str, str], set[str]] = defaultdict(set)
@@ -135,3 +159,69 @@ def audit_competitive_coverage(
         competitive_identities=competitive,
         reasons=tuple(reasons),
     )
+
+
+def compare_static_learned_routes(
+    scores: Iterable[Mapping[str, Any]],
+    *,
+    training_case_ids: set[str] | frozenset[str],
+    holdout_case_ids: set[str] | frozenset[str],
+    static_school_by_task: Mapping[str, str],
+    minimum_holdout_cases: int = 5,
+) -> RouteComparisonResult:
+    """用训练集平均效用选择 learned 流派，并在完全隔离的留出集与静态基线比较。"""
+    if set(training_case_ids).intersection(holdout_case_ids):
+        raise ValueError("training/holdout leakage detected")
+    rows = [row for row in scores if row.get("utility") is not None]
+    training: dict[tuple[str, str], list[float]] = defaultdict(list)
+    lookup: dict[tuple[str, str, str], float] = {}
+    for row in rows:
+        key = (str(row["case_id"]), str(row["task_id"]), str(row["school_id"]))
+        utility = float(row["utility"])
+        lookup[key] = utility
+        if key[0] in training_case_ids:
+            training[(key[1], key[2])].append(utility)
+
+    learned_by_task: dict[str, str] = {}
+    for task_id in static_school_by_task:
+        candidates = [
+            (fmean(values), school)
+            for (task, school), values in training.items()
+            if task == task_id and values
+        ]
+        if candidates:
+            learned_by_task[task_id] = max(candidates, key=lambda item: (item[0], item[1]))[1]
+
+    records: list[RouteComparisonRecord] = []
+    for case_id in sorted(holdout_case_ids):
+        for task_id, static_school in sorted(static_school_by_task.items()):
+            learned_school = learned_by_task.get(task_id)
+            if learned_school is None:
+                continue
+            static_key = (case_id, task_id, static_school)
+            learned_key = (case_id, task_id, learned_school)
+            if static_key not in lookup or learned_key not in lookup:
+                continue
+            records.append(RouteComparisonRecord(
+                case_id, task_id, static_school, learned_school,
+                lookup[static_key], lookup[learned_key],
+            ))
+    if not records:
+        return RouteComparisonResult("HOLD", (), 0.0, 0.0, ("留出集无可比较记录。",))
+    static_mean = fmean(row.static_utility for row in records)
+    learned_mean = fmean(row.learned_utility for row in records)
+    unique_cases = {row.case_id for row in records}
+    reasons: list[str] = []
+    if len(unique_cases) < minimum_holdout_cases:
+        reasons.append(f"可比较留出案例不足：{len(unique_cases)} < {minimum_holdout_cases}。")
+        status = "HOLD"
+    elif all(row.learned_school == row.static_school for row in records):
+        reasons.append("learned 路由与静态基线选择完全相同，尚未证明条件化路由增量。")
+        status = "HOLD"
+    elif learned_mean < static_mean:
+        reasons.append("learned 路由留出集平均效用低于静态基线。")
+        status = "STOP"
+    else:
+        reasons.append("learned 路由留出集平均效用不低于静态基线且至少一个路由选择发生变化。")
+        status = "GO"
+    return RouteComparisonResult(status, tuple(records), static_mean, learned_mean, tuple(reasons))
