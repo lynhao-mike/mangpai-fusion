@@ -21,7 +21,9 @@ from engine.decision.models import (
 )
 from engine.decision.l0_context import build_context_ledger
 from engine.decision.l0_wenzhen import parse_wenzhen_l0
-from engine.decision.l1_school_router import route_schools
+from engine.decision.l1_school_router import RoutePlan, RoutingRiskConfig, TaskRoute, build_route_plan, route_schools
+from engine.decision.capability_registry import CapabilityQuery, CapabilityRegistry
+from engine.decision.chart_prototype import PrototypeAssignment, classify_prototype
 from engine.decision.l2_claims import build_school_claims
 from engine.decision.l3_structure import build_structural_verdicts
 from engine.decision.l4_events import build_event_hypotheses
@@ -37,17 +39,23 @@ __all__ = [
     "AccuracyReport",
     "ArbitrationDecision",
     "CalibrationAction",
+    "CapabilityQuery",
+    "CapabilityRegistry",
     "ChartFactLedger",
     "ContextFactLedger",
     "DecisionRun",
     "EventHypothesis",
     "FeedbackAttribution",
     "FeedbackSignal",
+    "PrototypeAssignment",
     "RawWenzhenPayload",
     "ReportViewItem",
+    "RoutePlan",
+    "RoutingRiskConfig",
     "SchoolApplicability",
     "SchoolClaim",
     "StructuralVerdict",
+    "TaskRoute",
     "TimingProbability",
     "attribute_feedback",
     "build_arbitration_decisions",
@@ -59,9 +67,11 @@ __all__ = [
     "build_feedback_attributions",
     "build_feedback_signals",
     "build_report_items",
+    "build_route_plan",
     "build_school_claims",
     "build_structural_verdicts",
     "build_timing_probabilities",
+    "classify_prototype",
     "parse_wenzhen_l0",
     "render_accuracy_markdown",
     "route_schools",

@@ -49,8 +49,19 @@
 3. score weight 若缺失则静默默认 1.0；有实际输出时应要求精确覆盖 frozen outputs。
 4. prospective `blind_candidate` 允许 `has_existing_report=true`；有实际 prospective 样本时应拒绝（已有报告的 case 不能是真正的前瞻盲测）。
 
+## 2026-07-14 历史隔离批次更新
+
+- 输入与反馈改为两个独立文档：先读取并冻结 `cases/shuru-input.md`，冻结后才读取 `cases/fankui-feedback.md`。
+- 输入共 65 节；发现 1 组重复命盘，保留资料更完整者后得到 64 个独立案例。
+- 使用完整 19 项任务目录、2 个已接入流派冻结 2432 个三态输出；freeze hash 已验证，冻结制品不含来源 URL、反馈文本或报告文本。
+- 从冻结后揭示的反馈中保守抽取 66 条低歧义标签，覆盖 39 个独立案例；每条均含 source、observed_at、confidence_grade、quantifiable、conflict_state、reviewer。
+- 39 份逐案 `school-capability-labels.json` 已归档；reviewed manifest 已通过严格 schema 校验。
+- 能力覆盖为 claim 58、abstain 262、unsupported 2112。20 个六维 posterior 切片均为覆盖切片，最大 N_eff=0；当前没有可概率评分 claim。
+- 第一份历史隔离能力基线已生成，门禁结论仍为 **HOLD**。本轮完成了数据与评估全链，但未满足“非空有效能力后验”硬门槛。
+- 该批次只能称 `historical_blind_candidate`；论坛反馈早已客观存在，不能冒充真实 prospective 新案。
+
 ## 风险
 
-- 当前 30 案只能训练/开发，不能证明泛化准确度。
+- 当前历史隔离批次可以评估任务覆盖与克制行为，不能证明前瞻泛化准确度。
 - provisional chart prototype 尚未接入指导 01 的可计算特征向量。
-- 指导 02 未完成前，引擎命题能力仍可能为空；评估人的手写命题没有意义。
+- 当前 L2 只有子平结构任务产生 claim；二元概率任务没有 claim，无法形成有效能力样本量。

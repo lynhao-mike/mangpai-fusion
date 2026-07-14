@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
+import math
 from types import MappingProxyType
 from typing import Any, Literal, Mapping
 
@@ -59,19 +60,24 @@ class ChartFeatureVector:
             raise ValueError("schema_version is required")
         if not self.chart_id:
             raise ValueError("chart_id is required")
-        energy_total = sum(float(value) for value in self.element_energy.values())
-        if abs(energy_total - 1.0) > 1e-9:
+        if any(type(value) is not int or value < 0 for value in self.element_counts.values()):
+            raise ValueError("element_counts must contain non-negative integers")
+        energy_values = [float(value) for value in self.element_energy.values()]
+        if any(not math.isfinite(value) or value < 0.0 for value in energy_values):
+            raise ValueError("element_energy must contain finite non-negative values")
+        energy_total = sum(energy_values)
+        if not math.isclose(energy_total, 1.0, rel_tol=0.0, abs_tol=1e-9):
             raise ValueError("element_energy must sum to 1.0")
         if self.evidence_completeness not in {"full", "no_hour", "partial"}:
             raise ValueError("evidence_completeness must be full, no_hour, or partial")
-        if not -1.0 <= self.cold_warm_axis <= 1.0:
-            raise ValueError("cold_warm_axis must be between -1 and 1")
-        if not -1.0 <= self.dry_wet_axis <= 1.0:
-            raise ValueError("dry_wet_axis must be between -1 and 1")
-        if not 0.0 <= self.element_concentration <= 1.0:
-            raise ValueError("element_concentration must be between 0 and 1")
-        if not 0.0 <= self.branch_conflict_intensity <= 1.0:
-            raise ValueError("branch_conflict_intensity must be between 0 and 1")
+        if not math.isfinite(self.cold_warm_axis) or not -1.0 <= self.cold_warm_axis <= 1.0:
+            raise ValueError("cold_warm_axis must be finite and between -1 and 1")
+        if not math.isfinite(self.dry_wet_axis) or not -1.0 <= self.dry_wet_axis <= 1.0:
+            raise ValueError("dry_wet_axis must be finite and between -1 and 1")
+        if not math.isfinite(self.element_concentration) or not 0.0 <= self.element_concentration <= 1.0:
+            raise ValueError("element_concentration must be finite and between 0 and 1")
+        if not math.isfinite(self.branch_conflict_intensity) or not 0.0 <= self.branch_conflict_intensity <= 1.0:
+            raise ValueError("branch_conflict_intensity must be finite and between 0 and 1")
         for name in ("rooted_count", "supporting_count", "draining_count"):
             if getattr(self, name) < 0:
                 raise ValueError(f"{name} must be non-negative")

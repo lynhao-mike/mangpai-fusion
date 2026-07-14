@@ -17,6 +17,8 @@ from typing import Any
 
 import yaml
 
+from engine.chart_validation import dayun_direction
+
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 STAGING_JSONL = REPO_ROOT / "cases" / "raw_feedback" / "parsed" / "wenzhen_repan_top30_staging_manifest.jsonl"
 PROMOTION_PREFLIGHT_SUMMARY = (
@@ -320,7 +322,8 @@ def _build_dayun(staging: dict[str, Any], month_pillar: str) -> dict[str, Any]:
     qiyun_sui = int(match.group(1)) if match else 5
     qiyun_sui = max(1, min(11, qiyun_sui))
     qiyun_year = birth_year + qiyun_sui
-    shun_ni = "顺" if staging["qian_kun"] == "乾" else "逆"
+    year_gan = str(staging["pillars"]["Y"]).split(",")[0]
+    shun_ni = dayun_direction(staging["qian_kun"], year_gan)
     start_idx = JIAZI.index(month_pillar)
     steps = []
     for i in range(8):

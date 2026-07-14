@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Literal, Optional, Union
 
 from engine.application.candidates import _extract_candidates
+from engine.chart_validation import ensure_parsed_chart_validated
 from engine.application.dual_engine_adapter import analyze_dual_engine
 from engine.application.fusion_engine_v2 import build_final_prediction
 from engine.application.integration import integrate
@@ -64,6 +65,9 @@ def run_pipeline(
     Returns:
         AnalysisOutput；附带 ``output.timing`` 引用本次运行的 PipelineTiming。
     """
+    # Step 0：排盘验证硬门。未经验证或验证失败，禁止执行任何分析。
+    ensure_parsed_chart_validated(parsed)
+
     own_timing = timing is None
     if timing is None:
         timing = PipelineTiming(threshold_seconds=threshold_seconds)

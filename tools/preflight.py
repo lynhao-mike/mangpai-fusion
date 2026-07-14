@@ -728,6 +728,7 @@ def parse(
             "birth.真太阳时校正=false，请确认四柱已基于真太阳时手工调整"
         )
     dayun = _check_dayun(merged, birth_year)
+    _check_chart_validation(merged, pillars, dayun)
     # step 8
     canggan = _check_canggan(merged)
     # step 9
@@ -757,6 +758,63 @@ def parse(
         fingerprint=fp,
         preflight_warnings=warnings,
     )
+
+
+def _check_chart_validation(
+    merged: dict[str, Any],
+    pillars: dict[str, GanZhi],
+    dayun: Dayun,
+) -> None:
+    """排盘验证硬门：问真来源跳过，其他来源精确重排后才放行。"""
+    from engine.chart_validation import validate_chart
+
+    birth = merged["birth"]
+    case_meta = merged["case_meta"]
+    source = birth.get("来源") or case_meta.get("来源")
+    gongli = birth.get("公历")
+    if isinstance(gongli, datetime):
+        solar_date = gongli.strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        match = re.match(
+            r"^(\d{4}-\d{1,2}-\d{1,2})(?:[ T](\d{1,2}:\d{1,2}))?",
+            str(gongli).strip(),
+        )
+        if not match:
+            raise PreflightError(3, "birth.公历", f"无法解析: {gongli!r}")
+        solar_date = (
+            f"{match.group(1)} {match.group(2)}"
+            if match.group(2) else match.group(1)
+        )
+
+    claimed_pillars = {name: str(gz) for name, gz in pillars.items()}
+    claimed_dayun = {
+        "顺逆": dayun.顺逆,
+        "起运岁": dayun.起运岁,
+        "排布": [str(step.干支) for step in dayun.排布],
+    }
+    result = validate_chart(
+        claimed_pillars=claimed_pillars,
+        gender=str(birth["性别"]),
+        solar_date=solar_date,
+        hour_zhi=pillars["时柱"].zhi,
+        source=str(source) if source is not None else None,
+        claimed_dayun=claimed_dayun,
+    )
+    if not result.is_valid:
+        correction = ""
+        if result.corrected_pillars:
+            correction = f"；修正四柱={result.corrected_pillars}"
+        raise PreflightError(
+            step=6,
+            field_path="排盘验证",
+            detail="；".join(result.errors) + correction,
+        )
+
+    case_meta["排盘验证状态"] = (
+        "skipped_trusted_wenzhen" if result.skipped else "validated"
+    )
+    if result.warnings:
+        case_meta["排盘验证警告"] = list(result.warnings)
 
 
 # ============================================================

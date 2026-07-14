@@ -1,0 +1,10 @@
+{
+  "rule_snapshot_id": "l2-engine-rules-prospective-v1",
+  "schools": ["ziping", "ren"],
+  "runners": {
+    "ziping": "engine.v5.ziping_runner.generate_claims",
+    "ren": "engine.v5.ren_runner.generate_claims"
+  },
+  "feature_schema": "cfv-v1",
+  "task_catalog": "META/school-capability-prospective-tasks-v1.json"
+}

@@ -6,13 +6,73 @@
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import dataclass, field
+from types import MappingProxyType
+from typing import Literal, Mapping, Sequence, overload
 
+from engine.decision.capability_registry import CapabilityRegistry, CapabilityQuery
+from engine.decision.chart_prototype import PrototypeAssignment, classify_prototype
 from engine.decision.models import ChartFactLedger, ContextFactLedger, SchoolApplicability
+from engine.evaluation.models import BlindTask
+from engine.features.types import ChartFeatureVector
 
 _ROLE_LADDER = ("lead", "co_lead", "evidence_only", "abstain")
 _PRIOR_MIN_SAMPLE = 5
 _PRIOR_LOW_HIT_RATE = 0.35
 _PRIOR_SCORE_PENALTY = 0.2
+_DEFAULT_SCHOOLS = ("ziping", "ditiansui", "duan_jianye", "yang_qingjuan", "ren_fuhong", "gao_dechen")
+_PRODUCTION_EVIDENCE_GRADES = frozenset({"E2", "E3", "E4"})
+
+
+@dataclass(frozen=True)
+class RoutingRiskConfig:
+    schools: tuple[str, ...] = _DEFAULT_SCHOOLS
+    risk_factor: float = 0.45
+    minimum_route_score: float = 0.35
+    minimum_n_eff: float = 5.0
+    minimum_evidence_grades: frozenset[str] = _PRODUCTION_EVIDENCE_GRADES
+    high_risk_minimum_grade: str = "E3"
+    max_primary_schools: int = 2
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "schools", tuple(self.schools))
+        object.__setattr__(self, "minimum_evidence_grades", frozenset(self.minimum_evidence_grades))
+        if not self.schools:
+            raise ValueError("RoutingRiskConfig.schools cannot be empty")
+        if self.risk_factor < 0 or not 1 <= self.max_primary_schools <= 2:
+            raise ValueError("invalid routing risk configuration")
+
+
+@dataclass(frozen=True)
+class TaskRoute:
+    task_id: str
+    primary_schools: tuple[str, ...]
+    counter_school: str | None
+    abstain_candidates: tuple[str, ...]
+    unsupported_schools: tuple[str, ...]
+    evidence_status: Literal["sufficient", "insufficient"]
+    rationale: str
+    school_scores: Mapping[str, float] = field(default_factory=dict)
+    capability_queries: Mapping[str, CapabilityQuery] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "school_scores", MappingProxyType(dict(self.school_scores)))
+        object.__setattr__(self, "capability_queries", MappingProxyType(dict(self.capability_queries)))
+
+
+@dataclass(frozen=True)
+class RoutePlan:
+    primary_schools: tuple[str, ...]
+    counter_school: str | None
+    abstain_candidates: tuple[str, ...]
+    unsupported_schools: tuple[str, ...]
+    route_rationale: str
+    capability_snapshot_id: str
+    prototype_assignment: PrototypeAssignment
+    per_task_routes: Mapping[str, TaskRoute]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "per_task_routes", MappingProxyType(dict(self.per_task_routes)))
 
 
 def _downgrade_role(role: str) -> str:
@@ -111,13 +171,13 @@ def _focus_domains(context: ContextFactLedger) -> set[str]:
     return domains
 
 
-def route_schools(
+def _static_route_schools(
     chart: ChartFactLedger,
     context: ContextFactLedger,
     *,
     learned_prior: dict[str, tuple[float, int]] | None = None,
 ) -> list[SchoolApplicability]:
-    """生成 L1 SchoolApplicabilityMatrix。"""
+    """生成兼容的静态 L1 SchoolApplicabilityMatrix。"""
 
     focus = _focus_domains(context)
     has_four = len([v for v in chart.four_pillars.values() if v and v != "_"]) == 4
@@ -177,3 +237,182 @@ def route_schools(
             )
         )
     return result
+
+
+def _task_horizon(task: BlindTask) -> str:
+    horizons = tuple(task.allowed_time_horizons)
+    return str(horizons[0]) if horizons else "unspecified"
+
+
+def _grade_rank(grade: str) -> int:
+    normalized = grade.upper()
+    if normalized.startswith("E") and normalized[1:].isdigit():
+        return int(normalized[1:])
+    # 历史盲测 artifact 使用 A/B 等级；B 对齐 E2，仅作为历史盲测证据。
+    return {"A": 3, "B": 2, "C": 1}.get(normalized, 0)
+
+
+def _is_supported(query: CapabilityQuery, task: BlindTask, risk: RoutingRiskConfig) -> bool:
+    if query.shrink_level == "global_prior" or query.n_eff < risk.minimum_n_eff:
+        return False
+    grade_ok = query.evidence_grade in risk.minimum_evidence_grades or _grade_rank(query.evidence_grade) >= 2
+    if task.high_risk:
+        grade_ok = _grade_rank(query.evidence_grade) >= _grade_rank(risk.high_risk_minimum_grade)
+    return grade_ok and query.coverage_rate > 0.0
+
+
+def _route_score(query: CapabilityQuery, risk: RoutingRiskConfig) -> float:
+    uncertainty = query.credible_interval[1] - query.credible_interval[0]
+    # 增量价值用于判断反证/互补角色；主力排序保持“能力效用 - 不确定性惩罚”，
+    # 避免高 complementarity 的反证派反客为主。
+    return round(query.posterior_mean - risk.risk_factor * uncertainty, 6)
+
+
+def _build_task_route(
+    task: BlindTask,
+    assignment: PrototypeAssignment,
+    completeness: str,
+    registry: CapabilityRegistry,
+    risk: RoutingRiskConfig,
+) -> TaskRoute:
+    queries: dict[str, CapabilityQuery] = {}
+    scores: dict[str, float] = {}
+    unsupported: list[str] = []
+    abstain: list[str] = []
+    for school in risk.schools:
+        query = registry.query(
+            school_id=school,
+            task_id=task.task_id,
+            chart_prototype_id=assignment.prototype_id,
+            claim_type=task.claim_type,
+            time_horizon=_task_horizon(task),
+            evidence_completeness_band=completeness,
+        )
+        queries[school] = query
+        scores[school] = _route_score(query, risk)
+        if query.shrink_level == "global_prior":
+            unsupported.append(school)
+        elif not _is_supported(query, task, risk) or scores[school] < risk.minimum_route_score:
+            abstain.append(school)
+
+    eligible = [school for school in risk.schools if school not in unsupported and school not in abstain]
+    eligible.sort(key=lambda school: (-scores[school], school))
+    if not eligible:
+        return TaskRoute(
+            task_id=task.task_id,
+            primary_schools=(),
+            counter_school=None,
+            abstain_candidates=tuple(abstain),
+            unsupported_schools=tuple(unsupported),
+            evidence_status="insufficient",
+            rationale="证据不足：没有流派达到该任务的最小能力证据与不确定性门槛。",
+            school_scores=scores,
+            capability_queries=queries,
+        )
+
+    primary_count = min(risk.max_primary_schools, len(eligible))
+    primary: list[str] = [eligible[0]]
+    if primary_count > 1 and len(eligible) > 1 and scores[eligible[1]] >= scores[eligible[0]] - 0.08:
+        primary.append(eligible[1])
+    counter_candidates = [school for school in eligible if school not in primary and queries[school].incremental_gain > 0.0]
+    counter = max(counter_candidates, key=lambda school: (queries[school].incremental_gain, scores[school], school), default=None)
+    rationale = (
+        f"原型 {assignment.prototype_id}；按 expected_utility - risk×uncertainty + complementarity_gain 排序，"
+        f"主力为 {', '.join(primary)}" + (f"，反证为 {counter}。" if counter else "。")
+    )
+    return TaskRoute(
+        task_id=task.task_id,
+        primary_schools=tuple(primary),
+        counter_school=counter,
+        abstain_candidates=tuple(abstain),
+        unsupported_schools=tuple(unsupported),
+        evidence_status="sufficient",
+        rationale=rationale,
+        school_scores=scores,
+        capability_queries=queries,
+    )
+
+
+def build_route_plan(
+    *,
+    feature_vector: ChartFeatureVector,
+    tasks: Sequence[BlindTask],
+    evidence_completeness_band: str,
+    registry: CapabilityRegistry,
+    risk_config: RoutingRiskConfig,
+) -> RoutePlan:
+    """以条件化能力后验生成每任务独立、可追溯的 L1 路由计划。"""
+    if not tasks:
+        raise ValueError("tasks cannot be empty")
+    assignment = classify_prototype(feature_vector)
+    routes = {
+        task.task_id: _build_task_route(task, assignment, evidence_completeness_band, registry, risk_config)
+        for task in tasks
+    }
+    primary = tuple(dict.fromkeys(school for route in routes.values() for school in route.primary_schools))[:2]
+    counter = next((route.counter_school for route in routes.values() if route.counter_school), None)
+    abstain = tuple(dict.fromkeys(school for route in routes.values() for school in route.abstain_candidates))
+    unsupported = tuple(dict.fromkeys(school for route in routes.values() for school in route.unsupported_schools))
+    status_count = sum(route.evidence_status == "sufficient" for route in routes.values())
+    rationale = (
+        f"命盘映射为 {assignment.prototype_id}（置信 {assignment.confidence:.3f}）；"
+        f"能力快照 {registry.snapshot_id}；{status_count}/{len(routes)} 个任务达到证据门槛。"
+    )
+    return RoutePlan(primary, counter, abstain, unsupported, rationale, registry.snapshot_id, assignment, routes)
+
+
+@overload
+def route_schools(
+    chart: ChartFactLedger,
+    context: ContextFactLedger,
+    *,
+    learned_prior: dict[str, tuple[float, int]] | None = None,
+    routing_mode: Literal["static"] = "static",
+    tasks: Sequence[BlindTask] | None = None,
+    registry: CapabilityRegistry | None = None,
+    risk_config: RoutingRiskConfig | None = None,
+) -> list[SchoolApplicability]: ...
+
+
+@overload
+def route_schools(
+    chart: ChartFactLedger,
+    context: ContextFactLedger,
+    *,
+    learned_prior: dict[str, tuple[float, int]] | None = None,
+    routing_mode: Literal["learned"],
+    tasks: Sequence[BlindTask],
+    registry: CapabilityRegistry,
+    risk_config: RoutingRiskConfig | None = None,
+) -> RoutePlan: ...
+
+
+def route_schools(
+    chart: ChartFactLedger,
+    context: ContextFactLedger,
+    *,
+    learned_prior: dict[str, tuple[float, int]] | None = None,
+    routing_mode: Literal["static", "learned"] = "static",
+    tasks: Sequence[BlindTask] | None = None,
+    registry: CapabilityRegistry | None = None,
+    risk_config: RoutingRiskConfig | None = None,
+) -> list[SchoolApplicability] | RoutePlan:
+    """并行路由入口；默认静态，learned 必须显式注入冻结能力快照。"""
+    if routing_mode == "static":
+        return _static_route_schools(chart, context, learned_prior=learned_prior)
+    if routing_mode != "learned":
+        raise ValueError("routing_mode must be static or learned")
+    if registry is None or not tasks:
+        raise ValueError("learned routing requires registry and tasks")
+    # 延迟导入切断 engine.features → engine.decision.models → decision.__init__ 的初始化环。
+    from engine.features.chart_feature_vector import build_chart_feature_vector
+
+    features = build_chart_feature_vector(chart)
+    completeness = "complete" if features.evidence_completeness == "full" else features.evidence_completeness
+    return build_route_plan(
+        feature_vector=features,
+        tasks=tasks,
+        evidence_completeness_band=completeness,
+        registry=registry,
+        risk_config=risk_config or RoutingRiskConfig(),
+    )

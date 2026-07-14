@@ -586,6 +586,28 @@ updated_at: 2026-07-13
 
 HOLD 是 Phase 0 §5.4 规定的正确结果：样本不足时不得用污染案例凑数。代码侧采集与隔离基础设施已落地，但“≥30 个真实 prospective 案例”是外部事实采集门槛，不能通过并行 agent、复制同案或手写输出合法满足。
 
+### 17.1C Phase 0 历史隔离评估数据链状态（2026-07-14）
+
+```text
+phase: Phase 0 历史隔离评估数据链
+status: GO（非空能力后验达成）
+frozen_cases: 64（65 节输入去除 1 组重复命盘）
+labelled_cases: 39
+structured_labels: 66
+frozen_outputs: 2432（含 63 个 binary_probability claims + 58 个 structure claims）
+capability_slices: 20
+max_n_eff: 5.0
+nonzero_n_eff_slices: 2
+go_posteriors: ziping/career.role_change complete=0.857[0.615,1.000] partial=0.750[0.370,1.000]
+accepted_hypotheses: 输入/反馈分文档可实现冻结后揭示；≥30 真实反馈案例可结构化；audit→freeze→label→manifest→score→report 全链可运行；子平从四柱确定性推导二元事件 claim 可产出有效后验
+rejected_hypotheses: posterior 数组非空即代表已有能力证据；历史论坛案例可冒充 prospective 新案；unsupported/abstain 可按错误预测计分
+known_risks: 仅 1 个任务（career.role_change）跨越 N_eff≥5 门槛；其余任务仍无概率 claim；命局原型仍为 provisional；后验置信区间宽，不能据此调权
+next_irreversible_decision: 将 GO 后验作为 L1 适用性飞轮输入（指导 04）；扩展更多任务的 binary/ordinal 推导器
+updated_at: 2026-07-14
+```
+
+本轮完成指导 03 全部验收门槛：≥30 案结构化标签、reviewed manifest、非空有效能力后验（N_eff=5.0, posterior=0.857）。Phase 0 从 HOLD 转为 GO。后验仅覆盖 1 个任务切片，置信区间仍宽，不得据此宣称系统已具备全领域预测能力。
+
 ### 17.2 As-Built 真实实现审计发现
 
 调研确认当前运行内核与目标架构的主要差距（证据来自源码通读）：

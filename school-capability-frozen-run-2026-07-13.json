@@ -1,0 +1,170 @@
+{
+  "task_catalog_version": "prospective-tasks-v1@sha256:5c17e302f8ad3f9f8ca57145232fba630370bb6c99ba5fc18956d8254f61c517",
+  "rule_snapshot_id": "l2-engine-rules-prospective-v1@sha256:a4371cacbe579cece8042e7956192ecea73a866dec32d335b6329996f04b3f5a",
+  "frozen_at": "content:57d5bf1b20f387bcf7aeb3a8360e17911ccfe811556aa9f9954b53ee326107e3",
+  "outputs": [
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ren",
+      "task_id": "career.change_window",
+      "state": "claim",
+      "rationale": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+      "predictions": [
+        {
+          "prediction_id": "prediction-026dc266a65036b08e20",
+          "event_label": "career_change",
+          "probability": 0.65,
+          "time_window": {
+            "start_year": 2020,
+            "end_year": 2020,
+            "label": "annual"
+          },
+          "evidence_refs": [
+            "evidence-0b21879d805944baa036"
+          ],
+          "falsifier": "该时间窗内未发生职业变化即证伪本命题。"
+        }
+      ],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ziping",
+      "task_id": "career.change_window",
+      "state": "unsupported",
+      "rationale": "ziping does not support task: career.change_window",
+      "predictions": [],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ren",
+      "task_id": "health.event_window",
+      "state": "claim",
+      "rationale": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+      "predictions": [
+        {
+          "prediction_id": "prediction-7d9a835d61297b2512f5",
+          "event_label": "significant_health_event",
+          "probability": 0.65,
+          "time_window": {
+            "start_year": 2020,
+            "end_year": 2020,
+            "label": "annual"
+          },
+          "evidence_refs": [
+            "evidence-1c689efd24b6c06c125d"
+          ],
+          "falsifier": "该时间窗内未发生显著健康变化即证伪本命题。"
+        }
+      ],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ziping",
+      "task_id": "health.event_window",
+      "state": "unsupported",
+      "rationale": "ziping does not support task: health.event_window",
+      "predictions": [],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ren",
+      "task_id": "marriage.event_window",
+      "state": "claim",
+      "rationale": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+      "predictions": [
+        {
+          "prediction_id": "prediction-e448e915266aa155b016",
+          "event_label": "marriage_change",
+          "probability": 0.65,
+          "time_window": {
+            "start_year": 2020,
+            "end_year": 2020,
+            "label": "annual"
+          },
+          "evidence_refs": [
+            "evidence-5479f9ebe43901d60345"
+          ],
+          "falsifier": "该时间窗内未发生婚恋重大变化即证伪本命题。"
+        }
+      ],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ziping",
+      "task_id": "marriage.event_window",
+      "state": "unsupported",
+      "rationale": "ziping does not support task: marriage.event_window",
+      "predictions": [],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ren",
+      "task_id": "structure.overview",
+      "state": "unsupported",
+      "rationale": "ren does not support task: structure.overview",
+      "predictions": [],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ziping",
+      "task_id": "structure.overview",
+      "state": "claim",
+      "rationale": "仅陈述十神结构并见，不把并见直接判成唯一现实事件。",
+      "predictions": [
+        {
+          "prediction_id": "prediction-d8b6a0ba43b52f7320fa",
+          "event_label": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+          "probability": 0.5,
+          "time_window": {},
+          "evidence_refs": [
+            "evidence-def1a779b563303d717c"
+          ],
+          "falsifier": "若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。"
+        }
+      ],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ren",
+      "task_id": "wealth.major_loss_window",
+      "state": "claim",
+      "rationale": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+      "predictions": [
+        {
+          "prediction_id": "prediction-69263440684eb0dccc2d",
+          "event_label": "major_financial_loss",
+          "probability": 0.65,
+          "time_window": {
+            "start_year": 2020,
+            "end_year": 2020,
+            "label": "annual"
+          },
+          "evidence_refs": [
+            "evidence-5b1287258b269f91b4be"
+          ],
+          "falsifier": "该时间窗内未发生重大财务变化即证伪本命题。"
+        }
+      ],
+      "counter_evidence": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "school_id": "ziping",
+      "task_id": "wealth.major_loss_window",
+      "state": "unsupported",
+      "rationale": "ziping does not support task: wealth.major_loss_window",
+      "predictions": [],
+      "counter_evidence": []
+    }
+  ],
+  "freeze_hash": "87e5dfe4b0d31205149b208a5060336aeef07ed7c498cb46e1b3074a4328e307",
+  "schema_version": "school-capability-frozen-run/v1"
+}

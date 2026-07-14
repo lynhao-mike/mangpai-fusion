@@ -43,6 +43,20 @@ def chart_ledger_from_mapping(chart: dict[str, Any]) -> ChartFactLedger:
     )
 
 
+def _missing_required_fields(chart: ChartFactLedger, task: BlindTask) -> tuple[str, ...]:
+    missing: list[str] = []
+    for field in task.required_input_fields:
+        if field == "four_pillars":
+            values = tuple(chart.four_pillars.values())
+            present = bool(values) and all(str(value).strip() not in {"", "_"} for value in values)
+        else:
+            value = getattr(chart, field, None)
+            present = bool(str(value).strip()) if isinstance(value, str) else value is not None
+        if not present:
+            missing.append(field)
+    return tuple(missing)
+
+
 def _state_output(
     *,
     case_id: str,
@@ -85,6 +99,13 @@ def generate_blind_outputs(
                 rows.append(_state_output(
                     case_id=case_id, school=school, task=task, state="unsupported",
                     rationale="no independent L2 claim generator is registered for this school",
+                ))
+                continue
+            missing_required = _missing_required_fields(ledger, task)
+            if missing_required:
+                rows.append(_state_output(
+                    case_id=case_id, school=school, task=task, state="abstain",
+                    rationale=f"missing required chart facts: {', '.join(missing_required)}",
                 ))
                 continue
             if features is None:

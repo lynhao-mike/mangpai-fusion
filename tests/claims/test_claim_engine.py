@@ -107,6 +107,12 @@ def test_claim_contract_rejects_dangling_evidence_and_has_stable_identity() -> N
     with pytest.raises(ValueError, match="time_window"):
         replace(claim, claim_type="timing_claim")
 
+    other_chart = ChartFactLedger(
+        four_pillars={"year": "甲子", "month": "乙丑", "day": "戊辰", "hour": "己未"}
+    )
+    with pytest.raises(ValueError, match="same chart"):
+        validate_claim_evidence(claim, other_chart, features)
+
 
 def test_ziping_generates_feature_derived_structure_claims_and_abstains_at_boundaries() -> None:
     weak_chart = _full_chart()
@@ -337,3 +343,42 @@ def test_production_task_catalog_exposes_ziping_structure_task_for_default_orche
     indexed = {row.school_id: row for row in rows}
     assert indexed["ziping"].state == "claim"
     assert indexed["ren"].state == "unsupported"
+
+
+def test_default_orchestrator_abstains_when_task_required_chart_fact_is_missing() -> None:
+    task = _task(
+        "marriage.event_window",
+        domain="婚姻",
+        claim_type="event_timing",
+        scoring_method="time_window",
+        quantifiable=True,
+    )
+    task = replace(task, required_input_fields=("four_pillars", "sex_marker"))
+
+    rows = generate_blind_outputs(
+        {
+            "pillars": {"year": "癸未", "month": "甲寅", "day": "壬戌", "hour": "丙午"},
+            "liunian_steps": [{"year": 2024, "ganzhi": "甲辰", "dayun": "丙辰"}],
+        },
+        [task],
+        case_id="C-L2-MISSING-SEX",
+        schools=["ren"],
+    )
+
+    assert len(rows) == 1
+    assert rows[0].state == "abstain"
+    assert "sex_marker" in rows[0].rationale
+
+
+def test_default_orchestrator_reports_unknown_school_as_unsupported_before_input_completeness() -> None:
+    task = replace(_task("structure.overview"), required_input_fields=("four_pillars", "sex_marker"))
+
+    rows = generate_blind_outputs(
+        {"pillars": {"year": "庚申", "month": "庚申", "day": "甲午", "hour": "辛酉"}},
+        [task],
+        case_id="C-L2-UNKNOWN-SCHOOL",
+        schools=["unknown-school"],
+    )
+
+    assert len(rows) == 1
+    assert rows[0].state == "unsupported"

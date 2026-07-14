@@ -388,6 +388,7 @@ def load_case(case_id_or_short: str) -> ParsedInput:
         birth={
             "性别": data["gender"],
             "公历": f"{data['birth_year']}-01-01",
+            "来源": "问真八字 APP 可信历史样本（fixture 日期仅占位）",
         },
         case_meta={
             "case_id": full,

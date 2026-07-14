@@ -34,7 +34,12 @@ def validate_claim_evidence(
     chart: ChartFactLedger,
     features: ChartFeatureVector,
 ) -> None:
-    """拒绝指向不存在命盘事实或特征节点的命题证据。"""
+    """拒绝跨命盘或指向不存在命盘事实/特征节点的命题证据。"""
+    from engine.features import build_chart_feature_vector
+
+    expected_chart_id = build_chart_feature_vector(chart, schema_version=features.schema_version).chart_id
+    if expected_chart_id != features.chart_id:
+        raise ValueError("claim evidence and features must belong to the same chart")
     for evidence in claim.evidence:
         for ref in evidence.fact_refs:
             try:

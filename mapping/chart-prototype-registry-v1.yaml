@@ -1,0 +1,80 @@
+schema_version: chart-prototype-registry/v1
+prototypes:
+  - prototype_id: prototype-official-kill-mixed
+    label: 官杀混杂
+    required_features: {mixed_official_kill: {eq: true}}
+    excluded_features: {}
+    priority: 10
+    notes: 官杀并见，优先识别结构混杂。
+  - prototype_id: prototype-climate-cold
+    label: 寒湿偏极
+    required_features: {climate_extreme: {eq: true}, cold_warm_axis: {lte: -0.65}}
+    excluded_features: {}
+    priority: 20
+    notes: 寒暖轴显著偏寒。
+  - prototype_id: prototype-climate-hot
+    label: 炎热偏极
+    required_features: {climate_extreme: {eq: true}, cold_warm_axis: {gte: 0.65}}
+    excluded_features: {}
+    priority: 21
+    notes: 寒暖轴显著偏热。
+  - prototype_id: prototype-climate-dry
+    label: 燥气偏极
+    required_features: {climate_extreme: {eq: true}, dry_wet_axis: {gte: 0.65}}
+    excluded_features: {cold_warm_axis: {outside: [-0.65, 0.65]}}
+    priority: 22
+    notes: 燥湿轴显著偏燥。
+  - prototype_id: prototype-climate-wet
+    label: 湿气偏极
+    required_features: {climate_extreme: {eq: true}, dry_wet_axis: {lte: -0.65}}
+    excluded_features: {cold_warm_axis: {outside: [-0.65, 0.65]}}
+    priority: 23
+    notes: 燥湿轴显著偏湿。
+  - prototype_id: prototype-element-concentrated
+    label: 五行气势集中
+    required_features: {element_concentration: {gte: 0.5}, missing_elements: {length_gte: 2}}
+    excluded_features: {}
+    priority: 30
+    notes: 主导五行集中且缺行明显。
+  - prototype_id: prototype-branch-conflict-high
+    label: 宫位冲战明显
+    required_features: {branch_conflict_intensity: {gte: 0.5}, chong_pairs: {length_gte: 1}}
+    excluded_features: {}
+    priority: 40
+    notes: 地支冲战强，事件触发信号明显。
+  - prototype_id: prototype-wealth-official-combo
+    label: 财官组合
+    required_features: {has_wealth: {eq: true}, has_official: {eq: true}}
+    excluded_features: {mixed_official_kill: {eq: true}}
+    priority: 50
+    notes: 财官同时成形但非官杀混杂。
+  - prototype_id: prototype-output-resource-combo
+    label: 食伤印组合
+    required_features: {has_output: {eq: true}, has_resource: {eq: true}}
+    excluded_features: {}
+    priority: 51
+    notes: 输出与印星同时出现。
+  - prototype_id: prototype-day-master-supported
+    label: 日主受助明显
+    required_features: {supporting_count: {gte: 6}, rooted_count: {gte: 2}}
+    excluded_features: {}
+    priority: 60
+    notes: 同党生扶及根气明显。
+  - prototype_id: prototype-day-master-drained
+    label: 日主耗泄明显
+    required_features: {draining_count: {gte: 6}, rooted_count: {lte: 1}}
+    excluded_features: {}
+    priority: 61
+    notes: 克泄耗显著且根气弱。
+  - prototype_id: prototype-relation-harmony
+    label: 合象明显
+    required_features: {he_pairs: {length_gte: 2}, branch_conflict_intensity: {lte: 0.35}}
+    excluded_features: {}
+    priority: 70
+    notes: 多组合而冲战不强。
+  - prototype_id: prototype-balanced
+    label: 中和基线
+    required_features: {evidence_completeness: {eq: full}, element_concentration: {lte: 0.4}, branch_conflict_intensity: {lte: 0.35}, climate_extreme: {eq: false}}
+    excluded_features: {mixed_official_kill: {eq: true}}
+    priority: 100
+    notes: 证据完整且主要结构轴均不偏极。

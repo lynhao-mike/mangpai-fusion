@@ -606,9 +606,11 @@ def _validate_case_id(case_id: object) -> str:
 
 
 def validate_canonical_chart(chart: object, expected_case_id: str) -> dict[str, Any]:
-    """Validate the exact canonical chart contract and its expected case binding."""
+    """Validate the canonical chart contract and its expected case binding."""
     expected_case_id = _validate_case_id(expected_case_id)
-    if not isinstance(chart, dict) or set(chart) != {"case_id", "four_pillars", "sex_marker"}:
+    required = {"case_id", "four_pillars", "sex_marker"}
+    optional = {"solar_datetime", "start_luck", "dayun_steps", "liunian_steps"}
+    if not isinstance(chart, dict) or not required <= set(chart) or set(chart) - required - optional:
         raise ValueError(f"case canonical chart schema is invalid: {expected_case_id}")
     try:
         case_id = _validate_case_id(chart["case_id"])
@@ -621,6 +623,8 @@ def validate_canonical_chart(chart: object, expected_case_id: str) -> dict[str, 
         or len(pillars) != 4
         or any(not isinstance(pillar, str) or pillar not in _VALID_PILLARS for pillar in pillars)
         or chart["sex_marker"] not in {"乾", "坤"}
+        or any(not isinstance(chart.get(field, ""), str) for field in ("solar_datetime", "start_luck"))
+        or any(not isinstance(chart.get(field, []), list) for field in ("dayun_steps", "liunian_steps"))
     ):
         raise ValueError(f"case canonical chart values are invalid: {expected_case_id}")
     return chart
@@ -629,12 +633,53 @@ def validate_canonical_chart(chart: object, expected_case_id: str) -> dict[str, 
 def _canonical_chart(content: str, case_id: str) -> dict[str, Any]:
     pillar_matches = re.findall(r"^\s*四柱\s*[：:]\s*([^\r\n]+?)\s*$", content, re.MULTILINE)
     sex_matches = re.findall(r"^\s*(?:性别|命式)\s*[：:]\s*([^\s\r\n]+)\s*$", content, re.MULTILINE)
+    extended: dict[str, Any] = {}
+    if not pillar_matches and not sex_matches:
+        sex_matches = [match.removesuffix("造") for match in re.findall(
+            r"^Sex\s*:\s*([乾坤](?:造)?)\s*$", content, re.MULTILINE,
+        )]
+        four_section = content.partition("$FOUR")[2].partition("$DY_LOOP")[0]
+        rows = {
+            marker: (stem, branch)
+            for marker, stem, branch in re.findall(
+                r"^([YMDH]):[^,\r\n]*,([甲乙丙丁戊己庚辛壬癸]),([子丑寅卯辰巳午未申酉戌亥]),",
+                four_section,
+                re.MULTILINE,
+            )
+        }
+        if set(rows) == {"Y", "M", "D", "H"}:
+            pillar_matches = [" ".join("".join(rows[marker]) for marker in "YMDH")]
+        solar = re.findall(r"^Solar\s*:\s*([^\r\n]+?)\s*$", content, re.MULTILINE)
+        start = re.findall(r"^Start\s*:\s*([^,\r\n]+)", content, re.MULTILINE)
+        dayun_steps: list[dict[str, Any]] = []
+        liunian_steps: list[dict[str, Any]] = []
+        current_dayun = ""
+        loop = content.partition("$DY_LOOP")[2]
+        for line in loop.splitlines():
+            dayun = re.fullmatch(r"\s*>?\s*#(\d{4}),[^,]*,([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]),.*", line)
+            if dayun:
+                current_dayun = dayun.group(2)
+                dayun_steps.append({"ganzhi": current_dayun, "start_year": int(dayun.group(1))})
+                continue
+            liunian = re.fullmatch(r"\s*>\s*(\d{4}),([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]),.*", line)
+            if liunian:
+                step: dict[str, Any] = {"year": int(liunian.group(1)), "ganzhi": liunian.group(2)}
+                if current_dayun:
+                    step["dayun"] = current_dayun
+                liunian_steps.append(step)
+        extended = {
+            "solar_datetime": solar[0] if len(solar) == 1 else "",
+            "start_luck": start[0].strip() if len(start) == 1 else "",
+            "dayun_steps": dayun_steps,
+            "liunian_steps": liunian_steps,
+        }
     if len(pillar_matches) != 1 or len(sex_matches) != 1:
         raise ValueError(f"cannot strictly extract canonical chart: {case_id}")
     return validate_canonical_chart({
         "case_id": case_id,
         "four_pillars": pillar_matches[0].split(),
         "sex_marker": sex_matches[0],
+        **extended,
     }, case_id)
 
 
@@ -812,10 +857,8 @@ def prepare_blind_bundle(
 def _safe_output(path: Path) -> Path:
     if path.is_symlink():
         raise ValueError(f"output target must not be a symlink: {path}")
-    resolved = path.resolve()
-    if path.parent.resolve() != path.parent:
-        raise ValueError("output parent must not be a symlink")
-    return resolved
+    _reject_symlink(path.parent, "output parent")
+    return path.resolve()
 
 
 def _write(path: Path, payload: dict[str, Any], dry_run: bool) -> None:

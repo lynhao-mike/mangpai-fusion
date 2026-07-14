@@ -38,7 +38,9 @@
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
 | [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件；`prepare-blind` 仅复制 case `input.md`、tasks 与 rule snapshot，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
+| [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
+| [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许进入路由对照；输出 META 审计 JSON 与 HOLD/READY 报告，不写生产权重 |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
 
 ---
@@ -69,6 +71,7 @@
 | [`_verify_production_rules.py`](_verify_production_rules.py:1) | 生产规则校验 | 内部审计 |
 | [`feedback_statement_trace_audit.py`](feedback_statement_trace_audit.py:1) | 反馈断语追踪审计 | 内部审计 |
 | [`feedback_v2_preprocess.py`](feedback_v2_preprocess.py:1) | v2 反馈预处理 | 历史反馈治理辅助 |
+| [`chart_validation_calibrate.py`](chart_validation_calibrate.py:1) | 使用现有案例强制重算排盘并校准验证模块 | 内部只读审计；关闭问真可信来源旁路，输出 JSON/Markdown 校准记录 |
 | [`v6_preprod_coverage_audit.py`](v6_preprod_coverage_audit.py:1) | v6 preprod 报告覆盖审计 | 只读审计报告与配套 artifact，用于切默认入口前的证据积累 |
 
 ---
@@ -103,6 +106,7 @@
 | [`sync_wenzhen_repan_index_status.py`](sync_wenzhen_repan_index_status.py:1) | 同步问真排盘拆分索引状态与统计 | 问真补录索引维护辅助 |
 | [`promote_wenzhen_pending_analysis_samples.py`](promote_wenzhen_pending_analysis_samples.py:1) | 将问真待分析样本批量初始化为正式 case | 问真批处理迁移辅助；支持 dry-run 与无效干支人工 review 标记 |
 | [`fix_wenzhen_invalid_ganzhi.py`](fix_wenzhen_invalid_ganzhi.py:1) | 修复问真样本 OCR 式无效干支字符 | 问真迁移修复辅助；支持 `--dry-run` |
+| [`fix_wenzhen_dayun_direction.py`](fix_wenzhen_dayun_direction.py:1) | 修复历史问真转案的大运方向与序列错误 | 默认 dry-run；仅对校准快照严格匹配的历史固定“乾顺坤逆”错误记录执行，`--write` 才改文件 |
 | [`normalize_wenzhen_fixed_cases.py`](normalize_wenzhen_fixed_cases.py:1) | 规范化已修复问真无效干支 case | 问真迁移修复辅助；同步结构化四柱/性别/大运字段 |
 | [`generate_wenzhen_fixed_reports.py`](generate_wenzhen_fixed_reports.py:1) | 为已修复问真无效干支 case 生成统一报告 | 问真迁移修复辅助；不运行反馈摄入 |
 | [`promote_candidate_rules_to_production.py`](promote_candidate_rules_to_production.py:1) | 候选规则迁移为生产规则 | 历史迁移辅助；非日常反馈入口 |

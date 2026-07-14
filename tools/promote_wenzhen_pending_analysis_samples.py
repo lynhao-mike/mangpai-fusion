@@ -18,6 +18,8 @@ from typing import Any
 
 import yaml
 
+from engine.chart_validation import dayun_direction
+
 from tools.promote_wenzhen_ready_batch import (
     BRANCH_HIDDEN_STEMS,
     JIAZI,
@@ -431,7 +433,13 @@ def _build_dayun(sample: dict[str, Any], month_pillar: str) -> dict[str, Any]:
     qiyun_sui = int(match.group(1)) if match else 5
     qiyun_sui = max(1, min(11, qiyun_sui))
     qiyun_year = birth_year + qiyun_sui if birth_year else None
-    shun_ni = "顺" if _normalize_qian_kun(sample.get("qian_kun")) == "乾" else "逆"
+    bazi = str(sample.get("bazi") or "")
+    if not bazi:
+        raise ValueError("缺少 bazi，无法按年干阴阳计算大运方向")
+    shun_ni = dayun_direction(
+        _normalize_qian_kun(sample.get("qian_kun")),
+        bazi[0],
+    )
     if month_pillar not in JIAZI or qiyun_year is None:
         return {"起运岁": qiyun_sui, "起运年": qiyun_year or "待复核", "顺逆": shun_ni, "起运原文": start_text, "排布": []}
     start_idx = JIAZI.index(month_pillar)

@@ -22,7 +22,7 @@ from engine.predicates.types import (
     ZHI_CANGGAN_TABLE,
     ZHI_TO_WUXING,
 )
-from engine.claims import Claim, Evidence, TaskUnsupported, stable_claim_id, validate_claim_evidence
+from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
@@ -514,6 +514,7 @@ def run_ziping_independent(chart: dict[str, Any], case_id: str) -> list[V5Claim]
 # ── L2 统一命题契约 ──────────────────────────────────────────────────────────
 
 _ZIPING_STRUCTURE_TASKS = {"structure.overview"}
+_ZIPING_BINARY_TASKS = {"marriage.late_marriage", "career.role_change"}
 
 
 def _claim_evidence(
@@ -533,12 +534,150 @@ def _claim_evidence(
     )
 
 
+def _generate_binary_claims(
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    task: BlindTask,
+) -> list[Claim]:
+    """从四柱十神结构推导二元事件命题（晚婚/职业变动）。"""
+    if task.task_id == "marriage.late_marriage":
+        return _late_marriage_claim(chart, features, task)
+    if task.task_id == "career.role_change":
+        return _role_change_claim(chart, features, task)
+    return []
+
+
+def _late_marriage_claim(
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    task: BlindTask,
+) -> list[Claim]:
+    """晚婚推导：配偶星弱 + 日支被冲/刑 → 晚婚概率高。"""
+    sex = chart.sex_marker
+    # 男命看财星（正财+偏财），女命看官星（正官+七杀）
+    if sex in ("乾", "男", "M"):
+        spouse_count = features.ten_god_counts.get("正财", 0) + features.ten_god_counts.get("偏财", 0)
+        spouse_label = "财星"
+    elif sex in ("坤", "女", "F"):
+        spouse_count = features.ten_god_counts.get("正官", 0) + features.ten_god_counts.get("七杀", 0)
+        spouse_label = "官星"
+    else:
+        return []
+
+    # 日支是否被冲
+    day_pillar = str(chart.four_pillars.get("day", ""))
+    day_branch = day_pillar[1] if len(day_pillar) >= 2 else ""
+    day_branch_clashed = any(
+        day_branch in pair for pair in features.chong_pairs
+    ) if day_branch else False
+
+    # 触发条件：配偶星少（≤1）且日支被冲，或配偶星完全不见
+    triggers: list[str] = []
+    if spouse_count == 0:
+        triggers.append(f"四柱不见{spouse_label}")
+    if spouse_count <= 1 and day_branch_clashed:
+        triggers.append(f"{spouse_label}仅{spouse_count}处且日支{day_branch}被冲")
+    if features.branch_conflict_intensity >= 0.6 and spouse_count <= 1:
+        triggers.append(f"地支冲突强度={features.branch_conflict_intensity:.2f}且{spouse_label}薄弱")
+
+    if not triggers:
+        return []
+
+    rule_id = "ZIPING-LATE-MARRIAGE-V1"
+    description = "；".join(triggers)
+    evidence = _claim_evidence(
+        features,
+        rule_id=rule_id,
+        feature_refs=("ten_god_counts.正财", "ten_god_counts.偏财", "ten_god_counts.正官", "ten_god_counts.七杀", "branch_conflict_intensity"),
+        text=f"晚婚信号：{description}。",
+    )
+    # 使用宽泛 lifetime 窗口
+    window = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
+    claim = Claim(
+        claim_id=stable_claim_id("ziping", task.task_id, features.chart_id, rule_id),
+        school_id="ziping",
+        task_id=task.task_id,
+        claim_type="event_claim",
+        stance="support",
+        statement=f"子平命局{spouse_label}结构指向晚婚倾向：{description}。",
+        evidence=(evidence,),
+        falsifier="若命主在统一年龄阈值前已婚，则本命题证伪。",
+        time_window=window,
+        confidence_basis=f"基于四柱{spouse_label}计数与日支冲合关系的确定性推导。",
+        applicability_snapshot={
+            "sex_marker": sex,
+            "spouse_count": spouse_count,
+            "day_branch_clashed": day_branch_clashed,
+            "branch_conflict_intensity": features.branch_conflict_intensity,
+        },
+    )
+    validate_claim_evidence(claim, chart, features)
+    return [claim]
+
+
+def _role_change_claim(
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    task: BlindTask,
+) -> list[Claim]:
+    """职业变动推导：食伤制杀/官杀混杂/伤官见官 → 变动概率高。"""
+    output_count = features.ten_god_counts.get("食神", 0) + features.ten_god_counts.get("伤官", 0)
+    official_count = features.ten_god_counts.get("正官", 0) + features.ten_god_counts.get("七杀", 0)
+
+    triggers: list[str] = []
+    if features.mixed_official_kill:
+        triggers.append("官杀混杂")
+    if output_count >= 2 and official_count >= 1:
+        triggers.append(f"食伤{output_count}处制杀{official_count}处")
+    if features.ten_god_counts.get("伤官", 0) >= 1 and features.ten_god_counts.get("正官", 0) >= 1:
+        triggers.append("伤官见官")
+    if features.branch_conflict_intensity >= 0.5:
+        triggers.append(f"地支冲突强度={features.branch_conflict_intensity:.2f}")
+
+    if not triggers:
+        return []
+
+    rule_id = "ZIPING-ROLE-CHANGE-V1"
+    description = "；".join(triggers)
+    evidence = _claim_evidence(
+        features,
+        rule_id=rule_id,
+        feature_refs=("ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正官", "ten_god_counts.七杀", "mixed_official_kill", "branch_conflict_intensity"),
+        text=f"职业变动信号：{description}。",
+    )
+    window = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
+    claim = Claim(
+        claim_id=stable_claim_id("ziping", task.task_id, features.chart_id, rule_id),
+        school_id="ziping",
+        task_id=task.task_id,
+        claim_type="event_claim",
+        stance="support",
+        statement=f"子平命局十神结构指向显著职业变动倾向：{description}。",
+        evidence=(evidence,),
+        falsifier="若命主职业历程中无显著角色或岗位变化记录，则本命题证伪。",
+        time_window=window,
+        confidence_basis="基于四柱官杀与食伤结构关系的确定性推导。",
+        applicability_snapshot={
+            "output_count": output_count,
+            "official_count": official_count,
+            "mixed_official_kill": features.mixed_official_kill,
+            "branch_conflict_intensity": features.branch_conflict_intensity,
+        },
+    )
+    validate_claim_evidence(claim, chart, features)
+    return [claim]
+
+
 def generate_claims(
     chart: ChartFactLedger,
     features: ChartFeatureVector,
     task: BlindTask,
 ) -> list[Claim]:
-    """仅从冻结命盘与 cfv-v1 推导子平结构命题。"""
+    """从冻结命盘与 cfv-v1 推导子平命题（结构+二元事件）。"""
+    if task.task_id in _ZIPING_BINARY_TASKS:
+        if features.evidence_completeness == "partial":
+            return []
+        return _generate_binary_claims(chart, features, task)
     if task.task_id not in _ZIPING_STRUCTURE_TASKS:
         raise TaskUnsupported(f"ziping does not support task: {task.task_id}")
     if features.evidence_completeness != "full":

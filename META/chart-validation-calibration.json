@@ -1,0 +1,7006 @@
+{
+  "schema_version": "chart-validation-calibration/v1",
+  "generated_at": "2026-07-14T04:19:48.248700+00:00",
+  "cases_dir": "cases",
+  "summary": {
+    "scanned": 132,
+    "eligible": 115,
+    "trusted_source_eligible": 110,
+    "passed": 107,
+    "failed": 8,
+    "ineligible": 17,
+    "pillar_failures": {
+      "年柱": 0,
+      "月柱": 0,
+      "日柱": 2,
+      "时柱": 3
+    },
+    "dayun_direction_failures": 0,
+    "dayun_sequence_failures": 2,
+    "qiyun_age_failures": 3,
+    "fixed_gender_direction_pattern_failures": 0
+  },
+  "diagnosis": {
+    "fixed_gender_direction_pattern": "历史问真转案工具曾按乾顺坤逆生成大运，未使用年干阴阳；相关 48 案已由 wenzhen-dayun-direction-fix/v1 迁移修复。",
+    "evidence_paths": [
+      "tools/promote_wenzhen_ready_batch.py:323",
+      "tools/promote_wenzhen_pending_analysis_samples.py:434",
+      "tools/promote_wenzhen_first5_cases.py:293"
+    ]
+  },
+  "records": [
+    {
+      "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
+      "input_path": "cases/C-2026-001-乾-庚申戊寅壬子辛丑/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+      "input_path": "cases/C-2026-002-坤-壬戌庚戌戊辰丙辰/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-007-乾-乙丑庚辰己丑庚午",
+      "input_path": "cases/C-2026-007-乾-乙丑庚辰己丑庚午/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-008-坤-壬申癸卯丁未壬寅",
+      "input_path": "cases/C-2026-008-坤-壬申癸卯丁未壬寅/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-009-乾-庚辰乙酉丙申乙未",
+      "input_path": "cases/C-2026-009-乾-庚辰乙酉丙申乙未/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-010-坤-甲子丁卯癸卯庚申",
+      "input_path": "cases/C-2026-010-坤-甲子丁卯癸卯庚申/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+      "input_path": "cases/C-2026-011-乾-乙丑乙酉丁丑癸卯/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+      "input_path": "cases/C-2026-012-坤-壬戌癸丑丙申壬辰/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-013-坤-壬申甲辰丙辰己丑",
+      "input_path": "cases/C-2026-013-坤-壬申甲辰丙辰己丑/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+      "input_path": "cases/C-2026-014-乾-丙戌庚子乙亥辛巳/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+      "input_path": "cases/C-2026-015-乾-甲寅乙亥丙辰辛卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1974-11-11 06:03",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "甲寅",
+        "月柱": "乙亥",
+        "日柱": "丙辰",
+        "时柱": "辛卯"
+      },
+      "corrected_pillars": {
+        "年柱": "甲寅",
+        "月柱": "乙亥",
+        "日柱": "丙辰",
+        "时柱": "辛卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申"
+      ],
+      "computed_dayun_sequence": [
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9.0,
+      "computed_qiyun_age": 8.8615,
+      "qiyun_age_delta": 0.1385,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-016-坤-甲子丙子丙戌戊子",
+      "input_path": "cases/C-2026-016-坤-甲子丙子丙戌戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1984-12-18 00:50",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "甲子",
+        "月柱": "丙子",
+        "日柱": "丙戌",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "甲子",
+        "月柱": "丙子",
+        "日柱": "丙戌",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙亥",
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯"
+      ],
+      "computed_dayun_sequence": [
+        "乙亥",
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4.0,
+      "computed_qiyun_age": 3.5884,
+      "qiyun_age_delta": 0.4116,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+      "input_path": "cases/C-2026-017-乾-庚申辛巳辛丑丁酉/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "缺少可解析的公历日期"
+    },
+    {
+      "case_id": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+      "input_path": "cases/C-2026-018-坤-乙丑戊寅乙酉乙酉/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+      "input_path": "cases/C-2026-019-乾-辛巳壬辰甲寅乙丑/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+      "input_path": "cases/C-2026-020-坤-丁丑庚戌甲辰丁卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "",
+      "trusted_source": false,
+      "validation_skipped": false,
+      "solar_date": "1997-10-29 06:00",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "丁丑",
+        "月柱": "庚戌",
+        "日柱": "甲辰",
+        "时柱": "丁卯"
+      },
+      "corrected_pillars": {
+        "年柱": "丁丑",
+        "月柱": "庚戌",
+        "日柱": "甲辰",
+        "时柱": "丁卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未"
+      ],
+      "computed_dayun_sequence": [
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3.16,
+      "computed_qiyun_age": 3.1562,
+      "qiyun_age_delta": 0.0038,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+      "input_path": "cases/C-2026-021-乾-丙寅庚寅甲辰己巳/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-022-坤-癸亥庚申戊寅己未",
+      "input_path": "cases/C-2026-022-坤-癸亥庚申戊寅己未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1983-08-18 13:15",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "癸亥",
+        "月柱": "庚申",
+        "日柱": "戊寅",
+        "时柱": "己未"
+      },
+      "corrected_pillars": {
+        "年柱": "癸亥",
+        "月柱": "庚申",
+        "日柱": "戊寅",
+        "时柱": "己未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳"
+      ],
+      "computed_dayun_sequence": [
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7.0,
+      "computed_qiyun_age": 7.0012,
+      "qiyun_age_delta": 0.0012,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-023-乾-丙子戊戌壬寅丁未",
+      "input_path": "cases/C-2026-023-乾-丙子戊戌壬寅丁未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1996-11-01 14:00:00",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "丙子",
+        "月柱": "戊戌",
+        "日柱": "壬寅",
+        "时柱": "丁未"
+      },
+      "corrected_pillars": {
+        "年柱": "丙子",
+        "月柱": "戊戌",
+        "日柱": "壬寅",
+        "时柱": "丁未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未"
+      ],
+      "computed_dayun_sequence": [
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 1.9645,
+      "qiyun_age_delta": 1.0355,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-024-坤-己巳壬申辛亥壬辰",
+      "input_path": "cases/C-2026-024-坤-己巳壬申辛亥壬辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-08-19 07:25:00",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "壬申",
+        "日柱": "辛亥",
+        "时柱": "壬辰"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "壬申",
+        "日柱": "辛亥",
+        "时柱": "壬辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "computed_dayun_sequence": [
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 6.5622,
+      "qiyun_age_delta": 0.4378,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
+      "input_path": "cases/C-2026-025-坤-辛未乙未甲辰乙亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-08-02 22:22:00",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "辛未",
+        "月柱": "乙未",
+        "日柱": "甲辰",
+        "时柱": "乙亥"
+      },
+      "corrected_pillars": {
+        "年柱": "辛未",
+        "月柱": "乙未",
+        "日柱": "甲辰",
+        "时柱": "乙亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙申",
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰"
+      ],
+      "computed_dayun_sequence": [
+        "丙申",
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 1.8091,
+      "qiyun_age_delta": 0.1909,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-026-坤-癸未甲寅壬戌丙午",
+      "input_path": "cases/C-2026-026-坤-癸未甲寅壬戌丙午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2003-02-18 11:40",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "癸未",
+        "月柱": "甲寅",
+        "日柱": "壬戌",
+        "时柱": "丙午"
+      },
+      "corrected_pillars": {
+        "年柱": "癸未",
+        "月柱": "甲寅",
+        "日柱": "壬戌",
+        "时柱": "丙午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥"
+      ],
+      "computed_dayun_sequence": [
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.2835,
+      "qiyun_age_delta": 0.2835,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-027-乾-丁卯壬寅甲午乙丑",
+      "input_path": "cases/C-2026-027-乾-丁卯壬寅甲午乙丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息 + 命主反馈校准）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1987-02-14 01:00",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬寅",
+        "日柱": "甲午",
+        "时柱": "乙丑"
+      },
+      "corrected_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬寅",
+        "日柱": "甲午",
+        "时柱": "乙丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午",
+        "癸巳"
+      ],
+      "computed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午",
+        "癸巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.113,
+      "qiyun_age_delta": 0.113,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-028-乾-壬戌癸卯壬子乙巳",
+      "input_path": "cases/C-2026-028-乾-壬戌癸卯壬子乙巳/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1982-03-30 10:00",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "壬戌",
+        "月柱": "癸卯",
+        "日柱": "壬子",
+        "时柱": "乙巳"
+      },
+      "corrected_pillars": {
+        "年柱": "壬戌",
+        "月柱": "癸卯",
+        "日柱": "壬子",
+        "时柱": "乙巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未"
+      ],
+      "computed_dayun_sequence": [
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未",
+        "戊申",
+        "己酉",
+        "庚戌",
+        "辛亥",
+        "壬子"
+      ],
+      "dayun_sequence_ok": false,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.0122,
+      "qiyun_age_delta": 0.0122,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": [
+        "第1步大运错误：声称 癸亥，精算为 甲辰",
+        "第2步大运错误：声称 甲子，精算为 乙巳",
+        "第3步大运错误：声称 乙丑，精算为 丙午",
+        "第4步大运错误：声称 丙寅，精算为 丁未",
+        "第5步大运错误：声称 丁卯，精算为 戊申",
+        "第6步大运错误：声称 戊辰，精算为 己酉",
+        "第7步大运错误：声称 己巳，精算为 庚戌",
+        "第8步大运错误：声称 庚午，精算为 辛亥",
+        "第9步大运错误：声称 辛未，精算为 壬子"
+      ]
+    },
+    {
+      "case_id": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+      "input_path": "cases/C-2026-029-坤-乙亥戊寅辛酉癸巳/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "随机生成（用于系统报告流程 smoke）",
+      "trusted_source": false,
+      "validation_skipped": false,
+      "solar_date": "1995-02-18 09:30",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "辛酉",
+        "时柱": "癸巳"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "庚辰",
+        "时柱": "辛巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": false,
+        "时柱": false
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4.5,
+      "computed_qiyun_age": 5.3301,
+      "qiyun_age_delta": 0.8301,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": [
+        "日柱错误：声称 辛酉，根据 1995-02-18 09:30 精算为 庚辰",
+        "时柱错误：声称 癸巳，根据 1995-02-18 09:30 精算为 辛巳"
+      ]
+    },
+    {
+      "case_id": "C-2026-030-乾-己卯庚午丙辰戊子",
+      "input_path": "cases/C-2026-030-乾-己卯庚午丙辰戊子/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "真实案例反馈990个案例；由 cases/raw_feedback/case_drafts/RF-2026-000668 回填转正式案",
+      "trusted_source": false,
+      "validation_skipped": false,
+      "solar_date": "1999-07-03 23:04",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "庚午",
+        "日柱": "丙辰",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "庚午",
+        "日柱": "丙辰",
+        "时柱": "庚子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": false
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌"
+      ],
+      "computed_dayun_sequence": [
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 9.1655,
+      "qiyun_age_delta": 4.1655,
+      "qiyun_age_ok": false,
+      "warnings": [
+        "起运岁差距较大：声称 5.0，精算 9.17"
+      ],
+      "errors": [
+        "时柱错误：声称 戊子，根据 1999-07-03 23:04 精算为 庚子",
+        "起运岁差异过大：声称 5，精算 9.1655"
+      ]
+    },
+    {
+      "case_id": "C-2026-031-乾-辛卯辛卯庚申乙酉",
+      "input_path": "cases/C-2026-031-乾-辛卯辛卯庚申乙酉/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "C-2026-032-乾-癸酉乙卯戊戌甲寅",
+      "input_path": "cases/C-2026-032-乾-癸酉乙卯戊戌甲寅/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "",
+      "trusted_source": false,
+      "validation_skipped": false,
+      "solar_date": "1993-03-18 04:50",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "癸酉",
+        "月柱": "乙卯",
+        "日柱": "戊戌",
+        "时柱": "甲寅"
+      },
+      "corrected_pillars": {
+        "年柱": "癸酉",
+        "月柱": "乙卯",
+        "日柱": "戊戌",
+        "时柱": "甲寅"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "computed_dayun_sequence": [
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4.1,
+      "computed_qiyun_age": 4.099,
+      "qiyun_age_delta": 0.001,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-033-坤-戊午己未乙酉丁亥",
+      "input_path": "cases/C-2026-033-坤-戊午己未乙酉丁亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "",
+      "trusted_source": false,
+      "validation_skipped": false,
+      "solar_date": "1978-07-22 22:00",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "戊午",
+        "月柱": "己未",
+        "日柱": "乙酉",
+        "时柱": "丁亥"
+      },
+      "corrected_pillars": {
+        "年柱": "戊午",
+        "月柱": "己未",
+        "日柱": "乙酉",
+        "时柱": "丁亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌"
+      ],
+      "computed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5.0,
+      "computed_qiyun_age": 5.0331,
+      "qiyun_age_delta": 0.0331,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "input_path": "cases/C-2026-034-乾-甲子甲戌癸卯壬戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真八字 APP 排盘",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1984-11-05 20:25",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "甲子",
+        "月柱": "甲戌",
+        "日柱": "癸卯",
+        "时柱": "壬戌"
+      },
+      "corrected_pillars": {
+        "年柱": "甲子",
+        "月柱": "甲戌",
+        "日柱": "癸卯",
+        "时柱": "壬戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未"
+      ],
+      "computed_dayun_sequence": [
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 0.5,
+      "computed_qiyun_age": 0.5742,
+      "qiyun_age_delta": 0.0742,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-035-乾-戊辰癸亥甲戌庚午",
+      "input_path": "cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真八字 APP 排盘",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1988-11-15 12:09",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "戊辰",
+        "月柱": "癸亥",
+        "日柱": "甲戌",
+        "时柱": "庚午"
+      },
+      "corrected_pillars": {
+        "年柱": "戊辰",
+        "月柱": "癸亥",
+        "日柱": "甲戌",
+        "时柱": "庚午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申"
+      ],
+      "computed_dayun_sequence": [
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7.24,
+      "computed_qiyun_age": 7.242,
+      "qiyun_age_delta": 0.002,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "input_path": "cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "用户对话直贴（问真八字 APP 排盘信息）",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2001-04-21 01:40",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "辛巳",
+        "月柱": "壬辰",
+        "日柱": "甲寅",
+        "时柱": "乙丑"
+      },
+      "corrected_pillars": {
+        "年柱": "辛巳",
+        "月柱": "壬辰",
+        "日柱": "甲寅",
+        "时柱": "乙丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未"
+      ],
+      "computed_dayun_sequence": [
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.337,
+      "qiyun_age_delta": 0.337,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000026-乾-庚午戊寅壬寅丙午",
+      "input_path": "cases/C-2026-RF000026-乾-庚午戊寅壬寅丙午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第二批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1990-02-06",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "庚午",
+        "月柱": "戊寅",
+        "日柱": "壬寅",
+        "时柱": "丙午"
+      },
+      "corrected_pillars": {
+        "年柱": "庚午",
+        "月柱": "戊寅",
+        "日柱": "壬寅",
+        "时柱": "丙午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.3934,
+      "qiyun_age_delta": 0.3934,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000057-乾-乙丑乙酉乙亥乙酉",
+      "input_path": "cases/C-2026-RF000057-乾-乙丑乙酉乙亥乙酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1985-10-03 17:20",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "乙丑",
+        "月柱": "乙酉",
+        "日柱": "乙亥",
+        "时柱": "乙酉"
+      },
+      "corrected_pillars": {
+        "年柱": "乙丑",
+        "月柱": "乙酉",
+        "日柱": "乙亥",
+        "时柱": "乙酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳",
+        "庚辰",
+        "己卯",
+        "戊寅",
+        "丁丑"
+      ],
+      "computed_dayun_sequence": [
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳",
+        "庚辰",
+        "己卯",
+        "戊寅",
+        "丁丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.5618,
+      "qiyun_age_delta": 0.5618,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000108-坤-乙丑甲申甲申辛未",
+      "input_path": "cases/C-2026-RF000108-坤-乙丑甲申甲申辛未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第二批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1985-08-13 13:51",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "乙丑",
+        "月柱": "甲申",
+        "日柱": "甲申",
+        "时柱": "辛未"
+      },
+      "corrected_pillars": {
+        "年柱": "乙丑",
+        "月柱": "甲申",
+        "日柱": "甲申",
+        "时柱": "辛未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "computed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.4866,
+      "qiyun_age_delta": 0.4866,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+      "input_path": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "问真 staging 第三批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-10-08 01:35",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "癸酉",
+        "日柱": "辛丑",
+        "时柱": "己丑"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "癸酉",
+        "日柱": "辛丑",
+        "时柱": "己丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅"
+      ],
+      "computed_dayun_sequence": [
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑"
+      ],
+      "dayun_sequence_ok": false,
+      "claimed_qiyun_age": 10,
+      "computed_qiyun_age": 10.0234,
+      "qiyun_age_delta": 0.0234,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": [
+        "第1步大运错误：声称 癸酉，精算为 壬申",
+        "第2步大运错误：声称 壬申，精算为 辛未",
+        "第3步大运错误：声称 辛未，精算为 庚午",
+        "第4步大运错误：声称 庚午，精算为 己巳",
+        "第5步大运错误：声称 己巳，精算为 戊辰",
+        "第6步大运错误：声称 戊辰，精算为 丁卯",
+        "第7步大运错误：声称 丁卯，精算为 丙寅",
+        "第8步大运错误：声称 丙寅，精算为 乙丑"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000121-乾-丙子己亥丙子戊子",
+      "input_path": "cases/C-2026-RF000121-乾-丙子己亥丙子戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1996-12-05 00:25",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丙子",
+        "月柱": "己亥",
+        "日柱": "丙子",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "丙子",
+        "月柱": "己亥",
+        "日柱": "丙子",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未"
+      ],
+      "computed_dayun_sequence": [
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 0.7197,
+      "qiyun_age_delta": 0.2803,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000123-坤-壬午甲辰戊申庚申",
+      "input_path": "cases/C-2026-RF000123-坤-壬午甲辰戊申庚申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-04-10 15:10",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "甲辰",
+        "日柱": "戊申",
+        "时柱": "庚申"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "甲辰",
+        "日柱": "戊申",
+        "时柱": "庚申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申"
+      ],
+      "computed_dayun_sequence": [
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.7759,
+      "qiyun_age_delta": 0.7759,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000125-乾-丁卯壬子辛丑乙未",
+      "input_path": "cases/C-2026-RF000125-乾-丁卯壬子辛丑乙未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1987-12-18 13:15",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬子",
+        "日柱": "辛丑",
+        "时柱": "乙未"
+      },
+      "corrected_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬子",
+        "日柱": "辛丑",
+        "时柱": "乙未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰"
+      ],
+      "computed_dayun_sequence": [
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.5192,
+      "qiyun_age_delta": 0.5192,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000149-坤-壬戌己酉乙卯戊寅",
+      "input_path": "cases/C-2026-RF000149-坤-壬戌己酉乙卯戊寅/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1982-09-29 04:15",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "壬戌",
+        "月柱": "己酉",
+        "日柱": "乙卯",
+        "时柱": "戊寅"
+      },
+      "corrected_pillars": {
+        "年柱": "壬戌",
+        "月柱": "己酉",
+        "日柱": "乙卯",
+        "时柱": "戊寅"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑"
+      ],
+      "computed_dayun_sequence": [
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.9545,
+      "qiyun_age_delta": 0.9545,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000164-乾-戊寅戊午乙未壬午",
+      "input_path": "cases/C-2026-RF000164-乾-戊寅戊午乙未壬午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-06-17 12:30",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "戊午",
+        "日柱": "乙未",
+        "时柱": "壬午"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "戊午",
+        "日柱": "乙未",
+        "时柱": "壬午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅"
+      ],
+      "computed_dayun_sequence": [
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.7084,
+      "qiyun_age_delta": 0.7084,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000171-坤-壬午壬子丙辰乙未",
+      "input_path": "cases/C-2026-RF000171-坤-壬午壬子丙辰乙未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-12-14 14:00",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "壬子",
+        "日柱": "丙辰",
+        "时柱": "乙未"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "壬子",
+        "日柱": "丙辰",
+        "时柱": "乙未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰"
+      ],
+      "computed_dayun_sequence": [
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.3161,
+      "qiyun_age_delta": 0.3161,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000175-坤-乙亥己卯丁未乙巳",
+      "input_path": "cases/C-2026-RF000175-坤-乙亥己卯丁未乙巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-03-17 10:00",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "己卯",
+        "日柱": "丁未",
+        "时柱": "乙巳"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "己卯",
+        "日柱": "丁未",
+        "时柱": "乙巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥"
+      ],
+      "computed_dayun_sequence": [
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.3908,
+      "qiyun_age_delta": 0.3908,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申",
+      "input_path": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1980-11-28 16:38",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚申",
+        "月柱": "丁亥",
+        "日柱": "乙巳",
+        "时柱": "甲申"
+      },
+      "corrected_pillars": {
+        "年柱": "庚申",
+        "月柱": "丁亥",
+        "日柱": "乙巳",
+        "时柱": "甲申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未"
+      ],
+      "computed_dayun_sequence": [
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.8665,
+      "qiyun_age_delta": 0.8665,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯",
+      "input_path": "cases/C-2026-RF000179-乾-丁卯丁未丙子辛卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1987-07-26 05:56",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丁卯",
+        "月柱": "丁未",
+        "日柱": "丙子",
+        "时柱": "辛卯"
+      },
+      "corrected_pillars": {
+        "年柱": "丁卯",
+        "月柱": "丁未",
+        "日柱": "丙子",
+        "时柱": "辛卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥"
+      ],
+      "computed_dayun_sequence": [
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.0874,
+      "qiyun_age_delta": 0.0874,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000190-乾-己卯辛未丁卯丁未",
+      "input_path": "cases/C-2026-RF000190-乾-己卯辛未丁卯丁未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-07-14 14:59",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "丁卯",
+        "时柱": "丁未"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "丁卯",
+        "时柱": "丁未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥"
+      ],
+      "computed_dayun_sequence": [
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.244,
+      "qiyun_age_delta": 0.244,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+      "input_path": "cases/C-2026-RF000243-坤-己卯己巳戊午丁巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 首批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-05-06 10:18",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "己巳",
+        "日柱": "戊午",
+        "时柱": "丁巳"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "己巳",
+        "日柱": "戊午",
+        "时柱": "丁巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑"
+      ],
+      "computed_dayun_sequence": [
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 10,
+      "computed_qiyun_age": 10.3452,
+      "qiyun_age_delta": 0.3452,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000244-乾-戊寅甲寅辛丑戊戌",
+      "input_path": "cases/C-2026-RF000244-乾-戊寅甲寅辛丑戊戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-02-23 19:25",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "甲寅",
+        "日柱": "辛丑",
+        "时柱": "戊戌"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "甲寅",
+        "日柱": "辛丑",
+        "时柱": "戊戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌"
+      ],
+      "computed_dayun_sequence": [
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.438,
+      "qiyun_age_delta": 0.438,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000249-坤-乙亥乙酉庚午戊寅",
+      "input_path": "cases/C-2026-RF000249-坤-乙亥乙酉庚午戊寅/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-10-06 04:08",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "乙酉",
+        "日柱": "庚午",
+        "时柱": "戊寅"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "乙酉",
+        "日柱": "庚午",
+        "时柱": "戊寅"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳"
+      ],
+      "computed_dayun_sequence": [
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 0.9767,
+      "qiyun_age_delta": 0.0233,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000281-乾-己巳乙亥己丑戊辰",
+      "input_path": "cases/C-2026-RF000281-乾-己巳乙亥己丑戊辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-11-25 07:02",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "乙亥",
+        "日柱": "己丑",
+        "时柱": "戊辰"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "乙亥",
+        "日柱": "己丑",
+        "时柱": "戊辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯"
+      ],
+      "computed_dayun_sequence": [
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.8399,
+      "qiyun_age_delta": 0.8399,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000284-坤-癸亥乙丑丙午戊戌",
+      "input_path": "cases/C-2026-RF000284-坤-癸亥乙丑丙午戊戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1984-01-13 20:12",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "癸亥",
+        "月柱": "乙丑",
+        "日柱": "丙午",
+        "时柱": "戊戌"
+      },
+      "corrected_pillars": {
+        "年柱": "癸亥",
+        "月柱": "乙丑",
+        "日柱": "丙午",
+        "时柱": "戊戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉"
+      ],
+      "computed_dayun_sequence": [
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.3766,
+      "qiyun_age_delta": 0.3766,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+      "input_path": "cases/C-2026-RF000286-坤-戊辰丙辰癸丑壬子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1988-04-28 00:10",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "戊辰",
+        "月柱": "丙辰",
+        "日柱": "癸丑",
+        "时柱": "壬子"
+      },
+      "corrected_pillars": {
+        "年柱": "戊辰",
+        "月柱": "丙辰",
+        "日柱": "癸丑",
+        "时柱": "壬子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申"
+      ],
+      "computed_dayun_sequence": [
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.7016,
+      "qiyun_age_delta": 0.7016,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000287-坤-戊辰乙卯丁卯庚子",
+      "input_path": "cases/C-2026-RF000287-坤-戊辰乙卯丁卯庚子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1988-03-13 00:10",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "戊辰",
+        "月柱": "乙卯",
+        "日柱": "丁卯",
+        "时柱": "庚子"
+      },
+      "corrected_pillars": {
+        "年柱": "戊辰",
+        "月柱": "乙卯",
+        "日柱": "丁卯",
+        "时柱": "庚子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未"
+      ],
+      "computed_dayun_sequence": [
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.436,
+      "qiyun_age_delta": 0.436,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+      "input_path": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第四批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-05-11 06:40",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "辛巳",
+        "日柱": "壬寅",
+        "时柱": "癸卯"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "辛巳",
+        "日柱": "壬寅",
+        "时柱": "癸卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚辰",
+        "己卯",
+        "戊寅",
+        "丁丑",
+        "丙子",
+        "乙亥",
+        "甲戌",
+        "癸酉"
+      ],
+      "computed_dayun_sequence": [
+        "庚辰",
+        "己卯",
+        "戊寅",
+        "丁丑",
+        "丙子",
+        "乙亥",
+        "甲戌",
+        "癸酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.6551,
+      "qiyun_age_delta": 0.6551,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000331-乾-甲戌丁丑戊午甲子",
+      "input_path": "cases/C-2026-RF000331-乾-甲戌丁丑戊午甲子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-01-27 23:39",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丁丑",
+        "日柱": "戊午",
+        "时柱": "甲子"
+      },
+      "corrected_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丁丑",
+        "日柱": "戊午",
+        "时柱": "甲子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "computed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.5495,
+      "qiyun_age_delta": 0.5495,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000343-乾-庚辰辛巳戊寅戊午",
+      "input_path": "cases/C-2026-RF000343-乾-庚辰辛巳戊寅戊午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2000-05-20 11:20",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚辰",
+        "月柱": "辛巳",
+        "日柱": "戊寅",
+        "时柱": "戊午"
+      },
+      "corrected_pillars": {
+        "年柱": "庚辰",
+        "月柱": "辛巳",
+        "日柱": "戊寅",
+        "时柱": "戊午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑"
+      ],
+      "computed_dayun_sequence": [
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.4117,
+      "qiyun_age_delta": 0.4117,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000344-坤-丙寅丙申癸卯乙卯",
+      "input_path": "cases/C-2026-RF000344-坤-丙寅丙申癸卯乙卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1986-08-27 06:05",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "丙寅",
+        "月柱": "丙申",
+        "日柱": "癸卯",
+        "时柱": "乙卯"
+      },
+      "corrected_pillars": {
+        "年柱": "丙寅",
+        "月柱": "丙申",
+        "日柱": "癸卯",
+        "时柱": "乙卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "computed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.3656,
+      "qiyun_age_delta": 0.3656,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000345-乾-癸酉乙丑乙卯乙酉",
+      "input_path": "cases/C-2026-RF000345-乾-癸酉乙丑乙卯乙酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 首批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1994-01-29 18:42",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "癸酉",
+        "月柱": "乙丑",
+        "日柱": "乙卯",
+        "时柱": "乙酉"
+      },
+      "corrected_pillars": {
+        "年柱": "癸酉",
+        "月柱": "乙丑",
+        "日柱": "乙卯",
+        "时柱": "乙酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳"
+      ],
+      "computed_dayun_sequence": [
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.9569,
+      "qiyun_age_delta": 0.9569,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000353-坤-丙寅辛卯壬申戊申",
+      "input_path": "cases/C-2026-RF000353-坤-丙寅辛卯壬申戊申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1986-03-29 16:50",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "丙寅",
+        "月柱": "辛卯",
+        "日柱": "壬申",
+        "时柱": "戊申"
+      },
+      "corrected_pillars": {
+        "年柱": "丙寅",
+        "月柱": "辛卯",
+        "日柱": "壬申",
+        "时柱": "戊申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未"
+      ],
+      "computed_dayun_sequence": [
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.8282,
+      "qiyun_age_delta": 0.8282,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000354-坤-己巳壬申己酉壬申",
+      "input_path": "cases/C-2026-RF000354-坤-己巳壬申己酉壬申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-08-17 16:19",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "壬申",
+        "日柱": "己酉",
+        "时柱": "壬申"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "壬申",
+        "日柱": "己酉",
+        "时柱": "壬申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰"
+      ],
+      "computed_dayun_sequence": [
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.1053,
+      "qiyun_age_delta": 0.1053,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000373-乾-丙子庚子辛巳己亥",
+      "input_path": "cases/C-2026-RF000373-乾-丙子庚子辛巳己亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第四批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1996-12-10 22:34",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "丙子",
+        "月柱": "庚子",
+        "日柱": "辛巳",
+        "时柱": "己亥"
+      },
+      "corrected_pillars": {
+        "年柱": "丙子",
+        "月柱": "庚子",
+        "日柱": "辛巳",
+        "时柱": "己亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未",
+        "戊申"
+      ],
+      "computed_dayun_sequence": [
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未",
+        "戊申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.5672,
+      "qiyun_age_delta": 0.5672,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000374-坤-甲戌丙寅辛未甲午",
+      "input_path": "cases/C-2026-RF000374-坤-甲戌丙寅辛未甲午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1994-02-14 11:26",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丙寅",
+        "日柱": "辛未",
+        "时柱": "甲午"
+      },
+      "corrected_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丙寅",
+        "日柱": "辛未",
+        "时柱": "甲午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午"
+      ],
+      "computed_dayun_sequence": [
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.36,
+      "qiyun_age_delta": 0.36,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000388-乾-甲戌丙寅壬午己酉",
+      "input_path": "cases/C-2026-RF000388-乾-甲戌丙寅壬午己酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1994-02-25 17:35",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丙寅",
+        "日柱": "壬午",
+        "时柱": "己酉"
+      },
+      "corrected_pillars": {
+        "年柱": "甲戌",
+        "月柱": "丙寅",
+        "日柱": "壬午",
+        "时柱": "己酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "computed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.8062,
+      "qiyun_age_delta": 0.8062,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+      "input_path": "cases/C-2026-RF000396-坤-甲申丁卯丙午壬辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2004-03-28 08:05",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "甲申",
+        "月柱": "丁卯",
+        "日柱": "丙午",
+        "时柱": "壬辰"
+      },
+      "corrected_pillars": {
+        "年柱": "甲申",
+        "月柱": "丁卯",
+        "日柱": "丙午",
+        "时柱": "壬辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未"
+      ],
+      "computed_dayun_sequence": [
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.5855,
+      "qiyun_age_delta": 0.5855,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000408-乾-辛亥甲午辛卯壬辰",
+      "input_path": "cases/C-2026-RF000408-乾-辛亥甲午辛卯壬辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1971-07-05 07:38",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "辛亥",
+        "月柱": "甲午",
+        "日柱": "辛卯",
+        "时柱": "壬辰"
+      },
+      "corrected_pillars": {
+        "年柱": "辛亥",
+        "月柱": "甲午",
+        "日柱": "辛卯",
+        "时柱": "壬辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子",
+        "丁亥",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.5438,
+      "qiyun_age_delta": 0.5438,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000412-乾-己卯辛未丁卯丁未",
+      "input_path": "cases/C-2026-RF000412-乾-己卯辛未丁卯丁未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-07-14 14:27",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "丁卯",
+        "时柱": "丁未"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "丁卯",
+        "时柱": "丁未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥"
+      ],
+      "computed_dayun_sequence": [
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.2366,
+      "qiyun_age_delta": 0.2366,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000417-乾-丙寅丙申辛卯丁酉",
+      "input_path": "cases/C-2026-RF000417-乾-丙寅丙申辛卯丁酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第四批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1986-08-15 17:02",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "丙寅",
+        "月柱": "丙申",
+        "日柱": "辛卯",
+        "时柱": "丁酉"
+      },
+      "corrected_pillars": {
+        "年柱": "丙寅",
+        "月柱": "丙申",
+        "日柱": "辛卯",
+        "时柱": "丁酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰"
+      ],
+      "computed_dayun_sequence": [
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.8548,
+      "qiyun_age_delta": 0.8548,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000421-坤-甲申丙寅己巳己巳",
+      "input_path": "cases/C-2026-RF000421-坤-甲申丙寅己巳己巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2004-02-20 10:21",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "甲申",
+        "月柱": "丙寅",
+        "日柱": "己巳",
+        "时柱": "己巳"
+      },
+      "corrected_pillars": {
+        "年柱": "甲申",
+        "月柱": "丙寅",
+        "日柱": "己巳",
+        "时柱": "己巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午"
+      ],
+      "computed_dayun_sequence": [
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.2002,
+      "qiyun_age_delta": 0.2002,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000422-乾-戊寅壬戌辛丑丙申",
+      "input_path": "cases/C-2026-RF000422-乾-戊寅壬戌辛丑丙申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-10-21 16:10",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "壬戌",
+        "日柱": "辛丑",
+        "时柱": "丙申"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "壬戌",
+        "日柱": "辛丑",
+        "时柱": "丙申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午"
+      ],
+      "computed_dayun_sequence": [
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.7635,
+      "qiyun_age_delta": 0.7635,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午",
+      "input_path": "cases/C-2026-RF000441-乾-癸亥己未己未庚午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 首批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1983-07-30 11:40",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "癸亥",
+        "月柱": "己未",
+        "日柱": "己未",
+        "时柱": "庚午"
+      },
+      "corrected_pillars": {
+        "年柱": "癸亥",
+        "月柱": "己未",
+        "日柱": "己未",
+        "时柱": "庚午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥"
+      ],
+      "computed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.4854,
+      "qiyun_age_delta": 0.4854,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000444-坤-壬午壬寅辛亥癸巳",
+      "input_path": "cases/C-2026-RF000444-坤-壬午壬寅辛亥癸巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-02-12 09:00",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "壬寅",
+        "日柱": "辛亥",
+        "时柱": "癸巳"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "壬寅",
+        "日柱": "辛亥",
+        "时柱": "癸巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午"
+      ],
+      "computed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.675,
+      "qiyun_age_delta": 0.675,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000448-乾-庚辰甲申癸亥癸亥",
+      "input_path": "cases/C-2026-RF000448-乾-庚辰甲申癸亥癸亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第三批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2000-09-02 21:30",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "庚辰",
+        "月柱": "甲申",
+        "日柱": "癸亥",
+        "时柱": "癸亥"
+      },
+      "corrected_pillars": {
+        "年柱": "庚辰",
+        "月柱": "甲申",
+        "日柱": "癸亥",
+        "时柱": "癸亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "computed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.5901,
+      "qiyun_age_delta": 0.5901,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000449-乾-丁丑癸卯甲戌乙丑",
+      "input_path": "cases/C-2026-RF000449-乾-丁丑癸卯甲戌乙丑/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1997-04-02 01:57",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丁丑",
+        "月柱": "癸卯",
+        "日柱": "甲戌",
+        "时柱": "乙丑"
+      },
+      "corrected_pillars": {
+        "年柱": "丁丑",
+        "月柱": "癸卯",
+        "日柱": "甲戌",
+        "时柱": "乙丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未"
+      ],
+      "computed_dayun_sequence": [
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 9.0678,
+      "qiyun_age_delta": 8.0678,
+      "qiyun_age_ok": false,
+      "warnings": [
+        "起运岁差距较大：声称 1.0，精算 9.07"
+      ],
+      "errors": [
+        "起运岁差异过大：声称 1，精算 9.0678"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000452-坤-戊寅壬戌丙辰辛卯",
+      "input_path": "cases/C-2026-RF000452-坤-戊寅壬戌丙辰辛卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-11-05 05:20",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "壬戌",
+        "日柱": "丙辰",
+        "时柱": "辛卯"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "壬戌",
+        "日柱": "丙辰",
+        "时柱": "辛卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "computed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.1306,
+      "qiyun_age_delta": 0.1306,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000464-坤-己卯辛未甲子甲戌",
+      "input_path": "cases/C-2026-RF000464-坤-己卯辛未甲子甲戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-07-11 19:17",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "甲子",
+        "时柱": "甲戌"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "甲子",
+        "时柱": "甲戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯"
+      ],
+      "computed_dayun_sequence": [
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.166,
+      "qiyun_age_delta": 0.166,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000466-乾-辛酉戊戌壬申辛丑",
+      "input_path": "cases/C-2026-RF000466-乾-辛酉戊戌壬申辛丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1981-10-21 02:06",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "辛酉",
+        "月柱": "戊戌",
+        "日柱": "壬申",
+        "时柱": "辛丑"
+      },
+      "corrected_pillars": {
+        "年柱": "辛酉",
+        "月柱": "戊戌",
+        "日柱": "壬申",
+        "时柱": "辛丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅"
+      ],
+      "computed_dayun_sequence": [
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.1242,
+      "qiyun_age_delta": 0.1242,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000475-坤-戊辰辛酉己巳乙丑",
+      "input_path": "cases/C-2026-RF000475-坤-戊辰辛酉己巳乙丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1988-09-11 01:14",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "戊辰",
+        "月柱": "辛酉",
+        "日柱": "己巳",
+        "时柱": "乙丑"
+      },
+      "corrected_pillars": {
+        "年柱": "戊辰",
+        "月柱": "辛酉",
+        "日柱": "己巳",
+        "时柱": "乙丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑"
+      ],
+      "computed_dayun_sequence": [
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.0978,
+      "qiyun_age_delta": 0.0978,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000500-乾-庚申甲申丁丑辛丑",
+      "input_path": "cases/C-2026-RF000500-乾-庚申甲申丁丑辛丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1980-09-01 01:03",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚申",
+        "月柱": "甲申",
+        "日柱": "丁丑",
+        "时柱": "辛丑"
+      },
+      "corrected_pillars": {
+        "年柱": "庚申",
+        "月柱": "甲申",
+        "日柱": "丁丑",
+        "时柱": "辛丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "computed_dayun_sequence": [
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.2617,
+      "qiyun_age_delta": 0.2617,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000510-坤-壬申癸丑壬寅癸卯",
+      "input_path": "cases/C-2026-RF000510-坤-壬申癸丑壬寅癸卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1993-01-21 06:47",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "壬申",
+        "月柱": "癸丑",
+        "日柱": "壬寅",
+        "时柱": "癸卯"
+      },
+      "corrected_pillars": {
+        "年柱": "壬申",
+        "月柱": "癸丑",
+        "日柱": "壬寅",
+        "时柱": "癸卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳"
+      ],
+      "computed_dayun_sequence": [
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.2061,
+      "qiyun_age_delta": 0.2061,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+      "input_path": "cases/C-2026-RF000514-乾-癸亥己未甲子壬申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1983-08-04 15:21",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "癸亥",
+        "月柱": "己未",
+        "日柱": "甲子",
+        "时柱": "壬申"
+      },
+      "corrected_pillars": {
+        "年柱": "癸亥",
+        "月柱": "己未",
+        "日柱": "甲子",
+        "时柱": "壬申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥"
+      ],
+      "computed_dayun_sequence": [
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅",
+        "癸丑",
+        "壬子",
+        "辛亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.2032,
+      "qiyun_age_delta": 0.2032,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳",
+      "input_path": "cases/C-2026-RF000524-坤-己巳丙寅戊戌丁巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 首批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-02-07 10:05",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙寅",
+        "日柱": "戊戌",
+        "时柱": "丁巳"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙寅",
+        "日柱": "戊戌",
+        "时柱": "丁巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "computed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.8401,
+      "qiyun_age_delta": 0.8401,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000531-坤-乙亥庚辰己丑癸酉",
+      "input_path": "cases/C-2026-RF000531-坤-乙亥庚辰己丑癸酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第四批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-04-28 17:07",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "庚辰",
+        "日柱": "己丑",
+        "时柱": "癸酉"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "庚辰",
+        "日柱": "己丑",
+        "时柱": "癸酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子"
+      ],
+      "computed_dayun_sequence": [
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.5331,
+      "qiyun_age_delta": 0.5331,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000535-乾-戊寅丁巳壬戌己酉",
+      "input_path": "cases/C-2026-RF000535-乾-戊寅丁巳壬戌己酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-05-15 17:07",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "丁巳",
+        "日柱": "壬戌",
+        "时柱": "己酉"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "丁巳",
+        "日柱": "壬戌",
+        "时柱": "己酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑"
+      ],
+      "computed_dayun_sequence": [
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.1681,
+      "qiyun_age_delta": 0.1681,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000543-坤-己巳癸酉庚子庚辰",
+      "input_path": "cases/C-2026-RF000543-坤-己巳癸酉庚子庚辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-10-07 07:30",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "癸酉",
+        "日柱": "庚子",
+        "时柱": "庚辰"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "癸酉",
+        "日柱": "庚子",
+        "时柱": "庚辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "computed_dayun_sequence": [
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 0.4438,
+      "qiyun_age_delta": 0.5562,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000548-坤-己卯辛未壬申丁未",
+      "input_path": "cases/C-2026-RF000548-坤-己卯辛未壬申丁未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-07-19 13:22",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "壬申",
+        "时柱": "丁未"
+      },
+      "corrected_pillars": {
+        "年柱": "己卯",
+        "月柱": "辛未",
+        "日柱": "壬申",
+        "时柱": "丁未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯"
+      ],
+      "computed_dayun_sequence": [
+        "壬申",
+        "癸酉",
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.5815,
+      "qiyun_age_delta": 0.5815,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000551-乾-壬戌丙午甲申丁卯",
+      "input_path": "cases/C-2026-RF000551-乾-壬戌丙午甲申丁卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 Top30 OCR 修正后正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1982-06-30 06:26",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "壬戌",
+        "月柱": "丙午",
+        "日柱": "甲申",
+        "时柱": "丁卯"
+      },
+      "corrected_pillars": {
+        "年柱": "壬戌",
+        "月柱": "丙午",
+        "日柱": "甲申",
+        "时柱": "丁卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁未",
+        "戊申",
+        "己酉",
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅"
+      ],
+      "computed_dayun_sequence": [
+        "丁未",
+        "戊申",
+        "己酉",
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.5066,
+      "qiyun_age_delta": 0.5066,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000572-乾-辛未丙申庚戌戊子",
+      "input_path": "cases/C-2026-RF000572-乾-辛未丙申庚戌戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第二批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-08-08 23:21",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "辛未",
+        "月柱": "丙申",
+        "日柱": "庚戌",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "辛未",
+        "月柱": "丙申",
+        "日柱": "庚戌",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "computed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 0.2046,
+      "qiyun_age_delta": 0.7954,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000576-坤-乙亥戊寅己巳丙寅",
+      "input_path": "cases/C-2026-RF000576-坤-乙亥戊寅己巳丙寅/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-02-07 03:33",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "己巳",
+        "时柱": "丙寅"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "己巳",
+        "时柱": "丙寅"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.0794,
+      "qiyun_age_delta": 0.0794,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000592-乾-丁卯壬寅壬寅戊申",
+      "input_path": "cases/C-2026-RF000592-乾-丁卯壬寅壬寅戊申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第三批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1987-02-22 15:48",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬寅",
+        "日柱": "壬寅",
+        "时柱": "戊申"
+      },
+      "corrected_pillars": {
+        "年柱": "丁卯",
+        "月柱": "壬寅",
+        "日柱": "壬寅",
+        "时柱": "戊申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午"
+      ],
+      "computed_dayun_sequence": [
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉",
+        "丙申",
+        "乙未",
+        "甲午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.9853,
+      "qiyun_age_delta": 0.9853,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000595-乾-癸酉壬戌壬申丙午",
+      "input_path": "cases/C-2026-RF000595-乾-癸酉壬戌壬申丙午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1993-10-18 12:15",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "癸酉",
+        "月柱": "壬戌",
+        "日柱": "壬申",
+        "时柱": "丙午"
+      },
+      "corrected_pillars": {
+        "年柱": "癸酉",
+        "月柱": "壬戌",
+        "日柱": "壬申",
+        "时柱": "丙午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "computed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.2998,
+      "qiyun_age_delta": 0.2998,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000606-乾-庚午己丑甲申辛未",
+      "input_path": "cases/C-2026-RF000606-乾-庚午己丑甲申辛未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第二批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-01-14 13:54",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "甲申",
+        "时柱": "辛未"
+      },
+      "corrected_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "甲申",
+        "时柱": "辛未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "computed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.0311,
+      "qiyun_age_delta": 0.0311,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000632-坤-乙亥戊寅乙酉丁丑",
+      "input_path": "cases/C-2026-RF000632-坤-乙亥戊寅乙酉丁丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-02-23 01:46",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "乙酉",
+        "时柱": "丁丑"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "戊寅",
+        "日柱": "乙酉",
+        "时柱": "丁丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.7708,
+      "qiyun_age_delta": 0.7708,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000654-乾-乙亥己丑戊申庚申",
+      "input_path": "cases/C-2026-RF000654-乾-乙亥己丑戊申庚申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1996-01-12 16:16",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "己丑",
+        "日柱": "戊申",
+        "时柱": "庚申"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "己丑",
+        "日柱": "戊申",
+        "时柱": "庚申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳"
+      ],
+      "computed_dayun_sequence": [
+        "戊子",
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.0936,
+      "qiyun_age_delta": 0.0936,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000663-坤-庚辰戊子壬子辛丑",
+      "input_path": "cases/C-2026-RF000663-坤-庚辰戊子壬子辛丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2000-12-20 01:51",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "庚辰",
+        "月柱": "戊子",
+        "日柱": "壬子",
+        "时柱": "辛丑"
+      },
+      "corrected_pillars": {
+        "年柱": "庚辰",
+        "月柱": "戊子",
+        "日柱": "壬子",
+        "时柱": "辛丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳",
+        "庚辰"
+      ],
+      "computed_dayun_sequence": [
+        "丁亥",
+        "丙戌",
+        "乙酉",
+        "甲申",
+        "癸未",
+        "壬午",
+        "辛巳",
+        "庚辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.3088,
+      "qiyun_age_delta": 0.3088,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000671-乾-己巳甲戌乙巳丙戌",
+      "input_path": "cases/C-2026-RF000671-乾-己巳甲戌乙巳丙戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-10-12 19:02",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "甲戌",
+        "日柱": "乙巳",
+        "时柱": "丙戌"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "甲戌",
+        "日柱": "乙巳",
+        "时柱": "丙戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅"
+      ],
+      "computed_dayun_sequence": [
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.383,
+      "qiyun_age_delta": 0.383,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000684-坤-己巳丙子戊申戊午",
+      "input_path": "cases/C-2026-RF000684-坤-己巳丙子戊申戊午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 Top30 OCR 修正后正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-12-14 11:53",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙子",
+        "日柱": "戊申",
+        "时柱": "戊午"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙子",
+        "日柱": "戊申",
+        "时柱": "戊午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申"
+      ],
+      "computed_dayun_sequence": [
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.4815,
+      "qiyun_age_delta": 0.4815,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000713-乾-甲申丁丑丁酉丙午",
+      "input_path": "cases/C-2026-RF000713-乾-甲申丁丑丁酉丙午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2005-01-13 11:22",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲申",
+        "月柱": "丁丑",
+        "日柱": "丁酉",
+        "时柱": "丙午"
+      },
+      "corrected_pillars": {
+        "年柱": "甲申",
+        "月柱": "丁丑",
+        "日柱": "丁酉",
+        "时柱": "丙午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "computed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.1993,
+      "qiyun_age_delta": 0.1993,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000714-坤-辛酉戊戌辛巳癸巳",
+      "input_path": "cases/C-2026-RF000714-坤-辛酉戊戌辛巳癸巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1981-10-30 09:02",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "辛酉",
+        "月柱": "戊戌",
+        "日柱": "辛巳",
+        "时柱": "癸巳"
+      },
+      "corrected_pillars": {
+        "年柱": "辛酉",
+        "月柱": "戊戌",
+        "日柱": "辛巳",
+        "时柱": "癸巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午"
+      ],
+      "computed_dayun_sequence": [
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.8209,
+      "qiyun_age_delta": 0.8209,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000735-乾-庚辰丁亥戊寅丙辰",
+      "input_path": "cases/C-2026-RF000735-乾-庚辰丁亥戊寅丙辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2000-11-16 07:54",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚辰",
+        "月柱": "丁亥",
+        "日柱": "戊寅",
+        "时柱": "丙辰"
+      },
+      "corrected_pillars": {
+        "年柱": "庚辰",
+        "月柱": "丁亥",
+        "日柱": "戊寅",
+        "时柱": "丙辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未"
+      ],
+      "computed_dayun_sequence": [
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.9405,
+      "qiyun_age_delta": 0.9405,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000737-坤-辛酉癸巳辛卯戊戌",
+      "input_path": "cases/C-2026-RF000737-坤-辛酉癸巳辛卯戊戌/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1981-05-13 20:21",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "辛酉",
+        "月柱": "癸巳",
+        "日柱": "辛卯",
+        "时柱": "戊戌"
+      },
+      "corrected_pillars": {
+        "年柱": "辛酉",
+        "月柱": "癸巳",
+        "日柱": "辛卯",
+        "时柱": "戊戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑"
+      ],
+      "computed_dayun_sequence": [
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉",
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.7573,
+      "qiyun_age_delta": 0.7573,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000763-乾-壬午辛亥辛巳己亥",
+      "input_path": "cases/C-2026-RF000763-乾-壬午辛亥辛巳己亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-11-09 21:30",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "辛亥",
+        "日柱": "辛巳",
+        "时柱": "己亥"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "辛亥",
+        "日柱": "辛巳",
+        "时柱": "己亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未"
+      ],
+      "computed_dayun_sequence": [
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.2464,
+      "qiyun_age_delta": 0.2464,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000771-乾-癸亥壬戌壬午庚子",
+      "input_path": "cases/C-2026-RF000771-乾-癸亥壬戌壬午庚子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 Top30 OCR 修正后正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1983-10-21 00:48",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "癸亥",
+        "月柱": "壬戌",
+        "日柱": "壬午",
+        "时柱": "庚子"
+      },
+      "corrected_pillars": {
+        "年柱": "癸亥",
+        "月柱": "壬戌",
+        "日柱": "壬午",
+        "时柱": "庚子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "computed_dayun_sequence": [
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰",
+        "乙卯",
+        "甲寅"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.9437,
+      "qiyun_age_delta": 0.9437,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000788-坤-戊辰甲寅庚子戊子",
+      "input_path": "cases/C-2026-RF000788-坤-戊辰甲寅庚子戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1988-02-15 23:13",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "戊辰",
+        "月柱": "甲寅",
+        "日柱": "庚子",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "戊辰",
+        "月柱": "甲寅",
+        "日柱": "庚子",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "computed_dayun_sequence": [
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.6737,
+      "qiyun_age_delta": 0.6737,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000796-乾-丁丑辛亥丁丑戊申",
+      "input_path": "cases/C-2026-RF000796-乾-丁丑辛亥丁丑戊申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1997-12-01 15:18",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丁丑",
+        "月柱": "辛亥",
+        "日柱": "丁丑",
+        "时柱": "戊申"
+      },
+      "corrected_pillars": {
+        "年柱": "丁丑",
+        "月柱": "辛亥",
+        "日柱": "丁丑",
+        "时柱": "戊申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯"
+      ],
+      "computed_dayun_sequence": [
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.973,
+      "qiyun_age_delta": 0.973,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000797-乾-丁丑己酉丙子丙申",
+      "input_path": "cases/C-2026-RF000797-乾-丁丑己酉丙子丙申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1997-10-01 15:20",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丁丑",
+        "月柱": "己酉",
+        "日柱": "丙子",
+        "时柱": "丙申"
+      },
+      "corrected_pillars": {
+        "年柱": "丁丑",
+        "月柱": "己酉",
+        "日柱": "丙子",
+        "时柱": "丙申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑"
+      ],
+      "computed_dayun_sequence": [
+        "戊申",
+        "丁未",
+        "丙午",
+        "乙巳",
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.9007,
+      "qiyun_age_delta": 0.9007,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000805-乾-甲申丙寅辛酉丙申",
+      "input_path": "cases/C-2026-RF000805-乾-甲申丙寅辛酉丙申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2004-02-12 15:21",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲申",
+        "月柱": "丙寅",
+        "日柱": "辛酉",
+        "时柱": "丙申"
+      },
+      "corrected_pillars": {
+        "年柱": "甲申",
+        "月柱": "丙寅",
+        "日柱": "辛酉",
+        "时柱": "丙申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "computed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.3136,
+      "qiyun_age_delta": 0.3136,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000807-坤-乙亥丙戌戊寅癸亥",
+      "input_path": "cases/C-2026-RF000807-坤-乙亥丙戌戊寅癸亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1995-10-14 21:38",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "乙亥",
+        "月柱": "丙戌",
+        "日柱": "戊寅",
+        "时柱": "癸亥"
+      },
+      "corrected_pillars": {
+        "年柱": "乙亥",
+        "月柱": "丙戌",
+        "日柱": "戊寅",
+        "时柱": "癸亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午"
+      ],
+      "computed_dayun_sequence": [
+        "丁亥",
+        "戊子",
+        "己丑",
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.1106,
+      "qiyun_age_delta": 0.1106,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000861-乾-癸酉甲寅庚午乙酉",
+      "input_path": "cases/C-2026-RF000861-乾-癸酉甲寅庚午乙酉/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1993-02-18 17:15",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "癸酉",
+        "月柱": "甲寅",
+        "日柱": "庚午",
+        "时柱": "乙酉"
+      },
+      "corrected_pillars": {
+        "年柱": "癸酉",
+        "月柱": "甲寅",
+        "日柱": "庚午",
+        "时柱": "乙酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "computed_dayun_sequence": [
+        "癸丑",
+        "壬子",
+        "辛亥",
+        "庚戌",
+        "己酉",
+        "戊申",
+        "丁未",
+        "丙午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.856,
+      "qiyun_age_delta": 0.856,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申",
+      "input_path": "cases/C-2026-RF000864-乾-己巳丙子乙卯甲申/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "问真 staging 首批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-12-21 17:08",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙子",
+        "日柱": "乙卯",
+        "时柱": "甲申"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "丙子",
+        "日柱": "乙卯",
+        "时柱": "乙酉"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": false
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙亥",
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰"
+      ],
+      "computed_dayun_sequence": [
+        "乙亥",
+        "甲戌",
+        "癸酉",
+        "壬申",
+        "辛未",
+        "庚午",
+        "己巳",
+        "戊辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.747,
+      "qiyun_age_delta": 0.747,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": [
+        "时柱错误：声称 甲申，根据 1989-12-21 17:08 精算为 乙酉"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000865-乾-辛未丙申戊午癸亥",
+      "input_path": "cases/C-2026-RF000865-乾-辛未丙申戊午癸亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-08-16 22:40",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "辛未",
+        "月柱": "丙申",
+        "日柱": "戊午",
+        "时柱": "癸亥"
+      },
+      "corrected_pillars": {
+        "年柱": "辛未",
+        "月柱": "丙申",
+        "日柱": "戊午",
+        "时柱": "癸亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "computed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.8617,
+      "qiyun_age_delta": 0.8617,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000868-乾-壬申戊申庚辰丁亥",
+      "input_path": "cases/C-2026-RF000868-乾-壬申戊申庚辰丁亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第二批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1992-09-01 22:20",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "壬申",
+        "月柱": "戊申",
+        "日柱": "庚辰",
+        "时柱": "丁亥"
+      },
+      "corrected_pillars": {
+        "年柱": "壬申",
+        "月柱": "戊申",
+        "日柱": "庚辰",
+        "时柱": "丁亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己酉",
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰"
+      ],
+      "computed_dayun_sequence": [
+        "己酉",
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.9302,
+      "qiyun_age_delta": 0.9302,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000877-乾-丙寅庚子乙巳己卯",
+      "input_path": "cases/C-2026-RF000877-乾-丙寅庚子乙巳己卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1986-12-27 06:18",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "丙寅",
+        "月柱": "庚子",
+        "日柱": "乙巳",
+        "时柱": "己卯"
+      },
+      "corrected_pillars": {
+        "年柱": "丙寅",
+        "月柱": "庚子",
+        "日柱": "乙巳",
+        "时柱": "己卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未",
+        "戊申"
+      ],
+      "computed_dayun_sequence": [
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳",
+        "丙午",
+        "丁未",
+        "戊申"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.3183,
+      "qiyun_age_delta": 0.3183,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000894-乾-壬戌己酉庚子戊子",
+      "input_path": "cases/C-2026-RF000894-乾-壬戌己酉庚子戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 Top30 OCR 修正后正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1982-09-14 23:55",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "壬戌",
+        "月柱": "己酉",
+        "日柱": "庚子",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "壬戌",
+        "月柱": "己酉",
+        "日柱": "庚子",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳"
+      ],
+      "computed_dayun_sequence": [
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 7,
+      "computed_qiyun_age": 7.9878,
+      "qiyun_age_delta": 0.9878,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
+      "input_path": "cases/C-2026-RF000897-乾-甲子丁丑丙寅庚子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1985-01-27 23:57",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲子",
+        "月柱": "丁丑",
+        "日柱": "丙寅",
+        "时柱": "庚子"
+      },
+      "corrected_pillars": {
+        "年柱": "甲子",
+        "月柱": "丁丑",
+        "日柱": "丙寅",
+        "时柱": "庚子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "computed_dayun_sequence": [
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.4062,
+      "qiyun_age_delta": 0.4062,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000900-乾-戊寅乙卯丙寅戊子",
+      "input_path": "cases/C-2026-RF000900-乾-戊寅乙卯丙寅戊子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第三批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-03-20 00:00",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "乙卯",
+        "日柱": "丙寅",
+        "时柱": "戊子"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "乙卯",
+        "日柱": "丙寅",
+        "时柱": "戊子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥"
+      ],
+      "computed_dayun_sequence": [
+        "丙辰",
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 5,
+      "computed_qiyun_age": 5.441,
+      "qiyun_age_delta": 0.441,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000903-坤-癸酉庚申己丑庚午",
+      "input_path": "cases/C-2026-RF000903-坤-癸酉庚申己丑庚午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1993-09-05 12:32",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "癸酉",
+        "月柱": "庚申",
+        "日柱": "己丑",
+        "时柱": "庚午"
+      },
+      "corrected_pillars": {
+        "年柱": "癸酉",
+        "月柱": "庚申",
+        "日柱": "己丑",
+        "时柱": "庚午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰"
+      ],
+      "computed_dayun_sequence": [
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子",
+        "乙丑",
+        "丙寅",
+        "丁卯",
+        "戊辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 0.8138,
+      "qiyun_age_delta": 0.1862,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000914-坤-己未癸酉甲辰辛未",
+      "input_path": "cases/C-2026-RF000914-坤-己未癸酉甲辰辛未/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1979-10-04 14:26",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "己未",
+        "月柱": "癸酉",
+        "日柱": "甲辰",
+        "时柱": "辛未"
+      },
+      "corrected_pillars": {
+        "年柱": "己未",
+        "月柱": "癸酉",
+        "日柱": "甲辰",
+        "时柱": "辛未"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "computed_dayun_sequence": [
+        "甲戌",
+        "乙亥",
+        "丙子",
+        "丁丑",
+        "戊寅",
+        "己卯",
+        "庚辰",
+        "辛巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.5426,
+      "qiyun_age_delta": 0.5426,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000916-坤-戊寅甲子乙卯辛巳",
+      "input_path": "cases/C-2026-RF000916-坤-戊寅甲子乙卯辛巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1999-01-03 09:30",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "甲子",
+        "日柱": "乙卯",
+        "时柱": "辛巳"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "甲子",
+        "日柱": "乙卯",
+        "时柱": "辛巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰"
+      ],
+      "computed_dayun_sequence": [
+        "癸亥",
+        "壬戌",
+        "辛酉",
+        "庚申",
+        "己未",
+        "戊午",
+        "丁巳",
+        "丙辰"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.9094,
+      "qiyun_age_delta": 0.9094,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000918-乾-甲寅丙寅壬寅辛丑",
+      "input_path": "cases/C-2026-RF000918-乾-甲寅丙寅壬寅辛丑/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1974-03-02 01:30",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "甲寅",
+        "月柱": "丙寅",
+        "日柱": "壬寅",
+        "时柱": "辛丑"
+      },
+      "corrected_pillars": {
+        "年柱": "甲寅",
+        "月柱": "丙寅",
+        "日柱": "壬寅",
+        "时柱": "辛丑"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "computed_dayun_sequence": [
+        "丁卯",
+        "戊辰",
+        "己巳",
+        "庚午",
+        "辛未",
+        "壬申",
+        "癸酉",
+        "甲戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.4114,
+      "qiyun_age_delta": 0.4114,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000957-乾-壬午庚戌壬子庚戌",
+      "input_path": "cases/C-2026-RF000957-乾-壬午庚戌壬子庚戌/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-10-11 20:30",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "庚戌",
+        "日柱": "壬子",
+        "时柱": "庚戌"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "庚戌",
+        "日柱": "壬子",
+        "时柱": "庚戌"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午"
+      ],
+      "computed_dayun_sequence": [
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳",
+        "戊午"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 9.0259,
+      "qiyun_age_delta": 8.0259,
+      "qiyun_age_ok": false,
+      "warnings": [
+        "起运岁差距较大：声称 1.0，精算 9.03"
+      ],
+      "errors": [
+        "起运岁差异过大：声称 1，精算 9.0259"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000963-乾-戊寅丙辰戊戌庚申",
+      "input_path": "cases/C-2026-RF000963-乾-戊寅丙辰戊戌庚申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1998-04-21 15:25",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "戊寅",
+        "月柱": "丙辰",
+        "日柱": "戊戌",
+        "时柱": "庚申"
+      },
+      "corrected_pillars": {
+        "年柱": "戊寅",
+        "月柱": "丙辰",
+        "日柱": "戊戌",
+        "时柱": "庚申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子"
+      ],
+      "computed_dayun_sequence": [
+        "丁巳",
+        "戊午",
+        "己未",
+        "庚申",
+        "辛酉",
+        "壬戌",
+        "癸亥",
+        "甲子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.8005,
+      "qiyun_age_delta": 0.8005,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000965-坤-壬午乙巳甲午丙子",
+      "input_path": "cases/C-2026-RF000965-坤-壬午乙巳甲午丙子/input.md",
+      "eligible": true,
+      "status": "fail",
+      "source": "问真 staging 第三批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2002-05-27 00:30",
+      "gender": "F",
+      "claimed_pillars": {
+        "年柱": "壬午",
+        "月柱": "乙巳",
+        "日柱": "甲午",
+        "时柱": "丙子"
+      },
+      "corrected_pillars": {
+        "年柱": "壬午",
+        "月柱": "乙巳",
+        "日柱": "乙未",
+        "时柱": "丙子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": false,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉"
+      ],
+      "computed_dayun_sequence": [
+        "甲辰",
+        "癸卯",
+        "壬寅",
+        "辛丑",
+        "庚子",
+        "己亥",
+        "戊戌",
+        "丁酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 6,
+      "computed_qiyun_age": 6.9983,
+      "qiyun_age_delta": 0.9983,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": [
+        "日柱错误：声称 甲午，根据 2002-05-27 00:30 精算为 乙未"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000968-乾-辛酉丙申丙寅甲午",
+      "input_path": "cases/C-2026-RF000968-乾-辛酉丙申丙寅甲午/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1981-08-16 11:09",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "辛酉",
+        "月柱": "丙申",
+        "日柱": "丙寅",
+        "时柱": "甲午"
+      },
+      "corrected_pillars": {
+        "年柱": "辛酉",
+        "月柱": "丙申",
+        "日柱": "丙寅",
+        "时柱": "甲午"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "computed_dayun_sequence": [
+        "乙未",
+        "甲午",
+        "癸巳",
+        "壬辰",
+        "辛卯",
+        "庚寅",
+        "己丑",
+        "戊子"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 2,
+      "computed_qiyun_age": 2.8361,
+      "qiyun_age_delta": 0.8361,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000970-乾-庚午戊寅丙寅丙申",
+      "input_path": "cases/C-2026-RF000970-乾-庚午戊寅丙寅丙申/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1990-03-02 15:15",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚午",
+        "月柱": "戊寅",
+        "日柱": "丙寅",
+        "时柱": "丙申"
+      },
+      "corrected_pillars": {
+        "年柱": "庚午",
+        "月柱": "戊寅",
+        "日柱": "丙寅",
+        "时柱": "丙申"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "computed_dayun_sequence": [
+        "己卯",
+        "庚辰",
+        "辛巳",
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.1816,
+      "qiyun_age_delta": 0.1816,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000975-乾-庚辰辛巳己丑甲子",
+      "input_path": "cases/C-2026-RF000975-乾-庚辰辛巳己丑甲子/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "2000-05-31 00:13",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "庚辰",
+        "月柱": "辛巳",
+        "日柱": "己丑",
+        "时柱": "甲子"
+      },
+      "corrected_pillars": {
+        "年柱": "庚辰",
+        "月柱": "辛巳",
+        "日柱": "己丑",
+        "时柱": "甲子"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑"
+      ],
+      "computed_dayun_sequence": [
+        "壬午",
+        "癸未",
+        "甲申",
+        "乙酉",
+        "丙戌",
+        "丁亥",
+        "戊子",
+        "己丑"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 1,
+      "computed_qiyun_age": 1.8994,
+      "qiyun_age_delta": 0.8994,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000977-坤-辛未丁酉丁酉癸卯",
+      "input_path": "cases/C-2026-RF000977-坤-辛未丁酉丁酉癸卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-09-24 06:20",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "辛未",
+        "月柱": "丁酉",
+        "日柱": "丁酉",
+        "时柱": "癸卯"
+      },
+      "corrected_pillars": {
+        "年柱": "辛未",
+        "月柱": "丁酉",
+        "日柱": "丁酉",
+        "时柱": "癸卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳"
+      ],
+      "computed_dayun_sequence": [
+        "戊戌",
+        "己亥",
+        "庚子",
+        "辛丑",
+        "壬寅",
+        "癸卯",
+        "甲辰",
+        "乙巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.954,
+      "qiyun_age_delta": 0.954,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000980-坤-丁卯己酉己卯丁卯",
+      "input_path": "cases/C-2026-RF000980-坤-丁卯己酉己卯丁卯/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1987-09-27 05:02",
+      "gender": "女",
+      "claimed_pillars": {
+        "年柱": "丁卯",
+        "月柱": "己酉",
+        "日柱": "己卯",
+        "时柱": "丁卯"
+      },
+      "corrected_pillars": {
+        "年柱": "丁卯",
+        "月柱": "己酉",
+        "日柱": "己卯",
+        "时柱": "丁卯"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳"
+      ],
+      "computed_dayun_sequence": [
+        "庚戌",
+        "辛亥",
+        "壬子",
+        "癸丑",
+        "甲寅",
+        "乙卯",
+        "丙辰",
+        "丁巳"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 3,
+      "computed_qiyun_age": 3.9856,
+      "qiyun_age_delta": 0.9856,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000986-乾-己巳庚午己酉戊辰",
+      "input_path": "cases/C-2026-RF000986-乾-己巳庚午己酉戊辰/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真待分析样本批量正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1989-06-18 08:36",
+      "gender": "男",
+      "claimed_pillars": {
+        "年柱": "己巳",
+        "月柱": "庚午",
+        "日柱": "己酉",
+        "时柱": "戊辰"
+      },
+      "corrected_pillars": {
+        "年柱": "己巳",
+        "月柱": "庚午",
+        "日柱": "己酉",
+        "时柱": "戊辰"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "逆",
+      "computed_dayun_direction": "逆",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌"
+      ],
+      "computed_dayun_sequence": [
+        "己巳",
+        "戊辰",
+        "丁卯",
+        "丙寅",
+        "乙丑",
+        "甲子",
+        "癸亥",
+        "壬戌"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 4,
+      "computed_qiyun_age": 4.1043,
+      "qiyun_age_delta": 0.1043,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000989-乾-庚午己丑戊寅丁巳",
+      "input_path": "cases/C-2026-RF000989-乾-庚午己丑戊寅丁巳/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 剩余 READY 正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-01-08 09:45",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "戊寅",
+        "时柱": "丁巳"
+      },
+      "corrected_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "戊寅",
+        "时柱": "丁巳"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "computed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 9,
+      "computed_qiyun_age": 9.0888,
+      "qiyun_age_delta": 0.0888,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "C-2026-RF000990-乾-庚午己丑戊寅癸亥",
+      "input_path": "cases/C-2026-RF000990-乾-庚午己丑戊寅癸亥/input.md",
+      "eligible": true,
+      "status": "pass",
+      "source": "问真 staging 第四批正式转案",
+      "trusted_source": true,
+      "validation_skipped": false,
+      "solar_date": "1991-01-08 21:50",
+      "gender": "M",
+      "claimed_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "戊寅",
+        "时柱": "癸亥"
+      },
+      "corrected_pillars": {
+        "年柱": "庚午",
+        "月柱": "己丑",
+        "日柱": "戊寅",
+        "时柱": "癸亥"
+      },
+      "pillar_checks": {
+        "年柱": true,
+        "月柱": true,
+        "日柱": true,
+        "时柱": true
+      },
+      "claimed_dayun_direction": "顺",
+      "computed_dayun_direction": "顺",
+      "dayun_direction_ok": true,
+      "claimed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "computed_dayun_sequence": [
+        "庚寅",
+        "辛卯",
+        "壬辰",
+        "癸巳",
+        "甲午",
+        "乙未",
+        "丙申",
+        "丁酉"
+      ],
+      "dayun_sequence_ok": true,
+      "claimed_qiyun_age": 8,
+      "computed_qiyun_age": 8.9209,
+      "qiyun_age_delta": 0.9209,
+      "qiyun_age_ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "input_path": "cases/P-2026-001-乾-戊寅乙丑甲子丁卯/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    },
+    {
+      "case_id": "_TEMPLATE",
+      "input_path": "cases/_TEMPLATE/input.md",
+      "eligible": false,
+      "status": "ineligible",
+      "reason": "无 YAML 数据块"
+    }
+  ]
+}

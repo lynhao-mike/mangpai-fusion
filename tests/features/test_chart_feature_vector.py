@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import FrozenInstanceError, replace
+import math
 
 import pytest
 
@@ -54,6 +55,28 @@ def test_feature_vector_is_frozen_validated_and_json_round_trips() -> None:
     invalid["chong_pairs"] = [["子"]]
     with pytest.raises(ValueError, match="chong_pairs"):
         ChartFeatureVector.from_dict(invalid)
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("cold_warm_axis", math.nan, "cold_warm_axis"),
+        ("dry_wet_axis", math.inf, "dry_wet_axis"),
+        ("element_concentration", math.nan, "element_concentration"),
+        ("branch_conflict_intensity", math.inf, "branch_conflict_intensity"),
+        ("element_energy", {"木": math.nan, "火": 0.25, "土": 0.25, "金": 0.25, "水": 0.25}, "element_energy"),
+        ("element_counts", {"木": -1, "火": 1, "土": 1, "金": 1, "水": 1}, "element_counts"),
+    ],
+)
+def test_feature_vector_rejects_non_finite_or_structurally_invalid_numeric_state(
+    field: str,
+    value: object,
+    message: str,
+) -> None:
+    vector = build_chart_feature_vector(REAL_CHARTS["C-2026-001"])
+
+    with pytest.raises(ValueError, match=message):
+        replace(vector, **{field: value})
 
 
 def test_same_chart_and_schema_produce_stable_identity_and_payload() -> None:

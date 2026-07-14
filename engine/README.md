@@ -16,6 +16,11 @@
 | [`predicates/`](predicates/) | 共用干支、五行、宫位、关系、强弱等基础谓词。 |
 | [`features/`](features/) | L0 共享派生层；从 `ChartFactLedger` 确定性构建版本化 `ChartFeatureVector`，供路由、仲裁与学习层复用。 |
 | [`claims/`](claims/) | L2 独立命题层：稳定命题 ID、证据引用校验，以及 `generate_blind_outputs()` / `generate_frozen_claim_run()` 的 Chart→feature→task→freeze 默认评估链。 |
+| [`decision/chart_prototype.py`](decision/chart_prototype.py) | L1 命盘原型映射：消费 `cfv-v1` 与外置原型注册表，确定性返回主原型、边界备选与命中条件。 |
+| [`decision/capability_registry.py`](decision/capability_registry.py) | L1 能力回流只读边界：加载评估后验快照，执行 exact→prototype→task→domain→global 层级收缩。 |
+| [`decision/l1_school_router.py`](decision/l1_school_router.py) | L1 并行路由入口：默认保留 `static`；显式 `learned` 时按能力效用、不确定性与互补增益生成逐任务路由。 |
+| [`decision/routing_holdout.py`](decision/routing_holdout.py) | learned/static 留出集对照门禁：强制训练集隔离，并检查效用、校准误差与高风险假阳性。 |
+| [`decision/routing_holdout_artifacts.py`](decision/routing_holdout_artifacts.py) | 留出制品治理：按性别+四柱分组确定性切分、用 cfv-v1 重算原型，并审计同案同任务多流派可评分竞争覆盖。 |
 | [`contracts/`](contracts/) | 架构契约与跨模块数据交换约定。 |
 | [`v5/`](v5/) | ZiPing Fusion Engine v5 并行核心：五派命题、结构图、三段式仲裁、受限概率账本。 |
 
@@ -28,3 +33,5 @@
 | [`mechanical-rules.yaml`](mechanical-rules.yaml) | 机械铁断 + 黑名单。 |
 | [`calibration.yaml`](calibration.yaml) | 自迭代开关与阈值。 |
 | [`arbitration.md`](arbitration.md) | 派别仲裁规则（冲突裁定 + 联立加权）。 |
+
+L1 learned 路由不会自动读取最新文件或覆盖生产权重；调用方必须显式注入冻结的能力快照与任务列表。当前留出证据状态见 [`../reports/l1-routing-holdout-comparison.md`](../reports/l1-routing-holdout-comparison.md)，在门禁达到 GO 前正式入口继续使用 `static`。

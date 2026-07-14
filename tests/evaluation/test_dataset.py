@@ -294,6 +294,42 @@ def _prospective_input(root: Path, case_id: str, text: str = "四柱：甲子 �
     return path
 
 
+def test_register_prospective_intake_accepts_sectioned_raw_chart_format(tmp_path: Path) -> None:
+    raw = """$BASE
+Sex:乾造
+Solar:1999-01-12 05:15
+Start:出生后7年9月18日12时起运
+
+$FOUR
+Y:偏财,戊,寅,比肩 食神 偏财
+M:劫财,乙,丑,正财 正印 正官
+D:元男,甲,子,正印
+H:伤官,丁,卯,劫财
+
+$DY_LOOP
+#2006,8岁,丙寅,食神
+> 2006,丙戌,食神
+"""
+    input_path = _prospective_input(tmp_path, "P-2026-001-乾-戊寅乙丑甲子丁卯", raw)
+
+    intake = register_prospective_intake(
+        [input_path], _catalog(), ["ziping", "ren"], "human-reviewer-01",
+    )
+    tasks_path = tmp_path / "tasks.json"
+    tasks_path.write_text(json.dumps(_catalog(), ensure_ascii=False), encoding="utf-8")
+    snapshot = tmp_path / "rules.json"
+    snapshot.write_text('{"rule_snapshot_id":"rules-v1"}', encoding="utf-8")
+    prepare_blind_bundle(intake, tasks_path, snapshot, tmp_path / "bundle")
+    chart = json.loads((tmp_path / "bundle" / "cases" / input_path.parent.name / "chart.json").read_text(encoding="utf-8"))
+
+    assert len(intake["records"]) == 1
+    assert len(intake["records"][0]["subject_id_hash"]) == 64
+    assert chart["solar_datetime"] == "1999-01-12 05:15"
+    assert chart["start_luck"] == "出生后7年9月18日12时起运"
+    assert chart["dayun_steps"] == [{"ganzhi": "丙寅", "start_year": 2006}]
+    assert chart["liunian_steps"] == [{"year": 2006, "ganzhi": "丙戌", "dayun": "丙寅"}]
+
+
 def test_register_prospective_intake_rejects_known_facts_and_duplicate_cases(tmp_path: Path) -> None:
     leaked = _prospective_input(tmp_path, "C-P-001", "四柱：甲子 乙丑 丙寅 丁卯\nknown facts: 已婚\n")
     with pytest.raises(ValueError, match="known facts"):
