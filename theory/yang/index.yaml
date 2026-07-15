@@ -153,11 +153,55 @@ rules:
   topic_label: 入口规则补全
   title: 完整性原则
   conclusion: 完整=不受穿/破/克坏；财不完整不大；官不完整不长
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 入口规则补全
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
+  status_history: []
+  hits: 0
+  misses: 2
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - false
+  - false
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-014
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-014
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  confidence_cache:
+    star: 1
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-015
   school: yang
   topic: lifa
@@ -208,11 +252,55 @@ rules:
   topic_label: 结构基础定义
   title: 主位宾位正式定义
   conclusion: 日时=主位(自己+子女)；年月=宾位(长辈+兄弟)；大运流年=旅途所遇
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 结构基础定义
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
+  status_history: []
+  hits: 0
+  misses: 2
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - false
+  - false
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-049
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-049
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  confidence_cache:
+    star: 1
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-050
   school: yang
   topic: lifa
@@ -380,13 +468,15 @@ rules:
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
   status_history: []
   hits: 2
-  misses: 0
+  misses: 2
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5:
   - true
   - true
+  - false
+  - false
   applied_cases:
   - case_id: C-2026-026-坤-癸未甲寅壬戌丙午
     year: null
@@ -400,13 +490,40 @@ rules:
     evidence_chain:
     - M2-Y-064
     note: Step 1/五维定位·婚恋家庭 | 婚恋/家庭 | sids=S-026-d2b001
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-064
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-064
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
   confidence_cache:
-    star: 4
-    percent: 0.75
-    posterior: 0.75
-    variance: 0.0375
-    sample_n: 2
-    last_updated: '2026-06-11'
+    star: 2
+    percent: 0.5
+    posterior: 0.5
+    variance: 0.035714
+    sample_n: 4
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-065
   school: yang
   topic: hunyin
@@ -446,11 +563,55 @@ rules:
   topic_label: 结婚应期与婚姻深化
   title: 男命劫财见财妻宫破=必离
   conclusion: 比劫力>财力+妻宫冲穿=必离婚；力≤+宫未动=外遇不离
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 结婚应期与婚姻深化
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
+  status_history: []
+  hits: 0
+  misses: 2
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - false
+  - false
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-068
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-068
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  confidence_cache:
+    star: 1
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-069
   school: yang
   topic: hunyin
@@ -468,11 +629,55 @@ rules:
   topic_label: 学历判定系统
   title: 学历看法14条
   conclusion: 印独立=一本；官生印=重一本；羊刃配杀=研；印禄相随=研；财坏印=普本；比劫制旺财=三本；比劫弱财旺=中专技校
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 学历判定系统
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
+  status_history: []
+  hits: 0
+  misses: 2
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - false
+  - false
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-070
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-070
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  confidence_cache:
+    star: 1
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-071
   school: yang
   topic: jiaoyu
@@ -699,11 +904,55 @@ rules:
   topic_label: 财富级别进阶与禄体系
   title: 承载财官本质论
   conclusion: 真正福=禄；真正财官=印和禄(非字面财官)；用哪字取财官该字必须旺
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 杨派 m2-rules-registry
   raw_anchor: 财富级别进阶与禄体系
   raw_file: theory\raw\yang\promoted\m2-rules-registry.md
+  status_history: []
+  hits: 0
+  misses: 2
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - false
+  - false
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-091
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: false
+    evidence_chain:
+    - M2-Y-091
+    note: 1.2 杨派视角（M2 杨清娟 · 主宾体用 + 完整性） | 婚姻 | role=unknown
+  confidence_cache:
+    star: 1
+    percent: 0.25
+    posterior: 0.25
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    婚姻:
+      unknown:
+        hits: 0
+        misses: 2
+        abstained: 0
+        recent_5:
+        - false
+        - false
+        confidence_cache:
+          star: 1
+          percent: 0.25
+          posterior: 0.25
+          variance: 0.0375
+          sample_n: 2
 - id: M2-Y-092
   school: yang
   topic: caiyun

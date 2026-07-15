@@ -21,12 +21,28 @@ rules:
     conflict_type: occurrence_opposition
     target_claim_type: event_claim
     resolution_strategy: conservative_high_risk
-    min_weight_gap: 0.0
+    min_weight_gap: 0.8
+    high_risk_only: true
     domains:
       - 健康
       - 灾厄
       - 婚姻
+      - 财富
     falsifier: 若治理政策或高风险任务成本模型变更，则重新审核本规则。
+
+  - rule_id: CR-TIMING-HIGH-RISK-001
+    applies_to_stage: timing
+    conflict_type: occurrence_opposition
+    target_claim_type: timing_claim
+    resolution_strategy: conservative_high_risk
+    min_weight_gap: 0.8
+    high_risk_only: true
+    domains:
+      - 健康
+      - 灾厄
+      - 婚姻
+      - 财富
+    falsifier: 若治理政策或高风险应期成本模型变更，则重新审核本规则。
 
   - rule_id: CR-TIMING-CAPABILITY-001
     applies_to_stage: timing

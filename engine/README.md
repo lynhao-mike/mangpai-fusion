@@ -23,6 +23,7 @@
 | [`decision/routing_holdout_artifacts.py`](decision/routing_holdout_artifacts.py) | 留出制品治理：按性别+四柱分组确定性切分、用 cfv-v1 重算原型，并审计同案同任务多流派可评分竞争覆盖。 |
 | [`decision/l6_staged_arbitration.py`](decision/l6_staged_arbitration.py) | L6 对照入口：消费 L2 Claim 与 L1 权重，执行结构/事件/应期三段裁决、显式对立消解和结构优先级传播；不替换旧生产入口。 |
 | [`decision/conflict-rules.yaml`](decision/conflict-rules.yaml) | L6 显式冲突规则集：能力加权、证据完整度与高风险保守兜底。 |
+| [`learning/`](learning/) | L9 条件化学习：以六维能力身份治理反馈信号，按 N_eff 分级，生成不可变、可回滚且可被 L1 registry 消费的独立能力快照。 |
 | [`contracts/`](contracts/) | 架构契约与跨模块数据交换约定。 |
 | [`v5/`](v5/) | ZiPing Fusion Engine v5 并行核心：五派命题、结构图、三段式仲裁、受限概率账本。 |
 
@@ -33,7 +34,8 @@
 | [`confidence.yaml`](confidence.yaml) | 双轨制置信度计算配置（★ + %）。 |
 | [`domain-weights.yaml`](domain-weights.yaml) | 9 大领域 × 4 派 lead/co/audit 权重矩阵。 |
 | [`mechanical-rules.yaml`](mechanical-rules.yaml) | 机械铁断 + 黑名单。 |
-| [`calibration.yaml`](calibration.yaml) | 自迭代开关与阈值。 |
+| [`calibration.yaml`](calibration.yaml) | 旧规则生命周期自迭代开关与阈值。 |
+| [`conditional-learning.yaml`](conditional-learning.yaml) | L9 条件化学习的中样本 / 成熟样本门槛、部分反馈权重与单次变化上限；执行器不得硬编码这些阈值。 |
 | [`arbitration.md`](arbitration.md) | 派别仲裁规则（冲突裁定 + 联立加权）。 |
 
-L1 learned 路由不会自动读取最新文件或覆盖生产权重；调用方必须显式注入冻结的能力快照与任务列表。当前留出证据状态见 [`../reports/l1-routing-holdout-comparison.md`](../reports/l1-routing-holdout-comparison.md)，在门禁达到 GO 前正式入口继续使用 `static`。
+L1 learned 路由不会自动读取最新文件或覆盖生产权重；调用方必须显式注入冻结的能力快照与任务列表。L9 也只写独立内容寻址快照，不回灌 `expert-weights.yaml`、`domain-weights.yaml`、生产规则或历史 run snapshot。当前留出证据状态见 [`../reports/l1-routing-holdout-comparison.md`](../reports/l1-routing-holdout-comparison.md)，在门禁达到 GO 前正式入口继续使用 `static`。

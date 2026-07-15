@@ -604,6 +604,11 @@ def _late_marriage_claim(
         falsifier="若命主在统一年龄阈值前已婚，则本命题证伪。",
         time_window=window,
         confidence_basis=f"基于四柱{spouse_label}计数与日支冲合关系的确定性推导。",
+        domain=task.domain,
+        polarity="negative",
+        magnitude=min(1.0, 0.4 + 0.2 * len(triggers)),
+        confidence=0.7,
+        high_risk=task.high_risk,
         applicability_snapshot={
             "sex_marker": sex,
             "spouse_count": spouse_count,
@@ -657,6 +662,11 @@ def _role_change_claim(
         falsifier="若命主职业历程中无显著角色或岗位变化记录，则本命题证伪。",
         time_window=window,
         confidence_basis="基于四柱官杀与食伤结构关系的确定性推导。",
+        domain=task.domain,
+        polarity="negative",
+        magnitude=min(1.0, 0.4 + 0.15 * len(triggers)),
+        confidence=0.7,
+        high_risk=task.high_risk,
         applicability_snapshot={
             "output_count": output_count,
             "official_count": official_count,
@@ -711,6 +721,11 @@ def generate_claims(
             falsifier=f"若按同一子平口径独立复核不呈{strength}，则本结构命题证伪。",
             time_window=None,
             confidence_basis="旺衰由 cfv-v1 的生扶/克泄耗差、通根与月令信号共同形成。",
+            domain=task.domain,
+            polarity="positive" if strength == "身强" else "negative",
+            magnitude=min(1.0, abs(balance) / 8.0),
+            confidence=0.7,
+            high_risk=task.high_risk,
             applicability_snapshot={
                 "supporting_count": features.supporting_count,
                 "draining_count": features.draining_count,
@@ -742,6 +757,11 @@ def generate_claims(
             falsifier="若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。",
             time_window=None,
             confidence_basis="仅陈述十神结构并见，不把并见直接判成唯一现实事件。",
+            domain=task.domain,
+            polarity="neutral",
+            magnitude=min(1.0, (output_count + official_count) / 8.0),
+            confidence=0.6,
+            high_risk=task.high_risk,
             applicability_snapshot={"output_count": output_count, "official_count": official_count},
         )
         validate_claim_evidence(claim, chart, features)

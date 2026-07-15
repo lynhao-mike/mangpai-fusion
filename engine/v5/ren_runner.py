@@ -158,6 +158,11 @@ def _generate_binary_career_claim(
         falsifier="若该时间窗内未发生显著职业角色或岗位变化，则本命题证伪。",
         time_window=window,
         confidence_basis="基于输入流年与原局/大运的可计算冲合刑穿或伏吟关系推导。",
+        domain=task.domain,
+        polarity="negative",
+        magnitude=min(1.0, 0.35 + 0.12 * len(referenced_pillars)),
+        confidence=0.7,
+        high_risk=task.high_risk,
         applicability_snapshot={
             "year": year or None,
             "trigger_ganzhi": _ganzhi(step),
@@ -218,6 +223,11 @@ def generate_claims(
         falsifier=f"该时间窗内未发生{event_label}即证伪本命题。",
         time_window=window,
         confidence_basis="时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+        domain=task.domain,
+        polarity="negative" if task.high_risk else "neutral",
+        magnitude=min(1.0, 0.35 + 0.12 * len(referenced_pillars)),
+        confidence=0.7,
+        high_risk=task.high_risk,
         applicability_snapshot={
             "year": year,
             "liunian": _ganzhi(step),

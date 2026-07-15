@@ -1491,3 +1491,145 @@ git revert <commit-hash>
 # 或恢复快照：
 META/calibration/2026-06-12-after-C-2026-RF000524-坤-己巳丙寅戊戌丁巳.snapshot.yaml
 ```
+
+
+---
+
+## 2026-07-15 00:31 · ingest C-2026-001-乾-庚申戊寅壬子辛丑
+
+case_count: 32
+trigger: ingest_feedback
+
+### Rule Updates (16 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-001 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M1-D-122 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-253 | duan | 0→1 | 0→0 | ★2→★3 | confirmed→confirmed | hit |
+| M2-Y-068 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-091 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-049 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M2-Y-064 | yang | 2→2 | 0→1 | ★4→★3 | confirmed→confirmed | miss |
+| M2-Y-014 | yang | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| G-LF-006 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| G-LF-022 | gao | 0→0 | 0→1 | ★2→★1 | candidate→candidate | miss |
+| M3-R-005 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-003 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-031 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-022 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+| M3-R-027 | ren | 0→0 | 0→1 | ★2→★1 | confirmed→confirmed | miss |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-BD
+- G-DY
+- G-CH
+- G-BD-词馆
+- G-CH-车祸婚姻
+- G-CHE-车祸篇
+- G-BD-词馆神煞应用宝典
+- G-时柱神煞
+
+### Notes
+
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+
+### Cross-School Scan
+- 未触发（case_count=32，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-07-15-after-C-2026-001-乾-庚申戊寅壬子辛丑.snapshot.yaml
+```
+
+
+---
+
+## 2026-07-15 10:02 · ingest C-2026-001-乾-庚申戊寅壬子辛丑
+
+case_count: 32
+trigger: ingest_feedback
+
+### Rule Updates (16 条)
+
+| rule_id | 派 | hits 旧→新 | misses 旧→新 | conf ★ 旧→新 | status 旧→新 | verdict |
+|---|---|---|---|---|---|---|
+| M1-D-001 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-253 | duan | 1→2 | 0→0 | ★3→★4 | confirmed→confirmed | hit |
+| M1-D-122 | duan | 2→3 | 0→0 | ★4→★4 | confirmed→confirmed | hit |
+| M2-Y-014 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-064 | yang | 2→2 | 1→2 | ★3→★2 | confirmed→confirmed | miss |
+| M2-Y-070 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-091 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-068 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M2-Y-049 | yang | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| G-LF-006 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| G-LF-022 | gao | 0→0 | 1→2 | ★1→★1 | candidate→candidate | miss |
+| M3-R-003 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-031 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-022 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-005 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+| M3-R-027 | ren | 0→0 | 1→2 | ★1→★1 | confirmed→confirmed | miss |
+
+### Skipped Rule IDs (in analysis but not in theory yaml)
+
+- G-DY
+- G-BD
+- G-CH
+- G-BD-词馆
+- G-CH-车祸婚姻
+- G-CHE-车祸篇
+- G-BD-词馆神煞应用宝典
+- G-时柱神煞
+
+### Notes
+
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+- freeze_auto_demotion=true，跳过自动降级
+
+### Cross-School Scan
+- 未触发（case_count=32，下一次在 case_count % 10 == 0 时）
+
+### Rollback Hint
+
+```
+# 回滚到本次 ingest 前：
+git revert <commit-hash>
+# 或恢复快照：
+META/calibration/2026-07-15-after-C-2026-001-乾-庚申戊寅壬子辛丑.snapshot.yaml
+```

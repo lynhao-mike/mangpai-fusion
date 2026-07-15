@@ -42,6 +42,7 @@
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖与效用审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许对照；learned 必须改变至少一个选择且效用不退化才可 GO |
 | [`rebuild_l1_routing_evidence.py`](rebuild_l1_routing_evidence.py:1) | 重建 L1 路由盲测证据 | 从隔离命盘汇总重新冻结当前 runner 输出，揭示既有人工标签并评分；写 batch/scores/manifest，不写生产权重 |
+| [`conditional_learning.py`](conditional_learning.py:1) | L9 条件化学习离线治理 CLI | `decide` / `apply` / `rollback`；六维能力身份按 N_eff 分级，高风险与成熟更新须显式审批，所有写流程支持 `--dry-run`；只写独立内容寻址能力快照，不写静态权重、生产规则或历史 run snapshot |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
 
 ---
@@ -51,6 +52,7 @@
 - [`tools/`](README.md:1) 作为 CLI / adapter 层：负责文件入口、人工日志、批处理与审计落盘。
 - 当前 D1-D4 核心编排优先查看 [`engine/application/pipeline_runner.py`](../engine/application/pipeline_runner.py:1)，生产同步封装查看 [`engine/application/production_service.py`](../engine/application/production_service.py:1)。
 - [`render_report.py`](render_report.py:1) 是 legacy standard report 兼容入口；[`render_report_v6.py`](render_report_v6.py:1) 是 run-centric preprod 证明入口。两者并存期间，不从 Markdown 反推结构化状态。
+- [`conditional_learning.py`](conditional_learning.py:1) 是 staged 离线治理入口，不替代 [`feedback_ingest.py`](feedback_ingest.py:1)，也不切换生产路由；业务门禁与快照语义位于 [`engine/learning/`](../engine/learning/)，CLI 只做文件 adapter。
 - 新报告字段必须先进入 [`V5RunSnapshot`](../engine/v5/domain.py:366) / [`DecisionRun`](../engine/decision/models.py:302) 等结构化对象，再由报告视图渲染；不得把新领域能力直接塞进 [`tools/`](README.md:1)。
 - 新代码不应把 [`engine/application`](../engine/application:1) 继续扩大为依赖 [`tools/`](README.md:1) 的工具集合；涉及长期 API / queue / storage 时应下沉到 application / infrastructure 层。
 

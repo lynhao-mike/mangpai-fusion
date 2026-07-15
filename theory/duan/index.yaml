@@ -9,12 +9,56 @@ rules:
   topic: lifa
   topic_label: 宾主
   title: 宾主第 1 层 — 日干 vs 其它 7 字
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §17.1 宾主
   raw_file: theory\raw\duan\promoted\m1-patterns.md
   candidate_score: 4.0
+  status_history: []
+  hits: 2
+  misses: 0
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - true
+  - true
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-001
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-001
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
+  confidence_cache:
+    star: 4
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    事业:
+      unknown:
+        hits: 2
+        misses: 0
+        abstained: 0
+        recent_5:
+        - true
+        - true
+        confidence_cache:
+          star: 4
+          percent: 0.75
+          posterior: 0.75
+          variance: 0.0375
+          sample_n: 2
 - id: M1-D-002
   school: duan
   topic: lifa
@@ -572,12 +616,14 @@ rules:
   raw_file: theory\raw\duan\promoted\m1-patterns.md
   candidate_score: 4.5
   status_history: []
-  hits: 1
+  hits: 3
   misses: 0
   abstained: 0
   misses_at_confirmed: 0
   misses_at_flagged: null
   recent_5:
+  - true
+  - true
   - true
   applied_cases:
   - case_id: C-2026-025-坤-辛未乙未甲辰乙亥
@@ -586,13 +632,40 @@ rules:
     evidence_chain:
     - M1-D-122
     note: Step 1/五维定位·事业财富 | 事业/财富 | sids=S-025-d1a001
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-122
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-122
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
   confidence_cache:
-    star: 3
-    percent: 0.666667
-    posterior: 0.666667
-    variance: 0.055556
-    sample_n: 1
-    last_updated: '2026-05-31'
+    star: 4
+    percent: 0.8
+    posterior: 0.8
+    variance: 0.026667
+    sample_n: 3
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    事业:
+      unknown:
+        hits: 2
+        misses: 0
+        abstained: 0
+        recent_5:
+        - true
+        - true
+        confidence_cache:
+          star: 4
+          percent: 0.75
+          posterior: 0.75
+          variance: 0.0375
+          sample_n: 2
 - id: M1-D-123
   school: duan
   topic: lifa
@@ -2677,12 +2750,56 @@ rules:
   topic: unmapped
   topic_label: 财运判定
   title: 财库喜刑冲=发财铁律
-  status: promoted
+  status: confirmed
   layer: unmapped
   raw_source: 段派 m1 模块
   raw_anchor: §20.5 财运判定
   raw_file: theory\raw\duan\promoted\m1-practice.md
   candidate_score: 4.0
+  status_history: []
+  hits: 2
+  misses: 0
+  abstained: 0
+  misses_at_confirmed: 0
+  misses_at_flagged: null
+  recent_5:
+  - true
+  - true
+  applied_cases:
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-253
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
+  - case_id: C-2026-001-乾-庚申戊寅壬子辛丑
+    year: null
+    hit: true
+    evidence_chain:
+    - M1-D-253
+    note: 1.1 段派视角（M1 段建业 · 4 层签字律） | 事业 | role=unknown
+  confidence_cache:
+    star: 4
+    percent: 0.75
+    posterior: 0.75
+    variance: 0.0375
+    sample_n: 2
+    last_updated: '2026-07-15'
+  domain_role_stats:
+    事业:
+      unknown:
+        hits: 2
+        misses: 0
+        abstained: 0
+        recent_5:
+        - true
+        - true
+        confidence_cache:
+          star: 4
+          percent: 0.75
+          posterior: 0.75
+          variance: 0.0375
+          sample_n: 2
 - id: M1-D-254
   school: duan
   topic: unmapped

@@ -81,6 +81,8 @@ class Claim:
     polarity: ClaimPolarity = "neutral"
     magnitude: float | None = None
     confidence: float = 1.0
+    high_risk: bool = False
+    target_id: str = ""
 
     def __post_init__(self) -> None:
         for name in ("claim_id", "school_id", "task_id", "statement", "falsifier", "confidence_basis"):
@@ -98,6 +100,10 @@ class Claim:
             raise ValueError("magnitude must be between 0 and 1")
         if not 0.0 <= self.confidence <= 1.0:
             raise ValueError("confidence must be between 0 and 1")
+        if type(self.high_risk) is not bool:
+            raise ValueError("high_risk must be boolean")
+        if not self.target_id:
+            object.__setattr__(self, "target_id", self.task_id)
         if not self.evidence:
             raise ValueError("claim evidence must be non-empty")
         if self.claim_type in {"event_claim", "timing_claim"} and self.time_window is None:
@@ -124,6 +130,8 @@ class Claim:
             "polarity": self.polarity,
             "magnitude": self.magnitude,
             "confidence": self.confidence,
+            "high_risk": self.high_risk,
+            "target_id": self.target_id,
         }
 
 

@@ -65,12 +65,20 @@
   → 统一报告视图
   → statement ledger
   → feedback / learning signal
+  → L9 六维条件身份 + N_eff 分级治理
+  → 不可变 capability snapshot
+  → L1 CapabilityRegistry（显式注入）
 ```
 
 当前运行事实：[`application/pipeline_runner.py`](../application/pipeline_runner.py) 仍是已落地兼容入口，负责旧 D1-D4 编排、报告渲染前数据产出与既有反馈链路稳定性。它是 staged fallback / 对照验证入口，不是新的长期方法论主流程。
 
 迁移红线：五派并行主流程未跑出“六大领域 × 十五层判断 × 三段裁判 × 主要事件预测账本”的已归档案例证明物前，不切换正式入口；证明通过后，再把旧 W1-W4 删除或降为回归对照命令。
 
+### 2.1 L9 条件化学习治理边界
+
+L9 以 `(school_id, task_id, chart_prototype_id, claim_type, time_horizon, evidence_completeness_band)` 为唯一条件身份。不可归因反馈必须停留为 `no_data` / 人工复核，禁止平均分摊；低样本只记录，中样本仅可调适用性后验，成熟样本的规则先验建议与任意高风险更新均须显式人工审批。
+
+生产影响只通过 [`learning/repository.py`](../learning/repository.py) 的内容寻址不可变快照和 [`decision/capability_registry.py`](../decision/capability_registry.py) 的显式加载发生。禁止回写静态 `expert-weights.yaml` / `domain-weights.yaml`、生产规则或历史 run snapshot；任一已应用更新必须保留父快照并可回滚。阈值事实源为 [`conditional-learning.yaml`](../conditional-learning.yaml)，离线 operator adapter 为 [`../../tools/conditional_learning.py`](../../tools/conditional_learning.py)。该链路当前为 staged 能力，不自动切换正式路由。
 
 ---
 
