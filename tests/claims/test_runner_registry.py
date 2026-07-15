@@ -10,6 +10,7 @@ from engine.claims.runner_registry import DEFAULT_RUNNER_REGISTRY, RunnerRegistr
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
+from engine.v5.duan_runner import generate_claims as generate_duan_claims
 from engine.v5.ren_runner import generate_claims as generate_ren_claims
 from engine.v5.ziping_runner import generate_claims as generate_ziping_claims
 
@@ -49,16 +50,24 @@ def test_default_registry_resolves_only_currently_implemented_school_tasks() -> 
         "wealth.major_loss_window",
         "health.event_window",
     }
+    duan_tasks = {
+        "career.role_change",
+        "career.path_type",
+        "wealth.debt",
+        "marriage.divorce_or_remarriage",
+    }
 
     for task_id in ziping_tasks:
         assert DEFAULT_RUNNER_REGISTRY.resolve("ziping", task_id) is generate_ziping_claims
     for task_id in ren_tasks:
         assert DEFAULT_RUNNER_REGISTRY.resolve("ren", task_id) is generate_ren_claims
+    for task_id in duan_tasks:
+        assert DEFAULT_RUNNER_REGISTRY.resolve("duan", task_id) is generate_duan_claims
 
     assert DEFAULT_RUNNER_REGISTRY.resolve("ziping", "career.change_window") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("ren", "structure.overview") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("unknown-school", "structure.overview") is None
-    assert DEFAULT_RUNNER_REGISTRY.resolve("duan", "career.role_change") is None
+    assert DEFAULT_RUNNER_REGISTRY.resolve("duan", "career.change_window") is None
 
 
 def test_registry_rejects_duplicate_school_task_registration() -> None:
