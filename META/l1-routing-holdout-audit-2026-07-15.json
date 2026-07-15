@@ -1,0 +1,408 @@
+{
+  "schema_version": "l1-routing-holdout-audit/v2",
+  "source_baseline": "META/six-month-capability-baseline-2026-07-15.json",
+  "source_freeze_hash": "5f2cff073152a6a09146f6465db8ce825732481ab42c4ba878ebad7c8faa01c9",
+  "source_artifact_digest": "sha256:e881231bde38e0c78728e1bbbb6dbf0ab6f7aa79bff4bdd232bda256c64cff61",
+  "classification": "historical_blind_candidate",
+  "split": {
+    "salt": "six-month-l1-routing-v1",
+    "holdout_fraction": 0.25,
+    "subject_identity": "sex_marker + four_pillars",
+    "training_case_ids": [
+      "P-2026-001-乾-戊申癸亥戊戌癸亥",
+      "P-2026-002-乾-壬子戊申壬午己酉",
+      "P-2026-003-乾-乙卯己卯乙亥己卯",
+      "P-2026-004-乾-丁未丙午壬戌乙巳",
+      "P-2026-008-乾-癸丑乙丑戊辰甲寅",
+      "P-2026-009-乾-庚申丙戌庚辰庚辰",
+      "P-2026-011-乾-戊午丙辰甲子甲子",
+      "P-2026-012-乾-壬戌庚戌戊子甲寅",
+      "P-2026-013-乾-丙午乙未壬辰壬寅",
+      "P-2026-017-乾-甲寅庚午辛卯癸巳",
+      "P-2026-018-乾-甲子甲戌辛卯丁酉",
+      "P-2026-019-乾-乙卯辛巳丙子辛卯",
+      "P-2026-027-乾-壬子乙巳丁卯己酉",
+      "P-2026-030-乾-乙卯丁亥辛未乙未",
+      "P-2026-031-乾-辛酉癸巳戊子丁巳",
+      "P-2026-034-乾-庚申戊子甲子乙丑",
+      "P-2026-035-乾-庚戌癸未丁巳丁未",
+      "P-2026-036-坤-丙戌丙申癸未丙辰",
+      "P-2026-046-乾-丙寅庚寅辛丑己丑",
+      "P-2026-047-乾-丁巳己酉乙酉丁丑",
+      "P-2026-049-乾-壬子戊申乙酉丙子",
+      "P-2026-054-乾-庚申甲申癸酉乙卯",
+      "P-2026-055-乾-辛酉甲午乙酉丁亥",
+      "P-2026-060-乾-乙丑己丑丙辰丙申",
+      "P-2026-062-乾-己巳丙子辛酉丁酉"
+    ],
+    "holdout_case_ids": [
+      "P-2026-006-乾-壬戌辛亥戊戌庚申",
+      "P-2026-014-坤-乙卯辛巳甲子戊辰",
+      "P-2026-025-乾-癸亥丁巳丙申丁酉",
+      "P-2026-045-乾-戊午辛酉癸巳甲寅",
+      "P-2026-048-乾-庚戌戊子辛卯庚寅",
+      "P-2026-051-乾-庚申丁亥辛丑己亥",
+      "P-2026-063-乾-壬戌庚戌辛巳壬辰",
+      "P-2026-065-乾-丁卯壬寅壬辰甲辰"
+    ]
+  },
+  "static_baseline_source": "mapping/school-capability-runner-coverage-v1.yaml",
+  "static_school_by_task": {
+    "career.change_window": "ren",
+    "career.path_type": "duan",
+    "career.role_change": "ziping",
+    "marriage.event_window": "ren"
+  },
+  "training_capability_snapshot_id": "cap-train-56aea7c0e71b3d5cf7d5",
+  "training_capability_snapshot": {
+    "schema_version": "l1-training-capability-snapshot/v1",
+    "snapshot_id": "cap-train-56aea7c0e71b3d5cf7d5",
+    "training_case_ids": [
+      "P-2026-001-乾-戊申癸亥戊戌癸亥",
+      "P-2026-002-乾-壬子戊申壬午己酉",
+      "P-2026-003-乾-乙卯己卯乙亥己卯",
+      "P-2026-004-乾-丁未丙午壬戌乙巳",
+      "P-2026-008-乾-癸丑乙丑戊辰甲寅",
+      "P-2026-009-乾-庚申丙戌庚辰庚辰",
+      "P-2026-011-乾-戊午丙辰甲子甲子",
+      "P-2026-012-乾-壬戌庚戌戊子甲寅",
+      "P-2026-013-乾-丙午乙未壬辰壬寅",
+      "P-2026-017-乾-甲寅庚午辛卯癸巳",
+      "P-2026-018-乾-甲子甲戌辛卯丁酉",
+      "P-2026-019-乾-乙卯辛巳丙子辛卯",
+      "P-2026-027-乾-壬子乙巳丁卯己酉",
+      "P-2026-030-乾-乙卯丁亥辛未乙未",
+      "P-2026-031-乾-辛酉癸巳戊子丁巳",
+      "P-2026-034-乾-庚申戊子甲子乙丑",
+      "P-2026-035-乾-庚戌癸未丁巳丁未",
+      "P-2026-036-坤-丙戌丙申癸未丙辰",
+      "P-2026-046-乾-丙寅庚寅辛丑己丑",
+      "P-2026-047-乾-丁巳己酉乙酉丁丑",
+      "P-2026-049-乾-壬子戊申乙酉丙子",
+      "P-2026-054-乾-庚申甲申癸酉乙卯",
+      "P-2026-055-乾-辛酉甲午乙酉丁亥",
+      "P-2026-060-乾-乙丑己丑丙辰丙申",
+      "P-2026-062-乾-己巳丙子辛酉丁酉"
+    ],
+    "evaluated_at": "2026-07-15T13:11:00Z",
+    "posteriors": [],
+    "source_freeze_hash": "5f2cff073152a6a09146f6465db8ce825732481ab42c4ba878ebad7c8faa01c9"
+  },
+  "prototype_by_case": {
+    "P-2026-001-乾-戊申癸亥戊戌癸亥": "prototype-climate-cold",
+    "P-2026-002-乾-壬子戊申壬午己酉": "prototype-official-kill-mixed",
+    "P-2026-003-乾-乙卯己卯乙亥己卯": "prototype-element-concentrated",
+    "P-2026-004-乾-丁未丙午壬戌乙巳": "prototype-official-kill-mixed",
+    "P-2026-006-乾-壬戌辛亥戊戌庚申": "prototype-climate-cold",
+    "P-2026-008-乾-癸丑乙丑戊辰甲寅": "prototype-official-kill-mixed",
+    "P-2026-009-乾-庚申丙戌庚辰庚辰": "prototype-official-kill-mixed",
+    "P-2026-011-乾-戊午丙辰甲子甲子": "prototype-output-resource-combo",
+    "P-2026-012-乾-壬戌庚戌戊子甲寅": "prototype-climate-dry",
+    "P-2026-013-乾-丙午乙未壬辰壬寅": "prototype-official-kill-mixed",
+    "P-2026-014-坤-乙卯辛巳甲子戊辰": "prototype-official-kill-mixed",
+    "P-2026-017-乾-甲寅庚午辛卯癸巳": "prototype-official-kill-mixed",
+    "P-2026-018-乾-甲子甲戌辛卯丁酉": "prototype-climate-dry",
+    "P-2026-019-乾-乙卯辛巳丙子辛卯": "prototype-climate-hot",
+    "P-2026-025-乾-癸亥丁巳丙申丁酉": "prototype-official-kill-mixed",
+    "P-2026-027-乾-壬子乙巳丁卯己酉": "prototype-official-kill-mixed",
+    "P-2026-030-乾-乙卯丁亥辛未乙未": "prototype-climate-cold",
+    "P-2026-031-乾-辛酉癸巳戊子丁巳": "prototype-climate-hot",
+    "P-2026-034-乾-庚申戊子甲子乙丑": "prototype-official-kill-mixed",
+    "P-2026-035-乾-庚戌癸未丁巳丁未": "prototype-climate-hot",
+    "P-2026-036-坤-丙戌丙申癸未丙辰": "prototype-official-kill-mixed",
+    "P-2026-045-乾-戊午辛酉癸巳甲寅": "prototype-official-kill-mixed",
+    "P-2026-046-乾-丙寅庚寅辛丑己丑": "prototype-wealth-official-combo",
+    "P-2026-047-乾-丁巳己酉乙酉丁丑": "prototype-official-kill-mixed",
+    "P-2026-048-乾-庚戌戊子辛卯庚寅": "prototype-official-kill-mixed",
+    "P-2026-049-乾-壬子戊申乙酉丙子": "prototype-official-kill-mixed",
+    "P-2026-051-乾-庚申丁亥辛丑己亥": "prototype-climate-cold",
+    "P-2026-054-乾-庚申甲申癸酉乙卯": "prototype-element-concentrated",
+    "P-2026-055-乾-辛酉甲午乙酉丁亥": "prototype-climate-hot",
+    "P-2026-060-乾-乙丑己丑丙辰丙申": "prototype-official-kill-mixed",
+    "P-2026-062-乾-己巳丙子辛酉丁酉": "prototype-official-kill-mixed",
+    "P-2026-063-乾-壬戌庚戌辛巳壬辰": "prototype-official-kill-mixed",
+    "P-2026-065-乾-丁卯壬寅壬辰甲辰": "prototype-wealth-official-combo"
+  },
+  "competitive_coverage": {
+    "status": "READY",
+    "holdout_subject_count": 8,
+    "holdout_case_count": 8,
+    "scored_case_task_count": 15,
+    "competitive_case_task_count": 9,
+    "competitive_by_task": {
+      "career.change_window": 2,
+      "career.role_change": 2,
+      "marriage.event_window": 5
+    },
+    "competitive_identities": [
+      {
+        "case_id": "P-2026-006-乾-壬戌辛亥戊戌庚申",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-014-坤-乙卯辛巳甲子戊辰",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "career.change_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "career.role_change",
+        "schools": [
+          "duan",
+          "ren",
+          "ziping"
+        ]
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "career.change_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "career.role_change",
+        "schools": [
+          "duan",
+          "ren",
+          "ziping"
+        ]
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      },
+      {
+        "case_id": "P-2026-065-乾-丁卯壬寅壬辰甲辰",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "ren"
+        ]
+      }
+    ],
+    "reasons": []
+  },
+  "route_comparison": {
+    "status": "HOLD",
+    "record_count": 15,
+    "selection_changes": 0,
+    "records": [
+      {
+        "case_id": "P-2026-006-乾-壬戌辛亥戊戌庚申",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-006-乾-壬戌辛亥戊戌庚申",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-014-坤-乙卯辛巳甲子戊辰",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-025-乾-癸亥丁巳丙申丁酉",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "career.change_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "career.role_change",
+        "static_school": "ziping",
+        "learned_school": "ziping",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-045-乾-戊午辛酉癸巳甲寅",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-048-乾-庚戌戊子辛卯庚寅",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "career.change_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "career.role_change",
+        "static_school": "ziping",
+        "learned_school": "ziping",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-051-乾-庚申丁亥辛丑己亥",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-063-乾-壬戌庚戌辛巳壬辰",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-065-乾-丁卯壬寅壬辰甲辰",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      }
+    ],
+    "static_mean_utility": -0.1,
+    "learned_mean_utility": -0.1,
+    "reasons": [
+      "learned 路由与静态基线选择完全相同，尚未证明条件化路由增量。"
+    ]
+  },
+  "calibration_audit": {
+    "status": "insufficient",
+    "sample_count": 0,
+    "static_brier": null,
+    "learned_brier": null,
+    "worsened": false
+  },
+  "high_risk_audit": {
+    "task_ids": [
+      "health.event_window",
+      "health.system_risk",
+      "marriage.divorce_or_remarriage",
+      "wealth.debt",
+      "wealth.major_loss_window"
+    ],
+    "assessable_record_count": 0,
+    "static_false_positive_count": 0,
+    "learned_false_positive_count": 0,
+    "false_positives_increased": false,
+    "status": "insufficient"
+  },
+  "label_distribution_by_task": {
+    "career.change_window": {
+      "positive": 0,
+      "negative": 0,
+      "other": 4
+    },
+    "career.path_type": {
+      "positive": 0,
+      "negative": 0,
+      "other": 6
+    },
+    "career.role_change": {
+      "positive": 0,
+      "negative": 0,
+      "other": 6
+    },
+    "marriage.event_window": {
+      "positive": 0,
+      "negative": 0,
+      "other": 10
+    }
+  },
+  "single_class_tasks": [
+    "career.change_window",
+    "career.path_type",
+    "career.role_change",
+    "marriage.event_window"
+  ],
+  "prototype_incremental_evidence": [],
+  "gate_status": "HOLD",
+  "gate_reasons": [
+    "learned 与 static 选择完全相同。",
+    "留出标签缺少正负例或为单一类别：career.change_window, career.path_type, career.role_change, marriage.event_window。",
+    "校准样本不足，calibration_status=insufficient。",
+    "高风险任务不可评估。",
+    "没有 task × prototype 稳定增量证据。",
+    "learned 路由与静态基线选择完全相同，尚未证明条件化路由增量。"
+  ],
+  "generated_at": "2026-07-15T13:11:00Z",
+  "artifact_digest": "sha256:781edb8dbeedac7a565d829b300c529ce4d0dfa38f08368a07465abaccadb834"
+}
