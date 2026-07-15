@@ -39,6 +39,7 @@
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
 | [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件；`prepare-blind` 仅复制 case `input.md`、tasks 与 rule snapshot，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
 | [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
+| [`school_capability_task8.py`](school_capability_task8.py:1) | 六个月计划 Task 8 的六来源历史隔离基线编排 | 严格拆分 stage-a 冻结与 stage-b 标签揭示，复用现有 runner/evaluation 契约并只读核验旧 prospective bundle；不写生产路由、权重或规则 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖与效用审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许对照；learned 必须改变至少一个选择且效用不退化才可 GO |
 | [`rebuild_l1_routing_evidence.py`](rebuild_l1_routing_evidence.py:1) | 重建 L1 路由盲测证据 | 从隔离命盘汇总重新冻结当前 runner 输出，揭示既有人工标签并评分；写 batch/scores/manifest，不写生产权重 |
