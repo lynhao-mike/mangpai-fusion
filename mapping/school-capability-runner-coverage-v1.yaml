@@ -1,0 +1,62 @@
+schema_version: school-capability-runner-coverage/v1
+coverage:
+  - task_id: structure.overview
+    claim_type: structure_claim
+    primary_schools: [ziping]
+    supporting_schools: [ditiansui]
+    delivery_batch: {ziping: batch_1, ditiansui: batch_1}
+    high_risk: false
+  - task_id: career.role_change
+    claim_type: binary_event
+    primary_schools: [ziping]
+    supporting_schools: [duan]
+    delivery_batch: {ziping: batch_1, duan: batch_1}
+    high_risk: false
+  - task_id: marriage.divorce_or_remarriage
+    claim_type: binary_event
+    primary_schools: [yang]
+    supporting_schools: [duan]
+    delivery_batch: {yang: batch_1, duan: batch_1}
+    high_risk: true
+  - task_id: wealth.debt
+    claim_type: binary_event
+    primary_schools: [duan]
+    supporting_schools: [gao]
+    delivery_batch: {duan: batch_1, gao: batch_1}
+    high_risk: true
+  - task_id: career.path_type
+    claim_type: categorical_state
+    primary_schools: [duan]
+    supporting_schools: [ziping]
+    delivery_batch: {duan: batch_1, ziping: batch_1}
+    high_risk: false
+  - task_id: health.system_risk
+    claim_type: categorical_state
+    primary_schools: [gao]
+    supporting_schools: [ren]
+    delivery_batch: {gao: batch_1, ren: batch_1}
+    high_risk: true
+  - task_id: career.change_window
+    claim_type: event_timing
+    primary_schools: [ren, duan]
+    supporting_schools: [gao]
+    delivery_batch: {ren: batch_1, duan: batch_1, gao: batch_2}
+    high_risk: false
+  - task_id: marriage.event_window
+    claim_type: event_timing
+    primary_schools: [ren, duan]
+    supporting_schools: [gao]
+    delivery_batch: {ren: batch_1, duan: batch_1, gao: batch_2}
+    high_risk: false
+  - task_id: health.event_window
+    claim_type: event_timing
+    primary_schools: [ren, duan]
+    supporting_schools: [gao]
+    delivery_batch: {ren: batch_1, duan: batch_1, gao: batch_2}
+    high_risk: true
+  - task_id: wealth.major_loss_window
+    claim_type: event_timing
+    primary_schools: [ren, duan]
+    supporting_schools: [gao]
+    delivery_batch: {ren: batch_1, duan: batch_1, gao: batch_2}
+    high_risk: true

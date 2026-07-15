@@ -4,6 +4,7 @@
 > 文档类型：升级单元主索引与依赖图
 > 服从文档：[`docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md`](../../docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md)
 > 配套路线：[`plans/bazi-intelligence-platform-roadmap.md`](../bazi-intelligence-platform-roadmap.md)
+> 六个月执行规格：[`6-month-execution-plan-2026-07.md`](6-month-execution-plan-2026-07.md)
 
 ## 0. 本套指导文档的读者
 
