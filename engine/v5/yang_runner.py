@@ -5,13 +5,14 @@ from __future__ import annotations
 import hashlib
 
 from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
+from engine.claims.rule_loader import evaluate_rule, load_claim_rule_registry
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
 
 _SUPPORTED_TASK = "marriage.divorce_or_remarriage"
 _LIFETIME = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
-_HIGH_RISK_CONFIDENCE_CAP = 0.62
+_CLAIM_RULES = load_claim_rule_registry()
 _MALE_MARKERS = {"乾", "男", "男命", "乾造", "M", "male"}
 _FEMALE_MARKERS = {"坤", "女", "女命", "坤造", "F", "female"}
 
@@ -88,10 +89,17 @@ def generate_claims(
         "compound_distinct_palace_pairs": palace_compound,
     }
     independent_signal_count = sum(int(value) for value in signals.values())
-    if independent_signal_count < 2:
+    context = {
+        "evidence_completeness": features.evidence_completeness,
+        "sex": sex,
+        "spouse_star_basis": spouse_star_basis,
+        "independent_signal_count": independent_signal_count,
+    }
+    rule = _CLAIM_RULES.get("YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1")
+    if not evaluate_rule(rule, context).matched:
         return []
 
-    rule_id = "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1"
+    rule_id = rule.rule_id
     refs = (
         "ten_god_counts.正财", "ten_god_counts.偏财", "ten_god_counts.正官", "ten_god_counts.七杀",
         "ten_god_counts.比肩", "ten_god_counts.劫财", "ten_god_counts.食神", "ten_god_counts.伤官",
@@ -113,16 +121,15 @@ def generate_claims(
         claim_id=stable_claim_id("yang", task.task_id, features.chart_id, rule_id),
         school_id="yang",
         task_id=task.task_id,
-        claim_type="event_claim",
+        claim_type=rule.claim_type,
         stance="support",
-        statement="杨派原局至少两类独立婚姻事件信号同向，存在离婚或再婚事件风险，但不作必然判断。",
+        statement=rule.conclusion_template,
         evidence=(evidence,),
-        falsifier="若婚姻史中没有离婚或再婚记录，则命题证伪。",
+        falsifier=rule.falsifier,
         time_window=_LIFETIME,
-        confidence_basis="按性别选取配偶星，并要求夫妻宫、配偶星、比劫、食伤冲突或女命官杀混杂中至少两类独立信号同向；高风险任务保守封顶。",
+        confidence_basis=rule.confidence_basis,
         applicability_snapshot={
-            "sex": sex,
-            "spouse_star_basis": spouse_star_basis,
+            **context,
             "spouse_star_count": spouse_count,
             "day_branch": day_branch,
             "palace_pair_count": palace_pair_count,
@@ -131,9 +138,13 @@ def generate_claims(
             "evidence_completeness": features.evidence_completeness,
         },
         domain=task.domain,
-        polarity="negative",
+        polarity=rule.polarity,
         magnitude=min(1.0, 0.42 + 0.08 * independent_signal_count),
-        confidence=min(0.60, _HIGH_RISK_CONFIDENCE_CAP) if task.high_risk else 0.60,
+        confidence=(
+            min(rule.base_confidence, rule.high_risk_confidence_cap)
+            if task.high_risk and rule.high_risk_confidence_cap is not None
+            else rule.base_confidence
+        ),
         high_risk=task.high_risk,
     )
     validate_claim_evidence(claim, chart, features)

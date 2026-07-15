@@ -6,6 +6,7 @@ import hashlib
 from dataclasses import dataclass
 
 from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
+from engine.claims.rule_loader import ExecutableClaimRule, evaluate_rule, load_claim_rule_registry
 from engine.decision.models import ChartFactLedger
 from engine.energy.tiyong import evaluate_tiyong
 from engine.energy.zuogong import evaluate_zuogong
@@ -27,7 +28,7 @@ _TIMING_TASKS = {
 }
 _SUPPORTED_TASKS = _EVENT_TASKS | _TIMING_TASKS
 _LIFETIME = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
-_HIGH_RISK_CONFIDENCE_CAP = 0.62
+_CLAIM_RULES = load_claim_rule_registry()
 
 
 @dataclass(frozen=True)
@@ -95,19 +96,15 @@ def _claim(
     task: BlindTask,
     structure: _DuanStructure,
     *,
-    rule_id: str,
-    statement: str,
-    falsifier: str,
-    confidence_basis: str,
+    rule: ExecutableClaimRule,
     feature_refs: tuple[str, ...],
     evidence_text: str,
     snapshot: dict[str, object],
-    confidence: float,
 ) -> list[Claim]:
     evidence = _evidence(
         features,
         task_id=task.task_id,
-        rule_id=rule_id,
+        rule_id=rule.rule_id,
         feature_refs=feature_refs,
         text=evidence_text,
     )
@@ -121,21 +118,25 @@ def _claim(
         "evidence_completeness": features.evidence_completeness,
     }
     claim = Claim(
-        claim_id=stable_claim_id("duan", task.task_id, features.chart_id, rule_id),
+        claim_id=stable_claim_id("duan", task.task_id, features.chart_id, rule.rule_id),
         school_id="duan",
         task_id=task.task_id,
-        claim_type="event_claim",
+        claim_type=rule.claim_type,
         stance="support",
-        statement=statement,
+        statement=rule.conclusion_template,
         evidence=(evidence,),
-        falsifier=falsifier,
+        falsifier=rule.falsifier,
         time_window=_LIFETIME,
-        confidence_basis=confidence_basis,
+        confidence_basis=rule.confidence_basis,
         applicability_snapshot=applicability,
         domain=task.domain,
-        polarity="negative" if task.high_risk else "neutral",
+        polarity=rule.polarity,
         magnitude=min(1.0, 0.45 + 0.08 * structure.active_path_count),
-        confidence=min(confidence, _HIGH_RISK_CONFIDENCE_CAP) if task.high_risk else confidence,
+        confidence=(
+            min(rule.base_confidence, rule.high_risk_confidence_cap)
+            if task.high_risk and rule.high_risk_confidence_cap is not None
+            else rule.base_confidence
+        ),
         high_risk=task.high_risk,
     )
     validate_claim_evidence(claim, chart, features)
@@ -147,21 +148,26 @@ def _career_role_change(
 ) -> list[Claim]:
     output_count = _count(features, "食神", "伤官")
     official_count = _count(features, "正官", "七杀")
-    career_structure = features.has_official and features.has_output and output_count >= 2 and official_count >= 1
     movement_structure = features.mixed_official_kill or features.branch_conflict_intensity >= 0.35
-    if not (career_structure and movement_structure and structure.active_path_count >= 1):
+    context = {
+        "evidence_completeness": features.evidence_completeness,
+        "has_official": features.has_official,
+        "has_output": features.has_output,
+        "output_count": output_count,
+        "official_count": official_count,
+        "movement_structure": movement_structure,
+        "active_path_count": structure.active_path_count,
+        "branch_conflict_intensity": features.branch_conflict_intensity,
+    }
+    rule = _CLAIM_RULES.get("DUAN-EVENT-CAREER-ROLE-CHANGE-V1")
+    if not evaluate_rule(rule, context).matched:
         return []
-    rule_id = "DUAN-EVENT-CAREER-ROLE-CHANGE-V1"
     return _claim(
         chart, features, task, structure,
-        rule_id=rule_id,
-        statement="段派原局的财官事业结构与做功、冲动信号同向，支持一生中出现显著岗位、职责或职业角色变化。",
-        falsifier="若职业历程中无显著岗位、职责或职业角色变化，则命题证伪。",
-        confidence_basis="官杀与食伤事业结构、段派体用做功路径及官杀混杂/地支冲动至少共同成立。",
+        rule=rule,
         feature_refs=("ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正官", "ten_god_counts.七杀", "mixed_official_kill", "branch_conflict_intensity"),
         evidence_text=f"食伤={output_count}，官杀={official_count}，有效做功路径={structure.active_path_count}，冲突强度={features.branch_conflict_intensity:.2f}。",
-        snapshot={"output_count": output_count, "official_count": official_count, "mixed_official_kill": features.mixed_official_kill, "branch_conflict_intensity": features.branch_conflict_intensity},
-        confidence=0.68,
+        snapshot=context,
     )
 
 
@@ -178,20 +184,25 @@ def _career_path_type(
         predicted_label = "entrepreneurship"
     else:
         return []
-    if structure.active_path_count < 1 and predicted_label != "employment":
+    context = {
+        "evidence_completeness": features.evidence_completeness,
+        "predicted_label": predicted_label,
+        "employment_score": employment_score,
+        "entrepreneurship_score": entrepreneurship_score,
+        "employment_advantage": employment_score - entrepreneurship_score,
+        "entrepreneurship_advantage": entrepreneurship_score - employment_score,
+        "branch_conflict_intensity": features.branch_conflict_intensity,
+        "active_path_count": structure.active_path_count,
+    }
+    rule = _CLAIM_RULES.get(f"DUAN-EVENT-CAREER-PATH-{predicted_label.upper()}-V1")
+    if not evaluate_rule(rule, context).matched:
         return []
-    rule_id = f"DUAN-EVENT-CAREER-PATH-{predicted_label.upper()}-V1"
-    labels = {"employment": "受雇任职", "entrepreneurship": "创业经营", "mixed": "任职与经营混合"}
     return _claim(
         chart, features, task, structure,
-        rule_id=rule_id,
-        statement=f"段派原局结构支持主要职业路径归为{labels[predicted_label]}。",
-        falsifier=f"若可核验职业历程的主要路径不属于 {predicted_label}，则命题证伪。",
-        confidence_basis="按官印任职信号与食伤财经营信号的差值分类；信号接近时不输出。",
+        rule=rule,
         feature_refs=("ten_god_counts.正官", "ten_god_counts.七杀", "ten_god_counts.正印", "ten_god_counts.偏印", "ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正财", "ten_god_counts.偏财", "branch_conflict_intensity"),
         evidence_text=f"任职信号={employment_score}，经营信号={entrepreneurship_score}，有效做功路径={structure.active_path_count}。",
-        snapshot={"predicted_label": predicted_label, "employment_score": employment_score, "entrepreneurship_score": entrepreneurship_score},
-        confidence=0.66,
+        snapshot=context,
     )
 
 
@@ -201,27 +212,24 @@ def _wealth_debt(
     wealth_count = _count(features, "正财", "偏财")
     peer_pressure = _count(features, "比肩", "劫财")
     imbalance = features.draining_count - features.supporting_count
-    conflict = features.branch_conflict_intensity >= 0.55
-    if not (
-        features.has_wealth
-        and wealth_count >= 2
-        and peer_pressure >= 3
-        and imbalance >= 3
-        and conflict
-        and structure.active_path_count >= 1
-    ):
+    context = {
+        "evidence_completeness": features.evidence_completeness,
+        "has_wealth": features.has_wealth,
+        "wealth_count": wealth_count,
+        "peer_pressure": peer_pressure,
+        "support_drain_imbalance": imbalance,
+        "branch_conflict_intensity": features.branch_conflict_intensity,
+        "active_path_count": structure.active_path_count,
+    }
+    rule = _CLAIM_RULES.get("DUAN-EVENT-WEALTH-DEBT-V1")
+    if not evaluate_rule(rule, context).matched:
         return []
-    rule_id = "DUAN-EVENT-WEALTH-DEBT-V1"
     return _claim(
         chart, features, task, structure,
-        rule_id=rule_id,
-        statement="段派原局显示财富承压、比劫竞争与做功失衡同向，存在形成显著债务或长期负债的风险。",
-        falsifier="若命主没有可核验的显著债务、长期负债或债务危机记录，则命题证伪。",
-        confidence_basis="财星存在且同时受到比劫竞争、克泄耗失衡、强冲动及做功路径约束；高风险任务采用保守置信上限。",
+        rule=rule,
         feature_refs=("ten_god_counts.正财", "ten_god_counts.偏财", "ten_god_counts.比肩", "ten_god_counts.劫财", "supporting_count", "draining_count", "branch_conflict_intensity"),
         evidence_text=f"财星={wealth_count}，比劫={peer_pressure}，克泄耗减生扶={imbalance}，冲突强度={features.branch_conflict_intensity:.2f}。",
-        snapshot={"wealth_count": wealth_count, "peer_pressure": peer_pressure, "support_drain_imbalance": imbalance, "branch_conflict_intensity": features.branch_conflict_intensity},
-        confidence=0.62,
+        snapshot=context,
     )
 
 
@@ -236,19 +244,20 @@ def _marriage_divorce_or_remarriage(
         + int(features.mixed_official_kill)
         + int(bool(features.chong_pairs) and bool(features.xing_hai_pairs))
     )
-    if independent_signals < 2 or structure.active_path_count < 1:
+    context = {
+        "evidence_completeness": features.evidence_completeness,
+        "independent_signal_count": independent_signals,
+        "active_path_count": structure.active_path_count,
+    }
+    rule = _CLAIM_RULES.get("DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1")
+    if not evaluate_rule(rule, context).matched:
         return []
-    rule_id = "DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1"
     return _claim(
         chart, features, task, structure,
-        rule_id=rule_id,
-        statement="段派原局至少两组独立婚姻事件信号同向，支持一生中存在离婚或再婚事件风险，但不作必然判断。",
-        falsifier="若命主婚姻史中没有离婚或再婚记录，则命题证伪。",
-        confidence_basis="日支受冲刑害、官杀混杂、冲与刑害并见中至少两项独立成立，并有段派做功路径；高风险任务采用保守置信上限。",
+        rule=rule,
         feature_refs=("chong_pairs", "xing_hai_pairs", "mixed_official_kill", "branch_conflict_intensity"),
         evidence_text=f"日支受扰={day_branch_disrupted}，官杀混杂={features.mixed_official_kill}，冲刑害复合={bool(features.chong_pairs) and bool(features.xing_hai_pairs)}。",
-        snapshot={"day_branch": day_branch, "day_branch_disrupted": day_branch_disrupted, "mixed_official_kill": features.mixed_official_kill, "independent_signal_count": independent_signals},
-        confidence=0.60,
+        snapshot={**context, "day_branch": day_branch, "day_branch_disrupted": day_branch_disrupted, "mixed_official_kill": features.mixed_official_kill},
     )
 
 

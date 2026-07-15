@@ -1,0 +1,259 @@
+schema_version: claim-executable-rules/v1
+rules:
+  - rule_id: DUAN-EVENT-CAREER-ROLE-CHANGE-V1
+    school_id: duan
+    task_scope: [career.role_change]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, has_official, has_output, output_count, official_count, movement_structure, active_path_count, branch_conflict_intensity]
+    conditions:
+      - {fact: has_official, op: truthy, value: true}
+      - {fact: has_output, op: truthy, value: true}
+      - {fact: output_count, op: gte, value: 2}
+      - {fact: official_count, op: gte, value: 1}
+      - {fact: movement_structure, op: truthy, value: true}
+      - {fact: active_path_count, op: gte, value: 1}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: branch_conflict_intensity, op: lte, value: 0.34}
+    conclusion_template: 段派原局的财官事业结构与做功、冲动信号同向，支持一生中出现显著岗位、职责或职业角色变化。
+    confidence_basis: 官杀与食伤事业结构、段派体用做功路径及官杀混杂或地支冲动共同成立。
+    falsifier: 若职业历程中无显著岗位、职责或职业角色变化，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-001 / §17.1 宾主, supports: 支持从主客关系审视事业角色变化。}
+      - {path: theory/duan/index.yaml, locator: M1-D-005、M1-D-006 / §17.2 体用, supports: 支持以体为工具、财官为目的构造事业结构。}
+      - {path: theory/duan/index.yaml, locator: M1-D-009 / §17.3 做功, supports: 支持以可计算做功路径作为落地条件。}
+    lifecycle_state: production-candidate
+    base_confidence: 0.68
+    high_risk_confidence_cap: 0.62
+    polarity: neutral
+
+  - rule_id: DUAN-EVENT-CAREER-PATH-EMPLOYMENT-V1
+    school_id: duan
+    task_scope: [career.path_type]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, predicted_label, employment_score, entrepreneurship_score, employment_advantage, active_path_count]
+    conditions:
+      - {fact: predicted_label, op: eq, value: employment}
+      - {fact: employment_score, op: gte, value: 4}
+      - {fact: employment_advantage, op: gte, value: 3}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: active_path_count, op: lte, value: 0}
+    conclusion_template: 段派原局结构支持主要职业路径归为受雇任职。
+    confidence_basis: 官印任职信号明显高于食伤财经营信号；信号接近时不输出。
+    falsifier: 若可核验职业历程的主要路径不属于 employment，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-005、M1-D-006 / §17.2 体用, supports: 支持按体用与官杀目的识别任职路径。}
+      - {path: theory/duan/index.yaml, locator: M1-D-009 / §17.3 做功, supports: 支持用结构作用关系审计职业路径。}
+    lifecycle_state: production-candidate
+    predicted_label: employment
+    base_confidence: 0.66
+    high_risk_confidence_cap: 0.62
+    polarity: neutral
+
+  - rule_id: DUAN-EVENT-CAREER-PATH-ENTREPRENEURSHIP-V1
+    school_id: duan
+    task_scope: [career.path_type]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, predicted_label, employment_score, entrepreneurship_score, entrepreneurship_advantage, active_path_count]
+    conditions:
+      - {fact: predicted_label, op: eq, value: entrepreneurship}
+      - {fact: entrepreneurship_score, op: gte, value: 4}
+      - {fact: entrepreneurship_advantage, op: gte, value: 3}
+      - {fact: active_path_count, op: gte, value: 1}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: employment_score, op: gte, value: 2}
+    conclusion_template: 段派原局结构支持主要职业路径归为创业经营。
+    confidence_basis: 食伤财经营信号明显高于官印任职信号，并存在有效做功路径；信号接近时不输出。
+    falsifier: 若可核验职业历程的主要路径不属于 entrepreneurship，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-006、M1-D-007 / §17.2 体用, supports: 支持将财与食伤作为经营目的及作用媒介。}
+      - {path: theory/duan/index.yaml, locator: M1-D-009 / §17.3 做功, supports: 支持以有效做功路径约束经营结论。}
+    lifecycle_state: production-candidate
+    predicted_label: entrepreneurship
+    base_confidence: 0.66
+    high_risk_confidence_cap: 0.62
+    polarity: neutral
+
+  - rule_id: DUAN-EVENT-CAREER-PATH-MIXED-V1
+    school_id: duan
+    task_scope: [career.path_type]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, predicted_label, employment_score, entrepreneurship_score, branch_conflict_intensity, active_path_count]
+    conditions:
+      - {fact: predicted_label, op: eq, value: mixed}
+      - {fact: employment_score, op: gte, value: 4}
+      - {fact: entrepreneurship_score, op: gte, value: 4}
+      - {fact: branch_conflict_intensity, op: gte, value: 0.35}
+      - {fact: active_path_count, op: gte, value: 1}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: branch_conflict_intensity, op: lte, value: 0.4}
+    conclusion_template: 段派原局结构支持主要职业路径归为任职与经营混合。
+    confidence_basis: 官印任职与食伤财经营信号均达到门槛，并有冲动及有效做功路径；单侧信号不足时不输出。
+    falsifier: 若可核验职业历程的主要路径不属于 mixed，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-005、M1-D-006、M1-D-007 / §17.2 体用, supports: 支持官财食伤并见时区分多种目的与工具。}
+      - {path: theory/duan/index.yaml, locator: M1-D-014 / §17.3 做功, supports: 支持一命多功的复合职业路径。}
+    lifecycle_state: production-candidate
+    predicted_label: mixed
+    base_confidence: 0.66
+    high_risk_confidence_cap: 0.62
+    polarity: neutral
+
+  - rule_id: DUAN-EVENT-WEALTH-DEBT-V1
+    school_id: duan
+    task_scope: [wealth.debt]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, has_wealth, wealth_count, peer_pressure, support_drain_imbalance, branch_conflict_intensity, active_path_count]
+    conditions:
+      - {fact: has_wealth, op: truthy, value: true}
+      - {fact: wealth_count, op: gte, value: 2}
+      - {fact: peer_pressure, op: gte, value: 3}
+      - {fact: support_drain_imbalance, op: gte, value: 3}
+      - {fact: branch_conflict_intensity, op: gte, value: 0.55}
+      - {fact: active_path_count, op: gte, value: 1}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: support_drain_imbalance, op: lte, value: 3}
+    conclusion_template: 段派原局显示财富承压、比劫竞争与做功失衡同向，存在形成显著债务或长期负债的风险。
+    confidence_basis: 财星存在且同时受到比劫竞争、克泄耗失衡、强冲动及做功路径约束；高风险任务采用保守置信上限。
+    falsifier: 若命主没有可核验的显著债务、长期负债或债务危机记录，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-006 / §17.2 体用, supports: 支持以财为目的审查财富结构。}
+      - {path: theory/duan/index.yaml, locator: M1-D-009、M1-D-014 / §17.3 做功, supports: 支持把做功路径与复合失衡作为财富落地约束。}
+      - {path: theory/duan/index.yaml, locator: M1-D-226 / 财多无功需官统财, supports: 支持财多但缺乏有效统摄时的承压判断。}
+    lifecycle_state: production-candidate
+    base_confidence: 0.62
+    high_risk_confidence_cap: 0.62
+    polarity: negative
+
+  - rule_id: DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1
+    school_id: duan
+    task_scope: [marriage.divorce_or_remarriage]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, independent_signal_count, active_path_count]
+    conditions:
+      - {fact: independent_signal_count, op: gte, value: 2}
+      - {fact: active_path_count, op: gte, value: 1}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: independent_signal_count, op: lte, value: 2}
+    conclusion_template: 段派原局至少两组独立婚姻事件信号同向，支持一生中存在离婚或再婚事件风险，但不作必然判断。
+    confidence_basis: 日支受冲刑害、官杀混杂、冲与刑害并见中至少两项独立成立，并有段派做功路径；高风险任务采用保守置信上限。
+    falsifier: 若命主婚姻史中没有离婚或再婚记录，则命题证伪。
+    source_refs:
+      - {path: theory/duan/index.yaml, locator: M1-D-216 / 六亲体用分论法, supports: 支持婚姻以宫与配偶星联合审查。}
+      - {path: theory/duan/index.yaml, locator: M1-D-249、M1-D-267 / §20.2 婚姻判定, supports: 支持配偶宫优先及宫位被破坏作为风险来源。}
+      - {path: theory/duan/index.yaml, locator: M1-D-250 / 夫妻宫穿夫妻星, supports: 支持宫星同时受损的离婚风险方向；生产结论已降级为非必然风险。}
+    lifecycle_state: production-candidate
+    base_confidence: 0.60
+    high_risk_confidence_cap: 0.62
+    polarity: negative
+
+  - rule_id: GAO-WEALTH-DEBT-STRUCTURAL-CORROBORATION-V1
+    school_id: gao
+    task_scope: [wealth.debt]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, wealth_exposed, pressure_signal_count]
+    conditions:
+      - {fact: wealth_exposed, op: truthy, value: true}
+      - {fact: pressure_signal_count, op: gte, value: 2}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: pressure_signal_count, op: lte, value: 2}
+    conclusion_template: 高派结构性旁证显示债务风险与财富承压信号复合出现，但不作必然判断。
+    confidence_basis: 财星达到最低门槛，并至少有两项比劫竞争、克泄耗失衡、支冲突或五行偏枯代理同向；未使用神煞或应期输入。
+    falsifier: 若没有可核验的显著债务、长期负债或债务危机记录，则命题证伪。
+    source_refs:
+      - {path: theory/gao/index.yaml, locator: G-CS-018 / 穷命七特征, supports: 支持财弱比旺、财多身弱等财富承压方向。}
+      - {path: theory/gao/index.yaml, locator: G-CY-014 / 穷命 7 大特征铁律, supports: 支持财星、比劫、承载与调候失衡的复合审查。}
+      - {path: theory/gao/index.yaml, locator: G-CS-026 / 比劫六条定性法, supports: 支持比劫与财发生作用时的竞争性财富风险。}
+    lifecycle_state: production-candidate
+    base_confidence: 0.60
+    high_risk_confidence_cap: 0.62
+    polarity: negative
+
+  - rule_id: GAO-HEALTH-SYSTEM-RISK-MODERATE-V1
+    school_id: gao
+    task_scope: [health.system_risk]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, predicted_label, risk_signal_count]
+    conditions:
+      - {fact: predicted_label, op: eq, value: moderate}
+      - {fact: risk_signal_count, op: gte, value: 2}
+      - {fact: risk_signal_count, op: lte, value: 2}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: risk_signal_count, op: gte, value: 2}
+    conclusion_template: 高派结构风险分层为 moderate：多项原局结构代理同向，仅表示系统性健康风险旁证，不替代专业评估。
+    confidence_basis: 只按生扶与克泄耗失衡、气候极端、五行集中偏枯及支冲突的复合程度分层；不使用疾病或神煞诊断。
+    falsifier: 若独立结构复核和可核验健康记录均不支持 moderate 风险等级，则命题证伪；该命题不是医学结论。
+    source_refs:
+      - {path: theory/gao/index.yaml, locator: G-CH-009 / 六亲有灾 8 条判断规律, supports: 支持以偏旺偏弱、冲克及宫位受冲作为结构风险来源。}
+      - {path: theory/gao/index.yaml, locator: G-CH-011 / 寿限长短 5 条判断规律, supports: 支持刑冲反复、阴阳失衡及五行过旺过弱的结构风险方向；生产规则不采用寿限结论。}
+    lifecycle_state: production-candidate
+    predicted_label: moderate
+    base_confidence: 0.55
+    high_risk_confidence_cap: 0.62
+    polarity: negative
+
+  - rule_id: GAO-HEALTH-SYSTEM-RISK-HIGH-V1
+    school_id: gao
+    task_scope: [health.system_risk]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, predicted_label, risk_signal_count]
+    conditions:
+      - {fact: predicted_label, op: eq, value: high}
+      - {fact: risk_signal_count, op: gte, value: 3}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+    counter_conditions:
+      - {fact: risk_signal_count, op: lte, value: 3}
+    conclusion_template: 高派结构风险分层为 high：多项原局结构代理同向，仅表示较高的系统性健康风险旁证，不替代专业评估。
+    confidence_basis: 只按生扶与克泄耗失衡、气候极端、五行集中偏枯及支冲突的复合程度分层；不使用疾病或神煞诊断。
+    falsifier: 若独立结构复核和可核验健康记录均不支持 high 风险等级，则命题证伪；该命题不是医学结论。
+    source_refs:
+      - {path: theory/gao/index.yaml, locator: G-CH-009 / 六亲有灾 8 条判断规律, supports: 支持以偏旺偏弱、冲克及宫位受冲作为结构风险来源。}
+      - {path: theory/gao/index.yaml, locator: G-CH-011 / 寿限长短 5 条判断规律, supports: 支持刑冲反复、阴阳失衡及五行过旺过弱的复合结构风险；生产规则不采用寿限结论。}
+    lifecycle_state: production-candidate
+    predicted_label: high
+    base_confidence: 0.60
+    high_risk_confidence_cap: 0.62
+    polarity: negative
+
+  - rule_id: YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1
+    school_id: yang
+    task_scope: [marriage.divorce_or_remarriage]
+    claim_type: event_claim
+    required_facts: [evidence_completeness, sex, spouse_star_basis, independent_signal_count]
+    conditions:
+      - {fact: sex, op: truthy, value: true}
+      - {fact: spouse_star_basis, op: in, value: [wealth, official]}
+      - {fact: independent_signal_count, op: gte, value: 2}
+    exclusions:
+      - {fact: evidence_completeness, op: ne, value: full}
+      - {fact: sex, op: falsy, value: true}
+    counter_conditions:
+      - {fact: independent_signal_count, op: lte, value: 2}
+    conclusion_template: 杨派原局至少两类独立婚姻事件信号同向，存在离婚或再婚事件风险，但不作必然判断。
+    confidence_basis: 按性别选取配偶星，并要求夫妻宫、配偶星、比劫、食伤冲突或女命官杀混杂中至少两类独立信号同向；高风险任务保守封顶。
+    falsifier: 若婚姻史中没有离婚或再婚记录，则命题证伪。
+    source_refs:
+      - {path: theory/yang/index.yaml, locator: M2-Y-066 / 婚姻次数判定法, supports: 支持按男女配偶星并结合冲动审查婚姻事件。}
+      - {path: theory/yang/index.yaml, locator: M2-Y-068 / 男命劫财见财妻宫破, supports: 支持比劫、财星与妻宫共同受损的方向；生产结论已降级为非必然风险。}
+      - {path: theory/yang/index.yaml, locator: M2-Y-088 / 女命坐下官杀库穿破, supports: 支持女命夫妻宫受损与配偶星结构的联合审查；不采用原文铁断。}
+      - {path: theory/yang/index.yaml, locator: M2-Y-111 / 比劫见财与宫冲, supports: 支持比劫见财须叠加夫妻宫冲动才升级离婚风险。}
+    lifecycle_state: production-candidate
+    base_confidence: 0.60
+    high_risk_confidence_cap: 0.62
+    polarity: negative
