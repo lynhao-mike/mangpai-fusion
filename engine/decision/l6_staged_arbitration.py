@@ -181,10 +181,29 @@ class ApplicabilityPlan:
         return cls(source="uniform_fallback")
 
     @classmethod
+    def from_school_routes(
+        cls,
+        route_plan: Mapping[str, str],
+        claims: Sequence[Claim],
+    ) -> ApplicabilityPlan:
+        """把显式 task→school 路由规范为 L6 可消费的确定性权重。"""
+        schools_by_task: dict[str, set[str]] = {}
+        for claim in claims:
+            schools_by_task.setdefault(claim.task_id, set()).add(claim.school_id)
+        weights = {
+            str(task_id): {
+                school_id: 1.0 if school_id == selected_school else 0.0
+                for school_id in sorted(schools_by_task.get(str(task_id), ()))
+            }
+            for task_id, selected_school in route_plan.items()
+        }
+        return cls(weights)
+
+    @classmethod
     def from_route_plan(cls, route_plan: Any) -> ApplicabilityPlan:
         routes = getattr(route_plan, "per_task_routes", None)
         if not isinstance(routes, Mapping):
-            raise TypeError("applicability must be ApplicabilityPlan, RoutePlan, or None")
+            raise TypeError("applicability must be ApplicabilityPlan, RoutePlan, route mapping, or None")
         return cls({str(task_id): dict(route.school_scores) for task_id, route in routes.items()})
 
     def school_weight(self, school_id: str, task_id: str) -> float:
@@ -196,7 +215,14 @@ class ApplicabilityPlan:
 def _coerce_plan(applicability: Any | None, claims: Sequence[Claim]) -> ApplicabilityPlan:
     if applicability is None:
         return ApplicabilityPlan.uniform()
-    plan = applicability if isinstance(applicability, ApplicabilityPlan) else ApplicabilityPlan.from_route_plan(applicability)
+    if isinstance(applicability, ApplicabilityPlan):
+        plan = applicability
+    elif isinstance(applicability, Mapping):
+        if not all(isinstance(task_id, str) and isinstance(school_id, str) for task_id, school_id in applicability.items()):
+            raise TypeError("route mapping must contain string task_id and school_id values")
+        plan = ApplicabilityPlan.from_school_routes(applicability, claims)
+    else:
+        plan = ApplicabilityPlan.from_route_plan(applicability)
     if any(claim.school_id not in plan.task_school_weights.get(claim.task_id, {}) for claim in claims):
         return ApplicabilityPlan.uniform()
     return plan

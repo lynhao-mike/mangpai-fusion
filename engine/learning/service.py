@@ -136,14 +136,37 @@ def process_learning_signals(
         repository.record_signal(signal)
         current_row = rows.get(signal.identity.key)
         current = _current_posterior(current_row)
+        is_high_risk = task_risks[signal.identity.task_id]
         proposed = decide_learning_tier(
             signal,
             current,
             thresholds,
-            is_high_risk=task_risks[signal.identity.task_id],
+            is_high_risk=is_high_risk,
         )
+        if signal.verdict == "no_data" or is_high_risk:
+            reasons = tuple(proposed.audit.get("review_reasons", ()))
+            proposed = replace(
+                proposed,
+                update_tier="record_only",
+                proposed_delta=0.0,
+                proposed_posterior_mean=current.posterior_mean if current else 0.5,
+                proposed_credible_interval=current.credible_interval if current else proposed.proposed_credible_interval,
+                n_eff_after=proposed.n_eff_before,
+                applied=False,
+                requires_human_approval=is_high_risk,
+                rationale=(
+                    "tier=record_only; frozen feedback is not attributable"
+                    if signal.verdict == "no_data"
+                    else "tier=record_only; high-risk updates cannot be auto-applied"
+                ),
+                audit={**dict(proposed.audit), "review_reasons": reasons},
+            )
         approved = proposed.decision_id in approval_decision_ids
-        should_apply = proposed.applied or (proposed.requires_human_approval and approved)
+        should_apply = proposed.applied or (
+            proposed.requires_human_approval
+            and approved
+            and not is_high_risk
+        )
 
         snapshot_ref: str | None = None
         if should_apply and proposed.update_tier in {"adjust_applicability", "adjust_rule_prior"}:
@@ -176,3 +199,21 @@ def process_learning_signals(
         decisions.append(final)
 
     return tuple(decisions)
+
+
+def process_feedback_signal(
+    signal: ConditionalLearningSignal,
+    repository: ConditionalLearningRepository,
+    *,
+    thresholds: LearningThresholds,
+    task_catalog_path: str | Path,
+    created_at: str,
+) -> LearningDecision:
+    """观察单个冻结反馈；仅低风险 apply 决策可推进 active snapshot。"""
+    return process_learning_signals(
+        (signal,),
+        repository=repository,
+        thresholds=thresholds,
+        task_catalog_path=task_catalog_path,
+        created_at=created_at,
+    )[0]

@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Sequence
+from pathlib import Path
+from typing import Any, Mapping, Sequence
 
 from engine.application.pipeline_runner import run_pipeline
 from engine.claims.orchestrator import generate_frozen_claim_run
+from engine.claims.domain import Claim
 from engine.claims.runner_registry import DEFAULT_RUNNER_REGISTRY, RunnerRegistry
+from engine.decision.l6_staged_arbitration import (
+    ConflictRuleSet,
+    StagedArbitrationResult,
+    arbitrate_staged,
+)
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask, FrozenBlindRun
 from engine.features import build_chart_feature_vector
@@ -15,6 +22,7 @@ from engine.predicates.types import Bazi, Dayun, DayunStep, GanZhi, ParsedInput,
 
 _TASK_CATALOG_VERSION = "school-capability-tasks/v1-task10-staged"
 _RULE_SNAPSHOT_ID = "task10-structured-parallel-v1"
+_DEFAULT_CONFLICT_RULES = Path(__file__).parents[1] / "decision" / "conflict-rules.yaml"
 
 
 @dataclass(frozen=True)
@@ -90,6 +98,29 @@ def chart_to_parsed_input(chart: ChartFactLedger, *, case_id: str) -> ParsedInpu
     )
 
 
+def _capturing_registry(
+    registry: RunnerRegistry,
+    tasks: Sequence[BlindTask],
+    schools: Sequence[str],
+    captured: list[Claim],
+) -> RunnerRegistry:
+    """装饰现有 runner 以保留本次生成的原始 Claim，不改变各派执行逻辑。"""
+    registrations = []
+    for school_id in sorted(set(schools)):
+        for task in sorted(tasks, key=lambda item: item.task_id):
+            generator = registry.resolve(school_id, task.task_id)
+            if generator is None:
+                continue
+
+            def capture(chart, features, blind_task, *, _generator=generator):
+                claims = _generator(chart, features, blind_task)
+                captured.extend(claims)
+                return claims
+
+            registrations.append((school_id, task.task_id, capture))
+    return RunnerRegistry(registrations)
+
+
 def run_parallel(
     chart: ChartFactLedger,
     tasks: Sequence[BlindTask],
@@ -115,6 +146,7 @@ def run_parallel(
 
     claim_snapshot: FrozenBlindRun | None = None
     claim_error: str | None = None
+    captured_claims: list[Claim] = []
     try:
         claim_snapshot = generate_frozen_claim_run(
             chart,
@@ -123,8 +155,9 @@ def run_parallel(
             task_catalog_version=_TASK_CATALOG_VERSION,
             rule_snapshot_id=_RULE_SNAPSHOT_ID,
             schools=schools,
-            registry=registry,
+            registry=_capturing_registry(registry, tasks, schools, captured_claims),
         )
+        object.__setattr__(claim_snapshot, "staged_claims", tuple(captured_claims))
     except Exception as exc:  # noqa: BLE001 - branch isolation boundary
         claim_error = _error_text(exc)
 
@@ -136,4 +169,31 @@ def run_parallel(
         claim_error=claim_error,
         task_metadata=task_metadata,
         evidence_completeness=completeness,
+    )
+
+
+def _claims_from_snapshot(snapshot: FrozenBlindRun | None) -> tuple[Claim, ...]:
+    """读取冻结 run 上随运行产生的 Claim 旁车；不从展示字段反推命题。"""
+    if snapshot is None:
+        return ()
+    claims = getattr(snapshot, "staged_claims", ())
+    if not isinstance(claims, tuple | list) or not all(isinstance(item, Claim) for item in claims):
+        return ()
+    return tuple(claims)
+
+
+def run_parallel_with_arbitration(
+    parallel_run: ParallelRun,
+    route_plan: Mapping[str, str] | None = None,
+    *,
+    conflict_rules: ConflictRuleSet | None = None,
+) -> StagedArbitrationResult:
+    """把显式并跑产物送入 staged L6；缺少 Claim 时返回三段空裁决。"""
+    claims = _claims_from_snapshot(parallel_run.claim_snapshot)
+    rules = conflict_rules or ConflictRuleSet.from_yaml(_DEFAULT_CONFLICT_RULES)
+    return arbitrate_staged(
+        parallel_run.case_id,
+        claims,
+        route_plan,
+        conflict_rules=rules,
     )

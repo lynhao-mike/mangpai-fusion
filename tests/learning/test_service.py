@@ -165,7 +165,7 @@ def test_high_risk_medium_sample_does_not_apply_without_approval(tmp_path: Path)
     assert "high_risk" in decisions[0].audit["review_reasons"]
 
 
-def test_unattributable_signal_enters_manual_review_without_distribution(tmp_path: Path) -> None:
+def test_unattributable_signal_is_record_only_and_enters_review_without_distribution(tmp_path: Path) -> None:
     repository = ConditionalLearningRepository(tmp_path / "learning")
     parent = _seed(repository, _row(n_eff=10))
 
@@ -175,7 +175,8 @@ def test_unattributable_signal_enters_manual_review_without_distribution(tmp_pat
         [_signal("sig-no-data", verdict="no_data", attributable=False)],
     )
 
-    assert decisions[0].update_tier == "manual_review"
+    assert decisions[0].update_tier == "record_only"
+    assert decisions[0].applied is False
     assert decisions[0].n_eff_before == decisions[0].n_eff_after == 10
     assert decisions[0].proposed_delta == 0
     assert repository.active_snapshot_ref() == parent
