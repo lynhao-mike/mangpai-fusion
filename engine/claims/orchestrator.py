@@ -2,23 +2,16 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from typing import Any
 
 from engine.claims.blind_adapter import claim_to_blind_output
-from engine.claims.domain import Claim, TaskUnsupported
+from engine.claims.domain import TaskUnsupported
+from engine.claims.runner_registry import DEFAULT_RUNNER_REGISTRY, RunnerRegistry
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.freeze import freeze_outputs
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, FrozenBlindRun
-from engine.features import ChartFeatureVector, build_chart_feature_vector
-from engine.v5.ren_runner import generate_claims as generate_ren_claims
-from engine.v5.ziping_runner import generate_claims as generate_ziping_claims
-
-ClaimGenerator = Callable[[ChartFactLedger, ChartFeatureVector, BlindTask], list[Claim]]
-_ENGINE_RUNNERS: dict[str, ClaimGenerator] = {
-    "ziping": generate_ziping_claims,
-    "ren": generate_ren_claims,
-}
+from engine.features import build_chart_feature_vector
 
 
 def chart_ledger_from_mapping(chart: dict[str, Any]) -> ChartFactLedger:
@@ -80,6 +73,7 @@ def generate_blind_outputs(
     *,
     case_id: str,
     schools: Sequence[str] = ("ziping", "ren"),
+    registry: RunnerRegistry = DEFAULT_RUNNER_REGISTRY,
 ) -> list[BlindSchoolOutput]:
     """运行任务型 L2 引擎；不消费反馈、报告或人工 school-claims JSON。"""
     ledger = chart if isinstance(chart, ChartFactLedger) else chart_ledger_from_mapping(chart)
@@ -93,8 +87,8 @@ def generate_blind_outputs(
 
     rows: list[BlindSchoolOutput] = []
     for school in sorted(set(schools)):
-        generator = _ENGINE_RUNNERS.get(school)
         for task in sorted(tasks, key=lambda item: item.task_id):
+            generator = registry.resolve(school, task.task_id)
             if generator is None:
                 rows.append(_state_output(
                     case_id=case_id, school=school, task=task, state="unsupported",
@@ -140,10 +134,17 @@ def generate_frozen_claim_run(
     task_catalog_version: str,
     rule_snapshot_id: str,
     schools: Sequence[str] = ("ziping", "ren"),
+    registry: RunnerRegistry = DEFAULT_RUNNER_REGISTRY,
     frozen_at: str | None = None,
 ) -> FrozenBlindRun:
     """从命盘事实直接生成并冻结盲测输出，形成 03 可消费的标准制品。"""
-    outputs = generate_blind_outputs(chart, tasks, case_id=case_id, schools=schools)
+    outputs = generate_blind_outputs(
+        chart,
+        tasks,
+        case_id=case_id,
+        schools=schools,
+        registry=registry,
+    )
     return freeze_outputs(
         outputs,
         task_catalog_version,
