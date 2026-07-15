@@ -55,6 +55,10 @@ def test_default_registry_resolves_only_currently_implemented_school_tasks() -> 
         "career.path_type",
         "wealth.debt",
         "marriage.divorce_or_remarriage",
+        "career.change_window",
+        "marriage.event_window",
+        "wealth.major_loss_window",
+        "health.event_window",
     }
 
     for task_id in ziping_tasks:
@@ -67,7 +71,7 @@ def test_default_registry_resolves_only_currently_implemented_school_tasks() -> 
     assert DEFAULT_RUNNER_REGISTRY.resolve("ziping", "career.change_window") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("ren", "structure.overview") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("unknown-school", "structure.overview") is None
-    assert DEFAULT_RUNNER_REGISTRY.resolve("duan", "career.change_window") is None
+    assert DEFAULT_RUNNER_REGISTRY.resolve("duan", "structure.overview") is None
 
 
 def test_registry_rejects_duplicate_school_task_registration() -> None:

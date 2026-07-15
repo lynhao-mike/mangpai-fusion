@@ -16,6 +16,10 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
+from engine.claims import Claim, Evidence, TaskUnsupported, stable_claim_id, validate_claim_evidence
+from engine.decision.models import ChartFactLedger
+from engine.evaluation.models import BlindTask
+from engine.features import ChartFeatureVector
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence
 
 
@@ -295,6 +299,114 @@ def run_ditiansui_independent(chart: dict[str, Any], case_id: str) -> list[V5Cla
     ))
 
     return claims
+
+
+# ── 统一 L2 Claim 入口 ───────────────────────────────────────────────────────
+
+_DTS_CLIMATE_THRESHOLD = 0.65
+_DTS_CONCENTRATION_THRESHOLD = 0.50
+
+
+def _l2_evidence(
+    features: ChartFeatureVector,
+    *,
+    rule_id: str,
+    feature_refs: tuple[str, ...],
+    text: str,
+) -> Evidence:
+    raw = f"ditiansui|structure.overview|{features.chart_id}|{rule_id}|{'|'.join(feature_refs)}"
+    return Evidence(
+        evidence_id="evidence-" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20],
+        fact_refs=("four_pillars.month",),
+        feature_refs=feature_refs,
+        rule_id=rule_id,
+        text=text,
+    )
+
+
+def generate_claims(
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    task: BlindTask,
+) -> list[Claim]:
+    """从 cfv-v1 生成最多一条滴天髓结构命题；保留旧 V5 入口并存。"""
+    if task.task_id != "structure.overview":
+        raise TaskUnsupported(f"ditiansui does not support task: {task.task_id}")
+    if features.evidence_completeness == "partial":
+        return []
+
+    axis = max(abs(features.cold_warm_axis), abs(features.dry_wet_axis))
+    if features.climate_extreme and axis >= _DTS_CLIMATE_THRESHOLD:
+        temperature = "寒" if features.cold_warm_axis <= -_DTS_CLIMATE_THRESHOLD else "热" if features.cold_warm_axis >= _DTS_CLIMATE_THRESHOLD else ""
+        moisture = "湿" if features.dry_wet_axis <= -_DTS_CLIMATE_THRESHOLD else "燥" if features.dry_wet_axis >= _DTS_CLIMATE_THRESHOLD else ""
+        pattern = "、".join(item for item in (temperature, moisture) if item)
+        rule_id = "DITIANSUI-STRUCTURE-CLIMATE-EXTREME-V1"
+        refs = ("cold_warm_axis", "dry_wet_axis", "climate_extreme", "evidence_completeness")
+        evidence = _l2_evidence(
+            features,
+            rule_id=rule_id,
+            feature_refs=refs,
+            text=f"cfv-v1 寒暖轴={features.cold_warm_axis:.2f}、燥湿轴={features.dry_wet_axis:.2f}，达到极端阈值。",
+        )
+        statement = f"滴天髓结构判断：原局寒暖燥湿呈{pattern or '明显'}失衡，属于调候层面的显著结构约束。"
+        snapshot = {
+            "rule": "climate_extreme",
+            "cold_warm_axis": features.cold_warm_axis,
+            "dry_wet_axis": features.dry_wet_axis,
+            "climate_extreme": features.climate_extreme,
+            "evidence_completeness": features.evidence_completeness,
+        }
+        confidence = 0.66 if features.evidence_completeness == "full" else 0.58
+        confidence_basis = "cfv-v1 气候极端标记与至少一条寒暖/燥湿轴达到明确阈值；残缺时降级。"
+    elif (
+        features.element_concentration >= _DTS_CONCENTRATION_THRESHOLD
+        and (bool(features.dominant_element) or bool(features.missing_elements))
+    ):
+        rule_id = "DITIANSUI-STRUCTURE-QI-CONCENTRATION-V1"
+        refs = (
+            "element_concentration", "dominant_element", "missing_elements",
+            "element_energy", "evidence_completeness",
+        )
+        missing = "、".join(features.missing_elements) or "无明确缺失"
+        evidence = _l2_evidence(
+            features,
+            rule_id=rule_id,
+            feature_refs=refs,
+            text=f"主导五行为{features.dominant_element}，集中度={features.element_concentration:.3f}，缺失五行={missing}。",
+        )
+        statement = f"滴天髓结构判断：五行气势向{features.dominant_element}集中，并见{missing}，形成偏枯或集中结构。"
+        snapshot = {
+            "rule": "qi_concentration",
+            "element_concentration": features.element_concentration,
+            "dominant_element": features.dominant_element,
+            "missing_elements": features.missing_elements,
+            "element_energy": dict(features.element_energy),
+            "evidence_completeness": features.evidence_completeness,
+        }
+        confidence = 0.64 if features.evidence_completeness == "full" else 0.56
+        confidence_basis = "cfv-v1 五行集中度达到明确阈值，并可定位主导或缺失五行；残缺时降级。"
+    else:
+        return []
+
+    claim = Claim(
+        claim_id=stable_claim_id("ditiansui", task.task_id, features.chart_id, rule_id),
+        school_id="ditiansui",
+        task_id=task.task_id,
+        claim_type="structure_claim",
+        stance="support",
+        statement=statement,
+        evidence=(evidence,),
+        falsifier="若按同一特征版本独立复核时不具备该寒暖燥湿或五行气势结构，则命题证伪。",
+        time_window=None,
+        confidence_basis=confidence_basis,
+        applicability_snapshot=snapshot,
+        domain=task.domain,
+        polarity="neutral",
+        confidence=confidence,
+        high_risk=task.high_risk,
+    )
+    validate_claim_evidence(claim, chart, features)
+    return [claim]
 
 
 # ── self-check ────────────────────────────────────────────────────────────────

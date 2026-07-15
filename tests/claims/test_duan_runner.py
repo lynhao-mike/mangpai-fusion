@@ -231,13 +231,12 @@ def test_all_event_tasks_abstain_on_partial_evidence() -> None:
         assert generate_duan_claims(_chart(), base, _task(task_id)) == []
 
 
-def test_non_event_tasks_raise_unsupported_and_timing_remains_unregistered() -> None:
+def test_unknown_non_event_task_raises_unsupported_and_timing_is_registered() -> None:
     features = build_chart_feature_vector(_chart())
-    for task_id in (*TIMING_TASKS, "structure.overview"):
-        with pytest.raises(TaskUnsupported, match="duan does not support task"):
-            generate_duan_claims(_chart(), features, _task(task_id))
+    with pytest.raises(TaskUnsupported, match="duan does not support task"):
+        generate_duan_claims(_chart(), features, _task("structure.overview"))
     for task_id in TIMING_TASKS:
-        assert DEFAULT_RUNNER_REGISTRY.resolve("duan", task_id) is None
+        assert DEFAULT_RUNNER_REGISTRY.resolve("duan", task_id) is generate_duan_claims
 
 
 def test_default_registry_registers_exactly_the_four_duan_event_tasks() -> None:
@@ -246,7 +245,7 @@ def test_default_registry_registers_exactly_the_four_duan_event_tasks() -> None:
     assert DEFAULT_RUNNER_REGISTRY.resolve("duan", "marriage.relationship_pressure") is None
 
 
-def test_orchestrator_preserves_claim_abstain_and_unsupported_for_duan() -> None:
+def test_orchestrator_preserves_claim_and_abstain_for_duan_covered_tasks() -> None:
     chart = _chart()
     rows = generate_blind_outputs(
         chart,
@@ -256,4 +255,4 @@ def test_orchestrator_preserves_claim_abstain_and_unsupported_for_duan() -> None
     )
     indexed = {row.task_id: row.state for row in rows}
     assert indexed["career.role_change"] in {"claim", "abstain"}
-    assert indexed["career.change_window"] == "unsupported"
+    assert indexed["career.change_window"] == "abstain"

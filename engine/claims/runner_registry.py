@@ -9,8 +9,11 @@ from engine.claims.domain import Claim
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
+from engine.v5.ditiansui_runner import generate_claims as generate_ditiansui_claims
 from engine.v5.duan_runner import generate_claims as generate_duan_claims
+from engine.v5.gao_runner import generate_claims as generate_gao_claims
 from engine.v5.ren_runner import generate_claims as generate_ren_claims
+from engine.v5.yang_runner import generate_claims as generate_yang_claims
 from engine.v5.ziping_runner import generate_claims as generate_ziping_claims
 
 ClaimGenerator = Callable[[ChartFactLedger, ChartFeatureVector, BlindTask], list[Claim]]
@@ -55,9 +58,17 @@ DEFAULT_RUNNER_REGISTRY = RunnerRegistry(
         ("ren", "marriage.event_window", generate_ren_claims),
         ("ren", "wealth.major_loss_window", generate_ren_claims),
         ("ren", "health.event_window", generate_ren_claims),
+        ("ditiansui", "structure.overview", generate_ditiansui_claims),
+        ("gao", "wealth.debt", generate_gao_claims),
+        ("gao", "health.system_risk", generate_gao_claims),
+        ("yang", "marriage.divorce_or_remarriage", generate_yang_claims),
         ("duan", "career.role_change", generate_duan_claims),
         ("duan", "career.path_type", generate_duan_claims),
         ("duan", "wealth.debt", generate_duan_claims),
         ("duan", "marriage.divorce_or_remarriage", generate_duan_claims),
+        ("duan", "career.change_window", generate_duan_claims),
+        ("duan", "marriage.event_window", generate_duan_claims),
+        ("duan", "health.event_window", generate_duan_claims),
+        ("duan", "wealth.major_loss_window", generate_duan_claims),
     ]
 )

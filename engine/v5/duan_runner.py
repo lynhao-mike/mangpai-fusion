@@ -13,12 +13,19 @@ from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
 from engine.predicates.types import Bazi, GanZhi, _default_canggan_for
 
-_SUPPORTED_TASKS = {
+_EVENT_TASKS = {
     "career.role_change",
     "career.path_type",
     "wealth.debt",
     "marriage.divorce_or_remarriage",
 }
+_TIMING_TASKS = {
+    "career.change_window",
+    "marriage.event_window",
+    "health.event_window",
+    "wealth.major_loss_window",
+}
+_SUPPORTED_TASKS = _EVENT_TASKS | _TIMING_TASKS
 _LIFETIME = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
 _HIGH_RISK_CONFIDENCE_CAP = 0.62
 
@@ -250,9 +257,13 @@ def generate_claims(
     features: ChartFeatureVector,
     task: BlindTask,
 ) -> list[Claim]:
-    """生成每任务最多一条段派原局事件 Claim；不实现任何 timing 能力。"""
+    """生成段派白名单事件或 timing Claim；每任务每盘最多一条。"""
     if task.task_id not in _SUPPORTED_TASKS:
         raise TaskUnsupported(f"duan does not support task: {task.task_id}")
+    if task.task_id in _TIMING_TASKS:
+        from engine.v5.duan_timing import generate_timing_claims
+
+        return generate_timing_claims(chart, features, task)
     if features.evidence_completeness != "full":
         return []
     try:
