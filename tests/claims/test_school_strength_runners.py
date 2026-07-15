@@ -227,10 +227,14 @@ def test_gao_health_outputs_only_moderate_or_high_structural_risk() -> None:
     assert generate_gao_claims(chart, replace(high, evidence_completeness="partial"), _task("health.system_risk")) == []
 
 
-def test_gao_rejects_timing_and_other_unregistered_tasks() -> None:
+def test_gao_accepts_registered_timing_tasks_and_rejects_other_unregistered_tasks() -> None:
     chart = _chart()
     features = build_chart_feature_vector(chart)
     for task_id in ("wealth.major_loss_window", "health.event_window", "career.change_window"):
+        assert generate_gao_claims(chart, features, _task(task_id)) == []
+        assert DEFAULT_RUNNER_REGISTRY.resolve("gao", task_id) is generate_gao_claims
+
+    for task_id in ("structure.overview", "career.role_change"):
         with pytest.raises(TaskUnsupported, match="gao does not support task"):
             generate_gao_claims(chart, features, _task(task_id))
         assert DEFAULT_RUNNER_REGISTRY.resolve("gao", task_id) is None
@@ -313,15 +317,22 @@ def test_yang_rejects_uncovered_marriage_tasks() -> None:
         assert DEFAULT_RUNNER_REGISTRY.resolve("yang", task_id) is None
 
 
-def test_registry_resolves_exactly_the_four_task5_capabilities() -> None:
+def test_registry_preserves_task5_capabilities_and_adds_gao_timing() -> None:
     assert DEFAULT_RUNNER_REGISTRY.resolve("ditiansui", "structure.overview") is generate_ditiansui_claims
     assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "wealth.debt") is generate_gao_claims
     assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "health.system_risk") is generate_gao_claims
     assert DEFAULT_RUNNER_REGISTRY.resolve("yang", "marriage.divorce_or_remarriage") is generate_yang_claims
 
     assert DEFAULT_RUNNER_REGISTRY.resolve("ditiansui", "wealth.debt") is None
-    assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "wealth.major_loss_window") is None
-    assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "health.event_window") is None
+    for task_id in (
+        "career.change_window",
+        "marriage.event_window",
+        "health.event_window",
+        "wealth.major_loss_window",
+    ):
+        assert DEFAULT_RUNNER_REGISTRY.resolve("gao", task_id) is generate_gao_claims
+    assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "structure.overview") is None
+    assert DEFAULT_RUNNER_REGISTRY.resolve("gao", "career.role_change") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("yang", "marriage.event_window") is None
     assert DEFAULT_RUNNER_REGISTRY.resolve("yang", "marriage.relationship_pressure") is None
 

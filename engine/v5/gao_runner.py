@@ -10,7 +10,14 @@ from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
 
-_SUPPORTED_TASKS = {"wealth.debt", "health.system_risk"}
+_EVENT_TASKS = {"wealth.debt", "health.system_risk"}
+_TIMING_TASKS = {
+    "career.change_window",
+    "marriage.event_window",
+    "health.event_window",
+    "wealth.major_loss_window",
+}
+_SUPPORTED_TASKS = _EVENT_TASKS | _TIMING_TASKS
 _LIFETIME = TimeWindow(start_year=1900, end_year=2100, label="lifetime")
 _CLAIM_RULES = load_claim_rule_registry()
 
@@ -152,9 +159,13 @@ def generate_claims(
     features: ChartFeatureVector,
     task: BlindTask,
 ) -> list[Claim]:
-    """生成高派债务旁证或健康结构风险分层；未覆盖任务显式 unsupported。"""
+    """生成高派结构事件或有根流年 timing 旁证；未覆盖任务显式 unsupported。"""
     if task.task_id not in _SUPPORTED_TASKS:
         raise TaskUnsupported(f"gao does not support task: {task.task_id}")
+    if task.task_id in _TIMING_TASKS:
+        from engine.v5.gao_timing import generate_timing_claims
+
+        return generate_timing_claims(chart, features, task)
     if features.evidence_completeness != "full":
         return []
     if task.task_id == "wealth.debt":
