@@ -8,9 +8,14 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, Sequence
 
+from engine.decision.l6_staged_arbitration import StageDecision
+from engine.evaluation.models import BlindTask, FrozenBlindRun
 from engine.v5.domain import V5ArbitrationResult, V5Output, V5Prediction
+
+if TYPE_CHECKING:
+    from engine.application.run_comparison import RunComparison
 
 
 PLACEHOLDER_RE = re.compile(r"{{\s*([^}]+?)\s*}}")
@@ -422,3 +427,166 @@ def render_report_v6_from_output(
         arbitration_decisions=arbitration_decisions,
     )
     return render_template_text(template_text, context)
+
+
+# ── 从结构化 run/decision 构建 report context ──────────────────────────────
+
+_REPORT_DOMAINS = ("学业", "事业", "财富", "婚姻", "健康", "性格")
+_STAGE_SUMMARY_KEYS = {
+    "structure": "structure_summary",
+    "event": "event_summary",
+    "timing": "timing_summary",
+}
+_PUBLIC_SCHOOL_NAMES = {
+    **SCHOOLS,
+    "ren_tieshu": "任付红",
+    "ren_fuhong": "任付红",
+}
+_INTERNAL_TOKEN_RE = re.compile(
+    r"(?i)\b(?:claim|prediction)-[0-9a-z]+\b|\b(?:statement_id|statement_index|capability_posterior)\b|school_capability snapshot|Agent 工作记录"
+)
+
+
+def _public_school_name(school_id: str) -> str:
+    return _PUBLIC_SCHOOL_NAMES.get(school_id, school_id.replace("_", " "))
+
+
+def _safe_display_text(value: object) -> str:
+    """删除结构化上游文本中不应进入展示层的内部标识。"""
+
+    return re.sub(r"\s{2,}", " ", _INTERNAL_TOKEN_RE.sub("", str(value))).strip(" ：:；,，")
+
+
+def _decision_leaves(decisions: Sequence[StageDecision]) -> list[StageDecision]:
+    leaves: list[StageDecision] = []
+    for decision in decisions:
+        leaves.extend(decision.domain_decisions or (decision,))
+    return leaves
+
+
+def _decision_note(decision: StageDecision) -> str:
+    labels = {
+        "winner": "形成主结论",
+        "coexist": "多派观点并列",
+        "unresolved": "冲突未决",
+        "conflict_resolved": "冲突已消解",
+        "reject_all": "证据不足/本派克制",
+    }
+    rationale = _safe_display_text(decision.rationale)
+    base = f"{decision.domain or '相关领域'}：{labels[decision.result]}"
+    return f"{base}；{rationale}" if rationale else base
+
+
+def build_report_context_from_frozen_run(
+    frozen_run: FrozenBlindRun,
+    tasks: Sequence[BlindTask],
+    stage_decisions: Sequence[StageDecision] | None = None,
+) -> dict[str, Any]:
+    """从 FrozenBlindRun + StageDecision 构建不含内部 ID 的报告 ViewModel。"""
+
+    task_by_id = {task.task_id: task for task in tasks}
+    decisions = _decision_leaves(stage_decisions or ())
+    decisions_by_task_stage = {(item.task_id, item.stage): item for item in decisions}
+    winner_ids = {value for item in decisions for value in item.winner_claim_ids}
+    minority_ids = {value for item in decisions for value in item.minority_claim_ids}
+    has_explicit_sides = bool(winner_ids or minority_ids)
+
+    domains: dict[str, dict[str, list[str]]] = {
+        domain: {
+            "conclusions": [],
+            "minority_views": [],
+            "high_risk_notes": [],
+            "abstentions": [],
+            "stage_notes": [],
+        }
+        for domain in _REPORT_DOMAINS
+    }
+    seen_task_ids: set[str] = set()
+
+    for output in frozen_run.outputs:
+        task = task_by_id.get(output.task_id)
+        if task is None or task.domain not in domains:
+            continue
+        seen_task_ids.add(task.task_id)
+        bucket = domains[task.domain]
+        school_name = _public_school_name(output.school_id)
+        if output.state == "unsupported":
+            continue
+        if output.state == "abstain":
+            bucket["abstentions"].append(f"证据不足/本派克制（{school_name}）")
+            continue
+
+        for prediction in output.predictions:
+            event = _safe_display_text(prediction.event_label)
+            rationale = _safe_display_text(output.rationale)
+            window = _safe_display_text(prediction.time_window.get("label", ""))
+            detail = f"{school_name}：{event}"
+            if rationale:
+                detail += f"；{rationale}"
+            if window:
+                detail += f"；应期：{window}"
+
+            is_minority = prediction.prediction_id in minority_ids
+            is_winner = prediction.prediction_id in winner_ids
+            if is_minority or (has_explicit_sides and not is_winner and any(
+                item.task_id == task.task_id and item.result in {"winner", "conflict_resolved"}
+                for item in decisions
+            )):
+                bucket["minority_views"].append(f"少数派观点：{detail}")
+            elif task.high_risk:
+                bucket["high_risk_notes"].append(f"高风险提示：{detail}，需关注风险窗口。")
+            else:
+                bucket["conclusions"].append(detail)
+
+    for task in tasks:
+        if task.domain not in domains:
+            continue
+        bucket = domains[task.domain]
+        if task.task_id not in seen_task_ids or not any(
+            bucket[key] for key in ("conclusions", "minority_views", "high_risk_notes", "abstentions")
+        ):
+            bucket["abstentions"].append("证据不足/本派克制")
+
+    for decision in decisions:
+        if decision.domain in domains:
+            domains[decision.domain]["stage_notes"].append(_decision_note(decision))
+
+    context: dict[str, Any] = {
+        "domains": domains,
+        "structure_summary": [],
+        "event_summary": [],
+        "timing_summary": [],
+    }
+    for decision in decisions:
+        context[_STAGE_SUMMARY_KEYS[decision.stage]].append(_decision_note(decision))
+    return context
+
+
+def build_comparison_summary(comparison: RunComparison) -> dict[str, Any]:
+    """提取结构化并跑差异；仅保留公开领域、学派名与差异值。"""
+
+    summary: dict[str, list[dict[str, Any]]] = {
+        "coverage_delta": [],
+        "state_diff": [],
+        "high_risk_diff": [],
+    }
+    dimensions = (
+        ("coverage_delta", "task_coverage"),
+        ("state_diff", "claim_state"),
+        ("high_risk_diff", "risk_flag"),
+    )
+    for item in comparison.items:
+        for public_key, field_name in dimensions:
+            difference = getattr(item, field_name)
+            if difference.status in {"same", "both_missing"}:
+                continue
+            summary[public_key].append(
+                {
+                    "domain": item.domain,
+                    "school": _public_school_name(item.school_id),
+                    "status": difference.status,
+                    "legacy": difference.legacy,
+                    "structured": difference.claim,
+                }
+            )
+    return summary

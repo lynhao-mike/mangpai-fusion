@@ -75,6 +75,28 @@ DEFAULT_RULES_YAML: Path = (
     Path(__file__).resolve().parent.parent / "engine" / "mechanical-rules.yaml"
 )
 
+_INTERNAL_ID_PATTERNS = [
+    (re.compile(r"\bclaim-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 claim_id（内部哈希）"),
+    (re.compile(r"\bprediction-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 prediction_id（内部哈希）"),
+    (re.compile(r"\bstatement_id\b", re.IGNORECASE), "禁显 statement_id（内部字段名）"),
+    (re.compile(r"\bstatement_index\b", re.IGNORECASE), "禁显 statement_index（内部字段名）"),
+    (re.compile(r"\bcapability_posterior\b", re.IGNORECASE), "禁显 capability_posterior（内部学习字段）"),
+    (re.compile(r"school_capability snapshot", re.IGNORECASE), "禁显 school_capability snapshot（内部能力快照）"),
+    (re.compile(r"Agent 工作记录", re.IGNORECASE), "禁显 Agent 工作记录（内部过程）"),
+]
+
+
+def lint_internal_ids(text: str) -> list[str]:
+    """检测公开报告文本中的内部 ID 或内部字段名。"""
+
+    return [message for pattern, message in _INTERNAL_ID_PATTERNS if pattern.search(text)]
+
+
+def lint_report_text(text: str) -> list[str]:
+    """轻量报告出口检查；当前只返回内部标识禁显错误。"""
+
+    return lint_internal_ids(text)
+
 
 # ============================================================
 # 二、数据结构
@@ -487,6 +509,8 @@ def lint(
     if isinstance(analysis_output, str):
         # markdown 模式
         full_text = analysis_output
+        for message in lint_internal_ids(full_text):
+            res.add(Severity.ERROR, "E15", message, location="报告全文")
         conclusions = extract_conclusions_from_md(full_text)
         # E11 总数检查
         if len(conclusions) < 5:
