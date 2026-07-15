@@ -1,0 +1,33 @@
+{
+  "schema_version": "six-month-platform-gate/v1",
+  "phase": "six-month-platform-gate",
+  "status": "HOLD",
+  "evidence_artifacts": {
+    "capability_baseline": "META/six-month-capability-baseline-2026-07-15.json",
+    "l1_holdout_report": "reports/l1-routing-holdout-comparison.md",
+    "test_suite_result": "all tests pass, 6 skip",
+    "tool_registry_check": "exit 0",
+    "rule_status_check": "exit 0",
+    "git_diff_check": "exit 0"
+  },
+  "accepted_hypotheses": [
+    "H-STRUCT-COVERAGE: structure.overview 域在 ziping/ditiansui 学派下有非空 claim 输出（195 条 claim 总计），覆盖 structure 段",
+    "H-AUDIT-CHAIN: freeze_hash 已验证，rule_loader/claim_rules/staged_parallel_runner/run_comparison 均已落地，audit chain 可复现",
+    "H-NO-ID-LEAK: 公开报告中未检测到 claim_id/prediction_id/statement_id/freeze_hash 泄露（tests/v5/test_report_view.py 及 tests/test_output_linter.py 覆盖此约束）"
+  ],
+  "rejected_hypotheses": [
+    "H-INDEPENDENT-UTILITY: learned 路由效用 ≥ static 且选择有变化——留出集 15 条可比记录中选择变化 0，learned/static 平均效用均为 -0.1000，独立效用假设不成立",
+    "H-CALIBRATION: 至少一个任务有足够校准样本且 calibration_error < 0.2——所有任务校准状态 insufficient，binary 概率样本数为 0，校准不可用",
+    "H-PROSPECTIVE-30: 至少 30 个前瞻或 E3 案例进入冻结评估链——当前分类为 historical_blind_candidate，VALID_READ_ONLY，无新增前瞻样本",
+    "H-HIGH-RISK-EVALUABLE: 高风险任务有 A 级标签可评估——当前高风险任务无合格 A 级标签，可评估记录数为 0"
+  ],
+  "known_risks": [
+    "RISK-LABEL-QUALITY: 现有 195 条 claim 对应的标签质量失败计数 195，缺少负例或单类别标签，判别力不足",
+    "RISK-COVERAGE-GAP: unsupported 2624 条，表明多数学派在多数任务上缺乏触发条件，六域覆盖极不均匀",
+    "RISK-SINGLE-POSITIVE: 留出标签全部为其他类别（career/marriage 窗口任务）：正例 0，负例 0，不具备判别能力",
+    "RISK-NO-PROSPECTIVE: 历史隔离批次无法升级为 prospective 或 E3；前瞻证据积累需要新案例摄入",
+    "RISK-TIMING-ABSTAIN: 任/段 timing runner 因无逐年流年序列大量 abstain，应期任务不可评估"
+  ],
+  "next_irreversible_decision": "HOLD 状态下保持 staged 并跑，不切换默认路由。达到 GO 所需的最小操作步骤：(1) 摄入至少 30 个真实新案例，为 career/marriage/wealth/health 任务提供含正负例的前瞻标签，使 prospective 或 E3 案例 ≥ 30；(2) 对至少一个任务（如 career.role_change 或 marriage.divorce_or_remarriage）积累足够 binary 概率校准样本（建议 ≥ 20 条带观测结果的样本），使 calibration_error < 0.2；(3) 对 career.change_window/career.role_change/marriage.event_window 三个竞争任务，使多派竞争样本 ≥ 5，且至少一个任务的 learned 选择与 static 有实质差异（选择变化 ≥ 1）；(4) 以上三条满足后，重跑 L1 留出对照门禁，再提交独立契约变更提案将 staged 路径设为默认。",
+  "updated_at": "2026-07-15T15:26:00Z"
+}

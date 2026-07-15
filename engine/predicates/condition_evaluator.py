@@ -243,5 +243,5 @@ def rank_blind_rule(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[float,
     """排序键：(-score, status_rank, id)——score 高的优先。"""
     score = score_blind_rule(rule, chart)
     status = str(rule.get("status", "candidate"))
-    status_rank = {"confirmed": 0, "promoted": 1, "active": 1, "candidate": 2}.get(status, 3)
+    status_rank = {"confirmed": 0, "promoted": 0, "active": 0, "candidate": 1}.get(status, 2)
     return (-score, status_rank, str(rule.get("id", "")))
