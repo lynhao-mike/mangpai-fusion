@@ -367,7 +367,7 @@ def test_prepare_blind_bundle_whitelists_files_and_has_stable_hash(tmp_path: Pat
     assert not (tmp_path / "bundle-one" / "cases" / "C-P-001" / "input.md").exists()
     assert not (tmp_path / "bundle-one" / "cases" / "C-P-001" / "feedback.md").exists()
     assert {path.relative_to(tmp_path / "bundle-one").as_posix() for path in (tmp_path / "bundle-one").rglob("*") if path.is_file()} == {
-        "bundle-manifest.json", "cases/C-P-001/chart.json", "rule-snapshot.json", "tasks.json",
+        "bundle-manifest.json", "cases/C-P-001/chart.json", "intake.json", "rule-snapshot.json", "tasks.json",
     }
 
 
@@ -405,6 +405,34 @@ def test_prepare_blind_bundle_dry_run_writes_nothing(tmp_path: Path) -> None:
 
     assert len(result["bundle_sha256"]) == 64
     assert not target.exists()
+
+
+def test_prepare_blind_bundle_persists_only_safe_case_task_assignments(tmp_path: Path) -> None:
+    input_path = _prospective_input(tmp_path / "source", "C-P-001")
+    tasks = _catalog()
+    tasks_path = tmp_path / "tasks.json"
+    tasks_path.write_text(json.dumps(tasks), encoding="utf-8")
+    snapshot = tmp_path / "rules.json"
+    snapshot.write_text('{"rule_snapshot_id":"rules-v1"}', encoding="utf-8")
+    intake = register_prospective_intake(
+        [input_path], tasks, ["ziping"], "human-a",
+        tasks_by_case={"C-P-001": ["career.role_change"]},
+    )
+    bundle_root = tmp_path / "bundle"
+
+    manifest = prepare_blind_bundle(intake, tasks_path, snapshot, bundle_root)
+
+    assignments = json.loads((bundle_root / "intake.json").read_text(encoding="utf-8"))
+    assert assignments == {
+        "schema_version": "school-capability-blind-intake/v1",
+        "schools": ["ziping"],
+        "records": [{"case_id": "C-P-001", "task_ids": ["career.role_change"]}],
+    }
+    assert manifest["files"]["intake.json"] == hashlib.sha256(
+        (bundle_root / "intake.json").read_bytes()
+    ).hexdigest()
+    assert "input_file" not in json.dumps(assignments)
+    assert "subject_id_hash" not in json.dumps(assignments)
 
 
 def test_manifest_cli_rejects_symlink_output(tmp_path: Path) -> None:
@@ -702,8 +730,7 @@ def test_witness_event_payload_uses_exact_schema_per_event_type() -> None:
     key = b"external-secret"
     registered = _witness_event(
         "registered", "2026-07-11T00:00:00Z", case_id="C-P-001",
-        subject_id_hash="a" * 64, canonical_chart_sha256="b" * 64,
-        task_catalog_sha256="c" * 64, rule_snapshot_sha256="d" * 64,
+        input_sha256="b" * 64, subject_id_hash="a" * 64,
     )
     assert verify_witness_registry(append_witness_event(None, registered, key), key) is True
 
@@ -720,8 +747,7 @@ def test_witness_registry_detects_forged_hmac_broken_chain_and_bad_order() -> No
     key = b"external-secret"
     registry = append_witness_event(None, _witness_event(
         "registered", "2026-07-11T00:00:00Z", case_id="C-P-001",
-        subject_id_hash="a" * 64, canonical_chart_sha256="b" * 64,
-        task_catalog_sha256="c" * 64, rule_snapshot_sha256="d" * 64,
+        input_sha256="b" * 64, subject_id_hash="a" * 64,
     ), key)
     registry = append_witness_event(registry, _witness_event(
         "prepared", "2026-07-11T00:00:01Z", case_id="C-P-001", bundle_sha256="e" * 64,
@@ -769,7 +795,7 @@ def test_prospective_intake_rejects_duplicate_subject_and_bundle_contains_only_c
     assert intake["task_catalog_sha256"] == manifest["files"]["tasks.json"]
     rule_ref = json.loads((bundle_root / "rule-snapshot.json").read_text(encoding="utf-8"))
     assert rule_ref == {"rule_snapshot_id": "rules-v1", "sha256": hashlib.sha256(snapshot.read_bytes()).hexdigest()}
-    assert set(manifest["files"]) == {"tasks.json", "rule-snapshot.json", "cases/C-P-001/chart.json"}
+    assert set(manifest["files"]) == {"tasks.json", "rule-snapshot.json", "intake.json", "cases/C-P-001/chart.json"}
     assert "医生" not in "".join(path.read_text(encoding="utf-8") for path in bundle_root.rglob("*.json"))
 
 
@@ -791,10 +817,8 @@ def _go_fixture(tmp_path: Path) -> tuple[dict, dict, dict, dict, dict, Path, dic
     case_id = "C-P-001"
     registry = append_witness_event(None, _witness_event(
         "registered", "2026-07-11T00:00:00Z", case_id=case_id,
+        input_sha256=intake["records"][0]["input_sha256"],
         subject_id_hash=intake["records"][0]["subject_id_hash"],
-        canonical_chart_sha256=bundle["files"][f"cases/{case_id}/chart.json"],
-        task_catalog_sha256=bundle["files"]["tasks.json"],
-        rule_snapshot_sha256=bundle["files"]["rule-snapshot.json"],
     ), key)
     registry = append_witness_event(registry, _witness_event(
         "prepared", "2026-07-11T00:00:01Z", case_id=case_id,
@@ -862,9 +886,8 @@ def test_validly_resigned_replacement_remains_invalid_in_append_only_registry(tm
     (bundle_root / "bundle-manifest.json").write_text(json.dumps(bundle), encoding="utf-8")
     registry = append_witness_event(registry, _witness_event(
         "registered", "2026-07-12T00:00:02Z", case_id="C-P-001",
-        subject_id_hash=replacement_subject, canonical_chart_sha256=chart_sha,
-        task_catalog_sha256=bundle["files"]["tasks.json"],
-        rule_snapshot_sha256=bundle["files"]["rule-snapshot.json"],
+        input_sha256=intake["records"][0]["input_sha256"],
+        subject_id_hash=replacement_subject,
     ), key)
     registry = append_witness_event(registry, _witness_event(
         "prepared", "2026-07-12T00:00:03Z", case_id="C-P-001",
@@ -898,8 +921,7 @@ def test_witness_append_cli_reads_secret_only_from_environment(tmp_path: Path) -
     event_path = tmp_path / "event.json"
     event_path.write_text(json.dumps(_witness_event(
         "registered", "2026-07-11T00:00:00Z", case_id="C-P-001",
-        subject_id_hash="a" * 64, canonical_chart_sha256="b" * 64,
-        task_catalog_sha256="c" * 64, rule_snapshot_sha256="d" * 64,
+        input_sha256="b" * 64, subject_id_hash="a" * 64,
     )), encoding="utf-8")
     registry_path = tmp_path / "registry.json"
     command = [

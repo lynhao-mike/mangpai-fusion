@@ -19,8 +19,9 @@
 1. 案例必须是规则和路由版本冻结后进入系统的真实新命主。
 2. 既有 `P-2026-*`、990、Top30、feedback-first 案例、同命主重复报告及复制命盘均不得计入 prospective/E3。
 3. 同一 `sex_marker + four_pillars` 只允许入组一次；其稳定摘要作为 `subject_id_hash` 去重依据。改 case ID 不能绕过去重。
-4. 首批仅预留 `P-GO-2026-001` 至 `P-GO-2026-010` 的任务槽位。真实 case 目录只在取得授权的新命主到达后创建，不提前创建示例命盘。
-5. 正负例必须由连续真实入组和完整观察窗自然产生，不按已知结果挑选、复制、删除或改写案例。
+4. 首批仅预留 `P-GO-2026-001` 至 `P-GO-2026-010` 的任务槽位。现有 [`prospective-go-b01-tasks-by-case.json`](prospective-go/prospective-go-b01-tasks-by-case.json:1) 继续保留短槽位键；[`prospective-intake`](../tools/school_capability_dataset.py:683) 会在本次输入中唯一解析至完整 `P-GO-2026-NNN-{乾/坤}-{四柱}` case ID，无需也不得为真实四柱另生成改写版任务文件。首案及每 5 案 dry-run 可继续传入同批完整冻结表：严格符合 `P-GO-YYYY-NNN`、与本次输入同批、从 `001` 连续预注册且任务全部合法的尚未到达短槽位允许暂不匹配；本次已到达输入仍必须各自唯一命中。完整 case 键零匹配、短槽位格式错误、跨批、编号缺口、全部短槽位均未命中、同槽位多匹配或短/完整键重复解析至同案时必须拒绝。
+5. 真实 case 目录只在取得授权的新命主到达后创建，不提前创建示例命盘或任何空 intake、空盲包、空 frozen run、空 witness registry。
+6. 正负例必须由连续真实入组和完整观察窗自然产生，不按已知结果挑选、复制、删除或改写案例。
 
 ## 3. 时间顺序
 
@@ -42,7 +43,10 @@ received / enrolled
 - outcome custodian 在 freeze witness 完成前不得释放观察资料。
 - observation、review、label 和 reveal provenance 只能在 freeze 之后创建。
 - 历史 frozen run、labels、scores、capability snapshot 不得覆盖；每批必须使用全新且不存在的目标路径。
-- 所有会写制品的 CLI 命令必须先执行 `--dry-run`。
+- 盲包安全白名单只包含 `intake.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json` 与 `cases/<case_id>/chart.json`；不得包含原始 `input.md`、反馈、标签、报告、known facts 或其他旁路文件。
+- staged 冻结必须使用 [`school_capability_prospective.py stage-frozen-run`](../tools/school_capability_prospective.py:339)，规则快照固定为 [`prospective-go-rule-snapshot-v1.json`](prospective-go-rule-snapshot-v1.json:1)。
+- freeze witness 必须使用 [`school_capability_prospective.py witness-freeze-chain`](../tools/school_capability_prospective.py:346)，一次安全生成或追加每案完整 `registered → prepared → freeze` 三事件段；该步骤不得提前创建 reveal。HMAC key 仅从 `--witness-key-env` 指定的环境变量读取，不得写入仓库、参数值或制品。
+- 所有会写制品的 CLI 命令必须先执行 `--dry-run`；真实数据尚未到达时继续 HOLD，不运行正式写入命令，也不创建空制品占位。
 
 ## 4. 职责分离
 
@@ -97,7 +101,15 @@ received / enrolled
 
 这些是采集下限，不替代总完成案不少于 30、binary 不少于 20、竞争不少于 5、selection change 不少于 1、校准误差严格小于 0.2 或高风险 A 级双审门槛。
 
-## 9. 反馈与停止条件
+## 9. 每批冻结与见证操作
+
+1. 用真实完整 case 路径、现有短槽位 tasks-by-case 与十任务目录执行 `prospective-intake --dry-run`；唯一解析成功且隔离检查通过后，才允许正式写全新 intake。
+2. 使用 [`prospective-go-rule-snapshot-v1.json`](prospective-go-rule-snapshot-v1.json:1) 执行 `prepare-blind --dry-run`；核对盲包只含安全白名单后，才允许正式创建全新目录。
+3. 对正式盲包执行 `stage-frozen-run --dry-run`；核对六来源三态输出、任务 hash 与规则快照 hash 后，才允许正式写全新 frozen run。
+4. 独立见证方在环境中提供 HMAC key，执行 `witness-freeze-chain --dry-run`；核对每案完整三事件段后，才允许正式写全新 registry。追加既有链时用 `--registry` 读取旧 registry，并将 `--out` 指向全新路径，禁止覆盖。
+5. 上述链只到 freeze 为止。outcome custodian 继续封存真实结果，直至观察窗结束；reveal 必须走后续冻结后流程，不能由本阶段提前生成。
+
+## 10. 反馈与停止条件
 
 - 生产 case 反馈只允许通过 `tools/feedback_ingest.py`，并先执行 dry-run；评估 observation 不由该工具生成。
 - 不使用、恢复或引用 `calibrate.py` 作为新反馈入口。

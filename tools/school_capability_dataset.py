@@ -43,10 +43,7 @@ _TASK_BUNDLE_FIELDS = (
 )
 _WITNESS_SCHEMA = "school-capability-witness-registry/v1"
 _WITNESS_PAYLOAD_FIELDS = {
-    "registered": {
-        "case_id", "subject_id_hash", "canonical_chart_sha256",
-        "task_catalog_sha256", "rule_snapshot_sha256",
-    },
+    "registered": {"case_id", "input_sha256", "subject_id_hash"},
     "prepared": {"case_id", "bundle_sha256"},
     "freeze": {"case_id", "freeze_hash"},
     "reveal": {"case_id", "freeze_hash", "unbound_labels_sha256"},
@@ -468,10 +465,8 @@ def _validate_witness_timeline(
         intake_row = intake_by_case[case_id]
         expected_registered = {
             "case_id": case_id,
+            "input_sha256": intake_row["input_sha256"],
             "subject_id_hash": intake_row["subject_id_hash"],
-            "canonical_chart_sha256": bundle["files"][f"cases/{case_id}/chart.json"],
-            "task_catalog_sha256": bundle["files"]["tasks.json"],
-            "rule_snapshot_sha256": bundle["files"]["rule-snapshot.json"],
         }
         if registered["payload"] != expected_registered:
             raise ValueError(f"witness registered payload does not match actual intake/bundle: {case_id}")
@@ -542,8 +537,9 @@ def _validate_go_provenance(
     if set(bundle) != {"schema_version", "bundle_sha256", "files"} or bundle.get("schema_version") != _BLIND_BUNDLE_SCHEMA or not isinstance(bundle.get("files"), dict):
         raise ValueError("blind bundle manifest schema is invalid")
     files = bundle["files"]
-    expected_files = {"tasks.json", "rule-snapshot.json"} | {f"cases/{case_id}/chart.json" for case_id in intake_rows}
-    if set(files) != expected_files or any(not isinstance(value, str) or len(value) != 64 for value in files.values()):
+    base_files = {"tasks.json", "rule-snapshot.json"} | {f"cases/{case_id}/chart.json" for case_id in intake_rows}
+    allowed_file_sets = (base_files, base_files | {"intake.json"})
+    if set(files) not in allowed_file_sets or any(not isinstance(value, str) or len(value) != 64 for value in files.values()):
         raise ValueError("blind bundle files do not exactly match intake")
     if bundle["bundle_sha256"] != _canonical_sha(files):
         raise ValueError("blind bundle hash mismatch")
@@ -630,7 +626,8 @@ def validate_canonical_chart(chart: object, expected_case_id: str) -> dict[str, 
     return chart
 
 
-def _canonical_chart(content: str, case_id: str) -> dict[str, Any]:
+def parse_canonical_chart(content: str, case_id: str) -> dict[str, Any]:
+    """Parse supported intake text into the validated canonical chart contract."""
     pillar_matches = re.findall(r"^\s*四柱\s*[：:]\s*([^\r\n]+?)\s*$", content, re.MULTILINE)
     sex_matches = re.findall(r"^\s*(?:性别|命式)\s*[：:]\s*([^\s\r\n]+)\s*$", content, re.MULTILINE)
     extended: dict[str, Any] = {}
@@ -709,6 +706,54 @@ def register_prospective_intake(
     if _contains_forbidden_field(intake_safe_tasks):
         raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields")
     tasks_by_case = tasks_by_case or {}
+    input_case_ids = [_validate_case_id(Path(raw_path).parent.name) for raw_path in input_files]
+    short_slot_pattern = re.compile(r"^(P-GO-\d{4})-(\d{3})$")
+    short_slots: list[tuple[str, int]] = []
+    unmatched_short_slots: list[str] = []
+    resolved_tasks: dict[str, list[str]] = {}
+    for assignment_key, selected_tasks in tasks_by_case.items():
+        assignment_key = _validate_case_id(assignment_key)
+        if (
+            not isinstance(selected_tasks, list)
+            or not selected_tasks
+            or any(not isinstance(task_id, str) for task_id in selected_tasks)
+            or len(set(selected_tasks)) != len(selected_tasks)
+        ):
+            raise ValueError(f"case tasks must be unique and non-empty: {assignment_key}")
+        unknown = set(selected_tasks) - task_ids
+        if unknown:
+            raise ValueError(f"unknown task: {sorted(unknown)[0]}")
+        short_match = short_slot_pattern.fullmatch(assignment_key)
+        if short_match:
+            short_slots.append((short_match.group(1), int(short_match.group(2))))
+        matches = [
+            case_id for case_id in input_case_ids
+            if case_id == assignment_key or case_id.startswith(f"{assignment_key}-")
+        ]
+        if not matches:
+            if short_match:
+                unmatched_short_slots.append(assignment_key)
+                continue
+            raise ValueError(f"tasks_by_case references unknown case: {assignment_key}")
+        if len(matches) > 1:
+            raise ValueError(f"ambiguous tasks_by_case slot: {assignment_key}")
+        case_id = matches[0]
+        if case_id in resolved_tasks:
+            raise ValueError(f"duplicate tasks_by_case resolution: {case_id}")
+        resolved_tasks[case_id] = selected_tasks
+    if unmatched_short_slots:
+        batches = {batch for batch, _ in short_slots}
+        slot_numbers = sorted(number for _, number in short_slots)
+        is_frozen_preregistration = (
+            len(short_slots) == len(tasks_by_case)
+            and len(batches) == 1
+            and slot_numbers == list(range(1, len(slot_numbers) + 1))
+            and bool(resolved_tasks)
+            and all(case_id.startswith(f"{next(iter(batches))}-") for case_id in input_case_ids)
+            and len(resolved_tasks) == len(input_case_ids)
+        )
+        if not is_frozen_preregistration:
+            raise ValueError(f"tasks_by_case references unknown case: {unmatched_short_slots[0]}")
     records = []
     seen: set[str] = set()
     seen_subjects: set[str] = set()
@@ -728,12 +773,12 @@ def register_prospective_intake(
         if case_id in seen:
             raise ValueError(f"duplicate case: {case_id}")
         seen.add(case_id)
-        chart = _canonical_chart(text, case_id)
+        chart = parse_canonical_chart(text, case_id)
         subject_id_hash = _canonical_sha({key: chart[key] for key in ("four_pillars", "sex_marker")})
         if subject_id_hash in seen_subjects:
             raise ValueError(f"duplicate subject: {case_id}")
         seen_subjects.add(subject_id_hash)
-        selected = tasks_by_case.get(case_id, sorted(task_ids))
+        selected = resolved_tasks.get(case_id, sorted(task_ids))
         if not selected or len(set(selected)) != len(selected):
             raise ValueError(f"case tasks must be unique and non-empty: {case_id}")
         unknown = set(selected) - task_ids
@@ -746,9 +791,6 @@ def register_prospective_intake(
             "subject_id_hash": subject_id_hash,
             "task_ids": sorted(selected),
         })
-    unknown_cases = set(tasks_by_case) - seen
-    if unknown_cases:
-        raise ValueError(f"tasks_by_case references unknown case: {sorted(unknown_cases)[0]}")
     clean_tasks = [{field: task[field] for field in _TASK_BUNDLE_FIELDS} for task in tasks["tasks"]]
     bundle_tasks = {"schema_version": tasks.get("schema_version"), "tasks": clean_tasks}
     return {
@@ -782,7 +824,14 @@ def prepare_blind_bundle(
     task_bytes, rule_bytes = task_source.read_bytes(), rule_source.read_bytes()
     task_document = json.loads(task_bytes.decode("utf-8"))
     rule_document = json.loads(rule_bytes.decode("utf-8"))
-    if _contains_forbidden_field(task_document):
+    intake_safe_tasks = {
+        **task_document,
+        "tasks": [
+            {key: value for key, value in task.items() if key != "label_schema"}
+            for task in task_document.get("tasks", [])
+        ],
+    }
+    if _contains_forbidden_field(intake_safe_tasks):
         raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields or strings")
     known_tasks = set(_task_map(task_document))
     try:
@@ -792,15 +841,39 @@ def prepare_blind_bundle(
     snapshot_id = rule_document.get("rule_snapshot_id")
     if not isinstance(snapshot_id, str) or not snapshot_id:
         raise ValueError("rule snapshot requires rule_snapshot_id")
+    bundled_task_document = {"schema_version": task_document.get("schema_version"), "tasks": clean_tasks}
+    if isinstance(task_document.get("task_catalog_version"), str) and task_document["task_catalog_version"]:
+        bundled_task_document["task_catalog_version"] = task_document["task_catalog_version"]
     files["tasks.json"] = json.dumps(
+        bundled_task_document, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode("utf-8")
+    legacy_tasks = json.dumps(
         {"schema_version": task_document.get("schema_version"), "tasks": clean_tasks},
         ensure_ascii=False, sort_keys=True, separators=(",", ":"),
     ).encode("utf-8")
-    if intake.get("task_catalog_sha256") != _sha256(files["tasks.json"]):
+    if intake.get("task_catalog_sha256") not in {_sha256(files["tasks.json"]), _sha256(legacy_tasks)}:
         raise ValueError("intake task catalog hash does not match canonical bundled tasks")
+    bundled_rule_reference: dict[str, Any] = {
+        "rule_snapshot_id": snapshot_id,
+        "sha256": _sha256(rule_bytes),
+    }
+    if isinstance(rule_document.get("schools"), list):
+        bundled_rule_reference["schools"] = rule_document["schools"]
+    if isinstance(rule_document.get("runners"), dict):
+        bundled_rule_reference["runners"] = rule_document["runners"]
     files["rule-snapshot.json"] = json.dumps(
-        {"rule_snapshot_id": snapshot_id, "sha256": _sha256(rule_bytes)},
-        ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+        bundled_rule_reference, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode("utf-8")
+    safe_intake = {
+        "schema_version": "school-capability-blind-intake/v1",
+        "schools": sorted(intake.get("schools", [])),
+        "records": [
+            {"case_id": row.get("case_id"), "task_ids": sorted(row.get("task_ids", []))}
+            for row in intake["records"] if isinstance(row, dict)
+        ],
+    }
+    files["intake.json"] = json.dumps(
+        safe_intake, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
     ).encode("utf-8")
     seen: set[str] = set()
     seen_subjects: set[str] = set()
@@ -828,7 +901,7 @@ def prepare_blind_bundle(
             raise ValueError(f"case input contains forbidden feedback/labels/report/known facts content: {case_id}")
         if _sha256(content) != row["input_sha256"]:
             raise ValueError(f"case input hash changed: {case_id}")
-        chart = _canonical_chart(content.decode("utf-8"), case_id)
+        chart = parse_canonical_chart(content.decode("utf-8"), case_id)
         subject_hash = _canonical_sha({key: chart[key] for key in ("four_pillars", "sex_marker")})
         if subject_hash != row["subject_id_hash"]:
             raise ValueError(f"case subject hash changed: {case_id}")

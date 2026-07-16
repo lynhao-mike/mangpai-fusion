@@ -346,11 +346,11 @@ Run:
 python -m tools.school_capability_dataset prospective-intake --input cases/P-GO-2026-001-乾-实际四柱/input.md --input cases/P-GO-2026-002-坤-实际四柱/input.md --input cases/P-GO-2026-003-乾-实际四柱/input.md --input cases/P-GO-2026-004-坤-实际四柱/input.md --input cases/P-GO-2026-005-乾-实际四柱/input.md --tasks META/prospective-go-task-catalog-v1.json --school ziping --school ditiansui --school duan --school ren --school gao --school yang --operator human-intake-01 --tasks-by-case META/prospective-go/prospective-go-b01-tasks-by-case.json --out META/prospective-go/prospective-go-b01-intake.json --dry-run
 ```
 
-执行者必须把每个 `实际四柱` 替换为招募日志中该真实命主的四柱；dry-run 输出必须显示 5 个不同 `subject_id_hash`，且没有 forbidden marker。真实路径由招募日志唯一决定，禁止创建示例案例计数。
+执行者必须把每个 `实际四柱` 替换为招募日志中该真实命主的四柱；首案可先执行同参数的单输入 dry-run，之后每 5 案重跑。dry-run 输出必须显示与本次输入数相同的不同 `subject_id_hash`，且没有 forbidden marker。继续直接使用现有 [`prospective-go-b01-tasks-by-case.json`](../../META/prospective-go/prospective-go-b01-tasks-by-case.json:1) 的 `P-GO-2026-NNN` 十槽位冻结表：CLI 会在本次 `--input` 集合中唯一解析已到达槽位至完整 case ID；同批、严格格式、从 `001` 连续预注册且任务合法的未来槽位允许尚未到达，无需生成按真实四柱改写的任务文件。完整 case 键零匹配、短槽位格式错误、跨批、编号缺口、全部未命中、多匹配或短/完整键重复解析至同案都会拒绝。真实路径由招募日志唯一决定，禁止创建示例案例计数。
 
 - [ ] **Step 3: 批次满 10 案后正式写 intake**
 
-使用与 Step 2 相同参数去掉 `--dry-run`。每批独立写 `prospective-go-bNN-intake.json`，不追加或覆盖旧 intake。
+确认 dry-run 后，使用与 Step 2 相同参数去掉 `--dry-run`。每批独立写 `prospective-go-bNN-intake.json`，不追加或覆盖旧 intake。真实新案不足时本任务保持 HOLD，不执行正式写入，也不创建空 intake 或其他空制品占位。
 
 - [ ] **Step 4: 运行数据隔离回归**
 
@@ -392,10 +392,10 @@ git commit -m "data: register prospective go intake batch"
 Run:
 
 ```bash
-python -m tools.school_capability_dataset prepare-blind --intake META/prospective-go/prospective-go-b01-intake.json --tasks META/prospective-go-task-catalog-v1.json --rule-snapshot META/school-capability-rule-snapshot-prospective-v1.json --target-dir META/prospective-go/prospective-go-b01-blind-bundle --dry-run
+python -m tools.school_capability_dataset prepare-blind --intake META/prospective-go/prospective-go-b01-intake.json --tasks META/prospective-go-task-catalog-v1.json --rule-snapshot META/prospective-go-rule-snapshot-v1.json --target-dir META/prospective-go/prospective-go-b01-blind-bundle --dry-run
 ```
 
-Expected: 输出 bundle JSON；目标目录不存在；文件白名单仅含 `chart.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json`。
+Expected: 输出 bundle JSON；目标目录不存在；安全文件白名单精确为 `intake.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json`、`cases/<case_id>/chart.json`。不得包含原始 `input.md`、feedback、labels、report、known facts 或其他旁路文件。
 
 - [ ] **Step 2: 正式创建全新盲包**
 
@@ -405,17 +405,23 @@ Expected: 目标目录创建成功，bundle hash 与 dry-run 一致。
 
 - [ ] **Step 3: 生成并冻结 staged outputs**
 
-调用现有 [`generate_frozen_claim_run()`](../../engine/claims/orchestrator.py:1) 的批处理 adapter；输入只能来自 blind bundle。输出必须保留六来源所有 `claim/abstain/unsupported`，且 `task_catalog_version` 与 `rule_snapshot_id` 绑定 bundle 文件 hash。
-
-- [ ] **Step 4: witness 签署 intake、bundle、freeze 三个事件**
-
 Run:
 
 ```bash
-python -m tools.school_capability_dataset witness-append --event META/prospective-go/prospective-go-b01-freeze-event.json --out META/prospective-go/prospective-go-b01-witness-registry.json --witness-key-env SCHOOL_CAPABILITY_WITNESS_KEY --dry-run
+python -m tools.school_capability_prospective stage-frozen-run --bundle-root META/prospective-go/prospective-go-b01-blind-bundle --out META/prospective-go/prospective-go-b01-frozen-run.json --dry-run
 ```
 
-见证方确认后去掉 `--dry-run`。witness key 必须由独立见证方持有；registry root 外部备份。
+[`stage-frozen-run`](../../tools/school_capability_prospective.py:342) 只消费已校验 blind bundle，保留六来源所有 `claim/abstain/unsupported`，并把 `task_catalog_version` 与 `rule_snapshot_id` 绑定到 bundle 中任务目录和 [`prospective-go-rule-snapshot-v1.json`](../../META/prospective-go-rule-snapshot-v1.json:1) 的内容 hash。核对 dry-run 后才去掉 `--dry-run` 写入全新且不存在的 frozen run 路径。
+
+- [ ] **Step 4: witness 一次安全生成/追加 registered、prepared、freeze 三事件段**
+
+首次生成 Run:
+
+```bash
+python -m tools.school_capability_prospective witness-freeze-chain --intake META/prospective-go/prospective-go-b01-intake.json --bundle-root META/prospective-go/prospective-go-b01-blind-bundle --staged-run META/prospective-go/prospective-go-b01-frozen-run.json --out META/prospective-go/prospective-go-b01-witness-registry.json --witness-key-env SCHOOL_CAPABILITY_WITNESS_KEY --dry-run
+```
+
+[`witness-freeze-chain`](../../tools/school_capability_prospective.py:346) 会校验正式 intake、盲包 manifest、staged artifact 及 case 集，一次为每案生成完整且严格递增的 `registered → prepared → freeze` 三事件段。追加既有链时增加 `--registry <既有-registry>`，同时把 `--out` 指向全新路径；不得覆盖既有 registry。见证方确认 dry-run 后才正式写入并外部备份 registry root。此步骤不生成 reveal，outcome 在 freeze witness 完成前继续封存。HMAC key 必须由独立见证方持有，且仅从 `--witness-key-env` 指定的环境变量读取，不得写入命令参数值、仓库或制品。
 
 - [ ] **Step 5: 审计 timing 输出**
 
@@ -423,7 +429,7 @@ python -m tools.school_capability_dataset witness-append --event META/prospectiv
 
 - [ ] **Step 6: 运行冻结回归**
 
-Run: `python -m pytest tests/claims/test_multi_school_freeze.py tests/evaluation/test_dataset.py -q`
+Run: `python -m pytest tests/claims/test_multi_school_freeze.py tests/evaluation/test_dataset.py tests/evaluation/test_prospective_frozen_run.py -q`
 
 Expected: PASS。
 
@@ -435,8 +441,8 @@ git commit -m "eval: freeze prospective go blind batch"
 ```
 
 **验收门禁：**
-- **GO：** 每批 freeze hash 可复算；witness 时间线为 intake < bundle < freeze < reveal；四类 timing 至少总体出现非空 Claim。
-- **HOLD：** timing 正确 abstain 但 Claim 仍为 0，或 witness 尚未完成。
+- **GO：** 每批 freeze hash 可复算；witness 已形成完整 `registered → prepared → freeze` 链，且 freeze 早于后续独立 reveal；四类 timing 至少总体出现非空 Claim。
+- **HOLD：** 真实数据尚未到达、timing 正确 abstain 但 Claim 仍为 0，或 witness 尚未完成。HOLD 时不创建空盲包、空 frozen run 或空 witness registry。
 - **STOP：** runner 在冻结前读到结果；bundle 含白名单外文件；hash 不一致；冻结后改写历史输出。
 
 **依赖：** Task 3 每批达到 10 个真实输入。

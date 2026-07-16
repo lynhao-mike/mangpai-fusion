@@ -1,0 +1,39 @@
+{
+  "schema_version": "prospective-go-rule-snapshot/v1",
+  "rule_snapshot_id": "prospective-go-six-source-ten-task-rules-v1",
+  "schools": [
+    "ziping",
+    "ditiansui",
+    "duan",
+    "ren",
+    "gao",
+    "yang"
+  ],
+  "runners": {
+    "ziping": "engine.v5.ziping_runner.generate_claims",
+    "ditiansui": "engine.v5.ditiansui_runner.generate_claims",
+    "duan": "engine.v5.duan_runner.generate_claims",
+    "ren": "engine.v5.ren_runner.generate_claims",
+    "gao": "engine.v5.gao_runner.generate_claims",
+    "yang": "engine.v5.yang_runner.generate_claims"
+  },
+  "feature_schema": "cfv-v1",
+  "task_catalog": "META/prospective-go-task-catalog-v1.json",
+  "task_catalog_summary": {
+    "schema_version": "school-capability-cli-tasks/v1",
+    "task_catalog_version": "prospective-go-tasks-v1",
+    "task_ids": [
+      "structure.overview",
+      "career.role_change",
+      "marriage.divorce_or_remarriage",
+      "wealth.debt",
+      "career.path_type",
+      "health.system_risk",
+      "career.change_window",
+      "marriage.event_window",
+      "health.event_window",
+      "wealth.major_loss_window"
+    ],
+    "sha256": "bd0d869c45147f5b92bff2e45b9dde8ebce3283cc092270b9bd557c55e1231ef"
+  }
+}

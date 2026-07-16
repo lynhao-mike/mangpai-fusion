@@ -31,7 +31,7 @@
 
 ## 2. 我们在做什么任务
 
-六个月平台工程任务 Task 1—14 已完成，但六个月生产候选门禁最终判定为 **HOLD**。post-gate 行动计划 Task 1—2 已完成；prospective Task 3 已因缺少外部真实新命主判定 HOLD。本轮进一步把旧 2026-07-15 冻结批次之后新增的公开历史案例纳入独立 `historical_blind_candidate` 评估与 L1 路由诊断；这不会补足 prospective/E3 缺口，也不授权切换生产入口。
+六个月平台工程任务 Task 1—14 已完成，但六个月生产候选门禁最终判定为 **HOLD**。post-gate 行动计划 Task 1—2 与 Task 3/4 所需工程前置已完成；prospective Task 3 已招募首案但首批未满 10，保持进行中/HOLD，Task 4 未启动。本轮历史增量评估不会补足 prospective/E3 缺口，也不授权切换生产入口。
 
 当前五个证据缺口：
 
@@ -155,17 +155,18 @@
 - `git diff --check -- plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 通过；
 - 已有链接目标检查未发现非预期缺失。
 
-后续会话已实施 post-gate Task 1—2；prospective Task 3 因真实外部新案缺失保持 HOLD。本轮历史增量扩展已完成，但没有创建 prospective 新案，不能计入 E3，也没有把任何高风险单审标签升级为可评分证据。
+后续会话已实施 post-gate Task 1—2，并完成 Task 3/4 的工程前置：新十任务目录、正式六来源规则快照、短槽位唯一解析、包含安全 `intake.json` 的 canonical blind bundle、确定性 staged frozen run，以及一次生成/追加 `registered → prepared → freeze` 三事件段的 witness CLI。Task 3 已招募并取得授权记录 1 案；首案 raw section input 的 preflight 与单案 `prospective-intake --dry-run` 均通过。正式 prospective intake 仍为 0，未创建盲包、冻结、见证、观察、反馈或报告制品；Task 3 因首批未满 10 保持进行中/HOLD，Task 4 尚未启动。
 
 ---
 
 ## 4. 当前卡在哪里
 
-### 4.1 当前没有代码故障，卡在外部真实数据
+### 4.1 Task 3 已有首案，仍卡在外部真实数据规模
 
-根本瓶颈是前瞻证据，而不是测试或 runner 代码：
+当前采集状态以本节为短期交接快照；长期事实仍以正式 META 制品与运行时校验为准：
 
-- 真实 prospective/E3 完成案仍为 0；
+- 真实 prospective 招募数为 1，授权记录为 1；首案 preflight PASS，单案 intake dry-run PASS；
+- 正式 prospective intake 仍为 0，真实 prospective/E3 完成案仍为 0；
 - 真实 binary 校准 outcome 仍为 0；
 - 高风险 A 级双审标签仍为 0；
 - 现有历史输入缺逐年流年，因此 timing runner 正确 abstain；
@@ -173,10 +174,13 @@
 
 代码或 agent 不能合法“生成”这批证据。必须有规则/路由冻结后才进入系统的真实新命主，以及冻结后到达的真实 outcome。
 
-### 4.2 计划实施前还有两个明确工程前置
+### 4.2 Task 3/4 工程前置已完成
 
-1. 新建 `META/prospective-go-task-catalog-v1.json`：从现有 YAML 任务事实源精确冻结十任务。不能继续使用旧五任务 prospective JSON 承担 binary/high-risk。
-2. 新建 prospective→L1 审计 adapter：输出 L1 CLI 可消费的兼容接口制品，但必须保留 `classification="prospective"`、父 freeze hash 与 score digest，不能伪造 historical 身份。
+1. `META/prospective-go-task-catalog-v1.json` 已从 YAML 任务事实源精确冻结十任务；`META/prospective-go-rule-snapshot-v1.json` 已固定六来源 runner 与任务目录摘要。旧五任务 prospective JSON 仍只作追溯，不能承担 binary/high-risk；历史文件中的 classification 必须按字段语义判读，不能因文件名含 prospective 就误判为当前 prospective 证据。
+2. `prospective-intake` 已支持把现有 tasks-by-case 中 `P-GO-2026-NNN` 短槽位唯一解析至真实完整 case ID；无需生成按四柱改写的任务文件，歧义或未知槽位会拒绝。首案验证同时修复了 preflight 对 canonical raw section 格式的兼容，以及冻结十槽位表中未来尚未到达槽位的合法解析。
+3. `prepare-blind` 的安全白名单为 `intake.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json`、`cases/<case_id>/chart.json`。
+4. `tools/school_capability_prospective.py` 已提供 `stage-frozen-run` 与 `witness-freeze-chain`：前者从已校验盲包生成确定性六来源三态冻结制品；后者一次安全生成/追加每案 `registered → prepared → freeze` 三事件段，不提前 reveal，HMAC key 仅从环境变量读取。
+5. prospective→L1 审计 adapter 仍是后续 Task 9 的工程任务，不是当前真实采集 Task 3/4 的阻塞前置。
 
 ### 4.3 生产入口继续 HOLD
 
@@ -192,17 +196,17 @@
 
 ## 5. 下一步计划
 
-新会话不要重复实施已完成的行动计划 Task 1—2，也不要把本轮 11 个历史增量案例冒充 prospective。下一条合法主线仍是取得真实外部 prospective 新命主后继续 Task 3；若只做历史评估维护，则从本轮新增 baseline/L1 制品复核 HOLD 缺口。
+新会话不要重复实施已完成的行动计划 Task 1—2 或 Task 3/4 工程前置，也不要把历史增量案例冒充 prospective。下一条合法动作是继续 Task 3，招募并取得 `P-GO-2026-002` 的真实授权新命主；首批未满 10 前保持 HOLD，不正式写 intake，不启动 Task 4，也不创建盲包、frozen run、witness、observation、feedback 或 report。若只做历史评估维护，必须保持历史与 prospective classification 隔离。
 
 ### 5.1 第一执行批次
 
 按顺序：
 
-1. 阅读 `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 的 Global Constraints 与 Task 3；确认 Task 1—2 的现有制品和测试仍通过。
-2. 取得真实、规则冻结后才进入系统的新命主；没有外部真实数据时继续 HOLD，不生成替代样本。
-3. 使用 `META/prospective-intake-protocol-v1.md`、`META/prospective-go-task-catalog-v1.json` 与 `templates/prospective-observation-v1.json` 执行 prediction-first 流程。
-4. 三项高风险任务继续使用 `tools/school_capability_review.py` 的独立双审/仲裁链；单审或历史公开反馈不得进入 A 级可评分集。
-5. 所有写命令先 dry-run；保持历史与 prospective 制品路径完全隔离。
+1. 阅读 `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 的 Global Constraints 与 Task 3；确认首案仅有 `input.md` 与一条合法招募授权日志，正式 intake 不存在。
+2. 招募并取得 `P-GO-2026-002` 的真实授权新命主；按授权时间早于接收时间记录，不写 outcome 或 PII，不生成替代样本。
+3. 对新案运行 preflight，并使用现有短槽位 `META/prospective-go/prospective-go-b01-tasks-by-case.json` 做单案 `prospective-intake --dry-run`；继续核验 subject hash 不与历史或其他可读 prospective intake 重复。
+4. 首批未满 10 前不执行正式 `prospective-intake`，也不启动 Task 4 的 `prepare-blind`、`stage-frozen-run` 或 `witness-freeze-chain`。
+5. 三项高风险任务继续使用 `tools/school_capability_review.py` 的独立双审/仲裁链；单审或历史公开反馈不得进入 A 级可评分集。保持历史与 prospective 制品路径完全隔离。
 
 ### 5.2 外部运营准备
 
@@ -299,7 +303,7 @@ python -c "from pathlib import Path; p=Path(r'plans/upgrade-guides/post-gate-act
 
 当前状态：六个月 Task 1—14 已完成，但平台门禁为 HOLD。根因是 timing Claim=0、learned/static 选择无差异、binary 校准样本=0、高风险 A 级双审标签=0、prospective/E3 完成案=0。不要把现有 P-2026-*、990、Top30 或其他历史 feedback-first 案例冒充 prospective。
 
-你的第一任务是审查并开始执行 post-gate action plan 的 Task 1；使用 TDD，先写失败测试。Task 1 要冻结新的十任务 prospective CLI 目录、采集协议、观察模板和首批 tasks-by-case。现有 META/school-capability-prospective-tasks-v1.json 只有五项，禁止用它承担 binary/high-risk 采集。
+Task 1—2 与 Task 3/4 工程前置已经完成，不要重复实现。Task 3 当前已有 1 个真实招募案和 1 条授权记录，首案 preflight 与单案 intake dry-run 已通过，但正式 intake 仍为 0；首批未满 10，状态保持进行中/HOLD，Task 4 未启动。你的第一合法动作是招募并取得 `P-GO-2026-002` 的真实授权新命主，继续 preflight 和单案 intake dry-run；不得正式写 intake 或创建 Task 4 制品。
 
 硬约束：
 - 不降低 ≥30 prospective、≥20 binary、calibration_error<0.2、竞争≥5、selection change≥1 或 A 级双审门槛；

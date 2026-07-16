@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import importlib
 import json
 from pathlib import Path
 from typing import Any
@@ -7,12 +9,14 @@ from typing import Any
 import pytest
 import yaml
 
-from tools.school_capability_dataset import register_prospective_intake
+from engine.claims.runner_registry import DEFAULT_RUNNER_REGISTRY
+from tools.school_capability_dataset import prepare_blind_bundle, register_prospective_intake
 
 
 YAML_TASK_CATALOG = Path("mapping/school-capability-task-catalog-v1.yaml")
 LEGACY_PROSPECTIVE_TASK_CATALOG = Path("META/school-capability-prospective-tasks-v1.json")
 GO_TASK_CATALOG = Path("META/prospective-go-task-catalog-v1.json")
+GO_RULE_SNAPSHOT = Path("META/prospective-go-rule-snapshot-v1.json")
 PROTOCOL = Path("META/prospective-intake-protocol-v1.md")
 OBSERVATION_TEMPLATE = Path("templates/prospective-observation-v1.json")
 TASKS_BY_CASE = Path("META/prospective-go/prospective-go-b01-tasks-by-case.json")
@@ -123,6 +127,53 @@ def test_go_catalog_freezes_exactly_ten_approved_tasks_without_field_drift() -> 
         assert {field: task[field] for field in COPIED_TASK_FIELDS} == {
             field: expected[field] for field in COPIED_TASK_FIELDS
         }
+
+
+def test_go_rule_snapshot_freezes_six_real_runners_and_ten_task_catalog() -> None:
+    snapshot = _read_json(GO_RULE_SNAPSHOT)
+    catalog_bytes = GO_TASK_CATALOG.read_bytes()
+
+    assert snapshot["schema_version"] == "prospective-go-rule-snapshot/v1"
+    assert snapshot["rule_snapshot_id"] == "prospective-go-six-source-ten-task-rules-v1"
+    assert snapshot["schools"] == ["ziping", "ditiansui", "duan", "ren", "gao", "yang"]
+    assert set(snapshot["runners"]) == set(snapshot["schools"])
+    assert snapshot["feature_schema"] == "cfv-v1"
+    assert snapshot["task_catalog"] == GO_TASK_CATALOG.as_posix()
+    assert snapshot["task_catalog_summary"] == {
+        "schema_version": "school-capability-cli-tasks/v1",
+        "task_catalog_version": "prospective-go-tasks-v1",
+        "task_ids": list(APPROVED_TASK_IDS),
+        "sha256": hashlib.sha256(catalog_bytes).hexdigest(),
+    }
+
+    tasks = _read_json(GO_TASK_CATALOG)["tasks"]
+    for school, dotted_path in snapshot["runners"].items():
+        module_name, function_name = dotted_path.rsplit(".", 1)
+        runner = getattr(importlib.import_module(module_name), function_name)
+        registered = [
+            task["task_id"]
+            for task in tasks
+            if DEFAULT_RUNNER_REGISTRY.resolve(school, task["task_id"]) is runner
+        ]
+        assert registered, f"{school} snapshot runner has no registered GO task"
+
+
+def test_prepare_blind_consumes_go_rule_snapshot_id(tmp_path: Path) -> None:
+    case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+    schools = ["ziping", "ditiansui", "duan", "ren", "gao", "yang"]
+    intake = register_prospective_intake(
+        [input_path], _read_json(GO_TASK_CATALOG), schools, "human-intake-01"
+    )
+    bundle_dir = tmp_path / "bundle"
+
+    prepare_blind_bundle(intake, GO_TASK_CATALOG, GO_RULE_SNAPSHOT, bundle_dir)
+
+    rule_reference = _read_json(bundle_dir / "rule-snapshot.json")
+    assert rule_reference["rule_snapshot_id"] == "prospective-go-six-source-ten-task-rules-v1"
+    assert rule_reference["sha256"] == hashlib.sha256(GO_RULE_SNAPSHOT.read_bytes()).hexdigest()
 
 
 def test_legacy_five_task_catalog_cannot_satisfy_binary_and_high_risk_collection() -> None:
@@ -251,3 +302,175 @@ def test_timing_assignment_requires_real_canonical_liunian_steps(tmp_path: Path)
         timing_assignments={"career.change_window": []},
         high_risk_labels=[],
     ) == "HOLD"
+
+
+def test_short_prospective_slot_assigns_tasks_to_unique_full_case_id(tmp_path: Path) -> None:
+    slot_id = "P-GO-2026-001"
+    case_id = f"{slot_id}-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+
+    intake = register_prospective_intake(
+        [input_path],
+        _read_json(GO_TASK_CATALOG),
+        ["ren", "duan"],
+        "human-intake-01",
+        tasks_by_case={slot_id: ["career.role_change", "career.change_window"]},
+    )
+
+    assert intake["records"][0]["case_id"] == case_id
+    assert intake["records"][0]["task_ids"] == ["career.change_window", "career.role_change"]
+
+
+@pytest.mark.parametrize("arrived_count", [1, 5])
+def test_frozen_ten_slot_table_allows_not_yet_arrived_same_batch_slots(
+    tmp_path: Path, arrived_count: int,
+) -> None:
+    assignments = _read_json(TASKS_BY_CASE)
+    charts = (
+        ("乾", "甲子 乙丑 丙寅 丁卯"),
+        ("坤", "戊辰 己巳 庚午 辛未"),
+        ("乾", "壬申 癸酉 甲戌 乙亥"),
+        ("坤", "丙子 丁丑 戊寅 己卯"),
+        ("乾", "庚辰 辛巳 壬午 癸未"),
+    )
+    input_paths = []
+    expected_tasks: dict[str, list[str]] = {}
+    for index, (sex_marker, pillars) in enumerate(charts[:arrived_count], start=1):
+        slot_id = f"P-GO-2026-{index:03d}"
+        compact_pillars = pillars.replace(" ", "")
+        case_id = f"{slot_id}-{sex_marker}-{compact_pillars}"
+        input_path = tmp_path / case_id / "input.md"
+        input_path.parent.mkdir(parents=True)
+        input_path.write_text(f"四柱：{pillars}\n性别：{sex_marker}\n", encoding="utf-8")
+        input_paths.append(input_path)
+        expected_tasks[case_id] = sorted(assignments[slot_id])
+
+    intake = register_prospective_intake(
+        input_paths,
+        _read_json(GO_TASK_CATALOG),
+        ["ziping", "ditiansui", "duan", "ren", "gao", "yang"],
+        "human-intake-01",
+        tasks_by_case=assignments,
+    )
+
+    assert len(intake["records"]) == arrived_count
+    assert {row["case_id"]: row["task_ids"] for row in intake["records"]} == expected_tasks
+
+
+def test_full_prospective_case_key_still_assigns_tasks(tmp_path: Path) -> None:
+    case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+
+    intake = register_prospective_intake(
+        [input_path],
+        _read_json(GO_TASK_CATALOG),
+        ["ren", "duan"],
+        "human-intake-01",
+        tasks_by_case={case_id: ["career.role_change"]},
+    )
+
+    assert intake["records"][0]["task_ids"] == ["career.role_change"]
+
+
+def test_short_prospective_slot_rejects_ambiguous_full_case_ids(tmp_path: Path) -> None:
+    slot_id = "P-GO-2026-001"
+    input_paths = []
+    for suffix, chart in (
+        ("乾-甲子乙丑丙寅丁卯", "四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n"),
+        ("坤-戊辰己巳庚午辛未", "四柱：戊辰 己巳 庚午 辛未\n性别：坤\n"),
+    ):
+        input_path = tmp_path / f"{slot_id}-{suffix}" / "input.md"
+        input_path.parent.mkdir(parents=True)
+        input_path.write_text(chart, encoding="utf-8")
+        input_paths.append(input_path)
+
+    with pytest.raises(ValueError, match="ambiguous tasks_by_case slot"):
+        register_prospective_intake(
+            input_paths,
+            _read_json(GO_TASK_CATALOG),
+            ["ren", "duan"],
+            "human-intake-01",
+            tasks_by_case={slot_id: ["career.role_change"]},
+        )
+
+
+def test_short_prospective_slot_rejects_unknown_slot(tmp_path: Path) -> None:
+    case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="tasks_by_case references unknown case: P-GO-2026-999"):
+        register_prospective_intake(
+            [input_path],
+            _read_json(GO_TASK_CATALOG),
+            ["ren", "duan"],
+            "human-intake-01",
+            tasks_by_case={"P-GO-2026-999": ["career.role_change"]},
+        )
+
+
+@pytest.mark.parametrize(
+    ("assignments", "expected_error"),
+    [
+        ({"P-GO-2026-01": ["career.role_change"]}, "tasks_by_case references unknown case"),
+        (
+            {
+                "P-GO-2026-001": ["career.role_change"],
+                "P-GO-2026-003": ["career.change_window"],
+            },
+            "tasks_by_case references unknown case: P-GO-2026-003",
+        ),
+        (
+            {
+                "P-GO-2027-001": ["career.role_change"],
+                "P-GO-2027-002": ["career.change_window"],
+            },
+            "tasks_by_case references unknown case: P-GO-2027-001",
+        ),
+        (
+            {"P-GO-2026-999-乾-甲子乙丑丙寅丁卯": ["career.role_change"]},
+            "tasks_by_case references unknown case",
+        ),
+    ],
+)
+def test_not_yet_arrived_exception_rejects_malformed_gapped_cross_batch_and_full_keys(
+    tmp_path: Path, assignments: dict[str, list[str]], expected_error: str,
+) -> None:
+    case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match=expected_error):
+        register_prospective_intake(
+            [input_path],
+            _read_json(GO_TASK_CATALOG),
+            ["ren", "duan"],
+            "human-intake-01",
+            tasks_by_case=assignments,
+        )
+
+
+def test_tasks_by_case_rejects_short_and_full_keys_resolving_same_case(tmp_path: Path) -> None:
+    slot_id = "P-GO-2026-001"
+    case_id = f"{slot_id}-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="duplicate tasks_by_case resolution"):
+        register_prospective_intake(
+            [input_path],
+            _read_json(GO_TASK_CATALOG),
+            ["ren", "duan"],
+            "human-intake-01",
+            tasks_by_case={
+                slot_id: ["career.change_window"],
+                case_id: ["career.role_change"],
+            },
+        )

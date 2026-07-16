@@ -150,6 +150,14 @@ class KnownFact:
 
 
 @dataclass
+class CanonicalRawInput:
+    """原始问真 section 输入通过 canonical 契约后的 preflight 结果。"""
+    case_id: str
+    canonical_chart: dict[str, Any]
+    preflight_warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
 class ParsedInput:
     """preflight 解析后的内部结构（已通过 11 步校验）。"""
     schema_version: str
@@ -672,10 +680,60 @@ def _check_case_id_gender(case_id: str, birth: dict[str, Any]) -> None:
 # 六、主接口 parse()
 # ============================================================
 
+_RAW_SECTION_MARKERS = ("$BASE", "$FOUR", "$DY_LOOP")
+_RAW_CASE_ID_PATTERN = re.compile(
+    r"^.+-([乾坤])-(([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4})$"
+)
+
+
+def _parse_canonical_raw(input_md_path: Path, text: str) -> CanonicalRawInput:
+    from tools.school_capability_dataset import (
+        _contains_forbidden_field,
+        parse_canonical_chart,
+    )
+
+    if _contains_forbidden_field(text):
+        raise PreflightError(
+            step=3,
+            field_path="prospective input",
+            detail="包含 feedback/labels/report/known facts 禁止标记",
+        )
+    case_id = input_md_path.parent.name
+    try:
+        chart = parse_canonical_chart(text, case_id)
+    except ValueError as error:
+        raise PreflightError(
+            step=3,
+            field_path="canonical chart",
+            detail=str(error),
+        ) from error
+    match = _RAW_CASE_ID_PATTERN.fullmatch(case_id)
+    _require(
+        match is not None,
+        4,
+        "目录名",
+        "原始 section case 目录名必须以 {乾/坤}-{四柱} 结尾",
+    )
+    assert match is not None
+    _require(
+        match.group(1) == chart["sex_marker"],
+        4,
+        "目录名 ↔ sex_marker",
+        f"目录命式 {match.group(1)!r} 与输入 {chart['sex_marker']!r} 不一致",
+    )
+    _require(
+        match.group(2) == "".join(chart["four_pillars"]),
+        6,
+        "目录名 ↔ four_pillars",
+        f"目录四柱 {match.group(2)!r} 与输入 {''.join(chart['four_pillars'])!r} 不一致",
+    )
+    return CanonicalRawInput(case_id=case_id, canonical_chart=chart)
+
+
 def parse(
     input_md_path: Path,
     cases_index_path: Optional[Path] = None,
-) -> ParsedInput:
+) -> Union[ParsedInput, CanonicalRawInput]:
     """主入口：解析 + 11 步校验 input.md → ParsedInput。
 
     :param input_md_path: cases/C-XXX/input.md 的路径
@@ -692,9 +750,11 @@ def parse(
     text = input_md_path.read_text(encoding="utf-8")
     blocks = extract_yaml_blocks(text)
     if not blocks:
+        if all(marker in text for marker in _RAW_SECTION_MARKERS):
+            return _parse_canonical_raw(input_md_path, text)
         raise PreflightError(
             step=2, field_path="<yaml-block>",
-            detail="input.md 中未发现任何 ```yaml``` 代码块"
+            detail="input.md 中既无 ```yaml``` 代码块，也无完整 $BASE/$FOUR/$DY_LOOP"
         )
     merged = merge_blocks(blocks)
     warnings: list[str] = []

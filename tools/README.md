@@ -37,7 +37,8 @@
 | [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存；高并发场景后续演进为 job queue |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
-| [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件；`prepare-blind` 仅复制 case `input.md`、tasks 与 rule snapshot，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
+| [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件，并将唯一匹配的短槽位任务键解析为完整 case ID；`prepare-blind` 仅写安全 canonical intake、tasks、rule snapshot、chart 与 manifest，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
+| [`school_capability_prospective.py`](school_capability_prospective.py:1) | prospective 盲包 staged 冻结与 freeze witness 链 | `stage-frozen-run` 从已校验盲包生成确定性六来源三态冻结制品；`witness-freeze-chain` 校验正式 intake、盲包与 staged run 后，一次安全生成或追加每案 `registered → prepared → freeze` 三事件段；写入前必须 `--dry-run`，不提前 reveal，HMAC key 仅从 `--witness-key-env` 指定的环境变量读取 |
 | [`school_capability_review.py`](school_capability_review.py:1) | prospective 高风险任务独立双审、冲突仲裁与 A 级标签治理 | `prepare / submit / adjudicate / finalize / audit`；只消费冻结后 observation，拒绝预测/runner/report 泄漏、重复 reviewer、角色重叠及覆盖既有目标；所有写命令支持 `--dry-run`；不替代 `feedback_ingest.py`，不写生产规则或权重 |
 | [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
 | [`school_capability_incremental.py`](school_capability_incremental.py:1) | 基于不可变父 baseline 构建独立历史隔离增量批次 | `prepare / stage-a / stage-b / bind-formal / finalize`；按命主 identity 求增量、先冻结后揭示，仅绑定低风险目录内标签，高风险无 A 级双审保持不可评分；不覆盖父制品或修改生产路由/权重 |
@@ -153,14 +154,18 @@ python tools/rule_status_scan.py --check
 ## 学派能力 prospective / blind 隔离
 
 ```bash
-python -m tools.school_capability_dataset prospective-intake --input cases/C-P-001/input.md --tasks META/school-capability-tasks.json --school ziping --operator human-a --out META/prospective-intake.json --dry-run
-python -m tools.school_capability_dataset prepare-blind --intake META/prospective-intake.json --tasks META/school-capability-tasks.json --rule-snapshot META/rule-snapshot.json --target-dir META/blind-bundle --dry-run
+python -m tools.school_capability_dataset prospective-intake --input cases/P-GO-2026-001-乾-实际四柱/input.md --tasks META/prospective-go-task-catalog-v1.json --school ziping --operator human-intake-01 --tasks-by-case META/prospective-go/prospective-go-b01-tasks-by-case.json --out META/prospective-go/prospective-go-b01-intake.json --dry-run
+python -m tools.school_capability_dataset prepare-blind --intake META/prospective-go/prospective-go-b01-intake.json --tasks META/prospective-go-task-catalog-v1.json --rule-snapshot META/prospective-go-rule-snapshot-v1.json --target-dir META/prospective-go/prospective-go-b01-blind-bundle --dry-run
+python -m tools.school_capability_prospective stage-frozen-run --bundle-root META/prospective-go/prospective-go-b01-blind-bundle --out META/prospective-go/prospective-go-b01-frozen-run.json --dry-run
+python -m tools.school_capability_prospective witness-freeze-chain --intake META/prospective-go/prospective-go-b01-intake.json --bundle-root META/prospective-go/prospective-go-b01-blind-bundle --staged-run META/prospective-go/prospective-go-b01-frozen-run.json --out META/prospective-go/prospective-go-b01-witness-registry.json --witness-key-env SCHOOL_CAPABILITY_WITNESS_KEY --dry-run
 ```
 
-- `prospective-intake` 的输入只能是名为 `input.md` 的普通文件；case ID 取父目录名，禁止重复 case、未知 task、symlink，以及路径、内容或 JSON 字段中的 feedback / labels / report / known facts 标记。
-- `prepare-blind` 使用显式白名单生成全新目录：`cases/<case_id>/input.md`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json`。同目录中的诱饵 feedback 或其他文件不会进入 bundle。
+- `prospective-intake` 的输入只能是名为 `input.md` 的普通文件；case ID 取父目录名，禁止重复 case、未知 task、symlink，以及路径、内容或 JSON 字段中的 feedback / labels / report / known facts 标记。现有 tasks-by-case 文件可以继续使用 `P-GO-2026-NNN` 短槽位；CLI 只在唯一匹配时将其解析为完整 `P-GO-2026-NNN-{乾/坤}-{四柱}` case ID，无需生成改写版任务文件，零匹配或多匹配都会拒绝。
+- `prepare-blind` 使用显式白名单生成全新目录。安全白名单为 `intake.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json` 与 `cases/<case_id>/chart.json`；同目录中的 `input.md`、feedback、labels、report、known facts 或其他文件不会进入 bundle。
+- `stage-frozen-run` 只消费已校验盲包，保留六来源全部 `claim / abstain / unsupported`，并把任务目录及规则快照的内容 hash 绑定到冻结制品。
+- `witness-freeze-chain` 一次为每案安全生成或向既有 registry 追加完整 `registered → prepared → freeze` 三事件段；追加时用 `--registry` 指向既有 registry，并把 `--out` 指向全新路径，不覆盖旧制品。该流程不创建 reveal 事件；HMAC key 只从 `--witness-key-env` 指定的环境变量读取，不得写入命令参数、文件或仓库。
 - manifest 记录内容 SHA-256；bundle hash 只由白名单文件的相对路径和内容 hash 决定，因此不受时间、源目录或目标目录影响。
-- 源文件及其路径链、目标路径链均拒绝 symlink；目标目录必须不存在。`--dry-run` 只打印计划或制品 JSON，不创建输出。
+- 源文件及其路径链、目标路径链均拒绝 symlink；目标目录或输出文件必须不存在。所有写命令先执行 `--dry-run`；dry-run 只打印计划或制品 JSON，不创建输出。真实数据未到时状态仍为 HOLD，不创建空 intake、空盲包、空 frozen run 或空 witness registry。
 
 ### Witness HMAC 信任边界
 
