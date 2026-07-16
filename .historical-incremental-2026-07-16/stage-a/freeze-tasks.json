@@ -1,0 +1,243 @@
+{
+  "task_catalog_version": "school-capability-task-catalog-v1-ten-approved@source-sha256:0865367006e84d7d709996b304c5d450eb881c37b18469b6a4c843dfdc93db37",
+  "tasks": [
+    {
+      "task_id": "structure.overview",
+      "domain": "总体",
+      "claim_type": "structure_claim",
+      "scoring_method": "portrait_agreement",
+      "quantifiable": false,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "lifetime"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {},
+      "evaluation_note": "子平结构命题盲审任务；不概率化，仅评估独立结构复核一致度"
+    },
+    {
+      "task_id": "career.role_change",
+      "domain": "事业",
+      "claim_type": "binary_event",
+      "scoring_method": "binary_probability",
+      "quantifiable": true,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "boolean",
+        "positive_label": "occurred",
+        "negative_label": "not_observed"
+      },
+      "evaluation_note": "评价显著岗位或职业角色变化"
+    },
+    {
+      "task_id": "marriage.divorce_or_remarriage",
+      "domain": "婚姻",
+      "claim_type": "binary_event",
+      "scoring_method": "binary_probability",
+      "quantifiable": true,
+      "high_risk": true,
+      "allowed_time_horizons": [
+        "lifetime",
+        "ten_year"
+      ],
+      "required_input_fields": [
+        "four_pillars",
+        "sex_marker"
+      ],
+      "label_schema": {
+        "type": "boolean",
+        "positive_label": "occurred",
+        "negative_label": "not_observed"
+      },
+      "evaluation_note": "只评价是否发生，不把关系压力自动等同离婚"
+    },
+    {
+      "task_id": "wealth.debt",
+      "domain": "财富",
+      "claim_type": "binary_event",
+      "scoring_method": "binary_probability",
+      "quantifiable": true,
+      "high_risk": true,
+      "allowed_time_horizons": [
+        "lifetime",
+        "ten_year"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "boolean",
+        "positive_label": "occurred",
+        "negative_label": "not_observed"
+      },
+      "evaluation_note": "评价显著债务是否发生"
+    },
+    {
+      "task_id": "career.path_type",
+      "domain": "事业",
+      "claim_type": "categorical_state",
+      "scoring_method": "multiclass_probability",
+      "quantifiable": true,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "lifetime",
+        "ten_year"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "categorical",
+        "labels": [
+          "employment",
+          "entrepreneurship",
+          "mixed"
+        ]
+      },
+      "evaluation_note": "评价主要职业路径类型"
+    },
+    {
+      "task_id": "health.system_risk",
+      "domain": "健康",
+      "claim_type": "categorical_state",
+      "scoring_method": "multiclass_probability",
+      "quantifiable": true,
+      "high_risk": true,
+      "allowed_time_horizons": [
+        "lifetime",
+        "ten_year"
+      ],
+      "required_input_fields": [
+        "four_pillars",
+        "sex_marker"
+      ],
+      "label_schema": {
+        "type": "categorical",
+        "labels": [
+          "low",
+          "moderate",
+          "high"
+        ],
+        "high_risk_labels": [
+          "high"
+        ]
+      },
+      "evaluation_note": "仅作盲测风险分层，不替代医学诊断"
+    },
+    {
+      "task_id": "career.change_window",
+      "domain": "事业",
+      "claim_type": "event_timing",
+      "scoring_method": "time_window",
+      "quantifiable": true,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "object",
+        "required": [
+          "occurred",
+          "year"
+        ],
+        "occurred": "boolean",
+        "year": "integer_or_null",
+        "event": "career_change"
+      },
+      "evaluation_note": "评价职业变化窗口命中情况"
+    },
+    {
+      "task_id": "marriage.event_window",
+      "domain": "婚姻",
+      "claim_type": "event_timing",
+      "scoring_method": "time_window",
+      "quantifiable": true,
+      "high_risk": false,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars",
+        "sex_marker"
+      ],
+      "label_schema": {
+        "type": "object",
+        "required": [
+          "occurred",
+          "year"
+        ],
+        "occurred": "boolean",
+        "year": "integer_or_null",
+        "event": "marriage_change"
+      },
+      "evaluation_note": "评价婚恋重大事件窗口命中情况"
+    },
+    {
+      "task_id": "health.event_window",
+      "domain": "健康",
+      "claim_type": "event_timing",
+      "scoring_method": "time_window",
+      "quantifiable": true,
+      "high_risk": true,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars",
+        "sex_marker"
+      ],
+      "label_schema": {
+        "type": "object",
+        "required": [
+          "occurred",
+          "year"
+        ],
+        "occurred": "boolean",
+        "year": "integer_or_null",
+        "event": "significant_health_event"
+      },
+      "evaluation_note": "评价有记录的显著健康事件窗口"
+    },
+    {
+      "task_id": "wealth.major_loss_window",
+      "domain": "财富",
+      "claim_type": "event_timing",
+      "scoring_method": "time_window",
+      "quantifiable": true,
+      "high_risk": true,
+      "allowed_time_horizons": [
+        "ten_year",
+        "annual"
+      ],
+      "required_input_fields": [
+        "four_pillars"
+      ],
+      "label_schema": {
+        "type": "object",
+        "required": [
+          "occurred",
+          "year"
+        ],
+        "occurred": "boolean",
+        "year": "integer_or_null",
+        "event": "major_financial_loss"
+      },
+      "evaluation_note": "评价重大财务损失窗口"
+    }
+  ]
+}

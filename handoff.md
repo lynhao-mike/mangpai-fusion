@@ -1,4 +1,4 @@
-# HANDOFF · HOLD 后门禁行动计划交接
+# HANDOFF · 历史隔离增量批次与 HOLD 后门禁交接
 
 > 写给一个完全没有上下文的新会话。
 > 更新时间：2026-07-16（Asia/Shanghai）
@@ -31,7 +31,7 @@
 
 ## 2. 我们在做什么任务
 
-六个月平台工程任务 Task 1—14 已完成，但六个月生产候选门禁最终判定为 **HOLD**。本轮任务不是继续堆代码或立即切生产入口，而是制定从 HOLD 达到 GO 的后续阶段行动计划。
+六个月平台工程任务 Task 1—14 已完成，但六个月生产候选门禁最终判定为 **HOLD**。post-gate 行动计划 Task 1—2 已完成；prospective Task 3 已因缺少外部真实新命主判定 HOLD。本轮进一步把旧 2026-07-15 冻结批次之后新增的公开历史案例纳入独立 `historical_blind_candidate` 评估与 L1 路由诊断；这不会补足 prospective/E3 缺口，也不授权切换生产入口。
 
 当前五个证据缺口：
 
@@ -53,6 +53,22 @@
 ---
 
 ## 3. 本会话已经完成什么
+
+### 3.0 历史隔离增量批次扩展（2026-07-16）
+
+本轮已完成：
+
+- 以 `META/six-month-capability-baseline-2026-07-15.json` 的 64 个冻结 case ID 为父集合，按 `sex_marker + four_pillars` 与当前 `cases/shuru-input.md` 对照；
+- 当前输入仍到 `P-2026-076`，原始 76 案，去重后 75 个 subject；`P-2026-010` 与 `P-2026-045` 为同盘，继续保留更完整的 `P-2026-045`；
+- 确认增量共 11 案：`P-2026-066` 至 `P-2026-076`；
+- Stage A dry-run 与正式冻结均只读取隔离命盘事实，形成 11 × 10 × 6 = 660 条输出，forbidden marker 为 0；父 Stage A freeze hash 为 `b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68`；
+- Stage B 从公开反馈提取 14 条候选标签，其中 4 条 `education.attainment_band` 不在十任务目录，最终接受 10 条低风险目录内标签，覆盖 4 个案例；无 A 级双审高风险标签，高风险可评分数保持 0；
+- 通过正式 `school_capability_baseline.py freeze → score → report` 生成 4 个有目录内标签案例的独立正式子批次，freeze hash 为 `3abc2223f90116f5778eb5b2b360580c0a83125fb6747052a0ceedf64ba98ab7`；
+- 新增归档：`META/six-month-capability-baseline-2026-07-16-incremental.json`、`.md`，分类保持 `historical_blind_candidate`，门禁 HOLD；
+- 新增 L1 诊断：`META/l1-routing-holdout-audit-2026-07-16-incremental.json` 与 `reports/l1-routing-holdout-comparison-2026-07-16-incremental.md`；留出 1 个 subject、2 个可评分 case/task、1 个多派竞争 case/task、selection changes=0、static/learned mean utility 均为 -0.1，结论仍为 HOLD；
+- 新增编排工具 `tools/school_capability_incremental.py`、专项测试 `tests/evaluation/test_historical_incremental_batch.py` 和实施计划 `docs/superpowers/plans/2026-07-16-historical-isolation-incremental-batch.md`。
+
+旧 2026-07-15 基线未覆盖；任务开始时记录的 SHA-256 为：JSON `d3012a619054a137580cb4cfbd6c7481733841fa766de3e3c771c54123a1ac40`，Markdown `363ba24787319fb9524be45c0215be98498bed6ad75a6ff815a59f2feaefc4b0`。完成前必须复验一致。
 
 ### 3.1 已读取并核对当前事实源
 
@@ -139,7 +155,7 @@
 - `git diff --check -- plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 通过；
 - 已有链接目标检查未发现非预期缺失。
 
-本会话只完成了**规划文档**，没有开始实施计划中的 Task 1，也没有创建 prospective 新案、双审工具或路由 adapter。
+后续会话已实施 post-gate Task 1—2；prospective Task 3 因真实外部新案缺失保持 HOLD。本轮历史增量扩展已完成，但没有创建 prospective 新案，不能计入 E3，也没有把任何高风险单审标签升级为可评分证据。
 
 ---
 
@@ -176,27 +192,17 @@
 
 ## 5. 下一步计划
 
-新会话如获用户批准开始实施，应从行动计划 Task 1 开始，不要跳到采集或路由门禁。
+新会话不要重复实施已完成的行动计划 Task 1—2，也不要把本轮 11 个历史增量案例冒充 prospective。下一条合法主线仍是取得真实外部 prospective 新命主后继续 Task 3；若只做历史评估维护，则从本轮新增 baseline/L1 制品复核 HOLD 缺口。
 
 ### 5.1 第一执行批次
 
 按顺序：
 
-1. 阅读 `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 的 Global Constraints、文件结构、Task 1 和 Task 2。
-2. 用 TDD 实施 Task 1：
-   - 创建 `META/prospective-intake-protocol-v1.md`；
-   - 创建 `META/prospective-go-task-catalog-v1.json`；
-   - 创建 `templates/prospective-observation-v1.json`；
-   - 创建 `META/prospective-go/prospective-go-b01-tasks-by-case.json`；
-   - 创建 `tests/evaluation/test_prospective_gate_workflow.py`。
-3. 实施 Task 2：
-   - `engine/evaluation/high_risk_review.py`；
-   - `tools/school_capability_review.py`；
-   - `templates/high-risk-review-v1.json`；
-   - `tests/evaluation/test_high_risk_review.py`；
-   - 更新 `tools/README.md`。
-4. 所有写命令先 dry-run；每个代码任务按失败测试→最小实现→相关测试→工具检查执行。
-5. Task 1—2 通过后，才可进入真实命主招募和批量 intake。
+1. 阅读 `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 的 Global Constraints 与 Task 3；确认 Task 1—2 的现有制品和测试仍通过。
+2. 取得真实、规则冻结后才进入系统的新命主；没有外部真实数据时继续 HOLD，不生成替代样本。
+3. 使用 `META/prospective-intake-protocol-v1.md`、`META/prospective-go-task-catalog-v1.json` 与 `templates/prospective-observation-v1.json` 执行 prediction-first 流程。
+4. 三项高风险任务继续使用 `tools/school_capability_review.py` 的独立双审/仲裁链；单审或历史公开反馈不得进入 A 级可评分集。
+5. 所有写命令先 dry-run；保持历史与 prospective 制品路径完全隔离。
 
 ### 5.2 外部运营准备
 

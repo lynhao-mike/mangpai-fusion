@@ -1,0 +1,148 @@
+{
+  "schema_version": "l1-routing-holdout-audit/v2",
+  "source_baseline": ".historical-incremental-2026-07-16/stage-a/historical-batch.json + .historical-incremental-2026-07-16/stage-b/historical-scores.json",
+  "source_freeze_hash": "b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68",
+  "source_artifact_digest": null,
+  "classification": "historical_blind_candidate",
+  "split": {
+    "salt": "historical-incremental-l1-routing-2026-07-16-v1",
+    "holdout_fraction": 0.25,
+    "subject_identity": "sex_marker + four_pillars",
+    "training_case_ids": [
+      "P-2026-066-坤-丙寅辛卯壬子丁未",
+      "P-2026-072-坤-己巳甲戌戊申壬子",
+      "P-2026-075-乾-戊辰辛酉乙丑丙戌"
+    ],
+    "holdout_case_ids": [
+      "P-2026-067-乾-壬戌癸丑癸卯己未"
+    ]
+  },
+  "static_baseline_source": "mapping/school-capability-runner-coverage-v1.yaml",
+  "static_school_by_task": {
+    "career.change_window": "ren",
+    "career.path_type": "duan",
+    "career.role_change": "ziping",
+    "marriage.event_window": "ren"
+  },
+  "training_capability_snapshot_id": "cap-train-b295f0f5f1e78dbd668a",
+  "training_capability_snapshot": {
+    "schema_version": "l1-training-capability-snapshot/v1",
+    "snapshot_id": "cap-train-b295f0f5f1e78dbd668a",
+    "training_case_ids": [
+      "P-2026-066-坤-丙寅辛卯壬子丁未",
+      "P-2026-072-坤-己巳甲戌戊申壬子",
+      "P-2026-075-乾-戊辰辛酉乙丑丙戌"
+    ],
+    "evaluated_at": "2026-07-16T07:00:00Z",
+    "posteriors": [],
+    "source_freeze_hash": "b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68"
+  },
+  "prototype_by_case": {
+    "P-2026-066-坤-丙寅辛卯壬子丁未": "prototype-official-kill-mixed",
+    "P-2026-067-乾-壬戌癸丑癸卯己未": "prototype-official-kill-mixed",
+    "P-2026-072-坤-己巳甲戌戊申壬子": "prototype-climate-dry",
+    "P-2026-075-乾-戊辰辛酉乙丑丙戌": "prototype-wealth-official-combo"
+  },
+  "competitive_coverage": {
+    "status": "HOLD",
+    "holdout_subject_count": 1,
+    "holdout_case_count": 1,
+    "scored_case_task_count": 2,
+    "competitive_case_task_count": 1,
+    "competitive_by_task": {
+      "marriage.event_window": 1
+    },
+    "competitive_identities": [
+      {
+        "case_id": "P-2026-067-乾-壬戌癸丑癸卯己未",
+        "task_id": "marriage.event_window",
+        "schools": [
+          "duan",
+          "gao",
+          "ren"
+        ]
+      }
+    ],
+    "reasons": [
+      "同案同任务多流派可评分竞争样本不足：1 < 5。"
+    ]
+  },
+  "route_comparison": {
+    "status": "HOLD",
+    "record_count": 2,
+    "selection_changes": 0,
+    "records": [
+      {
+        "case_id": "P-2026-067-乾-壬戌癸丑癸卯己未",
+        "task_id": "career.path_type",
+        "static_school": "duan",
+        "learned_school": "duan",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      },
+      {
+        "case_id": "P-2026-067-乾-壬戌癸丑癸卯己未",
+        "task_id": "marriage.event_window",
+        "static_school": "ren",
+        "learned_school": "ren",
+        "static_utility": -0.1,
+        "learned_utility": -0.1
+      }
+    ],
+    "static_mean_utility": -0.1,
+    "learned_mean_utility": -0.1,
+    "reasons": [
+      "可比较留出案例不足：1 < 5。"
+    ]
+  },
+  "calibration_audit": {
+    "status": "insufficient",
+    "sample_count": 0,
+    "static_brier": null,
+    "learned_brier": null,
+    "worsened": false
+  },
+  "high_risk_audit": {
+    "task_ids": [
+      "health.event_window",
+      "health.system_risk",
+      "marriage.divorce_or_remarriage",
+      "wealth.debt",
+      "wealth.major_loss_window"
+    ],
+    "assessable_record_count": 0,
+    "static_false_positive_count": 0,
+    "learned_false_positive_count": 0,
+    "false_positives_increased": false,
+    "status": "insufficient"
+  },
+  "label_distribution_by_task": {
+    "career.path_type": {
+      "positive": 0,
+      "negative": 0,
+      "other": 1
+    },
+    "marriage.event_window": {
+      "positive": 0,
+      "negative": 0,
+      "other": 3
+    }
+  },
+  "single_class_tasks": [
+    "career.path_type",
+    "marriage.event_window"
+  ],
+  "prototype_incremental_evidence": [],
+  "gate_status": "HOLD",
+  "gate_reasons": [
+    "同案同任务多流派可评分竞争样本不足：1 < 5。",
+    "learned 与 static 选择完全相同。",
+    "留出标签缺少正负例或为单一类别：career.path_type, marriage.event_window。",
+    "校准样本不足，calibration_status=insufficient。",
+    "高风险任务不可评估。",
+    "没有 task × prototype 稳定增量证据。",
+    "可比较留出案例不足：1 < 5。"
+  ],
+  "generated_at": "2026-07-16T07:00:00Z",
+  "artifact_digest": "sha256:a0666b46b9e4e4a03c4f6742337a31a1d3c3e0b1f88d28c7b6ee79ae3fcc4bc0"
+}

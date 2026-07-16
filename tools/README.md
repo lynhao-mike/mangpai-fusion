@@ -40,6 +40,7 @@
 | [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件；`prepare-blind` 仅复制 case `input.md`、tasks 与 rule snapshot，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
 | [`school_capability_review.py`](school_capability_review.py:1) | prospective 高风险任务独立双审、冲突仲裁与 A 级标签治理 | `prepare / submit / adjudicate / finalize / audit`；只消费冻结后 observation，拒绝预测/runner/report 泄漏、重复 reviewer、角色重叠及覆盖既有目标；所有写命令支持 `--dry-run`；不替代 `feedback_ingest.py`，不写生产规则或权重 |
 | [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
+| [`school_capability_incremental.py`](school_capability_incremental.py:1) | 基于不可变父 baseline 构建独立历史隔离增量批次 | `prepare / stage-a / stage-b / bind-formal / finalize`；按命主 identity 求增量、先冻结后揭示，仅绑定低风险目录内标签，高风险无 A 级双审保持不可评分；不覆盖父制品或修改生产路由/权重 |
 | [`school_capability_task8.py`](school_capability_task8.py:1) | 六个月计划 Task 8 的六来源历史隔离基线编排 | 严格拆分 stage-a 冻结与 stage-b 标签揭示，复用现有 runner/evaluation 契约并只读核验旧 prospective bundle；不写生产路由、权重或规则 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖与效用审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许对照；learned 必须改变至少一个选择且效用不退化才可 GO |
