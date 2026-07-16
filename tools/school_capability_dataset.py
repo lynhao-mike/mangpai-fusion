@@ -698,9 +698,16 @@ def register_prospective_intake(
         raise ValueError("operator must be a named human")
     if not schools or len(set(schools)) != len(schools) or any(not isinstance(item, str) or not item for item in schools):
         raise ValueError("schools must be unique non-empty strings")
-    if _contains_forbidden_field(tasks):
-        raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields")
     task_ids = set(_task_map(tasks))
+    intake_safe_tasks = {
+        **tasks,
+        "tasks": [
+            {key: value for key, value in task.items() if key != "label_schema"}
+            for task in tasks["tasks"]
+        ],
+    }
+    if _contains_forbidden_field(intake_safe_tasks):
+        raise ValueError("tasks contain forbidden feedback/labels/report/known facts fields")
     tasks_by_case = tasks_by_case or {}
     records = []
     seen: set[str] = set()

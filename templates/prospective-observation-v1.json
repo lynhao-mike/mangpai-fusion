@@ -1,0 +1,29 @@
+{
+  "schema_version": "prospective-observation/v1",
+  "description": "冻结并由外部 witness 签署后，由 outcome custodian 填写的真实观察模板；不得包含预测内容。",
+  "prediction_fields_forbidden": true,
+  "allowed_binary_labels": [
+    "occurred",
+    "not_observed",
+    "no_data"
+  ],
+  "label_semantics": {
+    "occurred": "事件在预先定义的观察窗内真实发生且符合任务目录定义。",
+    "not_observed": "完整观察窗结束且来源可核验，窗内明确未发生；不表示终身不会发生。",
+    "no_data": "失访、观察窗未结束、资料冲突、资料不足或无法确认；不进入校准分母。"
+  },
+  "record_template": {
+    "case_id": "",
+    "task_id": "",
+    "label": "",
+    "observed_at": "",
+    "observation_window": {
+      "started_at": "",
+      "ended_at": ""
+    },
+    "source_refs": [],
+    "quantifiable": true,
+    "conflict_state": "none",
+    "custodian": ""
+  }
+}

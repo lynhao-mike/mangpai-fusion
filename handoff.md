@@ -1,130 +1,308 @@
-# HANDOFF · 会话交接文档
+# HANDOFF · HOLD 后门禁行动计划交接
 
-> 写给一个完全没有上下文的新会话。读完这份文档 + [`AGENTS.md`](AGENTS.md) + 下面列出的两份主干文档，你就能无缝接手。
-> 生成时间：2026-07-15
-> 本文件只作短期交接，不是长期事实源。长期事实源见 [`AGENTS.md`](AGENTS.md) 第 3 节事实源矩阵。
-
----
-
-## 1. 我们在做什么任务
-
-本仓库 `mangpai-fusion` 是四派盲派融合八字分析系统。当前这一轮工作**不是日常出报告**，而是**架构升级规划**：把系统从"手工专家系统"演进为"可学习的八字智能推理平台"。
-
-本轮会话的具体任务：**基于两份主干文档，制定未来 6 个月的分阶段实施路线**，并确认五派能力矩阵与任务分配。
-
-两份主干文档（必读，优先级最高）：
-1. [`docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md`](docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md) —— 目标架构核心设计（"宪法"，定义十层分权、核心对象、非谈判原则）
-2. [`plans/bazi-intelligence-platform-roadmap.md`](plans/bazi-intelligence-platform-roadmap.md) —— 推进与验证路线（阶段门禁、H1-H6 假设、Phase 0-5）
-
-配套升级指导文档在 [`plans/upgrade-guides/`](plans/upgrade-guides/)（00-06 共 7 份）。
+> 写给一个完全没有上下文的新会话。
+> 更新时间：2026-07-16（Asia/Shanghai）
+> 本文件只作短期交接，不是长期事实源。当前事实必须回到 `AGENTS.md`、`META/project-state.json`、门禁制品及运行时检查确认。
 
 ---
 
-## 2. 已经完成了什么
+## 1. 新会话先读什么
 
-### 2.1 核验结论（本会话第一阶段）
-核验了 [`plans/upgrade-guides/00-overview-and-sequencing.md`](plans/upgrade-guides/00-overview-and-sequencing.md) 清单，结论：
-- 升级单元 **01（命局特征向量 cfv-v1）** ✅ 已落地：[`engine/features/`](engine/features/) + [`tests/features/test_chart_feature_vector.py`](tests/features/test_chart_feature_vector.py)
-- 升级单元 **02（L2 命题引擎化）** ✅ 两派最小闭环已落地：[`engine/claims/`](engine/claims/) + [`engine/v5/ziping_runner.py`](engine/v5/ziping_runner.py) + [`engine/v5/ren_runner.py`](engine/v5/ren_runner.py)
-- 升级单元 **03（评估数据地基）** ✅ 历史隔离基线 GO：[`META/school-capability-baseline-2026-07-14.md`](META/school-capability-baseline-2026-07-14.md)（64 冻结案、39 标注案、非空后验 N_eff=5.0）
-- 升级单元 **04（L1 可学习路由）** ⚠️ HOLD：[`reports/l1-routing-holdout-comparison.md`](reports/l1-routing-holdout-comparison.md)（竞争样本 3<5，不足以判 GO）
-- 升级单元 **05（L6 分段仲裁）** ✅ staged 已落地：[`engine/decision/l6_staged_arbitration.py`](engine/decision/l6_staged_arbitration.py)
-- 升级单元 **06（L9 条件化学习）** ✅ offline staged 已落地：[`engine/learning/`](engine/learning/)
-- 测试状态：升级相关子集 **391 passed**；tool registry check + rule status scan 均通过（曾运行全量 pytest，只见 skip 无 fail）。
+严格按以下顺序读取，不要从本交接文档反推长期事实：
 
-### 2.2 六个月路线的关键决策（已获用户批准）
-经多轮确认，用户最终选定的方案边界：
-- **优先级路径**：先完成五派标准 Claim 覆盖，再集中补数据验证（不是先纵深单领域）。
-- **覆盖深度**：中等覆盖 —— 每派完成 2-3 个强项任务，覆盖结构 / 事件 / 应期三类 Claim。
-- **能力矩阵调整**：减少画像任务，增加财富和事业可量化任务。
-- **应期 runner 决策**：**任派 + 段派同时实现 timing runner 作为双主力，高派放第二批。**
-- **时间尺度**：6 个月，从数据 → 知识重铸 → 路由验证 → 第 4 个月起吸收"新旧并跑"。
+1. `README.md`
+2. `AGENTS.md`
+3. `META/project-state.json`
+4. `STATUS.md`
+5. `tools/README.md`
+6. `engine/README.md`
+7. `engine/contracts/00-OVERVIEW.md`
+8. `docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md`
+9. `plans/bazi-intelligence-platform-roadmap.md`
+10. `META/six-month-platform-gate-2026-07-15.md`
+11. `META/six-month-capability-baseline-2026-07-15.md`
+12. `reports/l1-routing-holdout-comparison.md`
+13. `plans/upgrade-guides/6-month-execution-plan-2026-07.md`
+14. `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md`
 
-### 2.3 五派能力矩阵（已获用户批准，基于原始资料第一手证据核实）
-| 流派 | 核心擅长 | 独有武器 |
-|---|---|---|
-| 子平 | 格局成败定性 + 旺衰多口径 + 调候用神 | 八格取运体系 |
-| 段派（段建业）| 做功体系 + 宾主论 + 应期4大类工程化 + 职业/牢狱/车祸 | 宾主体用、反客为主应期 |
-| 任派（任付红）| 十八道法门 + 应期直定 + 穿的系统化 + 疾病/寿命/六亲 | 合留婚期法、直定应期法 |
-| 高派（高德臣）| 神煞实战 + 串宫压运 + 流年有根论 + 财运应期6条 | 命宫长生诀、流年有根论 |
-| 杨派（杨清娟）| 婚姻全套规程 + 调候改运 + 禄的多维应用 + 气数论 | 婚姻操作规程、转象换象 |
-| 滴天髓 | 寒暖燥湿调候 + 真假用神 + 五行颠倒 + 从化格 | 寒暖燥湿轴（cfv-v1 已实现）|
-
-任务分配（已批准）：
-- 结构类 `structure.overview`：子平主 + 滴天髓副
-- `career.role_change`：子平 + 段派
-- `marriage.divorce`：杨派 + 段派
-- `wealth.debt`：段派 + 高派
-- `career.path_type`：段派 + 子平
-- `health.system_risk`：高派 + 任派
-- 时间窗（career/marriage/health/wealth）：**任派 + 段派双主力，高派第二批**
-
-用户最后一条指令是"同意，执行"。
+其中第 14 项是本轮新增的直接执行依据；核心设计文档仍是目标架构“宪法”，门禁报告仍是当前 HOLD 判定事实源。
 
 ---
 
-## 3. 当前卡在哪
+## 2. 我们在做什么任务
 
-**卡点 1：路线文档尚未落盘。**
-用户已批准完整六个月方案（能力矩阵 + 任务分配 + 双主力 timing 决策），但**批准的方案还没有写入 `plans/` 下的正式规格文档**。TODO 第 6 项仍是 In Progress，第 7、8 项（写规格 + 编详细实施计划）仍 Pending。
+六个月平台工程任务 Task 1—14 已完成，但六个月生产候选门禁最终判定为 **HOLD**。本轮任务不是继续堆代码或立即切生产入口，而是制定从 HOLD 达到 GO 的后续阶段行动计划。
 
-原因：上一会话上下文窗口接近极限，搜索原始资料（sources/ 五派教材）消耗了大量 token，没来得及落盘就要交接。
+当前五个证据缺口：
 
-**卡点 2：升级单元 04（L1 可学习路由）业务上 HOLD。**
-不是代码问题，是**真实前瞻样本不足**——现有 133 案 blind eligible=0，990/Top30 都是 feedback-first（先有反馈后补排盘），不能冒充 prospective 盲测。这是外部数据采集门槛，无法用代码/并行 agent 绕过。
+| # | 未满足条件 | 当前缺口 | GO 所需方向 |
+|---|---|---|---|
+| 1 | timing Claim 覆盖 | 历史输入缺逐年流年，四个 timing 任务 Claim 为 0；任/段 runner 正确 abstain | 新 prospective 输入必须包含真实逐年 `liunian_steps`，形成可审计 timing Claim |
+| 2 | 独立效用 E2 | learned/static 选择变化为 0，平均效用相同 | 至少一个任务竞争样本 ≥5、选择变化 ≥1、learned 效用不低于 static |
+| 3 | 校准 E3 | binary 校准样本为 0，后验 N_eff 为 0 | `career.role_change` 或 `marriage.divorce_or_remarriage` ≥20 条可评分正负例，`calibration_error < 0.2` |
+| 4 | 高风险 E4 | 债务、离婚、健康任务没有 A 级双审标签，可评估记录为 0 | 三项任务均建立独立双审；冲突由第三人仲裁；假阳性不增加 |
+| 5 | 前瞻证据 E6 | prospective/E3 完成案例为 0 | ≥30 个真实新命主完成 prediction-first 冻结评估链 |
 
----
+门禁报告规定的最短路径是：
 
-## 4. 下一步计划
-
-按优先级：
-
-1. **【立即做】把已批准的六个月路线写成正式规格文档**，建议路径 `plans/upgrade-guides/6-month-execution-plan-2026-07.md` 或 `docs/superpowers/specs/`。内容必须包含：
-   - 第 2.2 节的路径 / 覆盖深度 / 应期双主力决策
-   - 第 2.3 节的五派能力矩阵与任务分配表
-   - 每月交付物、阶段门禁（GO/HOLD/STOP）、回退策略
-   - 阶段①(月1-2) 数据+五派Claim覆盖 → 阶段②(月3) 知识重铸 → 阶段③(月4) 路由验证 → 阶段④(月4-6) 新旧并跑
-2. 写完规格后跑自检（占位符扫描、内部一致性、范围检查），再请用户 review。
-3. review 通过后用 writing-plans 编详细实施计划。
-4. 实施第一步落在：**段派 timing runner**（`engine/v5/` 下新建，参照现有 `ren_runner.py` 结构）+ 对应任务目录扩展。
+1. 采集至少 30 个真实 prospective 新案例；
+2. 积累至少 20 条目标 binary 校准样本并达到误差门槛；
+3. 建立真实多派竞争并让 learned 至少改变一次选择；
+4. 重跑 L1 learned/static 留出门禁及八项平台总门禁。
 
 ---
 
-## 5. 踩过的坑，绝对不要再踩
+## 3. 本会话已经完成什么
 
-1. **不要在长上下文里反复全文搜索 `sources/` 五派教材。** 每份教材几十万字，`search_files` 一次能吐 300+ 条截断结果，几次就把上下文烧光。要查某派应期理论，先定位到具体文件再 `read_file` 精确区间，或用 codebase_search 语义检索。
+### 3.1 已读取并核对当前事实源
 
-2. **不要把 feedback-first 历史案例当 prospective 盲测。** 990/Top30/wenzhen 全是"先有真实反馈、后补排盘生成报告"，逐案 provenance 已标 `feedback_predates_system_prediction`。把它们改名为 historical blind 会构成标签泄漏，整批作废。L1 路由 GO 必须靠真实前瞻新案。
+本会话已按 `AGENTS.md` 必读顺序读取：
 
-3. **不要从阶段名推断产品版本。** [`META/project-state.json`](META/project-state.json) 的 `current_phase` 是工作阶段，产品版本永远以 [`VERSION`](VERSION) 为准。
+- `README.md`
+- `AGENTS.md`
+- `META/project-state.json`
+- `STATUS.md`
+- `tools/README.md`
+- `engine/README.md`
+- `engine/contracts/00-OVERVIEW.md`
 
-4. **不要硬编码易漂移数据。** N_eff、规则数量、flagged/deprecated 清单、git HEAD 一律运行时扫描（`python tools/rule_status_scan.py`、`git rev-parse HEAD`），不要写进文档正文。
+并重点阅读：
 
-5. **命题引擎化必须先于/同步于 L1 学习化。** 若 L2 命题仍人工写入，能力后验只反映"写命题的人"的水平，飞轮学的是噪声（宪法附录 A.4.3）。这是整个升级的成败真实性红线。
+- 核心设计宪法；
+- 平台配套路线；
+- 六个月 HOLD 门禁；
+- 六个月能力历史隔离基线；
+- L1 路由留出对照；
+- 已完成的六个月执行计划。
 
-6. **timing runner 决策已定为任派+段派双主力，不是只有任派。** 早期讨论里差点把应期任务只分给任派，但原始资料证明段派应期体系（应期4大类 + 三法则工程化 + 反客为主）与任派并列第一。高派的"流年有根论"放第二批。
+### 3.2 已核实现有 CLI 与数据契约
 
-7. **报告出口禁显内部 ID。** 统一报告禁止展示 statement_id、共识/互补/独门/冲突 ID、章节编号、关联裁判等（AGENTS.md 展示层禁显约束）。规格文档本身不受此限，但任何面向命主的产物受限。
+已检查：
 
-8. **不要用 deprecated / missing 工具。** `calibrate.py` 已 deprecated；`seal_prediction.py`/`verify_evidence.py` 等从不存在。反馈入口用 [`tools/feedback_ingest.py`](tools/feedback_ingest.py)。
+- `tools/school_capability_dataset.py`
+  - `prospective-intake`
+  - `prepare-blind`
+  - `bind-labels`
+  - `validate`
+  - witness append/verify
+- `tools/school_capability_baseline.py`
+  - `audit/freeze/score/report`
+- `tools/l1_routing_holdout_audit.py`
+  - `--baseline` 与 `--batch/--scores` 两种输入
+- `tools/feedback_ingest.py`
+  - 正式反馈入口及 `--dry-run`
+- `engine/evaluation` 的 label、freeze、calibration 与高风险评分契约。
+
+关键核验结果：
+
+1. `prospective-intake` 会拒绝 feedback、labels、report、known facts、重复 case、重复 subject、未知 task 和 symlink。
+2. `prepare-blind` 只复制白名单 canonical chart、tasks、rule snapshot、manifest；目标目录必须不存在。
+3. dataset GO 需要至少 30 个 eligible 且至少 30 个 labelled case，还要求 bundle root、reveal provenance 和独立 witness 链。
+4. 现有 `META/school-capability-prospective-tasks-v1.json` 只含 structure + 四个 timing 任务，不能直接支撑本阶段 binary 校准及三项高风险任务。
+5. 现有 L1 CLI 的 `--batch/--scores` 只接受历史兼容 schema；prospective frozen run 不能直接冒充 historical batch，必须规划显式、保留 prospective 身份的 adapter。
+
+### 3.3 已产出正式后续行动计划
+
+已创建：
+
+- `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md`
+
+计划共 11 个任务、三阶段：
+
+1. **数据采集期（建议 8—12 周）**
+   - 冻结十任务 prospective CLI 目录和采集协议；
+   - 实现三项高风险 A 级双审/仲裁工具；
+   - 连续招募至少 36 个真实新命主，为 ≥30 完成案留失访缓冲；
+   - 每 10 案执行 intake、blind bundle、staged freeze 和 witness；
+   - 观察 outcome，形成真实正负例；
+   - 绑定双审标签。
+2. **校准验证期（建议 2—3 周）**
+   - 构建 reviewed manifest 和完整数据门禁；
+   - score/report；
+   - 至少一个目标 binary 任务 n≥20 且 `calibration_error < 0.2`；
+   - 建立 prospective→L1 审计显式适配与真实竞争证据。
+3. **路由 GO 准备期（建议 1—2 周）**
+   - 重跑 learned/static 严格留出；
+   - learned 至少改变 1 个选择且效用不退化；
+   - 重跑八项平台总门禁；
+   - GO 也只形成独立切换提案，不直接切入口。
+
+### 3.4 已完成计划自审与校验
+
+已运行新鲜校验：
+
+- 计划文件存在；
+- 共 1008 行；
+- 11 个 `Task`；
+- 核心需求关键词无缺失；
+- 未发现 `TBD`、`TODO`、`implement later` 等禁止占位；
+- `git diff --check -- plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 通过；
+- 已有链接目标检查未发现非预期缺失。
+
+本会话只完成了**规划文档**，没有开始实施计划中的 Task 1，也没有创建 prospective 新案、双审工具或路由 adapter。
 
 ---
 
-## 6. 快速上手命令
+## 4. 当前卡在哪里
 
-```bash
-# 看当前项目机器状态
-cat META/project-state.json
+### 4.1 当前没有代码故障，卡在外部真实数据
 
-# 跑升级相关测试（应 391 passed 或更多）
+根本瓶颈是前瞻证据，而不是测试或 runner 代码：
+
+- 真实 prospective/E3 完成案仍为 0；
+- 真实 binary 校准 outcome 仍为 0；
+- 高风险 A 级双审标签仍为 0；
+- 现有历史输入缺逐年流年，因此 timing runner 正确 abstain；
+- learned/static 没有数据支持的差异化选择。
+
+代码或 agent 不能合法“生成”这批证据。必须有规则/路由冻结后才进入系统的真实新命主，以及冻结后到达的真实 outcome。
+
+### 4.2 计划实施前还有两个明确工程前置
+
+1. 新建 `META/prospective-go-task-catalog-v1.json`：从现有 YAML 任务事实源精确冻结十任务。不能继续使用旧五任务 prospective JSON 承担 binary/high-risk。
+2. 新建 prospective→L1 审计 adapter：输出 L1 CLI 可消费的兼容接口制品，但必须保留 `classification="prospective"`、父 freeze hash 与 score digest，不能伪造 historical 身份。
+
+### 4.3 生产入口继续 HOLD
+
+在总门禁 GO 前必须保持：
+
+- `engine.application.pipeline_runner.run_pipeline()` 不变；
+- `engine.claims.runner_registry.DEFAULT_RUNNER_REGISTRY` 不变；
+- static 路由仍是默认；
+- staged 路径只用于并跑和评估；
+- 静态权重、生产规则和历史 run snapshot 不回写。
+
+---
+
+## 5. 下一步计划
+
+新会话如获用户批准开始实施，应从行动计划 Task 1 开始，不要跳到采集或路由门禁。
+
+### 5.1 第一执行批次
+
+按顺序：
+
+1. 阅读 `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` 的 Global Constraints、文件结构、Task 1 和 Task 2。
+2. 用 TDD 实施 Task 1：
+   - 创建 `META/prospective-intake-protocol-v1.md`；
+   - 创建 `META/prospective-go-task-catalog-v1.json`；
+   - 创建 `templates/prospective-observation-v1.json`；
+   - 创建 `META/prospective-go/prospective-go-b01-tasks-by-case.json`；
+   - 创建 `tests/evaluation/test_prospective_gate_workflow.py`。
+3. 实施 Task 2：
+   - `engine/evaluation/high_risk_review.py`；
+   - `tools/school_capability_review.py`；
+   - `templates/high-risk-review-v1.json`；
+   - `tests/evaluation/test_high_risk_review.py`；
+   - 更新 `tools/README.md`。
+4. 所有写命令先 dry-run；每个代码任务按失败测试→最小实现→相关测试→工具检查执行。
+5. Task 1—2 通过后，才可进入真实命主招募和批量 intake。
+
+### 5.2 外部运营准备
+
+代码实施可以先完成，但 GO 关键路径还需要：
+
+- 明确招募渠道和命主授权；
+- outcome custodian、intake operator、runner operator、reviewer A/B、adjudicator、witness 的人员隔离；
+- 独立 witness HMAC key holder；
+- 8—12 周观察窗及失访处理；
+- 每周 4—6 个新命主的招募能力；
+- 至少招募 36 个，为最终 ≥30 完成案留缓冲。
+
+### 5.3 每阶段退出条件
+
+- 数据采集 GO：≥30 唯一真实完成案、目标 binary ≥20 且正负都有、四项 timing 有完整流年与 Claim、三项高风险有 A 级双审。
+- 校准验证 GO：至少一个目标 binary task n≥20 且 `calibration_error < 0.2`；高风险不退化；竞争任务 ≥5。
+- 路由准备 GO：selection changes ≥1、learned utility ≥ static、校准不恶化、高风险假阳性不增加、八项总门禁全部通过。
+
+---
+
+## 6. 踩过的坑，绝对不要再踩
+
+1. **不要把现有 `P-2026-*` 当 prospective。** 仓库里已有约 40 个 `P-2026-*` 目录，但门禁事实源把当前有效批次定为 `historical_blind_candidate`，不是 E3。目录前缀不能改变证据等级。
+
+2. **不要复制历史案例凑 ≥30。** 990、Top30、问真补盘、同命主不同报告均不能升级为真实前瞻证据；`sex_marker + four_pillars` 重复必须拒绝。
+
+3. **不要使用旧五任务 prospective JSON 承担本阶段。** `META/school-capability-prospective-tasks-v1.json` 缺少 `career.role_change`、`marriage.divorce_or_remarriage`、`wealth.debt`、`health.system_risk` 等任务。必须从 YAML 事实源冻结新的十任务 CLI 目录，并用测试逐字段防漂移。
+
+4. **不要把 prospective frozen run 直接传给 L1 的 historical batch 接口。** 现有 `tools/l1_routing_holdout_audit.py --batch/--scores` 有严格历史 schema。必须通过显式 adapter，保留 prospective classification 和父制品摘要，不能改 schema 名冒充历史证据。
+
+5. **不要为了 timing 覆盖强迫 runner 发言。** 缺 `liunian_steps` 或无触发时 abstain 是正确行为。应修复真实新案输入采集，而不是补造流年或覆写 frozen output。
+
+6. **不要把失访/no_data 当负例。** `not_observed` 必须是预先定义观察窗完整结束后可核验的未发生；未知、未到期、来源冲突均不进入校准分母。
+
+7. **不要把关系压力当离婚正例。** `marriage.divorce_or_remarriage` 只标真实发生的离婚或再婚；同理，正常信用消费不等于显著债务，健康风险不等于医学诊断。
+
+8. **不要降低 A 级双审。** 债务、离婚、健康必须两名独立人类 reviewer；二人冲突必须第三名 adjudicator。单审、自动 reviewer、同一人换名字都不能生成 A 级。
+
+9. **不要让 reviewer 看预测。** reviewer 只能看同一 observation packet，不能看 runner 输出、概率、报告或对方意见，否则标签泄漏，整批 STOP。
+
+10. **不要在同一批上拟合校准又宣称同批 GO。** 若 error≥0.2，需要预注册训练/holdout 或追加新批复核。历史 frozen prediction 不得看标签后改写。
+
+11. **不要修改 static baseline 制造 selection change。** learned 选择变化必须来自能力后验；不能通过改 coverage mapping、删竞争样本或把 unsupported 当 miss 得到。
+
+12. **不要在 HOLD 期间切生产入口。** 不修改 `run_pipeline()`、`DEFAULT_RUNNER_REGISTRY` 或默认 routing mode。GO 也只是提交独立契约变更提案。
+
+13. **不要使用 deprecated 工具。** 正式反馈入口使用 `tools/feedback_ingest.py`；不要恢复或调用 `calibrate.py`。
+
+14. **不要覆盖旧制品。** blind bundle 目标目录必须不存在；freeze、labels、scores、capability snapshot 均用新批次/内容寻址文件，历史 run 保持字节不变。
+
+15. **不要硬编码易漂移状态到稳定文档。** 当前 N_eff、规则数量、git HEAD、flagged/deprecated 清单使用运行时扫描或当次 JSON 制品。
+
+16. **不要被 Windows cmd 编码乱码误导。** 之前用 Python 在 cmd 枚举中文 case 名时输出出现乱码，但数量命令 exit 0；中文路径核查优先使用文件工具或明确 UTF-8，不要据乱码改名/删除目录。
+
+17. **不要从旧 handoff 或历史计划推断当前流程。** 本文件也是临时交接；事实冲突时以 `AGENTS.md` 矩阵和最新门禁 JSON/Markdown 为准。
+
+---
+
+## 7. 建议验证命令
+
+Windows 10 默认 shell 为 `cmd.exe`，从仓库根运行：
+
+```bat
 python -m pytest tests -q
-
-# 工具与规则状态自检
 python tools/tool_registry.py --check
 python tools/rule_status_scan.py --check
+git diff --check
+```
 
-# 现有两派 claim runner 参考实现
-#   engine/v5/ziping_runner.py  (子平结构命题)
-#   engine/v5/ren_runner.py     (任派应期时间窗命题)
-#   engine/claims/orchestrator.py (generate_blind_outputs / generate_frozen_claim_run)
+计划文档专项检查：
+
+```bat
+python -c "from pathlib import Path; p=Path(r'plans/upgrade-guides/post-gate-action-plan-2026-07-15.md'); s=p.read_text(encoding='utf-8'); print({'exists':p.exists(),'lines':len(s.splitlines()),'tasks':s.count('## Task ')})"
+```
+
+不要在新会话一开始就运行长期服务器或切换默认入口。
+
+---
+
+## 8. 新会话提示词
+
+```text
+你正在接手 mangpai-fusion 的 HOLD 后门禁行动实施。先不要修改代码。
+
+请严格按 AGENTS.md 必读顺序读取当前事实源，然后重点阅读：
+- handoff.md
+- docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md
+- plans/bazi-intelligence-platform-roadmap.md
+- META/six-month-platform-gate-2026-07-15.md
+- META/six-month-capability-baseline-2026-07-15.md
+- reports/l1-routing-holdout-comparison.md
+- plans/upgrade-guides/6-month-execution-plan-2026-07.md
+- plans/upgrade-guides/post-gate-action-plan-2026-07-15.md
+
+当前状态：六个月 Task 1—14 已完成，但平台门禁为 HOLD。根因是 timing Claim=0、learned/static 选择无差异、binary 校准样本=0、高风险 A 级双审标签=0、prospective/E3 完成案=0。不要把现有 P-2026-*、990、Top30 或其他历史 feedback-first 案例冒充 prospective。
+
+你的第一任务是审查并开始执行 post-gate action plan 的 Task 1；使用 TDD，先写失败测试。Task 1 要冻结新的十任务 prospective CLI 目录、采集协议、观察模板和首批 tasks-by-case。现有 META/school-capability-prospective-tasks-v1.json 只有五项，禁止用它承担 binary/high-risk 采集。
+
+硬约束：
+- 不降低 ≥30 prospective、≥20 binary、calibration_error<0.2、竞争≥5、selection change≥1 或 A 级双审门槛；
+- 不伪造新案、负例或逐年流年；
+- 不修改 run_pipeline()、DEFAULT_RUNNER_REGISTRY、默认 static 路由或生产静态权重；
+- 反馈只用 tools/feedback_ingest.py，不使用 calibrate.py；
+- 高风险三任务必须两名独立人类 reviewer，冲突第三方仲裁；
+- 所有写命令先 dry-run，历史冻结制品不可覆盖；
+- 发现泄漏整批 STOP。
+
+先汇报你从事实源确认的当前状态、Task 1 精确文件和测试顺序；确认无冲突后再实施。
 ```

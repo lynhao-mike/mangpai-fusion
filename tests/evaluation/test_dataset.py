@@ -581,6 +581,20 @@ def test_task_catalog_recursive_strings_cannot_leak_outcomes(tmp_path: Path) -> 
         register_prospective_intake([input_path], catalog, ["ziping"], "human-a")
 
 
+def test_task_catalog_allows_label_schema_metadata_without_treating_it_as_revealed_labels(tmp_path: Path) -> None:
+    input_path = _prospective_input(tmp_path, "C-P-001")
+    catalog = _catalog()
+    catalog["tasks"][0]["label_schema"] = {
+        "type": "boolean",
+        "positive_label": "occurred",
+        "negative_label": "not_observed",
+    }
+
+    intake = register_prospective_intake([input_path], catalog, ["ziping"], "human-a")
+
+    assert intake["records"][0]["task_ids"] == ["career.role_change"]
+
+
 def test_build_reviewed_manifest_rejects_forged_clean_inventory() -> None:
     forged = _inventory_record("C-CLEAN-001")
     forged.update(reviewed_by="", reviewed_at="", provenance_evidence=[])

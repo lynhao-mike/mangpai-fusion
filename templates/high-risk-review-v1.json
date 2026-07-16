@@ -1,0 +1,37 @@
+{
+  "schema_version": "school-capability-high-risk-review/v1",
+  "description": "单名独立人类 reviewer 对冻结后 observation 的盲审记录；禁止包含预测、概率、runner 输出、报告文本或对方意见。",
+  "supported_task_ids": [
+    "wealth.debt",
+    "marriage.divorce_or_remarriage",
+    "health.system_risk"
+  ],
+  "review_template": {
+    "schema_version": "school-capability-high-risk-review/v1",
+    "case_id": "",
+    "task_id": "",
+    "observation_sha256": "",
+    "reviewer": "",
+    "decision": "",
+    "source_refs": [],
+    "rationale": "",
+    "signed_at": ""
+  },
+  "adjudication_template": {
+    "schema_version": "school-capability-high-risk-adjudication/v1",
+    "case_id": "",
+    "task_id": "",
+    "observation_sha256": "",
+    "adjudicator": "",
+    "decision": "",
+    "source_refs": [],
+    "rationale": "",
+    "signed_at": ""
+  },
+  "decision_schemas": {
+    "wealth.debt": ["occurred", "not_observed"],
+    "marriage.divorce_or_remarriage": ["occurred", "not_observed"],
+    "health.system_risk": ["low", "moderate", "high"]
+  },
+  "prediction_fields_forbidden": true
+}
