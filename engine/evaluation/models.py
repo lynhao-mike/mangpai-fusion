@@ -96,6 +96,7 @@ class BlindPrediction(PersistedContract):
     time_window: dict[str, int | str]
     evidence_refs: list[str]
     falsifier: str
+    fact_refs: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         _rate(self.probability, "probability")
@@ -103,6 +104,7 @@ class BlindPrediction(PersistedContract):
         _require(self.falsifier, "falsifier")
         object.__setattr__(self, "time_window", _freeze(self.time_window))
         object.__setattr__(self, "evidence_refs", _freeze(self.evidence_refs))
+        object.__setattr__(self, "fact_refs", _freeze(self.fact_refs))
 
 
 @dataclass(frozen=True)

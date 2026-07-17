@@ -21,6 +21,16 @@ from engine.evaluation.manifest_validation import (
     validate_routes,
 )
 from engine.evaluation.models import FrozenBlindRun
+from engine.evaluation.prospective_artifacts import (
+    ArtifactRef,
+    canonical_artifact_sha256,
+    publish_new_json,
+    validate_parent_ref,
+)
+from engine.evaluation.prospective_single_case import (
+    build_single_case_intake,
+    prepare_single_case_blind_bundle,
+)
 
 _INVENTORY_SCHEMA = "school-capability-case-inventory/v1"
 _DECISIONS_SCHEMA = "school-capability-review-decisions/v1"
@@ -415,8 +425,29 @@ def verify_witness_registry(registry: dict[str, Any], witness_key: bytes) -> boo
     """Verify registry schema, chain continuity, event hashes, and HMACs."""
     if not isinstance(witness_key, bytes) or not witness_key:
         raise ValueError("witness key must be non-empty bytes")
-    if not isinstance(registry, dict) or set(registry) != {"schema_version", "events"} or registry.get("schema_version") != _WITNESS_SCHEMA or not isinstance(registry.get("events"), list):
+    base_fields = {"schema_version", "events"}
+    artifact_fields = {
+        "case_id", "subject_id_hash", "created_at", "artifact_path", "parents",
+        "artifact_sha256",
+    }
+    if (
+        not isinstance(registry, dict)
+        or set(registry) not in (base_fields, base_fields | artifact_fields)
+        or registry.get("schema_version") != _WITNESS_SCHEMA
+        or not isinstance(registry.get("events"), list)
+    ):
         raise ValueError("witness registry schema is invalid")
+    if set(registry) == base_fields | artifact_fields:
+        if (
+            not isinstance(registry.get("case_id"), str)
+            or not _is_sha256(registry.get("subject_id_hash"))
+            or not _is_utc_timestamp(registry.get("created_at"))
+            or not isinstance(registry.get("artifact_path"), str)
+            or not registry["artifact_path"]
+            or not isinstance(registry.get("parents"), list)
+            or registry.get("artifact_sha256") != canonical_artifact_sha256(registry)
+        ):
+            raise ValueError("witness registry artifact contract is invalid")
     previous_hash = "0" * 64
     for event in registry["events"]:
         _validate_witness_event(event, stored=True)
@@ -974,10 +1005,88 @@ def _prospective_intake_command(args: argparse.Namespace) -> None:
     _write(Path(args.out), payload, args.dry_run)
 
 
+def _single_case_intake_command(args: argparse.Namespace) -> None:
+    assignments = _read_json(Path(args.tasks_by_case))
+    case_root = Path(args.case_root)
+    existing_subject_hashes: set[str] = set()
+    if case_root.exists():
+        _reject_symlink(case_root, "single-case root")
+        for candidate in case_root.glob("*/*--intake--v*.json"):
+            _reject_symlink(candidate, "existing single-case intake")
+            document = _read_json(candidate)
+            if document.get("schema_version") != "prospective-single-case-intake/v1":
+                continue
+            subject_hash = document.get("subject_id_hash")
+            if not _is_sha256(subject_hash):
+                raise ValueError(f"existing single-case intake has invalid subject_id_hash: {candidate}")
+            existing_subject_hashes.add(subject_hash)
+    intake, question = build_single_case_intake(
+        Path(args.input),
+        _read_json(Path(args.tasks)),
+        args.school,
+        args.operator,
+        assignments,
+        _read_json(Path(args.future_question)),
+        created_at=args.created_at,
+        case_root=case_root,
+        existing_subject_hashes=existing_subject_hashes,
+    )
+    question_path = Path(question["artifact_path"])
+    intake_path = Path(intake["artifact_path"])
+    result = {
+        "status": "DRY_RUN" if args.dry_run else "PUBLISHED",
+        "publication_order": ["future_question", "intake"],
+        "future_question": {
+            "artifact_path": question_path.as_posix(),
+            "document": question,
+        },
+        "intake": {
+            "artifact_path": intake_path.as_posix(),
+            "document": intake,
+        },
+    }
+    if args.dry_run:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+
+    if question_path.exists() and not question_path.is_symlink():
+        question_ref = ArtifactRef(
+            artifact_path=question_path.as_posix(),
+            artifact_sha256=str(question["artifact_sha256"]),
+        )
+        existing_question = validate_parent_ref(question_ref)
+        if existing_question != question:
+            raise ValueError(f"output already exists with different content: {question_path}")
+    else:
+        question_ref = publish_new_json(question_path, question, dry_run=False)
+    try:
+        publish_new_json(intake_path, intake, dry_run=False)
+    except BaseException as error:
+        raise ValueError(
+            "RECOVERABLE_HOLD: future question published but intake publication failed; "
+            f"published_parent={question_ref.artifact_path}@sha256:{question_ref.artifact_sha256}; "
+            f"cause={error}"
+        ) from error
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
 def _prepare_blind_command(args: argparse.Namespace) -> None:
     payload = prepare_blind_bundle(
         _read_json(Path(args.intake)), Path(args.tasks), Path(args.rule_snapshot),
         Path(args.target_dir), dry_run=args.dry_run,
+    )
+    if args.dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+def _prepare_single_case_blind_command(args: argparse.Namespace) -> None:
+    payload = prepare_single_case_blind_bundle(
+        _read_json(Path(args.intake)),
+        _read_json(Path(args.future_question)),
+        Path(args.tasks),
+        Path(args.rule_snapshot),
+        Path(args.target_dir),
+        dry_run=args.dry_run,
     )
     if args.dry_run:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1032,6 +1141,141 @@ def _witness_verify_command(args: argparse.Namespace) -> None:
     print("VALID")
 
 
+def _witness_verify_single_case_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import verify_single_case_freeze_chain
+
+    payload = verify_single_case_freeze_chain(
+        intake_path=Path(args.intake),
+        bundle_root=Path(args.bundle_root),
+        frozen_run_path=Path(args.frozen_run),
+        registry_path=Path(args.registry),
+        witness_key=_environment_witness_key(args.witness_key_env),
+        expected_external_root=args.external_root,
+        verified_at=args.verified_at,
+        verifier=args.verifier,
+    )
+    output = Path(args.out)
+    payload = {
+        **payload,
+        "artifact_path": output.as_posix(),
+    }
+    payload["artifact_sha256"] = canonical_artifact_sha256(payload)
+    if args.dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        unsigned = {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        publish_new_json(output, unsigned, dry_run=False)
+        print(payload["artifact_sha256"])
+
+
+def _issue_feedback_release_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import build_feedback_release_credential
+
+    payload = build_feedback_release_credential(
+        _read_json(Path(args.verification)),
+        _read_json(Path(args.roles)),
+        _read_json(Path(args.leakage_scan)),
+        created_at=args.created_at,
+    )
+    output = Path(args.out)
+    payload = {
+        **payload,
+        "artifact_path": output.as_posix(),
+    }
+    payload["artifact_sha256"] = canonical_artifact_sha256(payload)
+    if args.dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        unsigned = {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        publish_new_json(output, unsigned, dry_run=False)
+        print(payload["artifact_sha256"])
+
+
+def _require_canonical_artifact_output(payload: dict[str, Any], output: Path) -> None:
+    expected = Path(payload["artifact_path"])
+    if output != expected:
+        raise ValueError(f"formal artifact output must use canonical artifact_path: {expected}")
+
+
+def _release_immediate_template_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import validate_release_credential
+
+    release, _ = validate_release_credential(_read_json(Path(args.release)))
+    template = _read_json(Path("templates/prospective-immediate-retrospective-v1.json"))
+    payload = {
+        **template,
+        "case_id": release["case_id"],
+        "facts": [],
+    }
+    _write(Path(args.out), payload, args.dry_run)
+
+
+def _collect_immediate_retrospective_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import (
+        collect_immediate_retrospective,
+        validate_release_credential,
+    )
+
+    release = _read_json(Path(args.release))
+    validate_release_credential(release)
+    payload = collect_immediate_retrospective(
+        release,
+        lambda: _read_json(Path(args.custody_input)),
+        collected_at=args.collected_at,
+        custodian=args.custodian,
+    )
+    output = Path(args.out)
+    if args.dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _require_canonical_artifact_output(payload, output)
+        unsigned = {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        publish_new_json(output, unsigned, dry_run=False)
+        print(payload["artifact_sha256"])
+
+
+def _publish_canonical_artifact(payload: dict[str, Any], output: Path, *, dry_run: bool) -> None:
+    if dry_run:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    _require_canonical_artifact_output(payload, output)
+    unsigned = {key: value for key, value in payload.items() if key != "artifact_sha256"}
+    publish_new_json(output, unsigned, dry_run=False)
+    print(payload["artifact_sha256"])
+
+
+def _collect_future_observation_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import collect_future_observation
+
+    payload = collect_future_observation(
+        _read_json(Path(args.future_question)),
+        _read_json(Path(args.frozen_run)),
+        _read_json(Path(args.observation)),
+        collected_at=args.collected_at,
+    )
+    _publish_canonical_artifact(payload, Path(args.out), dry_run=args.dry_run)
+
+
+def _bind_future_observation_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import bind_future_observation
+
+    payload = bind_future_observation(_read_json(Path(args.unbound)))
+    _publish_canonical_artifact(payload, Path(args.out), dry_run=args.dry_run)
+
+
+def _build_case_completion_command(args: argparse.Namespace) -> None:
+    from engine.evaluation.prospective_evidence import build_case_completion
+
+    payload = build_case_completion(
+        freeze_verification=_read_json(Path(args.freeze_verification)),
+        immediate_bound=_read_json(Path(args.immediate_bound)) if args.immediate_bound else None,
+        future_bound=_read_json(Path(args.future_bound)) if args.future_bound else None,
+        stopped_incident=_read_json(Path(args.stopped_incident)) if args.stopped_incident else None,
+        created_at=args.created_at,
+    )
+    _publish_canonical_artifact(payload, Path(args.out), dry_run=args.dry_run)
+
+
 def _validate_command(args: argparse.Namespace) -> int:
     key_value = os.environ.get(args.witness_key_env) if args.witness_key_env else None
     result = validate_dataset(
@@ -1059,6 +1303,17 @@ def _parser() -> argparse.ArgumentParser:
     prospective.add_argument("--out", required=True)
     prospective.add_argument("--dry-run", action="store_true")
     prospective.set_defaults(handler=_prospective_intake_command)
+    single_case = commands.add_parser("single-case-intake")
+    single_case.add_argument("--input", required=True)
+    single_case.add_argument("--tasks", required=True)
+    single_case.add_argument("--school", action="append", required=True)
+    single_case.add_argument("--operator", required=True)
+    single_case.add_argument("--tasks-by-case", required=True)
+    single_case.add_argument("--future-question", required=True)
+    single_case.add_argument("--case-root", required=True)
+    single_case.add_argument("--created-at", required=True)
+    single_case.add_argument("--dry-run", action="store_true")
+    single_case.set_defaults(handler=_single_case_intake_command)
     blind = commands.add_parser("prepare-blind")
     blind.add_argument("--intake", required=True)
     blind.add_argument("--tasks", required=True)
@@ -1066,6 +1321,14 @@ def _parser() -> argparse.ArgumentParser:
     blind.add_argument("--target-dir", required=True)
     blind.add_argument("--dry-run", action="store_true")
     blind.set_defaults(handler=_prepare_blind_command)
+    single_blind = commands.add_parser("prepare-single-case-blind")
+    single_blind.add_argument("--intake", required=True)
+    single_blind.add_argument("--future-question", required=True)
+    single_blind.add_argument("--tasks", required=True)
+    single_blind.add_argument("--rule-snapshot", required=True)
+    single_blind.add_argument("--target-dir", required=True)
+    single_blind.add_argument("--dry-run", action="store_true")
+    single_blind.set_defaults(handler=_prepare_single_case_blind_command)
     inventory = commands.add_parser("inventory")
     inventory.add_argument("--cases-dir", required=True)
     inventory.add_argument("--reports-dir", required=True)
@@ -1113,6 +1376,61 @@ def _parser() -> argparse.ArgumentParser:
     witness_verify.add_argument("--registry", required=True)
     witness_verify.add_argument("--witness-key-env", default="SCHOOL_CAPABILITY_WITNESS_KEY")
     witness_verify.set_defaults(handler=_witness_verify_command)
+    single_verify = commands.add_parser("witness-verify-single-case")
+    single_verify.add_argument("--intake", required=True)
+    single_verify.add_argument("--bundle-root", required=True)
+    single_verify.add_argument("--frozen-run", required=True)
+    single_verify.add_argument("--registry", required=True)
+    single_verify.add_argument("--external-root", required=True)
+    single_verify.add_argument("--verifier", required=True)
+    single_verify.add_argument("--verified-at", required=True)
+    single_verify.add_argument("--out", required=True)
+    single_verify.add_argument("--witness-key-env", default="SCHOOL_CAPABILITY_WITNESS_KEY")
+    single_verify.add_argument("--dry-run", action="store_true")
+    single_verify.set_defaults(handler=_witness_verify_single_case_command)
+    feedback_release = commands.add_parser("issue-feedback-release")
+    feedback_release.add_argument("--verification", required=True)
+    feedback_release.add_argument("--roles", required=True)
+    feedback_release.add_argument("--leakage-scan", required=True)
+    feedback_release.add_argument("--created-at", required=True)
+    feedback_release.add_argument("--out", required=True)
+    feedback_release.add_argument("--dry-run", action="store_true")
+    feedback_release.set_defaults(handler=_issue_feedback_release_command)
+    immediate_template = commands.add_parser("release-immediate-retrospective-template")
+    immediate_template.add_argument("--release", required=True)
+    immediate_template.add_argument("--out", required=True)
+    immediate_template.add_argument("--dry-run", action="store_true")
+    immediate_template.set_defaults(handler=_release_immediate_template_command)
+    immediate_collect = commands.add_parser("collect-immediate-retrospective")
+    immediate_collect.add_argument("--release", required=True)
+    immediate_collect.add_argument("--custody-input", required=True)
+    immediate_collect.add_argument("--collected-at", required=True)
+    immediate_collect.add_argument("--custodian", required=True)
+    immediate_collect.add_argument("--out", required=True)
+    immediate_collect.add_argument("--dry-run", action="store_true")
+    immediate_collect.set_defaults(handler=_collect_immediate_retrospective_command)
+    future_collect = commands.add_parser("collect-future-observation")
+    future_collect.add_argument("--future-question", required=True)
+    future_collect.add_argument("--frozen-run", required=True)
+    future_collect.add_argument("--observation", required=True)
+    future_collect.add_argument("--collected-at", required=True)
+    future_collect.add_argument("--out", required=True)
+    future_collect.add_argument("--dry-run", action="store_true")
+    future_collect.set_defaults(handler=_collect_future_observation_command)
+    future_bind = commands.add_parser("bind-future-observation")
+    future_bind.add_argument("--unbound", required=True)
+    future_bind.add_argument("--out", required=True)
+    future_bind.add_argument("--dry-run", action="store_true")
+    future_bind.set_defaults(handler=_bind_future_observation_command)
+    completion = commands.add_parser("build-case-completion")
+    completion.add_argument("--freeze-verification", required=True)
+    completion.add_argument("--immediate-bound")
+    completion.add_argument("--future-bound")
+    completion.add_argument("--stopped-incident")
+    completion.add_argument("--created-at", required=True)
+    completion.add_argument("--out", required=True)
+    completion.add_argument("--dry-run", action="store_true")
+    completion.set_defaults(handler=_build_case_completion_command)
     validate = commands.add_parser("validate")
     validate.add_argument("--manifest", required=True)
     validate.add_argument("--labels", required=True)

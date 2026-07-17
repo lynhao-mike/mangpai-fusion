@@ -69,6 +69,7 @@ def claim_to_blind_output(claim: Claim, *, case_id: str, task: BlindTask) -> Bli
     _validate_compatibility(claim, task)
 
     evidence_refs = [evidence.evidence_id for evidence in claim.evidence]
+    fact_refs = sorted({ref for evidence in claim.evidence for ref in evidence.fact_refs})
     prediction_digest = hashlib.sha256(claim.claim_id.encode("utf-8")).hexdigest()[:24]
     prediction = BlindPrediction(
         prediction_id=f"prediction-{prediction_digest}",
@@ -77,6 +78,7 @@ def claim_to_blind_output(claim: Claim, *, case_id: str, task: BlindTask) -> Bli
         time_window=_validated_window(claim, task),
         evidence_refs=evidence_refs,
         falsifier=claim.falsifier,
+        fact_refs=fact_refs,
     )
     return BlindSchoolOutput(
         case_id=case_id,

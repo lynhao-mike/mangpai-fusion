@@ -12,6 +12,7 @@ from typing import Any
 
 from engine.claims.orchestrator import generate_blind_outputs
 from engine.evaluation.freeze import canonical_json, freeze_outputs, verify_frozen_run
+from engine.evaluation.prospective_artifacts import canonical_artifact_sha256, publish_new_json
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, FrozenBlindRun
 from tools.school_capability_dataset import (
     append_witness_event,
@@ -42,7 +43,21 @@ def _verified_bundle(root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[s
     if not root.is_dir() or root.is_symlink():
         raise ValueError("bundle root must be an existing non-symlink directory")
     manifest = _read_json(root / "bundle-manifest.json")
-    if set(manifest) != {"schema_version", "bundle_sha256", "files"} or manifest.get("schema_version") != _BUNDLE_SCHEMA or not isinstance(manifest.get("files"), dict):
+    legacy_manifest = (
+        set(manifest) == {"schema_version", "bundle_sha256", "files"}
+        and manifest.get("schema_version") == _BUNDLE_SCHEMA
+    )
+    single_case_manifest = (
+        set(manifest) == {
+            "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
+            "case_count", "future_question_count", "schools", "parents", "files",
+            "bundle_sha256", "artifact_sha256",
+        }
+        and manifest.get("schema_version") == "prospective-single-case-blind-bundle/v1"
+        and manifest.get("case_count") == 1
+        and manifest.get("future_question_count") == 1
+    )
+    if not (legacy_manifest or single_case_manifest) or not isinstance(manifest.get("files"), dict):
         raise ValueError("blind bundle manifest schema is invalid")
     files = manifest["files"]
     actual = {
@@ -58,7 +73,12 @@ def _verified_bundle(root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[s
             raise ValueError(f"invalid bundle file entry: {name}")
         if _sha256(path.read_bytes()) != expected:
             raise ValueError(f"actual bundle file hash mismatch: {name}")
-    encoded_files = json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    encoded_files = json.dumps(
+        files,
+        ensure_ascii=not single_case_manifest,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
     if _sha256(encoded_files) != manifest["bundle_sha256"]:
         raise ValueError("blind bundle hash mismatch")
     return manifest, _read_json(root / "tasks.json"), _read_json(root / "rule-snapshot.json"), _read_json(root / "intake.json")
@@ -184,14 +204,29 @@ def _utc(value: datetime) -> str:
 
 def _verified_staged_artifact(path: Path, manifest: dict[str, Any]) -> tuple[dict[str, Any], FrozenBlindRun, set[str]]:
     artifact = _read_json(path)
-    required = {
+    legacy_required = {
         "schema_version", "bundle_sha256", "task_catalog_sha256", "rule_snapshot_sha256",
         "case_task_assignments", "frozen_run", "artifact_sha256",
     }
-    if set(artifact) != required or artifact.get("schema_version") != _STAGED_SCHEMA:
+    single_case_required = {
+        "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
+        "intake_sha256", "future_question_registration_sha256", "task_catalog_sha256",
+        "rule_snapshot_sha256", "bundle_sha256", "bundle_manifest_sha256", "parents",
+        "case_task_assignments", "frozen_run", "artifact_sha256",
+    }
+    is_legacy = set(artifact) == legacy_required and artifact.get("schema_version") == _STAGED_SCHEMA
+    is_single_case = (
+        set(artifact) == single_case_required
+        and artifact.get("schema_version") == "school-capability-single-case-staged-run/v1"
+    )
+    if not (is_legacy or is_single_case):
         raise ValueError("staged artifact schema is invalid")
     unsigned = {key: value for key, value in artifact.items() if key != "artifact_sha256"}
-    if artifact.get("artifact_sha256") != _sha256(canonical_json(unsigned).encode("utf-8")):
+    expected_digest = (
+        _sha256(canonical_json(unsigned).encode("utf-8"))
+        if is_legacy else canonical_artifact_sha256(unsigned)
+    )
+    if artifact.get("artifact_sha256") != expected_digest:
         raise ValueError("staged artifact hash mismatch")
     if (
         artifact.get("bundle_sha256") != manifest["bundle_sha256"]
@@ -241,16 +276,24 @@ def build_witness_freeze_registry(
     witness_key: bytes,
     *,
     registry: dict[str, Any] | None = None,
+    artifact_path: Path | None = None,
 ) -> dict[str, Any]:
     """Build or append exact per-case registered/prepared/freeze witness segments."""
     intake = _read_json(Path(intake_path))
+    single_case_intake = intake.get("schema_version") == "prospective-single-case-intake/v1"
     if (
-        intake.get("schema_version") != _FORMAL_INTAKE_SCHEMA
+        intake.get("schema_version") not in {
+            _FORMAL_INTAKE_SCHEMA, "prospective-single-case-intake/v1",
+        }
         or not isinstance(intake.get("records"), list)
         or not intake["records"]
+        or (single_case_intake and len(intake["records"]) != 1)
     ):
         raise ValueError("formal prospective intake schema is invalid")
-    registered_at = _parse_utc(intake.get("generated_at"), "intake generated_at")
+    registered_at = _parse_utc(
+        intake.get("created_at") if single_case_intake else intake.get("generated_at"),
+        "intake created_at" if single_case_intake else "intake generated_at",
+    )
     manifest, _, _, blind_intake = _verified_bundle(Path(bundle_root))
     _, run, staged_cases = _verified_staged_artifact(Path(staged_run_path), manifest)
     rows: dict[str, dict[str, Any]] = {}
@@ -305,7 +348,39 @@ def build_witness_freeze_registry(
             current = append_witness_event(current, event, witness_key)
     assert current is not None
     verify_witness_registry(current, witness_key)
-    return current
+    if artifact_path is None or len(rows) != 1:
+        return current
+    only_row = next(iter(rows.values()))
+    parents: list[dict[str, str]] = []
+    if intake.get("schema_version") == "prospective-single-case-intake/v1":
+        parents = [
+            {
+                "artifact_path": str(intake["artifact_path"]),
+                "artifact_sha256": str(intake["artifact_sha256"]),
+            },
+            {
+                "artifact_path": str(manifest["artifact_path"]),
+                "artifact_sha256": str(manifest["artifact_sha256"]),
+            },
+            {
+                "artifact_path": Path(staged_run_path).as_posix(),
+                "artifact_sha256": str(_read_json(Path(staged_run_path))["artifact_sha256"]),
+            },
+        ]
+    artifact_payload = {
+        **current,
+        "case_id": only_row["case_id"],
+        "subject_id_hash": only_row["subject_id_hash"],
+        "created_at": run.frozen_at,
+        "artifact_path": Path(artifact_path).as_posix(),
+        "parents": parents,
+    }
+    artifact = {
+        **artifact_payload,
+        "artifact_sha256": canonical_artifact_sha256(artifact_payload),
+    }
+    verify_witness_registry(artifact, witness_key)
+    return artifact
 
 
 def _environment_witness_key(variable: str) -> bytes:
@@ -343,6 +418,10 @@ def _parser() -> argparse.ArgumentParser:
     stage.add_argument("--bundle-root", required=True)
     stage.add_argument("--out", required=True)
     stage.add_argument("--dry-run", action="store_true")
+    single_stage = commands.add_parser("stage-single-case-frozen-run")
+    single_stage.add_argument("--bundle-root", required=True)
+    single_stage.add_argument("--out", required=True)
+    single_stage.add_argument("--dry-run", action="store_true")
     witness = commands.add_parser("witness-freeze-chain")
     witness.add_argument("--intake", required=True)
     witness.add_argument("--bundle-root", required=True)
@@ -356,18 +435,34 @@ def _parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = _parser().parse_args()
+    use_task1_publisher = False
     if args.command == "stage-frozen-run":
         payload = build_staged_frozen_run(Path(args.bundle_root))
         result = payload["artifact_sha256"]
+    elif args.command == "stage-single-case-frozen-run":
+        from engine.evaluation.prospective_single_case import build_single_case_staged_frozen_run
+
+        payload = build_single_case_staged_frozen_run(Path(args.bundle_root))
+        if Path(args.out).as_posix() != payload["artifact_path"]:
+            raise ValueError(
+                f"formal output must use canonical single-case path: {payload['artifact_path']}"
+            )
+        result = payload["artifact_sha256"]
+        use_task1_publisher = True
     else:
         existing = _read_json(Path(args.registry)) if args.registry else None
         payload = build_witness_freeze_registry(
             Path(args.intake), Path(args.bundle_root), Path(args.staged_run),
             _environment_witness_key(args.witness_key_env), registry=existing,
+            artifact_path=Path(args.out),
         )
         result = payload["events"][-1]["event_hash"]
     if args.dry_run:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
+    elif use_task1_publisher:
+        unsigned = {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        publish_new_json(Path(args.out), unsigned, dry_run=False)
+        print(result)
     else:
         _write_new(Path(args.out), payload)
         print(result)

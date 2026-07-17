@@ -11,6 +11,14 @@ import pytest
 
 from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
+from engine.evaluation.prospective_artifacts import canonical_artifact_sha256, publish_new_json
+from engine.evaluation.prospective_single_case import (
+    ContaminationError,
+    SIX_SCHOOLS,
+    build_single_case_intake,
+    build_single_case_staged_frozen_run,
+    prepare_single_case_blind_bundle,
+)
 from tools.school_capability_dataset import (
     append_witness_event,
     prepare_blind_bundle,
@@ -206,15 +214,335 @@ def test_witness_freeze_registry_rejects_wrong_existing_order_and_cli_is_no_over
         "PYTHONUTF8": "1",
         "SCHOOL_CAPABILITY_WITNESS_KEY": "external-witness-secret",
     }
-    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True, env=environment)
+    dry = subprocess.run(
+        [*command, "--dry-run"], check=False, capture_output=True, text=True,
+        encoding="utf-8", env=environment,
+    )
     assert dry.returncode == 0, dry.stderr
     assert not output.exists()
     assert verify_witness_registry(json.loads(dry.stdout), key) is True
-    first = subprocess.run(command, check=False, capture_output=True, text=True, env=environment)
+    first = subprocess.run(
+        command, check=False, capture_output=True, text=True, encoding="utf-8", env=environment,
+    )
     assert first.returncode == 0, first.stderr
     original = output.read_bytes()
-    second = subprocess.run(command, check=False, capture_output=True, text=True, env=environment)
+    second = subprocess.run(
+        command, check=False, capture_output=True, text=True, encoding="utf-8", env=environment,
+    )
     assert second.returncode != 0
     assert "already exists" in second.stderr
     assert output.read_bytes() == original
     assert "external-witness-secret" not in output.read_text(encoding="utf-8")
+
+
+def _single_case_bundle(
+    tmp_path: Path,
+    *,
+    created_at: str = "2026-07-15T23:59:58Z",
+    freeze_at: str = "2026-07-16T00:00:00Z",
+) -> tuple[Path, dict, dict]:
+    case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
+    input_path = tmp_path / "source" / case_id / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text(
+        "Sex:乾\n$FOUR\nY:比肩,甲,子,正印\nM:劫财,乙,丑,正财\n"
+        "D:元男,丙,寅,偏印\nH:伤官,丁,卯,正印\n$DY_LOOP\n"
+        "#2026,8岁,戊辰,食神\n> 2026,丙午,食神\n",
+        encoding="utf-8",
+    )
+    tasks = _read(TASKS)
+    question_draft = {
+        "future_task_id": "career.role_change",
+        "question_text_redacted": "未来三个月是否发生显著岗位角色变化？",
+        "outcome_type": "binary",
+        "positive_definition": "发生并有雇佣资料或本人确认",
+        "negative_definition": "完整窗口结束且核验来源确认未发生",
+        "verification_source_requirements": ["custody://structured-interview"],
+        "observation_window": {
+            "start_at": freeze_at,
+            "end_at": "2026-10-16T00:00:00Z",
+        },
+    }
+    intake, question = build_single_case_intake(
+        input_path,
+        tasks,
+        SIX_SCHOOLS,
+        "human-test",
+        {"P-GO-2026-001": ["career.role_change", "career.change_window"]},
+        question_draft,
+        created_at=created_at,
+        case_root=tmp_path / "parents",
+    )
+    publish_new_json(Path(question["artifact_path"]), question, dry_run=False)
+    publish_new_json(Path(intake["artifact_path"]), intake, dry_run=False)
+    root = tmp_path / "single-bundle"
+    prepare_single_case_blind_bundle(intake, question, TASKS, RULES, root, dry_run=False)
+    return root, intake, question
+
+
+def _reseal_bundle(bundle: Path, name: str) -> None:
+    from engine.evaluation.prospective_artifacts import canonical_artifact_sha256
+
+    manifest_path = bundle / "bundle-manifest.json"
+    manifest = _read(manifest_path)
+    manifest["files"][name] = hashlib.sha256((bundle / name).read_bytes()).hexdigest()
+    manifest["bundle_sha256"] = hashlib.sha256(json.dumps(
+        manifest["files"], ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode("utf-8")).hexdigest()
+    manifest["artifact_sha256"] = canonical_artifact_sha256(manifest)
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(tmp_path: Path) -> None:
+    root, intake, question = _single_case_bundle(tmp_path)
+
+    artifact = build_single_case_staged_frozen_run(root)
+
+    assignments = artifact["case_task_assignments"]
+    outputs = artifact["frozen_run"]["outputs"]
+    task_count = len(assignments[0]["task_ids"])
+    assert len(assignments) == 1
+    assert len(outputs) == 6 * task_count
+    assert len({(row["case_id"], row["school_id"], row["task_id"]) for row in outputs}) == len(outputs)
+    assert {row["state"] for row in outputs} <= {"claim", "abstain", "unsupported"}
+    assert artifact["future_question_registration_sha256"] == question["artifact_sha256"]
+    assert artifact["intake_sha256"] == intake["artifact_sha256"]
+    assert artifact["task_catalog_sha256"] == _read(root / "bundle-manifest.json")["files"]["tasks.json"]
+    assert artifact["rule_snapshot_sha256"] == _read(root / "bundle-manifest.json")["files"]["rule-snapshot.json"]
+    assert artifact["bundle_manifest_sha256"] == _read(root / "bundle-manifest.json")["artifact_sha256"]
+    assert artifact["parents"] == [
+        {"artifact_path": intake["artifact_path"], "artifact_sha256": intake["artifact_sha256"]},
+        {"artifact_path": question["artifact_path"], "artifact_sha256": question["artifact_sha256"]},
+        {"artifact_path": (root / "tasks.json").as_posix(), "artifact_sha256": artifact["task_catalog_sha256"]},
+        {"artifact_path": (root / "rule-snapshot.json").as_posix(), "artifact_sha256": artifact["rule_snapshot_sha256"]},
+        {"artifact_path": (root / "bundle-manifest.json").as_posix(), "artifact_sha256": artifact["bundle_manifest_sha256"]},
+    ]
+    assert artifact["frozen_run"]["frozen_at"] == question["observation_window"]["start_at"]
+    assert artifact["case_id"] == intake["case_id"]
+    assert artifact["subject_id_hash"] == intake["subject_id_hash"]
+    assert artifact["created_at"] == artifact["frozen_run"]["frozen_at"]
+    assert artifact["artifact_path"].endswith(
+        f"{intake['case_id']}--frozen-run--v001.json"
+    )
+    manifest = _read(root / "bundle-manifest.json")
+    assert intake["created_at"] <= manifest["created_at"] < artifact["created_at"]
+    assert question["created_at"] <= manifest["created_at"]
+    from engine.evaluation.prospective_artifacts import ArtifactRef, validate_parent_ref
+    assert validate_parent_ref(ArtifactRef(**artifact["parents"][-1])) == manifest
+    assert build_single_case_staged_frozen_run(root) == artifact
+
+
+def test_single_case_frozen_run_rejects_two_cases_even_if_manifest_is_resealed(tmp_path: Path) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    intake_path = root / "intake.json"
+    intake = _read(intake_path)
+    intake["records"].append({"case_id": "P-GO-2026-002-坤-戊辰己巳庚午辛未", "task_ids": ["career.role_change"]})
+    intake_path.write_text(json.dumps(intake, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    _reseal_bundle(root, "intake.json")
+
+    with pytest.raises(ContaminationError, match="STOP|exactly one"):
+        build_single_case_staged_frozen_run(root)
+
+
+@pytest.mark.parametrize("mutation", ["duplicate", "missing-school"])
+def test_single_case_frozen_run_rejects_incomplete_or_duplicate_grid(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str,
+) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    original = prospective.build_staged_frozen_run(root)
+    outputs = original["frozen_run"]["outputs"]
+    if mutation == "duplicate":
+        outputs[-1] = dict(outputs[0])
+    else:
+        school = outputs[0]["school_id"]
+        original["frozen_run"]["outputs"] = [row for row in outputs if row["school_id"] != school]
+    monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: original)
+
+    with pytest.raises(ContaminationError, match="grid|duplicate|missing"):
+        build_single_case_staged_frozen_run(root)
+
+
+@pytest.mark.parametrize("parent", ["intake", "question", "tasks", "rule", "bundle"])
+def test_single_case_frozen_run_stops_on_any_actual_parent_byte_change(
+    tmp_path: Path, parent: str,
+) -> None:
+    root, intake, question = _single_case_bundle(tmp_path)
+    paths = {
+        "intake": Path(intake["artifact_path"]),
+        "question": Path(question["artifact_path"]),
+        "tasks": root / "tasks.json",
+        "rule": root / "rule-snapshot.json",
+        "bundle": root / "bundle-manifest.json",
+    }
+    paths[parent].write_bytes(paths[parent].read_bytes() + b" ")
+
+    with pytest.raises((ContaminationError, ValueError), match="STOP|drift|hash|invalid"):
+        build_single_case_staged_frozen_run(root)
+
+
+def test_single_case_frozen_run_rejects_rehashed_future_question_drift(tmp_path: Path) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    question_path = root / "future-question.json"
+    question = _read(question_path)
+    question["question_text_redacted"] = "未来三个月是否调任其他岗位？"
+    from engine.evaluation.prospective_artifacts import canonical_artifact_sha256
+    question["artifact_sha256"] = canonical_artifact_sha256(question)
+    question_path.write_text(json.dumps(question, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    _reseal_bundle(root, "future-question.json")
+
+    with pytest.raises(ContaminationError, match="question|parent|drift"):
+        build_single_case_staged_frozen_run(root)
+
+
+def test_single_case_frozen_run_keeps_timing_claim_with_structured_liunian_fact_ref(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    staged = prospective.build_staged_frozen_run(root)
+    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
+    timing.update({
+        "state": "claim",
+        "rationale": "timing derived from annual chart fact",
+        "predictions": [{
+            "prediction_id": "prediction-safe",
+            "event_label": "career_change",
+            "probability": 0.5,
+            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
+            "evidence_refs": ["evidence-annual-trigger"],
+            "fact_refs": ["liunian_steps.0", "four_pillars.day"],
+            "falsifier": "window elapsed without event",
+        }],
+    })
+    monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
+
+    artifact = build_single_case_staged_frozen_run(root)
+
+    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
+        row["school_id"], row["task_id"]
+    ) == (timing["school_id"], timing["task_id"]))
+    assert safe["state"] == "claim"
+    assert safe["predictions"][0]["fact_refs"] == ["liunian_steps.0", "four_pillars.day"]
+
+
+def test_single_case_frozen_run_never_freezes_unresolved_liunian_fact_ref(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    staged = prospective.build_staged_frozen_run(root)
+    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
+    timing.update({
+        "state": "claim",
+        "rationale": "timing cites a nonexistent annual chart fact",
+        "predictions": [{
+            "prediction_id": "prediction-unresolved",
+            "event_label": "career_change",
+            "probability": 0.5,
+            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
+            "evidence_refs": ["evidence-invalid-annual-trigger"],
+            "fact_refs": ["liunian_steps.999"],
+            "falsifier": "window elapsed without event",
+        }],
+    })
+    monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
+
+    artifact = build_single_case_staged_frozen_run(root)
+
+    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
+        row["school_id"], row["task_id"]
+    ) == (timing["school_id"], timing["task_id"]))
+    assert safe["state"] == "abstain"
+    assert safe["predictions"] == []
+    assert "liunian_steps" in safe["rationale"]
+
+
+def test_single_case_frozen_run_never_freezes_timing_claim_without_liunian_fact_ref(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    staged = prospective.build_staged_frozen_run(root)
+    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
+    timing.update({
+        "state": "claim",
+        "rationale": "timing guessed from text",
+        "predictions": [{
+            "prediction_id": "prediction-unsafe",
+            "event_label": "career_change",
+            "probability": 0.5,
+            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
+            "evidence_refs": ["opaque-evidence-id"],
+            "falsifier": "window elapsed without event",
+        }],
+    })
+    monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
+
+    artifact = build_single_case_staged_frozen_run(root)
+
+    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
+        row["school_id"], row["task_id"]
+    ) == (timing["school_id"], timing["task_id"]))
+    assert safe["state"] == "abstain"
+    assert safe["predictions"] == []
+    assert "liunian_steps" in safe["rationale"]
+
+
+def test_single_case_witness_registry_uses_current_artifact_schema(tmp_path: Path) -> None:
+    root, intake, _ = _single_case_bundle(tmp_path)
+    frozen = build_single_case_staged_frozen_run(root)
+    frozen_path = Path(frozen["artifact_path"])
+    publish_new_json(frozen_path, frozen, dry_run=False)
+    registry_path = Path(intake["artifact_path"]).with_name(
+        f"{intake['case_id']}--witness-registry--v001.json"
+    )
+
+    registry = prospective.build_witness_freeze_registry(
+        Path(intake["artifact_path"]), root, frozen_path, b"TEST-FIXTURE-KEY-NOT-REAL",
+        artifact_path=registry_path,
+    )
+
+    assert registry["case_id"] == intake["case_id"]
+    assert registry["subject_id_hash"] == intake["subject_id_hash"]
+    assert registry["artifact_path"] == registry_path.as_posix()
+    assert len(registry["events"]) == 3
+    assert [event["event_type"] for event in registry["events"]] == [
+        "registered", "prepared", "freeze",
+    ]
+    assert registry["artifact_sha256"] == canonical_artifact_sha256(registry)
+
+
+def test_single_case_cli_is_create_only_and_keeps_legacy_command(tmp_path: Path) -> None:
+    root, intake, _ = _single_case_bundle(tmp_path)
+    output = Path(intake["artifact_path"]).with_name(
+        f"{intake['case_id']}--frozen-run--v001.json"
+    )
+    command = [
+        sys.executable, "-m", "tools.school_capability_prospective",
+        "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
+    ]
+    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
+    assert dry.returncode == 0, dry.stderr
+    assert not output.exists()
+    assert json.loads(dry.stdout)["schema_version"] == "school-capability-single-case-staged-run/v1"
+
+    first = subprocess.run(command, check=False, capture_output=True, text=True)
+    assert first.returncode == 0, first.stderr
+    original = output.read_bytes()
+    second = subprocess.run(command, check=False, capture_output=True, text=True)
+    assert second.returncode != 0
+    assert "already exists" in second.stderr
+    assert output.read_bytes() == original
+    assert "stage-frozen-run" in prospective._parser().format_help()
+
+
+def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+    output = tmp_path / "single-frozen.json"
+    command = [
+        sys.executable, "-m", "tools.school_capability_prospective",
+        "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
+    ]
+
+    result = subprocess.run(command, check=False, capture_output=True, text=True)
+
+    assert result.returncode != 0
+    assert "canonical" in result.stderr.lower()
+    assert not output.exists()

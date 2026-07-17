@@ -130,6 +130,9 @@ def test_timing_event_uses_catalog_event_and_preserves_exact_window() -> None:
 
     prediction = claim_to_blind_output(claim, case_id="C-ADAPTER-TIMING", task=task).predictions[0]
     assert prediction.event_label == "career_change"
+    assert prediction.fact_refs == tuple(sorted({
+        ref for evidence in claim.evidence for ref in evidence.fact_refs
+    }))
     assert prediction.probability == 0.53
     assert prediction.time_window == {"start_year": 2027, "end_year": 2027, "label": "annual"}
 
