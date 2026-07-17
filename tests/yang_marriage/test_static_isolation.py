@@ -70,10 +70,19 @@ def _source_paths() -> tuple[Path, Path]:
 
 
 def _imported_modules(source: str) -> set[str]:
+    tree = ast.parse(source)
     imported: set[str] = set()
-    for node in ast.walk(ast.parse(source)):
+    importlib_bindings = {"importlib"}
+    import_module_bindings: set[str] = set()
+
+    for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             imported.update(alias.name for alias in node.names)
+            importlib_bindings.update(
+                alias.asname or alias.name
+                for alias in node.names
+                if alias.name == "importlib"
+            )
         elif isinstance(node, ast.ImportFrom):
             parent = node.module or ""
             imported.add(parent)
@@ -82,20 +91,32 @@ def _imported_modules(source: str) -> set[str]:
                 for alias in node.names
                 if alias.name != "*"
             )
-        elif (
+            if parent == "importlib":
+                import_module_bindings.update(
+                    alias.asname or alias.name
+                    for alias in node.names
+                    if alias.name == "import_module"
+                )
+
+    for node in ast.walk(tree):
+        if not (
             isinstance(node, ast.Call)
             and node.args
             and isinstance(node.args[0], ast.Constant)
             and isinstance(node.args[0].value, str)
-            and (
-                isinstance(node.func, ast.Name)
-                and node.func.id == "__import__"
-                or isinstance(node.func, ast.Attribute)
-                and isinstance(node.func.value, ast.Name)
-                and node.func.value.id == "importlib"
-                and node.func.attr == "import_module"
-            )
         ):
+            continue
+        is_bound_function = (
+            isinstance(node.func, ast.Name)
+            and node.func.id in import_module_bindings | {"__import__"}
+        )
+        is_bound_module_method = (
+            isinstance(node.func, ast.Attribute)
+            and isinstance(node.func.value, ast.Name)
+            and node.func.value.id in importlib_bindings
+            and node.func.attr == "import_module"
+        )
+        if is_bound_function or is_bound_module_method:
             imported.add(node.args[0].value)
     return imported
 
@@ -166,10 +187,18 @@ def test_import_scanner_recognizes_static_and_dynamic_import_forms() -> None:
         "from engine.decision import l7_report_view": "engine.decision.l7_report_view",
         "from engine.decision import l7_report_view as report_view": "engine.decision.l7_report_view",
         'importlib.import_module("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+        'from importlib import import_module\nimport_module("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+        'import importlib as il\nil.import_module("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+        'from importlib import import_module as load\nload("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+        'load("engine.decision.l7_report_view")\nfrom importlib import import_module as load': "engine.decision.l7_report_view",
         '__import__("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
     }
     for source, expected in mutations.items():
         assert expected in _imported_modules(source), source
+
+    assert "engine.decision.l7_report_view" not in _imported_modules(
+        'def load(name): return name\nload("engine.decision.l7_report_view")'
+    )
 
 
 def test_approved_worktree_bytes_accept_only_exact_lf_or_pure_crlf() -> None:
