@@ -485,3 +485,65 @@ class YangMarriageDiscrimination:
             "falsifier": self.falsifier,
             "source_rule_refs": list(self.source_rule_refs),
         }
+
+
+def discriminate_yang_marriage(
+    case_id: str,
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+) -> YangMarriageDiscrimination:
+    """按硬阻断、具名门 A+B、结构压力的优先级返回局部三态。"""
+    signals = extract_yang_marriage_signals(case_id, chart, features)
+    reduced_families = reduce_yang_marriage_families(signals)
+    family_keys = frozenset(item.family_key for item in reduced_families)
+    anchor = "spouse_palace_event_anchor" in family_keys
+    interaction = bool(_EVENT_INTERACTION_FAMILY_KEYS.intersection(family_keys))
+    blockers = list(signals.blocking_reason_codes)
+
+    if blockers:
+        state: YangMarriageState = "abstain"
+        # DTO 禁止 abstain 携带完整事件载荷；硬阻断时不让诊断家族形成稳定反票。
+        families = () if anchor and interaction else reduced_families
+        result_anchor = False
+        result_interaction = False
+        falsifier = "补齐并校验输入后重算。"
+    elif anchor and interaction:
+        state = "event"
+        families = reduced_families
+        result_anchor = True
+        result_interaction = True
+        falsifier = "若婚姻史中没有离婚或再婚记录，则命题证伪。"
+    elif reduced_families:
+        state = "pressure"
+        families = reduced_families
+        result_anchor = anchor
+        result_interaction = interaction
+        if not anchor:
+            blockers.append("missing_spouse_palace_event_anchor")
+        if not interaction:
+            blockers.append("missing_independent_spouse_interaction")
+        falsifier = "存在关系压力不等于离婚或再婚事件成立。"
+    else:
+        state = "abstain"
+        families = ()
+        result_anchor = False
+        result_interaction = False
+        blockers.append("insufficient_yang_marriage_signal")
+        falsifier = "当前无足够杨派婚姻信号；补充可验证结构后重算。"
+
+    return YangMarriageDiscrimination(
+        schema_version="yang-marriage-discrimination/v1",
+        case_id=case_id,
+        state=state,
+        sex_basis=signals.sex_basis,
+        spouse_palace_branch=signals.spouse_palace_branch,
+        families=families,
+        event_anchor_passed=result_anchor,
+        independent_spouse_interaction_passed=result_interaction,
+        blocking_reason_codes=tuple(sorted(set(blockers))),
+        falsifier=falsifier,
+        source_rule_refs=(
+            "theory/yang/index.yaml#M2-Y-068",
+            "theory/yang/index.yaml#M2-Y-088",
+        ),
+    )
