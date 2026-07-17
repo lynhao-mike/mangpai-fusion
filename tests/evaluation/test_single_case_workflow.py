@@ -8,7 +8,11 @@ from pathlib import Path
 
 import pytest
 
-from engine.evaluation.prospective_artifacts import canonical_artifact_sha256, publish_new_json
+from engine.evaluation.prospective_artifacts import (
+    canonical_artifact_sha256,
+    publish_new_json,
+    validate_revision_metadata,
+)
 from engine.evaluation.prospective_single_case import (
     SIX_SCHOOLS,
     ContaminationError,
@@ -234,6 +238,45 @@ def test_future_question_digest_and_timestamps_are_canonical(tmp_path: Path) -> 
     assert question["artifact_sha256"] == canonical_artifact_sha256(question)
 
 
+def test_v002_intake_and_question_require_and_bind_distinct_superseded_parents(
+    tmp_path: Path,
+) -> None:
+    v001_intake, v001_question = _build(tmp_path)
+    publish_new_json(Path(v001_question["artifact_path"]), v001_question, dry_run=False)
+    publish_new_json(Path(v001_intake["artifact_path"]), v001_intake, dry_run=False)
+    freeze_at = "2026-07-17T05:30:00Z"
+
+    v002_intake, v002_question = _build(
+        tmp_path,
+        version=2,
+        created_at="2026-07-17T05:29:58Z",
+        future_question=_question(observation_window={
+            "start_at": freeze_at,
+            "end_at": "2026-10-17T05:30:00Z",
+        }),
+        question_revision={
+            "supersedes": v001_question["artifact_path"],
+            "supersedes_sha256": v001_question["artifact_sha256"],
+            "reason": "Bind observation start to the actual freeze instant",
+            "approved_by": "human-approver-01",
+        },
+        intake_revision={
+            "supersedes": v001_intake["artifact_path"],
+            "supersedes_sha256": v001_intake["artifact_sha256"],
+            "reason": "Bind intake to the corrected future-question registration",
+            "approved_by": "human-approver-01",
+        },
+    )
+
+    assert v002_question["artifact_path"].endswith("--future-question-registration--v002.json")
+    assert v002_intake["artifact_path"].endswith("--intake--v002.json")
+    validate_revision_metadata(v002_question, 2)
+    validate_revision_metadata(v002_intake, 2)
+    assert v002_intake["future_question"]["artifact_sha256"] == v002_question["artifact_sha256"]
+    assert Path(v001_question["artifact_path"]).read_bytes()
+    assert Path(v001_intake["artifact_path"]).read_bytes()
+
+
 def _write_cli_inputs(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
     input_path = _input(tmp_path / "source")
     tasks_path = tmp_path / "tasks.json"
@@ -280,6 +323,26 @@ def _cli_command(tmp_path: Path) -> tuple[list[str], Path]:
     return command, root
 
 
+def test_single_case_cli_parser_exposes_v002_supersedes_arguments() -> None:
+    from tools.school_capability_dataset import _parser
+
+    help_text = _parser().format_help()
+    choices = _parser()._subparsers._group_actions[0].choices
+    single_help = choices["single-case-intake"].format_help()
+    bundle_help = choices["prepare-single-case-blind"].format_help()
+
+    assert "single-case-intake" in help_text
+    for option in (
+        "--version", "--question-supersedes", "--question-supersedes-sha256",
+        "--intake-supersedes", "--intake-supersedes-sha256", "--reason", "--approved-by",
+    ):
+        assert option in single_help
+    for option in (
+        "--supersedes", "--supersedes-sha256", "--reason", "--approved-by",
+    ):
+        assert option in bundle_help
+
+
 def test_single_case_cli_rejects_existing_subject_under_different_case_id(tmp_path: Path) -> None:
     first_command, root = _cli_command(tmp_path)
     first = subprocess.run(first_command, check=False, capture_output=True, text=True)
@@ -314,6 +377,41 @@ def test_single_case_cli_rejects_existing_subject_under_different_case_id(tmp_pa
     assert result.returncode != 0
     assert "duplicate subject_id_hash" in result.stderr
     assert not (root / second_case_id).exists()
+
+
+def test_single_case_cli_v002_dry_run_does_not_reject_same_case_subject(tmp_path: Path) -> None:
+    command, root = _cli_command(tmp_path)
+    first = subprocess.run(command, check=False, capture_output=True, text=True)
+    assert first.returncode == 0, first.stderr
+    published = json.loads(first.stdout)
+    question = published["future_question"]["document"]
+    intake = published["intake"]["document"]
+    question_draft = Path(command[command.index("--future-question") + 1])
+    draft = json.loads(question_draft.read_text(encoding="utf-8"))
+    draft["observation_window"] = {
+        "start_at": "2026-07-17T05:40:00Z",
+        "end_at": "2026-10-17T05:40:00Z",
+    }
+    question_draft.write_text(json.dumps(draft, ensure_ascii=False), encoding="utf-8")
+    revised = [
+        *command[:-1], "2026-07-17T05:39:58Z",
+        "--version", "2",
+        "--question-supersedes", question["artifact_path"],
+        "--question-supersedes-sha256", question["artifact_sha256"],
+        "--intake-supersedes", intake["artifact_path"],
+        "--intake-supersedes-sha256", intake["artifact_sha256"],
+        "--reason", "Bind observation start to actual freeze time",
+        "--approved-by", "human-approver-01",
+        "--dry-run",
+    ]
+
+    result = subprocess.run(revised, check=False, capture_output=True, text=True)
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["future_question"]["artifact_path"].endswith("--v002.json")
+    assert payload["intake"]["artifact_path"].endswith("--v002.json")
+    assert not (root / CASE_ID / f"{CASE_ID}--intake--v002.json").exists()
 
 
 def test_single_case_cli_dry_run_emits_two_documents_and_paths_without_writing(tmp_path: Path) -> None:
@@ -511,6 +609,57 @@ def test_single_case_bundle_dry_run_writes_nothing(tmp_path: Path) -> None:
 
     assert manifest["case_count"] == 1
     assert not target.exists()
+
+
+def test_v002_bundle_manifest_requires_supersedes_v001_manifest(tmp_path: Path) -> None:
+    intake, question, tasks_path, rules_path = _single_bundle_sources(tmp_path)
+    v001_target = tmp_path / f"{CASE_ID}--blind-bundle--v001"
+    v001 = prepare_single_case_blind_bundle(
+        intake, question, tasks_path, rules_path, v001_target, dry_run=False,
+    )
+    v002_intake, v002_question = _build(
+        tmp_path / "v002-registration",
+        version=2,
+        created_at="2026-07-17T05:29:58Z",
+        future_question=_question(observation_window={
+            "start_at": "2026-07-17T05:30:00Z",
+            "end_at": "2026-10-17T05:30:00Z",
+        }),
+        question_revision={
+            "supersedes": question["artifact_path"],
+            "supersedes_sha256": question["artifact_sha256"],
+            "reason": "Correct planned freeze binding",
+            "approved_by": "human-approver-01",
+        },
+        intake_revision={
+            "supersedes": intake["artifact_path"],
+            "supersedes_sha256": intake["artifact_sha256"],
+            "reason": "Bind corrected future question",
+            "approved_by": "human-approver-01",
+        },
+    )
+    publish_new_json(Path(v002_question["artifact_path"]), v002_question, dry_run=False)
+    publish_new_json(Path(v002_intake["artifact_path"]), v002_intake, dry_run=False)
+    v002_target = tmp_path / f"{CASE_ID}--blind-bundle--v002"
+
+    manifest = prepare_single_case_blind_bundle(
+        v002_intake,
+        v002_question,
+        tasks_path,
+        rules_path,
+        v002_target,
+        dry_run=True,
+        revision={
+            "supersedes": v001["artifact_path"],
+            "supersedes_sha256": v001["artifact_sha256"],
+            "reason": "Replace future planned start with immediate freeze chain",
+            "approved_by": "human-approver-01",
+        },
+    )
+
+    validate_revision_metadata(manifest, 2)
+    assert manifest["supersedes"] == v001["artifact_path"]
+    assert not v002_target.exists()
 
 
 def test_single_case_bundle_formal_is_create_only_and_preserves_first_bytes(tmp_path: Path) -> None:

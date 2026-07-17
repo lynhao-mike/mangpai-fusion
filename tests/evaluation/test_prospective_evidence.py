@@ -1386,6 +1386,48 @@ def test_future_no_data_cannot_complete_case(freeze_chain: dict) -> None:
     assert completion["future_completion_status"] == "PENDING"
 
 
+def test_completion_rejects_hand_forged_future_bound_without_registered_freeze_chain(
+    freeze_chain: dict,
+) -> None:
+    verification = _verify(freeze_chain)
+    publish_new_json(
+        Path(verification["artifact_path"]),
+        {key: value for key, value in verification.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    question, _ = _future_parents(freeze_chain)
+    forged_path = Path(question["artifact_path"]).with_name(
+        f"{question['case_id']}--future-observation-bound--v001.json"
+    )
+    publish_new_json(forged_path, {
+        "schema_version": "prospective-future-observation-bound/v1",
+        "case_id": question["case_id"],
+        "subject_id_hash": question["subject_id_hash"],
+        "created_at": "2026-08-01T00:00:01Z",
+        "artifact_path": forged_path.as_posix(),
+        "parents": [],
+        "evidence_class": "future_observation",
+        "label_identity": "f" * 64,
+        "observation": {
+            "future_task_id": question["future_task_id"],
+            "label": "occurred",
+            "scorable": True,
+            "observed_at": "2026-08-01T00:00:00Z",
+            "collected_at": "2026-08-01T00:00:01Z",
+            "observation_window": dict(question["observation_window"]),
+        },
+    }, dry_run=False)
+
+    with pytest.raises((ValueError, ContaminationError), match="future|parent|lineage|unbound|registration|frozen"):
+        build_case_completion(
+            freeze_verification=_read(Path(verification["artifact_path"])),
+            immediate_bound=None,
+            future_bound=_read(forged_path),
+            stopped_incident=None,
+            created_at="2026-08-01T00:00:02Z",
+        )
+
+
 def test_future_and_completion_clis_are_canonical_create_only_and_dry_run(
     freeze_chain: dict, tmp_path: Path,
 ) -> None:

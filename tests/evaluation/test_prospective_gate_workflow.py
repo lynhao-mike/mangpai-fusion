@@ -18,6 +18,9 @@ LEGACY_PROSPECTIVE_TASK_CATALOG = Path("META/school-capability-prospective-tasks
 GO_TASK_CATALOG = Path("META/prospective-go-task-catalog-v1.json")
 GO_RULE_SNAPSHOT = Path("META/prospective-go-rule-snapshot-v1.json")
 PROTOCOL = Path("META/prospective-intake-protocol-v1.md")
+ACTION_PLAN = Path("plans/upgrade-guides/post-gate-action-plan-2026-07-15.md")
+TOOLS_README = Path("tools/README.md")
+HANDOFF = Path("handoff.md")
 OBSERVATION_TEMPLATE = Path("templates/prospective-observation-v1.json")
 TASKS_BY_CASE = Path("META/prospective-go/prospective-go-b01-tasks-by-case.json")
 
@@ -261,6 +264,98 @@ def test_protocol_and_observation_template_freeze_prediction_first_semantics() -
     assert "probability" not in serialized
     assert "runner_output" not in serialized
     assert "report_text" not in serialized
+
+
+def test_protocol_documents_single_case_order_ledgers_and_three_isolated_gates() -> None:
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+
+    for required_text in (
+        "每案 dry-run 后当天正式 single-case intake",
+        "不等待 10 案",
+        "恰好 1 个",
+        "三个月内",
+        "每案独立 bundle / freeze / witness / verification",
+        "VERIFIED 前禁止反馈释放",
+        "prediction_first_immediate_retrospective",
+        "future_observation",
+        "完成数完全分账",
+        "每 10 案只聚合父引用",
+        "prediction_capability_candidate_gate_v1",
+        "future_empirical_gate_v1",
+        "historical_platform_baseline_2026_07_15",
+        "只读独立 HOLD",
+        "独立人类见证人",
+        "人工硬停点",
+        "不得自动切换生产入口",
+    ):
+        assert required_text in protocol
+
+
+def test_action_plan_replaces_batch_blocking_with_single_case_and_split_gate_rhythm() -> None:
+    plan = ACTION_PLAN.read_text(encoding="utf-8")
+    task3 = plan.split("## Task 3:", 1)[1].split("## Task 4:", 1)[0]
+    task4 = plan.split("## Task 4:", 1)[1].split("## Task 5:", 1)[0]
+    task5 = plan.split("## Task 5:", 1)[1].split("## Task 6:", 1)[0]
+    tasks7_to_10 = plan.split("## Task 7:", 1)[1].split("## Task 11:", 1)[0]
+    task11 = plan.split("## Task 11:", 1)[1]
+
+    assert "每案 dry-run 后当天正式 single-case intake" in task3
+    assert "满 10 案后正式写 intake" not in task3
+    assert "每案独立 bundle / freeze / witness / verification" in task4
+    assert "恰好 1 个" in task5 and "三个月内" in task5
+    assert "prediction_capability_candidate_gate_v1" in tasks7_to_10
+    assert "future_empirical_gate_v1" in tasks7_to_10
+    assert "prediction_first_immediate_retrospective" in tasks7_to_10
+    assert "future_observation" in tasks7_to_10
+    assert "historical_platform_baseline_2026_07_15" in task11
+    assert "只读" in task11
+    assert "20 immediate + 10 future" in task11
+    assert "production_switch=false" in task11
+
+
+def test_tools_index_registers_real_single_case_and_cohort_cli_as_offline_only() -> None:
+    text = TOOLS_README.read_text(encoding="utf-8")
+
+    assert "[`school_capability_cohort.py`](school_capability_cohort.py:1)" in text
+    for command in (
+        "single-case-intake",
+        "prepare-single-case-blind",
+        "stage-single-case-frozen-run",
+        "witness-freeze-chain",
+        "witness-verify-single-case",
+        "issue-feedback-release",
+        "release-immediate-retrospective-template",
+        "collect-immediate-retrospective",
+        "collect-future-observation",
+        "build-case-completion",
+        "tools.school_capability_cohort build",
+        "tools.school_capability_cohort gate",
+        "tools.school_capability_cohort future-gate",
+        "tools.school_capability_cohort report",
+    ):
+        assert command in text
+    assert "所有写操作先 dry-run，人工确认后才正式执行" in text
+    assert "仅离线评估" in text
+    assert "production_switch=false" in text
+    assert 'set "SCHOOL_CAPABILITY_WITNESS_KEY="' in text
+    assert "NOT SET" in text
+
+
+def test_handoff_names_first_legal_case_action_and_all_independent_holds() -> None:
+    handoff = HANDOFF.read_text(encoding="utf-8")
+
+    assert "首案" in handoff
+    assert "当天正式 single-case intake" in handoff
+    assert "不等待 10 案" in handoff
+    assert "人工硬停点" in handoff
+    assert "verification=VERIFIED 前禁止反馈释放" in handoff
+    assert "prediction_capability_candidate_gate_v1 = HOLD" in handoff
+    assert "future_empirical_gate_v1 = HOLD" in handoff
+    assert "historical_platform_baseline_2026_07_15 = HOLD" in handoff
+    assert "只读" in handoff
+    assert "static" in handoff
+    assert "production_switch=false" in handoff
+    assert "离线 GO 不代表平台 GO 或生产 GO" in handoff
 
 
 def test_first_batch_assigns_career_binary_timing_and_rotating_high_risk_tasks() -> None:

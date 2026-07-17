@@ -275,7 +275,9 @@ def _single_case_bundle(
     )
     publish_new_json(Path(question["artifact_path"]), question, dry_run=False)
     publish_new_json(Path(intake["artifact_path"]), intake, dry_run=False)
-    root = tmp_path / "single-bundle"
+    root = Path(intake["artifact_path"]).with_name(
+        f"{case_id}--blind-bundle--v001"
+    )
     prepare_single_case_blind_bundle(intake, question, TASKS, RULES, root, dry_run=False)
     return root, intake, question
 
@@ -517,6 +519,7 @@ def test_single_case_cli_is_create_only_and_keeps_legacy_command(tmp_path: Path)
     command = [
         sys.executable, "-m", "tools.school_capability_prospective",
         "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
+        "--now-utc", "2026-07-16T00:00:00Z",
     ]
     dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
     assert dry.returncode == 0, dry.stderr
@@ -539,6 +542,7 @@ def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path)
     command = [
         sys.executable, "-m", "tools.school_capability_prospective",
         "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
+        "--now-utc", "2026-07-16T00:00:00Z",
     ]
 
     result = subprocess.run(command, check=False, capture_output=True, text=True)
@@ -546,3 +550,174 @@ def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path)
     assert result.returncode != 0
     assert "canonical" in result.stderr.lower()
     assert not output.exists()
+
+
+def _v002_single_case_bundle(tmp_path: Path) -> tuple[Path, dict, dict, dict]:
+    v001_root, v001_intake, v001_question = _single_case_bundle(
+        tmp_path,
+        created_at="2026-07-17T05:29:58Z",
+        freeze_at="2026-07-17T05:30:00Z",
+    )
+    v001_frozen = build_single_case_staged_frozen_run(
+        v001_root, now_utc="2026-07-17T05:30:00Z",
+    )
+    publish_new_json(Path(v001_frozen["artifact_path"]), v001_frozen, dry_run=False)
+    case_id = v001_intake["case_id"]
+    input_path = tmp_path / "source" / case_id / "input.md"
+    question_draft = {
+        "future_task_id": "career.role_change",
+        "question_text_redacted": "未来三个月是否发生显著岗位角色变化？",
+        "outcome_type": "binary",
+        "positive_definition": "发生并有雇佣资料或本人确认",
+        "negative_definition": "完整窗口结束且核验来源确认未发生",
+        "verification_source_requirements": ["custody://structured-interview"],
+        "observation_window": {
+            "start_at": "2026-07-17T05:40:00Z",
+            "end_at": "2026-10-17T05:40:00Z",
+        },
+    }
+    v002_intake, v002_question = build_single_case_intake(
+        input_path,
+        _read(TASKS),
+        SIX_SCHOOLS,
+        "human-test",
+        {"P-GO-2026-001": ["career.role_change", "career.change_window"]},
+        question_draft,
+        created_at="2026-07-17T05:39:58Z",
+        case_root=tmp_path / "parents",
+        version=2,
+        question_revision={
+            "supersedes": v001_question["artifact_path"],
+            "supersedes_sha256": v001_question["artifact_sha256"],
+            "reason": "Bind observation start to actual revised freeze",
+            "approved_by": "human-approver-01",
+        },
+        intake_revision={
+            "supersedes": v001_intake["artifact_path"],
+            "supersedes_sha256": v001_intake["artifact_sha256"],
+            "reason": "Bind revised future question",
+            "approved_by": "human-approver-01",
+        },
+    )
+    publish_new_json(Path(v002_question["artifact_path"]), v002_question, dry_run=False)
+    publish_new_json(Path(v002_intake["artifact_path"]), v002_intake, dry_run=False)
+    v002_root = Path(v002_intake["artifact_path"]).with_name(
+        f"{case_id}--blind-bundle--v002"
+    )
+    v001_manifest = _read(v001_root / "bundle-manifest.json")
+    prepare_single_case_blind_bundle(
+        v002_intake,
+        v002_question,
+        TASKS,
+        RULES,
+        v002_root,
+        dry_run=False,
+        revision={
+            "supersedes": v001_manifest["artifact_path"],
+            "supersedes_sha256": v001_manifest["artifact_sha256"],
+            "reason": "Use the revised registered observation window",
+            "approved_by": "human-approver-01",
+        },
+    )
+    return v002_root, v002_intake, v002_question, v001_frozen
+
+
+def test_v002_single_case_frozen_run_uses_canonical_versioned_path_and_revision_chain(
+    tmp_path: Path,
+) -> None:
+    root, intake, _, v001_frozen = _v002_single_case_bundle(tmp_path)
+    revision = {
+        "supersedes": v001_frozen["artifact_path"],
+        "supersedes_sha256": v001_frozen["artifact_sha256"],
+        "reason": "Freeze revised registration and blind bundle",
+        "approved_by": "human-approver-01",
+    }
+
+    artifact = build_single_case_staged_frozen_run(
+        root, now_utc="2026-07-17T05:40:00Z", revision=revision,
+    )
+
+    assert artifact["artifact_path"].endswith(f"{intake['case_id']}--frozen-run--v002.json")
+    assert artifact["executed_at"] == "2026-07-17T05:40:00Z"
+    assert {field: artifact[field] for field in revision} == revision
+
+
+def test_v002_single_case_frozen_run_fail_closes_without_formal_v001_frozen_parent(
+    tmp_path: Path,
+) -> None:
+    root, _, _, v001_frozen = _v002_single_case_bundle(tmp_path)
+    wrong_parent = _read(root / "bundle-manifest.json")
+
+    with pytest.raises((ContaminationError, ValueError), match="supersedes|frozen|parent"):
+        build_single_case_staged_frozen_run(
+            root,
+            now_utc="2026-07-17T05:40:00Z",
+            revision={
+                "supersedes": wrong_parent["artifact_path"],
+                "supersedes_sha256": wrong_parent["artifact_sha256"],
+                "reason": "Invalidly bypass v001 frozen run",
+                "approved_by": "human-approver-01",
+            },
+        )
+
+    Path(v001_frozen["artifact_path"]).unlink()
+    with pytest.raises((ContaminationError, ValueError), match="supersedes|frozen|parent|unreadable"):
+        build_single_case_staged_frozen_run(
+            root,
+            now_utc="2026-07-17T05:40:00Z",
+            revision={
+                "supersedes": v001_frozen["artifact_path"],
+                "supersedes_sha256": v001_frozen["artifact_sha256"],
+                "reason": "Missing formal predecessor must fail closed",
+                "approved_by": "human-approver-01",
+            },
+        )
+
+
+def test_single_case_frozen_run_binds_actual_execution_to_question_start(
+    tmp_path: Path,
+) -> None:
+    root, _, _ = _single_case_bundle(
+        tmp_path,
+        created_at="2026-07-17T05:39:58Z",
+        freeze_at="2026-07-17T05:40:00Z",
+    )
+
+    with pytest.raises((ContaminationError, ValueError), match="execution|start_at|freeze"):
+        build_single_case_staged_frozen_run(root, now_utc="2026-07-17T05:39:59Z")
+
+    artifact = build_single_case_staged_frozen_run(root, now_utc="2026-07-17T05:40:00Z")
+    assert artifact["executed_at"] == "2026-07-17T05:40:00Z"
+    assert artifact["created_at"] == artifact["executed_at"]
+    assert artifact["frozen_run"]["frozen_at"] == artifact["executed_at"]
+
+
+def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(tmp_path: Path) -> None:
+    root, _, _, v001_frozen = _v002_single_case_bundle(tmp_path)
+    output = Path(v001_frozen["artifact_path"]).with_name(
+        f"{v001_frozen['case_id']}--frozen-run--v002.json"
+    )
+    command = [
+        sys.executable, "-m", "tools.school_capability_prospective",
+        "stage-single-case-frozen-run",
+        "--bundle-root", str(root),
+        "--out", str(output),
+        "--now-utc", "2026-07-17T05:40:00Z",
+        "--supersedes", v001_frozen["artifact_path"],
+        "--supersedes-sha256", v001_frozen["artifact_sha256"],
+        "--reason", "Freeze revised registration and blind bundle",
+        "--approved-by", "human-approver-01",
+    ]
+
+    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
+    assert dry.returncode == 0, dry.stderr
+    assert not output.exists()
+    assert json.loads(dry.stdout)["executed_at"] == "2026-07-17T05:40:00Z"
+
+    first = subprocess.run(command, check=False, capture_output=True, text=True)
+    assert first.returncode == 0, first.stderr
+    original = output.read_bytes()
+    second = subprocess.run(command, check=False, capture_output=True, text=True)
+    assert second.returncode != 0
+    assert "already exists" in second.stderr
+    assert output.read_bytes() == original

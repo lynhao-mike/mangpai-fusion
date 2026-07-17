@@ -324,7 +324,7 @@ git commit -m "feat: add independent high risk label review gate"
 - Consumes: 命主授权后的脱敏问真输入；不得消费 `feedback.md`、报告或经历字段。
 - Produces: 可被 [`register_prospective_intake()`](../../tools/school_capability_dataset.py:686) 严格解析的 `input.md`。
 
-**批量采集流程：**
+**单案采集流程（Task 3—11 同步契约）：** 每案 dry-run 后当天正式 single-case intake，不等待 10 案；连续招募目标与 historical baseline 阈值保留，但不再用批量边界阻塞单案链。
 
 1. 每周目标 4—6 个真实新命主；连续编号，不复用失败编号。
 2. intake operator 只整理性别、四柱、公历时间、起运、大运和逐年流年；已知经历放在独立 custody 系统，禁止进入仓库 input。
@@ -338,7 +338,7 @@ Run: `python -m tools.preflight cases/P-GO-2026-001-乾-甲子乙丑丙寅丁卯
 
 Expected: exit 0。命令中的四柱仅演示路径格式；执行时必须使用真实首案的实际 case ID，不得创建演示命盘计数。
 
-- [ ] **Step 2: 每 5 案运行 prospective intake dry-run**
+- [ ] **Step 2: 每案运行 single-case intake dry-run**
 
 Run:
 
@@ -348,9 +348,9 @@ python -m tools.school_capability_dataset prospective-intake --input cases/P-GO-
 
 执行者必须把每个 `实际四柱` 替换为招募日志中该真实命主的四柱；首案可先执行同参数的单输入 dry-run，之后每 5 案重跑。dry-run 输出必须显示与本次输入数相同的不同 `subject_id_hash`，且没有 forbidden marker。继续直接使用现有 [`prospective-go-b01-tasks-by-case.json`](../../META/prospective-go/prospective-go-b01-tasks-by-case.json:1) 的 `P-GO-2026-NNN` 十槽位冻结表：CLI 会在本次 `--input` 集合中唯一解析已到达槽位至完整 case ID；同批、严格格式、从 `001` 连续预注册且任务合法的未来槽位允许尚未到达，无需生成按真实四柱改写的任务文件。完整 case 键零匹配、短槽位格式错误、跨批、编号缺口、全部未命中、多匹配或短/完整键重复解析至同案都会拒绝。真实路径由招募日志唯一决定，禁止创建示例案例计数。
 
-- [ ] **Step 3: 批次满 10 案后正式写 intake**
+- [ ] **Step 3: 每案当天正式写 single-case intake**
 
-确认 dry-run 后，使用与 Step 2 相同参数去掉 `--dry-run`。每批独立写 `prospective-go-bNN-intake.json`，不追加或覆盖旧 intake。真实新案不足时本任务保持 HOLD，不执行正式写入，也不创建空 intake 或其他空制品占位。
+确认单案 dry-run 后，使用真实 `single-case-intake` 参数去掉 `--dry-run`，当天创建该案全新的 intake 与 future-question registration；不得等待 cohort 满 10 案。目标已存在时拒绝覆盖，真实新案未到时保持 HOLD 且不创建空制品。
 
 - [ ] **Step 4: 运行数据隔离回归**
 
@@ -374,9 +374,9 @@ git commit -m "data: register prospective go intake batch"
 
 ---
 
-## Task 4: 每批准备盲包并在结果揭示前冻结（第 2—12 周滚动）
+## Task 4: 每案准备盲包并在结果揭示前冻结与验证（第 2—12 周滚动）
 
-**目标：** 每 10 案形成一个不可变白名单盲包，运行六来源 staged Claim 并由外部 witness 证明冻结早于 outcome 揭示。
+**目标：** 每案独立 bundle / freeze / witness / verification；每案运行六来源 staged Claim，由独立人类见证人证明冻结早于 outcome 揭示，并以 verification=VERIFIED 作为反馈释放前的人工硬停点。10 案只用于父引用聚合。
 
 **Files:**
 - Create per batch: `META/prospective-go/prospective-go-bNN-blind-bundle/`
@@ -445,13 +445,13 @@ git commit -m "eval: freeze prospective go blind batch"
 - **HOLD：** 真实数据尚未到达、timing 正确 abstain 但 Claim 仍为 0，或 witness 尚未完成。HOLD 时不创建空盲包、空 frozen run 或空 witness registry。
 - **STOP：** runner 在冻结前读到结果；bundle 含白名单外文件；hash 不一致；冻结后改写历史输出。
 
-**依赖：** Task 3 每批达到 10 个真实输入。
+**依赖：** Task 3 当前单案正式 intake；不依赖满 10 案。
 
 ---
 
-## Task 5: 观察 outcome、维护负例并摄入正式 case 反馈（第 4—12 周滚动）
+## Task 5: verification 后即时回顾与独立未来观察（第 1—12 周滚动）
 
-**目标：** 在预先定义的观察窗结束后形成真实正负 outcome；评估标签与生产反馈分别走各自入口，避免把评分标签直接回灌生产规则。
+**目标：** 每案 freeze 前预注册恰好 1 个三个月内 binary future question；verification=VERIFIED 后才释放 freeze 前事实进入 `prediction_first_immediate_retrospective`，窗口成熟后另以 `future_observation` 形成真实正负 outcome。两类 evidence class、label identity 与完成数完全分账；评估标签不直接回灌生产规则。
 
 **Files:**
 - Create per completed case: `META/prospective-go/observations/<case_id>.json`
@@ -577,9 +577,9 @@ Expected: 三项高风险任务均有 A 级记录；duplicate reviewer=0；unres
 
 # 阶段二：校准验证期
 
-## Task 7: 构建 prospective reviewed manifest 并运行完整数据门禁（第 13 周）
+## Task 7: 构建十案父引用 cohort 并运行分账数据门禁（第 13 周）
 
-**目标：** 将三批真实新案合并为唯一 prospective 评估集，证明 ≥30 完成案、冻结/揭示/witness 时间线完整。
+**目标：** 每 10 个即时回顾完成案仅聚合不可变父引用；分别为 `prediction_capability_candidate_gate_v1` 消费 `prediction_first_immediate_retrospective`，为 `future_empirical_gate_v1` 消费 `future_observation`，不得输出混合完成数。
 
 **Files:**
 - Create: [`prospective-go-reviewed-manifest.json`](../../META/prospective-go/prospective-go-reviewed-manifest.json)
@@ -633,9 +633,9 @@ Expected: PASS。
 
 ---
 
-## Task 8: 评分、校准诊断与一次性冻结修正（第 13—14 周）
+## Task 8: 分账评分、校准诊断与一次性冻结修正（第 13—14 周）
 
-**目标：** 使 `career.role_change` 或 `marriage.divorce_or_remarriage` 达到 ≥20 binary 样本且 `calibration_error < 0.2`，同时保持高风险假阳性不退化。
+**目标：** `prediction_capability_candidate_gate_v1` 仅消费 `prediction_first_immediate_retrospective`，要求至少 20 个独立完成命主、至少一个任务 15 条有效正反例且 `calibration_error < 0.2`；`future_empirical_gate_v1` 仅消费 `future_observation`，要求至少 10 个到期完成命主、至少一个同类 future task 8 条有效正反例且误差严格小于 0.2。其余竞争、高风险、selection change、utility 与审计门槛保持严格。
 
 **Files:**
 - Create: [`prospective-go-scores-v1.json`](../../META/prospective-go/prospective-go-scores-v1.json)
@@ -705,9 +705,9 @@ git commit -m "eval: score prospective calibration gate"
 
 ---
 
-## Task 9: 构造真实多派竞争与差异化路由证据（第 14—15 周）
+## Task 9: 为两个新门禁构造分账竞争与差异化路由证据（第 14—15 周）
 
-**目标：** 不通过手改 route 结果，利用真实六维后验让至少一个竞争任务的 learned 选择与 static 不同，并证明留出效用不退化。
+**目标：** 不通过手改 route 结果，分别为 `prediction_capability_candidate_gate_v1` 的 `prediction_first_immediate_retrospective` 与 `future_empirical_gate_v1` 的 `future_observation` 提供真实竞争证据；未来账不得复用即时回顾审查或标签，learned 选择变化至少 1 且效用不低于 static。
 
 **Files:**
 - Create: [`prospective_routing_adapter.py`](../../engine/decision/prospective_routing_adapter.py)
@@ -775,9 +775,9 @@ Expected: PASS。
 
 # 阶段三：路由 GO 准备期
 
-## Task 10: 重跑 L1 learned/static 严格留出门禁（第 16 周）
+## Task 10: 分别重跑两个离线 learned/static 严格留出门禁（第 16 周）
 
-**目标：** 在 subject-level 无泄漏切分上证明 learned 至少改变一次选择、效用不低于 static、校准不恶化、高风险假阳性不增加。
+**目标：** 对 `prediction_capability_candidate_gate_v1` / `prediction_first_immediate_retrospective` 与 `future_empirical_gate_v1` / `future_observation` 分别证明 selection change、utility、校准和高风险审查条件；两个离线 GO 均不代表平台 GO 或生产 GO，`production_switch=false`。
 
 **Files:**
 - Create: [`l1-routing-prospective-holdout-v1.json`](../../META/prospective-go/l1-routing-prospective-holdout-v1.json)
@@ -838,9 +838,9 @@ git commit -m "eval: rerun prospective learned routing holdout"
 
 ---
 
-## Task 11: 重跑八项平台总门禁并形成切换提案（第 17 周）
+## Task 11: 只读保留 historical baseline 并形成独立升级提案（第 17 周）
 
-**目标：** 复核原 Task 14 的八项证据，只有全部满足时记录 GO；GO 仍不直接修改生产入口。
+**目标：** 分别读取两个新离线门禁结果，并保持 `historical_platform_baseline_2026_07_15` 只读独立 HOLD；禁止用 `20 immediate + 10 future` 冲抵原 30 案 baseline。两个离线 GO 都不是平台 GO 或生产 GO，`production_switch=false`，任何 GO 仍只形成独立升级提案而不修改生产入口。
 
 **Files:**
 - Create: `META/post-gate-platform-gate-2026-10-29.md`

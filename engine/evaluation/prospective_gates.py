@@ -13,6 +13,7 @@ from typing import Any
 
 from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
+from engine.evaluation.prospective_evidence import _validate_future_completion_chain
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
     canonical_artifact_sha256,
@@ -414,6 +415,8 @@ def _label_rows_from_manifests(
         for member in manifest["members"]:
             case_id = str(member["case_id"])
             subject = str(member["subject_id_hash"])
+            if not member.get("evidence_availability", {}).get("immediate_retrospective"):
+                continue
             if case_id in cases or subject in subjects:
                 raise ValueError("duplicate case_id or subject_id_hash across verified cohorts")
             cases.add(case_id)
@@ -489,6 +492,8 @@ def _future_label_rows_from_manifests(
         for member in manifest["members"]:
             case_id = str(member["case_id"])
             subject = str(member["subject_id_hash"])
+            if member.get("parents", {}).get("future") is None:
+                continue
             if case_id in all_cases or subject in all_subjects:
                 raise ValueError("duplicate case_id or subject_id_hash across verified cohorts")
             all_cases.add(case_id)
@@ -509,6 +514,7 @@ def _future_label_rows_from_manifests(
                 raise ValueError("future completion parent lineage identity mismatch")
             if future.get("evidence_class") != _FUTURE_EVIDENCE_CLASS:
                 raise ValueError("future parent evidence_class is invalid")
+            _validate_future_completion_chain(future)
             observation = future.get("observation")
             if not isinstance(observation, Mapping):
                 raise ValueError("future observation is missing")

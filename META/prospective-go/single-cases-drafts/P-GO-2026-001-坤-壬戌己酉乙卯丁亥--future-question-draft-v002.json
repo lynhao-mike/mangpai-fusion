@@ -1,0 +1,15 @@
+{
+  "future_task_id": "career.role_change",
+  "question_text_redacted": "在观察窗口内，是否发生可由指定非敏感来源核验的显著岗位或职业角色变化？",
+  "outcome_type": "binary",
+  "positive_definition": "发生以下至少一项且已实际实施：主要任职开始或结束、主要雇主变化、正式晋升或降职、正式级别调整、主要职责或职业角色发生实质变化。仅有意向、讨论、申请、短期代班或尚未实施的安排不计为 positive。",
+  "negative_definition": "仅当完整观察窗口结束，并经指定来源核验后确认没有符合 positive 定义的事件时，才记为 negative。观察窗口未结束、缺少来源或无法核验均不计为 negative。",
+  "verification_source_requirements": [
+    "custody://prospective-go/P-GO-2026-001/career-role-change/employment-record",
+    "custody://prospective-go/P-GO-2026-001/career-role-change/independent-verification"
+  ],
+  "observation_window": {
+    "start_at": "2026-07-17T07:00:00Z",
+    "end_at": "2026-10-17T07:00:00Z"
+  }
+}

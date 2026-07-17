@@ -1009,6 +1009,7 @@ def _single_case_intake_command(args: argparse.Namespace) -> None:
     assignments = _read_json(Path(args.tasks_by_case))
     case_root = Path(args.case_root)
     existing_subject_hashes: set[str] = set()
+    input_case_id = Path(args.input).parent.name
     if case_root.exists():
         _reject_symlink(case_root, "single-case root")
         for candidate in case_root.glob("*/*--intake--v*.json"):
@@ -1019,7 +1020,23 @@ def _single_case_intake_command(args: argparse.Namespace) -> None:
             subject_hash = document.get("subject_id_hash")
             if not _is_sha256(subject_hash):
                 raise ValueError(f"existing single-case intake has invalid subject_id_hash: {candidate}")
-            existing_subject_hashes.add(subject_hash)
+            if args.version == 1 or document.get("case_id") != input_case_id:
+                existing_subject_hashes.add(subject_hash)
+    question_revision = None
+    intake_revision = None
+    if args.version > 1:
+        question_revision = {
+            "supersedes": args.question_supersedes,
+            "supersedes_sha256": args.question_supersedes_sha256,
+            "reason": args.reason,
+            "approved_by": args.approved_by,
+        }
+        intake_revision = {
+            "supersedes": args.intake_supersedes,
+            "supersedes_sha256": args.intake_supersedes_sha256,
+            "reason": args.reason,
+            "approved_by": args.approved_by,
+        }
     intake, question = build_single_case_intake(
         Path(args.input),
         _read_json(Path(args.tasks)),
@@ -1030,6 +1047,9 @@ def _single_case_intake_command(args: argparse.Namespace) -> None:
         created_at=args.created_at,
         case_root=case_root,
         existing_subject_hashes=existing_subject_hashes,
+        version=args.version,
+        question_revision=question_revision,
+        intake_revision=intake_revision,
     )
     question_path = Path(question["artifact_path"])
     intake_path = Path(intake["artifact_path"])
@@ -1080,6 +1100,14 @@ def _prepare_blind_command(args: argparse.Namespace) -> None:
 
 
 def _prepare_single_case_blind_command(args: argparse.Namespace) -> None:
+    revision = None
+    if any((args.supersedes, args.supersedes_sha256, args.reason, args.approved_by)):
+        revision = {
+            "supersedes": args.supersedes,
+            "supersedes_sha256": args.supersedes_sha256,
+            "reason": args.reason,
+            "approved_by": args.approved_by,
+        }
     payload = prepare_single_case_blind_bundle(
         _read_json(Path(args.intake)),
         _read_json(Path(args.future_question)),
@@ -1087,6 +1115,7 @@ def _prepare_single_case_blind_command(args: argparse.Namespace) -> None:
         Path(args.rule_snapshot),
         Path(args.target_dir),
         dry_run=args.dry_run,
+        revision=revision,
     )
     if args.dry_run:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1312,6 +1341,13 @@ def _parser() -> argparse.ArgumentParser:
     single_case.add_argument("--future-question", required=True)
     single_case.add_argument("--case-root", required=True)
     single_case.add_argument("--created-at", required=True)
+    single_case.add_argument("--version", type=int, default=1)
+    single_case.add_argument("--question-supersedes")
+    single_case.add_argument("--question-supersedes-sha256")
+    single_case.add_argument("--intake-supersedes")
+    single_case.add_argument("--intake-supersedes-sha256")
+    single_case.add_argument("--reason")
+    single_case.add_argument("--approved-by")
     single_case.add_argument("--dry-run", action="store_true")
     single_case.set_defaults(handler=_single_case_intake_command)
     blind = commands.add_parser("prepare-blind")
@@ -1327,6 +1363,10 @@ def _parser() -> argparse.ArgumentParser:
     single_blind.add_argument("--tasks", required=True)
     single_blind.add_argument("--rule-snapshot", required=True)
     single_blind.add_argument("--target-dir", required=True)
+    single_blind.add_argument("--supersedes")
+    single_blind.add_argument("--supersedes-sha256")
+    single_blind.add_argument("--reason")
+    single_blind.add_argument("--approved-by")
     single_blind.add_argument("--dry-run", action="store_true")
     single_blind.set_defaults(handler=_prepare_single_case_blind_command)
     inventory = commands.add_parser("inventory")

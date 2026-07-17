@@ -17,6 +17,7 @@ from engine.evaluation.prospective_artifacts import (
     canonical_artifact_sha256,
     single_case_artifact_path,
     validate_parent_ref,
+    validate_revision_metadata,
 )
 from engine.evaluation.freeze import canonical_json, freeze_outputs, verify_frozen_run
 from engine.evaluation.models import BlindSchoolOutput, FrozenBlindRun
@@ -40,6 +41,7 @@ _FORBIDDEN_MARKERS = (
     re.compile(r"(?<![a-z0-9])known[ _-]+facts?(?![a-z0-9])"),
 )
 _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
+_REVISION_FIELDS = {"supersedes", "supersedes_sha256", "reason", "approved_by"}
 _FUTURE_REQUIRED_FIELDS = {
     "schema_version",
     "case_id",
@@ -172,6 +174,21 @@ def _non_empty_string(value: object, field: str) -> str:
     return value
 
 
+def _artifact_version(path: object, kind: str) -> int:
+    if not isinstance(path, str):
+        raise ValueError("artifact_path must be a non-empty string")
+    match = re.search(rf"--{re.escape(kind)}--v(\d{{3}})\.json$", path)
+    if match is None:
+        raise ValueError(f"artifact_path is not canonical for {kind}")
+    return int(match.group(1))
+
+
+def _revision_payload(value: Mapping[str, Any] | None, version: int) -> dict[str, Any]:
+    revision = dict(value or {})
+    validate_revision_metadata(revision, version)
+    return revision
+
+
 def _one_question(value: object) -> Mapping[str, Any]:
     if isinstance(value, Mapping):
         return value
@@ -188,9 +205,14 @@ def validate_future_question_registration(
     freeze_at: str | None = None,
 ) -> dict[str, Any]:
     """Validate one sealed binary future question without deriving it from chart data."""
-    if not isinstance(document, Mapping) or set(document) != _FUTURE_REQUIRED_FIELDS:
+    if not isinstance(document, Mapping):
         raise ValueError("future question registration schema is invalid")
     result = dict(document)
+    version = _artifact_version(result.get("artifact_path"), "future-question-registration")
+    expected_fields = _FUTURE_REQUIRED_FIELDS | (_REVISION_FIELDS if version > 1 else set())
+    if set(result) != expected_fields:
+        raise ValueError("future question registration schema is invalid")
+    validate_revision_metadata(result, version)
     if result.get("schema_version") != _FUTURE_SCHEMA:
         raise ValueError(f"future question must use {_FUTURE_SCHEMA}")
     if _contains_forbidden_marker(result):
@@ -245,6 +267,8 @@ def _build_future_question_registration(
     *,
     created_at: str,
     artifact_path: Path,
+    version: int,
+    revision: Mapping[str, Any] | None,
 ) -> dict[str, Any]:
     allowed = {
         "future_task_id",
@@ -269,6 +293,7 @@ def _build_future_question_registration(
         "artifact_path": artifact_path.as_posix(),
         **dict(draft),
         "parents": [],
+        **_revision_payload(revision, version),
     }
     document = {**payload, "artifact_sha256": canonical_artifact_sha256(payload)}
     return validate_future_question_registration(document)
@@ -286,6 +311,8 @@ def build_single_case_intake(
     existing_subject_hashes: Set[str] = frozenset(),
     case_root: Path,
     version: int = 1,
+    question_revision: Mapping[str, Any] | None = None,
+    intake_revision: Mapping[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Build one intake and one externally supplied question for immutable publication."""
     _parse_utc(created_at, "created_at")
@@ -320,6 +347,8 @@ def build_single_case_intake(
         draft,
         created_at=created_at,
         artifact_path=question_path,
+        version=version,
+        revision=question_revision,
     )
     question_ref = {
         "artifact_path": question_path.as_posix(),
@@ -337,6 +366,7 @@ def build_single_case_intake(
         "records": [row],
         "future_question": question_ref,
         "parents": [question_ref],
+        **_revision_payload(intake_revision, version),
     }
     intake = {
         **intake_payload,
@@ -347,7 +377,15 @@ def build_single_case_intake(
 
 def validate_single_case_intake(intake: Mapping[str, Any]) -> dict[str, Any]:
     """Validate and return the only immutable intake record."""
-    if not isinstance(intake, Mapping) or set(intake) != _SINGLE_INTAKE_REQUIRED_FIELDS:
+    if not isinstance(intake, Mapping):
+        raise _stop("single-case intake schema is invalid")
+    try:
+        version = _artifact_version(intake.get("artifact_path"), "intake")
+        validate_revision_metadata(intake, version)
+    except ValueError as error:
+        raise _stop(f"single-case intake revision is invalid: {error}") from error
+    expected_fields = _SINGLE_INTAKE_REQUIRED_FIELDS | (_REVISION_FIELDS if version > 1 else set())
+    if set(intake) != expected_fields:
         raise _stop("single-case intake schema is invalid")
     if intake.get("schema_version") != _INTAKE_SCHEMA:
         raise _stop(f"single-case intake must use {_INTAKE_SCHEMA}")
@@ -546,6 +584,7 @@ def prepare_single_case_blind_bundle(
     target_dir: Path,
     *,
     dry_run: bool,
+    revision: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build and create-only publish one whitelist-only blind bundle."""
     target = Path(target_dir)
@@ -555,6 +594,14 @@ def prepare_single_case_blind_bundle(
     files, row, question = _single_bundle_files(
         intake, future_question, Path(tasks_path), Path(rule_snapshot_path),
     )
+    version_match = re.search(r"--blind-bundle--v(\d{3})$", target.as_posix())
+    if version_match is None:
+        if revision:
+            raise ValueError("revision metadata requires a versioned blind-bundle target")
+        version = 1
+    else:
+        version = int(version_match.group(1))
+    revision_fields = _revision_payload(revision, version)
     hashes = {name: _sha256(content) for name, content in sorted(files.items())}
     parents = [
         {
@@ -587,6 +634,7 @@ def prepare_single_case_blind_bundle(
         "parents": parents,
         "files": hashes,
         "bundle_sha256": _sha256(_canonical_json_bytes(hashes)),
+        **revision_fields,
     }
     manifest["artifact_sha256"] = canonical_artifact_sha256(manifest)
     if dry_run:
@@ -631,13 +679,21 @@ def verify_single_case_bundle(bundle_root: Path) -> dict[str, Any]:
     expected_manifest_bytes = (
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
     ).encode("utf-8")
+    if not isinstance(manifest, dict):
+        raise _stop("single-case bundle manifest contract mismatch")
+    version_match = re.search(r"--blind-bundle--v(\d{3})/bundle-manifest\.json$", str(manifest.get("artifact_path", "")))
+    version = int(version_match.group(1)) if version_match is not None else 1
+    try:
+        validate_revision_metadata(manifest, version)
+    except ValueError as error:
+        raise _stop(f"single-case bundle revision is invalid: {error}") from error
+    expected_manifest_fields = {
+        "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
+        "case_count", "future_question_count", "schools", "parents", "files",
+        "bundle_sha256", "artifact_sha256",
+    } | (_REVISION_FIELDS if version > 1 else set())
     if (
-        not isinstance(manifest, dict)
-        or set(manifest) != {
-            "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
-            "case_count", "future_question_count", "schools", "parents", "files",
-            "bundle_sha256", "artifact_sha256",
-        }
+        set(manifest) != expected_manifest_fields
         or manifest.get("schema_version") != _SINGLE_BUNDLE_SCHEMA
         or manifest.get("case_count") != 1
         or manifest.get("future_question_count") != 1
@@ -810,7 +866,12 @@ def _assert_complete_single_case_grid(
         raise _stop("single-case frozen run contains invalid output state")
 
 
-def build_single_case_staged_frozen_run(bundle_root: Path) -> dict[str, Any]:
+def build_single_case_staged_frozen_run(
+    bundle_root: Path,
+    *,
+    now_utc: str | None = None,
+    revision: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     """Re-verify and freeze exactly one complete six-school prospective case."""
     root = Path(bundle_root)
     verified = verify_single_case_bundle(root)
@@ -848,23 +909,54 @@ def build_single_case_staged_frozen_run(bundle_root: Path) -> dict[str, Any]:
     _assert_complete_single_case_grid(
         safe_outputs, case_id=row["case_id"], task_ids=sorted(row["task_ids"]),
     )
-    frozen_at = question["observation_window"]["start_at"]
+    planned_start = question["observation_window"]["start_at"]
+    executed_at = now_utc or planned_start
     try:
-        freeze_time = _parse_utc(frozen_at, "freeze_at")
+        freeze_time = _parse_utc(executed_at, "executed_at")
+        planned_time = _parse_utc(planned_start, "observation_window.start_at")
         intake_time = _parse_utc(intake_parent["created_at"], "intake created_at")
         bundle_time = _parse_utc(manifest["created_at"], "bundle created_at")
     except (KeyError, ValueError) as error:
         raise _stop(f"single-case freeze time contract mismatch: {error}") from error
+    if freeze_time != planned_time:
+        raise _stop("actual execution must equal observation_window.start_at")
     if not intake_time <= bundle_time <= freeze_time:
         raise _stop("single-case time order must satisfy intake <= bundle <= freeze")
-    validate_future_question_registration(question, freeze_at=frozen_at)
+    validate_future_question_registration(question, freeze_at=executed_at)
     safe_run = freeze_outputs(
         safe_outputs,
         generated_run.task_catalog_version,
         generated_run.rule_snapshot_id,
-        frozen_at=frozen_at,
+        frozen_at=executed_at,
     )
     verify_frozen_run(safe_run)
+
+    version_match = re.search(
+        r"--blind-bundle--v(\d{3})/bundle-manifest\.json$",
+        str(manifest["artifact_path"]),
+    )
+    version = int(version_match.group(1)) if version_match is not None else 1
+    revision_fields = _revision_payload(revision, version)
+    if version > 1:
+        try:
+            predecessor = validate_parent_ref(ArtifactRef(
+                revision_fields["supersedes"],
+                revision_fields["supersedes_sha256"],
+            ))
+            predecessor_version = _artifact_version(
+                predecessor.get("artifact_path"), "frozen-run",
+            )
+            predecessor_run = FrozenBlindRun.from_dict(predecessor["frozen_run"])
+            verify_frozen_run(predecessor_run)
+        except (KeyError, TypeError, ValueError) as error:
+            raise _stop(f"frozen run supersedes parent is invalid: {error}") from error
+        if (
+            predecessor_version != version - 1
+            or predecessor.get("schema_version") != "school-capability-single-case-staged-run/v1"
+            or predecessor.get("case_id") != row["case_id"]
+            or predecessor.get("subject_id_hash") != intake_parent["subject_id_hash"]
+        ):
+            raise _stop("frozen run supersedes parent must be the formal previous version")
 
     task_hash = manifest["files"]["tasks.json"]
     rule_hash = manifest["files"]["rule-snapshot.json"]
@@ -876,14 +968,18 @@ def build_single_case_staged_frozen_run(bundle_root: Path) -> dict[str, Any]:
         {"artifact_path": (root / "rule-snapshot.json").as_posix(), "artifact_sha256": rule_hash},
         {"artifact_path": (root / "bundle-manifest.json").as_posix(), "artifact_sha256": manifest_hash},
     ]
-    artifact_path = Path(intake_parent["artifact_path"]).with_name(
-        f"{row['case_id']}--frozen-run--v001.json"
+    artifact_path = single_case_artifact_path(
+        Path(intake_parent["artifact_path"]).parent.parent,
+        row["case_id"],
+        "frozen-run",
+        version,
     )
     payload: dict[str, Any] = {
         "schema_version": "school-capability-single-case-staged-run/v1",
         "case_id": row["case_id"],
         "subject_id_hash": intake_parent["subject_id_hash"],
-        "created_at": frozen_at,
+        "created_at": executed_at,
+        "executed_at": executed_at,
         "artifact_path": artifact_path.as_posix(),
         "intake_sha256": intake_parent["artifact_sha256"],
         "future_question_registration_sha256": question["artifact_sha256"],
@@ -894,6 +990,7 @@ def build_single_case_staged_frozen_run(bundle_root: Path) -> dict[str, Any]:
         "parents": parents,
         "case_task_assignments": expected_assignment,
         "frozen_run": safe_run.to_dict(),
+        **revision_fields,
     }
     return {
         **payload,

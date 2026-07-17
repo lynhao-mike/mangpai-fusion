@@ -1045,6 +1045,73 @@ def apply_high_risk_final_label(
     return result
 
 
+def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
+    """Require bound/reviewed future evidence to descend from one real registration and freeze."""
+    source = dict(document)
+    if source.get("schema_version") == "prospective-future-observation-reviewed/v1":
+        parents = source.get("parents")
+        if not isinstance(parents, list):
+            raise _stop("future reviewed parent lineage is invalid")
+        bound_matches = []
+        for reference in parents:
+            if not isinstance(reference, Mapping):
+                raise _stop("future reviewed parent lineage is invalid")
+            try:
+                parent = validate_parent_ref(ArtifactRef(**_artifact_ref(reference)))
+            except (OSError, TypeError, ValueError) as error:
+                raise _stop(f"future reviewed parent drift or hash mismatch: {error}") from error
+            if parent.get("schema_version") == "prospective-future-observation-bound/v1":
+                bound_matches.append(parent)
+        if len(bound_matches) != 1:
+            raise _stop("future reviewed evidence must bind exactly one future bound parent")
+        source = bound_matches[0]
+
+    parents = source.get("parents")
+    if not isinstance(parents, list) or len(parents) != 1 or not isinstance(parents[0], Mapping):
+        raise _stop("future bound evidence must bind exactly one unbound parent")
+    try:
+        unbound = validate_parent_ref(ArtifactRef(**_artifact_ref(parents[0])))
+    except (OSError, TypeError, ValueError) as error:
+        raise _stop(f"future unbound parent drift or hash mismatch: {error}") from error
+    if (
+        unbound.get("schema_version") != "prospective-future-observation-unbound/v1"
+        or unbound.get("evidence_class") != _FUTURE_EVIDENCE_CLASS
+        or unbound.get("case_id") != source.get("case_id")
+        or unbound.get("subject_id_hash") != source.get("subject_id_hash")
+        or unbound.get("label_identity") != source.get("label_identity")
+        or unbound.get("observation") != source.get("observation")
+    ):
+        raise _stop("future bound/unbound lineage mismatch")
+    unbound_parents = unbound.get("parents")
+    if not isinstance(unbound_parents, list) or len(unbound_parents) != 2:
+        raise _stop("future unbound evidence requires one registration and one frozen parent")
+    try:
+        actual = [
+            validate_parent_ref(ArtifactRef(**_artifact_ref(reference)))
+            for reference in unbound_parents if isinstance(reference, Mapping)
+        ]
+    except (OSError, TypeError, ValueError) as error:
+        raise _stop(f"future unbound lineage parent drift or hash mismatch: {error}") from error
+    questions = [item for item in actual if item.get("schema_version") == "prospective-future-question/v1"]
+    frozen_runs = [item for item in actual if item.get("schema_version") == "school-capability-single-case-staged-run/v1"]
+    if len(questions) != 1 or len(frozen_runs) != 1:
+        raise _stop("future unbound evidence requires exactly one registration and frozen parent")
+    question, frozen = _validated_future_parents(questions[0], frozen_runs[0])
+    observation = unbound.get("observation")
+    if (
+        not isinstance(observation, Mapping)
+        or observation.get("future_task_id") != question.get("future_task_id")
+        or observation.get("observation_window") != question.get("observation_window")
+        or unbound.get("label_identity") != canonical_artifact_sha256({
+            "case_id": question["case_id"],
+            "evidence_class": _FUTURE_EVIDENCE_CLASS,
+            "future_task_id": question["future_task_id"],
+            "observed_at": observation.get("observed_at"),
+        })
+    ):
+        raise _stop("future observation does not match its registered question lineage")
+
+
 def _validated_optional_completion_parent(
     document: Mapping[str, Any] | None,
     *,
@@ -1073,6 +1140,8 @@ def _validated_optional_completion_parent(
     ):
         raise _stop(f"{evidence_class} completion parent binding or bound schema mismatch")
     _validate_parent_tree(actual)
+    if evidence_class == _FUTURE_EVIDENCE_CLASS:
+        _validate_future_completion_chain(actual)
     return actual
 
 

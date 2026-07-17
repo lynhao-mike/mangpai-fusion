@@ -12,9 +12,15 @@ import pytest
 
 from engine.evaluation.freeze import freeze_outputs
 from engine.evaluation.models import BlindPrediction, BlindSchoolOutput
-from engine.evaluation.prospective_artifacts import ArtifactRef, publish_new_json
+from engine.evaluation.prospective_artifacts import (
+    ArtifactRef,
+    canonical_artifact_sha256,
+    publish_new_json,
+)
 from engine.evaluation.prospective_gates import (
     GateEvidence,
+    _future_label_rows_from_manifests,
+    _label_rows_from_manifests,
     build_cohort_manifest,
     build_future_gate_evidence_from_cohorts,
     build_gate_evidence_from_cohorts,
@@ -398,6 +404,39 @@ def _future_case(
         root, index, mutation="calibration_equal_0_2" if mutation == "calibration_equal_0_2" else None,
     )
     completion_document = json.loads(completion.read_text(encoding="utf-8"))
+    frozen_ref = next(parent for parent in completion_document["parents"] if "frozen-run" in parent["artifact_path"])
+    frozen_path = Path(frozen_ref["artifact_path"])
+    frozen_document = json.loads(frozen_path.read_text(encoding="utf-8"))
+    question_path = completion.with_name(
+        f"{identity['case_id']}--future-question-registration--v001.json"
+    )
+    question_ref = publish_new_json(question_path, {
+        "schema_version": "prospective-future-question/v1",
+        "case_id": identity["case_id"],
+        "subject_id_hash": identity["subject_id_hash"],
+        "created_at": "2026-11-27T00:00:00Z",
+        "artifact_path": question_path.as_posix(),
+        "future_task_id": identity["task_id"],
+        "question_text_redacted": "未来窗口内是否发生显著岗位角色变化？",
+        "outcome_type": "binary",
+        "positive_definition": "发生并由登记来源确认",
+        "negative_definition": "完整窗口结束且登记来源确认未发生",
+        "verification_source_requirements": ["custody://structured-interview"],
+        "observation_window": {
+            "start_at": "2026-11-27T00:00:00Z",
+            "end_at": "2027-01-15T00:00:00Z",
+        },
+        "parents": [],
+    }, dry_run=False)
+    frozen_document["parents"] = [question_ref.__dict__]
+    frozen_document["future_question_registration_sha256"] = question_ref.artifact_sha256
+    frozen_document.pop("artifact_sha256")
+    frozen_path.unlink()
+    publish_new_json(frozen_path, frozen_document, dry_run=False)
+    completion_document["parents"] = [
+        _ref(frozen_path) if parent["artifact_path"] == frozen_path.as_posix() else parent
+        for parent in completion_document["parents"]
+    ]
     future_path = completion.with_name(
         f"{identity['case_id']}--future-observation-bound--v001.json"
     )
@@ -426,20 +465,39 @@ def _future_case(
         "observed_at": "2027-01-14T00:00:00Z" if mutation == "premature_not_observed" and index == 1 else "2027-01-15T00:00:00Z",
         "collected_at": "2027-01-14T00:00:00Z" if mutation == "premature_not_observed" and index == 1 else "2027-01-15T00:00:00Z",
         "observation_window": {
-            "start_at": "2026-10-15T00:00:00Z",
+            "start_at": "2026-11-27T00:00:00Z",
             "end_at": "2027-01-15T00:00:00Z",
         },
         **({"no_data_reason": no_data_reason} if no_data_reason else {}),
         **({"review_status": "pending_independent_dual_review"} if high_risk else {}),
     }
+    label_identity = canonical_artifact_sha256({
+        "case_id": identity["case_id"],
+        "evidence_class": FUTURE_EVIDENCE_CLASS,
+        "future_task_id": identity["task_id"],
+        "observed_at": observation["observed_at"],
+    })
+    unbound_path = completion.with_name(
+        f"{identity['case_id']}--future-observation-unbound--v001.json"
+    )
+    _publish(unbound_path, {
+        "schema_version": "prospective-future-observation-unbound/v1",
+        "case_id": identity["case_id"],
+        "subject_id_hash": identity["subject_id_hash"],
+        "created_at": "2027-01-15T00:00:00Z",
+        "evidence_class": FUTURE_EVIDENCE_CLASS,
+        "label_identity": label_identity,
+        "parents": [question_ref.__dict__, _ref(frozen_path)],
+        "observation": observation,
+    })
     _publish(future_path, {
         "schema_version": "prospective-future-observation-bound/v1",
         "case_id": identity["case_id"],
         "subject_id_hash": identity["subject_id_hash"],
         "created_at": "2027-01-15T00:00:00Z",
         "evidence_class": FUTURE_EVIDENCE_CLASS,
-        "label_identity": hashlib.sha256(f"future-{index}".encode()).hexdigest(),
-        "parents": [],
+        "label_identity": label_identity,
+        "parents": [_ref(unbound_path)],
         "observation": observation,
     })
     completion_document["parents"].append(_ref(future_path))
@@ -663,3 +721,75 @@ def test_three_gate_report_binds_canonical_historical_md_hash_and_scopes_go_offl
     assert hashlib.sha256(md_path.read_bytes()).hexdigest() in report
     assert "离线候选门禁结果：GO（不代表平台 GO 或生产 GO）" in report
     assert "production_switch: false" in report
+
+
+def test_immediate_aggregation_skips_future_only_member_in_mixed_manifest(tmp_path: Path) -> None:
+    cases = [_future_case(tmp_path / "mixed-immediate", index) for index in range(1, 11)]
+    future_only = cases[-1][0]
+    completion = json.loads(future_only.read_text(encoding="utf-8"))
+    completion["retrospective_completion_status"] = "PENDING"
+    completion["parents"] = [
+        parent for parent in completion["parents"]
+        if "immediate-retrospective" not in parent["artifact_path"]
+    ]
+    completion.pop("artifact_sha256")
+    future_only.unlink()
+    publish_new_json(future_only, completion, dry_run=False)
+    manifest = build_cohort_manifest(
+        [item[0] for item in cases], _historical_refs(tmp_path),
+        created_at="2027-01-15T02:00:00Z",
+    )
+
+    labels, cases_seen, subjects_seen, frozen = _label_rows_from_manifests([manifest])
+
+    assert len(labels) == 9
+    assert len(cases_seen) == 9
+    assert len(subjects_seen) == 9
+    assert set(frozen) == cases_seen
+    assert completion["case_id"] not in cases_seen
+
+
+def test_future_aggregation_skips_retrospective_only_and_pending_future_members(tmp_path: Path) -> None:
+    retrospective_only = [_case(tmp_path / "mixed-future", index) for index in range(1, 11)]
+    manifest = build_cohort_manifest(
+        [item[0] for item in retrospective_only], _historical_refs(tmp_path),
+        created_at=PARENT_AT,
+    )
+
+    labels, completed_cases, completed_subjects, frozen = _future_label_rows_from_manifests([manifest])
+
+    assert labels == {}
+    assert completed_cases == set()
+    assert completed_subjects == set()
+    assert frozen == {}
+
+
+def test_future_aggregation_rejects_parentless_hand_forged_bound_artifact(tmp_path: Path) -> None:
+    cases = [_future_case(tmp_path / "forged-future", index) for index in range(1, 11)]
+    manifest = build_cohort_manifest(
+        [item[0] for item in cases], _historical_refs(tmp_path),
+        created_at="2027-01-15T02:00:00Z",
+    )
+    first = manifest["members"][0]
+    future_path = Path(first["parents"]["future"]["artifact_path"])
+    forged = json.loads(future_path.read_text(encoding="utf-8"))
+    forged["parents"] = []
+    forged.pop("artifact_sha256")
+    future_path.unlink()
+    publish_new_json(future_path, forged, dry_run=False)
+    completion_path = Path(first["parents"]["completion"]["artifact_path"])
+    completion = json.loads(completion_path.read_text(encoding="utf-8"))
+    completion["parents"] = [
+        _ref(future_path) if parent["artifact_path"] == future_path.as_posix() else parent
+        for parent in completion["parents"]
+    ]
+    completion.pop("artifact_sha256")
+    completion_path.unlink()
+    publish_new_json(completion_path, completion, dry_run=False)
+    manifest = build_cohort_manifest(
+        [member["parents"]["completion"]["artifact_path"] for member in manifest["members"]],
+        _historical_refs(tmp_path / "rebuilt"), created_at="2027-01-15T02:00:00Z",
+    )
+
+    with pytest.raises(ValueError, match="future|parent|lineage|unbound|registration|frozen"):
+        _future_label_rows_from_manifests([manifest])

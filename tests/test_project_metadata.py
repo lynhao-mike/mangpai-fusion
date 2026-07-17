@@ -144,6 +144,26 @@ def test_current_contract_entrypoints_match_implementation() -> None:
     assert project_state["active_report_entrypoints"] == ["tools/render_report.py", "tools/output_linter.py"]
 
 
+def test_task12_document_files_and_offline_cohort_tool_are_wired() -> None:
+    required_paths = (
+        "META/prospective-intake-protocol-v1.md",
+        "plans/upgrade-guides/post-gate-action-plan-2026-07-15.md",
+        "tools/school_capability_cohort.py",
+        "handoff.md",
+    )
+    for rel in required_paths:
+        assert (ROOT / rel).is_file(), rel
+
+    tools_readme = (ROOT / "tools" / "README.md").read_text(encoding="utf-8")
+    handoff = (ROOT / "handoff.md").read_text(encoding="utf-8")
+    assert "school_capability_cohort.py" in tools_readme
+    assert "仅离线评估" in tools_readme
+    assert "production_switch=false" in tools_readme
+    assert "prediction_capability_candidate_gate_v1 = HOLD" in handoff
+    assert "future_empirical_gate_v1 = HOLD" in handoff
+    assert "historical_platform_baseline_2026_07_15 = HOLD" in handoff
+
+
 def test_historical_agent_handoff_is_not_current_branch_source() -> None:
     handoff = (ROOT / "engine" / "contracts" / "08-agent-handoff.md").read_text(encoding="utf-8")
     assert "历史说明" in handoff

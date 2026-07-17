@@ -5,7 +5,18 @@
 > 适用批次：`prospective-go-b01` 及后续全新批次  
 > 目的：在不降低门槛、不伪造前瞻证据的前提下，建立 prediction-first 的真实新案证据链。
 
-## 1. 硬门槛
+## 1. 单案当天正式链与三门禁隔离
+
+- 新案执行“每案 dry-run 后当天正式 single-case intake”，不等待 10 案；之后依次完成每案独立 bundle / freeze / witness / verification。每个写操作都必须先 dry-run，经人工确认后才可正式写入全新路径。
+- 每案必须在 freeze 前预注册恰好 1 个三个月内可核验的 binary future question；问题、正反定义、核验来源和观察窗口都必须随单案父链冻结。
+- 独立人类见证人亲自在临时 `cmd.exe` 中完成签署与验证。verification 是独立人工硬停点：VERIFIED 前禁止反馈释放，也不得读取、请求或创建反馈、即时回顾、observation、report 或 label。
+- 见证密钥只允许通过环境变量名 `SCHOOL_CAPABILITY_WITNESS_KEY` 引用。agent 不得创建、读取、请求、记录或展示值；见证人结束后必须执行 `set "SCHOOL_CAPABILITY_WITNESS_KEY="`，只做 SET / NOT SET 存在性检查并关闭终端。
+- 即时回顾固定使用 `evidence_class=prediction_first_immediate_retrospective`；未来观察固定使用 `evidence_class=future_observation`。两者使用不同制品、不同 `label_identity`，完成数完全分账，同一事实不得跨账复制计数。
+- 每 10 案只聚合父引用：cohort manifest 只记录不可变单案父制品的仓库相对路径与 SHA-256，不复制、覆盖或补写父制品；10 案边界不阻塞单案 intake、freeze、verification 或反馈释放。
+- 三门禁身份彼此隔离：`prediction_capability_candidate_gate_v1` 只消费即时回顾；`future_empirical_gate_v1` 只消费未来观察；`historical_platform_baseline_2026_07_15` 保持只读独立 HOLD。不得用 immediate / future 样本冲抵 historical baseline。
+- 两个新门禁即使离线计算为 GO，也只允许生成不可变结果与升级提案；`production_switch=false`，不得自动切换生产入口，默认 static routing、生产规则和生产权重保持不变。
+
+## 2. 原 historical baseline 硬门槛（只读保留）
 
 - 完成的唯一真实 prospective 案例必须不少于 30；招募数、在途数和失访数不能代替完成数。
 - `career.role_change` 或 `marriage.divorce_or_remarriage` 至少一个目标 binary 任务必须有不少于 20 条可评分标签，并同时包含 `occurred` 与 `not_observed`。
@@ -14,7 +25,7 @@
 - `wealth.debt`、`marriage.divorce_or_remarriage`、`health.system_risk` 的可评分 A 级标签必须由两名独立人类 reviewer 形成；意见冲突时必须由第三方 adjudicator 仲裁。
 - 任一泄漏、hash 篡改、重复命主冒充新案或 freeze 前揭示 outcome，整批 STOP。
 
-## 2. Prospective 身份与唯一性
+## 3. Prospective 身份与唯一性
 
 1. 案例必须是规则和路由版本冻结后进入系统的真实新命主。
 2. 既有 `P-2026-*`、990、Top30、feedback-first 案例、同命主重复报告及复制命盘均不得计入 prospective/E3。
@@ -23,7 +34,7 @@
 5. 真实 case 目录只在取得授权的新命主到达后创建，不提前创建示例命盘或任何空 intake、空盲包、空 frozen run、空 witness registry。
 6. 正负例必须由连续真实入组和完整观察窗自然产生，不按已知结果挑选、复制、删除或改写案例。
 
-## 3. 时间顺序
+## 4. 时间顺序
 
 每案必须满足以下不可逆顺序：
 
@@ -48,7 +59,7 @@ received / enrolled
 - freeze witness 必须使用 [`school_capability_prospective.py witness-freeze-chain`](../tools/school_capability_prospective.py:346)，一次安全生成或追加每案完整 `registered → prepared → freeze` 三事件段；该步骤不得提前创建 reveal。HMAC key 仅从 `--witness-key-env` 指定的环境变量读取，不得写入仓库、参数值或制品。
 - 所有会写制品的 CLI 命令必须先执行 `--dry-run`；真实数据尚未到达时继续 HOLD，不运行正式写入命令，也不创建空制品占位。
 
-## 4. 职责分离
+## 5. 职责分离
 
 | 角色 | 允许接触 | 禁止接触或兼任 |
 |---|---|---|
@@ -60,7 +71,7 @@ received / enrolled
 | adjudicator | observation 与两份冲突意见 | 不得兼任 reviewer A/B、intake operator 或 runner operator |
 | evaluation operator | frozen run、bound labels、manifest | 不得改写任何父制品 |
 
-## 5. 输入与 timing 完整度
+## 6. 输入与 timing 完整度
 
 1. `input.md` 只能包含出生事实、性别、四柱、起运、大运和逐年流年等预测输入，不得包含 known facts、outcome、feedback、labels、report 或真实经历。
 2. timing case 必须使用可被 dataset canonical parser 解析的 `$DY_LOOP`；只列十年大运不构成逐年流年完整。
@@ -68,7 +79,7 @@ received / enrolled
 4. 分配 timing 任务但 `liunian_steps` 为空时，该案对 timing 门禁为 HOLD。不得补造逐年流年，也不得覆盖已冻结输出。
 5. 无真实岁运触发时 runner 的 `abstain` 是正确克制；不得为覆盖率强迫生成 Claim。
 
-## 6. 观察与标签语义
+## 7. 观察与标签语义
 
 - `occurred`：事件在预先定义的 observation window 内真实发生，且满足任务目录的精确定义。
 - `not_observed`：完整 observation window 已结束、来源可核验，并明确未发生；只表示该观察窗内未发生，不表示终身不会发生。
@@ -78,7 +89,7 @@ received / enrolled
 - `health.system_risk` 必须有可核验健康资料或结构化访谈，只作风险分层，不冒充医学诊断。
 - observation 不得包含 prediction probability、runner output、报告文本或 reviewer 结论。
 
-## 7. 高风险双审
+## 8. 高风险双审
 
 1. 三项高风险任务必须由两名独立人类 reviewer 阅读相同 observation hash 后分别提交意见。
 2. reviewer A 与 reviewer B 身份必须不同，且均不得是 intake operator、runner operator 或 outcome custodian。
@@ -86,7 +97,7 @@ received / enrolled
 4. 两审冲突时保持 HOLD，必须由身份独立的第三方 adjudicator 仲裁；两份原始意见永久保留。
 5. 单审、同一人使用不同名称、自动 reviewer 或删除冲突记录均不能生成 A 级标签。
 
-## 8. 首批任务配额
+## 9. 首批任务配额
 
 | 任务 | 最低完成标签 | 首批规则 |
 |---|---:|---|
@@ -101,15 +112,15 @@ received / enrolled
 
 这些是采集下限，不替代总完成案不少于 30、binary 不少于 20、竞争不少于 5、selection change 不少于 1、校准误差严格小于 0.2 或高风险 A 级双审门槛。
 
-## 9. 每批冻结与见证操作
+## 10. 每案冻结、见证与验证操作
 
-1. 用真实完整 case 路径、现有短槽位 tasks-by-case 与十任务目录执行 `prospective-intake --dry-run`；唯一解析成功且隔离检查通过后，才允许正式写全新 intake。
-2. 使用 [`prospective-go-rule-snapshot-v1.json`](prospective-go-rule-snapshot-v1.json:1) 执行 `prepare-blind --dry-run`；核对盲包只含安全白名单后，才允许正式创建全新目录。
-3. 对正式盲包执行 `stage-frozen-run --dry-run`；核对六来源三态输出、任务 hash 与规则快照 hash 后，才允许正式写全新 frozen run。
-4. 独立见证方在环境中提供 HMAC key，执行 `witness-freeze-chain --dry-run`；核对每案完整三事件段后，才允许正式写全新 registry。追加既有链时用 `--registry` 读取旧 registry，并将 `--out` 指向全新路径，禁止覆盖。
-5. 上述链只到 freeze 为止。outcome custodian 继续封存真实结果，直至观察窗结束；reveal 必须走后续冻结后流程，不能由本阶段提前生成。
+1. 用真实完整 case 路径、现有短槽位 tasks-by-case、十任务目录和人工批准的 future question 执行 `single-case-intake --dry-run`；唯一解析成功且隔离检查通过后，当天正式写全新单案 intake 与 future-question registration。
+2. 使用 [`prospective-go-rule-snapshot-v1.json`](prospective-go-rule-snapshot-v1.json:1) 执行 `prepare-single-case-blind --dry-run`；核对单案盲包只含安全白名单后，才允许正式创建全新目录。
+3. 对正式盲包执行 `stage-single-case-frozen-run --dry-run`；核对六来源三态输出、任务 hash、规则快照 hash 与 future question hash 后，才允许正式写全新 frozen run。
+4. 独立人类见证人在临时终端执行 `witness-freeze-chain --dry-run` 和正式签署，再对实际 intake、bundle、frozen run、registry 与仓库外 root 执行 `witness-verify-single-case --dry-run` 和正式验证。只有新 verification 制品为 VERIFIED 才能越过人工硬停点。
+5. verification 前 outcome custodian 继续封存反馈；VERIFIED 后即时回顾才可进入 `prediction_first_immediate_retrospective`，future question 仅在观察窗成熟后进入 `future_observation`。
 
-## 10. 反馈与停止条件
+## 11. 反馈与停止条件
 
 - 生产 case 反馈只允许通过 `tools/feedback_ingest.py`，并先执行 dry-run；评估 observation 不由该工具生成。
 - 不使用、恢复或引用 `calibrate.py` 作为新反馈入口。

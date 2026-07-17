@@ -47,12 +47,14 @@ def _verified_bundle(root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[s
         set(manifest) == {"schema_version", "bundle_sha256", "files"}
         and manifest.get("schema_version") == _BUNDLE_SCHEMA
     )
+    single_case_fields = {
+        "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
+        "case_count", "future_question_count", "schools", "parents", "files",
+        "bundle_sha256", "artifact_sha256",
+    }
+    revision_fields = {"supersedes", "supersedes_sha256", "reason", "approved_by"}
     single_case_manifest = (
-        set(manifest) == {
-            "schema_version", "case_id", "subject_id_hash", "created_at", "artifact_path",
-            "case_count", "future_question_count", "schools", "parents", "files",
-            "bundle_sha256", "artifact_sha256",
-        }
+        set(manifest) in {frozenset(single_case_fields), frozenset(single_case_fields | revision_fields)}
         and manifest.get("schema_version") == "prospective-single-case-blind-bundle/v1"
         and manifest.get("case_count") == 1
         and manifest.get("future_question_count") == 1
@@ -214,9 +216,15 @@ def _verified_staged_artifact(path: Path, manifest: dict[str, Any]) -> tuple[dic
         "rule_snapshot_sha256", "bundle_sha256", "bundle_manifest_sha256", "parents",
         "case_task_assignments", "frozen_run", "artifact_sha256",
     }
+    revision_fields = {"supersedes", "supersedes_sha256", "reason", "approved_by"}
+    allowed_single_case_fields = {
+        frozenset(single_case_required),
+        frozenset(single_case_required | {"executed_at"}),
+        frozenset(single_case_required | {"executed_at"} | revision_fields),
+    }
     is_legacy = set(artifact) == legacy_required and artifact.get("schema_version") == _STAGED_SCHEMA
     is_single_case = (
-        set(artifact) == single_case_required
+        set(artifact) in allowed_single_case_fields
         and artifact.get("schema_version") == "school-capability-single-case-staged-run/v1"
     )
     if not (is_legacy or is_single_case):
@@ -421,6 +429,11 @@ def _parser() -> argparse.ArgumentParser:
     single_stage = commands.add_parser("stage-single-case-frozen-run")
     single_stage.add_argument("--bundle-root", required=True)
     single_stage.add_argument("--out", required=True)
+    single_stage.add_argument("--now-utc")
+    single_stage.add_argument("--supersedes")
+    single_stage.add_argument("--supersedes-sha256")
+    single_stage.add_argument("--reason")
+    single_stage.add_argument("--approved-by")
     single_stage.add_argument("--dry-run", action="store_true")
     witness = commands.add_parser("witness-freeze-chain")
     witness.add_argument("--intake", required=True)
@@ -442,7 +455,17 @@ def main() -> int:
     elif args.command == "stage-single-case-frozen-run":
         from engine.evaluation.prospective_single_case import build_single_case_staged_frozen_run
 
-        payload = build_single_case_staged_frozen_run(Path(args.bundle_root))
+        now_utc = args.now_utc or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        revision_values = {
+            "supersedes": args.supersedes,
+            "supersedes_sha256": args.supersedes_sha256,
+            "reason": args.reason,
+            "approved_by": args.approved_by,
+        }
+        revision = revision_values if any(value is not None for value in revision_values.values()) else None
+        payload = build_single_case_staged_frozen_run(
+            Path(args.bundle_root), now_utc=now_utc, revision=revision,
+        )
         if Path(args.out).as_posix() != payload["artifact_path"]:
             raise ValueError(
                 f"formal output must use canonical single-case path: {payload['artifact_path']}"
