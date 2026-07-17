@@ -114,3 +114,11 @@ def test_cli_emits_json_for_explicit_root(tmp_path: Path) -> None:
         "ziping",
         "tiaohou_ditiansui",
     ]
+
+
+def test_real_repository_reports_one_ziping_executable_slice() -> None:
+    status = scan_theory_slices(Path("."))
+    assert status["schools"]["ziping"] == {
+        "catalog_count": 933,
+        "executable_slice_count": 1,
+    }

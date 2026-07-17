@@ -35,3 +35,14 @@ slices:
       - engine/decision/ren_career_timing.py
       - engine/decision/ren_career_timing_slice.py
       - tests/ren_timing/test_staged_slice.py
+  - slice_id: ZIPING-CAREER-OFFICIAL-PATH-DISRUPTION-V1
+    school_id: ziping
+    task_id: career.role_change
+    target_layer: L3
+    status: staged_verified
+    artifacts:
+      - theory/production/ziping-career-structure-rules-v1.yaml
+      - engine/decision/ziping_career_rules.py
+      - engine/decision/ziping_career_structure.py
+      - engine/decision/ziping_career_structure_slice.py
+      - tests/ziping_career/test_staged_slice.py

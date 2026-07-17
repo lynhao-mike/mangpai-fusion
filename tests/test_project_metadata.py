@@ -177,3 +177,10 @@ def test_ren_career_timing_slice_is_staged_not_production() -> None:
     assert state["intelligence_platform_status"]["ren_career_role_change_timing_slice"] == (
         "staged_verified_production_unchanged"
     )
+
+
+def test_ziping_career_structure_slice_is_staged_verified_without_production_change() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    assert state["intelligence_platform_status"]["ziping_career_official_path_disruption_slice"] == (
+        "staged_verified_production_unchanged"
+    )
