@@ -425,6 +425,17 @@ def test_pressure_gate_booleans_must_match_family_payload() -> None:
         )
 
 
+def test_abstain_with_family_and_only_non_hard_reason_is_rejected() -> None:
+    with pytest.raises(ValueError, match="abstain with families requires a hard blocker"):
+        discrimination(
+            state="abstain",
+            families=(family("spouse_palace_event_anchor"),),
+            event_anchor_passed=False,
+            independent_spouse_interaction_passed=False,
+            blocking_reason_codes=("missing_independent_spouse_interaction",),
+        )
+
+
 def test_abstain_may_retain_incomplete_diagnostic_families() -> None:
     result = discrimination(
         state="abstain",

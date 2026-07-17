@@ -219,6 +219,12 @@ class YangMarriageDiscrimination:
             has_event_anchor_family and has_event_interaction_family
         ):
             raise ValueError("abstain cannot carry a complete event family payload")
+        if (
+            self.state == "abstain"
+            and self.families
+            and not _HARD_BLOCKING_REASON_CODES.intersection(self.blocking_reason_codes)
+        ):
+            raise ValueError("abstain with families requires a hard blocker")
         if self.state == "abstain" and not self.blocking_reason_codes:
             raise ValueError("abstain requires blocking reasons")
         if not self.case_id.strip() or not self.schema_version.strip() or not self.falsifier.strip():
