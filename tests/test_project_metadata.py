@@ -170,3 +170,11 @@ def test_historical_agent_handoff_is_not_current_branch_source() -> None:
     assert "不再作为当前分支策略事实源" in handoff
     assert "AGENTS.md" in handoff
     assert "META/project-state.json" in handoff
+
+
+def test_yang_marriage_slice_status_is_dedicated_synthetic_only() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    value = state["intelligence_platform_status"]["yang_marriage_discrimination_slice"]
+    assert value == "synthetic_spec_passed_dedicated_only"
+    forbidden = ("accuracy", "go", "production", "default", "promoted")
+    assert not any(token in value.lower() for token in forbidden)
