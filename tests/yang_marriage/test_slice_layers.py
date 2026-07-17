@@ -4,6 +4,11 @@ from dataclasses import replace
 
 import pytest
 
+from engine.decision import v5_adapter
+from engine.decision.l3_structure import build_structural_verdicts
+from engine.decision.l4_events import build_event_hypotheses
+from engine.decision.l5_timing import build_timing_probabilities
+from engine.decision.l6_arbitration import build_arbitration_decisions
 from engine.decision.models import SchoolApplicability
 from engine.decision.yang_marriage_slice import apply_yang_marriage_slice
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence, V5Output
@@ -106,17 +111,29 @@ def test_event_replaces_old_target_and_directly_builds_l2_through_l6() -> None:
     assert len(decisions) == 2
 
 
-def test_event_target_keeps_unique_l2_through_l6_chain_after_multiple_nontarget_events() -> None:
+def test_event_preserves_legacy_l2_l6_fields_and_keeps_one_complete_target_chain() -> None:
     case_id = "YM-SYN-MULTI-EVENT"
-    output = _output(case_id)
+    applicability = _applicability()
+    original = _output(case_id)
     output = replace(
-        output,
-        claims=output.claims
-        + [
+        original,
+        claims=[
+            original.claims[0],
+            _nontarget_event("legacy-nontarget-marriage", "婚姻", "marriage.other"),
+            original.claims[1],
             _nontarget_event("legacy-nontarget-health", "健康", "health.check"),
             _nontarget_event("legacy-nontarget-wealth", "财富", "wealth.change"),
         ],
     )
+    legacy_output = replace(
+        output,
+        claims=[claim for claim in output.claims if claim.metadata.get("task_id") != _TARGET_TASK],
+    )
+    baseline_claims = v5_adapter._claims(legacy_output, applicability)
+    baseline_verdicts = build_structural_verdicts(case_id, baseline_claims)
+    baseline_events = build_event_hypotheses(case_id, baseline_verdicts, baseline_claims)
+    baseline_timings = build_timing_probabilities(case_id, baseline_events)
+    baseline_decisions = build_arbitration_decisions(case_id, baseline_events, applicability)
 
     result, claims, verdicts, events, timings, decisions = apply_yang_marriage_slice(
         output,
@@ -126,34 +143,41 @@ def test_event_target_keeps_unique_l2_through_l6_chain_after_multiple_nontarget_
             chong_pairs=(("子", "午"),),
             ten_god_counts=_male_counts(wealth=1, peers=3),
         ),
-        _applicability(),
+        applicability,
     )
 
-    target_claims = [claim for claim in claims if claim.metadata.get("task_id") == _TARGET_TASK]
-    assert result.state == "event"
-    assert len(target_claims) == 1
-    target_claim = target_claims[0]
-    assert [claim.claim_id for claim in claims if claim is not target_claim] == [
-        "legacy-nontarget-career",
-        "legacy-nontarget-health",
-        "legacy-nontarget-wealth",
+    baseline_ids = {
+        "claims": {item.claim_id for item in baseline_claims},
+        "verdicts": {item.verdict_id for item in baseline_verdicts},
+        "events": {item.event_id for item in baseline_events},
+        "timings": {item.prediction_id for item in baseline_timings},
+        "decisions": {item.decision_id for item in baseline_decisions},
+    }
+    actual_legacy = [
+        [item for item in claims if item.claim_id in baseline_ids["claims"]],
+        [item for item in verdicts if item.verdict_id in baseline_ids["verdicts"]],
+        [item for item in events if item.event_id in baseline_ids["events"]],
+        [item for item in timings if item.prediction_id in baseline_ids["timings"]],
+        [item for item in decisions if item.decision_id in baseline_ids["decisions"]],
     ]
+    for actual, baseline in zip(
+        actual_legacy,
+        [baseline_claims, baseline_verdicts, baseline_events, baseline_timings, baseline_decisions],
+        strict=True,
+    ):
+        assert [item.to_dict() for item in actual] == [item.to_dict() for item in baseline]
 
-    target_verdicts = [verdict for verdict in verdicts if verdict.claim_id == target_claim.claim_id]
+    assert result.state == "event"
+    target_claims = [claim for claim in claims if claim.metadata.get("task_id") == _TARGET_TASK]
+    assert len(target_claims) == 1
+    target_verdicts = [verdict for verdict in verdicts if verdict.claim_id == target_claims[0].claim_id]
     assert len(target_verdicts) == 1
-    target_verdict = target_verdicts[0]
-
-    target_events = [event for event in events if target_verdict.verdict_id in event.source_verdict_ids]
+    target_events = [event for event in events if target_verdicts[0].verdict_id in event.source_verdict_ids]
     assert len(target_events) == 1
-    target_event = target_events[0]
-
-    target_timings = [timing for timing in timings if timing.event_id == target_event.event_id]
+    target_timings = [timing for timing in timings if timing.event_id == target_events[0].event_id]
     assert len(target_timings) == 1
-
     target_decisions = [
-        decision
-        for decision in decisions
-        if target_event.event_id in decision.competing_event_ids
+        decision for decision in decisions if target_events[0].event_id in decision.competing_event_ids
     ]
     assert len(target_decisions) == 1
 

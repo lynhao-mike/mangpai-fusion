@@ -92,12 +92,26 @@ def apply_yang_marriage_slice(
         if result.state != "event" or role == "abstain"
         else [to_yang_marriage_school_claim(result, role)]
     )
-    # 专用切片必须让唯一目标越过公共 L4 的前两项 cap；既有非目标相对顺序不变。
-    claims = native_l2 + legacy_l2
+    claims = legacy_l2 + native_l2
     _reject_duplicate_claim_ids(claims)
 
-    verdicts = build_structural_verdicts(case_id, claims)
-    events = build_event_hypotheses(case_id, verdicts, claims)
-    timings = build_timing_probabilities(case_id, events)
-    decisions = build_arbitration_decisions(case_id, events, applicability)
+    # 公共 L4 的 cap 属于单次 builder 调用；分支构建可同时保持 legacy 逐字段不变，
+    # 并让唯一 native 目标完整进入 L3-L6，而不改变公共 builder 语义。
+    legacy_verdicts = build_structural_verdicts(case_id, legacy_l2)
+    legacy_events = build_event_hypotheses(case_id, legacy_verdicts, legacy_l2)
+    legacy_timings = build_timing_probabilities(case_id, legacy_events)
+    legacy_decisions = build_arbitration_decisions(case_id, legacy_events, applicability)
+
+    # L6 decision_id 只由 case/domain 构成；同域 legacy 事件存在时需给专用分支稳定命名空间，
+    # 否则会产生重复 ID。该命名空间仅参与 native L3-L6 稳定 ID，不改变业务 case_id。
+    native_id_scope = f"{case_id}|yang-marriage-native"
+    native_verdicts = build_structural_verdicts(native_id_scope, native_l2)
+    native_events = build_event_hypotheses(native_id_scope, native_verdicts, native_l2)
+    native_timings = build_timing_probabilities(native_id_scope, native_events)
+    native_decisions = build_arbitration_decisions(native_id_scope, native_events, applicability)
+
+    verdicts = legacy_verdicts + native_verdicts
+    events = legacy_events + native_events
+    timings = legacy_timings + native_timings
+    decisions = legacy_decisions + native_decisions
     return result, claims, verdicts, events, timings, decisions
