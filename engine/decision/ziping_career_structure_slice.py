@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import hashlib
-from dataclasses import dataclass
-from typing import Mapping
+from dataclasses import dataclass, replace
+from typing import Any, Mapping
 
 from engine.decision.models import (
     ChartFactLedger,
@@ -19,6 +19,7 @@ from engine.decision.ziping_career_structure import (
     ZipingCareerDiscrimination,
     discriminate_ziping_career_structure,
 )
+from engine.evaluation.freeze import canonical_json, compute_freeze_hash
 from engine.features.types import ChartFeatureVector
 
 
@@ -43,6 +44,127 @@ class ZipingCareerSliceRun:
     verdicts: tuple[StructuralVerdict, ...]
     events: tuple[object, ...] = ()
     timings: tuple[object, ...] = ()
+
+
+def _sorted_mapping(value: Mapping[str, object]) -> dict[str, object]:
+    return {key: value[key] for key in sorted(value)}
+
+
+def _sorted_claim(claim: SchoolClaim) -> dict[str, Any]:
+    payload = claim.to_dict()
+    payload["evidence_refs"] = sorted(payload["evidence_refs"])
+    payload["dependencies"] = sorted(payload["dependencies"])
+    metadata = payload["metadata"]
+    if isinstance(metadata, dict):
+        payload["metadata"] = _sorted_mapping(metadata)
+        family_keys = payload["metadata"].get("family_keys")
+        if isinstance(family_keys, (list, tuple)):
+            payload["metadata"]["family_keys"] = sorted(family_keys)
+    return payload
+
+
+def _sorted_verdict(verdict: StructuralVerdict) -> dict[str, Any]:
+    payload = verdict.to_dict()
+    payload["blocking_factors"] = sorted(payload["blocking_factors"])
+    payload["required_support"] = sorted(payload["required_support"])
+    return payload
+
+
+@dataclass(frozen=True)
+class FrozenZipingCareerSlice:
+    schema_version: str
+    case_id: str
+    task_id: str
+    task_rule_id: str
+    mapping_digest: str
+    local_state: str
+    publication_state: str
+    families: tuple[dict[str, Any], ...]
+    gates: tuple[tuple[str, bool], ...]
+    claims: tuple[dict[str, Any], ...]
+    verdicts: tuple[dict[str, Any], ...]
+    events: tuple[dict[str, Any], ...]
+    timings: tuple[dict[str, Any], ...]
+    freeze_hash: str
+
+    @classmethod
+    def from_run(
+        cls, run: ZipingCareerSliceRun, *, freeze_hash: str
+    ) -> FrozenZipingCareerSlice:
+        if run.events or run.timings:
+            raise ValueError("Ziping career staged slice must stop at L3")
+        families = tuple(
+            {
+                "family_key": family.family_key,
+                "matched": family.matched,
+                "fact_refs": sorted(family.fact_refs),
+                "feature_refs": sorted(family.feature_refs),
+                "production_rule_refs": sorted(family.production_rule_refs),
+                "reason_codes": sorted(family.reason_codes),
+                "detail": family.detail,
+            }
+            for family in sorted(run.result.families, key=lambda item: item.family_key)
+        )
+        return cls(
+            schema_version="ziping-career-staged-slice/v1",
+            case_id=run.case_id,
+            task_id=run.result.task_id,
+            task_rule_id=run.result.task_rule_id,
+            mapping_digest=run.result.mapping_digest,
+            local_state=run.result.local_state.value,
+            publication_state=run.result.publication_state.value,
+            families=families,
+            gates=tuple(sorted(run.result.gates.items())),
+            claims=tuple(
+                _sorted_claim(claim)
+                for claim in sorted(run.claims, key=lambda item: item.claim_id)
+            ),
+            verdicts=tuple(
+                _sorted_verdict(verdict)
+                for verdict in sorted(run.verdicts, key=lambda item: item.verdict_id)
+            ),
+            events=(),
+            timings=(),
+            freeze_hash=freeze_hash,
+        )
+
+    def to_dict(self) -> dict[str, object]:
+        payload = {
+            "schema_version": self.schema_version,
+            "case_id": self.case_id,
+            "task_id": self.task_id,
+            "task_rule_id": self.task_rule_id,
+            "mapping_digest": self.mapping_digest,
+            "local_state": self.local_state,
+            "publication_state": self.publication_state,
+            "families": sorted(self.families, key=lambda item: item["family_key"]),
+            "gates": {key: value for key, value in sorted(self.gates)},
+            "claims": sorted(self.claims, key=lambda item: item["claim_id"]),
+            "verdicts": sorted(self.verdicts, key=lambda item: item["verdict_id"]),
+            "events": list(self.events),
+            "timings": list(self.timings),
+            "freeze_hash": self.freeze_hash,
+        }
+        canonical_json(payload)
+        return payload
+
+
+def freeze_ziping_career_slice(
+    run: ZipingCareerSliceRun,
+) -> FrozenZipingCareerSlice:
+    provisional = FrozenZipingCareerSlice.from_run(run, freeze_hash="")
+    payload = provisional.to_dict()
+    payload.pop("freeze_hash")
+    return replace(provisional, freeze_hash=compute_freeze_hash(payload))
+
+
+def verify_frozen_ziping_career_slice(frozen: FrozenZipingCareerSlice) -> None:
+    if frozen.events or frozen.timings:
+        raise ValueError("Ziping career staged slice must stop at L3")
+    payload = frozen.to_dict()
+    claimed = payload.pop("freeze_hash")
+    if compute_freeze_hash(payload) != claimed:
+        raise ValueError("freeze hash mismatch")
 
 
 def to_ziping_career_school_claim(

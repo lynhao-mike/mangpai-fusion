@@ -1,4 +1,6 @@
+import ast
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -7,10 +9,14 @@ from engine.decision.ziping_career_structure import (
     discriminate_ziping_career_structure,
 )
 from engine.decision.ziping_career_structure_slice import (
+    FrozenZipingCareerSlice,
     build_ziping_career_structure_slice,
+    freeze_ziping_career_slice,
     to_ziping_career_school_claim,
     to_ziping_career_structural_verdict,
+    verify_frozen_ziping_career_slice,
 )
+from engine.evaluation.freeze import canonical_json
 
 
 GEJU_PROFILE = {"geju_type": "正格", "favor_shishen": [], "avoid_shishen": []}
@@ -159,3 +165,124 @@ def test_supported_rerun_has_stable_claim_and_verdict_ids(
 
     assert first.claims[0].claim_id == second.claims[0].claim_id
     assert first.verdicts[0].verdict_id == second.verdicts[0].verdict_id
+
+
+def test_supported_slice_freezes_byte_stably(chart, supported_features) -> None:
+    kwargs = {
+        "case_id": "C-ZIPING-FREEZE",
+        "chart": chart,
+        "features": supported_features,
+        "geju_profile": GEJU_PROFILE,
+        "role": "lead",
+    }
+    first = freeze_ziping_career_slice(build_ziping_career_structure_slice(**kwargs))
+    second = freeze_ziping_career_slice(build_ziping_career_structure_slice(**kwargs))
+
+    assert isinstance(first, FrozenZipingCareerSlice)
+    verify_frozen_ziping_career_slice(first)
+    verify_frozen_ziping_career_slice(second)
+    assert first.freeze_hash == second.freeze_hash
+    assert canonical_json(first.to_dict()).encode("utf-8") == canonical_json(
+        second.to_dict()
+    ).encode("utf-8")
+    assert first.events == ()
+    assert first.timings == ()
+
+
+def test_feature_and_profile_order_permutation_keeps_freeze_hash(
+    chart, supported_features
+) -> None:
+    left = build_ziping_career_structure_slice(
+        "C-ZIPING-PERMUTE",
+        chart,
+        supported_features,
+        {
+            "geju_type": "正格",
+            "favor_shishen": ["正官", "正印"],
+            "avoid_shishen": [],
+        },
+        role="lead",
+    )
+    reordered = replace(
+        supported_features,
+        ten_god_counts=dict(reversed(list(supported_features.ten_god_counts.items()))),
+    )
+    right = build_ziping_career_structure_slice(
+        "C-ZIPING-PERMUTE",
+        chart,
+        reordered,
+        {
+            "avoid_shishen": [],
+            "favor_shishen": ["正印", "正官"],
+            "geju_type": "正格",
+        },
+        role="lead",
+    )
+
+    assert freeze_ziping_career_slice(left).freeze_hash == freeze_ziping_career_slice(
+        right
+    ).freeze_hash
+
+
+def test_first_falsifier_freezes_zero_l2_l3_and_zero_timing(
+    chart, coarse_trigger_without_output_features
+) -> None:
+    frozen = freeze_ziping_career_slice(
+        build_ziping_career_structure_slice(
+            "C-ZIPING-FALSIFIER-FROZEN",
+            chart,
+            coarse_trigger_without_output_features,
+            GEJU_PROFILE,
+            role="lead",
+        )
+    )
+
+    assert frozen.claims == ()
+    assert frozen.verdicts == ()
+    assert frozen.events == ()
+    assert frozen.timings == ()
+
+
+def test_frozen_slice_rejects_hash_mismatch(chart, supported_features) -> None:
+    frozen = freeze_ziping_career_slice(
+        build_ziping_career_structure_slice(
+            "C-ZIPING-TAMPER",
+            chart,
+            supported_features,
+            GEJU_PROFILE,
+            role="lead",
+        )
+    )
+
+    with pytest.raises(ValueError, match="freeze hash mismatch"):
+        verify_frozen_ziping_career_slice(replace(frozen, case_id="C-TAMPERED"))
+
+
+def test_slice_source_is_statically_truncated_at_l3() -> None:
+    source_path = Path("engine/decision/ziping_career_structure_slice.py")
+    source = source_path.read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imported_modules = {
+        node.module
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom) and node.module is not None
+    }
+    imported_modules.update(
+        alias.name
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Import)
+        for alias in node.names
+    )
+
+    forbidden_modules = {"l4_events", "l5_timing", "ren_career_timing", "render_report"}
+    assert not any(
+        any(part == forbidden for part in module.split("."))
+        for module in imported_modules
+        for forbidden in forbidden_modules
+    )
+    for forbidden_call in (
+        "TimeWindow(",
+        "TimingProbability(",
+        "build_timing_probabilities(",
+    ):
+        assert forbidden_call not in source
