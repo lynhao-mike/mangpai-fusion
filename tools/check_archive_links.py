@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "reports"
 CASES_DIR = ROOT / "cases"
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)#]+)(?:#[^)]+)?\)")
-CASE_ID_RE = re.compile(r"(C-\d{4}-\d{3})-")
+CASE_ID_RE = re.compile(r"(C-\d{4}-\d{3}-(?:乾|坤)-[^-]+)")
 
 
 def target_exists(md_path: Path, target: str) -> bool:
@@ -54,9 +54,13 @@ def check_links(texts: dict[Path, str] | None = None) -> list[str]:
 
 def check_sibling_reports(texts: dict[Path, str] | None = None) -> list[str]:
     errors: list[str] = []
-    report_paths = sorted(REPORTS_DIR.glob("C-*.md"))
     if texts is None:
+        report_paths = sorted(REPORTS_DIR.glob("C-*.md"))
         texts = _read_texts(report_paths)
+    else:
+        report_paths = sorted(
+            path for path in texts if path.name.startswith("C-") and path.suffix == ".md"
+        )
     by_case: dict[str, list[Path]] = {}
     for report in report_paths:
         match = CASE_ID_RE.search(report.name)

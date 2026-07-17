@@ -172,3 +172,5 @@
 - 结构化引擎证据（1799 条 statement、五派 run JSON）保留于 case 目录，供反馈回写。
 - 案例目录：[cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/](../cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/)
 - 反馈入口：[cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/feedback.md](../cases/C-2026-036-乾-辛巳壬辰甲寅乙丑/feedback.md)
+
+- 关联报告：[C-2026-036-乾-辛巳壬辰甲寅乙丑-v6-preprod-content-report.md](C-2026-036-乾-辛巳壬辰甲寅乙丑-v6-preprod-content-report.md)

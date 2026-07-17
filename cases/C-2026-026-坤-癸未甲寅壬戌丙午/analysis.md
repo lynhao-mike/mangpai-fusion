@@ -15,7 +15,7 @@
 | analysis_version | v1.1-feedback-calibrated |
 | analysis_status | 已完成 2026-05-31 二次反馈校准；规则级 fanout 通过 statement_rule_map.json 执行 |
 | input_path | [input.md](input.md) |
-| report_path | [命主可读报告](../../reports/C-2026-026-坤-癸未甲寅壬戌丙午-report.md) |
+| report_path | [命主可读报告](../../reports/C-2026-026-坤-癸未甲寅壬戌丙午-v6-preprod-content-report.md) |
 | feedback_path | [feedback.md](feedback.md) |
 | statement_index_path | [statement_index.json](statement_index.json) |
 

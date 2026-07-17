@@ -9,6 +9,7 @@ case input.md → chart DTO → run_v5 → report-v6 Markdown + v5 JSON。
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -194,6 +195,16 @@ def _display_path(path: Path, *, workspace_root: Path) -> str:
         return path.as_posix()
 
 
+def _report_relative_path(path: Path, *, report_file: Path) -> str:
+    """返回可从报告文件所在目录解析的 Markdown 链接目标。"""
+
+    try:
+        return Path(os.path.relpath(path, start=report_file.parent)).as_posix()
+    except ValueError:
+        # Windows 跨盘符没有相对路径；保留绝对目标仍可被 Markdown/检查器解析。
+        return path.as_posix()
+
+
 def default_v6_report_path(input_path: str | Path, *, reports_dir: str | Path) -> Path:
     """按 case_id 生成默认 v6 预生产报告路径。"""
 
@@ -258,9 +269,9 @@ def render_v6_preprod_case(
     report_md = render_report_v6_from_output(
         output,
         template_path=template_file,
-        report_path=_display_path(report_file, workspace_root=root),
-        case_dir=_display_path(case_dir, workspace_root=root),
-        feedback_path=_display_path(feedback_path, workspace_root=root),
+        report_path=_report_relative_path(report_file, report_file=report_file),
+        case_dir=_report_relative_path(case_dir, report_file=report_file),
+        feedback_path=_report_relative_path(feedback_path, report_file=report_file),
         report_items=decision_run.report_items,
         arbitration_decisions=decision_run.arbitration_decisions,
     )

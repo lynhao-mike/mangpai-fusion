@@ -98,3 +98,5 @@ flowchart LR
 - 本报告不直接修改理论库；实际写入由 feedback_ingest 完成。
 - 星级与百分比来自同一次 dry-run 产生的 IterationDiff。
 - no_data / skip / 未映射规则不参与动态置信度计分。
+
+- 关联报告：[C-2026-026-坤-癸未甲寅壬戌丙午-v6-preprod-content-report.md](C-2026-026-坤-癸未甲寅壬戌丙午-v6-preprod-content-report.md)

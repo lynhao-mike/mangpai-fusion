@@ -1,103 +1,123 @@
-"""Normalize clickable archive links between case files and reports.
+"""Safely migrate historical Markdown archive links.
 
-This maintenance helper focuses on human-facing markdown archive references:
-- reports/*.md association sections should link back to cases/ and sibling reports.
-- cases/C-*/ markdown files should link to related reports and local case files.
-
-It is intentionally conservative: it only rewrites plain archive paths in markdown prose,
-and skips fenced code blocks and already-linked markdown destinations.
+The migration is deterministic and conservative:
+- normalize repository-root destinations in reports and known nested v6 links;
+- replace legacy report names only when exactly one same-full-identity content report exists;
+- preserve and report unresolved legacy references instead of inventing files;
+- add bidirectional sibling links only for the same full case identity.
 """
 
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "reports"
 CASES_DIR = ROOT / "cases"
 
-PATH_RE = re.compile(
-    r"(?<!\]\()(?<![\w./-])"
-    r"((?:reports/[^\s`，。；;）)]+\.md)|"
-    r"(?:cases/C-[^\s`，。；;）)]+/(?:(?:input|analysis|feedback|future-events|events|lessons)\.md|statement_index\.json))|"
-    r"(?:cases/C-[^\s`，。；;）)]+/))"
+FULL_CASE_ID_PATTERN = r"C-\d{4}-(?:\d{3}|RF\d+)-(?:乾|坤)-[^\-/\s)]+"
+FULL_CASE_ID_RE = re.compile(rf"({FULL_CASE_ID_PATTERN})")
+MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)#]+)(#[^)]*)?\)")
+NESTED_GENERATED_LINK_RE = re.compile(
+    r"\[([^\]]+)\]\(\[\1\]\(([^)]+)\)\)"
+)
+LEGACY_REPORT_NAME_RE = re.compile(
+    rf"^(?P<identity>{FULL_CASE_ID_PATTERN})-(?P<suffix>"
+    r"report(?:-master|-v2)?|analyst-report|career-marriage-report|"
+    r"future-choice-report|future-events-report)\.md$"
+)
+CANONICAL_REPORT_RE = re.compile(
+    rf"^(?P<identity>{FULL_CASE_ID_PATTERN})(?:-v6-preprod)?-content-report\.md$"
 )
 
 
-def is_inside_markdown_link(line: str, start: int) -> bool:
-    """Return True if the match is already inside a markdown link destination."""
-    before = line[:start]
-    # Already handled direct `](` by regex, but keep a broader same-line guard.
-    last_open = before.rfind("](")
-    last_close = before.rfind(")")
-    return last_open > last_close
+@dataclass(frozen=True)
+class UnresolvedLink:
+    source: str
+    line: int
+    target: str
+    reason: str
 
 
-def is_inside_inline_code(line: str, start: int) -> bool:
-    return line[:start].count("`") % 2 == 1
+@dataclass(frozen=True)
+class MigrationResult:
+    changed: list[str]
+    unresolved: list[UnresolvedLink]
 
 
-def link_target(md_path: Path, raw_path: str) -> str:
-    """Build a markdown target without depending on Windows ANSI path decoding.
-
-    The repository contains Chinese filenames. In cmd.exe sessions Python may see
-    those filenames through the active ANSI code page, so existence/resolve based
-    path math can fall back incorrectly. Archive references are all rooted at
-    either reports/ or cases/, therefore deterministic textual rewriting is safer.
-    """
-    rel = md_path.relative_to(ROOT).as_posix()
-    if rel.startswith("reports/"):
-        if raw_path.startswith("cases/"):
-            return "../" + raw_path
-        if raw_path.startswith("reports/"):
-            return raw_path.removeprefix("reports/")
-        return raw_path
-    if rel.startswith("cases/C-"):
-        case_dir = rel.rsplit("/", 1)[0]
-        if raw_path.startswith("reports/"):
-            return "../../" + raw_path
-        if raw_path.startswith(case_dir + "/"):
-            return raw_path.removeprefix(case_dir + "/")
-        if raw_path.startswith("cases/"):
-            return "../" + raw_path.removeprefix("cases/")
-        return raw_path
-    return raw_path
+def _relative(path: Path, root: Path) -> str:
+    return path.relative_to(root).as_posix()
 
 
-def link_label(raw_path: str) -> str:
-    if raw_path.endswith("/"):
-        return raw_path.rstrip("/").split("/")[-1] + "/"
-    return raw_path.split("/")[-1]
+def _identity(path_or_name: str) -> str | None:
+    match = FULL_CASE_ID_RE.search(path_or_name)
+    return match.group(1) if match else None
 
 
-def rewrite_line(md_path: Path, line: str) -> str:
-    def repl(match: re.Match[str]) -> str:
-        raw = match.group(1)
-        if is_inside_markdown_link(line, match.start(1)) or is_inside_inline_code(line, match.start(1)):
-            return raw
-        return f"[{link_label(raw)}]({link_target(md_path, raw)})"
-
-    return PATH_RE.sub(repl, line)
-
-
-LINK_DEST_RE = re.compile(r"\]\((cases/[^)]+|reports/[^)]+)\)")
-CASE_ID_RE = re.compile(r"(C-\d{4}-\d{3})-")
+def _canonical_reports(reports_dir: Path) -> dict[str, list[Path]]:
+    by_identity: dict[str, list[Path]] = {}
+    for path in sorted(reports_dir.glob("C-*.md")):
+        match = CANONICAL_REPORT_RE.match(path.name)
+        if match:
+            by_identity.setdefault(match.group("identity"), []).append(path)
+    return by_identity
 
 
-def fix_existing_destinations(md_path: Path, line: str) -> str:
-    def repl(match: re.Match[str]) -> str:
-        return f"]({link_target(md_path, match.group(1))})"
+def _target_for(md_path: Path, repository_target: str, root: Path) -> str:
+    """Return a POSIX link from ``md_path`` to a repository-relative target."""
+    target = root / repository_target.rstrip("/")
+    try:
+        return target.relative_to(md_path.parent).as_posix()
+    except ValueError:
+        # pathlib.relative_to does not calculate paths containing ``..``.
+        import os
 
-    return LINK_DEST_RE.sub(repl, line)
+        return Path(os.path.relpath(target, md_path.parent)).as_posix()
 
 
-def rewrite_text(md_path: Path, text: str) -> tuple[bool, str]:
-    lines = text.splitlines(keepends=True)
-    changed = False
-    in_fence = False
+def _normalize_root_target(md_path: Path, target: str, root: Path) -> str:
+    if target.startswith("reports/"):
+        return _target_for(md_path, target, root)
+    if target.startswith("cases/"):
+        return _target_for(md_path, target, root)
+    return target
+
+
+def _legacy_replacement(
+    md_path: Path,
+    target: str,
+    canonical: dict[str, list[Path]],
+    root: Path,
+) -> tuple[str, str | None]:
+    name = Path(target).name
+    match = LEGACY_REPORT_NAME_RE.match(name)
+    if not match:
+        return target, None
+    if (md_path.parent / target).resolve().is_file():
+        return target, None
+
+    identity = match.group("identity")
+    candidates = canonical.get(identity, [])
+    if len(candidates) == 1:
+        return _target_for(md_path, f"reports/{candidates[0].name}", root), None
+    if not candidates:
+        return target, "no canonical report for full case identity"
+    return target, "multiple canonical reports for full case identity"
+
+
+def _rewrite_text(
+    md_path: Path,
+    text: str,
+    canonical: dict[str, list[Path]],
+    root: Path,
+) -> tuple[str, list[UnresolvedLink]]:
+    unresolved: list[UnresolvedLink] = []
     out: list[str] = []
-    for line in lines:
+    in_fence = False
+
+    for line_no, line in enumerate(text.splitlines(keepends=True), 1):
         stripped = line.lstrip()
         if stripped.startswith("```"):
             in_fence = not in_fence
@@ -106,92 +126,101 @@ def rewrite_text(md_path: Path, text: str) -> tuple[bool, str]:
         if in_fence:
             out.append(line)
             continue
-        new_line = fix_existing_destinations(md_path, rewrite_line(md_path, line))
-        if new_line != line:
-            changed = True
-        out.append(new_line)
-    return changed, "".join(out)
+
+        # Historical v6 output duplicated a complete link as both outer label and target.
+        line = NESTED_GENERATED_LINK_RE.sub(lambda m: f"[{m.group(1)}]({m.group(2)})", line)
+
+        def replace_link(match: re.Match[str]) -> str:
+            label, target, anchor = match.group(1), match.group(2), match.group(3) or ""
+            replacement, reason = _legacy_replacement(md_path, target, canonical, root)
+            if reason is not None:
+                unresolved.append(
+                    UnresolvedLink(_relative(md_path, root), line_no, target, reason)
+                )
+                return match.group(0)
+            replacement = _normalize_root_target(md_path, replacement, root)
+            return f"[{label}]({replacement}{anchor})"
+
+        out.append(MARKDOWN_LINK_RE.sub(replace_link, line))
+
+    return "".join(out), unresolved
 
 
-def rewrite_file(md_path: Path) -> bool:
-    text = md_path.read_text(encoding="utf-8")
-    changed, new_text = rewrite_text(md_path, text)
-    if changed:
-        md_path.write_text(new_text, encoding="utf-8")
-    return changed
-
-
-def ensure_report_cross_links(report_path: Path, sibling_reports: list[Path], text: str | None = None) -> bool:
-    if text is None:
-        text = report_path.read_text(encoding="utf-8")
-    additions: list[str] = []
-    for sibling in sibling_reports:
-        if sibling == report_path:
-            continue
-        sibling_name = sibling.name
-        if sibling_name not in text:
-            label = "关联报告" if "-report" in sibling_name else "关联文件"
-            target = sibling.relative_to(report_path.parent).as_posix()
-            additions.append(f"- {label}：[{sibling_name}]({target})")
+def _append_sibling_links(report: Path, siblings: list[Path], text: str) -> str:
+    additions = [
+        f"- 关联报告：[{sibling.name}]({sibling.name})"
+        for sibling in siblings
+        if sibling != report and sibling.name not in text
+    ]
     if not additions:
-        return False
-    if not text.endswith("\n"):
-        text += "\n"
-    text += "\n" + "\n".join(additions) + "\n"
-    report_path.write_text(text, encoding="utf-8")
-    return True
+        return text
+    return text.rstrip("\n") + "\n\n" + "\n".join(additions) + "\n"
 
 
-def case_key(report_path: Path) -> str | None:
-    match = CASE_ID_RE.match(report_path.name)
-    return match.group(1) if match else None
+def migrate_archive(root: Path = ROOT) -> MigrationResult:
+    """Migrate archive Markdown under ``root`` and return an auditable result."""
+    reports_dir = root / "reports"
+    cases_dir = root / "cases"
+    report_files = sorted(reports_dir.glob("*.md"))
+    case_files = sorted(path for path in cases_dir.glob("C-*/*.md") if path.is_file())
+    canonical = _canonical_reports(reports_dir)
+    changed: set[str] = set()
+    unresolved: list[UnresolvedLink] = []
+    texts: dict[Path, str] = {}
 
-
-def main() -> None:
-    changed: list[str] = []
-    changed_set: set[str] = set()
-
-    report_files = sorted(REPORTS_DIR.glob("*.md"))
-    case_md_files = sorted(p for p in CASES_DIR.glob("C-*/*.md") if p.is_file())
-    md_files = [*report_files, *case_md_files]
-    report_text_cache: dict[Path, str] = {}
-
-    for md_path in md_files:
+    for md_path in [*report_files, *case_files]:
         try:
-            text = md_path.read_text(encoding="utf-8")
+            original = md_path.read_text(encoding="utf-8")
         except OSError:
             continue
-        changed_file, new_text = rewrite_text(md_path, text)
-        if changed_file:
-            md_path.write_text(new_text, encoding="utf-8")
-            text = new_text
-            rel = md_path.relative_to(ROOT).as_posix()
-            if rel not in changed_set:
-                changed.append(rel)
-                changed_set.add(rel)
-        if md_path in report_files:
-            # 复用本轮已读取/重写后的报告文本，避免 sibling cross-link 阶段重复 I/O。
-            report_text_cache[md_path] = text
+        migrated, file_unresolved = _rewrite_text(md_path, original, canonical, root)
+        unresolved.extend(file_unresolved)
+        texts[md_path] = migrated
+        if migrated != original:
+            md_path.write_text(migrated, encoding="utf-8")
+            changed.add(_relative(md_path, root))
 
-    reports_by_case: dict[str, list[Path]] = {}
+    readme = reports_dir / "README.md"
+    template = root / "templates" / "report-v6.md"
+    if readme in texts and template.exists():
+        current = texts[readme]
+        migrated = current.replace("../templates/report-v1.3.md", "../templates/report-v6.md")
+        if migrated != current:
+            readme.write_text(migrated, encoding="utf-8")
+            texts[readme] = migrated
+            changed.add(_relative(readme, root))
+
+    siblings_by_identity: dict[str, list[Path]] = {}
     for report in report_files:
-        key = case_key(report)
-        if key:
-            reports_by_case.setdefault(key, []).append(report)
+        identity = _identity(report.name)
+        if identity:
+            siblings_by_identity.setdefault(identity, []).append(report)
 
-    for siblings in reports_by_case.values():
+    for siblings in siblings_by_identity.values():
         if len(siblings) < 2:
             continue
         siblings = sorted(siblings)
         for report in siblings:
-            if ensure_report_cross_links(report, siblings, report_text_cache.get(report)):
-                rel = report.relative_to(ROOT).as_posix()
-                if rel not in changed_set:
-                    changed.append(rel)
-                    changed_set.add(rel)
+            original = texts.get(report, report.read_text(encoding="utf-8"))
+            migrated = _append_sibling_links(report, siblings, original)
+            if migrated != original:
+                report.write_text(migrated, encoding="utf-8")
+                texts[report] = migrated
+                changed.add(_relative(report, root))
 
-    for rel in changed:
-        print(rel)
+    return MigrationResult(sorted(changed), sorted(unresolved, key=lambda item: (item.source, item.line, item.target)))
+
+
+def main() -> None:
+    result = migrate_archive()
+    for path in result.changed:
+        print(f"changed: {path}")
+    for item in result.unresolved:
+        print(
+            f"unresolved: {item.source}:{item.line}: {item.target}"
+            f" ({item.reason})"
+        )
+    print(f"summary: changed={len(result.changed)} unresolved={len(result.unresolved)}")
 
 
 if __name__ == "__main__":

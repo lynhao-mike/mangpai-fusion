@@ -266,9 +266,6 @@ def build_report_v6_context(
     chart = output.chart
     claims = _claims_by_domain_school(output)
 
-    def _link(text: str, url: str) -> str:
-        return f"[{text}]({url})" if url else text
-
     context.update(
         {
             "案例编号": output.case_id,
@@ -276,9 +273,9 @@ def build_report_v6_context(
             "当前大运": str(chart.get("current_dayun") or chart.get("当前大运") or "待补充"),
             "起运时间": str(chart.get("start_luck") or chart.get("起运时间") or "待补充"),
             "分析状态": "预生产最小闭环",
-            "报告路径": _link("打开报告文件", report_path),
-            "案例目录": _link("打开案例目录", case_dir),
-            "反馈入口": _link("打开反馈文件", feedback_path),
+            "报告路径": report_path,
+            "案例目录": case_dir,
+            "反馈入口": feedback_path,
             "年干": str(chart.get("year_stem") or chart.get("年干") or ""),
             "年支": str(chart.get("year_branch") or chart.get("年支") or ""),
             "月干": str(chart.get("month_stem") or chart.get("月干") or ""),

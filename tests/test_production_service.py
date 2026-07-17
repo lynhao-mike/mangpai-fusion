@@ -231,7 +231,13 @@ def test_submit_can_render_v6_preprod_artifacts(monkeypatch, tmp_path: Path) -> 
 
     assert result["status"] == "completed", result.get("error")
     assert result["summary"]["v6_preprod_rendered"] is True
-    assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.md").exists()
+    v6_report = reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.md"
+    assert v6_report.exists()
+    report_text = v6_report.read_text(encoding="utf-8")
+    assert "[[" not in report_text
+    assert "]([" not in report_text
+    assert "[打开案例目录](../cases/C-2026-999-乾-甲子乙丑丙寅丁卯)" in report_text
+    assert "[打开反馈文件](../cases/C-2026-999-乾-甲子乙丑丙寅丁卯/feedback.md)" in report_text
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.v5.json").exists()
     assert (reports_dir / "C-2026-999-乾-甲子乙丑丙寅丁卯-v6-preprod-content-report.decision-run.json").exists()
     kinds = {artifact["kind"] for artifact in result["artifacts"]}

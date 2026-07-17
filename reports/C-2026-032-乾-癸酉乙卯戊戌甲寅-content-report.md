@@ -259,3 +259,5 @@
 ```bash
 python -m tools.feedback_ingest C-2026-032-乾-癸酉乙卯戊戌甲寅
 ```
+
+- 关联报告：[C-2026-032-乾-癸酉乙卯戊戌甲寅-v6-preprod-content-report.md](C-2026-032-乾-癸酉乙卯戊戌甲寅-v6-preprod-content-report.md)

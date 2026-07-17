@@ -172,3 +172,5 @@
 归档 case：[`cases/C-2026-018-坤-乙丑戊寅乙酉乙酉/`](../cases/C-2026-018-坤-乙丑戊寅乙酉乙酉/)
 
 反馈入口：[`cases/C-2026-018-坤-乙丑戊寅乙酉乙酉/feedback.md`](../cases/C-2026-018-坤-乙丑戊寅乙酉乙酉/feedback.md)
+
+- 关联报告：[C-2026-018-坤-乙丑戊寅乙酉乙酉-v6-preprod-content-report.md](C-2026-018-坤-乙丑戊寅乙酉乙酉-v6-preprod-content-report.md)

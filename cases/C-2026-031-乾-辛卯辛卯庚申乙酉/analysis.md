@@ -15,7 +15,7 @@
 | analysis_version | v1.1-fixed-template + parallel-domain-15tier |
 | analysis_status | 初断归档；known_facts 为空 |
 | input_path | [input.md](input.md) |
-| report_path | [analyst-report.md](../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-analyst-report.md) |
+| report_path | [analyst-report.md](../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-content-report.md) |
 | feedback_path | [feedback.md](feedback.md) |
 | statement_index_path | [statement_index.json](statement_index.json) |
 
@@ -228,7 +228,7 @@
 
 ## 归档信息
 
-- report_path：[../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-analyst-report.md](../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-analyst-report.md)
+- report_path：[../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-analyst-report.md](../../reports/C-2026-031-乾-辛卯辛卯庚申乙酉-content-report.md)
 - input_path：[input.md](input.md)
 - feedback_path：[feedback.md](feedback.md)
 - statement_index_path：[statement_index.json](statement_index.json)
