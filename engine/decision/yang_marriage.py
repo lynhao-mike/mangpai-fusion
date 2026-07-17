@@ -19,6 +19,11 @@ CanonicalPair = tuple[str, str]
 
 _STATES = frozenset({"pressure", "event", "abstain"})
 _SEX_BASES = frozenset({"male_wealth", "female_official", "unknown"})
+_EVENT_INTERACTION_FAMILY_KEYS = frozenset({
+    "spouse_star_peer_interaction",
+    "spouse_star_output_interaction",
+    "spouse_star_configuration",
+})
 _FAMILY_KEYS = frozenset({
     "spouse_palace_event_anchor",
     "spouse_star_peer_interaction",
@@ -145,18 +150,42 @@ class YangMarriageDiscrimination:
         keys = [item.family_key for item in self.families]
         if len(keys) != len(set(keys)):
             raise ValueError("duplicate family_key")
+        has_event_anchor_family = "spouse_palace_event_anchor" in keys
+        has_event_interaction_family = bool(
+            _EVENT_INTERACTION_FAMILY_KEYS.intersection(keys)
+        )
         if self.state == "event" and (
-            not self.event_anchor_passed
+            not has_event_anchor_family
+            or not has_event_interaction_family
+            or not self.event_anchor_passed
             or not self.independent_spouse_interaction_passed
+            or self.sex_basis == "unknown"
+            or not self.spouse_palace_branch.strip()
             or self.blocking_reason_codes
         ):
-            raise ValueError("event requires both named gates and no blockers")
+            raise ValueError(
+                "event requires named A and B families, consistent gates, known sex, "
+                "spouse palace, and no blockers"
+            )
+        if self.state == "pressure" and (
+            self.event_anchor_passed != has_event_anchor_family
+            or self.independent_spouse_interaction_passed != has_event_interaction_family
+        ):
+            raise ValueError("gate fields must match family payload")
         if self.state == "pressure" and (
             not self.families
             or (self.event_anchor_passed and self.independent_spouse_interaction_passed)
             or not self.blocking_reason_codes
         ):
             raise ValueError("pressure requires evidence, a failed gate, and blockers")
+        if self.state == "abstain" and (
+            self.event_anchor_passed or self.independent_spouse_interaction_passed
+        ):
+            raise ValueError("abstain cannot pass event gates")
+        if self.state == "abstain" and (
+            has_event_anchor_family and has_event_interaction_family
+        ):
+            raise ValueError("abstain cannot carry a complete event family payload")
         if self.state == "abstain" and not self.blocking_reason_codes:
             raise ValueError("abstain requires blocking reasons")
         if not self.case_id.strip() or not self.schema_version.strip() or not self.falsifier.strip():

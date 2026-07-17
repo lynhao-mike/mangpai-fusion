@@ -5,6 +5,7 @@ import pytest
 
 from engine.decision.yang_marriage import (
     FamilyKey,
+    SexBasis,
     YangMarriageDiscrimination,
     YangMarriageFamilyEvidence,
     YangMarriageRawSignals,
@@ -74,7 +75,15 @@ def test_event_requires_named_a_and_b_gates_and_is_frozen() -> None:
             True,
             False,
             (),
-            "event requires both named gates",
+            "event requires named A and B families",
+        ),
+        (
+            "event",
+            (family("spouse_star_peer_interaction"),),
+            True,
+            True,
+            (),
+            "event requires named A and B families",
         ),
         (
             "event",
@@ -85,7 +94,7 @@ def test_event_requires_named_a_and_b_gates_and_is_frozen() -> None:
             True,
             True,
             ("incomplete_evidence",),
-            "event requires both named gates",
+            "event requires named A and B families",
         ),
         (
             "pressure",
@@ -121,6 +130,25 @@ def test_event_requires_named_a_and_b_gates_and_is_frozen() -> None:
             False,
             (),
             "abstain requires blocking reasons",
+        ),
+        (
+            "abstain",
+            (family("spouse_palace_event_anchor"),),
+            True,
+            False,
+            ("incomplete_evidence",),
+            "abstain cannot pass event gates",
+        ),
+        (
+            "abstain",
+            (
+                family("spouse_palace_event_anchor"),
+                family("spouse_star_peer_interaction"),
+            ),
+            False,
+            False,
+            ("incomplete_evidence",),
+            "abstain cannot carry a complete event family payload",
         ),
     ],
 )
@@ -160,14 +188,14 @@ def test_family_evidence_is_validated_deduplicated_and_sorted() -> None:
         matched=True,
         fact_refs=("z", "a", "z"),
         feature_refs=("xing_hai_pairs", "chong_pairs", "chong_pairs"),
-        canonical_pairs=(("子", "午"), ("午", "子"), ("子", "午")),
+        canonical_pairs=(("午", "子"), ("丑", "未"), ("午", "子")),
         reason_codes=("z", "a", "z"),
         detail="合成审计证据",
     )
 
     assert evidence.fact_refs == ("a", "z")
     assert evidence.feature_refs == ("chong_pairs", "xing_hai_pairs")
-    assert evidence.canonical_pairs == (("午", "子"), ("子", "午"))
+    assert evidence.canonical_pairs == (("丑", "未"), ("午", "子"))
     assert evidence.reason_codes == ("a", "z")
     with pytest.raises(ValueError, match="matched family requires"):
         YangMarriageFamilyEvidence(
@@ -176,8 +204,12 @@ def test_family_evidence_is_validated_deduplicated_and_sorted() -> None:
 
 
 def test_discrimination_sorting_and_serialization_are_deterministic() -> None:
-    result = discrimination(
+    first = YangMarriageDiscrimination(
+        schema_version="yang-marriage-discrimination/v1",
+        case_id="YM-SYN-DETERMINISTIC",
         state="event",
+        sex_basis="male_wealth",
+        spouse_palace_branch="子",
         families=(
             family("spouse_star_peer_interaction"),
             family("spouse_palace_event_anchor"),
@@ -185,14 +217,45 @@ def test_discrimination_sorting_and_serialization_are_deterministic() -> None:
         event_anchor_passed=True,
         independent_spouse_interaction_passed=True,
         blocking_reason_codes=(),
+        falsifier="合成证伪口径。",
+        source_rule_refs=("z", "a", "z"),
     )
+    second = YangMarriageDiscrimination(
+        schema_version="yang-marriage-discrimination/v1",
+        case_id="YM-SYN-DETERMINISTIC",
+        state="event",
+        sex_basis="male_wealth",
+        spouse_palace_branch="子",
+        families=(
+            family("spouse_palace_event_anchor"),
+            family("spouse_star_peer_interaction"),
+        ),
+        event_anchor_passed=True,
+        independent_spouse_interaction_passed=True,
+        blocking_reason_codes=(),
+        falsifier="合成证伪口径。",
+        source_rule_refs=("a", "z"),
+    )
+    expected = {
+        "schema_version": "yang-marriage-discrimination/v1",
+        "case_id": "YM-SYN-DETERMINISTIC",
+        "state": "event",
+        "sex_basis": "male_wealth",
+        "spouse_palace_branch": "子",
+        "families": [
+            family("spouse_palace_event_anchor").to_dict(),
+            family("spouse_star_peer_interaction").to_dict(),
+        ],
+        "event_anchor_passed": True,
+        "independent_spouse_interaction_passed": True,
+        "blocking_reason_codes": [],
+        "falsifier": "合成证伪口径。",
+        "source_rule_refs": ["a", "z"],
+    }
 
-    assert tuple(item.family_key for item in result.families) == (
-        "spouse_palace_event_anchor",
-        "spouse_star_peer_interaction",
-    )
-    assert json.dumps(result.to_dict(), ensure_ascii=False, sort_keys=True) == json.dumps(
-        result.to_dict(), ensure_ascii=False, sort_keys=True
+    assert first.to_dict() == second.to_dict() == expected
+    assert json.dumps(first.to_dict(), ensure_ascii=False, sort_keys=True) == json.dumps(
+        expected, ensure_ascii=False, sort_keys=True
     )
 
 
@@ -243,12 +306,69 @@ def test_literal_fields_and_boolean_fields_are_runtime_validated() -> None:
         )
 
 
+def test_event_requires_known_sex_nonempty_spouse_palace_and_consistent_gates() -> None:
+    event_families = (
+        family("spouse_palace_event_anchor"),
+        family("spouse_star_peer_interaction"),
+    )
+    invalid_inputs: tuple[tuple[SexBasis, str, bool, bool], ...] = (
+        ("unknown", "子", True, True),
+        ("male_wealth", " ", True, True),
+        ("male_wealth", "子", False, True),
+        ("male_wealth", "子", True, False),
+    )
+    for sex_basis, spouse_palace_branch, anchor, interaction in invalid_inputs:
+        with pytest.raises(ValueError, match="event requires named A and B families"):
+            YangMarriageDiscrimination(
+                "yang-marriage-discrimination/v1", "YM-SYN-EVENT-INVARIANT", "event",
+                sex_basis, spouse_palace_branch, event_families, anchor, interaction, (),
+                "合成证伪口径。", (),
+            )
+
+
+def test_pressure_gate_booleans_must_match_family_payload() -> None:
+    with pytest.raises(ValueError, match="gate fields must match family payload"):
+        discrimination(
+            state="pressure",
+            families=(family("spouse_palace_event_anchor"),),
+            event_anchor_passed=False,
+            independent_spouse_interaction_passed=False,
+            blocking_reason_codes=("missing_independent_spouse_interaction",),
+        )
+    with pytest.raises(ValueError, match="gate fields must match family payload"):
+        discrimination(
+            state="pressure",
+            families=(family("spouse_star_peer_interaction"),),
+            event_anchor_passed=False,
+            independent_spouse_interaction_passed=False,
+            blocking_reason_codes=("missing_event_anchor",),
+        )
+
+
+def test_abstain_may_retain_incomplete_diagnostic_families() -> None:
+    result = discrimination(
+        state="abstain",
+        families=(
+            family("spouse_palace_event_anchor"),
+            family("ambient_relationship_pressure"),
+        ),
+        event_anchor_passed=False,
+        independent_spouse_interaction_passed=False,
+        blocking_reason_codes=("incomplete_evidence",),
+    )
+
+    assert tuple(item.family_key for item in result.families) == (
+        "ambient_relationship_pressure",
+        "spouse_palace_event_anchor",
+    )
+
+
 def test_raw_signals_are_frozen_stable_and_reject_negative_counts() -> None:
     signals = YangMarriageRawSignals(
         case_id="YM-SYN-RAW",
         sex_basis="male_wealth",
         spouse_palace_branch="子",
-        canonical_palace_pairs=(("子", "午"), ("午", "子"), ("子", "午")),
+        canonical_palace_pairs=(("午", "子"), ("丑", "未"), ("午", "子")),
         spouse_star_present=True,
         spouse_star_count=1,
         peer_heavy=False,
@@ -257,9 +377,9 @@ def test_raw_signals_are_frozen_stable_and_reject_negative_counts() -> None:
         blocking_reason_codes=("z", "a", "z"),
     )
 
-    assert signals.canonical_palace_pairs == (("午", "子"), ("子", "午"))
+    assert signals.canonical_palace_pairs == (("丑", "未"), ("午", "子"))
     assert signals.blocking_reason_codes == ("a", "z")
-    assert signals.to_dict()["canonical_palace_pairs"] == [["午", "子"], ["子", "午"]]
+    assert signals.to_dict()["canonical_palace_pairs"] == [["丑", "未"], ["午", "子"]]
     with pytest.raises(FrozenInstanceError):
         signals.spouse_star_count = 2  # type: ignore[misc]
     with pytest.raises(ValueError, match="spouse_star_count must be non-negative"):
