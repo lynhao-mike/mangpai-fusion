@@ -374,9 +374,9 @@ git commit -m "data: register prospective go intake batch"
 
 ---
 
-## Task 4: 每案准备盲包并在结果揭示前冻结与验证（第 2—12 周滚动）
+## Task 4: 每案准备盲包并在结果揭示前不可变冻结（第 2—12 周滚动）
 
-**目标：** 每案独立 bundle / freeze / witness / verification；每案运行六来源 staged Claim，由独立人类见证人证明冻结早于 outcome 揭示，并以 verification=VERIFIED 作为反馈释放前的人工硬停点。10 案只用于父引用聚合。
+**目标：** 每案独立 bundle / immutable freeze；六来源 staged Claim 正式封存且 hash / 父链校验通过后即可进入反馈 / 核验摄入。witness / verification 仅为可选审计兼容入口，不是反馈前置条件；10 案只用于父引用聚合。
 
 **Files:**
 - Create per batch: `META/prospective-go/prospective-go-bNN-blind-bundle/`
@@ -413,7 +413,7 @@ python -m tools.school_capability_prospective stage-frozen-run --bundle-root MET
 
 [`stage-frozen-run`](../../tools/school_capability_prospective.py:342) 只消费已校验 blind bundle，保留六来源所有 `claim/abstain/unsupported`，并把 `task_catalog_version` 与 `rule_snapshot_id` 绑定到 bundle 中任务目录和 [`prospective-go-rule-snapshot-v1.json`](../../META/prospective-go-rule-snapshot-v1.json:1) 的内容 hash。核对 dry-run 后才去掉 `--dry-run` 写入全新且不存在的 frozen run 路径。
 
-- [ ] **Step 4: witness 一次安全生成/追加 registered、prepared、freeze 三事件段**
+- [ ] **Step 4（可选审计）: witness 一次安全生成/追加 registered、prepared、freeze 三事件段**
 
 首次生成 Run:
 
@@ -441,17 +441,17 @@ git commit -m "eval: freeze prospective go blind batch"
 ```
 
 **验收门禁：**
-- **GO：** 每批 freeze hash 可复算；witness 已形成完整 `registered → prepared → freeze` 链，且 freeze 早于后续独立 reveal；四类 timing 至少总体出现非空 Claim。
-- **HOLD：** 真实数据尚未到达、timing 正确 abstain 但 Claim 仍为 0，或 witness 尚未完成。HOLD 时不创建空盲包、空 frozen run 或空 witness registry。
+- **GO：** 每案 frozen result 已不可变落盘，freeze hash、canonical hash 与父链可复算，且 freeze 早于后续反馈；四类 timing 至少总体出现非空 Claim。
+- **HOLD：** 真实数据尚未到达或 frozen result 尚未正式封存。可选 witness 未完成不阻塞反馈摄入；HOLD 时不创建空盲包或空 frozen run。
 - **STOP：** runner 在冻结前读到结果；bundle 含白名单外文件；hash 不一致；冻结后改写历史输出。
 
 **依赖：** Task 3 当前单案正式 intake；不依赖满 10 案。
 
 ---
 
-## Task 5: verification 后即时回顾与独立未来观察（第 1—12 周滚动）
+## Task 5: 冻结后即时回顾与独立未来观察（第 1—12 周滚动）
 
-**目标：** 每案 freeze 前预注册恰好 1 个三个月内 binary future question；verification=VERIFIED 后才释放 freeze 前事实进入 `prediction_first_immediate_retrospective`，窗口成熟后另以 `future_observation` 形成真实正负 outcome。两类 evidence class、label identity 与完成数完全分账；评估标签不直接回灌生产规则。
+**目标：** 每案 freeze 前预注册恰好 1 个三个月内 binary future question；immutable frozen result 正式封存并校验后即可释放 freeze 前事实进入 `prediction_first_immediate_retrospective`，窗口成熟后另以 `future_observation` 形成真实正负 outcome。两类 evidence class、label identity 与完成数完全分账；评估标签不直接回灌生产规则。
 
 **Files:**
 - Create per completed case: `META/prospective-go/observations/<case_id>.json`
@@ -495,7 +495,7 @@ Expected: exit 0。不得使用 `calibrate.py`。
 - **HOLD：** 招募够但观察未结束、失访导致完成数不足、某 binary 只有一个类别。
 - **STOP：** freeze 前创建 observation；把未知当负例；把关系压力当离婚；用生产反馈改写历史 blind output。
 
-**依赖：** Task 4 对应批次 freeze + witness 完成。
+**依赖：** Task 4 对应单案 immutable freeze 完成；可选 witness 不阻塞。
 
 ---
 

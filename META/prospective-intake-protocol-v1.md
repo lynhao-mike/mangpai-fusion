@@ -7,10 +7,10 @@
 
 ## 1. 单案当天正式链与三门禁隔离
 
-- 新案执行“每案 dry-run 后当天正式 single-case intake”，不等待 10 案；之后依次完成每案独立 bundle / freeze / witness / verification。每个写操作都必须先 dry-run，经人工确认后才可正式写入全新路径。
+- 正式最小链固定为：`input / intake → blind run → immutable frozen result → feedback / verification intake`。每案 dry-run 后当天完成 single-case intake、blind bundle 与 frozen run，不等待 10 案；每个写操作仍须 create-only，不得覆盖历史制品。
 - 每案必须在 freeze 前预注册恰好 1 个三个月内可核验的 binary future question；问题、正反定义、核验来源和观察窗口都必须随单案父链冻结。
-- 独立人类见证人亲自在临时 `cmd.exe` 中完成签署与验证。verification 是独立人工硬停点：VERIFIED 前禁止反馈释放，也不得读取、请求或创建反馈、即时回顾、observation、report 或 label。
-- 见证密钥只允许通过环境变量名 `SCHOOL_CAPABILITY_WITNESS_KEY` 引用。agent 不得创建、读取、请求、记录或展示值；见证人结束后必须执行 `set "SCHOOL_CAPABILITY_WITNESS_KEY="`，只做 SET / NOT SET 存在性检查并关闭终端。
+- 不可变 frozen result 本身就是反馈门槛：其文件存在、canonical hash 可复算、父链完整且 frozen run 校验通过后，即可接收命主信息或登记待核验结果。独立 witness、witness key、仓库外 root、单独 freeze verification / `VERIFIED` 制品均不是反馈前置条件。
+- witness 与 verification 工具仅保留为可选审计 / 历史兼容入口；使用时仍不得伪造 key、root 或 verification 制品，也不得改写既有正式制品。
 - 即时回顾固定使用 `evidence_class=prediction_first_immediate_retrospective`；未来观察固定使用 `evidence_class=future_observation`。两者使用不同制品、不同 `label_identity`，完成数完全分账，同一事实不得跨账复制计数。
 - 每 10 案只聚合父引用：cohort manifest 只记录不可变单案父制品的仓库相对路径与 SHA-256，不复制、覆盖或补写父制品；10 案边界不阻塞单案 intake、freeze、verification 或反馈释放。
 - 三门禁身份彼此隔离：`prediction_capability_candidate_gate_v1` 只消费即时回顾；`future_empirical_gate_v1` 只消费未来观察；`historical_platform_baseline_2026_07_15` 保持只读独立 HOLD。不得用 immediate / future 样本冲抵 historical baseline。
@@ -42,16 +42,16 @@
 received / enrolled
 < prospective intake
 < blind bundle prepared
-< runner outputs freeze
-< external witness signs freeze
+< runner outputs immutable freeze
+< feedback / verification intake
 < observation window ends or outcome occurs
 < observation created
 < independent reviews / adjudication
-< labels bound and reveal witnessed
+< labels bound
 ```
 
 - 入组时间必须早于 freeze。
-- outcome custodian 在 freeze witness 完成前不得释放观察资料。
+- outcome / feedback 在 immutable frozen result 正式落盘并通过 hash 与父链校验前不得释放。
 - observation、review、label 和 reveal provenance 只能在 freeze 之后创建。
 - 历史 frozen run、labels、scores、capability snapshot 不得覆盖；每批必须使用全新且不存在的目标路径。
 - 盲包安全白名单只包含 `intake.json`、`tasks.json`、`rule-snapshot.json`、`bundle-manifest.json` 与 `cases/<case_id>/chart.json`；不得包含原始 `input.md`、反馈、标签、报告、known facts 或其他旁路文件。
@@ -112,16 +112,16 @@ received / enrolled
 
 这些是采集下限，不替代总完成案不少于 30、binary 不少于 20、竞争不少于 5、selection change 不少于 1、校准误差严格小于 0.2 或高风险 A 级双审门槛。
 
-## 10. 每案冻结、见证与验证操作
+## 10. 每案冻结与反馈 / 核验操作
 
 1. 用真实完整 case 路径、现有短槽位 tasks-by-case、十任务目录和人工批准的 future question 执行 `single-case-intake --dry-run`；唯一解析成功且隔离检查通过后，当天正式写全新单案 intake 与 future-question registration。
 2. 使用 [`prospective-go-rule-snapshot-v1.json`](prospective-go-rule-snapshot-v1.json:1) 执行 `prepare-single-case-blind --dry-run`；核对单案盲包只含安全白名单后，才允许正式创建全新目录。
 3. 对正式盲包执行 `stage-single-case-frozen-run --dry-run`；核对六来源三态输出、任务 hash、规则快照 hash 与 future question hash 后，才允许正式写全新 frozen run。
-4. 独立人类见证人在临时终端执行 `witness-freeze-chain --dry-run` 和正式签署，再对实际 intake、bundle、frozen run、registry 与仓库外 root 执行 `witness-verify-single-case --dry-run` 和正式验证。只有新 verification 制品为 VERIFIED 才能越过人工硬停点。
-5. verification 前 outcome custodian 继续封存反馈；VERIFIED 后即时回顾才可进入 `prediction_first_immediate_retrospective`，future question 仅在观察窗成熟后进入 `future_observation`。
+4. frozen run 正式落盘后，复算其 canonical hash、父链与内部 freeze hash；通过即直接执行 `issue-feedback-release --frozen-run ...`，接收命主信息或登记待核验结果。
+5. witness / verification 可在需要增强审计时另行执行，但不得阻塞反馈；即时回顾仍固定进入 `prediction_first_immediate_retrospective`，future question 仅在观察窗成熟后进入 `future_observation`。
 
 ## 11. 反馈与停止条件
 
 - 生产 case 反馈只允许通过 `tools/feedback_ingest.py`，并先执行 dry-run；评估 observation 不由该工具生成。
 - 不使用、恢复或引用 `calibrate.py` 作为新反馈入口。
-- 发现以下任一情况立即整批 STOP：预测前接触 outcome/反馈/标签/旧报告；review packet 含预测；重复命主跨批计数；witness 顺序断裂；hash 不一致；历史案例改名；历史冻结制品被改写。
+- 发现以下任一情况立即整批 STOP：frozen result 正式落盘前接触 outcome/反馈/标签/旧报告；review packet 含预测；重复命主跨批计数；hash 不一致；历史案例改名；历史冻结制品被改写。可选 witness 审计失败只影响该审计声明，不倒置已成立的 freeze-first 时间顺序。

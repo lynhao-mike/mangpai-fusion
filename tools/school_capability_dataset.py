@@ -1200,12 +1200,19 @@ def _witness_verify_single_case_command(args: argparse.Namespace) -> None:
 def _issue_feedback_release_command(args: argparse.Namespace) -> None:
     from engine.evaluation.prospective_evidence import build_feedback_release_credential
 
-    payload = build_feedback_release_credential(
-        _read_json(Path(args.verification)),
-        _read_json(Path(args.roles)),
-        _read_json(Path(args.leakage_scan)),
-        created_at=args.created_at,
-    )
+    if args.frozen_run:
+        payload = build_feedback_release_credential(
+            _read_json(Path(args.frozen_run)), created_at=args.created_at,
+        )
+    else:
+        if not args.verification or not args.roles or not args.leakage_scan:
+            raise ValueError("legacy verification release requires --verification, --roles, and --leakage-scan")
+        payload = build_feedback_release_credential(
+            _read_json(Path(args.verification)),
+            _read_json(Path(args.roles)),
+            _read_json(Path(args.leakage_scan)),
+            created_at=args.created_at,
+        )
     output = Path(args.out)
     payload = {
         **payload,
@@ -1429,9 +1436,10 @@ def _parser() -> argparse.ArgumentParser:
     single_verify.add_argument("--dry-run", action="store_true")
     single_verify.set_defaults(handler=_witness_verify_single_case_command)
     feedback_release = commands.add_parser("issue-feedback-release")
-    feedback_release.add_argument("--verification", required=True)
-    feedback_release.add_argument("--roles", required=True)
-    feedback_release.add_argument("--leakage-scan", required=True)
+    feedback_release.add_argument("--frozen-run")
+    feedback_release.add_argument("--verification")
+    feedback_release.add_argument("--roles")
+    feedback_release.add_argument("--leakage-scan")
     feedback_release.add_argument("--created-at", required=True)
     feedback_release.add_argument("--out", required=True)
     feedback_release.add_argument("--dry-run", action="store_true")

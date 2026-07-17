@@ -12,9 +12,9 @@
 ```text
 每案当天正式 intake
 → 每案独立盲包
-→ 每案六来源输出冻结
-→ 独立 witness 签署并验证
-→ 验证通过后，当天释放并收集既往经历与当前现状
+→ 每案六来源输出不可变冻结
+→ frozen result 的 hash 与父链校验通过
+→ 当天释放并收集既往经历、当前现状或待核验结果
 → 高风险事实双审
 → 每累计 10 案只做父制品引用式汇总评分与迭代判断
 ```
@@ -27,8 +27,8 @@
 
 ### 2.1 目标
 
-1. 新案在到达当天独立完成正式 intake、盲包、六来源冻结、witness 签署与签名验证。
-2. 只有签名验证成功后，才允许收集该案冻结时已经存在的既往经历与当前现状。
+1. 新案在到达当天独立完成正式 intake、盲包与六来源不可变冻结。
+2. frozen result 正式落盘且 hash / 父链校验成功后，即允许收集该案冻结时已经存在的既往经历、当前现状或待核验结果。
 3. 对当天反馈建立诚实的证据分类，允许用于 prediction-first immediate retrospective 验证，但不得计入未来观察 outcome。
 4. 每案冻结 1 个在 freeze 后三个月内可核验的短期未来问题，为独立的 future observation 账预注册任务、窗口与判定口径。
 5. 每 10 个已完成单案仅创建新的汇总制品；汇总通过父制品路径与摘要引用单案制品，不复制后覆盖、不改写父制品。
@@ -46,12 +46,12 @@
 
 ### 2.3 安全不变量
 
-- 预测输入与反馈资料物理隔离；freeze 签名验证前，runner 边界不得接触既往经历、当前现状、反馈、标签、旧报告或 known facts。
+- 预测输入与反馈资料物理隔离；immutable frozen result 正式落盘前，runner 边界不得接触既往经历、当前现状、反馈、标签、旧报告或 known facts。
 - 单案制品一经正式写入即不可覆盖、不可原地追加、不可改名复用。
 - 所有派生制品都必须绑定父制品内容摘要；父制品摘要不匹配时拒绝继续。
 - 同一命主以稳定 subject identity 去重；改 case ID、改变批次或重复报告不能绕过去重。
 - claim / abstain / unsupported 三态全部保留；不得为覆盖率强迫六来源发言。
-- 签署与验证是两个门：存在 witness registry 不等于签名已验证。
+- witness、witness key、外部 root 与单独 verification 是可选增强审计，不是反馈门槛；冻结制品本身是唯一最小反馈门槛。
 - 两层新门禁和 historical baseline 使用不同的 `gate_id`、evidence class、完成案计数与任务标签计数；同一条标签不得跨 evidence class 复制计数。
 - 任一门禁达到 GO 只允许形成升级提案；不得由采集、评分或报告程序自动切换生产入口。
 
@@ -181,6 +181,8 @@ META/prospective-go/single-cases/<case_id>/
 
 ## 5. 单案当天状态机与数据流
 
+> 本节以最小正式链为准；后文遗留 witness / verification 细节只描述可选审计兼容能力，不构成反馈前置条件。
+
 ### 5.1 状态机
 
 ```text
@@ -189,8 +191,6 @@ RECEIVED
 → BUNDLE_PREPARED
 → FUTURE_QUESTION_REGISTERED
 → SIX_SOURCE_FROZEN
-→ WITNESS_SIGNED
-→ SIGNATURE_VERIFIED
 → FEEDBACK_RELEASED
 → IMMEDIATE_RETROSPECTIVE_BOUND
 → CASE_COMPLETE_FOR_RETROSPECTIVE
@@ -248,7 +248,7 @@ manifest 必须证明 case 集恰为一个、schools 恰为六来源、评分任
 
 任何 timing claim 必须引用真实 `liunian_steps`；缺输入或无触发时 abstain 合法，禁止补造。
 
-### 5.5 独立 witness 签署与验证
+### 5.5 可选独立 witness 签署与验证（兼容审计）
 
 witness 必须独立于 intake operator、runner operator、outcome custodian 和高风险 reviewer。每案 registry 记录严格递增的 `registered → prepared → freeze` 三事件段，并分别绑定 input、bundle 与 freeze 摘要。
 
@@ -261,7 +261,7 @@ witness 必须独立于 intake operator、runner operator、outcome custodian �
 5. 时间严格满足 registered < prepared < freeze；
 6. 当前 registry root 与见证方外部保存的 root 一致。
 
-验证结果写入全新的 freeze verification 制品；只记录验证状态、父摘要、验证时间和 witness 身份引用，不记录密钥。只有 `status=VERIFIED` 才能打开反馈释放门。
+验证结果可写入全新的 freeze verification 制品；只记录验证状态、父摘要、验证时间和 witness 身份引用，不记录密钥。该制品只增强审计声明，不控制反馈释放门。
 
 ### 5.6 反馈释放与当天即时回顾
 
@@ -283,17 +283,7 @@ future question registration 必须在 freeze 前写入并进入 blind bundle，
 
 ## 6. 反馈释放门禁
 
-门禁采用 fail-closed。以下条件必须全部满足：
-
-- 正式单案 intake 存在且摘要可复算；
-- blind bundle 实际文件精确匹配白名单和 manifest；
-- frozen run 验证通过，且 case/task/school 网格无缺失、无重复；
-- witness registry 三事件完整，HMAC、hash 链和时间顺序验证通过；
-- freeze verification 制品为 VERIFIED；
-- witness 与 intake / runner / custodian 角色不重叠；
-- feedback custody 尚未释放，且仓库扫描无反馈泄漏标记；
-- 目标 immediate retrospective 路径不存在；
-- 当前案未被标记 STOP。
+门禁采用最小 fail-closed：正式单案 intake 与 blind bundle 父链可复算，frozen run 的 canonical hash、内部 freeze hash 及 case/task/school 网格校验通过，目标反馈制品不存在，且当前案未被标记 STOP。满足这些条件即允许反馈 / 核验摄入；witness registry、HMAC、外部 root 与 freeze verification 均不在必选条件中。
 
 任一条件不满足时，输出 HOLD 或 STOP 原因，不读取反馈正文，不创建空反馈制品。门禁检查顺序必须保证“验证父制品先于打开反馈文件或请求反馈内容”。
 
@@ -589,7 +579,7 @@ set "SCHOOL_CAPABILITY_WITNESS_KEY="
 - [ ] 使用实际父制品完成签名验证，registry root 已外部锚定。
 - [ ] 本机环境变量已清除且未回显。
 - [ ] freeze 前已注册恰好 1 个三个月内可核验 future question。
-- [ ] 只有 verification=VERIFIED 后才释放反馈。
+- [ ] immutable frozen result 的 hash、父链与内部 freeze hash 校验通过后才释放反馈。
 - [ ] 当天反馈标为 prediction-first immediate retrospective。
 - [ ] 高风险事实已进入独立双审或保持 HOLD。
 - [ ] future observation 未在窗口到期前创建，no_data 未充当反例。

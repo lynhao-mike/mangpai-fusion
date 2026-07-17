@@ -270,12 +270,12 @@ def test_protocol_documents_single_case_order_ledgers_and_three_isolated_gates()
     protocol = PROTOCOL.read_text(encoding="utf-8")
 
     for required_text in (
-        "每案 dry-run 后当天正式 single-case intake",
+        "input / intake → blind run → immutable frozen result → feedback / verification intake",
         "不等待 10 案",
         "恰好 1 个",
         "三个月内",
-        "每案独立 bundle / freeze / witness / verification",
-        "VERIFIED 前禁止反馈释放",
+        "不可变 frozen result 本身就是反馈门槛",
+        "不是反馈前置条件",
         "prediction_first_immediate_retrospective",
         "future_observation",
         "完成数完全分账",
@@ -284,8 +284,6 @@ def test_protocol_documents_single_case_order_ledgers_and_three_isolated_gates()
         "future_empirical_gate_v1",
         "historical_platform_baseline_2026_07_15",
         "只读独立 HOLD",
-        "独立人类见证人",
-        "人工硬停点",
         "不得自动切换生产入口",
     ):
         assert required_text in protocol
@@ -301,7 +299,8 @@ def test_action_plan_replaces_batch_blocking_with_single_case_and_split_gate_rhy
 
     assert "每案 dry-run 后当天正式 single-case intake" in task3
     assert "满 10 案后正式写 intake" not in task3
-    assert "每案独立 bundle / freeze / witness / verification" in task4
+    assert "每案独立 bundle / immutable freeze" in task4
+    assert "不是反馈前置条件" in task4
     assert "恰好 1 个" in task5 and "三个月内" in task5
     assert "prediction_capability_candidate_gate_v1" in tasks7_to_10
     assert "future_empirical_gate_v1" in tasks7_to_10
@@ -337,18 +336,17 @@ def test_tools_index_registers_real_single_case_and_cohort_cli_as_offline_only()
     assert "所有写操作先 dry-run，人工确认后才正式执行" in text
     assert "仅离线评估" in text
     assert "production_switch=false" in text
-    assert 'set "SCHOOL_CAPABILITY_WITNESS_KEY="' in text
-    assert "NOT SET" in text
+    assert "--frozen-run" in text
+    assert "不是反馈前置条件" in text
 
 
 def test_handoff_names_first_legal_case_action_and_all_independent_holds() -> None:
     handoff = HANDOFF.read_text(encoding="utf-8")
 
-    assert "首案" in handoff
-    assert "当天正式 single-case intake" in handoff
-    assert "不等待 10 案" in handoff
-    assert "人工硬停点" in handoff
-    assert "verification=VERIFIED 前禁止反馈释放" in handoff
+    assert "首案 v004" in handoff
+    assert "immutable frozen result 已正式存在" in handoff
+    assert "直接" in handoff and "--frozen-run" in handoff
+    assert "不是反馈前置条件" in handoff
     assert "prediction_capability_candidate_gate_v1 = HOLD" in handoff
     assert "future_empirical_gate_v1 = HOLD" in handoff
     assert "historical_platform_baseline_2026_07_15 = HOLD" in handoff

@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 建立每案当天独立完成正式 intake、短期未来问题预注册、盲包、六来源冻结、独立见证验证后即时回顾释放，并按每 10 个完成案只引用不可变父制品计算两个新门禁的完整 prediction-first 评估链。
+**Goal:** 建立每案当天独立完成正式 intake、短期未来问题预注册、盲包、六来源不可变冻结后直接释放即时回顾 / 核验摄入，并按每 10 个完成案只引用不可变父制品计算两个新门禁的完整 prediction-first 评估链。
 
-**Architecture:** 将不可逆证明点下沉到单案：`engine.evaluation.prospective_artifacts` 负责内容摘要、不可覆盖和父链，`engine.evaluation.prospective_evidence` 负责两类证据分账与反馈释放，`engine.evaluation.prospective_gates` 负责 cohort 和门禁纯计算；现有 `tools.school_capability_dataset`、`tools.school_capability_prospective`、`tools.school_capability_review` 只作为文件/CLI adapter。工程与测试完成后再迁移首案；独立人类见证人在其临时 `cmd.exe` 中亲自签署和验证，验证成功处设置人工硬停点，agent 永不创建、读取、传递或知晓真实 witness key。
+**Architecture:** 将不可逆证明点下沉到单案 frozen result：`engine.evaluation.prospective_artifacts` 负责内容摘要、不可覆盖和父链，`engine.evaluation.prospective_evidence` 直接以已校验 frozen result 负责两类证据分账与反馈释放，`engine.evaluation.prospective_gates` 负责 cohort 和门禁纯计算；现有工具只作为文件/CLI adapter。witness / verification 保留为可选审计兼容能力，不再设置反馈人工硬停点。
 
 **Tech Stack:** Python 3、stdlib `dataclasses` / `datetime` / `hashlib` / `hmac` / `json` / `pathlib` / `tempfile`、现有 `engine.evaluation` / `engine.claims`、pytest、Windows 10 `cmd.exe`。
 
@@ -19,11 +19,11 @@
 - 单案 blind bundle 白名单精确为 `intake.json`、`tasks.json`、`rule-snapshot.json`、`future-question.json`、`bundle-manifest.json`、`cases/<case_id>/chart.json`；case 集恰为一，schools 恰为 `ziping`、`ditiansui`、`duan`、`ren`、`gao`、`yang`。
 - 每案 freeze 前必须预注册恰好 1 个 binary 短期未来问题；`observation_window.start_at=freeze_at`，`end_at` 晚于 freeze 且不超过 freeze 后三个月。
 - 六来源三态 `claim` / `abstain` / `unsupported` 全部保留；timing claim 必须引用真实 `liunian_steps`，不得补造。
-- witness、intake operator、runner operator、outcome custodian、reviewer A/B、adjudicator 必须满足规格的角色隔离；签署与验证是两个独立门。
+- intake operator、runner operator、outcome custodian、reviewer A/B、adjudicator 继续保持预测 / 反馈隔离；witness 角色隔离仅在选择可选 witness 审计时适用。
 - 真实 witness key 只能由独立人类见证人在新开的本机临时 `cmd.exe` 会话中输入；agent 不得创建、索取、读取、接收、传递、记录、回显或知晓真实 key，也不得把 key 写入参数、仓库、日志、截图、聊天或 CI。
 - 测试只能使用显式标记为 fixture 的假 key；任何生产/首案命令只引用环境变量名 `SCHOOL_CAPABILITY_WITNESS_KEY`，不得包含值。
-- freeze verification 必须重新读取实际 intake、bundle manifest、frozen run、witness registry 和见证方仓库外保存的 registry root；只有新 verification 制品 `status=VERIFIED` 才允许生成反馈释放凭证。
-- 验证前不得打开反馈文件、请求反馈正文、创建 `feedback.md`、即时回顾、observation、report 或 label；门禁失败不得创建空反馈制品。
+- frozen result 正式落盘并通过 canonical hash、内部 freeze hash 与父链复验后即可生成反馈释放凭证；不要求 witness registry、仓库外 root 或单独 `VERIFIED` 制品。
+- freeze 前不得打开反馈文件、请求反馈正文、创建即时回顾、observation、report 或 label；freeze 校验失败不得创建空反馈制品。
 - 即时回顾固定为 `evidence_class=prediction_first_immediate_retrospective`；未来观察固定为 `evidence_class=future_observation`；不确定、失访、冲突未决、窗口未结束固定为 `no_data`。
 - 即时回顾与未来观察必须使用不同制品、不同全局唯一 `label_identity` 和不同完成计数；同一事实不得跨 evidence class 复制计数。
 - 三项高风险任务固定为 `marriage.divorce_or_remarriage`、`wealth.debt`、`health.system_risk`；两名不同人类独立复核，冲突由第三方仲裁，未来账不得复用即时回顾审查。
@@ -66,9 +66,9 @@
 | `tests/test_production_entrypoints_unchanged.py` | Create | 锁定生产入口函数签名、runner registry 和历史门禁摘要。 |
 | `META/prospective-intake-protocol-v1.md` | Modify | 将批量正式 intake 改为逐案当天链，定义两个新 gate identity。 |
 | `plans/upgrade-guides/post-gate-action-plan-2026-07-15.md` | Modify | Task 3—11 改为单案节奏、future question 与双门禁消费。 |
-| `tools/README.md` | Modify | 登记单案与 cohort 命令、见证人终端边界和硬停点。 |
-| `handoff.md` | Modify | 下一步改为首案单案链，分别列三个门禁 HOLD 与首案人工硬停点。 |
-| `META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/` | Create during approved execution | 首案不可变正式制品；先到 verification，硬停确认后才允许即时回顾。 |
+| `tools/README.md` | Modify | 登记单案与 cohort 命令、frozen result 反馈门槛及可选 witness 审计边界。 |
+| `handoff.md` | Modify | 下一步改为首案 frozen result 直接进入反馈 / 核验摄入，并分别列三个门禁 HOLD。 |
+| `META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/` | Create during approved execution | 首案不可变正式制品；frozen result 校验通过后允许即时回顾。 |
 
 ## Phase 1: Immutable Single-Case Engineering
 
@@ -432,7 +432,7 @@ git add engine/evaluation/prospective_single_case.py tools/school_capability_pro
 git commit -m "feat: freeze one prospective case with six source grid"
 ```
 
-### Task 5: Witness three-segment verification and feedback-release credential
+### Task 5: Frozen-result feedback-release credential and optional witness audit
 
 **Files:**
 - Create: `engine/evaluation/prospective_evidence.py`
@@ -502,24 +502,18 @@ def verify_single_case_freeze_chain(
 
 
 def build_feedback_release_credential(
-    verification: Mapping[str, Any], roles: Mapping[str, str],
-    leakage_scan: Mapping[str, Any], *, created_at: str,
+    frozen_run: Mapping[str, Any], *, created_at: str,
 ) -> dict[str, Any]:
-    if verification["status"] != "VERIFIED":
-        raise ValueError("feedback release requires VERIFIED freeze verification")
-    assert_roles_are_pairwise_independent(roles)
-    if leakage_scan != {"marker_count": 0, "status": "PASS"}:
-        raise ContaminationError("feedback leakage scan failed")
+    verify_frozen_run(FrozenBlindRun.from_dict(frozen_run["frozen_run"]))
+    validate_parent_tree(frozen_run)
     return seal_child_artifact(
-        schema_version="prospective-feedback-release/v1",
-        case_id=verification["case_id"],
-        subject_id_hash=verification["subject_id_hash"],
+        schema_version="prospective-feedback-release/v2",
+        case_id=frozen_run["case_id"],
+        subject_id_hash=frozen_run["subject_id_hash"],
         created_at=created_at,
-        parents=[artifact_ref(verification)],
+        parents=[artifact_ref(frozen_run)],
         release_status="RELEASED",
-        freeze_at=verification["freeze_at"],
-        roles=dict(roles),
-        leakage_scan=dict(leakage_scan),
+        freeze_at=frozen_run["freeze_at"],
     )
 ```
 
@@ -1114,13 +1108,14 @@ git commit -m "feat: calculate future gate without changing baseline"
 - [ ] **Step 1: Write failing documentation contract tests**
 
 ```python
-def test_protocol_documents_single_case_order_and_human_witness_stop() -> None:
+def test_protocol_documents_minimal_frozen_result_feedback_gate() -> None:
     text = Path("META/prospective-intake-protocol-v1.md").read_text(encoding="utf-8")
     for required in (
         "每案当天正式 intake", "恰好 1 个", "prediction_first_immediate_retrospective",
         "future_observation", "prediction_capability_candidate_gate_v1",
         "future_empirical_gate_v1", "historical_platform_baseline_2026_07_15",
-        "独立人类见证人", "人工硬停点", "不得自动切换生产入口",
+        "不可变 frozen result 本身就是反馈门槛", "不是反馈前置条件",
+        "不得自动切换生产入口",
     ):
         assert required in text
 ```
@@ -1302,7 +1297,7 @@ git commit -m "eval: freeze first immediate prospective case"
 
 Otherwise leave them uncommitted for human review; this does not change the plan document's no-commit rule.
 
-### Task 15: Independent human witness signing and verification — FIRST HARD STOP
+### Task 15: Optional independent human witness signing and verification audit
 
 **Files:**
 - Human-created: `META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/*--witness-freeze--v001.json`
@@ -1329,9 +1324,9 @@ The witness runs `witness-verify-single-case` first with `--dry-run`, then forma
 
 The witness runs `set "SCHOOL_CAPABILITY_WITNESS_KEY="`, then the SET/NOT SET check documented in Task 12. Expected output: `NOT SET`. The witness closes the temporary terminal and confirms only: case ID, verification artifact path, `status=VERIFIED`, external root anchored, key cleared. They do not send the key to the agent.
 
-- [ ] **Step 5: HUMAN HARD STOP — require explicit signed verification confirmation**
+- [ ] **Step 5（可选审计）: record signed verification confirmation without blocking feedback**
 
-**STOP HERE.** No agent, automation, subagent or subsequent task may generate a feedback-release credential, a follow-up outline, `feedback.md`, custody request, immediate retrospective, observation, report or label until an independent human witness has personally completed Steps 1—4 and supplied explicit confirmation that the immutable verification artifact exists and validates as `VERIFIED`.
+该步骤仅记录可选增强审计结果，不阻塞已通过 hash、父链与内部 freeze hash 校验的 immutable frozen result 进入反馈 / 核验摄入；不得因缺少 witness 制品伪造或覆盖冻结链。
 
 Expected checkpoint evidence:
 
@@ -1354,7 +1349,7 @@ git commit -m "eval: witness verify first prospective freeze"
 
 Do not stage any external root file, terminal transcript, environment dump or secret.
 
-### Task 16: Post-hard-stop feedback outline, immediate retrospective, and first-case status
+### Task 16: Post-freeze feedback outline, immediate retrospective, and first-case status
 
 **Files:**
 - Create only after Task 15 signed checkpoint: `META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/*--feedback-release--v001.json`

@@ -293,6 +293,25 @@ def test_verification_must_postdate_freeze_and_use_named_human_identity(freeze_c
             _verify(freeze_chain, verifier=verifier)
 
 
+def test_frozen_run_itself_opens_feedback_intake(freeze_chain: dict) -> None:
+    frozen = _read(freeze_chain["frozen_run_path"])
+
+    release = build_feedback_release_credential(
+        frozen,
+        created_at="2026-07-16T01:05:00Z",
+    )
+
+    assert release["schema_version"] == "prospective-feedback-release/v2"
+    assert release["release_status"] == "RELEASED"
+    assert release["freeze_at"] == frozen["freeze_at"]
+    assert release["parents"] == [{
+        "artifact_path": frozen["artifact_path"],
+        "artifact_sha256": frozen["artifact_sha256"],
+    }]
+    assert "verification" not in json.dumps(release).lower()
+    assert "witness" not in json.dumps(release).lower()
+
+
 def test_release_requires_verified_independent_roles_and_strict_clean_scan(freeze_chain: dict) -> None:
     verification = _verify(freeze_chain)
     release = build_feedback_release_credential(

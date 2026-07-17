@@ -355,14 +355,40 @@ def _validate_roles(roles: Mapping[str, str]) -> dict[str, str]:
 
 
 def build_feedback_release_credential(
-    verification: Mapping[str, Any],
-    roles: Mapping[str, str],
-    leakage_scan: Mapping[str, Any],
+    frozen_or_verification: Mapping[str, Any],
+    roles: Mapping[str, str] | None = None,
+    leakage_scan: Mapping[str, Any] | None = None,
     *,
     created_at: str,
 ) -> dict[str, Any]:
-    """Build an immutable release child only after all fail-closed gates pass."""
-    verified = _validated_verification(verification)
+    """Open feedback intake from an immutable freeze; v1 verification remains compatible."""
+    if frozen_or_verification.get("schema_version") == "school-capability-single-case-staged-run/v1":
+        frozen = _actual_supplied_artifact(frozen_or_verification, "frozen run")
+        try:
+            run = FrozenBlindRun.from_dict(frozen["frozen_run"])
+            verify_frozen_run(run)
+            _validate_parent_tree(frozen)
+        except (KeyError, TypeError, ValueError) as error:
+            raise _stop(f"frozen result is invalid: {error}") from error
+        created = _utc(created_at, "created_at")
+        if created < _utc(frozen["freeze_at"], "freeze_at"):
+            raise ValueError("feedback release cannot predate freeze")
+        parent_path = Path(frozen["artifact_path"])
+        payload: dict[str, Any] = {
+            "schema_version": "prospective-feedback-release/v2",
+            "case_id": frozen["case_id"],
+            "subject_id_hash": frozen["subject_id_hash"],
+            "created_at": created_at,
+            "artifact_path": single_case_artifact_path(
+                parent_path.parent.parent, frozen["case_id"], "feedback-release", 1,
+            ).as_posix(),
+            "parents": [_artifact_ref(frozen)],
+            "release_status": "RELEASED",
+            "freeze_at": frozen["freeze_at"],
+        }
+        return {**payload, "artifact_sha256": canonical_artifact_sha256(payload)}
+
+    verified = _validated_verification(frozen_or_verification)
     separated_roles = _validate_roles(roles)
     if (
         not isinstance(leakage_scan, Mapping)
@@ -375,12 +401,9 @@ def build_feedback_release_credential(
         raise ValueError("feedback release cannot predate verification")
     verification_path = Path(verified["artifact_path"])
     artifact_path = single_case_artifact_path(
-        verification_path.parent.parent,
-        verified["case_id"],
-        "feedback-release",
-        1,
+        verification_path.parent.parent, verified["case_id"], "feedback-release", 1,
     )
-    payload: dict[str, Any] = {
+    payload = {
         "schema_version": "prospective-feedback-release/v1",
         "case_id": verified["case_id"],
         "subject_id_hash": verified["subject_id_hash"],
@@ -402,7 +425,9 @@ def validate_release_credential(release: Mapping[str, Any]) -> tuple[dict[str, A
     supplied = dict(release)
     if supplied.get("release_status") != "RELEASED":
         raise ValueError("immediate retrospective requires RELEASED credential")
-    if supplied.get("schema_version") != "prospective-feedback-release/v1":
+    if supplied.get("schema_version") not in {
+        "prospective-feedback-release/v1", "prospective-feedback-release/v2",
+    }:
         raise ValueError("immediate retrospective release schema is invalid")
     if supplied.get("artifact_sha256") != canonical_artifact_sha256(supplied):
         raise ValueError("immediate retrospective release hash is invalid")
@@ -415,12 +440,26 @@ def validate_release_credential(release: Mapping[str, Any]) -> tuple[dict[str, A
         raise _stop("release credential differs from actual sealed release")
     parents = actual.get("parents")
     if not isinstance(parents, list) or len(parents) != 1 or not isinstance(parents[0], dict):
-        raise ValueError("release credential requires one verification parent")
+        raise ValueError("release credential requires one frozen parent")
     try:
-        verification = validate_parent_ref(ArtifactRef(**parents[0]))
+        parent = validate_parent_ref(ArtifactRef(**parents[0]))
     except (OSError, TypeError, ValueError) as error:
-        raise _stop(f"release verification parent drift or hash mismatch: {error}") from error
-    verified = _validated_verification(verification)
+        raise _stop(f"release parent drift or hash mismatch: {error}") from error
+    if actual["schema_version"] == "prospective-feedback-release/v2":
+        if parent.get("schema_version") != "school-capability-single-case-staged-run/v1":
+            raise ValueError("v2 feedback release requires a frozen result parent")
+        try:
+            verify_frozen_run(FrozenBlindRun.from_dict(parent["frozen_run"]))
+            _validate_parent_tree(parent)
+        except (KeyError, TypeError, ValueError) as error:
+            raise _stop(f"release frozen parent is invalid: {error}") from error
+        if any(actual.get(field) != parent.get(field) for field in ("case_id", "subject_id_hash", "freeze_at")):
+            raise _stop("release summary differs from actual frozen parent")
+        if _utc(actual["created_at"], "release created_at") < _utc(parent["freeze_at"], "freeze_at"):
+            raise ValueError("release cannot predate freeze")
+        return actual, parent
+
+    verified = _validated_verification(parent)
     _validate_parent_tree(verified)
     if any(actual.get(field) != verified.get(field) for field in ("case_id", "subject_id_hash", "freeze_at")):
         raise _stop("release summary differs from actual verification parent")
@@ -428,10 +467,10 @@ def validate_release_credential(release: Mapping[str, Any]) -> tuple[dict[str, A
         verified["verified_at"], "verified_at",
     ):
         raise ValueError("release cannot predate verification")
-    roles = _validate_roles(actual.get("roles"))
+    validated_roles = _validate_roles(actual.get("roles"))
     if actual.get("leakage_scan") != {"marker_count": 0, "status": "PASS"}:
         raise _stop("release leakage scan is invalid")
-    return {**actual, "roles": roles}, verified
+    return {**actual, "roles": validated_roles}, verified
 
 
 def _contains_forbidden_evidence_field(value: object) -> bool:
@@ -447,8 +486,8 @@ def _contains_forbidden_evidence_field(value: object) -> bool:
 
 
 def _task_catalog_for_release(release: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
-    verification = validate_parent_ref(ArtifactRef(**release["parents"][0]))
-    for reference in verification.get("parents", []):
+    release_parent = validate_parent_ref(ArtifactRef(**release["parents"][0]))
+    for reference in release_parent.get("parents", []):
         parent = validate_parent_ref(ArtifactRef(**reference))
         if parent.get("schema_version") != "prospective-single-case-blind-bundle/v1":
             continue
@@ -591,21 +630,23 @@ def collect_immediate_retrospective(
     custodian: str,
 ) -> dict[str, Any]:
     """Collect structured pre-freeze facts, opening custody only after release validation."""
-    verified_release, verification = validate_release_credential(release)
+    verified_release, release_parent = validate_release_credential(release)
     collection_time = _utc(collected_at, "collected_at")
-    if collection_time < _utc(verification["verified_at"], "verified_at") or collection_time < _utc(
+    parent_ready_at = release_parent.get("verified_at", release_parent.get("freeze_at"))
+    if collection_time < _utc(parent_ready_at, "release parent ready_at") or collection_time < _utc(
         verified_release["created_at"], "release created_at",
     ):
-        raise ValueError("collected_at cannot predate verification or release")
+        raise ValueError("collected_at cannot predate freeze or release")
     custodian_identity = _named_human_identity(custodian, "custodian")
-    if custodian_identity != verified_release["roles"]["outcome_custodian"]:
-        raise ValueError("custodian must match the released outcome custodian")
-    if custodian_identity in {
-        verified_release["roles"]["witness"],
-        verified_release["roles"]["intake_operator"],
-        verified_release["roles"]["runner_operator"],
-    }:
-        raise ValueError("custodian must remain role-separated from release operations")
+    released_roles = verified_release.get("roles")
+    if released_roles is not None:
+        if custodian_identity != released_roles["outcome_custodian"]:
+            raise ValueError("custodian must match the released outcome custodian")
+        if custodian_identity in {
+            released_roles["witness"], released_roles["intake_operator"],
+            released_roles["runner_operator"],
+        }:
+            raise ValueError("custodian must remain role-separated from release operations")
 
     tasks = _task_catalog_for_release(verified_release)
     raw = custody_reader()

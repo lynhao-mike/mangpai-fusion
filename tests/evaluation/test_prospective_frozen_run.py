@@ -552,7 +552,9 @@ def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path)
     assert not output.exists()
 
 
-def _v002_single_case_bundle(tmp_path: Path) -> tuple[Path, dict, dict, dict]:
+def _v002_single_case_bundle(
+    tmp_path: Path, *, publish_v001_frozen: bool = True,
+) -> tuple[Path, dict, dict, dict]:
     v001_root, v001_intake, v001_question = _single_case_bundle(
         tmp_path,
         created_at="2026-07-17T05:29:58Z",
@@ -561,7 +563,8 @@ def _v002_single_case_bundle(tmp_path: Path) -> tuple[Path, dict, dict, dict]:
     v001_frozen = build_single_case_staged_frozen_run(
         v001_root, now_utc="2026-07-17T05:30:00Z",
     )
-    publish_new_json(Path(v001_frozen["artifact_path"]), v001_frozen, dry_run=False)
+    if publish_v001_frozen:
+        publish_new_json(Path(v001_frozen["artifact_path"]), v001_frozen, dry_run=False)
     case_id = v001_intake["case_id"]
     input_path = tmp_path / "source" / case_id / "input.md"
     question_draft = {
@@ -642,40 +645,73 @@ def test_v002_single_case_frozen_run_uses_canonical_versioned_path_and_revision_
     assert {field: artifact[field] for field in revision} == revision
 
 
-def test_v002_single_case_frozen_run_fail_closes_without_formal_v001_frozen_parent(
+def test_v002_migration_can_supersede_v001_bundle_when_no_formal_run_or_leakage_exists(
     tmp_path: Path,
 ) -> None:
-    root, _, _, v001_frozen = _v002_single_case_bundle(tmp_path)
-    wrong_parent = _read(root / "bundle-manifest.json")
+    root, intake, _, _ = _v002_single_case_bundle(
+        tmp_path, publish_v001_frozen=False,
+    )
+    v001_manifest = _read(root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json")
+    revision = {
+        "supersedes": v001_manifest["artifact_path"],
+        "supersedes_sha256": v001_manifest["artifact_sha256"],
+        "reason": "Approved parent-chain migration before first formal freeze",
+        "approved_by": "human-approver-01",
+    }
 
-    with pytest.raises((ContaminationError, ValueError), match="supersedes|frozen|parent"):
+    artifact = build_single_case_staged_frozen_run(
+        root,
+        freeze_at="2026-07-17T05:40:00Z",
+        executed_at="2026-07-17T05:40:30Z",
+        revision=revision,
+        migration_context={
+            "revision_scope": "parent_chain",
+            "superseded_chain_terminal_kind": "blind-bundle",
+        },
+    )
+
+    assert artifact["case_id"] == intake["case_id"]
+    assert artifact["revision_scope"] == "parent_chain"
+    assert artifact["superseded_chain_terminal_kind"] == "blind-bundle"
+    assert artifact["freeze_at"] == "2026-07-17T05:40:00Z"
+    assert artifact["executed_at"] == "2026-07-17T05:40:30Z"
+    assert artifact["frozen_run"]["frozen_at"] == artifact["freeze_at"]
+    assert artifact["supersedes"] == v001_manifest["artifact_path"]
+
+
+def test_v002_migration_cannot_bypass_existing_formal_v001_frozen_run(tmp_path: Path) -> None:
+    root, _, _, _ = _v002_single_case_bundle(tmp_path)
+    v001_manifest = _read(root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json")
+
+    with pytest.raises((ContaminationError, ValueError), match="latest|frozen|supersedes|parent"):
         build_single_case_staged_frozen_run(
             root,
-            now_utc="2026-07-17T05:40:00Z",
+            freeze_at="2026-07-17T05:40:00Z",
+            executed_at="2026-07-17T05:40:30Z",
             revision={
-                "supersedes": wrong_parent["artifact_path"],
-                "supersedes_sha256": wrong_parent["artifact_sha256"],
-                "reason": "Invalidly bypass v001 frozen run",
+                "supersedes": v001_manifest["artifact_path"],
+                "supersedes_sha256": v001_manifest["artifact_sha256"],
+                "reason": "Must not bypass an existing formal run",
                 "approved_by": "human-approver-01",
+            },
+            migration_context={
+                "revision_scope": "parent_chain",
+                "superseded_chain_terminal_kind": "blind-bundle",
             },
         )
 
-    Path(v001_frozen["artifact_path"]).unlink()
-    with pytest.raises((ContaminationError, ValueError), match="supersedes|frozen|parent|unreadable"):
-        build_single_case_staged_frozen_run(
-            root,
-            now_utc="2026-07-17T05:40:00Z",
-            revision={
-                "supersedes": v001_frozen["artifact_path"],
-                "supersedes_sha256": v001_frozen["artifact_sha256"],
-                "reason": "Missing formal predecessor must fail closed",
-                "approved_by": "human-approver-01",
-            },
-        )
 
-
-def test_single_case_frozen_run_binds_actual_execution_to_question_start(
-    tmp_path: Path,
+@pytest.mark.parametrize(
+    ("executed_at", "accepted"),
+    [
+        ("2026-07-17T05:39:59Z", False),
+        ("2026-07-17T05:40:00Z", True),
+        ("2026-07-17T05:41:00Z", True),
+        ("2026-07-17T05:41:01Z", False),
+    ],
+)
+def test_single_case_frozen_run_allows_execution_only_in_sixty_second_freeze_window(
+    tmp_path: Path, executed_at: str, accepted: bool,
 ) -> None:
     root, _, _ = _single_case_bundle(
         tmp_path,
@@ -683,13 +719,23 @@ def test_single_case_frozen_run_binds_actual_execution_to_question_start(
         freeze_at="2026-07-17T05:40:00Z",
     )
 
-    with pytest.raises((ContaminationError, ValueError), match="execution|start_at|freeze"):
-        build_single_case_staged_frozen_run(root, now_utc="2026-07-17T05:39:59Z")
+    if not accepted:
+        with pytest.raises((ContaminationError, ValueError), match="executed_at|60|freeze"):
+            build_single_case_staged_frozen_run(
+                root,
+                freeze_at="2026-07-17T05:40:00Z",
+                executed_at=executed_at,
+            )
+        return
 
-    artifact = build_single_case_staged_frozen_run(root, now_utc="2026-07-17T05:40:00Z")
-    assert artifact["executed_at"] == "2026-07-17T05:40:00Z"
-    assert artifact["created_at"] == artifact["executed_at"]
-    assert artifact["frozen_run"]["frozen_at"] == artifact["executed_at"]
+    artifact = build_single_case_staged_frozen_run(
+        root,
+        freeze_at="2026-07-17T05:40:00Z",
+        executed_at=executed_at,
+    )
+    assert artifact["freeze_at"] == "2026-07-17T05:40:00Z"
+    assert artifact["executed_at"] == executed_at
+    assert artifact["frozen_run"]["frozen_at"] == artifact["freeze_at"]
 
 
 def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(tmp_path: Path) -> None:

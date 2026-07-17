@@ -1,4 +1,4 @@
-# HANDOFF · 单案当天冻结与双门禁 HOLD 交接
+# HANDOFF · 最小盲测闭环与双门禁 HOLD 交接
 
 > 写给一个完全没有上下文的新会话。
 >
@@ -27,24 +27,18 @@
 
 ## 3. 首案下一合法动作
 
-下一合法动作不是等待或补齐 10 案，而是对已授权首案执行“每案 dry-run 后当天正式 single-case intake”，不等待 10 案：
+首案 v004 的 immutable frozen result 已正式存在。下一合法动作是复算其 canonical hash、内部 freeze hash 与父链；通过后直接以 [`issue-feedback-release`](tools/school_capability_dataset.py:1200) 的 `--frozen-run` 参数生成 create-only release，再接收命主信息或登记待核验盲测结果。
 
-1. 复验首案脱敏 [`input.md`](cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/input.md:1) 不含经历、当前现状、反馈、标签、旧报告或 known facts。
-2. 由授权人批准恰好 1 个 freeze 后三个月内可核验的 binary future question；agent 不得猜测答案。
-3. 按 [`tools/school_capability_dataset.py`](tools/school_capability_dataset.py:1306) 的真实 parser 先运行 `single-case-intake --dry-run`，人工核对后才允许正式写入不存在的单案路径。
-4. 每案独立执行 bundle / freeze / witness / verification；每个写操作先 dry-run，禁止覆盖父制品。
-5. 独立人类见证人在其临时 `cmd.exe` 中私下持有真实 key。agent 不得读取、请求、记录或展示 key，只能引用环境变量名 `SCHOOL_CAPABILITY_WITNESS_KEY`。
-6. verification 是人工硬停点：verification=VERIFIED 前禁止反馈释放，不得读取或请求反馈，也不得创建即时回顾、future observation、report 或 label。
-7. VERIFIED 后，freeze 前事实进入 `prediction_first_immediate_retrospective`；预注册 future question 仅在窗口成熟后进入独立 `future_observation`。两账完成数、label identity 与高风险审查不得复用。
-8. 每累计 10 个回顾完成案只创建父引用 cohort；10 案不控制单案 intake、freeze、verification 或反馈释放。
+1. 不覆盖 v001—v004 的 intake、blind bundle 或 frozen run。
+2. freeze 前事实进入 `prediction_first_immediate_retrospective`；预注册 future question 仅在窗口成熟后进入独立 `future_observation`。两账完成数、label identity 与高风险审查不得复用。
+3. witness / witness key / 外部 root / freeze verification 仅为可选审计兼容入口，不是反馈前置条件；不得为补链伪造任何制品。
+4. 每累计 10 个回顾完成案只创建父引用 cohort；10 案不控制单案 intake、freeze 或反馈释放。
 
-## 4. Witness 人工边界
+## 4. 可选 Witness 审计边界
 
-- 见证人必须独立于 intake operator、runner operator、outcome custodian、reviewer A/B 与 adjudicator。
-- agent 只提供实际父路径和 SHA-256，不接触密钥值、终端屏幕、命令历史、环境、剪贴板或日志。
-- 见证人亲自先 dry-run 后正式签署并验证实际 intake、bundle、frozen run、registry 与仓库外 root。
-- 完成后见证人执行 `set "SCHOOL_CAPABILITY_WITNESS_KEY="`，只运行 SET / NOT SET 存在性检查；预期为 `NOT SET`，随后关闭临时终端。
-- 只有独立人类明确确认 verification 制品存在且 `status=VERIFIED`，流程才可越过人工硬停点。
+- 仅在明确需要增强审计时使用；不参与最小反馈门槛。
+- 若使用，见证人仍须独立，agent 不接触密钥值、外部 root 或终端环境。
+- 可选审计失败只影响 witness 审计声明，不允许借机覆盖或重冻已封存结果。
 
 ## 5. 禁止事项
 

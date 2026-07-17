@@ -8,13 +8,14 @@ import re
 import shutil
 import tempfile
 from collections.abc import Mapping, Sequence, Set
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
     canonical_artifact_sha256,
+    publish_new_json,
     single_case_artifact_path,
     validate_parent_ref,
     validate_revision_metadata,
@@ -42,6 +43,11 @@ _FORBIDDEN_MARKERS = (
 )
 _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 _REVISION_FIELDS = {"supersedes", "supersedes_sha256", "reason", "approved_by"}
+_MIGRATION_FIELDS = {"revision_scope", "superseded_chain_terminal_kind"}
+_FORBIDDEN_MIGRATION_KINDS = (
+    "frozen-run", "witness", "verification", "feedback", "retrospective",
+    "observation", "report", "label", "reveal",
+)
 _FUTURE_REQUIRED_FIELDS = {
     "schema_version",
     "case_id",
@@ -308,6 +314,7 @@ def build_single_case_intake(
     future_question: Mapping[str, Any] | Sequence[Mapping[str, Any]] | None,
     *,
     created_at: str,
+    question_created_at: str | None = None,
     existing_subject_hashes: Set[str] = frozenset(),
     case_root: Path,
     version: int = 1,
@@ -315,7 +322,11 @@ def build_single_case_intake(
     intake_revision: Mapping[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Build one intake and one externally supplied question for immutable publication."""
-    _parse_utc(created_at, "created_at")
+    intake_created = _parse_utc(created_at, "created_at")
+    question_created_at = question_created_at or created_at
+    question_created = _parse_utc(question_created_at, "question_created_at")
+    if question_created > intake_created:
+        raise ValueError("question_created_at must not be later than intake created_at")
     if tuple(schools) != SIX_SCHOOLS:
         raise ValueError("single-case intake requires exactly six schools in canonical order")
     draft = _one_question(future_question)
@@ -345,7 +356,7 @@ def build_single_case_intake(
     question = _build_future_question_registration(
         row,
         draft,
-        created_at=created_at,
+        created_at=question_created_at,
         artifact_path=question_path,
         version=version,
         revision=question_revision,
@@ -464,11 +475,23 @@ def _single_bundle_files(
     future_question: Mapping[str, Any],
     tasks_path: Path,
     rule_snapshot_path: Path,
+    *,
+    allow_unpublished_parents: bool = False,
 ) -> tuple[dict[str, bytes], dict[str, Any], dict[str, Any]]:
     validate_single_case_intake(intake)
     _validate_future_question_parent(future_question, intake)
-    actual_intake = _validated_disk_parent(intake, "single-case intake")
-    actual_question = _validated_disk_parent(future_question, "future-question")
+    if allow_unpublished_parents:
+        actual_intake = dict(intake)
+        actual_question = dict(future_question)
+        for document, description in (
+            (actual_intake, "single-case intake"),
+            (actual_question, "future-question"),
+        ):
+            if canonical_artifact_sha256(document) != document.get("artifact_sha256"):
+                raise _stop(f"unpublished {description} canonical hash mismatch")
+    else:
+        actual_intake = _validated_disk_parent(intake, "single-case intake")
+        actual_question = _validated_disk_parent(future_question, "future-question")
     row = validate_single_case_intake(actual_intake)
     question = _validate_future_question_parent(actual_question, actual_intake)
     intake = actual_intake
@@ -585,6 +608,8 @@ def prepare_single_case_blind_bundle(
     *,
     dry_run: bool,
     revision: Mapping[str, Any] | None = None,
+    created_at: str | None = None,
+    _allow_unpublished_parents: bool = False,
 ) -> dict[str, Any]:
     """Build and create-only publish one whitelist-only blind bundle."""
     target = Path(target_dir)
@@ -593,6 +618,7 @@ def prepare_single_case_blind_bundle(
         raise ValueError(f"bundle target must not exist: {target}")
     files, row, question = _single_bundle_files(
         intake, future_question, Path(tasks_path), Path(rule_snapshot_path),
+        allow_unpublished_parents=_allow_unpublished_parents,
     )
     version_match = re.search(r"--blind-bundle--v(\d{3})$", target.as_posix())
     if version_match is None:
@@ -615,12 +641,13 @@ def prepare_single_case_blind_bundle(
     ]
     intake_created = _parse_utc(intake["created_at"], "intake created_at")
     question_created = _parse_utc(question["created_at"], "future-question created_at")
-    bundle_created = max(intake_created, question_created)
+    parent_created = max(intake_created, question_created)
+    bundle_created = _parse_utc(created_at, "bundle created_at") if created_at else parent_created
     freeze_at = _parse_utc(
         question["observation_window"]["start_at"], "observation_window.start_at",
     )
-    if bundle_created > freeze_at:
-        raise _stop("single-case bundle cannot be generated after planned freeze")
+    if not parent_created <= bundle_created <= freeze_at:
+        raise _stop("single-case bundle time must satisfy parents <= bundle <= planned freeze")
     created_at = bundle_created.isoformat().replace("+00:00", "Z")
     manifest = {
         "schema_version": _SINGLE_BUNDLE_SCHEMA,
@@ -642,7 +669,7 @@ def prepare_single_case_blind_bundle(
 
     target.parent.mkdir(parents=True, exist_ok=True)
     _reject_symlink(target.parent, "single-case bundle parent")
-    temporary = Path(tempfile.mkdtemp(prefix=f".{target.name}.", dir=target.parent))
+    temporary = Path(tempfile.mkdtemp(prefix=".b.", dir=target.parent))
     try:
         for name, content in files.items():
             destination = temporary / name
@@ -870,7 +897,10 @@ def build_single_case_staged_frozen_run(
     bundle_root: Path,
     *,
     now_utc: str | None = None,
+    freeze_at: str | None = None,
+    executed_at: str | None = None,
     revision: Mapping[str, Any] | None = None,
+    migration_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Re-verify and freeze exactly one complete six-school prospective case."""
     root = Path(bundle_root)
@@ -910,24 +940,28 @@ def build_single_case_staged_frozen_run(
         safe_outputs, case_id=row["case_id"], task_ids=sorted(row["task_ids"]),
     )
     planned_start = question["observation_window"]["start_at"]
-    executed_at = now_utc or planned_start
+    freeze_at = freeze_at or planned_start
+    executed_at = executed_at or now_utc or freeze_at
     try:
-        freeze_time = _parse_utc(executed_at, "executed_at")
+        freeze_time = _parse_utc(freeze_at, "freeze_at")
+        execution_time = _parse_utc(executed_at, "executed_at")
         planned_time = _parse_utc(planned_start, "observation_window.start_at")
         intake_time = _parse_utc(intake_parent["created_at"], "intake created_at")
         bundle_time = _parse_utc(manifest["created_at"], "bundle created_at")
     except (KeyError, ValueError) as error:
         raise _stop(f"single-case freeze time contract mismatch: {error}") from error
     if freeze_time != planned_time:
-        raise _stop("actual execution must equal observation_window.start_at")
+        raise _stop("freeze_at must equal observation_window.start_at")
+    if not freeze_time <= execution_time <= freeze_time + timedelta(seconds=60):
+        raise _stop("executed_at must be within [freeze_at, freeze_at+60s]")
     if not intake_time <= bundle_time <= freeze_time:
         raise _stop("single-case time order must satisfy intake <= bundle <= freeze")
-    validate_future_question_registration(question, freeze_at=executed_at)
+    validate_future_question_registration(question, freeze_at=freeze_at)
     safe_run = freeze_outputs(
         safe_outputs,
         generated_run.task_catalog_version,
         generated_run.rule_snapshot_id,
-        frozen_at=executed_at,
+        frozen_at=freeze_at,
     )
     verify_frozen_run(safe_run)
 
@@ -937,26 +971,68 @@ def build_single_case_staged_frozen_run(
     )
     version = int(version_match.group(1)) if version_match is not None else 1
     revision_fields = _revision_payload(revision, version)
+    migration_fields: dict[str, Any] = {}
+    if migration_context is not None:
+        migration_fields = dict(migration_context)
+        if migration_fields != {
+            "revision_scope": "parent_chain",
+            "superseded_chain_terminal_kind": "blind-bundle",
+        }:
+            raise _stop("approved migration context is invalid")
     if version > 1:
         try:
             predecessor = validate_parent_ref(ArtifactRef(
                 revision_fields["supersedes"],
                 revision_fields["supersedes_sha256"],
             ))
-            predecessor_version = _artifact_version(
-                predecessor.get("artifact_path"), "frozen-run",
-            )
-            predecessor_run = FrozenBlindRun.from_dict(predecessor["frozen_run"])
-            verify_frozen_run(predecessor_run)
         except (KeyError, TypeError, ValueError) as error:
             raise _stop(f"frozen run supersedes parent is invalid: {error}") from error
-        if (
-            predecessor_version != version - 1
-            or predecessor.get("schema_version") != "school-capability-single-case-staged-run/v1"
-            or predecessor.get("case_id") != row["case_id"]
-            or predecessor.get("subject_id_hash") != intake_parent["subject_id_hash"]
-        ):
-            raise _stop("frozen run supersedes parent must be the formal previous version")
+        formal_previous_path = single_case_artifact_path(
+            Path(intake_parent["artifact_path"]).parent.parent,
+            row["case_id"],
+            "frozen-run",
+            version - 1,
+        )
+        if migration_fields:
+            if version == 2 and (formal_previous_path.exists() or formal_previous_path.is_symlink()):
+                raise _stop("migration cannot bypass the latest formal frozen run")
+            try:
+                predecessor_version = _artifact_version(
+                    predecessor.get("artifact_path", "").replace(
+                        "/bundle-manifest.json", ".json"
+                    ),
+                    "blind-bundle",
+                )
+            except ValueError:
+                bundle_match = re.search(
+                    r"--blind-bundle--v(\d{3})/bundle-manifest\.json$",
+                    str(predecessor.get("artifact_path", "")),
+                )
+                predecessor_version = int(bundle_match.group(1)) if bundle_match else -1
+            if (
+                predecessor_version != version - 1
+                or predecessor.get("schema_version") != _SINGLE_BUNDLE_SCHEMA
+                or predecessor.get("case_id") != row["case_id"]
+                or predecessor.get("subject_id_hash") != intake_parent["subject_id_hash"]
+            ):
+                raise _stop("migration supersedes parent must be the valid previous blind bundle")
+        else:
+            try:
+                predecessor_version = _artifact_version(
+                    predecessor.get("artifact_path"), "frozen-run",
+                )
+                predecessor_run = FrozenBlindRun.from_dict(predecessor["frozen_run"])
+                verify_frozen_run(predecessor_run)
+            except (KeyError, TypeError, ValueError) as error:
+                raise _stop(f"frozen run supersedes parent is invalid: {error}") from error
+            if (
+                predecessor_version != version - 1
+                or predecessor.get("schema_version") != "school-capability-single-case-staged-run/v1"
+                or predecessor.get("case_id") != row["case_id"]
+                or predecessor.get("subject_id_hash") != intake_parent["subject_id_hash"]
+                or Path(revision_fields["supersedes"]) != formal_previous_path
+            ):
+                raise _stop("frozen run supersedes parent must be the latest formal previous run")
 
     task_hash = manifest["files"]["tasks.json"]
     rule_hash = manifest["files"]["rule-snapshot.json"]
@@ -979,6 +1055,7 @@ def build_single_case_staged_frozen_run(
         "case_id": row["case_id"],
         "subject_id_hash": intake_parent["subject_id_hash"],
         "created_at": executed_at,
+        "freeze_at": freeze_at,
         "executed_at": executed_at,
         "artifact_path": artifact_path.as_posix(),
         "intake_sha256": intake_parent["artifact_sha256"],
@@ -991,8 +1068,251 @@ def build_single_case_staged_frozen_run(
         "case_task_assignments": expected_assignment,
         "frozen_run": safe_run.to_dict(),
         **revision_fields,
+        **migration_fields,
     }
     return {
         **payload,
         "artifact_sha256": _sha256(canonical_json(payload).encode("utf-8")),
     }
+
+
+def _migration_revision(parent: Mapping[str, Any], reason: str, approved_by: str) -> dict[str, Any]:
+    return {
+        "supersedes": parent["artifact_path"],
+        "supersedes_sha256": parent["artifact_sha256"],
+        "reason": reason,
+        "approved_by": approved_by,
+    }
+
+
+def _assert_migration_paths_clean(case_dir: Path, *, previous_version: int) -> None:
+    for candidate in case_dir.iterdir():
+        name = candidate.name.lower()
+        frozen_match = re.search(r"--frozen-run--v(\d{3})\.json$", name)
+        if frozen_match is not None and 2 <= int(frozen_match.group(1)) <= previous_version:
+            continue
+        if any(kind in name for kind in _FORBIDDEN_MIGRATION_KINDS):
+            raise _stop(f"forbidden migration artifact exists: {candidate}")
+
+
+def prepare_parent_chain_v002_migration(
+    *,
+    input_file: Path,
+    tasks_path: Path,
+    rule_snapshot_path: Path,
+    tasks_by_case: dict[str, list[str]],
+    future_question_draft: Mapping[str, Any],
+    case_root: Path,
+    operator: str,
+    approved_by: str,
+    reason: str,
+    transaction_started_at: str,
+    freeze_at: str,
+    executed_at: str,
+    dry_run: bool,
+    next_version: int = 2,
+) -> dict[str, Any]:
+    """Plan or create-only publish an approved whole-parent-chain transaction."""
+    input_file = Path(input_file)
+    case_id = input_file.parent.name
+    case_root = Path(case_root)
+    case_dir = case_root / case_id
+    if not case_dir.is_dir():
+        raise _stop("single-case directory is missing")
+    if isinstance(next_version, bool) or not isinstance(next_version, int) or next_version < 2:
+        raise ValueError("next_version must be an integer greater than or equal to 2")
+    previous_version = next_version - 1
+    _assert_migration_paths_clean(case_dir, previous_version=previous_version)
+
+    def sealed(path: Path) -> dict[str, Any]:
+        try:
+            digest = json.loads(path.read_text(encoding="utf-8"))["artifact_sha256"]
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, KeyError) as error:
+            raise _stop(f"migration parent is invalid: {path}") from error
+        return validate_parent_ref(ArtifactRef(path.as_posix(), digest))
+
+    previous_question = sealed(single_case_artifact_path(
+        case_root, case_id, "future-question-registration", previous_version,
+    ))
+    previous_intake = sealed(single_case_artifact_path(
+        case_root, case_id, "intake", previous_version,
+    ))
+    previous_bundle_root = case_dir / f"{case_id}--blind-bundle--v{previous_version:03d}"
+    previous_bundle = verify_single_case_bundle(previous_bundle_root)["manifest"]
+    if not (
+        previous_question["case_id"]
+        == previous_intake["case_id"]
+        == previous_bundle["case_id"]
+        == case_id
+        and previous_question["subject_id_hash"]
+        == previous_intake["subject_id_hash"]
+        == previous_bundle["subject_id_hash"]
+    ):
+        raise _stop("previous migration parents do not bind the same case and subject")
+
+    transaction_time = _parse_utc(transaction_started_at, "transaction_started_at")
+    question_created = transaction_time
+    intake_created = transaction_time + timedelta(microseconds=1)
+    bundle_created = transaction_time + timedelta(microseconds=2)
+    freeze_time = _parse_utc(freeze_at, "freeze_at")
+    execution_time = _parse_utc(executed_at, "executed_at")
+    if not bundle_created < freeze_time <= execution_time <= freeze_time + timedelta(seconds=60):
+        raise _stop(
+            "migration time order must satisfy transaction/question < intake < bundle < freeze "
+            "<= executed_at <= freeze_at+60s"
+        )
+    draft = dict(future_question_draft)
+    draft["observation_window"] = {
+        "start_at": freeze_at,
+        "end_at": _add_calendar_months(freeze_time, 3).isoformat().replace("+00:00", "Z"),
+    }
+    question_revision = _migration_revision(previous_question, reason, approved_by)
+    intake_revision = _migration_revision(previous_intake, reason, approved_by)
+    bundle_revision = _migration_revision(previous_bundle, reason, approved_by)
+    intake, question = build_single_case_intake(
+        input_file,
+        json.loads(Path(tasks_path).read_text(encoding="utf-8")),
+        SIX_SCHOOLS,
+        operator,
+        tasks_by_case,
+        draft,
+        created_at=intake_created.isoformat().replace("+00:00", "Z"),
+        question_created_at=question_created.isoformat().replace("+00:00", "Z"),
+        case_root=case_root,
+        version=next_version,
+        question_revision=question_revision,
+        intake_revision=intake_revision,
+    )
+    targets = {
+        "future_question": Path(question["artifact_path"]),
+        "intake": Path(intake["artifact_path"]),
+        "blind_bundle": case_dir / f"{case_id}--blind-bundle--v{next_version:03d}",
+        "frozen_run": single_case_artifact_path(
+            case_root, case_id, "frozen-run", next_version,
+        ),
+    }
+    existing = [path for path in targets.values() if path.exists() or path.is_symlink()]
+    if existing:
+        raise ValueError("migration target(s) must not exist: " + ", ".join(map(str, existing)))
+
+    # Build and reverify in a sibling staging tree before any formal write.
+    staging = Path(tempfile.mkdtemp(prefix=f".pcv{next_version}.", dir=case_dir.parent))
+    try:
+        staged_root = staging
+        staged_question = {**question, "artifact_path": single_case_artifact_path(
+            staged_root, case_id, "future-question-registration", next_version,
+        ).as_posix()}
+        staged_question["artifact_sha256"] = canonical_artifact_sha256(staged_question)
+        staged_intake = {**intake, "artifact_path": single_case_artifact_path(
+            staged_root, case_id, "intake", next_version,
+        ).as_posix()}
+        staged_intake["future_question"] = {
+            "artifact_path": staged_question["artifact_path"],
+            "artifact_sha256": staged_question["artifact_sha256"],
+        }
+        staged_intake["parents"] = [staged_intake["future_question"]]
+        staged_intake["artifact_sha256"] = canonical_artifact_sha256(staged_intake)
+        Path(staged_question["artifact_path"]).parent.mkdir(parents=True, exist_ok=True)
+        Path(staged_question["artifact_path"]).write_bytes(
+            (json.dumps(staged_question, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        )
+        Path(staged_intake["artifact_path"]).write_bytes(
+            (json.dumps(staged_intake, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        )
+        staged_bundle_root = Path(staged_intake["artifact_path"]).with_name(
+            f"{case_id}--blind-bundle--v{next_version:03d}"
+        )
+        staged_manifest = prepare_single_case_blind_bundle(
+            staged_intake, staged_question, Path(tasks_path), Path(rule_snapshot_path),
+            staged_bundle_root, dry_run=False, revision=bundle_revision,
+            created_at=bundle_created.isoformat().replace("+00:00", "Z"),
+        )
+        staged_run = build_single_case_staged_frozen_run(
+            staged_bundle_root,
+            freeze_at=freeze_at,
+            executed_at=executed_at,
+            revision=bundle_revision,
+            migration_context={
+                "revision_scope": "parent_chain",
+                "superseded_chain_terminal_kind": "blind-bundle",
+            },
+        )
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
+
+    question = {**staged_question, "artifact_path": targets["future_question"].as_posix()}
+    question["artifact_sha256"] = canonical_artifact_sha256(question)
+    intake = {**staged_intake, "artifact_path": targets["intake"].as_posix()}
+    intake["future_question"] = {
+        "artifact_path": question["artifact_path"], "artifact_sha256": question["artifact_sha256"],
+    }
+    intake["parents"] = [intake["future_question"]]
+    intake["artifact_sha256"] = canonical_artifact_sha256(intake)
+    manifest = prepare_single_case_blind_bundle(
+        intake, question, Path(tasks_path), Path(rule_snapshot_path),
+        targets["blind_bundle"], dry_run=True, revision=bundle_revision,
+        created_at=bundle_created.isoformat().replace("+00:00", "Z"),
+        _allow_unpublished_parents=True,
+    )
+    frozen = {
+        **staged_run,
+        "artifact_path": targets["frozen_run"].as_posix(),
+        "intake_sha256": intake["artifact_sha256"],
+        "future_question_registration_sha256": question["artifact_sha256"],
+        "bundle_sha256": manifest["bundle_sha256"],
+        "bundle_manifest_sha256": manifest["artifact_sha256"],
+    }
+    frozen["parents"] = [
+        manifest["parents"][0], manifest["parents"][1],
+        {"artifact_path": (targets["blind_bundle"] / "tasks.json").as_posix(), "artifact_sha256": frozen["task_catalog_sha256"]},
+        {"artifact_path": (targets["blind_bundle"] / "rule-snapshot.json").as_posix(), "artifact_sha256": frozen["rule_snapshot_sha256"]},
+        {"artifact_path": manifest["artifact_path"], "artifact_sha256": manifest["artifact_sha256"]},
+    ]
+    frozen["artifact_sha256"] = canonical_artifact_sha256(frozen)
+    artifacts = {
+        "future_question": question,
+        "intake": intake,
+        "blind_bundle": manifest,
+        "frozen_run": frozen,
+    }
+    plan = {
+        "status": "DRY_RUN" if dry_run else "PUBLISHED",
+        "publication_order": list(artifacts),
+        "freeze_at": freeze_at,
+        "artifacts": artifacts,
+    }
+    if dry_run:
+        return plan
+
+    published: list[str] = []
+    try:
+        publish_new_json(targets["future_question"], question, dry_run=False)
+        published.append(targets["future_question"].as_posix())
+        publish_new_json(targets["intake"], intake, dry_run=False)
+        published.append(targets["intake"].as_posix())
+        manifest = prepare_single_case_blind_bundle(
+            intake, question, Path(tasks_path), Path(rule_snapshot_path),
+            targets["blind_bundle"], dry_run=False, revision=bundle_revision,
+            created_at=bundle_created.isoformat().replace("+00:00", "Z"),
+        )
+        published.append(targets["blind_bundle"].as_posix())
+        frozen = build_single_case_staged_frozen_run(
+            targets["blind_bundle"],
+            freeze_at=freeze_at,
+            executed_at=executed_at,
+            revision=bundle_revision,
+            migration_context={
+                "revision_scope": "parent_chain",
+                "superseded_chain_terminal_kind": "blind-bundle",
+            },
+        )
+        artifacts["blind_bundle"] = manifest
+        artifacts["frozen_run"] = frozen
+        publish_new_json(targets["frozen_run"], frozen, dry_run=False)
+        published.append(targets["frozen_run"].as_posix())
+    except BaseException as error:
+        raise ValueError(
+            "RECOVERABLE_HOLD: parent-chain v002 publication interrupted; "
+            f"published={published}; cause={error}"
+        ) from error
+    return plan

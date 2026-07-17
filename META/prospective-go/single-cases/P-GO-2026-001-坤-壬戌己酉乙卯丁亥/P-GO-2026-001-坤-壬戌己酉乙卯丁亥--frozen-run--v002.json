@@ -1,0 +1,337 @@
+{
+  "schema_version": "school-capability-single-case-staged-run/v1",
+  "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+  "subject_id_hash": "352a1dffc2857d20e46c901ab27d691ce504623b9d740c6582055bd6d6ce0e05",
+  "created_at": "2026-07-17T06:22:48.588352Z",
+  "freeze_at": "2026-07-17T06:22:48.588326Z",
+  "executed_at": "2026-07-17T06:22:48.588352Z",
+  "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--frozen-run--v002.json",
+  "intake_sha256": "b66bf8b9a4f8996511377c71a5b5a533e018c58ab77c1d5394cfb483a5a01be6",
+  "future_question_registration_sha256": "e3325c661ddc026b70e934dfcd9d9a8b2cf187024ed586e4fb8e60e8fc3cea94",
+  "task_catalog_sha256": "de184212d481c4c81b9fd2f0229ccb6deedb268a4da07c30486c52d64b6511ee",
+  "rule_snapshot_sha256": "beb132cb656f2bc4f67952130608de4c1c60a93851c3fd7fd2955facbcff6b37",
+  "bundle_sha256": "0fac151b34268b3cbb13ad6af3de498cb451e7ee94d423f5c29df79290992483",
+  "bundle_manifest_sha256": "ad26f35db05b643b331924f3313d5288a4f40dc4420fe3b97142635c1d3eb0c2",
+  "parents": [
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--intake--v002.json",
+      "artifact_sha256": "b66bf8b9a4f8996511377c71a5b5a533e018c58ab77c1d5394cfb483a5a01be6"
+    },
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--future-question-registration--v002.json",
+      "artifact_sha256": "e3325c661ddc026b70e934dfcd9d9a8b2cf187024ed586e4fb8e60e8fc3cea94"
+    },
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v002/tasks.json",
+      "artifact_sha256": "de184212d481c4c81b9fd2f0229ccb6deedb268a4da07c30486c52d64b6511ee"
+    },
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v002/rule-snapshot.json",
+      "artifact_sha256": "beb132cb656f2bc4f67952130608de4c1c60a93851c3fd7fd2955facbcff6b37"
+    },
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v002/bundle-manifest.json",
+      "artifact_sha256": "ad26f35db05b643b331924f3313d5288a4f40dc4420fe3b97142635c1d3eb0c2"
+    }
+  ],
+  "case_task_assignments": [
+    {
+      "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+      "task_ids": [
+        "career.change_window",
+        "career.role_change",
+        "structure.overview",
+        "wealth.debt"
+      ]
+    }
+  ],
+  "frozen_run": {
+    "task_catalog_version": "prospective-go-tasks-v1@sha256:de184212d481c4c81b9fd2f0229ccb6deedb268a4da07c30486c52d64b6511ee",
+    "rule_snapshot_id": "prospective-go-six-source-ten-task-rules-v1@sha256:beb132cb656f2bc4f67952130608de4c1c60a93851c3fd7fd2955facbcff6b37",
+    "frozen_at": "2026-07-17T06:22:48.588326Z",
+    "outputs": [
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ditiansui",
+        "task_id": "career.change_window",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "duan",
+        "task_id": "career.change_window",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "gao",
+        "task_id": "career.change_window",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ren",
+        "task_id": "career.change_window",
+        "state": "claim",
+        "rationale": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。",
+        "predictions": [
+          {
+            "prediction_id": "prediction-53638d2aff3e39c6c220da60",
+            "event_label": "career_change",
+            "probability": 0.7,
+            "time_window": {
+              "start_year": 2006,
+              "end_year": 2006,
+              "label": "annual"
+            },
+            "evidence_refs": [
+              "evidence-d8749d81adc3f4d66d62"
+            ],
+            "falsifier": "该时间窗内未发生职业变化即证伪本命题。",
+            "fact_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "four_pillars.year",
+              "liunian_steps.24"
+            ]
+          }
+        ],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "yang",
+        "task_id": "career.change_window",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ziping",
+        "task_id": "career.change_window",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ditiansui",
+        "task_id": "career.role_change",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "duan",
+        "task_id": "career.role_change",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "gao",
+        "task_id": "career.role_change",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ren",
+        "task_id": "career.role_change",
+        "state": "claim",
+        "rationale": "基于输入流年与原局/大运的可计算冲合刑穿或伏吟关系推导。",
+        "predictions": [
+          {
+            "prediction_id": "prediction-d3e8c72fb6f20f3430c6e2b2",
+            "event_label": "occurred",
+            "probability": 0.7,
+            "time_window": {
+              "start_year": 2006,
+              "end_year": 2006,
+              "label": "annual"
+            },
+            "evidence_refs": [
+              "evidence-22863ca3841ced7cfeb2"
+            ],
+            "falsifier": "若该时间窗内未发生显著职业角色或岗位变化，则本命题证伪。",
+            "fact_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "four_pillars.year",
+              "liunian_steps.24"
+            ]
+          }
+        ],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "yang",
+        "task_id": "career.role_change",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ziping",
+        "task_id": "career.role_change",
+        "state": "abstain",
+        "rationale": "runner claim rejected by frozen task contract: time window 'lifetime' is not allowed for task career.role_change",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ditiansui",
+        "task_id": "structure.overview",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "duan",
+        "task_id": "structure.overview",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "gao",
+        "task_id": "structure.overview",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ren",
+        "task_id": "structure.overview",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "yang",
+        "task_id": "structure.overview",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ziping",
+        "task_id": "structure.overview",
+        "state": "claim",
+        "rationale": "仅陈述十神结构并见，不把并见直接判成唯一现实事件。",
+        "predictions": [
+          {
+            "prediction_id": "prediction-8aef6db477df0d87f172ddec",
+            "event_label": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+            "probability": 0.6,
+            "time_window": {},
+            "evidence_refs": [
+              "evidence-e2668b1ebcaae2148e70"
+            ],
+            "falsifier": "若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。",
+            "fact_refs": [
+              "four_pillars.day",
+              "four_pillars.month"
+            ]
+          }
+        ],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ditiansui",
+        "task_id": "wealth.debt",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "duan",
+        "task_id": "wealth.debt",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "gao",
+        "task_id": "wealth.debt",
+        "state": "abstain",
+        "rationale": "runner covers this task but chart facts do not satisfy a production trigger",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ren",
+        "task_id": "wealth.debt",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "yang",
+        "task_id": "wealth.debt",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      },
+      {
+        "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+        "school_id": "ziping",
+        "task_id": "wealth.debt",
+        "state": "unsupported",
+        "rationale": "no independent L2 claim generator is registered for this school",
+        "predictions": [],
+        "counter_evidence": []
+      }
+    ],
+    "freeze_hash": "b7a38b666e367e3875a28ad804316b7e97ccf8d5a7b3a3e06fa2966a6c938970",
+    "schema_version": "school-capability-frozen-run/v1"
+  },
+  "supersedes": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v001/bundle-manifest.json",
+  "supersedes_sha256": "9f38cd4d505ff48a9a6aa1af9a207f7d31729c37189c2ab5e9f964b652695d05",
+  "reason": "correct_pre_freeze_window_binding_before_any_reveal",
+  "approved_by": "human-user-approval-20260717",
+  "revision_scope": "parent_chain",
+  "superseded_chain_terminal_kind": "blind-bundle",
+  "artifact_sha256": "872022c83ead1eb9945688e7632a1dff205448c9cbbfbc9f3edf8859f969985d"
+}

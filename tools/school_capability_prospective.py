@@ -217,10 +217,14 @@ def _verified_staged_artifact(path: Path, manifest: dict[str, Any]) -> tuple[dic
         "case_task_assignments", "frozen_run", "artifact_sha256",
     }
     revision_fields = {"supersedes", "supersedes_sha256", "reason", "approved_by"}
+    migration_fields = {"revision_scope", "superseded_chain_terminal_kind"}
+    timing_fields = {"freeze_at", "executed_at"}
     allowed_single_case_fields = {
         frozenset(single_case_required),
         frozenset(single_case_required | {"executed_at"}),
-        frozenset(single_case_required | {"executed_at"} | revision_fields),
+        frozenset(single_case_required | timing_fields),
+        frozenset(single_case_required | timing_fields | revision_fields),
+        frozenset(single_case_required | timing_fields | revision_fields | migration_fields),
     }
     is_legacy = set(artifact) == legacy_required and artifact.get("schema_version") == _STAGED_SCHEMA
     is_single_case = (
@@ -435,6 +439,22 @@ def _parser() -> argparse.ArgumentParser:
     single_stage.add_argument("--reason")
     single_stage.add_argument("--approved-by")
     single_stage.add_argument("--dry-run", action="store_true")
+    migration = commands.add_parser(
+        "migrate-single-case-parent-chain-v002",
+        help="Plan or create-only publish the approved whole-parent-chain v002 migration",
+    )
+    migration.add_argument("--input", required=True)
+    migration.add_argument("--tasks", required=True)
+    migration.add_argument("--rule-snapshot", required=True)
+    migration.add_argument("--tasks-by-case", required=True)
+    migration.add_argument("--future-question", required=True)
+    migration.add_argument("--case-root", required=True)
+    migration.add_argument("--operator", required=True)
+    migration.add_argument("--approved-by", required=True)
+    migration.add_argument("--reason", required=True)
+    migration.add_argument("--freeze-at")
+    migration.add_argument("--next-version", type=int, default=2)
+    migration.add_argument("--dry-run", action="store_true")
     witness = commands.add_parser("witness-freeze-chain")
     witness.add_argument("--intake", required=True)
     witness.add_argument("--bundle-root", required=True)
@@ -472,6 +492,38 @@ def main() -> int:
             )
         result = payload["artifact_sha256"]
         use_task1_publisher = True
+    elif args.command == "migrate-single-case-parent-chain-v002":
+        from engine.evaluation.prospective_single_case import prepare_parent_chain_v002_migration
+
+        transaction_started = datetime.now(timezone.utc)
+        transaction_started_at = transaction_started.isoformat().replace("+00:00", "Z")
+        freeze_at = args.freeze_at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        freeze_time = _parse_utc(freeze_at, "freeze_at")
+        minimum_freeze = transaction_started + timedelta(microseconds=3)
+        if args.freeze_at is None and freeze_time < minimum_freeze:
+            freeze_at = _utc(minimum_freeze)
+        executed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        if executed_at < freeze_at:
+            executed_at = freeze_at
+        payload = prepare_parent_chain_v002_migration(
+            input_file=Path(args.input),
+            tasks_path=Path(args.tasks),
+            rule_snapshot_path=Path(args.rule_snapshot),
+            tasks_by_case=_read_json(Path(args.tasks_by_case)),
+            future_question_draft=_read_json(Path(args.future_question)),
+            case_root=Path(args.case_root),
+            operator=args.operator,
+            approved_by=args.approved_by,
+            reason=args.reason,
+            transaction_started_at=transaction_started_at,
+            freeze_at=freeze_at,
+            executed_at=executed_at,
+            dry_run=args.dry_run,
+            next_version=args.next_version,
+        )
+        result = payload["artifacts"]["frozen_run"]["artifact_sha256"]
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0
     else:
         existing = _read_json(Path(args.registry)) if args.registry else None
         payload = build_witness_freeze_registry(

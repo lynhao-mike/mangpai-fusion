@@ -38,7 +38,7 @@
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
 | [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件，并将唯一匹配的短槽位任务键解析为完整 case ID；`prepare-blind` 仅写安全 canonical intake、tasks、rule snapshot、chart 与 manifest，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
-| [`school_capability_prospective.py`](school_capability_prospective.py:1) | prospective 盲包 staged 冻结与 freeze witness 链 | `stage-frozen-run` 从已校验盲包生成确定性六来源三态冻结制品；`witness-freeze-chain` 校验正式 intake、盲包与 staged run 后，一次安全生成或追加每案 `registered → prepared → freeze` 三事件段；写入前必须 `--dry-run`，不提前 reveal，HMAC key 仅从 `--witness-key-env` 指定的环境变量读取 |
+| [`school_capability_prospective.py`](school_capability_prospective.py:1) | prospective 盲包 staged 冻结、受控父链迁移与 freeze witness 链 | `stage-frozen-run` 从已校验盲包生成确定性六来源三态冻结制品；`migrate-single-case-parent-chain-v002` 仅用于获批的首案整条父链 v002 修订，先 sibling staging 复验、默认 dry-run、正式模式固定顺序 create-only；`witness-freeze-chain` 校验正式 intake、盲包与 staged run 后，一次安全生成或追加每案 `registered → prepared → freeze` 三事件段 |
 | [`school_capability_review.py`](school_capability_review.py:1) | prospective 高风险任务独立双审、冲突仲裁与 A 级标签治理 | `prepare / submit / adjudicate / finalize / audit`；只消费冻结后 observation，拒绝预测/runner/report 泄漏、重复 reviewer、角色重叠及覆盖既有目标；所有写命令支持 `--dry-run`；不替代 `feedback_ingest.py`，不写生产规则或权重 |
 | [`school_capability_cohort.py`](school_capability_cohort.py:1) | 单案 prospective 的十案父引用 cohort、双门禁与三门禁报告 CLI | `build / verify / score / gate / future-gate / report`；仅离线评估，只展开不可变父引用，两个离线 GO 均不代表平台 GO 或生产 GO，`production_switch=false`；不写生产入口、规则或权重 |
 | [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
@@ -160,9 +160,16 @@ python tools/rule_status_scan.py --check
 python -m tools.school_capability_dataset single-case-intake --input <input.md路径> --tasks META/prospective-go-task-catalog-v1.json --school ziping --school ditiansui --school duan --school ren --school gao --school yang --operator human-intake-01 --tasks-by-case META/prospective-go/prospective-go-b01-tasks-by-case.json --future-question <future-question草稿路径> --case-root META/prospective-go/single-cases --created-at <真实UTC时间> --dry-run
 python -m tools.school_capability_dataset prepare-single-case-blind --intake <单案intake路径> --future-question <future-question-registration路径> --tasks META/prospective-go-task-catalog-v1.json --rule-snapshot META/prospective-go-rule-snapshot-v1.json --target-dir <单案blind-bundle路径> --dry-run
 python -m tools.school_capability_prospective stage-single-case-frozen-run --bundle-root <单案blind-bundle路径> --out <单案frozen-run路径> --dry-run
+python -m tools.school_capability_prospective migrate-single-case-parent-chain-v002 --input <input.md路径> --tasks META/prospective-go-task-catalog-v1.json --rule-snapshot META/prospective-go-rule-snapshot-v1.json --tasks-by-case META/prospective-go/prospective-go-b01-tasks-by-case.json --future-question <v002问题草稿路径> --case-root META/prospective-go/single-cases --operator <操作人> --approved-by <批准人> --reason <批准理由> --dry-run
 ```
 
-独立人类见证人的签署与 verification 是独立人工硬停点。以下占位符只能替换路径、时间和仓库外 registry root，绝不能放 key；agent 必须离开屏幕，不读取、请求、记录或展示真实值。见证人亲自在新临时 `cmd.exe` 输入值、先 dry-run 后正式执行、清空变量、确认 `NOT SET` 并关闭终端：
+正式最小链在 immutable frozen result 落盘并通过 hash / 父链校验后即可接收反馈或待核验结果：
+
+```bat
+python -m tools.school_capability_dataset issue-feedback-release --frozen-run <单案frozen-run路径> --created-at <真实UTC时间> --out <单案feedback-release路径> --dry-run
+```
+
+独立人类 witness / verification 仅为可选审计与历史兼容入口，不是反馈前置条件。若选择使用，以下占位符只能替换路径、时间和仓库外 registry root，绝不能放 key；agent 不读取、请求、记录或展示真实值：
 
 ```bat
 set "SCHOOL_CAPABILITY_WITNESS_KEY="
@@ -175,7 +182,7 @@ set "SCHOOL_CAPABILITY_WITNESS_KEY="
 python -c "import os; print('SET' if os.environ.get('SCHOOL_CAPABILITY_WITNESS_KEY') else 'NOT SET')"
 ```
 
-只有 verification 为 VERIFIED 后，才可依序使用 `issue-feedback-release`、`release-immediate-retrospective-template`、`collect-immediate-retrospective`；到期未来账使用 `collect-future-observation`，完成链使用 `build-case-completion`。每 10 个回顾完成案使用以下真实 cohort 子命令，只引用父制品：
+`issue-feedback-release` 当前推荐直接消费 immutable frozen result；随后可使用 `release-immediate-retrospective-template`、`collect-immediate-retrospective` 接收 / 登记结果。旧 verification 参数仍兼容，但只用于已有链和可选审计。到期未来账使用 `collect-future-observation`，完成链使用 `build-case-completion`。每 10 个回顾完成案使用以下真实 cohort 子命令，只引用父制品：
 
 ```bat
 python -m tools.school_capability_cohort build --completion <完成制品路径> --historical-md META/six-month-platform-gate-2026-07-15.md --historical-json META/six-month-platform-gate-2026-07-15.json --out-dir META/prospective-go/cohorts --dry-run
@@ -191,9 +198,9 @@ python -m tools.school_capability_cohort report --immediate-gate <即时门禁�
 - manifest 记录内容 SHA-256；bundle hash 只由白名单文件的相对路径和内容 hash 决定，因此不受时间、源目录或目标目录影响。
 - 源文件及其路径链、目标路径链均拒绝 symlink；目标目录或输出文件必须不存在。所有写命令先执行 `--dry-run`；dry-run 只打印计划或制品 JSON，不创建输出。真实数据未到时状态仍为 HOLD，不创建空 intake、空盲包、空 frozen run 或空 witness registry。
 
-### Witness HMAC 信任边界
+### Witness HMAC 可选审计边界
 
-- witness HMAC key holder 是**受信独立见证边界**，必须独立于被评估系统及其本地管理员保管密钥并签署事件。
+- witness HMAC 不参与最小反馈门槛；仅在选择增强审计时，由独立 key holder 保管密钥并签署事件。
 - 本地完整性模型用于发现未持有 witness key 的本地篡改；**密钥泄漏**或**恶意见证**不在本地完整性模型覆盖范围内。
 - witness registry 的 `registry root` 应由见证方做**外部备份**或锚定，以便发现本地 registry 被替换或回滚。
 - 该机制提供可验证的职责分离与篡改证据，不是无限防恶意管理员；同时控制本地系统、witness key 与外部 registry root 的管理员超出此模型的安全假设。

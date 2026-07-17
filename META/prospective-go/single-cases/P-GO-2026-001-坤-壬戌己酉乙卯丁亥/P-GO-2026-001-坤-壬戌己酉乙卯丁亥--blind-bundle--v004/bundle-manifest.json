@@ -1,0 +1,40 @@
+{
+  "schema_version": "prospective-single-case-blind-bundle/v1",
+  "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+  "subject_id_hash": "352a1dffc2857d20e46c901ab27d691ce504623b9d740c6582055bd6d6ce0e05",
+  "created_at": "2026-07-17T08:04:23.949029Z",
+  "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v004/bundle-manifest.json",
+  "case_count": 1,
+  "future_question_count": 1,
+  "schools": [
+    "ditiansui",
+    "duan",
+    "gao",
+    "ren",
+    "yang",
+    "ziping"
+  ],
+  "parents": [
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--intake--v004.json",
+      "artifact_sha256": "b8c439b403e139a0872a715b5c09afc5a2794ccb51f945c66549c3869052e008"
+    },
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--future-question-registration--v004.json",
+      "artifact_sha256": "b92a39eb082b0fce09ddadfc7407e71c7c2ce29c0db3f9d019a65e7dbeef24fe"
+    }
+  ],
+  "files": {
+    "cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/chart.json": "75c6675636c9b0f2904b50fa3cacefb39707461c7f237c0845b2b5d847f46b92",
+    "future-question.json": "098be7d0f9d4676bf4e163006efa5cc60e4d6edc48ef21f0f7c123988edb8ac3",
+    "intake.json": "665cfdc70c3874f1c9cabb0acb9302d2491571e191489b45e0e4d0e063cd5612",
+    "rule-snapshot.json": "beb132cb656f2bc4f67952130608de4c1c60a93851c3fd7fd2955facbcff6b37",
+    "tasks.json": "de184212d481c4c81b9fd2f0229ccb6deedb268a4da07c30486c52d64b6511ee"
+  },
+  "bundle_sha256": "d87846e1e10f081719dfb39c993b9d184240f97e5db5132c054217bf2e23cbb9",
+  "supersedes": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--blind-bundle--v003/bundle-manifest.json",
+  "supersedes_sha256": "b59600841f64a180a326d0a5a8f5e97435dd2d3e1a8e8ba0938aa14f8d28c20a",
+  "reason": "recover_v003_witness_event_time_order_before_any_reveal",
+  "approved_by": "human-user-approval-20260717",
+  "artifact_sha256": "4cfd6a99c024bce0ba6a0217cb2f7838e7236905f245b68816fb4ce90b73d246"
+}
