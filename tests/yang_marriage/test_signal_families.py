@@ -15,15 +15,15 @@ def family_keys(signals) -> tuple[str, ...]:
 def test_pair_order_and_cross_collection_duplicates_are_canonicalized_once() -> None:
     signals = extract_yang_marriage_signals(
         "YM-SYN-D1",
-        chart("YM-SYN-D1"),
+        chart("YM-SYN-D1", day="壬寅"),
         cfv(
             "YM-SYN-D1",
-            chong_pairs=(("子", "午"),),
-            xing_hai_pairs=(("午", "子"),),
+            chong_pairs=(("寅", "申"),),
+            xing_hai_pairs=(("申", "寅"),),
         ),
     )
 
-    assert signals.canonical_palace_pairs == (("午", "子"),)
+    assert signals.canonical_palace_pairs == (("寅", "申"),)
 
 
 @pytest.mark.parametrize(
@@ -62,14 +62,25 @@ def test_missing_unknown_or_incomplete_input_is_explicitly_blocked(
     assert reason in signals.blocking_reason_codes
 
 
-def test_invalid_relationship_pair_blocks_and_discards_all_palace_pairs() -> None:
+@pytest.mark.parametrize(
+    ("chong_pairs", "xing_hai_pairs"),
+    [
+        ((("子", "午"),), (("子", "子"),)),
+        ((("子", "丑"),), ()),
+        ((), (("子", "午"),)),
+    ],
+)
+def test_invalid_relationship_pair_blocks_and_discards_all_palace_pairs(
+    chong_pairs: tuple[tuple[str, str], ...],
+    xing_hai_pairs: tuple[tuple[str, str], ...],
+) -> None:
     signals = extract_yang_marriage_signals(
         "YM-SYN-I4",
         chart("YM-SYN-I4"),
         cfv(
             "YM-SYN-I4",
-            chong_pairs=(("子", "午"),),
-            xing_hai_pairs=(("子", "子"),),
+            chong_pairs=chong_pairs,
+            xing_hai_pairs=xing_hai_pairs,
         ),
     )
 
@@ -157,8 +168,8 @@ def test_reducer_emits_each_named_family_at_most_once_and_compound_only_enhances
         chart("YM-SYN-FAMILIES", sex="坤"),
         cfv(
             "YM-SYN-FAMILIES",
-            chong_pairs=(("子", "午"), ("子", "卯")),
-            xing_hai_pairs=(("午", "子"),),
+            chong_pairs=(("子", "午"),),
+            xing_hai_pairs=(("子", "卯"),),
             ten_god_counts={
                 "正财": 0,
                 "偏财": 0,

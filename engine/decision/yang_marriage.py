@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from engine.decision.models import ChartFactLedger
 from engine.features.types import ChartFeatureVector
+from engine.predicates.relations import zhi_chong, zhi_chuan, zhi_xing
+from engine.predicates.types import Zhi
 
 YangMarriageState = Literal["pressure", "event", "abstain"]
 SexBasis = Literal["male_wealth", "female_official", "unknown"]
@@ -143,8 +145,18 @@ def extract_yang_marriage_signals(
 
     palace_pairs: set[CanonicalPair] = set()
     try:
-        for pair in features.chong_pairs + features.xing_hai_pairs:
+        for pair in features.chong_pairs:
             canonical = _canonical_pair(pair)
+            left, right = cast(tuple[Zhi, Zhi], canonical)
+            if not zhi_chong(left, right):
+                raise ValueError("invalid relationship pair")
+            if day_branch and day_branch in canonical:
+                palace_pairs.add(canonical)
+        for pair in features.xing_hai_pairs:
+            canonical = _canonical_pair(pair)
+            left, right = cast(tuple[Zhi, Zhi], canonical)
+            if zhi_xing(left, right) is None and not zhi_chuan(left, right):
+                raise ValueError("invalid relationship pair")
             if day_branch and day_branch in canonical:
                 palace_pairs.add(canonical)
     except ValueError:
