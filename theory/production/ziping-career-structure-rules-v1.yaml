@@ -1,0 +1,50 @@
+schema_version: ziping-career-structure-rules/v1
+school_id: ziping
+task_id: career.role_change
+domain: 事业
+target_layer: L3
+task_rule_id: ZIPING-CAREER-OFFICIAL-PATH-DISRUPTION-V1
+claim_type: structure_claim
+required_facts:
+  - evidence_completeness
+  - ten_god_counts.正官
+  - ten_god_counts.七杀
+  - ten_god_counts.食神
+  - ten_god_counts.伤官
+  - ten_god_counts.正财
+  - ten_god_counts.偏财
+  - ten_god_counts.正印
+  - ten_god_counts.偏印
+  - mixed_official_kill
+  - geju_profile.geju_type
+  - geju_profile.favor_shishen
+  - geju_profile.avoid_shishen
+required_gates:
+  - complete_fact_closure
+  - official_path_anchor
+  - output_interference_present
+  - structure_qualification
+conditions:
+  - {fact: official_count, op: gte, value: 1}
+  - {fact: output_count, op: gte, value: 1}
+exclusions:
+  - {fact: evidence_completeness, op: ne, value: full}
+counter_conditions:
+  - {fact: wealth_count, op: gte, value: 1}
+  - {fact: resource_count, op: gte, value: 1}
+conclusion_template: 子平原局官杀职业路径存在食伤介入，且结构必要门成立，支持职业角色或职责路径具有变化倾向；本结论不判断事件必然发生与具体年份。
+confidence_basis: 官杀路径锚点、食伤介入与格局方向共同成立；财印护官与格局反向证据会阻止发布。
+falsifier: 若按同一事实口径复核不存在官杀锚点或食伤介入，或可核验职业历程长期无角色与职责变化，则本结构命题证伪或降权。
+source_anchors:
+  - production_rule_id: ZP-PROD-20260622-011
+    path: sources/ziping/《子平真诠》.md
+    line: 60
+    excerpt: 官格见财印相生为纯，混杂伤官七杀则杂。
+    supports: 支持区分官格的财印保护结构与伤官、七杀混杂结构。
+  - production_rule_id: ZP-PROD-20260622-012
+    path: sources/ziping/《子平真诠》.md
+    line: 64
+    excerpt: 同是官格，财生官、印护官为上格，伤官破官、七杀混官为下格。
+    supports: 支持把财印护官作为反条件，并把伤官破官作为结构干扰。
+lifecycle_state: staged
+base_confidence: 0.60
