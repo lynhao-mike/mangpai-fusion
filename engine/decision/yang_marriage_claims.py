@@ -6,6 +6,7 @@ from engine.claims import stable_claim_id
 from engine.decision.models import SchoolClaim, SchoolRole
 from engine.decision.yang_marriage import YangMarriageDiscrimination
 
+_SCHOOL_ID = "yang_qingjuan"
 _TASK_ID = "marriage.divorce_or_remarriage"
 _EVENT_FAMILY_KEYS = frozenset(
     {
@@ -50,13 +51,23 @@ def build_yang_marriage_school_claims(
         for ref in family.feature_refs
         if ref.strip()
     }
-    if not rule_refs or not fact_refs or not feature_refs:
+    if not rule_refs or not family_refs or not (fact_refs or feature_refs):
         return ()
 
-    source_rules = "|".join(sorted(result.source_rule_refs))
+    structural_evidence = sorted(
+        {
+            f"family={family.family_key};"
+            f"pairs={','.join('-'.join(pair) for pair in family.canonical_pairs)};"
+            f"facts={','.join(family.fact_refs)};"
+            f"features={','.join(family.feature_refs)};"
+            f"reasons={','.join(family.reason_codes)}"
+            for family in families
+        }
+    )
+    claim_identity = "|".join(sorted(rule_refs) + structural_evidence)
     claim = SchoolClaim(
-        claim_id=stable_claim_id("yang", _TASK_ID, result.case_id, source_rules),
-        school="yang",
+        claim_id=stable_claim_id(_SCHOOL_ID, _TASK_ID, result.case_id, claim_identity),
+        school=_SCHOOL_ID,
         role_granted_by_l1=role,
         domain="婚姻",
         claim_type="event_claim",

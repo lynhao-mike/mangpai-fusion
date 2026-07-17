@@ -2,7 +2,7 @@ from dataclasses import replace
 
 import pytest
 
-from engine.claims import stable_claim_id
+from engine.decision.l1_school_router import SCHOOL_PROFILES
 from engine.decision.yang_marriage import (
     YangMarriageDiscrimination,
     YangMarriageFamilyEvidence,
@@ -52,12 +52,13 @@ def test_pressure_and_abstain_emit_no_claim(result: YangMarriageDiscrimination) 
     assert build_yang_marriage_school_claims(result, "lead") == ()
 
 
-def test_event_emits_one_conservative_support_claim() -> None:
+def test_event_emits_one_conservative_support_claim_bound_to_canonical_l1_school() -> None:
     claims = build_yang_marriage_school_claims(_event(), "lead")
 
     assert len(claims) == 1
     claim = claims[0]
-    assert claim.school == "yang"
+    assert "yang_qingjuan" in SCHOOL_PROFILES
+    assert claim.school == "yang_qingjuan"
     assert claim.domain == "婚姻"
     assert claim.claim_type == "event_claim"
     assert claim.role_granted_by_l1 == "lead"
@@ -97,15 +98,14 @@ def test_claim_id_and_family_evidence_chain_are_stable_and_deduplicated() -> Non
     )
 
     first = build_yang_marriage_school_claims(result, "co_lead")[0]
-    second = build_yang_marriage_school_claims(result, "co_lead")[0]
+    reordered = replace(
+        result,
+        families=tuple(reversed(result.families)),
+        source_rule_refs=tuple(reversed(result.source_rule_refs)),
+    )
+    second = build_yang_marriage_school_claims(reordered, "co_lead")[0]
 
     assert first.to_dict() == second.to_dict()
-    assert first.claim_id == stable_claim_id(
-        "yang",
-        _TASK_ID,
-        result.case_id,
-        "theory/yang/index.yaml#M2-Y-068|theory/yang/index.yaml#M2-Y-088",
-    )
     assert first.evidence_refs == [
         "family:spouse_palace_event_anchor",
         "family:spouse_star_peer_interaction",
@@ -118,6 +118,60 @@ def test_claim_id_and_family_evidence_chain_are_stable_and_deduplicated() -> Non
         "feature:ten_god_counts.劫财",
         "feature:xing_hai_pairs",
     ]
+
+
+def test_claim_id_changes_when_structural_pair_or_family_evidence_changes() -> None:
+    original = _event()
+    changed_pair = replace(
+        original,
+        families=(
+            replace(
+                original.families[0],
+                canonical_pairs=(("丑", "子"),),
+                reason_codes=("different_palace_pair",),
+            ),
+            original.families[1],
+        ),
+    )
+    changed_family = replace(
+        original,
+        sex_basis="female_official",
+        families=(
+            original.families[0],
+            replace(
+                original.families[1],
+                family_key="spouse_star_output_interaction",
+                reason_codes=("female_official_output_interaction",),
+            ),
+        ),
+    )
+
+    ids = {
+        build_yang_marriage_school_claims(result, "lead")[0].claim_id
+        for result in (original, changed_pair, changed_family)
+    }
+
+    assert len(ids) == 3
+
+
+@pytest.mark.parametrize("ref_kind", ("fact", "feature"))
+def test_event_accepts_family_evidence_with_only_one_reference_kind(ref_kind: str) -> None:
+    changes = (
+        {"feature_refs": ()}
+        if ref_kind == "fact"
+        else {"fact_refs": ()}
+    )
+    result = replace(
+        _event(),
+        families=tuple(replace(item, **changes) for item in _event().families),
+    )
+
+    claim = build_yang_marriage_school_claims(result, "lead")[0]
+
+    assert any(ref.startswith(f"{ref_kind}:") for ref in claim.evidence_refs)
+    opposite = "feature" if ref_kind == "fact" else "fact"
+    assert not any(ref.startswith(f"{opposite}:") for ref in claim.evidence_refs)
+    assert any(ref.startswith("rule:") for ref in claim.evidence_refs)
 
 
 @pytest.mark.parametrize(
