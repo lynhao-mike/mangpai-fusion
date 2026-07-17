@@ -5,6 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Literal
 
+from engine.decision.models import ChartFactLedger
+from engine.features.types import ChartFeatureVector
+
 YangMarriageState = Literal["pressure", "event", "abstain"]
 SexBasis = Literal["male_wealth", "female_official", "unknown"]
 FamilyKey = Literal[
@@ -19,7 +22,10 @@ CanonicalPair = tuple[str, str]
 
 _STATES = frozenset({"pressure", "event", "abstain"})
 _SEX_BASES = frozenset({"male_wealth", "female_official", "unknown"})
+_STEMS = frozenset("甲乙丙丁戊己庚辛壬癸")
 _BRANCHES = frozenset("子丑寅卯辰巳午未申酉戌亥")
+_MALE_MARKERS = frozenset({"乾", "男", "男命", "乾造", "M", "male"})
+_FEMALE_MARKERS = frozenset({"坤", "女", "女命", "坤造", "F", "female"})
 _HARD_BLOCKING_REASON_CODES = frozenset({
     "missing_or_unknown_sex",
     "incomplete_evidence",
@@ -39,6 +45,17 @@ _FAMILY_KEYS = frozenset({
     "spouse_star_context_pressure",
     "ambient_relationship_pressure",
 })
+
+
+def _canonical_pair(pair: tuple[str, str]) -> CanonicalPair:
+    if (
+        len(pair) != 2
+        or pair[0] not in _BRANCHES
+        or pair[1] not in _BRANCHES
+        or pair[0] == pair[1]
+    ):
+        raise ValueError("invalid relationship pair")
+    return tuple(sorted(pair))  # type: ignore[return-value]
 
 
 @dataclass(frozen=True)
@@ -95,6 +112,87 @@ class YangMarriageRawSignals:
         }
 
 
+def extract_yang_marriage_signals(
+    case_id: str,
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+) -> YangMarriageRawSignals:
+    """只从命盘事实与 CFV 提取杨派婚姻结构原始信号。"""
+    blockers: set[str] = set()
+    marker = chart.sex_marker.strip()
+    sex_basis: SexBasis = (
+        "male_wealth"
+        if marker in _MALE_MARKERS
+        else "female_official"
+        if marker in _FEMALE_MARKERS
+        else "unknown"
+    )
+    if sex_basis == "unknown":
+        blockers.add("missing_or_unknown_sex")
+    if features.evidence_completeness != "full":
+        blockers.add("incomplete_evidence")
+
+    day = str(chart.four_pillars.get("day", chart.four_pillars.get("日柱", ""))).strip()
+    day_branch = (
+        day[1]
+        if len(day) == 2 and day[0] in _STEMS and day[1] in _BRANCHES
+        else ""
+    )
+    if not day_branch:
+        blockers.add("missing_or_invalid_day_pillar")
+
+    palace_pairs: set[CanonicalPair] = set()
+    try:
+        for pair in features.chong_pairs + features.xing_hai_pairs:
+            canonical = _canonical_pair(pair)
+            if day_branch and day_branch in canonical:
+                palace_pairs.add(canonical)
+    except ValueError:
+        blockers.add("invalid_relationship_pair")
+        palace_pairs.clear()
+
+    wealth_count = sum(
+        int(features.ten_god_counts.get(name, 0)) for name in ("正财", "偏财")
+    )
+    official_count = sum(
+        int(features.ten_god_counts.get(name, 0)) for name in ("正官", "七杀")
+    )
+    spouse_count = (
+        wealth_count
+        if sex_basis == "male_wealth"
+        else official_count
+        if sex_basis == "female_official"
+        else 0
+    )
+    spouse_present = (
+        features.has_wealth and spouse_count > 0
+        if sex_basis == "male_wealth"
+        else features.has_official and spouse_count > 0
+        if sex_basis == "female_official"
+        else False
+    )
+    return YangMarriageRawSignals(
+        case_id=case_id,
+        sex_basis=sex_basis,
+        spouse_palace_branch=day_branch,
+        canonical_palace_pairs=tuple(sorted(palace_pairs)),
+        spouse_star_present=spouse_present,
+        spouse_star_count=spouse_count,
+        peer_heavy=sum(
+            int(features.ten_god_counts.get(name, 0)) for name in ("比肩", "劫财")
+        )
+        >= 3,
+        output_heavy=sum(
+            int(features.ten_god_counts.get(name, 0)) for name in ("食神", "伤官")
+        )
+        >= 4,
+        mixed_official_kill=(
+            sex_basis == "female_official" and features.mixed_official_kill
+        ),
+        blocking_reason_codes=tuple(sorted(blockers)),
+    )
+
+
 @dataclass(frozen=True)
 class YangMarriageFamilyEvidence:
     family_key: FamilyKey
@@ -131,6 +229,122 @@ class YangMarriageFamilyEvidence:
             "reason_codes": list(self.reason_codes),
             "detail": self.detail,
         }
+
+
+def reduce_yang_marriage_families(
+    signals: YangMarriageRawSignals,
+) -> tuple[YangMarriageFamilyEvidence, ...]:
+    """把原始信号归并为固定六类家族；每个家族最多贡献一次。"""
+    families: dict[FamilyKey, YangMarriageFamilyEvidence] = {}
+
+    def add(
+        key: FamilyKey,
+        *,
+        facts: tuple[str, ...],
+        features: tuple[str, ...],
+        reason: str,
+        detail: str,
+        pairs: tuple[CanonicalPair, ...] = (),
+    ) -> None:
+        families[key] = YangMarriageFamilyEvidence(
+            key, True, facts, features, pairs, (reason,), detail
+        )
+
+    if signals.canonical_palace_pairs:
+        add(
+            "spouse_palace_event_anchor",
+            facts=("four_pillars.day",),
+            features=("chong_pairs", "xing_hai_pairs"),
+            pairs=signals.canonical_palace_pairs,
+            reason="day_branch_disrupted",
+            detail="日支参与去重后的冲或刑害。",
+        )
+    if (
+        signals.sex_basis == "male_wealth"
+        and signals.spouse_star_present
+        and signals.peer_heavy
+    ):
+        add(
+            "spouse_star_peer_interaction",
+            facts=("sex_marker",),
+            features=(
+                "has_wealth",
+                "ten_god_counts.正财",
+                "ten_god_counts.偏财",
+                "ten_god_counts.比肩",
+                "ten_god_counts.劫财",
+            ),
+            reason="male_wealth_peer_interaction",
+            detail="男命财星上下文与比劫结构显式交互。",
+        )
+    if (
+        signals.sex_basis == "female_official"
+        and signals.spouse_star_present
+        and signals.output_heavy
+    ):
+        add(
+            "spouse_star_output_interaction",
+            facts=("sex_marker",),
+            features=(
+                "has_official",
+                "ten_god_counts.正官",
+                "ten_god_counts.七杀",
+                "ten_god_counts.食神",
+                "ten_god_counts.伤官",
+            ),
+            reason="female_official_output_interaction",
+            detail="女命官杀上下文与食伤结构显式交互。",
+        )
+    if signals.sex_basis == "female_official" and signals.mixed_official_kill:
+        add(
+            "spouse_star_configuration",
+            facts=("sex_marker",),
+            features=(
+                "mixed_official_kill",
+                "ten_god_counts.正官",
+                "ten_god_counts.七杀",
+            ),
+            reason="female_mixed_official_configuration",
+            detail="女命正官七杀复合配置按一个家族归并。",
+        )
+    if signals.sex_basis != "unknown" and (
+        not signals.spouse_star_present or signals.spouse_star_count <= 1
+    ):
+        add(
+            "spouse_star_context_pressure",
+            facts=("sex_marker",),
+            features=(
+                "has_wealth",
+                "has_official",
+                "ten_god_counts.正财",
+                "ten_god_counts.偏财",
+                "ten_god_counts.正官",
+                "ten_god_counts.七杀",
+            ),
+            reason="spouse_star_weak_or_missing",
+            detail="配偶星弱或缺失只支持关系压力。",
+        )
+    ambient = (
+        (signals.sex_basis != "male_wealth" or not signals.spouse_star_present)
+        and signals.peer_heavy
+    ) or (
+        (signals.sex_basis != "female_official" or not signals.spouse_star_present)
+        and signals.output_heavy
+    )
+    if ambient:
+        add(
+            "ambient_relationship_pressure",
+            facts=("sex_marker",),
+            features=(
+                "ten_god_counts.比肩",
+                "ten_god_counts.劫财",
+                "ten_god_counts.食神",
+                "ten_god_counts.伤官",
+            ),
+            reason="ambient_pressure_without_spouse_interaction",
+            detail="全局压力缺少性别对应配偶星交互上下文。",
+        )
+    return tuple(sorted(families.values(), key=lambda item: item.family_key))
 
 
 @dataclass(frozen=True)
