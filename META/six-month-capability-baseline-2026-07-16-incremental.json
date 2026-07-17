@@ -5164,9 +5164,10 @@
     "rule_snapshot": "claim-rules-v1-6396883d8db0b8d24c6c15435c130c6f9ae045c8c6d1fe8d2a84748c5b0bebef@sha256:d61bdd62c442261443c086ee4a0f5ce42f25ea834b4aadc2fe544fa5a7157f4d",
     "freeze_hash": "3abc2223f90116f5778eb5b2b360580c0a83125fb6747052a0ceedf64ba98ab7",
     "scores_artifact_digest": "sha256:c28a279f2523725ea7cc57687f36decbac4a8a66b2c1dccb4e7e18631116d8a1",
-    "historical_input": ".historical-incremental-2026-07-16/incremental-input.md",
-    "historical_labels": ".historical-incremental-2026-07-16/stage-b/parent-bound-labels.json",
-    "historical_reviewed_manifest": ".historical-incremental-2026-07-16/formal/reviewed-manifest.json",
+    "evidence_manifest": "META/historical-incremental-evidence-manifest-2026-07-16.json",
+    "historical_input_sha256": "047ec4c41bf374b78162d1a5c867782b6948271c5acd4a017d866eedba739e7b",
+    "historical_labels_sha256": "6e442d073e2027ddc4f141229989a57bde1dd6c9a9f5e5d359892e7aa22fe61b",
+    "historical_reviewed_manifest_sha256": "2a9ca0c39e17efecc9c8d61418ba668a4a22c6486c74e547d13243ea740c7b6c",
     "historical_timing_notice": "historical feedback predates this refreeze; this is not a prospective/E3 blind test"
   },
   "prospective_status": {
@@ -5178,5 +5179,5 @@
     "next_intake_command_template": "use META/prospective-intake-protocol-v1.md",
     "next_bundle_command_template": "use the prospective blind bundle workflow"
   },
-  "artifact_digest": "sha256:242ee77d271da0b005e0d86dce51c77843a31aa8d6735e5a46f55cae55d17cf4"
+  "artifact_digest": "sha256:17f7443b3f761d63f3b8beea69d1acd1b4418c58efe606170a6b3701ab9f299b"
 }

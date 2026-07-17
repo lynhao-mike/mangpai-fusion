@@ -2,7 +2,7 @@
 
 > 日期：2026-07-11  
 > 文档类型：阶段推进、实验验证与迁移路线  
-> 状态：设计已批准，尚未开始实施  
+> 状态：分阶段实施中；已落地与门禁状态见本文第 16—17 节 As-Built 记录
 > 服从文档：[`docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md`](../docs/superpowers/specs/2026-07-11-bazi-intelligence-platform-core-design.md)
 
 ## 1. 路线定位

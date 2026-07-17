@@ -1,0 +1,28 @@
+{
+  "schema_version": "historical-incremental-evidence-manifest/v1",
+  "generated_at": "2026-07-17T09:47:00Z",
+  "classification": "historical_blind_candidate",
+  "retention_policy": "summary_and_digest_only",
+  "retired_workspace_artifacts": {
+    "l1_routing_source": {
+      "freeze_hash": "b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68",
+      "historical_batch_sha256": "ae13421045c2da14775317a6f1f5d83ccdf0e65bf7563953f2ce69d1e5e96e3c",
+      "historical_scores_sha256": "340ab14b3262b8a0adaf86561a6bf397c623f888679cc448521e45194a0a12e1",
+      "task8_scores_artifact_digest": "sha256:41f8971d09dbe2952237abe46d6a095f734d1ebe0c9cb70d44e19f61341ba9a8"
+    },
+    "formal_baseline_source": {
+      "freeze_hash": "3abc2223f90116f5778eb5b2b360580c0a83125fb6747052a0ceedf64ba98ab7",
+      "incremental_input_sha256": "047ec4c41bf374b78162d1a5c867782b6948271c5acd4a017d866eedba739e7b",
+      "bound_labels_sha256": "6e442d073e2027ddc4f141229989a57bde1dd6c9a9f5e5d359892e7aa22fe61b",
+      "reviewed_manifest_sha256": "2a9ca0c39e17efecc9c8d61418ba668a4a22c6486c74e547d13243ea740c7b6c",
+      "scores_artifact_digest": "sha256:c28a279f2523725ea7cc57687f36decbac4a8a66b2c1dccb4e7e18631116d8a1"
+    }
+  },
+  "promoted_artifacts": {
+    "capability_baseline_json": "META/six-month-capability-baseline-2026-07-16-incremental.json",
+    "capability_baseline_report": "META/six-month-capability-baseline-2026-07-16-incremental.md",
+    "l1_routing_audit": "META/l1-routing-holdout-audit-2026-07-16-incremental.json",
+    "l1_routing_report": "reports/l1-routing-holdout-comparison-2026-07-16-incremental.md"
+  },
+  "notice": "The retired generation workspace is intentionally not retained. Formal promoted artifacts contain the evaluation summaries; this manifest preserves only the minimum source identities and digests needed for provenance checks."
+}

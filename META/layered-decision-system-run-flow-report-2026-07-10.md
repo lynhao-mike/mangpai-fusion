@@ -276,16 +276,12 @@ R5 learned_prior
 回灌 route_schools
 ```
 
-已交付的计划文档：
+当时的切片实施计划已执行并清理；当前实现与方向追溯改用以下 as-built 事实源：
 
-```text
-docs/superpowers/plans/2026-07-09-l1-routing-precedence-refactor.md
-docs/superpowers/plans/2026-07-09-l1-structural-signal-routing-refactor.md
-docs/superpowers/plans/2026-07-09-l8-feedback-to-router-attribution-refactor.md
-docs/superpowers/plans/2026-07-09-layered-accuracy-dashboard.md
-docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md
-docs/superpowers/plans/2026-07-09-r5-learned-prior-injection-refactor.md
-```
+- 分层决策系统现状与阶段状态：[`plans/layered-decision-system.md`](../plans/layered-decision-system.md:1)
+- 平台长期路线与 L0—L9 落地边界：[`plans/bazi-intelligence-platform-roadmap.md`](../plans/bazi-intelligence-platform-roadmap.md:1)
+- L1 路由当前实现：[`engine/decision/l1_school_router.py`](../engine/decision/l1_school_router.py:1)
+- L9 条件化学习当前实现：[`engine/learning/`](../engine/learning/)
 
 ---
 

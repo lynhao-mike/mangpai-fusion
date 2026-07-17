@@ -123,7 +123,7 @@
 
 原“至少 30 个 prospective 或 E3 案例进入冻结评估链”及其配套门槛保留为 `historical_platform_baseline_2026_07_15`。它不是上述 20 案或 10 案门禁的上位、下位或别名，也不能用 `20 immediate + 10 future = 30` 拼接满足。本文不得覆盖或原地修订 [`META/six-month-platform-gate-2026-07-15.md`](../../../META/six-month-platform-gate-2026-07-15.md:1) 与 [`META/six-month-platform-gate-2026-07-15.json`](../../../META/six-month-platform-gate-2026-07-15.json:1)；未来实现只能创建新的派生门禁制品并引用它们的路径与 SHA-256。
 
-截至本规格修订时，首案只有授权招募记录、`input.md`、preflight PASS 与单案 intake dry-run PASS，尚未完成正式 intake、freeze、witness、verification 或即时回顾。因此，两个新门禁均为 HOLD：
+首案当前执行状态属于易漂移运行事实，以 [`handoff.md`](../../../handoff.md:28) 和 [`META/prospective-go/single-cases/`](../../../META/prospective-go/single-cases/) 下的实际不可变制品为准；本文不复制 intake / freeze / release 的瞬时进度。首案即时回顾尚未完成，因此两个新门禁均为 HOLD：
 
 - `prediction_capability_candidate_gate_v1 = HOLD`；
 - `future_empirical_gate_v1 = HOLD`；
@@ -477,7 +477,7 @@ set "SCHOOL_CAPABILITY_WITNESS_KEY="
 
 ## 13. 首案迁移路径
 
-当前首案只有授权招募记录、`input.md`、preflight PASS 与单案 intake dry-run PASS；正式 intake、future question registration、bundle、freeze、witness、即时回顾、未来观察和报告均不存在。首案即时回顾明确为**未完成**，不能计入任一新门禁。该状态适合无数据重写迁移：
+首案迁移的当前进度以 [`handoff.md`](../../../handoff.md:28) 与 [`META/prospective-go/single-cases/`](../../../META/prospective-go/single-cases/) 的实际不可变制品为准；不得依据本文假定 intake、future question registration、bundle、freeze、release 或可选 witness 制品不存在。首案即时回顾明确为**未完成**，不能计入任一新门禁；以下步骤保留为设计契约与历史迁移检查清单，已落地步骤不得重做或覆盖：
 
 1. 冻结当前首案 `input.md` 的内容摘要并复验没有反馈 / 经历 / 现状标记。
 2. 保留原 case ID、招募编号、授权引用和 subject identity；不得重建为另一个“新案”。
@@ -600,4 +600,4 @@ set "SCHOOL_CAPABILITY_WITNESS_KEY="
 
 目标架构把不可逆证明点下沉到单案：每个新案当天独立完成短期未来问题预注册、预测冻结和见证验证，随后才揭示 freeze 前既有事实；10 案只承担周期性统计与学习治理，不再阻塞单案证据链。该设计缩短反馈周期，同时通过 evidence class、label identity 与 gate identity 分账，避免把即时回顾伪装成未来 outcome，或把 20 案、10 案与原 30 案 historical baseline 混算。任何未来观察都另建账本、另建标签、另行双审和评分。
 
-截至本规格修订时，首案即时回顾未完成，`prediction_capability_candidate_gate_v1` 与 `future_empirical_gate_v1` 均为 HOLD，原 `historical_platform_baseline_2026_07_15` 也继续按既有正式制品保持 HOLD。未来任一 GO 只形成升级提案，不自动切生产。本文只定义设计，不执行首案迁移、不创建数据制品、不调用实现，也不修改 handoff、行动计划或两个 2026-07-15 门禁事实源。
+首案运行进度以 [`handoff.md`](../../../handoff.md:28) 与实际不可变制品为准；当前首案即时回顾未完成，`prediction_capability_candidate_gate_v1` 与 `future_empirical_gate_v1` 均为 HOLD，原 `historical_platform_baseline_2026_07_15` 也继续按既有正式制品保持 HOLD。未来任一 GO 只形成升级提案，不自动切生产。本文只定义设计契约，不作为首案运行状态事实源，也不修改 handoff、行动计划或两个 2026-07-15 门禁事实源。

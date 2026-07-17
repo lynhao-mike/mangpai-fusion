@@ -3,7 +3,7 @@
 > **本文是 v1.2 重构 + v1.3 自迭代闭环的"宪法"。所有 agent、所有规律、所有报告都必须遵守此文档。**
 > 修改本文件需要在 PR 中显式说明，并通知所有运行中的 agent。
 
-最后更新：2026-05-29（v1.3.0 已发布 / v1.4 schema 与报告收口）
+最后更新：2026-07-17（产品发布版本见仓库根 [`VERSION`](../../VERSION) / v1.4 schema 与报告收口）
 契约版本：**v1.4.0-schema-current**
 代码版本：见仓库根 [`VERSION`](../../VERSION)
 适用分支：`main`（v1.2-build 已于 v1.2 发布时合并；v1.3 PR #26-#37 已合 main）
@@ -12,11 +12,11 @@
 
 ## 〇、版本对应表（单一信息源）
 
-> **架构师红线**：每次发版（修改 [`VERSION`](../../VERSION)）必须同步更新此表。**任何文档若与本表冲突，以本表为准**（基准评审 § 七 第 6 条精神）。
+> **架构师红线**：产品发布版本只读取仓库根 [`VERSION`](../../VERSION)，本表不复制其值。**任何文档若与该事实源冲突，以 [`VERSION`](../../VERSION) 为准**（基准评审 § 七 第 6 条精神）。
 
 | 项 | 值 | 来源 / 说明 |
 |---|---|---|
-| 当前发布版本 | **v1.3.0** | [`VERSION`](../../VERSION) |
+| 当前发布版本 | 见仓库根 [`VERSION`](../../VERSION) | 唯一机器可读事实源；不在契约中手写复制 |
 | 当前契约版本 | **v1.4.0-schema-current** | 本文件标头；产品发布版本仍以 [`../../VERSION`](../../VERSION) 为准 |
 | 主分支 | `main` | git symbolic-ref refs/remotes/origin/HEAD |
 | 主分支 HEAD | `git rev-parse HEAD`（运行时查询，不在文档中硬编码） | 历史教训：handoff.md / STATUS.md 各自硬编码 commit 短 SHA 必然漂移 |
@@ -258,8 +258,7 @@ tools/
 ├── timing_report.py         ← 全局 pipeline 耗时聚合（pipeline.PipelineTiming）
 ├── tool_registry.py         ← 工具注册表生成 / 校验器
 ├── rule_status_scan.py      ← 规律状态运行时扫描器
-├── calibrate.py             ← v1.0 反馈入口（v1.3.0 起 deprecated，含 guard）
-└── build_indexes.py         ← 索引重建（v1.0 保留）
+└── build_indexes.py         ← 索引重建（历史/迁移辅助）
 ```
 
 
@@ -330,7 +329,7 @@ tools/
 | v1.0 报告模板 | 历史报告模板已作废并从当前模板目录删除；新案只允许 `templates/report-v1.3.md` |
 | v1.0 domain 权重 | 已收敛到当前 `engine/domain-weights.yaml`，不存在 `dimension-weights.yaml` 事实源 |
 | v1.0 mechanical-rules.md | 已升级为 `engine/mechanical-rules.yaml` |
-| `tools/calibrate.py` | v1.3.0 起 deprecated（含 guard，详见 `plans/architecture-review-2026-05-26-postrelease.md`）|
+| `tools/calibrate.py` | 历史入口已删除；现行反馈统一使用 [`../../tools/feedback_ingest.py`](../../tools/feedback_ingest.py) + [`../../tools/feedback_loop.py`](../../tools/feedback_loop.py)，工具状态以 [`../../tools/README.md`](../../tools/README.md) 与 [`../../tools/tool_registry.py`](../../tools/tool_registry.py) 为准 |
 
 ### 9.2 v1.2 → v1.3 迁移（已完成）
 

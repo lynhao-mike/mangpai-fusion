@@ -3,11 +3,13 @@
 **门禁结论：HOLD**
 
 ## 来源与证据等级
-- Task 8 制品：`.historical-incremental-2026-07-16/stage-a/historical-batch.json + .historical-incremental-2026-07-16/stage-b/historical-scores.json`
+- 正式能力基线：[`META/six-month-capability-baseline-2026-07-16-incremental.json`](../META/six-month-capability-baseline-2026-07-16-incremental.json)
+- 正式 L1 审计：[`META/l1-routing-holdout-audit-2026-07-16-incremental.json`](../META/l1-routing-holdout-audit-2026-07-16-incremental.json)
+- 最小来源身份与摘要：[`META/historical-incremental-evidence-manifest-2026-07-16.json`](../META/historical-incremental-evidence-manifest-2026-07-16.json)
 - freeze hash：`b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68`
-- artifact digest：`None`
+- Task 8 scores artifact digest：`sha256:41f8971d09dbe2952237abe46d6a095f734d1ebe0c9cb70d44e19f61341ba9a8`
 - 数据证据等级：historical blind candidate；不是 prospective/E3。
-- 本审计摘要：`sha256:a0666b46b9e4e4a03c4f6742337a31a1d3c3e0b1f88d28c7b6ee79ae3fcc4bc0`
+- 本审计摘要：`sha256:13df1152f570749068183ec1894d3634cd1e4362e2f90ce252dd300cccc2718b`
 
 ## 无泄漏 subject 切分
 - subject identity：`sex_marker + four_pillars`

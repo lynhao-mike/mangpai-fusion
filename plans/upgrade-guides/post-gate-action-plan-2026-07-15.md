@@ -1,6 +1,8 @@
 # HOLD 后门禁行动 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **操作入口已被后续协议替代：** 当前操作事实、单案执行顺序与安全门槛以 [`META/prospective-intake-protocol-v1.md`](../../META/prospective-intake-protocol-v1.md:1) 和短期 [`handoff.md`](../../handoff.md:1) 为准。本文仅保留 2026-07-15 时点的历史目标、门槛与阶段设计，不作为命令入口；正文中的命令和任务勾选不得直接执行。
+>
+> **历史计划说明：** 原 agentic worker 执行约定仅供追溯；后续实施必须从上述当前事实源重新确认。
 
 **Goal:** 在不降低任何 GO 门槛、不伪造前瞻证据且不切换生产入口的前提下，用真实 prediction-first 新案例补齐 timing 覆盖、binary 校准、高风险 A 级双审标签与 L1 差异化路由证据，使六个月平台门禁从 HOLD 达到可提交 GO 切换提案的条件。
 

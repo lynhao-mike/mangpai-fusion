@@ -819,7 +819,7 @@ R1 已删除 [`v5_adapter.py`](../engine/decision/v5_adapter.py:1) 的“从命�
 
 ### Phase R5：流派适用性学习先验注入（注入端）
 
-> 状态：注入端已完成（route_schools 支持可选 learned_prior，缺省零回归，低命中先验可下调对应流派角色与分数，见 tests/test_l1_learned_prior.py）。真实反馈聚合出 learned_prior 并持久化回灌（R5-B）尚未实现，依赖真实反馈样本与 tools 层落盘，属数据工程而非纯路由重构。方向依据见 docs/superpowers/plans/2026-07-09-r5-cross-run-routing-learning-direction.md。
+> 状态：注入端已完成（route_schools 支持可选 learned_prior，缺省零回归，低命中先验可下调对应流派角色与分数，见 [`tests/test_l1_learned_prior.py`](../tests/test_l1_learned_prior.py:1)）。真实反馈聚合、持久化与回灌现由 L9 条件化学习治理承接；当前 staged 边界以 [`engine/learning/`](../engine/learning/) 和 [`plans/bazi-intelligence-platform-roadmap.md`](bazi-intelligence-platform-roadmap.md:1) 为准，不再从已执行切片计划推断。
 
 ### Phase R6：扶正主干——让分层链驱动报告（核心方向）
 

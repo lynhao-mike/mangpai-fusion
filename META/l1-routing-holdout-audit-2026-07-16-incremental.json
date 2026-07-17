@@ -1,8 +1,8 @@
 {
   "schema_version": "l1-routing-holdout-audit/v2",
-  "source_baseline": ".historical-incremental-2026-07-16/stage-a/historical-batch.json + .historical-incremental-2026-07-16/stage-b/historical-scores.json",
+  "source_baseline": "META/historical-incremental-evidence-manifest-2026-07-16.json",
   "source_freeze_hash": "b5d09f6e5ec49e061c865d8f4a4ec3d934293cb0f6d5adfb98107c78aa478f68",
-  "source_artifact_digest": null,
+  "source_artifact_digest": "sha256:41f8971d09dbe2952237abe46d6a095f734d1ebe0c9cb70d44e19f61341ba9a8",
   "classification": "historical_blind_candidate",
   "split": {
     "salt": "historical-incremental-l1-routing-2026-07-16-v1",
@@ -144,5 +144,5 @@
     "可比较留出案例不足：1 < 5。"
   ],
   "generated_at": "2026-07-16T07:00:00Z",
-  "artifact_digest": "sha256:a0666b46b9e4e4a03c4f6742337a31a1d3c3e0b1f88d28c7b6ee79ae3fcc4bc0"
+  "artifact_digest": "sha256:13df1152f570749068183ec1894d3634cd1e4362e2f90ce252dd300cccc2718b"
 }
