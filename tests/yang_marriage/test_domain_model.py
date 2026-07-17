@@ -32,13 +32,15 @@ def discrimination(
     event_anchor_passed: bool,
     independent_spouse_interaction_passed: bool,
     blocking_reason_codes: tuple[str, ...],
+    sex_basis: SexBasis = "male_wealth",
+    spouse_palace_branch: str = "子",
 ) -> YangMarriageDiscrimination:
     return YangMarriageDiscrimination(
         schema_version="yang-marriage-discrimination/v1",
         case_id=f"YM-SYN-{state.upper()}",
         state=state,
-        sex_basis="male_wealth",
-        spouse_palace_branch="子",
+        sex_basis=sex_basis,
+        spouse_palace_branch=spouse_palace_branch,
         families=families,
         event_anchor_passed=event_anchor_passed,
         independent_spouse_interaction_passed=independent_spouse_interaction_passed,
@@ -384,6 +386,26 @@ def test_pressure_rejects_specified_hard_blockers(hard_blocker: str) -> None:
         )
 
 
+@pytest.mark.parametrize(
+    ("sex_basis", "spouse_palace_branch"),
+    (("unknown", "子"), ("male_wealth", "")),
+)
+def test_pressure_requires_known_sex_and_nonempty_spouse_palace(
+    sex_basis: SexBasis,
+    spouse_palace_branch: str,
+) -> None:
+    with pytest.raises(ValueError, match="pressure requires known sex and spouse palace"):
+        discrimination(
+            state="pressure",
+            families=(family("spouse_palace_event_anchor"),),
+            event_anchor_passed=True,
+            independent_spouse_interaction_passed=False,
+            blocking_reason_codes=("missing_independent_spouse_interaction",),
+            sex_basis=sex_basis,
+            spouse_palace_branch=spouse_palace_branch,
+        )
+
+
 def test_pressure_gate_booleans_must_match_family_payload() -> None:
     with pytest.raises(ValueError, match="gate fields must match family payload"):
         discrimination(
@@ -418,6 +440,21 @@ def test_abstain_may_retain_incomplete_diagnostic_families() -> None:
     assert tuple(item.family_key for item in result.families) == (
         "ambient_relationship_pressure",
         "spouse_palace_event_anchor",
+    )
+
+
+def test_hard_blocked_abstain_may_retain_sex_incompatible_audit_family() -> None:
+    result = discrimination(
+        state="abstain",
+        families=(family("spouse_star_output_interaction"),),
+        event_anchor_passed=False,
+        independent_spouse_interaction_passed=False,
+        blocking_reason_codes=("incomplete_evidence",),
+        sex_basis="male_wealth",
+    )
+
+    assert tuple(item.family_key for item in result.families) == (
+        "spouse_star_output_interaction",
     )
 
 

@@ -171,8 +171,10 @@ class YangMarriageDiscrimination:
             }),
             "unknown": frozenset(),
         }[self.sex_basis]
-        if _EVENT_INTERACTION_FAMILY_KEYS.intersection(keys).difference(
-            allowed_interaction_families
+        if self.state in {"event", "pressure"} and (
+            _EVENT_INTERACTION_FAMILY_KEYS.intersection(keys).difference(
+                allowed_interaction_families
+            )
         ):
             raise ValueError("interaction family is incompatible with sex_basis")
         if self.spouse_palace_branch and self.spouse_palace_branch not in _BRANCHES:
@@ -194,6 +196,10 @@ class YangMarriageDiscrimination:
                 "event requires named A and B families, consistent gates, known sex, "
                 "spouse palace, and no blockers"
             )
+        if self.state == "pressure" and (
+            self.sex_basis == "unknown" or not self.spouse_palace_branch.strip()
+        ):
+            raise ValueError("pressure requires known sex and spouse palace")
         if self.state == "pressure" and (
             self.event_anchor_passed != has_event_anchor_family
             or self.independent_spouse_interaction_passed != has_event_interaction_family
