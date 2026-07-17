@@ -199,6 +199,21 @@ def _extract_atoms(
     return tuple(sorted(atoms.values(), key=lambda atom: (atom.year, atom.priority, atom.atom_id)))
 
 
+def _has_relation_without_year(chart: ChartFactLedger) -> bool:
+    for step in chart.liunian_steps:
+        if _year(step) is not None:
+            continue
+        annual = _ganzhi(step.get("ganzhi") or step.get("干支") or step.get("liunian"))
+        if not annual:
+            continue
+        targets = tuple(_ganzhi(value) for value in chart.four_pillars.values()) + (
+            _ganzhi(step.get("dayun") or step.get("大运")),
+        )
+        if any(target and _relation(annual[1], target[1]) for target in targets):
+            return True
+    return False
+
+
 def _reduce_families(atoms: tuple[TriggerAtom, ...]) -> tuple[EvidenceFamily, ...]:
     grouped: dict[str, dict[str, TriggerAtom]] = {}
     for atom in atoms:
@@ -226,8 +241,8 @@ def discriminate_ren_career_timing(
     *,
     task_id: str = "career.role_change",
 ) -> RenTimingResult:
-    del features  # Task 4 accepts the CFV contract but only extracts ledger relations.
-    event_id = event.event_id if event else ""
+    del features  # The named gate consumes ledger relations; CFV remains an input contract.
+    event_id = event.event_id if isinstance(event, EventHypothesis) else ""
     if task_id != "career.role_change":
         return RenTimingResult(
             task_id,
@@ -235,7 +250,11 @@ def discriminate_ren_career_timing(
             RenTimingState.UNSUPPORTED,
             PublicationState.UNSUPPORTED,
         )
-    if event is None or event.event_type != "career.role_change" or not event.event_id:
+    if (
+        not isinstance(event, EventHypothesis)
+        or event.event_type != "career.role_change"
+        or not event.event_id
+    ):
         return RenTimingResult(
             task_id,
             event_id,
@@ -262,12 +281,46 @@ def discriminate_ren_career_timing(
             remediation="补齐合法四柱、大运与候选流年事实。",
         )
 
+    if _has_relation_without_year(chart):
+        return RenTimingResult(
+            task_id,
+            event.event_id,
+            RenTimingState.INSUFFICIENT_TRIGGER,
+            PublicationState.HOLD,
+            failed_gates=("trigger_year_required",),
+            diagnostic_reasons=("关系触发候选缺少整数年份，无法形成可证伪时间窗。",),
+        )
+
     families = _reduce_families(_extract_atoms(chart, load_ren_timing_rules()))
+    if not families:
+        return RenTimingResult(
+            task_id,
+            event.event_id,
+            RenTimingState.ABSTAIN,
+            PublicationState.ABSTAIN,
+            failed_gates=("relation_trigger_required",),
+            diagnostic_reasons=("候选岁运未形成任派冲、刑、穿、合或伏吟触发。",),
+            remediation="补充后续候选流年；不得用默认大运窗口替代真实触发。",
+        )
+
+    selected = min(
+        families,
+        key=lambda family: (
+            min(atom.priority for atom in family.atoms),
+            min(atom.year for atom in family.atoms),
+            family.family_key,
+        ),
+    )
     return RenTimingResult(
         task_id,
         event.event_id,
-        RenTimingState.INSUFFICIENT_TRIGGER,
-        PublicationState.HOLD,
+        RenTimingState.TIMING_READY,
+        PublicationState.EMIT,
         evidence_families=families,
-        failed_gates=("timing_gate_not_evaluated",),
+        selected_family_key=selected.family_key,
+        diagnostic_reasons=(
+            "qualified_event",
+            "complete_suiyun_context",
+            "relation_trigger_present",
+        ),
     )

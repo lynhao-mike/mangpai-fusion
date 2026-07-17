@@ -5,6 +5,8 @@ from dataclasses import FrozenInstanceError, replace
 import pytest
 
 from engine.decision.ren_career_timing import discriminate_ren_career_timing
+from engine.features import build_chart_feature_vector
+from engine.predicates.relations import zhi_chong, zhi_chuan, zhi_liuhe, zhi_xing
 
 
 def _atoms(result):
@@ -74,12 +76,118 @@ def test_chart_and_feature_input_order_does_not_change_serialized_result(
     assert {atom.atom_id for atom in _atoms(original)} == {atom.atom_id for atom in _atoms(reordered)}
 
 
-def test_task4_discriminator_remains_extraction_only_hold(
+def test_valid_trigger_emits_one_selected_family(
     trigger_chart, trigger_features, career_event
 ) -> None:
     result = discriminate_ren_career_timing(trigger_chart, trigger_features, career_event)
 
+    assert result.local_state.value == "timing-ready"
+    assert result.publication_state.value == "emit"
+    assert result.selected_family_key
+    assert result.failed_gates == ()
+    selected = next(
+        family for family in result.evidence_families
+        if family.family_key == result.selected_family_key
+    )
+    expected = min(
+        result.evidence_families,
+        key=lambda family: (
+            min(atom.priority for atom in family.atoms),
+            min(atom.year for atom in family.atoms),
+            family.family_key,
+        ),
+    )
+    assert selected == expected
+
+
+def test_first_falsifier_has_no_l5_eligible_result(no_trigger_chart, career_event) -> None:
+    annual_branch = no_trigger_chart.liunian_steps[0]["ganzhi"][1]
+    target_branches = [
+        value[1] for value in no_trigger_chart.four_pillars.values()
+    ] + [no_trigger_chart.liunian_steps[0]["dayun"][1]]
+    assert all(
+        not zhi_chong(annual_branch, target)
+        and zhi_xing(annual_branch, target) is None
+        and not zhi_chuan(annual_branch, target)
+        and annual_branch != target
+        and zhi_liuhe(annual_branch, target) is None
+        and frozenset((annual_branch, target)) != frozenset(("午", "未"))
+        for target in target_branches
+    )
+
+    features = build_chart_feature_vector(no_trigger_chart)
+    result = discriminate_ren_career_timing(no_trigger_chart, features, career_event)
+
+    assert result.local_state.value == "abstain"
+    assert result.publication_state.value != "emit"
+    assert result.selected_family_key == ""
+    assert "relation_trigger_required" in result.failed_gates
+
+
+def test_missing_context_abstains(partial_chart, career_event) -> None:
+    features = build_chart_feature_vector(partial_chart)
+    result = discriminate_ren_career_timing(partial_chart, features, career_event)
+
+    assert result.local_state.value == "abstain"
+    assert result.publication_state.value == "abstain"
+    assert set(result.input_blockers) == {"dayun_required", "liunian_required"}
+
+
+def test_related_but_unusable_year_is_hold(
+    trigger_chart, trigger_features, career_event
+) -> None:
+    incomplete = replace(
+        trigger_chart,
+        liunian_steps=[{"ganzhi": "丙午", "dayun": "甲午"}],
+    )
+    result = discriminate_ren_career_timing(incomplete, trigger_features, career_event)
+
     assert result.local_state.value == "insufficient-trigger"
     assert result.publication_state.value == "hold"
     assert result.selected_family_key == ""
-    assert result.failed_gates == ("timing_gate_not_evaluated",)
+    assert result.failed_gates == ("trigger_year_required",)
+
+
+def test_step_without_any_relation_abstains(no_trigger_chart, career_event) -> None:
+    features = build_chart_feature_vector(no_trigger_chart)
+    result = discriminate_ren_career_timing(no_trigger_chart, features, career_event)
+
+    assert result.local_state.value == "abstain"
+    assert result.publication_state.value == "abstain"
+    assert result.failed_gates == ("relation_trigger_required",)
+
+
+@pytest.mark.parametrize("event", [None, "not-an-event"])
+def test_missing_or_wrong_type_upstream_event_is_routing_abstain(
+    trigger_chart, trigger_features, event
+) -> None:
+    result = discriminate_ren_career_timing(trigger_chart, trigger_features, event)
+
+    assert result.local_state.value == "abstain"
+    assert result.publication_state.value == "abstain"
+    assert result.routing_blockers == ("qualified_career_event_required",)
+
+
+def test_wrong_event_type_is_routing_abstain(
+    trigger_chart, trigger_features, career_event
+) -> None:
+    wrong_event = replace(career_event, event_type="wealth.gain")
+    result = discriminate_ren_career_timing(trigger_chart, trigger_features, wrong_event)
+
+    assert result.local_state.value == "abstain"
+    assert result.publication_state.value == "abstain"
+    assert result.routing_blockers == ("qualified_career_event_required",)
+
+
+def test_unsupported_task_is_unsupported(
+    trigger_chart, trigger_features, career_event
+) -> None:
+    result = discriminate_ren_career_timing(
+        trigger_chart,
+        trigger_features,
+        career_event,
+        task_id="marriage.event",
+    )
+
+    assert result.local_state.value == "unsupported"
+    assert result.publication_state.value == "unsupported"
