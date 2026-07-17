@@ -1,0 +1,32 @@
+schema_version: ren-career-timing-rules/v1
+rules:
+  - rule_id: REN-CAREER-TIMING-CHONG-V1
+    relation: 冲
+    priority: 10
+    source_path: theory/ren/index.yaml
+    source_anchor: M3-R-057
+    confidence: 0.72
+  - rule_id: REN-CAREER-TIMING-XING-V1
+    relation: 刑
+    priority: 20
+    source_path: theory/ren/index.yaml
+    source_anchor: M3-R-046
+    confidence: 0.68
+  - rule_id: REN-CAREER-TIMING-CHUAN-V1
+    relation: 穿
+    priority: 30
+    source_path: theory/ren/index.yaml
+    source_anchor: M3-R-047
+    confidence: 0.66
+  - rule_id: REN-CAREER-TIMING-FUYIN-V1
+    relation: 伏吟
+    priority: 40
+    source_path: theory/ren/index.yaml
+    source_anchor: M3-R-188
+    confidence: 0.64
+  - rule_id: REN-CAREER-TIMING-HE-V1
+    relation: 合
+    priority: 50
+    source_path: theory/ren/index.yaml
+    source_anchor: M3-R-057
+    confidence: 0.62
