@@ -311,19 +311,77 @@ def test_event_requires_known_sex_nonempty_spouse_palace_and_consistent_gates() 
         family("spouse_palace_event_anchor"),
         family("spouse_star_peer_interaction"),
     )
-    invalid_inputs: tuple[tuple[SexBasis, str, bool, bool], ...] = (
-        ("unknown", "子", True, True),
-        ("male_wealth", " ", True, True),
-        ("male_wealth", "子", False, True),
-        ("male_wealth", "子", True, False),
+    invalid_inputs: tuple[tuple[SexBasis, str, bool, bool, str], ...] = (
+        ("unknown", "子", True, True, "interaction family is incompatible with sex_basis"),
+        ("male_wealth", " ", True, True, "invalid spouse_palace_branch"),
+        ("male_wealth", "子", False, True, "event requires named A and B families"),
+        ("male_wealth", "子", True, False, "event requires named A and B families"),
     )
-    for sex_basis, spouse_palace_branch, anchor, interaction in invalid_inputs:
-        with pytest.raises(ValueError, match="event requires named A and B families"):
+    for sex_basis, spouse_palace_branch, anchor, interaction, message in invalid_inputs:
+        with pytest.raises(ValueError, match=message):
             YangMarriageDiscrimination(
                 "yang-marriage-discrimination/v1", "YM-SYN-EVENT-INVARIANT", "event",
                 sex_basis, spouse_palace_branch, event_families, anchor, interaction, (),
                 "合成证伪口径。", (),
             )
+
+
+@pytest.mark.parametrize(
+    ("sex_basis", "interaction_family"),
+    [
+        ("male_wealth", "spouse_star_output_interaction"),
+        ("male_wealth", "spouse_star_configuration"),
+        ("female_official", "spouse_star_peer_interaction"),
+    ],
+)
+def test_sex_basis_rejects_incompatible_event_interaction_families(
+    sex_basis: SexBasis,
+    interaction_family: FamilyKey,
+) -> None:
+    with pytest.raises(ValueError, match="interaction family is incompatible with sex_basis"):
+        YangMarriageDiscrimination(
+            "yang-marriage-discrimination/v1", "YM-SYN-SEX-FAMILY", "event",
+            sex_basis, "子",
+            (family("spouse_palace_event_anchor"), family(interaction_family)),
+            True, True, (), "合成证伪口径。", (),
+        )
+
+
+@pytest.mark.parametrize("spouse_palace_branch", ("甲", "invalid"))
+def test_nonempty_spouse_palace_branch_must_be_a_valid_earthly_branch(
+    spouse_palace_branch: str,
+) -> None:
+    with pytest.raises(ValueError, match="invalid spouse_palace_branch"):
+        YangMarriageDiscrimination(
+            "yang-marriage-discrimination/v1", "YM-SYN-BRANCH", "abstain",
+            "unknown", spouse_palace_branch, (), False, False,
+            ("missing_or_unknown_sex",), "合成证伪口径。", (),
+        )
+    with pytest.raises(ValueError, match="invalid spouse_palace_branch"):
+        YangMarriageRawSignals(
+            "YM-SYN-BRANCH", "unknown", spouse_palace_branch, (), False, 0,
+            False, False, False, ("missing_or_unknown_sex",),
+        )
+
+
+@pytest.mark.parametrize(
+    "hard_blocker",
+    (
+        "missing_or_unknown_sex",
+        "incomplete_evidence",
+        "missing_or_invalid_day_pillar",
+        "invalid_relationship_pair",
+    ),
+)
+def test_pressure_rejects_specified_hard_blockers(hard_blocker: str) -> None:
+    with pytest.raises(ValueError, match="hard blocker requires abstain"):
+        discrimination(
+            state="pressure",
+            families=(family("spouse_palace_event_anchor"),),
+            event_anchor_passed=True,
+            independent_spouse_interaction_passed=False,
+            blocking_reason_codes=(hard_blocker, "missing_independent_spouse_interaction"),
+        )
 
 
 def test_pressure_gate_booleans_must_match_family_payload() -> None:

@@ -19,6 +19,13 @@ CanonicalPair = tuple[str, str]
 
 _STATES = frozenset({"pressure", "event", "abstain"})
 _SEX_BASES = frozenset({"male_wealth", "female_official", "unknown"})
+_BRANCHES = frozenset("子丑寅卯辰巳午未申酉戌亥")
+_HARD_BLOCKING_REASON_CODES = frozenset({
+    "missing_or_unknown_sex",
+    "incomplete_evidence",
+    "missing_or_invalid_day_pillar",
+    "invalid_relationship_pair",
+})
 _EVENT_INTERACTION_FAMILY_KEYS = frozenset({
     "spouse_star_peer_interaction",
     "spouse_star_output_interaction",
@@ -60,6 +67,8 @@ class YangMarriageRawSignals:
             raise ValueError("boolean fields must be boolean")
         if type(self.spouse_star_count) is not int or self.spouse_star_count < 0:
             raise ValueError("spouse_star_count must be non-negative")
+        if self.spouse_palace_branch and self.spouse_palace_branch not in _BRANCHES:
+            raise ValueError("invalid spouse_palace_branch")
         object.__setattr__(
             self,
             "canonical_palace_pairs",
@@ -154,6 +163,24 @@ class YangMarriageDiscrimination:
         has_event_interaction_family = bool(
             _EVENT_INTERACTION_FAMILY_KEYS.intersection(keys)
         )
+        allowed_interaction_families = {
+            "male_wealth": frozenset({"spouse_star_peer_interaction"}),
+            "female_official": frozenset({
+                "spouse_star_output_interaction",
+                "spouse_star_configuration",
+            }),
+            "unknown": frozenset(),
+        }[self.sex_basis]
+        if _EVENT_INTERACTION_FAMILY_KEYS.intersection(keys).difference(
+            allowed_interaction_families
+        ):
+            raise ValueError("interaction family is incompatible with sex_basis")
+        if self.spouse_palace_branch and self.spouse_palace_branch not in _BRANCHES:
+            raise ValueError("invalid spouse_palace_branch")
+        if self.state == "pressure" and _HARD_BLOCKING_REASON_CODES.intersection(
+            self.blocking_reason_codes
+        ):
+            raise ValueError("hard blocker requires abstain")
         if self.state == "event" and (
             not has_event_anchor_family
             or not has_event_interaction_family
