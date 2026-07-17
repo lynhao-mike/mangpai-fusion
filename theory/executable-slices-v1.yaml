@@ -1,0 +1,26 @@
+schema_version: executable-slices/v1
+slices:
+  - slice_id: DUAN-CAREER-ROLE-CHANGE-V1
+    school_id: duan
+    task_id: career.role_change
+    target_layer: L2
+    status: existing_audited
+    artifacts:
+      - engine/v5/duan_runner.py
+      - theory/production/claim-rules-v1.yaml
+  - slice_id: GAO-HEALTH-SYSTEM-RISK-V1
+    school_id: gao
+    task_id: health.system_risk
+    target_layer: L2
+    status: existing_audited
+    artifacts:
+      - engine/v5/gao_runner.py
+      - theory/production/claim-rules-v1.yaml
+  - slice_id: YANG-MARRIAGE-DIVORCE-RISK-V1
+    school_id: yang
+    task_id: marriage.divorce_or_remarriage
+    target_layer: L2
+    status: existing_audited
+    artifacts:
+      - engine/v5/yang_runner.py
+      - theory/production/claim-rules-v1.yaml
