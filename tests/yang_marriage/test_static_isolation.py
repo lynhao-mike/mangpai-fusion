@@ -14,6 +14,10 @@ import engine.decision.yang_marriage as discriminator
 import engine.decision.yang_marriage_slice as slice_module
 
 
+APPROVED_BASELINE = "15ac7f3cdba01167b10f7ecc1139ef1e11782c8a"
+PRODUCTION_RULE_PATH = Path("theory/production/claim-rules-v1.yaml")
+
+
 PUBLIC_FIELDS = {
     Claim: (
         "claim_id",
@@ -63,21 +67,72 @@ def _source_paths() -> tuple[Path, Path]:
     return Path(discriminator.__file__), Path(slice_module.__file__)
 
 
+def _imported_modules(source: str) -> set[str]:
+    imported: set[str] = set()
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            parent = node.module or ""
+            imported.add(parent)
+            imported.update(
+                f"{parent}.{alias.name}" if parent else alias.name
+                for alias in node.names
+                if alias.name != "*"
+            )
+        elif (
+            isinstance(node, ast.Call)
+            and node.args
+            and isinstance(node.args[0], ast.Constant)
+            and isinstance(node.args[0].value, str)
+            and (
+                isinstance(node.func, ast.Name)
+                and node.func.id == "__import__"
+                or isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "importlib"
+                and node.func.attr == "import_module"
+            )
+        ):
+            imported.add(node.args[0].value)
+    return imported
+
+
+def test_import_scanner_recognizes_static_and_dynamic_import_forms() -> None:
+    mutations = {
+        "import engine.decision.l7_report_view": "engine.decision.l7_report_view",
+        "import engine.decision.l7_report_view as report_view": "engine.decision.l7_report_view",
+        "from engine.decision import l7_report_view": "engine.decision.l7_report_view",
+        "from engine.decision import l7_report_view as report_view": "engine.decision.l7_report_view",
+        'importlib.import_module("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+        '__import__("engine.decision.l7_report_view")': "engine.decision.l7_report_view",
+    }
+    for source, expected in mutations.items():
+        assert expected in _imported_modules(source), source
+
+
 def test_public_contract_fields_and_production_rule_bytes_are_unchanged() -> None:
     for model, expected in PUBLIC_FIELDS.items():
         assert tuple(item.name for item in fields(model)) == expected
 
-    path = "theory/production/claim-rules-v1.yaml"
-    baseline_ref = subprocess.check_output(
-        ["git", "merge-base", "HEAD", "main"], text=True
-    ).strip()
-    baseline = subprocess.check_output(["git", "show", f"{baseline_ref}:{path}"])
-    current_blob = subprocess.check_output(
-        ["git", "hash-object", "--path", path, path], text=True
-    ).strip()
-    current = subprocess.check_output(["git", "cat-file", "blob", current_blob])
-    assert hashlib.sha256(current).digest() == hashlib.sha256(baseline).digest()
-    assert current == baseline
+    subprocess.run(
+        ["git", "cat-file", "-e", f"{APPROVED_BASELINE}^{{commit}}"], check=True
+    )
+    path = PRODUCTION_RULE_PATH.as_posix()
+    baseline_blob = subprocess.check_output(["git", "show", f"{APPROVED_BASELINE}:{path}"])
+    head_blob = subprocess.check_output(["git", "show", f"HEAD:{path}"])
+    assert hashlib.sha256(head_blob).digest() == hashlib.sha256(baseline_blob).digest()
+    assert head_blob == baseline_blob
+
+    # `core.autocrlf` may make checkout bytes CRLF while the repository blob is LF.
+    # Apply checkout filters to the approved blob, then compare the actual raw bytes;
+    # never clean/hash the worktree bytes with `hash-object --path`.
+    expected_worktree = subprocess.check_output(
+        ["git", "cat-file", "--filters", f"--path={path}", f"{APPROVED_BASELINE}:{path}"]
+    )
+    current_worktree = PRODUCTION_RULE_PATH.read_bytes()
+    assert hashlib.sha256(current_worktree).digest() == hashlib.sha256(expected_worktree).digest()
+    assert current_worktree == expected_worktree
 
 
 def test_slice_has_no_history_report_learning_or_count_threshold_dependency() -> None:
@@ -99,12 +154,7 @@ def test_slice_has_no_history_report_learning_or_count_threshold_dependency() ->
 def test_slice_imports_do_not_reach_l7_l9_or_production_runner() -> None:
     imported: set[str] = set()
     for path in _source_paths():
-        tree = ast.parse(path.read_text(encoding="utf-8"))
-        imported |= {
-            node.module or ""
-            for node in ast.walk(tree)
-            if isinstance(node, ast.ImportFrom)
-        }
+        imported |= _imported_modules(path.read_text(encoding="utf-8"))
     forbidden_prefixes = (
         "engine.decision.l7",
         "engine.decision.l8",
