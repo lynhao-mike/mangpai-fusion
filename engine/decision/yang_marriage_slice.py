@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import replace
 
 from engine.decision import v5_adapter
+from engine.decision.l1_school_router import route_schools
 from engine.decision.l3_structure import build_structural_verdicts
 from engine.decision.l4_events import build_event_hypotheses
 from engine.decision.l5_timing import build_timing_probabilities
@@ -12,7 +14,10 @@ from engine.decision.l6_arbitration import build_arbitration_decisions
 from engine.decision.models import (
     ArbitrationDecision,
     ChartFactLedger,
+    ContextFactLedger,
+    DecisionRun,
     EventHypothesis,
+    RawWenzhenPayload,
     SchoolApplicability,
     SchoolClaim,
     SchoolRole,
@@ -111,3 +116,46 @@ def apply_yang_marriage_slice(
     # L6 的公共语义是每个 domain 一次统一仲裁；所有 eligible events 必须共同竞争。
     decisions = build_arbitration_decisions(case_id, events, applicability)
     return result, claims, verdicts, events, timings, decisions
+
+
+def build_yang_marriage_slice_decision_run(
+    output: V5Output,
+    chart: ChartFactLedger,
+    features: ChartFeatureVector,
+    raw_text: str = "",
+) -> tuple[YangMarriageDiscrimination, DecisionRun]:
+    """装配现有 DecisionRun；专用切片止于 L6。"""
+    case_id = output.case_id or features.chart_id
+    raw = raw_text or f"{output.schema_version}|{case_id}|yang-marriage-synthetic-slice"
+    raw_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+    bound_chart = replace(chart, raw_source_hash=raw_hash)
+    payload = RawWenzhenPayload(
+        raw_text=raw,
+        raw_hash=raw_hash,
+        parser_version="decision-yang-marriage-slice-v1",
+    )
+    context = ContextFactLedger(
+        preserved_text_blocks=["yang_marriage_discrimination_slice"]
+    )
+    applicability = route_schools(bound_chart, context)
+    result, claims, verdicts, events, timings, decisions = apply_yang_marriage_slice(
+        output, bound_chart, features, applicability
+    )
+    run = DecisionRun(
+        run_id=v5_adapter._stable_id("drun", case_id, raw_hash),
+        case_id=case_id,
+        raw_payload=payload,
+        chart_ledger=bound_chart,
+        context_ledger=context,
+        school_applicability=applicability,
+        school_claims=claims,
+        structural_verdicts=verdicts,
+        event_hypotheses=events,
+        timing_probabilities=timings,
+        arbitration_decisions=decisions,
+        report_items=[],
+        feedback_signals=[],
+        feedback_attributions=[],
+        calibration_actions=[],
+    )
+    return result, run

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import json
 
 import pytest
 
@@ -10,9 +11,12 @@ from engine.decision.l4_events import build_event_hypotheses
 from engine.decision.l5_timing import build_timing_probabilities
 from engine.decision.l6_arbitration import build_arbitration_decisions
 from engine.decision.models import SchoolApplicability
-from engine.decision.yang_marriage_slice import apply_yang_marriage_slice
+from engine.decision.yang_marriage_slice import (
+    apply_yang_marriage_slice,
+    build_yang_marriage_slice_decision_run,
+)
 from engine.v5.domain import V5Claim, V5Confidence, V5Evidence, V5Output
-from tests.yang_marriage.fixtures import cfv, chart
+from tests.yang_marriage.fixtures import cfv, chart, slice_output, synthetic_cases
 
 
 _TARGET_TASK = "marriage.divorce_or_remarriage"
@@ -216,6 +220,165 @@ def test_pressure_strips_old_target_and_never_enters_l2_through_l6() -> None:
     assert len(verdicts) == len(events) == len(timings) == len(decisions) == 1
     assert all(item.domain != "婚姻" for item in events)
     assert all(item.domain != "婚姻" for item in decisions)
+
+
+def target_counts(run) -> tuple[int, int, int, int, int]:
+    claim_ids = {
+        claim.claim_id for claim in run.school_claims
+        if claim.metadata.get("task_id") == _TARGET_TASK
+    }
+    verdict_ids = {
+        verdict.verdict_id for verdict in run.structural_verdicts
+        if verdict.claim_id in claim_ids
+    }
+    event_ids = {
+        event.event_id for event in run.event_hypotheses
+        if set(event.source_verdict_ids) & verdict_ids
+    }
+    return (
+        len(claim_ids),
+        len(verdict_ids),
+        len(event_ids),
+        sum(timing.event_id in event_ids for timing in run.timing_probabilities),
+        sum(
+            bool(set(decision.competing_event_ids) & event_ids)
+            for decision in run.arbitration_decisions
+        ),
+    )
+
+
+def _target_serialization(run) -> str:
+    target_claim_ids = {
+        claim.claim_id for claim in run.school_claims
+        if claim.metadata.get("task_id") == _TARGET_TASK
+    }
+    target_verdict_ids = {
+        verdict.verdict_id for verdict in run.structural_verdicts
+        if verdict.claim_id in target_claim_ids
+    }
+    target_event_ids = {
+        event.event_id for event in run.event_hypotheses
+        if set(event.source_verdict_ids) & target_verdict_ids
+    }
+    objects = [
+        *[item.to_dict() for item in run.school_claims if item.claim_id in target_claim_ids],
+        *[item.to_dict() for item in run.structural_verdicts if item.verdict_id in target_verdict_ids],
+        *[item.to_dict() for item in run.event_hypotheses if item.event_id in target_event_ids],
+        *[item.to_dict() for item in run.timing_probabilities if item.event_id in target_event_ids],
+        *[item.to_dict() for item in run.arbitration_decisions
+          if set(item.competing_event_ids) & target_event_ids],
+    ]
+    return json.dumps(objects, ensure_ascii=False, sort_keys=True)
+
+
+@pytest.mark.parametrize("case_id", ["YM-SYN-M1", "YM-SYN-F1", "YM-SYN-F2"])
+def test_event_has_exact_complete_l2_l6_trace(case_id: str) -> None:
+    sample = next(item for item in synthetic_cases() if item.case_id == case_id)
+    result, run = build_yang_marriage_slice_decision_run(
+        slice_output(case_id), sample.chart, sample.features
+    )
+
+    assert result.state == "event"
+    assert target_counts(run) == (1, 1, 1, 1, 1)
+    assert run.validate_trace() == []
+    assert run.report_items == []
+    assert run.feedback_signals == []
+    assert run.feedback_attributions == []
+    assert run.calibration_actions == []
+
+
+@pytest.mark.parametrize(
+    "sample",
+    [item for item in synthetic_cases() if item.expected_state != "event"],
+    ids=lambda item: item.case_id,
+)
+def test_pressure_and_abstain_have_zero_target_objects_in_every_layer(sample) -> None:
+    result, run = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id), sample.chart, sample.features
+    )
+
+    assert result.state in {"pressure", "abstain"}
+    assert target_counts(run) == (0, 0, 0, 0, 0)
+    assert all(claim.claim_id != "legacy-yang-marriage-target" for claim in run.school_claims)
+    public_text = json.dumps(run.to_dict(), ensure_ascii=False)
+    assert "存在关系压力不等于离婚或再婚事件成立" not in public_text
+
+
+def test_decision_run_is_deterministic_for_repeat_and_pair_permutation() -> None:
+    sample = next(item for item in synthetic_cases() if item.case_id == "YM-SYN-R1")
+    first_result, first_run = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id), sample.chart, sample.features
+    )
+    reversed_features = replace(
+        sample.features,
+        chong_pairs=tuple(
+            tuple(reversed(pair)) for pair in reversed(sample.features.chong_pairs)
+        ),
+        xing_hai_pairs=tuple(
+            tuple(reversed(pair)) for pair in reversed(sample.features.xing_hai_pairs)
+        ),
+    )
+    second_result, second_run = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id), sample.chart, reversed_features
+    )
+
+    assert first_result.to_dict() == second_result.to_dict()
+    assert first_run.run_id == second_run.run_id
+    assert _target_serialization(first_run) == _target_serialization(second_run)
+
+
+def test_old_target_presence_does_not_change_slice_run() -> None:
+    sample = next(item for item in synthetic_cases() if item.case_id == "YM-SYN-M1")
+    _, with_old = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id), sample.chart, sample.features
+    )
+    _, without_old = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id, include_old_target=False), sample.chart, sample.features
+    )
+
+    assert with_old.to_dict() == without_old.to_dict()
+    assert "legacy-yang-marriage-target" not in json.dumps(
+        with_old.to_dict(), ensure_ascii=False
+    )
+
+
+def test_decision_run_preserves_non_target_legacy_objects_field_for_field() -> None:
+    sample = next(item for item in synthetic_cases() if item.case_id == "YM-SYN-M1")
+    output = slice_output(sample.case_id, include_old_target=False)
+    _, run = build_yang_marriage_slice_decision_run(output, sample.chart, sample.features)
+    baseline_claims = v5_adapter._claims(output, run.school_applicability)
+    baseline_verdicts = build_structural_verdicts(sample.case_id, baseline_claims)
+    baseline_events = build_event_hypotheses(
+        sample.case_id, baseline_verdicts, baseline_claims
+    )
+    baseline_timings = build_timing_probabilities(sample.case_id, baseline_events)
+    baseline_decisions = build_arbitration_decisions(
+        sample.case_id, baseline_events, run.school_applicability
+    )
+    baseline_layers = (
+        baseline_claims, baseline_verdicts, baseline_events, baseline_timings,
+        baseline_decisions,
+    )
+    run_layers = (
+        run.school_claims, run.structural_verdicts, run.event_hypotheses,
+        run.timing_probabilities, run.arbitration_decisions,
+    )
+    id_fields = ("claim_id", "verdict_id", "event_id", "prediction_id", "decision_id")
+    for layer, expected, field in zip(run_layers, baseline_layers, id_fields, strict=True):
+        expected_ids = {getattr(item, field) for item in expected}
+        actual = [item for item in layer if getattr(item, field) in expected_ids]
+        assert [item.to_dict() for item in actual] == [item.to_dict() for item in expected]
+
+
+def test_decision_run_duplicate_non_target_claim_fails_before_l3() -> None:
+    sample = next(item for item in synthetic_cases() if item.case_id == "YM-SYN-P1")
+    output = slice_output(sample.case_id, include_old_target=False)
+    duplicated = replace(output, claims=[*output.claims, output.claims[0]])
+
+    with pytest.raises(ValueError, match="duplicate L2 claim_id"):
+        build_yang_marriage_slice_decision_run(
+            duplicated, sample.chart, sample.features
+        )
 
 
 def test_duplicate_yang_applicability_fails_fast() -> None:
