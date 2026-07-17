@@ -50,3 +50,9 @@ def test_default_runner_registry_registrations_are_unchanged() -> None:
 def test_production_weight_defaults_and_file_are_unchanged() -> None:
     assert _DEFAULT_SCHOOL_WEIGHTS == DEFAULT_WEIGHT_SUMMARY
     assert _sha256(Path("engine/expert-weights.yaml")) == PRODUCTION_WEIGHT_FILE_SHA256
+
+
+def test_ren_staged_slice_does_not_modify_production_claim_rules() -> None:
+    assert _sha256(Path("theory/production/claim-rules-v1.yaml")) == (
+        "6396883d8db0b8d24c6c15435c130c6f9ae045c8c6d1fe8d2a84748c5b0bebef"
+    )

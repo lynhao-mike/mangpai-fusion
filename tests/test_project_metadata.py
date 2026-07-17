@@ -170,3 +170,10 @@ def test_historical_agent_handoff_is_not_current_branch_source() -> None:
     assert "不再作为当前分支策略事实源" in handoff
     assert "AGENTS.md" in handoff
     assert "META/project-state.json" in handoff
+
+
+def test_ren_career_timing_slice_is_staged_not_production() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    assert state["intelligence_platform_status"]["ren_career_role_change_timing_slice"] == (
+        "staged_verified_production_unchanged"
+    )

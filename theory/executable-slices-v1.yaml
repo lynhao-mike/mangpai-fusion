@@ -24,3 +24,14 @@ slices:
     artifacts:
       - engine/v5/yang_runner.py
       - theory/production/claim-rules-v1.yaml
+  - slice_id: REN-CAREER-ROLE-CHANGE-TIMING-V1
+    school_id: ren
+    task_id: career.role_change
+    target_layer: L5
+    status: staged_verified
+    artifacts:
+      - theory/production/ren-career-timing-rules-v1.yaml
+      - engine/decision/ren_timing_rules.py
+      - engine/decision/ren_career_timing.py
+      - engine/decision/ren_career_timing_slice.py
+      - tests/ren_timing/test_staged_slice.py

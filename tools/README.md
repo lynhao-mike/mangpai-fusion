@@ -44,6 +44,7 @@
 | [`school_capability_batch.py`](school_capability_batch.py:1) | 历史输入/反馈分文档的批量隔离、去重、冻结、保守标签、评分与基线报告 | 只消费先冻结输入、后揭示反馈；产物固定标为 historical blind candidate，不冒充 prospective，不写生产权重或规则 |
 | [`school_capability_incremental.py`](school_capability_incremental.py:1) | 基于不可变父 baseline 构建独立历史隔离增量批次 | `prepare / stage-a / stage-b / bind-formal / finalize`；按命主 identity 求增量、先冻结后揭示，仅绑定低风险目录内标签，高风险无 A 级双审保持不可评分；不覆盖父制品或修改生产路由/权重 |
 | [`school_capability_task8.py`](school_capability_task8.py:1) | 六个月计划 Task 8 的六来源历史隔离基线编排 | 严格拆分 stage-a 冻结与 stage-b 标签揭示，复用现有 runner/evaluation 契约并只读核验旧 prospective bundle；不写生产路由、权重或规则 |
+| [`theory_slice_status.py`](theory_slice_status.py:1) | 分账扫描理论目录条目与可执行切片清单 | 只读输出 `catalog_count` / `executable_slice_count`；不更新规则生命周期、生产 registry 或权重 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
 | [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖与效用审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许对照；learned 必须改变至少一个选择且效用不退化才可 GO |
 | [`rebuild_l1_routing_evidence.py`](rebuild_l1_routing_evidence.py:1) | 重建 L1 路由盲测证据 | 从隔离命盘汇总重新冻结当前 runner 输出，揭示既有人工标签并评分；写 batch/scores/manifest，不写生产权重 |
@@ -60,6 +61,8 @@
 - [`conditional_learning.py`](conditional_learning.py:1) 是 staged 离线治理入口，不替代 [`feedback_ingest.py`](feedback_ingest.py:1)，也不切换生产路由；业务门禁与快照语义位于 [`engine/learning/`](../engine/learning/)，CLI 只做文件 adapter。
 - 新报告字段必须先进入 [`V5RunSnapshot`](../engine/v5/domain.py:366) / [`DecisionRun`](../engine/decision/models.py:302) 等结构化对象，再由报告视图渲染；不得把新领域能力直接塞进 [`tools/`](README.md:1)。
 - 新代码不应把 [`engine/application`](../engine/application:1) 继续扩大为依赖 [`tools/`](README.md:1) 的工具集合；涉及长期 API / queue / storage 时应下沉到 application / infrastructure 层。
+
+任派职业角色变化应期切片当前仅为 staged 专用入口：它消费已成立的职业变化事件，使用真实岁运触发生成可证伪 L5 窗口；未注册到默认 runner registry，也不替换正式 pipeline 或报告入口。
 
 ---
 
