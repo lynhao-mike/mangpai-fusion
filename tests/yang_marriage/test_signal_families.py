@@ -196,6 +196,47 @@ def test_reducer_emits_each_named_family_at_most_once_and_compound_only_enhances
     assert anchor.canonical_pairs == (("午", "子"), ("卯", "子"))
 
 
+@pytest.mark.parametrize(
+    ("case_id", "official_count", "kill_count", "expected_state", "has_configuration"),
+    [
+        ("YM-SYN-MIXED-CONTRADICTION", 0, 0, "pressure", False),
+        ("YM-SYN-OFFICIAL-ONLY", 1, 0, "pressure", False),
+        ("YM-SYN-KILL-ONLY", 0, 1, "pressure", False),
+        ("YM-SYN-MIXED-CONFIRMED", 1, 1, "event", True),
+    ],
+)
+def test_female_configuration_requires_both_official_and_kill_counts(
+    case_id: str,
+    official_count: int,
+    kill_count: int,
+    expected_state: str,
+    has_configuration: bool,
+) -> None:
+    result = discriminate_yang_marriage(
+        case_id,
+        chart(case_id, sex="坤"),
+        cfv(
+            case_id,
+            chong_pairs=(("子", "午"),),
+            ten_god_counts={
+                "正财": 0,
+                "偏财": 0,
+                "正官": official_count,
+                "七杀": kill_count,
+                "比肩": 0,
+                "劫财": 0,
+                "食神": 0,
+                "伤官": 0,
+            },
+            has_official=bool(official_count or kill_count),
+            mixed_official_kill=True,
+        ),
+    )
+
+    assert result.state == expected_state
+    assert ("spouse_star_configuration" in result_keys(result)) is has_configuration
+
+
 def test_male_wealth_peer_context_is_interaction_not_ambient_pressure() -> None:
     signals = extract_yang_marriage_signals(
         "YM-SYN-MALE",

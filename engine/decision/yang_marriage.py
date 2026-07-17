@@ -199,7 +199,11 @@ def extract_yang_marriage_signals(
         )
         >= 4,
         mixed_official_kill=(
-            sex_basis == "female_official" and features.mixed_official_kill
+            sex_basis == "female_official"
+            and spouse_present
+            and int(features.ten_god_counts.get("正官", 0)) > 0
+            and int(features.ten_god_counts.get("七杀", 0)) > 0
+            and features.mixed_official_kill
         ),
         blocking_reason_codes=tuple(sorted(blockers)),
     )
