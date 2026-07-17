@@ -33,7 +33,10 @@ def build_yang_marriage_school_claims(
     if (
         len(families) < 2
         or not result.source_rule_refs
-        or any(not family.fact_refs and not family.feature_refs for family in families)
+        or any(
+            not any(ref.strip() for ref in family.fact_refs + family.feature_refs)
+            for family in families
+        )
     ):
         return ()
 

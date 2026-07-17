@@ -185,6 +185,17 @@ def test_event_accepts_family_evidence_with_only_one_reference_kind(ref_kind: st
                 family("spouse_star_peer_interaction"),
             ),
         ),
+        replace(
+            _event(),
+            families=(
+                replace(
+                    family("spouse_palace_event_anchor"),
+                    fact_refs=(" ",),
+                    feature_refs=("\t",),
+                ),
+                family("spouse_star_peer_interaction"),
+            ),
+        ),
     ),
 )
 def test_event_with_missing_rule_or_family_evidence_fails_closed(
