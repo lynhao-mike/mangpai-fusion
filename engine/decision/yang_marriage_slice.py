@@ -92,7 +92,8 @@ def apply_yang_marriage_slice(
         if result.state != "event" or role == "abstain"
         else [to_yang_marriage_school_claim(result, role)]
     )
-    claims = legacy_l2 + native_l2
+    # 专用切片必须让唯一目标越过公共 L4 的前两项 cap；既有非目标相对顺序不变。
+    claims = native_l2 + legacy_l2
     _reject_duplicate_claim_ids(claims)
 
     verdicts = build_structural_verdicts(case_id, claims)

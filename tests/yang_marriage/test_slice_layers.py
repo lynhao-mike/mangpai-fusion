@@ -69,6 +69,19 @@ def _male_counts(*, wealth: int, peers: int) -> dict[str, int]:
     }
 
 
+def _nontarget_event(claim_id: str, domain: str, task_id: str) -> V5Claim:
+    return V5Claim(
+        claim_id=claim_id,
+        school="ziping",
+        domain=domain,
+        claim=f"合成非目标{domain}事件。",
+        claim_type="event_claim",
+        confidence=V5Confidence(score=0.60),
+        evidence=[V5Evidence(claim_id, "synthetic", f"非目标{domain}证据")],
+        metadata={"task_id": task_id},
+    )
+
+
 def test_event_replaces_old_target_and_directly_builds_l2_through_l6() -> None:
     case_id = "YM-SYN-M1"
     result, claims, verdicts, events, timings, decisions = apply_yang_marriage_slice(
@@ -91,6 +104,58 @@ def test_event_replaces_old_target_and_directly_builds_l2_through_l6() -> None:
     assert len(events) == 2
     assert len(timings) == 2
     assert len(decisions) == 2
+
+
+def test_event_target_keeps_unique_l2_through_l6_chain_after_multiple_nontarget_events() -> None:
+    case_id = "YM-SYN-MULTI-EVENT"
+    output = _output(case_id)
+    output = replace(
+        output,
+        claims=output.claims
+        + [
+            _nontarget_event("legacy-nontarget-health", "健康", "health.check"),
+            _nontarget_event("legacy-nontarget-wealth", "财富", "wealth.change"),
+        ],
+    )
+
+    result, claims, verdicts, events, timings, decisions = apply_yang_marriage_slice(
+        output,
+        chart(case_id),
+        cfv(
+            case_id,
+            chong_pairs=(("子", "午"),),
+            ten_god_counts=_male_counts(wealth=1, peers=3),
+        ),
+        _applicability(),
+    )
+
+    target_claims = [claim for claim in claims if claim.metadata.get("task_id") == _TARGET_TASK]
+    assert result.state == "event"
+    assert len(target_claims) == 1
+    target_claim = target_claims[0]
+    assert [claim.claim_id for claim in claims if claim is not target_claim] == [
+        "legacy-nontarget-career",
+        "legacy-nontarget-health",
+        "legacy-nontarget-wealth",
+    ]
+
+    target_verdicts = [verdict for verdict in verdicts if verdict.claim_id == target_claim.claim_id]
+    assert len(target_verdicts) == 1
+    target_verdict = target_verdicts[0]
+
+    target_events = [event for event in events if target_verdict.verdict_id in event.source_verdict_ids]
+    assert len(target_events) == 1
+    target_event = target_events[0]
+
+    target_timings = [timing for timing in timings if timing.event_id == target_event.event_id]
+    assert len(target_timings) == 1
+
+    target_decisions = [
+        decision
+        for decision in decisions
+        if target_event.event_id in decision.competing_event_ids
+    ]
+    assert len(target_decisions) == 1
 
 
 def test_pressure_strips_old_target_and_never_enters_l2_through_l6() -> None:
