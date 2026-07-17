@@ -95,23 +95,19 @@ def apply_yang_marriage_slice(
     claims = legacy_l2 + native_l2
     _reject_duplicate_claim_ids(claims)
 
-    # 公共 L4 的 cap 属于单次 builder 调用；分支构建可同时保持 legacy 逐字段不变，
-    # 并让唯一 native 目标完整进入 L3-L6，而不改变公共 builder 语义。
+    # L4 的全局 cap 会让追加的 native event 与 legacy event 争抢名额，因此两支分别
+    # 构建后合并；L3/L5 均为逐对象映射，分支构建保持 legacy L2-L5 逐字段不变。
     legacy_verdicts = build_structural_verdicts(case_id, legacy_l2)
     legacy_events = build_event_hypotheses(case_id, legacy_verdicts, legacy_l2)
     legacy_timings = build_timing_probabilities(case_id, legacy_events)
-    legacy_decisions = build_arbitration_decisions(case_id, legacy_events, applicability)
 
-    # L6 decision_id 只由 case/domain 构成；同域 legacy 事件存在时需给专用分支稳定命名空间，
-    # 否则会产生重复 ID。该命名空间仅参与 native L3-L6 稳定 ID，不改变业务 case_id。
-    native_id_scope = f"{case_id}|yang-marriage-native"
-    native_verdicts = build_structural_verdicts(native_id_scope, native_l2)
-    native_events = build_event_hypotheses(native_id_scope, native_verdicts, native_l2)
-    native_timings = build_timing_probabilities(native_id_scope, native_events)
-    native_decisions = build_arbitration_decisions(native_id_scope, native_events, applicability)
+    native_verdicts = build_structural_verdicts(case_id, native_l2)
+    native_events = build_event_hypotheses(case_id, native_verdicts, native_l2)
+    native_timings = build_timing_probabilities(case_id, native_events)
 
     verdicts = legacy_verdicts + native_verdicts
     events = legacy_events + native_events
     timings = legacy_timings + native_timings
-    decisions = legacy_decisions + native_decisions
+    # L6 的公共语义是每个 domain 一次统一仲裁；所有 eligible events 必须共同竞争。
+    decisions = build_arbitration_decisions(case_id, events, applicability)
     return result, claims, verdicts, events, timings, decisions

@@ -111,7 +111,7 @@ def test_event_replaces_old_target_and_directly_builds_l2_through_l6() -> None:
     assert len(decisions) == 2
 
 
-def test_event_preserves_legacy_l2_l6_fields_and_keeps_one_complete_target_chain() -> None:
+def test_event_preserves_legacy_l2_l5_and_arbitrates_complete_domains_once() -> None:
     case_id = "YM-SYN-MULTI-EVENT"
     applicability = _applicability()
     original = _output(case_id)
@@ -151,18 +151,16 @@ def test_event_preserves_legacy_l2_l6_fields_and_keeps_one_complete_target_chain
         "verdicts": {item.verdict_id for item in baseline_verdicts},
         "events": {item.event_id for item in baseline_events},
         "timings": {item.prediction_id for item in baseline_timings},
-        "decisions": {item.decision_id for item in baseline_decisions},
     }
     actual_legacy = [
         [item for item in claims if item.claim_id in baseline_ids["claims"]],
         [item for item in verdicts if item.verdict_id in baseline_ids["verdicts"]],
         [item for item in events if item.event_id in baseline_ids["events"]],
         [item for item in timings if item.prediction_id in baseline_ids["timings"]],
-        [item for item in decisions if item.decision_id in baseline_ids["decisions"]],
     ]
     for actual, baseline in zip(
         actual_legacy,
-        [baseline_claims, baseline_verdicts, baseline_events, baseline_timings, baseline_decisions],
+        [baseline_claims, baseline_verdicts, baseline_events, baseline_timings],
         strict=True,
     ):
         assert [item.to_dict() for item in actual] == [item.to_dict() for item in baseline]
@@ -176,10 +174,28 @@ def test_event_preserves_legacy_l2_l6_fields_and_keeps_one_complete_target_chain
     assert len(target_events) == 1
     target_timings = [timing for timing in timings if timing.event_id == target_events[0].event_id]
     assert len(target_timings) == 1
-    target_decisions = [
-        decision for decision in decisions if target_events[0].event_id in decision.competing_event_ids
+    assert len({item.claim_id for item in claims}) == len(claims)
+    assert len({item.verdict_id for item in verdicts}) == len(verdicts)
+    assert len({item.event_id for item in events}) == len(events)
+    assert len({item.prediction_id for item in timings}) == len(timings)
+
+    assert len({decision.domain for decision in decisions}) == len(decisions)
+    marriage_decisions = [decision for decision in decisions if decision.domain == "婚姻"]
+    assert len(marriage_decisions) == 1
+    legacy_marriage_event_ids = {
+        event.event_id for event in baseline_events if event.domain == "婚姻"
+    }
+    assert legacy_marriage_event_ids
+    assert set(marriage_decisions[0].competing_event_ids) == (
+        legacy_marriage_event_ids | {target_events[0].event_id}
+    )
+    expected_decisions = build_arbitration_decisions(case_id, events, applicability)
+    assert [item.to_dict() for item in decisions] == [
+        item.to_dict() for item in expected_decisions
     ]
-    assert len(target_decisions) == 1
+    assert [item.to_dict() for item in decisions] != [
+        item.to_dict() for item in baseline_decisions
+    ]
 
 
 def test_pressure_strips_old_target_and_never_enters_l2_through_l6() -> None:
