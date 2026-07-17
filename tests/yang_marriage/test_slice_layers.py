@@ -309,6 +309,9 @@ def test_decision_run_is_deterministic_for_repeat_and_pair_permutation() -> None
     first_result, first_run = build_yang_marriage_slice_decision_run(
         slice_output(sample.case_id), sample.chart, sample.features
     )
+    repeated_result, repeated_run = build_yang_marriage_slice_decision_run(
+        slice_output(sample.case_id), sample.chart, sample.features
+    )
     reversed_features = replace(
         sample.features,
         chong_pairs=tuple(
@@ -318,13 +321,13 @@ def test_decision_run_is_deterministic_for_repeat_and_pair_permutation() -> None
             tuple(reversed(pair)) for pair in reversed(sample.features.xing_hai_pairs)
         ),
     )
-    second_result, second_run = build_yang_marriage_slice_decision_run(
+    permuted_result, permuted_run = build_yang_marriage_slice_decision_run(
         slice_output(sample.case_id), sample.chart, reversed_features
     )
 
-    assert first_result.to_dict() == second_result.to_dict()
-    assert first_run.run_id == second_run.run_id
-    assert _target_serialization(first_run) == _target_serialization(second_run)
+    assert first_result.to_dict() == repeated_result.to_dict() == permuted_result.to_dict()
+    assert first_run.to_dict() == repeated_run.to_dict() == permuted_run.to_dict()
+    assert _target_serialization(first_run) == _target_serialization(permuted_run)
 
 
 def test_old_target_presence_does_not_change_slice_run() -> None:
