@@ -11,6 +11,10 @@ from engine.decision.yang_marriage import (
     YangMarriageRawSignals,
     YangMarriageState,
 )
+from engine.decision.yang_marriage_slice import (
+    _reject_duplicate_claim_ids,
+    to_yang_marriage_school_claim,
+)
 
 
 def family(key: FamilyKey) -> YangMarriageFamilyEvidence:
@@ -467,6 +471,41 @@ def test_hard_blocked_abstain_may_retain_sex_incompatible_audit_family() -> None
     assert tuple(item.family_key for item in result.families) == (
         "spouse_star_output_interaction",
     )
+
+
+def test_event_adapter_accepts_only_event_and_uses_both_gate_evidence() -> None:
+    event = discrimination(
+        state="event",
+        families=(
+            family("spouse_palace_event_anchor"),
+            family("spouse_star_peer_interaction"),
+        ),
+        event_anchor_passed=True,
+        independent_spouse_interaction_passed=True,
+        blocking_reason_codes=(),
+    )
+
+    claim = to_yang_marriage_school_claim(event, "lead")
+
+    assert claim.school == "yang_qingjuan"
+    assert claim.domain == "婚姻"
+    assert claim.claim_type == "event_claim"
+    assert claim.confidence == 0.60
+    assert len(claim.evidence_refs) >= 2
+    assert claim.metadata["task_id"] == "marriage.divorce_or_remarriage"
+    assert not any(text in claim.statement for text in ("必离", "100%", "多婚命"))
+
+    pressure = discrimination(
+        state="pressure",
+        families=(family("spouse_palace_event_anchor"),),
+        event_anchor_passed=True,
+        independent_spouse_interaction_passed=False,
+        blocking_reason_codes=("missing_independent_spouse_interaction",),
+    )
+    with pytest.raises(ValueError, match="event only"):
+        to_yang_marriage_school_claim(pressure, "lead")
+    with pytest.raises(ValueError, match="duplicate L2 claim_id"):
+        _reject_duplicate_claim_ids([claim, claim])
 
 
 def test_raw_signals_are_frozen_stable_and_reject_negative_counts() -> None:

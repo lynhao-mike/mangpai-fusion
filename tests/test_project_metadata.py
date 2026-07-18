@@ -177,3 +177,12 @@ def test_ren_career_timing_slice_is_staged_not_production() -> None:
     assert state["intelligence_platform_status"]["ren_career_role_change_timing_slice"] == (
         "staged_verified_production_unchanged"
     )
+
+
+def test_yang_marriage_slice_status_is_dedicated_synthetic_only() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    assert state["last_updated"] >= "2026-07-17"
+    value = state["intelligence_platform_status"]["yang_marriage_discrimination_slice"]
+    assert value == "synthetic_spec_passed_dedicated_only"
+    forbidden = ("accuracy", "go", "production", "default", "promoted")
+    assert not any(token in value.lower() for token in forbidden)
