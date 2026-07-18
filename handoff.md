@@ -12,18 +12,21 @@
 - 生产默认仍为 static routing；staged 仅用于并跑和离线评估，`production_switch=false`，不得据此修改生产入口、规则或权重。
 - 跨流派理论能力已改为 `catalog_count` 与 `executable_slice_count` 分账；运行入口见 [`theory_slice_status.py`](tools/theory_slice_status.py:1)，清单见 [`executable-slices-v1.yaml`](theory/executable-slices-v1.yaml:1)。
 - 任派“职业角色变化应期”已通过 G0-G5，状态为 `staged_verified_production_unchanged`；证据包见 [`ren-career-timing-slice-g0-g5-verification.md`](reports/ren-career-timing-slice-g0-g5-verification.md:1)。
-- 默认 runner registry、正式 pipeline、production claim rules、公共 schema 与报告入口未因任派切片改变。
+- 子平“官杀职业路径受扰资格门”已通过 G0-G5，状态为 `staged_verified_production_unchanged`；证据包见 [`ziping-career-structure-slice-g0-g5-verification.md`](reports/ziping-career-structure-slice-g0-g5-verification.md:1)。
+- 默认 runner registry、正式 pipeline、production claim rules、公共 schema、报告入口及既有任派/杨派路径未因子平切片改变。
 
 ## 2. 理论切片本轮状态
 
-### 2.1 子平“官杀职业路径受扰资格门”已批准、待实施
+### 2.1 子平“官杀职业路径受扰资格门”已完成 staged G0-G5
 
-- 只读审计、方案选择与设计审批已经完成；新会话不得重复 brainstorming、候选路径比较或规格审批。
 - 已批准设计：[`2026-07-17-ziping-career-official-path-disruption-slice-design.md`](docs/superpowers/specs/2026-07-17-ziping-career-official-path-disruption-slice-design.md:1)。
-- 已批准 TDD 实施计划：[`2026-07-17-ziping-career-official-path-disruption-slice.md`](docs/superpowers/plans/2026-07-17-ziping-career-official-path-disruption-slice.md:1)。
-- 目标任务为 `career.role_change`，task-scoped rule ID 为 `ZIPING-CAREER-OFFICIAL-PATH-DISRUPTION-V1`，来源锚点为 `ZP-PROD-20260622-011` 与 `ZP-PROD-20260622-012`。
-- 当前仅有规格与计划；规则 YAML、判别器、adapter、专项测试、冻结制品、状态登记和验证报告均尚未实施。
-- 最终合法状态仅为 `staged_verified_production_unchanged`；不得宣称准确率提升、G6 晋级或生产启用。
+- 已执行 TDD 计划：[`2026-07-17-ziping-career-official-path-disruption-slice.md`](docs/superpowers/plans/2026-07-17-ziping-career-official-path-disruption-slice.md:1)。
+- 目标任务为 `career.role_change`，task-scoped rule ID 为 `ZIPING-CAREER-OFFICIAL-PATH-DISRUPTION-V1`，production 来源锚点保持 `ZP-PROD-20260622-011` 与 `ZP-PROD-20260622-012`。
+- 已落地严格映射、纯判别器、emit-only L2、专用 L3、确定性冻结、生产隔离测试、切片登记及 G0-G5 验证报告。
+- 首证伪点已证明：粗官杀 trigger 存在但食伤必要门失败时，L2=0、L3=0、events=0、timings=0。
+- 最新完成门 focused/regression/隔离集合为 298 passed、0 failed、0 skipped、1 个既有弃用 warning；未运行仓库全量测试，不得表述为全量通过。
+- 子平计数分账为 `catalog_count=933`、production entries=933、`executable_slice_count=1`。
+- 合法终态仅为 `staged_verified_production_unchanged`；G6 未进入，不代表准确率提升、生产晋级或可用于正式报告。
 
 ### 2.2 统一规范与任派纵切
 
@@ -53,77 +56,42 @@
 
 ## 3. 下一阶段优先级
 
-1. **P2 子平职业路径**：收敛子平 task Claim 与 production 库身份，先做一个 L2→L3 staged 纵切，不全量迁移目录规则。
-2. **P3 滴天髓调候蒸馏**：从大量调候条目中选一个判别度高、事实闭包明确的结构任务，形成 G3/G4 切片。
-3. **杨派续作**：只处理 Git 实查后的未完成任务；与 P2/P3 并行时，杨派写区继续由单一 owner 管理。
-4. **G6 生产候选门**：任派与后续切片均需独立冻结样本上的误报、漏报、校准与适用性后验，不能由合成测试自动晋级。
+1. **P3 滴天髓调候蒸馏**：先做只读审计与设计，从大量调候/气势条目中选择一个判别度高、事实闭包明确、可反驳的最小结构任务；批准后再实施 staged L2→L3，不全量迁移目录。
+2. **杨派续作**：只处理 Git 实查后的未完成任务；与 P3 并行时，杨派、任派及子平写区继续由单一 owner 管理。
+3. **G6 生产候选门**：任派、子平及后续切片均需独立冻结样本上的误报、漏报、校准与适用性后验，不能由合成测试自动晋级。
+4. **首案即时回顾**：如业务事实已可收集，按既有 prospective 链执行 freeze 前事实收集、双审/仲裁、bind 与 completion，不与理论切片混写。
 
 ## 4. 新会话提示词
 
-### 4.1 P2 · 子平职业路径（已批准实施版）
+### 4.1 P3 · 滴天髓调候蒸馏（下一推荐会话）
 
 ```text
-你正在 mangpai-fusion 仓库无人值守执行已批准的 P2 子平“官杀职业路径受扰资格门”staged L2→L3 纵切。设计与计划已经批准，不要重复 brainstorming、方案比较、规格编写或等待人工批准；直接按正式计划逐任务实施。
+你正在 mangpai-fusion 仓库执行 P3“滴天髓调候蒸馏”理论切片。P2 子平“官杀职业路径受扰资格门”已经完成 staged G0-G5，状态为 staged_verified_production_unchanged；不得重复实施、扩写或接入生产。当前任务只做 P3 的只读审计、候选任务比较与设计审批，未获批准前不要写生产代码、测试或共享登记文件。
 
 一、启动与事实源
-1. 先读取 AGENTS.md、META/project-state.json、docs/superpowers/specs/2026-07-17-ziping-career-official-path-disruption-slice-design.md、docs/superpowers/plans/2026-07-17-ziping-career-official-path-disruption-slice.md、handoff.md。
-2. 执行 git fetch --prune origin、git status --short --branch、git rev-list --left-right --count HEAD...origin/main、git log --oneline --decorate -12。
-3. 以 Git、正式规格和计划为持久状态；handoff.md 只作短期入口。不要假定固定 HEAD。若工作树含非本任务改动、origin/main 出现无法安全解释的推进、或计划保护路径已有并行修改，立即 fail-closed 停止，不覆盖、不 reset、不 stash、不自动合并。
+1. 依次读取 AGENTS.md、META/project-state.json、handoff.md、docs/superpowers/specs/2026-07-17-cross-school-theory-slicing-and-ren-timing-design.md、reports/ren-career-timing-slice-g0-g5-verification.md、reports/ziping-career-structure-slice-g0-g5-verification.md。
+2. 再读取 engine/v5/ditiansui_runner.py、engine/application/production_rule_loader.py、theory/tiaohou_ditiansui/index.yaml、theory/tiaohou_ditiansui/_extracted_rules_summary.md、engine/features/types.py、engine/claims/domain.py、theory/executable-slices-v1.yaml 与直接相关 tests。
+3. 执行 git fetch --prune origin、git status --short --branch、git rev-list --left-right --count HEAD...origin/main、git log --oneline --decorate -12。
+4. 以 Git 和正式制品为持久状态，handoff.md 仅作短期入口。若存在 dirty diff、合并冲突、无法解释的远端推进，或杨派/任派/子平保护路径已有并行修改，立即 fail-closed；不覆盖、不 reset、不 stash、不自动合并。
 
-二、固定目标与边界
-- task：career.role_change。
-- task-scoped rule ID：ZIPING-CAREER-OFFICIAL-PATH-DISRUPTION-V1。
-- production source anchors：ZP-PROD-20260622-011、ZP-PROD-20260622-012；原 production ID 不改写。
-- 只做 staged L2→L3；子平只判断结构资格与职业路径结构。
-- 禁止制造 EventHypothesis、TimingProbability、默认 lifetime window 或任何任派应期。
-- 默认 runner registry、正式 pipeline、production claim-rules、公共 schema、报告入口、既有任派/杨派路径必须零改动。
-- 终态只允许 staged_verified_production_unchanged，不得声称准确率提升、生产晋级或 G6 完成。
+二、固定边界
+- 不迁移全部滴天髓/调候目录条目，不把 catalog_count 当 executable capability。
+- 只选择一个事实闭包完整、可计算、可反驳的最小结构任务，优先 staged L2→L3。
+- 不生成 EventHypothesis、TimingProbability、默认 lifetime window 或任何流派应期。
+- 默认 runner registry、正式 pipeline、production claim-rules、公共 schema、报告入口以及杨派、任派、子平现有 staged 写区必须零改动。
+- 未经独立批准不得进入实施；未来即使通过 G0-G5，也只能登记 staged_verified_production_unchanged，不得声称准确率提升、G6 完成或生产晋级。
 
-三、无人值守编排
-使用一个顶层 orchestrator，严格按实施计划 Task 1→6 串行执行。每个 Task 使用全新的隔离子任务/子 agent；子任务只能完成当前 Task，不得提前修改后续共享集成文件。不要并发写仓库，也不要无界递归嵌套。若平台不支持子任务，则顶层 agent 自行按同一边界顺序执行。
+三、只读审计交付
+1. 对调候、气势、支冲等 production/catalog 条目聚类去重，识别 always trigger、散文型条目、复合规则与来源可解析性。
+2. 盘点当前 runner、production loader、CFV 与 claim 层能够真实消费的事实，明确 catalog_count、production entries、executable_slice_count 三类计数。
+3. 给出候选原子任务 Top 3。每个候选必须列明：原文锚点、task ID、单一结论、事实闭包、正向必要门、exclusions、counter conditions、首个 falsifier、目标层、与既有切片的写区冲突。
+4. 给出 2-3 种蒸馏路径及推荐方案，明确为什么推荐项判别度更高、事实闭包更小、生产隔离更容易证明。
+5. 形成设计草案：局部态 supported/weakened/contradicted/abstain、统一发布态、evidence family 去重、emit-only adapter、专用 L3、冻结确定性与 G0-G5 门禁。
 
-每个 Task 的强制协议：
-1. 从计划读取该 Task 的精确文件清单、测试和提交信息。
-2. 复核工作树与最近提交，判断该 Task 是否已完成；若已有对应提交，先重跑该 Task focused tests，成功后跳到下一 Task，禁止重复施工。
-3. 严格 TDD：先写/运行 RED，确认因目标能力缺失而失败；再做最小 GREEN；运行计划列出的 focused tests 和必要回归。
-4. 执行 git diff --check，并审查 git diff --name-only，确保未触碰保护路径或别的 agent 写区。
-5. 每个 Task 单独 commit，使用计划给定的提交信息；记录 commit SHA、RED 证据、GREEN/回归结果。
-6. 顶层 orchestrator 在派发下一 Task 前复核该提交的 diff、测试和边界。复核失败时停止，禁止带病继续。
-7. Task 6 才能修改共享最终登记/验证文件，包括 theory/executable-slices-v1.yaml、META/project-state.json、reports/ziping-career-structure-slice-g0-g5-verification.md 与 tests/tools/test_theory_slice_status.py。
-
-四、会话耗尽与自动恢复
-- Git commit 是唯一进度检查点；禁止把未验证的跨 Task 工作留在工作树。
-- 若预计上下文不足，在完成当前 Task 的测试、diff 审查和 commit 后停止；不要半做下一 Task。
-- 新 orchestrator 重启时重新执行启动检查，读取计划 Task 1→6，并依据文件、git log 和 focused tests 找到第一个未完成 Task；不要依赖上一会话记忆。
-- 已提交 Task 的判断必须同时满足：对应提交/文件存在、工作树无冲突、focused tests 可复现。仅凭 commit message 不算完成。
-- 若发现未提交但只属于单一当前 Task 的改动，先审查并复跑 RED/GREEN 证据；无法证明来源与正确性则停止，不擅自删除或接管。
-
-五、自动停止条件
-以下任一情况立即 fail-closed，并输出阻塞证据，不猜测修复：合并冲突；非本任务 dirty diff；保护路径变化；origin 推进导致基线不明；RED 未按预期失败；focused/regression test 失败；生产入口/公共 schema/任派/杨派路径出现 diff；需要扩大已批准范围；无法证明 events=0 且 timings=0。
-
-六、完成门
-只有 Task 1→6 均有独立提交并复核，计划要求的 focused/回归/隔离测试全部通过，git diff --check 通过，工作树干净，冻结制品确定性成立，catalog_count / production entries / executable_slice_count 分账正确，且生产制品摘要未变，才可报告完成。最终报告必须列出每个 Task 的 commit SHA、测试命令与结果、保护路径核验、未运行或中止的测试；不得把未跑的全量测试表述为通过。不要 push、rebase、merge 或改写历史，除非用户另有明确授权。
-```
-
-### 4.2 P3 · 滴天髓调候蒸馏
-
-```text
-你正在 mangpai-fusion 仓库执行 P3“滴天髓调候蒸馏”理论切片。先按 AGENTS.md 读取 README.md、META/project-state.json、tools/README.md、engine/README.md、engine/contracts/00-OVERVIEW.md；随后读取 docs/superpowers/specs/2026-07-17-cross-school-theory-slicing-and-ren-timing-design.md、reports/ren-career-timing-slice-g0-g5-verification.md、engine/v5/ditiansui_runner.py、engine/application/production_rule_loader.py、theory/tiaohou_ditiansui/index.yaml、theory/tiaohou_ditiansui/_extracted_rules_summary.md、engine/features/types.py、engine/claims/domain.py 与相关 tests。
-
-先执行 git fetch --prune origin、git status、git rev-list --left-right --count HEAD...origin/main，并核验杨派、任派及可能并行的子平写区；不得自动覆盖并行 agent 改动。
-
-目标：不要迁移全部滴天髓/调候目录条目。先从调候或气势中选择一个事实闭包完整、可计算、可反证的最小结构任务，蒸馏为 staged G3/G4 切片，优先验证 L2→L3，不制造事件与应期。
-
-必须先做只读审计与设计：
-1. 对调候、气势、支冲等 trigger 聚类去重，识别 always/散文型条目，禁止把条目总量当能力；
-2. 选择一个原子结论，明确冷暖燥湿/气势所需 CFV 字段、输入完整度、正向门、排除门与反条件；
-3. 原文进入 source evidence，结论必须短、可评分；
-4. 定义局部结构态 supported/weakened/contradicted/abstain，并映射统一发布态；
-5. 首个证伪点必须证明“调候描述命中但关键事实不完整或反条件成立时，不得 emit”。
-
-实施使用 TDD：先 RED，再最小 GREEN。建立严格 staged 规则注册、纯 extractor/reducer/discriminator、emit-only L2 adapter、L3 接线与冻结证明。默认 registry、正式 pipeline、production claim-rules、公共 schema、报告入口及现有杨/任/子平写区零改动。通过 G0-G5 后只登记 staged_verified_production_unchanged；独立样本与 G6 审批前不得切生产。
-
-开始时先给出：Git 一致性、滴天髓目录条目与可执行能力差距、候选调候任务 Top 3、2-3 种蒸馏路径及推荐方案；取得批准后再写规格与实施计划。
+四、停止条件与输出
+- 审计阶段禁止提交实现代码；如需持久化，只能在用户批准后另行编写正式设计与实施计划。
+- 发现事实字段不足、来源 ID 不稳定、候选必须依赖岁运/反馈/报告、或需要修改保护路径时，明确标记阻塞，不要扩大范围。
+- 本会话先输出：Git 一致性、能力差距、候选 Top 3、方案比较、推荐方案、首证伪点和待批准决策；等待用户明确批准后再写规格与 TDD 实施计划。
 ```
 
 ## 5. 首案当前状态与下一动作
@@ -139,10 +107,11 @@
 
 1. [`AGENTS.md`](AGENTS.md:1)：仓库规则与事实源矩阵。
 2. [`META/project-state.json`](META/project-state.json:1)：当前机器状态。
-3. [`子平已批准设计`](docs/superpowers/specs/2026-07-17-ziping-career-official-path-disruption-slice-design.md:1)：本次纵切的固定语义与边界。
-4. [`子平已批准实施计划`](docs/superpowers/plans/2026-07-17-ziping-career-official-path-disruption-slice.md:1)：Task 1→6 的 TDD、文件、测试和提交清单。
-5. [`跨流派理论切片设计`](docs/superpowers/specs/2026-07-17-cross-school-theory-slicing-and-ren-timing-design.md:1)：统一切片定义、状态机与路线图。
-6. [`任派 G0-G5 证据包`](reports/ren-career-timing-slice-g0-g5-verification.md:1)：已验证参考实现。
-7. [`杨派设计规格`](docs/superpowers/specs/2026-07-17-yang-marriage-discrimination-slice-design.md:1) 与 [`杨派当前实现`](engine/decision/yang_marriage.py:1)：避免重复施工。
+3. [`跨流派理论切片设计`](docs/superpowers/specs/2026-07-17-cross-school-theory-slicing-and-ren-timing-design.md:1)：统一切片定义、状态机与路线图。
+4. [`子平 G0-G5 证据包`](reports/ziping-career-structure-slice-g0-g5-verification.md:1)：刚完成的 staged L2→L3 参考实现与生产隔离证据。
+5. [`任派 G0-G5 证据包`](reports/ren-career-timing-slice-g0-g5-verification.md:1)：已验证的 staged timing 参考实现。
+6. [`滴天髓/调候目录`](theory/tiaohou_ditiansui/index.yaml:1) 与 [`提取摘要`](theory/tiaohou_ditiansui/_extracted_rules_summary.md:1)：P3 审计对象。
+7. [`滴天髓 runner`](engine/v5/ditiansui_runner.py:1) 与 [`production loader`](engine/application/production_rule_loader.py:1)：当前可执行能力与目录加载边界。
+8. [`杨派设计规格`](docs/superpowers/specs/2026-07-17-yang-marriage-discrimination-slice-design.md:1) 与 [`杨派当前实现`](engine/decision/yang_marriage.py:1)：保护既有写区并避免重复施工。
 
 [`handoff.md`](handoff.md:1) 自身不列为长期事实源；若与正式制品冲突，以正式制品和 [`META/project-state.json`](META/project-state.json:1) 为准。
