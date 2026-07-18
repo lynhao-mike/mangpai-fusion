@@ -184,3 +184,10 @@ def test_ziping_career_structure_slice_is_staged_verified_without_production_cha
     assert state["intelligence_platform_status"]["ziping_career_official_path_disruption_slice"] == (
         "staged_verified_production_unchanged"
     )
+
+
+def test_yang_marriage_slice_is_staged_verified_without_production_change() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    assert state["intelligence_platform_status"]["yang_marriage_discrimination_slice"] == (
+        "staged_verified_production_unchanged"
+    )
