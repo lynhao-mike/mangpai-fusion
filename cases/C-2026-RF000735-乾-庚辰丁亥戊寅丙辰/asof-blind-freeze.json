@@ -1,0 +1,355 @@
+{
+  "schema_version": "asof-blind-freeze-v1",
+  "case_id": "C-2026-RF000735-乾-庚辰丁亥戊寅丙辰",
+  "as_of_date": "2026-07-30",
+  "domain": "事业",
+  "freeze_status": "FINAL_BLIND_FREEZE",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000735-乾-庚辰丁亥戊寅丙辰/input.md",
+    "truncate_function": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 171,
+    "boundary_type": "yaml_key",
+    "boundary_marker": "known_facts:",
+    "table_embedded_annotation_lines": [],
+    "post_boundary_content_used": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "pillars": [
+      "庚辰",
+      "丁亥",
+      "戊寅",
+      "丙辰"
+    ],
+    "domain": "事业",
+    "scaffold_source": "cases/C-2026-RF000735-乾-庚辰丁亥戊寅丙辰/asof-freeze-scaffold-draft.json",
+    "scaffold_years": [
+      2009,
+      2013,
+      2014,
+      2017,
+      2020
+    ]
+  },
+  "l1_l2_gate": {
+    "domain": "事业",
+    "l1": {
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "乙",
+        "寅"
+      ],
+      "rationale": "原局存在 事业 关键字: 甲,乙,寅"
+    },
+    "candidate_year_traces": [
+      {
+        "year": 2009,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      },
+      {
+        "year": 2013,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      },
+      {
+        "year": 2014,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      },
+      {
+        "year": 2017,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "寅"
+        ],
+        "l2_rationale": "大运己丑(过渡期): 过渡期：相邻大运庚寅的地支寅∈ 必需字",
+        "crossed_l1_l2_gate": true
+      },
+      {
+        "year": 2020,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运己丑未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      }
+    ],
+    "e1_selection_rule": "E1 按盲态 L1+L2 门选择；2017 是脚手架五个高触发候选中唯一同时通过 L1 与 L2 的年份。"
+  },
+  "reasoning_boundary": {
+    "allowed": [
+      "盲态输入前缀",
+      "冻结脚手架",
+      "L1+L2 门控结果",
+      "已确认 active 理论规则"
+    ],
+    "forbidden_before_hash": [
+      "feedback.md",
+      "input.md 的 known_facts 边界后内容"
+    ]
+  },
+  "primary_landing_set": {
+    "domain": "事业",
+    "center": {
+      "statement": "专业技术输出能力进入组织化职责承接，但职业路径受规则压力牵制，稳定职位兑现并非必然。",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "confidence": {
+        "star": 3,
+        "percent": 0.64
+      }
+    },
+    "alternatives": [
+      {
+        "alternative_id": "A1",
+        "statement": "能力存在但现实兑现不稳，呈项目制或间断承接，尚未形成稳定职位。",
+        "reason": "命局所示能力与现实稳定完成度分开计分，避免把结构存在直接等同于稳定职业兑现。"
+      }
+    ],
+    "falsifiers": [
+      "若反馈明确显示长期无专业技能输出、无职责承接且无任何项目化兑现，则中心判断受反证。",
+      "若反馈明确显示职业路径长期稳定且不存在规则压力造成的波动，则现实完成度判断受反证。"
+    ]
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "priority": "PRIMARY_E1",
+      "scoring_unit": "dated_career_responsibility_landing",
+      "window": "2017-01-01/2017-12-31",
+      "center_event": "专业能力形成一次可核验的组织职责承接节点",
+      "trigger_basis": "盲态脚手架列为高触发单年；丁酉处己丑大运，酉与原局两辰分别六合化金；五个候选年中仅此年实际通过事业 L1+L2。",
+      "gate_trace": {
+        "year": 2017,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "寅"
+        ],
+        "l2_rationale": "大运己丑(过渡期): 过渡期：相邻大运庚寅的地支寅∈ 必需字",
+        "crossed_l1_l2_gate": true
+      }
+    },
+    {
+      "candidate_id": "E2",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_boundary_change",
+      "window": "2009-01-01/2009-12-31",
+      "center_event": "事业责任边界发生一次明确调整",
+      "trigger_basis": "盲态脚手架列为高触发单年；己丑处戊子大运，丑与大运子六合化土；L1 通过、L2 未通过，故仅作次级预注册。",
+      "gate_trace": {
+        "year": 2009,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      }
+    },
+    {
+      "candidate_id": "E3",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_disruption",
+      "window": "2013-01-01/2013-12-31",
+      "center_event": "职业环境发生一次明显的中断式变动",
+      "trigger_basis": "盲态脚手架列为高触发单年；癸巳处戊子大运，与原局及大运形成五项关系；L1 通过、L2 未通过，故仅作次级预注册。",
+      "gate_trace": {
+        "year": 2013,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      }
+    },
+    {
+      "candidate_id": "E4",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_direction_change",
+      "window": "2014-01-01/2014-12-31",
+      "center_event": "事业规则压力上升并形成一次岗位方向调整",
+      "trigger_basis": "盲态脚手架列为高触发单年；甲午处戊子大运，午冲大运子；L1 通过、L2 未通过，故仅作次级预注册。",
+      "gate_trace": {
+        "year": 2014,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运戊子未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      }
+    },
+    {
+      "candidate_id": "E5",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_realization",
+      "window": "2020-01-01/2020-12-31",
+      "center_event": "专业输出形成一次可核验的现实兑现节点",
+      "trigger_basis": "盲态脚手架列为高触发单年；庚子处己丑大运，子与大运丑六合化土；L1 通过、L2 未通过，故仅作次级预注册。",
+      "gate_trace": {
+        "year": 2020,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅",
+        "l2_passed": false,
+        "l2_evidence_chars": [],
+        "l2_rationale": "大运己丑未提供 事业 必需字（含过渡期 ±1 年）。必需字（前 8 个）: 甲,乙,寅,卯,丙,丁,巳,午",
+        "crossed_l1_l2_gate": false
+      }
+    }
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-037",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1416-1453",
+      "claim": "食神生财、制杀，喜身旺有根，忌枭神夺食。",
+      "use": "支持把食神视为专业输出及制杀能力，但不直接推出稳定职位完成。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-039",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1492-1524",
+      "claim": "七杀有制可转为偏官贵格，无制攻身；制杀以食神为上。",
+      "use": "支持组织规则压力与专业输出制约并存的事业结构判断。"
+    }
+  ],
+  "contract_gate": {
+    "center_statement_finding": {
+      "or_count": 0,
+      "likely_too_broad": false,
+      "note": "职业中心描述含 0 个‘或’，未达到宽泛性提醒阈值；本启发式检查不保证描述本身足够具体或可证伪。"
+    },
+    "event_window_findings": [
+      {
+        "candidate_id": "E1",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E1 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E2",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E2 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E3",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E3 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E4",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E4 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E5",
+        "window_days": 365,
+        "window_months": 11.992032690609664,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E5 的窗口为 365 天（约 11.99 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      }
+    ],
+    "completion_finding": {
+      "has_activate_existing_center": true,
+      "has_incomplete_realization_alt": true,
+      "missing_realization_guard": false,
+      "note": "中心使用 ACTIVATE_EXISTING，且已有备选覆盖现实兑现不完整信号。"
+    },
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。"
+  },
+  "verdict_policy": {
+    "allowed_enums": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "e1_is_independent_single_year": true,
+    "adjudicate_after_feedback_reveal_only": true
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "schema_version": "asof-prototype-v1",
+  "case_id": "C-2026-RF000805-乾-甲申丙寅辛酉丙申",
+  "as_of_date": "2026-07-30",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "created_at": "2026-07-31",
+  "blindness_controls": {
+    "input_path": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+    "truncate_blind_section_called": true,
+    "boundary_line": 170,
+    "boundary_type": "yaml_key",
+    "empty_known_facts_fallback_verified": false,
+    "detect_table_embedded_annotation_called": true,
+    "embedded_annotation_lines": [],
+    "feedback_read_before_freeze": false,
+    "scaffold_source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+    "scaffold_mode": "EXISTING_READ"
+  },
+  "primary_landing_set": {
+    "center": {
+      "statement": "以组织职责和专业输出为中心的职业承担路径",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "statement": "能力存在但现实兑现不稳，可能仅表现为间断或项目化调整"
+      },
+      {
+        "statement": "年度结构触发可能落在家庭或健康而非职业中心"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业领域定位在年干甲正财、年支申藏壬伤官、年支申藏戊正印、月干丙正官；相关十神透出或潜藏并由原局节点承载，形成组织职责—专业输出—资源兑现路径，据此定为STRONG_ROOT，不以日主一般旺衰替代事业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000805-乾-甲申丙寅辛酉丙申",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career-structure",
+        "function": "组织职责与专业输出承载",
+        "chart_evidence": [
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+            "locator": "年干",
+            "excerpt": "年干甲定位为正财"
+          },
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+            "locator": "年支申藏",
+            "excerpt": "年支申藏壬定位为伤官"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "年干",
+        "excerpt": "年干甲为正财"
+      },
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "年支申藏",
+        "excerpt": "年支申藏壬为伤官"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "月干",
+        "excerpt": "月干丙为正官"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career-path",
+        "function": "以官印/食伤/财星结构承接职业角色变化",
+        "node_ids": [
+          "career-structure"
+        ],
+        "evidence": [
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+            "locator": "年干",
+            "excerpt": "年干甲为正财"
+          },
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+            "locator": "年支申藏",
+            "excerpt": "年支申藏壬为伤官"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "原局边界",
+        "excerpt": "结构只表示可能承载，不保证现实兑现"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "年干",
+        "excerpt": "年干甲为正财"
+      },
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "年支申藏",
+        "excerpt": "年支申藏壬为伤官"
+      },
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "年支申藏",
+        "excerpt": "年支申藏戊为正印"
+      },
+      {
+        "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+        "locator": "月干",
+        "excerpt": "月干丙为正官"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\ziping\\index.yaml",
+        "line": 1,
+        "excerpt": "[ziping:ZP-PROD-20260622-256] 戊午得癸未 戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败， 子平规则参与：戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败，得正印偏印俱在此，印上或库或旺，虽有煞神。 (来源: theory\\ziping\\index.yaml)"
+      }
+    ],
+    "competing_explanations": [
+      "同一结构也可能只体现为学习、资格或项目性输出"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "职业或学业承担方式出现一次明确调整，职责与专业输出同步增强",
+      "window_start": "2011-01-01",
+      "window_end": "2011-12-31",
+      "natal_evidence": [
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+          "locator": "年干",
+          "excerpt": "年干甲为正财"
+        },
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+          "locator": "年支申藏",
+          "excerpt": "年支申藏壬为伤官"
+        }
+      ],
+      "daiyun_evidence": [
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+          "locator": "E1.trigger_basis",
+          "excerpt": "2011年流年辛卯，处于丁卯大运；与原局形成4项干支关系，结构触发强度为高；关系摘要：流年干合月干丙化('水', '合绊')；流年干合时干丙化('水', '合绊')；流年支冲日支酉；流年伏吟大运支(卯)；领域提示：事业、家庭。本草稿关注领域：career。"
+        }
+      ],
+      "annual_trace": {
+        "year": 2011,
+        "liunian": "辛卯",
+        "dayun_ganzhi": "丁卯",
+        "relations": [
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+            "locator": "E1.trigger_basis",
+            "excerpt": "2011年流年辛卯，处于丁卯大运；与原局形成4项干支关系，结构触发强度为高；关系摘要：流年干合月干丙化('水', '合绊')；流年干合时干丙化('水', '合绊')；流年支冲日支酉；流年伏吟大运支(卯)；领域提示：事业、家庭。本草稿关注领域：career。"
+          }
+        ],
+        "activated_node_ids": [
+          "career-structure"
+        ],
+        "domains": [
+          "career"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+            "locator": "E1.trigger_basis",
+            "excerpt": "2011年流年辛卯，处于丁卯大运；与原局形成4项干支关系，结构触发强度为高；关系摘要：流年干合月干丙化('水', '合绊')；流年干合时干丙化('水', '合绊')；流年支冲日支酉；流年伏吟大运支(卯)；领域提示：事业、家庭。本草稿关注领域：career。"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "root_level": "STRONG_ROOT",
+      "root_evidence": [
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+          "locator": "年干",
+          "excerpt": "年干甲为正财"
+        },
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\input.md",
+          "locator": "年支申藏",
+          "excerpt": "年支申藏壬为伤官"
+        }
+      ],
+      "source_citations": [
+        {
+          "source_path": "theory\\ziping\\index.yaml",
+          "line": 1,
+          "excerpt": "[ziping:ZP-PROD-20260622-256] 戊午得癸未 戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败， 子平规则参与：戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败，得正印偏印俱在此，印上或库或旺，虽有煞神。 (来源: theory\\ziping\\index.yaml)"
+        }
+      ],
+      "completion_mode": "ACTIVATE_EXISTING",
+      "supporting_evidence": [
+        {
+          "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+          "locator": "E1.trigger_basis",
+          "excerpt": "2011年流年辛卯，处于丁卯大运；与原局形成4项干支关系，结构触发强度为高；关系摘要：流年干合月干丙化('水', '合绊')；流年干合时干丙化('水', '合绊')；流年支冲日支酉；流年伏吟大运支(卯)；领域提示：事业、家庭。本草稿关注领域：career。"
+        }
+      ],
+      "counter_evidence": [],
+      "alternative_hypotheses": [
+        "能力存在但现实兑现不稳，可能仅表现为间断或项目化调整"
+      ],
+      "frozen_version": "asof-prototype-v1",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "is_primary_event": true
+    }
+  ],
+  "annual_gate_selection": {
+    "source": "cases\\C-2026-RF000805-乾-甲申丙寅辛酉丙申\\asof-freeze-scaffold-draft.json",
+    "selected_candidate": "E1",
+    "trigger_basis": "2011年流年辛卯，处于丁卯大运；与原局形成4项干支关系，结构触发强度为高；关系摘要：流年干合月干丙化('水', '合绊')；流年干合时干丙化('水', '合绊')；流年支冲日支酉；流年伏吟大运支(卯)；领域提示：事业、家庭。本草稿关注领域：career。"
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "检索用于冻结前证据复核，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-256",
+      "citation": "[ziping:ZP-PROD-20260622-256] 戊午得癸未 戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败， 子平规则参与：戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败，得正印偏印俱在此，印上或库或旺，虽有煞神。 (来源: theory\\ziping\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[ziping:ZP-PROD-20260622-256] 戊午得癸未 戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败， 子平规则参与：戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败，得正印偏印俱在此，印上或库或旺，虽有煞神。 (来源: theory\\ziping\\index.yaml)",
+      "[ziping:ZP-PROD-20260622-483] 论食神食神者，日干所生顺数第三位，乃甲食丙、乙食丁之例。 假如甲见丙为食，柱中有壬作甲木偏印，克制丙火不能生戊土，不能制庚金，使甲木受制退财，岂不窘乎？《元理赋》云：食神制煞，逢枭不贫则夭。《一行》云：阳日食神暗合官星，阴日食神暗合正印，官印不要明显，但得食神纯粹，主贵而有禄，富而有寿，食神只宜一位，不宜太多，恐窃本元之气。经云：“一木叠逢火位，名为散气之父”是也。食多者宜行 子平规则参与：假如甲见丙为食，柱中有壬作甲木偏印，克制丙火不能生戊土，不能制庚金，使甲木受制退财，岂不窘乎？《元理赋》云：食神制煞，逢枭不贫则夭。《一行》云：阳日食神暗合官星，阴日食神暗合正印，官印不要明显，但得食神纯粹，主贵而有禄，富而有寿，食神只宜一位，不宜太多，恐窃本元之气。经云：“一木叠逢火位，名为散气之父”是也。食多者宜行印运，食少者不宜，是枭神夺食，故食喜旺禄。 (来源: theory\\ziping\\index.yaml)",
+      "[ziping:ZP-PROD-20260622-486] 论食神食神者，日干所生顺数第三位，乃甲食丙、乙食丁之例。 食神者，十干福禄之会，君子得之显达丰赡，小人得之周旋给足，在福聚之地则官崇禄厚，在祸聚之地则职卑命薄。如以甲子论，食丙子为福星之贵，食丙寅为长生之禄，又为禄马同乡，食神学堂之贵，丙辰为正印，丙午为自刑破命，丙申为克身破禄，丙戌为身衰破空亡，余干例推。若遇生旺、库、印、天乙、天官、华盖、文星、学堂、官印禄马之类，为福聚之 子平规则参与：食神者，十干福禄之会，君子得之显达丰赡，小人得之周旋给足，在福聚之地则官崇禄厚，在祸聚之地则职卑命薄。如以甲子论，食丙子为福星之贵，食丙寅为长生之禄，又为禄马同乡，食神学堂之贵，丙辰为正印，丙午为自刑破命，丙申为克身破禄，丙戌为身衰破空亡，余干例推。若遇生旺、库、印、天乙、天官、华盖、文星、学堂、官印禄马之类，为福聚之地，遇克破、空亡、恶煞、刑害、休、败、死。 (来源: theory\\ziping\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "正印",
+          "官印"
+        ],
+        "hit_count": 4,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-256] 戊午得癸未 戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败， 子平规则参与：戊午得癸未，庚子得乙丑，丁酉得壬辰，己卯得申戌，辛酉得丙辰，干神制支神合之类。诸印要逢库墓，若生旺扶助互换，禄马贵人并相合者，至贵之命。最忌刑冲破害，三合六合上见鬼，如甲戌日得癸酉时，则减力。水命人得本家印无益；得木印损气；得土印，支干有交涉者，名官印；无交涉者，名鬼印。又有福聚印，如年、月、日、时、胎五位俱无气衰败，得正印偏印俱在此，印上或库或旺，虽有煞神。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-483] 论食神食神者，日干所生顺数第三位，乃甲食丙、乙食丁之例。 假如甲见丙为食，柱中有壬作甲木偏印，克制丙火不能生戊土，不能制庚金，使甲木受制退财，岂不窘乎？《元理赋》云：食神制煞，逢枭不贫则夭。《一行》云：阳日食神暗合官星，阴日食神暗合正印，官印不要明显，但得食神纯粹，主贵而有禄，富而有寿，食神只宜一位，不宜太多，恐窃本元之气。经云：“一木叠逢火位，名为散气之父”是也。食多者宜行 子平规则参与：假如甲见丙为食，柱中有壬作甲木偏印，克制丙火不能生戊土，不能制庚金，使甲木受制退财，岂不窘乎？《元理赋》云：食神制煞，逢枭不贫则夭。《一行》云：阳日食神暗合官星，阴日食神暗合正印，官印不要明显，但得食神纯粹，主贵而有禄，富而有寿，食神只宜一位，不宜太多，恐窃本元之气。经云：“一木叠逢火位，名为散气之父”是也。食多者宜行印运，食少者不宜，是枭神夺食，故食喜旺禄。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-486] 论食神食神者，日干所生顺数第三位，乃甲食丙、乙食丁之例。 食神者，十干福禄之会，君子得之显达丰赡，小人得之周旋给足，在福聚之地则官崇禄厚，在祸聚之地则职卑命薄。如以甲子论，食丙子为福星之贵，食丙寅为长生之禄，又为禄马同乡，食神学堂之贵，丙辰为正印，丙午为自刑破命，丙申为克身破禄，丙戌为身衰破空亡，余干例推。若遇生旺、库、印、天乙、天官、华盖、文星、学堂、官印禄马之类，为福聚之 子平规则参与：食神者，十干福禄之会，君子得之显达丰赡，小人得之周旋给足，在福聚之地则官崇禄厚，在祸聚之地则职卑命薄。如以甲子论，食丙子为福星之贵，食丙寅为长生之禄，又为禄马同乡，食神学堂之贵，丙辰为正印，丙午为自刑破命，丙申为克身破禄，丙戌为身衰破空亡，余干例推。若遇生旺、库、印、天乙、天官、华盖、文星、学堂、官印禄马之类，为福聚之地，遇克破、空亡、恶煞、刑害、休、败、死。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 3,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。"
+  },
+  "explicit_non_claims": [
+    "未读取feedback.md形成冻结判断",
+    "未把高触发年等同于现实事件"
+  ],
+  "verdict_policy": {
+    "E1": "反馈无冻结单年窗口事实则ABSTAIN；不得用其他年份替代"
+  }
+}

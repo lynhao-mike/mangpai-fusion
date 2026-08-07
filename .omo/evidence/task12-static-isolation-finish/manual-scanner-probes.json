@@ -1,0 +1,146 @@
+{
+  "command": "PowerShell here-string piped to python -",
+  "bounded_runtime_seconds": 1.367,
+  "exit": 0,
+  "records": [
+    {
+      "criterion": "relative import escape",
+      "invocation": "forbidden_import_issues((bad_application.py,bad_infrastructure.py,bad_tools.py), GOVERNANCE_OUTWARD_IMPORTS)",
+      "expected": [
+        "bad_application.py imports engine.application",
+        "bad_infrastructure.py imports engine.infrastructure",
+        "bad_tools.py imports tools"
+      ],
+      "actual": [
+        "bad_application.py imports engine.application",
+        "bad_infrastructure.py imports engine.infrastructure",
+        "bad_tools.py imports tools"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "active report/feedback entrypoint discovery",
+      "invocation": "active_entrypoint_paths(ROOT) subset of legacy_shadow_consumer_paths()",
+      "expected": [
+        "tools/batch_review.py",
+        "tools/domain_analysis_cli.py",
+        "tools/domain_feedback.py",
+        "tools/feedback_ingest.py",
+        "tools/feedback_loop.py",
+        "tools/output_linter.py",
+        "tools/promote_expert_weight_feedback.py",
+        "tools/render_report.py"
+      ],
+      "actual": [
+        "tools/batch_review.py",
+        "tools/domain_analysis_cli.py",
+        "tools/domain_feedback.py",
+        "tools/feedback_ingest.py",
+        "tools/feedback_loop.py",
+        "tools/output_linter.py",
+        "tools/promote_expert_weight_feedback.py",
+        "tools/render_report.py"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "FactSnapshot alias + future school-view discovery",
+      "invocation": "school_view_adapter_paths(tmp) + fact_snapshot_write_issues((future,))",
+      "expected": {
+        "paths": [
+          "engine/application/governance_new_school_view_adapter.py"
+        ],
+        "issues": [
+          "governance_new_school_view_adapter.py calls build_fact_snapshot",
+          "governance_new_school_view_adapter.py calls FactSnapshot"
+        ]
+      },
+      "actual": {
+        "paths": [
+          "engine/application/governance_new_school_view_adapter.py"
+        ],
+        "issues": [
+          "governance_new_school_view_adapter.py calls build_fact_snapshot",
+          "governance_new_school_view_adapter.py calls FactSnapshot"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "dt.now()/now() aliases",
+      "invocation": "system_time_liunian_issues((bad_dt_alias_liunian.py,bad_now_alias_liunian.py))",
+      "expected": [
+        "bad_dt_alias_liunian.py reads system time while mentioning liunian",
+        "bad_now_alias_liunian.py reads system time while mentioning liunian"
+      ],
+      "actual": [
+        "bad_dt_alias_liunian.py reads system time while mentioning liunian",
+        "bad_now_alias_liunian.py reads system time while mentioning liunian"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "UNC/Unix absolute paths",
+      "invocation": "governance_yaml_issues(bad-absolute-paths.yaml)",
+      "expected": [
+        "bad-absolute-paths.yaml contains absolute path \\\\server\\share\\case.json",
+        "bad-absolute-paths.yaml contains absolute path /opt/project/case.json"
+      ],
+      "actual": [
+        "bad-absolute-paths.yaml contains absolute path \\\\server\\share\\case.json",
+        "bad-absolute-paths.yaml contains absolute path /opt/project/case.json"
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "real governance outward imports",
+      "invocation": "forbidden_import_issues(python_files(ROOT / 'engine' / 'governance'), GOVERNANCE_OUTWARD_IMPORTS)",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "criterion": "real shadow default consumers",
+      "invocation": "shadow_runner_consumer_issues(legacy_shadow_consumer_paths())",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "criterion": "real governance YAML",
+      "invocation": "governance_yaml_issues(ROOT / 'theory' / 'multi-school-governance-v1.yaml')",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "criterion": "real School View adapters",
+      "invocation": "fact_snapshot_write_issues(school_view_adapter_paths())",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "criterion": "real governance liunian time",
+      "invocation": "system_time_liunian_issues(new_governance_python_paths())",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    }
+  ],
+  "ultraqa": {
+    "dirty": "PASS: large unrelated dirty worktree observed; probe used TemporaryDirectory and assigned Task12 files only.",
+    "stale": "PASS: active entrypoints parsed from META/project-state.json during this run.",
+    "misleading": "PASS: every probe records expected, actual, and boolean equality.",
+    "flaky": "PASS: no sleeps, no wall-clock assertions; deterministic AST/YAML probes.",
+    "hung": "PASS: completed in 1.367s inside the command timeout.",
+    "malformed": "PASS: controlled malformed/violating Python and YAML fixtures reported deterministic issues.",
+    "prompt_injection": "N/A: no prompt or LLM text is parsed by this scanner surface.",
+    "cancel_resume": "N/A: no resumable product workflow is exercised.",
+    "repeated_interruptions": "N/A: scanner probe is a single bounded local process."
+  },
+  "cleanup": {
+    "temporary_directory_removed": true,
+    "repo_temp_files_created": []
+  }
+}

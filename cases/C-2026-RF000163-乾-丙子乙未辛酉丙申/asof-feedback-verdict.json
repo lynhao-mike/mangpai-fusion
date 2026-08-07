@@ -1,0 +1,115 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000163-乾-丙子乙未辛酉丙申",
+  "adjudicated_at": "2026-07-30T20:19:50+08:00",
+  "feedback_source": "cases/C-2026-RF000163-乾-丙子乙未辛酉丙申/feedback.md",
+  "freeze_source": "cases/C-2026-RF000163-乾-丙子乙未辛酉丙申/asof-blind-freeze.json",
+  "freeze_sha256_expected": "d7a31a435c64a1aaf77a3f4c75a42d1d5b8aa5a9429043e7014f7b95cf14b019",
+  "freeze_sha256_observed_before_verdict": "d7a31a435c64a1aaf77a3f4c75a42d1d5b8aa5a9429043e7014f7b95cf14b019",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2018,
+      "domain": "career_stability",
+      "fact": "工作开始稳定，物流行业。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_current_state",
+      "fact": "在后爸的矿山从事销售，收入尚可。"
+    },
+    {
+      "year": 2011,
+      "domain": "dated_event_evidence",
+      "fact": "反馈未提供2011年事实。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ACTIVATED_BOUNDARY",
+    "verdict": "CENTER_HIT",
+    "reason": "2018起工作稳定，2024矿山销售具有组织责任、客户推进和业绩结果可追踪特征，满足冻结中心最低职业责任结构；反馈不足以证明具体文书或学习路径，故仅作边界命中。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_PRIMARY",
+      "verdict": "MISS",
+      "reason": "反馈明确工作已稳定且收入尚可，不支持兑现不稳为当前主要落点；不计独立统计。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "MISS",
+      "reason": "反馈支持稳定正式工作，不支持阶段性任务替代；不计独立统计。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "2011-01-01/2011-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈没有2011年事实。",
+      "reason": "窗口内无直接证据，不能将2018稳定就业迁入2011。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "scaffold未提供2024，冻结后不得改写E1。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "稳定物流及矿山销售支持可追踪组织责任的最低中心结构。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "无独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "2011无直接反馈。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "CENTER_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业基础边界命中，E1弃权。"
+  },
+  "protocol_exception": {
+    "code": "PREFLIGHT_REQUIRED_FIELD_MISSING_AND_SCAFFOLD_YEAR_COVERAGE_GAP",
+    "preflight_field_path": "藏干",
+    "required_section_9_4_year": 2024,
+    "e1_year": 2011,
+    "strict_requirement_satisfied": false,
+    "reason": "preflight失败后按scaffold降级且未后验改写。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

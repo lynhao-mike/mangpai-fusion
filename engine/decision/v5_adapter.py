@@ -87,7 +87,13 @@ def _claims(output: V5Output, applicability: list[SchoolApplicability]) -> list[
             metadata=dict(claim.metadata),
         )
         for claim in output.claims
-        if claim.claim_id and claim.school and claim.domain and role_by_school.get(claim.school) != "abstain"
+        if (
+            claim.claim_id
+            and claim.school
+            and claim.domain
+            and claim.stance != "abstain"
+            and role_by_school.get(claim.school) != "abstain"
+        )
     ]
 
 

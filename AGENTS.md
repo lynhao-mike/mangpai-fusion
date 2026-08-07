@@ -147,6 +147,8 @@ pytest tests/test_project_metadata.py -q
 - 不要引用不存在的旧工具名作为可执行入口，例如 `seal_prediction.py`、`verify_evidence.py`。
 - 不要把 [`handoff.md`](handoff.md) 当作长期真相源；它只保留短期下一步。
 - 不要在报告标题遗漏性别命式（乾/坤）。
+- 不要把 F10 启动决策包收尾、多专家功能域主裁判路由 promotion、v1.4 V7 报告模板默认切换、子平/滴天髓生产规则扩充、八字指纹相似案检索，当作当前最高优先级长任务。这五项都在优化现有静态报告生成器（读取全部 known facts 后一次性生成报告）的局部参数，不解决“先盲断、后核验、再从核验后现实位置推演”的认识论缺口；它们必须排在 as-of 求测闭环（见 [`plans/as-of-life-state-reasoning-design-2026-07-18.md`](plans/as-of-life-state-reasoning-design-2026-07-18.md)）之后，除非用户明确改变优先级。
+- 不要把现有生产 pipeline（读取全部 known facts 后生成报告）当作已验证的推理系统去扩充规则或调整路由权重；它从未在“不知道答案”的条件下被测试过盲断准确率。规则扩充、多专家路由 promotion、指纹相似案检索的价值，必须等 as-of 求测闭环产生真实盲断—核验数据后才能被证实，不能凭已知答案下的报告吻合度自证。
 
 ---
 

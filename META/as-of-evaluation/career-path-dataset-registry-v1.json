@@ -1,0 +1,91 @@
+{
+  "schema_version": "career-path-dataset-registry/v1",
+  "registry_id": "career-path-dataset-registry-v1",
+  "frozen_at": "2026-07-31T09:47:00Z",
+  "development_datasets": [
+    {
+      "dataset_id": "p-series-career-40-development-replay-v1",
+      "classification": "development_replay_only",
+      "case_count": 40,
+      "case_ids": [
+        "P-2026-001",
+        "P-2026-004",
+        "P-2026-007",
+        "P-2026-008",
+        "P-2026-009",
+        "P-2026-011",
+        "P-2026-013",
+        "P-2026-017",
+        "P-2026-018",
+        "P-2026-019",
+        "P-2026-021",
+        "P-2026-023",
+        "P-2026-025",
+        "P-2026-027",
+        "P-2026-030",
+        "P-2026-031",
+        "P-2026-034",
+        "P-2026-035",
+        "P-2026-037",
+        "P-2026-038",
+        "P-2026-039",
+        "P-2026-041",
+        "P-2026-045",
+        "P-2026-046",
+        "P-2026-047",
+        "P-2026-048",
+        "P-2026-049",
+        "P-2026-051",
+        "P-2026-055",
+        "P-2026-056",
+        "P-2026-058",
+        "P-2026-060",
+        "P-2026-062",
+        "P-2026-063",
+        "P-2026-067",
+        "P-2026-071",
+        "P-2026-072",
+        "P-2026-073",
+        "P-2026-074",
+        "P-2026-075"
+      ],
+      "source_artifacts": [
+        "META/as-of-evaluation/p-series-career-cohort-v1.json",
+        "META/as-of-evaluation/p-series-career-cohort-v2.json",
+        "META/as-of-evaluation/p-series-career-prediction-freeze-v1.json",
+        "META/as-of-evaluation/p-series-career-path-classifier-freeze-v1.json",
+        "META/as-of-evaluation/p-series-career-path-classifier-freeze-v2.json",
+        "META/as-of-evaluation/p-series-career-path-classifier-freeze-v3.json",
+        "cases/p-series-career-path-labels.jsonl",
+        "predictions/p-series-career-path-blind-v1.jsonl",
+        "predictions/p-series-career-path-classifier-v1.jsonl",
+        "predictions/p-series-career-path-classifier-v2.jsonl",
+        "predictions/p-series-career-path-classifier-v3.jsonl"
+      ],
+      "permitted_uses": [
+        "development_replay",
+        "regression_testing",
+        "failure_analysis"
+      ],
+      "forbidden_uses": [
+        "promotion_evidence",
+        "holdout_membership",
+        "holdout_scoring",
+        "threshold_selection",
+        "model_selection"
+      ],
+      "promotion_eligible": false,
+      "holdout_eligible": false,
+      "reason": "All 40 cases were observed by one or more frozen v1-v3 development classifiers and their labels are available in the repository."
+    }
+  ],
+  "unseen_holdout": {
+    "dataset_id": null,
+    "status": "not_ready",
+    "case_count": 0,
+    "manifest_path": null,
+    "labels_path": null,
+    "promotion_eligible": false,
+    "reason": "No qualifying unseen holdout has been admitted. Do not create placeholder cases or reuse the 40-case development cohort."
+  }
+}

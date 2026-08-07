@@ -1,0 +1,274 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000530-乾-癸酉甲子丁亥庚戌",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:18:23+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000530-乾-癸酉甲子丁亥庚戌/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以资质与资源协同承接组织职责并形成工作收益",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "资质能力存在但现实兑现不稳，岗位阶段性变化"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "资源经营较强，但正式职责并非稳定中心"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业领域定位在年干癸七杀、月干甲正印与时干庚正财；财、杀、印均透，存在资源—组织职责—资质承接的显性财官印路径，据此定为STRONG_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000530-乾-癸酉甲子丁亥庚戌",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "年干癸七杀、月干甲正印与时干庚正财",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "年干癸七杀、月干甲正印与时干庚正财"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "年干癸七杀、月干甲正印与时干庚正财"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "财、杀、印均透，存在资源—组织职责—资质承接的显性财官印路径"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以资质与资源协同承接组织职责并形成工作收益",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "年干癸七杀、月干甲正印与时干庚正财"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "财、杀、印均透，存在资源—组织职责—资质承接的显性财官印路径"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "年干癸七杀、月干甲正印与时干庚正财"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "财、杀、印均透，存在资源—组织职责—资质承接的显性财官印路径"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\ziping\\index.yaml",
+        "line": 1,
+        "excerpt": "岁德正官取年上干支官为岁德，喜忌与月令正官同论。 遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺 子平规则参与：遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺地，财生印助福无涯。又：年上官星为岁德，。"
+      }
+    ],
+    "competing_explanations": [
+      "资质能力存在但现实兑现不稳，岗位阶段性变化",
+      "资源经营较强，但正式职责并非稳定中心"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2013-01-01/2013-12-31",
+      "center_event": "2013年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "root_level": "STRONG_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "annual_trace": {
+        "year": 2013,
+        "liunian": "癸巳",
+        "dayun_ganzhi": "壬戌",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2013].relations[0]",
+            "excerpt": "流年支冲日支亥"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.day.branch"
+        ],
+        "domains": [
+          "事业",
+          "健康"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2013].main_energy",
+            "excerpt": "工作变动 / 压力"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2013].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2013,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-349",
+      "citation": "[ziping:ZP-PROD-20260622-349] 岁德正官取年上干支官为岁德，喜忌与月令正官同论。 遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺 子平规则参与：遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺地，财生印助福无涯。又：年上官星为岁德，。 (来源: theory\\ziping\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[ziping:ZP-PROD-20260622-349] 岁德正官取年上干支官为岁德，喜忌与月令正官同论。 遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺 子平规则参与：遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺地，财生印助福无涯。又：年上官星为岁德，。 (来源: theory\\ziping\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "正官",
+          "生印"
+        ],
+        "hit_count": 5,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-349] 岁德正官取年上干支官为岁德，喜忌与月令正官同论。 遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺 子平规则参与：遇此必生宦族，或荫袭祖父之职，若月居财官分野，运向财官旺地，日主健旺，贵无疑矣。凡年干遇官，福气最重，发达必早。如癸酉、庚申、丙子、丙申，年上官星，柱中会官局，归禄日下，丙克申酉金为财官双美，二丙身旺，十七八运行戊午，虽午冲子，申子会局，冲不能动，日主并旺，及第早发。古歌云：年中正禄是根芽，必主生身富贵家，运气喜逢身旺地，财生印助福无涯。又：年上官星为岁德，。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-350] 时上正官如甲日酉辛时，乙日申庚时例。 时上官星与月亦同，但力轻微，发福多在晚年，或生贤子，要有印助。古歌云：正官有用不须多，多则伤身少则和，日旺再逢生印绶，定须平步擢高科。 子平规则参与：时上官星与月亦同，但力轻微，发福多在晚年，或生贤子，要有印助。古歌云：正官有用不须多，多则伤身少则和，日旺再逢生印绶，定须平步擢高科。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-455] 论印绶印绶者，乃五行生我之名。 如甲乙在亥子月，丙丁在寅卯月之类，乃我气之源，为生气，为父母，能护我官星，使无伤克，譬人生得物相助相养，受现成之福，岂不为妙？此格主聪明，多智慧，性慈惠，语善良，迟讷体，貌丰厚，能饮食，平生少病，不逢凶横，但吝财耳，为官多为正官，受宣敕不拘文武，皆掌印信，喜官星，以官能生印。经云：印赖官生。又云：有官无印，即非真官，有 子平规则参与：如甲乙在亥子月，丙丁在寅卯月之类，乃我气之源，为生气，为父母，能护我官星，使无伤克，譬人生得物相助相养，受现成之福，岂不为妙？此格主聪明，多智慧，性慈惠，语善良，迟讷体，貌丰厚，能饮食，平生少病，不逢凶横，但吝财耳，为官多为正官，受宣敕不拘文武，皆掌印信，喜官星，以官能生印。经云：印赖官生。又云：有官无印，即非真官，有印有官，方成厚福是也。忌财星，以财能破印。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "正官",
+          "事业"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

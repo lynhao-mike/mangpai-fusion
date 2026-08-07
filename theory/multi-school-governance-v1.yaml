@@ -1,0 +1,55 @@
+schema_version: multi-school-governance/v1
+certifications: []
+schools:
+  - ziping
+  - gao_dechen
+  - duan_jianye
+  - yang_qingjuan
+  - ren_fuhong
+legacy_compatibility_sources:
+  - ditiansui
+capabilities: []
+composition_templates:
+  - template_id: synthetic.structure-consensus
+    version: 1.0.0
+    accepted_claim_kinds:
+      - structure
+    accepted_stances:
+      - oppose
+      - support
+    accepted_task_ids:
+      - structure.assessment
+    accepted_temporal_layers:
+      - natal
+    required_component_slots:
+      - slot_id: independent_support
+        count: 2
+    output_kind: structure
+    event_scope_rule: component_only
+    temporal_rule: equal_only
+    evidence_cap: corroborated
+    preserve_counterevidence: true
+    preserve_falsifier: true
+    human_review_conditions:
+      - strong_contradiction
+    status: synthetic_only
+    specification_digest: ac185189fc44da8779e0e5cd984d1f683b2ec943ac00412b43231e01df7d4580
+triggers:
+  - trigger_id: synthetic.natal-present
+    evaluator_id: fact_kind_present
+    evaluator_version: 1.0.0
+    required_fact_kinds:
+      - chart.natal
+    allowed_temporal_layers:
+      - natal
+    missing_input_behavior: inactive_with_issue
+    publication_status: candidate
+  - trigger_id: synthetic.liunian-target
+    evaluator_id: liunian_target_year_present
+    evaluator_version: 1.0.0
+    required_fact_kinds:
+      - chart.liunian
+    allowed_temporal_layers:
+      - liunian
+    missing_input_behavior: inactive_with_issue
+    publication_status: synthetic_only

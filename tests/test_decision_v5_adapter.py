@@ -18,7 +18,13 @@ def test_decision_run_from_v5_preserves_trace() -> None:
     abstained_schools = {item.school for item in run.school_applicability if item.role == "abstain"}
     expected_claims = [
         c for c in output.claims
-        if c.claim_id and c.school and c.domain and c.school not in abstained_schools
+        if (
+            c.claim_id
+            and c.school
+            and c.domain
+            and c.stance != "abstain"
+            and c.school not in abstained_schools
+        )
     ]
     assert len(run.school_claims) == len(expected_claims)
     assert len(run.timing_probabilities) == len(output.prediction_ledger.predictions)

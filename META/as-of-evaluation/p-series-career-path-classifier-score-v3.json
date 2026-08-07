@@ -1,0 +1,741 @@
+{
+  "schema_version": "career-path-classifier-score/v3",
+  "freeze_path": "META/as-of-evaluation/p-series-career-path-classifier-freeze-v3.json",
+  "freeze_sha256": "ea124d3c7726f7bd5473b6c5997cc81a87ec0fba3109c8e18481b5ccc9b41ef6",
+  "predictions_sha256": "a153b5a53d9a4d1d6255e2ec98aca0cb369136e910970e6fdcf2ec500f34b71d",
+  "strict_binary_count": 37,
+  "mixed_holdout_count": 3,
+  "balanced_accuracy": 0.315625,
+  "employment_recall": 0.03125,
+  "entrepreneurship_recall": 0.6,
+  "coverage": 0.7567567567567568,
+  "accuracy": 0.10810810810810811,
+  "confusion_matrix": {
+    "entrepreneurship": {
+      "employment": 0,
+      "entrepreneurship": 3,
+      "abstain": 2
+    },
+    "employment": {
+      "employment": 1,
+      "entrepreneurship": 24,
+      "abstain": 7
+    }
+  },
+  "prediction_distribution": {
+    "abstain": 12,
+    "employment": 1,
+    "entrepreneurship": 27
+  },
+  "frozen_baseline_balanced_accuracy": 0.425,
+  "thresholds": {
+    "balanced_accuracy": 0.6,
+    "employment_recall": 0.55,
+    "entrepreneurship_recall": 0.55,
+    "coverage": 0.7
+  },
+  "passes_all_thresholds": false,
+  "post_score_tuning_permitted": false,
+  "audit_rows": [
+    {
+      "case_id": "P-2026-001",
+      "prediction": "abstain",
+      "truth": "entrepreneurship",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-004",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-007",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_weak_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.5"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-008",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-009",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:weak_output_wealth_chain",
+          "employment_score=0.0",
+          "entrepreneurship_score=1.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-011",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-013",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:strong_output_breaks_official_without_resource_rescue",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=-1.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-017",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-018",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-019",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:weak_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_weak_subject",
+          "employment_score=1.0",
+          "entrepreneurship_score=2.5"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-021",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-023",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:weak_official_resource_chain",
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=1.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-025",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-027",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_weak_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.5"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-030",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-031",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-034",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:wealth_only_cap",
+          "employment_score=0.0",
+          "entrepreneurship_score=0.5"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-035",
+      "prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "strict_binary_scored": true,
+      "hit": true,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-037",
+      "prediction": "abstain",
+      "truth": "entrepreneurship",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_1:visible_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=3.5",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-038",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-039",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:wealth_only_cap",
+          "employment_score=0.0",
+          "entrepreneurship_score=0.5"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-041",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-045",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-046",
+      "prediction": "employment",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": true,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_1:visible_official_resource_chain",
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=3.5",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-047",
+      "prediction": "abstain",
+      "truth": "mixed",
+      "strict_binary_scored": false,
+      "hit": null,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:wealth_only_cap",
+          "employment_score=0.0",
+          "entrepreneurship_score=0.5"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-048",
+      "prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "strict_binary_scored": true,
+      "hit": true,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-049",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:wealth_only_cap",
+          "employment_score=0.0",
+          "entrepreneurship_score=0.5"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-051",
+      "prediction": "abstain",
+      "truth": "mixed",
+      "strict_binary_scored": false,
+      "hit": null,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_1:visible_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=3.5",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-055",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-056",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-058",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:weak_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=1.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-060",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-062",
+      "prediction": "abstain",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:output_only_cap",
+          "employment_score=0.0",
+          "entrepreneurship_score=0.5"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-063",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-067",
+      "prediction": "abstain",
+      "truth": "mixed",
+      "strict_binary_scored": false,
+      "hit": null,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:weak_output_wealth_chain",
+          "employment_score=0.0",
+          "entrepreneurship_score=1.0"
+        ],
+        "reason": "score_margin_below_threshold"
+      }
+    },
+    {
+      "case_id": "P-2026-071",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-072",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-073",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-074",
+      "prediction": "entrepreneurship",
+      "truth": "employment",
+      "strict_binary_scored": true,
+      "hit": false,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_2_v3:mixed_strength_chain_active_subject",
+          "employment_score=0.0",
+          "entrepreneurship_score=2.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    },
+    {
+      "case_id": "P-2026-075",
+      "prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "strict_binary_scored": true,
+      "hit": true,
+      "signal": {
+        "adapter": "career_path_classifier_v3",
+        "dayun_mechanism": null,
+        "evidence_refs": [
+          "detector_1:rooted_official_resource_chain",
+          "detector_2_v3:strong_output_wealth_chain_active_subject",
+          "employment_score=2.0",
+          "entrepreneurship_score=4.0"
+        ],
+        "reason": "natal_score_advantage"
+      }
+    }
+  ]
+}

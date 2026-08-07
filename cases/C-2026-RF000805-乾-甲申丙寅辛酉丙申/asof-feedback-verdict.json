@@ -1,0 +1,104 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000805-乾-甲申丙寅辛酉丙申",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T09:54:32+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000805-乾-甲申丙寅辛酉丙申/asof-blind-freeze.json",
+    "sha256": "7b58c59d851f12eae61e3eb44f03cc14a8d78e3c2dd6163706f096e71ae85fef",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000805-乾-甲申丙寅辛酉丙申/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "ABSTAIN",
+    "reason": "反馈充分支持在读阶段学习与能力提升，但截至截止日仍为学生，未提供组织职责或职业交付证据；不能把学业优秀直接等同于职业中心命中，也不足以判职业方向失败。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ABSTAIN",
+      "reason": "反馈不足以同时确认‘能力存在’与‘现实兑现不稳’的完整备选要素，不后验强裁。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "ABSTAIN",
+      "reason": "家庭或健康事实不能替代冻结职业中心；也没有足够证据证明该备选是主要现实落点。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2011-01-01/2011-12-31",
+      "frozen_center_event": "职业或学业承担方式出现一次明确调整，职责与专业输出同步增强",
+      "verdict": "ABSTAIN",
+      "reason": "反馈没有2011年事实；年表从2013年开始，不得移动相邻学业事实。",
+      "enters_event_denominator": false
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "feedback_consistency": "NOT_REESTIMATED",
+    "reason": "反馈揭示后不回写冻结root_level；本字段仅保留边界说明。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "ziping:ZP-PROD-20260622-256",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论命中只作为冻结前结构证据，不单独决定现实裁决。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ABSTAIN"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "ABSTAIN"
+      }
+    ],
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "misses": 0,
+      "abstains": 0
+    }
+  },
+  "overall_conclusion": {
+    "event_e1": "ABSTAIN",
+    "summary": "E1按冻结年份与反馈年份严格核对，裁为ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_valid": true
+  }
+}

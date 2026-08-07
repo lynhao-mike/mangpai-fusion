@@ -1,0 +1,183 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
+  "adjudicated_at": "2026-07-30T13:35:56+08:00",
+  "feedback_source": "cases/C-2026-RF000897-乾-甲子丁丑丙寅庚子/feedback.md",
+  "known_facts_source": "cases/C-2026-RF000897-乾-甲子丁丑丙寅庚子/input.md:161-194",
+  "freeze_source": "cases/C-2026-RF000897-乾-甲子丁丑丙寅庚子/asof-blind-freeze.json",
+  "freeze_sha256_expected": "fac01b504769263e543eddc7534ba70bd93a8b06748035e1aa80a9a9a837054c",
+  "freeze_sha256_observed_before_feedback": "fac01b504769263e543eddc7534ba70bd93a8b06748035e1aa80a9a9a837054c",
+  "freeze_sha256_observed_after_feedback": "fac01b504769263e543eddc7534ba70bd93a8b06748035e1aa80a9a9a837054c",
+  "freeze_immutable": true,
+  "independent_blind_freeze_reviewer": true,
+  "feedback_reveal_control": {
+    "freeze_created_before_feedback_reveal": true,
+    "sha256_verified_before_feedback_reveal": true,
+    "sha256_verified_after_feedback_reveal": true,
+    "feedback_first_read_after_pre_reveal_hash": true
+  },
+  "feedback_evidence": [
+    {
+      "year": 2024,
+      "domain": "career_snapshot",
+      "fact": "known_facts仅记载‘吉,平常’，附带职业字段为‘个体身价年收入: 10’，未描述主要职业职责边界变化。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_change_probe",
+      "fact": "§9.4写‘过去12个月职业状态无明显变化，待命主确认’。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_before_after_slice",
+      "fact": "§9.4变化前状态与变化后状态均为‘待命主确认’，没有形成可核验的前后对比。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_snapshot",
+      "fact": "截至2026-06-11扫描快照记为在职，当前职位字段为‘个体身价年收入:’，主要收入来源待确认。"
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "scoring_unit": "career_basic_state",
+    "verdict": "ABSTAIN",
+    "matched_facts": [
+      "职业附带字段出现‘个体’",
+      "扫描快照记为在职"
+    ],
+    "boundary_check": {
+      "ordinary_employment_or_identity_only": true,
+      "professional_judgment_directly_observed": false,
+      "project_delivery_responsibility_directly_observed": false,
+      "weak_hit_boundary_crossed": false,
+      "industry_rank_income_not_scored": true
+    },
+    "reason": "‘个体’身份与在职快照只能说明存在职业活动，不能直接确认主要职业价值持续包含专业判断、项目推进和结果交付责任；现有反馈也不足以确认长期低自主、只按固定流程工作，从而不能判MISS。按冻结weak_hit_boundary，职业基本面证据不足，裁决为ABSTAIN。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "alternative_index": 1,
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈未直接描述职责增加、授权不足、持续项目不足或成果承接不稳，备选未激活。"
+    },
+    {
+      "claim_id": "A2",
+      "alternative_index": 2,
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈未直接描述主要职业长期仅按既定流程完成常规任务，备选未激活。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "frozen_center_event": "2024年主要职业职责边界发生一次可核验的明确变化。",
+      "verdict": "ABSTAIN",
+      "enters_denominator": false,
+      "observed_feedback": {
+        "known_fact": "2024年职业条目为‘吉,平常’，其余为职业、收入、出身、健康、婚姻、子女和性格的拼接快照。",
+        "time_node": "2024年前后",
+        "change_description": "过去12个月职业状态无明显变化，待命主确认",
+        "before_state": "待命主确认",
+        "after_state": "待命主确认"
+      },
+      "element_match": {
+        "within_2024_window": true,
+        "explicit_confirmed_change_present": false,
+        "explicit_confirmed_no_change_present": false,
+        "before_state_present": false,
+        "after_state_present": false,
+        "before_after_comparison_complete": false,
+        "responsibility_boundary_change_evaluable": false
+      },
+      "reason": "E1只能按2024单年内‘主要职业职责边界明确变化’评分。known_facts的‘平常’没有指出职责边界发生变化，也不足以严格证明全年无变化；§9.4的‘无明显变化’带有‘待命主确认’，且变化前、变化后均待确认。揭示前后没有新增完整、已确认的职责前后对比，因此既不能判CENTER_HIT，也不能把自动扫描占位当作已核实反证判MISS。E1为ABSTAIN，不进入日期事件分母。"
+    }
+  ],
+  "theory_layer_adjudication": [
+    {
+      "rule_id": "ZP-PROD-20260606-004",
+      "verdict": "NOT_TESTED_BY_FEEDBACK",
+      "reason": "反馈没有提供足以核验专业判断、责任承接或成果落地的职责事实，不能由‘个体’身份反推财官制化对应的现实职业完成。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260622-053",
+      "verdict": "NOT_TESTED_BY_FEEDBACK",
+      "reason": "反馈缺少职责、承载、授权、收益稳定性和劳碌破财之间的可对应事实，风险边界无法评价。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260622-837",
+      "verdict": "SUPPORTED_AS_GUARDRAIL",
+      "reason": "冻结只把寒月丙火规则作为条件性结构依据，未据此声称具体职位或成功；本次反馈不足不应反向扩张古籍等级断语。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "职业身份快照未越过专业判断与项目交付责任的弱命中边界。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "E1缺少已确认的2024职责前后对比，不进入分母。"
+    },
+    "alternatives": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 2,
+      "summary": "两个备选均缺少直接激活证据。"
+    }
+  },
+  "section_9_4_validation": {
+    "field_helped_event_enter_denominator": false,
+    "e1_would_be_abstain_without_comparison_slice": true,
+    "e1_remains_abstain_with_comparison_slice": true,
+    "qualitative_assessment": "INSUFFICIENT_UNCONFIRMED_PLACEHOLDER",
+    "before_reveal_assessment": "冻结E1为2024单年职责边界明确变化，需可核验的变化事实或明确反证。",
+    "after_reveal_assessment": "known_facts只有‘平常’静态概括；§9.4称无明显变化但待确认，且前后状态均待确认。",
+    "reason": "§9.4前后对比没有补成已确认的变化截面：时间节点仅为‘2024年前后’，变化描述仍带待确认限定，前后状态均为空缺占位。与揭示前相比，E1没有获得足以命中或证伪的新增可核验证据，因此不进入分母。",
+    "scope_limit": "只有候选窗口内的明确变化描述及可区分、已确认的前后职责状态，或经确认的全年无变化事实，才可使该E1进入分母。"
+  },
+  "overall_conclusion": {
+    "career_basic_state": "ABSTAIN",
+    "dated_event_precision": "ABSTAIN",
+    "e1_result": "ABSTAIN",
+    "e1_enters_denominator": false,
+    "summary": "反馈只提供个体/在职静态字段和未确认的‘无明显变化’占位。E1缺少2024职责边界的已确认前后对比，保持ABSTAIN且不进入分母。"
+  },
+  "diagnostic_note": {
+    "failure_class": "DATED_EVIDENCE_INSUFFICIENT",
+    "section_9_4_missing_confirmed_before_after": true,
+    "minimum_correction": "补充确认2024年主要职业职责在变化前后的具体内容；若确认全年无明确变化则可评价为MISS，若确认发生明确边界变化则按事实评价CENTER_HIT。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_scored_atomic_verdicts_formal": true,
+    "non_scoring_theory_labels": [
+      "NOT_TESTED_BY_FEEDBACK",
+      "SUPPORTED_AS_GUARDRAIL"
+    ]
+  }
+}

@@ -21,6 +21,9 @@
 | 主分支 | `main` | git symbolic-ref refs/remotes/origin/HEAD |
 | 主分支 HEAD | `git rev-parse HEAD`（运行时查询，不在文档中硬编码） | 历史教训：handoff.md / STATUS.md 各自硬编码 commit 短 SHA 必然漂移 |
 | 已锁定决策 | A-M（v1.2 重构）+ D1-D8（v1.3 自迭代）+ V1-V6 / V8（v1.4 已落地）+ V7（模板存在、默认发布门禁收口）| 见 [`decisions-locked.md`](decisions-locked.md) + [`../../plans/architecture-v1.3.md`](../../plans/architecture-v1.3.md) + [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) |
+| 现实结果 taxonomy | [`11-outcome-taxonomy-v1.md`](11-outcome-taxonomy-v1.md) | 现实结果领域、指标与 L0–L14 等级事实源 |
+| 现实功能证据卡 | [`12-real-world-function-evidence-cards-v1.md`](12-real-world-function-evidence-cards-v1.md) | F01–F12 功能成立语义；当前为安全恢复版，缺口不得推断 |
+| 职业路径状态机 | [`13-career-path-state-machine-v1.md`](13-career-path-state-machine-v1.md) | 原局倾向、大运约束、现实职业状态与 mixed 转换语义 |
 | 下一里程碑 | v1.4 报告默认发布门禁（V7 ViewModel / linter / 快照验收）+ 全量测试收口 | [`../../plans/architecture-v1.4.md`](../../plans/architecture-v1.4.md) § 三 |
 
 ---
@@ -171,7 +174,7 @@ V5-V8（PictureFindings.industry_path / wealth_level.framework / 报告耦合提
 
 ```
 engine/
-├── contracts/                    ← 本目录（12 份契约，00-09 为 v1.x 基础契约，10-11 为 v5/taxonomy 扩展契约）
+├── contracts/                    ← 本目录（00-09 为 v1.x 基础契约，10-13 为后续扩展契约）
 │   ├── 00-OVERVIEW.md           ← 本文件（架构总览）
 │   ├── 01-input-schema.md       ← 命主输入严格 schema（问真APP格式）
 │   ├── 02-predicate-library.md  ← 60 个 Python 谓词函数签名
@@ -183,7 +186,17 @@ engine/
 │   ├── 08-agent-handoff.md      ← 8 个 agent 的契约边界
 │   ├── 09-naming-convention.md  ← 文件命名规范（含干支）
 │   ├── 10-ziping-fusion-v5.md   ← 五派命理推理操作系统契约
-│   └── 11-outcome-taxonomy-v1.md ← 可训练 outcome taxonomy 契约
+│   ├── 11-outcome-taxonomy-v1.md ← 可训练 outcome taxonomy 契约
+│   ├── 12-real-world-function-evidence-cards-v1.md ← 现实功能证据卡
+│   ├── 13-career-path-state-machine-v1.md ← 职业路径状态机契约
+│   ├── 14-career-path-evaluation-protocol-v1.md ← 职业路径离线评估协议
+│   ├── 15-career-relation-inference-v1.md ← 职业关系五步定位结构契约
+│   ├── 16-career-path-state-machine-v2.md ← 职业路径 staged 状态机契约
+│   ├── 17-career-relation-expert-annotation-v1.md ← 专家中间结构盲标、双审与一致率契约
+│   ├── 18-career-path-prospective-cohort-v1.md ← 真正未见职业路径 cohort 采集、隔离、双审裁决与准入契约
+│   ├── 19-career-path-product-routing-v1.md ← 冻结竞争证据链与失败关闭产品分流契约
+│   ├── 20-domain-prospective-evaluation-v1.md ← 事业、财富、婚姻三领域 prospective 盲测与失败关闭评分契约
+│   └── 21-high-risk-domain-claims-v1.md ← 高风险领域命题独立来源、失败关闭与人工复核契约
 │
 ├── energy/                      ← Track-A 段派 D1 引擎（Python 包）
 │   ├── __init__.py

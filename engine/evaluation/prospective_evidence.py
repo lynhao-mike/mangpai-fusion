@@ -488,6 +488,8 @@ def _contains_forbidden_evidence_field(value: object) -> bool:
 def _task_catalog_for_release(release: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     release_parent = validate_parent_ref(ArtifactRef(**release["parents"][0]))
     for reference in release_parent.get("parents", []):
+        if not str(reference.get("artifact_path", "")).endswith("bundle-manifest.json"):
+            continue
         parent = validate_parent_ref(ArtifactRef(**reference))
         if parent.get("schema_version") != "prospective-single-case-blind-bundle/v1":
             continue
@@ -1207,8 +1209,11 @@ def build_case_completion(
         _validate_parent_tree(incident)
         raise ContaminationError("STOP case cannot produce completion")
     verification = _actual_supplied_artifact(freeze_verification, "freeze verification")
-    verified = _validated_verification(verification)
-    _validate_parent_tree(verified)
+    if verification.get("schema_version") == "prospective-feedback-release/v2":
+        verified, _ = validate_release_credential(verification)
+    else:
+        verified = _validated_verification(verification)
+        _validate_parent_tree(verified)
     immediate = _validated_optional_completion_parent(
         immediate_bound, evidence_class=_IMMEDIATE_EVIDENCE_CLASS,
         case_id=verified["case_id"], subject_id_hash=verified["subject_id_hash"],

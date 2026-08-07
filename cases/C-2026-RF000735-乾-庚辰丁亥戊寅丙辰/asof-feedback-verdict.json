@@ -1,0 +1,153 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000735-乾-庚辰丁亥戊寅丙辰",
+  "adjudicated_at": "2026-07-30T14:20:52+08:00",
+  "feedback_source": "cases/C-2026-RF000735-乾-庚辰丁亥戊寅丙辰/feedback.md",
+  "freeze_source": "cases/C-2026-RF000735-乾-庚辰丁亥戊寅丙辰/asof-blind-freeze.json",
+  "freeze_sha256_expected": "9f8d4cfffe18040199b8906a6e19916f34a5c825af853395ac7e0070e0961015",
+  "freeze_sha256_observed_before_verdict": "9f8d4cfffe18040199b8906a6e19916f34a5c825af853395ac7e0070e0961015",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2016,
+      "domain": "career_skill",
+      "fact": "进入工地学习暖通手艺，年底有结余，但发生手指重伤。"
+    },
+    {
+      "year": 2018,
+      "domain": "career_state",
+      "fact": "外出闯荡但生活难以维持，处于游荡状态。"
+    },
+    {
+      "year": 2019,
+      "domain": "career_position",
+      "fact": "进入财务公司，受老板器重，月薪约一万三。"
+    },
+    {
+      "year": 2020,
+      "domain": "career_risk",
+      "fact": "公司业务踩红线，个人被羁押一个多月。"
+    },
+    {
+      "year": 2023,
+      "domain": "project_realization",
+      "fact": "取得不少项目并有数十万元级收入，但资金未能留存。"
+    },
+    {
+      "year": 2024,
+      "domain": "project_state",
+      "fact": "项目工作由此前拿到不少项目转为平平无奇。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ALTERNATIVE_REALIZED",
+    "verdict": "ALTERNATIVE_HIT",
+    "reason": "反馈显示暖通技能、公司岗位和项目承接能力均真实存在，但职业路径经历外出失稳、涉业务风险、回归工地、项目收入不留存及项目转淡，直接支持能力存在而现实兑现不稳的冻结备选，不能按稳定职位中心命中计分。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "ACTIVATED",
+      "verdict": "ALTERNATIVE_HIT",
+      "reason": "2016学习暖通技能、2019形成受器重岗位、2023取得多个项目证明能力存在；2018失稳、2020至2021法律与项目风险、2024项目转淡证明兑现间断且不稳。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_landing",
+      "window": "2017-01-01/2017-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈年表提供2016年与2018年事实，但没有2017年职业事件记录。",
+      "reason": "相邻年份事实不能替代冻结的独立2017单年窗口；缺少窗口内直接证据，故不判命中或未命中。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_career_boundary_change",
+      "window": "2009-01-01/2009-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2009年事实。",
+      "reason": "窗口内无直接证据。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_career_disruption",
+      "window": "2013-01-01/2013-12-31",
+      "verdict": "MISS",
+      "observed_feedback": "2013年反馈为学习成绩显著提升并多次受学校表彰。",
+      "reason": "窗口内已提供明确事实，但不是冻结所述职业环境中断式变动。"
+    },
+    {
+      "candidate_id": "E4",
+      "scoring_unit": "dated_career_direction_change",
+      "window": "2014-01-01/2014-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2014年事实；2015年辍学进入社会不能移入2014单年窗口。",
+      "reason": "窗口内无直接证据。"
+    },
+    {
+      "candidate_id": "E5",
+      "scoring_unit": "dated_career_realization",
+      "window": "2020-01-01/2020-12-31",
+      "verdict": "MISS",
+      "observed_feedback": "2020年公司业务踩红线，个人被羁押一个多月。",
+      "reason": "窗口内发生的是既有公司岗位的重大风险暴露，不是专业输出形成现实兑现节点。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "冻结前无法知道§9.4年份；既有盲态脚手架只列2009、2013、2014、2017、2020，按协议不得后验添加2024或改写E1。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 0,
+      "alternative_hits": 1,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "能力存在获证实，但稳定职业兑现不足，命中冻结备选。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "冻结包未设置独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 2,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 2,
+      "abstains": 3,
+      "summary": "E1及两个次级候选因窗口内无直接事实而弃权；2013与2020候选由窗口内明确反向事实判为未命中。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "ALTERNATIVE_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "MISS",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业能力存在但现实兑现不稳的备选命中；E1因2017年直接证据缺失而弃权，不能用相邻年补判。"
+  },
+  "diagnostic_note": {
+    "failure_class": "SCAFFOLD_YEAR_COVERAGE_GAP",
+    "minimum_correction": "后续脚手架应在不读取反馈的前提下建立覆盖求测日前近年节点的候选生成规则；本案冻结不得后验改写。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

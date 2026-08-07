@@ -1,0 +1,132 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000868",
+  "adjudicated_at": "2026-07-29T22:01:30+08:00",
+  "feedback_source": "cases/C-2026-RF000868-乾-壬申戊申庚辰丁亥/feedback.md",
+  "freeze_source": "cases/C-2026-RF000868-乾-壬申戊申庚辰丁亥/asof-blind-freeze.json",
+  "freeze_sha256_expected": "7d8881a981506d92508fb83f6ed3f2e269cde664b957812d96ae616829c1edc7",
+  "freeze_sha256_observed_before_verdict": "7d8881a981506d92508fb83f6ed3f2e269cde664b957812d96ae616829c1edc7",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {"year": 2004, "domain": "education", "fact": "随父亲从农村到县城读初中，因基础和节奏差异而成绩不好"},
+    {"year": 2012, "domain": "education", "fact": "高考超过三本线16分，但缺少志愿与专业指导，进入成都航空职业技术学院专科"},
+    {"year": 2013, "domain": "career", "fact": "2013—2014进入一汽大众实习，每月工资3000多元"},
+    {"year": 2014, "domain": "career", "fact": "在贵州国企实习，可签正式合同但因离家远未签；开始接触游戏直播并有少量收入"},
+    {"year": 2015, "domain": "career", "fact": "大专毕业后进入成都民用飞机制造厂，数月后因不自由辞职转做游戏主播，并被平台正式签约"},
+    {"year": 2016, "domain": "career", "fact": "直播收入超过进厂工资，但本人和家人均认为职业不稳定"},
+    {"year": 2018, "domain": "career", "fact": "游戏直播内容匮乏、枯燥，职业压力和情绪压力明显"},
+    {"year": 2019, "domain": "career", "fact": "找到新直播内容并签约直播公会，但工资和礼物收入被公会分成，之后数年受内容匮乏及工作节律不稳困扰"},
+    {"year": 2022, "domain": "marriage", "fact": "正式宴请亲友举行婚礼；未提供这一年的职业状态变化"}
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "HISTORICAL_DIRECTION_SUPPORTED_BUT_CURRENT_CUTOFF_UNVERIFIED",
+    "verdict": "ABSTAIN",
+    "reason": "飞机制造实习与就业属于技术/工程实施，随后游戏直播属于信息媒介、内容组织和持续交付，历史方向明显符合技术/信息/项目型输出；但反馈的职业事实主要止于2019及其后数年的概括，没有明确给出2026-07-29的现职、主要价值来源和持续状态。当前基本面不能由历史同向事实替代。",
+    "counterfactual_for_hit": "若补充反馈确认截止日仍主要依靠技术、信息内容、系统流程、专业方案或复杂问题解决持续交付，则C1可按CENTER_HIT裁决；本次不预先改判。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未显示审计风控、质量流程、运营控制、供应链协调或咨询方案等组织专业职责；已有历史事实更直接落在工程与直播内容输出。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "HISTORICAL_PATTERN_SUPPORTED_BUT_CURRENT_CUTOFF_UNVERIFIED",
+      "verdict": "ABSTAIN",
+      "reason": "2015辞去稳定工厂工作转做主播、2016本人认为不稳定、2018—2019内容压力以及之后努力与摆烂交替，强力支持项目化和收入承接不稳的历史模式；但没有足够事实确认该模式持续到2026截止日，故不能判为当前备选命中。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "claim_id": "P1",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2004从农村转到县城读初中并因基础差异跟不上", "2005—2006沉迷网络游戏并影响学习生活", "2012高考与志愿专业选择后进入航空职业技术学院"],
+      "reason": "2003—2013阶段确有学校环境迁移、学习压力、技能/专业选择和高考升学节点，达到冻结断语的最低条件；不把具体成绩、学校或专业视为盲断所得。"
+    },
+    {
+      "claim_id": "P2",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2013—2014一汽大众和贵州国企实习", "2015毕业进入飞机制造厂后辞职转做游戏主播并获正式签约", "2018内容匮乏与职业压力", "2019调整直播内容并签约公会"],
+      "reason": "2013—2023阶段完成教育到工作转换，并连续发生实习平台、制造业就业、直播转型、内容方向和签约方式变化；同时职业兑现并非稳定上升，完整符合冻结的阶段方向。"
+    },
+    {
+      "claim_id": "P3",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈没有2023—2026的岗位、职责、项目方式或收入稳定性事实，不能核验壬子运前段断语。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_education_to_work_transition",
+      "window": "2012-01-01/2014-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2012高考后进入成都航空职业技术学院；2013—2014先后在一汽大众和贵州国企实习。",
+      "reason": "时间窗、教育履历转换及进入工作实习的事件类型均直接匹配；不回填具体学校、企业、收入或结果优劣。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_career_or_platform_restructuring",
+      "window": "2018-01-01/2020-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2018直播内容匮乏、枯燥并承受明显压力；2019找到新直播内容并签约公会，收入分成结构和工作平台关系发生改变。",
+      "reason": "窗口内同时出现职业压力、内容方向调整和签约平台重构，满足冻结的职业平台或职责可核验改变；公会分成后果属于额外事实。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_role_or_work_mode_change",
+      "window": "2022-01-01/2025-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "仅记录2022正式举行婚礼，没有2022—2025职业事实。",
+      "reason": "婚姻事件不属于冻结的职业评分单位；反馈对该窗口职业变化保持沉默，不能把沉默当作MISS。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "历史职业方向与不稳定兑现模式均获强支持，但截止日现状缺失，正式裁决ABSTAIN。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 2,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "P1、P2命中；P3缺少2023—2026核验。"
+    },
+    "dated_event_precision": {
+      "evaluable": 2,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "E1教育—工作转换与E2职业平台重构命中；E3无职业核验，不进入分母。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "ABSTAIN",
+    "broad_phase_direction": "CENTER_HIT",
+    "event_timing_precision": "CENTER_HIT",
+    "summary": "本例最有价值的盲断成果是工程技术到游戏直播均落在技术/信息/项目型输出方向，且2012—2014教育—工作转换与2018—2020内容及签约平台重构两个窗口命中。冻结时保留的‘能力存在但职业兑现不稳’边界也得到历史事实支持；但反馈不足以确认2026当前状态，因此职业基本面保持ABSTAIN。"
+  },
+  "diagnostic_note": {
+    "failure_class": null,
+    "completion_boundary_result": "PRESERVED",
+    "note": "冻结未把丁官或金水输出直接外推为行政权、稳定职级或成熟职业完成；现实中的主播职业不稳定、内容匮乏和节律波动落在预先保留的完成度边界内，因此不是RF000900式现实完成过度声称。"
+  },
+  "verdict_enum_check": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "all_verdicts_formal": true
+  }
+}

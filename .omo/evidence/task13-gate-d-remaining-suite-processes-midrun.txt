@@ -1,0 +1,112 @@
+﻿Timestamp: 2026-08-06T09:14:26.8270061+08:00
+
+
+ProcessId       : 124
+ParentProcessId : 10824
+Name            : chrome-headless-shell.exe
+CommandLine     : C:\Users\Administrator\AppData\Local\ms-playwright\chromium_headless_shell-1228\chrome-headless-shell-win64\chrome-headless-shell.exe --headless --no-first-run --no-default-browser-check --disable-background-networking --disable-component-update --disable-default-apps --disable-extensions --disable-features=MediaRouter,OptimizationHints,Translate --disable-sync --metrics-recording-only --no-pings --remote-allow-origins=* --remote-debugging-port=57308 --user-data-dir=C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\pytest-3130\test_complete_accountability_a0\browser-profile about:blank
+
+ProcessId       : 5472
+ParentProcessId : 7040
+Name            : cmd.exe
+CommandLine     : C:\Windows\system32\cmd.exe /d /s /c "powershell -Command "python -m pytest --ignore=tests/test_web_accountability_browser_e2e.py --ignore=tests/test_web_accountability_e2e.py -q --tb=short 2>&1 | Out-File .round3_task3_full.txt; Write-Output started""
+
+ProcessId       : 28588
+ParentProcessId : 5472
+Name            : powershell.exe
+CommandLine     : powershell  -Command "python -m pytest --ignore=tests/test_web_accountability_browser_e2e.py --ignore=tests/test_web_accountability_e2e.py -q --tb=short 2>&1 | Out-File .round3_task3_full.txt; Write-Output started"
+
+ProcessId       : 34172
+ParentProcessId : 28588
+Name            : python.exe
+CommandLine     : "C:\Python314\python.exe" -m pytest --ignore=tests/test_web_accountability_browser_e2e.py --ignore=tests/test_web_accountability_e2e.py -q --tb=short
+
+ProcessId       : 24272
+ParentProcessId : 23404
+Name            : powershell.exe
+CommandLine     : "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+                  $ErrorActionPreference='Continue'
+                  Set-Location -LiteralPath 'F:\多流派新思路'
+                  $artifactDir = '.omo\evidence'
+                  New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
+                  $outPath = Join-Path $artifactDir 'task13-gate-d-remaining-suite-pytest-output.txt'
+                  $metaPath = Join-Path $artifactDir 'task13-gate-d-remaining-suite-pytest-meta.json'
+                  $cmdLine = 'python -m pytest tests/ -q -p no:cacheprovider --ignore=tests/test_application_candidates.py --ignore=tests/regression/test_g_iteration.py'
+                  $start = Get-Date
+                  $env:PYTHONDONTWRITEBYTECODE = '1'
+                  \"Surface: pytest CLI\" | Set-Content -LiteralPath $outPath -Encoding UTF8
+                  \"Invocation: $cmdLine\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"Start: $($start.ToString('o'))\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"PYTHONDONTWRITEBYTECODE: $env:PYTHONDONTWRITEBYTECODE\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"--- pytest output ---\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  $psi = New-Object System.Diagnostics.ProcessStartInfo
+                  $psi.FileName = 'python'
+                  $psi.Arguments = '-m pytest tests/ -q -p no:cacheprovider --ignore=tests/test_application_candidates.py --ignore=tests/regression/test_g_iteration.py'
+                  $psi.RedirectStandardOutput = $true
+                  $psi.RedirectStandardError = $true
+                  $psi.UseShellExecute = $false
+                  $psi.CreateNoWindow = $true
+                  $p = New-Object System.Diagnostics.Process
+                  $p.StartInfo = $psi
+                  [void]$p.Start()
+                  $stdoutTask = $p.StandardOutput.ReadToEndAsync()
+                  $stderrTask = $p.StandardError.ReadToEndAsync()
+                  $completed = $p.WaitForExit(2400 * 1000)
+                  $timedOut = -not $completed
+                  if ($timedOut) {
+                    try { $p.Kill() } catch {}
+                    $p.WaitForExit()
+                  }
+                  $stdout = $stdoutTask.GetAwaiter().GetResult()
+                  $stderr = $stderrTask.GetAwaiter().GetResult()
+                  if ($stdout) { $stdout | Add-Content -LiteralPath $outPath -Encoding UTF8 }
+                  if ($stderr) {
+                    \"--- stderr ---\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                    $stderr | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  }
+                  $end = Get-Date
+                  $duration = New-TimeSpan -Start $start -End $end
+                  $exitCode = if ($timedOut) { 124 } else { $p.ExitCode }
+                  \"--- run meta ---\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"End: $($end.ToString('o'))\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"DurationSeconds: $([math]::Round($duration.TotalSeconds,3))\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"ExitCode: $exitCode\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  \"TimedOut: $timedOut\" | Add-Content -LiteralPath $outPath -Encoding UTF8
+                  $meta = [ordered]@{
+                    surface = 'pytest CLI'
+                    invocation = $cmdLine
+                    start = $start.ToString('o')
+                    end = $end.ToString('o')
+                    durationSeconds = [math]::Round($duration.TotalSeconds,3)
+                    exitCode = $exitCode
+                    timedOut = $timedOut
+                    pythonDontWriteBytecode = $env:PYTHONDONTWRITEBYTECODE
+                    outputPath = (Resolve-Path -LiteralPath $outPath).Path
+                  }
+                  $meta | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $metaPath -Encoding UTF8
+                  Get-Content -LiteralPath $metaPath
+                  exit $exitCode"
+
+ProcessId       : 19892
+ParentProcessId : 24272
+Name            : python.exe
+CommandLine     : "python" -m pytest tests/ -q -p no:cacheprovider --ignore=tests/test_application_candidates.py --ignore=tests/regression/test_g_iteration.py
+
+ProcessId       : 36492
+ParentProcessId : 23404
+Name            : powershell.exe
+CommandLine     : "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+                  Set-Location -LiteralPath 'F:\多流派新思路'
+                  $midPath = '.omo\evidence\task13-gate-d-remaining-suite-processes-midrun.txt'
+                  \"Timestamp: $(Get-Date -Format o)\" | Set-Content -LiteralPath $midPath -Encoding UTF8
+                  Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'python|pytest' -or $_.CommandLine -match 'pytest' } | Select-Object ProcessId,ParentProcessId,Name,CommandLine | Format-List | Out-String -Width 4096 | Add-Content -LiteralPath $midPath -Encoding UTF8
+                  Get-Item -LiteralPath $midPath | Select-Object FullName,Length,LastWriteTime | Format-List"
+
+ProcessId       : 24760
+ParentProcessId : 34172
+Name            : python.exe
+CommandLine     : C:\Python314\python.exe C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\pytest-3486\isolated-diagnosis-repo0\scripts\run_zengshan_mismatch_diagnosis.py --write
+
+
+
+

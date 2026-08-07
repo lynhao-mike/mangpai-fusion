@@ -1,0 +1,203 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000861",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T09:25:23+08:00",
+  "as_of_date": "2026-07-30",
+  "as_of_date_basis": "案例盲态前缀未另给截止日，采用本次验证日期；写入并计算哈希后不得根据反馈回写。",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000861-乾-癸酉甲寅庚午乙酉/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 150,
+    "cutoff_marker": "yaml_key",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "1993-02-18T17:15:00+08:00",
+    "birthplace": "吉隆坡市",
+    "true_solar_time_correction_supplied": true,
+    "true_solar_time_supplied": "1993-02-18T17:15:00+08:00",
+    "pillars_supplied": [
+      "癸酉",
+      "甲寅",
+      "庚午",
+      "乙酉"
+    ],
+    "dayun_supplied": [
+      {"pillar": "癸丑", "start_year": 1997, "end_year": 2007},
+      {"pillar": "壬子", "start_year": 2007, "end_year": 2017},
+      {"pillar": "辛亥", "start_year": 2017, "end_year": 2027},
+      {"pillar": "庚戌", "start_year": 2027, "end_year": 2037},
+      {"pillar": "己酉", "start_year": 2037, "end_year": 2047},
+      {"pillar": "戊申", "start_year": 2047, "end_year": 2057},
+      {"pillar": "丁未", "start_year": 2057, "end_year": 2067},
+      {"pillar": "丙午", "start_year": 2067, "end_year": 2077}
+    ],
+    "known_life_facts_used": []
+  },
+  "admission_gate": {
+    "age_at_as_of_date": 33,
+    "fits_career_window": true,
+    "note": "33岁落在23—65岁职业活跃期预筛窗口内。"
+  },
+  "reasoning_boundary": {
+    "natal_structure": "庚金日主生寅月，月干甲财、时干乙财并透，寅中甲丙戊与日支午中丁己使财与官杀均有现实牵引；年时两酉给庚金根气，形成以专业判断承接资源、客户或经营结果的结构。庚乙相合与财坐酉绝提示价值转化并非天然平滑，不能从财官可见直接推出财富规模或职位等级。",
+    "current_dayun": "2017—2027辛亥运以劫财、食神为主要结构提示，开放同业竞争、协作、专业输出和自主处理空间，也可能削弱稳定收益、组织授权和职业连续性。该运更支持能力被调用，不保证能力持续变现。",
+    "strength_cap": "职业能力方向冻结为中等，现实兑现冻结为中等偏低至中等；不冻结行业名称、管理层级、企业所有权、高收入或社会等级。",
+    "root_level_justification": "甲乙财透、寅午木火链与两酉金根支持资源识别—方案判断—现实交付；但庚乙合、辛劫并临及财临酉地构成完成度折损，因此使用ACTIVATE_EXISTING并设置兑现不稳的同方向备选。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "professional_judgment_converted_into_measurable_business_results",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能在需要把客户需求、资源条件和专业判断转成可量化成果的业务执行岗位，日常承担方案判断、沟通推进与结果交付；具备商业敏感度和独立处理能力，但不冻结管理层级。",
+      "strength": "MEDIUM",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：能力结构存在，但现实兑现不稳，受平台约束、同业竞争和职业转换影响，可能表现为授权有限、收入波动、岗位稳定性不足。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若不直接面向客户或营收，则更可能在组织内部承担项目运营与流程协调，以成本、进度和交付结果衡量价值。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅是普通上班、偶尔沟通、使用办公软件、接触客户或有收入不算命中；主要职责必须持续涉及资源权衡、方案判断、推进协调，并由业务结果、成本、进度或交付质量考核。",
+    "falsifiers": [
+      "长期主要从事低判断要求、低协调要求且不对业务结果或交付负责的重复劳动。",
+      "截至截止日主要身份与工作均不涉及客户需求、资源配置、方案判断、项目推进或结果交付。",
+      "现实职业价值主要来自纯行政层级授权或被动资产，本人无需持续进行专业判断与推进。"
+    ]
+  },
+  "frozen_phase_claims": [
+    {
+      "claim_id": "P1",
+      "window": "2007-2017 壬子运",
+      "statement": "学习到初入社会阶段并非完全单线平滑，至少出现一次由升学、专业选择或职业入口引起的方向调整；调整更强调现实用途和结果，而非只按原计划延续。",
+      "confidence": 58,
+      "falsifier": "整个阶段教育、专业、城市及初次职业入口均按单一路径推进，从无重要选择或调整。"
+    },
+    {
+      "claim_id": "P2",
+      "window": "2017-2022 辛亥运前段",
+      "statement": "职业能力逐步转向专业输出与协作推进，但现实位置尚未完全稳定，较可能经历职责扩展、平台更换或收入结构波动中的至少一项。",
+      "confidence": 64,
+      "falsifier": "2017—2022岗位、职责、平台和收入结构始终稳定，且没有专业输出或协作推进责任增长。"
+    },
+    {
+      "claim_id": "P3",
+      "window": "2023-2026 辛亥运后段",
+      "statement": "现实主题集中到价值兑现与职业定位，能力被更强调用，但稳定收益和组织授权未必同步；阶段内应有一次可核验的职责重定或职业结构变化。",
+      "confidence": 72,
+      "falsifier": "2023—2026职责、职业定位、岗位结构及收益模式均无变化，且能力调用强度没有上升。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_structure_change",
+      "window": "2025-01-01/2025-12-31",
+      "center_event": "2025年职业结构发生一次可核验变动，最低命中条件为主要岗位职责发生明确变化。",
+      "confidence": 76,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "L1+L2候选门通过；乙巳年处辛亥运，乙合日干庚，巳冲运支亥、穿月支寅并与寅构成三刑，共4项关系，激活月支与日干，是截止日前最近的高强度双门年份。",
+      "falsifier": "2025全年主要岗位职责无明确变化。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_responsibility_increase",
+      "window": "2026-01-01/2026-12-31",
+      "center_event": "2026年职业责任发生一次可核验调整，最低命中条件为主要项目责任明显上升。",
+      "confidence": 64,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "L1+L2候选门通过；丙午年处辛亥运，丙合运干辛，午自刑并伏吟日支午，激活日支，算法结构强度为medium，故置信度低于2025。",
+      "falsifier": "2026全年主要项目责任未明显上升。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_years": [
+      {
+        "year": 2025,
+        "liunian": "乙巳",
+        "dayun": "辛亥",
+        "strength": "high",
+        "domains": ["财富", "婚姻"],
+        "relations": ["乙合庚", "巳冲亥", "巳穿寅", "巳与寅构成三刑"],
+        "activated_natal_nodes": ["月支寅", "日干庚"]
+      },
+      {
+        "year": 2026,
+        "liunian": "丙午",
+        "dayun": "辛亥",
+        "strength": "medium",
+        "domains": ["事业", "健康"],
+        "relations": ["丙合辛", "午自刑日支午", "午伏吟日支午"],
+        "activated_natal_nodes": ["日支午"]
+      }
+    ],
+    "rejected_nearby_preflight_high_years": [
+      {"year": 2020, "liunian": "庚子", "reason": "普通preflight为high，但未通过L1+L2候选门。"},
+      {"year": 2023, "liunian": "癸卯", "reason": "普通preflight为high，但未通过L1+L2候选门。"},
+      {"year": 2024, "liunian": "甲辰", "reason": "普通preflight为high，但未通过L1+L2候选门。"}
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "center_or_count": 0,
+    "event_windows_months": {"E1": 11.959177806525801, "E2": 11.959177806525801},
+    "event_or_counts": {"E1": 0, "E2": 0},
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位性质、职业名称、职务等级或管理人数。",
+    "不冻结财富总量、高收入、创业成功、行政晋升或社会等级。",
+    "不把财官透出或古籍中的贵显措辞直接等同于现实成功。",
+    "不冻结婚姻、子女、疾病、灾祸及家庭财富。",
+    "日期事件仅按单年窗口和单一最低命中条件评分，不由阶段方向吸收。"
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-500",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:20343-20384",
+      "summary": "庚午日见乙酉时不按羊刃机械论，午中丁火对酉中辛金构成制约；支持财、官杀与金根并见的结构辨析，但原规则明确要求结合旺衰、岁运复核。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-715",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:29293-29334",
+      "summary": "庚日乙酉时以乙为财、酉中辛为刃，火可抑扬金刚；本案庚午日自身带火，支持能力与财官作用并存，也提示不可忽略财临酉绝和竞争折损。古籍等级结论不采纳。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-716",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:29335-29375",
+      "summary": "庚日乙酉时在财官运中可增强现实价值兑现，且有先难后成的结构表达；本案只采纳资源转化和完成度波动方向，不采纳功名显达等等级断语。"
+    }
+  ],
+  "verdict_policy": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "career_basic_state_rule": "截止日职业中心与备选分别核验；普通上班、接触客户或有收入不得越过weak_hit_boundary。",
+    "phase_precision_rule": "P1—P3按各自窗口、方向和最低变化条件评分；未冻结的具体行业、单位、成败与后果不得后验补记。",
+    "event_precision_rule": "E1—E2分别按单年窗口和单一scoring_unit评分；职责变化与责任上升不得互相替代。",
+    "unused_alternative_rule": "未激活备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED。",
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决写入独立文件并复核SHA-256。"
+  }
+}

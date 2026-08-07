@@ -1,0 +1,146 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000504-坤-癸未癸亥庚子癸未",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T01:17:14+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000504-坤-癸未癸亥庚子癸未/asof-blind-freeze.json",
+    "sha256": "77753491b9e8168cfc588f36e4188b1452f9ffac5f7bc9965fe9fbc4404fa057",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000504-坤-癸未癸亥庚子癸未/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "feedback_evidence": [
+    {
+      "year": 2009,
+      "fact": "凶,小学一开学被摩托车撞到脸差点死掉",
+      "domains": [
+        "income"
+      ]
+    },
+    {
+      "year": 2015,
+      "fact": "吉,成绩突飞猛进，后来成绩一直很好",
+      "domains": []
+    },
+    {
+      "year": 2021,
+      "fact": "凶,考上 211 大学，但是那个暑假期间被教培机构当成廉价劳动力，最后一天快乐回家时被车撞了，但没死",
+      "domains": [
+        "income"
+      ]
+    },
+    {
+      "year": 2023,
+      "fact": "凶,暑假期间去德国留学交流力，然后环游小半个欧洲，但是在法国高速发生车祸力",
+      "domains": [
+        "income"
+      ]
+    },
+    {
+      "year": 2024,
+      "fact": "凶,海投简历，找不到工作，焦虑焦虑",
+      "domains": [
+        "occupation",
+        "health"
+      ]
+    },
+    {
+      "year": 2022,
+      "fact": "凶,疫情被困上海，差点玉玉跳楼**其他信息: 职业：学生 身价年收入: 没有捏 出身: 一般，父母从商 健康情况: 有些虚，很多结节 婚姻情况: 未婚，一直单着 子女情况: 无 性格特点: 玉玉，但是表面阳光开朗，温文尔雅，感觉有双重性格",
+      "domains": [
+        "occupation",
+        "income",
+        "family",
+        "health",
+        "marriage",
+        "children",
+        "personality"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈存在明确职业变化或岗位事实：2024年凶,海投简历，找不到工作，焦虑焦虑；2022年凶,疫情被困上海，差点玉玉跳楼**其他信息: 职业：学生 身价年收入: 没有捏 出身: 一般，父母从商 健康情况: 有些虚，很多结节 婚姻情况: 未婚，一直单着 子女情况: 无 性格特点: 玉玉，但是表面阳光开朗，温文尔雅，感觉有双重性格"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2026-01-01/2026-12-31",
+      "verdict": "ABSTAIN",
+      "reason": "反馈无冻结窗口2026年记录（年表最高年份为2024），不得用其他年份事件替代精确窗口裁决。",
+      "enters_event_denominator": false
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "feedback_consistency": "NOT_REESTIMATED",
+    "reason": "反馈揭示后不回写冻结root_level；本字段仅保留边界说明。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "gao:G-CS-020",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论命中只作为冻结前结构证据，不单独决定现实裁决。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstentions": 1
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ABSTAIN"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "ABSTAIN"
+      }
+    ]
+  },
+  "overall_conclusion": {
+    "event_e1": "ABSTAIN",
+    "summary": "E1按冻结年份与反馈年份严格核对，裁为ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_valid": true
+  }
+}

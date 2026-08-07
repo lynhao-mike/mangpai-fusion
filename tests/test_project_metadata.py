@@ -141,7 +141,61 @@ def test_current_contract_entrypoints_match_implementation() -> None:
 
     assert project_state["active_feedback_entrypoints"][:2] == ["tools/feedback_ingest.py", "tools/feedback_loop.py"]
     assert "tools/batch_review.py" in project_state["active_feedback_entrypoints"]
-    assert project_state["active_report_entrypoints"] == ["tools/render_report.py", "tools/output_linter.py"]
+    assert "tools/domain_feedback.py" in project_state["active_feedback_entrypoints"]
+    assert project_state["active_report_entrypoints"] == [
+        "tools/render_report.py",
+        "tools/output_linter.py",
+        "tools/domain_analysis_cli.py",
+    ]
+
+
+def test_six_source_three_domain_governance_capabilities_are_wired_without_production_claim() -> None:
+    state = json.loads((ROOT / "META" / "project-state.json").read_text(encoding="utf-8"))
+    engine_readme = (ROOT / "engine" / "README.md").read_text(encoding="utf-8")
+    tools_readme = (ROOT / "tools" / "README.md").read_text(encoding="utf-8")
+
+    required_paths = (
+        "engine/evaluation/domain_prospective.py",
+        "engine/v5/domain_report_view.py",
+        "engine/v5/domain_capability_metrics.py",
+        "engine/v5/high_risk_gate.py",
+        "engine/v5/domain_feedback.py",
+        "engine/contracts/20-domain-prospective-evaluation-v1.md",
+        "engine/contracts/21-high-risk-domain-claims-v1.md",
+        "tools/domain_prospective_cohort.py",
+        "tools/domain_capability_status.py",
+        "tools/domain_feedback.py",
+        "templates/domain-claim-feedback.json",
+    )
+    for rel in required_paths:
+        assert (ROOT / rel).is_file(), rel
+
+    statuses = state["intelligence_platform_status"]
+    assert statuses["domain_prospective_evaluation"].startswith("landed_protocol_and_cli")
+    assert statuses["domain_claim_report_workbench"].startswith("landed_")
+    assert statuses["domain_capability_diagnostics"].startswith("landed_")
+    assert statuses["high_risk_domain_claim_gate"].startswith("landed_")
+    assert statuses["domain_claim_feedback"].startswith("landed_")
+    assert state["domain_prospective_entrypoint"] == "tools/domain_prospective_cohort.py"
+    assert state["domain_capability_status_entrypoint"] == "tools/domain_capability_status.py"
+    assert state["domain_prospective_status"] == {
+        "engineering_implementation": "landed",
+        "real_cohort": "not_ready",
+        "production_ready": False,
+        "production_switch_permitted": False,
+        "status_source": "engine/contracts/20-domain-prospective-evaluation-v1.md",
+    }
+
+    for name in ("domain_prospective_cohort.py", "domain_capability_status.py", "domain_feedback.py"):
+        assert name in tools_readme
+    for name in (
+        "domain_prospective.py",
+        "domain_report_view.py",
+        "domain_capability_metrics.py",
+        "high_risk_gate.py",
+        "domain_feedback.py",
+    ):
+        assert name in engine_readme
 
 
 def test_task12_document_files_and_offline_cohort_tool_are_wired() -> None:
@@ -149,19 +203,24 @@ def test_task12_document_files_and_offline_cohort_tool_are_wired() -> None:
         "META/prospective-intake-protocol-v1.md",
         "plans/upgrade-guides/post-gate-action-plan-2026-07-15.md",
         "tools/school_capability_cohort.py",
-        "handoff.md",
     )
     for rel in required_paths:
         assert (ROOT / rel).is_file(), rel
 
     tools_readme = (ROOT / "tools" / "README.md").read_text(encoding="utf-8")
-    handoff = (ROOT / "handoff.md").read_text(encoding="utf-8")
+    intake_protocol = (
+        ROOT / "META" / "prospective-intake-protocol-v1.md"
+    ).read_text(encoding="utf-8")
     assert "school_capability_cohort.py" in tools_readme
     assert "仅离线评估" in tools_readme
     assert "production_switch=false" in tools_readme
-    assert "prediction_capability_candidate_gate_v1 = HOLD" in handoff
-    assert "future_empirical_gate_v1 = HOLD" in handoff
-    assert "historical_platform_baseline_2026_07_15 = HOLD" in handoff
+    assert "`prediction_capability_candidate_gate_v1` 只消费即时回顾" in intake_protocol
+    assert "`future_empirical_gate_v1` 只消费未来观察" in intake_protocol
+    assert (
+        "`historical_platform_baseline_2026_07_15` 保持只读独立 HOLD"
+        in intake_protocol
+    )
+    assert "`production_switch=false`" in intake_protocol
 
 
 def test_historical_agent_handoff_is_not_current_branch_source() -> None:

@@ -1,0 +1,120 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000302-乾-辛未癸巳癸卯丁巳",
+  "adjudicated_at": "2026-07-30T20:10:37+08:00",
+  "feedback_source": "cases/C-2026-RF000302-乾-辛未癸巳癸卯丁巳/feedback.md",
+  "freeze_source": "cases/C-2026-RF000302-乾-辛未癸巳癸卯丁巳/asof-blind-freeze.json",
+  "freeze_sha256_expected": "bd21dbe39283412c36299ef060328bb9b62f10a97229fbcbed6ae4a812366dcb",
+  "freeze_sha256_observed_before_verdict": "bd21dbe39283412c36299ef060328bb9b62f10a97229fbcbed6ae4a812366dcb",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2016,
+      "domain": "career_entry",
+      "fact": "考上公务员。"
+    },
+    {
+      "year": 2017,
+      "domain": "career_upgrade",
+      "fact": "再次考上公务员，职位提升。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_upgrade",
+      "fact": "被提拔、升职、加薪，职业为公务员。"
+    },
+    {
+      "year": 2005,
+      "domain": "dated_event_evidence",
+      "fact": "反馈年表未提供2005年事实。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ACTIVATED",
+    "verdict": "CENTER_HIT",
+    "reason": "公务员岗位及连续考录、职位提升、提拔加薪，直接支持专业积累、文书流程和可追踪组织责任的冻结中心；不据此外推具体职级与收入。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_PRIMARY",
+      "verdict": "MISS",
+      "reason": "反馈显示职业兑现明确且连续升级，不支持现实兑现不稳作为主要落点；此备选不计独立统计。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "MISS",
+      "reason": "反馈为正式公务员岗位，不支持阶段性任务替代正式岗位；此备选不计独立统计。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "2005-01-01/2005-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈年表没有2005年事实。",
+      "reason": "2005独立单年窗口内无直接证据，不能把2016、2017或2024的职业升级迁入该窗口。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "scaffold未提供2024候选，冻结E1为2005；揭盲后不得改写。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "公务员考录与连续职位提升支持职业基础中心。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "冻结包未设置独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "2005窗口无直接反馈，E1弃权。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "CENTER_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业基础中心命中；2005日期事件缺证弃权。"
+  },
+  "protocol_exception": {
+    "code": "PREFLIGHT_REQUIRED_FIELD_MISSING_AND_SCAFFOLD_YEAR_COVERAGE_GAP",
+    "preflight_field_path": "藏干",
+    "required_section_9_4_year": 2024,
+    "e1_year": 2005,
+    "strict_requirement_satisfied": false,
+    "reason": "preflight因藏干缺失未进入L1+L2；E1按安全scaffold降级选择，且未后验改写。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

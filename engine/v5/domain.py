@@ -1,6 +1,6 @@
 """ZiPing Fusion Engine v5 数据契约。
 
-v5 的核心产物不是报告文本，而是五派命题、结构图、仲裁结果、
+v5 的核心产物不是报告文本，而是六源命题、结构图、仲裁结果、
 受限概率预测账本与学习信号。该模块只定义可序列化的数据对象，
 不实现具体命理规则。
 """
@@ -12,7 +12,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-V5_SCHEMA_VERSION = "5.0.0-five-school-mvp"
+V5_SCHEMA_VERSION = "5.1.0-six-source"
 V5_RUN_SNAPSHOT_SCHEMA_VERSION = "run-snapshot-v1"
 V5_CASE_MANIFEST_SCHEMA_VERSION = "case-manifest-v1"
 
@@ -22,6 +22,7 @@ V5School = Literal[
     "gao_dechen",
     "duan_jianye",
     "yang_qingjuan",
+    "ren_fuhong",
 ]
 
 V5_SCHOOLS: tuple[str, ...] = (
@@ -30,6 +31,7 @@ V5_SCHOOLS: tuple[str, ...] = (
     "gao_dechen",
     "duan_jianye",
     "yang_qingjuan",
+    "ren_fuhong",
 )
 
 V5SchoolRole = Literal[
@@ -38,6 +40,7 @@ V5SchoolRole = Literal[
     "work_transformation",
     "event_framework",
     "image_detail",
+    "timing_validation",
 ]
 
 V5_SCHOOL_ROLES: dict[str, str] = {
@@ -46,6 +49,7 @@ V5_SCHOOL_ROLES: dict[str, str] = {
     "gao_dechen": "work_transformation",
     "duan_jianye": "event_framework",
     "yang_qingjuan": "image_detail",
+    "ren_fuhong": "timing_validation",
 }
 
 V5ClaimType = Literal[

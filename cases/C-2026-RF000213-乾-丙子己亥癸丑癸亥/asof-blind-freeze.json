@@ -1,0 +1,276 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000213-乾-丙子己亥癸丑癸亥",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:03:51+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000213-乾-丙子己亥癸丑癸亥/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "组织规则约束下，以专业输出承接项目职责并形成收入",
+      "completion_mode": "COMPLETE_LATENT"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "专业能力存在但现实兑现不稳，工作职责阶段性变化"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "以组织内执行岗位为主，个人输出尚未形成稳定收益"
+      }
+    ]
+  },
+  "root_level": "WEAK_ROOT",
+  "root_level_justification": "候选事业领域定位在月干己七杀与年干丙正财；亥中甲伤官可制杀并向财星形成输出—职责—收益承载路径，但食伤伏藏、链路隔层，据此定为WEAK_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000213-乾-丙子己亥癸丑癸亥",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "月干己七杀与年干丙正财",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干己七杀与年干丙正财"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干己七杀与年干丙正财"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "亥中甲伤官可制杀并向财星形成输出—职责—收益承载路径，但食伤伏藏、链路隔层"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "组织规则约束下，以专业输出承接项目职责并形成收入",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干己七杀与年干丙正财"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "亥中甲伤官可制杀并向财星形成输出—职责—收益承载路径，但食伤伏藏、链路隔层"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干己七杀与年干丙正财"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "亥中甲伤官可制杀并向财星形成输出—职责—收益承载路径，但食伤伏藏、链路隔层"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\ziping\\index.yaml",
+        "line": 1,
+        "excerpt": "三十九、论偏官 七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 子平规则参与：七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。"
+      }
+    ],
+    "competing_explanations": [
+      "专业能力存在但现实兑现不稳，工作职责阶段性变化",
+      "以组织内执行岗位为主，个人输出尚未形成稳定收益"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2026-01-01/2026-12-31",
+      "center_event": "2026年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "COMPLETE_LATENT",
+      "root_level": "WEAK_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "REMAINDER_ONLY_RECHECK_CROSS_DAIYUN",
+      "annual_trace": {
+        "year": 2026,
+        "liunian": "丙午",
+        "dayun_ganzhi": "壬寅",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2026].relations[0]",
+            "excerpt": "流年支冲年支子"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2026].relations[1]",
+            "excerpt": "流年支穿日支丑"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.year.branch",
+          "natal.day.branch"
+        ],
+        "domains": [
+          "财富",
+          "婚姻"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2026].main_energy",
+            "excerpt": "财动 / 婚动"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2026].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2026,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2014,
+      2015,
+      2016,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-039",
+      "citation": "[ziping:ZP-PROD-20260622-039] 三十九、论偏官 七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 子平规则参与：七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 (来源: theory\\ziping\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[ziping:ZP-PROD-20260622-039] 三十九、论偏官 七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 子平规则参与：七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 (来源: theory\\ziping\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "七杀",
+          "制杀"
+        ],
+        "hit_count": 6,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-039] 三十九、论偏官 七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 子平规则参与：七杀即偏官，阳克阳、阴克阴，凶神也。七杀有制为偏官贵格，无制攻身则祸。制杀用神以食神、阳刃为上。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-059] 六十、格例总纲 正官格：月令官星透出，财印相辅，无伤官七杀混杂为成格。财格：月令财星，食生官护，无比劫夺财为成格。印格：月令印绶，官星生源，无财破印为成格。食神格：食神旺相，身旺财星透出，无枭神夺食为成格。七杀格：七杀有制，食神制杀、印绶化杀，不克日主为成格。伤官格：伤官配印、伤官生财，不见正官杂乱为成格。阳刃格：刃逢官杀制伏，刃不肆 子平规则参与：正官格：月令官星透出，财印相辅，无伤官七杀混杂为成格。财格：月令财星，食生官护，无比劫夺财为成格。印格：月令印绶，官星生源，无财破印为成格。食神格：食神旺相，身旺财星透出，无枭神夺食为成格。七杀格：七杀有制，食神制杀、印绶化杀，不克日主为成格。伤官格：伤官配印、伤官生财，不见正官杂乱为成格。阳刃格：刃逢官杀制伏，刃不肆虐为成格。建禄格：禄旺身强，四柱财官透出。 (来源: theory\\ziping\\index.yaml)",
+          "[tiaohou_ditiansui:DTS-PROD-20260622-109] 八    地支 此土水相克，两气成象，纯杀无制，日主受伤。初走火土之乡，生助七杀，正是明月清风谁与共，高山流水少知音；一交乙卯，运转东方，制杀化权，得奇遇，飞升县令。由此观之，生局必须食为美，印局无秀气，不足为佳。财局身财均敌，日主本气无伤，然又要运程安顿得好，斯为全美，一遇破局，则祸生矣。 滴天髓规则参与：此土水相克，两气成象，纯杀无制，日主受伤。初走火土之乡，生助七杀，正是明月清风谁与共，高山流水少知音；一交乙卯，运转东方，制杀化权，得奇遇，飞升县令。由此观之，生局必须食为美，印局无秀气，不足为佳。财局身财均敌，日主本气无伤，然又要运程安顿得好，斯为全美，一遇破局，则祸生矣。 (来源: theory\\tiaohou_ditiansui\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "七杀",
+          "事业"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": null,
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

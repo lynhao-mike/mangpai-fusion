@@ -1,0 +1,81 @@
+﻿Task11 manual QA scenario rerun summary
+SCENARIO success_full_trace
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py success_full_trace
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-success_full_trace-rerun.txt
+
+SCENARIO one_school_failure
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py one_school_failure
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-one_school_failure-rerun.txt
+
+SCENARIO fact_conflict
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py fact_conflict
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-fact_conflict-rerun.txt
+
+SCENARIO deterministic_ordering
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py deterministic_ordering
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-deterministic_ordering-rerun.txt
+
+SCENARIO no_target_year
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py no_target_year
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-no_target_year-rerun.txt
+
+SCENARIO ditiansui_excluded
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py ditiansui_excluded
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-ditiansui_excluded-rerun.txt
+
+SCENARIO no_mutation
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py no_mutation
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-no_mutation-rerun.txt
+
+SCENARIO serializable_canonical
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py serializable_canonical
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-serializable_canonical-rerun.txt
+
+SCENARIO banned_imports
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py banned_imports
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-banned_imports-rerun.txt
+
+SCENARIO unknown_school
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py unknown_school
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-unknown_school-rerun.txt
+
+SCENARIO unknown_capability
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py unknown_capability
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-unknown_capability-rerun.txt
+
+SCENARIO unknown_trigger
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py unknown_trigger
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-unknown_trigger-rerun.txt
+
+SCENARIO unsupported_composition
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py unsupported_composition
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-unsupported_composition-rerun.txt
+
+SCENARIO malformed_input
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py malformed_input
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-malformed_input-rerun.txt
+
+SCENARIO legacy_surfaces
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py legacy_surfaces
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-legacy_surfaces-rerun.txt
+
+SCENARIO stale_state_two_processes
+INVOCATION python .omo\evidence\task11-shadow-runner-manual-qa\harness.py stale_state_two_processes
+EXIT 0
+ARTIFACT .omo\evidence\task11-shadow-runner-manual-qa\scenario-stale_state_two_processes-rerun.txt
+

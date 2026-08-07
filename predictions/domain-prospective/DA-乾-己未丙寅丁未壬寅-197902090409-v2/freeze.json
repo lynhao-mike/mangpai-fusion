@@ -1,0 +1,2498 @@
+{
+  "schema_version": "domain-prospective-freeze/v1",
+  "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+  "track": "prospective",
+  "intake_hash": "45acacf1a9fc1156ee7d78b5baf31234f009cff091eadf6b2ddc3fd47a68a2a1",
+  "snapshot_hash": "789f6973b5ddf998",
+  "snapshot": {
+    "snapshot_schema_version": "run-snapshot-v1",
+    "run_id": "run-3c76ec48ea60",
+    "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+    "canonical_input": {
+      "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+      "gender_marker": "乾",
+      "birth_datetime": "1979-02-09 04:09:00",
+      "as_of_date": "2026-08-01",
+      "pillars": {
+        "year": "己未",
+        "month": "丙寅",
+        "day": "丁未",
+        "hour": "壬寅"
+      },
+      "year_stem": "己",
+      "year_branch": "未",
+      "month_stem": "丙",
+      "month_branch": "寅",
+      "day_stem": "丁",
+      "day_branch": "未",
+      "hour_stem": "壬",
+      "hour_branch": "寅",
+      "current_dayun": "辛酉",
+      "dayun": [
+        {
+          "ganzhi": "乙丑",
+          "start_year": 1980
+        },
+        {
+          "ganzhi": "甲子",
+          "start_year": 1990
+        },
+        {
+          "ganzhi": "癸亥",
+          "start_year": 2000
+        },
+        {
+          "ganzhi": "壬戌",
+          "start_year": 2010
+        },
+        {
+          "ganzhi": "辛酉",
+          "start_year": 2020
+        },
+        {
+          "ganzhi": "庚申",
+          "start_year": 2030
+        },
+        {
+          "ganzhi": "己未",
+          "start_year": 2040
+        },
+        {
+          "ganzhi": "戊午",
+          "start_year": 2050
+        },
+        {
+          "ganzhi": "丁巳",
+          "start_year": 2060
+        },
+        {
+          "ganzhi": "丙辰",
+          "start_year": 2070
+        }
+      ],
+      "future_years": [
+        {
+          "year": 2026,
+          "ganzhi": "丙午"
+        },
+        {
+          "year": 2027,
+          "ganzhi": "丁未"
+        },
+        {
+          "year": 2028,
+          "ganzhi": "戊申"
+        }
+      ],
+      "calculator": "lunar-python",
+      "domain_analysis_request": {
+        "gender": "乾",
+        "birth_datetime": "1979-02-09 04:09:00",
+        "as_of_date": "2026-08-01",
+        "domains": [
+          "career",
+          "wealth",
+          "marriage"
+        ],
+        "output_dir": "predictions/domain-prospective/DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2"
+      }
+    },
+    "engine_version": "domain-analysis-p3-three-domains",
+    "output_schema_version": "5.1.0-six-source",
+    "output_hash": "2d7f34e5c9998a06",
+    "claims": [
+      {
+        "claim_id": "v5cl-5363d3dbeeb5826984a1",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "事业",
+        "claim": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.6,
+          "note": "仅陈述十神结构并见，不把并见直接判成唯一现实事件。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-4634f240424ab1aaa7f3",
+            "source": "ziping",
+            "text": "食伤计数=5，官杀计数=1，两组结构同时存在。",
+            "node_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "feature:ten_god_counts.食神",
+              "feature:ten_god_counts.伤官",
+              "feature:ten_god_counts.正官",
+              "feature:ten_god_counts.七杀"
+            ],
+            "rule_ids": [
+              "ZIPING-OUTPUT-OFFICIAL-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "structure.overview",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "output_count": 5,
+            "official_count": 1
+          }
+        }
+      },
+      {
+        "claim_id": "v5cl-7bf352004d4c8ad9fc2c",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "事业",
+        "claim": "子平命局十神结构指向显著职业变动倾向：食伤5处制杀1处；伤官见官。",
+        "claim_type": "event_claim",
+        "stance": "support",
+        "polarity": "negative",
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.7,
+          "note": "基于四柱官杀与食伤结构关系的确定性推导。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-19612c0d77bc8238869a",
+            "source": "ziping",
+            "text": "职业变动信号：食伤5处制杀1处；伤官见官。",
+            "node_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "feature:ten_god_counts.食神",
+              "feature:ten_god_counts.伤官",
+              "feature:ten_god_counts.正官",
+              "feature:ten_god_counts.七杀",
+              "feature:mixed_official_kill",
+              "feature:branch_conflict_intensity"
+            ],
+            "rule_ids": [
+              "ZIPING-ROLE-CHANGE-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 1900,
+            "end_year": 2100,
+            "label": "lifetime"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "若命主职业历程中无显著角色或岗位变化记录，则本命题证伪。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "career.role_change",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "output_count": 5,
+            "official_count": 1,
+            "mixed_official_kill": false,
+            "branch_conflict_intensity": 0.0
+          }
+        }
+      },
+      {
+        "claim_id": "v5cl-4fa90edfe563",
+        "school": "ditiansui",
+        "school_role": "qi_momentum",
+        "domain": "事业",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-4fa90edfe563",
+            "source": "domain_slice_registry",
+            "text": "ditiansui 在事业领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "career rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-c0e1e3c40217",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "domain": "事业",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-c0e1e3c40217",
+            "source": "domain_slice_registry",
+            "text": "gao_dechen 在事业领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "career rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-5a344426c94e",
+        "school": "duan_jianye",
+        "school_role": "event_framework",
+        "domain": "事业",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-5a344426c94e",
+            "source": "domain_slice_registry",
+            "text": "duan_jianye 在事业领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "career rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-6726f3ef6f63",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "domain": "事业",
+        "claim": "本派在该领域暂不支持。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-6726f3ef6f63",
+            "source": "domain_slice_registry",
+            "text": "yang_qingjuan 在事业领域状态为 unsupported。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "unsupported",
+              "reason": "slice unsupported"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "unsupported"
+        }
+      },
+      {
+        "claim_id": "v5cl-b5fb1f300463d9257b39",
+        "school": "ren_fuhong",
+        "school_role": "timing_validation",
+        "domain": "事业",
+        "claim": "2026 年出现职业变化的岁运触发窗口：流年午与year支未合；流年午与day支未合。",
+        "claim_type": "timing_claim",
+        "stance": "support",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.7,
+          "note": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-1954fcf39292f55a4e72",
+            "source": "ren_fuhong",
+            "text": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+            "node_refs": [
+              "liunian_steps.0",
+              "four_pillars.year",
+              "four_pillars.day",
+              "feature:branch_conflict_intensity",
+              "feature:evidence_completeness"
+            ],
+            "rule_ids": [
+              "REN-SUIYUN-RELATION-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 2026,
+            "end_year": 2026,
+            "label": "annual"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "该时间窗内未发生职业变化即证伪本命题。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "career.change_window",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "year": 2026,
+            "liunian": "丙午",
+            "branch_conflict_intensity": 0.0,
+            "evidence_completeness": "full"
+          }
+        }
+      },
+      {
+        "claim_id": "v5cl-5363d3dbeeb5826984a1",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "财富",
+        "claim": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+        "claim_type": "structure_claim",
+        "stance": "support",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.6,
+          "note": "仅陈述十神结构并见，不把并见直接判成唯一现实事件。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-4634f240424ab1aaa7f3",
+            "source": "ziping",
+            "text": "食伤计数=5，官杀计数=1，两组结构同时存在。",
+            "node_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "feature:ten_god_counts.食神",
+              "feature:ten_god_counts.伤官",
+              "feature:ten_god_counts.正官",
+              "feature:ten_god_counts.七杀"
+            ],
+            "rule_ids": [
+              "ZIPING-OUTPUT-OFFICIAL-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "若十神复核显示食伤或官杀任一结构不存在，则本命题证伪。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "structure.overview",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "output_count": 5,
+            "official_count": 1
+          }
+        }
+      },
+      {
+        "claim_id": "v5cl-d552142434e3",
+        "school": "ditiansui",
+        "school_role": "qi_momentum",
+        "domain": "财富",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-d552142434e3",
+            "source": "domain_slice_registry",
+            "text": "ditiansui 在财富领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "wealth rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-3e5f5dad31eb",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "domain": "财富",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-3e5f5dad31eb",
+            "source": "domain_slice_registry",
+            "text": "gao_dechen 在财富领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "wealth rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-9713d3ca86b5",
+        "school": "duan_jianye",
+        "school_role": "event_framework",
+        "domain": "财富",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-9713d3ca86b5",
+            "source": "domain_slice_registry",
+            "text": "duan_jianye 在财富领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "wealth rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-8f0b1f599440",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "domain": "财富",
+        "claim": "本派在该领域暂不支持。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-8f0b1f599440",
+            "source": "domain_slice_registry",
+            "text": "yang_qingjuan 在财富领域状态为 unsupported。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "unsupported",
+              "reason": "slice unsupported"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "unsupported"
+        }
+      },
+      {
+        "claim_id": "v5cl-aa2fab94f624c894d09c",
+        "school": "ren_fuhong",
+        "school_role": "timing_validation",
+        "domain": "财富",
+        "claim": "高风险命题证据未通过独立安全门禁，暂不形成肯定判断。",
+        "claim_type": "timing_claim",
+        "stance": "abstain",
+        "polarity": "negative",
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.7,
+          "note": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-da4c1ee03155ea8384bb",
+            "source": "ren_fuhong",
+            "text": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+            "node_refs": [
+              "liunian_steps.0",
+              "four_pillars.year",
+              "four_pillars.day",
+              "feature:branch_conflict_intensity",
+              "feature:evidence_completeness"
+            ],
+            "rule_ids": [
+              "REN-SUIYUN-RELATION-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 2026,
+            "end_year": 2026,
+            "label": "annual"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "该时间窗内未发生重大财务变化即证伪本命题。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "wealth.major_loss_window",
+          "high_risk": true,
+          "applicability_snapshot": {
+            "year": 2026,
+            "liunian": "丙午",
+            "branch_conflict_intensity": 0.0,
+            "evidence_completeness": "full"
+          },
+          "high_risk_gate": {
+            "status": "failed",
+            "reason": "insufficient_independent_non_timing_sources",
+            "task_id": "wealth.major_loss_window",
+            "required_independent_source_count": 2,
+            "independent_source_count": 0,
+            "independent_sources": [],
+            "evidence_complete": true,
+            "falsifier_present": true,
+            "timing_only_excluded": true,
+            "confidence_increased": false,
+            "requires_human_review": true
+          },
+          "high_risk_gate_original_stance": "support"
+        }
+      },
+      {
+        "claim_id": "v5cl-907e5b3f51f955f78a05",
+        "school": "ziping",
+        "school_role": "structure_law",
+        "domain": "婚姻",
+        "claim": "子平命局财星结构指向晚婚倾向：四柱不见财星。",
+        "claim_type": "event_claim",
+        "stance": "support",
+        "polarity": "negative",
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.7,
+          "note": "基于四柱财星计数与日支冲合关系的确定性推导。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-bd4a9bae5a18badbf499",
+            "source": "ziping",
+            "text": "晚婚信号：四柱不见财星。",
+            "node_refs": [
+              "four_pillars.day",
+              "four_pillars.month",
+              "feature:ten_god_counts.正财",
+              "feature:ten_god_counts.偏财",
+              "feature:ten_god_counts.正官",
+              "feature:ten_god_counts.七杀",
+              "feature:branch_conflict_intensity"
+            ],
+            "rule_ids": [
+              "ZIPING-LATE-MARRIAGE-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 1900,
+            "end_year": 2100,
+            "label": "lifetime"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "若命主在统一年龄阈值前已婚，则本命题证伪。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "marriage.late_marriage",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "sex_marker": "乾",
+            "spouse_count": 0,
+            "day_branch_clashed": false,
+            "branch_conflict_intensity": 0.0
+          }
+        }
+      },
+      {
+        "claim_id": "v5cl-ef8e2f60c0f8",
+        "school": "ditiansui",
+        "school_role": "qi_momentum",
+        "domain": "婚姻",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-ef8e2f60c0f8",
+            "source": "domain_slice_registry",
+            "text": "ditiansui 在婚姻领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "marriage rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-eaffef0ade4f",
+        "school": "gao_dechen",
+        "school_role": "work_transformation",
+        "domain": "婚姻",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-eaffef0ade4f",
+            "source": "domain_slice_registry",
+            "text": "gao_dechen 在婚姻领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "marriage rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-65be6d52d502",
+        "school": "duan_jianye",
+        "school_role": "event_framework",
+        "domain": "婚姻",
+        "claim": "证据不足，本派在该领域克制判断。",
+        "claim_type": "evidence_claim",
+        "stance": "abstain",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★",
+          "score": 0.1,
+          "note": "显式弃权，不进入正反证计分"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-65be6d52d502",
+            "source": "domain_slice_registry",
+            "text": "duan_jianye 在婚姻领域状态为 abstain。",
+            "node_refs": [
+              "chart:root"
+            ],
+            "rule_ids": [],
+            "metadata": {
+              "slice_status": "abstain",
+              "reason": "marriage rules did not match"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [],
+        "probabilistic": false,
+        "falsifiable": "切片接入完整规则与证据后，本占位命题应消失。",
+        "metadata": {
+          "runner_state": "domain_slice",
+          "slice_status": "abstain"
+        }
+      },
+      {
+        "claim_id": "v5cl-3c84b512b97751e7ae0a",
+        "school": "yang_qingjuan",
+        "school_role": "image_detail",
+        "domain": "婚姻",
+        "claim": "高风险命题证据未通过独立安全门禁，暂不形成肯定判断。",
+        "claim_type": "event_claim",
+        "stance": "abstain",
+        "polarity": "negative",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.6,
+          "note": "按性别选取配偶星，并要求夫妻宫、配偶星、比劫、食伤冲突或女命官杀混杂中至少两类独立信号同向；高风险任务保守封顶。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-b76a1fae30dcd571f46f",
+            "source": "yang_qingjuan",
+            "text": "性别口径=wealth，配偶星数=0，日支=未，去重后的独立信号=2。",
+            "node_refs": [
+              "sex_marker",
+              "four_pillars.day",
+              "feature:ten_god_counts.正财",
+              "feature:ten_god_counts.偏财",
+              "feature:ten_god_counts.正官",
+              "feature:ten_god_counts.七杀",
+              "feature:ten_god_counts.比肩",
+              "feature:ten_god_counts.劫财",
+              "feature:ten_god_counts.食神",
+              "feature:ten_god_counts.伤官",
+              "feature:has_wealth",
+              "feature:has_official",
+              "feature:mixed_official_kill",
+              "feature:chong_pairs",
+              "feature:xing_hai_pairs",
+              "feature:evidence_completeness"
+            ],
+            "rule_ids": [
+              "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 1900,
+            "end_year": 2100,
+            "label": "lifetime"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "若婚姻史中没有离婚或再婚记录，则命题证伪。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "marriage.divorce_or_remarriage",
+          "high_risk": true,
+          "applicability_snapshot": {
+            "evidence_completeness": "full",
+            "sex": "male",
+            "spouse_star_basis": "wealth",
+            "independent_signal_count": 2,
+            "spouse_star_count": 0,
+            "day_branch": "未",
+            "palace_pair_count": 0,
+            "spouse_palace_disrupted": false,
+            "spouse_star_weak": true,
+            "peer_competition": true,
+            "output_spouse_conflict": false,
+            "female_mixed_official": false,
+            "compound_distinct_palace_pairs": false
+          },
+          "high_risk_gate": {
+            "status": "failed",
+            "reason": "insufficient_independent_non_timing_sources",
+            "task_id": "marriage.divorce_or_remarriage",
+            "required_independent_source_count": 2,
+            "independent_source_count": 1,
+            "independent_sources": [
+              "yang_qingjuan"
+            ],
+            "evidence_complete": true,
+            "falsifier_present": true,
+            "timing_only_excluded": false,
+            "confidence_increased": false,
+            "requires_human_review": true
+          },
+          "high_risk_gate_original_stance": "support"
+        }
+      },
+      {
+        "claim_id": "v5cl-89e7a8d273f6cc8c333b",
+        "school": "ren_fuhong",
+        "school_role": "timing_validation",
+        "domain": "婚姻",
+        "claim": "2026 年出现婚恋重大变化的岁运触发窗口：流年午与year支未合；流年午与day支未合。",
+        "claim_type": "timing_claim",
+        "stance": "support",
+        "polarity": "neutral",
+        "confidence": {
+          "tier": "★★★★",
+          "score": 0.7,
+          "note": "时间窗来自输入流年与原局/大运的可计算冲合刑穿或伏吟，不使用固定年份文案。"
+        },
+        "evidence": [
+          {
+            "evidence_id": "v5ev-a83ae78b64525c69e033",
+            "source": "ren_fuhong",
+            "text": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+            "node_refs": [
+              "liunian_steps.0",
+              "four_pillars.year",
+              "four_pillars.day",
+              "feature:branch_conflict_intensity",
+              "feature:evidence_completeness"
+            ],
+            "rule_ids": [
+              "REN-SUIYUN-RELATION-V1"
+            ],
+            "metadata": {
+              "adapter": "legacy_claim_v1"
+            }
+          }
+        ],
+        "counter_evidence": [],
+        "timing_hints": [
+          {
+            "start_year": 2026,
+            "end_year": 2026,
+            "label": "annual"
+          }
+        ],
+        "probabilistic": false,
+        "falsifiable": "该时间窗内未发生婚恋重大变化即证伪本命题。",
+        "metadata": {
+          "adapter": "legacy_claim_v1",
+          "task_id": "marriage.event_window",
+          "high_risk": false,
+          "applicability_snapshot": {
+            "year": 2026,
+            "liunian": "丙午",
+            "branch_conflict_intensity": 0.0,
+            "evidence_completeness": "full"
+          }
+        }
+      }
+    ],
+    "structure_graph": {
+      "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+      "nodes": [
+        {
+          "id": "chart:root",
+          "type": "chart",
+          "label": "己未丙寅丁未壬寅",
+          "payload": {
+            "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+            "gender_marker": "乾",
+            "birth_datetime": "1979-02-09 04:09:00",
+            "as_of_date": "2026-08-01",
+            "pillars": {
+              "year": "己未",
+              "month": "丙寅",
+              "day": "丁未",
+              "hour": "壬寅"
+            },
+            "year_stem": "己",
+            "year_branch": "未",
+            "month_stem": "丙",
+            "month_branch": "寅",
+            "day_stem": "丁",
+            "day_branch": "未",
+            "hour_stem": "壬",
+            "hour_branch": "寅",
+            "current_dayun": "辛酉",
+            "dayun": [
+              {
+                "ganzhi": "乙丑",
+                "start_year": 1980
+              },
+              {
+                "ganzhi": "甲子",
+                "start_year": 1990
+              },
+              {
+                "ganzhi": "癸亥",
+                "start_year": 2000
+              },
+              {
+                "ganzhi": "壬戌",
+                "start_year": 2010
+              },
+              {
+                "ganzhi": "辛酉",
+                "start_year": 2020
+              },
+              {
+                "ganzhi": "庚申",
+                "start_year": 2030
+              },
+              {
+                "ganzhi": "己未",
+                "start_year": 2040
+              },
+              {
+                "ganzhi": "戊午",
+                "start_year": 2050
+              },
+              {
+                "ganzhi": "丁巳",
+                "start_year": 2060
+              },
+              {
+                "ganzhi": "丙辰",
+                "start_year": 2070
+              }
+            ],
+            "future_years": [
+              {
+                "year": 2026,
+                "ganzhi": "丙午"
+              },
+              {
+                "year": 2027,
+                "ganzhi": "丁未"
+              },
+              {
+                "year": 2028,
+                "ganzhi": "戊申"
+              }
+            ],
+            "calculator": "lunar-python",
+            "domain_analysis_request": {
+              "gender": "乾",
+              "birth_datetime": "1979-02-09 04:09:00",
+              "as_of_date": "2026-08-01",
+              "domains": [
+                "career",
+                "wealth",
+                "marriage"
+              ],
+              "output_dir": "predictions/domain-prospective/DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+              "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2"
+            }
+          }
+        },
+        {
+          "id": "domain:事业",
+          "type": "domain",
+          "label": "事业"
+        },
+        {
+          "id": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "claim",
+          "label": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+          "school": "ziping",
+          "school_role": "structure_law",
+          "claim_type": "structure_claim"
+        },
+        {
+          "id": "evidence:v5ev-4634f240424ab1aaa7f3",
+          "type": "evidence",
+          "label": "食伤计数=5，官杀计数=1，两组结构同时存在。",
+          "source": "ziping"
+        },
+        {
+          "id": "claim:v5cl-7bf352004d4c8ad9fc2c",
+          "type": "claim",
+          "label": "子平命局十神结构指向显著职业变动倾向：食伤5处制杀1处；伤官见官。",
+          "school": "ziping",
+          "school_role": "structure_law",
+          "claim_type": "event_claim"
+        },
+        {
+          "id": "evidence:v5ev-19612c0d77bc8238869a",
+          "type": "evidence",
+          "label": "职业变动信号：食伤5处制杀1处；伤官见官。",
+          "source": "ziping"
+        },
+        {
+          "id": "claim:v5cl-4fa90edfe563",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "ditiansui",
+          "school_role": "qi_momentum",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-4fa90edfe563",
+          "type": "evidence",
+          "label": "ditiansui 在事业领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-c0e1e3c40217",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "gao_dechen",
+          "school_role": "work_transformation",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-c0e1e3c40217",
+          "type": "evidence",
+          "label": "gao_dechen 在事业领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-5a344426c94e",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "duan_jianye",
+          "school_role": "event_framework",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-5a344426c94e",
+          "type": "evidence",
+          "label": "duan_jianye 在事业领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-6726f3ef6f63",
+          "type": "claim",
+          "label": "本派在该领域暂不支持。",
+          "school": "yang_qingjuan",
+          "school_role": "image_detail",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-6726f3ef6f63",
+          "type": "evidence",
+          "label": "yang_qingjuan 在事业领域状态为 unsupported。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-b5fb1f300463d9257b39",
+          "type": "claim",
+          "label": "2026 年出现职业变化的岁运触发窗口：流年午与year支未合；流年午与day支未合。",
+          "school": "ren_fuhong",
+          "school_role": "timing_validation",
+          "claim_type": "timing_claim"
+        },
+        {
+          "id": "evidence:v5ev-1954fcf39292f55a4e72",
+          "type": "evidence",
+          "label": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+          "source": "ren_fuhong"
+        },
+        {
+          "id": "domain:财富",
+          "type": "domain",
+          "label": "财富"
+        },
+        {
+          "id": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "claim",
+          "label": "食伤与官杀并见，格局成立需审查制化与破格关系。",
+          "school": "ziping",
+          "school_role": "structure_law",
+          "claim_type": "structure_claim"
+        },
+        {
+          "id": "evidence:v5ev-4634f240424ab1aaa7f3",
+          "type": "evidence",
+          "label": "食伤计数=5，官杀计数=1，两组结构同时存在。",
+          "source": "ziping"
+        },
+        {
+          "id": "claim:v5cl-d552142434e3",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "ditiansui",
+          "school_role": "qi_momentum",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-d552142434e3",
+          "type": "evidence",
+          "label": "ditiansui 在财富领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-3e5f5dad31eb",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "gao_dechen",
+          "school_role": "work_transformation",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-3e5f5dad31eb",
+          "type": "evidence",
+          "label": "gao_dechen 在财富领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-9713d3ca86b5",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "duan_jianye",
+          "school_role": "event_framework",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-9713d3ca86b5",
+          "type": "evidence",
+          "label": "duan_jianye 在财富领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-8f0b1f599440",
+          "type": "claim",
+          "label": "本派在该领域暂不支持。",
+          "school": "yang_qingjuan",
+          "school_role": "image_detail",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-8f0b1f599440",
+          "type": "evidence",
+          "label": "yang_qingjuan 在财富领域状态为 unsupported。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-aa2fab94f624c894d09c",
+          "type": "claim",
+          "label": "高风险命题证据未通过独立安全门禁，暂不形成肯定判断。",
+          "school": "ren_fuhong",
+          "school_role": "timing_validation",
+          "claim_type": "timing_claim"
+        },
+        {
+          "id": "evidence:v5ev-da4c1ee03155ea8384bb",
+          "type": "evidence",
+          "label": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+          "source": "ren_fuhong"
+        },
+        {
+          "id": "domain:婚姻",
+          "type": "domain",
+          "label": "婚姻"
+        },
+        {
+          "id": "claim:v5cl-907e5b3f51f955f78a05",
+          "type": "claim",
+          "label": "子平命局财星结构指向晚婚倾向：四柱不见财星。",
+          "school": "ziping",
+          "school_role": "structure_law",
+          "claim_type": "event_claim"
+        },
+        {
+          "id": "evidence:v5ev-bd4a9bae5a18badbf499",
+          "type": "evidence",
+          "label": "晚婚信号：四柱不见财星。",
+          "source": "ziping"
+        },
+        {
+          "id": "claim:v5cl-ef8e2f60c0f8",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "ditiansui",
+          "school_role": "qi_momentum",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-ef8e2f60c0f8",
+          "type": "evidence",
+          "label": "ditiansui 在婚姻领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-eaffef0ade4f",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "gao_dechen",
+          "school_role": "work_transformation",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-eaffef0ade4f",
+          "type": "evidence",
+          "label": "gao_dechen 在婚姻领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-65be6d52d502",
+          "type": "claim",
+          "label": "证据不足，本派在该领域克制判断。",
+          "school": "duan_jianye",
+          "school_role": "event_framework",
+          "claim_type": "evidence_claim"
+        },
+        {
+          "id": "evidence:v5ev-65be6d52d502",
+          "type": "evidence",
+          "label": "duan_jianye 在婚姻领域状态为 abstain。",
+          "source": "domain_slice_registry"
+        },
+        {
+          "id": "claim:v5cl-3c84b512b97751e7ae0a",
+          "type": "claim",
+          "label": "高风险命题证据未通过独立安全门禁，暂不形成肯定判断。",
+          "school": "yang_qingjuan",
+          "school_role": "image_detail",
+          "claim_type": "event_claim"
+        },
+        {
+          "id": "evidence:v5ev-b76a1fae30dcd571f46f",
+          "type": "evidence",
+          "label": "性别口径=wealth，配偶星数=0，日支=未，去重后的独立信号=2。",
+          "source": "yang_qingjuan"
+        },
+        {
+          "id": "claim:v5cl-89e7a8d273f6cc8c333b",
+          "type": "claim",
+          "label": "2026 年出现婚恋重大变化的岁运触发窗口：流年午与year支未合；流年午与day支未合。",
+          "school": "ren_fuhong",
+          "school_role": "timing_validation",
+          "claim_type": "timing_claim"
+        },
+        {
+          "id": "evidence:v5ev-a83ae78b64525c69e033",
+          "type": "evidence",
+          "label": "2026 年岁运触发：流年午与year支未合；流年午与day支未合。",
+          "source": "ren_fuhong"
+        }
+      ],
+      "edges": [
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-5363d3dbeeb5826984a1",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-4634f240424ab1aaa7f3",
+          "target": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-7bf352004d4c8ad9fc2c",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-7bf352004d4c8ad9fc2c",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-19612c0d77bc8238869a",
+          "target": "claim:v5cl-7bf352004d4c8ad9fc2c",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-4fa90edfe563",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-4fa90edfe563",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-4fa90edfe563",
+          "target": "claim:v5cl-4fa90edfe563",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-c0e1e3c40217",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-c0e1e3c40217",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-c0e1e3c40217",
+          "target": "claim:v5cl-c0e1e3c40217",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-5a344426c94e",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-5a344426c94e",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-5a344426c94e",
+          "target": "claim:v5cl-5a344426c94e",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-6726f3ef6f63",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-6726f3ef6f63",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-6726f3ef6f63",
+          "target": "claim:v5cl-6726f3ef6f63",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-b5fb1f300463d9257b39",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-b5fb1f300463d9257b39",
+          "target": "domain:事业",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-1954fcf39292f55a4e72",
+          "target": "claim:v5cl-b5fb1f300463d9257b39",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-5363d3dbeeb5826984a1",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-4634f240424ab1aaa7f3",
+          "target": "claim:v5cl-5363d3dbeeb5826984a1",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-d552142434e3",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-d552142434e3",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-d552142434e3",
+          "target": "claim:v5cl-d552142434e3",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-3e5f5dad31eb",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-3e5f5dad31eb",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-3e5f5dad31eb",
+          "target": "claim:v5cl-3e5f5dad31eb",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-9713d3ca86b5",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-9713d3ca86b5",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-9713d3ca86b5",
+          "target": "claim:v5cl-9713d3ca86b5",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-8f0b1f599440",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-8f0b1f599440",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-8f0b1f599440",
+          "target": "claim:v5cl-8f0b1f599440",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-aa2fab94f624c894d09c",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-aa2fab94f624c894d09c",
+          "target": "domain:财富",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-da4c1ee03155ea8384bb",
+          "target": "claim:v5cl-aa2fab94f624c894d09c",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-907e5b3f51f955f78a05",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-907e5b3f51f955f78a05",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-bd4a9bae5a18badbf499",
+          "target": "claim:v5cl-907e5b3f51f955f78a05",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-ef8e2f60c0f8",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-ef8e2f60c0f8",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-ef8e2f60c0f8",
+          "target": "claim:v5cl-ef8e2f60c0f8",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-eaffef0ade4f",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-eaffef0ade4f",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-eaffef0ade4f",
+          "target": "claim:v5cl-eaffef0ade4f",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-65be6d52d502",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-65be6d52d502",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-65be6d52d502",
+          "target": "claim:v5cl-65be6d52d502",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-3c84b512b97751e7ae0a",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-3c84b512b97751e7ae0a",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-b76a1fae30dcd571f46f",
+          "target": "claim:v5cl-3c84b512b97751e7ae0a",
+          "type": "supports"
+        },
+        {
+          "source": "chart:root",
+          "target": "claim:v5cl-89e7a8d273f6cc8c333b",
+          "type": "feeds"
+        },
+        {
+          "source": "claim:v5cl-89e7a8d273f6cc8c333b",
+          "target": "domain:婚姻",
+          "type": "targets"
+        },
+        {
+          "source": "evidence:v5ev-a83ae78b64525c69e033",
+          "target": "claim:v5cl-89e7a8d273f6cc8c333b",
+          "type": "supports"
+        }
+      ]
+    },
+    "arbitration_results": [
+      {
+        "domain": "事业",
+        "stage": "structure_legality",
+        "conclusion": "结构裁决（2条支持）：子平命局十神结构指向显著职业变动倾向：食伤5处制杀1处；伤官见官。…",
+        "winning_schools": [
+          "ziping"
+        ],
+        "minority_claims": [],
+        "support_score": 2.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.61,
+          "note": "子平+滴天髓结构命题=2条；结构门禁=通过"
+        },
+        "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "事业",
+        "stage": "event_realization",
+        "conclusion": "事件裁决（1条支持，基于结构基础）：子平命局十神结构指向显著职业变动倾向：食伤5处制杀1处；伤官见官。…",
+        "winning_schools": [
+          "ziping"
+        ],
+        "minority_claims": [],
+        "support_score": 1.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★★",
+          "score": 0.47000000000000003,
+          "note": "事件命题=1条；结构前提=满足"
+        },
+        "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（2条支持）：子平命局十神结构指向显著职业变动倾向：食伤5处制杀1处；伤。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "事业",
+        "stage": "probability_timing",
+        "conclusion": "概率应期：无满足条件的命题（需结构基础 + 白名单域 + 可反馈时间窗）。",
+        "winning_schools": [],
+        "minority_claims": [],
+        "support_score": 0.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★",
+          "score": 0.15,
+          "note": "性格、格局高低、宽泛气质描述不进入概率层。"
+        },
+        "rationale": "仅白名单事件（学业/事业/财富/婚姻/健康）且有结构基础时允许概率化。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "婚姻",
+        "stage": "structure_legality",
+        "conclusion": "结构裁决（1条支持）：子平命局财星结构指向晚婚倾向：四柱不见财星。…",
+        "winning_schools": [
+          "ziping"
+        ],
+        "minority_claims": [],
+        "support_score": 1.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.53,
+          "note": "子平+滴天髓结构命题=1条；结构门禁=通过"
+        },
+        "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "婚姻",
+        "stage": "event_realization",
+        "conclusion": "事件裁决（1条支持，基于结构基础）：子平命局财星结构指向晚婚倾向：四柱不见财星。…",
+        "winning_schools": [
+          "ziping"
+        ],
+        "minority_claims": [],
+        "support_score": 1.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★★",
+          "score": 0.47000000000000003,
+          "note": "事件命题=1条；结构前提=满足"
+        },
+        "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（1条支持）：子平命局财星结构指向晚婚倾向：四柱不见财星。…。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "婚姻",
+        "stage": "probability_timing",
+        "conclusion": "概率应期：无满足条件的命题（需结构基础 + 白名单域 + 可反馈时间窗）。",
+        "winning_schools": [],
+        "minority_claims": [],
+        "support_score": 0.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★",
+          "score": 0.15,
+          "note": "性格、格局高低、宽泛气质描述不进入概率层。"
+        },
+        "rationale": "仅白名单事件（学业/事业/财富/婚姻/健康）且有结构基础时允许概率化。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "财富",
+        "stage": "structure_legality",
+        "conclusion": "结构裁决（1条支持）：食伤与官杀并见，格局成立需审查制化与破格关系。…",
+        "winning_schools": [
+          "ziping"
+        ],
+        "minority_claims": [],
+        "support_score": 1.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★★★",
+          "score": 0.53,
+          "note": "子平+滴天髓结构命题=1条；结构门禁=通过"
+        },
+        "rationale": "子平类、滴天髓类、高德臣优先参与结构合法性判断。结构基础：已建立。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "财富",
+        "stage": "event_realization",
+        "conclusion": "无有效事件命题。",
+        "winning_schools": [],
+        "minority_claims": [],
+        "support_score": 0.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★",
+          "score": 0.2,
+          "note": "事件命题=0条；结构前提=满足"
+        },
+        "rationale": "高德臣、段建业、杨清娟参与事件落地；结构约束来自：结构裁决（1条支持）：食伤与官杀并见，格局成立需审查制化与破格关系。…。",
+        "probabilistic_allowed": false
+      },
+      {
+        "domain": "财富",
+        "stage": "probability_timing",
+        "conclusion": "概率应期：无满足条件的命题（需结构基础 + 白名单域 + 可反馈时间窗）。",
+        "winning_schools": [],
+        "minority_claims": [],
+        "support_score": 0.0,
+        "opposition_score": 0.0,
+        "conflict_type": "none",
+        "confidence": {
+          "tier": "★",
+          "score": 0.15,
+          "note": "性格、格局高低、宽泛气质描述不进入概率层。"
+        },
+        "rationale": "仅白名单事件（学业/事业/财富/婚姻/健康）且有结构基础时允许概率化。",
+        "probabilistic_allowed": false
+      }
+    ],
+    "prediction_ledger": {
+      "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+      "predictions": []
+    },
+    "learning_signals": [
+      {
+        "signal_id": "v5sig-52906219a560",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-5363d3dbeeb5826984a1",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-99aab62d7bde",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-7bf352004d4c8ad9fc2c",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-d0b486677889",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-4fa90edfe563",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-62751c4a87d7",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-c0e1e3c40217",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-acf2eb942016",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-5a344426c94e",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-a8cc5c3653cc",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-6726f3ef6f63",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-ba65244bc0bc",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-b5fb1f300463d9257b39",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-52906219a560",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-5363d3dbeeb5826984a1",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-33a8ccfaef57",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-d552142434e3",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-8adeefd77932",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-3e5f5dad31eb",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-00eefa4a1e6f",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-9713d3ca86b5",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-ef3e60cf34a2",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-8f0b1f599440",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-cc4a5ad69f91",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-aa2fab94f624c894d09c",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-11ba4f0014a9",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-907e5b3f51f955f78a05",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-8aba075de77a",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-ef8e2f60c0f8",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-0e1156bafdf0",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-eaffef0ade4f",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-3664e8c2b0d4",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-65be6d52d502",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-6792051765d1",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-3c84b512b97751e7ae0a",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      },
+      {
+        "signal_id": "v5sig-12af00d41b55",
+        "case_id": "DA-乾-己未丙寅丁未壬寅-197902090409-v2",
+        "target_id": "v5cl-89e7a8d273f6cc8c333b",
+        "signal_type": "claim_trace_registered",
+        "value": "pending_feedback",
+        "note": "命题已进入 v5 图谱，等待 feedback.md 或 prediction ledger 绑定。",
+        "metadata": {}
+      }
+    ],
+    "artifact_bindings": {
+      "report_path": "DA-乾-己未丙寅丁未壬寅-197902090409-v2-content-report.md",
+      "report_sha256": "4306352b059b03a204944c0c670adaf6bdca105416120c9cf89921bb6abd93e5"
+    },
+    "metadata": {
+      "requested_domains": [
+        "career",
+        "wealth",
+        "marriage"
+      ],
+      "slice_coverage": [
+        {
+          "school": "ziping",
+          "domain": "career",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "career rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ziping",
+          "domain": "wealth",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "wealth rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ziping",
+          "domain": "marriage",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ditiansui",
+          "domain": "career",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "career rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ditiansui",
+          "domain": "wealth",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "wealth rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ditiansui",
+          "domain": "marriage",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "gao_dechen",
+          "domain": "career",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "career rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "gao_dechen",
+          "domain": "wealth",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "wealth rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "gao_dechen",
+          "domain": "marriage",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "duan_jianye",
+          "domain": "career",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "career rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "duan_jianye",
+          "domain": "wealth",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "wealth rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "duan_jianye",
+          "domain": "marriage",
+          "status": "abstain",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules did not match",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "yang_qingjuan",
+          "domain": "career",
+          "status": "unsupported",
+          "claims": [],
+          "audit": {
+            "reason": "slice unsupported",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "yang_qingjuan",
+          "domain": "wealth",
+          "status": "unsupported",
+          "claims": [],
+          "audit": {
+            "reason": "slice unsupported",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "yang_qingjuan",
+          "domain": "marriage",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ren_fuhong",
+          "domain": "career",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "career rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ren_fuhong",
+          "domain": "wealth",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "wealth rules matched",
+            "error_type": ""
+          }
+        },
+        {
+          "school": "ren_fuhong",
+          "domain": "marriage",
+          "status": "implemented",
+          "claims": [],
+          "audit": {
+            "reason": "marriage rules matched",
+            "error_type": ""
+          }
+        }
+      ],
+      "domain_conclusions": {},
+      "high_risk_gate": {
+        "registry_version": "high-risk-domain-claims-v1",
+        "registered_tasks": [
+          "marriage.divorce_or_remarriage",
+          "wealth.debt",
+          "wealth.major_loss_window"
+        ],
+        "evaluated_claim_count": 2,
+        "status_counts": {
+          "failed": 2
+        },
+        "reason_counts": {
+          "insufficient_independent_non_timing_sources": 2
+        },
+        "task_results": [
+          {
+            "task_id": "marriage.divorce_or_remarriage",
+            "independent_source_count": 1,
+            "independent_sources": [
+              "yang_qingjuan"
+            ],
+            "required_independent_source_count": 2
+          },
+          {
+            "task_id": "wealth.major_loss_window",
+            "independent_source_count": 0,
+            "independent_sources": [],
+            "required_independent_source_count": 2
+          }
+        ],
+        "confidence_increased": false,
+        "reality_accuracy_validated": false
+      },
+      "production_ready": false,
+      "domain_evaluation_claims": [
+        {
+          "claim_id": "domain-eval-80952187b1c3d2a0d843",
+          "source_claim_id": "v5cl-7bf352004d4c8ad9fc2c",
+          "source_claim_hash": "d9298ca7cc1af41c4cdf516b89f6d2e282cc1e68a3ff0bd98f17b5f1e1163f0c",
+          "school": "ziping",
+          "domain": "career",
+          "task_id": "career.role_change",
+          "claim_type": "event_claim",
+          "state": "claim"
+        },
+        {
+          "claim_id": "domain-eval-06641d89e55b41af86aa",
+          "source_claim_id": "v5cl-b5fb1f300463d9257b39",
+          "source_claim_hash": "c171bd8c11fac9aa9ff5101e06e9455a4efd304d3acf712bee4521a32599c51f",
+          "school": "ren_fuhong",
+          "domain": "career",
+          "task_id": "career.change_window",
+          "claim_type": "timing_claim",
+          "state": "claim"
+        },
+        {
+          "claim_id": "domain-eval-084c6de3cb096195ba7c",
+          "source_claim_id": "v5cl-907e5b3f51f955f78a05",
+          "source_claim_hash": "64d2cd556296c9f0eea1116f3517c6651722134ef152e3d70888dfc2c796eb6b",
+          "school": "ziping",
+          "domain": "marriage",
+          "task_id": "marriage.late_marriage",
+          "claim_type": "event_claim",
+          "state": "claim"
+        },
+        {
+          "claim_id": "domain-eval-c39736653c74c963ea24",
+          "source_claim_id": "v5cl-89e7a8d273f6cc8c333b",
+          "source_claim_hash": "fe84bc20570e027e4787cf5726736d1ade613f0f5b421d513074c3842d460e4d",
+          "school": "ren_fuhong",
+          "domain": "marriage",
+          "task_id": "marriage.event_window",
+          "claim_type": "timing_claim",
+          "state": "claim"
+        }
+      ],
+      "domain_evaluation_exclusions": [
+        {
+          "source_claim_id": "v5cl-5363d3dbeeb5826984a1",
+          "source_claim_hash": "548177d5c7123fce942b426861678742e25a697a2b8d7d9580e07fc7141241c2",
+          "school": "ziping",
+          "domain": "career",
+          "task_id": "structure.overview",
+          "claim_type": "structure_claim",
+          "stance": "support",
+          "reason": "unstable_domain_task_target"
+        },
+        {
+          "source_claim_id": "v5cl-4fa90edfe563",
+          "source_claim_hash": "c9dcc035f03880a6c71c9a3d646f6cdfc1d820aa485f576d7fb5f6623538632b",
+          "school": "ditiansui",
+          "domain": "career",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-c0e1e3c40217",
+          "source_claim_hash": "16d7c3c00c66b0ebeabfae07f658974b2044794d1682ee628da67c2ea70afe40",
+          "school": "gao_dechen",
+          "domain": "career",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-5a344426c94e",
+          "source_claim_hash": "bb3271a50d6448d76c0b5684bda0f8d74f00c87be1eab00748548d754d82c0ba",
+          "school": "duan_jianye",
+          "domain": "career",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-6726f3ef6f63",
+          "source_claim_hash": "8b62a1581e1535eab69832600ab7f08ced2019bbdb2d08c7206493ab4104dd17",
+          "school": "yang_qingjuan",
+          "domain": "career",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-5363d3dbeeb5826984a1",
+          "source_claim_hash": "d96c7ead0a586ad54303bb209d6ea30a28bfb550d4998e72f058fba13c137d14",
+          "school": "ziping",
+          "domain": "wealth",
+          "task_id": "structure.overview",
+          "claim_type": "structure_claim",
+          "stance": "support",
+          "reason": "unstable_domain_task_target"
+        },
+        {
+          "source_claim_id": "v5cl-d552142434e3",
+          "source_claim_hash": "60ca9a7e129970f26cd6695f7b3b7e829e6d9802b1f536571231933958da21c5",
+          "school": "ditiansui",
+          "domain": "wealth",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-3e5f5dad31eb",
+          "source_claim_hash": "da1e2e00efe5672239a72c7b696de9c7ea5ef0d2c8abdce9d41ff2df2f9737f4",
+          "school": "gao_dechen",
+          "domain": "wealth",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-9713d3ca86b5",
+          "source_claim_hash": "d2463071b5d47146c42f99902eb24f36ce379c3c45042284111a5769e6fdd1b3",
+          "school": "duan_jianye",
+          "domain": "wealth",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-8f0b1f599440",
+          "source_claim_hash": "f9114598e114203656b2589292ef5c735063b30b5b649fa511be4d8feaad62ed",
+          "school": "yang_qingjuan",
+          "domain": "wealth",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-aa2fab94f624c894d09c",
+          "source_claim_hash": "2c7a16957cb45b5fd19557825486a5f82fa758a6144e69b0c6ce92b771e244e2",
+          "school": "ren_fuhong",
+          "domain": "wealth",
+          "task_id": "wealth.major_loss_window",
+          "claim_type": "timing_claim",
+          "stance": "abstain",
+          "reason": "abstain"
+        },
+        {
+          "source_claim_id": "v5cl-ef8e2f60c0f8",
+          "source_claim_hash": "0a28a1f6c920878f43bc4775cf83f93b91eb6e98088bc2245e894da60a8ab513",
+          "school": "ditiansui",
+          "domain": "marriage",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-eaffef0ade4f",
+          "source_claim_hash": "a6d202cf0a834b0d5cb7268063885bf24895f1d3668704ada9b083682cc188c6",
+          "school": "gao_dechen",
+          "domain": "marriage",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-65be6d52d502",
+          "source_claim_hash": "6265dfe9bce792072fe9dd9810ff1d57d7a290b064ed74954486e7ce9d43e4be",
+          "school": "duan_jianye",
+          "domain": "marriage",
+          "task_id": "",
+          "claim_type": "evidence_claim",
+          "stance": "abstain",
+          "reason": "missing_task_id"
+        },
+        {
+          "source_claim_id": "v5cl-3c84b512b97751e7ae0a",
+          "source_claim_hash": "cf8b8eccdf3da48e41c49aaf769d9f598699b79b36ec46d1b3bc55566c172c1e",
+          "school": "yang_qingjuan",
+          "domain": "marriage",
+          "task_id": "marriage.divorce_or_remarriage",
+          "claim_type": "event_claim",
+          "stance": "abstain",
+          "reason": "abstain"
+        }
+      ],
+      "domain_evaluation_integrity": {
+        "schema_version": "domain-evaluation-integrity/v1",
+        "sha256": "44a9bca31541f116d9227acc10daa7b86ecb4b01671c12357b6affd252d1952c"
+      },
+      "capability_integrity": {
+        "schema_version": "domain-capability-integrity/v1",
+        "sha256": "413e21586cbdb3ca5277ecd41f187873ab90607afe04696ee4e8a708a4316c11"
+      }
+    }
+  },
+  "claims": [
+    {
+      "claim_id": "domain-eval-80952187b1c3d2a0d843",
+      "domain": "career",
+      "task_id": "career.role_change",
+      "state": "claim",
+      "school": "ziping",
+      "claim_type": "event_claim",
+      "source_claim_id": "v5cl-7bf352004d4c8ad9fc2c",
+      "source_claim_hash": "d9298ca7cc1af41c4cdf516b89f6d2e282cc1e68a3ff0bd98f17b5f1e1163f0c"
+    },
+    {
+      "claim_id": "domain-eval-06641d89e55b41af86aa",
+      "domain": "career",
+      "task_id": "career.change_window",
+      "state": "claim",
+      "school": "ren_fuhong",
+      "claim_type": "timing_claim",
+      "source_claim_id": "v5cl-b5fb1f300463d9257b39",
+      "source_claim_hash": "c171bd8c11fac9aa9ff5101e06e9455a4efd304d3acf712bee4521a32599c51f"
+    },
+    {
+      "claim_id": "domain-eval-084c6de3cb096195ba7c",
+      "domain": "marriage",
+      "task_id": "marriage.late_marriage",
+      "state": "claim",
+      "school": "ziping",
+      "claim_type": "event_claim",
+      "source_claim_id": "v5cl-907e5b3f51f955f78a05",
+      "source_claim_hash": "64d2cd556296c9f0eea1116f3517c6651722134ef152e3d70888dfc2c796eb6b"
+    },
+    {
+      "claim_id": "domain-eval-c39736653c74c963ea24",
+      "domain": "marriage",
+      "task_id": "marriage.event_window",
+      "state": "claim",
+      "school": "ren_fuhong",
+      "claim_type": "timing_claim",
+      "source_claim_id": "v5cl-89e7a8d273f6cc8c333b",
+      "source_claim_hash": "fe84bc20570e027e4787cf5726736d1ade613f0f5b421d513074c3842d460e4d"
+    }
+  ],
+  "freeze_hash": "516883e35eb22f125ed117f4826153864b1af317cbb8f9d4535143e5e1628839",
+  "artifact_sha256": "a5c5856806144d7c8e9959db288823d55ce70db1eebc829d0b5f81f46b6e910d"
+}

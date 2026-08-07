@@ -1,0 +1,452 @@
+schema_version: ziping.structure-catalog/v1
+structures:
+  - structure_id: officer_generates_seal
+    canonical_key: officer_generates_seal
+    display_name_zh: 官印相生
+    family: flow_protection
+    required_roles: [officer, seal]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [hurting_officer_meets_officer, wealth_damages_seal]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:57"
+      - "theory/_ir/ziping_rule_ir.yaml:3601"
+  - structure_id: killing_generates_seal
+    canonical_key: killing_generates_seal
+    display_name_zh: 杀印相生
+    family: flow_protection
+    required_roles: [killing, seal]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [wealth_damages_seal, killing_attacks_body]
+    source_status: normalized
+    implementation_status: current_implemented
+    legacy_mapping: KILLING_GENERATES_SEAL
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:58"
+      - "theory/_ir/ziping_rule_ir.yaml:1376"
+  - structure_id: wealth_generates_officer
+    canonical_key: wealth_generates_officer
+    display_name_zh: 财官相生
+    family: flow_protection
+    required_roles: [wealth, officer]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [peers_compete_for_wealth]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:59"
+      - "theory/_ir/ziping_rule_ir.yaml:1309"
+  - structure_id: wealth_generates_killing
+    canonical_key: wealth_generates_killing
+    display_name_zh: 财滋杀
+    family: flow_protection
+    required_roles: [wealth, killing]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [strength_balance]
+    block_types: [overpowered]
+    damage_types: [wealth_aids_killing_attack]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:60"
+      - "theory/_ir/ziping_rule_ir.yaml:1376"
+  - structure_id: food_god_generates_wealth
+    canonical_key: food_god_generates_wealth
+    display_name_zh: 食神生财
+    family: flow_protection
+    required_roles: [food_god, wealth]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [owl_robs_food]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:61"
+      - "theory/_ir/ziping_rule_ir.yaml:1372"
+  - structure_id: hurting_officer_generates_wealth
+    canonical_key: hurting_officer_generates_wealth
+    display_name_zh: 伤官生财
+    family: flow_protection
+    required_roles: [hurting_officer, wealth]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [output_overdrains_body]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:62"
+      - "theory/_ir/ziping_rule_ir.yaml:1309"
+  - structure_id: hurting_officer_uses_seal
+    canonical_key: hurting_officer_uses_seal
+    display_name_zh: 伤官配印
+    family: flow_protection
+    required_roles: [hurting_officer, seal]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [wealth_damages_seal]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:63"
+      - "theory/_ir/ziping_rule_ir.yaml:1527"
+  - structure_id: food_god_uses_seal
+    canonical_key: food_god_uses_seal
+    display_name_zh: 食神配印
+    family: flow_protection
+    required_roles: [food_god, seal]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [wealth_damages_seal, owl_robs_food]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:64"
+      - "theory/_ir/ziping_rule_ir.yaml:1372"
+  - structure_id: seal_protects_officer
+    canonical_key: seal_protects_officer
+    display_name_zh: 印绶护官
+    family: flow_protection
+    required_roles: [seal, officer]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [wealth_damages_seal]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:65"
+      - "theory/_ir/ziping_rule_ir.yaml:1288"
+  - structure_id: officer_protects_wealth
+    canonical_key: officer_protects_wealth
+    display_name_zh: 官星护财
+    family: flow_protection
+    required_roles: [officer, wealth]
+    candidate_types: [role_presence, protective_flow]
+    clear_types: [protective_flow]
+    block_types: [role_missing]
+    damage_types: [peers_compete_for_wealth]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:66"
+      - "theory/_ir/ziping_rule_ir.yaml:1309"
+  - structure_id: output_releases_excellence
+    canonical_key: output_releases_excellence
+    display_name_zh: 食伤泄秀
+    family: flow_protection
+    required_roles: [body, output]
+    candidate_types: [role_presence, strength_balance]
+    clear_types: [protective_flow]
+    block_types: [overdrained]
+    damage_types: [output_overdrains_body]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:67"
+      - "theory/_ir/ziping_rule_ir.yaml:1372"
+  - structure_id: wealth_officer_seal_flow
+    canonical_key: wealth_officer_seal_flow
+    display_name_zh: 财官印相生
+    family: flow_protection
+    required_roles: [wealth, officer, seal]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [wealth_damages_seal, hurting_officer_meets_officer]
+    source_status: composite
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:68"
+      - "theory/_ir/ziping_rule_ir.yaml:3601"
+  - structure_id: output_wealth_officer_flow
+    canonical_key: output_wealth_officer_flow
+    display_name_zh: 食伤生财生官
+    family: flow_protection
+    required_roles: [output, wealth, officer]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [protective_flow]
+    block_types: [edge_missing]
+    damage_types: [output_overdrains_body, peers_compete_for_wealth]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:69"
+      - "theory/_ir/ziping_rule_ir.yaml:1309"
+  - structure_id: food_god_controls_killing
+    canonical_key: food_god_controls_killing
+    display_name_zh: 食神制杀
+    family: control_transformation
+    required_roles: [food_god, killing]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [strength_balance]
+    block_types: [overpowered]
+    damage_types: [owl_robs_food, overcontrolled_killing]
+    source_status: direct
+    implementation_status: current_implemented
+    legacy_mapping: FOOD_GOD_CONTROLS_KILLING
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:70"
+      - "theory/_ir/ziping_rule_ir.yaml:1376"
+  - structure_id: hurting_officer_controls_killing
+    canonical_key: hurting_officer_controls_killing
+    display_name_zh: 伤官驾杀
+    family: control_transformation
+    required_roles: [hurting_officer, killing]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [strength_balance]
+    block_types: [overpowered]
+    damage_types: [overcontrolled_killing]
+    source_status: review
+    implementation_status: current_implemented
+    legacy_mapping: HURTING_OFFICER_CONTROLS_KILLING
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:71"
+      - "theory/tiaohou_ditiansui/index.yaml:32776"
+  - structure_id: blade_killing_balanced
+    canonical_key: blade_killing_balanced
+    display_name_zh: 羊刃驾杀
+    family: control_transformation
+    required_roles: [blade, killing]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [strength_balance]
+    block_types: [role_missing]
+    damage_types: [overcontrolled_killing, killing_attacks_body]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:72"
+      - "theory/_ir/ziping_rule_ir.yaml:3771"
+  - structure_id: rob_wealth_combines_killing
+    canonical_key: rob_wealth_combines_killing
+    display_name_zh: 劫财合杀
+    family: control_transformation
+    required_roles: [rob_wealth, killing]
+    candidate_types: [role_presence, combination_edge]
+    clear_types: [strength_balance]
+    block_types: [edge_missing]
+    damage_types: [mixed_signal]
+    source_status: review
+    implementation_status: catalog_only_review
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:73"
+      - "theory/tiaohou_ditiansui/index.yaml:15477"
+  - structure_id: hurting_officer_combines_killing
+    canonical_key: hurting_officer_combines_killing
+    display_name_zh: 伤官合杀
+    family: control_transformation
+    required_roles: [hurting_officer, killing]
+    candidate_types: [role_presence, combination_edge]
+    clear_types: [strength_balance]
+    block_types: [edge_missing]
+    damage_types: [mixed_signal]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:74"
+      - "theory/_ir/ziping_rule_ir.yaml:3950"
+  - structure_id: officer_killing_mixed
+    canonical_key: officer_killing_mixed
+    display_name_zh: 官杀混杂
+    family: clearing
+    required_roles: [officer, killing]
+    candidate_types: [role_presence, mixed_signal]
+    clear_types: [clearing_resolution]
+    block_types: [mixed_signal]
+    damage_types: [source_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:75"
+      - "theory/_ir/ziping_rule_ir.yaml:1549"
+  - structure_id: officer_killing_cleared
+    canonical_key: officer_killing_cleared
+    display_name_zh: 官杀去留取清
+    family: clearing
+    required_roles: [officer, killing, output]
+    candidate_types: [role_presence, clearing_resolution]
+    clear_types: [clearing_resolution]
+    block_types: [mixed_signal]
+    damage_types: [source_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:76"
+      - "theory/_ir/ziping_rule_ir.yaml:3950"
+  - structure_id: hurting_officer_exhausted
+    canonical_key: hurting_officer_exhausted
+    display_name_zh: 伤官伤尽
+    family: clearing
+    required_roles: [hurting_officer, officer]
+    candidate_types: [role_presence, clearing_resolution]
+    clear_types: [clearing_resolution]
+    block_types: [role_missing]
+    damage_types: [hurting_officer_meets_officer]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:77"
+      - "theory/_ir/ziping_rule_ir.yaml:3950"
+  - structure_id: hurting_officer_meets_officer
+    canonical_key: hurting_officer_meets_officer
+    display_name_zh: 伤官见官
+    family: damage_imbalance
+    required_roles: [hurting_officer, officer]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [role_missing]
+    damage_types: [self_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:78"
+      - "theory/_ir/ziping_rule_ir.yaml:3560"
+  - structure_id: owl_robs_food
+    canonical_key: owl_robs_food
+    display_name_zh: 枭神夺食
+    family: damage_imbalance
+    required_roles: [owl, food_god]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [role_missing]
+    damage_types: [source_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:79"
+      - "theory/_ir/ziping_rule_ir.yaml:1372"
+  - structure_id: wealth_damages_seal
+    canonical_key: wealth_damages_seal
+    display_name_zh: 财坏印
+    family: damage_imbalance
+    required_roles: [wealth, seal]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [role_missing]
+    damage_types: [source_damage]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:80"
+      - "theory/_ir/ziping_rule_ir.yaml:3560"
+  - structure_id: peers_compete_for_wealth
+    canonical_key: peers_compete_for_wealth
+    display_name_zh: 比劫夺财
+    family: damage_imbalance
+    required_roles: [peer, wealth]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [role_missing]
+    damage_types: [self_damage]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:81"
+      - "theory/_ir/ziping_rule_ir.yaml:1442"
+  - structure_id: wealth_aids_killing_attack
+    canonical_key: wealth_aids_killing_attack
+    display_name_zh: 财生杀攻身
+    family: damage_imbalance
+    required_roles: [wealth, killing, body]
+    candidate_types: [role_presence, generation_edge]
+    clear_types: [damage_confirmed]
+    block_types: [strength_balance]
+    damage_types: [self_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:82"
+      - "theory/_ir/ziping_rule_ir.yaml:1376"
+  - structure_id: overcontrolled_killing
+    canonical_key: overcontrolled_killing
+    display_name_zh: 制杀太过
+    family: damage_imbalance
+    required_roles: [food_god, hurting_officer, killing]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [strength_balance]
+    damage_types: [source_damage]
+    source_status: review
+    implementation_status: catalog_only_review
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:83"
+      - "theory/tiaohou_ditiansui/index.yaml:3644"
+  - structure_id: killing_attacks_body
+    canonical_key: killing_attacks_body
+    display_name_zh: 官杀攻身
+    family: damage_imbalance
+    required_roles: [officer, killing, body]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [strength_balance]
+    damage_types: [self_damage]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:84"
+      - "theory/_ir/ziping_rule_ir.yaml:1376"
+  - structure_id: output_overdrains_body
+    canonical_key: output_overdrains_body
+    display_name_zh: 食伤泄身太过
+    family: damage_imbalance
+    required_roles: [output, body]
+    candidate_types: [role_presence, strength_balance]
+    clear_types: [damage_confirmed]
+    block_types: [strength_balance]
+    damage_types: [self_damage]
+    source_status: normalized
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:85"
+      - "theory/_ir/ziping_rule_ir.yaml:1372"
+  - structure_id: excess_seal_blocks_output
+    canonical_key: excess_seal_blocks_output
+    display_name_zh: 印旺滞食
+    family: damage_imbalance
+    required_roles: [seal, output]
+    candidate_types: [role_presence, control_edge]
+    clear_types: [damage_confirmed]
+    block_types: [role_missing]
+    damage_types: [source_damage]
+    source_status: direct
+    implementation_status: catalog_only_candidate
+    legacy_mapping: null
+    source_refs:
+      - ".omo/plans/ten-god-structure-production-closure.md:86"
+      - "theory/_ir/ziping_rule_ir.yaml:1527"

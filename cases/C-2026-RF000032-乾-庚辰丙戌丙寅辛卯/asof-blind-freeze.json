@@ -1,0 +1,308 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000032-乾-庚辰丙戌丙寅辛卯",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-30T23:59:00+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": null,
+    "boundary": null,
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "no_boundary_manual_exception": true,
+    "exception_basis": "known_facts is exactly [] and embedded annotation scan is empty",
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000032-乾-庚辰丙戌丙寅辛卯/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以专业技能与持续输出为主，收入更可能通过项目成果或市场化交付兑现",
+      "completion_mode": "COMPLETE_LATENT"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "组织内专业执行岗位，职责稳定但晋升权力并非核心"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "输出能力存在但现实兑现不稳，阶段性收入波动"
+      }
+    ]
+  },
+  "root_level": "WEAK_ROOT",
+  "root_level_justification": "候选事业功能定位在戌、辰所藏食神/伤官节点，食伤向年干庚偏财与时干辛正财形成输出到收益的承载路径；但食伤未透、财星虽透而兑现链隔层，因此定为弱根，不以日主坐寅或卯印根替代事业领域证据。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000032-乾-庚辰丙戌丙寅辛卯",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.output",
+        "function": "戌、辰藏食神/伤官的专业输出功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.output",
+            "excerpt": "月支戌、年支辰藏食伤节点"
+          }
+        ]
+      },
+      {
+        "node_id": "career.wealth",
+        "function": "年干庚偏财、时干辛正财的收益节点",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.wealth",
+            "excerpt": "年干庚与时干辛财星透出"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.output",
+        "excerpt": "月支戌、年支辰藏食伤节点"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.wealth",
+        "excerpt": "年干庚与时干辛财星透出"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "root_level",
+        "excerpt": "候选事业功能定位在戌、辰所藏食神/伤官节点，食伤向年干庚偏财与时干辛正财形成输出到收益的承载路径；但食伤未透、财星虽透而兑现链隔层，因此定为弱根，不以日主坐寅或卯印根替代事业领域证据。"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以专业技能与持续输出为主，收入更可能通过项目成果或市场化交付兑现",
+        "node_ids": [
+          "career.output",
+          "career.wealth"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.output",
+            "excerpt": "月支戌、年支辰藏食伤节点"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.wealth",
+            "excerpt": "年干庚与时干辛财星透出"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_chart",
+        "locator": "blind_boundary",
+        "excerpt": "不从日主长生、临官、帝旺或一般根气替代事业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.output",
+        "excerpt": "月支戌、年支辰藏食伤节点"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.wealth",
+        "excerpt": "年干庚与时干辛财星透出"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory/gao/index.yaml",
+        "line": 2495,
+        "excerpt": "G-CS-035：伤官生财可表现为专业技术向财务工作的承载。"
+      }
+    ],
+    "competing_explanations": [
+      "组织内专业执行岗位，职责稳定但晋升权力并非核心",
+      "输出能力存在但现实兑现不稳，阶段性收入波动"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "early_environment_responsibility_change",
+      "window": "2001-01-01/2001-12-31",
+      "center_event": "2001年成长阶段的家庭资源、照护安排或生活环境出现一次可核验调整。",
+      "alternative": "仅有短期搬动、照护者变化或家庭支出增加，未形成长期改变",
+      "completion_mode": "COMPLETE_LATENT",
+      "root_level": "WEAK_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "REMAINDER_ONLY_RECHECK_CROSS_DAIYUN",
+      "annual_trace": {
+        "year": 2001,
+        "liunian": "辛巳",
+        "dayun_ganzhi": "丁亥",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].relations[0]",
+            "excerpt": "流年干合月干丙化('水', '合绊')"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].relations[1]",
+            "excerpt": "流年干合日干丙化('水', '合绊')"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].relations[2]",
+            "excerpt": "流年支冲大运支亥"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].relations[3]",
+            "excerpt": "流年支穿日支寅"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].relations[4]",
+            "excerpt": "流年支三刑日支寅"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.month.stem",
+          "natal.day.stem",
+          "natal.day.branch"
+        ],
+        "domains": [
+          "财富",
+          "婚姻"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].main_energy",
+            "excerpt": "财动 / 婚动"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2001].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2001,
+    "crossed_candidate_gate": true,
+    "rejected_preview_year": null,
+    "rejected_preview_reason": null
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "change_reason": "命中规则支持既有中心方向，未出现足以改变中心判断的反证；零命中组仅保留检索审计。",
+    "adopted_rule": {
+      "adopted_rule": "gao:G-CS-035",
+      "locator": "theory/gao/index.yaml:2495",
+      "summary": "伤官生财可表现为专业技术向收益兑现。"
+    },
+    "search_audit": [
+      {
+        "keywords": [
+          "伤官",
+          "生财"
+        ],
+        "hit_count": 30,
+        "citations_reviewed": [
+          "[gao:G-CS-020] 看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败 (来源: theory\\gao\\index.yaml)",
+          "[gao:G-CS-035] 财务工作七标志 ①财星合/冲印星 ②日支坐财/财库 ③财/财库伏吟(来回折腾钱) ④官杀下配财星 ⑤伤官生财(专业技术) ⑥水代表数据(壬癸亥子) ⑦比劫与财感应(手与钱打交道) (来源: theory\\gao\\index.yaml)",
+          "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "正财",
+          "透出"
+        ],
+        "hit_count": 2,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-293] 论十干坐支兼得月时及行运吉凶△甲乙甲木属阳，乃栋梁之材。 太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助， 子平规则参与：太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助，亦轻。喜行西方四季金土分野向官临财，忌行。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-399] 禄即官 禄即官，财即马，二句同一义也。壬以丁火为财马，己土为官禄，俱禄于午；癸以丙火为正财，戊土为正官，俱禄于巳。人命禄马财官，难得兼全，况自坐支下，所以为贵。喜秋生金旺永生木死，不能克土，故为远害。若见寅卯旺则秀而不实，冬生玄武当权，贵为王侯。如柱有财官，更得此二日生，尤妙。如己丑、丁卯、壬午、癸卯，年月透出丁己，归禄日下， 子平规则参与：禄即官，财即马，二句同一义也。壬以丁火为财马，己土为官禄，俱禄于午；癸以丙火为正财，戊土为正官，俱禄于巳。人命禄马财官，难得兼全，况自坐支下，所以为贵。喜秋生金旺永生木死，不能克土，故为远害。若见寅卯旺则秀而不实，冬生玄武当权，贵为王侯。如柱有财官，更得此二日生，尤妙。如己丑、丁卯、壬午、癸卯，年月透出丁己，归禄日下，合此，大贵。《珞??录子》云：禄马同乡，。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "偏财",
+          "透出"
+        ],
+        "hit_count": 4,
+        "citations_reviewed": [
+          "[gao:G-CY-021] 暴富命造标志组合 ①月令为财库+库透己到我宫+卯未合要获取②日坐偏财马星③马星透出定义禄神为大财 (来源: theory\\gao\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-293] 论十干坐支兼得月时及行运吉凶△甲乙甲木属阳，乃栋梁之材。 太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助， 子平规则参与：太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助，亦轻。喜行西方四季金土分野向官临财，忌行。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-450] 喜见辛官、壬癸生助 喜见辛官、壬癸生助，忌庚煞、乙劫，柱中不宜再见戊己，若身太旺，运东方寅卯则失财，余干例推。此与时上偏官格相似，只要一位，不宜多逢，天元透出为妙，支内所藏次之，柱有官印相助，日主健旺，便作好命看。大怕年月冲破，兄弟辈出，则福气不全。古诗云：时上偏财冲最忌，兄弟之辈皆为畏，喜行身旺官禄乡，别无透出方为贵。 子平规则参与：喜见辛官、壬癸生助，忌庚煞、乙劫，柱中不宜再见戊己，若身太旺，运东方寅卯则失财，余干例推。此与时上偏官格相似，只要一位，不宜多逢，天元透出为妙，支内所藏次之，柱有官印相助，日主健旺，便作好命看。大怕年月冲破，兄弟辈出，则福气不全。古诗云：时上偏财冲最忌，兄弟之辈皆为畏，喜行身旺官禄乡，别无透出方为贵。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "root_level_finding": null,
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 4,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定domain=career；幼年E1只作为年度双证据门候选，不把家庭/学习描述冒充已证实职业事实。",
+    "strict_preflight_nonclaim": "RF自动排盘输入缺少严格preflight完整字段，本次使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用feedback.md及候选报告反馈摘要形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

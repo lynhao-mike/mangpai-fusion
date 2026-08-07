@@ -1,0 +1,35 @@
+﻿Timestamp: 2026-08-06T09:29:30.2432075+08:00
+
+
+ProcessId       : 124
+ParentProcessId : 10824
+Name            : chrome-headless-shell.exe
+CommandLine     : C:\Users\Administrator\AppData\Local\ms-playwright\chromium_headless_shell-1228\chrome-headless-shell-win64\chrome-headless-shell.exe --headless --no-first-run --no-default-browser-check --disable-background-networking --disable-component-update --disable-default-apps --disable-extensions --disable-features=MediaRouter,OptimizationHints,Translate --disable-sync --metrics-recording-only --no-pings --remote-allow-origins=* --remote-debugging-port=57308 --user-data-dir=C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\pytest-3130\test_complete_accountability_a0\browser-profile about:blank
+
+ProcessId       : 19380
+ParentProcessId : 23404
+Name            : powershell.exe
+CommandLine     : "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+                  Set-Location -LiteralPath 'F:\多流派新思路'
+                  $afterPath = '.omo\evidence\task13-gate-d-remaining-suite-processes-after.txt'
+                  \"Timestamp: $(Get-Date -Format o)\" | Set-Content -LiteralPath $afterPath -Encoding UTF8
+                  Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'python|pytest' -or $_.CommandLine -match 'pytest' } | Select-Object ProcessId,ParentProcessId,Name,CommandLine | Format-List | Out-String -Width 4096 | Add-Content -LiteralPath $afterPath -Encoding UTF8
+                  Get-Item -LiteralPath $afterPath | Select-Object FullName,Length,LastWriteTime | Format-List"
+
+ProcessId       : 27504
+ParentProcessId : 23404
+Name            : powershell.exe
+CommandLine     : "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+                  Set-Location -LiteralPath 'F:\多流派新思路'
+                  Get-Content -LiteralPath '.omo\evidence\task13-gate-d-remaining-suite-pytest-output.txt' -Tail 80"
+
+ProcessId       : 31572
+ParentProcessId : 23404
+Name            : powershell.exe
+CommandLine     : "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+                  Set-Location -LiteralPath 'F:\多流派新思路'
+                  Get-Item -LiteralPath '.omo\evidence\task13-gate-d-remaining-suite-pytest-output.txt','.omo\evidence\task13-gate-d-remaining-suite-pytest-meta.json','.omo\evidence\task13-gate-d-remaining-suite-processes-before.txt','.omo\evidence\task13-gate-d-remaining-suite-processes-midrun.txt' | Select-Object FullName,Length,LastWriteTime | Format-List"
+
+
+
+

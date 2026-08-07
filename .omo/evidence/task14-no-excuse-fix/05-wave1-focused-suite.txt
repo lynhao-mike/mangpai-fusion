@@ -1,0 +1,13 @@
+锘緾OMMAND: python -m pytest tests/governance tests/application/test_governance_fact_builder.py tests/application/test_governance_claim_adapters.py tests/application/test_governance_shadow_runner.py -q
+START: 2026-08-06T11:18:46.8793282+08:00
+........................................................................ [ 33%]
+........................................................................ [ 67%]
+....................................................................     [100%]
+============================== warnings summary ===============================
+engine\application\pipeline_runner.py:11
+  F:\多流派新思路\engine\application\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.
+    from engine.application.dual_engine_adapter import analyze_dual_engine
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+212 passed, 1 warning in 22.04s
+EXIT_CODE: 0

@@ -12,6 +12,11 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from engine.application.governance_shadow_types import GovernanceShadowResult
+from engine.evaluation.governance_shadow_adapter import (
+    GovernanceShadowTaskProjection,
+    adapt_governance_shadow_to_blind_outputs,
+)
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
     canonical_artifact_sha256,
@@ -21,7 +26,8 @@ from engine.evaluation.prospective_artifacts import (
     validate_revision_metadata,
 )
 from engine.evaluation.freeze import canonical_json, freeze_outputs, verify_frozen_run
-from engine.evaluation.models import BlindSchoolOutput, FrozenBlindRun
+from engine.evaluation.models import BlindSchoolOutput, BlindTask, FrozenBlindRun
+from engine.governance.school_registry import normalize_school_input
 
 
 SIX_SCHOOLS: tuple[str, ...] = (
@@ -82,7 +88,7 @@ _SINGLE_INTAKE_REQUIRED_FIELDS = {
 _INTAKE_RECORD_FIELDS = {"case_id", "input_file", "input_sha256", "subject_id_hash", "task_ids"}
 _TASK_BUNDLE_FIELDS = (
     "task_id", "domain", "claim_type", "scoring_method", "quantifiable", "high_risk",
-    "allowed_time_horizons", "required_input_fields", "label_schema",
+    "allowed_time_horizons", "required_input_fields", "label_schema", "evaluation_note",
 )
 
 
@@ -530,8 +536,12 @@ def _single_bundle_files(
     if isinstance(task_document.get("task_catalog_version"), str) and task_document["task_catalog_version"]:
         bundled_tasks["task_catalog_version"] = task_document["task_catalog_version"]
     task_bytes = _canonical_json_bytes(bundled_tasks)
+    legacy_task_rows = [
+        {key: value for key, value in task.items() if key != "evaluation_note"}
+        for task in clean_tasks
+    ]
     legacy_task_bytes = _canonical_json_bytes({
-        "schema_version": task_document.get("schema_version"), "tasks": clean_tasks,
+        "schema_version": task_document.get("schema_version"), "tasks": legacy_task_rows,
     })
     if intake.get("task_catalog_sha256") not in {_sha256(task_bytes), _sha256(legacy_task_bytes)}:
         raise _stop("intake task catalog hash changed")
@@ -893,6 +903,72 @@ def _assert_complete_single_case_grid(
         raise _stop("single-case frozen run contains invalid output state")
 
 
+def _merge_governance_yang_divorce_slot(
+    outputs: Sequence[BlindSchoolOutput],
+    *,
+    generated_run: FrozenBlindRun,
+    task_document: Mapping[str, Any],
+    case_id: str,
+    result: GovernanceShadowResult,
+    projections: tuple[GovernanceShadowTaskProjection, ...],
+) -> list[BlindSchoolOutput]:
+    if len(projections) != 1 or type(projections[0]) is not GovernanceShadowTaskProjection:
+        raise TypeError("governance mode requires exactly one exact GovernanceShadowTaskProjection")
+    projection = projections[0]
+    target_task_id = "marriage.divorce_or_remarriage"
+    task_rows = [
+        task for task in task_document.get("tasks", [])
+        if isinstance(task, dict) and task.get("task_id") == target_task_id
+    ]
+    if len(task_rows) != 1:
+        raise ValueError("governance target task must occur exactly once in the bundled catalog")
+    try:
+        task = BlindTask(**task_rows[0])
+    except (TypeError, ValueError) as error:
+        raise ValueError(f"governance target task is invalid: {error}") from error
+    if projection.case_id != case_id:
+        raise ValueError("governance projection case mismatch")
+    if projection.task_catalog_version != generated_run.task_catalog_version:
+        raise ValueError("governance projection task catalog mismatch")
+    if projection.rule_version != generated_run.rule_snapshot_id:
+        raise ValueError("governance projection rule version mismatch")
+    if normalize_school_input("yang") != "yang_qingjuan" or projection.school_id != "yang_qingjuan":
+        raise ValueError("governance projection does not own the canonical Yang slot")
+
+    adapted = adapt_governance_shadow_to_blind_outputs(result, task, projections)
+    if len(adapted) != 1:
+        raise ValueError("governance adapter must return exactly one output")
+    canonical = adapted[0]
+    if (
+        canonical.case_id,
+        canonical.school_id,
+        canonical.task_id,
+    ) != (case_id, "yang_qingjuan", target_task_id):
+        raise ValueError("governance adapter returned the wrong target identity")
+    alias_output = BlindSchoolOutput(
+        case_id=canonical.case_id,
+        school_id="yang",
+        task_id=canonical.task_id,
+        state=canonical.state,
+        rationale=canonical.rationale,
+        predictions=list(canonical.predictions),
+        counter_evidence=list(canonical.counter_evidence),
+    )
+    target = (case_id, "yang", target_task_id)
+    matches = sum(
+        (output.case_id, output.school_id, output.task_id) == target
+        for output in outputs
+    )
+    if matches != 1:
+        raise ValueError("legacy Yang divorce slot must occur exactly once")
+    return [
+        alias_output
+        if (output.case_id, output.school_id, output.task_id) == target
+        else output
+        for output in outputs
+    ]
+
+
 def build_single_case_staged_frozen_run(
     bundle_root: Path,
     *,
@@ -901,8 +977,20 @@ def build_single_case_staged_frozen_run(
     executed_at: str | None = None,
     revision: Mapping[str, Any] | None = None,
     migration_context: Mapping[str, Any] | None = None,
+    governance_shadow_result: GovernanceShadowResult | None = None,
+    governance_shadow_projections: tuple[GovernanceShadowTaskProjection, ...] = (),
 ) -> dict[str, Any]:
     """Re-verify and freeze exactly one complete six-school prospective case."""
+    if type(governance_shadow_projections) is not tuple:
+        raise TypeError("governance_shadow_projections must be an exact tuple")
+    if governance_shadow_result is None:
+        if governance_shadow_projections != ():
+            raise ValueError("governance inputs must be both absent or both present")
+    elif type(governance_shadow_result) is not GovernanceShadowResult:
+        raise TypeError("governance_shadow_result must be an exact GovernanceShadowResult")
+    elif len(governance_shadow_projections) != 1:
+        raise ValueError("governance mode requires exactly one projection")
+
     root = Path(bundle_root)
     verified = verify_single_case_bundle(root)
     manifest = verified["manifest"]
@@ -935,7 +1023,24 @@ def build_single_case_staged_frozen_run(
         generated_run = FrozenBlindRun.from_dict(staged["frozen_run"])
     except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
         raise _stop(f"single-case generated frozen run is invalid: {error}") from error
-    safe_outputs = _safe_timing_outputs(generated_run, timing_task_ids, verified["chart"])
+    merged_outputs: Sequence[BlindSchoolOutput] = generated_run.outputs
+    if governance_shadow_result is not None:
+        merged_outputs = _merge_governance_yang_divorce_slot(
+            merged_outputs,
+            generated_run=generated_run,
+            task_document=task_document,
+            case_id=row["case_id"],
+            result=governance_shadow_result,
+            projections=governance_shadow_projections,
+        )
+    merged_run = FrozenBlindRun(
+        task_catalog_version=generated_run.task_catalog_version,
+        rule_snapshot_id=generated_run.rule_snapshot_id,
+        frozen_at=generated_run.frozen_at,
+        outputs=list(merged_outputs),
+        freeze_hash=generated_run.freeze_hash,
+    )
+    safe_outputs = _safe_timing_outputs(merged_run, timing_task_ids, verified["chart"])
     _assert_complete_single_case_grid(
         safe_outputs, case_id=row["case_id"], task_ids=sorted(row["task_ids"]),
     )

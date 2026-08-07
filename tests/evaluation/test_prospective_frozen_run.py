@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import ast
 import hashlib
+import inspect
 import json
 import os
 import subprocess
@@ -8,6 +10,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from dataclasses import replace
 
 from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
@@ -27,6 +30,11 @@ from tools.school_capability_dataset import (
 )
 from tools import school_capability_prospective as prospective
 from tools.school_capability_prospective import build_staged_frozen_run
+from tests.evaluation.test_governance_shadow_adapter import (
+    _claim as governance_claim_fixture,
+    _projection as governance_projection_fixture,
+    _shadow as governance_shadow_fixture,
+)
 
 
 TASKS = Path("META/prospective-go-task-catalog-v1.json")
@@ -240,6 +248,7 @@ def _single_case_bundle(
     *,
     created_at: str = "2026-07-15T23:59:58Z",
     freeze_at: str = "2026-07-16T00:00:00Z",
+    task_ids: list[str] | None = None,
 ) -> tuple[Path, dict, dict]:
     case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
     input_path = tmp_path / "source" / case_id / "input.md"
@@ -251,8 +260,9 @@ def _single_case_bundle(
         encoding="utf-8",
     )
     tasks = _read(TASKS)
+    assigned_tasks = task_ids or ["career.role_change", "career.change_window"]
     question_draft = {
-        "future_task_id": "career.role_change",
+        "future_task_id": assigned_tasks[0],
         "question_text_redacted": "未来三个月是否发生显著岗位角色变化？",
         "outcome_type": "binary",
         "positive_definition": "发生并有雇佣资料或本人确认",
@@ -268,7 +278,7 @@ def _single_case_bundle(
         tasks,
         SIX_SCHOOLS,
         "human-test",
-        {"P-GO-2026-001": ["career.role_change", "career.change_window"]},
+        {"P-GO-2026-001": assigned_tasks},
         question_draft,
         created_at=created_at,
         case_root=tmp_path / "parents",
@@ -293,6 +303,308 @@ def _reseal_bundle(bundle: Path, name: str) -> None:
     ).encode("utf-8")).hexdigest()
     manifest["artifact_sha256"] = canonical_artifact_sha256(manifest)
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def test_single_case_bundle_preserves_evaluation_note_with_legacy_intake_hash(tmp_path: Path) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+
+    task_bytes = (root / "tasks.json").read_bytes()
+    tasks = json.loads(task_bytes)
+    divorce_task = next(
+        task for task in tasks["tasks"]
+        if task["task_id"] == "marriage.divorce_or_remarriage"
+    )
+    manifest = _read(root / "bundle-manifest.json")
+
+    assert divorce_task["evaluation_note"] == "只评价是否发生，不把关系压力自动等同离婚"
+    assert manifest["files"]["tasks.json"] == hashlib.sha256(task_bytes).hexdigest()
+
+
+def test_single_case_legacy_mode_accepts_exact_explicit_governance_shadow_defaults(tmp_path: Path) -> None:
+    root, _, _ = _single_case_bundle(tmp_path)
+
+    implicit = build_single_case_staged_frozen_run(root)
+    explicit = build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=None,
+        governance_shadow_projections=(),
+    )
+
+    assert explicit == implicit
+
+
+def test_single_case_governance_shadow_claim_replaces_only_yang_divorce_slot(tmp_path: Path) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage", "career.role_change"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+
+    governed = build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=shadow,
+        governance_shadow_projections=(projection,),
+    )
+    baseline_rows = {
+        (row["school_id"], row["task_id"]): row
+        for row in baseline["frozen_run"]["outputs"]
+    }
+    governed_rows = {
+        (row["school_id"], row["task_id"]): row
+        for row in governed["frozen_run"]["outputs"]
+    }
+    target = governed_rows[("yang", "marriage.divorce_or_remarriage")]
+
+    assert target["state"] == "claim"
+    assert target["rationale"] == "显式投影提供完整事件绑定。"
+    assert "yang_qingjuan" not in {row["school_id"] for row in governed_rows.values()}
+    assert {
+        identity: row for identity, row in governed_rows.items()
+        if identity != ("yang", "marriage.divorce_or_remarriage")
+    } == {
+        identity: row for identity, row in baseline_rows.items()
+        if identity != ("yang", "marriage.divorce_or_remarriage")
+    }
+
+
+@pytest.mark.parametrize("invalid", ("half", "list", "empty", "multiple", "projection-subclass"))
+def test_single_case_governance_shadow_boundary_fails_closed(tmp_path: Path, invalid: str) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+    result = shadow
+    projections: object = (projection,)
+    if invalid == "half":
+        result = None
+    elif invalid == "list":
+        projections = [projection]
+    elif invalid == "empty":
+        projections = ()
+    elif invalid == "multiple":
+        projections = (projection, projection)
+    else:
+        subclass = type("ProjectionSubclass", (type(projection),), {})
+        projections = (subclass(**{
+            field: getattr(projection, field)
+            for field in projection.__dataclass_fields__
+        }),)
+
+    with pytest.raises((TypeError, ValueError), match="governance|projection|tuple"):
+        build_single_case_staged_frozen_run(
+            root,
+            governance_shadow_result=result,
+            governance_shadow_projections=projections,  # type: ignore[arg-type]
+        )
+
+
+def test_single_case_governance_shadow_binding_mismatches_fail_closed(tmp_path: Path) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+
+    for change in (
+        {"case_id": "other-case"},
+        {"school_id": "yang"},
+        {"task_id": "career.role_change"},
+        {"task_catalog_version": "other-catalog"},
+        {"rule_version": "other-rule"},
+    ):
+        with pytest.raises(ValueError, match="case|Yang|task|catalog|rule"):
+            build_single_case_staged_frozen_run(
+                root,
+                governance_shadow_result=shadow,
+                governance_shadow_projections=(replace(projection, **change),),
+            )
+
+
+@pytest.mark.parametrize(
+    ("projection_change", "expected_state"),
+    (({"prediction": None}, "abstain"), ({"prediction": None, "capability_state": "uncertified"}, "unsupported")),
+)
+def test_single_case_governance_shadow_nonclaim_states_replace_only_target(
+    tmp_path: Path,
+    projection_change: dict[str, object],
+    expected_state: str,
+) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage", "career.role_change"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+
+    governed = build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=shadow,
+        governance_shadow_projections=(replace(projection, **projection_change),),
+    )
+    rows = {
+        (row["school_id"], row["task_id"]): row
+        for row in governed["frozen_run"]["outputs"]
+    }
+
+    assert rows[("yang", "marriage.divorce_or_remarriage")]["state"] == expected_state
+    assert rows[("yang", "marriage.divorce_or_remarriage")]["predictions"] == []
+
+
+def test_single_case_governance_shadow_replay_is_deterministic_and_prediction_changes_hash(
+    tmp_path: Path,
+) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+    arguments = {
+        "governance_shadow_result": shadow,
+        "governance_shadow_projections": (projection,),
+    }
+
+    first = build_single_case_staged_frozen_run(root, **arguments)
+    assert build_single_case_staged_frozen_run(root, **arguments) == first
+
+    changed_binding = replace(projection.prediction, probability=0.64)
+    changed = build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=shadow,
+        governance_shadow_projections=(replace(projection, prediction=changed_binding),),
+    )
+    assert changed["frozen_run"]["freeze_hash"] != first["frozen_run"]["freeze_hash"]
+    assert changed["artifact_sha256"] != first["artifact_sha256"]
+
+
+def test_single_case_governance_shadow_merge_precedes_timing_and_grid_checks(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+    import engine.evaluation.prospective_single_case as module
+
+    original_timing = module._safe_timing_outputs
+    original_grid = module._assert_complete_single_case_grid
+    observed: list[str] = []
+
+    def timing(run: FrozenBlindRun, task_ids: set[str], chart: dict) -> list:
+        target = next(row for row in run.outputs if row.school_id == "yang")
+        assert target.rationale == projection.rationale
+        observed.append("timing")
+        return original_timing(run, task_ids, chart)
+
+    def grid(outputs: list, *, case_id: str, task_ids: list[str]) -> None:
+        assert observed == ["timing"]
+        observed.append("grid")
+        original_grid(outputs, case_id=case_id, task_ids=task_ids)
+
+    monkeypatch.setattr(module, "_safe_timing_outputs", timing)
+    monkeypatch.setattr(module, "_assert_complete_single_case_grid", grid)
+
+    build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=shadow,
+        governance_shadow_projections=(projection,),
+    )
+    assert observed == ["timing", "grid"]
+
+
+def test_single_case_governance_shadow_api_and_static_dependencies_are_exact() -> None:
+    module_path = Path("engine/evaluation/prospective_single_case.py")
+    tree = ast.parse(module_path.read_text(encoding="utf-8"))
+    signature = inspect.signature(build_single_case_staged_frozen_run)
+    imports = {
+        node.module
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom) and node.module is not None
+    }
+    serialized_keys = {
+        node.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Constant) and isinstance(node.value, str)
+    }
+
+    assert signature.parameters["governance_shadow_result"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert signature.parameters["governance_shadow_projections"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert imports & {
+        "engine.application.governance_shadow_types",
+        "engine.evaluation.governance_shadow_adapter",
+        "engine.governance.school_registry",
+    } == {
+        "engine.application.governance_shadow_types",
+        "engine.evaluation.governance_shadow_adapter",
+        "engine.governance.school_registry",
+    }
+    assert not imports & {
+        "engine.evaluation.scoring",
+        "engine.evaluation.reveal",
+        "tools.feedback_ingest",
+        "tools.render_report",
+    }
+    assert not serialized_keys & {
+        "governance_shadow_result",
+        "governance_shadow_projections",
+        "projection_custody",
+        "governance_metadata",
+    }
 
 
 def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(tmp_path: Path) -> None:

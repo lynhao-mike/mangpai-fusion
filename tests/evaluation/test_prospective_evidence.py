@@ -312,6 +312,33 @@ def test_frozen_run_itself_opens_feedback_intake(freeze_chain: dict) -> None:
     assert "witness" not in json.dumps(release).lower()
 
 
+def test_v2_release_collects_immediate_retrospective_from_mixed_frozen_parents(
+    freeze_chain: dict,
+) -> None:
+    frozen = _read(freeze_chain["frozen_run_path"])
+    release = build_feedback_release_credential(
+        frozen,
+        created_at="2026-07-16T01:05:00Z",
+    )
+    release_path = Path(release["artifact_path"])
+    publish_new_json(
+        release_path,
+        {key: value for key, value in release.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    release = _read(release_path)
+
+    result = prospective_evidence.collect_immediate_retrospective(
+        release,
+        lambda: _custody_payload(release["case_id"]),
+        collected_at="2026-07-16T02:00:00Z",
+        custodian="human-custodian-01",
+    )
+
+    assert result["facts"][0]["task_id"] == "career.role_change"
+    assert result["facts"][0]["classification"] == "immediate_fact"
+
+
 def test_release_requires_verified_independent_roles_and_strict_clean_scan(freeze_chain: dict) -> None:
     verification = _verify(freeze_chain)
     release = build_feedback_release_credential(
@@ -1158,6 +1185,54 @@ def test_future_observation_rejects_invalid_time_label_and_global_duplicate(free
         collect_future_observation(
             question, frozen, copy.deepcopy(observation), collected_at="2026-08-02T00:00:00Z",
         )
+
+
+def test_v2_release_can_anchor_immediate_case_completion(freeze_chain: dict) -> None:
+    frozen = _read(freeze_chain["frozen_run_path"])
+    release = build_feedback_release_credential(
+        frozen,
+        created_at="2026-07-16T01:05:00Z",
+    )
+    publish_new_json(
+        Path(release["artifact_path"]),
+        {key: value for key, value in release.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    release = _read(Path(release["artifact_path"]))
+    immediate = prospective_evidence.collect_immediate_retrospective(
+        release,
+        lambda: _custody_payload(release["case_id"]),
+        collected_at="2026-07-16T02:00:00Z",
+        custodian="human-custodian-01",
+    )
+    publish_new_json(
+        Path(immediate["artifact_path"]),
+        {key: value for key, value in immediate.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    bound = prospective_evidence.bind_immediate_labels(
+        _read(Path(immediate["artifact_path"])),
+    )
+    publish_new_json(
+        Path(bound["artifact_path"]),
+        {key: value for key, value in bound.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+
+    completion = build_case_completion(
+        freeze_verification=release,
+        immediate_bound=_read(Path(bound["artifact_path"])),
+        future_bound=None,
+        stopped_incident=None,
+        created_at="2026-07-16T02:00:01Z",
+    )
+
+    assert completion["retrospective_completion_status"] == "CASE_COMPLETE_FOR_RETROSPECTIVE"
+    assert completion["future_completion_status"] == "PENDING"
+    assert completion["parents"][0] == {
+        "artifact_path": release["artifact_path"],
+        "artifact_sha256": release["artifact_sha256"],
+    }
 
 
 def test_case_completion_has_separate_ledgers_and_no_completed_boolean(freeze_chain: dict) -> None:

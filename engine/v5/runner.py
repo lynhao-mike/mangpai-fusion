@@ -548,6 +548,7 @@ def build_abstain_claims(
         "gao_dechen": "高德臣 runner 尚未接入生产规则；当前仅登记做功转化待判。",
         "duan_jianye": "段建业 runner 尚未接入生产规则；当前仅登记事件框架待判。",
         "yang_qingjuan": "杨清娟 runner 尚未接入生产规则；当前仅登记象法细节待判。",
+        "ren_fuhong": "任付红 runner 尚未接入 v5 领域应期规则；当前仅登记应期验证待判。",
     }
     claim_type = {
         "ziping": "structure_claim",
@@ -555,13 +556,14 @@ def build_abstain_claims(
         "gao_dechen": "event_claim",
         "duan_jianye": "event_claim",
         "yang_qingjuan": "event_claim",
+        "ren_fuhong": "timing_claim",
     }
     claims: list[V5Claim] = []
     for school in schools:
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, school, label),
             source="chart_model",
-            text=f"五派共用同一 Chart Model：{label}",
+            text=f"六源共用同一 Chart Model：{label}",
             node_refs=["chart:root"],
             metadata={"runner_state": "stub"},
         )
@@ -577,7 +579,7 @@ def build_abstain_claims(
                 confidence=V5Confidence(tier="★", score=0.1, note="runner 骨架占位，不进入正式断语"),
                 evidence=[evidence],
                 probabilistic=False,
-                falsifiable="接入真实五派 runner 后，占位命题应消失。",
+                falsifiable="接入真实六源 runner 后，占位命题应消失。",
                 metadata={"case_id": case_id, "school_role": "see V5_SCHOOL_ROLES", "runner_state": "stub"},
             )
         )
@@ -1189,7 +1191,7 @@ def run_v5(
     claims: list[V5Claim] | None = None,
     workspace_root: str = ".",
 ) -> V5Output:
-    """运行 v5 五派命题图最小闭环。
+    """运行 v5 六源命题图最小闭环。
 
     参数：
     - chart：五派共享的标准命盘对象。

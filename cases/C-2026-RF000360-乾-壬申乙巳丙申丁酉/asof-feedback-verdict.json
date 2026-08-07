@@ -1,0 +1,120 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000360-乾-壬申乙巳丙申丁酉",
+  "adjudicated_at": "2026-07-30T20:13:48+08:00",
+  "feedback_source": "cases/C-2026-RF000360-乾-壬申乙巳丙申丁酉/feedback.md",
+  "freeze_source": "cases/C-2026-RF000360-乾-壬申乙巳丙申丁酉/asof-blind-freeze.json",
+  "freeze_sha256_expected": "4228c1b3914b71120a7bd48d79513b86bb3f9e2167c699b9fc77b2cb13653220",
+  "freeze_sha256_observed_before_verdict": "4228c1b3914b71120a7bd48d79513b86bb3f9e2167c699b9fc77b2cb13653220",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2020,
+      "domain": "career_upgrade",
+      "fact": "跳槽到比较好的公司。"
+    },
+    {
+      "year": 2021,
+      "domain": "career_income",
+      "fact": "年薪百万以上。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_state",
+      "fact": "金融行业，年薪百万左右。"
+    },
+    {
+      "year": 1998,
+      "domain": "dated_event_evidence",
+      "fact": "反馈未提供1998年事实。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ACTIVATED",
+    "verdict": "CENTER_HIT",
+    "reason": "金融行业、跳槽至更好公司及持续高收入支持专业输出、结果交付和资源协调的职业责任结构；不据此外推具体职级。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_PRIMARY",
+      "verdict": "MISS",
+      "reason": "反馈显示职业现实兑现较强，不支持兑现不稳为主要落点；不计独立统计。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "MISS",
+      "reason": "反馈支持正式公司职业路径；不计独立统计。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "1998-01-01/1998-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈没有1998年事实。",
+      "reason": "窗口内无直接证据，不能迁入2020后的职业事实。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "scaffold未提供2024，冻结后不得改写E1。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "金融职业与现实成就支持中心。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "无独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "1998无直接反馈。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "CENTER_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业基础命中，E1弃权。"
+  },
+  "protocol_exception": {
+    "code": "PREFLIGHT_REQUIRED_FIELD_MISSING_AND_SCAFFOLD_YEAR_COVERAGE_GAP",
+    "preflight_field_path": "藏干",
+    "required_section_9_4_year": 2024,
+    "e1_year": 1998,
+    "strict_requirement_satisfied": false,
+    "reason": "preflight失败后按scaffold降级，未后验改写。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

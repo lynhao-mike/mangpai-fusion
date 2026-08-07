@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 
-from engine.decision.accuracy_report import AccuracyReport, build_accuracy_report, render_accuracy_markdown
+from importlib import import_module
+from typing import TYPE_CHECKING, Final, Protocol
+
+from engine.decision.accuracy_report import (
+    AccuracyReport,
+    build_accuracy_report,
+    render_accuracy_markdown,
+)
 from engine.decision.models import (
     ArbitrationDecision,
     CalibrationAction,
@@ -21,7 +28,13 @@ from engine.decision.models import (
 )
 from engine.decision.l0_context import build_context_ledger
 from engine.decision.l0_wenzhen import parse_wenzhen_l0
-from engine.decision.l1_school_router import RoutePlan, RoutingRiskConfig, TaskRoute, build_route_plan, route_schools
+from engine.decision.l1_school_router import (
+    RoutePlan,
+    RoutingRiskConfig,
+    TaskRoute,
+    build_route_plan,
+    route_schools,
+)
 from engine.decision.capability_registry import CapabilityQuery, CapabilityRegistry
 from engine.decision.chart_prototype import PrototypeAssignment, classify_prototype
 from engine.decision.l2_claims import build_school_claims
@@ -29,11 +42,59 @@ from engine.decision.l3_structure import build_structural_verdicts
 from engine.decision.l4_events import build_event_hypotheses
 from engine.decision.l5_timing import build_timing_probabilities
 from engine.decision.l6_arbitration import build_arbitration_decisions
-from engine.decision.l7_report_view import build_report_items
-from engine.decision.l8_feedback_attribution import attribute_feedback, build_feedback_attributions, build_feedback_signals
-from engine.decision.l9_calibration import build_calibration_actions, build_router_calibration_actions
-from engine.decision.orchestrator import run_decision_mvp
-from engine.decision.v5_adapter import decision_run_from_snapshot, decision_run_from_v5
+
+if TYPE_CHECKING:
+    from engine.decision.l7_report_view import build_report_items
+    from engine.decision.l8_feedback_attribution import (
+        attribute_feedback,
+        build_feedback_attributions,
+        build_feedback_signals,
+    )
+    from engine.decision.l9_calibration import (
+        build_calibration_actions,
+        build_router_calibration_actions,
+    )
+    from engine.decision.orchestrator import run_decision_mvp
+    from engine.decision.v5_adapter import (
+        decision_run_from_snapshot,
+        decision_run_from_v5,
+    )
+
+
+class _DecisionExport(Protocol):
+    __module__: str
+    __name__: str
+
+
+_LAZY_EXPORTS: Final[dict[str, tuple[str, str]]] = {
+    "attribute_feedback": (
+        "engine.decision.l8_feedback_attribution",
+        "attribute_feedback",
+    ),
+    "build_calibration_actions": (
+        "engine.decision.l9_calibration",
+        "build_calibration_actions",
+    ),
+    "build_feedback_attributions": (
+        "engine.decision.l8_feedback_attribution",
+        "build_feedback_attributions",
+    ),
+    "build_feedback_signals": (
+        "engine.decision.l8_feedback_attribution",
+        "build_feedback_signals",
+    ),
+    "build_report_items": ("engine.decision.l7_report_view", "build_report_items"),
+    "build_router_calibration_actions": (
+        "engine.decision.l9_calibration",
+        "build_router_calibration_actions",
+    ),
+    "decision_run_from_snapshot": (
+        "engine.decision.v5_adapter",
+        "decision_run_from_snapshot",
+    ),
+    "decision_run_from_v5": ("engine.decision.v5_adapter", "decision_run_from_v5"),
+    "run_decision_mvp": ("engine.decision.orchestrator", "run_decision_mvp"),
+}
 
 __all__ = [
     "AccuracyReport",
@@ -79,3 +140,18 @@ __all__ = [
     "decision_run_from_v5",
     "run_decision_mvp",
 ]
+
+
+def __getattr__(name: str) -> _DecisionExport:
+    target = _LAZY_EXPORTS.get(name)
+    if target is None:
+        message = f"module {__name__!r} has no attribute {name!r}"
+        raise AttributeError(message)
+    module_name, attribute_name = target
+    export = getattr(import_module(module_name), attribute_name)
+    globals()[name] = export
+    return export
+
+
+def __dir__() -> list[str]:
+    return sorted((*globals(), *__all__))

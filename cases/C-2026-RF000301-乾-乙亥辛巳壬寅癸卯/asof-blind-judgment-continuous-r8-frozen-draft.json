@@ -1,0 +1,706 @@
+{
+  "as_of_date": "2026-06-08",
+  "blind_boundary": {
+    "blind_line_count": 155,
+    "boundary_type": "yaml_key",
+    "cut_line": 156,
+    "table_embedded_annotation_lines": []
+  },
+  "blind_input": {
+    "chart_source": "wenzhen_structured_v1",
+    "daiyun": [
+      {
+        "branch": "辰",
+        "end_date": "2006-01-01",
+        "sequence": 1,
+        "start_date": "1996-01-01",
+        "stem": "庚"
+      },
+      {
+        "branch": "卯",
+        "end_date": "2016-01-01",
+        "sequence": 2,
+        "start_date": "2006-01-01",
+        "stem": "己"
+      },
+      {
+        "branch": "寅",
+        "end_date": "2026-01-01",
+        "sequence": 3,
+        "start_date": "2016-01-01",
+        "stem": "戊"
+      },
+      {
+        "branch": "丑",
+        "end_date": "2036-01-01",
+        "sequence": 4,
+        "start_date": "2026-01-01",
+        "stem": "丁"
+      },
+      {
+        "branch": "子",
+        "end_date": "2046-01-01",
+        "sequence": 5,
+        "start_date": "2036-01-01",
+        "stem": "丙"
+      },
+      {
+        "branch": "亥",
+        "end_date": "2056-01-01",
+        "sequence": 6,
+        "start_date": "2046-01-01",
+        "stem": "乙"
+      },
+      {
+        "branch": "戌",
+        "end_date": "2066-01-01",
+        "sequence": 7,
+        "start_date": "2056-01-01",
+        "stem": "甲"
+      },
+      {
+        "branch": "酉",
+        "end_date": "2076-01-01",
+        "sequence": 8,
+        "start_date": "2066-01-01",
+        "stem": "癸"
+      }
+    ],
+    "gender": "乾",
+    "pillars": {
+      "day": {
+        "branch": "寅",
+        "changsheng": "病",
+        "hidden_stems": [
+          "甲",
+          "丙",
+          "戊"
+        ],
+        "stem": "壬"
+      },
+      "hour": {
+        "branch": "卯",
+        "changsheng": "死",
+        "hidden_stems": [
+          "乙"
+        ],
+        "stem": "癸"
+      },
+      "month": {
+        "branch": "巳",
+        "changsheng": "绝",
+        "hidden_stems": [
+          "丙",
+          "庚",
+          "戊"
+        ],
+        "stem": "辛"
+      },
+      "year": {
+        "branch": "亥",
+        "changsheng": "临官",
+        "hidden_stems": [
+          "壬",
+          "甲"
+        ],
+        "stem": "乙"
+      }
+    },
+    "schema_version": "asof-blind-input/v1"
+  },
+  "blind_input_sha256": "af147564751ea8b3366d23685b40bcb45b1cbbae00dfbb5077bfa2c57941afbc",
+  "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+  "feedback_opened": false,
+  "freeze_package": {
+    "blind_input_sha256": "af147564751ea8b3366d23685b40bcb45b1cbbae00dfbb5077bfa2c57941afbc",
+    "events": [
+      {
+        "candidate": {
+          "alternative_hypotheses": [
+            "甲木与寅卯输出增强可能只形成技能、表达或任务增加，未转成明确职责升级"
+          ],
+          "annual_trace": {
+            "activated_node_ids": [
+              "water_root",
+              "expression_output",
+              "authority_responsibility"
+            ],
+            "counter_evidence": [
+              {
+                "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+                "locator": "lines 37-40,150-155",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              },
+              {
+                "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+                "locator": "lines 38,49-58",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              }
+            ],
+            "crossed_candidate_gate": true,
+            "dayun_ganzhi": "戊寅",
+            "domains": [
+              "career"
+            ],
+            "liunian": "甲辰",
+            "relations": [
+              {
+                "excerpt": "甲辰年甲食神透出，强化原局寅卯乙的输出路径",
+                "locator": "2024 annual derivation",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              },
+              {
+                "excerpt": "辰藏癸戊乙，分别补弱根、承接运干戊责任信号并延续输出",
+                "locator": "2024 annual derivation",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              }
+            ],
+            "supporting_evidence": [
+              {
+                "excerpt": "甲辰年甲食神透出，强化原局寅卯乙的输出路径",
+                "locator": "2024 annual derivation",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              },
+              {
+                "excerpt": "辰藏癸戊乙，分别补弱根、承接运干戊责任信号并延续输出",
+                "locator": "2024 annual derivation",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              },
+              {
+                "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+                "locator": "lines 56-68,88-92",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              },
+              {
+                "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+                "locator": "lines 37-72",
+                "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+              }
+            ],
+            "trigger_strength": "medium",
+            "year": 2024
+          },
+          "candidate_id": "career-event-2024-responsibility-upgrade",
+          "completion_mode": "COMPLETE_LATENT",
+          "counter_evidence": [
+            {
+              "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+              "locator": "lines 37-40,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+              "locator": "lines 38,49-58",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "daiyun_evidence": [
+            {
+              "excerpt": "第三步大运为戊寅，2016-2026",
+              "locator": "lines 88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "domain": "career",
+          "event_type": "career_responsibility_upgrade",
+          "extension_boundary": "REMAINDER_ONLY_RECHECK_CROSS_DAIYUN",
+          "frozen_version": "asof-prototype-v1",
+          "is_primary_event": true,
+          "natal_evidence": [
+            {
+              "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+              "locator": "lines 37-48,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+              "locator": "lines 37-40,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "root_evidence": [
+            {
+              "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+              "locator": "lines 37-48,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+              "locator": "lines 37-40,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+              "locator": "lines 38,49-58",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "root_level": "WEAK_ROOT",
+          "source_citations": [
+            {
+              "excerpt": "壬水月令取用须结合戊庚辛丙甲配置，不能只据旺弱直接推出事业事件。",
+              "line": 101,
+              "source_path": "theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md"
+            },
+            {
+              "excerpt": "生方怕动库宜开，败地逢冲仔细推；仍须天干调剂、用神有力与岁运辅助。",
+              "line": 85,
+              "source_path": "theory/raw/tiaohou_ditiansui/extracted/滴天髓阐微_part1_候选理论提取_2026-06-06.md"
+            }
+          ],
+          "supporting_evidence": [
+            {
+              "excerpt": "甲辰年甲食神透出，强化原局寅卯乙的输出路径",
+              "locator": "2024 annual derivation",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "辰藏癸戊乙，分别补弱根、承接运干戊责任信号并延续输出",
+              "locator": "2024 annual derivation",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "verification_status": "FROZEN",
+          "window_end": "2024-12-31",
+          "window_start": "2024-01-01"
+        },
+        "landing_set": {
+          "alternatives": [
+            {
+              "direction": "upgrade",
+              "domain": "career",
+              "name": "岗位职责范围扩大"
+            },
+            {
+              "direction": "upgrade",
+              "domain": "career",
+              "name": "转入需要协调资源的工作角色"
+            }
+          ],
+          "center": {
+            "direction": "upgrade",
+            "domain": "career",
+            "name": "专业输出转为明确项目或结果责任"
+          },
+          "exclusions": [
+            "单纯薪资涨跌不计入命中",
+            "学习、考试或证书变化本身不计入事业职责升级",
+            "婚恋、健康或家庭事件不计入事业落点",
+            "不得事后追认具体单位、行业、职级或收入数额"
+          ],
+          "falsifiers": [
+            "2024年全年没有职责范围、项目结果责任或资源协调角色变化",
+            "唯一可核验事业变化明确发生在2024年窗口之外"
+          ],
+          "frozen_version": "asof-prototype-v1",
+          "function_candidate": "career_responsibility_upgrade",
+          "weak_hit_boundary": "只有学习、技能输出、任务量或短期协作增加，但没有职责范围、项目结果责任或资源协调角色的可核验变化"
+        }
+      }
+    ],
+    "fundamentals": [
+      {
+        "center": "原局有亥中壬本气根与癸劫透，但巳月绝地且巳亥冲；戊寅运以输出承接规则责任，兑现依赖年度补足链",
+        "falsifiers": [
+          "长期稳定职责升级完全不依赖岁运补足且根基不受冲动影响",
+          "戊寅运截至截止日没有输出向规则责任转化的可核验迹象"
+        ],
+        "fundamental_id": "career-fundamental-2016-2026",
+        "reasonable_range": [
+          "专业输出可转为明确职责",
+          "只增加技能、表达或任务量而未升级职责",
+          "根受冲时责任承接不稳定"
+        ],
+        "strongest_alternative": "食伤输出增强但只表现为学习、技能、表达或工作量增加",
+        "window_center": "2021-01-01",
+        "window_end": "2026-06-08",
+        "window_start": "2016-01-01"
+      }
+    ],
+    "identity": {
+      "as_of_date": "2026-06-08",
+      "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+      "schema_version": "asof-session/v1",
+      "session_id": "S-20260729T104900Z-00000301"
+    },
+    "schema_version": "asof-career-freeze-package/v1"
+  },
+  "freeze_package_sha256": "177295ff596bbe861cada8a5b3f35dca2a5d4471da3a946d7d00570f4cb502f9",
+  "frozen_at_utc": "2026-07-29T10:51:00.389346Z",
+  "frozen_prediction": {
+    "annual_trace": {
+      "activated_node_ids": [
+        "water_root",
+        "expression_output",
+        "authority_responsibility"
+      ],
+      "counter_evidence": [
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "crossed_candidate_gate": true,
+      "dayun_ganzhi": "戊寅",
+      "domains": [
+        "career"
+      ],
+      "liunian": "甲辰",
+      "relations": [
+        {
+          "excerpt": "甲辰年甲食神透出，强化原局寅卯乙的输出路径",
+          "locator": "2024 annual derivation",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "辰藏癸戊乙，分别补弱根、承接运干戊责任信号并延续输出",
+          "locator": "2024 annual derivation",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "supporting_evidence": [
+        {
+          "excerpt": "甲辰年甲食神透出，强化原局寅卯乙的输出路径",
+          "locator": "2024 annual derivation",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "辰藏癸戊乙，分别补弱根、承接运干戊责任信号并延续输出",
+          "locator": "2024 annual derivation",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+          "locator": "lines 56-68,88-92",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+          "locator": "lines 37-72",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "trigger_strength": "medium",
+      "year": 2024
+    },
+    "completion_mode": "COMPLETE_LATENT",
+    "daiyun_stage": {
+      "amplified_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "path_id": "output_to_responsibility",
+          "reason": "运干戊引入规则责任，运支寅延续原局输出路径"
+        }
+      ],
+      "applicability_conditions": [
+        "输出必须转成可核验职责、项目结果责任或资源协调角色",
+        "单纯学习、技能或工作量增加不满足事业升级落点"
+      ],
+      "closed_paths": [],
+      "counter_evidence": [
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "domain_tendency": "mixed",
+      "end_date": "2025-12-31",
+      "ganzhi": "戊寅",
+      "natal_relations": [
+        {
+          "evidence": [
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "natal_node_id": "expression_output",
+          "relation": "寅运延续甲木输出"
+        },
+        {
+          "evidence": [
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "natal_node_id": "authority_responsibility",
+          "relation": "戊运强化责任信号"
+        }
+      ],
+      "opened_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "path_id": "output_to_responsibility",
+          "reason": "运干戊引入规则责任，运支寅延续原局输出路径"
+        }
+      ],
+      "redirected_paths": [],
+      "repaired_paths": [],
+      "sequence": 3,
+      "signal_refs": [
+        {
+          "excerpt": "戊寅:2016-2026",
+          "locator": "segment[3].year_range",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        }
+      ],
+      "start_date": "2016-01-01",
+      "suppressed_paths": [],
+      "unresolved_signal_refs": [
+        {
+          "excerpt": "戊七杀透、寅食神承接，责任压力与输出并行",
+          "locator": "segment[3].feature",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        },
+        {
+          "excerpt": "career",
+          "locator": "segment[3].typical_domains",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        }
+      ]
+    },
+    "event_window": [
+      "2024-01-01",
+      "2024-12-31"
+    ],
+    "forbidden_inferences": [
+      "不得从盲断包推断具体单位、行业、职级或收入数额",
+      "不得将触发强度解释为现实影响度",
+      "不得跨年度或跨大运追认命中",
+      "不得用反馈自由文本创造冻结闭集之外的新命中项"
+    ],
+    "natal_capacity": {
+      "capacity_nodes": [
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+              "locator": "lines 37-48,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+              "locator": "lines 37-40,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "function": "承接与持续性",
+          "node_id": "water_root"
+        },
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "function": "专业输出与交付",
+          "node_id": "expression_output"
+        },
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+              "locator": "lines 38,49-58",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "function": "规则责任承接",
+          "node_id": "authority_responsibility"
+        }
+      ],
+      "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+      "chart_evidence": [
+        {
+          "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+          "locator": "lines 37-48,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+          "locator": "lines 37-72",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+          "locator": "lines 56-68,88-92",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "competing_explanations": [
+        "食伤增强可能只形成技能、表达或任务增加，未转成明确职责升级"
+      ],
+      "constraints": [
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "counter_evidence": [
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "domain": "career",
+      "feasible_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+              "locator": "lines 37-72",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+              "locator": "lines 56-68,88-92",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            },
+            {
+              "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+              "locator": "lines 37-48,150-155",
+              "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+            }
+          ],
+          "function": "专业输出转为明确责任",
+          "node_ids": [
+            "expression_output",
+            "authority_responsibility",
+            "water_root"
+          ],
+          "path_id": "output_to_responsibility"
+        }
+      ],
+      "schema_version": "asof-prototype-v1",
+      "source_citations": [
+        {
+          "excerpt": "壬水月令取用须结合戊庚辛丙甲配置，不能只据旺弱直接推出事业事件。",
+          "line": 101,
+          "source_path": "theory/raw/ziping/extracted/子平_穷通宝鉴_part2_候选理论提取_2026-06-06.md"
+        },
+        {
+          "excerpt": "生方怕动库宜开，败地逢冲仔细推；仍须天干调剂、用神有力与岁运辅助。",
+          "line": 85,
+          "source_path": "theory/raw/tiaohou_ditiansui/extracted/滴天髓阐微_part1_候选理论提取_2026-06-06.md"
+        }
+      ],
+      "structural_features": [
+        {
+          "excerpt": "年支亥藏壬本气且为壬日临官，时干癸劫财透出",
+          "locator": "lines 37-48,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "年干乙、寅卯及亥寅所藏甲乙形成食伤输出链",
+          "locator": "lines 37-72",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "巳寅均藏戊，第三步大运戊寅为规则与责任信号",
+          "locator": "lines 56-68,88-92",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ],
+      "vulnerabilities": [
+        {
+          "excerpt": "壬水生巳月处绝，巳亥冲使年支本气根受动",
+          "locator": "lines 37-40,150-155",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        },
+        {
+          "excerpt": "月干辛印透，但坐巳火且巳中庚戊丙并见",
+          "locator": "lines 38,49-58",
+          "source": "cases/C-2026-RF000301-乾-乙亥辛巳壬寅癸卯/input.md"
+        }
+      ]
+    },
+    "root_level": "WEAK_ROOT"
+  },
+  "schema_version": "asof-blind-judgment-continuous-r8-frozen-draft/v1",
+  "session_id": "S-20260729T104900Z-00000301"
+}

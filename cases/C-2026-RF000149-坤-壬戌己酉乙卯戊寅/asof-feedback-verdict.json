@@ -1,0 +1,184 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000149",
+  "adjudicated_at": "2026-07-30T10:13:15+08:00",
+  "feedback_source": "cases/C-2026-RF000149-坤-壬戌己酉乙卯戊寅/feedback.md",
+  "freeze_source": "cases/C-2026-RF000149-坤-壬戌己酉乙卯戊寅/asof-blind-freeze.json",
+  "freeze_sha256_expected": "82d3c6cba344532b8bef077eda1cdeae0c8736ad048ed786a7a40ff62c63f8e7",
+  "freeze_sha256_observed_before_verdict": "82d3c6cba344532b8bef077eda1cdeae0c8736ad048ed786a7a40ff62c63f8e7",
+  "freeze_immutable": true,
+  "independent_blind_reviewer": true,
+  "feedback_evidence": [
+    {
+      "year": 2011,
+      "domain": "career",
+      "fact": "获得好工作和好老板，年末工作发生变动并与原本关系好的老板闹僵。"
+    },
+    {
+      "year": 2012,
+      "domain": "career",
+      "fact": "工作突然换老板，年底被辞退；2013年与单位诉讼胜诉并获得赔偿，同时找到更好的工作。"
+    },
+    {
+      "year": 2013,
+      "domain": "career",
+      "fact": "前期工作状态较好，10月后再次失去工作并获得持续至2014年的补偿。"
+    },
+    {
+      "year": 2016,
+      "domain": "career",
+      "fact": "找到非常好的工作，并因工作跨城市搬迁，竞争较小。"
+    },
+    {
+      "year": 2017,
+      "domain": "career",
+      "fact": "差点失去工作，后获贵人帮助恢复工作并取得更好机会，再次因工作换城市。"
+    },
+    {
+      "year": 2018,
+      "domain": "career",
+      "fact": "全年工作被排挤、被陷害，2019年失去工作后很快接到更好的工作并换城市。"
+    },
+    {
+      "year": 2023,
+      "domain": "career",
+      "fact": "年表记载前半年打官司，后半年找到好工作。"
+    },
+    {
+      "year": 2024,
+      "domain": "career",
+      "fact": "年表记载截至反馈时财务不错、工作前半年顺利，并描述命主工作决断性强但情绪化。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_snapshot_conflict",
+      "fact": "截止日一句话快照另记‘2024年前半年打官司，后半年找到好工作’，与年表将该事件归于2023相冲突。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_snapshot",
+      "fact": "截至2026-06-11反馈快照为在职，但岗位、主要收入来源与职责均待确认或不详。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "NOT_EVALUABLE",
+    "verdict": "ABSTAIN",
+    "reason": "反馈确认命主在职，并明确其工作决断性强，历史上也多次获得更好工作；但没有说明截至截止日主要职业价值是否持续来自专业输出、自主推进，以及是否承担可识别的项目交付责任。按冻结weak_hit_boundary，仅有在职、决断性强或曾获得好工作不足以判中心命中，也不足以判失误。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_EVALUABLE",
+      "verdict": "ABSTAIN",
+      "reason": "2011—2019确有老板冲突、被辞退、被排挤、诉讼和重新就业等现实兑现不稳迹象，但反馈没有先确认专业输出与项目推进能力这一同向备选前提，也没有提供截止日授权、持续项目或成果承接情况，因此不后验激活。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_EVALUABLE",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未提供当前岗位职责，无法证明主要职业只是按既定流程完成常规任务，也无法证明其缺少持续自主推进和项目交付责任。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "claim_id": "P1",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈年表最早的职业事实始于2011年，没有1998—2008丁未运内技能形成、实践积累或自主项目主轴的正反证据。"
+    },
+    {
+      "claim_id": "P2",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2011获得好工作后年末发生工作变动并与老板闹僵",
+        "2012换老板、被辞退，2013诉讼胜诉并找到更好工作",
+        "2013再次失去工作并获得补偿",
+        "2016获得好工作并因工作换城市",
+        "2017差点失业后恢复工作并取得更好机会"
+      ],
+      "reason": "2008—2018阶段连续出现更好工作、跨城机会与工作机会升级，支持任务范围和职业自主性较前期扩张；同时反复出现老板冲突、辞退、诉讼及险些失业，直接支持对既定安排不适配的阶段方向。该命中仅针对宽阶段方向，不证明具体专业输出形态。"
+    },
+    {
+      "claim_id": "P3",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2018全年被排挤和陷害，2019失业后很快取得更好工作并换城市",
+        "2023年表记载诉讼后找到好工作",
+        "2024年表记载工作前半年顺利并描述工作决断性强但情绪化"
+      ],
+      "reason": "2018年至截止日出现同业或组织冲突、失业后重新落位、诉讼后再就业及较强工作决断性，支持自主推进、竞争和职责边界重定成为突出职业主题；多次排挤、失业与诉讼也支持现实授权和成果兑现未必同步稳定。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "年表把‘前半年打官司、后半年找到好工作’记在2023；截止日一句话快照却把同一描述记为2024。2024年表本身只确认截至反馈时工作前半年顺利，没有明确职责边界是否变化。",
+      "reason": "冻结最低命中条件是2024年主要职业职责边界发生明确变化。反馈内部对诉讼和重新就业年份归属冲突，且没有职责变化的直接描述；既不能用冲突快照强判CENTER_HIT，也不能由‘工作顺利’推断全年无变化而判MISS，故ABSTAIN。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "当前职责、专业输出和项目交付证据缺失，职业基本状态不可评价。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 2,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "2008—2018与2018—2026两段的机会扩张、冲突波动和重新落位方向有直接年表支持；1998—2008缺证。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "2024事件年份归属在反馈内部冲突，且缺少职责边界变化的直接证据，日期精度不可评价。"
+    }
+  },
+  "overall_conclusion": {
+    "career_basic_state": "ABSTAIN",
+    "broad_phase_direction": "PARTIAL_CENTER_HIT",
+    "dated_event_precision": "ABSTAIN",
+    "summary": "两段职业大方向得到反馈支持，但截止日职业功能链缺少职责级证据，2024日期事件又受反馈年份冲突限制。阶段命中不得吸收职业中心或日期事件的缺证。"
+  },
+  "toolchain_comparison": {
+    "subjective_assessment": "PHASE_SIGNAL_WITH_FUNCTION_AND_DATED_EVIDENCE_GAPS",
+    "improvements": [
+      "中心析取计数为0且设置weak_hit_boundary，阻止把在职、工作决断性强或获得好工作自动算作专业项目交付中心命中。",
+      "ACTIVATE_EXISTING配套现实兑现不稳备选，使历史职业冲突和失业可记录，但在缺少专业输出前提时不强行激活。",
+      "年度事件只冻结通过L1+L2候选门的2024单年，并坚持主要职业职责边界变化这一单一评分单元。",
+      "明确记录反馈内部2023/2024年份冲突，不以后验选择更有利年份制造日期命中。"
+    ],
+    "remaining_limit": "反馈缺少当前岗位与职责、持续专业输出、项目推进和交付责任说明；2023/2024诉讼及再就业年份还需原始记录核对。"
+  },
+  "diagnostic_note": {
+    "failure_class": "CAREER_FUNCTION_EVIDENCE_INSUFFICIENT_AND_DATED_FEEDBACK_CONFLICT",
+    "minimum_correction": "后续只需补问当前主要职责、是否持续自主推进并承担项目交付结果，以及核对诉讼和找到好工作的准确年份；补充前保持职业中心与日期项ABSTAIN。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_atomic_verdicts_formal": true,
+    "aggregate_label_not_atomic": "PARTIAL_CENTER_HIT"
+  }
+}

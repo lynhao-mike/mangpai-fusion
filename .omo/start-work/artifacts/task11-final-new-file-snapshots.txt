@@ -1,0 +1,851 @@
+==== engine\application\governance_shadow_runner.py ====
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Literal
+
+from engine.application.governance_fact_builder import (
+    FactBuilderError,
+    build_governance_fact_snapshot,
+)
+from engine.application.governance_shadow_school_views import adapt_school_views
+from engine.application.governance_shadow_types import (
+    CompositionRequest,
+    CompositionTrace,
+    GovernanceShadowDependencies,
+    GovernanceShadowRequest,
+    GovernanceShadowResult,
+    SchoolViewFailure as SchoolViewFailure,
+    SchoolViewOutcome as SchoolViewOutcome,
+    ShadowArbitrationTrace,
+    ShadowClaimTrace,
+    ShadowIssue,
+    TriggerRequest as TriggerRequest,
+    TriggerTrace,
+    UnavailableSchool,
+    shadow_result_digest,
+)
+from engine.governance.arbitration import arbitrate
+from engine.governance.arbitration_contracts import (
+    ArbitrationArena,
+    ArbitrationContext,
+    ArbitrationIntegrityError,
+)
+from engine.governance.composition_contracts import CompositionExecutionMode
+from engine.governance.composition_executor import execute_composition
+from engine.governance.contracts import FactSnapshot, build_fact_snapshot
+from engine.governance.fact_values import DigestRef, SnapshotSpec
+from engine.governance.governance_claim import GovernanceClaim
+from engine.governance.trigger_registry import evaluate_governance_trigger
+
+
+_SCHEMA_VERSION = "governance.shadow-result.v1"
+_RUNNER_VERSION = "governance-shadow-runner/v1"
+
+
+@dataclass(frozen=True, slots=True)
+class _RunContext:
+    unavailable: tuple[UnavailableSchool, ...] = ()
+    excluded_claim_refs: tuple[str, ...] = ()
+    triggers: tuple[TriggerTrace, ...] = ()
+    compositions: tuple[CompositionTrace, ...] = ()
+    arbitration: ShadowArbitrationTrace | None = None
+    issues: tuple[ShadowIssue, ...] = ()
+
+
+def _result(
+    status: Literal["ok", "fail_closed"],
+    snapshot: FactSnapshot,
+    claims: tuple[GovernanceClaim, ...],
+    context: _RunContext,
+) -> GovernanceShadowResult:
+    trace = GovernanceShadowResult(
+        _SCHEMA_VERSION,
+        _RUNNER_VERSION,
+        status,
+        str(snapshot.snapshot_id),
+        snapshot.content_digest.value,
+        snapshot.input_digest.value,
+        tuple(sorted({fact.fact_kind for fact in snapshot.facts})),
+        tuple(ShadowClaimTrace.from_claim(claim) for claim in claims),
+        tuple(sorted(context.unavailable, key=lambda item: item.school_id)),
+        tuple(sorted(context.excluded_claim_refs)),
+        tuple(sorted(context.triggers, key=lambda item: item.trigger_id)),
+        tuple(
+            sorted(
+                context.compositions,
+                key=lambda item: (item.template_id, item.version, item.content_digest),
+            )
+        ),
+        context.arbitration,
+        tuple(sorted(context.issues, key=lambda item: item.to_canonical())),
+        "",
+    )
+    return GovernanceShadowResult(
+        trace.schema_version,
+        trace.runner_version,
+        trace.status,
+        trace.fact_snapshot_id,
+        trace.fact_snapshot_digest,
+        trace.input_digest,
+        trace.fact_kinds,
+        trace.claims,
+        trace.unavailable_schools,
+        trace.excluded_claim_refs,
+        trace.trigger_results,
+        trace.composition_results,
+        trace.arbitration,
+        trace.issues,
+        shadow_result_digest(trace),
+    )
+
+
+def _fact_failure(error: FactBuilderError) -> GovernanceShadowResult:
+    snapshot = build_fact_snapshot(
+        SnapshotSpec(
+            "governance.fact-snapshot.v1",
+            "fact-build-failed",
+            DigestRef.from_material(("fact-build-failed",)),
+        ),
+        (),
+    )
+    context = _RunContext(
+        issues=(ShadowIssue(error.issue_code, error.field_path, error.diagnostic),)
+    )
+    return _result("fail_closed", snapshot, (), context)
+
+
+def _triggers(
+    snapshot: FactSnapshot, dependencies: GovernanceShadowDependencies
+) -> tuple[TriggerTrace, ...]:
+    if dependencies.trigger_registry is None:
+        return ()
+    traces: list[TriggerTrace] = []
+    for request in dependencies.trigger_requests:
+        outcome = evaluate_governance_trigger(
+            dependencies.trigger_registry,
+            request.trigger_id,
+            snapshot,
+            request.context,
+        )
+        traces.append(
+            TriggerTrace(
+                request.trigger_id,
+                outcome.active,
+                tuple(issue.value for issue in outcome.issues),
+            )
+        )
+    return tuple(traces)
+
+
+def _compositions(
+    claims: tuple[GovernanceClaim, ...], dependencies: GovernanceShadowDependencies
+) -> tuple[CompositionTrace, ...]:
+    if dependencies.composition_registry is None:
+        return ()
+    by_id = {claim.claim_id: claim for claim in claims}
+    traces: list[CompositionTrace] = []
+    for request in dependencies.composition_requests:
+        traces.append(_composition_trace(request, by_id, dependencies))
+    return tuple(traces)
+
+
+def _composition_trace(
+    request: CompositionRequest,
+    claims: dict[str, GovernanceClaim],
+    dependencies: GovernanceShadowDependencies,
+) -> CompositionTrace:
+    registry = dependencies.composition_registry
+    if registry is None:
+        raise AssertionError("composition registry checked before trace execution")
+    result = execute_composition(
+        registry,
+        template_id=request.template_id,
+        version=request.version,
+        components=tuple(
+            claims[claim_id]
+            for claim_id in request.component_claim_ids
+            if claim_id in claims
+        ),
+        mode=CompositionExecutionMode.SHADOW,
+    )
+    return CompositionTrace(
+        result.template_id,
+        result.template_version,
+        result.outcome.value,
+        result.content_digest.value,
+        result.issue_code,
+    )
+
+
+def _merge(
+    context: _RunContext,
+    triggers: tuple[TriggerTrace, ...],
+    compositions: tuple[CompositionTrace, ...],
+    arbitration: ShadowArbitrationTrace | None = None,
+    issues: tuple[ShadowIssue, ...] = (),
+) -> _RunContext:
+    return _RunContext(
+        context.unavailable,
+        context.excluded_claim_refs,
+        triggers,
+        compositions,
+        arbitration,
+        (*context.issues, *issues),
+    )
+
+
+def _arbitration_result(
+    request: GovernanceShadowRequest,
+    dependencies: GovernanceShadowDependencies,
+    snapshot: FactSnapshot,
+    claims: tuple[GovernanceClaim, ...],
+) -> ShadowArbitrationTrace:
+    arena = ArbitrationArena(
+        claims,
+        ArbitrationContext(snapshot.facts, dependencies.certification_registry),
+        dependencies.reference_catalog,
+        dependencies.school_registry,
+        dependencies.capability_version,
+        request.fact_conflicts,
+    )
+    return ShadowArbitrationTrace.from_result(arbitrate(arena))
+
+
+def run_governance_shadow(
+    request: GovernanceShadowRequest,
+    dependencies: GovernanceShadowDependencies,
+) -> GovernanceShadowResult:
+    try:
+        snapshot = build_governance_fact_snapshot(
+            case_id=request.case_id,
+            raw_payload=request.raw_payload,
+            chart=request.chart,
+            target_year=request.target_year,
+            calculator_version=request.calculator_version,
+            feature_vector=request.feature_vector,
+        )
+    except FactBuilderError as error:
+        return _fact_failure(error)
+    adapted = adapt_school_views(request.school_views, dependencies.reference_catalog)
+    context = _RunContext(
+        adapted.unavailable,
+        adapted.excluded_claim_refs,
+        issues=adapted.issues,
+    )
+    claims = adapted.claims
+    triggers = _triggers(snapshot, dependencies)
+    compositions = _compositions(claims, dependencies)
+    if request.fact_conflicts:
+        issues = tuple(
+            ShadowIssue("ARBITRATION.FACT_CONFLICT", item.fact_id, "fact conflict")
+            for item in request.fact_conflicts
+        )
+        return _result(
+            "fail_closed",
+            snapshot,
+            claims,
+            _merge(context, triggers, compositions, issues=issues),
+        )
+    try:
+        arbitration = _arbitration_result(request, dependencies, snapshot, claims)
+    except ArbitrationIntegrityError as error:
+        issue = ShadowIssue(error.code.value, error.fact_id, str(error))
+        return _result(
+            "fail_closed",
+            snapshot,
+            claims,
+            _merge(context, triggers, compositions, issues=(issue,)),
+        )
+    return _result(
+        "ok",
+        snapshot,
+        claims,
+        _merge(context, triggers, compositions, arbitration=arbitration),
+    )
+==== engine\application\governance_shadow_types.py ====
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Literal
+
+from engine.decision.models import ChartFactLedger, RawWenzhenPayload, SchoolClaim
+from engine.features.types import ChartFeatureVector
+from engine.governance.arbitration_contracts import FactConflictContext
+from engine.governance.arbitration_result import ArbitrationResult
+from engine.governance.canonical import CanonicalValue
+from engine.governance.composition_templates import CompositionRegistry
+from engine.governance.contracts import FactSnapshot
+from engine.governance.fact_certification import FactCertificationRegistry
+from engine.governance.fact_values import DigestRef
+from engine.governance.governance_claim import GovernanceClaim
+from engine.governance.governance_claim_values import GovernanceReferenceCatalog
+from engine.governance.school_registry import SchoolRegistry
+from engine.governance.trigger_registry import TriggerEvaluationContext, TriggerRegistry
+
+
+@dataclass(frozen=True, slots=True)
+class SchoolViewOutcome:
+    school_id: str
+    legacy_claims: tuple[SchoolClaim, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class SchoolViewFailure:
+    school_id: str
+    issue_code: str
+    diagnostic: str
+
+
+@dataclass(frozen=True, slots=True)
+class TriggerRequest:
+    trigger_id: str
+    context: TriggerEvaluationContext
+
+
+@dataclass(frozen=True, slots=True)
+class CompositionRequest:
+    template_id: str
+    version: str
+    component_claim_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class GovernanceShadowRequest:
+    case_id: str
+    raw_payload: RawWenzhenPayload
+    chart: ChartFactLedger
+    calculator_version: str
+    school_views: tuple[SchoolViewOutcome | SchoolViewFailure, ...]
+    target_year: int | None = None
+    feature_vector: ChartFeatureVector | None = None
+    fact_conflicts: tuple[FactConflictContext, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class GovernanceShadowDependencies:
+    reference_catalog: GovernanceReferenceCatalog
+    school_registry: SchoolRegistry
+    certification_registry: FactCertificationRegistry
+    capability_version: str
+    trigger_registry: TriggerRegistry | None = None
+    trigger_requests: tuple[TriggerRequest, ...] = ()
+    composition_registry: CompositionRegistry | None = None
+    composition_requests: tuple[CompositionRequest, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class ShadowIssue:
+    issue_code: str
+    field_path: str
+    diagnostic: str
+
+    def to_canonical(self) -> CanonicalValue:
+        return (self.issue_code, self.field_path, self.diagnostic)
+
+
+@dataclass(frozen=True, slots=True)
+class UnavailableSchool:
+    school_id: str
+    issue_code: str
+    diagnostic: str
+
+    def to_canonical(self) -> CanonicalValue:
+        return (self.school_id, self.issue_code, self.diagnostic)
+
+
+@dataclass(frozen=True, slots=True)
+class ShadowClaimTrace:
+    claim_id: str
+    school_id: str
+    source_claim_ref: str
+    content_digest: str
+
+    @classmethod
+    def from_claim(cls, claim: GovernanceClaim) -> ShadowClaimTrace:
+        return cls(
+            claim.claim_id,
+            claim.school_id,
+            claim.adapter_provenance.source_claim_ref,
+            claim.content_digest.value,
+        )
+
+    def to_canonical(self) -> CanonicalValue:
+        return (
+            self.claim_id,
+            self.school_id,
+            self.source_claim_ref,
+            self.content_digest,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class GateTrace:
+    gate: str
+    retained_claim_ids: tuple[str, ...]
+    rejected_claim_ids: tuple[str, ...]
+
+    def to_canonical(self) -> CanonicalValue:
+        return (self.gate, self.retained_claim_ids, self.rejected_claim_ids)
+
+
+@dataclass(frozen=True, slots=True)
+class ShadowArbitrationTrace:
+    decision: str
+    content_digest: str
+    retained_claim_ids: tuple[str, ...]
+    gate_trace: tuple[GateTrace, ...]
+
+    @classmethod
+    def from_result(cls, result: ArbitrationResult) -> ShadowArbitrationTrace:
+        return cls(
+            result.decision.value,
+            result.content_digest.value,
+            result.retained_claim_ids,
+            tuple(
+                GateTrace(
+                    record.gate.value,
+                    record.retained_claim_ids,
+                    record.rejected_claim_ids,
+                )
+                for record in result.gates
+            ),
+        )
+
+    def to_canonical(self) -> CanonicalValue:
+        return (
+            self.decision,
+            self.content_digest,
+            self.retained_claim_ids,
+            tuple(record.to_canonical() for record in self.gate_trace),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class TriggerTrace:
+    trigger_id: str
+    active: bool
+    issues: tuple[str, ...]
+
+    def to_canonical(self) -> CanonicalValue:
+        return (self.trigger_id, self.active, self.issues)
+
+
+@dataclass(frozen=True, slots=True)
+class CompositionTrace:
+    template_id: str
+    version: str
+    outcome: str
+    content_digest: str
+    issue_code: str | None
+
+    def to_canonical(self) -> CanonicalValue:
+        return (
+            self.template_id,
+            self.version,
+            self.outcome,
+            self.content_digest,
+            self.issue_code,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class GovernanceShadowResult:
+    schema_version: str
+    runner_version: str
+    status: Literal["ok", "fail_closed"]
+    fact_snapshot_id: str
+    fact_snapshot_digest: str
+    input_digest: str
+    fact_kinds: tuple[str, ...]
+    claims: tuple[ShadowClaimTrace, ...]
+    unavailable_schools: tuple[UnavailableSchool, ...]
+    excluded_claim_refs: tuple[str, ...]
+    trigger_results: tuple[TriggerTrace, ...]
+    composition_results: tuple[CompositionTrace, ...]
+    arbitration: ShadowArbitrationTrace | None
+    issues: tuple[ShadowIssue, ...]
+    result_digest: str
+
+    def to_canonical(self) -> CanonicalValue:
+        return (
+            self.schema_version,
+            self.runner_version,
+            self.status,
+            self.fact_snapshot_id,
+            self.fact_snapshot_digest,
+            self.input_digest,
+            self.fact_kinds,
+            tuple(claim.to_canonical() for claim in self.claims),
+            tuple(item.to_canonical() for item in self.unavailable_schools),
+            self.excluded_claim_refs,
+            tuple(item.to_canonical() for item in self.trigger_results),
+            tuple(item.to_canonical() for item in self.composition_results),
+            self.arbitration.to_canonical() if self.arbitration is not None else None,
+            tuple(issue.to_canonical() for issue in self.issues),
+        )
+
+
+def shadow_result_digest(result: GovernanceShadowResult) -> str:
+    return DigestRef.from_material(result.to_canonical()).value
+
+
+def snapshot_versions(snapshot: FactSnapshot) -> tuple[str, ...]:
+    return tuple(sorted({fact.calculator_version for fact in snapshot.facts}))
+==== engine\application\governance_shadow_school_views.py ====
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import assert_never
+
+from engine.application.governance_claim_adapters import adapt_decision_school_claim
+from engine.application.governance_shadow_types import (
+    SchoolViewFailure,
+    SchoolViewOutcome,
+    ShadowIssue,
+    UnavailableSchool,
+)
+from engine.governance.governance_claim import GovernanceClaim
+from engine.governance.governance_claim_values import (
+    ClaimIssue,
+    GovernanceReferenceCatalog,
+)
+
+
+@dataclass(frozen=True, slots=True)
+class AdaptedSchoolViews:
+    claims: tuple[GovernanceClaim, ...]
+    unavailable: tuple[UnavailableSchool, ...]
+    excluded_claim_refs: tuple[str, ...]
+    issues: tuple[ShadowIssue, ...]
+
+
+def _claim_issue(issue: ClaimIssue) -> ShadowIssue:
+    return ShadowIssue(issue.code.value, "school_views.legacy_claims", issue.detail)
+
+
+def adapt_school_views(
+    views: tuple[SchoolViewOutcome | SchoolViewFailure, ...],
+    catalog: GovernanceReferenceCatalog,
+) -> AdaptedSchoolViews:
+    claims: list[GovernanceClaim] = []
+    unavailable: list[UnavailableSchool] = []
+    excluded: list[str] = []
+    issues: list[ShadowIssue] = []
+    for view in views:
+        match view:
+            case SchoolViewFailure(
+                school_id=school_id, issue_code=code, diagnostic=text
+            ):
+                unavailable.append(UnavailableSchool(school_id, code, text))
+            case SchoolViewOutcome(school_id=school_id, legacy_claims=legacy_claims):
+                if school_id == "ditiansui":
+                    excluded.extend(claim.claim_id for claim in legacy_claims)
+                    continue
+                for legacy in legacy_claims:
+                    adapted = adapt_decision_school_claim(legacy, catalog)
+                    if adapted.claim is None:
+                        issues.extend(_claim_issue(issue) for issue in adapted.issues)
+                        continue
+                    claims.append(adapted.claim)
+            case unreachable:
+                assert_never(unreachable)
+    return AdaptedSchoolViews(
+        tuple(sorted(claims, key=lambda claim: claim.claim_id)),
+        tuple(unavailable),
+        tuple(excluded),
+        tuple(issues),
+    )
+==== tests\application\test_governance_shadow_runner.py ====
+from __future__ import annotations
+
+import ast
+from dataclasses import replace
+from pathlib import Path
+
+from engine.decision.models import ChartFactLedger, RawWenzhenPayload, SchoolClaim
+from engine.governance import (
+    ClaimEvidenceGrade,
+    ClaimKind,
+    ClaimReferenceCategory,
+    DigestRef,
+    FactConflictContext,
+    GovernanceReferenceCatalog,
+    ReferenceRegistration,
+    TemporalLayer,
+    TriggerEvaluationContext,
+    TriggerRegistrationSpec,
+    build_trigger_registry,
+)
+from engine.governance.registries import (
+    CapabilityIdentity,
+    CapabilityRegistration,
+    CapabilityRole,
+    FactCertificationRegistry,
+    LegacyCompatibilitySource,
+    PeerSchool,
+    PublicationStatus,
+    SchoolRegistry,
+    TriggerEvaluatorId,
+    TriggerPublicationStatus,
+)
+
+from engine.application.governance_shadow_runner import (
+    GovernanceShadowDependencies,
+    GovernanceShadowRequest,
+    SchoolViewFailure,
+    SchoolViewOutcome,
+    TriggerRequest,
+    run_governance_shadow,
+)
+
+
+def _raw() -> RawWenzhenPayload:
+    return RawWenzhenPayload(raw_text="fixture", raw_hash="raw-shadow-001")
+
+
+def _chart() -> ChartFactLedger:
+    return ChartFactLedger(
+        sex_marker="qian",
+        four_pillars={"year": "jiazi", "month": "yichou", "day": "bingyin"},
+        dayun_steps=[{"ganzhi": "wuchen", "start_year": 2018, "end_year": 2027}],
+        liunian_steps=[{"year": 2026, "ganzhi": "bingwu"}],
+        raw_source_hash="raw-shadow-001",
+    )
+
+
+def _catalog() -> GovernanceReferenceCatalog:
+    return GovernanceReferenceCatalog(
+        (
+            ReferenceRegistration(
+                ClaimReferenceCategory.SCHOOL_REASON, "reason:ziping", "legacy-v1"
+            ),
+            ReferenceRegistration(
+                ClaimReferenceCategory.SCHOOL_REASON, "reason:gao", "legacy-v1"
+            ),
+            ReferenceRegistration(
+                ClaimReferenceCategory.SOURCE_RULE, "rule:structure", "legacy-v1"
+            ),
+        )
+    )
+
+
+def _school_registry() -> SchoolRegistry:
+    capabilities = tuple(
+        CapabilityRegistration(
+            CapabilityIdentity(
+                school_id,
+                "structure.assessment",
+                ClaimKind.STRUCTURE,
+                ClaimEvidenceGrade.INFERENTIAL,
+                "governance/v1",
+            ),
+            CapabilityRole.LEAD,
+            PublicationStatus.PUBLISHED,
+        )
+        for school_id in ("ziping", "gao_dechen")
+    )
+    return SchoolRegistry(
+        tuple(
+            PeerSchool(school_id)
+            for school_id in (
+                "ziping",
+                "gao_dechen",
+                "duan_jianye",
+                "yang_qingjuan",
+                "ren_fuhong",
+            )
+        ),
+        (LegacyCompatibilitySource("ditiansui"),),
+        capabilities,
+    )
+
+
+def _dependencies() -> GovernanceShadowDependencies:
+    return GovernanceShadowDependencies(
+        reference_catalog=_catalog(),
+        school_registry=_school_registry(),
+        certification_registry=FactCertificationRegistry(()),
+        capability_version="governance/v1",
+    )
+
+
+def _legacy_claim(school: str, reason: str) -> SchoolClaim:
+    return SchoolClaim(
+        claim_id=f"legacy-{school}",
+        school=school,
+        role_granted_by_l1="lead",
+        domain="structure",
+        claim_type="structure_claim",
+        statement=f"{school} structure view",
+        evidence_refs=[reason, "rule:structure"],
+        confidence=0.64,
+        falsifier="",
+        metadata={
+            "task_id": "structure.assessment",
+            "stance": "support",
+            "temporal_scope": "natal",
+            "reference_version": "legacy-v1",
+        },
+    )
+
+
+def _request(
+    *outcomes: SchoolViewOutcome | SchoolViewFailure,
+    target_year: int | None = 2026,
+) -> GovernanceShadowRequest:
+    return GovernanceShadowRequest(
+        case_id="C-SHADOW-001",
+        raw_payload=_raw(),
+        chart=_chart(),
+        target_year=target_year,
+        calculator_version="governance-fact-builder-v1",
+        school_views=outcomes,
+    )
+
+
+def test_shadow_runner_preserves_available_schools_when_one_school_fails() -> None:
+    # Given: one valid School View and one explicit unavailable School View.
+    request = _request(
+        SchoolViewOutcome("ziping", (_legacy_claim("ziping", "reason:ziping"),)),
+        SchoolViewFailure("ren_fuhong", "SCHOOL_VIEW.RUNTIME", "ren view failed"),
+    )
+
+    # When: the shadow runner orchestrates fact build, adaptation, and arbitration.
+    result = run_governance_shadow(request, _dependencies())
+
+    # Then: the failed school is marked unavailable and the other claim survives.
+    assert result.status == "ok"
+    assert result.unavailable_schools[0].school_id == "ren_fuhong"
+    assert result.arbitration is not None
+    assert result.arbitration.decision == "consensus"
+    assert result.arbitration.retained_claim_ids == (result.claims[0].claim_id,)
+    assert tuple(record.gate for record in result.arbitration.gate_trace) == (
+        "eligibility",
+        "temporal",
+        "evidence",
+        "independence",
+        "counterevidence",
+        "applicability",
+        "decision",
+    )
+
+
+def test_fact_conflict_stops_before_arena_with_typed_fail_closed_result() -> None:
+    # Given: an explicit immutable fact conflict from an upstream snapshot check.
+    conflict = FactConflictContext(
+        "fact:shared",
+        DigestRef.from_material(("first",)).value,
+        DigestRef.from_material(("second",)).value,
+    )
+    request = replace(
+        _request(
+            SchoolViewOutcome("ziping", (_legacy_claim("ziping", "reason:ziping"),))
+        ),
+        fact_conflicts=(conflict,),
+    )
+
+    # When: the runner receives the conflict.
+    result = run_governance_shadow(request, _dependencies())
+
+    # Then: arbitration is not allowed to proceed.
+    assert result.status == "fail_closed"
+    assert result.arbitration is None
+    assert result.issues[0].issue_code == "ARBITRATION.FACT_CONFLICT"
+
+
+def test_same_inputs_and_versions_produce_the_same_shadow_digest() -> None:
+    # Given: two equivalent requests with different School View ordering.
+    first = _request(
+        SchoolViewOutcome("ziping", (_legacy_claim("ziping", "reason:ziping"),)),
+        SchoolViewOutcome("gao_dechen", (_legacy_claim("gao", "reason:gao"),)),
+    )
+    second = _request(*reversed(first.school_views))
+
+    # When: both are evaluated through the same dependency snapshot.
+    first_result = run_governance_shadow(first, _dependencies())
+    second_result = run_governance_shadow(second, _dependencies())
+
+    # Then: canonical ordering keeps the public digest deterministic.
+    assert first_result.result_digest == second_result.result_digest
+    assert first_result.to_canonical() == second_result.to_canonical()
+
+
+def test_no_target_year_omits_liunian_and_keeps_liunian_trigger_inactive() -> None:
+    # Given: an explicit liunian trigger request but no explicit target year.
+    dependencies = replace(
+        _dependencies(),
+        trigger_registry=build_trigger_registry(
+            (
+                TriggerRegistrationSpec(
+                    "timing.liunian",
+                    TriggerEvaluatorId.LIUNIAN_TARGET_YEAR_PRESENT.value,
+                    "1.0.0",
+                    ("chart.liunian",),
+                    (TemporalLayer.LIUNIAN.value,),
+                    "inactive_with_issue",
+                    TriggerPublicationStatus.PUBLISHED.value,
+                ),
+            )
+        ),
+        trigger_requests=(
+            TriggerRequest("timing.liunian", TriggerEvaluationContext()),
+        ),
+    )
+
+    # When: the runner executes without target_year.
+    result = run_governance_shadow(
+        _request(
+            SchoolViewOutcome("ziping", (_legacy_claim("ziping", "reason:ziping"),)),
+            target_year=None,
+        ),
+        dependencies,
+    )
+
+    # Then: no liunian fact appears and timing activation remains inactive.
+    assert "chart.liunian" not in result.fact_kinds
+    assert result.trigger_results[0].active is False
+    assert result.trigger_results[0].issues == ("missing_required_fact",)
+
+
+def test_ditiansui_legacy_claim_is_excluded_from_five_school_arena() -> None:
+    # Given: one peer claim and one legacy Ditiansui compatibility claim.
+    request = _request(
+        SchoolViewOutcome("ziping", (_legacy_claim("ziping", "reason:ziping"),)),
+        SchoolViewOutcome("ditiansui", (_legacy_claim("ditiansui", "reason:ziping"),)),
+    )
+
+    # When: the shadow arena is built.
+    result = run_governance_shadow(request, _dependencies())
+
+    # Then: Ditiansui is audited as excluded and never enters arbitration.
+    assert result.status == "ok"
+    assert result.excluded_claim_refs == ("legacy-ditiansui",)
+    assert result.arbitration is not None
+    assert result.arbitration.retained_claim_ids == (result.claims[0].claim_id,)
+
+
+def test_shadow_runner_static_imports_stay_isolated_from_production_surfaces() -> None:
+    # Given: the runner source.
+    module_path = Path("engine/application/governance_shadow_runner.py")
+    tree = ast.parse(module_path.read_text(encoding="utf-8"))
+
+    # When: direct imports are inspected.
+    modules: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            modules.update(alias.name for alias in node.names)
+        if isinstance(node, ast.ImportFrom) and node.module is not None:
+            modules.add(node.module)
+
+    # Then: shadow code does not bind production/report/feedback/learning surfaces.
+    banned = (
+        "engine.pipeline",
+        "engine.v5.runner",
+        "engine.application.pipeline_runner",
+        "tools.render_report",
+        "tools.feedback_ingest",
+        "tools.feedback_loop",
+        "tools.conditional_learning",
+    )
+    assert all(module not in modules for module in banned)

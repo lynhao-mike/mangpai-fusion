@@ -1,0 +1,189 @@
+Task 7 seven-gate arbitration evidence
+
+Implementation boundary
+- New path only: engine/governance/arbitration.py, arbitration_gates.py,
+  arbitration_decision.py, arbitration_contracts.py.
+- Legacy engine/decision/l6_staged_arbitration.py and arbitrate_staged() unchanged.
+- Fixed gate sequence observed:
+  eligibility -> temporal -> evidence -> independence -> counterevidence
+  -> applicability -> decision
+- Arena requires immutable claims, ArbitrationContext facts and certifications,
+  reference catalog, school registry, exact capability version, and optional typed
+  FactConflictContext input. Fact conflicts raise ARBITRATION.FACT_CONFLICT before
+  theory arbitration.
+
+Focused repeat
+Command: python -m pytest tests/governance/test_arbitration_gates.py tests/governance/test_arbitration_properties.py -q
+Result: 14 passed in 0.47s
+
+Planned joint regression
+Command: python -m pytest tests/governance tests/decision/test_staged_arbitration.py -q
+Result: 127 passed in 17.50s; one existing pipeline_runner deprecation warning.
+
+CLI property permutation
+Command: python -c (two claims, then reversed claims, arbitrate both)
+Result:
+- decision: consensus
+- digest equality: True
+- independent group count equality: True
+
+Manual QA matrix
+- Qualified direct claim: consensus and all seven GateRecord values present.
+- Natal support plus liunian oppose: complementary, two TemporalGroup values.
+- Typed blocker: evidence audit; no applicability audit.
+- Same-source duplicate: one EvidenceGroup; retained IDs deduplicated.
+- Candidate, unregistered, and evidence_only capabilities: abstain with applicability audit.
+- Direct event support/oppose: human_review; both claim IDs retained.
+- Timing target years 2025 and 2027: preserved separately; no average/intersection.
+- Empty arena: abstain; no implicit authority.
+- Explicit incompatible FactConflictContext: typed fail-closed error.
+
+Quality
+- ruff check passed for all Task7 source and tests.
+- ruff format applied and verified during focused/joint execution.
+- Pure LOC: arbitration.py 52; arbitration_gates.py 203;
+  arbitration_decision.py 93; arbitration_contracts.py 142;
+  test_arbitration_gates.py 176; test_arbitration_properties.py 44.
+- Forbidden uniform/global/weighted legacy path scan: absent.
+- basedpyright unavailable in environment; no-excuse checker later located in the
+  programming skill and passed with zero violations.
+
+Independence grouping repair
+- Red tests added for shared public fact with different source_rule and for the
+  transitive-overlap attack A(f,r1), B(f,r2), C(f,r1).
+- Red result: 2 failed, 5 passed. Both inputs incorrectly produced one group.
+- Root causes: any-reference intersection unioned source families, and arena
+  deduplicated by claim_id although Task5 permits distinct content digests for
+  the same assertion identity.
+- Green rule: complete normalized source identity is the sorted tuple of all
+  public fact, certified fact, school reason, and source rule references.
+  Claims fold only when that entire tuple is equal. Arena deduplication uses
+  (claim_id, content_digest), so exact copies fold but distinct evidence remains.
+- Focused first green: 16 passed in 0.72s. Focused repeat: 16 passed in 0.98s.
+- Final joint: python -m pytest tests/governance tests/decision/test_staged_arbitration.py -q
+  Result: 129 passed in 18.01s; one existing deprecation warning.
+- Fresh process transitive CLI: 2 groups, member sizes (1, 2), permutation
+  digest equality True.
+- ruff check and ruff format --check passed. No-excuse checker passed with zero
+  violations in 6 files. basedpyright remains unavailable in environment.
+
+Review HIGH repair: variant identity and counterevidence trace
+- Added frozen, slots ClaimVariantRef(claim_id, content_digest) as the only
+  claim-instance identity for audits, gate records, temporal/evidence groups,
+  retained/applicable/minority/preserved result views, and digest material.
+  Legacy claim-ID properties are read-only display compatibility views only.
+- Added CounterevidenceTrace(owner variant, exact ClaimReference tuple). The
+  counterevidence gate creates stable sorted immutable traces and result digest
+  binds traces, every variant reference, groups, audits, gates, and decision.
+
+Recursive nested public-contract repair
+- Direct constructor matrix: TemporalGroup.variants, EvidenceGroup.variants /
+  source keys, ClaimAudit.owner plus gate / issue, GateRecord retained / rejected
+  variants, and CounterevidenceTrace.owner / references reject mutable or forged
+  fields with ArbitrationContractError.
+- Nested object injection: object.__new__(ClaimAudit) with a forged owner and an
+  object missing its required gate field are rejected by ArbitrationResult.build
+  before digest construction; no AttributeError is exposed.
+- Red evidence: the missing-gate injection initially failed with AttributeError
+  from audit validation. Green repair: shared validators check required fields
+  before reading and recursively validate exact field types and canonical tuples.
+- Boundary suite: 3 passed in 0.38s.
+- Focused suite run 1: 26 passed in 1.83s.
+- Focused suite run 2: 26 passed in 2.15s.
+- Joint regression: 139 passed in 19.76s; one existing pipeline_runner
+  deprecation warning.
+- Fresh Python CLI: arbitration completed with decision consensus and digest
+  281ff1cc62be9a7dbda4ba984d56f4476a6dfa3b2a0860cec962e1a6ac79a553.
+- Quality: ruff check passed; ruff format --check passed; no-excuse checker
+  reported zero violations in 11 files. basedpyright is unavailable in this
+  environment and was not treated as a passing check.
+- Pure LOC: arbitration.py 58; arbitration_contracts.py 191;
+  arbitration_values.py 39; arbitration_nested_validation.py 104;
+  arbitration_trace.py 57; arbitration_gates.py 240;
+  arbitration_decision.py 85; arbitration_result.py 135;
+  test_arbitration_gates.py 178; test_arbitration_properties.py 203;
+  test_arbitration_contract_boundaries.py 66.
+- ArbitrationResult direct construction validates content_digest. The sanctioned
+  build constructor computes its digest before validation.
+- Reviewer red started at missing ClaimVariantRef, then exposed mechanical
+  DigestRef ordering/import issues. Final green reviewer properties verify:
+  clean/blocked same claim ID has one retained and one rejected evidence variant;
+  confidence-only content changes result digest; nonempty counterevidence is
+  traced; support copies do not remove trace; counterevidence changes digest.
+- Focused tests: 21 passed twice. Final joint command:
+  python -m pytest tests/governance tests/decision/test_staged_arbitration.py -q
+  Result: 134 passed in 20.95s; one existing deprecation warning.
+- Fresh process reviewer CLI: evidence retained 1, rejected 1, counter traces 1,
+  repeated result digest equality True.
+- Final ruff check, ruff format --check, and no-excuse checker passed for 7
+  files. Pure LOC: arbitration 56, contracts 243, decision 85, gates 240,
+  trace 54, gate tests 178, property tests 131.
+
+Direct public contract repair
+- Added arbitration_values.py with closed ArbitrationContractError and strict
+  validators. ClaimVariantRef accepts only an exact stable governance_claim
+  identifier and exact DigestRef; raw strings, bool, and str subclasses reject.
+- CounterevidenceTrace accepts only an exact ClaimVariantRef owner and nonempty,
+  exact tuple of exact ClaimReference values already canonically sorted and
+  unique. Lists, sets, generators, duplicate tuples, and forged owners reject.
+- Concentrated malformed matrix passed for every above case. Direct fresh Python
+  process ClaimVariantRef(True, valid_digest) raised ARBITRATION.CONTRACT.
+- Focused tests: 22 passed twice. Final joint command:
+  python -m pytest tests/governance tests/decision/test_staged_arbitration.py -q
+  Result: 135 passed in 21.55s; one existing deprecation warning.
+- Final ruff check, ruff format --check, and no-excuse checker passed for 8
+  files. Pure LOC: arbitration 58, contracts 248, values 39, decision 85,
+  gates 240, trace 54, gate tests 178, property tests 159.
+
+ArbitrationResult collection boundary repair
+- Red reproduction: a direct ArbitrationResult constructor accepted a mutable
+  retained_variants list while retaining an otherwise legitimate digest.
+- Moved the result model to arbitration_result.py. Shared validation runs before
+  build provisional digesting and in direct __post_init__; it requires exact
+  ArbitrationDecision/DigestRef and exact tuples of exact variant, group, trace,
+  audit, and gate value objects.
+- Matrix verifies direct matching-digest list rejection, nested forged
+  EvidenceGroup rejection, and builder list rejection. Compatibility ID views
+  remain tuple-returning properties.
+- Focused tests: 23 passed twice. Final joint command:
+  python -m pytest tests/governance tests/decision/test_staged_arbitration.py -q
+  Result: 136 passed in 23.60s; one existing deprecation warning.
+- Fresh process direct list injection rejected with ARBITRATION.CONTRACT:
+  retained_variants must be exact ClaimVariantRef tuple.
+- Final ruff check, ruff format --check, and no-excuse checker passed for 9
+  files. All files remain below 250 pure LOC; new result module is 171 LOC.
+
+Derivation identity and seven-gate result-history repair
+- Task7 GovernanceClaimSpec fixture now supplies an explicit valid
+  derivation_chain_digest.
+- Source identity is the sorted complete tuple of public fact, certified fact,
+  school reason, source rule, and derivation digest. Equal references with a
+  different derivation produce separate EvidenceGroups; equal complete source
+  identities fold. Permutation coverage confirms stable grouping and digest.
+- Red reviewer repro: ArbitrationResult.build accepted empty, missing,
+  duplicated, and reordered gate histories; direct construction with a digest
+  computed from empty gates also accepted; different derivation digests folded.
+- Green rule: exactly one ordered sequence eligibility, temporal, evidence,
+  independence, counterevidence, applicability, decision is required. Each
+  record partitions the preceding retained variants, has no retain/reject
+  overlap, and applicability plus decision retained sets equal
+  applicable_variants.
+- New boundary suite: 5 passed in 1.03s.
+- Focused run 1: 31 passed in 3.88s.
+- Focused run 2: 31 passed in 1.41s.
+- Task1-7 joint: 148 passed in 19.96s; one existing pipeline_runner
+  deprecation warning.
+- Fresh Python CLI with equal refs and distinct derivation digests: 2 evidence
+  groups; exact seven-gate sequence; digest
+  4e43f67d2e0274e828a1c98f1fd5519d84ff8ce924d5592f949b73b2d33484ec.
+- Quality: ruff check and ruff format --check passed; no-excuse reported zero
+  violations in 13 files. basedpyright is unavailable and was not counted as
+  passing.
+- Pure LOC: arbitration.py 58; arbitration_contracts.py 191;
+  arbitration_values.py 39; arbitration_nested_validation.py 104;
+  arbitration_result_validation.py 42; arbitration_trace.py 57;
+  arbitration_gates.py 245; arbitration_decision.py 85;
+  arbitration_result.py 137; test_arbitration_gates.py 182;
+  test_arbitration_properties.py 203;
+  test_arbitration_contract_boundaries.py 66;
+  test_arbitration_gate_contracts.py 121.

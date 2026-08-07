@@ -1,0 +1,146 @@
+{
+  "verdict": "PASS",
+  "scenario_count": 7,
+  "rows": [
+    {
+      "scenario_id": "S01",
+      "criterion": "relative imports ..application, ..infrastructure, ...tools",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "forbidden_import_issues((bad_application,bad_infrastructure,bad_tools), GOVERNANCE_OUTWARD_IMPORTS)",
+      "expected": [
+        "bad_application.py imports engine.application",
+        "bad_infrastructure.py imports engine.infrastructure",
+        "bad_tools.py imports tools"
+      ],
+      "actual": [
+        "bad_application.py imports engine.application",
+        "bad_infrastructure.py imports engine.infrastructure",
+        "bad_tools.py imports tools"
+      ],
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S02",
+      "criterion": "active report/feedback entrypoints are covered and clean",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "legacy_shadow_consumer_paths(); shadow_runner_consumer_issues(paths)",
+      "expected": {
+        "required_present": true,
+        "issues": []
+      },
+      "actual": {
+        "required_present": true,
+        "issues": []
+      },
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S03",
+      "criterion": "FactSnapshot direct and alias builders/constructors plus future adapter discovery",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "fact_snapshot_write_issues((bad_fact_direct,bad_fact_alias)); school_view_adapter_paths(future_root)",
+      "expected": {
+        "issues": [
+          "bad_fact_direct.py calls FactSnapshot",
+          "bad_fact_alias.py calls build_fact_snapshot",
+          "bad_fact_alias.py calls FactSnapshot"
+        ],
+        "future": [
+          "governance_future_school_view_adapter.py"
+        ]
+      },
+      "actual": {
+        "issues": [
+          "bad_fact_direct.py calls FactSnapshot",
+          "bad_fact_alias.py calls build_fact_snapshot",
+          "bad_fact_alias.py calls FactSnapshot"
+        ],
+        "future": [
+          "governance_future_school_view_adapter.py"
+        ]
+      },
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S04",
+      "criterion": "datetime/date/time direct and alias forms including dt.now() and now()",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "system_time_liunian_issues((datetime.now, dt.now, d.today, time.time, now))",
+      "expected": [
+        "bad_datetime_direct_liunian.py reads system time while mentioning liunian",
+        "bad_datetime_alias_liunian.py reads system time while mentioning liunian",
+        "bad_date_alias_liunian.py reads system time while mentioning liunian",
+        "bad_time_direct_liunian.py reads system time while mentioning liunian",
+        "bad_time_alias_liunian.py reads system time while mentioning liunian"
+      ],
+      "actual": [
+        "bad_datetime_direct_liunian.py reads system time while mentioning liunian",
+        "bad_datetime_alias_liunian.py reads system time while mentioning liunian",
+        "bad_date_alias_liunian.py reads system time while mentioning liunian",
+        "bad_time_direct_liunian.py reads system time while mentioning liunian",
+        "bad_time_alias_liunian.py reads system time while mentioning liunian"
+      ],
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S05",
+      "criterion": "YAML drive, UNC, and /opt absolute paths",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "governance_yaml_issues(bad_paths.yaml)",
+      "expected": [
+        "bad_paths.yaml contains absolute path F:\\cases\\x.json",
+        "bad_paths.yaml contains absolute path \\\\server\\share\\case.json",
+        "bad_paths.yaml contains absolute path /opt/project/case.json"
+      ],
+      "actual": [
+        "bad_paths.yaml contains absolute path F:\\cases\\x.json",
+        "bad_paths.yaml contains absolute path \\\\server\\share\\case.json",
+        "bad_paths.yaml contains absolute path /opt/project/case.json"
+      ],
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S06",
+      "criterion": "benign controls avoid false positives",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "fact_snapshot_write_issues(read-only annotation); governance_yaml_issues(relative yaml); system_time_liunian_issues(no liunian clock)",
+      "expected": {
+        "fact": [],
+        "yaml": [],
+        "time": []
+      },
+      "actual": {
+        "fact": [],
+        "yaml": [],
+        "time": []
+      },
+      "exit": 0,
+      "verdict": "PASS"
+    },
+    {
+      "scenario_id": "S07",
+      "criterion": "malformed input fails closed",
+      "surface": "bounded Python CLI probe",
+      "exact_input": "fact_snapshot_write_issues(malformed.py); governance_yaml_issues(malformed.yaml)",
+      "expected": {
+        "python": "SyntaxError",
+        "yaml": "ParserError"
+      },
+      "actual": {
+        "python": "SyntaxError",
+        "yaml": "ParserError"
+      },
+      "exit": 0,
+      "verdict": "PASS"
+    }
+  ],
+  "cleanup": {
+    "temp_dir": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\task12-qa-ur4uvnjo",
+    "removed": true
+  }
+}

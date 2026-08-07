@@ -1,0 +1,219 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000763-乾-壬午辛亥辛巳己亥",
+  "adjudicated_at": "2026-07-30T13:13:46+08:00",
+  "feedback_source": "cases/C-2026-RF000763-乾-壬午辛亥辛巳己亥/feedback.md",
+  "known_facts_source": "cases/C-2026-RF000763-乾-壬午辛亥辛巳己亥/input.md#known_facts",
+  "freeze_source": "cases/C-2026-RF000763-乾-壬午辛亥辛巳己亥/asof-blind-freeze.json",
+  "freeze_sha256_expected": "2e53e108e930c4a5e16cccd1807607720d862d5797615fa12db6bd7f10a68b18",
+  "freeze_sha256_observed_before_feedback": "2e53e108e930c4a5e16cccd1807607720d862d5797615fa12db6bd7f10a68b18",
+  "freeze_sha256_observed_after_feedback": "2e53e108e930c4a5e16cccd1807607720d862d5797615fa12db6bd7f10a68b18",
+  "freeze_immutable": true,
+  "independent_blind_freeze_reviewer": true,
+  "feedback_reveal_control": {
+    "freeze_created_before_feedback_reveal": true,
+    "sha256_verified_before_feedback_reveal": true,
+    "sha256_verified_after_feedback_reveal": true,
+    "feedback_first_read_after_pre_reveal_hash": true,
+    "hash_confirmation_note": "用户最初提供的哈希为62位截断值；揭示前实算得到64位SHA-256后，由用户明确确认该64位值为揭示前基准，随后才读取feedback.md与input.md known_facts。"
+  },
+  "feedback_evidence": [
+    {
+      "year": 2020,
+      "domain": "education",
+      "fact": "高考失利后选择复读。"
+    },
+    {
+      "year": 2021,
+      "domain": "education_and_health",
+      "fact": "考入一所211，绩点很高，但遭遇校园霸凌并处于明显抑郁和自闭状态。"
+    },
+    {
+      "year": 2022,
+      "domain": "education_transition",
+      "fact": "从理工科转入社科。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_transition_non_completion",
+      "fact": "论文未发表，指导教师被解聘，考研失利且报考院校停招；职业附带信息为学生、目前家里蹲。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_state_comparison",
+      "fact": "§9.4记录变化前为学生，变化后仍为学生、目前家里蹲。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_snapshot",
+      "fact": "截至2026-06-11就业状态为在读，当前岗位为学生。"
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "scoring_unit": "career_basic_state",
+    "verdict": "CENTER_HIT",
+    "matched_facts": [
+      "截至2026-06-11就业状态为在读、当前岗位为学生",
+      "2024年论文未发表、考研失利且报考院校停招",
+      "2024年职业附带信息为学生、目前家里蹲"
+    ],
+    "boundary_check": {
+      "learning_to_career_transition_observed": true,
+      "stable_position_power_observed": false,
+      "continuous_job_delivery_observed": false,
+      "specific_industry_rank_income_not_scored": true
+    },
+    "reason": "冻结中心判断的是截至截止日仍处在专业学习向现实职业衔接阶段，且未把具体行业、职级和收入纳入命中条件。反馈截止态直接记录在读、岗位为学生；2024年论文与升学衔接连续受阻，且没有持续岗位或连续任务交付的反证。因此职业基本面可评价并命中中心。反馈没有直接描述技术表达或可检验任务交付能力，故该机制不拆成额外命中项。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "alternative_index": 1,
+      "activation_status": "OBSERVED_BUT_SUBSUMED_BY_CENTER",
+      "verdict": "ABSTAIN",
+      "matched_facts": [
+        "2024年论文未发表、考研失利且报考院校停招",
+        "2024年变化前后均为学生，变化后为目前家里蹲",
+        "截至2026-06-11仍为在读学生"
+      ],
+      "reason": "现实兑现不稳以及未形成持续岗位、稳定项目或连续收入的方向得到观察，但该备选与本案中心‘仍处职业衔接阶段、尚无稳定职位权力’同向且已被中心裁决吸收，不重复记ALTERNATIVE_HIT。"
+    },
+    {
+      "claim_id": "A2",
+      "alternative_index": 2,
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈没有证据表明截至截止日已在稳定岗位持续承担明确职责并形成连续交付；相反，截止态仍为在读学生。反向备选未激活。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "dayun": "癸丑",
+      "window": "2021-2031截至2026-06-11反馈快照",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2021年考入211且绩点很高",
+        "2022年从理工科转入社科",
+        "2024年论文与考研衔接受阻",
+        "截至2026-06-11仍为在读学生"
+      ],
+      "reason": "2021年以来的直接事实持续围绕高等教育、专业转换、论文与升学展开，支持学习积累、专业训练和输出衔接并行的阶段方向；2024年的衔接受阻及截止日仍在读，也支持稳定职位、授权和收入的现实完成度不能当然推定。心理健康事实不作为本职业阶段项的独立命中依据。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_transition_non_completion",
+      "window": "2024-01-01/2024-12-31",
+      "frozen_center_event": "2024年职业衔接没有完成，仍未形成持续岗位与稳定任务交付。",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": {
+        "time_node": "2024年前后",
+        "change_description": "论文未发表、指导教师被解聘、考研失利且报考院校停招，当前家里蹲",
+        "before_state": "学生",
+        "after_state": "学生，目前家里蹲"
+      },
+      "element_match": {
+        "within_2024_window": true,
+        "dated_node_present": true,
+        "before_state_present": true,
+        "after_state_present": true,
+        "career_transition_not_completed": true,
+        "stable_position_formed": false,
+        "stable_traceable_task_delivery_formed": false
+      },
+      "reason": "known_facts已直接记录2024年论文未发表、考研失利、院校停招及学生家里蹲；§9.4又将同一节点组织成‘学生→学生，目前家里蹲’的前后对比。该对比没有显示职业承载建立，反而直接确认窗口内职业衔接未完成，且没有持续岗位或稳定任务交付。冻结E1是非完成状态而非必须发生岗位迁移的事件，因此前后同为学生不是ABSTAIN理由，而是中心事件的直接正证据；E1可评价并判CENTER_HIT。"
+    }
+  ],
+  "theory_layer_adjudication": [
+    {
+      "rule_id": "ZP-PROD-20260606-004",
+      "verdict": "SUPPORTED_WITH_BOUNDARY",
+      "reason": "反馈显示学习与专业转换存在，但职业衔接并未因食神、印等结构名称自动兑现；支持冻结时不按十神名称直接判职业成功的边界。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260622-053",
+      "verdict": "SUPPORTED_WITH_BOUNDARY",
+      "reason": "学习和绩点能力事实与稳定职业承载未形成同时存在，支持结构能力存在不等于现实稳定享用；不外推收入与授权细节。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260622-031",
+      "verdict": "SUPPORTED_AS_GUARDRAIL",
+      "reason": "反馈没有稳定组织岗位与职位权力，符合冻结不由官星语义直接推定职级或稳定岗位的护栏；单案结果不反向证明该规则在所有案例均成立。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "截止日仍为在读学生，且2024职业衔接受阻，直接支持尚处学习向现实职业衔接阶段的中心。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "癸丑运截至反馈快照的教育、转专业、论文和升学事实支持学习训练与职业衔接并行而稳定职位未完成的阶段方向。"
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "E1由2024 known facts与§9.4学生到学生家里蹲的前后对比共同确认，正式进入分母并命中职业衔接未完成。"
+    },
+    "alternatives": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 2,
+      "summary": "A1与中心同向且被中心吸收；A2没有被反馈激活。"
+    }
+  },
+  "section_9_4_validation": {
+    "field_helped_event_enter_denominator": true,
+    "e1_would_be_abstain_without_comparison_slice": false,
+    "qualitative_assessment": "VALIDATED_THIRD_INDEPENDENT_CASE_WITH_NON_COMPLETION_STATE",
+    "reason": "known_facts本身已有2024年论文、考研与院校停招失败以及学生家里蹲，最低事实已经足以支持E1可评价；§9.4进一步把时间节点、变化描述、变化前学生状态和变化后仍为学生且家里蹲组织成同一比较截面，直接排除‘职业衔接已完成并形成稳定岗位’的解释。因此§9.4对进入分母有实质确认作用，但不是本案唯一证据来源。",
+    "comparison_with_rf000417_rf000464": "RF000417用在职程序员到合同终止求职验证劳动关系迁移；RF000464用已升职到任务增加验证责任升级；本案则用学生到仍为学生且家里蹲验证职业衔接非完成。三案事件性质不同，但高质量§9.4都提供窗口内节点和可比较前后状态，使对应日期评分单元可评价。",
+    "scope_limit": "本案只验证§9.4对冻结的2024职业衔接非完成状态具有分母资格贡献；前后状态相同只有在冻结事件本身是‘未完成/未形成’时才是正证据。若缺少窗口内时间、变化描述或职业承载信息，仍应ABSTAIN。"
+  },
+  "overall_conclusion": {
+    "career_basic_state": "CENTER_HIT",
+    "broad_phase_direction": "CENTER_HIT",
+    "dated_event_precision": "CENTER_HIT",
+    "e1_result": "CENTER_HIT",
+    "e1_enters_denominator": true,
+    "summary": "截止日职业基本面仍处学习向现实职业衔接阶段，癸丑运阶段方向得到教育与衔接事实支持。E1由2024 known facts及§9.4前后同为学生、变化后家里蹲的比较截面直接确认，正式进入日期事件分母并命中中心。"
+  },
+  "diagnostic_note": {
+    "failure_class": "NONE_FOR_E1",
+    "window_mismatch": false,
+    "section_9_4_missing_before_after": false,
+    "remaining_limit": "§9.4时间节点写为‘2024年前后’而非具体月日，日期精度只可评价到冻结的单年窗口，不能扩张为月日命中；收入、项目责任与求职细节仍未提供。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_scored_atomic_verdicts_formal": true,
+    "non_scoring_theory_labels": [
+      "SUPPORTED_WITH_BOUNDARY",
+      "SUPPORTED_AS_GUARDRAIL"
+    ]
+  }
+}

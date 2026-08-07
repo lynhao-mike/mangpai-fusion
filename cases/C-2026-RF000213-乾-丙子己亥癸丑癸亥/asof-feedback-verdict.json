@@ -1,0 +1,108 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000213-乾-丙子己亥癸丑癸亥",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T01:04:30+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000213-乾-丙子己亥癸丑癸亥/asof-blind-freeze.json",
+    "sha256": "3d68bc625cd8112cfee31b378cadae415ffb93803a23b68f44da711cc67310de",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000213-乾-丙子己亥癸丑癸亥/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "feedback_evidence": [
+    {
+      "year": 2022,
+      "fact": "找到一份工作，涨40%",
+      "domains": ["occupation"]
+    },
+    {
+      "year": 2023,
+      "fact": "被裁并换工作，新工作压力大",
+      "domains": ["occupation"]
+    },
+    {
+      "year": 2024,
+      "fact": "反馈年表最后覆盖年份；无2026年记录",
+      "domains": ["coverage_boundary"]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "CENTER_HIT",
+    "reason": "2022年获得工作且收入上涨，2023年裁员后换工作并承受更大压力，支持组织规则与专业职责共同作用并形成收入的中心方向。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ALTERNATIVE_HIT",
+      "reason": "2023年裁员换工作显示岗位兑现和职责存在阶段性变化。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "MISS",
+      "reason": "反馈明确存在涨薪与职业变化，不能只裁为稳定执行且收益未成中心。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2026-01-01/2026-12-31",
+      "verdict": "ABSTAIN",
+      "reason": "反馈年表仅覆盖至2024年，未到冻结的2026窗口；2022至2023职业事件不得替代2026精确窗口裁决。",
+      "enters_event_denominator": false
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "WEAK_ROOT",
+    "feedback_consistency": "CONSISTENT_WITH_WEAK_ROOT",
+    "reason": "已有职业与收入兑现，但2023年出现裁员、换工作和压力增大，符合承载存在而兑现稳定性有限；此事后说明不回写冻结。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "ziping:ZP-PROD-20260622-039",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论规则支持结构表达，但不能单独证明2026事件；E1仍因覆盖不足裁为ABSTAIN。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstentions": 1
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ALTERNATIVE_HIT"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "MISS"
+      }
+    ]
+  },
+  "overall_conclusion": {
+    "event_e1": "ABSTAIN",
+    "summary": "职业基本状态中心方向有反馈支持；冻结的2026精确事件窗口尚无反馈覆盖，不计入事件命中率。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "all_verdicts_valid": true
+  }
+}

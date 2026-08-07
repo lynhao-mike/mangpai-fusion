@@ -1,0 +1,133 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000900",
+  "adjudicated_at": "2026-07-29T21:52:00+08:00",
+  "feedback_source": "cases/C-2026-RF000900-乾-戊寅乙卯丙寅戊子/feedback.md",
+  "freeze_source": "cases/C-2026-RF000900-乾-戊寅乙卯丙寅戊子/asof-blind-freeze.json",
+  "freeze_sha256_expected": "67961bcdd7ac852529fa507bd14817ecdfba4791025150be7173f663a181a132",
+  "freeze_sha256_observed_before_verdict": "67961bcdd7ac852529fa507bd14817ecdfba4791025150be7173f663a181a132",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {"year": 2006, "domain": "education", "fact": "上不下去而转学"},
+    {"year": 2010, "domain": "education", "fact": "没考上中学，高价上初中"},
+    {"year": 2013, "domain": "education", "fact": "没考上高中，高价上高中"},
+    {"year": 2015, "domain": "education", "fact": "与年级主任冲突后不能到校，在家学习"},
+    {"year": 2016, "domain": "education", "fact": "高考失利，上大专"},
+    {"year": 2017, "domain": "education_and_finance", "fact": "所选专业不擅长，挂科退学；打工收入不足并欠网贷"},
+    {"year": 2018, "domain": "education", "fact": "重回学校"},
+    {"year": 2021, "domain": "career", "fact": "毕业后找不到工作"},
+    {"year": 2022, "domain": "finance", "fact": "炒股亏损40万且网贷爆雷"},
+    {"year": 2023, "domain": "career", "fact": "依旧找不到工作并失去自由"},
+    {"year": 2024, "domain": "career_and_finance", "fact": "无业、持续亏损；下半年仅回本两万元"}
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "CONTRADICTED",
+    "verdict": "MISS",
+    "reason": "冻结中心要求截止日存在以学习理解形成作品、方案、项目、产品或技术结果的成长型职业路径。反馈明确截至2024仍无业、持续亏损，且未提供任何稳定专业交付；现实落在冻结集合之外。这不是同方向强度偏低，而是截止状态方向失败。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "CONTRADICTED",
+      "verdict": "MISS",
+      "reason": "没有技术应用、产品运营、客户方案或项目协调岗位；反馈明确长期找不到工作。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "无业本身不等于冻结所述的考证、升学、转行训练、作品积累或求职转型过渡期；反馈未确认2023—2024存在这些持续活动，不能把消极状态后验包装为备选命中。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "claim_id": "P1",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "MISS",
+      "matched_facts": [],
+      "reason": "2003—2013反馈集中表现为2006转学、2010升学失败和2013升学失败，没有成绩、竞赛、才艺、班级角色或老师评价的突出节点，中心方向及最低命中条件均未满足。"
+    },
+    {
+      "claim_id": "P2",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2015不能到校而在家学习", "2016高考失利后上大专", "2017专业不适配、挂科退学并打工", "2018重回学校", "2021毕业"],
+      "reason": "该十年确有学校、专业、学习方式、退学复学和教育到就业入口的一系列重要选择，且明显不是单一路径平滑兑现。命中只限于变化与非平滑方向，不包含正向成就。"
+    },
+    {
+      "claim_id": "P3",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "MISS",
+      "matched_facts": [],
+      "reason": "2023—2024明确为依旧找不到工作、无业和持续亏损，未出现入职、换岗、项目责任、职业重定或考试训练成果兑现；冻结的成果交付与现实定位方向落空。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_education_or_direction_change",
+      "window": "2016-01-01/2018-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2016高考失利上大专；2017专业不适配、挂科退学；2018重回学校。",
+      "reason": "窗口内发生多次达到履历节点的升学、专业和学习路径调整，事件类型直接匹配；未冻结的失败次数和严重后果不算预测所得。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_transition_to_work_or_reorientation",
+      "window": "2020-01-01/2022-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2021毕业并进入求职入口，但找不到工作；2022金融亏损和债务爆雷。",
+      "reason": "冻结明确把毕业和首次职业入口纳入中心事件且不要求结果成功，因此2021毕业求职满足最低事件条件。找不到工作与债务后果没有被预测，不得算附加命中。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_job_or_responsibility_change",
+      "window": "2023-01-01/2025-12-31",
+      "verdict": "MISS",
+      "observed_feedback": "2023依旧找不到工作；2024无业并持续亏损。",
+      "reason": "反馈对窗口前两年给出明确反证：无入职、岗位、单位、项目责任、证书或作品成果的可核验变化。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 1,
+      "abstains": 0,
+      "summary": "截止状态落在冻结职业集合之外，记MISS。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 3,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 2,
+      "abstains": 0,
+      "summary": "仅P2的非平滑教育—就业路径命中；P1和P3失败。"
+    },
+    "dated_event_precision": {
+      "evaluable": 3,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 1,
+      "abstains": 0,
+      "summary": "E1、E2命中转换节点；E3对2023—2025职责变化的判断失败。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "MISS",
+    "broad_phase_direction": "MISS",
+    "event_timing_precision": "CENTER_HIT",
+    "summary": "本例暴露出典型的‘承载/输出能力被误当成现实完成’：若只看2016—2022节点，事件候选有2/3命中，但截止职业状态和戊午运前段方向均失败。事件窗口命中不能吸收无业、债务与持续亏损这一现实中心落点。"
+  },
+  "diagnostic_note": {
+    "failure_class": "REALITY_COMPLETION_OVERCLAIM",
+    "minimum_correction": "后续相似强印食结构必须把财官/现实承接缺失设为更高权重反证；当前中心应允许‘有学习输出潜能但长期无法形成稳定职业兑现’进入冻结备选，而不是默认成长型专业岗位。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "all_verdicts_formal": true
+  }
+}

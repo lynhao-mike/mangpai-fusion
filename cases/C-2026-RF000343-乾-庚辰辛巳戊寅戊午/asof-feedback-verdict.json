@@ -1,0 +1,238 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000343-乾-庚辰辛巳戊寅戊午",
+  "adjudicated_at": "2026-07-30T13:22:44+08:00",
+  "feedback_source": "cases/C-2026-RF000343-乾-庚辰辛巳戊寅戊午/feedback.md",
+  "known_facts_source": "cases/C-2026-RF000343-乾-庚辰辛巳戊寅戊午/input.md#known_facts",
+  "freeze_source": "cases/C-2026-RF000343-乾-庚辰辛巳戊寅戊午/asof-blind-freeze.json",
+  "freeze_sha256_expected": "ea2cd6e9b09646e41dc797c7f314e73f53d0a2b9190b63381d35463e6af96c25",
+  "freeze_sha256_observed_before_feedback": "ea2cd6e9b09646e41dc797c7f314e73f53d0a2b9190b63381d35463e6af96c25",
+  "freeze_sha256_observed_after_feedback": "ea2cd6e9b09646e41dc797c7f314e73f53d0a2b9190b63381d35463e6af96c25",
+  "freeze_immutable": true,
+  "independent_blind_freeze_reviewer": true,
+  "feedback_reveal_control": {
+    "freeze_created_before_feedback_reveal": true,
+    "sha256_verified_before_feedback_reveal": true,
+    "sha256_verified_after_feedback_reveal": true,
+    "feedback_first_read_after_pre_reveal_hash": true
+  },
+  "feedback_evidence": [
+    {
+      "year": 2012,
+      "domain": "technical_learning",
+      "fact": "学习电脑技术并靠此赚到一点小钱。"
+    },
+    {
+      "year": 2018,
+      "domain": "education",
+      "fact": "复读一年后考入大专。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_entry",
+      "fact": "找到一份轻松的工作，同事相处良好；附带职业信息为医生。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_state_comparison",
+      "fact": "§9.4记录变化前状态待命主确认，变化后为找到轻松的工作、职业为医生。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_snapshot",
+      "fact": "截至2026-06-11就业状态为在职，当前岗位为医生。"
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "scoring_unit": "career_basic_state",
+    "verdict": "ABSTAIN",
+    "matched_facts": [
+      "截至2026-06-11就业状态为在职、当前岗位为医生",
+      "2024年找到一份工作"
+    ],
+    "boundary_check": {
+      "ordinary_employment_only": true,
+      "professional_role_label_present": true,
+      "rule_bound_process_responsibility_directly_described": false,
+      "traceable_delivery_directly_described": false,
+      "industry_rank_income_not_scored": true
+    },
+    "reason": "反馈直接确认在职医生，但冻结中心的弱命中边界明确规定普通上班或仅有岗位名称不足以命中，主要职业价值还须持续体现专业要求、流程责任与可核验成果交付。现有材料没有职责、流程、质量责任或交付成果的直接描述；不能仅由‘医生’岗位名称后验补全这些要素，因此职业基本面证据不足，记ABSTAIN而非CENTER_HIT或MISS。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "alternative_index": 1,
+      "activation_status": "INSUFFICIENT_EVIDENCE",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈没有说明岗位、项目、授权或回报缺少连续性；‘工作轻松’不能等同于职业兑现不稳，故A1不可评价。"
+    },
+    {
+      "claim_id": "A2",
+      "alternative_index": 2,
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "matched_facts": [
+        "2024年找到工作",
+        "截至2026-06-11为在职医生"
+      ],
+      "reason": "反馈没有支持截至截止日仍未形成持续专业任务承接；但职责与交付细节也不足以把反向证据扩张成中心命中，因此该备选只记未激活的ABSTAIN。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "dayun": "壬午",
+      "window": "2005-2015",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2012年学习电脑技术并赚到一点小钱",
+        "2014年被父亲带到管理严格的学校后学业上升"
+      ],
+      "reason": "学习训练、规则适应与能力形成均有直接事实支持；不把赚到小钱扩张为正式职业完成。"
+    },
+    {
+      "dayun": "癸未",
+      "window": "2015-2025",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2018年复读后考入大专",
+        "2024年找到工作"
+      ],
+      "reason": "从学历训练到2024年进入工作，支持技能积累向现实任务承接过渡的宽阶段方向；具体岗位责任和回报完成度未据此推定。"
+    },
+    {
+      "dayun": "甲申",
+      "window": "2025-2035截至2026-06-11反馈快照",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "ABSTAIN",
+      "matched_facts": [
+        "截至2026-06-11为在职医生"
+      ],
+      "reason": "当前仅有岗位快照，没有规则压力、职位责任、技术输出、竞争或兑现连续性的职责级截面，不能评价整个阶段方向。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_state_or_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "frozen_center_event": "2024年发生一次可核验的职业状态或主要责任边界变化。",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": {
+        "time_node": "2024年前后",
+        "change_description": "找到一份轻松的工作，同事相处良好",
+        "before_state": "待命主确认",
+        "after_state": "找到轻松的工作；职业为医生"
+      },
+      "element_match": {
+        "within_2024_window": true,
+        "dated_node_present": true,
+        "before_state_present": false,
+        "after_state_present": true,
+        "explicit_job_found_event_present": true,
+        "career_state_change_minimum_met": true,
+        "responsibility_boundary_change_observed": false
+      },
+      "reason": "冻结E1采用析取边界：职业状态变化或主要责任边界变化满足其一即可。known_facts与§9.4变化描述均直接写明2024年‘找到一份工作’，这是窗口内可核验的职业进入事件，变化后状态又确认已找到工作且职业为医生；因此即使变化前状态仍待确认，‘找到工作’这一事件事实本身已满足宽口径职业状态变化的最低条件。E1可评价、进入日期事件分母并判CENTER_HIT。未观察到职责边界变化，不以后验岗位名称补记该要素。"
+    }
+  ],
+  "theory_layer_adjudication": [
+    {
+      "rule_id": "ZP-PROD-20260606-004",
+      "verdict": "SUPPORTED_AS_GUARDRAIL",
+      "reason": "反馈确认就业与医生岗位，但未提供职责级技术输出证据，支持不由食伤、官杀名称或岗位名称直接扩张为职业机制命中。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260606-005",
+      "verdict": "PARTIALLY_TESTED",
+      "reason": "现实就业已形成，但事业层级、授权与持续成果证据缺失，只能验证冻结不评高层级的边界，不能评价具体层级。"
+    },
+    {
+      "rule_id": "ZP-PROD-20260606-026",
+      "verdict": "NOT_INDEPENDENTLY_TESTABLE_FROM_FEEDBACK",
+      "reason": "反馈没有财富、稳定回报或生机层次的充分事实，不能由单次就业事件独立检验该结构规则。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "在职医生仅确认岗位状态，未越过冻结的职责与可核验交付弱命中边界，职业基本面ABSTAIN。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 2,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "壬午、癸未阶段分别获学习训练及从大专到就业的事实支持；甲申阶段职责级证据不足。"
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "E1由2024年‘找到一份工作’这一明确职业进入事件确认，正式进入分母并命中中心。"
+    },
+    "alternatives": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 2,
+      "summary": "A1缺少兑现不连续证据；A2未被在职事实激活。"
+    }
+  },
+  "section_9_4_validation": {
+    "field_helped_event_enter_denominator": true,
+    "complete_before_after_comparison_present": false,
+    "complete_comparison_slice_independently_qualified_e1": false,
+    "e1_would_be_abstain_without_section_9_4": false,
+    "qualitative_assessment": "PARTIAL_VALIDATION_EVENT_TEXT_SUFFICIENT_COMPARISON_INCOMPLETE",
+    "reason": "§9.4的变化前状态仍为‘待命主确认’，所以它没有像RF000417、RF000464、RF000763那样提供完整可比较的前后截面，不能声称‘完整前后对比’独立让E1进入分母。但§9.4的时间节点、变化描述和变化后状态与known_facts相互确认：2024年明确‘找到一份工作’。该事件文字本身就是冻结宽口径职业状态变化的最低事实，因此E1仍可评价并进入分母；分母资格来自明确就业进入事件，而非补齐了变化前状态。",
+    "comparison_with_rf000417_rf000464_rf000763": "前三案的§9.4均提供窗口内节点及可比较前后状态；本案缺少变化前状态，故不能作为第四个完整前后对比样本。差异不导致E1 ABSTAIN，因为本案冻结事件更宽，且‘找到工作’本身明确编码职业状态变化。",
+    "scope_limit": "本案只证明明确的窗口内就业进入事件可在缺少详细前态时使宽口径职业状态变化可评价；若文本仅有截止日岗位名称、没有‘找到/入职/离职/转岗/职责变化’等事件表达，则仍应ABSTAIN。"
+  },
+  "overall_conclusion": {
+    "career_basic_state": "ABSTAIN",
+    "broad_phase_direction": "CENTER_HIT_WITH_ONE_ABSTAIN",
+    "dated_event_precision": "CENTER_HIT",
+    "e1_result": "CENTER_HIT",
+    "e1_enters_denominator": true,
+    "section_9_4_complete_before_after_qualified_e1": false,
+    "summary": "E1在2024单年窗口内由‘找到一份工作’这一明确职业进入事件直接确认，进入日期事件分母并命中中心。§9.4缺少变化前状态，未形成完整前后对比，故不能把入分母归因于完整比较截面；它只与known_facts共同确认事件及变化后状态。"
+  },
+  "diagnostic_note": {
+    "failure_class": "NONE_FOR_E1",
+    "window_mismatch": false,
+    "section_9_4_missing_before_after": true,
+    "remaining_limit": "§9.4时间节点仅为‘2024年前后’且变化前状态待确认，日期精度只能评价到单年，不能扩张到月日，也不能裁决责任升级；职业基本面仍缺职责与成果交付证据。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_scored_atomic_verdicts_formal": true,
+    "aggregate_labels_not_atomic": [
+      "CENTER_HIT_WITH_ONE_ABSTAIN"
+    ],
+    "non_scoring_theory_labels": [
+      "SUPPORTED_AS_GUARDRAIL",
+      "PARTIALLY_TESTED",
+      "NOT_INDEPENDENTLY_TESTABLE_FROM_FEEDBACK"
+    ]
+  }
+}

@@ -1,0 +1,205 @@
+TASK 1 CANONICAL DIGEST AND STABLE ID EVIDENCE
+Date: 2026-08-03
+Workspace: F:\多流派新思路
+Python: 3.14.5
+pytest: 8.4.2
+
+OWNED PATHS
+- engine/governance/__init__.py (new)
+- engine/governance/canonical.py (new)
+- tests/governance/test_canonical.py (new)
+- .omo/start-work/artifacts/task1-canonical.txt (this evidence)
+
+DIRTY WORKTREE RECEIPT
+- Pre-edit scoped command: git status --short -- engine/governance tests/governance/test_canonical.py .omo/start-work/artifacts/task1-canonical.txt
+- Pre-edit scoped output: empty
+- Post-implementation scoped status before this artifact: ?? engine/governance/ and ?? tests/governance/test_canonical.py
+- The worktree also contained 785 unrelated status entries at final receipt time. They were preserved and not edited or reverted by this task.
+
+BASELINE (PRE-EDIT)
+Command: & python -m pytest tests/f09 -q; $taskExit=$LASTEXITCODE; Write-Output "__EXIT_CODE__=$taskExit"; exit $taskExit
+Result: PASS
+Exit code: 0
+Count: 1183 passed
+Pytest elapsed: 176.40s (0:02:56)
+Output marker: __EXIT_CODE__=0
+Timeout: none; retained session 93487 was polled in bounded 30-second intervals.
+Timestamp note: the retained runner did not emit absolute start/end markers. The run was completed before the test file was created at 2026-08-03T14:13:25.6175968+08:00. Exact elapsed, exit code, count, and pre-edit ordering were captured; absolute baseline endpoints are unavailable and are not fabricated here.
+
+FAILING-FIRST
+Command: & python -m pytest tests/governance/test_canonical.py -q; $taskExit=$LASTEXITCODE; Write-Output "__EXIT_CODE__=$taskExit"; exit $taskExit
+Result: expected RED
+Exit code: 2
+Count: 1 collection error in 0.33s
+Reason: ModuleNotFoundError: No module named 'engine.governance'
+Output marker: __EXIT_CODE__=2
+Ordering: test file creation was 2026-08-03T14:13:25.6175968+08:00; source file creation was later at 2026-08-03T14:15:51.9443394+08:00.
+Timestamp note: the command did not emit absolute start/end markers; its reported elapsed and tool exit were captured.
+
+GREEN AND FLAKINESS PROBE
+- First implemented suite: 11 passed in 0.46s, exit 0.
+- Adversarial self-list red: 1 failed in 0.51s, exit 1; expected CYCLE_DETECTED but received TYPE_UNSUPPORTED.
+- Minimal cycle fix suite: 12 passed in 0.52s, exit 0.
+- Final repeat: 12 passed in 0.51s, exit 0.
+- Outcome/count comparison: PASS, both finalized runs were 12 passed with exit 0.
+- Absolute start/end markers were not emitted for these short test runs; exact elapsed/count/exit evidence is recorded.
+
+FULL VERIFICATION
+Command: & python -m pytest tests/governance/test_canonical.py tests/f09 -q; $taskExit=$LASTEXITCODE; Write-Output "__EXIT_CODE__=$taskExit"; exit $taskExit
+Result: PASS
+Exit code: 0
+Count: 1195 passed
+Pytest elapsed: 206.69s (0:03:26)
+Output marker: __EXIT_CODE__=0
+Timeout: none; retained session 23483 was polled in bounded 30-second intervals.
+End receipt: .pytest_cache/v/cache/nodeids write time was 2026-08-03T14:27:38.5745610+08:00.
+
+MANUAL CLI QA
+Literal command:
+python -c "from engine.governance import canonical_digest, stable_object_id; first=canonical_digest({'b': 2, 'a': 1}); second=canonical_digest({'a': 1, 'b': 2}); fact_id=stable_object_id('fact', {'kind': 'stem', 'value': 'jia'}); claim_id=stable_object_id('claim', {'kind': 'stem', 'value': 'jia'}); hexchars=set('0123456789abcdef'); fact_suffix=fact_id.removeprefix('fact:'); claim_suffix=claim_id.removeprefix('claim:'); digest_shape=len(first) == 64 and set(first) <= hexchars; id_shape=fact_id.startswith('fact:') and claim_id.startswith('claim:') and all(len(value) == 64 and set(value) <= hexchars for value in (fact_suffix, claim_suffix)); print(f'key_order_equal={first == second}'); print(f'namespace_unequal={fact_id != claim_id}'); print(f'digest_shape={digest_shape}'); print(f'id_shape={id_shape}'); print(f'digest={first}'); print(f'fact_id={fact_id}'); print(f'claim_id={claim_id}')"
+Start: 2026-08-03T14:30:19.2127115+08:00
+End: 2026-08-03T14:30:20.5724563+08:00
+Exit code: 0
+stderr: empty
+stdout:
+key_order_equal=True
+namespace_unequal=True
+digest_shape=True
+id_shape=True
+digest=90f74fae46074ab40b1f59ec84285475bf4c5ad24d4207d2567db5791344f5ad
+fact_id=fact:17581d14d76075afe3463236464b960b9600436a6599ef39931d3001d0dd3fcf
+claim_id=claim:fd4b43bb992ac517724117e74a4d3f9a118d0efe543089166e78b59d5db029a4
+Manual verdict: PASS (all four required booleans True and documented shapes observed).
+Harness note: two earlier quoting attempts exited 1 before library execution (one Python SyntaxError and one PowerShell parser error). They were corrected without product changes and are not counted as passing QA.
+
+ADVERSARIAL QA
+- malformed_input: PASS, 2026-08-03T14:32:17.1930451+08:00 to 2026-08-03T14:32:17.9710351+08:00, exit 0.
+  custom instance -> CANONICAL.TYPE_UNSUPPORTED
+  NaN -> CANONICAL.NON_FINITE_NUMBER
+  Infinity -> CANONICAL.NON_FINITE_NUMBER
+  self-referential list -> CANONICAL.CYCLE_DETECTED
+- stale_state: PASS, 2026-08-03T14:31:19.0408991+08:00 to 2026-08-03T14:31:21.0589372+08:00. Two fresh Python processes exited 0 and printed exact equal digest/ID output; fresh_process_equal=True.
+- dirty_worktree: PASS for scoped ownership. Pre-edit scoped status was empty; final scoped status contains only the four owned paths. Unrelated dirty entries were preserved.
+- flaky_tests: PASS. Finalized new suite ran twice with 12 passed and exit 0 both times.
+- misleading_success_output: PASS. Real exit markers/counts and manual booleans are recorded above; failed harness attempts are disclosed.
+- hung_or_long_commands: PASS. Long pytest sessions used retained handles and bounded 30-second polls; no command timed out.
+- prompt_injection: not applicable; no untrusted instruction-bearing content was consumed.
+- cancel_resume: not applicable; the task was not cancelled or resumed.
+- repeated_interruptions: not applicable; status messages did not interrupt execution.
+
+QUALITY AND ARCHITECTURE
+- Bundled no-excuse audit: no violations in 3 file(s), exit 0.
+- Ruff: All checks passed, exit 0.
+- basedpyright: unavailable locally; no installation attempted.
+- Pure LOC: engine/governance/canonical.py=147; engine/governance/__init__.py=16.
+- Single responsibility: canonical.py owns canonical identity primitives; __init__.py owns the package export surface.
+- Boundary purity: public inputs use a recursive CanonicalValue/Mapping type and normalize once into the existing F09 bounded JCS graph.
+- Exhaustive variants: supported scalar/container variants use match; unsupported variants fail closed through CanonicalizationError.
+- Type safety: no Any, object annotations, cast, type-ignore, broad except, or raw-dict public signatures.
+- Compatibility: F09 bounded_jcs_sha256 remains the sole JSON canonicalization/hash primitive; no permissive serializer is exported.
+
+CLEANUP RECEIPT
+- No server, port, external service, temporary file, or long-lived resource was created.
+- No task-related Python/pytest process remained at the pre-artifact cleanup check.
+- Standard ignored Python bytecode caches were identified. Three explicit cleanup attempts were rejected by the execution safety policy before deletion, so the ignored caches remain; no process or external resource remains attached to them.
+
+ARCHITECTURE REWORK - 2026-08-03
+
+CODE-REVIEW FINDING
+- Finding: importing engine.governance.canonical imported engine.f09.canonical_json, which first executed the eager engine.f09 package initializer and loaded application plus its artifacts/decision/evidence/feedback fanout.
+- Closure: engine/f09/__init__.py is now a strict lazy public-export boundary. Its six-name __all__ is unchanged; exact application objects load and cache only when a public attribute is explicitly accessed.
+- Exact additional changed prerequisite: engine/f09/__init__.py. It was a pre-existing untracked F09 prerequisite and only its package boundary was changed.
+
+TDD CHARACTERIZATION AND RED
+- Compatibility command: python -m pytest tests/governance/test_canonical.py::test_f09_public_exports_resolve_to_application_objects -q
+- Pre-change compatibility: PASS, 1 passed in 0.50s, exit 0.
+- Isolation command: python -m pytest tests/governance/test_canonical.py::test_governance_import_does_not_load_f09_application_fanout -q
+- Expected RED: 1 failed in 0.84s, exit 1.
+- Before snapshot: before=()
+- Eager after snapshot: after=('engine.f09.application', 'engine.f09.artifacts', 'engine.f09.decision', 'engine.f09.evidence', 'engine.f09.feedback', 'engine.f09.json_source', 'engine.f09.markdown_source', 'engine.f09.operator_diagnostics', 'engine.f09.trace')
+
+TARGETED GREEN
+- Command: python -m pytest tests/governance/test_canonical.py::test_governance_import_does_not_load_f09_application_fanout tests/governance/test_canonical.py::test_f09_public_exports_resolve_to_application_objects -q
+- Result: PASS, 2 passed in 0.91s, exit 0.
+- Additional focused edges: invalid namespaces fail typed; canonical digest and stable-ID hash domains differ; list and tuple material have distinct digests.
+
+FINALIZED FOCUSED TESTS / FLAKINESS
+- Command: python -m pytest tests/governance/test_canonical.py -q
+- Run 1: PASS, 19 passed in 1.00s, exit 0.
+- Run 2: PASS, 19 passed in 0.95s, exit 0.
+- Count/outcome comparison: identical 19-pass count and exit 0.
+
+FULL REWORK VERIFICATION
+- Command: python -m pytest tests/governance/test_canonical.py tests/f09 -q
+- Start: 2026-08-03T15:11:11.2957628+08:00
+- End: 2026-08-03T15:14:30.9460700+08:00
+- Result: PASS, 1202 passed in 194.64s (0:03:14)
+- Exit marker: __EXIT_CODE__=0
+- Long-command handling: retained session 97801, bounded 30-second polling, no timeout.
+
+FRESH IMPORT-ISOLATION PROBE
+- Start: 2026-08-03T15:15:15.4302400+08:00
+- End: 2026-08-03T15:15:15.7264468+08:00
+- Exit code: 0
+- before=()
+- after=()
+- explicit_unloaded=True for engine.f09.application, engine.f09.feedback, engine.f09.artifacts, engine.f09.decision, and engine.f09.evidence.
+- Only engine.f09.canonical_json, engine.f09.contracts, and engine.f09.errors were allowed side-effect-free dependencies.
+
+FRESH PUBLIC-EXPORT COMPATIBILITY PROBE
+- Start: 2026-08-03T15:15:45.8579831+08:00
+- End: 2026-08-03T15:15:46.4489894+08:00
+- Exit code: 0
+- names=('F09Observation', 'F09RunExecutionResultV1', 'F09RunRequest', 'F09RunResult', 'run_f09_slice', 'run_f09_slice_with_execution_authority_v1')
+- before_application=False
+- after_application=True
+- mismatches=()
+- Verdict: every __all__ name resolved to the exact engine.f09.application object after explicit access.
+
+REWORK MANUAL CLI QA
+- Start: 2026-08-03T15:16:15.5249345+08:00
+- End: 2026-08-03T15:16:15.9404627+08:00
+- Exit code: 0
+- key_order_equal=True
+- namespace_unequal=True
+- digest_shape=True
+- id_shape=True
+- Digest and IDs exactly matched the pre-rework outputs recorded above.
+
+REWORK MALFORMED INPUT QA
+- Start: 2026-08-03T15:16:42.8365067+08:00
+- End: 2026-08-03T15:16:43.1566960+08:00
+- Exit code: 0
+- unsupported=CANONICAL.TYPE_UNSUPPORTED
+- nan=CANONICAL.NON_FINITE_NUMBER
+- infinity=CANONICAL.NON_FINITE_NUMBER
+- cycle=CANONICAL.CYCLE_DETECTED
+- namespace=CANONICAL.NAMESPACE_INVALID
+
+REWORK STALE-STATE / IMPORT-FANOUT RECEIPT
+- Start: 2026-08-03T15:17:12.8128357+08:00
+- End: 2026-08-03T15:17:13.5216502+08:00
+- Two fresh canonical processes exited 0 and printed byte-identical digest/fact-ID/claim-ID output.
+- fresh_process_equal=True
+- Import isolation was separately repeated in a fresh process with before=(), after=(), exit 0.
+
+REWORK QUALITY GATES
+- Ruff: All checks passed, exit 0, across engine/f09/__init__.py and the three Task 1 Python files.
+- Bundled no-excuse audit: no violations in 4 file(s), exit 0.
+- Strict escape-hatch scan: no matches.
+- Pure LOC: engine/f09/__init__.py=45; engine/governance/canonical.py=147; engine/governance/__init__.py=16; tests/governance/test_canonical.py=150.
+- No file exceeds 250 pure LOC.
+- Single responsibility: engine/f09/__init__.py owns lazy package exports; canonical.py remains limited to canonical identity primitives.
+- Boundary purity: importing the side-effect-free canonical primitive no longer crosses into the F09 application layer.
+
+REWORK DIRTY-WORKTREE / CLEANUP RECEIPT
+- Final scoped status before artifact append contained exactly the five authorized paths:
+  ?? .omo/start-work/artifacts/task1-canonical.txt
+  ?? engine/f09/__init__.py
+  ?? engine/governance/__init__.py
+  ?? engine/governance/canonical.py
+  ?? tests/governance/test_canonical.py
+- Unrelated dirty files remained untouched.
+- No Task 1 Python/pytest process remained.
+- No server, port, temporary service, or external resource was created. Cache deletion was not required for this rework.
+- misleading_success_output/import_fanout: real exit markers, module snapshots, full counts, and exact compatibility mismatches are recorded; no success was inferred from printed text alone.

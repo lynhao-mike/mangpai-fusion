@@ -1,0 +1,324 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-30T23:59:00+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": null,
+    "boundary": null,
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "no_boundary_manual_exception": true,
+    "exception_basis": "known_facts is exactly [] and embedded annotation scan is empty",
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000169-乾-丁卯辛亥甲申辛未/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "更适合规则明确的组织或专业体系，以责任、资格与规范执行建立职业位置",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "专业技术或咨询支持岗位，受组织规则约束但管理权有限"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "高压职责存在但岗位兑现不稳，易经历组织调整或职责反复"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业结构由月干、时干辛正官双透并落在月柱与时柱，日支申中庚七杀构成贴身压力节点，月支亥中壬偏印承接官杀并向甲木日主形成印化官杀的承载路径；官杀领域节点显性且有印星转化，不以亥月长生或卯未木根单独证明强根。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.officer",
+        "function": "月干、时干辛正官双透的规则责任功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.officer",
+            "excerpt": "月干辛、时干辛双透"
+          }
+        ]
+      },
+      {
+        "node_id": "career.seal",
+        "function": "月支亥中壬偏印的承接转化功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.seal",
+            "excerpt": "月支亥藏壬印星"
+          }
+        ]
+      },
+      {
+        "node_id": "career.pressure",
+        "function": "日支申中庚七杀的贴身压力节点",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.pressure",
+            "excerpt": "日支申藏庚七杀"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.officer",
+        "excerpt": "月干辛、时干辛双透"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.seal",
+        "excerpt": "月支亥藏壬印星"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.pressure",
+        "excerpt": "日支申藏庚七杀"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "root_level",
+        "excerpt": "候选事业结构由月干、时干辛正官双透并落在月柱与时柱，日支申中庚七杀构成贴身压力节点，月支亥中壬偏印承接官杀并向甲木日主形成印化官杀的承载路径；官杀领域节点显性且有印星转化，不以亥月长生或卯未木根单独证明强根。"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "更适合规则明确的组织或专业体系，以责任、资格与规范执行建立职业位置",
+        "node_ids": [
+          "career.pressure",
+          "career.seal",
+          "career.officer"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.officer",
+            "excerpt": "月干辛、时干辛双透"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.seal",
+            "excerpt": "月支亥藏壬印星"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.pressure",
+            "excerpt": "日支申藏庚七杀"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_chart",
+        "locator": "blind_boundary",
+        "excerpt": "不从日主长生、临官、帝旺或一般根气替代事业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.officer",
+        "excerpt": "月干辛、时干辛双透"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.seal",
+        "excerpt": "月支亥藏壬印星"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.pressure",
+        "excerpt": "日支申藏庚七杀"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory/ziping/index.yaml",
+        "line": 11815,
+        "excerpt": "ZP-PROD-20260622-292：六甲日以辛为正官，透出时须结合月令与全局判断财官之用。"
+      }
+    ],
+    "competing_explanations": [
+      "专业技术或咨询支持岗位，受组织规则约束但管理权有限",
+      "高压职责存在但岗位兑现不稳，易经历组织调整或职责反复"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "early_environment_responsibility_change",
+      "window": "1997-01-01/1997-12-31",
+      "center_event": "1997年学习环境、家庭安排或居住节奏出现一次可核验调整。",
+      "alternative": "压力集中于短期学业或家庭纪律变化，未形成长期迁移",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "root_level": "STRONG_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "annual_trace": {
+        "year": 1997,
+        "liunian": "丁丑",
+        "dayun_ganzhi": "庚戌",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[1997].relations[0]",
+            "excerpt": "流年支冲时支未"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[1997].relations[1]",
+            "excerpt": "流年支三刑时支未"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[1997].relations[2]",
+            "excerpt": "流年支三刑大运支戌"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.hour.branch"
+        ],
+        "domains": [
+          "事业",
+          "财富"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[1997].main_energy",
+            "excerpt": "技术产出 / 子女 / 表达"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[1997].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 1997,
+    "crossed_candidate_gate": true,
+    "rejected_preview_year": null,
+    "rejected_preview_reason": null
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "change_reason": "命中规则支持既有中心方向，未出现足以改变中心判断的反证；零命中组仅保留检索审计。",
+    "adopted_rule": {
+      "adopted_rule": "ziping:ZP-PROD-20260622-292",
+      "locator": "theory/ziping/index.yaml:11815",
+      "summary": "甲日辛正官透出可构成规则责任节点，但须结合全局承载。"
+    },
+    "search_audit": [
+      {
+        "keywords": [
+          "正官",
+          "透出"
+        ],
+        "hit_count": 7,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-059] 六十、格例总纲 正官格：月令官星透出，财印相辅，无伤官七杀混杂为成格。财格：月令财星，食生官护，无比劫夺财为成格。印格：月令印绶，官星生源，无财破印为成格。食神格：食神旺相，身旺财星透出，无枭神夺食为成格。七杀格：七杀有制，食神制杀、印绶化杀，不克日主为成格。伤官格：伤官配印、伤官生财，不见正官杂乱为成格。阳刃格：刃逢官杀制伏，刃不肆 子平规则参与：正官格：月令官星透出，财印相辅，无伤官七杀混杂为成格。财格：月令财星，食生官护，无比劫夺财为成格。印格：月令印绶，官星生源，无财破印为成格。食神格：食神旺相，身旺财星透出，无枭神夺食为成格。七杀格：七杀有制，食神制杀、印绶化杀，不克日主为成格。伤官格：伤官配印、伤官生财，不见正官杂乱为成格。阳刃格：刃逢官杀制伏，刃不肆虐为成格。建禄格：禄旺身强，四柱财官透出。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-292] 论十干坐支兼得月时及行运吉凶△甲乙甲木属阳，乃栋梁之材。 原无财星，不畏。如木得金而成器，仁者有勇；金得木而成材，勇者必仁，是乃刚柔相济，阴阳相停。运行却喜财官，若有木无金，则庚辛亏而义寡；有金无火，即勇而无礼，则乱金太盛。而无水则枯木太多，而无金则繁，是金木各不一也。偏阴偏阳，难名之命，纵遇财官，亦不发达。六甲日用辛为正官，庚为偏官，戊巳为财。如年月时中透出戊巳辛字，生三秋。 子平规则参与：原无财星，不畏。如木得金而成器，仁者有勇；金得木而成材，勇者必仁，是乃刚柔相济，阴阳相停。运行却喜财官，若有木无金，则庚辛亏而义寡；有金无火，即勇而无礼，则乱金太盛。而无水则枯木太多，而无金则繁，是金木各不一也。偏阴偏阳，难名之命，纵遇财官，亦不发达。六甲日用辛为正官，庚为偏官，戊巳为财。如年月时中透出戊巳辛字，生三秋四季及金土局，财官有用。如不透出三字，只。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-293] 论十干坐支兼得月时及行运吉凶△甲乙甲木属阳，乃栋梁之材。 太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助， 子平规则参与：太过反不为福。更看日干于所生月内有力无力有助无助，分节气浅深轻重言之。喜行身旺鬼衰运，忌身衰鬼旺运。六乙日用戊为正财，巳偏财，庚为正官，辛偏官，若年月时上透出戊巳庚字，生三秋；四季及金土局，财官有用。如不透此三字，生三秋四季及金土局，亦作财官论。见甲乙夺财，丙伤官，名利艰难，若生春夏及火木局，纵有财官，无气；虽得滋助，亦轻。喜行西方四季金土分野向官临财，忌行。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "七杀",
+          "制化"
+        ],
+        "hit_count": 1,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-019] 十九、论四凶神能成格 杀、伤、枭、刃为四凶神，制化得宜反成贵格。七杀逢食神制，杀格成名；伤官配印，伤官成格；枭神制旺食，枭为我用；阳刃用官杀制伏，刃格显贵。凶神有制，化凶为吉。 子平规则参与：杀、伤、枭、刃为四凶神，制化得宜反成贵格。七杀逢食神制，杀格成名；伤官配印，伤官成格；枭神制旺食，枭为我用；阳刃用官杀制伏，刃格显贵。凶神有制，化凶为吉。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "正印",
+          "化杀"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": true,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 4,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定domain=career；幼年E1只作为年度双证据门候选，不把家庭/学习描述冒充已证实职业事实。",
+    "strict_preflight_nonclaim": "RF自动排盘输入缺少严格preflight完整字段，本次使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用feedback.md及候选报告反馈摘要形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

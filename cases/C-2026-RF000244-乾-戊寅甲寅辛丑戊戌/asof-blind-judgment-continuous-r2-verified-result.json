@@ -1,0 +1,29 @@
+{
+  "case_id": "C-2026-RF000244-乾-戊寅甲寅辛丑戊戌",
+  "decision_action": "REJECTED_NO_STATE_BUILD",
+  "feedback_opened_at_utc": "2026-07-29T05:19:42.397620+00:00",
+  "final_envelope_state": "VERIFICATION_OPEN",
+  "freeze_package_sha256_verified": "91b37c24f2789ba21f56ec546b012b4c59384d5e807e7865ed43d155dc6fbc7f",
+  "schema_version": "asof-blind-judgment-continuous-r2-verified-result/v1",
+  "session_id": "S-20260729T051700Z-000244c2",
+  "verdicts": [
+    {
+      "actual_landing": "土木工作中断后持续职业迷茫并暂时无业",
+      "candidate_id": "career-organization-responsibility-2021-2026-dingsi",
+      "evidence_window": [
+        "2021-01-01",
+        "2026-06-11"
+      ],
+      "feedback_evidence": "2021年土木工作做不下去；2022年不知道做什么；2023年仍不知道做什么且暂时无业。",
+      "landing_verdict": "MISS",
+      "predicted_alternatives": [
+        "专业技术或职能岗位责任增强但未形成正式管理职权"
+      ],
+      "predicted_center": "体制或专业组织内的项目执行与管理责任增强",
+      "reason_code": "OUTSIDE_FROZEN_LANDINGS",
+      "reasoning": "窗口内连续职业事实足以评分，故样本有效；但现实为工作中断、职业迷茫及暂时无业，与冻结中心及替代落点均不匹配，按冻结边界裁为REJECTED/MISS。",
+      "verdict": "REJECTED"
+    }
+  ],
+  "verified_event_ids": []
+}

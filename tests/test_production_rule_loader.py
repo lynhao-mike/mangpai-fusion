@@ -7,11 +7,15 @@ import yaml
 
 from engine.application.production_rule_loader import (
     ProductionRuleValidationError,
+    _has_guansha_mixed,
+    _has_hour_qisha,
+    _has_qisha_with_control,
     load_default_production_library,
     load_production_library,
     load_production_rule_set,
 )
 from engine.pipeline import run_pipeline
+from engine.predicates.types import Bazi, GanZhi
 from tests.fixtures.cases import load_case
 
 
@@ -53,6 +57,34 @@ def test_pipeline_injects_production_rule_conclusions() -> None:
     assert "DTS-PROD-20260622-001" in production_ids
     assert any("子平规则参与" in c.statement for c in output.final_conclusions)
     assert any("滴天髓规则参与" in c.statement for c in output.final_conclusions)
+
+
+def test_structural_triggers_do_not_fallback_to_any_nonempty_chart() -> None:
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
+    parsed.bazi = Bazi(
+        年柱=GanZhi.parse("甲子"),
+        月柱=GanZhi.parse("乙卯"),
+        日柱=GanZhi.parse("丙午"),
+        时柱=GanZhi.parse("丁未"),
+    )
+
+    assert not _has_qisha_with_control(parsed)
+    assert not _has_hour_qisha(parsed)
+    assert not _has_guansha_mixed(parsed)
+
+
+def test_structural_triggers_require_their_declared_signals() -> None:
+    parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
+    parsed.bazi = Bazi(
+        年柱=GanZhi.parse("甲子"),
+        月柱=GanZhi.parse("戊寅"),
+        日柱=GanZhi.parse("壬子"),
+        时柱=GanZhi.parse("戊辰"),
+    )
+
+    assert _has_qisha_with_control(parsed)
+    assert _has_hour_qisha(parsed)
+    assert not _has_guansha_mixed(parsed)
 
 
 def test_production_loader_rejects_bypass_candidate_path() -> None:

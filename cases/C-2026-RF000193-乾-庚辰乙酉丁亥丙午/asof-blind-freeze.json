@@ -1,0 +1,330 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000193-乾-庚辰乙酉丁亥丙午",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-30T23:59:00+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": null,
+    "boundary": null,
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "no_boundary_manual_exception": true,
+    "exception_basis": "known_facts is exactly [] and embedded annotation scan is empty",
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000193-乾-庚辰乙酉丁亥丙午/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "职业更可能落在组织化专业岗位，以知识资质承接规则压力，并兼顾资源或业务结果",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "专业支持或技术执行路径，能进入组织但职权层级有限"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "项目或业务导向岗位，收入机会存在但组织位置不稳定"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业结构节点为日支亥中壬正官贴近日主、月干乙偏印透出承接官星，年干庚正财与月支酉中辛偏财提供业务资源节点，时柱丙午比劫根承担执行；形成官星—偏印—日主及财星—官星的双承载路径，不以午禄根或比劫帮身单独替代官印事业定位。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000193-乾-庚辰乙酉丁亥丙午",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.officer",
+        "function": "日支亥中壬正官的规则责任功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.officer",
+            "excerpt": "日支亥藏壬正官"
+          }
+        ]
+      },
+      {
+        "node_id": "career.seal",
+        "function": "月干乙偏印的知识资质承接功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.seal",
+            "excerpt": "月干乙偏印透出"
+          }
+        ]
+      },
+      {
+        "node_id": "career.wealth",
+        "function": "年干庚与月支酉中辛的资源业务功能",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.wealth",
+            "excerpt": "年干庚、月支酉藏辛财星"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.officer",
+        "excerpt": "日支亥藏壬正官"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.seal",
+        "excerpt": "月干乙偏印透出"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.wealth",
+        "excerpt": "年干庚、月支酉藏辛财星"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "root_level",
+        "excerpt": "候选事业结构节点为日支亥中壬正官贴近日主、月干乙偏印透出承接官星，年干庚正财与月支酉中辛偏财提供业务资源节点，时柱丙午比劫根承担执行；形成官星—偏印—日主及财星—官星的双承载路径，不以午禄根或比劫帮身单独替代官印事业定位。"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "职业更可能落在组织化专业岗位，以知识资质承接规则压力，并兼顾资源或业务结果",
+        "node_ids": [
+          "career.wealth",
+          "career.officer",
+          "career.seal"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.officer",
+            "excerpt": "日支亥藏壬正官"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.seal",
+            "excerpt": "月干乙偏印透出"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.wealth",
+            "excerpt": "年干庚、月支酉藏辛财星"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_chart",
+        "locator": "blind_boundary",
+        "excerpt": "不从日主长生、临官、帝旺或一般根气替代事业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.officer",
+        "excerpt": "日支亥藏壬正官"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.seal",
+        "excerpt": "月干乙偏印透出"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.wealth",
+        "excerpt": "年干庚、月支酉藏辛财星"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory/ziping/index.yaml",
+        "line": 17828,
+        "excerpt": "ZP-PROD-20260622-439：原有财官时，财运生官可形成资源向责任位置的承载。"
+      }
+    ],
+    "competing_explanations": [
+      "专业支持或技术执行路径，能进入组织但职权层级有限",
+      "项目或业务导向岗位，收入机会存在但组织位置不稳定"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "education_responsibility_boundary_change",
+      "window": "2012-01-01/2012-12-31",
+      "center_event": "2012年学习、责任或环境节奏出现一次可核验的边界调整。",
+      "alternative": "仅出现短期压力、支出或出行变化，未形成长期转折",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "root_level": "STRONG_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "annual_trace": {
+        "year": 2012,
+        "liunian": "壬辰",
+        "dayun_ganzhi": "丙戌",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].relations[0]",
+            "excerpt": "流年干合日干丁化('木', '合绊')"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].relations[1]",
+            "excerpt": "流年支冲大运支戌"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].relations[2]",
+            "excerpt": "流年支六合月支酉化金"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].relations[3]",
+            "excerpt": "流年支自刑年支辰"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.year.branch",
+          "natal.month.branch",
+          "natal.day.stem"
+        ],
+        "domains": [
+          "事业",
+          "健康"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].main_energy",
+            "excerpt": "工作变动 / 压力"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2012].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2012,
+    "crossed_candidate_gate": true,
+    "rejected_preview_year": 2008,
+    "rejected_preview_reason": "2008仅为preflight high，未通过L1+L2 crossed gate，未伪造成正式E1；改选真实越门的2012。"
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "change_reason": "命中规则支持既有中心方向，未出现足以改变中心判断的反证；零命中组仅保留检索审计。",
+    "adopted_rule": {
+      "adopted_rule": "ziping:ZP-PROD-20260622-439",
+      "locator": "theory/ziping/index.yaml:17828",
+      "summary": "财生官支持资源或业务结果向组织责任位置承载。"
+    },
+    "search_audit": [
+      {
+        "keywords": [
+          "七杀",
+          "制化"
+        ],
+        "hit_count": 1,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-019] 十九、论四凶神能成格 杀、伤、枭、刃为四凶神，制化得宜反成贵格。七杀逢食神制，杀格成名；伤官配印，伤官成格；枭神制旺食，枭为我用；阳刃用官杀制伏，刃格显贵。凶神有制，化凶为吉。 子平规则参与：杀、伤、枭、刃为四凶神，制化得宜反成贵格。七杀逢食神制，杀格成名；伤官配印，伤官成格；枭神制旺食，枭为我用；阳刃用官杀制伏，刃格显贵。凶神有制，化凶为吉。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "正财",
+          "生官"
+        ],
+        "hit_count": 2,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-439] 论正财正财者，乃甲见己、乙见戊之例。 壬生戌月，甲子旬戌落空亡之类。余以例推。又曰：财为养命之源，凡人八字不可无财，但不要太多，多则不清，若柱原无财而行财运，乃有名无实，如财多身弱，又行官乡财旺之地，见财盗气，官克身，不惟不发禄，且祸患百出。又曰：财为马，官为禄，二者不可缺一，实难两全，原有财星宜行官运，原有官星宜行财运，行财运生官，行官运发财，若柱中原无 子平规则参与：壬生戌月，甲子旬戌落空亡之类。余以例推。又曰：财为养命之源，凡人八字不可无财，但不要太多，多则不清，若柱原无财而行财运，乃有名无实，如财多身弱，又行官乡财旺之地，见财盗气，官克身，不惟不发禄，且祸患百出。又曰：财为马，官为禄，二者不可缺一，实难两全，原有财星宜行官运，原有官星宜行财运，行财运生官，行官运发财，若柱中原无官星，只是财多，又行财运，亦能成就名利，。 (来源: theory\\ziping\\index.yaml)",
+          "[ziping:ZP-PROD-20260622-441] 论正财正财者，乃甲见己、乙见戊之例。 又云：妻财明朗，乔木相求，财星入墓，必定刑妻，支下伏财，偏房宠妾。口诀云：财星太过愚。又云：大运、流年、三合财乡，必主红鸾吉兆。《千里马》云：财源被劫，父命先倾。又云：男逢财多身弱，妻话偏听，财星得位，因妻致富成家，财遇长生，田园万顷，财旺生官，白身荣显。《元理赋》云：大贵者用财而不用官。又云：财临旺地人多福。又云：孤 子平规则参与：又云：妻财明朗，乔木相求，财星入墓，必定刑妻，支下伏财，偏房宠妾。口诀云：财星太过愚。又云：大运、流年、三合财乡，必主红鸾吉兆。《千里马》云：财源被劫，父命先倾。又云：男逢财多身弱，妻话偏听，财星得位，因妻致富成家，财遇长生，田园万顷，财旺生官，白身荣显。《元理赋》云：大贵者用财而不用官。又云：财临旺地人多福。又云：孤寡者只为财神被劫。秘诀云：财生身旺两相停。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "偏印",
+          "化杀"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 4,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定domain=career；幼年E1只作为年度双证据门候选，不把家庭/学习描述冒充已证实职业事实。",
+    "strict_preflight_nonclaim": "RF自动排盘输入缺少严格preflight完整字段，本次使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用feedback.md及候选报告反馈摘要形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

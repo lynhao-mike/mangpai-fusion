@@ -1,0 +1,267 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000343-乾-庚辰辛巳戊寅戊午",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-30T13:18:40+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "evidence_scope": "仅使用input.md经truncate_blind_section得到的盲态前缀、该前缀的表格注释检测结果、asof-freeze-scaffold-draft.json、preflight与adapt_parsed解析结果、事业L1+L2门控结果、RF000417/RF000464/RF000763既有验证格式、§9.4结构质量排名中该案时间节点年份，以及显式读取的active理论规则。",
+    "source": "cases/C-2026-RF000343-乾-庚辰辛巳戊寅戊午/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 175,
+    "cutoff_marker": "yaml_key",
+    "blind_character_count": 2420,
+    "blind_line_count": 174,
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "parser_method": "tools.preflight.parse(blind-only temp) -> engine.predicates.types.adapt_parsed",
+    "temporary_parser_completion": "仅在临时盲态副本将birth.性别由男规范化为M、补空known_facts并闭合Markdown代码围栏；临时文件已删除。",
+    "known_fact_count_after_parse": 0,
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false,
+    "existing_case_analysis_read_before_freeze": false,
+    "existing_statement_or_findings_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "2000-05-20 11:20",
+    "birthplace": "江西赣州",
+    "pillars_supplied": [
+      "庚辰",
+      "辛巳",
+      "戊寅",
+      "戊午"
+    ],
+    "dayun_supplied": [
+      "壬午 2005-2015",
+      "癸未 2015-2025",
+      "甲申 2025-2035",
+      "乙酉 2035-2045",
+      "丙戌 2045-2055",
+      "丁亥 2055-2065",
+      "戊子 2065-2075",
+      "己丑 2075-2085"
+    ],
+    "current_dayun": "甲申",
+    "current_dayun_years": "2025-2035"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "rule_bound_technical_execution_and_verifiable_delivery",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能以规则明确的技术执行和流程交付承担职业责任，主要价值来自把专业要求落实为可检验成果；具备持续承责能力，但不冻结行业、职级与收入。",
+      "strength": "MEDIUM",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：技术执行与任务承接能力存在，但现实兑现不稳，表现为岗位、项目、授权或回报缺少连续性。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若中心不成立，则截至截止日主要职业活动仍未形成持续的专业任务承接与可检验交付。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有普通上班、短期任务或按指令完成重复劳动不算中心命中；主要职业价值须持续体现专业要求、流程责任与可核验成果交付。",
+    "falsifiers": [
+      "截至截止日长期从事低专业要求、低流程责任且结果不可追踪的重复劳动。",
+      "主要职业活动未形成持续任务承接，也不对进度、质量或交付结果负责。"
+    ]
+  },
+  "reasoning_boundary": {
+    "natal_structure": "戊土日主生巳月，时柱戊午加强火土，月干辛为伤官透出，年干庚为食神透出，日支寅中甲丙戊并存。结构更支持把理解、技术表达和执行能力落到具体任务，但火土偏聚且水气不显，不能由食伤名义直接推定稳定职位、收入或现实完成度。",
+    "current_dayun": "2025—2035甲申运，七杀与食神主题并见，脚手架仅提示规则压力、职位责任、技术输出和专业技能可能同时增强；也可能表现为竞争、约束与成果兑现不同步。",
+    "strength_cap": "职业中心冻结为中等强度；行业、单位、职级、收入、管理范围与经营身份不冻结。",
+    "root_level_justification": "原局火土根气明确且庚辛食伤透出，具备承接执行与输出的结构基础；财星不显，现实回报和稳定承载未经反馈验证，因此采用ACTIVATE_EXISTING并保留兑现不稳备选。"
+  },
+  "dayun_stages": [
+    {
+      "dayun": "壬午",
+      "start_year": 2005,
+      "end_year": 2015,
+      "stage_judgment": "早期更偏学习训练、规则适应与表达能力形成，结构触发较多，但不冻结具体学业或职业事实。"
+    },
+    {
+      "dayun": "癸未",
+      "start_year": 2015,
+      "end_year": 2025,
+      "stage_judgment": "技能积累向现实任务承接过渡，责任与成果要求可能增强，稳定岗位和回报完成度不作当然推定。"
+    },
+    {
+      "dayun": "甲申",
+      "start_year": 2025,
+      "end_year": 2035,
+      "stage_judgment": "规则压力、职位责任与技术输出并行增强，更容易进入以专业任务和可检验交付接受评价的阶段，同时保留竞争和兑现不连续风险。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "scoring_unit": "dated_career_state_or_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "center_event": "2024年发生一次可核验的职业状态或主要责任边界变化。",
+      "confidence": 62,
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "2024甲辰处癸未运，事业L1+L2候选门通过；辰自刑原局年支辰并激活年支，算法强度low且领域含事业、健康。",
+      "selection_reason": "按盲态允许的§9.4结构质量排名识别时间节点所在年为2024；该年通过事业L1+L2候选门。脚手架首批推荐高触发年均已纳入候选覆盖审查，但因时间节点硬约束与单年契约，E1选择2024并明确其算法强度仅为low。",
+      "falsifier": "2024全年职业状态及主要责任边界均无明确变化。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "tools.preflight.parse -> engine.predicates.types.adapt_parsed -> engine.asof.annual_trace.build_annual_traces_with_gate",
+    "domain": "事业",
+    "trace_count": 22,
+    "passed_year_count": 22,
+    "passed_years": [
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "scaffold_recommended_high_years": [
+      2005,
+      2006,
+      2007,
+      2016,
+      2017
+    ],
+    "scaffold_high_year_gate_coverage": [
+      {
+        "year": 2005,
+        "liunian": "乙酉",
+        "dayun": "壬午",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["事业", "健康"]
+      },
+      {
+        "year": 2006,
+        "liunian": "丙戌",
+        "dayun": "壬午",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["学业", "家庭", "六亲"]
+      },
+      {
+        "year": 2007,
+        "liunian": "丁亥",
+        "dayun": "壬午",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["学业", "家庭", "六亲"]
+      },
+      {
+        "year": 2016,
+        "liunian": "丙申",
+        "dayun": "癸未",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["学业", "家庭", "六亲"]
+      },
+      {
+        "year": 2017,
+        "liunian": "丁酉",
+        "dayun": "癸未",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["学业", "家庭", "六亲"]
+      }
+    ],
+    "selected_year": {
+      "year": 2024,
+      "liunian": "甲辰",
+      "dayun": "癸未",
+      "strength": "low",
+      "domains": ["事业", "健康"],
+      "relations": ["流年支自刑年支辰"],
+      "activated_node_ids": ["natal.year.branch"],
+      "crossed_candidate_gate": true
+    },
+    "selection_reason": "脚手架推荐高触发年已全部检查且均通过事业L1+L2门；E1依硬约束选择§9.4时间节点所在的2024单年。2024同样通过门控且算法领域含事业，但强度为low，故只冻结宽口径、可证伪的职业状态或责任边界变化，不推定升职、离职或收入变化。"
+  },
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-004",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:794-831",
+      "summary": "财官印食伤不能按名称绝对定吉凶，必须结合日主强弱、月气与制化状态。",
+      "application": "不把庚辛食伤或甲申运的七杀名称直接等同于职业成功，仅用于支持技术执行、规则责任与成果交付方向。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-005",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:832-868",
+      "summary": "命局通月气并有生扶、制化或通关倚托时才可提高事业层级；仅见形式而无实质倚托不可评高。",
+      "application": "本案虽火土根气与食伤输出线索清楚，仍不据此冻结具体层级，并以中等强度及现实兑现不稳备选限制完成度。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-026",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:1630-1668",
+      "summary": "戊土应检查丙照、甲疏、癸润的配置，缺项会限制生机与灵动层次，且季节取用变化时不可机械同权。",
+      "application": "本案寅中有甲丙而癸水不显，因此把结构能力与现实成果连续性分开，不冻结高层次、财富或稳定回报。"
+    }
+  ],
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "asserted_no_issue": true,
+    "center_or_count": 0,
+    "event_windows_months": {
+      "E1": 11.992032690609664
+    },
+    "event_window_days": {
+      "E1": 365
+    },
+    "event_or_counts": {
+      "E1": 1
+    },
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。"
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位、职级、收入、财富规模、管理人数或社会等级。",
+    "不把脚手架高触发、L1+L2门控通过或2024辰自刑直接等同于职业事件必然发生。",
+    "不冻结升职、离职、创业、加薪等具体事件类型。",
+    "不冻结婚姻、健康、子女及反馈中可能出现的任何事实。",
+    "禁止在本阶段读取feedback.md。",
+    "禁止在本阶段创建verdict。"
+  ],
+  "verdict_policy": {
+    "verdict_created": false,
+    "verdict_stage": "禁止在冻结前创建",
+    "future_comparison_unit": "职业中心、两条备选及E1分别核验，不得相互吸收",
+    "immutability_rule": "反馈揭示后不得修改本文件；后续裁决须写入独立文件并绑定本冻结SHA-256。"
+  },
+  "immutability_policy": "计算SHA-256后不得根据反馈修改本文件；揭示与裁决必须在独立阶段执行。"
+}

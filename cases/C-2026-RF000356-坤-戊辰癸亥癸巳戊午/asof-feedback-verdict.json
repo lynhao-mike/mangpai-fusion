@@ -1,0 +1,120 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+  "adjudicated_at": "2026-07-30T20:16:45+08:00",
+  "feedback_source": "cases/C-2026-RF000356-坤-戊辰癸亥癸巳戊午/feedback.md",
+  "freeze_source": "cases/C-2026-RF000356-坤-戊辰癸亥癸巳戊午/asof-blind-freeze.json",
+  "freeze_sha256_expected": "55969db7e743faf7cb6c76d02ce76f50e1e045718a6085e53371124cb980bce8",
+  "freeze_sha256_observed_before_verdict": "55969db7e743faf7cb6c76d02ce76f50e1e045718a6085e53371124cb980bce8",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2017,
+      "domain": "career_disruption",
+      "fact": "主动离职。"
+    },
+    {
+      "year": 2021,
+      "domain": "career_disruption",
+      "fact": "从待遇不错的朋友淘宝店主动离职。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_disruption",
+      "fact": "主动离职并待业至今。"
+    },
+    {
+      "year": 2013,
+      "domain": "dated_event_evidence",
+      "fact": "反馈未提供2013年事实。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ALTERNATIVE_REALIZED",
+    "verdict": "ALTERNATIVE_HIT",
+    "reason": "本科及既往工作经历支持能力基础，但多次主动离职且当前待业，未支持持续稳定责任落地，直接命中现实兑现不稳的同方向备选。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "ACTIVATED",
+      "verdict": "ALTERNATIVE_HIT",
+      "reason": "2017、2021、2024多次离职及当前待业构成职业兑现间断的直接证据。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_EVALUABLE",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未充分说明阶段性支持任务形态。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "2013-01-01/2013-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈没有2013年事实。",
+      "reason": "窗口内缺少直接证据。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "scaffold未提供2024，冻结后不得改写。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 0,
+      "alternative_hits": 1,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "能力基础存在但职业兑现间断，命中备选。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "无独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "2013无直接反馈。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "ALTERNATIVE_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "基础态命中兑现不稳备选，E1弃权。"
+  },
+  "protocol_exception": {
+    "code": "PREFLIGHT_REQUIRED_FIELD_MISSING_AND_SCAFFOLD_YEAR_COVERAGE_GAP",
+    "preflight_field_path": "藏干",
+    "required_section_9_4_year": 2024,
+    "e1_year": 2013,
+    "strict_requirement_satisfied": false,
+    "reason": "preflight失败后按scaffold降级且未后验改写。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

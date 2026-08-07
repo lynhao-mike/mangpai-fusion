@@ -259,6 +259,96 @@ def test_h3_parallel_feedback_fanout_stats_and_weight_proposal(tmp_path, monkeyp
     assert proposal["proposals"][0]["requires_human_review"] is True
 
 
+def test_h3_ingest_fans_out_real_parallel_statement_index(tmp_path, monkeypatch):
+    """ingest 主流程应读取落盘 statement_index 并登记并行域反馈。"""
+    import json
+
+    import tools.feedback_ingest as fi
+    from tools.feedback_loop import IterationDiff
+
+    case_dir = tmp_path / "C-TEST-PARALLEL-INGEST"
+    case_dir.mkdir()
+    statement_id = "S-999-pd0001"
+    (case_dir / "feedback.md").write_text(
+        f"反馈：[{statement_id}] [y]\n",
+        encoding="utf-8",
+    )
+    (case_dir / "statement_records.json").write_text(
+        json.dumps(
+            {
+                "records": [
+                    {
+                        "statement_id": statement_id,
+                        "rule_id": "M1-D-001",
+                        "family_id": "FAM-M1",
+                        "school": "段",
+                        "canon": "duan",
+                        "rule_type": "runtime_rule",
+                        "domain": "财运",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "statement_index.json").write_text(
+        json.dumps(
+            {
+                "case_id": case_dir.name,
+                "statements": [
+                    {
+                        "statement_id": statement_id,
+                        "section": "parallel_domain_adjudication",
+                        "domain": "财运",
+                        "summary": "财运结构可用",
+                        "reading_ids": [
+                            "RD-C-TEST-财运-BLIND-001",
+                            "RD-C-TEST-财运-ZIPING-001",
+                        ],
+                        "adjudication_id": "ADJ-C-TEST-财运",
+                        "expert_systems": ["blind", "ziping"],
+                        "supporting_experts": ["blind", "ziping"],
+                        "dissenting_experts": [],
+                        "abstained_experts": ["tiaohou_ditiansui"],
+                        "consensus_layer": "双专家共识",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    expert_log = tmp_path / "logs" / "expert_domain_feedback.jsonl"
+    adjudication_log = tmp_path / "logs" / "adjudication_accuracy.jsonl"
+    monkeypatch.setattr(fi, "find_case_dir", lambda _case_id: case_dir)
+    monkeypatch.setattr(fi, "EXPERT_DOMAIN_FEEDBACK_LOG", expert_log)
+    monkeypatch.setattr(fi, "ADJUDICATION_ACCURACY_LOG", adjudication_log)
+    monkeypatch.setattr(fi, "WEIGHT_CHANGES_LOG", tmp_path / "logs" / "weight-changes.jsonl")
+    monkeypatch.setattr(
+        fi,
+        "run_learning_update",
+        lambda *_args, **_kwargs: {"updated_count": 0, "observable_confidence_changes": []},
+    )
+    monkeypatch.setattr(
+        fi,
+        "_apply_rule_verdicts",
+        lambda case_id, *_args, **_kwargs: IterationDiff(case_id=case_id, ts="2026-07-27T00:00:00", case_count=1),
+    )
+    monkeypatch.setattr(fi, "append_iteration_log", lambda _diff: None)
+    monkeypatch.setattr(fi, "write_snapshot", lambda _diff: None)
+    monkeypatch.setattr(fi, "_bump_state", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(fi, "_write_ingest_timing", lambda *_args, **_kwargs: None)
+
+    result = fi.ingest(case_dir.name)
+
+    rows = [json.loads(line) for line in expert_log.read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 2
+    assert {row["expert_system"] for row in rows} == {"blind", "ziping"}
+    assert any("parallel-domain 反馈已登记：reading=2，adjudication=1" in note for note in result.iteration_diff.notes)
+
+
 def test_h3_weight_proposal_low_sample_only_warns(tmp_path, monkeypatch):
     """n_eff < 5 时只提示样本不足，不产生调整 proposal。"""
     import json

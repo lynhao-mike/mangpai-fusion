@@ -1,0 +1,18 @@
+{
+  "invocation": "python cleanup/status with resolved workspace containment checks",
+  "removed_pycache": [
+    "tests/governance/__pycache__",
+    "tests/application/__pycache__",
+    "tests/__pycache__",
+    "engine/application/__pycache__",
+    "engine/governance/__pycache__"
+  ],
+  "remaining_temp": [],
+  "python_process_matches": [
+    "python  -m pytest -q         33548"
+  ],
+  "scoped_git_status": [
+    "?? .omo/evidence/task12-static-isolation-manual-qa/"
+  ],
+  "exit_code": 0
+}

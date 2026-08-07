@@ -1,0 +1,122 @@
+Task6 school registry evidence
+
+Scope
+- Added engine/governance/school_registry.py and school_registry_loader.py.
+- Extended engine/governance/registries.py with stable readonly exports.
+- Extended the shared Wave1 YAML top-level schema in fact_certification_loader.py.
+- Formal YAML declares exactly five peer schools, Ditiansui legacy compatibility, and no capabilities.
+- No legacy capability snapshot schema, decision capability registry, or production arbitration was changed.
+
+TDD
+- RED: python -m pytest tests/governance/test_school_registry.py -q
+  Result: 12 failed because the Task6 exports did not yet exist.
+- GREEN/repeated focused:
+  python -m pytest tests/governance/test_school_registry.py -q
+  Result: 12 passed in 0.51s; repeated 12 passed in 1.26s.
+- Shared Task4 focused:
+  python -m pytest tests/governance/test_fact_certification_registry.py -q
+  Result: 12 passed in 0.64s; repeated 12 passed in 1.68s.
+- Plan joint:
+  python -m pytest tests/governance/test_school_registry.py tests/test_l1_learned_prior.py tests/decision/test_staged_arbitration.py -q
+  Result: 50 passed, one pre-existing deprecation warning.
+- Task1-6 joint:
+  python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py tests/governance/test_fact_certification_registry.py tests/governance/test_governance_claim.py tests/application/test_governance_claim_adapters.py tests/governance/test_school_registry.py -q
+  Result: 106 passed, one pre-existing deprecation warning.
+
+Quality
+- ruff check changed Python files: passed.
+- ruff format --check changed Python files: passed.
+- no-excuse checker script and basedpyright executable are absent from this workspace/PATH.
+- Pure LOC: school_registry.py 242; school_registry_loader.py 205; registries.py 56; fact_certification_loader.py 190; test_school_registry.py 166.
+- Dependency scan found no labels, report, feedback, or learning-runtime import in Task6 implementation.
+
+MANUAL_QA_MATRIX
+Timestamp: 2026-08-04T00:41:24+08:00
+Command: PowerShell here-string piped to `python -` from F:\多流派新思路; it used TemporaryDirectory for all fixture, tamper, path, and symlink cases.
+Exit code: 0
+
+PASS | formal_peer_ids
+Observed: ('ziping', 'gao_dechen', 'duan_jianye', 'yang_qingjuan', 'ren_fuhong')
+Expected: exactly the same five IDs in this order.
+
+PASS | ditiansui_legacy_only
+Observed: type=LegacyCompatibilitySource,status=legacy_compatibility_source,has_role=False
+Expected: legacy compatibility source with no peer role.
+
+PASS | alias_boundary_gao
+Observed: normalize=gao_dechen, canonical query=SCHOOL.UNKNOWN, uppercase/substrings/space-prefixed inputs all raised SCHOOL.INPUT_UNKNOWN.
+Expected: exact boundary mapping only; canonical registry query rejects aliases and malformed variants.
+
+PASS | alias_boundary_duan
+Observed: normalize=duan_jianye, canonical query=SCHOOL.UNKNOWN, uppercase/substrings/space-prefixed inputs all raised SCHOOL.INPUT_UNKNOWN.
+Expected: exact boundary mapping only; canonical registry query rejects aliases and malformed variants.
+
+PASS | alias_boundary_yang
+Observed: normalize=yang_qingjuan, canonical query=SCHOOL.UNKNOWN, uppercase/substrings/space-prefixed inputs all raised SCHOOL.INPUT_UNKNOWN.
+Expected: exact boundary mapping only; canonical registry query rejects aliases and malformed variants.
+
+PASS | alias_boundary_ren
+Observed: normalize=ren_fuhong, canonical query=SCHOOL.UNKNOWN, uppercase/substrings/space-prefixed inputs all raised SCHOOL.INPUT_UNKNOWN.
+Expected: exact boundary mapping only; canonical registry query rejects aliases and malformed variants.
+
+PASS | five_dimensional_unregistered
+Observed: type=CapabilityAbstention, issue=CAPABILITY.UNREGISTERED, source=school_registry.
+Expected: full 5D exact unregistered lookup abstains without fallback.
+
+PASS | malformed_identity_missing_identity
+Observed: CAPABILITY.IDENTITY typed rejection.
+Expected: typed reject.
+
+PASS | malformed_identity_empty_task
+Observed: SCHOOL.TEXT_REQUIRED typed rejection.
+Expected: typed reject.
+
+PASS | malformed_identity_bool_school
+Observed: SCHOOL.TEXT_REQUIRED typed rejection.
+Expected: typed reject.
+
+PASS | deep_readonly
+Observed: frozen registry assignment=True, frozen PeerSchool assignment=True, tuple append=True.
+Expected: all caller mutation attempts blocked.
+
+PASS | published_evidence_only
+Observed: type=CapabilityQualification, role=evidence_only, winner_eligible=False.
+Expected: evidence-only capability cannot become an independent winner.
+
+PASS | tamper_unknown_top_field
+Observed: CERTIFICATION.YAML_FIELDS typed rejection.
+Expected: unknown top-level YAML field fails closed.
+
+PASS | tamper_duplicate_top_field
+Observed: CERTIFICATION.YAML_DUPLICATE_FIELD typed rejection.
+Expected: duplicate top-level YAML field fails closed.
+
+PASS | tamper_duplicate_capability_identity
+Observed: CAPABILITY.DUPLICATE_IDENTITY typed rejection.
+Expected: conflicting duplicate 5D capability identity fails closed.
+
+PASS | path_parent_escape
+Observed: CERTIFICATION.PATH typed rejection for ../outside.yaml.
+Expected: workspace path traversal fails closed.
+
+PASS | symlink_escape
+Observed: CERTIFICATION.SYMLINK typed rejection for theory/linked.yaml -> external file.
+Expected: symlink escape fails closed.
+
+PASS | task4_combined_formal_yaml
+Observed: registration_count=0 from load_fact_certification_registry on theory/multi-school-governance-v1.yaml.
+Expected: combined formal YAML still loads under Task4 with zero certifications.
+
+PASS | runtime_import_isolation
+Observed: forbidden loaded module names matching label/report/feedback/learning = ().
+Expected: no label/report/feedback/learning runtime import.
+
+Cleanup: TemporaryDirectory removed; subprocesses_started=0; remaining_processes=0.
+
+Focused regression
+Timestamp: 2026-08-04T00:42:43.3611778+08:00
+Command: python -m pytest tests/governance/test_school_registry.py -q
+Exit code: 0
+Observed: 12 passed in 0.43s.
+Expected: focused Task6 suite remains green after temporary-fixture QA.
+Result: PASS

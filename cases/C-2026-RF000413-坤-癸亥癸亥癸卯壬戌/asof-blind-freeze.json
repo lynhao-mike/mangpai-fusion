@@ -1,0 +1,287 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:12:27+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000413-坤-癸亥癸亥癸卯壬戌/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以技能输出与项目交付形成阶段性职业收益",
+      "completion_mode": "COMPLETE_LATENT"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "输出能力存在但现实兑现不稳，收入具有项目性"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "工作平台相对稳定，个人项目只是补充"
+      }
+    ]
+  },
+  "root_level": "WEAK_ROOT",
+  "root_level_justification": "候选事业领域定位在日支卯食神、两亥所藏甲伤官与戌中丁偏财；食伤节点可向戌中偏财形成输出—项目—收益路径，但财星伏藏且未透，兑现链偏弱，据此定为WEAK_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "日支卯食神、两亥所藏甲伤官与戌中丁偏财",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "日支卯食神、两亥所藏甲伤官与戌中丁偏财"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "日支卯食神、两亥所藏甲伤官与戌中丁偏财"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "食伤节点可向戌中偏财形成输出—项目—收益路径，但财星伏藏且未透，兑现链偏弱"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以技能输出与项目交付形成阶段性职业收益",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "日支卯食神、两亥所藏甲伤官与戌中丁偏财"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "食伤节点可向戌中偏财形成输出—项目—收益路径，但财星伏藏且未透，兑现链偏弱"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "日支卯食神、两亥所藏甲伤官与戌中丁偏财"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "食伤节点可向戌中偏财形成输出—项目—收益路径，但财星伏藏且未透，兑现链偏弱"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\gao\\index.yaml",
+        "line": 1,
+        "excerpt": "伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库"
+      }
+    ],
+    "competing_explanations": [
+      "输出能力存在但现实兑现不稳，收入具有项目性",
+      "工作平台相对稳定，个人项目只是补充"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2025-01-01/2025-12-31",
+      "center_event": "2025年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "COMPLETE_LATENT",
+      "root_level": "WEAK_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "REMAINDER_ONLY_RECHECK_CROSS_DAIYUN",
+      "annual_trace": {
+        "year": 2025,
+        "liunian": "乙巳",
+        "dayun_ganzhi": "丁卯",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].relations[0]",
+            "excerpt": "流年支冲年支亥"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].relations[1]",
+            "excerpt": "流年支冲月支亥"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.year.branch",
+          "natal.month.branch"
+        ],
+        "domains": [
+          "事业",
+          "财富"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].main_energy",
+            "excerpt": "技术产出 / 子女 / 表达"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2025,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2001,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "gao",
+      "rule_id": "G-CY-018",
+      "citation": "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "食神",
+          "生财"
+        ],
+        "hit_count": 16,
+        "citations_reviewed": [
+          "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)",
+          "[duan:M1-D-078] 经营取财 — 内食神生财 (来源: theory\\duan\\index.yaml)",
+          "[yang:M2-Y-006] 谁生的财谁说了算 食神生财归属论；不生时财就走了 (来源: theory\\yang\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "食神",
+          "事业"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": null,
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

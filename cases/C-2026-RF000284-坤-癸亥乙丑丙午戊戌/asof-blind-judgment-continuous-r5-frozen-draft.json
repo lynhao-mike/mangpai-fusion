@@ -1,0 +1,446 @@
+{
+  "as_of_date": "2026-06-11",
+  "blind_boundary": {
+    "blind_line_count": 165,
+    "cut_line": 166,
+    "historical_reality_term_hits": 0,
+    "table_annotation_hits": 0,
+    "type": "yaml_key"
+  },
+  "blind_input": {
+    "chart_source": "wenzhen_structured_v1",
+    "daiyun": [
+      {
+        "branch": "寅",
+        "end_date": "2001-01-01",
+        "sequence": 1,
+        "start_date": "1991-01-01",
+        "stem": "丙"
+      },
+      {
+        "branch": "卯",
+        "end_date": "2011-01-01",
+        "sequence": 2,
+        "start_date": "2001-01-01",
+        "stem": "丁"
+      },
+      {
+        "branch": "辰",
+        "end_date": "2021-01-01",
+        "sequence": 3,
+        "start_date": "2011-01-01",
+        "stem": "戊"
+      },
+      {
+        "branch": "巳",
+        "end_date": "2031-01-01",
+        "sequence": 4,
+        "start_date": "2021-01-01",
+        "stem": "己"
+      },
+      {
+        "branch": "午",
+        "end_date": "2041-01-01",
+        "sequence": 5,
+        "start_date": "2031-01-01",
+        "stem": "庚"
+      },
+      {
+        "branch": "未",
+        "end_date": "2051-01-01",
+        "sequence": 6,
+        "start_date": "2041-01-01",
+        "stem": "辛"
+      },
+      {
+        "branch": "申",
+        "end_date": "2061-01-01",
+        "sequence": 7,
+        "start_date": "2051-01-01",
+        "stem": "壬"
+      },
+      {
+        "branch": "酉",
+        "end_date": "2071-01-01",
+        "sequence": 8,
+        "start_date": "2061-01-01",
+        "stem": "癸"
+      }
+    ],
+    "gender": "坤",
+    "pillars": {
+      "day": {
+        "branch": "午",
+        "changsheng": "帝旺",
+        "hidden_stems": [
+          "丁",
+          "己"
+        ],
+        "stem": "丙"
+      },
+      "hour": {
+        "branch": "戌",
+        "changsheng": "墓",
+        "hidden_stems": [
+          "戊",
+          "辛",
+          "丁"
+        ],
+        "stem": "戊"
+      },
+      "month": {
+        "branch": "丑",
+        "changsheng": "养",
+        "hidden_stems": [
+          "己",
+          "癸",
+          "辛"
+        ],
+        "stem": "乙"
+      },
+      "year": {
+        "branch": "亥",
+        "changsheng": "绝",
+        "hidden_stems": [
+          "壬",
+          "甲"
+        ],
+        "stem": "癸"
+      }
+    },
+    "schema_version": "asof-blind-input/v1"
+  },
+  "blind_input_sha256": "4fce7fedde575543cd35aabcaab142035a2f112af2bce1fb14eabfb76b96b161",
+  "case_id": "C-2026-RF000284-坤-癸亥乙丑丙午戊戌",
+  "feedback_opened": false,
+  "freeze_package": {
+    "blind_input_sha256": "4fce7fedde575543cd35aabcaab142035a2f112af2bce1fb14eabfb76b96b161",
+    "events": [
+      {
+        "candidate": {
+          "alternative_hypotheses": [
+            "仅专业输出或工作量增强，正式权限未增加",
+            "巳亥冲主要落为岗位或平台调整，未形成责任上行"
+          ],
+          "annual_trace": {
+            "activated_node_ids": [
+              "N-ROOT-CARRY",
+              "N-INSTITUTION",
+              "N-OUTPUT"
+            ],
+            "counter_evidence": [
+              {
+                "excerpt": "巳亥冲可表现为调整或不稳，不能单向解释为晋升",
+                "locator": "annual_trace.2025.counter",
+                "source": "blind_input"
+              }
+            ],
+            "crossed_candidate_gate": true,
+            "dayun_ganzhi": "己巳",
+            "domains": [
+              "career"
+            ],
+            "liunian": "乙巳",
+            "relations": [
+              {
+                "excerpt": "乙巳流年叠加己巳大运，巳再次冲原局亥；乙印透出",
+                "locator": "annual_trace.2025",
+                "source": "blind_input"
+              }
+            ],
+            "supporting_evidence": [
+              {
+                "excerpt": "己巳大运：2021-01-01至2030-12-31；己为伤官，巳为丙火临官",
+                "locator": "daiyun[4]",
+                "source": "blind_input"
+              },
+              {
+                "excerpt": "乙巳流年叠加己巳大运，巳再次冲原局亥；乙印透出",
+                "locator": "annual_trace.2025",
+                "source": "blind_input"
+              },
+              {
+                "excerpt": "丙日坐午，十二长生为帝旺，午藏丁火",
+                "locator": "pillars.day.branch",
+                "source": "blind_input"
+              },
+              {
+                "excerpt": "戊透时干，为丙火食神输出功能",
+                "locator": "pillars.hour.stem",
+                "source": "blind_input"
+              }
+            ],
+            "trigger_strength": "high",
+            "year": 2025
+          },
+          "candidate_id": "E-R5-RF000284-CAREER-2025",
+          "completion_mode": "ACTIVATE_EXISTING",
+          "counter_evidence": [
+            {
+              "excerpt": "丑月癸水司令，丙火失令",
+              "locator": "month_commander",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "巳与原局亥冲，变化方向需结合衰旺与现实核验",
+              "locator": "daiyun[4].branch->pillars.year.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "巳亥冲可表现为调整或不稳，不能单向解释为晋升",
+              "locator": "annual_trace.2025.counter",
+              "source": "blind_input"
+            }
+          ],
+          "daiyun_evidence": [
+            {
+              "excerpt": "己巳大运：2021-01-01至2030-12-31；己为伤官，巳为丙火临官",
+              "locator": "daiyun[4]",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "巳与原局亥冲，变化方向需结合衰旺与现实核验",
+              "locator": "daiyun[4].branch->pillars.year.branch",
+              "source": "blind_input"
+            }
+          ],
+          "domain": "career",
+          "event_type": "career_responsibility_or_autonomy_adjustment",
+          "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+          "frozen_version": "asof-prototype-v1",
+          "is_primary_event": true,
+          "natal_evidence": [
+            {
+              "excerpt": "丙日坐午，十二长生为帝旺，午藏丁火",
+              "locator": "pillars.day.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "戌藏丁火，为丙火墓库根气",
+              "locator": "pillars.hour.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "癸透年干，为丙火正官功能",
+              "locator": "pillars.year.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "乙透月干，为丙火正印功能",
+              "locator": "pillars.month.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "戊透时干，为丙火食神输出功能",
+              "locator": "pillars.hour.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "丑月癸水司令，丙火失令",
+              "locator": "month_commander",
+              "source": "blind_input"
+            }
+          ],
+          "root_evidence": [
+            {
+              "excerpt": "丙日坐午，十二长生为帝旺，午藏丁火",
+              "locator": "pillars.day.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "戌藏丁火，为丙火墓库根气",
+              "locator": "pillars.hour.branch",
+              "source": "blind_input"
+            }
+          ],
+          "root_level": "STRONG_ROOT",
+          "source_citations": [
+            {
+              "excerpt": "丙丁火在地支午火、巳火为有根",
+              "line": 1448,
+              "source_path": "sources/yang/MinerU_markdown_2021年课程基础讲解_2056036810585997312.md"
+            },
+            {
+              "excerpt": "丙火时落于午，根得帝旺，于焉转弱为强",
+              "line": 613,
+              "source_path": "sources/qianliminggao/千里命稿_part5.md"
+            },
+            {
+              "excerpt": "失令不作死法；四柱有根，便能受财官食神而当伤官七杀",
+              "line": 616,
+              "source_path": "sources/tiaohou_ditiansui/滴天髓阐微-清-任铁樵_part2.md"
+            }
+          ],
+          "supporting_evidence": [
+            {
+              "excerpt": "丙日坐午，十二长生为帝旺，午藏丁火",
+              "locator": "pillars.day.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "戌藏丁火，为丙火墓库根气",
+              "locator": "pillars.hour.branch",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "癸透年干，为丙火正官功能",
+              "locator": "pillars.year.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "乙透月干，为丙火正印功能",
+              "locator": "pillars.month.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "戊透时干，为丙火食神输出功能",
+              "locator": "pillars.hour.stem",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "己巳大运：2021-01-01至2030-12-31；己为伤官，巳为丙火临官",
+              "locator": "daiyun[4]",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "乙巳流年叠加己巳大运，巳再次冲原局亥；乙印透出",
+              "locator": "annual_trace.2025",
+              "source": "blind_input"
+            }
+          ],
+          "verification_status": "FROZEN",
+          "window_end": "2025-12-31",
+          "window_start": "2025-01-01"
+        },
+        "landing_set": {
+          "alternatives": [
+            {
+              "direction": "responsibility-and-autonomy-up",
+              "domain": "career",
+              "name": "专业输出或业务自主性增强但正式管理权限有限"
+            },
+            {
+              "direction": "responsibility-and-autonomy-up",
+              "domain": "career",
+              "name": "转岗换平台或自主承接业务且职责结构改变但职级未升"
+            }
+          ],
+          "center": {
+            "direction": "responsibility-and-autonomy-up",
+            "domain": "career",
+            "name": "专业或项目结果责任增强并伴随岗位或组织调整"
+          },
+          "exclusions": [
+            "不预测具体行业、单位性质或职业名称",
+            "不预测必然升职、收入增加、创业成功或管理人数",
+            "不把健康、婚姻、学习事件或泛化忙碌追认为事业命中"
+          ],
+          "falsifiers": [
+            "2025年无事业责任、自主性、岗位、组织或平台结构变化",
+            "变化仅发生在己巳运之外，或仅能由跨大运事实支持"
+          ],
+          "frozen_version": "asof-prototype-v1",
+          "function_candidate": "career_responsibility_or_autonomy_adjustment",
+          "weak_hit_boundary": "只有工作量、情绪或泛化变化而无责任、自主性、岗位或平台结构变化，不计命中；闭集外同义扩张禁止。"
+        }
+      }
+    ],
+    "fundamentals": [
+      {
+        "center": "己巳运放大原局已有承载与输出，事业责任或自主性上行但伴随组织关系调整风险",
+        "falsifiers": [
+          "截至2026-06-11无上述事业结构变化",
+          "只能用2021年前或2031年后的事实核验"
+        ],
+        "fundamental_id": "F-R5-RF000284-CAREER-STAGE",
+        "reasonable_range": [
+          "责任增强且组织位置调整",
+          "专业输出增强但正式权限有限",
+          "岗位或平台改变且职责结构重组"
+        ],
+        "strongest_alternative": "巳亥冲主要形成不稳或摩擦，未兑现责任与自主性上行",
+        "window_center": "2025-01-01",
+        "window_end": "2026-06-11",
+        "window_start": "2021-01-01"
+      }
+    ],
+    "identity": {
+      "as_of_date": "2026-06-11",
+      "case_id": "C-2026-RF000284-坤-癸亥乙丑丙午戊戌",
+      "schema_version": "asof-session/v1",
+      "session_id": "S-20260729T084820Z-00000284"
+    },
+    "schema_version": "asof-career-freeze-package/v1"
+  },
+  "freeze_package_sha256": "d785b3a4e0208b773ca85b396ffd33943a07fba1f36909a8ea38e113a27a8bc1",
+  "frozen_at_utc": "2026-07-29T08:48:20Z",
+  "frozen_prediction": {
+    "annual_trace": {
+      "dayun_ganzhi": "己巳",
+      "liunian": "乙巳",
+      "year": 2025
+    },
+    "candidate_reason_code": "CANDIDATE_FROZEN",
+    "completion_mode": "ACTIVATE_EXISTING",
+    "daiyun_stage": {
+      "domain_tendency": "mixed",
+      "end_date": "2030-12-31",
+      "ganzhi": "己巳",
+      "start_date": "2021-01-01"
+    },
+    "event_window": [
+      "2025-01-01",
+      "2025-12-31"
+    ],
+    "forbidden_inferences": [
+      "强根不等于必然升职、增收或创业成功",
+      "年度触发强度不等于现实影响度",
+      "己巳运之外的事实不能核验本事件机制",
+      "揭盲后不得扩张冻结落点闭集"
+    ],
+    "natal_capacity": {
+      "capacity_nodes": [
+        {
+          "function": "稳定承载与持续投入",
+          "node_id": "N-ROOT-CARRY"
+        },
+        {
+          "function": "制度责任与组织约束",
+          "node_id": "N-INSTITUTION"
+        },
+        {
+          "function": "专业表达与结果输出",
+          "node_id": "N-OUTPUT"
+        }
+      ],
+      "competing_explanations": [
+        "强根只说明可承载，不保证管理晋升或收入增长",
+        "官、印、食伤并见也可能落为专业责任而非正式职级"
+      ],
+      "completion_mode": "ACTIVATE_EXISTING",
+      "feasible_paths": [
+        {
+          "function": "在组织或项目中承担结果责任",
+          "node_ids": [
+            "N-ROOT-CARRY",
+            "N-INSTITUTION",
+            "N-OUTPUT"
+          ],
+          "path_id": "P-RESPONSIBILITY"
+        },
+        {
+          "function": "以专业输出增加业务自主性",
+          "node_ids": [
+            "N-ROOT-CARRY",
+            "N-OUTPUT"
+          ],
+          "path_id": "P-AUTONOMY"
+        }
+      ],
+      "root_level": "STRONG_ROOT"
+    },
+    "root_level": "STRONG_ROOT"
+  },
+  "schema_version": "asof-blind-judgment-continuous-r5/v1",
+  "session_id": "S-20260729T084820Z-00000284"
+}

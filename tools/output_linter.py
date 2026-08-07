@@ -76,8 +76,11 @@ DEFAULT_RULES_YAML: Path = (
 )
 
 _INTERNAL_ID_PATTERNS = [
-    (re.compile(r"\bclaim-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 claim_id（内部哈希）"),
+    (re.compile(r"\b(?:claim|v5cl)-[0-9a-z-]{6,}\b", re.IGNORECASE), "禁显 claim_id（内部哈希）"),
+    (re.compile(r"\b(?:evidence|v5ev)-[0-9a-z-]{6,}\b", re.IGNORECASE), "禁显 evidence_id（内部哈希）"),
     (re.compile(r"\bprediction-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 prediction_id（内部哈希）"),
+    (re.compile(r"\bclaim_id\b", re.IGNORECASE), "禁显 claim_id（内部字段名）"),
+    (re.compile(r"\bevidence_id\b", re.IGNORECASE), "禁显 evidence_id（内部字段名）"),
     (re.compile(r"\bstatement_id\b", re.IGNORECASE), "禁显 statement_id（内部字段名）"),
     (re.compile(r"\bstatement_index\b", re.IGNORECASE), "禁显 statement_index（内部字段名）"),
     (re.compile(r"\bcapability_posterior\b", re.IGNORECASE), "禁显 capability_posterior（内部学习字段）"),

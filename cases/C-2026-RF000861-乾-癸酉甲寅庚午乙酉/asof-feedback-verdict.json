@@ -1,0 +1,136 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000861",
+  "adjudicated_at": "2026-07-30T09:27:24+08:00",
+  "feedback_source": "cases/C-2026-RF000861-乾-癸酉甲寅庚午乙酉/feedback.md",
+  "freeze_source": "cases/C-2026-RF000861-乾-癸酉甲寅庚午乙酉/asof-blind-freeze.json",
+  "freeze_sha256_expected": "72def324ff3193615030c27e9ec74d3b0e7f05ecfcb880b11e0c19a97e5a8cc1",
+  "freeze_sha256_observed_before_verdict": "72def324ff3193615030c27e9ec74d3b0e7f05ecfcb880b11e0c19a97e5a8cc1",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {"year": 2009, "domain": "career_and_finance", "fact": "开始灰色地带创业并赚得第一桶金，持续约四年。"},
+    {"year": 2013, "domain": "career_and_finance", "fact": "与合作者经营文化项目密室逃脱，至2019年平均年净收入约12万。"},
+    {"year": 2015, "domain": "entrepreneurship", "fact": "与合作者及软件创始人提出电子钱包构想，年末完成测试版。"},
+    {"year": 2016, "domain": "entrepreneurship", "fact": "技术团队优化软件，命主负责路演找老板，推进不顺且投入未回本。"},
+    {"year": 2017, "domain": "entrepreneurship_and_financing", "fact": "命主与合作者推进融资，找到5家有意投资的上市公司，拟融资5000万马币推广。"},
+    {"year": 2018, "domain": "entrepreneurship", "fact": "软件创始人因风险拒绝融资，项目告终。"},
+    {"year": 2020, "domain": "career", "fact": "疫情冲击使密室逃脱项目结束。"},
+    {"year": 2021, "domain": "career", "fact": "资源归零后依靠创业人脉获得办公室闲职。"},
+    {"year": 2022, "domain": "career", "fact": "辅助一名贵族后裔把经营从亏损改善到不亏损。"},
+    {"year": 2024, "domain": "career", "fact": "清明时离开该合作对象。"},
+    {"year": 2025, "domain": "career_and_finance", "fact": "反馈快照记载职业为文化教育生意，平均年收入约40万。"}
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ACTIVATED",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈持续显示命主把客户与合作资源、产品构想和商业判断转化为项目结果：经营文化项目、组织电子钱包测试版、负责路演融资、辅助经营止亏，并在截止快照从事文化教育生意且平均年收入约40万。主要职责明显涉及方案判断、沟通推进与可量化结果，越过weak_hit_boundary。冻结未声称具体行业或管理层级，因此文化教育这一具体落点不作额外命中计分。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "2016—2021确有融资受阻、项目告终和收入/平台不稳定，但截至反馈快照中心职业集合已有直接命中；A1是中心不能稳定兑现时的同方向备选，不与中心重复计分。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "2021办公室闲职和2022辅助经营可部分接近内部协调，但反馈没有证明主要价值长期由成本、进度和内部流程交付考核；中心已直接命中，不后验激活该备选。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "claim_id": "P1",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2009开始创业并获得第一桶金", "2013进入文化项目经营", "2015提出电子钱包构想并完成测试版", "2016负责路演推进"],
+      "reason": "2007—2017阶段至少经历创业入口、经营项目转换和软件创业方向扩展，路径明显不是按单一计划平滑延续，并持续强调现实用途与商业结果。反馈没有教育细节，因此只按职业入口和方向调整命中。"
+    },
+    {
+      "claim_id": "P2",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2017推进大额融资", "2018项目因风险决策告终", "2020原经营受疫情冲击结束", "2021依人脉转入办公室闲职", "2022辅助经营止亏"],
+      "reason": "该阶段专业输出、合作推进与平台切换均有直接事实，同时项目终止、疫情冲击和转入闲职证明现实位置与收入连续性不稳，中心方向和完成度限制同时命中。"
+    },
+    {
+      "claim_id": "P3",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2024离开原辅助对象", "2025职业快照为文化教育生意且平均年收入约40万"],
+      "reason": "2024离开原合作对象、随后反馈显示文化教育生意和可量化收入，支持阶段内职业结构重定与价值兑现。反馈不足以证明组织授权等级，因此命中仅限职责/职业结构变化及现实结果。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_structure_change",
+      "window": "2025-01-01/2025-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "2025条目仅提供文化教育生意和平均年收入约40万的截止快照。",
+      "reason": "冻结最低命中条件是2025年主要岗位职责发生明确变化。反馈没有给出2025年前后职责对照，也未说明文化教育生意始于何时；现状快照不能后验改写成当年变动。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_responsibility_increase",
+      "window": "2026-01-01/2026-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈采集于2026-06-11，但没有2026年主要项目责任变化事实。",
+      "reason": "窗口尚未完整结束，且反馈未确认主要项目责任明显上升；缺证时按ABSTAIN，不以未来窗口或职业现状推定命中。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "文化教育经营、创业融资和结果交付事实直接命中职业中心。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 3,
+      "center_hits": 3,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "三个阶段均有独立事实支持方向调整、专业协作与职业结构重定。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 2,
+      "summary": "2025只有静态职业快照，2026没有责任上升事实；两个单年事件均不可评价。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "CENTER_HIT",
+    "broad_phase_direction": "CENTER_HIT",
+    "event_timing_precision": "ABSTAIN",
+    "summary": "职业中心和三段阶段方向均获反馈直接支持；特别是项目经营、产品构想、路演融资、辅助止亏及文化教育收入，与资源判断—推进—结果交付的冻结方向一致。日期精度没有可评价证据，不能把2025静态快照算作当年职责变动，也不能提前评价2026全年。"
+  },
+  "toolchain_comparison": {
+    "comparison_cases": ["C-2026-RF000868", "C-2026-RF000894", "C-2026-RF000900"],
+    "subjective_assessment": "IMPROVED_WITH_TIMING_EVIDENCE_GAP",
+    "improvements": [
+      "职业中心由多行业枚举收窄为单一功能链，中心描述的析取计数为0，反馈核验边界更清楚。",
+      "ACTIVATE_EXISTING强制配套兑现不稳备选，避免把能力结构直接等同于稳定职位和收入。",
+      "普通preflight高触发年再经L1+L2过滤，2020、2023、2024未过双门，不被随意包装为日期事件。",
+      "事件窗口压缩为单年且评分单元单一，裁决时能明确区分静态现状与当年变化。"
+    ],
+    "remaining_limit": "本案反馈对2025只给静态快照、对2026没有责任变化记录，因此新工具链改善了断语可证伪性，却尚未得到日期精度命中的实证。"
+  },
+  "diagnostic_note": {
+    "failure_class": "DATED_EVIDENCE_INSUFFICIENT",
+    "minimum_correction": "后续采集需补问文化教育生意开始年份、2025职责是否变化及2026项目责任是否上升；在补充前保持E1、E2为ABSTAIN。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "all_verdicts_formal": true
+  }
+}

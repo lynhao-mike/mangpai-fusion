@@ -1,0 +1,241 @@
+TASK 2 - DEEP IMMUTABLE FACT CONTRACTS
+Evidence recorded: 2026-08-03 Asia/Shanghai
+
+ENVIRONMENT
+Python 3.14.5
+pytest 8.4.2
+ruff 0.8.4
+basedpyright installed: False (not run, per task instruction)
+
+OWNED SCOPE BEFORE PRODUCT EDITS
+Command:
+git status --short --untracked-files=all -- engine/governance/__init__.py engine/governance/contracts.py tests/governance/test_fact_contracts.py .omo/start-work/artifacts/task2-fact-contracts.txt
+Output:
+?? engine/governance/__init__.py
+Meaning: __init__.py was already an untracked predecessor file; the other owned deliverables did not exist.
+
+BASELINE
+Command:
+python -m pytest tests/governance/test_canonical.py -q
+Start: 2026-08-03T15:36:28.5871582+08:00
+End:   2026-08-03T15:36:30.8158336+08:00
+Exit: 0
+Output:
+...................                                                      [100%]
+19 passed in 1.03s
+
+FAILING FIRST
+Command:
+python -m pytest tests/governance/test_fact_contracts.py -q
+Start: 2026-08-03T15:39:49.8394588+08:00
+End:   2026-08-03T15:39:51.2269302+08:00
+Exit: 1
+Output summary:
+FAILED test_fact_contract_public_surface_is_available
+1 failed in 0.25s
+Correct failure reason: available public fact-contract names were (), while seven reviewed names were required. This was an absent-behavior assertion, not an import or syntax failure. No product implementation existed at this point.
+
+FIRST GREEN AND SIZE-DRIVEN REFACTOR
+Command:
+python -m pytest tests/governance/test_fact_contracts.py -q
+Start: 2026-08-03T15:51:01.3373980+08:00
+End:   2026-08-03T15:51:02.7763823+08:00
+Exit: 0
+Output:
+........................                                                 [100%]
+24 passed in 0.41s
+Initial contracts.py pure LOC: 348, rejected as over the 250 LOC ceiling.
+Refactor: fact primitives, temporal/spec validation, digests, and payload freezing moved to the single permitted narrow fact_values.py module. contracts.py remained the reviewed stable import surface and retained fact/snapshot aggregates, construction, and integrity checks.
+Post-split focused result: 24 passed in 0.49s, exit 0.
+
+FINAL AUTOMATED VERIFICATION
+Focused run A:
+Command: python -m pytest tests/governance/test_fact_contracts.py -q
+Start: 2026-08-03T16:00:28.1104829+08:00
+End:   2026-08-03T16:00:31.1753530+08:00
+Exit: 0
+Output: 24 passed in 0.67s
+
+Focused run B:
+Command: python -m pytest tests/governance/test_fact_contracts.py -q
+Start: 2026-08-03T16:00:27.8946194+08:00
+End:   2026-08-03T16:00:30.8154895+08:00
+Exit: 0
+Output: 24 passed in 0.82s
+
+Combined fact/canonical regression:
+Command: python -m pytest tests/governance/test_fact_contracts.py tests/governance/test_canonical.py -q
+Start: 2026-08-03T16:00:27.9006040+08:00
+End:   2026-08-03T16:00:32.2618746+08:00
+Exit: 0
+Output: 43 passed in 2.29s
+
+STATIC VERIFICATION
+Command: ruff format --check engine/governance/contracts.py engine/governance/fact_values.py engine/governance/__init__.py tests/governance/test_fact_contracts.py
+Exit: 0
+Output: 4 files already formatted
+
+Command: ruff check engine/governance/contracts.py engine/governance/fact_values.py engine/governance/__init__.py tests/governance/test_fact_contracts.py
+Exit: 0
+Output: All checks passed!
+
+Command: python C:/Users/Administrator/.codex/plugins/cache/sisyphuslabs/omo/4.13.0/skills/programming/scripts/python/check-no-excuse-rules.py engine/governance/contracts.py engine/governance/fact_values.py engine/governance/__init__.py tests/governance/test_fact_contracts.py
+Exit: 0
+Output: no violations in 4 file(s)
+
+Command: git diff --check -- engine/governance/__init__.py engine/governance/contracts.py engine/governance/fact_values.py tests/governance/test_fact_contracts.py
+Exit: 0
+
+Advisory command: ruff check --select ALL <same changed Python files>
+Exit: 1
+Interpretation: the repository has no Ruff policy or test per-file ignores. The advisory pass reported docstring/test-assert policy noise plus one real production assert and formatting findings. The production assert was removed and formatting was applied. The acceptance command using repository-default Ruff passed. No advisory output was treated as success.
+
+PURE LOC AND SOURCE RESPONSIBILITY
+engine/governance/contracts.py: 222 pure LOC; immutable fact/snapshot aggregates, builders, identity/content binding, duplicate/conflict integrity, stable reviewed exports.
+engine/governance/fact_values.py: 217 pure LOC; fact primitives, typed errors/digests, closed enums, temporal/spec boundary parsing, recursive payload freezing.
+engine/governance/__init__.py: 50 pure LOC; minimal reviewed package exports.
+tests/governance/test_fact_contracts.py: 210 pure LOC; Task 2 contract and adversarial regression coverage.
+Both product modules are in the 200-250 warning band. Any material follow-up should split before adding responsibilities.
+
+MANUAL PUBLIC-API QA
+Literal PowerShell/stdin command program (executed as @'...program...'@ | python -):
+import operator
+from dataclasses import replace
+from engine.governance import (
+    ConflictingFactIdError,
+    DigestRef,
+    DuplicateFactIdError,
+    FactContractError,
+    FactIntegrityError,
+    FactLevel,
+    FactSpec,
+    SnapshotSpec,
+    TemporalLayer,
+    TemporalScope,
+    build_fact_snapshot,
+    build_governance_fact,
+)
+
+scope = TemporalScope(layer=TemporalLayer.NATAL)
+spec = FactSpec(
+    fact_kind="chart.hidden_stems",
+    fact_level=FactLevel.CANONICAL_OBSERVATION,
+    temporal_scope=scope,
+    source_positions=("month.branch",),
+    input_refs=("input.four_pillars",),
+    calculator_id="hidden-stems",
+    calculator_version="1.0.0",
+)
+original = {"nested": {"stems": ["甲", "癸"]}}
+first = build_governance_fact(spec, original)
+original["nested"]["stems"].append("乙")
+original_mutation_isolated = first.payload == {"nested": {"stems": ("甲", "癸")}}
+try:
+    operator.setitem(first.payload, "changed", True)
+except TypeError:
+    payload_mutation_blocked = True
+else:
+    payload_mutation_blocked = False
+second = build_governance_fact(
+    replace(spec, fact_kind="chart.visible_stems"),
+    {"value": "甲"},
+)
+snapshot_spec = SnapshotSpec(
+    schema_version="governance.fact-snapshot.v1",
+    case_id="C-MANUAL-001",
+    input_digest=DigestRef.from_material({"input": "fixed"}),
+)
+forward = build_fact_snapshot(snapshot_spec, (first, second))
+reverse = build_fact_snapshot(snapshot_spec, (second, first))
+snapshot_order_stable = forward == reverse
+try:
+    TemporalScope(layer=TemporalLayer.LIUNIAN)
+except FactContractError:
+    liunian_missing_year_fail_closed = True
+else:
+    liunian_missing_year_fail_closed = False
+try:
+    build_fact_snapshot(snapshot_spec, (first, first))
+except DuplicateFactIdError:
+    duplicate_id_fail_closed = True
+else:
+    duplicate_id_fail_closed = False
+conflicting = build_governance_fact(spec, {"nested": {"stems": ["乙"]}})
+try:
+    build_fact_snapshot(snapshot_spec, (first, conflicting))
+except ConflictingFactIdError as error:
+    conflicting_id_integrity_error = isinstance(error, FactIntegrityError)
+else:
+    conflicting_id_integrity_error = False
+print(f"original-mutation-isolated={original_mutation_isolated}")
+print(f"payload-mutation-blocked={payload_mutation_blocked}")
+print(f"snapshot-order-stable={snapshot_order_stable}")
+print(f"liunian-missing-year-fail-closed={liunian_missing_year_fail_closed}")
+print(f"duplicate-id-fail-closed={duplicate_id_fail_closed}")
+print(f"conflicting-id-integrity-error={conflicting_id_integrity_error}")
+
+Start: 2026-08-03T16:01:04.7322837+08:00
+End:   2026-08-03T16:01:05.1315107+08:00
+Exit: 0
+stderr: empty
+stdout:
+original-mutation-isolated=True
+payload-mutation-blocked=True
+snapshot-order-stable=True
+liunian-missing-year-fail-closed=True
+duplicate-id-fail-closed=True
+conflicting-id-integrity-error=True
+
+STALE-STATE / FRESH-PROCESS QA
+First harness attempt used PowerShell python -c argument passing; embedded quotes were stripped and both child processes exited with SyntaxError before domain code ran. Attempt timestamp: 2026-08-03T16:02:04.0007916+08:00 to 2026-08-03T16:02:04.5307590+08:00, exit 1. Classified as harness quoting failure and not hidden.
+
+Successful retry command shape:
+$program = @'<literal program below>'@
+$first = $program | python -
+$second = $program | python -
+compare with PowerShell case-sensitive -ceq and require both child exit codes 0.
+
+Literal program:
+from engine.governance import DigestRef, FactLevel, FactSpec, SnapshotSpec, TemporalLayer, TemporalScope, build_fact_snapshot, build_governance_fact
+spec = FactSpec("chart.hidden_stems", FactLevel.CANONICAL_OBSERVATION, TemporalScope(TemporalLayer.NATAL), ("month.branch",), ("input.four_pillars",), "hidden-stems", "1.0.0")
+fact = build_governance_fact(spec, {"nested": {"stems": ["甲", "癸"]}})
+snapshot = build_fact_snapshot(SnapshotSpec("governance.fact-snapshot.v1", "C-STALE-001", DigestRef.from_material({"input": "fixed"})), (fact,))
+print(f"{fact.fact_id}|{fact.content_digest.value}|{snapshot.snapshot_id}|{snapshot.content_digest.value}")
+
+Start: 2026-08-03T16:02:37.9039278+08:00
+End:   2026-08-03T16:02:38.5781457+08:00
+Exit: 0
+stderr: empty
+stdout:
+fresh-process-first=fact:e47b9562ab505466545a1f3d58cfb4ef1122f400f1150bba543a60bbb387fbbe|1b4d855ac9d153ff0d063ff8064416af4d676d1b74ff4a81695ddfed7d38f4e3|fact_snapshot:07149c2a3af40563ca455901b374ff95739b5a833061ae8a58cbf50b8a372758|5ae90c099a69640720bb50a23d7e3b34756390e4ae0974e9a748b544950cf3d7
+fresh-process-second=fact:e47b9562ab505466545a1f3d58cfb4ef1122f400f1150bba543a60bbb387fbbe|1b4d855ac9d153ff0d063ff8064416af4d676d1b74ff4a81695ddfed7d38f4e3|fact_snapshot:07149c2a3af40563ca455901b374ff95739b5a833061ae8a58cbf50b8a372758|5ae90c099a69640720bb50a23d7e3b34756390e4ae0974e9a748b544950cf3d7
+fresh-process-byte-identical=True
+
+ADVERSARIAL QA CLASSIFICATION
+malformed_input: PASS. Tests reject empty/whitespace calculator identity/version, empty fact kind, empty and duplicate refs, bool years, years 0/-1/10000, inverted ranges, partial and out-of-range liunian/dayun contexts, non-string keys, unsupported values, cyclic payloads, identical duplicate IDs, and conflicting IDs.
+dirty_worktree: PASS. Before showed only predecessor-owned untracked __init__.py in the explicit owned scope. After shows only __init__.py plus the three new owned Python files before artifact creation; no unrelated tracked file was edited.
+stale_state: PASS after transparently recorded harness retry. Two fresh Python processes produced byte-identical IDs and digests.
+flaky_tests: PASS. The final focused suite passed twice independently (24/24 each).
+misleading_success_output: PASS. Every gate records real exit code/count; manual output contains six binary True observables. The failed advisory/harness attempts are recorded as failures.
+hung_or_long_commands: PASS. Commands used bounded 30-second yields; all completed, longest final test gate under five seconds.
+prompt_injection: NOT APPLICABLE. No untrusted external instructions or web content were consumed.
+cancel_resume: NOT APPLICABLE. No cancellation/resume event occurred.
+repeated_interruptions: NOT APPLICABLE. Status requests did not interrupt or change execution.
+
+ARCHITECTURAL REVIEW
+Single responsibility: PASS. contracts.py owns fact aggregates; fact_values.py owns fact primitives.
+Boundary purity: PASS. Mutable canonical input is validated once, recursively copied, and exposed only as tuple/MappingProxyType graphs.
+Variant discrimination: PASS. TemporalLayer uses exhaustive match with assert_never.
+Escape hatches: PASS. No Any, annotation object, cast, type-ignore, broad except, or mutable dataclass.
+Parameter bloat: PASS. Public builders take two typed arguments; multi-field data is represented by reusable FactSpec/SnapshotSpec domain values.
+Determinism/isolation: PASS. No clock, timezone, locale, randomness, application, infrastructure, tools, report, or feedback dependency. Isolation rg returned no matches.
+Public surface: PASS. engine.governance exports only canonical primitives plus reviewed fact types, builders, IDs/digests, and typed errors; private freeze mechanics are not exported.
+Identity/content separation: PASS. Fact identity binds fact kind, temporal scope, normalized source positions, and normalized input refs. Payload, fact level, calculator ID/version, school/display payload fields do not enter fact identity but do enter content digest. Snapshot digest binds input digest and complete canonical fact content/version material.
+
+CLEANUP
+Persistent task processes started: 0
+Servers started: 0
+Containers started: 0
+Ports opened: 0
+Temporary services/files: 0
+No cleanup action required.
