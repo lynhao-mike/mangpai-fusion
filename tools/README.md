@@ -100,6 +100,7 @@
 | [`_generate_p_series_career_summary.py`](_generate_p_series_career_summary.py:1) | 生成 P 系列职业标签阶段摘要 | 内部一次性汇总脚本；不作为生产入口 |
 | [`_verify_p_series_career_labels.py`](_verify_p_series_career_labels.py:1) | 校验 P 系列职业标签制品 | 内部历史实验审计；不作为生产入口 |
 | [`as_of_admission_age_gate.py`](as_of_admission_age_gate.py:1) | as-of admission 年龄与截止日预筛 | as-of 内部证据门禁；不切换生产入口 |
+| [`as_of_prospective.py`](as_of_prospective.py:1) | as-of 前瞻冻结、反馈释放与核验制品 CLI | 内部前瞻证据链入口；仅创建新制品，不切换生产入口 |
 | [`as_of_blind_judgment_probe.py`](as_of_blind_judgment_probe.py:1) | as-of 盲态结构判断探针 | 历史/手动 side path，只用于方法验证 |
 | [`as_of_candidate_prioritizer.py`](as_of_candidate_prioritizer.py:1) | as-of 候选优先级排序 | 内部候选治理工具 |
 | [`as_of_contract_gate.py`](as_of_contract_gate.py:1) | as-of 输入契约预检查 | 内部失败关闭门禁 |

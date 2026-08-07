@@ -24,7 +24,10 @@ def test_extract_candidates_normalizes_known_fact_types_to_gate_domains() -> Non
         (2006, "生子", "六亲"),
         (2020, "母亲去世", "六亲"),
         (2005, "结婚", "婚姻"),
-    def test_extract_candidates_keeps_all_fact_types_inside_gate_domain_contract() -> None:
+    ]
+
+
+def test_extract_candidates_keeps_all_fact_types_inside_gate_domain_contract() -> None:
     parsed = SimpleNamespace(
         known_facts=[
             KnownFact(type="灾厄", year=2018, event="重病", content=""),
