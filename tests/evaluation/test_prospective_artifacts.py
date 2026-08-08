@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 import threading
 from pathlib import Path
 
 import pytest
 
+import engine.evaluation.prospective_artifacts as artifacts
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
     canonical_artifact_sha256,
@@ -109,7 +111,9 @@ def test_validate_parent_ref_rejects_stored_digest_drift(tmp_path: Path) -> None
     ref = publish_new_json(target, _payload(), dry_run=False)
     document = json.loads(target.read_text(encoding="utf-8"))
     document["artifact_sha256"] = "f" * 64
-    target.write_bytes((json.dumps(document, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+    target.write_bytes(
+        (json.dumps(document, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    )
 
     with pytest.raises(ValueError, match="stored digest"):
         validate_parent_ref(ref)
@@ -120,10 +124,186 @@ def test_validate_parent_ref_rejects_content_digest_drift(tmp_path: Path) -> Non
     ref = publish_new_json(target, _payload(), dry_run=False)
     document = json.loads(target.read_text(encoding="utf-8"))
     document["created_at"] = "2026-07-16T00:00:01Z"
-    target.write_bytes((json.dumps(document, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+    target.write_bytes(
+        (json.dumps(document, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    )
 
     with pytest.raises(ValueError, match="canonical digest"):
         validate_parent_ref(ref)
+
+
+def test_validate_parent_ref_authenticates_recursive_tree_inside_admitted_root(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "trusted"
+    parent_path = root / "parents" / "parent.json"
+    parent_ref = publish_new_json(parent_path, _payload(), dry_run=False)
+    child_path = root / "children" / "child.json"
+    child_ref = publish_new_json(
+        child_path,
+        _payload(parents=[parent_ref.__dict__]),
+        dry_run=False,
+    )
+
+    document = validate_parent_ref(child_ref, admitted_root=root)
+
+    assert document["parents"] == [parent_ref.__dict__]
+
+
+@pytest.mark.parametrize(
+    "unsafe_path",
+    [
+        Path("..") / "outside.json",
+        Path("nested") / ".." / "parent.json",
+    ],
+)
+def test_validate_parent_ref_rejects_traversal_and_normalized_alias(
+    tmp_path: Path, unsafe_path: Path
+) -> None:
+    root = tmp_path / "trusted"
+    outside = tmp_path / "outside.json"
+    actual = root / "parent.json"
+    ref = publish_new_json(actual, _payload(), dry_run=False)
+    candidate = root / unsafe_path
+    if unsafe_path.parts[0] == "nested":
+        candidate = root / unsafe_path
+    else:
+        outside.write_bytes(actual.read_bytes())
+    unsafe_ref = ArtifactRef(candidate.as_posix(), ref.artifact_sha256)
+
+    with pytest.raises(ValueError, match="PATH_(TRAVERSAL|ALIAS)"):
+        validate_parent_ref(unsafe_ref, admitted_root=root)
+
+
+def test_validate_parent_ref_rejects_absolute_root_escape(tmp_path: Path) -> None:
+    root = tmp_path / "trusted"
+    outside = tmp_path / "outside.json"
+    ref = publish_new_json(outside, _payload(), dry_run=False)
+
+    with pytest.raises(ValueError, match="PATH_OUTSIDE_ROOT"):
+        validate_parent_ref(ref, admitted_root=root)
+
+
+def test_validate_parent_ref_rejects_symlink_ancestor(tmp_path: Path) -> None:
+    root = tmp_path / "trusted"
+    real = root / "real"
+    ref = publish_new_json(real / "parent.json", _payload(), dry_run=False)
+    linked = root / "linked"
+    try:
+        linked.symlink_to(real, target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"directory symlink creation unavailable on this host: {exc}")
+
+    linked_ref = ArtifactRef((linked / "parent.json").as_posix(), ref.artifact_sha256)
+    with pytest.raises(ValueError, match="PATH_LINK_LIKE"):
+        validate_parent_ref(linked_ref, admitted_root=root)
+
+
+def test_validate_parent_ref_rejects_reparse_ancestor_through_portable_seam(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "trusted"
+    parent_path = root / "junction" / "parent.json"
+    ref = publish_new_json(parent_path, _payload(), dry_run=False)
+    monkeypatch.setattr(
+        artifacts,
+        "_is_reparse_point",
+        lambda candidate: candidate == parent_path.parent,
+        raising=False,
+    )
+
+    with pytest.raises(ValueError, match="PATH_LINK_LIKE"):
+        validate_parent_ref(ref, admitted_root=root)
+
+
+def test_validate_parent_ref_rejects_orphan_schema_drift_and_parent_cycle(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "trusted"
+    child_path = root / "child.json"
+    missing_ref = ArtifactRef((root / "missing.json").as_posix(), "a" * 64)
+    orphan = publish_new_json(
+        child_path,
+        _payload(parents=[missing_ref.__dict__]),
+        dry_run=False,
+    )
+    with pytest.raises(ValueError, match="PATH_UNREADABLE"):
+        validate_parent_ref(orphan, admitted_root=root)
+
+    malformed_path = root / "malformed.json"
+    malformed = publish_new_json(
+        malformed_path,
+        _payload(parents=[{"artifact_path": missing_ref.artifact_path}]),
+        dry_run=False,
+    )
+    with pytest.raises(ValueError, match="PARENT_SCHEMA"):
+        validate_parent_ref(malformed, admitted_root=root)
+
+    cycle_path = root / "cycle.json"
+    cycle_payload = _payload()
+    cycle_digest = canonical_artifact_sha256(cycle_payload)
+    cycle_payload["parents"] = [
+        ArtifactRef(cycle_path.as_posix(), cycle_digest).__dict__
+    ]
+    cycle_ref = publish_new_json(cycle_path, cycle_payload, dry_run=False)
+    with pytest.raises(ValueError, match="PARENT_CYCLE"):
+        validate_parent_ref(cycle_ref, admitted_root=root)
+
+
+def test_validate_parent_ref_rejects_duplicate_logical_parent(tmp_path: Path) -> None:
+    root = tmp_path / "trusted"
+    parent_ref = publish_new_json(root / "parent.json", _payload(), dry_run=False)
+    child_ref = publish_new_json(
+        root / "child.json",
+        _payload(parents=[parent_ref.__dict__, parent_ref.__dict__]),
+        dry_run=False,
+    )
+
+    with pytest.raises(ValueError, match="PARENT_DUPLICATE"):
+        validate_parent_ref(child_ref, admitted_root=root)
+
+
+def test_publish_authenticates_destination_parent_and_rejects_linklike_leaf(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path / "trusted"
+    target = root / "output.json"
+    root.mkdir()
+    monkeypatch.setattr(
+        artifacts,
+        "_is_reparse_point",
+        lambda candidate: candidate == target,
+        raising=False,
+    )
+
+    with pytest.raises(ValueError, match="PATH_LINK_LIKE"):
+        publish_new_json(target, _payload(), dry_run=False, admitted_root=root)
+    assert not target.exists()
+
+
+def test_publish_rejects_destination_escape_and_keeps_atomic_race_loser(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "trusted"
+    with pytest.raises(ValueError, match="PATH_OUTSIDE_ROOT"):
+        publish_new_json(
+            tmp_path / "outside.json",
+            _payload(),
+            dry_run=False,
+            admitted_root=root,
+        )
+
+    target = root / "output.json"
+    publish_new_json(target, _payload(), dry_run=False, admitted_root=root)
+    with pytest.raises(ValueError, match="already exists"):
+        publish_new_json(target, _payload(), dry_run=False, admitted_root=root)
+
+
+@pytest.mark.skipif(
+    os.name != "nt", reason="physical Windows junction coverage requires Windows"
+)
+def test_windows_junction_platform_accounting_is_explicit() -> None:
+    assert os.name == "nt"
 
 
 def test_v002_requires_complete_named_human_revision_metadata() -> None:
@@ -188,8 +368,12 @@ def test_publish_race_loser_does_not_close_an_already_owned_descriptor(
         closed_descriptors.append(descriptor)
         real_close(descriptor)
 
-    monkeypatch.setattr("engine.evaluation.prospective_artifacts.os.link", lose_publication_race)
-    monkeypatch.setattr("engine.evaluation.prospective_artifacts.os.close", record_close)
+    monkeypatch.setattr(
+        "engine.evaluation.prospective_artifacts.os.link", lose_publication_race
+    )
+    monkeypatch.setattr(
+        "engine.evaluation.prospective_artifacts.os.close", record_close
+    )
 
     with pytest.raises(ValueError, match="already exists"):
         publish_new_json(target, _payload(), dry_run=False)

@@ -75,7 +75,10 @@ def _build(args: argparse.Namespace) -> int:
     historical = [_raw_ref(args.historical_md), _raw_ref(args.historical_json)]
     try:
         manifest = build_cohort_manifest(
-            args.completion, historical, created_at=_created_at(args.created_at),
+            args.completion,
+            historical,
+            created_at=_created_at(args.created_at),
+            admitted_root=args.admitted_root,
         )
     except CohortHoldError as error:
         _emit(error.plan)
@@ -97,7 +100,9 @@ def _build(args: argparse.Namespace) -> int:
         if actual_entries != {manifest_path.name}:
             raise ValueError(f"existing cohort output contains unexpected pollution: {target}")
         existing = _read_json(manifest_path)
-        verification = verify_cohort_manifest(existing)
+        verification = verify_cohort_manifest(
+            existing, admitted_root=args.admitted_root
+        )
         if verification["status"] != "VERIFIED" or existing != manifest:
             raise ValueError("existing cohort output differs or has parent drift")
         _emit({
@@ -113,7 +118,9 @@ def _build(args: argparse.Namespace) -> int:
 
 def _verify(args: argparse.Namespace) -> int:
     manifest = _read_json(args.manifest)
-    result = verify_cohort_manifest(manifest)
+    result = verify_cohort_manifest(
+        manifest, admitted_root=args.admitted_root
+    )
     _emit(result)
     return 0 if result["status"] == "VERIFIED" else 4
 
@@ -152,7 +159,9 @@ def _inventory(manifest: dict[str, Any]) -> dict[str, Any]:
 
 def _score(args: argparse.Namespace) -> int:
     manifest = _read_json(args.manifest)
-    verification = verify_cohort_manifest(manifest)
+    verification = verify_cohort_manifest(
+        manifest, admitted_root=args.admitted_root
+    )
     if verification["status"] != "VERIFIED":
         _emit(verification)
         return 4
@@ -192,9 +201,12 @@ def _gate(args: argparse.Namespace) -> int:
         scoring_artifact=args.scores,
         holdout_artifact=args.holdout,
         audit_artifact=args.audit,
+        admitted_root=args.admitted_root,
     )
     result = evaluate_prediction_capability_candidate(
-        evidence, evaluated_at=_created_at(args.evaluated_at),
+        evidence,
+        evaluated_at=_created_at(args.evaluated_at),
+        admitted_root=args.admitted_root,
     )
     if args.dry_run:
         _emit({"status": "DRY_RUN", "result": result, "out": args.out.as_posix()})
@@ -214,10 +226,17 @@ def _future_gate(args: argparse.Namespace) -> int:
     if args.out.name != "future-empirical-gate-v1.json":
         raise ValueError("future gate output filename must be canonical: future-empirical-gate-v1.json")
     evidence = build_future_gate_evidence_from_cohorts(
-        args.manifest, scoring_artifact=args.scores,
-        holdout_artifact=args.holdout, audit_artifact=args.audit,
+        args.manifest,
+        scoring_artifact=args.scores,
+        holdout_artifact=args.holdout,
+        audit_artifact=args.audit,
+        admitted_root=args.admitted_root,
     )
-    result = evaluate_future_empirical(evidence, evaluated_at=_created_at(args.evaluated_at))
+    result = evaluate_future_empirical(
+        evidence,
+        evaluated_at=_created_at(args.evaluated_at),
+        admitted_root=args.admitted_root,
+    )
     if args.dry_run:
         _emit({"status": "DRY_RUN", "result": result, "out": args.out.as_posix()})
         return 0
@@ -252,7 +271,9 @@ def _validated_gate(
 def _report(args: argparse.Namespace) -> int:
     if args.manifest is not None:
         manifest = _read_json(args.manifest)
-        verification = verify_cohort_manifest(manifest)
+        verification = verify_cohort_manifest(
+            manifest, admitted_root=args.admitted_root
+        )
         if verification["status"] != "VERIFIED":
             _emit(verification)
             return 4
@@ -289,7 +310,12 @@ def _report(args: argparse.Namespace) -> int:
         raise ValueError("report output filename must be canonical: three-gate-report-v1.md")
     immediate = _read_json(args.immediate_gate)
     future = _read_json(args.future_gate)
-    text = build_three_gate_report(immediate, future, _raw_ref(args.historical_json))
+    text = build_three_gate_report(
+        immediate,
+        future,
+        _raw_ref(args.historical_json),
+        admitted_root=args.admitted_root,
+    )
     if args.dry_run:
         print(text, end="")
         return 0
@@ -305,6 +331,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Manage parent-reference-only prospective cohorts")
     commands = parser.add_subparsers(dest="command", required=True)
 
+    def require_admitted_root(command: argparse.ArgumentParser) -> None:
+        command.add_argument("--admitted-root", type=Path, required=True)
+
     build = commands.add_parser("build")
     build.add_argument("--completion", type=Path, action="append", required=True)
     build.add_argument("--historical-md", type=Path, required=True)
@@ -312,16 +341,19 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--out-dir", type=Path, required=True)
     build.add_argument("--created-at")
     build.add_argument("--dry-run", action="store_true")
+    require_admitted_root(build)
     build.set_defaults(handler=_build)
 
     verify = commands.add_parser("verify")
     verify.add_argument("--manifest", type=Path, required=True)
+    require_admitted_root(verify)
     verify.set_defaults(handler=_verify)
 
     score = commands.add_parser("score")
     score.add_argument("--manifest", type=Path, required=True)
     score.add_argument("--out-dir", type=Path, required=True)
     score.add_argument("--dry-run", action="store_true")
+    require_admitted_root(score)
     score.set_defaults(handler=_score)
 
     gate = commands.add_parser("gate")
@@ -332,6 +364,7 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--evaluated-at")
     gate.add_argument("--out", type=Path, required=True)
     gate.add_argument("--dry-run", action="store_true")
+    require_admitted_root(gate)
     gate.set_defaults(handler=_gate)
 
     future_gate = commands.add_parser("future-gate")
@@ -342,6 +375,7 @@ def build_parser() -> argparse.ArgumentParser:
     future_gate.add_argument("--evaluated-at")
     future_gate.add_argument("--out", type=Path, required=True)
     future_gate.add_argument("--dry-run", action="store_true")
+    require_admitted_root(future_gate)
     future_gate.set_defaults(handler=_future_gate)
 
     report = commands.add_parser("report")
@@ -351,6 +385,7 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--historical-json", type=Path)
     report.add_argument("--out", type=Path, required=True)
     report.add_argument("--dry-run", action="store_true")
+    require_admitted_root(report)
     report.set_defaults(handler=_report)
     return parser
 

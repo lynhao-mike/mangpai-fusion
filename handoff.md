@@ -363,3 +363,69 @@ G6 不能通过继续局部修补来声明收口。已知工作同时横跨早�
 - 当前停止点：W2-C2 技术冻结与 append-only handoff 均已完成。停止 W2-C2 自动推进。
 - W2-C3 未授权、未激活；任何 successor unit 必须从独立 RECOVER 与 ADMISSION 开始，不继承 W2-C2 的 contract、写权限、测试权限、Gate PASS、publication 或 production 权限。
 
+---
+
+## 14. 2026-08-08 · W2-C3 reconciliation-only Gate 交接
+
+> **纠正性追加而非历史改写：** 上一节保留了当时 durable controller state 中“W2-C3 未授权、未激活”的原始记录。后续只读调查发现 W2-C3 源码与测试已经落盘，且 W2-C3 草案包含 PASS 自述，但 Boulder、append-only ledger 与本交接未同步。本节不删除该冲突、不回填历史 start/completion，也不认证草案中的旧测试自述；它仅记录 2026-08-08 当前时间重新执行的 reconciliation evidence。权威当前证据为 [`.omo/evidence/w2-c3-prospective-staging-reconciliation-2026-08-08.md`](.omo/evidence/w2-c3-prospective-staging-reconciliation-2026-08-08.md)。
+
+### 当前 reconciliation verdict
+
+- 初始 verdict 为 `REVISE`：历史 `20/20` 与 `123/123` 自述缺少独立 durable evidence，不能补写成历史 PASS。
+- 当前 fresh static review 与两个草案精确 selectors 均成功后，最终 verdict 为 `PASS / CURRENT RECONCILIATION COMPLETE — EVIDENCE-BOUNDED FREEZE`。
+- 此 PASS 只认证当前被检查状态，不认证历史运行；[`.omo/start-work/ledger.jsonl`](.omo/start-work/ledger.jsonl) 追加的是当前 `work-reconciled` 事实，不是伪造的历史 `work-started` 或 `work-completed` 事件。
+
+### Fresh evidence 与准确核算
+
+- W2-C3 精确 selector：44 collected，20 selected / 20 passed，24 deselected，0 failed / errors / skipped，exit code `0`，用时 `3.10s`。
+- W2-C2 read-only adapter selector：123 collected / selected / passed，0 deselected / failed / errors / skipped，exit code `0`，用时 `1.80s`。
+- Fresh static review：exit code `0`；确认 [`build_single_case_staged_frozen_run()`](engine/evaluation/prospective_single_case.py:972) 的 keyword-only governance API、`evaluation_note` task binding、唯一 adapter call、required/forbidden import 边界，以及 source-line 顺序 merge → timing → grid → freeze → verify；staged artifact payload 未加入 governance result/projection/custody/metadata 字段。
+- 聚合 selected execution 为 143 passed、24 deselected；该数字不是全仓测试结论，也未执行草案中的 broader 两文件 selector。
+
+### 证明边界与生产状态
+
+- 直接证明：当前 W2-C3 implementation/test surface 满足上述静态边界与精确 selectors；W2-C2 adapter regression 在其完整单文件 selector 下保持 123 passed。
+- 不证明：历史测试自述、全仓正确性、预测准确率、校准、外部 custody、real cohort readiness、publication、deployment、远端状态或生产授权。
+- [`META/project-state.json`](META/project-state.json:70) 已只读核对且未修改：`real_cohort="not_ready"`、`production_ready=false`、`production_switch_permitted=false`。
+- 本次只修改 W2-C3 evidence、Boulder、append-only ledger 与本 handoff；未修改源码、测试、production、router、weights、reports、feedback 或 registry；未执行 Git、GitHub、网络或远端 mutation。
+
+### 唯一下一合法动作
+
+- 当前停止点：W2-C3 当前时间 reconciliation 与 durable-state 同步完成，停止 W2-C3 自动推进。
+- 不创建、不激活 W2-C4；任何 successor unit 必须重新经过独立 RECOVER 与 ADMISSION，不继承 W2-C3 的 contract、写权限、测试权限、Gate PASS、publication 或 production 权限。
+
+---
+
+## 15. 2026-08-08 · W2-C4 governance promotion REVISE / STOP 交接
+
+> **纠正性 STOP persistence，不是成功交接：** 本节只追加记录 W2-C4 在关键实现假设被两轮独立核验推翻后的真实停止状态。权威证据为 [`.omo/evidence/w2-c4-governance-promotion-stop-2026-08-08.md`](.omo/evidence/w2-c4-governance-promotion-stop-2026-08-08.md)，合同为 [`.omo/drafts/w2-c4-governance-promotion-admission-contract-2026-08-08.md`](.omo/drafts/w2-c4-governance-promotion-admission-contract-2026-08-08.md)。本节不覆盖旧历史、不回填历史 start/PASS/completion，不构成 `HANDOFF complete / success`。
+
+### Durable verdict 与 Gate 边界
+
+- W2-C4 当前 durable verdict：`REVISE / BLOCKED / STOPPED`。
+- CONTRACT 曾为 `PASS / CLOSED / FROZEN`，但只冻结合同；不等于实现可行、当前 Gate PASS 或技术 FREEZE。
+- IMPLEMENT 曾产生 `32 focused PASS`，仅保留为旧实现证据；fresh STATIC_REVIEW 为 `REVISE`，所以 32 focused PASS 不是当前 Gate PASS。
+- VERIFY 未运行；二次独立技术核验为 `confirmed`。未伪造 HOLD artifact、VERIFY PASS、EVIDENCE_REVIEW PASS 或 FREEZE PASS。
+- W2-C4 **未 FREEZE**，也未形成成功完成的 HANDOFF；本节仅证明 STOP 已 durable persistence。W2-C5 未授权、未激活、不得自动进入。
+
+### 关键假设推翻与实现缺陷
+
+- 合同要求 promotion snapshot 从真实磁盘 lineage 认证五维身份：`school_id × task_id × claim_kind × evidence_grade × capability_version`。
+- 当前 sealed prospective lineage 的 [`ArtifactRef`](engine/evaluation/prospective_artifacts.py:23) 只有 path/digest；[`GateEvidence`](engine/evaluation/prospective_gates.py:64) 也不携带 `claim_kind`、`evidence_grade`、`capability_version`。因此在当前白名单内不能诚实地从真实 lineage 构建合同要求的 W2-C4 snapshot。
+- 当前新增 [`build_and_publish_metric_snapshot()`](engine/evaluation/governance_promotion.py:499) 仍依赖自造扁平 observation/gate parents，而非真实 cohort/gate lineage 重建；audit 状态由聚合 GO 推断；另有路径安全、typed/closed taxonomy 与 evidence parent accounting 缺陷。
+- 当前专项测试 [`tests/evaluation/test_governance_promotion.py`](tests/evaluation/test_governance_promotion.py) 使用嵌入五维身份的合成 JSON fixture；它不能认证现有真实 sealed lineage 已携带这些字段。
+- 遵照关键假设推翻即停止的硬边界，本轮未修复 [`engine/evaluation/governance_promotion.py`](engine/evaluation/governance_promotion.py) 或任何测试、contract、artifact primitive、gate owner。
+
+### 项目状态、保护与证据边界
+
+- [`META/project-state.json`](META/project-state.json:70) 只读且保持 `real_cohort="not_ready"`、`production_ready=false`、`production_switch_permitted=false`。
+- 本轮仅修改 W2-C4 STOP evidence、[`.omo/boulder.json`](.omo/boulder.json)、append-only [`.omo/start-work/ledger.jsonl`](.omo/start-work/ledger.jsonl) 和本 handoff；未修改 Python、tests、contract 或 project state。
+- 未运行测试、Python 验证、Ruff、compileall、Git、GitHub、网络、部署、发布或远端 mutation。
+- 不得从 CONTRACT PASS、旧 32 focused PASS、fixture 分支或 STOP persistence 推导真实 HOLD artifact、candidate、accuracy、calibration、incremental value、proposal readiness、production readiness、W2-C4 FREEZE、Wave2 completion 或 W2-C5 authority。
+
+### 唯一下一合法动作
+
+由用户决定是否修订 W2-C4 合同，或明确扩展 sealed lineage owner / implementation whitelist，使真实 lineage owner 可认证携带五维 promotion identity。在该决定与新的精确授权之前，必须保持 W2-C4 STOP；不得修源码、运行测试、制造 artifact、标 completed/PASS/frozen、形成成功 HANDOFF，或启动 W2-C5。
+
+---
+

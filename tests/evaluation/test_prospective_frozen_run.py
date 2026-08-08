@@ -14,7 +14,14 @@ from dataclasses import replace
 
 from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
-from engine.evaluation.prospective_artifacts import canonical_artifact_sha256, publish_new_json
+from engine.evaluation.prospective_artifacts import (
+    canonical_artifact_sha256,
+    publish_new_json,
+)
+from engine.evaluation.prospective_capability_identity import (
+    build_capability_identity_artifact,
+    validate_capability_identity_ref,
+)
 from engine.evaluation.prospective_single_case import (
     ContaminationError,
     SIX_SCHOOLS,
@@ -42,6 +49,21 @@ RULES = Path("META/prospective-go-rule-snapshot-v1.json")
 SCHOOLS = ["ziping", "ditiansui", "duan", "ren", "gao", "yang"]
 
 
+def _identity_ref(tmp_path: Path, claim: object):
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(shadow, claim)
+    _, reference = build_capability_identity_artifact(
+        claim,  # type: ignore[arg-type]
+        governance_result=shadow,
+        governance_projection=projection,
+        created_at="2026-08-08T00:00:00Z",
+        source_output_path=tmp_path / "governance-source.json",
+        output_path=tmp_path / "capability-identity.json",
+        dry_run=False,
+    )
+    return reference
+
+
 def _read(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -53,7 +75,10 @@ def _bundle(tmp_path: Path, *, task_ids: list[str] | None = None) -> tuple[Path,
     input_path.write_text("四柱：甲子 乙丑 丙寅 丁卯\n性别：乾\n", encoding="utf-8")
     tasks = _read(TASKS)
     intake = register_prospective_intake(
-        [input_path], tasks, SCHOOLS, "human-test",
+        [input_path],
+        tasks,
+        SCHOOLS,
+        "human-test",
         tasks_by_case={case_id: task_ids} if task_ids else None,
     )
     root = tmp_path / "bundle"
@@ -61,8 +86,12 @@ def _bundle(tmp_path: Path, *, task_ids: list[str] | None = None) -> tuple[Path,
     return root, manifest
 
 
-def test_build_staged_run_uses_bundle_only_and_preserves_total_six_source_grid(tmp_path: Path) -> None:
-    root, manifest = _bundle(tmp_path, task_ids=["career.role_change", "health.system_risk"])
+def test_build_staged_run_uses_bundle_only_and_preserves_total_six_source_grid(
+    tmp_path: Path,
+) -> None:
+    root, manifest = _bundle(
+        tmp_path, task_ids=["career.role_change", "health.system_risk"]
+    )
 
     artifact = build_staged_frozen_run(root)
 
@@ -70,30 +99,53 @@ def test_build_staged_run_uses_bundle_only_and_preserves_total_six_source_grid(t
     assert artifact["bundle_sha256"] == manifest["bundle_sha256"]
     assert artifact["task_catalog_sha256"] == manifest["files"]["tasks.json"]
     assert artifact["rule_snapshot_sha256"] == manifest["files"]["rule-snapshot.json"]
-    assert artifact["case_task_assignments"] == [{
-        "case_id": "P-GO-TEST-001-乾-甲子乙丑丙寅丁卯",
-        "task_ids": ["career.role_change", "health.system_risk"],
-    }]
+    assert artifact["case_task_assignments"] == [
+        {
+            "case_id": "P-GO-TEST-001-乾-甲子乙丑丙寅丁卯",
+            "task_ids": ["career.role_change", "health.system_risk"],
+        }
+    ]
     run = FrozenBlindRun.from_dict(artifact["frozen_run"])
     verify_frozen_run(run)
     assert run.task_catalog_version == (
         "prospective-go-tasks-v1@sha256:" + manifest["files"]["tasks.json"]
     )
     assert run.rule_snapshot_id == (
-        "prospective-go-six-source-ten-task-rules-v1@sha256:" + manifest["files"]["rule-snapshot.json"]
+        "prospective-go-six-source-ten-task-rules-v1@sha256:"
+        + manifest["files"]["rule-snapshot.json"]
     )
     assert len(run.outputs) == 12
     assert {output.school_id for output in run.outputs} == set(SCHOOLS)
-    assert {output.task_id for output in run.outputs} == {"career.role_change", "health.system_risk"}
-    assert {output.state for output in run.outputs} <= {"claim", "abstain", "unsupported"}
-    assert artifact["artifact_sha256"] == hashlib.sha256(json.dumps(
-        {key: value for key, value in artifact.items() if key != "artifact_sha256"},
-        ensure_ascii=False, sort_keys=True, separators=(",", ":"),
-    ).encode("utf-8")).hexdigest()
+    assert {output.task_id for output in run.outputs} == {
+        "career.role_change",
+        "health.system_risk",
+    }
+    assert {output.state for output in run.outputs} <= {
+        "claim",
+        "abstain",
+        "unsupported",
+    }
+    assert (
+        artifact["artifact_sha256"]
+        == hashlib.sha256(
+            json.dumps(
+                {
+                    key: value
+                    for key, value in artifact.items()
+                    if key != "artifact_sha256"
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+    )
     assert build_staged_frozen_run(root) == artifact
 
 
-def test_build_staged_run_rejects_manifest_tampering_and_extra_files(tmp_path: Path) -> None:
+def test_build_staged_run_rejects_manifest_tampering_and_extra_files(
+    tmp_path: Path,
+) -> None:
     root, _ = _bundle(tmp_path)
     chart = next((root / "cases").glob("*/chart.json"))
     chart.write_text("{}", encoding="utf-8")
@@ -106,18 +158,31 @@ def test_build_staged_run_rejects_manifest_tampering_and_extra_files(tmp_path: P
         build_staged_frozen_run(root)
 
 
-def test_cli_dry_run_writes_nothing_and_formal_run_refuses_overwrite(tmp_path: Path) -> None:
+def test_cli_dry_run_writes_nothing_and_formal_run_refuses_overwrite(
+    tmp_path: Path,
+) -> None:
     root, _ = _bundle(tmp_path)
     output = tmp_path / "staged-run.json"
     command = [
-        sys.executable, "-m", "tools.school_capability_prospective", "stage-frozen-run",
-        "--bundle-root", str(root), "--out", str(output),
+        sys.executable,
+        "-m",
+        "tools.school_capability_prospective",
+        "stage-frozen-run",
+        "--bundle-root",
+        str(root),
+        "--out",
+        str(output),
     ]
 
-    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
+    dry = subprocess.run(
+        [*command, "--dry-run"], check=False, capture_output=True, text=True
+    )
     assert dry.returncode == 0, dry.stderr
     assert not output.exists()
-    assert json.loads(dry.stdout)["schema_version"] == "school-capability-prospective-staged-run/v1"
+    assert (
+        json.loads(dry.stdout)["schema_version"]
+        == "school-capability-prospective-staged-run/v1"
+    )
 
     first = subprocess.run(command, check=False, capture_output=True, text=True)
     assert first.returncode == 0, first.stderr
@@ -150,36 +215,66 @@ def _witness_fixture(tmp_path: Path) -> tuple[Path, Path, Path, dict, dict]:
     return intake_path, bundle_root, staged_path, intake, manifest
 
 
-def test_build_witness_freeze_registry_generates_exact_per_case_chain(tmp_path: Path) -> None:
+def test_build_witness_freeze_registry_generates_exact_per_case_chain(
+    tmp_path: Path,
+) -> None:
     intake_path, bundle_root, staged_path, intake, manifest = _witness_fixture(tmp_path)
     key = b"external-witness-secret"
 
     registry = prospective.build_witness_freeze_registry(
-        intake_path, bundle_root, staged_path, key,
+        intake_path,
+        bundle_root,
+        staged_path,
+        key,
     )
 
     assert verify_witness_registry(registry, key) is True
     assert [event["event_type"] for event in registry["events"]] == [
-        "registered", "prepared", "freeze", "registered", "prepared", "freeze",
+        "registered",
+        "prepared",
+        "freeze",
+        "registered",
+        "prepared",
+        "freeze",
     ]
     assert "reveal" not in {event["event_type"] for event in registry["events"]}
     intake_by_case = {row["case_id"]: row for row in intake["records"]}
     frozen = _read(staged_path)["frozen_run"]
     for case_id in sorted(intake_by_case):
-        events = [event for event in registry["events"] if event["payload"]["case_id"] == case_id]
-        assert [event["event_type"] for event in events] == ["registered", "prepared", "freeze"]
+        events = [
+            event
+            for event in registry["events"]
+            if event["payload"]["case_id"] == case_id
+        ]
+        assert [event["event_type"] for event in events] == [
+            "registered",
+            "prepared",
+            "freeze",
+        ]
         assert events[0]["payload"] == {
             "case_id": case_id,
             "input_sha256": intake_by_case[case_id]["input_sha256"],
             "subject_id_hash": intake_by_case[case_id]["subject_id_hash"],
         }
-        assert events[1]["payload"] == {"case_id": case_id, "bundle_sha256": manifest["bundle_sha256"]}
-        assert events[2]["payload"] == {"case_id": case_id, "freeze_hash": frozen["freeze_hash"]}
-        assert events[0]["occurred_at"] < events[1]["occurred_at"] < events[2]["occurred_at"]
+        assert events[1]["payload"] == {
+            "case_id": case_id,
+            "bundle_sha256": manifest["bundle_sha256"],
+        }
+        assert events[2]["payload"] == {
+            "case_id": case_id,
+            "freeze_hash": frozen["freeze_hash"],
+        }
+        assert (
+            events[0]["occurred_at"]
+            < events[1]["occurred_at"]
+            < events[2]["occurred_at"]
+        )
         assert events[2]["occurred_at"] == frozen["frozen_at"]
 
 
-def test_witness_freeze_registry_rejects_tamper_case_and_hash_mismatch(tmp_path: Path) -> None:
+def test_witness_freeze_registry_rejects_tamper_case_and_hash_mismatch(
+    tmp_path: Path,
+) -> None:
     intake_path, bundle_root, staged_path, _, _ = _witness_fixture(tmp_path)
     key = b"external-witness-secret"
 
@@ -187,35 +282,60 @@ def test_witness_freeze_registry_rejects_tamper_case_and_hash_mismatch(tmp_path:
     tampered["frozen_run"]["freeze_hash"] = "f" * 64
     staged_path.write_text(json.dumps(tampered), encoding="utf-8")
     with pytest.raises(ValueError, match="frozen run|artifact hash"):
-        prospective.build_witness_freeze_registry(intake_path, bundle_root, staged_path, key)
+        prospective.build_witness_freeze_registry(
+            intake_path, bundle_root, staged_path, key
+        )
 
-    staged_path.write_text(json.dumps(build_staged_frozen_run(bundle_root)), encoding="utf-8")
+    staged_path.write_text(
+        json.dumps(build_staged_frozen_run(bundle_root)), encoding="utf-8"
+    )
     mismatched = _read(intake_path)
     mismatched["records"] = mismatched["records"][:1]
     intake_path.write_text(json.dumps(mismatched), encoding="utf-8")
     with pytest.raises(ValueError, match="case set"):
-        prospective.build_witness_freeze_registry(intake_path, bundle_root, staged_path, key)
+        prospective.build_witness_freeze_registry(
+            intake_path, bundle_root, staged_path, key
+        )
 
 
-def test_witness_freeze_registry_rejects_wrong_existing_order_and_cli_is_no_overwrite(tmp_path: Path) -> None:
+def test_witness_freeze_registry_rejects_wrong_existing_order_and_cli_is_no_overwrite(
+    tmp_path: Path,
+) -> None:
     intake_path, bundle_root, staged_path, intake, manifest = _witness_fixture(tmp_path)
     key = b"external-witness-secret"
     case_id = intake["records"][0]["case_id"]
-    wrong = append_witness_event(None, {
-        "event_type": "prepared",
-        "occurred_at": intake["generated_at"],
-        "payload": {"case_id": case_id, "bundle_sha256": manifest["bundle_sha256"]},
-    }, key)
+    wrong = append_witness_event(
+        None,
+        {
+            "event_type": "prepared",
+            "occurred_at": intake["generated_at"],
+            "payload": {"case_id": case_id, "bundle_sha256": manifest["bundle_sha256"]},
+        },
+        key,
+    )
     with pytest.raises(ValueError, match="order|existing witness"):
         prospective.build_witness_freeze_registry(
-            intake_path, bundle_root, staged_path, key, registry=wrong,
+            intake_path,
+            bundle_root,
+            staged_path,
+            key,
+            registry=wrong,
         )
 
     output = tmp_path / "witness.json"
     command = [
-        sys.executable, "-m", "tools.school_capability_prospective", "witness-freeze-chain",
-        "--intake", str(intake_path), "--bundle-root", str(bundle_root),
-        "--staged-run", str(staged_path), "--out", str(output),
+        sys.executable,
+        "-m",
+        "tools.school_capability_prospective",
+        "witness-freeze-chain",
+        "--intake",
+        str(intake_path),
+        "--bundle-root",
+        str(bundle_root),
+        "--staged-run",
+        str(staged_path),
+        "--out",
+        str(output),
     ]
     environment = {
         **os.environ,
@@ -223,19 +343,33 @@ def test_witness_freeze_registry_rejects_wrong_existing_order_and_cli_is_no_over
         "SCHOOL_CAPABILITY_WITNESS_KEY": "external-witness-secret",
     }
     dry = subprocess.run(
-        [*command, "--dry-run"], check=False, capture_output=True, text=True,
-        encoding="utf-8", env=environment,
+        [*command, "--dry-run"],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=environment,
     )
     assert dry.returncode == 0, dry.stderr
     assert not output.exists()
     assert verify_witness_registry(json.loads(dry.stdout), key) is True
     first = subprocess.run(
-        command, check=False, capture_output=True, text=True, encoding="utf-8", env=environment,
+        command,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=environment,
     )
     assert first.returncode == 0, first.stderr
     original = output.read_bytes()
     second = subprocess.run(
-        command, check=False, capture_output=True, text=True, encoding="utf-8", env=environment,
+        command,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=environment,
     )
     assert second.returncode != 0
     assert "already exists" in second.stderr
@@ -285,10 +419,10 @@ def _single_case_bundle(
     )
     publish_new_json(Path(question["artifact_path"]), question, dry_run=False)
     publish_new_json(Path(intake["artifact_path"]), intake, dry_run=False)
-    root = Path(intake["artifact_path"]).with_name(
-        f"{case_id}--blind-bundle--v001"
+    root = Path(intake["artifact_path"]).with_name(f"{case_id}--blind-bundle--v001")
+    prepare_single_case_blind_bundle(
+        intake, question, TASKS, RULES, root, dry_run=False
     )
-    prepare_single_case_blind_bundle(intake, question, TASKS, RULES, root, dry_run=False)
     return root, intake, question
 
 
@@ -298,20 +432,30 @@ def _reseal_bundle(bundle: Path, name: str) -> None:
     manifest_path = bundle / "bundle-manifest.json"
     manifest = _read(manifest_path)
     manifest["files"][name] = hashlib.sha256((bundle / name).read_bytes()).hexdigest()
-    manifest["bundle_sha256"] = hashlib.sha256(json.dumps(
-        manifest["files"], ensure_ascii=False, sort_keys=True, separators=(",", ":"),
-    ).encode("utf-8")).hexdigest()
+    manifest["bundle_sha256"] = hashlib.sha256(
+        json.dumps(
+            manifest["files"],
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
     manifest["artifact_sha256"] = canonical_artifact_sha256(manifest)
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
 
-def test_single_case_bundle_preserves_evaluation_note_with_legacy_intake_hash(tmp_path: Path) -> None:
+def test_single_case_bundle_preserves_evaluation_note_with_legacy_intake_hash(
+    tmp_path: Path,
+) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
 
     task_bytes = (root / "tasks.json").read_bytes()
     tasks = json.loads(task_bytes)
     divorce_task = next(
-        task for task in tasks["tasks"]
+        task
+        for task in tasks["tasks"]
         if task["task_id"] == "marriage.divorce_or_remarriage"
     )
     manifest = _read(root / "bundle-manifest.json")
@@ -320,7 +464,9 @@ def test_single_case_bundle_preserves_evaluation_note_with_legacy_intake_hash(tm
     assert manifest["files"]["tasks.json"] == hashlib.sha256(task_bytes).hexdigest()
 
 
-def test_single_case_legacy_mode_accepts_exact_explicit_governance_shadow_defaults(tmp_path: Path) -> None:
+def test_single_case_legacy_mode_accepts_exact_explicit_governance_shadow_defaults(
+    tmp_path: Path,
+) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
 
     implicit = build_single_case_staged_frozen_run(root)
@@ -333,7 +479,78 @@ def test_single_case_legacy_mode_accepts_exact_explicit_governance_shadow_defaul
     assert explicit == implicit
 
 
-def test_single_case_governance_shadow_claim_replaces_only_yang_divorce_slot(tmp_path: Path) -> None:
+def test_governance_single_case_requires_and_uniquely_binds_sealed_capability_identity(
+    tmp_path: Path,
+) -> None:
+    root, intake, _ = _single_case_bundle(
+        tmp_path,
+        task_ids=["marriage.divorce_or_remarriage"],
+    )
+    baseline = build_single_case_staged_frozen_run(root)
+    claim = governance_claim_fixture()
+    shadow = governance_shadow_fixture(claim)
+    projection = governance_projection_fixture(
+        shadow,
+        claim,
+        case_id=intake["case_id"],
+        task_catalog_version=baseline["frozen_run"]["task_catalog_version"],
+        rule_version=baseline["frozen_run"]["rule_snapshot_id"],
+    )
+    identity, identity_ref = build_capability_identity_artifact(
+        claim,
+        governance_result=shadow,
+        governance_projection=projection,
+        created_at=baseline["created_at"],
+        source_output_path=tmp_path / "governance-source.json",
+        output_path=tmp_path / "capability-identity.json",
+        dry_run=False,
+    )
+
+    with pytest.raises(ValueError, match="capability identity"):
+        build_single_case_staged_frozen_run(
+            root,
+            governance_shadow_result=shadow,
+            governance_shadow_projections=(projection,),
+        )
+
+    governed = build_single_case_staged_frozen_run(
+        root,
+        governance_shadow_result=shadow,
+        governance_shadow_projections=(projection,),
+        capability_identity_ref=identity_ref,
+    )
+
+    expected_ref = {
+        "artifact_path": identity_ref.artifact_path,
+        "artifact_sha256": identity_ref.artifact_sha256,
+    }
+    source_ref = {
+        "artifact_path": identity.governance_source_ref.artifact_path,
+        "artifact_sha256": identity.governance_source_ref.artifact_sha256,
+    }
+    assert governed["capability_identity_ref"] == expected_ref
+    assert governed["governance_source_ref"] == source_ref
+    assert governed["parents"].count(expected_ref) == 1
+    assert governed["parents"].count(source_ref) == 1
+    assert (
+        validate_capability_identity_ref(
+            identity_ref, admitted_root=tmp_path.absolute()
+        ).source_claim_id
+        == claim.claim_id
+    )
+    assert set(FrozenBlindRun.from_dict(governed["frozen_run"]).to_dict()) == {
+        "schema_version",
+        "task_catalog_version",
+        "rule_snapshot_id",
+        "frozen_at",
+        "outputs",
+        "freeze_hash",
+    }
+
+
+def test_single_case_governance_shadow_claim_replaces_only_yang_divorce_slot(
+    tmp_path: Path,
+) -> None:
     root, intake, _ = _single_case_bundle(
         tmp_path,
         task_ids=["marriage.divorce_or_remarriage", "career.role_change"],
@@ -353,6 +570,7 @@ def test_single_case_governance_shadow_claim_replaces_only_yang_divorce_slot(tmp
         root,
         governance_shadow_result=shadow,
         governance_shadow_projections=(projection,),
+        capability_identity_ref=_identity_ref(tmp_path, claim),
     )
     baseline_rows = {
         (row["school_id"], row["task_id"]): row
@@ -368,16 +586,22 @@ def test_single_case_governance_shadow_claim_replaces_only_yang_divorce_slot(tmp
     assert target["rationale"] == "显式投影提供完整事件绑定。"
     assert "yang_qingjuan" not in {row["school_id"] for row in governed_rows.values()}
     assert {
-        identity: row for identity, row in governed_rows.items()
+        identity: row
+        for identity, row in governed_rows.items()
         if identity != ("yang", "marriage.divorce_or_remarriage")
     } == {
-        identity: row for identity, row in baseline_rows.items()
+        identity: row
+        for identity, row in baseline_rows.items()
         if identity != ("yang", "marriage.divorce_or_remarriage")
     }
 
 
-@pytest.mark.parametrize("invalid", ("half", "list", "empty", "multiple", "projection-subclass"))
-def test_single_case_governance_shadow_boundary_fails_closed(tmp_path: Path, invalid: str) -> None:
+@pytest.mark.parametrize(
+    "invalid", ("half", "list", "empty", "multiple", "projection-subclass")
+)
+def test_single_case_governance_shadow_boundary_fails_closed(
+    tmp_path: Path, invalid: str
+) -> None:
     root, intake, _ = _single_case_bundle(
         tmp_path,
         task_ids=["marriage.divorce_or_remarriage"],
@@ -404,20 +628,27 @@ def test_single_case_governance_shadow_boundary_fails_closed(tmp_path: Path, inv
         projections = (projection, projection)
     else:
         subclass = type("ProjectionSubclass", (type(projection),), {})
-        projections = (subclass(**{
-            field: getattr(projection, field)
-            for field in projection.__dataclass_fields__
-        }),)
+        projections = (
+            subclass(
+                **{
+                    field: getattr(projection, field)
+                    for field in projection.__dataclass_fields__
+                }
+            ),
+        )
 
     with pytest.raises((TypeError, ValueError), match="governance|projection|tuple"):
         build_single_case_staged_frozen_run(
             root,
             governance_shadow_result=result,
             governance_shadow_projections=projections,  # type: ignore[arg-type]
+            capability_identity_ref=_identity_ref(tmp_path, claim),
         )
 
 
-def test_single_case_governance_shadow_binding_mismatches_fail_closed(tmp_path: Path) -> None:
+def test_single_case_governance_shadow_binding_mismatches_fail_closed(
+    tmp_path: Path,
+) -> None:
     root, intake, _ = _single_case_bundle(
         tmp_path,
         task_ids=["marriage.divorce_or_remarriage"],
@@ -445,12 +676,16 @@ def test_single_case_governance_shadow_binding_mismatches_fail_closed(tmp_path: 
                 root,
                 governance_shadow_result=shadow,
                 governance_shadow_projections=(replace(projection, **change),),
+                capability_identity_ref=_identity_ref(tmp_path, claim),
             )
 
 
 @pytest.mark.parametrize(
     ("projection_change", "expected_state"),
-    (({"prediction": None}, "abstain"), ({"prediction": None, "capability_state": "uncertified"}, "unsupported")),
+    (
+        ({"prediction": None}, "abstain"),
+        ({"prediction": None, "capability_state": "uncertified"}, "unsupported"),
+    ),
 )
 def test_single_case_governance_shadow_nonclaim_states_replace_only_target(
     tmp_path: Path,
@@ -476,6 +711,7 @@ def test_single_case_governance_shadow_nonclaim_states_replace_only_target(
         root,
         governance_shadow_result=shadow,
         governance_shadow_projections=(replace(projection, **projection_change),),
+        capability_identity_ref=_identity_ref(tmp_path, claim),
     )
     rows = {
         (row["school_id"], row["task_id"]): row
@@ -506,6 +742,7 @@ def test_single_case_governance_shadow_replay_is_deterministic_and_prediction_ch
     arguments = {
         "governance_shadow_result": shadow,
         "governance_shadow_projections": (projection,),
+        "capability_identity_ref": _identity_ref(tmp_path, claim),
     }
 
     first = build_single_case_staged_frozen_run(root, **arguments)
@@ -515,7 +752,10 @@ def test_single_case_governance_shadow_replay_is_deterministic_and_prediction_ch
     changed = build_single_case_staged_frozen_run(
         root,
         governance_shadow_result=shadow,
-        governance_shadow_projections=(replace(projection, prediction=changed_binding),),
+        governance_shadow_projections=(
+            replace(projection, prediction=changed_binding),
+        ),
+        capability_identity_ref=arguments["capability_identity_ref"],
     )
     assert changed["frozen_run"]["freeze_hash"] != first["frozen_run"]["freeze_hash"]
     assert changed["artifact_sha256"] != first["artifact_sha256"]
@@ -563,6 +803,7 @@ def test_single_case_governance_shadow_merge_precedes_timing_and_grid_checks(
         root,
         governance_shadow_result=shadow,
         governance_shadow_projections=(projection,),
+        capability_identity_ref=_identity_ref(tmp_path, claim),
     )
     assert observed == ["timing", "grid"]
 
@@ -582,8 +823,14 @@ def test_single_case_governance_shadow_api_and_static_dependencies_are_exact() -
         if isinstance(node, ast.Constant) and isinstance(node.value, str)
     }
 
-    assert signature.parameters["governance_shadow_result"].kind is inspect.Parameter.KEYWORD_ONLY
-    assert signature.parameters["governance_shadow_projections"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert (
+        signature.parameters["governance_shadow_result"].kind
+        is inspect.Parameter.KEYWORD_ONLY
+    )
+    assert (
+        signature.parameters["governance_shadow_projections"].kind
+        is inspect.Parameter.KEYWORD_ONLY
+    )
     assert imports & {
         "engine.application.governance_shadow_types",
         "engine.evaluation.governance_shadow_adapter",
@@ -607,7 +854,9 @@ def test_single_case_governance_shadow_api_and_static_dependencies_are_exact() -
     }
 
 
-def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(tmp_path: Path) -> None:
+def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(
+    tmp_path: Path,
+) -> None:
     root, intake, question = _single_case_bundle(tmp_path)
 
     artifact = build_single_case_staged_frozen_run(root)
@@ -617,21 +866,52 @@ def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(tmp_path: P
     task_count = len(assignments[0]["task_ids"])
     assert len(assignments) == 1
     assert len(outputs) == 6 * task_count
-    assert len({(row["case_id"], row["school_id"], row["task_id"]) for row in outputs}) == len(outputs)
+    assert len(
+        {(row["case_id"], row["school_id"], row["task_id"]) for row in outputs}
+    ) == len(outputs)
     assert {row["state"] for row in outputs} <= {"claim", "abstain", "unsupported"}
-    assert artifact["future_question_registration_sha256"] == question["artifact_sha256"]
+    assert (
+        artifact["future_question_registration_sha256"] == question["artifact_sha256"]
+    )
     assert artifact["intake_sha256"] == intake["artifact_sha256"]
-    assert artifact["task_catalog_sha256"] == _read(root / "bundle-manifest.json")["files"]["tasks.json"]
-    assert artifact["rule_snapshot_sha256"] == _read(root / "bundle-manifest.json")["files"]["rule-snapshot.json"]
-    assert artifact["bundle_manifest_sha256"] == _read(root / "bundle-manifest.json")["artifact_sha256"]
+    assert (
+        artifact["task_catalog_sha256"]
+        == _read(root / "bundle-manifest.json")["files"]["tasks.json"]
+    )
+    assert (
+        artifact["rule_snapshot_sha256"]
+        == _read(root / "bundle-manifest.json")["files"]["rule-snapshot.json"]
+    )
+    assert (
+        artifact["bundle_manifest_sha256"]
+        == _read(root / "bundle-manifest.json")["artifact_sha256"]
+    )
     assert artifact["parents"] == [
-        {"artifact_path": intake["artifact_path"], "artifact_sha256": intake["artifact_sha256"]},
-        {"artifact_path": question["artifact_path"], "artifact_sha256": question["artifact_sha256"]},
-        {"artifact_path": (root / "tasks.json").as_posix(), "artifact_sha256": artifact["task_catalog_sha256"]},
-        {"artifact_path": (root / "rule-snapshot.json").as_posix(), "artifact_sha256": artifact["rule_snapshot_sha256"]},
-        {"artifact_path": (root / "bundle-manifest.json").as_posix(), "artifact_sha256": artifact["bundle_manifest_sha256"]},
+        {
+            "artifact_path": intake["artifact_path"],
+            "artifact_sha256": intake["artifact_sha256"],
+        },
+        {
+            "artifact_path": question["artifact_path"],
+            "artifact_sha256": question["artifact_sha256"],
+        },
+        {
+            "artifact_path": (root / "tasks.json").as_posix(),
+            "artifact_sha256": artifact["task_catalog_sha256"],
+        },
+        {
+            "artifact_path": (root / "rule-snapshot.json").as_posix(),
+            "artifact_sha256": artifact["rule_snapshot_sha256"],
+        },
+        {
+            "artifact_path": (root / "bundle-manifest.json").as_posix(),
+            "artifact_sha256": artifact["bundle_manifest_sha256"],
+        },
     ]
-    assert artifact["frozen_run"]["frozen_at"] == question["observation_window"]["start_at"]
+    assert (
+        artifact["frozen_run"]["frozen_at"]
+        == question["observation_window"]["start_at"]
+    )
     assert artifact["case_id"] == intake["case_id"]
     assert artifact["subject_id_hash"] == intake["subject_id_hash"]
     assert artifact["created_at"] == artifact["frozen_run"]["frozen_at"]
@@ -642,16 +922,27 @@ def test_single_case_frozen_run_is_complete_unique_parent_bound_grid(tmp_path: P
     assert intake["created_at"] <= manifest["created_at"] < artifact["created_at"]
     assert question["created_at"] <= manifest["created_at"]
     from engine.evaluation.prospective_artifacts import ArtifactRef, validate_parent_ref
+
     assert validate_parent_ref(ArtifactRef(**artifact["parents"][-1])) == manifest
     assert build_single_case_staged_frozen_run(root) == artifact
 
 
-def test_single_case_frozen_run_rejects_two_cases_even_if_manifest_is_resealed(tmp_path: Path) -> None:
+def test_single_case_frozen_run_rejects_two_cases_even_if_manifest_is_resealed(
+    tmp_path: Path,
+) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     intake_path = root / "intake.json"
     intake = _read(intake_path)
-    intake["records"].append({"case_id": "P-GO-2026-002-坤-戊辰己巳庚午辛未", "task_ids": ["career.role_change"]})
-    intake_path.write_text(json.dumps(intake, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    intake["records"].append(
+        {
+            "case_id": "P-GO-2026-002-坤-戊辰己巳庚午辛未",
+            "task_ids": ["career.role_change"],
+        }
+    )
+    intake_path.write_text(
+        json.dumps(intake, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+        encoding="utf-8",
+    )
     _reseal_bundle(root, "intake.json")
 
     with pytest.raises(ContaminationError, match="STOP|exactly one"):
@@ -660,7 +951,9 @@ def test_single_case_frozen_run_rejects_two_cases_even_if_manifest_is_resealed(t
 
 @pytest.mark.parametrize("mutation", ["duplicate", "missing-school"])
 def test_single_case_frozen_run_rejects_incomplete_or_duplicate_grid(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    mutation: str,
 ) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     original = prospective.build_staged_frozen_run(root)
@@ -669,7 +962,9 @@ def test_single_case_frozen_run_rejects_incomplete_or_duplicate_grid(
         outputs[-1] = dict(outputs[0])
     else:
         school = outputs[0]["school_id"]
-        original["frozen_run"]["outputs"] = [row for row in outputs if row["school_id"] != school]
+        original["frozen_run"]["outputs"] = [
+            row for row in outputs if row["school_id"] != school
+        ]
     monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: original)
 
     with pytest.raises(ContaminationError, match="grid|duplicate|missing"):
@@ -678,7 +973,8 @@ def test_single_case_frozen_run_rejects_incomplete_or_duplicate_grid(
 
 @pytest.mark.parametrize("parent", ["intake", "question", "tasks", "rule", "bundle"])
 def test_single_case_frozen_run_stops_on_any_actual_parent_byte_change(
-    tmp_path: Path, parent: str,
+    tmp_path: Path,
+    parent: str,
 ) -> None:
     root, intake, question = _single_case_bundle(tmp_path)
     paths = {
@@ -690,18 +986,26 @@ def test_single_case_frozen_run_stops_on_any_actual_parent_byte_change(
     }
     paths[parent].write_bytes(paths[parent].read_bytes() + b" ")
 
-    with pytest.raises((ContaminationError, ValueError), match="STOP|drift|hash|invalid"):
+    with pytest.raises(
+        (ContaminationError, ValueError), match="STOP|drift|hash|invalid"
+    ):
         build_single_case_staged_frozen_run(root)
 
 
-def test_single_case_frozen_run_rejects_rehashed_future_question_drift(tmp_path: Path) -> None:
+def test_single_case_frozen_run_rejects_rehashed_future_question_drift(
+    tmp_path: Path,
+) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     question_path = root / "future-question.json"
     question = _read(question_path)
     question["question_text_redacted"] = "未来三个月是否调任其他岗位？"
     from engine.evaluation.prospective_artifacts import canonical_artifact_sha256
+
     question["artifact_sha256"] = canonical_artifact_sha256(question)
-    question_path.write_text(json.dumps(question, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    question_path.write_text(
+        json.dumps(question, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+        encoding="utf-8",
+    )
     _reseal_bundle(root, "future-question.json")
 
     with pytest.raises(ContaminationError, match="question|parent|drift"):
@@ -709,97 +1013,150 @@ def test_single_case_frozen_run_rejects_rehashed_future_question_drift(tmp_path:
 
 
 def test_single_case_frozen_run_keeps_timing_claim_with_structured_liunian_fact_ref(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     staged = prospective.build_staged_frozen_run(root)
-    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
-    timing.update({
-        "state": "claim",
-        "rationale": "timing derived from annual chart fact",
-        "predictions": [{
-            "prediction_id": "prediction-safe",
-            "event_label": "career_change",
-            "probability": 0.5,
-            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
-            "evidence_refs": ["evidence-annual-trigger"],
-            "fact_refs": ["liunian_steps.0", "four_pillars.day"],
-            "falsifier": "window elapsed without event",
-        }],
-    })
+    timing = next(
+        row
+        for row in staged["frozen_run"]["outputs"]
+        if row["task_id"] == "career.change_window"
+    )
+    timing.update(
+        {
+            "state": "claim",
+            "rationale": "timing derived from annual chart fact",
+            "predictions": [
+                {
+                    "prediction_id": "prediction-safe",
+                    "event_label": "career_change",
+                    "probability": 0.5,
+                    "time_window": {
+                        "start_year": 2026,
+                        "end_year": 2026,
+                        "label": "annual",
+                    },
+                    "evidence_refs": ["evidence-annual-trigger"],
+                    "fact_refs": ["liunian_steps.0", "four_pillars.day"],
+                    "falsifier": "window elapsed without event",
+                }
+            ],
+        }
+    )
     monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
 
     artifact = build_single_case_staged_frozen_run(root)
 
-    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
-        row["school_id"], row["task_id"]
-    ) == (timing["school_id"], timing["task_id"]))
+    safe = next(
+        row
+        for row in artifact["frozen_run"]["outputs"]
+        if (row["school_id"], row["task_id"])
+        == (timing["school_id"], timing["task_id"])
+    )
     assert safe["state"] == "claim"
-    assert safe["predictions"][0]["fact_refs"] == ["liunian_steps.0", "four_pillars.day"]
+    assert safe["predictions"][0]["fact_refs"] == [
+        "liunian_steps.0",
+        "four_pillars.day",
+    ]
 
 
 def test_single_case_frozen_run_never_freezes_unresolved_liunian_fact_ref(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     staged = prospective.build_staged_frozen_run(root)
-    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
-    timing.update({
-        "state": "claim",
-        "rationale": "timing cites a nonexistent annual chart fact",
-        "predictions": [{
-            "prediction_id": "prediction-unresolved",
-            "event_label": "career_change",
-            "probability": 0.5,
-            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
-            "evidence_refs": ["evidence-invalid-annual-trigger"],
-            "fact_refs": ["liunian_steps.999"],
-            "falsifier": "window elapsed without event",
-        }],
-    })
+    timing = next(
+        row
+        for row in staged["frozen_run"]["outputs"]
+        if row["task_id"] == "career.change_window"
+    )
+    timing.update(
+        {
+            "state": "claim",
+            "rationale": "timing cites a nonexistent annual chart fact",
+            "predictions": [
+                {
+                    "prediction_id": "prediction-unresolved",
+                    "event_label": "career_change",
+                    "probability": 0.5,
+                    "time_window": {
+                        "start_year": 2026,
+                        "end_year": 2026,
+                        "label": "annual",
+                    },
+                    "evidence_refs": ["evidence-invalid-annual-trigger"],
+                    "fact_refs": ["liunian_steps.999"],
+                    "falsifier": "window elapsed without event",
+                }
+            ],
+        }
+    )
     monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
 
     artifact = build_single_case_staged_frozen_run(root)
 
-    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
-        row["school_id"], row["task_id"]
-    ) == (timing["school_id"], timing["task_id"]))
+    safe = next(
+        row
+        for row in artifact["frozen_run"]["outputs"]
+        if (row["school_id"], row["task_id"])
+        == (timing["school_id"], timing["task_id"])
+    )
     assert safe["state"] == "abstain"
     assert safe["predictions"] == []
     assert "liunian_steps" in safe["rationale"]
 
 
 def test_single_case_frozen_run_never_freezes_timing_claim_without_liunian_fact_ref(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     staged = prospective.build_staged_frozen_run(root)
-    timing = next(row for row in staged["frozen_run"]["outputs"] if row["task_id"] == "career.change_window")
-    timing.update({
-        "state": "claim",
-        "rationale": "timing guessed from text",
-        "predictions": [{
-            "prediction_id": "prediction-unsafe",
-            "event_label": "career_change",
-            "probability": 0.5,
-            "time_window": {"start_year": 2026, "end_year": 2026, "label": "annual"},
-            "evidence_refs": ["opaque-evidence-id"],
-            "falsifier": "window elapsed without event",
-        }],
-    })
+    timing = next(
+        row
+        for row in staged["frozen_run"]["outputs"]
+        if row["task_id"] == "career.change_window"
+    )
+    timing.update(
+        {
+            "state": "claim",
+            "rationale": "timing guessed from text",
+            "predictions": [
+                {
+                    "prediction_id": "prediction-unsafe",
+                    "event_label": "career_change",
+                    "probability": 0.5,
+                    "time_window": {
+                        "start_year": 2026,
+                        "end_year": 2026,
+                        "label": "annual",
+                    },
+                    "evidence_refs": ["opaque-evidence-id"],
+                    "falsifier": "window elapsed without event",
+                }
+            ],
+        }
+    )
     monkeypatch.setattr(prospective, "build_staged_frozen_run", lambda _: staged)
 
     artifact = build_single_case_staged_frozen_run(root)
 
-    safe = next(row for row in artifact["frozen_run"]["outputs"] if (
-        row["school_id"], row["task_id"]
-    ) == (timing["school_id"], timing["task_id"]))
+    safe = next(
+        row
+        for row in artifact["frozen_run"]["outputs"]
+        if (row["school_id"], row["task_id"])
+        == (timing["school_id"], timing["task_id"])
+    )
     assert safe["state"] == "abstain"
     assert safe["predictions"] == []
     assert "liunian_steps" in safe["rationale"]
 
 
-def test_single_case_witness_registry_uses_current_artifact_schema(tmp_path: Path) -> None:
+def test_single_case_witness_registry_uses_current_artifact_schema(
+    tmp_path: Path,
+) -> None:
     root, intake, _ = _single_case_bundle(tmp_path)
     frozen = build_single_case_staged_frozen_run(root)
     frozen_path = Path(frozen["artifact_path"])
@@ -809,7 +1166,10 @@ def test_single_case_witness_registry_uses_current_artifact_schema(tmp_path: Pat
     )
 
     registry = prospective.build_witness_freeze_registry(
-        Path(intake["artifact_path"]), root, frozen_path, b"TEST-FIXTURE-KEY-NOT-REAL",
+        Path(intake["artifact_path"]),
+        root,
+        frozen_path,
+        b"TEST-FIXTURE-KEY-NOT-REAL",
         artifact_path=registry_path,
     )
 
@@ -818,25 +1178,41 @@ def test_single_case_witness_registry_uses_current_artifact_schema(tmp_path: Pat
     assert registry["artifact_path"] == registry_path.as_posix()
     assert len(registry["events"]) == 3
     assert [event["event_type"] for event in registry["events"]] == [
-        "registered", "prepared", "freeze",
+        "registered",
+        "prepared",
+        "freeze",
     ]
     assert registry["artifact_sha256"] == canonical_artifact_sha256(registry)
 
 
-def test_single_case_cli_is_create_only_and_keeps_legacy_command(tmp_path: Path) -> None:
+def test_single_case_cli_is_create_only_and_keeps_legacy_command(
+    tmp_path: Path,
+) -> None:
     root, intake, _ = _single_case_bundle(tmp_path)
     output = Path(intake["artifact_path"]).with_name(
         f"{intake['case_id']}--frozen-run--v001.json"
     )
     command = [
-        sys.executable, "-m", "tools.school_capability_prospective",
-        "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
-        "--now-utc", "2026-07-16T00:00:00Z",
+        sys.executable,
+        "-m",
+        "tools.school_capability_prospective",
+        "stage-single-case-frozen-run",
+        "--bundle-root",
+        str(root),
+        "--out",
+        str(output),
+        "--now-utc",
+        "2026-07-16T00:00:00Z",
     ]
-    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
+    dry = subprocess.run(
+        [*command, "--dry-run"], check=False, capture_output=True, text=True
+    )
     assert dry.returncode == 0, dry.stderr
     assert not output.exists()
-    assert json.loads(dry.stdout)["schema_version"] == "school-capability-single-case-staged-run/v1"
+    assert (
+        json.loads(dry.stdout)["schema_version"]
+        == "school-capability-single-case-staged-run/v1"
+    )
 
     first = subprocess.run(command, check=False, capture_output=True, text=True)
     assert first.returncode == 0, first.stderr
@@ -848,13 +1224,22 @@ def test_single_case_cli_is_create_only_and_keeps_legacy_command(tmp_path: Path)
     assert "stage-frozen-run" in prospective._parser().format_help()
 
 
-def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path) -> None:
+def test_single_case_cli_rejects_noncanonical_formal_output_path(
+    tmp_path: Path,
+) -> None:
     root, _, _ = _single_case_bundle(tmp_path)
     output = tmp_path / "single-frozen.json"
     command = [
-        sys.executable, "-m", "tools.school_capability_prospective",
-        "stage-single-case-frozen-run", "--bundle-root", str(root), "--out", str(output),
-        "--now-utc", "2026-07-16T00:00:00Z",
+        sys.executable,
+        "-m",
+        "tools.school_capability_prospective",
+        "stage-single-case-frozen-run",
+        "--bundle-root",
+        str(root),
+        "--out",
+        str(output),
+        "--now-utc",
+        "2026-07-16T00:00:00Z",
     ]
 
     result = subprocess.run(command, check=False, capture_output=True, text=True)
@@ -865,7 +1250,9 @@ def test_single_case_cli_rejects_noncanonical_formal_output_path(tmp_path: Path)
 
 
 def _v002_single_case_bundle(
-    tmp_path: Path, *, publish_v001_frozen: bool = True,
+    tmp_path: Path,
+    *,
+    publish_v001_frozen: bool = True,
 ) -> tuple[Path, dict, dict, dict]:
     v001_root, v001_intake, v001_question = _single_case_bundle(
         tmp_path,
@@ -873,7 +1260,8 @@ def _v002_single_case_bundle(
         freeze_at="2026-07-17T05:30:00Z",
     )
     v001_frozen = build_single_case_staged_frozen_run(
-        v001_root, now_utc="2026-07-17T05:30:00Z",
+        v001_root,
+        now_utc="2026-07-17T05:30:00Z",
     )
     if publish_v001_frozen:
         publish_new_json(Path(v001_frozen["artifact_path"]), v001_frozen, dry_run=False)
@@ -949,10 +1337,14 @@ def test_v002_single_case_frozen_run_uses_canonical_versioned_path_and_revision_
     }
 
     artifact = build_single_case_staged_frozen_run(
-        root, now_utc="2026-07-17T05:40:00Z", revision=revision,
+        root,
+        now_utc="2026-07-17T05:40:00Z",
+        revision=revision,
     )
 
-    assert artifact["artifact_path"].endswith(f"{intake['case_id']}--frozen-run--v002.json")
+    assert artifact["artifact_path"].endswith(
+        f"{intake['case_id']}--frozen-run--v002.json"
+    )
     assert artifact["executed_at"] == "2026-07-17T05:40:00Z"
     assert {field: artifact[field] for field in revision} == revision
 
@@ -961,9 +1353,12 @@ def test_v002_migration_can_supersede_v001_bundle_when_no_formal_run_or_leakage_
     tmp_path: Path,
 ) -> None:
     root, intake, _, _ = _v002_single_case_bundle(
-        tmp_path, publish_v001_frozen=False,
+        tmp_path,
+        publish_v001_frozen=False,
     )
-    v001_manifest = _read(root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json")
+    v001_manifest = _read(
+        root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json"
+    )
     revision = {
         "supersedes": v001_manifest["artifact_path"],
         "supersedes_sha256": v001_manifest["artifact_sha256"],
@@ -991,11 +1386,17 @@ def test_v002_migration_can_supersede_v001_bundle_when_no_formal_run_or_leakage_
     assert artifact["supersedes"] == v001_manifest["artifact_path"]
 
 
-def test_v002_migration_cannot_bypass_existing_formal_v001_frozen_run(tmp_path: Path) -> None:
+def test_v002_migration_cannot_bypass_existing_formal_v001_frozen_run(
+    tmp_path: Path,
+) -> None:
     root, _, _, _ = _v002_single_case_bundle(tmp_path)
-    v001_manifest = _read(root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json")
+    v001_manifest = _read(
+        root.with_name(root.name.replace("v002", "v001")) / "bundle-manifest.json"
+    )
 
-    with pytest.raises((ContaminationError, ValueError), match="latest|frozen|supersedes|parent"):
+    with pytest.raises(
+        (ContaminationError, ValueError), match="latest|frozen|supersedes|parent"
+    ):
         build_single_case_staged_frozen_run(
             root,
             freeze_at="2026-07-17T05:40:00Z",
@@ -1023,7 +1424,9 @@ def test_v002_migration_cannot_bypass_existing_formal_v001_frozen_run(tmp_path: 
     ],
 )
 def test_single_case_frozen_run_allows_execution_only_in_sixty_second_freeze_window(
-    tmp_path: Path, executed_at: str, accepted: bool,
+    tmp_path: Path,
+    executed_at: str,
+    accepted: bool,
 ) -> None:
     root, _, _ = _single_case_bundle(
         tmp_path,
@@ -1032,7 +1435,9 @@ def test_single_case_frozen_run_allows_execution_only_in_sixty_second_freeze_win
     )
 
     if not accepted:
-        with pytest.raises((ContaminationError, ValueError), match="executed_at|60|freeze"):
+        with pytest.raises(
+            (ContaminationError, ValueError), match="executed_at|60|freeze"
+        ):
             build_single_case_staged_frozen_run(
                 root,
                 freeze_at="2026-07-17T05:40:00Z",
@@ -1050,24 +1455,37 @@ def test_single_case_frozen_run_allows_execution_only_in_sixty_second_freeze_win
     assert artifact["frozen_run"]["frozen_at"] == artifact["freeze_at"]
 
 
-def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(tmp_path: Path) -> None:
+def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(
+    tmp_path: Path,
+) -> None:
     root, _, _, v001_frozen = _v002_single_case_bundle(tmp_path)
     output = Path(v001_frozen["artifact_path"]).with_name(
         f"{v001_frozen['case_id']}--frozen-run--v002.json"
     )
     command = [
-        sys.executable, "-m", "tools.school_capability_prospective",
+        sys.executable,
+        "-m",
+        "tools.school_capability_prospective",
         "stage-single-case-frozen-run",
-        "--bundle-root", str(root),
-        "--out", str(output),
-        "--now-utc", "2026-07-17T05:40:00Z",
-        "--supersedes", v001_frozen["artifact_path"],
-        "--supersedes-sha256", v001_frozen["artifact_sha256"],
-        "--reason", "Freeze revised registration and blind bundle",
-        "--approved-by", "human-approver-01",
+        "--bundle-root",
+        str(root),
+        "--out",
+        str(output),
+        "--now-utc",
+        "2026-07-17T05:40:00Z",
+        "--supersedes",
+        v001_frozen["artifact_path"],
+        "--supersedes-sha256",
+        v001_frozen["artifact_sha256"],
+        "--reason",
+        "Freeze revised registration and blind bundle",
+        "--approved-by",
+        "human-approver-01",
     ]
 
-    dry = subprocess.run([*command, "--dry-run"], check=False, capture_output=True, text=True)
+    dry = subprocess.run(
+        [*command, "--dry-run"], check=False, capture_output=True, text=True
+    )
     assert dry.returncode == 0, dry.stderr
     assert not output.exists()
     assert json.loads(dry.stdout)["executed_at"] == "2026-07-17T05:40:00Z"
