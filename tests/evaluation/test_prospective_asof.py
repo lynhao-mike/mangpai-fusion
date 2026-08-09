@@ -912,7 +912,12 @@ def test_asof_bundle_first_proof_ast_accounting(
         assert cli_module.main() == 2
         assert capsys.readouterr().err == "ASOF_LINK_ERROR\n"
     elif check == "evidence-byte":
-        assert hashlib.sha256(Path("engine/evaluation/prospective_evidence.py").read_bytes()).hexdigest() == "a503adc310c97e59cdc411b021f127e4687824e73b3004fb34fda2ecb468d416"
+        assert (
+            hashlib.sha256(
+                Path("engine/evaluation/prospective_evidence.py").read_bytes()
+            ).hexdigest()
+            == "ee4581d1a8303bb3c2263ccac9a239388c7fc273aa27a0a82c2724462b49507d"
+        )
     else:
         lowered = (source + Path("tools/as_of_prospective.py").read_text(encoding="utf-8")).lower()
         forbidden = (

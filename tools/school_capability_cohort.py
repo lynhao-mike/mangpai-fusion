@@ -12,16 +12,22 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
-from engine.evaluation.prospective_artifacts import ArtifactRef, canonical_artifact_sha256, publish_new_json
+from engine.evaluation.prospective_artifacts import (
+    ArtifactRef,
+    _authority_root,
+    _repository_authority,
+    canonical_artifact_sha256,
+    publish_new_json,
+)
 from engine.evaluation.prospective_gates import (
     CohortHoldError,
+    _build_future_gate_evidence_with_authority,
+    _build_gate_evidence_with_authority,
+    _evaluate_future_empirical_with_authority,
+    _evaluate_prediction_capability_candidate_with_authority,
     build_cohort_manifest,
-    build_future_gate_evidence_from_cohorts,
-    build_gate_evidence_from_cohorts,
     build_three_gate_report,
     cohort_output_dir,
-    evaluate_future_empirical,
-    evaluate_prediction_capability_candidate,
     verify_cohort_manifest,
 )
 
@@ -37,7 +43,9 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 def _raw_ref(path: Path) -> ArtifactRef:
     if path.is_symlink() or not path.is_file():
-        raise ValueError(f"historical baseline must be a regular non-symlink file: {path}")
+        raise ValueError(
+            f"historical baseline must be a regular non-symlink file: {path}"
+        )
     return ArtifactRef(path.as_posix(), hashlib.sha256(path.read_bytes()).hexdigest())
 
 
@@ -47,7 +55,9 @@ def _write_new_json(path: Path, payload: object, *, dry_run: bool) -> None:
     if path.exists() or path.is_symlink():
         raise ValueError(f"output already exists: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    descriptor, temporary = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as stream:
             stream.write(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
@@ -64,7 +74,9 @@ def _write_new_json(path: Path, payload: object, *, dry_run: bool) -> None:
 def _created_at(value: str | None) -> str:
     if value:
         return value
-    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    return (
+        datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    )
 
 
 def _emit(payload: object) -> None:
@@ -78,7 +90,6 @@ def _build(args: argparse.Namespace) -> int:
             args.completion,
             historical,
             created_at=_created_at(args.created_at),
-            admitted_root=args.admitted_root,
         )
     except CohortHoldError as error:
         _emit(error.plan)
@@ -87,29 +98,39 @@ def _build(args: argparse.Namespace) -> int:
     target = cohort_output_dir(args.out_dir, manifest)
     manifest_path = target / "cohort-manifest.json"
     if args.dry_run:
-        _emit({
-            "status": "DRY_RUN",
-            "manifest_path": manifest_path.as_posix(),
-            "manifest": manifest,
-        })
+        _emit(
+            {
+                "status": "DRY_RUN",
+                "manifest_path": manifest_path.as_posix(),
+                "manifest": manifest,
+            }
+        )
         return 0
     if target.exists() or target.is_symlink():
-        if not target.is_dir() or manifest_path.is_symlink() or not manifest_path.is_file():
-            raise ValueError(f"existing cohort output is not a verifiable publication: {target}")
+        if (
+            not target.is_dir()
+            or manifest_path.is_symlink()
+            or not manifest_path.is_file()
+        ):
+            raise ValueError(
+                f"existing cohort output is not a verifiable publication: {target}"
+            )
         actual_entries = {item.name for item in target.iterdir()}
         if actual_entries != {manifest_path.name}:
-            raise ValueError(f"existing cohort output contains unexpected pollution: {target}")
+            raise ValueError(
+                f"existing cohort output contains unexpected pollution: {target}"
+            )
         existing = _read_json(manifest_path)
-        verification = verify_cohort_manifest(
-            existing, admitted_root=args.admitted_root
-        )
+        verification = verify_cohort_manifest(existing)
         if verification["status"] != "VERIFIED" or existing != manifest:
             raise ValueError("existing cohort output differs or has parent drift")
-        _emit({
-            "status": "VERIFIED_EXISTING",
-            "manifest_path": manifest_path.as_posix(),
-            "verification": verification,
-        })
+        _emit(
+            {
+                "status": "VERIFIED_EXISTING",
+                "manifest_path": manifest_path.as_posix(),
+                "verification": verification,
+            }
+        )
         return 0
     _write_new_json(manifest_path, manifest, dry_run=False)
     _emit({"status": "CREATED", "manifest_path": manifest_path.as_posix()})
@@ -118,9 +139,7 @@ def _build(args: argparse.Namespace) -> int:
 
 def _verify(args: argparse.Namespace) -> int:
     manifest = _read_json(args.manifest)
-    result = verify_cohort_manifest(
-        manifest, admitted_root=args.admitted_root
-    )
+    result = verify_cohort_manifest(manifest)
     _emit(result)
     return 0 if result["status"] == "VERIFIED" else 4
 
@@ -159,9 +178,7 @@ def _inventory(manifest: dict[str, Any]) -> dict[str, Any]:
 
 def _score(args: argparse.Namespace) -> int:
     manifest = _read_json(args.manifest)
-    verification = verify_cohort_manifest(
-        manifest, admitted_root=args.admitted_root
-    )
+    verification = verify_cohort_manifest(manifest)
     if verification["status"] != "VERIFIED":
         _emit(verification)
         return 4
@@ -173,40 +190,59 @@ def _score(args: argparse.Namespace) -> int:
         return 0
     if args.out_dir.exists() or args.out_dir.is_symlink():
         raise ValueError(f"score output directory already exists: {args.out_dir}")
-    _write_new_json(immediate_path, {
-        **inventory,
-        "classes": {
-            "prediction_first_immediate_retrospective": inventory["classes"]["prediction_first_immediate_retrospective"]
-        },
-    }, dry_run=False)
-    if inventory["classes"]["future_observation"]:
-        _write_new_json(future_path, {
+    _write_new_json(
+        immediate_path,
+        {
             **inventory,
-            "classes": {"future_observation": inventory["classes"]["future_observation"]},
-        }, dry_run=False)
-    _emit({
-        "status": "INVENTORY_ONLY_HOLD",
-        "immediate_inventory": immediate_path.as_posix(),
-        "future_inventory": future_path.as_posix() if future_path.exists() else None,
-        "gate_outputs_created": False,
-    })
+            "classes": {
+                "prediction_first_immediate_retrospective": inventory["classes"][
+                    "prediction_first_immediate_retrospective"
+                ]
+            },
+        },
+        dry_run=False,
+    )
+    if inventory["classes"]["future_observation"]:
+        _write_new_json(
+            future_path,
+            {
+                **inventory,
+                "classes": {
+                    "future_observation": inventory["classes"]["future_observation"]
+                },
+            },
+            dry_run=False,
+        )
+    _emit(
+        {
+            "status": "INVENTORY_ONLY_HOLD",
+            "immediate_inventory": immediate_path.as_posix(),
+            "future_inventory": future_path.as_posix()
+            if future_path.exists()
+            else None,
+            "gate_outputs_created": False,
+        }
+    )
     return 0
 
 
 def _gate(args: argparse.Namespace) -> int:
+    authority = _repository_authority()
     if args.out.name != "prediction-capability-candidate-gate-v1.json":
-        raise ValueError("gate output filename must be canonical: prediction-capability-candidate-gate-v1.json")
-    evidence = build_gate_evidence_from_cohorts(
+        raise ValueError(
+            "gate output filename must be canonical: prediction-capability-candidate-gate-v1.json"
+        )
+    evidence = _build_gate_evidence_with_authority(
         args.manifest,
         scoring_artifact=args.scores,
         holdout_artifact=args.holdout,
         audit_artifact=args.audit,
-        admitted_root=args.admitted_root,
+        authority=authority,
     )
-    result = evaluate_prediction_capability_candidate(
+    result = _evaluate_prediction_capability_candidate_with_authority(
         evidence,
         evaluated_at=_created_at(args.evaluated_at),
-        admitted_root=args.admitted_root,
+        authority=authority,
     )
     if args.dry_run:
         _emit({"status": "DRY_RUN", "result": result, "out": args.out.as_posix()})
@@ -217,25 +253,29 @@ def _gate(args: argparse.Namespace) -> int:
         args.out,
         {key: value for key, value in result.items() if key != "artifact_sha256"},
         dry_run=False,
+        admitted_root=_authority_root(authority),
     )
     _emit({"status": "CREATED", "result": result, "out": args.out.as_posix()})
     return 0
 
 
 def _future_gate(args: argparse.Namespace) -> int:
+    authority = _repository_authority()
     if args.out.name != "future-empirical-gate-v1.json":
-        raise ValueError("future gate output filename must be canonical: future-empirical-gate-v1.json")
-    evidence = build_future_gate_evidence_from_cohorts(
+        raise ValueError(
+            "future gate output filename must be canonical: future-empirical-gate-v1.json"
+        )
+    evidence = _build_future_gate_evidence_with_authority(
         args.manifest,
         scoring_artifact=args.scores,
         holdout_artifact=args.holdout,
         audit_artifact=args.audit,
-        admitted_root=args.admitted_root,
+        authority=authority,
     )
-    result = evaluate_future_empirical(
+    result = _evaluate_future_empirical_with_authority(
         evidence,
         evaluated_at=_created_at(args.evaluated_at),
-        admitted_root=args.admitted_root,
+        authority=authority,
     )
     if args.dry_run:
         _emit({"status": "DRY_RUN", "result": result, "out": args.out.as_posix()})
@@ -243,14 +283,21 @@ def _future_gate(args: argparse.Namespace) -> int:
     if args.out.exists() or args.out.is_symlink():
         raise ValueError(f"output already exists: {args.out}")
     publish_new_json(
-        args.out, {key: value for key, value in result.items() if key != "artifact_sha256"}, dry_run=False,
+        args.out,
+        {key: value for key, value in result.items() if key != "artifact_sha256"},
+        dry_run=False,
+        admitted_root=_authority_root(authority),
     )
     _emit({"status": "CREATED", "result": result, "out": args.out.as_posix()})
     return 0
 
 
 def _validated_gate(
-    path: Path, *, gate_id: str, manifest: dict[str, Any], manifest_path: Path,
+    path: Path,
+    *,
+    gate_id: str,
+    manifest: dict[str, Any],
+    manifest_path: Path,
 ) -> dict[str, Any]:
     gate = _read_json(path)
     if gate.get("gate_id") != gate_id:
@@ -264,26 +311,30 @@ def _validated_gate(
     }
     parents = gate.get("parents")
     if not isinstance(parents, list) or expected_parent not in parents:
-        raise ValueError(f"gate artifact must bind the verified cohort manifest parent: {path}")
+        raise ValueError(
+            f"gate artifact must bind the verified cohort manifest parent: {path}"
+        )
     return gate
 
 
 def _report(args: argparse.Namespace) -> int:
     if args.manifest is not None:
         manifest = _read_json(args.manifest)
-        verification = verify_cohort_manifest(
-            manifest, admitted_root=args.admitted_root
-        )
+        verification = verify_cohort_manifest(manifest)
         if verification["status"] != "VERIFIED":
             _emit(verification)
             return 4
         immediate = _validated_gate(
-            args.immediate_gate, gate_id="prediction_capability_candidate_gate_v1",
-            manifest=manifest, manifest_path=args.manifest,
+            args.immediate_gate,
+            gate_id="prediction_capability_candidate_gate_v1",
+            manifest=manifest,
+            manifest_path=args.manifest,
         )
         future = _validated_gate(
-            args.future_gate, gate_id="future_empirical_gate_v1",
-            manifest=manifest, manifest_path=args.manifest,
+            args.future_gate,
+            gate_id="future_empirical_gate_v1",
+            manifest=manifest,
+            manifest_path=args.manifest,
         )
         payload = {
             "schema_version": "prospective-cohort-task9-report/v1",
@@ -293,10 +344,12 @@ def _report(args: argparse.Namespace) -> int:
             },
             "status": "HOLD_PENDING_TASK_10_AND_11_GATE_EVALUATION",
             "gate_parent_refs": [
-                _raw_ref(args.immediate_gate).__dict__, _raw_ref(args.future_gate).__dict__,
+                _raw_ref(args.immediate_gate).__dict__,
+                _raw_ref(args.future_gate).__dict__,
             ],
             "observed_gate_statuses": {
-                "immediate": immediate.get("status"), "future": future.get("status"),
+                "immediate": immediate.get("status"),
+                "future": future.get("status"),
             },
             "production_switch": False,
         }
@@ -307,14 +360,15 @@ def _report(args: argparse.Namespace) -> int:
     if args.historical_json is None:
         raise ValueError("three-gate report requires --historical-json")
     if args.out.name != "three-gate-report-v1.md":
-        raise ValueError("report output filename must be canonical: three-gate-report-v1.md")
+        raise ValueError(
+            "report output filename must be canonical: three-gate-report-v1.md"
+        )
     immediate = _read_json(args.immediate_gate)
     future = _read_json(args.future_gate)
     text = build_three_gate_report(
         immediate,
         future,
         _raw_ref(args.historical_json),
-        admitted_root=args.admitted_root,
     )
     if args.dry_run:
         print(text, end="")
@@ -328,11 +382,10 @@ def _report(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Manage parent-reference-only prospective cohorts")
+    parser = argparse.ArgumentParser(
+        description="Manage parent-reference-only prospective cohorts"
+    )
     commands = parser.add_subparsers(dest="command", required=True)
-
-    def require_admitted_root(command: argparse.ArgumentParser) -> None:
-        command.add_argument("--admitted-root", type=Path, required=True)
 
     build = commands.add_parser("build")
     build.add_argument("--completion", type=Path, action="append", required=True)
@@ -341,19 +394,16 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--out-dir", type=Path, required=True)
     build.add_argument("--created-at")
     build.add_argument("--dry-run", action="store_true")
-    require_admitted_root(build)
     build.set_defaults(handler=_build)
 
     verify = commands.add_parser("verify")
     verify.add_argument("--manifest", type=Path, required=True)
-    require_admitted_root(verify)
     verify.set_defaults(handler=_verify)
 
     score = commands.add_parser("score")
     score.add_argument("--manifest", type=Path, required=True)
     score.add_argument("--out-dir", type=Path, required=True)
     score.add_argument("--dry-run", action="store_true")
-    require_admitted_root(score)
     score.set_defaults(handler=_score)
 
     gate = commands.add_parser("gate")
@@ -364,7 +414,6 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--evaluated-at")
     gate.add_argument("--out", type=Path, required=True)
     gate.add_argument("--dry-run", action="store_true")
-    require_admitted_root(gate)
     gate.set_defaults(handler=_gate)
 
     future_gate = commands.add_parser("future-gate")
@@ -375,7 +424,6 @@ def build_parser() -> argparse.ArgumentParser:
     future_gate.add_argument("--evaluated-at")
     future_gate.add_argument("--out", type=Path, required=True)
     future_gate.add_argument("--dry-run", action="store_true")
-    require_admitted_root(future_gate)
     future_gate.set_defaults(handler=_future_gate)
 
     report = commands.add_parser("report")
@@ -385,7 +433,6 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--historical-json", type=Path)
     report.add_argument("--out", type=Path, required=True)
     report.add_argument("--dry-run", action="store_true")
-    require_admitted_root(report)
     report.set_defaults(handler=_report)
     return parser
 
@@ -398,7 +445,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return int(args.handler(args))
-    except (FileNotFoundError, OSError, TypeError, ValueError, json.JSONDecodeError) as error:
+    except (
+        FileNotFoundError,
+        OSError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
 

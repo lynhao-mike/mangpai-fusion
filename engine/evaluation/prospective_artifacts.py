@@ -19,6 +19,75 @@ _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 _REVISION_FIELDS = frozenset(
     {"supersedes", "supersedes_sha256", "reason", "approved_by"}
 )
+_REPOSITORY_STATE = Path("META/project-state.json")
+_R3_CONTRACT = Path(
+    ".omo/drafts/w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md"
+)
+_CONCRETE_PATH_TYPE = type(Path())
+
+
+@dataclass(frozen=True, slots=True)
+class _RepositoryAuthority:
+    root: Path
+    project_state_sha256: str
+    contract_sha256: str
+    issuer: object
+
+
+def _regular_file_digest(root: Path, relative: Path, description: str) -> str:
+    path = authenticate_path(root / relative, admitted_root=root)
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError as error:
+        raise ValueError(f"{description} is unreadable") from error
+
+
+def _trusted_repository_root() -> Path:
+    """Resolve the repository only from this already-loaded production module."""
+    return Path(__file__).absolute().parents[2]
+
+
+def _authority_api():
+    issuer = object()
+    cached: _RepositoryAuthority | None = None
+
+    def issue() -> _RepositoryAuthority:
+        nonlocal cached
+        root = _trusted_repository_root()
+        if type(root) is not _CONCRETE_PATH_TYPE or not root.is_absolute():
+            raise TypeError("repository authority root must be an exact absolute Path")
+        project_state_sha256 = _regular_file_digest(
+            root, _REPOSITORY_STATE, "canonical project state"
+        )
+        contract_sha256 = _regular_file_digest(root, _R3_CONTRACT, "frozen R3 contract")
+        if cached is not None and cached.root == root:
+            if (
+                cached.project_state_sha256 != project_state_sha256
+                or cached.contract_sha256 != contract_sha256
+            ):
+                raise ValueError("canonical repository authority anchor drift detected")
+            return cached
+        cached = _RepositoryAuthority(
+            root=root,
+            project_state_sha256=project_state_sha256,
+            contract_sha256=contract_sha256,
+            issuer=issuer,
+        )
+        return cached
+
+    def admitted_root(authority: _RepositoryAuthority) -> Path:
+        if (
+            type(authority) is not _RepositoryAuthority
+            or authority.issuer is not issuer
+        ):
+            raise TypeError("repository authority must be the private exact token")
+        return authority.root
+
+    return issue, admitted_root
+
+
+_repository_authority, _authority_root = _authority_api()
+del _authority_api
 
 
 @dataclass(frozen=True)
@@ -227,6 +296,10 @@ def _validate_parent_tree(
             ) from exc
         if not isinstance(document, dict):
             raise ValueError("parent artifact must be a JSON object")
+        if "artifact_sha256" not in document:
+            if hashlib.sha256(raw).hexdigest() != ref.artifact_sha256:
+                raise ValueError("raw parent byte digest mismatch")
+            return document
         if raw != _document_bytes(document):
             raise ValueError("parent artifact byte drift detected")
 

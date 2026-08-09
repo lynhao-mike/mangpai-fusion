@@ -16,12 +16,15 @@ from engine.evaluation.models import FrozenBlindRun
 from engine.evaluation.prospective_evidence import _validate_future_completion_chain
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
+    _RepositoryAuthority,
+    _authority_root,
+    _repository_authority,
     authenticate_path,
     canonical_artifact_sha256,
     validate_parent_ref,
 )
 from engine.evaluation.prospective_capability_identity import (
-    validate_capability_identity_ref,
+    _validate_capability_identity_ref_with_authority,
 )
 from engine.governance.governance_claim_values import ClaimEvidenceGrade, ClaimKind
 
@@ -81,7 +84,9 @@ class FrozenMapping(Mapping[str, Any]):
             elif type(child) is list:
                 child = tuple(child)
             elif isinstance(child, (Mapping, list)):
-                raise TypeError("immutable mapping rejects mutable mapping/list subclasses")
+                raise TypeError(
+                    "immutable mapping rejects mutable mapping/list subclasses"
+                )
             items.append((key, child))
         self._items = tuple(items)
 
@@ -132,37 +137,165 @@ class GateEvidence:
     unsupported_rows: int = 0
 
     def __post_init__(self) -> None:
-        mapping_fields = (
+        top_level_counts = (
+            "unique_completed_subjects",
+            "selection_change_count",
+            "claim_rows",
+            "abstain_rows",
+            "unsupported_rows",
+        )
+        for field in top_level_counts:
+            value = getattr(self, field)
+            if type(value) is not int:
+                raise TypeError(f"{field} must be an exact integer")
+            if value < 0:
+                raise ValueError(f"{field} must be non-negative")
+
+        for field in ("learned_utility", "static_utility"):
+            value = getattr(self, field)
+            if type(value) is not float:
+                raise TypeError(f"{field} must be an exact float")
+            if not math.isfinite(value):
+                raise ValueError(f"{field} must be finite")
+
+        if (
+            self.evidence_class
+            not in {
+                _GATE_EVIDENCE_CLASS,
+                _FUTURE_EVIDENCE_CLASS,
+            }
+            or type(self.evidence_class) is not str
+        ):
+            raise ValueError("evidence_class is invalid")
+        high_risk_statuses = (
+            {"PASS", "FAIL", "HOLD", "NOT_APPLICABLE"}
+            if self.evidence_class == _GATE_EVIDENCE_CLASS
+            else {"PASS_FUTURE", "FAIL", "HOLD", "NOT_APPLICABLE"}
+        )
+        if (
+            type(self.high_risk_review_status) is not str
+            or self.high_risk_review_status not in high_risk_statuses
+        ):
+            raise ValueError("high_risk_review_status is invalid for evidence_class")
+        for field in (
+            "hash_audit_status",
+            "witness_audit_status",
+            "leakage_audit_status",
+        ):
+            value = getattr(self, field)
+            if type(value) is not str or value not in {"PASS", "FAIL", "HOLD"}:
+                raise ValueError(f"{field} is invalid")
+
+        if type(self.parent_created_at) is not tuple:
+            raise TypeError("parent_created_at must be an exact tuple")
+        if len(self.parent_created_at) != len(self.parents):
+            raise ValueError("parent_created_at cardinality must equal parents")
+        for value in self.parent_created_at:
+            _utc(value, "parent_created_at")
+
+        if (
+            self.governance_source_ref is not None
+            and type(self.governance_source_ref) is not ArtifactRef
+        ):
+            raise TypeError(
+                "governance_source_ref must be an exact ArtifactRef or None"
+            )
+        for field in ("school_id", "task_id", "capability_version"):
+            value = getattr(self, field)
+            if value is not None and (type(value) is not str or not value.strip()):
+                raise TypeError(f"{field} must be a non-empty exact string or None")
+        if self.claim_kind is not None and type(self.claim_kind) is not ClaimKind:
+            raise TypeError("claim_kind must be an exact ClaimKind or None")
+        if (
+            self.evidence_grade is not None
+            and type(self.evidence_grade) is not ClaimEvidenceGrade
+        ):
+            raise TypeError(
+                "evidence_grade must be an exact ClaimEvidenceGrade or None"
+            )
+        if type(self.provenance_verified) is not bool:
+            raise TypeError("provenance_verified must be an exact bool")
+
+        identity_fields = (
+            self.capability_identity_ref,
+            self.governance_source_ref,
+            self.school_id,
+            self.task_id,
+            self.claim_kind,
+            self.evidence_grade,
+            self.capability_version,
+        )
+        if any(value is None for value in identity_fields) and any(
+            value is not None for value in identity_fields
+        ):
+            raise ValueError(
+                "capability identity fields must be all-none or all-present"
+            )
+
+        count_fields = (
             "task_label_counts",
             "positive_counts",
             "negative_counts",
             "no_data_counts",
-            "calibration_error_by_task",
             "competitive_count_by_task",
         )
-        for field in mapping_fields:
+        for field in count_fields:
             value = getattr(self, field)
-            if isinstance(value, FrozenMapping):
+            if type(value) not in {dict, FrozenMapping}:
+                raise TypeError(f"{field} must be an exact scalar dict")
+            if any(
+                type(key) is not str or type(child) is not int or child < 0
+                for key, child in value.items()
+            ):
+                raise ValueError(
+                    f"{field} must contain exact string keys and non-negative exact integer values"
+                )
+            if type(value) is dict:
+                object.__setattr__(self, field, FrozenMapping(value))
+
+        calibration = self.calibration_error_by_task
+        if type(calibration) not in {dict, FrozenMapping}:
+            raise TypeError("calibration_error_by_task must be an exact scalar dict")
+        if any(type(key) is not str for key in calibration):
+            raise TypeError("calibration keys must be exact strings")
+        for child in calibration.values():
+            if child is None:
                 continue
-            if type(value) is not dict:
-                raise TypeError(f"{field} must be an exact dict or immutable mapping")
-            object.__setattr__(self, field, FrozenMapping(value))
+            if type(child) not in {int, float} or not math.isfinite(child):
+                raise ValueError(
+                    "calibration values must be finite scalar numbers or None"
+                )
+            if not 0.0 <= child <= 1.0:
+                raise ValueError("calibration values must be within [0, 1] bounds")
+        if type(calibration) is dict:
+            object.__setattr__(
+                self, "calibration_error_by_task", FrozenMapping(calibration)
+            )
+
+        def immutable_ref(value: object, description: str) -> FrozenMapping:
+            if type(value) not in {dict, FrozenMapping} or any(
+                type(key) is not str or type(child) is not str
+                for key, child in value.items()
+            ):
+                raise TypeError(
+                    f"{description} must contain exact string keys and scalar string values"
+                )
+            return value if type(value) is FrozenMapping else FrozenMapping(value)
+
         if type(self.parents) is not tuple:
             raise TypeError("parents must be an exact immutable tuple")
-        immutable_parents: list[FrozenMapping] = []
-        for value in self.parents:
-            if isinstance(value, FrozenMapping):
-                immutable_parents.append(value)
-            elif type(value) is dict:
-                immutable_parents.append(FrozenMapping(value))
-            else:
-                raise TypeError("parent refs must be exact dict or immutable mapping values")
-        object.__setattr__(self, "parents", tuple(immutable_parents))
+        object.__setattr__(
+            self,
+            "parents",
+            tuple(immutable_ref(value, "parent refs") for value in self.parents),
+        )
         identity = self.capability_identity_ref
-        if identity is not None and not isinstance(identity, FrozenMapping):
-            if type(identity) is not dict:
-                raise TypeError("capability identity ref must be an exact dict or immutable mapping")
-            object.__setattr__(self, "capability_identity_ref", FrozenMapping(identity))
+        if identity is not None:
+            object.__setattr__(
+                self,
+                "capability_identity_ref",
+                immutable_ref(identity, "capability identity ref"),
+            )
 
 
 class CohortHoldError(ValueError):
@@ -216,9 +349,7 @@ def _load_sealed(
     if isinstance(source, ArtifactRef):
         reference = source
     elif isinstance(source, (str, Path)):
-        path = authenticate_path(
-            Path(source), admitted_root=root, destination=False
-        )
+        path = authenticate_path(Path(source), admitted_root=root, destination=False)
         try:
             supplied = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
@@ -298,9 +429,7 @@ def _validate_completion_lineage(
         raise ValueError("case completion parent lineage identity mismatch")
 
 
-def _validate_stop_lineage(
-    document: Mapping[str, Any], *, admitted_root: Path
-) -> None:
+def _validate_stop_lineage(document: Mapping[str, Any], *, admitted_root: Path) -> None:
     parents = _validated_direct_parents(
         document, "STOP incident", admitted_root=admitted_root
     )
@@ -312,9 +441,7 @@ def _validate_stop_lineage(
         raise ValueError("STOP incident parent lineage identity mismatch")
 
 
-def _raw_historical(
-    ref: ArtifactRef, *, admitted_root: Path
-) -> dict[str, str]:
+def _raw_historical(ref: ArtifactRef, *, admitted_root: Path) -> dict[str, str]:
     if not isinstance(ref, ArtifactRef):
         raise TypeError("historical refs must be explicit ArtifactRef values")
     path = authenticate_path(
@@ -373,15 +500,25 @@ def build_cohort_manifest(
     historical_refs: Sequence[ArtifactRef],
     *,
     created_at: str,
-    admitted_root: Path | None = None,
 ) -> dict[str, Any]:
-    """Build a ten-member cohort from authenticated disk artifacts, never supplied documents."""
-    created = _utc(created_at, "created_at")
-    root = (
-        _trusted_root(admitted_root)
-        if admitted_root is not None
-        else Path.cwd().absolute()
+    """Build a ten-member cohort under repository authority."""
+    return _build_cohort_manifest_with_authority(
+        member_completions,
+        historical_refs,
+        created_at=created_at,
+        authority=_repository_authority(),
     )
+
+
+def _build_cohort_manifest_with_authority(
+    member_completions: Sequence[str | Path | ArtifactRef],
+    historical_refs: Sequence[ArtifactRef],
+    *,
+    created_at: str,
+    authority: _RepositoryAuthority,
+) -> dict[str, Any]:
+    created = _utc(created_at, "created_at")
+    root = _authority_root(authority)
     historical = sorted(
         (_raw_historical(ref, admitted_root=root) for ref in historical_refs),
         key=lambda item: item["artifact_path"],
@@ -489,8 +626,15 @@ def build_cohort_manifest(
     return {**payload, "artifact_sha256": canonical_artifact_sha256(payload)}
 
 
-def verify_cohort_manifest(
-    manifest: Mapping[str, Any], *, admitted_root: Path | None = None
+def verify_cohort_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    """Verify one cohort under repository authority."""
+    return _verify_cohort_manifest_with_authority(
+        manifest, authority=_repository_authority()
+    )
+
+
+def _verify_cohort_manifest_with_authority(
+    manifest: Mapping[str, Any], *, authority: _RepositoryAuthority
 ) -> dict[str, Any]:
     """Verify identity and every immutable parent; report all drift as cohort STOP."""
     drifted: list[dict[str, str]] = []
@@ -504,7 +648,7 @@ def verify_cohort_manifest(
             raise ValueError("cohort manifest canonical hash mismatch")
         if manifest.get("gate_ids") != COHORT_GATE_IDS:
             raise ValueError("cohort gate IDs changed")
-        rebuilt = build_cohort_manifest(
+        rebuilt = _build_cohort_manifest_with_authority(
             [
                 ArtifactRef(**member["parents"]["completion"])
                 for member in manifest["members"]
@@ -515,7 +659,7 @@ def verify_cohort_manifest(
             ],
             [ArtifactRef(**item) for item in manifest["historical_baseline_refs"]],
             created_at=str(manifest["created_at"]),
-            admitted_root=admitted_root,
+            authority=authority,
         )
         if dict(manifest) != rebuilt:
             raise ValueError(
@@ -726,7 +870,7 @@ def _label_rows_from_manifests(
 
 
 def _future_label_rows_from_manifests(
-    manifests: Sequence[Mapping[str, Any]], *, admitted_root: Path
+    manifests: Sequence[Mapping[str, Any]], *, authority: _RepositoryAuthority
 ) -> tuple[
     dict[tuple[str, str, str], dict[str, Any]],
     set[str],
@@ -734,6 +878,7 @@ def _future_label_rows_from_manifests(
     dict[str, dict[str, Any]],
 ]:
     """Reload future bound/reviewed labels and their frozen prediction parents."""
+    admitted_root = _authority_root(authority)
     labels: dict[tuple[str, str, str], dict[str, Any]] = {}
     cases: set[str] = set()
     subjects: set[str] = set()
@@ -788,7 +933,7 @@ def _future_label_rows_from_manifests(
                 raise ValueError("future completion parent lineage identity mismatch")
             if future.get("evidence_class") != _FUTURE_EVIDENCE_CLASS:
                 raise ValueError("future parent evidence_class is invalid")
-            _validate_future_completion_chain(future)
+            _validate_future_completion_chain(future, authority=authority)
             observation = future.get("observation")
             if not isinstance(observation, Mapping):
                 raise ValueError("future observation is missing")
@@ -869,10 +1014,26 @@ def build_gate_evidence_from_cohorts(
     scoring_artifact: str | Path,
     holdout_artifact: str | Path,
     audit_artifact: str | Path,
-    admitted_root: Path,
 ) -> GateEvidence:
-    """Derive gate evidence only from verified manifests and their recursive sealed lineage."""
-    root = _trusted_root(admitted_root)
+    """Derive gate evidence under the code-authenticated repository authority."""
+    return _build_gate_evidence_with_authority(
+        cohort_paths,
+        scoring_artifact=scoring_artifact,
+        holdout_artifact=holdout_artifact,
+        audit_artifact=audit_artifact,
+        authority=_repository_authority(),
+    )
+
+
+def _build_gate_evidence_with_authority(
+    cohort_paths: Sequence[str | Path],
+    *,
+    scoring_artifact: str | Path,
+    holdout_artifact: str | Path,
+    audit_artifact: str | Path,
+    authority: _RepositoryAuthority,
+) -> GateEvidence:
+    root = _authority_root(authority)
     if (
         not isinstance(cohort_paths, Sequence)
         or isinstance(cohort_paths, (str, bytes))
@@ -886,7 +1047,10 @@ def build_gate_evidence_from_cohorts(
         manifest, reference = _load_gate_artifact(
             path, "cohort manifest", admitted_root=root
         )
-        verification = verify_cohort_manifest(manifest, admitted_root=root)
+        verification = _verify_cohort_manifest_with_authority(
+            manifest,
+            authority=authority,
+        )
         if verification["status"] != "VERIFIED":
             raise ValueError(
                 "cohort manifest is not verified against its parent reconstruction"
@@ -911,9 +1075,9 @@ def build_gate_evidence_from_cohorts(
     identity_ref = None
     if identity_refs:
         identity_ref = ArtifactRef(*next(iter(identity_refs)))
-        capability_identity = validate_capability_identity_ref(
+        capability_identity = _validate_capability_identity_ref_with_authority(
             identity_ref,
-            admitted_root=root,
+            authority=authority,
         )
         expected_ref = {
             "artifact_path": identity_ref.artifact_path,
@@ -1163,9 +1327,7 @@ def build_gate_evidence_from_cohorts(
     if not isinstance(component_parents, list) or len(component_parents) != 4:
         raise ValueError("audit artifact requires four component audit parents")
     components = [
-        _load_sealed(
-            ArtifactRef(**_ref(reference)), admitted_root=root
-        )
+        _load_sealed(ArtifactRef(**_ref(reference)), admitted_root=root)
         for reference in component_parents
     ]
     _require_capability_identity(
@@ -1281,10 +1443,26 @@ def build_future_gate_evidence_from_cohorts(
     scoring_artifact: str | Path,
     holdout_artifact: str | Path,
     audit_artifact: str | Path,
-    admitted_root: Path,
 ) -> GateEvidence:
-    """Recompute future evidence from future labels, frozen predictions, and sealed audits."""
-    root = _trusted_root(admitted_root)
+    """Recompute future evidence under the authenticated repository authority."""
+    return _build_future_gate_evidence_with_authority(
+        cohort_paths,
+        scoring_artifact=scoring_artifact,
+        holdout_artifact=holdout_artifact,
+        audit_artifact=audit_artifact,
+        authority=_repository_authority(),
+    )
+
+
+def _build_future_gate_evidence_with_authority(
+    cohort_paths: Sequence[str | Path],
+    *,
+    scoring_artifact: str | Path,
+    holdout_artifact: str | Path,
+    audit_artifact: str | Path,
+    authority: _RepositoryAuthority,
+) -> GateEvidence:
+    root = _authority_root(authority)
     if not cohort_paths:
         raise ValueError("one or more future cohort manifests are required")
     manifests: list[dict[str, Any]] = []
@@ -1294,13 +1472,19 @@ def build_future_gate_evidence_from_cohorts(
         manifest, reference = _load_gate_artifact(
             path, "future cohort manifest", admitted_root=root
         )
-        if verify_cohort_manifest(manifest, admitted_root=root)["status"] != "VERIFIED":
+        if (
+            _verify_cohort_manifest_with_authority(
+                manifest,
+                authority=authority,
+            )["status"]
+            != "VERIFIED"
+        ):
             raise ValueError("future cohort manifest is not verified")
         manifests.append(manifest)
         manifest_refs.append(reference)
         parent_times.append(str(manifest["created_at"]))
     labels, completed_cases, completed_subjects, frozen_by_case = (
-        _future_label_rows_from_manifests(manifests, admitted_root=root)
+        _future_label_rows_from_manifests(manifests, authority=authority)
     )
     identity_refs = {
         (
@@ -1316,9 +1500,9 @@ def build_future_gate_evidence_from_cohorts(
     identity_ref = None
     if identity_refs:
         identity_ref = ArtifactRef(*next(iter(identity_refs)))
-        capability_identity = validate_capability_identity_ref(
+        capability_identity = _validate_capability_identity_ref_with_authority(
             identity_ref,
-            admitted_root=root,
+            authority=authority,
         )
         expected_identity_ref = {
             "artifact_path": identity_ref.artifact_path,
@@ -1657,8 +1841,9 @@ def build_future_gate_evidence_from_cohorts(
 
 
 def _validate_future_gate_evidence(
-    evidence: GateEvidence, *, admitted_root: Path
+    evidence: GateEvidence, *, authority: _RepositoryAuthority
 ) -> None:
+    admitted_root = _authority_root(authority)
     if (
         not isinstance(evidence, GateEvidence)
         or evidence.provenance_verified is not True
@@ -1698,12 +1883,12 @@ def _validate_future_gate_evidence(
         or audit_path is None
     ):
         raise ValueError("future gate evidence parent set is incomplete")
-    rebuilt = build_future_gate_evidence_from_cohorts(
+    rebuilt = _build_future_gate_evidence_with_authority(
         cohort_paths,
         scoring_artifact=scoring_path,
         holdout_artifact=holdout_path,
         audit_artifact=audit_path,
-        admitted_root=admitted_root,
+        authority=authority,
     )
     if rebuilt != evidence:
         raise ValueError(
@@ -1713,7 +1898,10 @@ def _validate_future_gate_evidence(
         raise ValueError("future gate evidence_class must be future_observation")
 
 
-def _validate_gate_evidence(evidence: GateEvidence, *, admitted_root: Path) -> None:
+def _validate_gate_evidence(
+    evidence: GateEvidence, *, authority: _RepositoryAuthority
+) -> None:
+    admitted_root = _authority_root(authority)
     if (
         not isinstance(evidence, GateEvidence)
         or evidence.provenance_verified is not True
@@ -1753,12 +1941,12 @@ def _validate_gate_evidence(evidence: GateEvidence, *, admitted_root: Path) -> N
         or audit_path is None
     ):
         raise ValueError("gate evidence parent set is incomplete")
-    rebuilt = build_gate_evidence_from_cohorts(
+    rebuilt = _build_gate_evidence_with_authority(
         cohort_paths,
         scoring_artifact=scoring_path,
         holdout_artifact=holdout_path,
         audit_artifact=audit_path,
-        admitted_root=admitted_root,
+        authority=authority,
     )
     if rebuilt != evidence:
         raise ValueError(
@@ -1819,10 +2007,20 @@ def evaluate_prediction_capability_candidate(
     evidence: GateEvidence,
     *,
     evaluated_at: str,
-    admitted_root: Path,
 ) -> dict[str, Any]:
-    """Evaluate the Task-10 proposal gate; GO never changes production behavior."""
-    _validate_gate_evidence(evidence, admitted_root=_trusted_root(admitted_root))
+    """Evaluate the Task-10 proposal gate under repository authority."""
+    return _evaluate_prediction_capability_candidate_with_authority(
+        evidence, evaluated_at=evaluated_at, authority=_repository_authority()
+    )
+
+
+def _evaluate_prediction_capability_candidate_with_authority(
+    evidence: GateEvidence,
+    *,
+    evaluated_at: str,
+    authority: _RepositoryAuthority,
+) -> dict[str, Any]:
+    _validate_gate_evidence(evidence, authority=authority)
     evaluated = _utc(evaluated_at, "evaluated_at")
     if any(
         evaluated < _utc(value, "parent created_at")
@@ -1895,12 +2093,20 @@ def evaluate_future_empirical(
     evidence: GateEvidence,
     *,
     evaluated_at: str,
-    admitted_root: Path,
 ) -> dict[str, Any]:
-    """Evaluate only future observations; GO remains an offline result."""
-    _validate_future_gate_evidence(
-        evidence, admitted_root=_trusted_root(admitted_root)
+    """Evaluate future observations under repository authority."""
+    return _evaluate_future_empirical_with_authority(
+        evidence, evaluated_at=evaluated_at, authority=_repository_authority()
     )
+
+
+def _evaluate_future_empirical_with_authority(
+    evidence: GateEvidence,
+    *,
+    evaluated_at: str,
+    authority: _RepositoryAuthority,
+) -> dict[str, Any]:
+    _validate_future_gate_evidence(evidence, authority=authority)
     evaluated = _utc(evaluated_at, "evaluated_at")
     if any(
         evaluated < _utc(value, "parent created_at")
@@ -1977,15 +2183,28 @@ def build_three_gate_report(
     immediate_result: Mapping[str, Any],
     future_result: Mapping[str, Any],
     historical_ref: ArtifactRef,
-    *,
-    admitted_root: Path,
 ) -> str:
-    """Render three isolated sections; historical status/hash are read from actual JSON bytes."""
+    """Render three isolated sections under repository authority."""
+    return _build_three_gate_report_with_authority(
+        immediate_result,
+        future_result,
+        historical_ref,
+        authority=_repository_authority(),
+    )
+
+
+def _build_three_gate_report_with_authority(
+    immediate_result: Mapping[str, Any],
+    future_result: Mapping[str, Any],
+    historical_ref: ArtifactRef,
+    *,
+    authority: _RepositoryAuthority,
+) -> str:
     if immediate_result.get("gate_id") != "prediction_capability_candidate_gate_v1":
         raise ValueError("immediate gate result is invalid")
     if future_result.get("gate_id") != "future_empirical_gate_v1":
         raise ValueError("future gate result is invalid")
-    root = _trusted_root(admitted_root)
+    root = _authority_root(authority)
     historical = _raw_historical(historical_ref, admitted_root=root)
     path = Path(historical["artifact_path"])
     if path != root / "META" / "six-month-platform-gate-2026-07-15.json":

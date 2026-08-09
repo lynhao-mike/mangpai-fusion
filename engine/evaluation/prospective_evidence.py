@@ -13,12 +13,15 @@ from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
+    _RepositoryAuthority,
+    _authority_root,
+    _repository_authority,
     canonical_artifact_sha256,
     single_case_artifact_path,
     validate_parent_ref,
 )
 from engine.evaluation.prospective_capability_identity import (
-    validate_capability_identity_ref,
+    _validate_capability_identity_ref_with_authority,
 )
 from engine.evaluation.prospective_single_case import (
     ContaminationError,
@@ -127,9 +130,11 @@ def _artifact_ref(document: Mapping[str, Any]) -> dict[str, str]:
 def _validate_parent_tree(
     document: Mapping[str, Any],
     *,
+    authority: _RepositoryAuthority | None = None,
     visited: set[tuple[str, str]] | None = None,
 ) -> None:
     """Re-read every reachable parent, including raw bundle files without embedded digests."""
+    operation_authority = authority or _repository_authority()
     parents = document.get("parents", [])
     if not isinstance(parents, list):
         raise _stop("artifact parents must be a list")
@@ -154,13 +159,16 @@ def _validate_parent_tree(
             raise _stop("artifact parent must be a JSON object")
         try:
             if "artifact_sha256" in actual:
-                actual = validate_parent_ref(ArtifactRef(**reference))
+                actual = validate_parent_ref(
+                    ArtifactRef(**reference),
+                    admitted_root=_authority_root(operation_authority),
+                )
             elif hashlib.sha256(raw).hexdigest() != reference["artifact_sha256"]:
                 raise ValueError("raw parent digest mismatch")
         except (OSError, TypeError, ValueError) as error:
             raise _stop(f"artifact parent drift or hash mismatch: {error}") from error
         if "parents" in actual:
-            _validate_parent_tree(actual, visited=seen)
+            _validate_parent_tree(actual, authority=operation_authority, visited=seen)
 
 
 def _actual_raw_json_parent(
@@ -183,13 +191,22 @@ def _actual_raw_json_parent(
     return actual
 
 
-def _actual_sealed_artifact(path: Path, description: str) -> dict[str, Any]:
+def _actual_sealed_artifact(
+    path: Path,
+    description: str,
+    *,
+    authority: _RepositoryAuthority | None = None,
+) -> dict[str, Any]:
+    operation_authority = authority or _repository_authority()
     document, _ = _read_json(path, description)
     reference = _artifact_ref(document)
     if Path(reference["artifact_path"]) != Path(path):
         raise _stop(f"{description} artifact_path differs from actual path")
     try:
-        actual = validate_parent_ref(ArtifactRef(**reference))
+        actual = validate_parent_ref(
+            ArtifactRef(**reference),
+            admitted_root=_authority_root(operation_authority),
+        )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(f"{description} parent drift or hash mismatch: {error}") from error
     return actual
@@ -200,8 +217,11 @@ def _verify_frozen_parent(
     *,
     intake: Mapping[str, Any],
     bundle: Mapping[str, Any],
+    authority: _RepositoryAuthority,
 ) -> dict[str, Any]:
-    frozen = _actual_sealed_artifact(frozen_run_path, "single-case frozen run")
+    frozen = _actual_sealed_artifact(
+        frozen_run_path, "single-case frozen run", authority=authority
+    )
     try:
         run = FrozenBlindRun.from_dict(frozen["frozen_run"])
         verify_frozen_run(run)
@@ -247,9 +267,9 @@ def _verify_frozen_parent(
                 "single-case frozen run must bind identity and source exactly once"
             )
         try:
-            identity = validate_capability_identity_ref(
+            identity = _validate_capability_identity_ref_with_authority(
                 ArtifactRef(**identity_ref),
-                admitted_root=Path(identity_ref["artifact_path"]).parent.absolute(),
+                authority=authority,
             )
         except (TypeError, ValueError) as error:
             raise _stop(
@@ -277,6 +297,7 @@ def verify_single_case_freeze_chain(
     verifier: str,
 ) -> dict[str, Any]:
     """Re-read and authenticate one exact registered/prepared/freeze segment."""
+    authority = _repository_authority()
     if not isinstance(witness_key, bytes) or not witness_key:
         raise ValueError("witness key must be non-empty bytes")
     if (
@@ -287,7 +308,9 @@ def verify_single_case_freeze_chain(
     verification_time = _utc(verified_at, "verified_at")
     verifier_identity = _named_human_identity(verifier, "verifier")
 
-    intake = _actual_sealed_artifact(Path(intake_path), "single-case intake")
+    intake = _actual_sealed_artifact(
+        Path(intake_path), "single-case intake", authority=authority
+    )
     row = validate_single_case_intake(intake)
     bundle = verify_single_case_bundle(Path(bundle_root))
     manifest = bundle["manifest"]
@@ -301,13 +324,16 @@ def verify_single_case_freeze_chain(
         Path(frozen_run_path),
         intake=intake,
         bundle=bundle,
+        authority=authority,
     )
     registry, _ = _read_json(Path(registry_path), "witness registry")
     registry_ref = _artifact_ref(registry)
     if Path(registry_ref["artifact_path"]) != Path(registry_path):
         raise _stop("witness registry artifact_path differs from actual path")
     try:
-        actual_registry = validate_parent_ref(ArtifactRef(**registry_ref))
+        actual_registry = validate_parent_ref(
+            ArtifactRef(**registry_ref), admitted_root=_authority_root(authority)
+        )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(
             f"witness registry parent drift or hash mismatch: {error}"
@@ -383,7 +409,7 @@ def verify_single_case_freeze_chain(
         raise _stop("external registry root mismatch")
 
     artifact_path = single_case_artifact_path(
-        Path(intake["artifact_path"]).parent.parent,
+        _authority_root(authority),
         row["case_id"],
         "freeze-verification",
         1,
@@ -478,14 +504,13 @@ def build_feedback_release_credential(
         created = _utc(created_at, "created_at")
         if created < _utc(frozen["freeze_at"], "freeze_at"):
             raise ValueError("feedback release cannot predate freeze")
-        parent_path = Path(frozen["artifact_path"])
         payload: dict[str, Any] = {
             "schema_version": "prospective-feedback-release/v2",
             "case_id": frozen["case_id"],
             "subject_id_hash": frozen["subject_id_hash"],
             "created_at": created_at,
             "artifact_path": single_case_artifact_path(
-                parent_path.parent.parent,
+                _authority_root(_repository_authority()),
                 frozen["case_id"],
                 "feedback-release",
                 1,
@@ -507,9 +532,8 @@ def build_feedback_release_credential(
     _utc(created_at, "created_at")
     if _utc(created_at, "created_at") < _utc(verified["verified_at"], "verified_at"):
         raise ValueError("feedback release cannot predate verification")
-    verification_path = Path(verified["artifact_path"])
     artifact_path = single_case_artifact_path(
-        verification_path.parent.parent,
+        _authority_root(_repository_authority()),
         verified["case_id"],
         "feedback-release",
         1,
@@ -533,6 +557,14 @@ def validate_release_credential(
     release: Mapping[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Re-read the actual release and verification parent before custody access."""
+    return _validate_release_credential_with_authority(
+        release, authority=_repository_authority()
+    )
+
+
+def _validate_release_credential_with_authority(
+    release: Mapping[str, Any], *, authority: _RepositoryAuthority
+) -> tuple[dict[str, Any], dict[str, Any]]:
     if not isinstance(release, Mapping):
         raise ValueError("immediate retrospective requires a release credential")
     supplied = dict(release)
@@ -547,7 +579,10 @@ def validate_release_credential(
         raise ValueError("immediate retrospective release hash is invalid")
     reference = _artifact_ref(supplied)
     try:
-        actual = validate_parent_ref(ArtifactRef(**reference))
+        actual = validate_parent_ref(
+            ArtifactRef(**reference),
+            admitted_root=_authority_root(authority),
+        )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(f"release parent drift or hash mismatch: {error}") from error
     if actual != supplied:
@@ -560,7 +595,10 @@ def validate_release_credential(
     ):
         raise ValueError("release credential requires one frozen parent")
     try:
-        parent = validate_parent_ref(ArtifactRef(**parents[0]))
+        parent = validate_parent_ref(
+            ArtifactRef(**parents[0]),
+            admitted_root=_authority_root(authority),
+        )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(f"release parent drift or hash mismatch: {error}") from error
     if actual["schema_version"] == "prospective-feedback-release/v2":
@@ -571,7 +609,7 @@ def validate_release_credential(
             raise ValueError("v2 feedback release requires a frozen result parent")
         try:
             verify_frozen_run(FrozenBlindRun.from_dict(parent["frozen_run"]))
-            _validate_parent_tree(parent)
+            _validate_parent_tree(parent, authority=authority)
         except (KeyError, TypeError, ValueError) as error:
             raise _stop(f"release frozen parent is invalid: {error}") from error
         if any(
@@ -586,7 +624,7 @@ def validate_release_credential(
         return actual, parent
 
     verified = _validated_verification(parent)
-    _validate_parent_tree(verified)
+    _validate_parent_tree(verified, authority=authority)
     if any(
         actual.get(field) != verified.get(field)
         for field in ("case_id", "subject_id_hash", "freeze_at")
@@ -618,11 +656,16 @@ def _contains_forbidden_evidence_field(value: object) -> bool:
 
 
 def _task_catalog_for_release(release: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
-    release_parent = validate_parent_ref(ArtifactRef(**release["parents"][0]))
+    admitted_root = _authority_root(_repository_authority())
+    release_parent = validate_parent_ref(
+        ArtifactRef(**release["parents"][0]), admitted_root=admitted_root
+    )
     for reference in release_parent.get("parents", []):
         if not str(reference.get("artifact_path", "")).endswith("bundle-manifest.json"):
             continue
-        parent = validate_parent_ref(ArtifactRef(**reference))
+        parent = validate_parent_ref(
+            ArtifactRef(**reference), admitted_root=admitted_root
+        )
         if parent.get("schema_version") != "prospective-single-case-blind-bundle/v1":
             continue
         tasks_path = Path(reference["artifact_path"]).parent / "tasks.json"
@@ -824,11 +867,9 @@ def collect_immediate_retrospective(
     identities = [fact["label_identity"] for fact in facts]
     if len(set(identities)) != len(identities):
         raise ValueError("duplicate label identity")
-    release_path = Path(verified_release["artifact_path"])
+    admitted_root = _authority_root(_repository_authority())
     existing_identities: set[str] = set()
-    for path in release_path.parent.parent.rglob(
-        "*--immediate-retrospective-*--v*.json"
-    ):
+    for path in admitted_root.rglob("*--immediate-retrospective-*--v*.json"):
         if path.is_symlink() or not path.is_file():
             continue
         document, _ = _read_json(path, "existing immediate retrospective artifact")
@@ -840,7 +881,7 @@ def collect_immediate_retrospective(
     if existing_identities.intersection(identities):
         raise ValueError("duplicate label identity already exists in another artifact")
     artifact_path = single_case_artifact_path(
-        release_path.parent.parent,
+        admitted_root,
         verified_release["case_id"],
         "immediate-retrospective-unbound",
         1,
@@ -897,7 +938,7 @@ def bind_immediate_labels(unbound: Mapping[str, Any]) -> dict[str, Any]:
     if len(set(identities)) != len(identities):
         raise ValueError("duplicate label identity")
     artifact_path = single_case_artifact_path(
-        Path(source["artifact_path"]).parent.parent,
+        _authority_root(_repository_authority()),
         source["case_id"],
         "immediate-retrospective-bound",
         1,
@@ -919,16 +960,31 @@ def bind_immediate_labels(unbound: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _actual_supplied_artifact(
-    document: Mapping[str, Any], description: str
+    document: Mapping[str, Any],
+    description: str,
+    *,
+    authority: _RepositoryAuthority | None = None,
 ) -> dict[str, Any]:
     if not isinstance(document, Mapping):
         raise ValueError(f"{description} artifact is required")
     supplied = dict(document)
     reference = _artifact_ref(supplied)
-    try:
-        actual = validate_parent_ref(ArtifactRef(**reference))
-    except (OSError, TypeError, ValueError) as error:
-        raise _stop(f"{description} parent drift or hash mismatch: {error}") from error
+    if authority is None:
+        try:
+            actual = validate_parent_ref(
+                ArtifactRef(**reference),
+                admitted_root=_authority_root(_repository_authority()),
+            )
+        except (OSError, TypeError, ValueError) as error:
+            raise _stop(
+                f"{description} parent drift or hash mismatch: {error}"
+            ) from error
+    else:
+        actual = _actual_sealed_artifact(
+            Path(reference["artifact_path"]),
+            description,
+            authority=authority,
+        )
     if actual != supplied:
         raise _stop(f"{description} supplied artifact differs from actual parent")
     return actual
@@ -937,9 +993,13 @@ def _actual_supplied_artifact(
 def _validated_future_parents(
     registration: Mapping[str, Any],
     frozen_run: Mapping[str, Any],
+    *,
+    authority: _RepositoryAuthority,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    question = _actual_supplied_artifact(registration, "future-question")
-    frozen = _actual_supplied_artifact(frozen_run, "frozen run")
+    question = _actual_supplied_artifact(
+        registration, "future-question", authority=authority
+    )
+    frozen = _actual_supplied_artifact(frozen_run, "frozen run", authority=authority)
     if frozen.get("schema_version") != "school-capability-single-case-staged-run/v1":
         raise ValueError("future observation frozen parent schema is invalid")
     try:
@@ -952,7 +1012,7 @@ def _validated_future_parents(
             question,
             freeze_at=run.frozen_at,
         )
-        _validate_parent_tree(frozen)
+        _validate_parent_tree(frozen, authority=authority)
     except ValueError as error:
         raise _stop(f"future-question parent is invalid: {error}") from error
     question_ref = _artifact_ref(validated_question)
@@ -1049,7 +1109,10 @@ def collect_future_observation(
     collected_at: str,
 ) -> dict[str, Any]:
     """Collect one release-independent future observation against immutable parents."""
-    question, frozen = _validated_future_parents(registration, frozen_run)
+    authority = _repository_authority()
+    question, frozen = _validated_future_parents(
+        registration, frozen_run, authority=authority
+    )
     if not isinstance(observation, Mapping):
         raise ValueError("future observation must be an object")
     value = dict(observation)
@@ -1140,7 +1203,7 @@ def collect_future_observation(
             "observed_at": observed_raw,
         }
     )
-    root = Path(question["artifact_path"]).parent.parent
+    root = _authority_root(_repository_authority())
     for path in root.rglob("*--future-observation-*--v*.json"):
         if path.is_symlink() or not path.is_file():
             continue
@@ -1185,7 +1248,7 @@ def bind_future_observation(unbound: Mapping[str, Any]) -> dict[str, Any]:
         observation["scorable"] = False
         observation["review_status"] = "pending_independent_dual_review"
     artifact_path = single_case_artifact_path(
-        Path(source["artifact_path"]).parent.parent,
+        _authority_root(_repository_authority()),
         source["case_id"],
         "future-observation-bound",
         1,
@@ -1340,7 +1403,7 @@ def apply_high_risk_final_label(
     else:
         result["observation"] = row
     artifact_path = single_case_artifact_path(
-        Path(source["artifact_path"]).parent.parent,
+        _authority_root(_repository_authority()),
         source["case_id"],
         "immediate-retrospective-reviewed"
         if evidence_class == _IMMEDIATE_EVIDENCE_CLASS
@@ -1363,7 +1426,9 @@ def apply_high_risk_final_label(
     return result
 
 
-def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
+def _validate_future_completion_chain(
+    document: Mapping[str, Any], *, authority: _RepositoryAuthority
+) -> None:
     """Require bound/reviewed future evidence to descend from one real registration and freeze."""
     source = dict(document)
     if source.get("schema_version") == "prospective-future-observation-reviewed/v1":
@@ -1375,7 +1440,10 @@ def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
             if not isinstance(reference, Mapping):
                 raise _stop("future reviewed parent lineage is invalid")
             try:
-                parent = validate_parent_ref(ArtifactRef(**_artifact_ref(reference)))
+                parent = validate_parent_ref(
+                    ArtifactRef(**_artifact_ref(reference)),
+                    admitted_root=_authority_root(authority),
+                )
             except (OSError, TypeError, ValueError) as error:
                 raise _stop(
                     f"future reviewed parent drift or hash mismatch: {error}"
@@ -1399,7 +1467,10 @@ def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
     ):
         raise _stop("future bound evidence must bind exactly one unbound parent")
     try:
-        unbound = validate_parent_ref(ArtifactRef(**_artifact_ref(parents[0])))
+        unbound = validate_parent_ref(
+            ArtifactRef(**_artifact_ref(parents[0])),
+            admitted_root=_authority_root(authority),
+        )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(f"future unbound parent drift or hash mismatch: {error}") from error
     if (
@@ -1418,7 +1489,10 @@ def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
         )
     try:
         actual = [
-            validate_parent_ref(ArtifactRef(**_artifact_ref(reference)))
+            validate_parent_ref(
+                ArtifactRef(**_artifact_ref(reference)),
+                admitted_root=_authority_root(authority),
+            )
             for reference in unbound_parents
             if isinstance(reference, Mapping)
         ]
@@ -1440,7 +1514,9 @@ def _validate_future_completion_chain(document: Mapping[str, Any]) -> None:
         raise _stop(
             "future unbound evidence requires exactly one registration and frozen parent"
         )
-    question, frozen = _validated_future_parents(questions[0], frozen_runs[0])
+    question, frozen = _validated_future_parents(
+        questions[0], frozen_runs[0], authority=authority
+    )
     observation = unbound.get("observation")
     if (
         not isinstance(observation, Mapping)
@@ -1465,10 +1541,13 @@ def _validated_optional_completion_parent(
     evidence_class: str,
     case_id: str,
     subject_id_hash: str,
+    authority: _RepositoryAuthority,
 ) -> dict[str, Any] | None:
     if document is None:
         return None
-    actual = _actual_supplied_artifact(document, f"{evidence_class} completion")
+    actual = _actual_supplied_artifact(
+        document, f"{evidence_class} completion", authority=authority
+    )
     expected_schemas = {
         _IMMEDIATE_EVIDENCE_CLASS: {
             "prospective-immediate-retrospective-bound/v1",
@@ -1488,9 +1567,9 @@ def _validated_optional_completion_parent(
         raise _stop(
             f"{evidence_class} completion parent binding or bound schema mismatch"
         )
-    _validate_parent_tree(actual)
+    _validate_parent_tree(actual, authority=authority)
     if evidence_class == _FUTURE_EVIDENCE_CLASS:
-        _validate_future_completion_chain(actual)
+        _validate_future_completion_chain(actual, authority=authority)
     return actual
 
 
@@ -1503,8 +1582,11 @@ def build_case_completion(
     created_at: str,
 ) -> dict[str, Any]:
     """Build a status ledger; retrospective and future completion never collapse."""
+    authority = _repository_authority()
     if stopped_incident is not None:
-        incident = _actual_supplied_artifact(stopped_incident, "STOP incident")
+        incident = _actual_supplied_artifact(
+            stopped_incident, "STOP incident", authority=authority
+        )
         if (
             incident.get("schema_version") != "prospective-stop-incident/v1"
             or incident.get("status") != "STOP"
@@ -1513,25 +1595,31 @@ def build_case_completion(
             != freeze_verification.get("subject_id_hash")
         ):
             raise _stop("STOP incident parent binding mismatch")
-        _validate_parent_tree(incident)
+        _validate_parent_tree(incident, authority=authority)
         raise ContaminationError("STOP case cannot produce completion")
-    verification = _actual_supplied_artifact(freeze_verification, "freeze verification")
+    verification = _actual_supplied_artifact(
+        freeze_verification, "freeze verification", authority=authority
+    )
     if verification.get("schema_version") == "prospective-feedback-release/v2":
-        verified, _ = validate_release_credential(verification)
+        verified, _ = _validate_release_credential_with_authority(
+            verification, authority=authority
+        )
     else:
         verified = _validated_verification(verification)
-        _validate_parent_tree(verified)
+        _validate_parent_tree(verified, authority=authority)
     immediate = _validated_optional_completion_parent(
         immediate_bound,
         evidence_class=_IMMEDIATE_EVIDENCE_CLASS,
         case_id=verified["case_id"],
         subject_id_hash=verified["subject_id_hash"],
+        authority=authority,
     )
     future = _validated_optional_completion_parent(
         future_bound,
         evidence_class=_FUTURE_EVIDENCE_CLASS,
         case_id=verified["case_id"],
         subject_id_hash=verified["subject_id_hash"],
+        authority=authority,
     )
     creation_time = _utc(created_at, "created_at")
     parents = [item for item in (verified, immediate, future) if item is not None]
@@ -1550,9 +1638,9 @@ def build_case_completion(
         }:
             raise _stop("freeze verification governance source reference is invalid")
         try:
-            identity = validate_capability_identity_ref(
+            identity = _validate_capability_identity_ref_with_authority(
                 ArtifactRef(**identity_ref),
-                admitted_root=Path(identity_ref["artifact_path"]).parent.absolute(),
+                authority=authority,
             )
         except (TypeError, ValueError) as error:
             raise _stop(
@@ -1580,7 +1668,7 @@ def build_case_completion(
         and future["observation"].get("scorable") is True
     )
     artifact_path = single_case_artifact_path(
-        Path(verified["artifact_path"]).parent.parent,
+        _authority_root(authority),
         verified["case_id"],
         "case-completion",
         1,

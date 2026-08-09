@@ -14,9 +14,12 @@ from dataclasses import replace
 
 from engine.evaluation.freeze import verify_frozen_run
 from engine.evaluation.models import FrozenBlindRun
+import engine.evaluation.prospective_artifacts as prospective_artifacts
+import engine.evaluation.prospective_single_case as prospective_single_case
 from engine.evaluation.prospective_artifacts import (
     canonical_artifact_sha256,
     publish_new_json,
+    single_case_artifact_path,
 )
 from engine.evaluation.prospective_capability_identity import (
     build_capability_identity_artifact,
@@ -47,6 +50,27 @@ from tests.evaluation.test_governance_shadow_adapter import (
 TASKS = Path("META/prospective-go-task-catalog-v1.json")
 RULES = Path("META/prospective-go-rule-snapshot-v1.json")
 SCHOOLS = ["ziping", "ditiansui", "duan", "ren", "gao", "yang"]
+
+
+@pytest.fixture(autouse=True)
+def _repository_authority(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    root = tmp_path.absolute()
+    state = root / "META" / "project-state.json"
+    contract = (
+        root
+        / ".omo"
+        / "drafts"
+        / ("w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md")
+    )
+    state.parent.mkdir(parents=True, exist_ok=True)
+    contract.parent.mkdir(parents=True, exist_ok=True)
+    state.write_bytes(Path("META/project-state.json").read_bytes())
+    contract.write_bytes(
+        Path(
+            ".omo/drafts/w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md"
+        ).read_bytes()
+    )
+    monkeypatch.setattr(prospective_artifacts, "_trusted_repository_root", lambda: root)
 
 
 def _identity_ref(tmp_path: Path, claim: object):
@@ -533,10 +557,7 @@ def test_governance_single_case_requires_and_uniquely_binds_sealed_capability_id
     assert governed["parents"].count(expected_ref) == 1
     assert governed["parents"].count(source_ref) == 1
     assert (
-        validate_capability_identity_ref(
-            identity_ref, admitted_root=tmp_path.absolute()
-        ).source_claim_id
-        == claim.claim_id
+        validate_capability_identity_ref(identity_ref).source_claim_id == claim.claim_id
     )
     assert set(FrozenBlindRun.from_dict(governed["frozen_run"]).to_dict()) == {
         "schema_version",
@@ -806,6 +827,49 @@ def test_single_case_governance_shadow_merge_precedes_timing_and_grid_checks(
         capability_identity_ref=_identity_ref(tmp_path, claim),
     )
     assert observed == ["timing", "grid"]
+
+
+def test_single_case_w2_c4_parent_reads_and_publication_are_authority_bound() -> None:
+    module = ast.parse(
+        Path("engine/evaluation/prospective_single_case.py").read_text("utf-8")
+    )
+    functions = {
+        node.name: node
+        for node in module.body
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+    }
+    owner_names = {
+        "_single_case_parent_document",
+        "build_single_case_staged_frozen_run",
+    }
+    calls = [
+        node
+        for owner_name in owner_names
+        for node in ast.walk(functions[owner_name])
+        if isinstance(node, ast.Call)
+    ]
+
+    rootless_parent_reads = [
+        call
+        for call in calls
+        if isinstance(call.func, ast.Name)
+        and call.func.id in {"validate_parent_ref", "_single_case_parent_document"}
+        and not any(
+            keyword.arg in {"admitted_root", "authority"} for keyword in call.keywords
+        )
+    ]
+    self_selected_roots = [
+        node
+        for owner_name in owner_names
+        for node in ast.walk(functions[owner_name])
+        if isinstance(node, ast.Attribute)
+        and node.attr == "parent"
+        and isinstance(node.value, ast.Attribute)
+        and node.value.attr == "parent"
+    ]
+
+    assert rootless_parent_reads == []
+    assert self_selected_roots == []
 
 
 def test_single_case_governance_shadow_api_and_static_dependencies_are_exact() -> None:
@@ -1187,15 +1251,14 @@ def test_single_case_witness_registry_uses_current_artifact_schema(
 
 def test_single_case_cli_is_create_only_and_keeps_legacy_command(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     root, intake, _ = _single_case_bundle(tmp_path)
-    output = Path(intake["artifact_path"]).with_name(
-        f"{intake['case_id']}--frozen-run--v001.json"
+    output = single_case_artifact_path(
+        tmp_path.absolute(), intake["case_id"], "frozen-run", 1
     )
     command = [
-        sys.executable,
-        "-m",
-        "tools.school_capability_prospective",
         "stage-single-case-frozen-run",
         "--bundle-root",
         str(root),
@@ -1204,22 +1267,23 @@ def test_single_case_cli_is_create_only_and_keeps_legacy_command(
         "--now-utc",
         "2026-07-16T00:00:00Z",
     ]
-    dry = subprocess.run(
-        [*command, "--dry-run"], check=False, capture_output=True, text=True
+    monkeypatch.setattr(
+        sys, "argv", ["school-capability-prospective", *command, "--dry-run"]
     )
-    assert dry.returncode == 0, dry.stderr
+    assert prospective.main() == 0
+    dry = capsys.readouterr()
     assert not output.exists()
     assert (
-        json.loads(dry.stdout)["schema_version"]
+        json.loads(dry.out)["schema_version"]
         == "school-capability-single-case-staged-run/v1"
     )
 
-    first = subprocess.run(command, check=False, capture_output=True, text=True)
-    assert first.returncode == 0, first.stderr
+    monkeypatch.setattr(sys, "argv", ["school-capability-prospective", *command])
+    assert prospective.main() == 0
+    capsys.readouterr()
     original = output.read_bytes()
-    second = subprocess.run(command, check=False, capture_output=True, text=True)
-    assert second.returncode != 0
-    assert "already exists" in second.stderr
+    with pytest.raises(ValueError, match="already exists"):
+        prospective.main()
     assert output.read_bytes() == original
     assert "stage-frozen-run" in prospective._parser().format_help()
 
@@ -1386,6 +1450,326 @@ def test_v002_migration_can_supersede_v001_bundle_when_no_formal_run_or_leakage_
     assert artifact["supersedes"] == v001_manifest["artifact_path"]
 
 
+def test_parent_chain_migration_propagates_one_exact_authority_to_every_boundary(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _, intake, question = _single_case_bundle(
+        tmp_path,
+        created_at="2026-07-17T05:29:58Z",
+        freeze_at="2026-07-17T05:30:00Z",
+    )
+    expected_authority = prospective_artifacts._repository_authority()
+    resolver_calls = 0
+    observed: dict[str, list[object]] = {
+        boundary: []
+        for boundary in (
+            "case_directory",
+            "clean_scan",
+            "migration_intake",
+            "target_preflight",
+            "staging_root",
+            "bundle_files",
+            "published_parent",
+            "bundle_verification",
+            "source_read",
+            "staging_write",
+            "temporary_bundle_write",
+            "bundle_publication",
+            "json_publication",
+        )
+    }
+    original_bundle = (
+        prospective_single_case._prepare_single_case_blind_bundle_with_authority
+    )
+    original_frozen = (
+        prospective_single_case._build_single_case_staged_frozen_run_with_authority
+    )
+    original_bundle_files = prospective_single_case._single_bundle_files
+    original_parent = prospective_single_case._validated_disk_parent
+    original_verify = prospective_single_case.verify_single_case_bundle
+    original_case_directory = getattr(
+        prospective_single_case, "_authenticate_migration_case_directory", None
+    )
+    original_clean_scan = getattr(
+        prospective_single_case, "_assert_migration_paths_clean", None
+    )
+    original_migration_intake = getattr(
+        prospective_single_case, "_build_migration_single_case_intake", None
+    )
+    original_target_preflight = getattr(
+        prospective_single_case, "_preflight_migration_targets", None
+    )
+    original_staging_root = getattr(
+        prospective_single_case, "_create_migration_staging_root", None
+    )
+    original_read = getattr(prospective_single_case, "_read_bytes_with_authority", None)
+    original_write = getattr(
+        prospective_single_case, "_write_bytes_with_authority", None
+    )
+    original_bundle_publish = getattr(
+        prospective_single_case, "_publish_bundle_directory_with_authority", None
+    )
+    original_json_publish = getattr(
+        prospective_single_case, "_publish_json_with_authority", None
+    )
+
+    def operation_start_authority() -> object:
+        nonlocal resolver_calls
+        resolver_calls += 1
+        if resolver_calls != 1:
+            raise AssertionError("migration downstream reacquired repository authority")
+        return expected_authority
+
+    def exact(boundary: str, authority: object) -> None:
+        assert authority is expected_authority
+        observed[boundary].append(authority)
+
+    def bundle_probe(*args: object, authority: object, **kwargs: object) -> dict:
+        exact("bundle_files", authority)
+        return original_bundle(*args, authority=authority, **kwargs)
+
+    def frozen_probe(*args: object, authority: object, **kwargs: object) -> dict:
+        exact("bundle_verification", authority)
+        return original_frozen(*args, authority=authority, **kwargs)
+
+    def bundle_files_probe(
+        *args: object, authority: object, **kwargs: object
+    ) -> tuple[dict[str, bytes], dict, dict]:
+        exact("bundle_files", authority)
+        return original_bundle_files(*args, authority=authority, **kwargs)
+
+    def parent_probe(
+        *args: object, authority: object, **kwargs: object
+    ) -> dict[str, object]:
+        exact("published_parent", authority)
+        return original_parent(*args, authority=authority, **kwargs)
+
+    def verify_probe(*args: object, authority: object, **kwargs: object) -> dict:
+        exact("bundle_verification", authority)
+        return original_verify(*args, authority=authority, **kwargs)
+
+    def case_directory_probe(case_dir: Path, *, authority: object) -> Path:
+        exact("case_directory", authority)
+        assert original_case_directory is not None
+        return original_case_directory(case_dir, authority=authority)
+
+    def clean_scan_probe(
+        case_dir: Path, *, previous_version: int, authority: object
+    ) -> None:
+        exact("clean_scan", authority)
+        assert original_clean_scan is not None
+        original_clean_scan(
+            case_dir, previous_version=previous_version, authority=authority
+        )
+
+    def migration_intake_probe(
+        *args: object, authority: object, **kwargs: object
+    ) -> tuple[dict, dict]:
+        exact("migration_intake", authority)
+        assert original_migration_intake is not None
+        return original_migration_intake(*args, authority=authority, **kwargs)
+
+    def target_preflight_probe(targets: dict[str, Path], *, authority: object) -> None:
+        exact("target_preflight", authority)
+        assert original_target_preflight is not None
+        original_target_preflight(targets, authority=authority)
+
+    def staging_root_probe(case_dir: Path, *, version: int, authority: object) -> Path:
+        exact("staging_root", authority)
+        assert original_staging_root is not None
+        return original_staging_root(case_dir, version=version, authority=authority)
+
+    def read_probe(path: Path, *, authority: object, description: str) -> bytes:
+        exact("source_read", authority)
+        assert original_read is not None
+        return original_read(path, authority=authority, description=description)
+
+    def write_probe(
+        path: Path, content: bytes, *, authority: object, description: str
+    ) -> None:
+        boundary = (
+            "temporary_bundle_write" if ".b." in path.as_posix() else "staging_write"
+        )
+        exact(boundary, authority)
+        assert original_write is not None
+        original_write(path, content, authority=authority, description=description)
+
+    def bundle_publication_probe(
+        temporary: Path, target: Path, *, authority: object
+    ) -> None:
+        exact("bundle_publication", authority)
+        assert original_bundle_publish is not None
+        original_bundle_publish(temporary, target, authority=authority)
+
+    def json_publication_probe(
+        path: Path,
+        payload: dict,
+        *,
+        authority: object,
+        dry_run: bool,
+    ) -> object:
+        exact("json_publication", authority)
+        assert original_json_publish is not None
+        return original_json_publish(
+            path, payload, authority=authority, dry_run=dry_run
+        )
+
+    monkeypatch.setattr(
+        prospective_single_case, "_repository_authority", operation_start_authority
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_prepare_single_case_blind_bundle_with_authority",
+        bundle_probe,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_build_single_case_staged_frozen_run_with_authority",
+        frozen_probe,
+    )
+    monkeypatch.setattr(
+        prospective_single_case, "_single_bundle_files", bundle_files_probe
+    )
+    monkeypatch.setattr(prospective_single_case, "_validated_disk_parent", parent_probe)
+    monkeypatch.setattr(
+        prospective_single_case, "verify_single_case_bundle", verify_probe
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_authenticate_migration_case_directory",
+        case_directory_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_assert_migration_paths_clean",
+        clean_scan_probe,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_build_migration_single_case_intake",
+        migration_intake_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_preflight_migration_targets",
+        target_preflight_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_create_migration_staging_root",
+        staging_root_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case, "_read_bytes_with_authority", read_probe, raising=False
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_write_bytes_with_authority",
+        write_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_publish_bundle_directory_with_authority",
+        bundle_publication_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        prospective_single_case,
+        "_publish_json_with_authority",
+        json_publication_probe,
+        raising=False,
+    )
+
+    admitted_tasks = tmp_path / "META" / TASKS.name
+    admitted_rules = tmp_path / "META" / RULES.name
+    admitted_tasks.parent.mkdir(parents=True, exist_ok=True)
+    admitted_tasks.write_bytes(TASKS.read_bytes())
+    admitted_rules.write_bytes(RULES.read_bytes())
+
+    plan = prospective_single_case.prepare_parent_chain_v002_migration(
+        input_file=tmp_path / "source" / intake["case_id"] / "input.md",
+        tasks_path=admitted_tasks,
+        rule_snapshot_path=admitted_rules,
+        tasks_by_case={"P-GO-2026-001": ["career.role_change", "career.change_window"]},
+        future_question_draft={
+            key: value
+            for key, value in question.items()
+            if key
+            in {
+                "future_task_id",
+                "question_text_redacted",
+                "outcome_type",
+                "positive_definition",
+                "negative_definition",
+                "verification_source_requirements",
+                "observation_window",
+            }
+        },
+        case_root=tmp_path / "parents",
+        operator="human-test",
+        approved_by="human-approver-01",
+        reason="Approved whole parent-chain revision before first formal freeze",
+        transaction_started_at="2026-07-17T05:39:59.999997Z",
+        freeze_at="2026-07-17T05:40:00Z",
+        executed_at="2026-07-17T05:40:30Z",
+        dry_run=False,
+    )
+
+    assert plan["status"] == "PUBLISHED"
+    assert resolver_calls == 1
+    assert all(observed.values()), observed
+    assert all(
+        authority is expected_authority
+        for authorities in observed.values()
+        for authority in authorities
+    )
+
+
+def test_migration_intake_outside_authority_fails_before_source_read(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    authority = prospective_artifacts._repository_authority()
+    outside = (
+        tmp_path.parent
+        / "outside-authority"
+        / "P-GO-2026-999-乾-甲子乙丑丙寅丁卯"
+        / "input.md"
+    )
+    reads = 0
+
+    def forbidden_read(self: Path) -> bytes:
+        nonlocal reads
+        reads += 1
+        raise AssertionError("outside-root migration input was read")
+
+    monkeypatch.setattr(Path, "read_bytes", forbidden_read)
+
+    with pytest.raises(ValueError, match="PATH_OUTSIDE_ROOT"):
+        prospective_single_case._build_migration_single_case_intake(
+            outside,
+            {"tasks": []},
+            "human-test",
+            {},
+            {},
+            authority=authority,
+            created_at="2026-07-17T05:39:59.999998Z",
+            question_created_at="2026-07-17T05:39:59.999997Z",
+            case_root=tmp_path / "parents",
+            version=2,
+            question_revision={},
+            intake_revision={},
+        )
+
+    assert reads == 0
+
+
 def test_v002_migration_cannot_bypass_existing_formal_v001_frozen_run(
     tmp_path: Path,
 ) -> None:
@@ -1457,10 +1841,12 @@ def test_single_case_frozen_run_allows_execution_only_in_sixty_second_freeze_win
 
 def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     root, _, _, v001_frozen = _v002_single_case_bundle(tmp_path)
-    output = Path(v001_frozen["artifact_path"]).with_name(
-        f"{v001_frozen['case_id']}--frozen-run--v002.json"
+    output = single_case_artifact_path(
+        tmp_path.absolute(), v001_frozen["case_id"], "frozen-run", 2
     )
     command = [
         sys.executable,
@@ -1483,17 +1869,19 @@ def test_v002_single_case_cli_dry_run_and_formal_publish_are_create_only(
         "human-approver-01",
     ]
 
-    dry = subprocess.run(
-        [*command, "--dry-run"], check=False, capture_output=True, text=True
+    cli_args = [command[3], *command[4:]]
+    monkeypatch.setattr(
+        sys, "argv", ["school-capability-prospective", *cli_args, "--dry-run"]
     )
-    assert dry.returncode == 0, dry.stderr
+    assert prospective.main() == 0
+    dry = capsys.readouterr()
     assert not output.exists()
-    assert json.loads(dry.stdout)["executed_at"] == "2026-07-17T05:40:00Z"
+    assert json.loads(dry.out)["executed_at"] == "2026-07-17T05:40:00Z"
 
-    first = subprocess.run(command, check=False, capture_output=True, text=True)
-    assert first.returncode == 0, first.stderr
+    monkeypatch.setattr(sys, "argv", ["school-capability-prospective", *cli_args])
+    assert prospective.main() == 0
+    capsys.readouterr()
     original = output.read_bytes()
-    second = subprocess.run(command, check=False, capture_output=True, text=True)
-    assert second.returncode != 0
-    assert "already exists" in second.stderr
+    with pytest.raises(ValueError, match="already exists"):
+        prospective.main()
     assert output.read_bytes() == original

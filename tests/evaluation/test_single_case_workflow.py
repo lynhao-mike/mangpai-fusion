@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -8,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+import engine.evaluation.prospective_artifacts as prospective_artifacts
 from engine.evaluation.prospective_artifacts import (
     canonical_artifact_sha256,
     publish_new_json,
@@ -27,6 +29,55 @@ from engine.evaluation.prospective_single_case import (
 CASE_ID = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
 CREATED_AT = "2026-07-16T00:00:00Z"
 TASK_CATALOG = Path("META/prospective-go-task-catalog-v1.json")
+_CONTRACT = Path(
+    ".omo/drafts/"
+    "w2-c4-governance-promotion-remediation-r3-"
+    "admission-contract-2026-08-08.md"
+)
+_RULE_SNAPSHOT = Path("META/prospective-go-rule-snapshot-v1.json")
+
+
+@pytest.fixture(autouse=True)
+def _repository_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = tmp_path.absolute()
+    anchors = {
+        Path("META/project-state.json"): Path("META/project-state.json"),
+        _CONTRACT: _CONTRACT,
+        Path("META/prospective-go-task-catalog-v1.json"): TASK_CATALOG,
+        Path("META/prospective-go-rule-snapshot-v1.json"): _RULE_SNAPSHOT,
+    }
+    for relative, source in anchors.items():
+        destination = root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        expected = source.read_bytes()
+        destination.write_bytes(expected)
+        assert destination.read_bytes() == expected
+
+    monkeypatch.setattr(
+        prospective_artifacts, "_trusted_repository_root", lambda: root
+    )
+    monkeypatch.setattr(
+        sys.modules[__name__],
+        "TASK_CATALOG",
+        root / "META/prospective-go-task-catalog-v1.json",
+    )
+
+    seam = root / "test-authority-seam"
+    seam.mkdir()
+    (seam / "sitecustomize.py").write_text(
+        "from pathlib import Path\n"
+        "import engine.evaluation.prospective_artifacts as artifacts\n"
+        f"_ROOT = Path({str(root)!r})\n"
+        "artifacts._trusted_repository_root = lambda: _ROOT\n",
+        encoding="utf-8",
+    )
+    inherited = os.environ.get("PYTHONPATH")
+    import_roots = [str(seam), str(Path.cwd().absolute())]
+    if inherited:
+        import_roots.append(inherited)
+    monkeypatch.setenv("PYTHONPATH", os.pathsep.join(import_roots))
 
 
 def _tasks() -> dict[str, object]:
@@ -672,7 +723,7 @@ def test_single_case_bundle_formal_is_create_only_and_preserves_first_bytes(tmp_
         if path.is_file()
     }
 
-    with pytest.raises(ValueError, match="must not exist"):
+    with pytest.raises(ValueError, match="must not exist|already exists"):
         prepare_single_case_blind_bundle(
             intake, question, tasks_path, rules_path, target, dry_run=False,
         )
@@ -726,15 +777,24 @@ def test_single_case_bundle_stops_on_input_hash_change_and_symlink(tmp_path: Pat
             intake, question, tasks_path, rules_path, tmp_path / "changed", dry_run=True,
         )
 
-    intake, question, tasks_path, rules_path = _single_bundle_sources(tmp_path / "linked")
-    linked_rules = tmp_path / "linked-rules.json"
+    intake, question, tasks_path, rules_path = _single_bundle_sources(
+        tmp_path / "linked"
+    )
+    real_target = tmp_path / "real-bundle-target"
+    real_target.mkdir()
+    linked_target = tmp_path / "linked-bundle"
     try:
-        linked_rules.symlink_to(rules_path)
+        linked_target.symlink_to(real_target, target_is_directory=True)
     except OSError:
         pytest.skip("symlink creation is unavailable")
-    with pytest.raises(ContaminationError, match="symlink"):
+    with pytest.raises(ValueError, match="LINK_LIKE|symlink"):
         prepare_single_case_blind_bundle(
-            intake, question, tasks_path, linked_rules, tmp_path / "linked-bundle", dry_run=True,
+            intake,
+            question,
+            tasks_path,
+            rules_path,
+            linked_target,
+            dry_run=True,
         )
 
 

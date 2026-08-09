@@ -19,6 +19,10 @@ from engine.evaluation.governance_shadow_adapter import (
 )
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
+    _RepositoryAuthority,
+    _authority_root,
+    _repository_authority,
+    authenticate_path,
     canonical_artifact_sha256,
     publish_new_json,
     single_case_artifact_path,
@@ -26,7 +30,7 @@ from engine.evaluation.prospective_artifacts import (
     validate_revision_metadata,
 )
 from engine.evaluation.prospective_capability_identity import (
-    validate_capability_identity_ref,
+    _validate_capability_identity_ref_with_authority,
 )
 from engine.evaluation.freeze import canonical_json, freeze_outputs, verify_frozen_run
 from engine.evaluation.models import BlindSchoolOutput, BlindTask, FrozenBlindRun
@@ -362,48 +366,19 @@ def _build_future_question_registration(
     return validate_future_question_registration(document)
 
 
-def build_single_case_intake(
-    input_file: Path,
-    tasks: dict[str, Any],
-    schools: Sequence[str],
+def _assemble_single_case_intake(
+    batch: Mapping[str, Any],
+    draft: Mapping[str, Any],
     operator: str,
-    tasks_by_case: dict[str, list[str]],
-    future_question: Mapping[str, Any] | Sequence[Mapping[str, Any]] | None,
     *,
     created_at: str,
-    question_created_at: str | None = None,
-    existing_subject_hashes: Set[str] = frozenset(),
+    question_created_at: str,
+    existing_subject_hashes: Set[str],
     case_root: Path,
-    version: int = 1,
-    question_revision: Mapping[str, Any] | None = None,
-    intake_revision: Mapping[str, Any] | None = None,
+    version: int,
+    question_revision: Mapping[str, Any] | None,
+    intake_revision: Mapping[str, Any] | None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Build one intake and one externally supplied question for immutable publication."""
-    intake_created = _parse_utc(created_at, "created_at")
-    question_created_at = question_created_at or created_at
-    question_created = _parse_utc(question_created_at, "question_created_at")
-    if question_created > intake_created:
-        raise ValueError("question_created_at must not be later than intake created_at")
-    if tuple(schools) != SIX_SCHOOLS:
-        raise ValueError(
-            "single-case intake requires exactly six schools in canonical order"
-        )
-    draft = _one_question(future_question)
-    if _contains_forbidden_marker(draft):
-        raise ValueError(
-            "future question contains forbidden feedback/labels/report/known facts marker"
-        )
-
-    # Kept local to avoid making the general-purpose dataset CLI an import-time engine dependency.
-    from tools.school_capability_dataset import register_prospective_intake
-
-    batch = register_prospective_intake(
-        [Path(input_file)],
-        tasks,
-        list(schools),
-        operator,
-        tasks_by_case=tasks_by_case,
-    )
     if (
         len(batch.get("records", [])) != 1
         or tuple(batch.get("schools", [])) != SIX_SCHOOLS
@@ -452,6 +427,62 @@ def build_single_case_intake(
         "artifact_sha256": canonical_artifact_sha256(intake_payload),
     }
     return intake, question
+
+
+def build_single_case_intake(
+    input_file: Path,
+    tasks: dict[str, Any],
+    schools: Sequence[str],
+    operator: str,
+    tasks_by_case: dict[str, list[str]],
+    future_question: Mapping[str, Any] | Sequence[Mapping[str, Any]] | None,
+    *,
+    created_at: str,
+    question_created_at: str | None = None,
+    existing_subject_hashes: Set[str] = frozenset(),
+    case_root: Path,
+    version: int = 1,
+    question_revision: Mapping[str, Any] | None = None,
+    intake_revision: Mapping[str, Any] | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Build one intake and one externally supplied question for immutable publication."""
+    intake_created = _parse_utc(created_at, "created_at")
+    question_created_at = question_created_at or created_at
+    question_created = _parse_utc(question_created_at, "question_created_at")
+    if question_created > intake_created:
+        raise ValueError("question_created_at must not be later than intake created_at")
+    if tuple(schools) != SIX_SCHOOLS:
+        raise ValueError(
+            "single-case intake requires exactly six schools in canonical order"
+        )
+    draft = _one_question(future_question)
+    if _contains_forbidden_marker(draft):
+        raise ValueError(
+            "future question contains forbidden feedback/labels/report/known facts marker"
+        )
+
+    # Kept local to avoid making the general-purpose dataset CLI an import-time engine dependency.
+    from tools.school_capability_dataset import register_prospective_intake
+
+    batch = register_prospective_intake(
+        [Path(input_file)],
+        tasks,
+        list(schools),
+        operator,
+        tasks_by_case=tasks_by_case,
+    )
+    return _assemble_single_case_intake(
+        batch,
+        draft,
+        operator,
+        created_at=created_at,
+        question_created_at=question_created_at,
+        existing_subject_hashes=existing_subject_hashes,
+        case_root=case_root,
+        version=version,
+        question_revision=question_revision,
+        intake_revision=intake_revision,
+    )
 
 
 def validate_single_case_intake(intake: Mapping[str, Any]) -> dict[str, Any]:
@@ -530,7 +561,81 @@ def _validate_future_question_parent(
     return question
 
 
+def _read_bytes_with_authority(
+    path: Path, *, authority: object, description: str
+) -> bytes:
+    source = authenticate_path(
+        Path(path), admitted_root=_authority_root(authority), destination=False
+    )
+    try:
+        return source.read_bytes()
+    except OSError as error:
+        raise _stop(f"{description} is unreadable: {source}") from error
+
+
+def _write_bytes_with_authority(
+    path: Path, content: bytes, *, authority: object, description: str
+) -> None:
+    destination = authenticate_path(
+        Path(path), admitted_root=_authority_root(authority), destination=True
+    )
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination = authenticate_path(
+        destination, admitted_root=_authority_root(authority), destination=True
+    )
+    try:
+        destination.write_bytes(content)
+    except OSError as error:
+        raise _stop(f"{description} is unwritable: {destination}") from error
+
+
+def _publish_json_with_authority(
+    path: Path,
+    payload: Mapping[str, Any],
+    *,
+    authority: object,
+    dry_run: bool,
+) -> Any:
+    return publish_new_json(
+        path, payload, dry_run=dry_run, admitted_root=_authority_root(authority)
+    )
+
+
+def _publish_bundle_directory_with_authority(
+    temporary: Path, target: Path, *, authority: object
+) -> None:
+    root = _authority_root(authority)
+    authenticate_path(
+        temporary / ".publication-boundary", admitted_root=root, destination=True
+    )
+    if not temporary.is_dir() or _is_linklike(temporary):
+        raise ValueError(f"bundle temporary must be a regular directory: {temporary}")
+    destination = authenticate_path(target, admitted_root=root, destination=True)
+    try:
+        os.rename(temporary, destination)
+    except FileExistsError as error:
+        raise ValueError(f"bundle target must not exist: {target}") from error
+
+
 def _validated_disk_parent(
+    document: Mapping[str, Any], description: str, *, authority: object
+) -> dict[str, Any]:
+    try:
+        actual = validate_parent_ref(
+            ArtifactRef(
+                artifact_path=str(document.get("artifact_path", "")),
+                artifact_sha256=str(document.get("artifact_sha256", "")),
+            ),
+            admitted_root=_authority_root(authority),
+        )
+    except (OSError, ValueError, TypeError) as error:
+        raise _stop(f"{description} parent is invalid: {error}") from error
+    if actual != document:
+        raise _stop(f"{description} parent differs from supplied document")
+    return actual
+
+
+def _validated_disk_parent_legacy(
     document: Mapping[str, Any], description: str
 ) -> dict[str, Any]:
     try:
@@ -553,6 +658,7 @@ def _single_bundle_files(
     tasks_path: Path,
     rule_snapshot_path: Path,
     *,
+    authority: object | None = None,
     allow_unpublished_parents: bool = False,
 ) -> tuple[dict[str, bytes], dict[str, Any], dict[str, Any]]:
     validate_single_case_intake(intake)
@@ -566,9 +672,18 @@ def _single_bundle_files(
         ):
             if canonical_artifact_sha256(document) != document.get("artifact_sha256"):
                 raise _stop(f"unpublished {description} canonical hash mismatch")
+    elif authority is None:
+        actual_intake = _validated_disk_parent_legacy(intake, "single-case intake")
+        actual_question = _validated_disk_parent_legacy(
+            future_question, "future-question"
+        )
     else:
-        actual_intake = _validated_disk_parent(intake, "single-case intake")
-        actual_question = _validated_disk_parent(future_question, "future-question")
+        actual_intake = _validated_disk_parent(
+            intake, "single-case intake", authority=authority
+        )
+        actual_question = _validated_disk_parent(
+            future_question, "future-question", authority=authority
+        )
     row = validate_single_case_intake(actual_intake)
     question = _validate_future_question_parent(actual_question, actual_intake)
     intake = actual_intake
@@ -578,13 +693,19 @@ def _single_bundle_files(
     from tools.school_capability_dataset import parse_canonical_chart
 
     sources = (Path(tasks_path), Path(rule_snapshot_path))
-    for source in sources:
-        _reject_symlink(source, "single-case bundle source")
-        if not source.is_file():
-            raise _stop(f"single-case bundle source must be a regular file: {source}")
     try:
-        task_document = json.loads(sources[0].read_text(encoding="utf-8"))
-        rule_document = json.loads(sources[1].read_text(encoding="utf-8"))
+        source_bytes = (
+            [source.read_bytes() for source in sources]
+            if authority is None
+            else [
+                _read_bytes_with_authority(
+                    source, authority=authority, description="single-case bundle source"
+                )
+                for source in sources
+            ]
+        )
+        task_document = json.loads(source_bytes[0].decode("utf-8"))
+        rule_document = json.loads(source_bytes[1].decode("utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
         raise _stop("single-case bundle source must be valid UTF-8 JSON") from error
     if not isinstance(task_document, dict) or not isinstance(
@@ -645,7 +766,7 @@ def _single_bundle_files(
         raise _stop("rule snapshot requires rule_snapshot_id")
     rule_ref: dict[str, Any] = {
         "rule_snapshot_id": snapshot_id,
-        "sha256": _sha256(sources[1].read_bytes()),
+        "sha256": _sha256(source_bytes[1]),
     }
     if isinstance(rule_document.get("schools"), list):
         rule_ref["schools"] = rule_document["schools"]
@@ -653,12 +774,17 @@ def _single_bundle_files(
         rule_ref["runners"] = rule_document["runners"]
 
     input_path = Path(row["input_file"])
-    _reject_symlink(input_path, "single-case input source")
-    if not input_path.is_file() or input_path.name != "input.md":
+    if input_path.name != "input.md":
         raise _stop("single-case input source must be a regular input.md")
     if input_path.parent.name != row["case_id"]:
         raise _stop("single-case input parent mismatch")
-    input_bytes = input_path.read_bytes()
+    input_bytes = (
+        input_path.read_bytes()
+        if authority is None
+        else _read_bytes_with_authority(
+            input_path, authority=authority, description="single-case input source"
+        )
+    )
     if _sha256(input_bytes) != row["input_sha256"]:
         raise _stop("single-case input hash changed")
     try:
@@ -703,20 +829,25 @@ def _single_bundle_files(
     return files, row, question
 
 
-def prepare_single_case_blind_bundle(
+def _prepare_single_case_blind_bundle_with_authority(
     intake: Mapping[str, Any],
     future_question: Mapping[str, Any],
     tasks_path: Path,
     rule_snapshot_path: Path,
     target_dir: Path,
     *,
+    authority: _RepositoryAuthority,
     dry_run: bool,
     revision: Mapping[str, Any] | None = None,
     created_at: str | None = None,
     _allow_unpublished_parents: bool = False,
+    _migration_transaction: bool = False,
 ) -> dict[str, Any]:
-    """Build and create-only publish one whitelist-only blind bundle."""
-    target = Path(target_dir)
+    """Build and create-only publish one authority-bound blind bundle."""
+    admitted_root = _authority_root(authority)
+    target = authenticate_path(
+        Path(target_dir), admitted_root=admitted_root, destination=True
+    )
     _reject_symlink(target, "single-case bundle target")
     if target.exists():
         raise ValueError(f"bundle target must not exist: {target}")
@@ -725,6 +856,7 @@ def prepare_single_case_blind_bundle(
         future_question,
         Path(tasks_path),
         Path(rule_snapshot_path),
+        authority=authority if _migration_transaction else None,
         allow_unpublished_parents=_allow_unpublished_parents,
     )
     version_match = re.search(r"--blind-bundle--v(\d{3})$", target.as_posix())
@@ -786,34 +918,70 @@ def prepare_single_case_blind_bundle(
     temporary = Path(tempfile.mkdtemp(prefix=".b.", dir=target.parent))
     try:
         for name, content in files.items():
-            destination = temporary / name
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_bytes(content)
-        (temporary / "bundle-manifest.json").write_bytes(
-            (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            _write_bytes_with_authority(
+                temporary / name,
+                content,
+                authority=authority,
+                description="temporary single-case bundle file",
+            )
+        _write_bytes_with_authority(
+            temporary / "bundle-manifest.json",
+            (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
+            authority=authority,
+            description="temporary single-case bundle manifest",
         )
-        if target.exists() or _is_linklike(target):
-            raise ValueError(f"bundle target must not exist: {target}")
-        try:
-            os.rename(temporary, target)
-        except FileExistsError as error:
-            raise ValueError(f"bundle target must not exist: {target}") from error
+        _publish_bundle_directory_with_authority(temporary, target, authority=authority)
     except BaseException:
         shutil.rmtree(temporary, ignore_errors=True)
         raise
     return manifest
 
 
-def verify_single_case_bundle(bundle_root: Path) -> dict[str, Any]:
+def prepare_single_case_blind_bundle(
+    intake: Mapping[str, Any],
+    future_question: Mapping[str, Any],
+    tasks_path: Path,
+    rule_snapshot_path: Path,
+    target_dir: Path,
+    *,
+    dry_run: bool,
+    revision: Mapping[str, Any] | None = None,
+    created_at: str | None = None,
+    _allow_unpublished_parents: bool = False,
+) -> dict[str, Any]:
+    """Build and create-only publish one whitelist-only blind bundle."""
+    authority = _repository_authority()
+    return _prepare_single_case_blind_bundle_with_authority(
+        intake,
+        future_question,
+        tasks_path,
+        rule_snapshot_path,
+        target_dir,
+        authority=authority,
+        dry_run=dry_run,
+        revision=revision,
+        created_at=created_at,
+        _allow_unpublished_parents=_allow_unpublished_parents,
+    )
+
+
+def verify_single_case_bundle(
+    bundle_root: Path, *, authority: object | None = None
+) -> dict[str, Any]:
     """Re-read an actual bundle and STOP on any whitelist or digest drift."""
+    authority = authority if authority is not None else _repository_authority()
     root = Path(bundle_root)
+    manifest_path = root / "bundle-manifest.json"
+    manifest_bytes = _read_bytes_with_authority(
+        manifest_path,
+        authority=authority,
+        description="single-case bundle manifest",
+    )
     _reject_symlink(root, "single-case bundle root")
     if not root.is_dir():
         raise _stop("single-case bundle root must be a directory")
-    manifest_path = root / "bundle-manifest.json"
     _reject_symlink(manifest_path, "single-case bundle manifest")
     try:
-        manifest_bytes = manifest_path.read_bytes()
         manifest = json.loads(manifest_bytes.decode("utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
         raise _stop("single-case bundle manifest is missing or invalid") from error
@@ -858,7 +1026,13 @@ def verify_single_case_bundle(bundle_root: Path) -> dict[str, Any]:
     files = manifest["files"]
     intake_name = "intake.json"
     try:
-        intake = json.loads((root / intake_name).read_text(encoding="utf-8"))
+        intake = json.loads(
+            _read_bytes_with_authority(
+                root / intake_name,
+                authority=authority,
+                description="single-case blind intake",
+            ).decode("utf-8")
+        )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
         raise _stop("single-case blind intake is invalid") from error
     records = intake.get("records") if isinstance(intake, dict) else None
@@ -910,20 +1084,26 @@ def verify_single_case_bundle(bundle_root: Path) -> dict[str, Any]:
         for value in files.values()
     ):
         raise _stop("single-case bundle file digest contract mismatch")
+    bundle_file_bytes = {
+        name: _read_bytes_with_authority(
+            root / name,
+            authority=authority,
+            description=f"single-case bundle file {name}",
+        )
+        for name in files
+    }
     for name, digest in files.items():
-        if _sha256((root / name).read_bytes()) != digest:
+        if _sha256(bundle_file_bytes[name]) != digest:
             raise _stop(f"single-case bundle file hash changed: {name}")
     if manifest.get("bundle_sha256") != _sha256(_canonical_json_bytes(files)):
         raise _stop("single-case bundle hash changed")
     try:
-        question = json.loads(
-            (root / "future-question.json").read_text(encoding="utf-8")
-        )
+        question = json.loads(bundle_file_bytes["future-question.json"].decode("utf-8"))
         chart = json.loads(
-            (root / f"cases/{case_id}/chart.json").read_text(encoding="utf-8")
+            bundle_file_bytes[f"cases/{case_id}/chart.json"].decode("utf-8")
         )
         rule_reference = json.loads(
-            (root / "rule-snapshot.json").read_text(encoding="utf-8")
+            bundle_file_bytes["rule-snapshot.json"].decode("utf-8")
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
         raise _stop("single-case bundle JSON content is invalid") from error
@@ -974,7 +1154,7 @@ def verify_single_case_bundle(bundle_root: Path) -> dict[str, Any]:
 
 
 def _single_case_parent_document(
-    reference: Mapping[str, Any], description: str
+    reference: Mapping[str, Any], description: str, *, authority: object
 ) -> dict[str, Any]:
     if not isinstance(reference, Mapping) or set(reference) != {
         "artifact_path",
@@ -986,7 +1166,8 @@ def _single_case_parent_document(
             ArtifactRef(
                 artifact_path=str(reference["artifact_path"]),
                 artifact_sha256=str(reference["artifact_sha256"]),
-            )
+            ),
+            admitted_root=_authority_root(authority),
         )
     except (OSError, TypeError, ValueError) as error:
         raise _stop(f"{description} parent drift: {error}") from error
@@ -1135,9 +1316,10 @@ def _merge_governance_yang_divorce_slot(
     ]
 
 
-def build_single_case_staged_frozen_run(
+def _build_single_case_staged_frozen_run_with_authority(
     bundle_root: Path,
     *,
+    authority: _RepositoryAuthority,
     now_utc: str | None = None,
     freeze_at: str | None = None,
     executed_at: str | None = None,
@@ -1147,7 +1329,7 @@ def build_single_case_staged_frozen_run(
     governance_shadow_projections: tuple[GovernanceShadowTaskProjection, ...] = (),
     capability_identity_ref: ArtifactRef | None = None,
 ) -> dict[str, Any]:
-    """Re-verify and freeze exactly one complete six-school prospective case."""
+    """Re-verify and freeze exactly one complete authority-bound prospective case."""
     if type(governance_shadow_projections) is not tuple:
         raise TypeError("governance_shadow_projections must be an exact tuple")
     capability_identity = None
@@ -1167,9 +1349,9 @@ def build_single_case_staged_frozen_run(
             "governance mode requires one sealed capability identity reference"
         )
     else:
-        capability_identity = validate_capability_identity_ref(
+        capability_identity = _validate_capability_identity_ref_with_authority(
             capability_identity_ref,
-            admitted_root=Path(capability_identity_ref.artifact_path).parent.absolute(),
+            authority=authority,
         )
         projection = governance_shadow_projections[0]
         matching_traces = [
@@ -1187,12 +1369,17 @@ def build_single_case_staged_frozen_run(
                 "sealed capability identity does not match governance lineage"
             )
 
+    admitted_root = _authority_root(authority)
     root = Path(bundle_root)
-    verified = verify_single_case_bundle(root)
+    verified = verify_single_case_bundle(root, authority=authority)
     manifest = verified["manifest"]
     parent_refs = verified["parent_refs"]
-    intake_parent = _single_case_parent_document(parent_refs[0], "single-case intake")
-    question_parent = _single_case_parent_document(parent_refs[1], "future-question")
+    intake_parent = _single_case_parent_document(
+        parent_refs[0], "single-case intake", authority=authority
+    )
+    question_parent = _single_case_parent_document(
+        parent_refs[1], "future-question", authority=authority
+    )
     row = validate_single_case_intake(intake_parent)
     question = _validate_future_question_parent(question_parent, intake_parent)
     if question != verified["future_question"]:
@@ -1290,12 +1477,13 @@ def build_single_case_staged_frozen_run(
                 ArtifactRef(
                     revision_fields["supersedes"],
                     revision_fields["supersedes_sha256"],
-                )
+                ),
+                admitted_root=admitted_root,
             )
         except (KeyError, TypeError, ValueError) as error:
             raise _stop(f"frozen run supersedes parent is invalid: {error}") from error
         formal_previous_path = single_case_artifact_path(
-            Path(intake_parent["artifact_path"]).parent.parent,
+            admitted_root,
             row["case_id"],
             "frozen-run",
             version - 1,
@@ -1386,7 +1574,7 @@ def build_single_case_staged_frozen_run(
         identity_fields["capability_identity_ref"] = identity_reference
         identity_fields["governance_source_ref"] = source_reference
     artifact_path = single_case_artifact_path(
-        Path(intake_parent["artifact_path"]).parent.parent,
+        admitted_root,
         row["case_id"],
         "frozen-run",
         version,
@@ -1418,6 +1606,34 @@ def build_single_case_staged_frozen_run(
     }
 
 
+def build_single_case_staged_frozen_run(
+    bundle_root: Path,
+    *,
+    now_utc: str | None = None,
+    freeze_at: str | None = None,
+    executed_at: str | None = None,
+    revision: Mapping[str, Any] | None = None,
+    migration_context: Mapping[str, Any] | None = None,
+    governance_shadow_result: GovernanceShadowResult | None = None,
+    governance_shadow_projections: tuple[GovernanceShadowTaskProjection, ...] = (),
+    capability_identity_ref: ArtifactRef | None = None,
+) -> dict[str, Any]:
+    """Re-verify and freeze exactly one complete six-school prospective case."""
+    authority = _repository_authority()
+    return _build_single_case_staged_frozen_run_with_authority(
+        bundle_root,
+        authority=authority,
+        now_utc=now_utc,
+        freeze_at=freeze_at,
+        executed_at=executed_at,
+        revision=revision,
+        migration_context=migration_context,
+        governance_shadow_result=governance_shadow_result,
+        governance_shadow_projections=governance_shadow_projections,
+        capability_identity_ref=capability_identity_ref,
+    )
+
+
 def _migration_revision(
     parent: Mapping[str, Any], reason: str, approved_by: str
 ) -> dict[str, Any]:
@@ -1429,8 +1645,26 @@ def _migration_revision(
     }
 
 
-def _assert_migration_paths_clean(case_dir: Path, *, previous_version: int) -> None:
-    for candidate in case_dir.iterdir():
+def _authenticate_migration_case_directory(
+    case_dir: Path, *, authority: object
+) -> Path:
+    root = _authority_root(authority)
+    directory = Path(os.path.abspath(case_dir))
+    try:
+        directory.relative_to(root)
+    except ValueError as error:
+        raise _stop("migration directory escapes admitted root") from error
+    _reject_symlink(directory, "migration directory")
+    if not directory.is_dir():
+        raise _stop("single-case directory is missing")
+    return directory
+
+
+def _assert_migration_paths_clean(
+    case_dir: Path, *, previous_version: int, authority: object
+) -> None:
+    directory = _authenticate_migration_case_directory(case_dir, authority=authority)
+    for candidate in directory.iterdir():
         name = candidate.name.lower()
         frozen_match = re.search(r"--frozen-run--v(\d{3})\.json$", name)
         if (
@@ -1440,6 +1674,143 @@ def _assert_migration_paths_clean(case_dir: Path, *, previous_version: int) -> N
             continue
         if any(kind in name for kind in _FORBIDDEN_MIGRATION_KINDS):
             raise _stop(f"forbidden migration artifact exists: {candidate}")
+
+
+def _preflight_migration_targets(
+    targets: Mapping[str, Path], *, authority: object
+) -> None:
+    existing: list[Path] = []
+    for path in targets.values():
+        try:
+            authenticate_path(
+                Path(path), admitted_root=_authority_root(authority), destination=True
+            )
+        except ValueError as error:
+            if "output already exists" not in str(error):
+                raise
+            existing.append(Path(path))
+    if existing:
+        raise ValueError(
+            "migration target(s) must not exist: " + ", ".join(map(str, existing))
+        )
+
+
+def _create_migration_staging_root(
+    case_dir: Path, *, version: int, authority: object
+) -> Path:
+    directory = _authenticate_migration_case_directory(case_dir, authority=authority)
+    parent = _authenticate_migration_case_directory(
+        directory.parent, authority=authority
+    )
+    staging = Path(tempfile.mkdtemp(prefix=f".pcv{version}.", dir=parent))
+    return _authenticate_migration_case_directory(staging, authority=authority)
+
+
+def _build_migration_single_case_intake(
+    input_file: Path,
+    tasks: dict[str, Any],
+    operator: str,
+    tasks_by_case: dict[str, list[str]],
+    future_question: Mapping[str, Any],
+    *,
+    authority: object,
+    created_at: str,
+    question_created_at: str,
+    case_root: Path,
+    version: int,
+    question_revision: Mapping[str, Any],
+    intake_revision: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    from tools.school_capability_dataset import parse_canonical_chart
+
+    if (
+        not isinstance(operator, str)
+        or not operator.strip()
+        or operator.lower().startswith(("automated", "agent", "ai-"))
+    ):
+        raise ValueError("operator must be a named human")
+    draft = _one_question(future_question)
+    if _contains_forbidden_marker(draft):
+        raise ValueError(
+            "future question contains forbidden feedback/labels/report/known facts marker"
+        )
+    source = Path(input_file)
+    if source.name.lower() != "input.md" or _contains_forbidden_marker(
+        source.as_posix()
+    ):
+        raise ValueError("migration input path is invalid")
+    content = _read_bytes_with_authority(
+        source, authority=authority, description="migration intake source"
+    )
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError("migration input must be UTF-8") from error
+    if _contains_forbidden_marker(text):
+        raise ValueError("migration input contains forbidden content")
+    case_id = source.parent.name
+    chart = parse_canonical_chart(text, case_id)
+    subject_id_hash = _sha256(
+        _canonical_json_bytes(
+            {key: chart[key] for key in ("four_pillars", "sex_marker")}
+        )
+    )
+    try:
+        task_rows = tasks["tasks"]
+        task_ids = {row["task_id"] for row in task_rows}
+        matching_assignments = [
+            assigned
+            for assignment, assigned in tasks_by_case.items()
+            if case_id == assignment or case_id.startswith(f"{assignment}-")
+        ]
+        if len(matching_assignments) != 1:
+            raise ValueError("migration task assignment is invalid")
+        selected = matching_assignments[0]
+        clean_tasks = [
+            {
+                field: row[field]
+                for field in _TASK_BUNDLE_FIELDS
+                if field != "evaluation_note"
+            }
+            for row in task_rows
+        ]
+    except (KeyError, TypeError) as error:
+        raise ValueError("migration task assignment is invalid") from error
+    if (
+        not selected
+        or len(selected) != len(set(selected))
+        or not set(selected) <= task_ids
+    ):
+        raise ValueError("migration task assignment is invalid")
+    batch = {
+        "schools": list(SIX_SCHOOLS),
+        "task_catalog_sha256": _sha256(
+            _canonical_json_bytes(
+                {"schema_version": tasks.get("schema_version"), "tasks": clean_tasks}
+            )
+        ),
+        "records": [
+            {
+                "case_id": case_id,
+                "input_file": str(source.absolute()),
+                "input_sha256": _sha256(content),
+                "subject_id_hash": subject_id_hash,
+                "task_ids": sorted(selected),
+            }
+        ],
+    }
+    return _assemble_single_case_intake(
+        batch,
+        draft,
+        operator,
+        created_at=created_at,
+        question_created_at=question_created_at,
+        existing_subject_hashes=frozenset(),
+        case_root=case_root,
+        version=version,
+        question_revision=question_revision,
+        intake_revision=intake_revision,
+    )
 
 
 def prepare_parent_chain_v002_migration(
@@ -1460,12 +1831,14 @@ def prepare_parent_chain_v002_migration(
     next_version: int = 2,
 ) -> dict[str, Any]:
     """Plan or create-only publish an approved whole-parent-chain transaction."""
+    authority = _repository_authority()
+    admitted_root = _authority_root(authority)
     input_file = Path(input_file)
     case_id = input_file.parent.name
     case_root = Path(case_root)
-    case_dir = case_root / case_id
-    if not case_dir.is_dir():
-        raise _stop("single-case directory is missing")
+    case_dir = _authenticate_migration_case_directory(
+        case_root / case_id, authority=authority
+    )
     if (
         isinstance(next_version, bool)
         or not isinstance(next_version, int)
@@ -1473,14 +1846,22 @@ def prepare_parent_chain_v002_migration(
     ):
         raise ValueError("next_version must be an integer greater than or equal to 2")
     previous_version = next_version - 1
-    _assert_migration_paths_clean(case_dir, previous_version=previous_version)
+    _assert_migration_paths_clean(
+        case_dir, previous_version=previous_version, authority=authority
+    )
 
     def sealed(path: Path) -> dict[str, Any]:
         try:
-            digest = json.loads(path.read_text(encoding="utf-8"))["artifact_sha256"]
+            digest = json.loads(
+                _read_bytes_with_authority(
+                    path, authority=authority, description="migration parent"
+                ).decode("utf-8")
+            )["artifact_sha256"]
         except (OSError, UnicodeDecodeError, json.JSONDecodeError, KeyError) as error:
             raise _stop(f"migration parent is invalid: {path}") from error
-        return validate_parent_ref(ArtifactRef(path.as_posix(), digest))
+        return validate_parent_ref(
+            ArtifactRef(path.as_posix(), digest), admitted_root=admitted_root
+        )
 
     previous_question = sealed(
         single_case_artifact_path(
@@ -1501,7 +1882,9 @@ def prepare_parent_chain_v002_migration(
     previous_bundle_root = (
         case_dir / f"{case_id}--blind-bundle--v{previous_version:03d}"
     )
-    previous_bundle = verify_single_case_bundle(previous_bundle_root)["manifest"]
+    previous_bundle = verify_single_case_bundle(
+        previous_bundle_root, authority=authority
+    )["manifest"]
     if not (
         previous_question["case_id"]
         == previous_intake["case_id"]
@@ -1539,13 +1922,18 @@ def prepare_parent_chain_v002_migration(
     question_revision = _migration_revision(previous_question, reason, approved_by)
     intake_revision = _migration_revision(previous_intake, reason, approved_by)
     bundle_revision = _migration_revision(previous_bundle, reason, approved_by)
-    intake, question = build_single_case_intake(
+    task_catalog = json.loads(
+        _read_bytes_with_authority(
+            Path(tasks_path), authority=authority, description="migration task catalog"
+        ).decode("utf-8")
+    )
+    intake, question = _build_migration_single_case_intake(
         input_file,
-        json.loads(Path(tasks_path).read_text(encoding="utf-8")),
-        SIX_SCHOOLS,
+        task_catalog,
         operator,
         tasks_by_case,
         draft,
+        authority=authority,
         created_at=intake_created.isoformat().replace("+00:00", "Z"),
         question_created_at=question_created.isoformat().replace("+00:00", "Z"),
         case_root=case_root,
@@ -1564,14 +1952,12 @@ def prepare_parent_chain_v002_migration(
             next_version,
         ),
     }
-    existing = [path for path in targets.values() if path.exists() or path.is_symlink()]
-    if existing:
-        raise ValueError(
-            "migration target(s) must not exist: " + ", ".join(map(str, existing))
-        )
+    _preflight_migration_targets(targets, authority=authority)
 
     # Build and reverify in a sibling staging tree before any formal write.
-    staging = Path(tempfile.mkdtemp(prefix=f".pcv{next_version}.", dir=case_dir.parent))
+    staging = _create_migration_staging_root(
+        case_dir, version=next_version, authority=authority
+    )
     try:
         staged_root = staging
         staged_question = {
@@ -1599,32 +1985,40 @@ def prepare_parent_chain_v002_migration(
         }
         staged_intake["parents"] = [staged_intake["future_question"]]
         staged_intake["artifact_sha256"] = canonical_artifact_sha256(staged_intake)
-        Path(staged_question["artifact_path"]).parent.mkdir(parents=True, exist_ok=True)
-        Path(staged_question["artifact_path"]).write_bytes(
+        _write_bytes_with_authority(
+            Path(staged_question["artifact_path"]),
             (json.dumps(staged_question, ensure_ascii=False, indent=2) + "\n").encode(
                 "utf-8"
-            )
+            ),
+            authority=authority,
+            description="staging future-question",
         )
-        Path(staged_intake["artifact_path"]).write_bytes(
+        _write_bytes_with_authority(
+            Path(staged_intake["artifact_path"]),
             (json.dumps(staged_intake, ensure_ascii=False, indent=2) + "\n").encode(
                 "utf-8"
-            )
+            ),
+            authority=authority,
+            description="staging intake",
         )
         staged_bundle_root = Path(staged_intake["artifact_path"]).with_name(
             f"{case_id}--blind-bundle--v{next_version:03d}"
         )
-        staged_manifest = prepare_single_case_blind_bundle(
+        _prepare_single_case_blind_bundle_with_authority(
             staged_intake,
             staged_question,
             Path(tasks_path),
             Path(rule_snapshot_path),
             staged_bundle_root,
+            authority=authority,
             dry_run=False,
             revision=bundle_revision,
             created_at=bundle_created.isoformat().replace("+00:00", "Z"),
+            _migration_transaction=True,
         )
-        staged_run = build_single_case_staged_frozen_run(
+        staged_run = _build_single_case_staged_frozen_run_with_authority(
             staged_bundle_root,
+            authority=authority,
             freeze_at=freeze_at,
             executed_at=executed_at,
             revision=bundle_revision,
@@ -1648,16 +2042,18 @@ def prepare_parent_chain_v002_migration(
     }
     intake["parents"] = [intake["future_question"]]
     intake["artifact_sha256"] = canonical_artifact_sha256(intake)
-    manifest = prepare_single_case_blind_bundle(
+    manifest = _prepare_single_case_blind_bundle_with_authority(
         intake,
         question,
         Path(tasks_path),
         Path(rule_snapshot_path),
         targets["blind_bundle"],
+        authority=authority,
         dry_run=True,
         revision=bundle_revision,
         created_at=bundle_created.isoformat().replace("+00:00", "Z"),
         _allow_unpublished_parents=True,
+        _migration_transaction=True,
     )
     frozen = {
         **staged_run,
@@ -1703,23 +2099,33 @@ def prepare_parent_chain_v002_migration(
 
     published: list[str] = []
     try:
-        publish_new_json(targets["future_question"], question, dry_run=False)
+        _publish_json_with_authority(
+            targets["future_question"],
+            question,
+            authority=authority,
+            dry_run=False,
+        )
         published.append(targets["future_question"].as_posix())
-        publish_new_json(targets["intake"], intake, dry_run=False)
+        _publish_json_with_authority(
+            targets["intake"], intake, authority=authority, dry_run=False
+        )
         published.append(targets["intake"].as_posix())
-        manifest = prepare_single_case_blind_bundle(
+        manifest = _prepare_single_case_blind_bundle_with_authority(
             intake,
             question,
             Path(tasks_path),
             Path(rule_snapshot_path),
             targets["blind_bundle"],
+            authority=authority,
             dry_run=False,
             revision=bundle_revision,
             created_at=bundle_created.isoformat().replace("+00:00", "Z"),
+            _migration_transaction=True,
         )
         published.append(targets["blind_bundle"].as_posix())
-        frozen = build_single_case_staged_frozen_run(
+        frozen = _build_single_case_staged_frozen_run_with_authority(
             targets["blind_bundle"],
+            authority=authority,
             freeze_at=freeze_at,
             executed_at=executed_at,
             revision=bundle_revision,
@@ -1730,7 +2136,12 @@ def prepare_parent_chain_v002_migration(
         )
         artifacts["blind_bundle"] = manifest
         artifacts["frozen_run"] = frozen
-        publish_new_json(targets["frozen_run"], frozen, dry_run=False)
+        _publish_json_with_authority(
+            targets["frozen_run"],
+            frozen,
+            authority=authority,
+            dry_run=False,
+        )
         published.append(targets["frozen_run"].as_posix())
     except BaseException as error:
         raise ValueError(

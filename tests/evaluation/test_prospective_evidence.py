@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import copy
 import hashlib
 import json
@@ -10,10 +11,12 @@ from pathlib import Path
 
 import pytest
 
+import engine.evaluation.prospective_artifacts as prospective_artifacts
 from engine.evaluation.prospective_artifacts import (
     ArtifactRef,
     canonical_artifact_sha256,
     publish_new_json,
+    single_case_artifact_path,
     validate_parent_ref,
 )
 import engine.evaluation.prospective_evidence as prospective_evidence
@@ -82,8 +85,65 @@ def prospective_clock(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.fixture()
-def freeze_chain(tmp_path_factory: pytest.TempPathFactory) -> dict:
-    tmp_path = tmp_path_factory.mktemp("prospective-evidence")
+def authority_root(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    return tmp_path_factory.mktemp("prospective-evidence-authority").absolute()
+
+
+@pytest.fixture()
+def tmp_path(authority_root: Path) -> Path:
+    return authority_root
+
+
+@pytest.fixture(autouse=True)
+def _repository_authority(
+    authority_root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = authority_root
+    state = root / "META" / "project-state.json"
+    contract = (
+        root
+        / ".omo"
+        / "drafts"
+        / ("w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md")
+    )
+    state.parent.mkdir(parents=True, exist_ok=True)
+    contract.parent.mkdir(parents=True, exist_ok=True)
+    state.write_bytes(Path("META/project-state.json").read_bytes())
+    contract.write_bytes(
+        Path(
+            ".omo/drafts/w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md"
+        ).read_bytes()
+    )
+    monkeypatch.setattr(prospective_artifacts, "_trusted_repository_root", lambda: root)
+
+    site_directory = root / "test-pythonpath"
+    site_directory.mkdir()
+    (site_directory / "sitecustomize.py").write_text(
+        "from pathlib import Path\n"
+        "from engine.evaluation import prospective_artifacts\n"
+        f"prospective_artifacts._trusted_repository_root = lambda: Path({str(root)!r})\n",
+        encoding="utf-8",
+    )
+    original_run = subprocess.run
+    repository_path = str(Path.cwd())
+
+    def authority_bound_run(
+        *args: object, **kwargs: object
+    ) -> subprocess.CompletedProcess:
+        environment = dict(kwargs.get("env") or os.environ)
+        existing = environment.get("PYTHONPATH")
+        environment["PYTHONPATH"] = os.pathsep.join(
+            part for part in (str(site_directory), repository_path, existing) if part
+        )
+        kwargs["env"] = environment
+        return original_run(*args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "run", authority_bound_run)
+
+
+@pytest.fixture()
+def freeze_chain(authority_root: Path) -> dict:
+    tmp_path = authority_root
     case_id = "P-GO-2026-001-乾-甲子乙丑丙寅丁卯"
     input_path = tmp_path / "source" / case_id / "input.md"
     input_path.parent.mkdir(parents=True)
@@ -214,6 +274,33 @@ def release_credential(freeze_chain: dict) -> dict:
     return _read(release_path)
 
 
+def test_w2_c4_evidence_lineage_has_no_rootless_parent_read_or_self_selected_root() -> (
+    None
+):
+    module = ast.parse(
+        Path("engine/evaluation/prospective_evidence.py").read_text("utf-8")
+    )
+    rootless_parent_reads = [
+        node
+        for node in ast.walk(module)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "validate_parent_ref"
+        and not any(keyword.arg == "admitted_root" for keyword in node.keywords)
+    ]
+    self_selected_roots = [
+        node
+        for node in ast.walk(module)
+        if isinstance(node, ast.Attribute)
+        and node.attr == "parent"
+        and isinstance(node.value, ast.Attribute)
+        and node.value.attr == "parent"
+    ]
+
+    assert rootless_parent_reads == []
+    assert self_selected_roots == []
+
+
 def test_verification_and_completion_recursively_preserve_capability_identity(
     freeze_chain: dict,
     tmp_path: Path,
@@ -280,6 +367,76 @@ def test_verification_and_completion_recursively_preserve_capability_identity(
             stopped_incident=None,
             created_at="2026-07-16T02:00:00Z",
         )
+
+
+def test_case_completion_explicitly_propagates_one_exact_repository_authority(
+    freeze_chain: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    verification = _verify(freeze_chain)
+    verification_path = Path(verification["artifact_path"])
+    publish_new_json(
+        verification_path,
+        {key: value for key, value in verification.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    expected_authority = prospective_artifacts._repository_authority()
+    resolver_calls = 0
+    observed: list[object] = []
+    original_actual_sealed = prospective_evidence._actual_sealed_artifact
+    original_validate_tree = prospective_evidence._validate_parent_tree
+
+    def operation_start_authority() -> object:
+        nonlocal resolver_calls
+        resolver_calls += 1
+        if resolver_calls != 1:
+            raise AssertionError(
+                "completion downstream reacquired repository authority"
+            )
+        return expected_authority
+
+    def actual_sealed_probe(
+        path: Path,
+        description: str,
+        *,
+        authority: object,
+    ) -> dict:
+        assert authority is expected_authority
+        observed.append(authority)
+        return original_actual_sealed(path, description, authority=authority)
+
+    def validate_tree_probe(
+        document: dict,
+        *,
+        authority: object,
+        visited: set[tuple[str, str]] | None = None,
+    ) -> None:
+        assert authority is expected_authority
+        observed.append(authority)
+        original_validate_tree(document, authority=authority, visited=visited)
+
+    monkeypatch.setattr(
+        prospective_evidence, "_repository_authority", operation_start_authority
+    )
+    monkeypatch.setattr(
+        prospective_evidence, "_actual_sealed_artifact", actual_sealed_probe
+    )
+    monkeypatch.setattr(
+        prospective_evidence, "_validate_parent_tree", validate_tree_probe
+    )
+
+    completion = prospective_evidence.build_case_completion(
+        freeze_verification=_read(verification_path),
+        immediate_bound=None,
+        future_bound=None,
+        stopped_incident=None,
+        created_at="2026-07-16T02:00:00Z",
+    )
+
+    assert completion["schema_version"] == "prospective-case-completion/v1"
+    assert resolver_calls == 1
+    assert len(observed) >= 2
+    assert all(authority is expected_authority for authority in observed)
 
 
 def _custody_payload(case_id: str, facts: list[dict] | None = None) -> dict:
@@ -1407,6 +1564,11 @@ def test_reviewed_high_risk_immediate_becomes_scorable_without_cross_ledger_reus
         collected_at="2026-07-16T02:00:00Z",
         custodian="human-custodian-01",
     )
+    publish_new_json(
+        Path(unbound["artifact_path"]),
+        {key: value for key, value in unbound.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
     bound = prospective_evidence.bind_immediate_labels(unbound)
     publish_new_json(
         Path(bound["artifact_path"]),
@@ -1747,6 +1909,90 @@ def test_v2_release_can_anchor_immediate_case_completion(freeze_chain: dict) -> 
     }
 
 
+def test_v2_release_completion_propagates_one_exact_operation_authority(
+    freeze_chain: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    frozen = _read(freeze_chain["frozen_run_path"])
+    release = build_feedback_release_credential(
+        frozen,
+        created_at="2026-07-16T01:05:00Z",
+    )
+    publish_new_json(
+        Path(release["artifact_path"]),
+        {key: value for key, value in release.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    release = _read(Path(release["artifact_path"]))
+    expected_authority = prospective_artifacts._repository_authority()
+    resolver_calls = 0
+    observed: list[object] = []
+    original_release = getattr(
+        prospective_evidence, "_validate_release_credential_with_authority", None
+    )
+    original_actual = prospective_evidence._actual_supplied_artifact
+    original_tree = prospective_evidence._validate_parent_tree
+
+    def operation_start_authority() -> object:
+        nonlocal resolver_calls
+        resolver_calls += 1
+        if resolver_calls != 1:
+            raise AssertionError(
+                "completion downstream reacquired repository authority"
+            )
+        return expected_authority
+
+    def release_probe(
+        document: dict, *, authority: object
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        assert authority is expected_authority
+        observed.append(authority)
+        assert original_release is not None
+        return original_release(document, authority=authority)
+
+    def actual_probe(
+        document: dict, description: str, *, authority: object
+    ) -> dict[str, object]:
+        assert authority is expected_authority
+        observed.append(authority)
+        return original_actual(document, description, authority=authority)
+
+    def tree_probe(
+        document: dict,
+        *,
+        authority: object,
+        visited: set[tuple[str, str]] | None = None,
+    ) -> None:
+        assert authority is expected_authority
+        observed.append(authority)
+        original_tree(document, authority=authority, visited=visited)
+
+    monkeypatch.setattr(
+        prospective_evidence, "_repository_authority", operation_start_authority
+    )
+    monkeypatch.setattr(
+        prospective_evidence,
+        "_validate_release_credential_with_authority",
+        release_probe,
+        raising=False,
+    )
+    monkeypatch.setattr(prospective_evidence, "_actual_supplied_artifact", actual_probe)
+    monkeypatch.setattr(prospective_evidence, "_validate_parent_tree", tree_probe)
+
+    completion = build_case_completion(
+        freeze_verification=release,
+        immediate_bound=None,
+        future_bound=None,
+        stopped_incident=None,
+        created_at="2026-07-16T01:05:01Z",
+    )
+
+    assert completion["parents"][0]["artifact_sha256"] == release["artifact_sha256"]
+    assert resolver_calls == 1
+    assert observed
+    assert all(authority is expected_authority for authority in observed)
+
+
 def test_case_completion_has_separate_ledgers_and_no_completed_boolean(
     freeze_chain: dict,
 ) -> None:
@@ -2055,6 +2301,108 @@ def test_future_no_data_cannot_complete_case(freeze_chain: dict) -> None:
     assert completion["future_completion_status"] == "PENDING"
 
 
+def test_future_completion_chain_propagates_one_exact_operation_authority(
+    freeze_chain: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    question, frozen = _future_parents(freeze_chain)
+    verification = _verify(freeze_chain)
+    publish_new_json(
+        Path(verification["artifact_path"]),
+        {key: value for key, value in verification.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    future = collect_future_observation(
+        question,
+        frozen,
+        _future_observation(question),
+        collected_at="2026-08-01T00:00:01Z",
+    )
+    publish_new_json(
+        Path(future["artifact_path"]),
+        {key: value for key, value in future.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    bound = prospective_evidence.bind_future_observation(
+        _read(Path(future["artifact_path"]))
+    )
+    publish_new_json(
+        Path(bound["artifact_path"]),
+        {key: value for key, value in bound.items() if key != "artifact_sha256"},
+        dry_run=False,
+    )
+    expected_authority = prospective_artifacts._repository_authority()
+    resolver_calls = 0
+    observed: list[object] = []
+    original_actual = prospective_evidence._actual_supplied_artifact
+    original_tree = prospective_evidence._validate_parent_tree
+    original_future_parents = prospective_evidence._validated_future_parents
+    original_future_chain = prospective_evidence._validate_future_completion_chain
+
+    def operation_start_authority() -> object:
+        nonlocal resolver_calls
+        resolver_calls += 1
+        if resolver_calls != 1:
+            raise AssertionError(
+                "completion downstream reacquired repository authority"
+            )
+        return expected_authority
+
+    def exact(authority: object) -> None:
+        assert authority is expected_authority
+        observed.append(authority)
+
+    def actual_probe(
+        document: dict, description: str, *, authority: object
+    ) -> dict[str, object]:
+        exact(authority)
+        return original_actual(document, description, authority=authority)
+
+    def tree_probe(
+        document: dict,
+        *,
+        authority: object,
+        visited: set[tuple[str, str]] | None = None,
+    ) -> None:
+        exact(authority)
+        original_tree(document, authority=authority, visited=visited)
+
+    def future_parents_probe(
+        registration: dict, frozen_run: dict, *, authority: object
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        exact(authority)
+        return original_future_parents(registration, frozen_run, authority=authority)
+
+    def future_chain_probe(document: dict, *, authority: object) -> None:
+        exact(authority)
+        original_future_chain(document, authority=authority)
+
+    monkeypatch.setattr(
+        prospective_evidence, "_repository_authority", operation_start_authority
+    )
+    monkeypatch.setattr(prospective_evidence, "_actual_supplied_artifact", actual_probe)
+    monkeypatch.setattr(prospective_evidence, "_validate_parent_tree", tree_probe)
+    monkeypatch.setattr(
+        prospective_evidence, "_validated_future_parents", future_parents_probe
+    )
+    monkeypatch.setattr(
+        prospective_evidence, "_validate_future_completion_chain", future_chain_probe
+    )
+
+    completion = build_case_completion(
+        freeze_verification=_read(Path(verification["artifact_path"])),
+        immediate_bound=None,
+        future_bound=_read(Path(bound["artifact_path"])),
+        stopped_incident=None,
+        created_at="2026-08-01T00:00:02Z",
+    )
+
+    assert completion["future_completion_status"] == "CASE_COMPLETE_FOR_FUTURE"
+    assert resolver_calls == 1
+    assert observed
+    assert all(authority is expected_authority for authority in observed)
+
+
 def test_completion_rejects_hand_forged_future_bound_without_registered_freeze_chain(
     freeze_chain: dict,
 ) -> None:
@@ -2113,8 +2461,8 @@ def test_future_and_completion_clis_are_canonical_create_only_and_dry_run(
     cli_observation = _future_observation(question)
     cli_observation["observed_at"] = "2026-07-16T17:00:00Z"
     _write(observation_path, cli_observation)
-    future_output = Path(question["artifact_path"]).parent / (
-        f"{question['case_id']}--future-observation-unbound--v001.json"
+    future_output = single_case_artifact_path(
+        tmp_path, question["case_id"], "future-observation-unbound", 1
     )
     future_command = [
         sys.executable,
@@ -2171,8 +2519,8 @@ def test_future_and_completion_clis_are_canonical_create_only_and_dry_run(
         {key: value for key, value in verification.items() if key != "artifact_sha256"},
         dry_run=False,
     )
-    completion_output = Path(verification["artifact_path"]).parent / (
-        f"{verification['case_id']}--case-completion--v001.json"
+    completion_output = single_case_artifact_path(
+        tmp_path, verification["case_id"], "case-completion", 1
     )
     bound_future = prospective_evidence.bind_future_observation(_read(future_output))
     bound_future_output = Path(bound_future["artifact_path"])

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import json
 import os
 import threading
@@ -19,6 +20,77 @@ from engine.evaluation.prospective_artifacts import (
 
 
 CASE_ID = "P-GO-2026-001-坤-壬戌己酉乙卯丁亥"
+
+
+def _authority_root(tmp_path: Path) -> Path:
+    state = tmp_path / "META" / "project-state.json"
+    contract = (
+        tmp_path
+        / ".omo"
+        / "drafts"
+        / ("w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md")
+    )
+    state.parent.mkdir(parents=True)
+    contract.parent.mkdir(parents=True)
+    state.write_bytes(Path("META/project-state.json").read_bytes())
+    contract.write_bytes(
+        Path(
+            ".omo/drafts/w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md"
+        ).read_bytes()
+    )
+    return tmp_path.absolute()
+
+
+def test_production_module_exposes_no_arbitrary_root_authority_surface() -> None:
+    forbidden = {
+        "_TEST_AUTHORITY_ISSUER",
+        "_issue_repository_authority",
+        "_use_test_repository_authority",
+        "_TEST_AUTHORITY",
+    }
+
+    assert forbidden.isdisjoint(vars(artifacts))
+    assert not any(
+        inspect.isfunction(value)
+        and "authority" in name.lower()
+        and "root" in inspect.signature(value).parameters
+        for name, value in vars(artifacts).items()
+    )
+
+
+def test_repository_authority_is_one_closure_held_token_per_trusted_root(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root = _authority_root(tmp_path)
+    monkeypatch.setattr(artifacts, "_trusted_repository_root", lambda: root)
+
+    assert artifacts._repository_authority() is artifacts._repository_authority()
+
+
+@pytest.mark.parametrize(
+    "relative_anchor",
+    [
+        Path("META/project-state.json"),
+        Path(
+            ".omo/drafts/"
+            "w2-c4-governance-promotion-remediation-r3-admission-contract-2026-08-08.md"
+        ),
+    ],
+)
+def test_repository_authority_cache_fails_closed_after_canonical_anchor_drift(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    relative_anchor: Path,
+) -> None:
+    root = _authority_root(tmp_path)
+    monkeypatch.setattr(artifacts, "_trusted_repository_root", lambda: root)
+    original = artifacts._repository_authority()
+    anchor = root / relative_anchor
+    anchor.write_bytes(anchor.read_bytes() + b"\nDRIFT")
+
+    with pytest.raises(ValueError, match="canonical|contract|drift"):
+        reacquired = artifacts._repository_authority()
+        assert reacquired is not original
 
 
 def _payload(**overrides: object) -> dict[str, object]:
@@ -148,6 +220,31 @@ def test_validate_parent_ref_authenticates_recursive_tree_inside_admitted_root(
     document = validate_parent_ref(child_ref, admitted_root=root)
 
     assert document["parents"] == [parent_ref.__dict__]
+
+
+def test_recursive_parent_accepts_authority_bound_raw_json_by_exact_byte_digest(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "trusted"
+    raw_path = root / "bundle" / "tasks.json"
+    raw_path.parent.mkdir(parents=True)
+    raw = b'{"tasks": []}\n'
+    raw_path.write_bytes(raw)
+    raw_ref = ArtifactRef(
+        raw_path.as_posix(), artifacts.hashlib.sha256(raw).hexdigest()
+    )
+    child_ref = publish_new_json(
+        root / "child.json",
+        _payload(parents=[raw_ref.__dict__]),
+        dry_run=False,
+    )
+
+    document = validate_parent_ref(child_ref, admitted_root=root)
+
+    assert document["parents"] == [raw_ref.__dict__]
+    raw_path.write_bytes(b'{"tasks": ["drift"]}\n')
+    with pytest.raises(ValueError, match="digest"):
+        validate_parent_ref(child_ref, admitted_root=root)
 
 
 @pytest.mark.parametrize(
