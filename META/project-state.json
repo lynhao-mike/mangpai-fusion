@@ -15,6 +15,13 @@
   "tool_registry": "tools/tool_registry.py",
   "rule_status_scanner": "tools/rule_status_scan.py",
   "iteration_state": "META/iteration-state.json",
+  "progress_dashboard": {
+    "machine_state": "progress/PROJECT_PROGRESS.json",
+    "human_dashboard": "progress/PROJECT_PROGRESS.md",
+    "milestones": "progress/MILESTONES.md",
+    "history": "progress/PROGRESS_HISTORY.md",
+    "entrypoint": "tools/project_progress.py"
+  },
   "changelog": "META/rule-changelog.md",
   "arbitration_log": "META/arbitration-log.md",
   "contract_overview": "engine/contracts/00-OVERVIEW.md",

@@ -11,6 +11,7 @@ import re
 from typing import Any
 
 from engine.v5.domain import V5ArbitrationResult, V5Claim, V5RunSnapshot, V5_SCHOOLS
+from engine.v5.adjudication import build_v5_adjudication_units
 from engine.v5.domain_slices.orchestrator import DOMAIN_NAMES
 
 SCHOOL_NAMES = {
@@ -72,6 +73,10 @@ class DomainView:
     name: str
     conclusion: str
     conclusion_confidence: str
+    adjudication_status: str
+    adjudication_summary: str
+    mapping_status: str
+    mapping_summary: str
     conflict_summary: str
     conflict_rationale: str
     cards: tuple[ClaimCardView, ...] = field(default_factory=tuple)
@@ -181,7 +186,47 @@ def build_domain_report_view(snapshot: V5RunSnapshot) -> DomainReportView:
         domain_name = DOMAIN_NAMES[domain]
         arbitration = _arbitration_for_domain(snapshot, domain_name)
         fallback = str(snapshot.metadata.get("domain_conclusions", {}).get(domain, "证据不足"))
-        conclusion = public(arbitration.conclusion if arbitration and arbitration.conclusion else fallback)
+        legacy_conclusion = public(arbitration.conclusion if arbitration and arbitration.conclusion else fallback)
+        domain_claims = [claim for claim in snapshot.claims if claim.domain == domain_name]
+        claim_ids = {claim.claim_id for claim in domain_claims}
+        units = [
+            item for item in snapshot.adjudication_units
+            if item.domain == domain_name
+            and set(item.candidate_claim_ids).issubset(claim_ids)
+        ]
+        if not units and domain_claims:
+            units = [item for item in build_v5_adjudication_units(domain_claims)]
+        unresolved_count = sum(item.status == "UNRESOLVED" for item in units)
+        coexist_count = sum(item.status == "COEXIST" for item in units)
+        primary_count = sum(item.status == "PRIMARY" for item in units)
+        mapped_count = sum(item.mapping_status == "MAPPED" for item in units)
+        no_mapping_count = sum(item.mapping_status == "NO_MAPPING" for item in units)
+        if mapped_count:
+            mapping_status = "已映射"
+            mapping_summary = "存在已批准的现实指标映射。"
+        elif no_mapping_count:
+            mapping_status = "NO_MAPPING"
+            mapping_summary = "当前没有已批准的现实指标映射，不输出学历、职业、财富或婚姻现实标签。"
+        else:
+            mapping_status = "未评估"
+            mapping_summary = "现实指标映射尚未评估。"
+        if unresolved_count:
+            adjudication_status = "未决"
+            adjudication_summary = "同一目标存在支持与反对命题，当前不形成唯一主断。"
+            conclusion = adjudication_summary
+        elif primary_count or coexist_count:
+            if coexist_count:
+                adjudication_status = "同向并存"
+                adjudication_summary = "已形成同向主断，但多个命题并存，不合并为单一命题。"
+            else:
+                adjudication_status = "已形成主断"
+                adjudication_summary = "目标级裁决已形成主断。"
+            conclusion = f"{adjudication_summary}{legacy_conclusion}"
+        else:
+            adjudication_status = "弃权"
+            adjudication_summary = "当前领域没有形成可输出的目标级主断。"
+            conclusion = adjudication_summary
+        conclusion = public(conclusion)
         conclusion_confidence = (
             _confidence_text(arbitration.confidence.tier, arbitration.confidence.score)
             if arbitration
@@ -189,7 +234,6 @@ def build_domain_report_view(snapshot: V5RunSnapshot) -> DomainReportView:
         )
         conflict_type = arbitration.conflict_type if arbitration else "none"
         cards: list[ClaimCardView] = []
-        domain_claims = [claim for claim in snapshot.claims if claim.domain == domain_name]
         domain_claims.sort(key=lambda claim: (V5_SCHOOLS.index(claim.school), claim.claim))
         for claim in domain_claims:
             status, audit_reason = reasons.get((claim.school, domain), (str(claim.metadata.get("slice_status", "")), ""))
@@ -216,6 +260,10 @@ def build_domain_report_view(snapshot: V5RunSnapshot) -> DomainReportView:
                 name=domain_name,
                 conclusion=conclusion,
                 conclusion_confidence=conclusion_confidence,
+                adjudication_status=adjudication_status,
+                adjudication_summary=public(adjudication_summary),
+                mapping_status=mapping_status,
+                mapping_summary=public(mapping_summary),
                 conflict_summary=CONFLICT_NAMES.get(conflict_type, "存在需人工判读的命题冲突"),
                 conflict_rationale=public(arbitration.rationale if arbitration else "当前无可执行冲突命题。"),
                 cards=tuple(cards),

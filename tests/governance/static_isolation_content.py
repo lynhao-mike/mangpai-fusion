@@ -47,8 +47,8 @@ PREDICTION_RESULT_LABELS: Final = frozenset(
     }
 )
 
-type YamlScalar = str | int | float | bool | None
-type YamlNode = YamlScalar | list[YamlNode] | dict[YamlScalar, YamlNode]
+YamlScalar = str | int | float | bool | None
+YamlNode = YamlScalar | list["YamlNode"] | dict[YamlScalar, "YamlNode"]
 
 
 def source_token_issues(

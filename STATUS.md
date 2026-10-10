@@ -11,6 +11,7 @@
 | 产品版本 | 见 [`VERSION`](VERSION) |
 | Python 包版本 | 见 [`engine/__init__.py`](engine/__init__.py) |
 | 机器可读项目状态 | [`META/project-state.json`](META/project-state.json) |
+| 文本式项目进度 | [`progress/PROJECT_PROGRESS.md`](progress/PROJECT_PROGRESS.md)；机器状态见 [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json) |
 | 迭代计数状态 | [`META/iteration-state.json`](META/iteration-state.json) |
 | 契约总览 | [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md) |
 | 工具索引 | [`tools/README.md`](tools/README.md) |

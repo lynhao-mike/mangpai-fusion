@@ -9,6 +9,7 @@ mapping/
 ├── exclusive.md                              上层 · 独门层（单派独有，含历史命中数据）
 ├── conflicts.md                              冲突仲裁登记（多派结论相反）
 ├── outcome-taxonomy-v1.yaml                  v5 · 现实结果等级标签本体
+├── chart-l2-measurement-registry-v1.json     CHART_L2 → 现实测量候选与准入状态
 └── real-world-function-evidence-cards-v1.yaml F01–F12 · 现实功能证据卡机器附录
 ```
 
@@ -35,3 +36,7 @@ mapping/
 ```
 
 详细仲裁规则见 [`../engine/arbitration.md`](../engine/arbitration.md)。
+
+## CHART_L2 测量注册表
+
+[`chart-l2-measurement-registry-v1.json`](chart-l2-measurement-registry-v1.json) 只登记命局语义到现实测量对象的候选、审批、冻结和 pilot 准入状态。`UNRESOLVED`、`PROPOSED` 与 `REJECTED` 均不得进入现实评分；当前注册表为 `PROPOSAL_ONLY`。校验入口为 [`../tools/measurement_registry.py`](../tools/measurement_registry.py)。

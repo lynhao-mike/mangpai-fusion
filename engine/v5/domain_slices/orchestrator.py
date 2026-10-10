@@ -15,12 +15,18 @@ from engine.v5.domain import (
     V5_SCHOOLS,
 )
 from engine.v5.domain_metadata_integrity import build_domain_evaluation_metadata, seal_capability_metadata
+from engine.v5.adjudication import build_v5_adjudication_units
 from engine.v5.domain_slices import build_domain_registry
 from engine.v5.domain_slices.context import build_analysis_context
 from engine.v5.domain_slices.contract import DomainAnalysisContext, DomainAnalysisRequest, SliceAudit, SliceResult
 from engine.v5.domain_slices.registry import DomainSliceRegistry, SliceRegistration
 from engine.v5.high_risk_gate import apply_high_risk_gate
-from engine.v5.runner import arbitrate_claims, build_learning_signals, build_structure_graph
+from engine.v5.runner import (
+    arbitrate_claims,
+    build_learning_signals,
+    build_structure_graph,
+    prepare_claims_for_adjudication,
+)
 
 DOMAIN_NAMES = {"career": "事业", "wealth": "财富", "marriage": "婚姻"}
 
@@ -138,6 +144,9 @@ def run_domain_analysis(
     chart = _chart(context)
     graph = build_structure_graph(context.case_id, chart, claims)
     arbitrations = arbitrate_claims(claims)
+    adjudication_units = build_v5_adjudication_units(
+        prepare_claims_for_adjudication(claims)
+    )
     ledger = V5PredictionLedger(case_id=context.case_id, predictions=[])
     output = V5Output(
         case_id=context.case_id,
@@ -147,6 +156,7 @@ def run_domain_analysis(
         arbitration_results=arbitrations,
         prediction_ledger=ledger,
         learning_signals=build_learning_signals(context.case_id, claims, ledger),
+        adjudication_units=list(adjudication_units),
     )
     domain_conclusions = {
         domain: "证据不足"

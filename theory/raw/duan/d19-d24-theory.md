@@ -495,7 +495,7 @@ level_signal: null
 confidence_init: 4.0
 falsifiable_by: 有入墓但大运化解则不入狱
 cross_ref:
-  m1_internal: M1-D-200, M1-D-174 应期铁律
+  m1_internal: M1-D-200, M1-D-174 流年以应期为主（结合原局与大运作用）
   topics: [prison-litigation]
 calibration_rule_id: R-M1-50
 case_evidence:
@@ -545,7 +545,7 @@ level_signal: null
 confidence_init: 4.0
 falsifiable_by: 有车象但无凶象引动则只是开车多不出事
 cross_ref:
-  m1_internal: M1-D-178 穿6组分级, M1-D-180 连根体被去
+  m1_internal: M1-D-178 六穿性质/功能边界（含来源冲突）, M1-D-180 连根体被去
   topics: [accident]
 calibration_rule_id: R-M1-50
 case_evidence:
@@ -886,7 +886,7 @@ case_evidence:
 | M1-D-159 婚姻好坏 | upgrade_d20 | 10节完整系统(好/差/独身/桃花/伤克/多婚/包局) | D-20 全章 |
 | M1-D-171 过河拆桥 | examples_d19 | D-19 过河拆桥8例验证 | D-19 §过河拆桥 |
 | M1-D-172 财富4级别 | examples_d19d23 | 官杀当财5例+食伤当财3例+比禄当财2例 | D-19+D-23 §四 |
-| M1-D-174 应期铁律 | examples_d19d23 | D-19/D-23 应期章综合应用6例 | D-19+D-23 §一 |
+| M1-D-174 应期原则 | examples_d19d23 | D-19/D-23 应期章综合应用6例；结合 D-32 对流年作用边界的说明 | D-19+D-23 §一 + D-32 §应期 |
 | M1-D-179 5结构 | examples_d24 | D-24 按结构分类判定职业(去用=执法/合用=开店) | D-24 |
 | M1-D-180 去用铁律 | examples_d23 | 车祸例：连根体被冲=致命 | D-23 §七 |
 | M1-D-182 宫主星辅 | upgrade_d20 | 正宫/副宫精确定义+10节系统化 | D-20 §概念+全章 |

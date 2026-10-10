@@ -18,9 +18,10 @@ AI agent 执行任务前按以下顺序读取：
 2. [`AGENTS.md`](AGENTS.md)：AI 调用规则与事实源矩阵。
 3. [`META/project-state.json`](META/project-state.json)：机器可读当前项目状态。
 4. [`STATUS.md`](STATUS.md)：稳定项目仪表盘。
-5. [`tools/README.md`](tools/README.md)：唯一工具索引。
-6. [`engine/README.md`](engine/README.md)：引擎接口说明。
-7. [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)：契约总览。
+5. [`progress/PROJECT_PROGRESS.md`](progress/PROJECT_PROGRESS.md)：文本式阶段进度仪表盘；机器状态见 [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json)。
+6. [`tools/README.md`](tools/README.md)：唯一工具索引。
+7. [`engine/README.md`](engine/README.md)：引擎接口说明。
+8. [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)：契约总览。
 
 不要从历史计划、旧 handoff 或 deprecated 工具开始推断当前流程。
 
@@ -33,6 +34,7 @@ AI agent 执行任务前按以下顺序读取：
 | 产品版本 | [`VERSION`](VERSION) | 单行机器可读版本号；不要从阶段名推断。 |
 | Python 包版本 | [`engine/__init__.py`](engine/__init__.py) | 必须与 [`VERSION`](VERSION) 一致。 |
 | 当前项目状态 | [`META/project-state.json`](META/project-state.json) | 给 AI / 脚本读取的项目级状态；`current_phase` 是工作阶段，不等同于产品版本。 |
+| 项目进度状态 | [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json) | 阶段、任务、权重、阻塞项和进入/退出条件的机器状态源。 |
 | 迭代计数状态 | [`META/iteration-state.json`](META/iteration-state.json) | 反馈完成案、迭代序号等机器状态。 |
 | 工具状态 | [`tools/README.md`](tools/README.md) + [`tools/tool_registry.py`](tools/tool_registry.py) | 工具 active/deprecated/internal/missing 分类。 |
 | 规则状态快照 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) | 易漂移规则数量、N_eff、review 清单运行时扫描。 |

@@ -1,0 +1,53 @@
+{
+  "schema_version": "career-event-development-replay-blind-cohort/v1",
+  "dataset_id": "career-role-change-development-replay-v1",
+  "dataset_classification": "development_replay_only",
+  "promotion_eligible": false,
+  "unseen_holdout_evidence": "none",
+  "normalization_policy": {
+    "unit": "source_case_id@calendar_year",
+    "event_scope": "One chart-only career-role-change evaluation window per source case and calendar year.",
+    "chart_boundary": "This artifact contains only sex marker, four pillars, declared dayun ranges, and replay years. It contains no labels, source references, known facts, feedback, verification, observed outcomes, or calibration data."
+  },
+  "charts": [
+    {
+      "source_case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+      "sex_marker": "乾",
+      "four_pillars": ["己巳", "癸酉", "辛丑", "己丑"],
+      "dayun_steps": [
+        {"ganzhi": "癸酉", "start_year": 1999, "end_year": 2008},
+        {"ganzhi": "壬申", "start_year": 2009, "end_year": 2018},
+        {"ganzhi": "辛未", "start_year": 2019, "end_year": 2028}
+      ]
+    },
+    {
+      "source_case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申",
+      "sex_marker": "乾",
+      "four_pillars": ["庚申", "丁亥", "乙巳", "甲申"],
+      "dayun_steps": [
+        {"ganzhi": "庚寅", "start_year": 2002, "end_year": 2011},
+        {"ganzhi": "辛卯", "start_year": 2012, "end_year": 2021}
+      ]
+    },
+    {
+      "source_case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯",
+      "sex_marker": "乾",
+      "four_pillars": ["丁卯", "丁未", "丙子", "辛卯"],
+      "dayun_steps": [
+        {"ganzhi": "甲辰", "start_year": 2013, "end_year": 2022}
+      ]
+    }
+  ],
+  "replay_units": [
+    {"replay_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2015", "source_case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑", "year": 2015},
+    {"replay_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2019", "source_case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑", "year": 2019},
+    {"replay_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2021", "source_case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑", "year": 2021},
+    {"replay_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2022", "source_case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑", "year": 2022},
+    {"replay_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2005", "source_case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申", "year": 2005},
+    {"replay_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2017", "source_case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申", "year": 2017},
+    {"replay_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2019", "source_case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申", "year": 2019},
+    {"replay_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2021", "source_case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申", "year": 2021},
+    {"replay_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯@2014", "source_case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯", "year": 2014},
+    {"replay_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯@2018", "source_case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯", "year": 2018}
+  ]
+}

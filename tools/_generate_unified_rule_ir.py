@@ -234,7 +234,7 @@ def main() -> None:
             schema_mismatch_points.append(f"top_level_format:{fmt}")
         if theory_key in {"duan", "gao", "yang", "ren"}:
             schema_mismatch_points.append("blind_school_index_lacks_explicit_domain_on_many_rules")
-        if theory_key == "tiaohou_ditiansui":
+        if theory_key == "tiaohou_ditiansui" and fmt == "list_of_Rule_wrappers":
             schema_mismatch_points.append("top_level_is_list_of_Rule_wrappers_not_production_rules_mapping")
         for name, count in sorted(item_mismatches.items()):
             schema_mismatch_points.append(f"{name}:{count}")

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from types import MappingProxyType
 from typing import Any, ClassVar, Mapping, TypeVar
 
@@ -65,8 +65,8 @@ class ConditionalIdentity(FrozenContract):
     evidence_completeness_band: str
 
     def __post_init__(self) -> None:
-        for field in fields(self):
-            _require(getattr(self, field.name), field.name)
+        for declared_field in fields(self):
+            _require(getattr(self, declared_field.name), declared_field.name)
 
     @property
     def key(self) -> str:
@@ -93,7 +93,7 @@ class ConditionalLearningSignal(FrozenContract):
     feedback_quality: float
     attributable: bool
     time_error: float | None = None
-    metadata: Mapping[str, Any] = MappingProxyType({})
+    metadata: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
 
     def __post_init__(self) -> None:
         for name in ("signal_id", "feedback_observation_id", "claim_id", "rule_id"):
@@ -158,7 +158,7 @@ class LearningDecision(FrozenContract):
     requires_human_approval: bool
     snapshot_ref: str | None
     rationale: str
-    audit: Mapping[str, Any] = MappingProxyType({})
+    audit: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
 
     _tuple_fields: ClassVar[frozenset[str]] = frozenset({"proposed_credible_interval"})
 
@@ -200,7 +200,7 @@ class ManualReviewItem(FrozenContract):
     decision_id: str | None
     reason: str
     target_identity: ConditionalIdentity
-    context: Mapping[str, Any] = MappingProxyType({})
+    context: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
 
     def __post_init__(self) -> None:
         for name in ("review_id", "signal_id", "reason"):

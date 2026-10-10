@@ -487,9 +487,18 @@ class AnalysisOutputProto:  # pragma: no cover
 
 
 def _analysis_to_dict(obj: Any) -> dict[str, Any]:
-    """支持 dataclass / dict / 自定义 dataclass。"""
+    """支持 dict、自定义序列化对象与普通 dataclass。
+
+    许多冻结输出对象用只读映射保护内部状态；优先使用它们自己的
+    ``to_dict``，避免 ``dataclasses.asdict`` 直接深拷贝 ``mappingproxy``。
+    """
     if isinstance(obj, dict):
         return obj
+    serializer = getattr(obj, "to_dict", None)
+    if callable(serializer):
+        serialized = serializer()
+        if isinstance(serialized, dict):
+            return serialized
     if dataclasses.is_dataclass(obj):
         return dataclasses.asdict(obj)
     # 兜底：尝试 vars()

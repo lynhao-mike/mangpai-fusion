@@ -33,6 +33,8 @@ def test_report_shows_chart_time_scope_and_explicit_abstentions_without_internal
     assert "## 婚姻分析" in report
     assert "2026 丙午" in report
     assert "融合判断：**" in report
+    assert "目标级裁决状态：" in report
+    assert "现实映射状态：NO_MAPPING" in report
     assert "任付红" in report
     assert snapshot.run_id not in report
     assert "claim_id" not in report
@@ -135,7 +137,10 @@ def test_report_workbench_renders_fused_conclusion_and_six_source_claim_cards() 
 
     report = render_domain_analysis_report(snapshot)
 
-    assert "融合结论：**财富以积累为主，但扩张期需控制回撤。**" in report
+    assert "目标级裁决状态：未决" in report
+    assert "当前不形成唯一主断" in report
+    assert "没有已批准的现实指标映射" in report
+    assert "融合结论：**同一目标存在支持与反对命题，当前不形成唯一主断。**" in report
     assert "### 六源逐命题工作台" in report
     for school_name in ("子平", "滴天髓", "高德臣", "段建业", "杨清娟", "任付红"):
         assert school_name in report
@@ -151,6 +156,38 @@ def test_report_workbench_renders_fused_conclusion_and_six_source_claim_cards() 
     assert "需人工复核" in report
     assert "现实概率" not in report
     assert lint_report_text(report) == []
+
+
+def test_report_does_not_publish_domain_conclusion_when_same_target_is_unresolved() -> None:
+    base = run_domain_analysis(
+        DomainAnalysisRequest(
+            gender="乾",
+            birth_datetime=datetime(1990, 1, 1, 12, 0),
+            as_of_date=date(2026, 7, 31),
+            domains=("wealth",),
+        )
+    )
+    claims = [
+        _claim("ziping", claim="财富来源支持经营。", stance="support"),
+        _claim("duan_jianye", claim="财富来源反对经营。", stance="oppose"),
+    ]
+    snapshot = replace(
+        base,
+        claims=claims,
+        arbitration_results=[
+            V5ArbitrationResult(
+                domain="财富",
+                stage="event_realization",
+                conclusion="旧汇总不应覆盖未决目标。",
+            )
+        ],
+    )
+
+    report = render_domain_analysis_report(snapshot)
+
+    assert "目标级裁决状态：未决" in report
+    assert "当前不形成唯一主断" in report
+    assert "旧汇总不应覆盖未决目标" not in report
 
 
 @pytest.mark.parametrize(

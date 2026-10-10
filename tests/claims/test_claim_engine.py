@@ -341,7 +341,9 @@ def test_production_task_catalog_exposes_ziping_structure_task_for_default_orche
     )
 
     indexed = {row.school_id: row for row in rows}
-    assert indexed["ziping"].state == "claim"
+    assert indexed["ziping"].state == "abstain"
+    assert indexed["ziping"].predictions == ()
+    assert "unresolved competition" in indexed["ziping"].rationale
     assert indexed["ren"].state == "unsupported"
 
 

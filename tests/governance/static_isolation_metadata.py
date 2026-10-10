@@ -9,7 +9,7 @@ ACTIVE_ENTRYPOINT_KEYS: Final = (
     "active_report_entrypoints",
 )
 
-type JsonNode = str | int | float | bool | None | list[JsonNode] | dict[str, JsonNode]
+JsonNode = str | int | float | bool | None | list["JsonNode"] | dict[str, "JsonNode"]
 
 
 def active_entrypoint_paths(root: Path) -> tuple[Path, ...]:

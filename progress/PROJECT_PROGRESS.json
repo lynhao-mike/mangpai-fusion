@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0",
+  "project": "mangpai-fusion",
+  "last_updated": "2026-10-07",
+  "status_source": "META/project-state.json",
+  "policy": {
+    "completion_calculation": "按阶段权重与任务权重计算；每个任务必须显式填写 completion，不允许凭感觉填写百分比。",
+    "stage_completion_is_not_readiness": true,
+    "production_readiness_is_separate": true,
+    "real_outcomes_scope": "现实结果只进入验证层，不得进入盲态裁决、冻结分析制品或 Measurement Spec 设计。"
+  },
+  "stages": [
+    {
+      "id": "P01",
+      "name": "基础架构、理论资料与规则入库",
+      "status": "COMPLETE",
+      "readiness": "COMPLETE",
+      "weight": 10,
+      "milestones": ["M1", "M2", "M3", "M4"],
+      "entry_conditions": ["仓库具备统一 schema、理论资料入口与规则数据结构。"],
+      "exit_conditions": ["M1-M4 完成，四派资料入库并具备跨派映射基础。"],
+      "tasks": [
+        {"id": "P01-T01", "label": "仓库骨架、schema 与语料迁入", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P01-T02", "label": "高派与段派规律入库", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P01-T03", "label": "杨派与任派规律入库", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P01-T04", "label": "跨派映射矩阵建立", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]}
+      ],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "id": "P02",
+      "name": "引擎、报告、反馈闭环与版本契约",
+      "status": "COMPLETE",
+      "readiness": "LOCKED",
+      "weight": 15,
+      "milestones": ["M5", "M6", "M7", "M8", "M9", "M10"],
+      "entry_conditions": ["理论与规则资料已具备可执行入口。"],
+      "exit_conditions": ["M5-M10 完成，分析、报告、反馈和版本契约均有稳定入口。"],
+      "tasks": [
+        {"id": "P02-T01", "label": "双轨置信度引擎与仲裁引擎", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P02-T02", "label": "主分析器与输入输出模板", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P02-T03", "label": "META 自迭代、校准工具与案例归档", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P02-T04", "label": "v1.2 双层引擎契约与发布门槛", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P02-T05", "label": "v1.2 维度引擎与三层护栏", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]},
+        {"id": "P02-T06", "label": "v1.3 自迭代闭环 D1-D8", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["STATUS.md"]}
+      ],
+      "blockers": [],
+      "next_actions": []
+    },
+    {
+      "id": "P03",
+      "name": "六源三领域分析与治理能力",
+      "status": "COMPLETE",
+      "readiness": "ENGINEERING_COMPLETE / REAL_COHORT_NOT_READY",
+      "weight": 15,
+      "milestones": [],
+      "entry_conditions": ["基础分析、报告和反馈闭环已稳定。"],
+      "exit_conditions": ["六源三领域工程能力完成；现实验证另由 P06 管理，不能由工程完成状态替代。"],
+      "tasks": [
+        {"id": "P03-T01", "label": "六源三领域分析引擎", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["META/project-state.json"]},
+        {"id": "P03-T02", "label": "命理师逐命题报告工作台", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["META/project-state.json"]},
+        {"id": "P03-T03", "label": "十八槽位 registration/runtime 诊断", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["META/project-state.json"]},
+        {"id": "P03-T04", "label": "高风险命题失败关闭门禁", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["META/project-state.json"]},
+        {"id": "P03-T05", "label": "命题级 create-only 反馈与只读校准候选", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["META/project-state.json"]}
+      ],
+      "blockers": ["真人 prospective cohort 仍为 not_ready；该项不回写为工程完成。"],
+      "next_actions": ["由 P06 继续处理真实 cohort 与未来观察。"]
+    },
+    {
+      "id": "P04",
+      "name": "命局候选保留与目标级裁决",
+      "status": "COMPLETE",
+      "readiness": "CHART_ONLY_EXIT_LANDED / PRODUCTION_MAPPING_PENDING",
+      "weight": 20,
+      "milestones": [],
+      "entry_conditions": ["现有命题可以保留并按 domain/task/target 组织。"],
+      "exit_conditions": ["目标级裁决稳定输出；现实映射注册、Measurement Spec 和完整生产报告切换另需完成。"],
+      "tasks": [
+        {"id": "P04-T01", "label": "统一 AdjudicationUnit 与候选保留", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["plans/chart-adjudication-implementation-2026-10-07.md"]},
+        {"id": "P04-T02", "label": "按 target_id 的同向/冲突/不支持裁决", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["plans/chart-adjudication-implementation-2026-10-07.md"]},
+        {"id": "P04-T03", "label": "V5 目标级报告视图不覆盖未决结论", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["plans/chart-adjudication-implementation-2026-10-07.md"]},
+        {"id": "P04-T04", "label": "现实映射注册表与单位级映射状态", "status": "COMPLETE", "completion": 1.0, "weight": 3, "evidence": ["mapping/chart-l2-measurement-registry-v1.json", "tools/measurement_registry.py"]},
+        {"id": "P04-T05", "label": "chart-only 结构裁决出口与边界验收", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["tools/chart_adjudication.py", "tests/test_chart_adjudication_cli.py"]}
+      ],
+      "blockers": ["候选映射已登记，但没有已批准的现实映射；未完成映射的裁决单位必须保持 NO_MAPPING。"],
+      "next_actions": ["保持现实映射独立受 P05 管理，不把 chart-only 主断直接写成现实标签。"]
+    },
+    {
+      "id": "P05",
+      "name": "L2 → 现实测量层",
+      "status": "IN_PROGRESS",
+      "readiness": "GOVERNANCE_APPROVED / SPEC_PENDING",
+      "weight": 15,
+      "milestones": [],
+      "entry_conditions": ["L2→现实测量层治理框架已获批准，且不自动批准任何具体映射。"],
+      "exit_conditions": ["具体 L2 完成语义保真审查、映射类型与 Measurement Spec 冻结，并由独立验证流程接收。"],
+      "tasks": [
+        {"id": "P05-T01", "label": "治理框架获批并冻结边界", "status": "COMPLETE", "completion": 1.0, "weight": 3, "evidence": ["plans/measurement/"]},
+        {"id": "P05-T02", "label": "“学业有成”候选测量对象审计", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["plans/measurement/"]},
+        {"id": "P05-T03", "label": "“学业有成”候选 Measurement Spec v0.1 结构化制品", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["plans/measurement/academic-achievement-v0.1-spec.json"]},
+        {"id": "P05-T04", "label": "映射、观察与证伪条件冻结", "status": "BLOCKED", "completion": 0.0, "weight": 2, "evidence": ["plans/measurement/"]},
+        {"id": "P05-T05", "label": "blind pilot 准入审查", "status": "BLOCKED", "completion": 0.0, "weight": 1, "evidence": ["META/project-state.json"]}
+      ],
+      "blockers": ["当前尚未冻结任何具体 L2→L3 Measurement Spec；不得启动 blind pilot。"],
+      "next_actions": ["先完成一个具体候选的 Measurement Spec，允许最终被拒绝为 NO_MAPPING。"]
+    },
+    {
+      "id": "P06",
+      "name": "As-of / prospective 验证",
+      "status": "VALIDATING",
+      "readiness": "ENGINEERING_COMPLETE / COHORT_NOT_READY",
+      "weight": 15,
+      "milestones": [],
+      "entry_conditions": ["盲态输入、冻结、揭示、评分协议已实现。"],
+      "exit_conditions": ["完成真实未知结果 cohort、未来观察与独立评分，并产生可审计验证证据。"],
+      "tasks": [
+        {"id": "P06-T01", "label": "blind bundle / freeze / reveal / score 协议", "status": "COMPLETE", "completion": 1.0, "weight": 3, "evidence": ["META/project-state.json"]},
+        {"id": "P06-T02", "label": "单案例 prospective 链路实现", "status": "COMPLETE", "completion": 1.0, "weight": 1, "evidence": ["META/project-state.json", "engine/evaluation/prospective_single_case.py", "engine/evaluation/prospective_capability_identity.py"]},
+        {"id": "P06-T03", "label": "真实 prospective cohort 建立", "status": "READY", "completion": 0.0, "weight": 3, "evidence": ["META/project-state.json"]},
+        {"id": "P06-T04", "label": "未来观察完成并形成评分数据", "status": "READY", "completion": 0.0, "weight": 2, "evidence": ["META/project-state.json"]},
+        {"id": "P06-T05", "label": "经验验证门禁与生产准入结论", "status": "BLOCKED", "completion": 0.0, "weight": 2, "evidence": ["META/project-state.json"]}
+      ],
+      "blockers": ["domain prospective real_cohort=not_ready。", "单案例 future_observation 尚未完成。"],
+      "next_actions": ["在不泄漏现实结果的前提下建立真实 cohort，再执行冻结后的 reveal/score。"]
+    },
+    {
+      "id": "P07",
+      "name": "生产切换与最终验收",
+      "status": "BLOCKED",
+      "readiness": "NOT_READY",
+      "weight": 10,
+      "milestones": [],
+      "entry_conditions": ["P04、P05、P06 的退出条件均已满足。"],
+      "exit_conditions": ["现实映射、未知结果验证与生产准入门禁全部通过，production_ready=true。"],
+      "tasks": [
+        {"id": "P07-T01", "label": "production readiness 门禁实现与失败关闭输出", "status": "COMPLETE", "completion": 1.0, "weight": 2, "evidence": ["engine/evaluation/domain_prospective.py", "tools/domain_prospective_cohort.py"]},
+        {"id": "P07-T02", "label": "production readiness 门禁通过", "status": "BLOCKED", "completion": 0.0, "weight": 2, "evidence": ["META/project-state.json"]},
+        {"id": "P07-T03", "label": "最终验收与发布判定", "status": "BLOCKED", "completion": 0.0, "weight": 1, "evidence": ["META/project-state.json"]}
+      ],
+      "blockers": ["现实测量映射不足。", "真实未知结果验证尚未完成。", "当前 production_ready=false。"],
+      "next_actions": ["先完成 P04-P06 的阻塞项，不提前切换生产入口。"]
+    }
+  ],
+  "global_blockers": [
+    "当前生产状态仍为 production_ready=false，不能把工程落地等同于准确性验证。",
+    "现实结果不得污染盲态裁决与已冻结分析制品。"
+  ],
+  "next_stage": "P05",
+  "next_actions": [
+    "审查并决定候选 Measurement Spec 是否可以进入正式冻结；不批准时保持 UNRESOLVED。",
+    "在具体 Measurement Spec 获批前保持 blind pilot 暂停。",
+    "保持 P06 的真实 cohort 状态为 not_ready，直到有独立未知结果数据。"
+  ]
+}

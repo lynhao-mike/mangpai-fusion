@@ -70,6 +70,18 @@ V5ArbitrationStage = Literal[
 V5FeedbackState = Literal["pending", "hit", "miss", "partial", "skipped"]
 
 
+def _load_adjudication_units(raw: Any) -> list[Any]:
+    """懒加载裁决协议，避免数据契约模块与 decision 包形成导入环。"""
+
+    from engine.decision.adjudication_protocol import AdjudicationUnit
+
+    return [
+        item if isinstance(item, AdjudicationUnit) else AdjudicationUnit.from_dict(item)
+        for item in raw
+        if isinstance(item, (dict, AdjudicationUnit))
+    ]
+
+
 @dataclass(frozen=True)
 class V5Confidence:
     """v5 双轨置信度：等级与百分比并存，但不等同于事件概率。"""
@@ -382,6 +394,7 @@ class V5RunSnapshot:
     arbitration_results: list[V5ArbitrationResult] = field(default_factory=list)
     prediction_ledger: V5PredictionLedger = field(default_factory=lambda: V5PredictionLedger(case_id=""))
     learning_signals: list[V5LearningSignal] = field(default_factory=list)
+    adjudication_units: list[Any] = field(default_factory=list)
     artifact_bindings: dict[str, str] = field(default_factory=dict)
     engine_version: str = ""
     output_schema_version: str = V5_SCHEMA_VERSION
@@ -410,6 +423,7 @@ class V5RunSnapshot:
             arbitration_results=list(output.arbitration_results),
             prediction_ledger=output.prediction_ledger,
             learning_signals=list(output.learning_signals),
+            adjudication_units=list(output.adjudication_units),
             artifact_bindings=dict(artifact_bindings or {}),
             engine_version=engine_version,
             output_schema_version=output.schema_version,
@@ -431,6 +445,7 @@ class V5RunSnapshot:
             "arbitration_results": [item.to_dict() for item in self.arbitration_results],
             "prediction_ledger": self.prediction_ledger.to_dict(),
             "learning_signals": [item.to_dict() for item in self.learning_signals],
+            "adjudication_units": [item.to_dict() for item in self.adjudication_units],
             "artifact_bindings": dict(self.artifact_bindings),
             "metadata": dict(self.metadata),
         }
@@ -447,6 +462,7 @@ class V5RunSnapshot:
             arbitration_results=[V5ArbitrationResult.from_dict(x) for x in data.get("arbitration_results", [])],
             prediction_ledger=V5PredictionLedger.from_dict(data.get("prediction_ledger", {"case_id": case_id})),
             learning_signals=[V5LearningSignal.from_dict(x) for x in data.get("learning_signals", [])],
+            adjudication_units=_load_adjudication_units(data.get("adjudication_units", [])),
             artifact_bindings={str(k): str(v) for k, v in data.get("artifact_bindings", {}).items()},
             engine_version=str(data.get("engine_version", "")),
             output_schema_version=str(data.get("output_schema_version", V5_SCHEMA_VERSION)),
@@ -464,6 +480,7 @@ class V5RunSnapshot:
             arbitration_results=list(self.arbitration_results),
             prediction_ledger=self.prediction_ledger,
             learning_signals=list(self.learning_signals),
+            adjudication_units=list(self.adjudication_units),
             schema_version=self.output_schema_version,
         )
 
@@ -658,6 +675,7 @@ class V5Output:
     arbitration_results: list[V5ArbitrationResult] = field(default_factory=list)
     prediction_ledger: V5PredictionLedger = field(default_factory=lambda: V5PredictionLedger(case_id=""))
     learning_signals: list[V5LearningSignal] = field(default_factory=list)
+    adjudication_units: list[Any] = field(default_factory=list)
     schema_version: str = V5_SCHEMA_VERSION
 
     def to_dict(self) -> dict[str, Any]:
@@ -670,6 +688,7 @@ class V5Output:
             "arbitration_results": [item.to_dict() for item in self.arbitration_results],
             "prediction_ledger": self.prediction_ledger.to_dict(),
             "learning_signals": [item.to_dict() for item in self.learning_signals],
+            "adjudication_units": [item.to_dict() for item in self.adjudication_units],
         }
 
     @classmethod
@@ -683,6 +702,7 @@ class V5Output:
             arbitration_results=[V5ArbitrationResult.from_dict(x) for x in data.get("arbitration_results", [])],
             prediction_ledger=V5PredictionLedger.from_dict(data.get("prediction_ledger", {"case_id": case_id})),
             learning_signals=[V5LearningSignal.from_dict(x) for x in data.get("learning_signals", [])],
+            adjudication_units=_load_adjudication_units(data.get("adjudication_units", [])),
             schema_version=str(data.get("schema_version", V5_SCHEMA_VERSION)),
         )
 

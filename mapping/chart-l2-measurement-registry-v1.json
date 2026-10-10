@@ -1,0 +1,27 @@
+{
+  "schema_version": "chart-l2-measurement-registry-v1",
+  "registry_status": "PROPOSAL_ONLY",
+  "mapping_types": ["DIRECT", "RANGE", "CONDITIONAL", "COMPOSITE", "NO_MAPPING"],
+  "mapping_statuses": ["UNRESOLVED", "PROPOSED", "FROZEN", "REJECTED"],
+  "pilot_policy": "只有 FROZEN 映射、已批准 Measurement Spec、冻结观察与证伪条件同时存在时，pilot_eligible 才能为 true。",
+  "entries": [
+    {
+      "chart_l2_id": "M1-D-244",
+      "wording": "学业有成",
+      "source_refs": ["M1-D-244"],
+      "candidate_outcome_indicators": ["education.academic_achievement"],
+      "mapping_type": null,
+      "mapping_status": "UNRESOLVED",
+      "measurement_spec": "plans/measurement/academic-achievement-v0.1-spec.json",
+      "approval_status": "PENDING",
+      "frozen": false,
+      "pilot_eligible": false,
+      "reason": "academic_achievement 是现有候选承载对象，但观察范围、成功边界、评分与现实 falsifier 尚未获批冻结。",
+      "prohibited_shortcuts": [
+        "不得把 degree_level 直接等同于学业有成。",
+        "不得把 learning_ability 或 exam_ability 直接等同于已取得学业成果。",
+        "不得凭 papers、awards、licenses 或 professional_outputs 的任一字段单独生成 hit。"
+      ]
+    }
+  ]
+}
