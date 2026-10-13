@@ -43,13 +43,14 @@ def _sample_claim(**kwargs) -> V5Claim:
     return V5Claim(**defaults)
 
 
-def test_v5_five_school_constants():
+def test_v5_six_school_constants():
     assert V5_SCHOOLS == (
         "ziping",
         "ditiansui",
         "gao_dechen",
         "duan_jianye",
         "yang_qingjuan",
+        "ren_fuhong",
     )
 
 
@@ -216,7 +217,9 @@ def test_run_v5_default_loads_production_rules_and_mvp_school_runners():
     assert not any(claim.metadata.get("rule_id", "").startswith("ZP-CAND-") for claim in ziping_claims)
     assert {claim.school for claim in blind_rule_claims} >= {"gao_dechen", "duan_jianye", "yang_qingjuan"}
     assert all(claim.metadata.get("selection") in ("v6_preprod_blind_limited", "v6_preprod_blind_predicate") for claim in blind_rule_claims)
-    assert stub_claims == []
+    assert [(claim.school, claim.claim_type, claim.stance) for claim in stub_claims] == [
+        ("ren_fuhong", "timing_claim", "abstain")
+    ]
     assert len(output.prediction_ledger.predictions) >= 5
     assert len(output.learning_signals) == len(output.claims) + len(output.prediction_ledger.predictions)
 

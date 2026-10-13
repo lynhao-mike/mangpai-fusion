@@ -1,0 +1,229 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000441",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T09:48:26+08:00",
+  "as_of_date": "2026-07-30",
+  "as_of_date_basis": "采用用户指定验证截止日；写入并计算哈希后不得根据反馈回写。",
+  "independent_blind_reviewer": true,
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000441-乾-癸亥己未己未庚午/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 149,
+    "cutoff_marker": "yaml_key",
+    "blind_character_count": 2014,
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "embedded_annotation_count": 0,
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "1983-07-30T11:40:00+08:00",
+    "birthplace": "香港市",
+    "true_solar_time_correction_supplied": true,
+    "true_solar_time_supplied": "1983-07-30T11:40:00+08:00",
+    "pillars_supplied": [
+      "癸亥",
+      "己未",
+      "己未",
+      "庚午"
+    ],
+    "dayun_supplied": [
+      {"pillar": "戊午", "start_year": 1990, "end_year": 2000},
+      {"pillar": "丁巳", "start_year": 2000, "end_year": 2010},
+      {"pillar": "丙辰", "start_year": 2010, "end_year": 2020},
+      {"pillar": "乙卯", "start_year": 2020, "end_year": 2030},
+      {"pillar": "甲寅", "start_year": 2030, "end_year": 2040},
+      {"pillar": "癸丑", "start_year": 2040, "end_year": 2050},
+      {"pillar": "壬子", "start_year": 2050, "end_year": 2060},
+      {"pillar": "辛亥", "start_year": 2060, "end_year": 2070}
+    ],
+    "parser_adapter": "tools.preflight.parse(blind-only temp) -> engine.predicates.types.adapt_parsed",
+    "known_life_facts_used": [],
+    "known_fact_count_after_parse": 0
+  },
+  "admission_gate": {
+    "age_at_as_of_date": 43,
+    "career_window": [23, 65],
+    "fits_career_window": true,
+    "note": "43岁落在23—65岁职业活跃期预筛窗口内。"
+  },
+  "algorithm_evidence": {
+    "freeze_preflight_tool": "tools.as_of_freeze_preflight.run_freeze_preflight",
+    "freeze_scaffold_tool": "tools.as_of_freeze_scaffold.build_freeze_scaffold",
+    "annual_trace_tool": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "annual_trace_total": 36,
+    "crossed_candidate_gate_count": 30,
+    "current_dayun_tendency": "2020—2030乙卯运，天干与地支主气均为七杀结构提示；算法仅提示职位权力、规则约束与组织压力可能被放大，不单独裁决喜忌或现实成败。",
+    "reasoning_limit": "scaffold仅作候选提示；最终冻结只采用通过L1+L2候选门且与事业域和可证伪合同同时匹配的年份。"
+  },
+  "reasoning_boundary": {
+    "natal_structure": "己土日主生未月，月日双未且时支午，土火根气明显；年干癸与年支亥提供润土和现实资源通道，时干庚为输出端。原局呈现承载、执行与输出并存，但土火偏重，资源流通及成果外化并非天然平滑。",
+    "current_dayun": "2020—2030乙卯运以七杀官杀为主要结构提示，直接增加规则、责任、考核和组织压力。对身有根气的己土，这更支持承接职责与推进复杂事项，但官杀加压不等于职级晋升，且现实授权与成果兑现可能不稳定。",
+    "strength_cap": "职业基本方向冻结为中等；现实职位、行业、收入和行政级别不冻结。",
+    "root_level_justification": "未月己土有根，双未午火提高承载与持续执行能力；癸亥润土、庚金输出提供现实流通线索。乙卯运强化官杀责任，但原局土火偏重且官杀现实完成度未经反馈验证，因此使用ACTIVATE_EXISTING并设置兑现不稳备选。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "rule_bound_execution_coordination_with_delivery_accountability",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能处于组织规则约束较强、需要持续统筹执行并对交付结果负责的职业位置，工作价值主要来自推进复杂事项落地；具备承接责任的能力，但不冻结职级与行业。",
+      "strength": "MEDIUM",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：承责与推进能力存在，但现实兑现不稳，表现为岗位责任反复调整、授权受限与成果承接间断。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若中心不成立，则截至截止日主要职业仍以被安排的常规执行为主，未形成持续统筹和结果责任。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有固定工作、遵守制度、偶尔协调或完成个人任务不算中心命中；主要职责必须持续涉及多事项推进、资源或进度协调，并对明确交付结果负责。",
+    "falsifiers": [
+      "截至截止日长期从事低协调要求、低判断要求且只对个人重复任务负责的工作。",
+      "主要工作不涉及复杂事项推进、跨人协作、进度控制或交付责任。",
+      "职业责任始终由他人完整承担，命主没有持续承接结果责任。"
+    ]
+  },
+  "frozen_phase_claims": [
+    {
+      "claim_id": "P1",
+      "window": "2000-2010 丁巳运",
+      "statement": "职业准备到初入社会阶段偏重技能、经验与执行积累，现实路径不以快速获得稳定组织权责为主。",
+      "confidence": 55,
+      "falsifier": "该阶段很早即获得持续稳定的组织权责，职业主线并非技能与执行积累。"
+    },
+    {
+      "claim_id": "P2",
+      "window": "2010-2020 丙辰运",
+      "statement": "职业位置较前阶段趋于稳定，承接实际事务和持续交付的比重提高，但发展仍更依赖长期积累而非一次跃升。",
+      "confidence": 61,
+      "falsifier": "该阶段职业稳定性与事务责任未提高，且主要发展来自一次短期跃升。"
+    },
+    {
+      "claim_id": "P3",
+      "window": "2020-2026 乙卯运截至截止日",
+      "statement": "规则约束、责任考核和组织压力成为更突出的职业主题，阶段内应出现一次可核验的职责重定或责任边界变化；现实授权与成果兑现未必同步稳定。",
+      "confidence": 72,
+      "falsifier": "2020年至截止日岗位职责、责任边界、考核方式与组织压力均无明显变化。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_structure_change",
+      "window": "2025-01-01/2025-12-31",
+      "center_event": "2025年职业结构发生一次可核验变动，最低命中条件为主要岗位职责发生明确变化。",
+      "confidence": 75,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "L1+L2候选门通过；乙巳年处乙卯运，算法强度为high且领域含事业。流年干乙合时干庚，流年支巳冲年支亥，激活年支与时干，对应规则责任与输出端同时受触发。",
+      "falsifier": "2025全年主要岗位职责无明确变化。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_years": [
+      {
+        "year": 2025,
+        "liunian": "乙巳",
+        "dayun": "乙卯",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": ["事业", "健康"],
+        "relations": ["流年干乙合时干庚", "流年支巳冲年支亥"],
+        "activated_natal_nodes": ["年支亥", "时干庚"]
+      }
+    ],
+    "context_years_not_frozen_as_dated_events": [
+      {
+        "year": 2020,
+        "liunian": "庚子",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "reason": "事业域明确但距截止日较远，仅作为乙卯运起段的阶段背景，不另冻结事件。"
+      },
+      {
+        "year": 2021,
+        "liunian": "辛丑",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "reason": "事业域明确但关系过多，难在盲态下收窄为单一事件类型。"
+      },
+      {
+        "year": 2024,
+        "liunian": "甲辰",
+        "strength": "medium",
+        "crossed_candidate_gate": true,
+        "reason": "可作为阶段预热，但强度低于2025，不扩展第二个日期事件。"
+      },
+      {
+        "year": 2026,
+        "liunian": "丙午",
+        "strength": "low",
+        "crossed_candidate_gate": true,
+        "reason": "算法领域不含事业且强度低，不冻结事业事件。"
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "center_or_count": 0,
+    "event_windows_months": {"E1": 11.959177806525801},
+    "event_window_days": {"E1": 364},
+    "event_or_counts": {"E1": 0},
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位性质、职业名称、职务等级、管理人数或企业所有权。",
+    "不冻结财富总量、高收入、行政晋升、创业成功或社会等级。",
+    "不把七杀、官杀或古籍中的贵显措辞直接等同于现实成功。",
+    "不冻结婚姻、子女、疾病、灾祸及家庭财富。",
+    "日期事件仅按2025单年窗口和主要岗位职责变化评分，不由阶段方向吸收。"
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-004",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:794-831",
+      "source_path": "sources/ziping/《三命通会》.md",
+      "source_excerpt": "正官、偏官、正财、偏财、印绶、伤官、食神",
+      "applied_summary": "财官印食伤不能按名称绝对定吉凶，须随日主强弱、月气与制化取用；因此乙卯官杀只支持责任与规则压力方向，不直接冻结升职或成功。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-027",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:1669-1708",
+      "source_path": "sources/ziping/穷通宝鉴-明-余春台_part2.md",
+      "source_excerpt": "三夏己土，杂气才官，禾稼在田，最喜甘沛，取癸为要，次用丙火。",
+      "applied_summary": "本案己土生未月，年柱癸亥提供润土线索，时支午提供火气；据此支持承载与生发并存，但不据古籍措辞推导现实等级。"
+    }
+  ],
+  "excluded_theory_evidence": [
+    {
+      "rule_id": "ZP-PROD-20260618-015",
+      "reason": "规则要求时柱透偏官或七杀；本案时干庚为伤官，不满足 required 条件，依 exclusion 不适用。"
+    }
+  ],
+  "verdict_policy": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "career_basic_state_rule": "截止日职业中心与备选分别核验；普通上班、遵守制度或偶尔协调不得越过weak_hit_boundary。",
+    "phase_precision_rule": "P1—P3按各自窗口、方向和最低变化条件评分；未冻结的具体行业、单位、成败与后果不得后验补记。",
+    "event_precision_rule": "E1仅按2025单年窗口和主要岗位职责明确变化评分；其他年份或其他事件类型不得替代。",
+    "unused_alternative_rule": "未激活备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED。",
+    "separate_score_units": ["career_basic_state", "broad_phase_direction", "dated_event_precision"],
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决写入独立文件并复核SHA-256。"
+  }
+}

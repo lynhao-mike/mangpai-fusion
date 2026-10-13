@@ -1,0 +1,107 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000471-乾-戊寅己未壬戌乙巳",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T01:16:19+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000471-乾-戊寅己未壬戌乙巳/asof-blind-freeze.json",
+    "sha256": "a0abe448659e60ff28c10186027496acfa4d89dba916dc467a344f13ec439344",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000471-乾-戊寅己未壬戌乙巳/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "feedback_evidence": [
+    {
+      "year": 2024,
+      "fact": "凶,年初创业失败，跟女友分手，谈了另外一个又分了其他信息: 职业：驾校行业",
+      "domains": [
+        "occupation",
+        "marriage"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈存在明确职业变化或岗位事实：2024年凶,年初创业失败，跟女友分手，谈了另外一个又分了其他信息: 职业：驾校行业"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2024-01-01/2024-12-31",
+      "verdict": "CENTER_HIT",
+      "reason": "反馈在冻结窗口2024年明确记录职业事实：凶,年初创业失败，跟女友分手，谈了另外一个又分了其他信息: 职业：驾校行业",
+      "enters_event_denominator": true
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "feedback_consistency": "NOT_REESTIMATED",
+    "reason": "反馈揭示后不回写冻结root_level；本字段仅保留边界说明。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "gao:G-CS-020",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论命中只作为冻结前结构证据，不单独决定现实裁决。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstentions": 0
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ABSTAIN"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "ABSTAIN"
+      }
+    ]
+  },
+  "overall_conclusion": {
+    "event_e1": "CENTER_HIT",
+    "summary": "E1按冻结年份与反馈年份严格核对，裁为CENTER_HIT。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_valid": true
+  }
+}

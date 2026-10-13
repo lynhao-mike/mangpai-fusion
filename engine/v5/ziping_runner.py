@@ -726,6 +726,7 @@ def generate_claims(
             magnitude=min(1.0, abs(balance) / 8.0),
             confidence=0.7,
             high_risk=task.high_risk,
+            target_id="structure.day_master_strength",
             applicability_snapshot={
                 "supporting_count": features.supporting_count,
                 "draining_count": features.draining_count,
@@ -762,6 +763,7 @@ def generate_claims(
             magnitude=min(1.0, (output_count + official_count) / 8.0),
             confidence=0.6,
             high_risk=task.high_risk,
+            target_id="structure.output_official_relation",
             applicability_snapshot={"output_count": output_count, "official_count": official_count},
         )
         validate_claim_evidence(claim, chart, features)

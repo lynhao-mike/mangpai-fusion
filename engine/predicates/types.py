@@ -258,6 +258,8 @@ class KnownFact:
     year: Optional[int] = None
     event: Optional[str] = None
     content: Optional[str] = None
+    应验度: float = 1.0   # CFL-C016-002：1.0=已应验（命主反馈），0.0=待验证候选时机。
+                          # ≥ 0.7 → gate ★ cap 5（已应验回填）；< 0.7 → gate ★ cap 4（前向预测）。
 
 
 @dataclass
@@ -418,6 +420,7 @@ def adapt_parsed(obj: object) -> ParsedInput:
                 year=getattr(kf, "year", None),
                 event=getattr(kf, "event", None),
                 content=getattr(kf, "content", None),
+                应验度=float(getattr(kf, "应验度", 1.0)),  # CFL-C016-002 透传
             ))
 
     return ParsedInput(

@@ -1,0 +1,119 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000737-坤-辛酉癸巳辛卯戊戌",
+  "adjudicated_at": "2026-07-30T20:06:22+08:00",
+  "feedback_source": "cases/C-2026-RF000737-坤-辛酉癸巳辛卯戊戌/feedback.md",
+  "freeze_source": "cases/C-2026-RF000737-坤-辛酉癸巳辛卯戊戌/asof-blind-freeze.json",
+  "freeze_sha256_expected": "657fa46b919938ea9a8eabf4547ff22093f69da2d997d29b72960daaa5338497",
+  "freeze_sha256_observed_before_verdict": "657fa46b919938ea9a8eabf4547ff22093f69da2d997d29b72960daaa5338497",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2024,
+      "domain": "career_basic_state",
+      "fact": "职业为财务，年收入约8万元。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_current_state",
+      "fact": "求测截止日现状快照记载就业状态为在职、当前岗位为财务。"
+    },
+    {
+      "year": 1993,
+      "domain": "dated_event_evidence",
+      "fact": "反馈年表未提供1993年事实。"
+    },
+    {
+      "year": 2024,
+      "domain": "recent_career_change",
+      "fact": "§9.4记载过去12个月职业状态无明显变化，且待命主确认。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ACTIVATED",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈明确命主在职且从事财务；财务岗位具备规则明确、流程约束、账务结果可追踪的基本责任结构，达到冻结中心的最低命中条件，但不据此推断职级、授权或收入成就。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_EVALUABLE",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未提供职责、授权、稳定性和回报是否同步的充分细节。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "MISS",
+      "reason": "反馈明确为在职财务，不支持以阶段性项目替代正式岗位作为当前主要形态；此备选裁决不计入独立统计单元。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "1993-01-01/1993-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈年表没有1993年事实。",
+      "reason": "冻结的独立1993单年窗口内缺少直接反馈，不能用其他年份的财务岗位事实后验移入该窗口。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "冻结前脚手架只提供1988、1993、1995、1996、1999；E1依盲态事业门控选择1993，不能在揭盲后改写为2024。§9.4本身还标记待命主确认。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "在职财务直接支持规则、流程与可追踪结果责任的职业基础结构。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "冻结包未设置独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "1993独立单年窗口缺少直接反馈，E1弃权。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "CENTER_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业基础态中心命中；1993日期事件因窗口内无直接证据弃权。"
+  },
+  "protocol_exception": {
+    "code": "SCAFFOLD_YEAR_COVERAGE_GAP",
+    "required_section_9_4_year": 2024,
+    "e1_year": 1993,
+    "strict_requirement_satisfied": false,
+    "reason": "盲态脚手架与L1+L2未提供2024候选；为保持冻结不可变，没有在揭盲后修改E1。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

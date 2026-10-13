@@ -922,9 +922,12 @@ def ingest(
                 else:
                     prediction_feedback_summary["missing_prediction_ids"].append(prediction_id)
 
-    # 2. 读 statement_records。legacy statement_index / statement_rule_map 不再作为 bridge fanout 来源。
+    # 2. 读 statement_records。它仍是规则学习的唯一 fanout 来源；statement_index
+    # 只为 parallel-domain reading / adjudication 反馈提供渲染期元数据。
     records_path = case_dir / "statement_records.json"
+    statement_index_path = case_dir / "statement_index.json"
     statement_records: dict[str, Any] = {}
+    statement_index: dict[str, Any] = {}
     skipped_no_index = False
     with timing.step("load_statement_records"):
         if records_path.exists():
@@ -932,6 +935,11 @@ def ingest(
                 statement_records = json.loads(records_path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, ValueError):
                 statement_records = {}
+        if statement_index_path.exists():
+            try:
+                statement_index = json.loads(statement_index_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, ValueError):
+                statement_index = {}
 
     # 3. 决策路径选择
     if not feedbacks or not _record_map(statement_records):
@@ -979,7 +987,12 @@ def ingest(
         )
     with timing.step("fanout"):
         rule_verdicts, unknown_sids = fanout_to_rules(feedbacks, statement_records)
-        parallel_feedback_counts = {"expert_feedback_rows": 0, "adjudication_feedback_rows": 0}
+        parallel_feedback_counts = fanout_to_parallel_feedback(
+            feedbacks,
+            statement_index,
+            case_id=full_case_id,
+            dry_run=dry_run,
+        )
 
     # 5. 应用现有规则级更新（不写 log，本函数末尾统一写）。
     with timing.step("apply_rules"):

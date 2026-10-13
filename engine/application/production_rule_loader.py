@@ -1,231 +1,67 @@
-"""子平 / 滴天髓生产规则加载与最小触发评估。
-
-本模块只读取正式生产规则库 ``theory/ziping`` 与
-``theory/tiaohou_ditiansui``，与旁路候选规则加载器隔离：
-- 顶层 ``status`` 必须为 ``active``；
-- 单条规则 ``status`` 必须为 ``active``；
-- 不读取 ``theory/raw/yaml`` 旁路候选文件；
-- 输出转换为现有 ``FinalConclusion`` 可消费的 evidence 链。
-"""
-
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import logging
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Literal, Optional
+from typing import Any, Iterable
 
 import yaml
 
-from engine.energy.types import Confidence, EnergyFindings, Evidence
-from engine.picture.types import PictureFindings
-from engine.predicates.relations import zhi_chong
-from engine.predicates.shensha import has_shensha
-from engine.predicates.types import GAN_TO_WUXING, ZHI_TO_WUXING, ParsedInput
-
-ProductionExpertSystem = Literal["ziping", "tiaohou_ditiansui"]
-ALLOWED_PRODUCTION_EXPERT_SYSTEMS: tuple[ProductionExpertSystem, ...] = (
-    "ziping",
-    "tiaohou_ditiansui",
+from engine.application.production_rule_models import (
+    ALLOWED_PRODUCTION_EXPERT_SYSTEMS,
+    ALLOWED_RULE_STATUS,
+    ALLOWED_SOURCE_SCOPE,
+    ALLOWED_TOP_LEVEL_STATUS,
+    EXPERT_DISPLAY_NAMES,
+    ProductionExpertSystem,
+    ProductionRule,
+    ProductionRuleConditions,
+    ProductionRuleOutput,
+    ProductionRuleSet,
+    ProductionRuleSource,
+    ProductionRuleValidationError,
 )
-ALLOWED_TOP_LEVEL_STATUS = "active"
-ALLOWED_SOURCE_SCOPE = "production_rules"
-ALLOWED_RULE_STATUS = "active"
-_DEFAULT_LIBRARY_CACHE: "Optional[ProductionRuleLibrary]" = None  # 模块级缓存，避免重复 YAML 解析
-DEFAULT_PRODUCTION_FILES: dict[ProductionExpertSystem, Path] = {
-    "ziping": Path("theory/ziping/index.yaml"),
-    "tiaohou_ditiansui": Path("theory/tiaohou_ditiansui/index.yaml"),
-}
-EXPERT_DISPLAY_NAMES: dict[ProductionExpertSystem, str] = {
-    "ziping": "子平",
-    "tiaohou_ditiansui": "滴天髓",
-}
+from engine.application.production_rule_triggers import (
+    _has_guansha_mixed as _has_guansha_mixed,
+    _has_hour_qisha as _has_hour_qisha,
+    _has_qisha_structure as _has_qisha_structure,
+    _has_qisha_with_control as _has_qisha_with_control,
+    rule_triggered,
+)
+from engine.application.production_rule_validation import (
+    DEFAULT_PRODUCTION_FILES,
+    load_production_rule_set,
+)
+from engine.energy.types import EnergyFindings
+from engine.picture.types import PictureFindings
+from engine.predicates.types import ParsedInput
+
+_DEFAULT_LIBRARY_CACHE: ProductionRuleLibrary | None = None
+_LOGGER = logging.getLogger(__name__)
+_rule_triggered = rule_triggered
+
+__all__ = [
+    "ALLOWED_PRODUCTION_EXPERT_SYSTEMS",
+    "ALLOWED_RULE_STATUS",
+    "ALLOWED_SOURCE_SCOPE",
+    "ALLOWED_TOP_LEVEL_STATUS",
+    "DEFAULT_PRODUCTION_FILES",
+    "EXPERT_DISPLAY_NAMES",
+    "ProductionExpertSystem",
+    "ProductionRule",
+    "ProductionRuleConditions",
+    "ProductionRuleLibrary",
+    "ProductionRuleOutput",
+    "ProductionRuleSet",
+    "ProductionRuleSource",
+    "ProductionRuleValidationError",
+    "load_default_production_library",
+    "load_production_library",
+    "load_production_rule_set",
+]
 
 
-class ProductionRuleValidationError(ValueError):
-    """生产规则 YAML 不满足正式规则库约束。"""
-
-
-@dataclass(frozen=True)
-class ProductionRuleSource:
-    """生产规则来源。"""
-
-    path: str
-    excerpt: str
-
-    def to_dict(self) -> dict[str, Any]:
-        return {"path": self.path, "excerpt": self.excerpt}
-
-    @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ProductionRuleSource":
-        return cls(path=str(data.get("path", "")), excerpt=str(data.get("excerpt", "")))
-
-
-@dataclass(frozen=True)
-class ProductionRuleOutput:
-    """生产规则输出模板。"""
-
-    statement: str
-    falsifiable: str
-
-    def to_dict(self) -> dict[str, Any]:
-        return {"statement": self.statement, "falsifiable": self.falsifiable}
-
-    @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ProductionRuleOutput":
-        return cls(
-            statement=str(data.get("statement", "")),
-            falsifiable=str(data.get("falsifiable", "")),
-        )
-
-
-@dataclass(frozen=True)
-class ProductionRuleConditions:
-    """生产规则触发条件。"""
-
-    required: list[str] = field(default_factory=list)
-    optional: list[str] = field(default_factory=list)
-    exclusions: list[str] = field(default_factory=list)
-    trigger: str = "always"
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "required": list(self.required),
-            "optional": list(self.optional),
-            "exclusions": list(self.exclusions),
-            "trigger": self.trigger,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ProductionRuleConditions":
-        return cls(
-            required=[str(x) for x in data.get("required", [])],
-            optional=[str(x) for x in data.get("optional", [])],
-            exclusions=[str(x) for x in data.get("exclusions", [])],
-            trigger=str(data.get("trigger", "always")),
-        )
-
-
-@dataclass(frozen=True)
-class ProductionRule:
-    """正式生产规则。"""
-
-    id: str
-    status: Literal["active"]
-    expert_system: ProductionExpertSystem
-    title: str
-    topic: str
-    domains: list[str]
-    axis_refs: list[str]
-    claim: str
-    conditions: ProductionRuleConditions
-    output: ProductionRuleOutput
-    source: ProductionRuleSource
-    confidence: Confidence
-    layer: str = "互补"
-    rule_type: str = "GENERAL_PRINCIPLE"
-    quantifiable: bool = False
-    review_notes: str = ""
-
-    @property
-    def display_school(self) -> str:
-        return EXPERT_DISPLAY_NAMES[self.expert_system]
-
-    def to_evidence(self) -> Evidence:
-        return Evidence(
-            rule_id=self.id,
-            school=self.display_school,  # type: ignore[arg-type]
-            description=f"{self.title}：{self.claim}",
-            weight=round(self.confidence.posterior, 3),
-        )
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "id": self.id,
-            "status": self.status,
-            "expert_system": self.expert_system,
-            "title": self.title,
-            "topic": self.topic,
-            "domains": list(self.domains),
-            "axis_refs": list(self.axis_refs),
-            "claim": self.claim,
-            "conditions": self.conditions.to_dict(),
-            "output": self.output.to_dict(),
-            "source": self.source.to_dict(),
-            "confidence": self.confidence.to_dict(),
-            "layer": self.layer,
-            "rule_type": self.rule_type,
-            "quantifiable": self.quantifiable,
-            "review": {"notes": self.review_notes},
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict[str, Any], *, expected_expert_system: ProductionExpertSystem) -> "ProductionRule":
-        status = str(data.get("status", ""))
-        expert_system = str(data.get("expert_system", ""))
-        if status != ALLOWED_RULE_STATUS:
-            raise ProductionRuleValidationError(
-                f"生产规则 {data.get('id', '<unknown>')} status 必须为 active，实际为 {status!r}。"
-            )
-        if expert_system != expected_expert_system:
-            raise ProductionRuleValidationError(
-                f"生产规则 {data.get('id', '<unknown>')} expert_system 必须为 "
-                f"{expected_expert_system!r}，实际为 {expert_system!r}。"
-            )
-        conf = data.get("confidence", {}) or {}
-        return cls(
-            id=str(data["id"]),
-            status="active",
-            expert_system=expected_expert_system,
-            title=str(data["title"]),
-            topic=str(data["topic"]),
-            domains=[str(x) for x in data.get("domains", [])],
-            axis_refs=[str(x) for x in data.get("axis_refs", [])],
-            claim=str(data["claim"]),
-            conditions=ProductionRuleConditions.from_dict(data.get("conditions", {})),
-            output=ProductionRuleOutput.from_dict(data.get("output", {})),
-            source=ProductionRuleSource.from_dict(data.get("source", {})),
-            confidence=Confidence(
-                star=int(conf.get("star", 4)),
-                percent=float(conf.get("percent", 0.78)),
-                posterior=float(conf.get("posterior", conf.get("percent", 0.78))),
-                variance=float(conf.get("variance", 0.04)),
-                sample_n=int(conf.get("sample_n", 1)),
-            ),
-            layer=str(data.get("layer", "互补")),
-            rule_type=str(data.get("rule_type", "GENERAL_PRINCIPLE")),
-            quantifiable=bool(data.get("quantifiable", False)),
-            review_notes=str(data.get("review", {}).get("notes", "")),
-        )
-
-
-@dataclass(frozen=True)
-class ProductionRuleSet:
-    """单一专家体系的正式生产规则集。"""
-
-    schema_version: str
-    status: Literal["active"]
-    source_scope: Literal["production_rules"]
-    expert_system: ProductionExpertSystem
-    notes: str
-    rules: list[ProductionRule]
-    source_path: Path
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "schema_version": self.schema_version,
-            "status": self.status,
-            "source_scope": self.source_scope,
-            "expert_system": self.expert_system,
-            "notes": self.notes,
-            "rules": [rule.to_dict() for rule in self.rules],
-            "source_path": self.source_path.as_posix(),
-        }
-
-    def rules_for_domain(self, domain: str) -> list[ProductionRule]:
-        return [rule for rule in self.rules if domain in rule.domains]
-
-
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ProductionRuleLibrary:
     """子平与滴天髓正式生产规则库。"""
 
@@ -243,61 +79,29 @@ class ProductionRuleLibrary:
     def triggered_rules(
         self,
         *,
-        parsed: Optional[ParsedInput],
+        parsed: ParsedInput | None,
         energy: EnergyFindings,
         picture: PictureFindings,
     ) -> list[ProductionRule]:
         return [
             rule
             for rule in self.rules
-            if _rule_triggered(rule, parsed=parsed, energy=energy, picture=picture)
+            if rule_triggered(rule, parsed=parsed, energy=energy, picture=picture)
         ]
 
     def to_dict(self) -> dict[str, Any]:
         return {key: value.to_dict() for key, value in self.rule_sets.items()}
 
 
-def load_production_rule_set(
-    path: str | Path,
+def load_default_production_library(
     *,
-    expected_expert_system: Optional[ProductionExpertSystem] = None,
     workspace_root: str | Path = ".",
-) -> ProductionRuleSet:
-    """加载并校验单个正式生产规则 YAML。"""
-
-    resolved_path = _resolve_production_path(path, workspace_root=workspace_root)
-    raw = yaml.safe_load(resolved_path.read_text(encoding="utf-8"))
-    if not isinstance(raw, dict):
-        raise ProductionRuleValidationError(f"{resolved_path} 顶层必须是 YAML mapping。")
-    expert_system = _validate_top_level(raw, expected_expert_system=expected_expert_system)
-    rules_raw = raw.get("rules", [])
-    if not isinstance(rules_raw, list):
-        raise ProductionRuleValidationError(f"{resolved_path} rules 必须是 list。")
-    rules = [ProductionRule.from_dict(item, expected_expert_system=expert_system) for item in rules_raw]
-    return ProductionRuleSet(
-        schema_version=str(raw.get("schema_version", "")),
-        status="active",
-        source_scope="production_rules",
-        expert_system=expert_system,
-        notes=str(raw.get("notes", "")),
-        rules=rules,
-        source_path=resolved_path,
-    )
-
-
-def load_default_production_library(*, workspace_root: str | Path = ".") -> ProductionRuleLibrary:
-    """加载默认子平 / 滴天髓正式生产规则库（同一进程内缓存，避免重复 YAML IO）。
-
-    单个规则集加载失败时记录警告并跳过，不阻断其余派别加载。
-    """
-    import logging as _logging
-    _log = _logging.getLogger(__name__)
-
+) -> ProductionRuleLibrary:
     global _DEFAULT_LIBRARY_CACHE
     if _DEFAULT_LIBRARY_CACHE is not None and str(workspace_root) == ".":
         return _DEFAULT_LIBRARY_CACHE
 
-    rule_sets: dict[ProductionExpertSystem, "ProductionRuleSet"] = {}
+    rule_sets: dict[ProductionExpertSystem, ProductionRuleSet] = {}
     for expert_system, path in DEFAULT_PRODUCTION_FILES.items():
         try:
             rule_sets[expert_system] = load_production_rule_set(
@@ -305,13 +109,19 @@ def load_default_production_library(*, workspace_root: str | Path = ".") -> Prod
                 expected_expert_system=expert_system,
                 workspace_root=workspace_root,
             )
-        except Exception as exc:  # noqa: BLE001
-            _log.warning("生产规则集 %s 加载跳过：%s", expert_system, exc)
+        except (
+            KeyError,
+            OSError,
+            TypeError,
+            ProductionRuleValidationError,
+            yaml.YAMLError,
+        ) as error:
+            _LOGGER.warning("生产规则集 %s 加载跳过：%s", expert_system, error)
 
-    lib = ProductionRuleLibrary(rule_sets=rule_sets)
+    library = ProductionRuleLibrary(rule_sets=rule_sets)
     if str(workspace_root) == ".":
-        _DEFAULT_LIBRARY_CACHE = lib
-    return lib
+        _DEFAULT_LIBRARY_CACHE = library
+    return library
 
 
 def load_production_library(
@@ -319,159 +129,12 @@ def load_production_library(
     *,
     workspace_root: str | Path = ".",
 ) -> ProductionRuleLibrary:
-    """从显式路径集合加载正式生产规则库。"""
-
     rule_sets: dict[ProductionExpertSystem, ProductionRuleSet] = {}
     for path in paths:
         rule_set = load_production_rule_set(path, workspace_root=workspace_root)
         if rule_set.expert_system in rule_sets:
-            raise ProductionRuleValidationError(f"重复加载 expert_system={rule_set.expert_system!r}。")
+            raise ProductionRuleValidationError(
+                f"重复加载 expert_system={rule_set.expert_system!r}。"
+            )
         rule_sets[rule_set.expert_system] = rule_set
     return ProductionRuleLibrary(rule_sets=rule_sets)
-
-
-def _validate_top_level(
-    raw: dict[str, Any],
-    *,
-    expected_expert_system: Optional[ProductionExpertSystem],
-) -> ProductionExpertSystem:
-    status = str(raw.get("status", ""))
-    source_scope = str(raw.get("source_scope", ""))
-    expert_system = str(raw.get("expert_system", ""))
-    if status != ALLOWED_TOP_LEVEL_STATUS:
-        raise ProductionRuleValidationError(f"顶层 status 必须为 active，实际为 {status!r}。")
-    if source_scope != ALLOWED_SOURCE_SCOPE:
-        raise ProductionRuleValidationError(
-            f"顶层 source_scope 必须为 production_rules，实际为 {source_scope!r}。"
-        )
-    if expert_system not in ALLOWED_PRODUCTION_EXPERT_SYSTEMS:
-        raise ProductionRuleValidationError(f"不支持的 expert_system：{expert_system!r}。")
-    if expected_expert_system and expert_system != expected_expert_system:
-        raise ProductionRuleValidationError(
-            f"文件 expert_system 必须为 {expected_expert_system!r}，实际为 {expert_system!r}。"
-        )
-    return expert_system  # type: ignore[return-value]
-
-
-def _resolve_production_path(path: str | Path, *, workspace_root: str | Path) -> Path:
-    root = Path(workspace_root).resolve()
-    candidate = Path(path)
-    if not candidate.is_absolute():
-        candidate = root / candidate
-    resolved = candidate.resolve()
-    allowed_roots = [(root / "theory" / name).resolve() for name in DEFAULT_PRODUCTION_FILES]
-    if not any(_is_relative_to(resolved, allowed_root) for allowed_root in allowed_roots):
-        raise ProductionRuleValidationError(
-            "生产规则加载器只能读取 theory/ziping 或 theory/tiaohou_ditiansui 下的 YAML 文件："
-            f"{resolved}"
-        )
-    if not resolved.exists():
-        raise ProductionRuleValidationError(f"正式生产规则 YAML 不存在：{resolved}")
-    if resolved.suffix.lower() not in {".yaml", ".yml"}:
-        raise ProductionRuleValidationError(f"正式生产规则文件必须是 YAML：{resolved}")
-    return resolved
-
-
-def _is_relative_to(path: Path, parent: Path) -> bool:
-    try:
-        path.relative_to(parent)
-        return True
-    except ValueError:
-        return False
-
-
-def _rule_triggered(
-    rule: ProductionRule,
-    *,
-    parsed: Optional[ParsedInput],
-    energy: EnergyFindings,
-    picture: PictureFindings,
-) -> bool:
-    trigger = rule.conditions.trigger
-    if trigger == "always":
-        return parsed is not None
-    if trigger == "has_wealth_picture":
-        return bool(getattr(picture, "caifu", None) or getattr(picture, "wealth_level", None))
-    if trigger == "has_official_picture":
-        return bool(getattr(picture, "guanming", None))
-    if trigger == "has_marriage_picture":
-        return bool(getattr(picture, "marriage_picture", None))
-    if trigger == "has_tiaohou_advice":
-        return bool(getattr(picture, "tiaohou_advice", None))
-    if trigger == "wuxing_imbalanced":
-        return _is_wuxing_imbalanced(parsed)
-    if trigger == "has_zhi_chong":
-        return _has_zhi_chong(parsed)
-    if trigger == "has_energy_structure":
-        return bool(getattr(energy, "tiyong", None) and getattr(energy, "layer_count", 0) >= 1)
-    # ── B: 大运 / 流年 ──────────────────────────────────────────────────────────
-    if trigger in ("has_dayun", "has_xiaoyun"):
-        return parsed is not None and bool(getattr(parsed, "dayun", None) and parsed.dayun.排布)
-    if trigger in ("has_liunian", "has_suiyun_interaction"):
-        return parsed is not None and getattr(parsed, "dayun", None) is not None
-    # ── A: 神煞（简单查表）──────────────────────────────────────────────────────
-    if trigger == "has_sanhe_partial":
-        return parsed is not None and (has_shensha("三合", parsed) or has_shensha("半三合", parsed))
-    if trigger == "has_sanxing":
-        return parsed is not None and has_shensha("三刑", parsed)
-    if trigger == "has_kongwang":
-        return parsed is not None and has_shensha("空亡", parsed)
-    if trigger == "has_zaisha":
-        return parsed is not None and has_shensha("灾煞", parsed)
-    if trigger == "has_goujiao":
-        return parsed is not None and (has_shensha("勾绞", parsed) or has_shensha("绞煞", parsed))
-    if trigger == "has_guchen_guasu":
-        return parsed is not None and (has_shensha("孤辰", parsed) or has_shensha("寡宿", parsed))
-    if trigger == "has_tianluodiwang":
-        return parsed is not None and (has_shensha("天罗", parsed) or has_shensha("地网", parsed))
-    if trigger == "has_shie_dabai":
-        return parsed is not None and has_shensha("十恶大败", parsed)
-    # ── A: 神煞+八字组合（降级为 always，避免永久静默）───────────────────────────
-    if trigger in ("has_qisha_with_control", "has_hour_qisha", "has_guansha_mixed"):
-        return parsed is not None
-    # ── C: 日时干支特定组合 ──────────────────────────────────────────────────────
-    if trigger == "has_yi_day_bingzi_hour":
-        return (parsed is not None
-                and parsed.bazi.日柱.gan == "乙"
-                and parsed.bazi.时柱.gan == "丙"
-                and parsed.bazi.时柱.zhi == "子")
-    if trigger == "has_xin_day_wuzi_hour":
-        return (parsed is not None
-                and parsed.bazi.日柱.gan == "辛"
-                and parsed.bazi.时柱.gan == "戊"
-                and parsed.bazi.时柱.zhi == "子")
-    # ── D: 六亲评估（降级为 always，任意命盘均可产出六亲判断）───────────────────
-    if trigger in (
-        "child_chart_health_assessment", "child_chart_guansha",
-        "liuqin_star_location_assessment", "spouse_star_location_assessment",
-        "children_star_location_assessment", "female_chart_spouse_children_assessment",
-    ):
-        return parsed is not None
-    return False
-
-
-def _is_wuxing_imbalanced(parsed: Optional[ParsedInput]) -> bool:
-    if parsed is None or not getattr(parsed, "bazi", None):
-        return False
-    counts = {"木": 0, "火": 0, "土": 0, "金": 0, "水": 0}
-    for _, gan in parsed.bazi.all_gans():
-        wuxing = GAN_TO_WUXING.get(gan)
-        if wuxing:
-            counts[wuxing] = counts.get(wuxing, 0) + 1
-    for _, zhi in parsed.bazi.all_zhis():
-        wuxing = ZHI_TO_WUXING.get(zhi)
-        if wuxing:
-            counts[wuxing] = counts.get(wuxing, 0) + 1
-    values = list(counts.values())
-    return max(values) - min(values) >= 2 or any(value == 0 for value in values)
-
-
-def _has_zhi_chong(parsed: Optional[ParsedInput]) -> bool:
-    if parsed is None or not getattr(parsed, "bazi", None):
-        return False
-    zhis = [zhi for _, zhi in parsed.bazi.all_zhis()]
-    for idx, left in enumerate(zhis):
-        for right in zhis[idx + 1:]:
-            if zhi_chong(left, right):
-                return True
-    return False

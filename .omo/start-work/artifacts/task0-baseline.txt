@@ -1,0 +1,108 @@
+Task 0 - Wave 1 baseline evidence
+=================================
+
+Evidence generated at: 2026-08-03T13:40:55.4249869+08:00
+Workspace: F:\多流派新思路
+Manual-QA channel: real pytest CLI surface
+
+Runtime versions
+----------------
+Capture started: 2026-08-03T13:37:07.1028252+08:00
+Capture ended: 2026-08-03T13:37:09.9393408+08:00
+
+Invocation: python --version
+Exit code: 0
+stdout/stderr combined by PowerShell: "Python 3.14.5\r\n"
+
+Invocation: python -m pytest --version
+Exit code: 0
+stdout/stderr combined by PowerShell: "pytest 8.4.2\r\n"
+
+Required verification 1 - new baseline test, first run
+------------------------------------------------------
+Invocation: python -m pytest tests/governance/test_wave1_baseline_contract.py -q
+Started: 2026-08-03T13:28:43.4728829+08:00
+Ended: 2026-08-03T13:29:00.7491817+08:00
+Exit code: 0
+Parsed counts: passed=5, failed=0, warnings=1
+stdout (JSON-escaped exact capture): ".....                                                                    [100%]\r\n============================== warnings summary ===============================\r\nengine\\application\\pipeline_runner.py:11\r\n  F:\\��������˼·\\engine\\application\\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.\r\n    from engine.application.dual_engine_adapter import analyze_dual_engine\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n5 passed, 1 warning in 14.47s\r\n"
+stderr (JSON-escaped exact capture): ""
+
+Required verification 2 - exact plan baseline
+---------------------------------------------
+Invocation: python -m pytest tests/yang_marriage/test_static_isolation.py tests/test_architecture_dependencies.py tests/test_production_rule_loader.py tests/decision/test_staged_arbitration.py tests/predicates/test_ten_god_structures.py tests/ren_timing -q
+Exit code: 0
+Parsed counts: passed=113, failed=0, warnings=1
+Duration reported by pytest: 105.80s (0:01:45)
+Absolute timestamps: the direct tool run did not expose absolute timestamps; the evidence-grade repeat below captures them without changing the invocation or result.
+stdout (reconstructed from the tool's literal ordered chunks): "........................................................................ [ 63%]\r\n.........................................                                [100%]\r\n============================== warnings summary ===============================\r\nengine\\application\\pipeline_runner.py:11\r\n  F:\\��������˼·\\engine\\application\\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.\r\n    from engine.application.dual_engine_adapter import analyze_dual_engine\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n113 passed, 1 warning in 105.80s (0:01:45)\r\n"
+stderr: no stderr was emitted in the tool's merged direct stream.
+
+Required verification 3 - new baseline test, flakiness repeat
+-------------------------------------------------------------
+Invocation: python -m pytest tests/governance/test_wave1_baseline_contract.py -q
+Started: 2026-08-03T13:33:55.5079342+08:00
+Ended: 2026-08-03T13:34:11.9460249+08:00
+Exit code: 0
+Parsed counts: passed=5, failed=0, warnings=1
+stdout (JSON-escaped exact capture): ".....                                                                    [100%]\r\n============================== warnings summary ===============================\r\nengine\\application\\pipeline_runner.py:11\r\n  F:\\��������˼·\\engine\\application\\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.\r\n    from engine.application.dual_engine_adapter import analyze_dual_engine\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n5 passed, 1 warning in 13.95s\r\n"
+stderr (JSON-escaped exact capture): ""
+
+Evidence-grade exact-plan repeat with separate streams and timestamps
+---------------------------------------------------------------------
+Invocation: python -m pytest tests/yang_marriage/test_static_isolation.py tests/test_architecture_dependencies.py tests/test_production_rule_loader.py tests/decision/test_staged_arbitration.py tests/predicates/test_ten_god_structures.py tests/ren_timing -q
+Started: 2026-08-03T13:35:17.8915440+08:00
+Ended: 2026-08-03T13:36:32.7546267+08:00
+Exit code: 0
+Parsed counts: passed=113, failed=0, warnings=1
+stdout (JSON-escaped exact capture): "........................................................................ [ 63%]\r\n.........................................                                [100%]\r\n============================== warnings summary ===============================\r\nengine\\application\\pipeline_runner.py:11\r\n  F:\\��������˼·\\engine\\application\\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.\r\n    from engine.application.dual_engine_adapter import analyze_dual_engine\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n113 passed, 1 warning in 71.11s (0:01:11)\r\n"
+stderr (JSON-escaped exact capture): ""
+
+Post-audit test-only edit verification
+--------------------------------------
+The AST import scanner was changed from if/elif dispatch to ast.NodeVisitor dispatch after the strict audit. The contract assertions and product code were unchanged.
+
+Invocation: python -m pytest tests/governance/test_wave1_baseline_contract.py -q
+Started: 2026-08-03T13:38:49.8666985+08:00
+Ended: 2026-08-03T13:39:04.8207418+08:00
+Exit code: 0
+Parsed counts: passed=5, failed=0, warnings=1
+stdout (JSON-escaped exact capture): ".....                                                                    [100%]\r\n============================== warnings summary ===============================\r\nengine\\application\\pipeline_runner.py:11\r\n  F:\\��������˼·\\engine\\application\\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.\r\n    from engine.application.dual_engine_adapter import analyze_dual_engine\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n5 passed, 1 warning in 12.69s\r\n"
+stderr (JSON-escaped exact capture): ""
+
+Strict Python audit
+-------------------
+Invocation: python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py tests\governance\test_wave1_baseline_contract.py
+Exit code: 0
+stdout: "no violations in 1 file(s)\r\n"
+stderr: ""
+
+Adversarial QA
+--------------
+dirty_worktree: PASS. Scoped status before was empty and tests/governance did not exist. Scoped status after contains only the two owned new tests and this owned artifact; unrelated pre-existing worktree changes were preserved.
+flaky_tests: PASS. Required isolated runs both returned exit 0 with passed=5 and failed=0; the post-audit isolated verification also returned the same counts.
+misleading_success_output: PASS. Success is based on process exit_code=0 plus parsed nonzero pass counts (5 and 113), not on progress dots or success text alone.
+stale_state: PASS. This artifact was freshly created for the run and records individual start/end timestamps. An initial long-capture wrapper yielded no result metadata and was discarded as inconclusive; the exact command was repeated with an evidence-grade capture.
+hung_or_long_commands: PASS. Long pytest calls were polled in bounded 30-second intervals. No command timed out; the longest accepted pytest duration was 105.80s.
+malformed_input: not applicable; Task 0 adds characterization assertions and no input parser.
+prompt_injection: not applicable; no untrusted external text or model prompt is consumed.
+cancel_resume: not applicable; no resumable workflow or persistent checkpoint is introduced.
+repeated_interruptions: not applicable; no mid-operation interruption occurred.
+
+Cleanup receipt
+---------------
+No servers, ports, containers, temporary directories, or runtime services were created.
+Process audit after verification found no running python/pytest process whose command line referenced either Task 0 test invocation.
+No product source was modified and engine/governance was not created by Task 0.
+
+Final scope/process check: 2026-08-03T13:42:42.8338079+08:00
+Scoped git status before: ""
+Scoped git status after:
+  ?? .omo/start-work/artifacts/task0-baseline.txt
+  ?? tests/governance/__init__.py
+  ?? tests/governance/test_wave1_baseline_contract.py
+Matching runtime process count: 0
+engine/governance exists: false
+
+Result: PASS
+Both required suites exited 0 with nonzero pass counts, and the isolated result was stable across repeats.

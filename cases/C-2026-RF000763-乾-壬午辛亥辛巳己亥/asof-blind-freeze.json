@@ -1,0 +1,166 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000763-乾-壬午辛亥辛巳己亥",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-30T13:10:25+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "evidence_scope": "仅使用input.md经truncate_blind_section得到的盲态前缀、该前缀的表格注释检测结果、asof-freeze-scaffold-draft.json、preflight与adapt_parsed解析结果、事业L1+L2门控结果、RF000417/RF000464既有验证产物、工具契约、§9.4结构质量排名中该案时间节点年份，以及显式读取的active理论规则。",
+    "source": "cases/C-2026-RF000763-乾-壬午辛亥辛巳己亥/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 161,
+    "cutoff_marker": "yaml_key",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "parser_method": "tools.preflight.parse(blind-only temp) -> engine.predicates.types.adapt_parsed",
+    "temporary_parser_completion": "仅在临时盲态副本补空known_facts并闭合Markdown代码围栏；临时文件已删除。",
+    "known_fact_count_after_parse": 0,
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false,
+    "existing_case_analysis_read_before_freeze": false,
+    "existing_statement_or_findings_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "2002-11-09 21:30",
+    "birthplace": "青島市",
+    "pillars_supplied": [
+      "壬午",
+      "辛亥",
+      "辛巳",
+      "己亥"
+    ],
+    "current_dayun": "癸丑",
+    "current_dayun_years": "2021-2031"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能仍处于专业学习向现实职业衔接的阶段，职业价值中心偏向依靠知识训练、技术表达与可检验任务交付，而非已经形成稳定职位权力；不冻结具体行业、职级和收入。",
+      "strength": "MEDIUM",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：知识与技能结构已经存在，但现实兑现不稳，表现为尚未形成持续岗位、稳定项目或连续收入。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若中心不成立，则截至截止日已在稳定岗位中持续承担明确职责并形成连续交付。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有在读、短期实习、零散学习或一次性任务不算稳定职业兑现；需出现持续岗位或连续项目责任，才可判为已形成现实职业承载。",
+    "falsifiers": [
+      "截至截止日已在稳定岗位中持续承担明确职责并形成连续交付。",
+      "主要现实活动长期既不包含专业学习，也不包含知识、技术表达及可检验任务交付。"
+    ]
+  },
+  "dayun_stage": {
+    "dayun": "癸丑",
+    "start_year": 2021,
+    "end_year": 2031,
+    "stage_judgment": "食神透而丑中印气承接，优先冻结为学习积累、专业技能与输出训练并行的衔接期；结构能力可被激活，但稳定职位、授权和收入的现实完成度不作当然推定。",
+    "algorithmic_hint": "脚手架提示可能放大技术输出、创作表达、专业技能、学习积累、文书权贵与长辈支持；该提示仅作十神分类启发，不单独构成现实事实。"
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "scoring_unit": "dated_career_transition_non_completion",
+      "window": "2024-01-01/2024-12-31",
+      "center_event": "2024年职业衔接没有完成，仍未形成持续岗位与稳定任务交付。",
+      "confidence": 68,
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "2024甲辰处癸丑运，为脚手架高触发年且事业L1+L2候选门通过；甲与时干己合绊，激活原局时干，算法强度high。",
+      "selection_reason": "E1覆盖脚手架高触发年，优先选择门控通过年份，并覆盖§9.4时间节点所在的2024年。",
+      "falsifier": "2024年内已形成持续岗位，并承担稳定、可追踪的任务交付。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "tools.preflight.parse -> engine.predicates.types.adapt_parsed -> engine.asof.annual_trace.build_annual_traces_with_gate",
+    "domain": "事业",
+    "trace_count": 16,
+    "passed_year_count": 11,
+    "selected_year": {
+      "year": 2024,
+      "liunian": "甲辰",
+      "dayun": "癸丑",
+      "strength": "high",
+      "domains": [
+        "财富",
+        "婚姻"
+      ],
+      "relations": [
+        "流年干合时干己化('土', '合绊')"
+      ],
+      "activated_node_ids": [
+        "natal.hour.stem"
+      ],
+      "crossed_candidate_gate": true
+    },
+    "selection_reason": "2024同时属于脚手架高触发年、通过事业L1+L2候选门，并与§9.4时间节点所在年一致；算法直接领域未含事业，故仅将其作为职业衔接状态的跨域候选，不把门控通过等同于事件必然发生。",
+    "other_scaffold_high_years_covered_by_e1": [],
+    "scaffold_high_years_not_frozen_as_e1": [
+      2013,
+      2014,
+      2017,
+      2025
+    ]
+  },
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-004",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:794",
+      "summary": "财官印食伤不能按名称绝对定吉凶，须结合日主强弱、通月气与制化状态。",
+      "application": "不把癸丑运的食神、偏印名称直接等同于职业成功，仅冻结学习、技能与输出的结构倾向。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-053",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:2038",
+      "summary": "财官能否兑现须看日主承载与印扶；结构存在不等于现实能够稳定享用。",
+      "application": "用于保留知识技能已存在但持续岗位、授权和收入兑现不稳的同方向备选。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-031",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1177",
+      "summary": "正官强调规则与约束，但成格须结合财生、印护及有无混杂破损。",
+      "application": "用于限制稳定组织职位与权力判断；本案不因官星语义直接冻结职级或稳定岗位。"
+    }
+  ],
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "asserted_no_issue": true,
+    "center_or_count": 0,
+    "event_windows_months": {
+      "E1": 11.992032690609664
+    },
+    "event_or_counts": {
+      "E1": 0
+    },
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。"
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位、职级、收入、财富规模或社会等级。",
+    "不把2024算法高触发与候选门通过直接等同于职业事件必然发生。",
+    "不冻结婚姻、健康、子女及反馈中可能出现的任何事实。",
+    "禁止在本阶段读取feedback.md。",
+    "禁止在本阶段创建verdict。"
+  ],
+  "immutability_policy": "计算SHA-256后不得根据反馈修改本文件；后续揭示与裁决必须写入独立文件并绑定本冻结哈希。"
+}

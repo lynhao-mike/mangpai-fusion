@@ -1,0 +1,428 @@
+{
+  "schema_version": "asof-blind-freeze-v1",
+  "case_id": "C-2026-RF000807-坤-乙亥丙戌戊寅癸亥",
+  "as_of_date": "2026-07-30",
+  "domain": "事业",
+  "freeze_status": "FINAL_BLIND_FREEZE",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000807-坤-乙亥丙戌戊寅癸亥/input.md",
+    "truncate_function": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 166,
+    "boundary_type": "yaml_key",
+    "boundary_marker": "known_facts:",
+    "table_embedded_annotation_lines": [],
+    "post_boundary_content_used": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "pillars": [
+      "乙亥",
+      "丙戌",
+      "戊寅",
+      "癸亥"
+    ],
+    "domain": "事业",
+    "scaffold_source": "cases/C-2026-RF000807-坤-乙亥丙戌戊寅癸亥/asof-freeze-scaffold-draft.json",
+    "scaffold_years": [
+      2004,
+      2008,
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "l1_l2_gate": {
+    "domain": "事业",
+    "l1": {
+      "passed": true,
+      "evidence_chars": [
+        "甲",
+        "乙",
+        "寅",
+        "癸",
+        "亥"
+      ],
+      "rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥"
+    },
+    "candidate_year_traces": [
+      {
+        "year": 2004,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      },
+      {
+        "year": 2008,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      },
+      {
+        "year": 2011,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      },
+      {
+        "year": 2012,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      },
+      {
+        "year": 2013,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "癸"
+        ],
+        "l2_rationale": "大运戊子: 大运子藏 癸 ∈ 必需字",
+        "crossed_l1_l2_gate": true
+      }
+    ],
+    "e1_selection_rule": "E1按盲态事业L1+L2与脚手架触发证据选择；五年均过双门，2013以6项关系为脚手架关系数最高年，并处大运阶段边界，故冻结为E1。"
+  },
+  "reasoning_boundary": {
+    "allowed": [
+      "盲态输入前缀",
+      "冻结脚手架",
+      "L1+L2门控结果",
+      "已实际查阅的active理论规则"
+    ],
+    "forbidden_before_hash": [
+      "feedback.md",
+      "input.md的known_facts边界后内容"
+    ]
+  },
+  "primary_landing_set": {
+    "domain": "事业",
+    "center": {
+      "statement": "组织规则与资源协调型职责更可能成为事业主轴，但现实路径易有波动，稳定职位兑现并非必然。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "confidence": {
+        "star": 3,
+        "percent": 0.63
+      }
+    },
+    "alternatives": [
+      {
+        "alternative_id": "A1",
+        "statement": "能力存在但现实兑现不稳，呈间断承接或过渡期切换，尚未形成稳定职位。",
+        "reason": "官印财均见但结构存在不等于现实稳定完成，预先保留同方向的不完整兑现落点。"
+      }
+    ],
+    "falsifiers": [
+      "若反馈明确显示长期无组织规则承担、无资源协调职责且无任何阶段性兑现，则中心判断受反证。",
+      "若反馈明确显示职业路径长期稳定且不存在间断、转型或现实兑现波动，则不稳备选受反证。"
+    ]
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "priority": "PRIMARY_E1",
+      "scoring_unit": "dated_career_path_disruption",
+      "window": "2013-01-01/2013-12-31",
+      "center_event": "职业准备路径发生一次明确的中断式切换",
+      "trigger_basis": "五个盲态脚手架候选均通过事业L1+L2；2013癸巳有6项干支关系，为关系数最高的单年，且处丁亥运转戊子运的阶段边界，故仅据盲态证据选为E1。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "gate_trace": {
+        "year": 2013,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "癸"
+        ],
+        "l2_rationale": "大运戊子: 大运子藏 癸 ∈ 必需字",
+        "crossed_l1_l2_gate": true
+      }
+    },
+    {
+      "candidate_id": "E2",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_capacity_disruption",
+      "window": "2004-01-01/2004-12-31",
+      "center_event": "事业能力准备环境发生一次明显扰动",
+      "trigger_basis": "盲态脚手架高触发单年；甲申处丁亥运，有5项冲、穿、刑关系且领域提示含事业；事业L1+L2通过。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "gate_trace": {
+        "year": 2004,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      }
+    },
+    {
+      "candidate_id": "E3",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_resource_change",
+      "window": "2008-01-01/2008-12-31",
+      "center_event": "事业资源条件发生一次可辨识调整",
+      "trigger_basis": "盲态脚手架高触发单年；戊子处丁亥运，戊癸合绊并提示事业；事业L1+L2通过。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "gate_trace": {
+        "year": 2008,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      }
+    },
+    {
+      "candidate_id": "E4",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_output_change",
+      "window": "2011-01-01/2011-12-31",
+      "center_event": "事业输出方式发生一次可辨识变化",
+      "trigger_basis": "盲态脚手架高触发单年；辛卯处丁亥运，丙辛合绊、卯戌六合，领域提示含事业与财富；事业L1+L2通过。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "gate_trace": {
+        "year": 2011,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      }
+    },
+    {
+      "candidate_id": "E5",
+      "priority": "SECONDARY_PREREGISTERED",
+      "scoring_unit": "dated_career_boundary_change",
+      "window": "2012-01-01/2012-12-31",
+      "center_event": "事业责任边界发生一次明确调整",
+      "trigger_basis": "盲态脚手架高触发单年；壬辰处丁亥运，丁壬合绊、辰戌冲；事业L1+L2通过，作为独立单年次级预注册。",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "gate_trace": {
+        "year": 2012,
+        "l1_passed": true,
+        "l1_evidence_chars": [
+          "甲",
+          "乙",
+          "寅",
+          "癸",
+          "亥"
+        ],
+        "l1_rationale": "原局存在 事业 关键字: 甲,乙,寅,癸,亥",
+        "l2_passed": true,
+        "l2_evidence_chars": [
+          "丁",
+          "亥",
+          "寅",
+          "甲"
+        ],
+        "l2_rationale": "大运丁亥: 大运丁亥的天干丁∈ 必需字; 大运丁亥的地支亥∈ 必需字; 大运亥刑原局年支亥; 大运亥六合原局日支寅",
+        "crossed_l1_l2_gate": true
+      }
+    }
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-039",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1492-1529",
+      "claim": "七杀有制为偏官贵格，无制攻身则祸；制杀以食神、阳刃为上。",
+      "use": "原局官杀与印并见，支持将规则职责视为事业主轴，同时保留压力与完成度反证。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-040",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1530-1557",
+      "claim": "杀格运喜食伤制杀、印绶化杀，忌财生杀旺攻身。",
+      "use": "支持区分职责激活与现实承压，不把财官同现直接等同于稳定职位。"
+    }
+  ],
+  "contract_gate": {
+    "center_statement_finding": {
+      "or_count": 0,
+      "likely_too_broad": false,
+      "note": "职业中心描述含 0 个‘或’，未达到宽泛性提醒阈值；本启发式检查不保证描述本身足够具体或可证伪。"
+    },
+    "event_window_findings": [
+      {
+        "candidate_id": "E1",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E1 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E2",
+        "window_days": 365,
+        "window_months": 11.992032690609664,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E2 的窗口为 365 天（约 11.99 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E3",
+        "window_days": 365,
+        "window_months": 11.992032690609664,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E3 的窗口为 365 天（约 11.99 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E4",
+        "window_days": 364,
+        "window_months": 11.959177806525801,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E4 的窗口为 364 天（约 11.96 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      },
+      {
+        "candidate_id": "E5",
+        "window_days": 365,
+        "window_months": 11.992032690609664,
+        "exceeds_limit": false,
+        "or_count_in_event": 0,
+        "note": "候选 E5 的窗口为 365 天（约 11.99 个月），未超过 14.0 个月限制；仍应人工检查事件描述是否过宽。"
+      }
+    ],
+    "completion_finding": {
+      "has_activate_existing_center": true,
+      "has_incomplete_realization_alt": true,
+      "missing_realization_guard": false,
+      "note": "中心使用 ACTIVATE_EXISTING，且已有备选覆盖现实兑现不完整信号。"
+    },
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。"
+  },
+  "verdict_policy": {
+    "allowed_enums": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "e1_is_independent_single_year": true,
+    "adjudicate_after_feedback_reveal_only": true
+  }
+}

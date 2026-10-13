@@ -1,0 +1,23 @@
+{
+  "schema_version": "career-relation-model-disposition/v1",
+  "model_id": "career-path-relation-model-v1",
+  "decided_at": "2026-07-31T11:10:00Z",
+  "decision": "invalidated_requires_new_model_id",
+  "formal_scoring_status": "invalidated",
+  "theory_fidelity": "unsupported_terminal_semantics",
+  "development_replay_permitted": true,
+  "holdout_scoring_permitted": false,
+  "promotion_eligible": false,
+  "production_switch_permitted": false,
+  "historical_identity_frozen": true,
+  "supersedes_preregistration_candidate_eligibility": "META/as-of-evaluation/career-path-holdout-preregistration-v1.json#models/career-path-relation-model-v1",
+  "audit_matrix_path": "META/as-of-evaluation/career-relation-model-v1-fidelity-matrix.json",
+  "audit_report_path": "reports/career-relation-model-v1-fidelity-audit-2026-07-31.md",
+  "reason": "The five-step career-pillar locator is substantially faithful, but the model's employment and entrepreneurship terminal chains are unsupported semantic compression of career-pillar type and six-category left-pillar nature semantics.",
+  "required_before_formal_scoring": [
+    "revise terminal semantics without treating left-pillar nature as a binary employment/entrepreneurship label",
+    "assign a new model_id",
+    "create a new preregistration before any unseen labels are revealed",
+    "retain this model_id and its artifacts for traceability only"
+  ]
+}

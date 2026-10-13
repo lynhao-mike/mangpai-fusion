@@ -1,0 +1,69 @@
+Task12 static isolation evidence
+
+Changed files:
+- tests/test_architecture_dependencies.py
+- tests/governance/test_static_isolation.py
+- tests/governance/static_isolation_scanner.py
+- tests/governance/static_isolation_content.py
+
+No product code was modified.
+
+Baseline on unchanged assigned source:
+- Scenario: existing architecture and Yang static guards before Task12 edits.
+- Invocation: python -m pytest tests/test_architecture_dependencies.py tests/yang_marriage/test_static_isolation.py -q
+- Observable: exit 0; 13 passed, 1 warning in 3.78s.
+
+RED evidence:
+- Scenario: Task12 tests added before scanner helpers existed.
+- Invocation: python -m pytest tests/governance/test_static_isolation.py -q
+- Observable: exit 1; 12 failed, 1 passed; failures were NameError for missing scanner helpers such as _forbidden_import_issues, _governance_yaml_issues, _fact_snapshot_write_issues, and _system_time_liunian_issues.
+- Note: an initial patch attempt landed in the session cwd, was removed immediately, and was reapplied under F:\多流派新思路 before implementation continued.
+
+Green evidence:
+- Scenario: exact Task12 plan command, final split implementation.
+- Invocation: python -m pytest tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/yang_marriage/test_static_isolation.py -q
+- Observable: exit 0; 27 passed, 1 warning in 4.10s.
+- Scenario: exact Task12 plan command, repeat/focused pass.
+- Invocation: python -m pytest tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/yang_marriage/test_static_isolation.py -q
+- Observable: exit 0; 27 passed, 1 warning in 4.37s.
+
+Manual QA surface:
+- Scenario: static scanner public surface against real tree and controlled violating fixtures.
+- Invocation: python -m pytest tests/governance/test_static_isolation.py -q
+- Observable: exit 0; 13 passed in 1.41s.
+- Coverage: controlled fixtures assert failures for governance outward imports, V5/report/label contamination, shadow runner consumers, forbidden YAML scalars, FactSnapshot writes, and system-time liunian decisions; real-tree assertions scan engine/governance, theory/multi-school-governance-v1.yaml, legacy entrypoints/templates, School View adapters, new governance/shadow code, and legacy Yang guard presence.
+
+Representative compatibility:
+- Scenario: Task11 shadow runner/default compatibility.
+- Invocation: python -m pytest tests/application/test_governance_shadow_runner.py tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+- Observable: exit 0; 94 passed, 1 warning in 30.23s.
+- Scenario: governance trigger/catalog representative compatibility.
+- Invocation: python -m pytest tests/governance/test_trigger_registry.py tests/governance/test_structure_catalog.py -q
+- Observable: exit 0; 26 passed in 4.44s.
+
+Quality gates:
+- Invocation: python -m ruff check tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+- Observable: exit 0; All checks passed.
+- Invocation: python -m ruff format --check tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+- Observable: exit 0; 4 files already formatted.
+- Invocation: python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+- Observable: exit 0; no violations in 4 file(s).
+- Invocation: python -m compileall -q tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+- Observable: exit 0; no output.
+- Invocation: PowerShell pure LOC counter over touched Python files.
+- Observable: tests/test_architecture_dependencies.py 75; tests/governance/test_static_isolation.py 117; tests/governance/static_isolation_scanner.py 173; tests/governance/static_isolation_content.py 88.
+
+UltraQA class mapping:
+- malformed_input: covered by malformed violating Python/YAML fixtures; scanners report deterministic issues.
+- dirty_worktree: observed large pre-existing dirty tree; only assigned tests and Task12 artifacts touched.
+- stale_state: mitigated by baseline before edits and repeated exact command after final split.
+- flaky: mitigated by two focused exact passes plus standalone static scanner pass; no sleeps or wall-clock waits.
+- misleading_output: mitigated by binary observables and exact command/result capture instead of inferred pass claims.
+- hung_commands: long pytest run announced as WORKING; all command sessions polled to exit.
+- side_effects: product code untouched; tmp_path fixtures are pytest-managed and not persistent.
+- dependency_drift: PyYAML/ruff/pytest availability verified by actual command execution.
+- cleanup: no manual temp fixture files or background processes left by Task12; misplaced cwd test file was removed immediately.
+
+Residual risks:
+- The broader worktree contains many unrelated changes and untracked files outside this assignment.
+- Deprecation warning from engine.application.pipeline_runner remains pre-existing and unrelated.

@@ -1,0 +1,229 @@
+Task 10 structure catalog evidence
+Timestamp: 2026-08-04 Asia/Shanghai
+Owner scope: tests/governance/test_structure_catalog.py; engine/governance/structure_catalog.py; engine/governance/structure_catalog_types.py; theory/ziping/structure-catalog-v1.yaml; this artifact; matching notepad.
+
+Source audit
+- Authority read: plans/multi-school-governance-wave1-implementation-2026-08-02.md Task 10; plans/multi-school-governance-design-2026-08-02.md sections 13 and 15.1.
+- Primary 30-item source: .omo/plans/ten-god-structure-production-closure.md lines 55-86. It freezes exactly 13 flow/protection, 5 control/transformation, 3 clearing, 9 damage/imbalance structures, and explicitly keeps 食神制杀, 伤官驾杀, 杀印相生 as legacy compatibility while saying TenGodStructureKind is not the full catalog source.
+- Scope guard source: .omo/plans/ten-god-structure-production-closure.md lines 38-47 excludes single-pattern 格, 从格, 专旺, 化气, 调候, 神煞 and forbids eval/dynamic Python/runtime Chinese inference.
+- Ziping corpus cross-check: theory/_ir/ziping_rule_ir.yaml lines 1288-1309, 1372-1377, 1442-1460, 1527-1549, 3539-3560, 3601-3623, 3771, 3950.
+- Review-status items: hurting_officer_controls_killing, rob_wealth_combines_killing, overcontrolled_killing use DTS/normalized evidence in the .omo source and were frozen with source_status=review rather than inventing Ziping-only definitions.
+
+Baseline and RED
+- Scenario: old three-structure behavior baseline.
+- Invocation: python -m pytest tests/predicates/test_ten_god_structures.py -q
+- Observable: exit 0; 13 passed in 0.60s.
+- Invocation: python -c "from engine.predicates.ten_god_structure_types import TenGodStructureKind; print([kind.name for kind in TenGodStructureKind])"
+- Observable: exit 0; ['FOOD_GOD_CONTROLS_KILLING', 'HURTING_OFFICER_CONTROLS_KILLING', 'KILLING_GENERATES_SEAL'].
+- RED invocation: python -m pytest tests/governance/test_structure_catalog.py -q
+- Observable: exit 1; 10 failed due ModuleNotFoundError: No module named 'engine.governance.structure_catalog'. Correct failure reason before implementation.
+
+Implementation summary
+- Added a strict YAML loader in engine/governance/structure_catalog.py.
+- Split closed enums, DTOs, and typed error into engine/governance/structure_catalog_types.py because structure_catalog.py measured 295 pure LOC before split.
+- Added theory/ziping/structure-catalog-v1.yaml with exactly 30 entries, required roles, candidate/clear/block/damage types, closed source/implementation statuses, source refs, and only the three current legacy mappings.
+- Did not modify engine/governance/__init__.py, multi-school-governance-v1.yaml, registries.py, TenGodStructureKind, production loaders, reports, feedback, learning, or public fact registration.
+
+GREEN and focused verification
+- Invocation: python -m pytest tests/governance/test_structure_catalog.py -q
+- Observable after fixes: exit 0; 10 passed in 2.35s.
+- Planned focused invocation 1: python -m pytest tests/governance/test_structure_catalog.py tests/predicates/test_ten_god_structures.py -q
+- Observable: exit 0; 23 passed in 2.24s.
+- Planned focused invocation 2: same command.
+- Observable: exit 0; 23 passed in 2.76s.
+- Post-split focused invocation: same command.
+- Observable: exit 0; 23 passed in 3.19s.
+
+Manual loader QA
+- Invocation: public API script using load_structure_catalog("theory/ziping/structure-catalog-v1.yaml").
+- Observable:
+  - count=30
+  - unique_ids=30
+  - unique_keys=30
+  - digest=1b746ca407ca17b653646fdaeb0f289acaeaa440bce780a81cc52ff70a3da8bc
+  - legacy_projection={'KILLING_GENERATES_SEAL': 'killing_generates_seal', 'FOOD_GOD_CONTROLS_KILLING': 'food_god_controls_killing', 'HURTING_OFFICER_CONTROLS_KILLING': 'hurting_officer_controls_killing'}
+  - source_status_counts={'composite': 1, 'direct': 16, 'normalized': 10, 'review': 3}
+  - implementation_status_counts={'catalog_only_candidate': 25, 'catalog_only_review': 2, 'current_implemented': 3}
+  - current_implemented=['food_god_controls_killing', 'hurting_officer_controls_killing', 'killing_generates_seal']
+  - enum_count=3
+  - production_loader_imported=False
+  - order_digest_same=True
+  - invalid duplicate_id -> STRUCTURE.DUPLICATE_ID
+  - invalid duplicate_key -> STRUCTURE.DUPLICATE_KEY
+  - invalid unknown_legacy -> STRUCTURE.LEGACY_MAPPING
+  - invalid missing_source_status -> STRUCTURE.YAML_FIELDS
+  - invalid unknown_source_status -> STRUCTURE.SOURCE_STATUS
+- Rename rerun using ASCII line-prefix mutation:
+  - rename_id_same=True
+  - rename_digest_changed=True
+  - baseline_digest=1b746ca407ca17b653646fdaeb0f289acaeaa440bce780a81cc52ff70a3da8bc
+  - renamed_digest=2aa34a1c29218aa033c89c39b6c3c2de661f6fbbb981b80bcc06c6c48411891a
+
+Static, LOC, and diff checks
+- Invocation: python -m ruff check engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; All checks passed.
+- Invocation: python -m ruff format --check engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; 3 files already formatted.
+- Invocation: python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; no violations in 3 file(s).
+- LOC invocation: PowerShell nonblank/noncomment count.
+- Observable: engine/governance/structure_catalog.py 225; engine/governance/structure_catalog_types.py 95; tests/governance/test_structure_catalog.py 157.
+- Invocation: python -m ruff format ... after split.
+- Observable: exit 0; 1 file reformatted, 2 files left unchanged.
+- Invocation: git diff --check -- engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py theory/ziping/structure-catalog-v1.yaml
+- Observable: exit 0; no whitespace errors.
+- Invocation: git status --short -- target files.
+- Observable: four task code/data files untracked before artifact write.
+- Invocation: Test-Path F:\八字分析系统\ziweidoushu\tests\governance\test_structure_catalog.py
+- Observable: False; earlier mislocated test file removed.
+
+Joint governance regression
+- Invocation: python -m pytest tests/governance -q
+- Observable: exit 1; 153 passed, 1 failed, 1 warning.
+- Failure: tests/governance/test_school_registry.py::test_evidence_only_capability_is_never_winner_eligible fails in existing school_registry/fact_certification path with CERTIFICATION.YAML_FIELDS and then FrozenInstanceError on an existing frozen exception. This is outside Task10 ownership and no Task10-owned file is in the stack.
+
+Risks and notes
+- StructureCatalogContractError is a manual __slots__ Exception, not a frozen dataclass, because frozen Exception breaks traceback handling under the active Python runtime. Value DTOs remain frozen+slots.
+- The catalog is a governance contract only. It does not implement or register 30 evaluators and does not register public facts or production rules.
+
+REQUEST_CHANGES rework verification (2026-08-04)
+
+Implementation delta
+- engine/governance/structure_catalog.py now computes the real entry digest from parsed typed YAML values before StructureCatalogEntry construction; no placeholder digest path remains.
+- engine/governance/structure_catalog.py now pre-scans YAML structure_id, canonical_key, and legacy_mapping before typed entry construction so duplicate IDs/keys/legacy enums fail with STRUCTURE.DUPLICATE_ID, STRUCTURE.DUPLICATE_KEY, or STRUCTURE.LEGACY_DUPLICATE before entry-level target checks.
+- engine/governance/structure_catalog_types.py now fail-closes direct constructors for exact wrapper/enums/tuple/digest/projection contracts and keeps StructureId/CanonicalStructureKey string-compatible for the existing public test surface.
+- File-level SIZE_OK comments were added to the three Task10 Python files because these untracked Task10 files are cohesive catalog/enum/contract-test surfaces; splitting them would broaden Wave1 Task10 ownership.
+
+Focused RED from rework start
+- Invocation: python -m pytest tests/governance/test_structure_catalog.py tests/predicates/test_ten_god_structures.py -q
+- Observable before fix: exit 1; 10 failed, 17 passed. First failure was real YAML load rejecting the placeholder digest with STRUCTURE.ENTRY_DIGEST.
+
+Focused GREEN repeatability
+- Invocation 1: python -m pytest tests/governance/test_structure_catalog.py tests/predicates/test_ten_god_structures.py -q
+- Observable: exit 0; 27 passed in 3.31s.
+- Invocation 2: same command.
+- Observable: exit 0; 27 passed in 2.73s.
+- Final post-format invocation: same command.
+- Observable: exit 0; 27 passed in 4.15s.
+
+Joint governance regression
+- Invocation: python -m pytest tests/governance -q
+- Observable: exit 0; 159 passed, 1 warning in 25.45s.
+- Final post-format invocation: same command.
+- Observable: exit 0; 159 passed, 1 warning in 26.59s.
+- Warning: existing DeprecationWarning from engine/application/pipeline_runner.py importing deprecated dual_engine_adapter.
+
+Static and compile gates
+- Invocation: python -m ruff check engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; All checks passed.
+- Invocation: python -m ruff format --check engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable after formatting: exit 0; 3 files already formatted.
+- Invocation: python -m compileall engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; compiled all three files.
+- Invocation: python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py
+- Observable: exit 0; no violations in 3 file(s).
+- LOC invocation: PowerShell nonblank/noncomment count on the same three files.
+- Observable: engine/governance/structure_catalog.py 290; engine/governance/structure_catalog_types.py 331; tests/governance/test_structure_catalog.py 290.
+
+Manual public replay
+- Invocation: PowerShell here-string piped to python -; script imported load_structure_catalog, StructureCatalog, StructureCatalogEntry, DigestRef, TenGodStructureKind, then exercised real YAML load, invalid YAML mutations, direct constructor forgeries, and module import side effects.
+- Observable:
+  - catalog_count=30
+  - unique_ids=30
+  - unique_keys=30
+  - projection={'KILLING_GENERATES_SEAL': 'killing_generates_seal', 'FOOD_GOD_CONTROLS_KILLING': 'food_god_controls_killing', 'HURTING_OFFICER_CONTROLS_KILLING': 'hurting_officer_controls_killing'}
+  - swapped_legacy=STRUCTURE.LEGACY_TARGET
+  - duplicate_legacy=STRUCTURE.LEGACY_DUPLICATE
+  - forged_entry_digest=STRUCTURE.ENTRY_DIGEST
+  - raw_family=STRUCTURE.ENTRY_TYPE
+  - mutable_roles=STRUCTURE.ENTRY_TYPE
+  - forged_catalog_digest=STRUCTURE.CATALOG_DIGEST
+  - mutable_projection=STRUCTURE.CATALOG_TYPE
+  - wrong_projection=STRUCTURE.LEGACY_TARGET
+  - wrong_nested_entry=STRUCTURE.CATALOG_TYPE
+  - production_loader_imported=False
+
+Worktree observation
+- Invocation: git status --short -- engine/governance/structure_catalog.py engine/governance/structure_catalog_types.py tests/governance/test_structure_catalog.py theory/ziping/structure-catalog-v1.yaml .omo/start-work/artifacts/task10-structure-catalog.txt .omo/notepads/multi-school-governance-wave1/task10-structure-catalog.md
+- Observable before this append: all six Task10 paths were untracked in the shared worktree.
+
+SAFE REFACTOR: remove SIZE_OK escapes (2026-08-04)
+
+Codemap
+- engine/governance/structure_catalog.py: public YAML loader facade. Owns path resolution, YAML compose call, duplicate ID/key/legacy pre-scan orchestration, catalog cardinality/projection checks, and public re-exports that existing callers import from this facade.
+- engine/governance/structure_catalog_loader_values.py: extracted YAML node/scalar/sequence/closed-enum parsing. Owns typed conversion from YAML nodes into StructureFamily, StructureRole, StructureConditionType, SourceStatus, ImplementationStatus, and TenGodStructureKind.
+- engine/governance/structure_catalog_types.py: primitive branded IDs, closed enums, typed StructureCatalogContractError, and lazy public re-exports for catalog models/digest helpers.
+- engine/governance/structure_catalog_models.py: extracted StructureCatalogEntry and StructureCatalog integrity models, digest derivation, tuple/projection/nested-entry validation, and exact legacy-target fail-closed checks.
+- tests/governance/test_structure_catalog.py: loader/catalog count, digest, invalid YAML matrix, and production import side-effect coverage.
+- tests/governance/test_structure_catalog_integrity.py: direct constructor/digest/type/projection forgery coverage moved without assertion deletion.
+
+Split plan
+1. Extract catalog model/digest/constructor integrity from structure_catalog_types.py into structure_catalog_models.py, preserving existing imports via lazy structure_catalog_types re-exports.
+2. Extract YAML node/scalar/list/closed-enum parsing from structure_catalog.py into structure_catalog_loader_values.py, leaving loader orchestration in the facade.
+3. Split direct constructor forgery tests into test_structure_catalog_integrity.py, leaving loader behavior tests in test_structure_catalog.py.
+4. Remove every SIZE_OK escape and verify all touched Python files are below 250 pure LOC.
+
+Per-step verification
+- Step 1 targeted invocation: python -m pytest tests/governance/test_structure_catalog.py tests/predicates/test_ten_god_structures.py -q
+- Step 1 observable: exit 0; 27 passed in 3.10s.
+- Step 1 LOC observable: structure_catalog.py 290; structure_catalog_types.py 147; structure_catalog_models.py 238; test_structure_catalog.py 290.
+- Step 2 first targeted invocation: same focused command.
+- Step 2 first observable: exit 1; 2 failed, 25 passed because two duplicate ID/key branches still called removed _reject.
+- Step 2 fix: replaced the two stale _reject calls with reject_structure_catalog.
+- Step 2 targeted rerun observable: exit 0; 27 passed in 3.47s.
+- Step 2 LOC observable: structure_catalog.py 248; structure_catalog_loader_values.py 118; structure_catalog_types.py 147; structure_catalog_models.py 238; test_structure_catalog.py 290.
+- Step 3 targeted invocation: python -m pytest tests/governance/test_structure_catalog.py tests/governance/test_structure_catalog_integrity.py tests/predicates/test_ten_god_structures.py -q
+- Step 3 observable: exit 0; 27 passed in 3.15s.
+- Step 3 LOC observable: structure_catalog.py 248; structure_catalog_loader_values.py 118; structure_catalog_types.py 147; structure_catalog_models.py 238; test_structure_catalog.py 177; test_structure_catalog_integrity.py 117.
+- Compatibility fix: restored structure_catalog.py facade re-exports for existing imports after targeted test caught StructureFamily import regression.
+- Compatibility targeted rerun observable: exit 0; 27 passed in 2.90s.
+
+Final verification
+- Focused invocation 1: python -m pytest tests/governance/test_structure_catalog.py tests/governance/test_structure_catalog_integrity.py tests/predicates/test_ten_god_structures.py -q
+- Observable: exit 0; 27 passed in 3.66s.
+- Focused invocation 2: same command.
+- Observable: exit 0; 27 passed in 3.75s.
+- Plan command: same focused invocation above; observable exit 0, 27 passed.
+- Governance invocation: python -m pytest tests/governance -q
+- Observable: exit 0; 159 passed, 1 warning in 23.23s.
+- Ruff check invocation: python -m ruff check engine/governance/structure_catalog.py engine/governance/structure_catalog_loader_values.py engine/governance/structure_catalog_types.py engine/governance/structure_catalog_models.py tests/governance/test_structure_catalog.py tests/governance/test_structure_catalog_integrity.py
+- Observable: exit 0; All checks passed.
+- Ruff format invocation: python -m ruff format --check same six Python files.
+- Observable: exit 0; 6 files already formatted.
+- No-excuse invocation: python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py same six Python files.
+- Observable: exit 0; no violations in 6 file(s).
+- Compile invocation: python -m compileall same six Python files.
+- Observable: exit 0.
+- SIZE_OK scan invocation: rg "SIZE_OK" same six Python files.
+- Observable: exit 1 with no output, meaning no SIZE_OK escapes remain.
+- Final LOC observable:
+  - engine/governance/structure_catalog.py 248
+  - engine/governance/structure_catalog_loader_values.py 118
+  - engine/governance/structure_catalog_types.py 149
+  - engine/governance/structure_catalog_models.py 238
+  - tests/governance/test_structure_catalog.py 177
+  - tests/governance/test_structure_catalog_integrity.py 117
+
+Final public replay
+- Invocation: PowerShell here-string piped to python -; loaded real catalog, verified re-exported digest helper, verified direct structure_catalog_models import identity, exercised invalid YAML mutations and constructor forgeries.
+- Observable:
+  - catalog_count=30
+  - unique_ids=30
+  - unique_keys=30
+  - projection={'KILLING_GENERATES_SEAL': 'killing_generates_seal', 'FOOD_GOD_CONTROLS_KILLING': 'food_god_controls_killing', 'HURTING_OFFICER_CONTROLS_KILLING': 'hurting_officer_controls_killing'}
+  - type_reexport_entry_digest_matches=True
+  - direct_model_import_matches=True
+  - swapped_legacy=STRUCTURE.LEGACY_TARGET
+  - duplicate_legacy=STRUCTURE.LEGACY_DUPLICATE
+  - forged_entry_digest=STRUCTURE.ENTRY_DIGEST
+  - raw_family=STRUCTURE.ENTRY_TYPE
+  - mutable_roles=STRUCTURE.ENTRY_TYPE
+  - forged_catalog_digest=STRUCTURE.CATALOG_DIGEST
+  - mutable_projection=STRUCTURE.CATALOG_TYPE
+  - wrong_projection=STRUCTURE.LEGACY_TARGET
+  - wrong_nested_entry=STRUCTURE.CATALOG_TYPE
+  - production_loader_imported=False
+
+Worktree observation after safe refactor
+- Invocation: git status --short -- Task10 Python/data/artifact/notepad/evidence paths.
+- Observable: Task10 files and .omo/evidence/ remain untracked in the shared worktree; no unrelated paths were touched by this refactor pass.

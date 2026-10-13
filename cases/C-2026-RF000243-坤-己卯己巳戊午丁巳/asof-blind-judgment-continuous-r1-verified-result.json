@@ -1,0 +1,26 @@
+{
+  "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+  "decision_action": "REJECTED_NO_STATE_BUILD",
+  "feedback_opened_at_utc": "2026-07-29T03:44:17.719633+00:00",
+  "final_envelope_state": "VERIFICATION_OPEN",
+  "freeze_package_sha256_verified": "28880985a0f857a4ec3c0b197e69d3672437c1b428a448e2b0461009e49e6b78",
+  "schema_version": "asof-blind-judgment-continuous-r1-verified-result/v1",
+  "verdicts": [
+    {
+      "actual_landing": "施工单位文员岗位转换，未见专业输出或交付职责增强证据",
+      "candidate_id": "career-output-2023-2026-xinwei",
+      "evidence_window": [
+        "2023-06-08",
+        "2026-06-08"
+      ],
+      "feedback_evidence": "2023年6月离职，休养两个月后转去施工单位做文员；反馈未记载专业内容、方案、技术成果、运营项目或流程交付职责增强。",
+      "landing_verdict": "MISS",
+      "predicted_alternative": "运营、项目执行或流程交付职责增强但未形成正式管理职权",
+      "predicted_center": "专业内容、方案或技术成果的独立输出责任增强",
+      "reason_code": "OUTSIDE_FROZEN_LANDINGS",
+      "reasoning": "窗口内存在可评分事业变动，因此样本有效；但岗位转换不等于冻结中心或替代落点所要求的职责增强。按冻结字符串和弱命中边界，不以同义扩张追认命中，裁为REJECTED/MISS。",
+      "verdict": "REJECTED"
+    }
+  ],
+  "verified_event_ids": []
+}

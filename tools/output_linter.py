@@ -76,8 +76,11 @@ DEFAULT_RULES_YAML: Path = (
 )
 
 _INTERNAL_ID_PATTERNS = [
-    (re.compile(r"\bclaim-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 claim_id（内部哈希）"),
+    (re.compile(r"\b(?:claim|v5cl)-[0-9a-z-]{6,}\b", re.IGNORECASE), "禁显 claim_id（内部哈希）"),
+    (re.compile(r"\b(?:evidence|v5ev)-[0-9a-z-]{6,}\b", re.IGNORECASE), "禁显 evidence_id（内部哈希）"),
     (re.compile(r"\bprediction-[0-9a-f]{6,}\b", re.IGNORECASE), "禁显 prediction_id（内部哈希）"),
+    (re.compile(r"\bclaim_id\b", re.IGNORECASE), "禁显 claim_id（内部字段名）"),
+    (re.compile(r"\bevidence_id\b", re.IGNORECASE), "禁显 evidence_id（内部字段名）"),
     (re.compile(r"\bstatement_id\b", re.IGNORECASE), "禁显 statement_id（内部字段名）"),
     (re.compile(r"\bstatement_index\b", re.IGNORECASE), "禁显 statement_index（内部字段名）"),
     (re.compile(r"\bcapability_posterior\b", re.IGNORECASE), "禁显 capability_posterior（内部学习字段）"),
@@ -484,9 +487,18 @@ class AnalysisOutputProto:  # pragma: no cover
 
 
 def _analysis_to_dict(obj: Any) -> dict[str, Any]:
-    """支持 dataclass / dict / 自定义 dataclass。"""
+    """支持 dict、自定义序列化对象与普通 dataclass。
+
+    许多冻结输出对象用只读映射保护内部状态；优先使用它们自己的
+    ``to_dict``，避免 ``dataclasses.asdict`` 直接深拷贝 ``mappingproxy``。
+    """
     if isinstance(obj, dict):
         return obj
+    serializer = getattr(obj, "to_dict", None)
+    if callable(serializer):
+        serialized = serializer()
+        if isinstance(serialized, dict):
+            return serialized
     if dataclasses.is_dataclass(obj):
         return dataclasses.asdict(obj)
     # 兜底：尝试 vars()

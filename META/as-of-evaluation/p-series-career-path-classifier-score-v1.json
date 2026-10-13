@@ -1,0 +1,39 @@
+{
+  "schema_version": "career-path-classifier-score/v1",
+  "freeze_path": "META/as-of-evaluation/p-series-career-path-classifier-freeze-v1.json",
+  "freeze_sha256": "43ea6d8091c42c4b5464c514e31e35ae8d3a99314da32586bb75f99654116516",
+  "predictions_sha256": "3758164aa07c3b09e0428b6f341a90484b74f4a469da4e4a655cdc024481f0c4",
+  "strict_binary_count": 37,
+  "mixed_holdout_count": 3,
+  "balanced_accuracy": 0.3625,
+  "employment_recall": 0.125,
+  "entrepreneurship_recall": 0.6,
+  "coverage": 0.5135135135135135,
+  "accuracy": 0.1891891891891892,
+  "confusion_matrix": {
+    "employment": {
+      "employment": 4,
+      "entrepreneurship": 12,
+      "abstain": 16
+    },
+    "entrepreneurship": {
+      "employment": 0,
+      "entrepreneurship": 3,
+      "abstain": 2
+    }
+  },
+  "prediction_distribution": {
+    "abstain": 20,
+    "employment": 4,
+    "entrepreneurship": 16
+  },
+  "frozen_baseline_balanced_accuracy": 0.425,
+  "thresholds": {
+    "balanced_accuracy": 0.6,
+    "employment_recall": 0.55,
+    "entrepreneurship_recall": 0.55,
+    "coverage": 0.7
+  },
+  "passes_all_thresholds": false,
+  "post_score_tuning_permitted": false
+}

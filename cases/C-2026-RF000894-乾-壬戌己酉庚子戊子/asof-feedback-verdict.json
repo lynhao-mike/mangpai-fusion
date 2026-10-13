@@ -1,0 +1,124 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000894",
+  "adjudicated_at": "2026-07-29T21:47:30+08:00",
+  "feedback_source": "cases/C-2026-RF000894-乾-壬戌己酉庚子戊子/feedback.md",
+  "freeze_source": "cases/C-2026-RF000894-乾-壬戌己酉庚子戊子/asof-blind-freeze.json",
+  "freeze_sha256_expected": "e6e347d74123af6c9b34effe05114155660d01b22b8c2adbc8032f13525d62f3",
+  "freeze_sha256_observed_before_verdict": "e6e347d74123af6c9b34effe05114155660d01b22b8c2adbc8032f13525d62f3",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {"year": 2000, "domain": "education", "fact": "考上北京一所211大学"},
+    {"year": 2004, "domain": "career", "fact": "毕业后工作一般，去桂林机械行业"},
+    {"year": 2013, "domain": "career", "fact": "升职加薪"},
+    {"year": 2018, "domain": "career", "fact": "事业发展遇到瓶颈，团队成员先后离职"},
+    {"year": 2019, "domain": "career", "fact": "跳槽到无锡一家上市公司，薪资翻倍，进入新能源汽车行业"},
+    {"year": null, "domain": "career_trait", "fact": "技术能力出众，善于处理人际关系"}
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "EVIDENCE_SUPPORTS_DIRECTION_BUT_CURRENT_CUTOFF_UNVERIFIED",
+    "verdict": "ABSTAIN",
+    "reason": "机械行业、新能源汽车行业及‘技术能力出众’强力支持专业技术/问题解决方向，且不以行政权力为已知中心；但反馈没有明确给出2026-07-29的现职和持续状态。冻结断语是截止日当前基本面，不能用2019及未标年的职业描述替代当前核验。",
+    "counterfactual_for_hit": "若补充反馈确认截止日仍主要依靠技术、分析、方法、流程或复杂问题解决承担稳定专业职责，则C1可按CENTER_HIT裁决；本次文件不预先改判。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未给出运营控制、审计风控、财务流程、质量、供应链或制度执行等具体职责。"
+    },
+    {
+      "claim_id": "A2",
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "reason": "反馈未给出咨询、培训、方案策划、内容沟通或专业服务职责。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "claim_id": "P1",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2000考入北京211大学", "2004毕业后去桂林机械行业就业"],
+      "reason": "1999—2009阶段确有高等教育、技能/专业形成以及学业到异地就业的现实转换，达到冻结断语的最低命中条件；不把学校层级或具体行业记作盲断所得。"
+    },
+    {
+      "claim_id": "P2",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": ["2013升职加薪", "2018事业瓶颈及团队离职", "2019跨城市、跨公司并转入新能源汽车行业"],
+      "reason": "2009—2019阶段出现职业责任和平台变化，2019同时发生地点、上市公司平台、行业及薪资结构变化，明显超过冻结所需的至少一次较大变化。该命中只代表十年阶段方向，不代表精确预测了2013或2019。"
+    },
+    {
+      "claim_id": "P3",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "ABSTAIN",
+      "matched_facts": ["2019跳槽上市公司并进入新能源汽车行业"],
+      "reason": "2019事实与进入更大组织平台和专业路线相容，但反馈没有2020—2026的职责稳定性、资格化、制度接口或晋升速度信息，不足以核验整个运前段的中心断语。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_or_location_change",
+      "window": "2009-01-01/2010-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "2009仅明确记录女儿出生，未明确陈述这一窗口有或没有职业/地点变化。",
+      "reason": "事实表未列出匹配事件，但它不是明确的完整负面核验；不能把沉默直接当作MISS。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_career_disruption_or_restructuring",
+      "window": "2018-01-01/2020-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2018事业瓶颈及团队成员离职；2019跳槽无锡上市公司、薪资翻倍并进入新能源汽车行业。",
+      "reason": "时间窗、职业领域和最低事件类型均直接匹配；冻结中心没有规定升降方向，现实中的跳槽、平台和行业重构足以构成中心命中。薪资翻倍属于额外事实，不回填为已预测内容。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_role_or_platform_change",
+      "window": "2023-01-01/2025-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈没有2023—2025职业事实。",
+      "reason": "无核验材料。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "职业方向获得强支持，但截止日状态缺失，正式裁决ABSTAIN。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 2,
+      "center_hits": 2,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "P1、P2命中；P3缺少2020—2026核验。"
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 2,
+      "summary": "仅E2有充分核验并命中；E1与E3不进入命中率分母。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "ABSTAIN",
+    "broad_phase_direction": "CENTER_HIT",
+    "event_timing_precision": "CENTER_HIT",
+    "summary": "本例最有价值的盲断成果是技术/专业方向得到现实事实支持，以及2018—2020职业结构变化窗口命中。由于反馈缺少截止日现职和2023—2025事实，不能把职业基本面或后段候选抬为命中；阶段方向与精确事件继续分开计分。"
+  },
+  "verdict_enum_check": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "all_verdicts_formal": true
+  }
+}

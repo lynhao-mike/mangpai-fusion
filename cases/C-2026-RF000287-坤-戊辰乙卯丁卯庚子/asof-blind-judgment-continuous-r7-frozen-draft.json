@@ -1,0 +1,728 @@
+{
+  "as_of_date": "2026-06-11",
+  "blind_boundary": {
+    "blind_line_count": 144,
+    "boundary_type": "yaml_key",
+    "cut_line": 145,
+    "table_embedded_annotation_lines": []
+  },
+  "blind_input": {
+    "chart_source": "wenzhen_structured_v1",
+    "daiyun": [
+      {
+        "branch": "寅",
+        "end_date": "2000-01-01",
+        "sequence": 1,
+        "start_date": "1990-01-01",
+        "stem": "甲"
+      },
+      {
+        "branch": "丑",
+        "end_date": "2010-01-01",
+        "sequence": 2,
+        "start_date": "2000-01-01",
+        "stem": "癸"
+      },
+      {
+        "branch": "子",
+        "end_date": "2020-01-01",
+        "sequence": 3,
+        "start_date": "2010-01-01",
+        "stem": "壬"
+      },
+      {
+        "branch": "亥",
+        "end_date": "2030-01-01",
+        "sequence": 4,
+        "start_date": "2020-01-01",
+        "stem": "辛"
+      },
+      {
+        "branch": "戌",
+        "end_date": "2040-01-01",
+        "sequence": 5,
+        "start_date": "2030-01-01",
+        "stem": "庚"
+      },
+      {
+        "branch": "酉",
+        "end_date": "2050-01-01",
+        "sequence": 6,
+        "start_date": "2040-01-01",
+        "stem": "己"
+      },
+      {
+        "branch": "申",
+        "end_date": "2060-01-01",
+        "sequence": 7,
+        "start_date": "2050-01-01",
+        "stem": "戊"
+      },
+      {
+        "branch": "未",
+        "end_date": "2070-01-01",
+        "sequence": 8,
+        "start_date": "2060-01-01",
+        "stem": "丁"
+      }
+    ],
+    "gender": "坤",
+    "pillars": {
+      "day": {
+        "branch": "卯",
+        "changsheng": "病",
+        "hidden_stems": [
+          "乙"
+        ],
+        "stem": "丁"
+      },
+      "hour": {
+        "branch": "子",
+        "changsheng": "绝",
+        "hidden_stems": [
+          "癸"
+        ],
+        "stem": "庚"
+      },
+      "month": {
+        "branch": "卯",
+        "changsheng": "病",
+        "hidden_stems": [
+          "乙"
+        ],
+        "stem": "乙"
+      },
+      "year": {
+        "branch": "辰",
+        "changsheng": "衰",
+        "hidden_stems": [
+          "戊",
+          "乙",
+          "癸"
+        ],
+        "stem": "戊"
+      }
+    },
+    "schema_version": "asof-blind-input/v1"
+  },
+  "blind_input_sha256": "bf2b7a8ff56755b4c3d73746d52f3ab314610521121f5db26dd676db33eb23ea",
+  "case_id": "C-2026-RF000287-坤-戊辰乙卯丁卯庚子",
+  "feedback_opened": false,
+  "freeze_package": {
+    "blind_input_sha256": "bf2b7a8ff56755b4c3d73746d52f3ab314610521121f5db26dd676db33eb23ea",
+    "events": [
+      {
+        "candidate": {
+          "alternative_hypotheses": [
+            "只出现学习、项目加码或工作量变化，未形成职责调整",
+            "巳亥冲主要落在非事业域"
+          ],
+          "annual_trace": {
+            "activated_node_ids": [
+              "resource_conversion",
+              "expression_output",
+              "authority_pressure"
+            ],
+            "counter_evidence": [
+              {
+                "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+                "locator": "lines 40-67",
+                "source": ".tmp_asof_blind_view.md"
+              },
+              {
+                "excerpt": "时干庚金财星透出，地支无金根",
+                "locator": "lines 40-67",
+                "source": ".tmp_asof_blind_view.md"
+              }
+            ],
+            "crossed_candidate_gate": true,
+            "dayun_ganzhi": "辛亥",
+            "domains": [
+              "career"
+            ],
+            "liunian": "乙巳",
+            "relations": [
+              {
+                "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+                "locator": "2025 annual derivation",
+                "source": ".tmp_asof_blind_view.md"
+              },
+              {
+                "excerpt": "流年巳与大运亥相冲，触发既有资源—职责路径重排",
+                "locator": "2025 annual derivation",
+                "source": ".tmp_asof_blind_view.md"
+              }
+            ],
+            "supporting_evidence": [
+              {
+                "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+                "locator": "2025 annual derivation",
+                "source": ".tmp_asof_blind_view.md"
+              },
+              {
+                "excerpt": "流年巳与大运亥相冲，触发既有资源—职责路径重排",
+                "locator": "2025 annual derivation",
+                "source": ".tmp_asof_blind_view.md"
+              },
+              {
+                "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+                "locator": "lines 40-67",
+                "source": ".tmp_asof_blind_view.md"
+              }
+            ],
+            "trigger_strength": "high",
+            "year": 2025
+          },
+          "candidate_id": "career-event-2025-role-adjustment",
+          "completion_mode": "TEMPORARY_SUBSTITUTE",
+          "counter_evidence": [
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "daiyun_evidence": [
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "domain": "career",
+          "event_type": "career_role_adjustment",
+          "extension_boundary": "SHORT_TERM_ONLY",
+          "frozen_version": "asof-prototype-v1",
+          "is_primary_event": true,
+          "natal_evidence": [
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "年干戊土伤官透，辰中亦藏戊",
+              "locator": "lines 40-55",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+              "locator": "lines 45-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "root_evidence": [
+            {
+              "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "丁日主在卯月标为病，司令甲木用事",
+              "locator": "lines 130-141",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+              "locator": "2025 annual derivation",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "root_level": "NO_ROOT",
+          "source_citations": [
+            {
+              "excerpt": "正月丁火，甲木当权，乃为母旺，非庚不能劈甲，何以引丁。",
+              "line": 101,
+              "source_path": "theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md"
+            },
+            {
+              "excerpt": "君赖臣生者，印绶太旺之意也。",
+              "line": 181,
+              "source_path": "theory/raw/tiaohou_ditiansui/extracted/滴天髓阐微_part6_候选理论提取_2026-06-06.md"
+            }
+          ],
+          "supporting_evidence": [
+            {
+              "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+              "locator": "2025 annual derivation",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "流年巳与大运亥相冲，触发既有资源—职责路径重排",
+              "locator": "2025 annual derivation",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "verification_status": "FROZEN",
+          "window_end": "2025-12-31",
+          "window_start": "2025-01-01"
+        },
+        "landing_set": {
+          "alternatives": [
+            {
+              "direction": "change",
+              "domain": "career",
+              "name": "工作平台或团队切换"
+            },
+            {
+              "direction": "change",
+              "domain": "career",
+              "name": "工作内容与权限边界重组"
+            }
+          ],
+          "center": {
+            "direction": "change",
+            "domain": "career",
+            "name": "岗位职责明显调整"
+          },
+          "exclusions": [
+            "单纯薪资涨跌不计入命中",
+            "婚恋、健康或家庭事件不计入事业落点",
+            "不得以具体单位、行业、职级或收入数额追认"
+          ],
+          "falsifiers": [
+            "2025年全年没有任何事业岗位、平台、团队、职责或权限边界变化",
+            "唯一可核验变化明确发生在2025年窗口之外"
+          ],
+          "frozen_version": "asof-prototype-v1",
+          "function_candidate": "career_role_adjustment",
+          "weak_hit_boundary": "仅有工作量、学习任务或短期项目变化，但无岗位、平台、团队、职责或权限边界的可核验改变"
+        }
+      }
+    ],
+    "fundamentals": [
+      {
+        "center": "原局资源与学习承载强，但丁火无支根；事业兑现依赖阶段性火势及财星制印",
+        "falsifiers": [
+          "长期稳定自主兑现且无需岁运补火或财星制衡",
+          "2020年至截止日完全不存在资源—职责转化迹象"
+        ],
+        "fundamental_id": "career-fundamental-2020-2026",
+        "reasonable_range": [
+          "资源学习可转为职责能力",
+          "资源压力偏重而现实兑现有限",
+          "阶段性触发岗位职责调整"
+        ],
+        "strongest_alternative": "双卯印旺主要表现为持续学习或环境支持，未转成职责变化",
+        "window_center": "2025-07-01",
+        "window_end": "2026-06-11",
+        "window_start": "2020-01-01"
+      }
+    ],
+    "identity": {
+      "as_of_date": "2026-06-11",
+      "case_id": "C-2026-RF000287-坤-戊辰乙卯丁卯庚子",
+      "schema_version": "asof-session/v1",
+      "session_id": "S-20260729T094100Z-00000287"
+    },
+    "schema_version": "asof-career-freeze-package/v1"
+  },
+  "freeze_package_sha256": "2e519c85b300adf571342cfae8e10ae8de975cff291b5d6eda8f198d06a412b0",
+  "frozen_at_utc": "2026-07-29T09:41:00Z",
+  "frozen_prediction": {
+    "annual_trace": {
+      "activated_node_ids": [
+        "resource_conversion",
+        "expression_output",
+        "authority_pressure"
+      ],
+      "counter_evidence": [
+        {
+          "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "crossed_candidate_gate": true,
+      "dayun_ganzhi": "辛亥",
+      "domains": [
+        "career"
+      ],
+      "liunian": "乙巳",
+      "relations": [
+        {
+          "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+          "locator": "2025 annual derivation",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "流年巳与大运亥相冲，触发既有资源—职责路径重排",
+          "locator": "2025 annual derivation",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "supporting_evidence": [
+        {
+          "excerpt": "乙巳年：乙木再增印，巳火为丁火提供阶段性火势",
+          "locator": "2025 annual derivation",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "流年巳与大运亥相冲，触发既有资源—职责路径重排",
+          "locator": "2025 annual derivation",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "trigger_strength": "high",
+      "year": 2025
+    },
+    "completion_mode": "TEMPORARY_SUBSTITUTE",
+    "daiyun_stage": {
+      "amplified_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "path_id": "resource_to_role",
+          "reason": "亥水可生卯木，同时放大资源与压力的竞争解释"
+        }
+      ],
+      "applicability_conditions": [
+        "仅适用于辛亥运内",
+        "必须由具体流年提供火的临时根源并形成可审计作用链"
+      ],
+      "closed_paths": [],
+      "counter_evidence": [
+        {
+          "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "domain_tendency": "mixed",
+      "end_date": "2029-12-31",
+      "ganzhi": "辛亥",
+      "natal_relations": [
+        {
+          "evidence": [
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "natal_node_id": "resource_conversion",
+          "relation": "辛财制印与亥水生印并存"
+        },
+        {
+          "evidence": [
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+              "locator": "lines 45-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "natal_node_id": "authority_pressure",
+          "relation": "亥水延续官杀与规则压力信号"
+        }
+      ],
+      "opened_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "第四步大运为辛亥，2020-2030",
+              "locator": "lines 89-93",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "path_id": "resource_to_role",
+          "reason": "辛财透出，为制衡旺印提供阶段性通道"
+        }
+      ],
+      "redirected_paths": [],
+      "repaired_paths": [],
+      "sequence": 4,
+      "signal_refs": [
+        {
+          "excerpt": "辛亥:2020-2030",
+          "locator": "segment[4].year_range",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        }
+      ],
+      "start_date": "2020-01-01",
+      "suppressed_paths": [],
+      "unresolved_signal_refs": [
+        {
+          "excerpt": "辛财透而亥水生卯木",
+          "locator": "segment[4].feature",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        },
+        {
+          "excerpt": "career",
+          "locator": "segment[4].typical_domains",
+          "source": "engine.yingqi.retrospective.DaiyunSegment"
+        }
+      ]
+    },
+    "event_window": [
+      "2025-01-01",
+      "2025-12-31"
+    ],
+    "forbidden_inferences": [
+      "不得推断具体单位、行业、职级或收入数额",
+      "不得用2025年窗口外事实追认本候选",
+      "触发强度不等于现实影响度",
+      "冻结前不得读取known_facts或feedback"
+    ],
+    "natal_capacity": {
+      "capacity_nodes": [
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "function": "把印星资源转为技能与岗位能力",
+          "node_id": "resource_conversion"
+        },
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "年干戊土伤官透，辰中亦藏戊",
+              "locator": "lines 40-55",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "function": "以伤官输出解决方案与工作成果",
+          "node_id": "expression_output"
+        },
+        {
+          "chart_evidence": [
+            {
+              "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+              "locator": "lines 45-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "function": "承接规则、责任与考核压力",
+          "node_id": "authority_pressure"
+        }
+      ],
+      "case_id": "C-2026-RF000287-坤-戊辰乙卯丁卯庚子",
+      "chart_evidence": [
+        {
+          "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "年干戊土伤官透，辰中亦藏戊",
+          "locator": "lines 40-55",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+          "locator": "lines 45-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "丁日主在卯月标为病，司令甲木用事",
+          "locator": "lines 130-141",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "competing_explanations": [
+        "双卯印旺也可能只表现为持续学习或资源依赖，不必然形成岗位变化",
+        "庚辛财透可制印，但金在原局无支根，调节能力可能不足"
+      ],
+      "constraints": [
+        {
+          "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "counter_evidence": [
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "domain": "career",
+      "feasible_paths": [
+        {
+          "evidence": [
+            {
+              "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+              "locator": "lines 45-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "function": "资源学习转为岗位职责",
+          "node_ids": [
+            "resource_conversion",
+            "authority_pressure"
+          ],
+          "path_id": "resource_to_role"
+        },
+        {
+          "evidence": [
+            {
+              "excerpt": "年干戊土伤官透，辰中亦藏戊",
+              "locator": "lines 40-55",
+              "source": ".tmp_asof_blind_view.md"
+            },
+            {
+              "excerpt": "时干庚金财星透出，地支无金根",
+              "locator": "lines 40-67",
+              "source": ".tmp_asof_blind_view.md"
+            }
+          ],
+          "function": "成果输出推动职责调整",
+          "node_ids": [
+            "expression_output",
+            "resource_conversion"
+          ],
+          "path_id": "output_to_adjustment"
+        }
+      ],
+      "schema_version": "asof-prototype-v1",
+      "source_citations": [
+        {
+          "excerpt": "正月丁火，甲木当权，乃为母旺，非庚不能劈甲，何以引丁。",
+          "line": 101,
+          "source_path": "theory/raw/ziping/extracted/子平_穷通宝鉴_part1_候选理论提取_2026-06-06.md"
+        },
+        {
+          "excerpt": "君赖臣生者，印绶太旺之意也。",
+          "line": 181,
+          "source_path": "theory/raw/tiaohou_ditiansui/extracted/滴天髓阐微_part6_候选理论提取_2026-06-06.md"
+        }
+      ],
+      "structural_features": [
+        {
+          "excerpt": "月柱乙卯、日支卯，乙木印星成势",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "时干庚金财星透出，地支无金根",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "年干戊土伤官透，辰中亦藏戊",
+          "locator": "lines 40-55",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "子中癸水、辰中癸水形成官杀压力信号",
+          "locator": "lines 45-67",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ],
+      "vulnerabilities": [
+        {
+          "excerpt": "四支辰卯卯子及全部藏干均不含丙丁火",
+          "locator": "lines 40-67",
+          "source": ".tmp_asof_blind_view.md"
+        },
+        {
+          "excerpt": "丁日主在卯月标为病，司令甲木用事",
+          "locator": "lines 130-141",
+          "source": ".tmp_asof_blind_view.md"
+        }
+      ]
+    },
+    "root_level": "NO_ROOT"
+  },
+  "schema_version": "asof-blind-judgment-continuous-r7-frozen-draft/v1",
+  "session_id": "S-20260729T094100Z-00000287"
+}

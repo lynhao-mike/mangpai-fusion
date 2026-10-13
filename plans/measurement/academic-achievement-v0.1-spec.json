@@ -1,0 +1,56 @@
+{
+  "schema_version": "measurement-spec-candidate-v0.1",
+  "spec_id": "education.academic_achievement.l2.v0.1",
+  "spec_status": "DRAFT",
+  "approval_status": "PENDING",
+  "mapping_status": "UNRESOLVED",
+  "mapping_type": null,
+  "frozen": false,
+  "pilot_eligible": false,
+  "chart_l2": {
+    "id": "M1-D-244",
+    "wording": "学业有成",
+    "source_refs": ["M1-D-244"],
+    "semantic_layer": "CHART_L2"
+  },
+  "candidate_outcome": {
+    "domain": "education",
+    "indicator": "academic_achievement",
+    "taxonomy_path": "mapping/outcome-taxonomy-v1.yaml",
+    "fields": ["papers", "awards", "licenses", "professional_outputs"],
+    "role": "CANDIDATE_MEASUREMENT_OBJECT"
+  },
+  "proposed_semantic_boundary": {
+    "include": "已形成并完成实质评价、可归属于本人、与可辨认学习/训练/研究活动有直接联系的成果。",
+    "exclude": [
+      "学历层次、学校层次、学习能力或考试能力本身",
+      "没有学习/训练/研究联系的职业产出",
+      "只有投稿、报名、参与、出勤或未经实质评价的材料"
+    ],
+    "status": "PROPOSED_NOT_APPROVED"
+  },
+  "observation": {
+    "status": "UNDEFINED",
+    "window": null,
+    "coverage": null,
+    "cutoff": null
+  },
+  "scoring": {
+    "status": "UNDEFINED",
+    "hit_rule": null,
+    "miss_rule": null,
+    "undecidable_rule": "UNDEFINED"
+  },
+  "falsifier": {
+    "status": "UNDEFINED",
+    "theory_falsifier": "官杀配印但财坏印且运不补者",
+    "reality_falsifier": null
+  },
+  "prohibitions": [
+    "本候选不是已批准的 mapping。",
+    "不得从该候选生成现实 outcome 标签。",
+    "不得启动 blind pilot。",
+    "不得用命主现实结果反向修改本文件。"
+  ],
+  "source_document": "plans/measurement/academic-achievement-v0.1-proposal.md"
+}

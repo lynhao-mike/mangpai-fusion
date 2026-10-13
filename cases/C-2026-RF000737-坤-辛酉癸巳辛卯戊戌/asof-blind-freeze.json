@@ -1,0 +1,146 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000737-坤-辛酉癸巳辛卯戊戌",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T20:04:55+08:00",
+  "as_of_date": "2026-07-30",
+  "independent_blind_freeze_reviewer": true,
+  "blindness_controls": {
+    "evidence_scope": "仅使用本独立上下文由input.md经truncate_blind_section得到的blind_text、对blind_text的表格注释检测结果、asof-freeze-scaffold-draft.json、指定解析与事业L1+L2门控结果，以及显式读取的active理论规则。",
+    "source": "cases/C-2026-RF000737-坤-辛酉癸巳辛卯戊戌/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 154,
+    "cutoff_marker": "yaml_key",
+    "blind_char_count": 2203,
+    "blind_line_count": 153,
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "temporary_gender_normalization": "仅将blind_text内birth.性别从女规范化为F并补空known_facts以适配preflight；临时文件已删除。",
+    "content_after_cutoff_read_by_reviewer": false,
+    "feedback_read_by_reviewer": false,
+    "known_life_facts_used": []
+  },
+  "blind_input": {
+    "sex": "坤",
+    "pillars_supplied": [
+      "辛酉",
+      "癸巳",
+      "辛卯",
+      "戊戌"
+    ]
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能在规则明确、责任可追踪的工作场景中，以任务承接、流程推进和结果交付体现职业价值；职业责任存在上升潜力，但不冻结具体行业、职级和收入水平。",
+      "strength": "MEDIUM",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：能力结构存在，但现实兑现不稳，表现为职责增加而授权、稳定性与回报未同步。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若不在正式组织岗位，则以阶段性项目承担可追踪的执行与交付责任。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有普通上班经历不算命中；需持续承担可追踪任务，并以流程推进或结果交付接受评价。",
+    "falsifiers": [
+      "截至截止日长期不在任何工作或项目责任场景中。",
+      "主要职业活动始终是低判断、低责任且不对进度、质量或交付负责的重复劳动。"
+    ]
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "1993-01-01/1993-12-31",
+      "center_event": "1993年发生一次可核验的职业责任升级，最低命中条件为主要工作任务范围明确扩大。",
+      "confidence": 72,
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "事业L1+L2候选门通过；1993癸酉年处甲午运，癸合时干戊、酉冲日支卯、酉穿时支戌、酉自刑年支酉，共4项关系，激活年支、日支、时干与时支；算法强度high。",
+      "falsifier": "1993全年主要工作任务范围没有明确扩大。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "tools.preflight.parse -> engine.predicates.types.adapt_parsed -> engine.asof.annual_trace.build_annual_traces_with_gate",
+    "preflight_status": "PASS_AFTER_SAFE_TEMP_ADAPTATION",
+    "domain": "事业",
+    "selected_year": {
+      "year": 1993,
+      "liunian": "癸酉",
+      "dayun": "甲午",
+      "strength": "high",
+      "crossed_candidate_gate": true,
+      "domains": [
+        "事业",
+        "财富"
+      ],
+      "relations": [
+        "流年干合时干戊",
+        "流年支冲日支卯",
+        "流年支穿时支戌",
+        "流年支自刑年支酉"
+      ],
+      "activated_node_ids": [
+        "natal.year.branch",
+        "natal.day.branch",
+        "natal.hour.stem",
+        "natal.hour.branch"
+      ]
+    },
+    "selection_reason": "在五个scaffold年份中，1993与1996均明确含事业提示；1993同时含财富提示、四项关系且激活四个原局节点，因此选择1993单年作为唯一E1。"
+  },
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-031",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1177",
+      "summary": "正官强调规则、责任与约束，并须结合财生、印护及破损情况；本案仅支持组织责任方向，不推导职位等级。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-053",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:2038",
+      "summary": "财官能否兑现须看日主承载与印扶，财官叠见不等于现实成功；用于设置职责存在但回报或稳定性未同步的备选。"
+    }
+  ],
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "asserted_no_issue": true,
+    "center_or_count": 0,
+    "event_windows_months": {
+      "E1": 11.959177806525801
+    },
+    "event_or_counts": {
+      "E1": 0
+    },
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。",
+    "failed_attempt_history": [
+      {
+        "classification": "invocation_parameter_shape_error",
+        "exception_type": "ValueError",
+        "detail": "Invalid isoformat string: '1993-01-01/1993-12-31'",
+        "behavior_evidence": "none",
+        "repair": "按check_event_window真实签名拆分window_start与window_end后精确重跑。"
+      }
+    ]
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位、职级、收入、财富规模或社会等级。",
+    "不把1993算法高触发直接等同于升职、加薪或成功。",
+    "不冻结婚姻、健康、子女及反馈中可能出现的任何事实。",
+    "禁止在本阶段创建verdict。"
+  ],
+  "immutability_policy": "计算SHA-256后不得根据反馈修改本文件；后续裁决必须写入独立文件。"
+}

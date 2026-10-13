@@ -1,0 +1,174 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000900",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-29T21:50:00+08:00",
+  "as_of_date": "2026-07-29",
+  "as_of_date_basis": "案例盲态前缀未另给截止日，采用本次验证日期；写入并计算哈希后不得根据反馈回写。",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000900-乾-戊寅乙卯丙寅戊子/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 141,
+    "cutoff_marker": "yaml_key",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "1998-03-20T00:00:00+08:00",
+    "birthplace": "新乡市",
+    "true_solar_time_correction_supplied": true,
+    "true_solar_time_supplied": "1998-03-20T00:00:00+08:00",
+    "pillars_supplied": ["戊寅", "乙卯", "丙寅", "戊子"],
+    "dayun_supplied": [
+      {"pillar": "丙辰", "start_year": 2003, "end_year": 2013},
+      {"pillar": "丁巳", "start_year": 2013, "end_year": 2023},
+      {"pillar": "戊午", "start_year": 2023, "end_year": 2033},
+      {"pillar": "己未", "start_year": 2033, "end_year": 2043},
+      {"pillar": "庚申", "start_year": 2043, "end_year": 2053},
+      {"pillar": "辛酉", "start_year": 2053, "end_year": 2063},
+      {"pillar": "壬戌", "start_year": 2063, "end_year": 2073},
+      {"pillar": "癸亥", "start_year": 2073, "end_year": 2083}
+    ],
+    "known_life_facts_used": []
+  },
+  "reasoning_boundary": {
+    "natal_structure": "丙火生卯月，乙卯与两寅形成强印根，日主承载充足；年时两戊食神透出，构成知识/学习输入向表达、作品、方案、产品或实际交付的泄秀路径。金财全局不现、癸官仅藏子，故不能由印食旺直接推出财富规模、企业所有权或行政等级。",
+    "current_dayun": "2023—2033戊午运进一步增强食神输出和火势，现实主题更偏从学习积累转向作品、项目、教学表达、方案交付或业务成果；但木火土偏聚且财官不显，也可能表现为选择多、自我要求强、输出过载或成果变现不足。",
+    "strength_cap": "能力与学习承载评为中上，现实职业兑现只冻结为中等偏低至中等。命主截止日仅28岁，优先判断成长中的专业执行/输出岗位，不冻结资深专家、高管、创业成功或高收入。",
+    "root_level_justification": "职业功能定位于两戊食神的稳定外显，并由寅卯寅印根与丙火承载形成输入—消化—输出链；这支持技能和表达型职业方向，但财官缺位使职位、商业兑现及组织权力只能弱判。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "knowledge_or_creative_input_converted_into_deliverables",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-29，命主更可能处于需要学习理解后形成可见交付的职业路径，主要价值来自内容/方案、设计策划、产品项目、教育培训、技术应用或沟通表达之一；现实位置以成长中的专业执行者或项目成员为中心，工作自主性和输出要求高于纯重复岗位，但尚不冻结成熟管理权。",
+      "strength": "MEDIUM_LOW",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "若并非知识内容或设计策划岗，则更可能是需要快速学习、现场解决问题并持续交付的技术应用、产品运营、客户方案或项目协调岗位。",
+        "strength": "MEDIUM_LOW"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若尚未形成稳定职业，则处于考证、升学、转行训练、作品积累或从学习向就业兑现的过渡期；方向仍是把知识与表达转为可验证成果。",
+        "strength": "LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有学历、爱学习、会说话、使用办公软件或偶尔写材料不算命中；主要学习或工作必须持续产出作品、方案、课程、项目、产品、技术结果或客户可用成果。",
+    "falsifiers": [
+      "长期主要从事低学习要求、低自主判断且无作品/方案/项目/技术交付的重复劳动。",
+      "主要现实身份依赖家族资本、被动资产或纯层级授权，本人无需持续学习与输出。",
+      "截至截止日既无稳定职业，也无升学、考证、训练、作品或求职转型等可核验的知识兑现活动。"
+    ]
+  },
+  "frozen_phase_claims": [
+    {
+      "claim_id": "P1",
+      "window": "2003-2013 丙辰运",
+      "statement": "基础教育阶段总体具备较强学习吸收或表达表现机会，至少有一个阶段在成绩、竞赛、才艺、班级角色或老师评价上表现突出；但不冻结始终名列前茅。",
+      "confidence": 58,
+      "falsifier": "整个阶段学习吸收、表达表现及学校评价持续明显偏弱，且从无任何突出节点。"
+    },
+    {
+      "claim_id": "P2",
+      "window": "2013-2023 丁巳运",
+      "statement": "升学到初入社会阶段的自主性和输出欲增强，十年内至少出现一次升学专业、学校/城市、实习就业或职业方向的重要选择；过程并非完全按单一路径平滑兑现。",
+      "confidence": 65,
+      "falsifier": "十年内学校、专业、城市、实习就业及职业方向均无重要选择或变化，且始终单线平滑。"
+    },
+    {
+      "claim_id": "P3",
+      "window": "2023-2026 戊午运前段",
+      "statement": "从积累转向成果交付和现实定位，较可能经历入职、换岗、项目责任增加、职业方向重定或考试/训练成果兑现；同时变现和组织认可未必与投入同步。",
+      "confidence": 70,
+      "falsifier": "2023年以来就业、岗位、项目责任、职业方向和考试训练成果均无变化，且没有任何成果交付压力。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_education_or_direction_change",
+      "window": "2016-01-01/2018-12-31",
+      "center_event": "出现一次重要升学、专业选择、学校/城市变化或学习路径调整，达到履历节点。",
+      "confidence": 60,
+      "root_level": "WEAK_ROOT",
+      "completion_mode": "COMPLETE_LATENT",
+      "trigger_trace": "丁巳运中的申酉戌连续年份引入原局缺少的财与现实选择条件，并对寅卯木火结构形成外部牵动。",
+      "falsifier": "2016—2018无升学、专业、学校、城市或学习路径的重要变化。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_transition_to_work_or_reorientation",
+      "window": "2020-01-01/2022-12-31",
+      "center_event": "出现一次毕业、入职、实习转正、考研考公、换专业/方向或首次稳定职业入口；只冻结教育—职业转换，不冻结结果必然成功。",
+      "confidence": 68,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "庚子、辛丑、壬寅连续引入财官与原局子、寅的重复触发，且处于常见高教到就业年龄窗口。",
+      "falsifier": "2020—2022既无毕业/升学考试，也无入职、实习转正、职业入口或方向调整。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_job_or_responsibility_change",
+      "window": "2023-01-01/2025-12-31",
+      "center_event": "出现一次入职、换岗、换单位、项目责任明显增加、职业方向重定或关键证书/作品兑现；最低命中条件是现实职责或职业位置发生可核验变化。",
+      "confidence": 72,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "2023进入戊午运，食神输出轴增强；癸卯、甲辰、乙巳连续触发印食链与现实交付。",
+      "falsifier": "2023—2025就业单位、岗位、职责、职业方向、证书及作品成果均无可核验变化。"
+    }
+  ],
+  "explicit_non_claims": [
+    "不冻结具体学历、学校、专业、行业、单位性质或职务名称。",
+    "不冻结教师、设计师、程序员、自媒体、体制内、高管或企业主身份。",
+    "不冻结高收入、财富总量、创业成功或行政晋升。",
+    "不把聪明、印旺或木火通明直接等同于高学历和现实成功。",
+    "不冻结婚姻、子女、疾病、灾祸及家庭财富。",
+    "日期事件按窗口、类型和最低次数独立计分，不由阶段方向吸收。"
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "食神格泄秀规则",
+      "status": "active",
+      "locator": "theory/_ir/ziping_rule_ir.yaml:1352-1372",
+      "summary": "食神以泄秀、生财、制杀为主要功用，须日主有根可泄；支持本案寅卯印根承载两戊输出，但不自动证明财富和职位。"
+    },
+    {
+      "school": "tiaohou_ditiansui",
+      "rule_id": "形全宜损其有余",
+      "status": "active",
+      "locator": "theory/tiaohou_ditiansui/index.yaml:5113-5135",
+      "summary": "旺者须区分宜泄或宜伤，不可只凭旺衰机械取用；支持将食伤输出与官杀约束分开，并限制强度外推。"
+    },
+    {
+      "school": "unified_ir",
+      "rule_id": "木火通明表达边界",
+      "status": "derived",
+      "locator": "theory/_ir/unified_rule_ir.yaml:46449-46478",
+      "summary": "木火通明且寒暖适中时，学习、表达、文化传播与名声倾向增强；本案仅采纳学习表达方向，不采纳名望或学历等级。"
+    },
+    {
+      "school": "tiaohou_ditiansui",
+      "rule_id": "丙火仲春结构样本",
+      "status": "active_case_rule",
+      "locator": "theory/tiaohou_ditiansui/index.yaml:18515-18537",
+      "summary": "丙火生仲春可见火相木旺，但原例另有财官条件；反向提醒本案缺少显财官，不能复制原例的等级结论。"
+    }
+  ],
+  "verdict_policy": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "career_basic_state_rule": "截止日职业中心与备选分别核验，泛称聪明、学生或上班族不得越过weak_hit_boundary。",
+    "event_precision_rule": "E1—E3分别按窗口、事件类型和最低次数评分；具体年份、次数、成败和后果未冻结者不得后验补记。",
+    "unused_alternative_rule": "未激活备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED。",
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决写入独立文件并复核SHA-256。"
+  }
+}

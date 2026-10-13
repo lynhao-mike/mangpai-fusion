@@ -179,7 +179,7 @@ def test_default_registry_preserves_claim_abstain_and_unsupported_states() -> No
     )
     indexed = {(row.school_id, row.task_id): row.state for row in rows}
 
-    assert indexed[("ziping", "structure.overview")] == "claim"
+    assert indexed[("ziping", "structure.overview")] == "abstain"
     assert indexed[("ziping", "career.change_window")] == "unsupported"
     assert indexed[("ren", "structure.overview")] == "unsupported"
     assert indexed[("ren", "career.change_window")] == "abstain"

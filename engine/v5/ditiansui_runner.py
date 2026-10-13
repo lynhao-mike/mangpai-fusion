@@ -404,6 +404,7 @@ def generate_claims(
         polarity="neutral",
         confidence=confidence,
         high_risk=task.high_risk,
+        target_id=f"structure.{rule_id.lower().replace('-', '_')}",
     )
     validate_claim_evidence(claim, chart, features)
     return [claim]

@@ -1,0 +1,92 @@
+Task12 stop-hook verification evidence, second claim
+
+Hook run: subagent-stop:20:C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\hooks\subagent-stop-verifying-lazycodex-executor-evidence.json
+Workspace: F:\多流派新思路
+Judgment: COMPLETE after second direct re-verification. No failing item found. Task13 was not started.
+
+Verified commands and captured outputs:
+
+1. Exact Task12 plan command
+Invocation:
+python -m pytest tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/yang_marriage/test_static_isolation.py -q
+Exit code: 0
+Output:
+...........................                                              [100%]
+============================== warnings summary ===============================
+engine\application\pipeline_runner.py:11
+  F:\��������˼·\engine\application\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.
+    from engine.application.dual_engine_adapter import analyze_dual_engine
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+27 passed, 1 warning in 4.53s
+
+2. Manual QA static scanner surface
+Invocation:
+python -m pytest tests/governance/test_static_isolation.py -q
+Exit code: 0
+Output:
+.............                                                            [100%]
+13 passed in 1.70s
+
+3. Ruff check
+Invocation:
+python -m ruff check tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+Exit code: 0
+Output:
+All checks passed!
+
+4. Ruff format check
+Invocation:
+python -m ruff format --check tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+Exit code: 0
+Output:
+4 files already formatted
+
+5. No-excuse rules
+Invocation:
+python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+Exit code: 0
+Output:
+no violations in 4 file(s)
+
+6. Compileall
+Invocation:
+python -m compileall -q tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/governance/static_isolation_scanner.py tests/governance/static_isolation_content.py
+Exit code: 0
+Output:
+<empty>
+
+7. Pure LOC check
+Invocation:
+PowerShell pure LOC counter over changed Python files
+Exit code: 0
+Output:
+tests/test_architecture_dependencies.py 75
+tests/governance/test_static_isolation.py 117
+tests/governance/static_isolation_scanner.py 173
+tests/governance/static_isolation_content.py 88
+
+8. Artifact presence
+Invocation:
+Get-Item -LiteralPath .omo\start-work\artifacts\task12-static-isolation.txt, .omo\notepads\multi-school-governance-wave1\task12-static-isolation.md, .omo\evidence\task12-static-isolation-stop-hook-verification.txt | Select-Object FullName,Length
+Exit code: 0
+Output:
+F:\多流派新思路\.omo\start-work\artifacts\task12-static-isolation.txt 5429
+F:\多流派新思路\.omo\notepads\multi-school-governance-wave1\task12-static-isolation.md 1413
+F:\多流派新思路\.omo\evidence\task12-static-isolation-stop-hook-verification.txt 4542
+
+Guard sensitivity:
+- Controlled violating fixtures in tests/governance/test_static_isolation.py prove detection for governance outward imports, V5/report/label contamination, shadow-runner legacy consumers, forbidden YAML scalars, School View FactSnapshot writes, and system-time liunian decisions.
+
+Binary observables:
+- Exact Task12 command passed.
+- Manual static scanner surface passed.
+- Ruff check and format passed.
+- No-excuse passed.
+- Compileall passed.
+- All touched Python files are below 250 pure LOC.
+- Required artifact, notepad, and first stop-hook evidence are non-empty.
+
+Residual context:
+- The worktree still has unrelated dirty state outside the intended Task12 paths.
+- Existing DeprecationWarning from engine.application.pipeline_runner remains unrelated.

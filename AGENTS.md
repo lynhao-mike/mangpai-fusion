@@ -18,9 +18,10 @@ AI agent 执行任务前按以下顺序读取：
 2. [`AGENTS.md`](AGENTS.md)：AI 调用规则与事实源矩阵。
 3. [`META/project-state.json`](META/project-state.json)：机器可读当前项目状态。
 4. [`STATUS.md`](STATUS.md)：稳定项目仪表盘。
-5. [`tools/README.md`](tools/README.md)：唯一工具索引。
-6. [`engine/README.md`](engine/README.md)：引擎接口说明。
-7. [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)：契约总览。
+5. [`progress/PROJECT_PROGRESS.md`](progress/PROJECT_PROGRESS.md)：文本式阶段进度仪表盘；机器状态见 [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json)。
+6. [`tools/README.md`](tools/README.md)：唯一工具索引。
+7. [`engine/README.md`](engine/README.md)：引擎接口说明。
+8. [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)：契约总览。
 
 不要从历史计划、旧 handoff 或 deprecated 工具开始推断当前流程。
 
@@ -33,6 +34,7 @@ AI agent 执行任务前按以下顺序读取：
 | 产品版本 | [`VERSION`](VERSION) | 单行机器可读版本号；不要从阶段名推断。 |
 | Python 包版本 | [`engine/__init__.py`](engine/__init__.py) | 必须与 [`VERSION`](VERSION) 一致。 |
 | 当前项目状态 | [`META/project-state.json`](META/project-state.json) | 给 AI / 脚本读取的项目级状态；`current_phase` 是工作阶段，不等同于产品版本。 |
+| 项目进度状态 | [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json) | 阶段、任务、权重、阻塞项和进入/退出条件的机器状态源。 |
 | 迭代计数状态 | [`META/iteration-state.json`](META/iteration-state.json) | 反馈完成案、迭代序号等机器状态。 |
 | 工具状态 | [`tools/README.md`](tools/README.md) + [`tools/tool_registry.py`](tools/tool_registry.py) | 工具 active/deprecated/internal/missing 分类。 |
 | 规则状态快照 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) | 易漂移规则数量、N_eff、review 清单运行时扫描。 |
@@ -147,6 +149,8 @@ pytest tests/test_project_metadata.py -q
 - 不要引用不存在的旧工具名作为可执行入口，例如 `seal_prediction.py`、`verify_evidence.py`。
 - 不要把 [`handoff.md`](handoff.md) 当作长期真相源；它只保留短期下一步。
 - 不要在报告标题遗漏性别命式（乾/坤）。
+- 不要把 F10 启动决策包收尾、多专家功能域主裁判路由 promotion、v1.4 V7 报告模板默认切换、子平/滴天髓生产规则扩充、八字指纹相似案检索，当作当前最高优先级长任务。这五项都在优化现有静态报告生成器（读取全部 known facts 后一次性生成报告）的局部参数，不解决“先盲断、后核验、再从核验后现实位置推演”的认识论缺口；它们必须排在 as-of 求测闭环（见 [`plans/as-of-life-state-reasoning-design-2026-07-18.md`](plans/as-of-life-state-reasoning-design-2026-07-18.md)）之后，除非用户明确改变优先级。
+- 不要把现有生产 pipeline（读取全部 known facts 后生成报告）当作已验证的推理系统去扩充规则或调整路由权重；它从未在“不知道答案”的条件下被测试过盲断准确率。规则扩充、多专家路由 promotion、指纹相似案检索的价值，必须等 as-of 求测闭环产生真实盲断—核验数据后才能被证实，不能凭已知答案下的报告吻合度自证。
 
 ---
 

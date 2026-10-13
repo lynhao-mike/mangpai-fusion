@@ -1,0 +1,425 @@
+{
+  "as_of_date": "2026-06-11",
+  "blind_boundary": {
+    "blind_line_count": 165,
+    "blind_view_sha256": "05fec4cb08a9ed83459bcb88fbd601e862e69a3ff7723fcc11f170c84203af0a",
+    "cut_line": 166,
+    "historical_reality_term_hits": 0,
+    "source_sha256": "3ada45967cede97d13b3a9305d607d3293e724788ee76a5b5a75c6abd8d2fbac",
+    "table_annotation_hits": 0,
+    "type": "yaml_key"
+  },
+  "blind_input": {
+    "chart_source": "wenzhen_structured_v1",
+    "daiyun": [
+      {
+        "branch": "卯",
+        "end_date": "2005-01-01",
+        "sequence": 1,
+        "start_date": "1995-01-01",
+        "stem": "乙"
+      },
+      {
+        "branch": "寅",
+        "end_date": "2015-01-01",
+        "sequence": 2,
+        "start_date": "2005-01-01",
+        "stem": "甲"
+      },
+      {
+        "branch": "丑",
+        "end_date": "2025-01-01",
+        "sequence": 3,
+        "start_date": "2015-01-01",
+        "stem": "癸"
+      },
+      {
+        "branch": "子",
+        "end_date": "2035-01-01",
+        "sequence": 4,
+        "start_date": "2025-01-01",
+        "stem": "壬"
+      },
+      {
+        "branch": "亥",
+        "end_date": "2045-01-01",
+        "sequence": 5,
+        "start_date": "2035-01-01",
+        "stem": "辛"
+      },
+      {
+        "branch": "戌",
+        "end_date": "2055-01-01",
+        "sequence": 6,
+        "start_date": "2045-01-01",
+        "stem": "庚"
+      },
+      {
+        "branch": "酉",
+        "end_date": "2065-01-01",
+        "sequence": 7,
+        "start_date": "2055-01-01",
+        "stem": "己"
+      },
+      {
+        "branch": "申",
+        "end_date": "2075-01-01",
+        "sequence": 8,
+        "start_date": "2065-01-01",
+        "stem": "戊"
+      }
+    ],
+    "gender": "坤",
+    "pillars": {
+      "day": {
+        "branch": "丑",
+        "changsheng": "冠带",
+        "hidden_stems": [
+          "己",
+          "癸",
+          "辛"
+        ],
+        "stem": "癸"
+      },
+      "hour": {
+        "branch": "子",
+        "changsheng": "临官",
+        "hidden_stems": [
+          "癸"
+        ],
+        "stem": "壬"
+      },
+      "month": {
+        "branch": "辰",
+        "changsheng": "养",
+        "hidden_stems": [
+          "戊",
+          "乙",
+          "癸"
+        ],
+        "stem": "丙"
+      },
+      "year": {
+        "branch": "辰",
+        "changsheng": "养",
+        "hidden_stems": [
+          "戊",
+          "乙",
+          "癸"
+        ],
+        "stem": "戊"
+      }
+    },
+    "schema_version": "asof-blind-input/v1"
+  },
+  "blind_input_sha256": "c4cb85656a608a02c9efccddbfc0e5d3e0d8ce95ccc78ba2a2f3873eb1332d53",
+  "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+  "feedback_opened": false,
+  "freeze_package": {
+    "blind_input_sha256": "c4cb85656a608a02c9efccddbfc0e5d3e0d8ce95ccc78ba2a2f3873eb1332d53",
+    "events": [
+      {
+        "candidate": {
+          "alternative_hypotheses": [
+            "重复事务或工作量上升，但没有职责边界变化",
+            "规范支持增强，但主要落为专业辅助而非统筹责任"
+          ],
+          "annual_trace": {
+            "activated_node_ids": [
+              "N-WATER-ROOT",
+              "N-INSTITUTION",
+              "N-RESOURCE"
+            ],
+            "counter_evidence": [
+              {
+                "excerpt": "三丑重叠亦可能只表现为重复事务、压力固化或进展迟滞",
+                "locator": "流年.2021辛丑",
+                "source": "blind_input"
+              }
+            ],
+            "crossed_candidate_gate": true,
+            "dayun_ganzhi": "癸丑",
+            "domains": [
+              "career"
+            ],
+            "liunian": "辛丑",
+            "relations": [
+              {
+                "excerpt": "辛丑年与癸丑运、日支丑重叠；辛印出现，丑中己癸辛结构集中触发",
+                "locator": "流年.2021辛丑×大运.癸丑×日柱.癸丑",
+                "source": "blind_input"
+              }
+            ],
+            "supporting_evidence": [
+              {
+                "excerpt": "辛印可衔接规范与支持，丑将官杀责任、比肩承载和印星流程集中于同一年度",
+                "locator": "流年.2021辛丑",
+                "source": "blind_input"
+              },
+              {
+                "excerpt": "癸丑运：2015-2025，癸比肩加强承载，丑与日支丑同位并含己癸辛",
+                "locator": "大运.排布[3]",
+                "source": "blind_input"
+              }
+            ],
+            "trigger_strength": "high",
+            "year": 2021
+          },
+          "candidate_id": "EV-R6-2021-PROCESS-RESPONSIBILITY",
+          "completion_mode": "ACTIVATE_EXISTING",
+          "counter_evidence": [
+            {
+              "excerpt": "辰月戊土司令且三重湿土，责任压力可能多于正式权限",
+              "locator": "四柱.月令+地支",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "木仅藏于双辰而不透，独立创意输出路径不宜作为中心落点",
+              "locator": "四柱.藏干",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "三丑重叠亦可能只表现为重复事务、压力固化或进展迟滞",
+              "locator": "流年.2021辛丑",
+              "source": "blind_input"
+            }
+          ],
+          "daiyun_evidence": [
+            {
+              "excerpt": "癸丑运：2015-2025，癸比肩加强承载，丑与日支丑同位并含己癸辛",
+              "locator": "大运.排布[3]",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "癸丑运：2015-2025，癸比肩加强承载，丑与日支丑同位并含己癸辛",
+              "locator": "大运.排布[3]",
+              "source": "blind_input"
+            }
+          ],
+          "domain": "career",
+          "event_type": "既有组织职责与流程统筹强化",
+          "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+          "frozen_version": "asof-prototype-v1",
+          "is_primary_event": true,
+          "natal_evidence": [
+            {
+              "excerpt": "时柱壬子；癸日主在子为临官，子藏癸，形成直接比劫禄根",
+              "locator": "四柱.时柱+十二长生.时支",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "年、月双辰均藏癸；辰为水库，日主另有库根",
+              "locator": "四柱.年支+月支+藏干",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "日支丑藏癸辛己，癸水有余气并得辛印潜在生扶",
+              "locator": "四柱.日支+藏干",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "年干戊官透，司令戊土用事，双辰与丑构成持续制度约束和责任承载",
+              "locator": "四柱.年干+月令司令+地支",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "月干丙财透，时柱壬子帮身，呈现资源任务与执行承载并存",
+              "locator": "四柱.月干+时柱",
+              "source": "blind_input"
+            }
+          ],
+          "root_evidence": [
+            {
+              "excerpt": "时柱壬子；癸日主在子为临官，子藏癸，形成直接比劫禄根",
+              "locator": "四柱.时柱+十二长生.时支",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "年、月双辰均藏癸；辰为水库，日主另有库根",
+              "locator": "四柱.年支+月支+藏干",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "日支丑藏癸辛己，癸水有余气并得辛印潜在生扶",
+              "locator": "四柱.日支+藏干",
+              "source": "blind_input"
+            }
+          ],
+          "root_level": "STRONG_ROOT",
+          "source_citations": [
+            {
+              "excerpt": "有根？有根指的是天干在地支有本五行的比劫和禄，或生本五行的那个字。例如，甲木乙木在地支见寅木卯木，或见亥，（亥为甲木的长生之地，亥中有甲木藏干），或者地支有木的本库未；壬癸水在地支见申金，亥水、子水，（申金是壬水的长生之地，申中有壬水藏干），或见辰库，（辰为水的本库），庚金辛金在地支见申金或酉金，或者地支有丑库，是金的本库，这些都是有根。",
+              "line": 1446,
+              "source_path": "sources/yang/MinerU_markdown_2021年课程基础讲解_2056036810585997312.md"
+            },
+            {
+              "excerpt": "有气？还是以甲木为例，甲木在地支见到辰为有气，辰中有木的余气。以此类推，丙丁火在地支午火、巳火为有根，见未土为有气，因为未中有火的余气。壬水，癸水在地支见丑土为有气，因为辰为水的本库，丑中只有水的余气。庚金在地支见戌也是为有气，因为戌中有金的余气。戊己土是比较特殊的，在地支见午火、巳火、未土、戌土为有根，见丑土和辰土不论根，因为辰为水库，丑为金库，都是湿土，一般情况下不能作为土的根气。（附练习）",
+              "line": 1448,
+              "source_path": "sources/yang/MinerU_markdown_2021年课程基础讲解_2056036810585997312.md"
+            },
+            {
+              "excerpt": "答：子中藏癸水，丑中藏己土，辛金，癸水，寅中藏甲木。丙火戊土，卯中藏乙木，辰中藏乙木，癸水，戊土，巳中藏丙火，戊土，庚金，午中藏丁火，己土，未中藏乙木，己土，丁火，申中藏庚金，壬水，戊土，酉中藏辛金，戌中藏辛金，丁火，戊土，亥中藏壬水，甲木。",
+              "line": 338,
+              "source_path": "sources/qianliminggao/千里命稿_part1.md"
+            }
+          ],
+          "supporting_evidence": [
+            {
+              "excerpt": "年干戊官透，司令戊土用事，双辰与丑构成持续制度约束和责任承载",
+              "locator": "四柱.年干+月令司令+地支",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "月干丙财透，时柱壬子帮身，呈现资源任务与执行承载并存",
+              "locator": "四柱.月干+时柱",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "辛丑年与癸丑运、日支丑重叠；辛印出现，丑中己癸辛结构集中触发",
+              "locator": "流年.2021辛丑×大运.癸丑×日柱.癸丑",
+              "source": "blind_input"
+            },
+            {
+              "excerpt": "辛印可衔接规范与支持，丑将官杀责任、比肩承载和印星流程集中于同一年度",
+              "locator": "流年.2021辛丑",
+              "source": "blind_input"
+            }
+          ],
+          "verification_status": "FROZEN",
+          "window_end": "2021-12-31",
+          "window_start": "2021-01-01"
+        },
+        "landing_set": {
+          "alternatives": [
+            {
+              "direction": "responsibility_up",
+              "domain": "career",
+              "name": "专业支持转为项目协调或结果责任"
+            },
+            {
+              "direction": "responsibility_up",
+              "domain": "career",
+              "name": "稳定平台内岗位调整并增加跨环节协调"
+            }
+          ],
+          "center": {
+            "direction": "responsibility_up",
+            "domain": "career",
+            "name": "既有组织中职责升级并承担流程或资源统筹"
+          },
+          "exclusions": [
+            "不冻结具体职业名称、单位性质、职级、收入变化或创业结果",
+            "不把日常工作量增加、情绪压力或泛化忙碌视为职责升级",
+            "不使用2025年后壬子运事实替代2021年事件窗口证据"
+          ],
+          "falsifiers": [
+            "2021年没有任何事业职责、流程协调、项目责任或岗位边界变化",
+            "2021年主要事业变化是退出稳定组织、纯销售拓展或完全独立创业，且无冻结职责方向",
+            "相关事业事实仅发生在2025年后壬子运，无法核验癸丑运内候选"
+          ],
+          "frozen_version": "asof-prototype-v1",
+          "function_candidate": "既有组织职责与流程统筹强化",
+          "weak_hit_boundary": "仅当2021年出现同一组织或稳定平台内可辨识的职责边界扩大、项目协调、流程统筹或结果责任增加，且未达到中心完整强度时，才可判替代命中；单纯加班、事务量增加、泛称更忙不计命中。"
+        }
+      }
+    ],
+    "fundamentals": [
+      {
+        "center": "强根承载下，事业更偏既有组织中的制度流程、资源衔接与责任落实",
+        "falsifiers": [
+          "癸丑运内事业长期以纯创意、纯市场开拓或完全无组织约束为主",
+          "癸丑运内不存在任何持续职责、流程衔接或资源落实特征"
+        ],
+        "fundamental_id": "FD-R6-CAREER-CAPACITY",
+        "reasonable_range": [
+          "稳定组织或项目体系内承担持续执行责任",
+          "专业支持、流程衔接与跨环节协调并存",
+          "责任压力可能先于正式权限或职级兑现"
+        ],
+        "strongest_alternative": "以稳定专业支持为主，承担重复事务但没有明确职责上行",
+        "window_center": "2021-07-01",
+        "window_end": "2024-12-31",
+        "window_start": "2015-01-01"
+      }
+    ],
+    "identity": {
+      "as_of_date": "2026-06-11",
+      "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+      "schema_version": "asof-session/v1",
+      "session_id": "S-20260729T091000Z-00000286"
+    },
+    "schema_version": "asof-career-freeze-package/v1"
+  },
+  "freeze_package_sha256": "f638a95eae0c408e71e5fa740cc703815b77fbe4bcf7f81fa8bb6f3aa217de96",
+  "frozen_at_utc": "2026-07-29T09:13:24Z",
+  "frozen_prediction": {
+    "annual_trace": {
+      "dayun_ganzhi": "癸丑",
+      "liunian": "辛丑",
+      "year": 2021
+    },
+    "candidate_reason_code": "CANDIDATE_FROZEN",
+    "completion_mode": "ACTIVATE_EXISTING",
+    "daiyun_stage": {
+      "domain_tendency": "mixed",
+      "end_date": "2024-12-31",
+      "ganzhi": "癸丑",
+      "start_date": "2015-01-01"
+    },
+    "event_window": [
+      "2021-01-01",
+      "2021-12-31"
+    ],
+    "forbidden_inferences": [
+      "强根不等于必然升职、增收或取得正式职级",
+      "年度触发强度不等于现实影响度",
+      "2025年后壬子运事实不能核验2021辛丑事件机制",
+      "揭盲后不得扩张冻结中心、替代落点或同义落点",
+      "具体职业名称、单位性质和收入结果均未冻结"
+    ],
+    "natal_capacity": {
+      "capacity_nodes": [
+        {
+          "function": "持续承载与协同执行",
+          "node_id": "N-WATER-ROOT"
+        },
+        {
+          "function": "制度责任与流程约束",
+          "node_id": "N-INSTITUTION"
+        },
+        {
+          "function": "资源任务衔接与落实",
+          "node_id": "N-RESOURCE"
+        }
+      ],
+      "competing_explanations": [
+        "水有强根只说明具备承载基础，不保证正式晋升或收入增长",
+        "官杀湿土密集也可能只落为事务压力增加，而非权限上升"
+      ],
+      "completion_mode": "ACTIVATE_EXISTING",
+      "feasible_paths": [
+        {
+          "function": "在既有组织中承担流程和结果责任",
+          "node_ids": [
+            "N-WATER-ROOT",
+            "N-INSTITUTION",
+            "N-RESOURCE"
+          ],
+          "path_id": "P-PROCESS-RESPONSIBILITY"
+        },
+        {
+          "function": "跨环节协调并稳定交付",
+          "node_ids": [
+            "N-WATER-ROOT",
+            "N-RESOURCE"
+          ],
+          "path_id": "P-COORDINATION"
+        }
+      ],
+      "root_level": "STRONG_ROOT"
+    },
+    "root_level": "STRONG_ROOT"
+  },
+  "schema_version": "asof-blind-judgment-continuous-r6/v1",
+  "session_id": "S-20260729T091000Z-00000286"
+}

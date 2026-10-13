@@ -1,0 +1,12 @@
+﻿COMMAND: Get-CimInstance Win32_Process -Filter "name = 'python.exe'" | Select-Object ProcessId,ParentProcessId,CommandLine
+START: 2026-08-06T11:20:47.9592794+08:00
+
+ProcessId ParentProcessId CommandLine                                                                                  
+--------- --------------- -----------                                                                                  
+     8148           14788 python  -m pytest --ignore=tests\test_web_accountability_browser_e2e.py --ignore=tests\tes...
+    13464            8148 C:\Python314\python.exe C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\...
+    34360           18940 python  -m pytest tests/governance/test_fact_certification_registry.py tests/governance/te...
+
+
+
+EXIT_CODE: 0

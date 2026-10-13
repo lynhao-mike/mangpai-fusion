@@ -1,0 +1,305 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000149",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T10:12:09+08:00",
+  "as_of_date": "2026-07-30",
+  "as_of_date_basis": "采用用户指定验证截止日；写入并计算哈希后不得根据反馈回写。",
+  "independent_blind_reviewer": true,
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000149-坤-壬戌己酉乙卯戊寅/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 157,
+    "cutoff_marker": "yaml_key",
+    "blind_character_count": 2228,
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "embedded_annotation_count": 0,
+    "minimal_fence_completion_applied": true,
+    "empty_known_facts_completion_applied": true,
+    "legacy_gender_value_normalized_to_parser_enum": true,
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "坤",
+    "birth_datetime": "1982-09-29T04:15:00+08:00",
+    "pillars_supplied": [
+      "壬戌",
+      "己酉",
+      "乙卯",
+      "戊寅"
+    ],
+    "dayun_supplied": [
+      {
+        "pillar": "戊申",
+        "start_age": 6,
+        "end_age": 15,
+        "start_year": 1988,
+        "end_year": 1998
+      },
+      {
+        "pillar": "丁未",
+        "start_age": 16,
+        "end_age": 25,
+        "start_year": 1998,
+        "end_year": 2008
+      },
+      {
+        "pillar": "丙午",
+        "start_age": 26,
+        "end_age": 35,
+        "start_year": 2008,
+        "end_year": 2018
+      },
+      {
+        "pillar": "乙巳",
+        "start_age": 36,
+        "end_age": 45,
+        "start_year": 2018,
+        "end_year": 2028
+      },
+      {
+        "pillar": "甲辰",
+        "start_age": 46,
+        "end_age": 55,
+        "start_year": 2028,
+        "end_year": 2038
+      },
+      {
+        "pillar": "癸卯",
+        "start_age": 56,
+        "end_age": 65,
+        "start_year": 2038,
+        "end_year": 2048
+      },
+      {
+        "pillar": "壬寅",
+        "start_age": 66,
+        "end_age": 75,
+        "start_year": 2048,
+        "end_year": 2058
+      },
+      {
+        "pillar": "辛丑",
+        "start_age": 76,
+        "end_age": 85,
+        "start_year": 2058,
+        "end_year": 2068
+      }
+    ],
+    "parser_adapter": "tools.preflight.parse(blind-only temp) -> engine.predicates.types.adapt_parsed",
+    "known_life_facts_used": [],
+    "known_fact_count_after_parse": 0
+  },
+  "admission_gate": {
+    "age_at_as_of_date": 43,
+    "career_window": [
+      23,
+      65
+    ],
+    "fits_career_window": true,
+    "note": "命主在候选 as_of_date 时年龄为 43 岁，落在职业活跃期区间内。"
+  },
+  "algorithm_evidence": {
+    "freeze_preflight_tool": "tools.as_of_freeze_preflight.run_freeze_preflight",
+    "freeze_scaffold_tool": "tools.as_of_freeze_scaffold.build_freeze_scaffold",
+    "annual_trace_tool": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "annual_trace_total": 39,
+    "crossed_candidate_gate_count": 18,
+    "current_dayun_tendency": "2018—2028乙巳运，天干比肩、地支主气伤官；算法仅提示同业竞争、自主推进、技术输出与专业表达可能被放大，不单独裁决职业身份或现实成败。",
+    "reasoning_limit": "scaffold仅作候选提示；日期事件只采用通过L1+L2候选门、领域含事业且能收窄为单年可证伪合同的年份。"
+  },
+  "reasoning_boundary": {
+    "natal_structure": "乙木日主生酉月，日支卯与时支寅提供根气，年干壬提供印星生扶；月干己、时干戊形成财星现实承接端。原局同时具备学习吸收、专业输出与成果承接线索，但酉冲卯使专业能力与外部规则之间存在持续张力。",
+    "current_dayun": "2018—2028乙巳运增加比肩与伤官主题，更支持自主推进、专业表达和技能成果化，也提高同业竞争及与既定规则摩擦的可能；该方向不等于创业、晋升或稳定收益。",
+    "strength_cap": "职业基本方向冻结为中等；现实职位、行业、收入、管理层级与经营身份不冻结。",
+    "root_level_justification": "乙木坐卯且时支寅为根，壬印可生身，具备承接专业输出的结构基础；但生于酉月且卯酉冲，财星虽透而完成度未经现实反馈验证，因此使用ACTIVATE_EXISTING并设置兑现不稳备选。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "professional_output_with_autonomous_project_delivery",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能以专业输出和自主推进为职业主轴，持续承担项目交付责任；具备把技能转成实际成果的能力，但不冻结行业、职级与经营身份。",
+      "strength": "MEDIUM",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：专业输出与项目推进能力存在，但现实兑现不稳，表现为责任增加而授权、持续项目或成果承接不足。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若中心不成立，则截至截止日主要职业仍以按既定流程完成常规任务为主，未形成持续自主推进和项目交付责任。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有固定工作、偶尔提出建议、完成个人任务或掌握一项技能不算中心命中；主要职业价值必须持续来自专业输出、自主推进，并承担可识别的项目交付责任。",
+    "falsifiers": [
+      "截至截止日长期从事低自主、低专业判断且只按固定流程完成个人重复任务的工作。",
+      "主要职业价值不依赖专业技能输出，也不承担持续项目推进或交付责任。",
+      "工作中的任务选择、推进节奏与结果责任始终由他人完整承担。"
+    ]
+  },
+  "frozen_phase_claims": [
+    {
+      "claim_id": "P1",
+      "window": "1998-2008 丁未运",
+      "statement": "职业准备与初入社会阶段更偏向技能形成和实践积累，成果承接开始出现，但尚未形成稳定的自主项目主轴。",
+      "confidence": 55,
+      "falsifier": "该阶段职业主线已长期稳定地以自主项目推进和持续交付责任为核心。"
+    },
+    {
+      "claim_id": "P2",
+      "window": "2008-2018 丙午运",
+      "statement": "专业表达与成果输出较前阶段增强，职业自主性及任务扩张倾向提高，同时更易出现对既定安排的不适配。",
+      "confidence": 63,
+      "falsifier": "该阶段专业输出、自主性与任务范围均未增强，且对既定安排的适配始终稳定。"
+    },
+    {
+      "claim_id": "P3",
+      "window": "2018-2026 乙巳运截至截止日",
+      "statement": "自主推进、专业输出和同业竞争成为更突出的职业主题，阶段内应出现职责边界重定；现实授权与成果兑现未必同步稳定。",
+      "confidence": 70,
+      "falsifier": "2018年至截止日职业自主性、专业输出、竞争环境与职责边界均无明显变化。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "center_event": "2024年主要职业职责边界发生一次可核验的明确变化。",
+      "confidence": 74,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "L1+L2候选门通过；甲辰年处乙巳运，算法强度为high且领域含事业。流年干甲合月干己，流年支辰冲年支戌、合月支酉并穿日支卯，激活年支、月干、月支与日支。",
+      "falsifier": "2024全年主要职业职责边界无明确变化。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_years": [
+      {
+        "year": 2024,
+        "liunian": "甲辰",
+        "dayun": "乙巳",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "domains": [
+          "事业",
+          "家庭"
+        ],
+        "relations": [
+          "流年干合月干己化('土', '合绊')",
+          "流年支冲年支戌",
+          "流年支六合月支酉化金",
+          "流年支穿日支卯"
+        ],
+        "activated_node_ids": [
+          "natal.year.branch",
+          "natal.month.stem",
+          "natal.month.branch",
+          "natal.day.branch"
+        ]
+      }
+    ],
+    "context_years_not_frozen_as_dated_events": [
+      {
+        "year": 2020,
+        "liunian": "庚子",
+        "strength": "medium",
+        "crossed_candidate_gate": true,
+        "reason": "领域含事业但强度低于2024，仅作为当前大运前段背景。"
+      },
+      {
+        "year": 2025,
+        "liunian": "乙巳",
+        "strength": "low",
+        "crossed_candidate_gate": true,
+        "reason": "领域含事业但算法强度低，不扩展第二个日期事件。"
+      },
+      {
+        "year": 2026,
+        "liunian": "丙午",
+        "strength": "low",
+        "crossed_candidate_gate": false,
+        "reason": "未通过L1+L2候选门，不冻结事业日期事件。"
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "center_or_count": 0,
+    "event_windows_months": {
+      "E1": 11.992032690609664
+    },
+    "event_window_days": {
+      "E1": 365
+    },
+    "event_or_counts": {
+      "E1": 0
+    },
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false,
+    "invalid_run_history": [
+      {
+        "run": 1,
+        "classification": "invocation_collection_error",
+        "evidence_valid": false,
+        "cause": "事件窗口曾误以斜杠合并字符串传入需要起止日期分列的API；该次运行在日期解析阶段退出，提供零合同行为证据。"
+      }
+    ]
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位性质、职业名称、职务等级、管理人数或企业所有权。",
+    "不冻结财富总量、高收入、行政晋升、创业成功或社会等级。",
+    "不把伤官、财星或古籍中的贵显措辞直接等同于现实成功。",
+    "不冻结婚姻、子女、疾病、灾祸及家庭财富。",
+    "日期事件仅按2024单年窗口和主要职业职责边界明确变化评分，不由阶段方向吸收。"
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-041",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1570-1609",
+      "source_path": "sources/ziping/《子平真诠》.md",
+      "source_excerpt": "我生异类为伤官，阴生阳、阳生阴。伤官生财为用，伤官配印为贵，伤官无制见官则祸。",
+      "applied_summary": "乙巳运的伤官提示只用于专业输出与成果化方向，并以财印和制化边界限制；不据伤官名义直接冻结职业成败。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-817",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:33520-33561",
+      "source_path": "sources/ziping/穷通宝鉴-明-余春台_part1.md",
+      "source_excerpt": "若有癸无丙，名利虚花。",
+      "applied_summary": "本案为秋分后酉月乙木，原局壬水生扶而丙火不透；据此把专业生发与名利兑现分开，支持ACTIVATE_EXISTING及兑现不稳备选，不采用古籍等级铁断。"
+    }
+  ],
+  "excluded_theory_evidence": [],
+  "verdict_policy": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "career_basic_state_rule": "截止日职业中心与备选分别核验；普通上班、掌握技能或偶尔推进任务不得越过weak_hit_boundary。",
+    "phase_precision_rule": "P1—P3按各自窗口、方向和最低变化条件评分；未冻结的行业、单位、成败与后果不得后验补记。",
+    "event_precision_rule": "E1仅按2024单年窗口和主要职业职责边界明确变化评分；其他年份或其他事件类型不得替代。",
+    "unused_alternative_rule": "未激活备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED。",
+    "separate_score_units": [
+      "career_basic_state",
+      "broad_phase_direction",
+      "dated_event_precision"
+    ],
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决写入独立文件并复核SHA-256。"
+  }
+}

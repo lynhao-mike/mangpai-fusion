@@ -1,0 +1,936 @@
+schema_version: real-world-function-evidence-cards-v1
+contract: engine/contracts/12-real-world-function-evidence-cards-v1.md
+status: complete_recovery
+purpose: F01-F12 现实功能证据卡的枚举、字段、冻结数据、竞争关系与出处索引
+
+recovery_policy:
+  only_transcribe_frozen_decisions: true
+  infer_missing_fields: false
+  executable_logic_allowed: false
+  pending_cards: []
+  note: F01-F12 均已恢复为完整冻结卡；完整恢复允许保留原闭区间未明确裁决的字段缺口，且不得从共同条款或其他卡反推。
+
+enums:
+  function_id: [F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12]
+  card_recovery_status:
+    - frozen_summary_recovered
+    - frozen_partial_recovered
+    - frozen_complete_recovered
+    - frozen_source_pending_recovery
+  root_level:
+    - STRONG_ROOT
+    - WEAK_ROOT
+    - NO_ROOT
+  timing_completion:
+    - ACTIVATE_EXISTING
+    - COMPLETE_LATENT
+    - REPAIR_DEFECT
+    - TEMPORARY_SUBSTITUTE
+    - INVALID_COMPLETION
+  coverage_rating:
+    - strong
+    - partial
+    - minimal
+    - none
+    - unknown
+  output_precision:
+    - T0
+    - T1
+    - T2
+  decision_action:
+    - OUTPUT
+    - CONDITIONAL
+    - ASK
+    - ABSTAIN
+    - HUMAN_REVIEW
+    - UNKNOWN
+  gap_code:
+    - TAXONOMY_GAP
+
+common_constraints:
+  ontology:
+    type: real_world_function
+    not_job_catalog: true
+    not_industry_catalog: true
+    not_shishen_catalog: true
+    not_school_catalog: true
+  prohibited_direct_inference_from:
+    - occupation
+    - title
+    - department
+    - institution
+    - platform
+    - venue
+    - education
+    - certificate
+    - qualification
+    - income
+    - assets
+    - fame
+    - followers
+    - awards
+    - outcome
+    - single_symbol
+    - broad_personality
+    - search_hit_count
+    - source_count
+  independent_accounts:
+    - reality_vs_theory
+    - state_vs_event
+    - root_vs_timing_completion
+    - coverage_vs_evidence
+    - output_precision_vs_confidence
+    - function_level_vs_outcome_taxonomy_level
+  natal_chain:
+    same_school: true
+    same_chart: true
+    same_chain: true
+    cross_school_splicing_forbidden: true
+  minimum_sufficient_roles:
+    - single_school_complete_natal_chain
+    - explicit_daiyun_stage_effect
+    - explicit_liunian_trigger_for_specific_event
+    - real_world_function_gate
+    - native_break_condition_or_valid_falsifier
+  reality_chain_fields:
+    - object
+    - action
+    - action_attribution
+    - function_path
+    - state_event_ledger
+    - result_layer_ledger
+    - strongest_competing_explanation
+    - bounded_real_world_outcomes
+  theory_chain_fields:
+    - same_school_same_chart_same_chain_origin
+    - natal_carrier
+    - action_direction
+    - root_level
+    - timing_completion
+    - break_condition
+    - competing_explanation
+    - abstention_gate
+  required_card_fields:
+    - function_id
+    - label
+    - frozen_definition
+    - reality_objects
+    - reality_actions
+    - action_attribution
+    - necessary_reality_gates
+    - state_card
+    - event_card
+    - result_layers
+    - competing_functions
+    - strongest_competing_explanation
+    - theory_origin_gate
+    - source_gate
+    - root_assessment
+    - timing_completion
+    - bounded_real_world_outcomes
+    - coverage
+    - output_precision
+    - contradiction_guards
+    - source_refs
+    - recovery_status
+  root_guards:
+    - NO_ROOT cannot pair with ACTIVATE_EXISTING
+    - NO_ROOT plus COMPLETE_LATENT defaults to temporary assembly
+    - INVALID_COMPLETION never generates the target primary event
+    - reality feedback cannot upgrade root level
+    - school count cannot upgrade root level
+  bounded_outcome_policy:
+    center_max: 1
+    alternatives_max: 2
+    freeze_before_feedback: true
+    post_result_addition_as_hit_forbidden: true
+    uncovered_same_domain_same_direction_code: TAXONOMY_GAP
+    taxonomy_gap_counts_as_hit: false
+    taxonomy_gap_rewrites_frozen_record: false
+  coverage_dimensions:
+    - theory_family
+    - modern_lineage
+    - mid_granularity_function
+    - specific_occupation_outcome
+  coverage_guards:
+    independent: true
+    aggregate_vote_forbidden: true
+    same_source_cluster_deduplicated: true
+    modern_authors_do_not_raise_theory_family: true
+    occupation_subclassification_defaults_to_downgrade: true
+    backfill_other_ledgers_forbidden: true
+  output_precision_policy:
+    default_max: T1
+    T0: association_candidate_only
+    T1: closed_mid_granularity_function
+    T2: restricted_specific_role_occupation_medium_or_type
+    T2_requires:
+      - same_school_subclassification_constraint
+      - independent_real_world_action_evidence
+      - strongest_competing_explanation_excluded
+    upgrade_from_coverage_confidence_feedback_or_single_symbol_forbidden: true
+  conflict_priority:
+    - negative_evidence
+    - strongest_competing_explanation
+    - abstention
+  unresolved_output:
+    - UNKNOWN
+    - HUMAN_REVIEW
+
+function_cards:
+  F01:
+    function_id: F01
+    label: 专业判断与技术解决
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主以可学习、可复用的专业知识或技术方法，对既定领域内的具体问题进行诊断、核算、设计、审查、操作或解决，并对结果承担一定专业责任；关键判据是解决已有知识与方法框架内的问题。
+    reality_objects: [bounded_domain_problem]
+    reality_actions: [diagnosis, calculation, design, review, debugging, professional_operation, solution]
+    action_attribution: subject_has_professional_discretion_and_result_responsibility
+    necessary_reality_gates: [professional_object, professional_action, professional_discretion, verifiable_solution_result, subject_attribution]
+    state_card:
+      center: stable_role_or_independent_practice_centered_on_professional_judgment_or_technical_solution
+      alternatives: [technical_implementation_with_judgment_and_discretion, professional_consulting_evaluation_audit_or_solution_support]
+    event_card:
+      center: entry_or_transition_to_independent_core_professional_problem_responsibility
+      alternatives: [upgrade_from_assistance_to_independent_professional_judgment, qualification_or_authorization_with_actual_discretion_expansion]
+    result_layers: [professional_function_state, professional_function_event]
+    competing_functions: [F02, F03, F04, F09, F11]
+    strongest_competing_explanation: innovation_repetitive_process_coordination_capital_allocation_or_health_risk_intervention
+    theory_origin_gate: at_least_one_complete_theory_family_chain_with_explicit_action_direction
+    source_gate: professional_or_technical_anchor_and_DT_landing_gate_not_failed
+    root_assessment:
+      STRONG_ROOT: natal_carrier_object_action_and_reality_anchor_chain_complete
+      WEAK_ROOT: carrier_and_object_locatable_but_chain_anchor_or_repair_incomplete
+      NO_ROOT: isolated_symbol_industry_analogy_or_timing_only_assembly
+    timing_completion:
+      source_level: inherited_from_previously_frozen_global_model_not_reexpanded_inside_F01_card
+      values: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+      directly_frozen_F01_limits: [temporary_substitute_cannot_prove_stable_professional_identity, invalid_completion_abstains, reality_cannot_upgrade_natal_root]
+    bounded_real_world_outcomes:
+      center_max: 1
+      alternatives_max: 2
+      weak_hit: same_domain_without_independent_discretion_or_unverified_duration
+      exclusions: [title_only, certificate_without_duty_change, institution_only, single_symbol, occasional_help]
+      taxonomy_gap: TAXONOMY_GAP
+    coverage: {theory_family: strong, modern_lineage: strong, mid_granularity_function: strong, specific_occupation_outcome: partial}
+    output_precision: null
+    contradiction_guards: [professional_discretion_required, adjacent_functions_independent, reality_not_upgrade_root, counterevidence_and_prohibited_inference_only]
+    unresolved_fields: [output_precision]
+    source_refs: [SRC-SNAPSHOT-F01]
+
+  F02:
+    function_id: F02
+    label: 研究创新与知识生产
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 围绕未知问题、知识缺口或现有方法局限，持续开展观察、比较、试验、推演、归纳、建模、验证或体系重构；研究状态与创新成果分账。
+    internal_labels: [knowledge_research_and_theory_production, technical_R_and_D_and_method_innovation]
+    reality_objects: [unknown_problem, knowledge_gap, existing_method_limitation, R_and_D_target]
+    reality_actions: [observation, comparison, experiment, deduction, induction, modeling, validation, system_reconstruction]
+    action_attribution: substantive_personal_research_or_innovation_contribution
+    necessary_reality_gates: [research_object, systematic_sustained_process, stable_duty_or_formal_project, reality_reception, adjacent_function_boundary]
+    state_card: {levels: [S1, S2, S3], labels: [participating_research, independent_research, research_lead], innovation_result_implied: false}
+    event_card:
+      levels: [O1, O2, O3]
+      labels: [local_novelty, reusable_result, systemic_breakthrough]
+      necessary_gates: [novelty, identifiable_artifact, substantive_personal_contribution, validation, reception]
+      awards_or_patents_auto_upgrade: false
+    result_layers: [research_state, innovation_result]
+    competing_functions: [F01, F03, F10, F11, F12]
+    strongest_competing_explanation: mature_professional_solution_routine_execution_teaching_clinical_intervention_or_content_dissemination
+    theory_origin_gate: family_internal_chain_plus_cross_family_same_function_support_or_falsifier
+    source_gate: reality_state_five_gates_or_result_five_gates_required
+    root_assessment:
+      STRONG_ROOT: explicit_carrier_directed_object_complete_family_internal_input_process_output_chain_landing_and_sustainability
+      WEAK_ROOT: one_missing_link_mixture_constraint_insufficient_landing_or_partial_module
+      NO_ROOT: broad_intelligence_education_expression_interest_or_only_F01_F10_F12_chain
+    timing_completion:
+      STRONG_ROOT: [ACTIVATE_EXISTING, REPAIR_DEFECT]
+      WEAK_ROOT: [COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE]
+      NO_ROOT: [TEMPORARY_SUBSTITUTE]
+      reality_gate_still_required: true
+    bounded_real_world_outcomes:
+      center: sustained_research_R_and_D_or_knowledge_production_with_object_process_and_reception
+      alternatives: [knowledge_research_and_theory_production, technical_R_and_D_and_method_innovation]
+      result_event_is_separate_card: true
+      weak_hit: institution_only_peripheral_participation_ordinary_writing_or_unvalidated_improvement
+    coverage: {theory_family: strong, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: minimal}
+    output_precision: null
+    contradiction_guards: [research_state_not_innovation_result, same_evidence_no_double_weight, reality_result_not_upgrade_root, counterevidence_and_prohibited_inference_only]
+    unresolved_fields: [output_precision]
+    source_refs: [SRC-SNAPSHOT-F02]
+
+  F03:
+    function_id: F03
+    label: 生产运营与流程执行
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主依据既定目标、流程、标准和资源约束，持续实施生产、加工、设备运行、流程操作、质量执行或现场交付，把对象稳定转化为可验收产品、服务或阶段成果，并维持流程连续性。
+    internal_labels: [production_processing_and_field_execution, process_operation_and_continuous_delivery]
+    reality_objects: [material, component, equipment, information, order, service_request, field_condition]
+    reality_actions: [production, processing, equipment_operation, process_operation, quality_execution, field_delivery]
+    action_attribution: subject_directly_executes_or_bears_key_process_responsibility
+    necessary_reality_gates: [object, established_process, actual_execution, verifiable_standard, continuity, adjacent_function_boundary]
+    state_card: {levels: [S1, S2, S3], labels: [participating_execution, independent_process_or_delivery_unit, key_operation_unit], S3_is_management_level: false}
+    event_card:
+      necessary_gates: [baseline, verifiable_change, personal_attribution, observable_result, sustained_consequence, counterfactual]
+      directions: [START, EXPAND, IMPROVE, DISRUPT, CONTRACT, RECOVER, REPLACE, EXIT]
+      impact_levels: [minor, significant, major, turning_point]
+      only_sustained_verified_event_updates_state: true
+    result_layers: [stable_conversion, continuous_delivery, state_update_from_sustained_event]
+    competing_functions: [F01, F02, F04, F08]
+    strongest_competing_explanation: professional_diagnosis_innovation_coordination_or_business_risk_bearing
+    theory_origin_gate: family_internal_complete_chain_plus_DT_quality_review_or_equivalent_falsifier
+    source_gate: QM_or_MB_F03_anchor_plus_reality_six_gates
+    root_assessment:
+      STRONG_ROOT: carrier_object_complete_chain_process_continuity_result_landing_and_adjacent_review
+      WEAK_ROOT: missing_link_unstable_flow_insufficient_landing_mixture_or_repair_needed
+      NO_ROOT: labor_tool_factory_or_single_symbol_only_or_other_function_primary_chain
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    timing_guards: [NO_ROOT_cannot_ACTIVATE_EXISTING, NO_ROOT_COMPLETE_LATENT_downgrades_to_TEMPORARY_SUBSTITUTE, INVALID_COMPLETION_no_primary_event, timing_cannot_upgrade_natal_root]
+    bounded_real_world_outcomes:
+      center: sustained_stable_conversion_and_continuous_delivery_with_acceptance_responsibility
+      alternatives: [production_processing_and_field_execution, process_operation_and_continuous_delivery]
+      center_max: 1
+      alternatives_max: 2
+      taxonomy_gap: TAXONOMY_GAP
+      event_hit_does_not_prove_state: true
+    coverage: {theory_family: strong, modern_lineage: strong, mid_granularity_function: strong, specific_occupation_outcome: partial}
+    coverage_subdomains:
+      manufacturing_mechanical_and_traditional_field_execution: strong
+      construction_and_resource_field_operation: partial
+      quality_planning_and_warehouse_fulfillment: partial
+      digital_infrastructure_service_operation_and_automation: minimal
+    output_precision: null
+    contradiction_guards: [root_limits_path_extrapolation_not_reality, long_reality_cannot_upgrade_root, NO_ROOT_not_imply_reality_instability, future_starts_from_current_reality_position]
+    unresolved_fields: [output_precision]
+    source_refs: [SRC-SNAPSHOT-F03]
+
+  F04:
+    function_id: F04
+    label: 组织协调与项目管理
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主围绕具有明确范围、期限、阶段目标或交付标准之一的集体任务，处理人员、任务、节点和资源之间的依赖与冲突，通过分工、排序、协调、调度、跟踪和调整形成可执行协同，并对跨节点或整体交付负责；日常持续协调不因没有正式项目名而排除。
+    reality_objects: [bounded_collective_task, actors, tasks, nodes, resources, dependencies, conflicts]
+    reality_actions: [division, sequencing, coordination, scheduling, tracking, adjustment]
+    action_attribution: subject_has_substantive_coordination_discretion_and_overall_delivery_responsibility
+    necessary_reality_gates: [bounded_responsibility, multi_actor_or_cross_node, real_dependency_or_conflict, substantive_coordination_discretion, overall_result_responsibility, current_as_of]
+    state_card: {levels: [S1, S2, S3], independent_from_event: true}
+    event_card: {levels: [E1, E2, E3], necessary_gates_count: 7, outcome_does_not_prove_coordination: true}
+    result_layers: [coordination_direction, overall_result_form]
+    competing_functions: [F03, F05, F06, F08]
+    strongest_competing_explanation: stable_conversion_identity_governance_public_normative_effect_or_business_continuity
+    theory_origin_gate: single_school_complete_chain_and_chart_window_correspondence
+    source_gate: traceable_single_school_source_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {center: cross_actor_or_cross_node_coordination_responsibility, alternatives: [project_organization_and_stage_delivery, operational_coordination_and_dynamic_scheduling]}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: partial}
+    output_precision: null
+    contradiction_guards: [reality_fact_not_denied_by_theory, state_event_independent, outcome_not_backfill_action, career_not_upgrade_root]
+    unresolved_fields: [output_precision]
+    source_refs: [SRC-SNAPSHOT-F04]
+
+  F05:
+    function_id: F05
+    label: 人事治理与制度执行
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主围绕人与特定组织之间的成员／任职关系，通过正式建议、有效评价、审核决定或效力执行，对人员准入与配置、评价与发展、纪律与退出产生可核验组织身份后果；命主作为治理作用者与作为身份对象全程分账。
+    reality_objects: [person_organization_membership_or_appointment_relation]
+    reality_actions: [formal_recommendation, effective_evaluation, review_decision, effect_execution]
+    action_attribution: governance_actor_separate_from_identity_object
+    necessary_reality_gates: [direct_identity_relation_object, effective_intervention, identity_consequence, actor_attribution, verifiability]
+    state_card: {levels: [S1, S2, S3], tense: [CURRENT, ENDED, SUSPENDED, UNKNOWN_AS_OF]}
+    event_card: {levels: [E1, E2, E3], necessary_gates_count: 7}
+    result_layers: [admission_and_allocation, evaluation_and_development, discipline_and_exit]
+    competing_functions: [F04, F06]
+    strongest_competing_explanation: task_coordination_public_normative_effect_general_control_or_mechanical_administration
+    theory_origin_gate: single_school_chain_and_window_correspondence_by_role
+    source_gate: traceable_source_binding_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {center_max: 1, alternatives_max: 2, taxonomy_gap: TAXONOMY_GAP}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: partial}
+    output_precision: null
+    contradiction_guards: [actor_object_separate, state_event_separate, reality_precedes_theory, career_not_upgrade_root]
+    unresolved_fields: [output_precision]
+    remaining_gaps: [source_traceability, case_window_binding]
+    source_refs: [SRC-SNAPSHOT-F05]
+
+  F06:
+    function_id: F06
+    label: 公共治理与规则实施
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主基于公共规范来源，对外部规范对象实施实质、非机械、可问责的规则形成、公共准入、监督调查、责任发动、裁判审查或效力执行，并产生可核验独立程序或终局规范后果。
+    reality_objects: [external_normative_object]
+    reality_actions: [rule_formation, public_admission, supervision_investigation, responsibility_initiation, adjudicative_review, effect_execution]
+    action_attribution: normative_actor_separate_from_normative_object_and_procedural_participant
+    necessary_reality_gates: [public_normative_source, external_object, substantive_intervention, verifiable_normative_consequence, role_attribution, public_accountability]
+    state_card: {levels: [S1, S2, S3], tense: [CURRENT, ENDED, SUSPENDED, UNKNOWN_AS_OF]}
+    event_card: {levels: [E1, E2, E3], consequence_types: [independent_procedural, final_normative]}
+    result_layers: [independent_procedural_consequence, final_normative_consequence]
+    competing_functions: [F01, F03, F04, F05]
+    strongest_competing_explanation: professional_advice_process_delivery_coordination_internal_identity_governance_or_general_control
+    theory_origin_gate: single_school_six_link_chain_and_theory_dual_gate
+    source_gate: traceable_source_binding_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {center_max: 1, alternatives_max: 2, taxonomy_gap: TAXONOMY_GAP}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: partial}
+    unified_coverage_scalar: null
+    output_precision: null
+    contradiction_guards: [role_separation, signature_or_final_power_not_sufficient, event_reversal_not_erase_history, theory_failure_not_delete_reality]
+    unresolved_fields: [unified_coverage_scalar, output_precision]
+    remaining_gaps: [source_traceability, case_window_binding]
+    source_refs: [SRC-SNAPSHOT-F06]
+
+  F07:
+    function_id: F07
+    label: 客户获取与交易促成
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主面向可识别客户、交易相对方或供需双方关系，通过可归属的客户发现、需求与资格识别、价值表达、异议处理、条件协商、关系引介、双方匹配、订单／签约推动或客户扩展，使交易进程节点产生可核验变化并承担责任。
+    reality_objects: [potential_customer, existing_customer, transaction_counterparty, supply_demand_relation]
+    reality_actions: [customer_discovery, need_and_qualification_identification, value_expression, objection_handling, negotiation, introduction, matching, order_or_contract_advancement, customer_expansion]
+    action_attribution: identifiable_personal_causal_attribution
+    necessary_reality_gates: [transaction_relation, advancement_object, substantive_nonmechanical_intervention, verifiable_advancement_consequence, personal_attribution]
+    state_card: {levels: [S1, S2, S3], tense: [CURRENT, ENDED, SUSPENDED, UNKNOWN_AS_OF]}
+    event_card: {levels: [E1, E2, E3], final_transaction_required: false}
+    result_layers: [customer_development, negotiation_and_closing, matching_and_expansion]
+    competing_functions: [F01, F03, F04, F08]
+    strongest_competing_explanation: professional_output_process_support_task_coordination_or_business_risk_bearing
+    theory_origin_gate: single_school_six_link_chain_and_theory_dual_gate
+    source_gate: traceable_source_binding_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {center_max: 1, alternatives_max: 2, taxonomy_gap: TAXONOMY_GAP}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: strong}
+    output_precision: null
+    contradiction_guards: [role_separation, revenue_not_backfill_action, forecast_not_rewrite_as_of, reality_theory_one_way]
+    unresolved_fields: [output_precision]
+    remaining_gaps: [source_traceability, same_source_deduplication, case_window_binding]
+    source_refs: [SRC-SNAPSHOT-F07]
+
+  F08:
+    function_id: F08
+    label: 经营承担与资源整合
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主面向边界可识别且以持续提供产品／服务或组织交换为目的的经营单元，实际组织或重配关键资源，作出非机械经营取舍，使经营后果或风险位置发生可核验变化，并承担持续责任或边界完整的一次事件问责。
+    reality_objects: [bounded_business_unit, key_resources, business_consequence_or_risk_position]
+    reality_actions: [resource_organization, resource_reallocation, nonmechanical_business_tradeoff]
+    action_attribution: resources_decisions_consequences_and_accountability_attributable_to_subject
+    necessary_reality_gates: [business_unit, key_resource_configuration, nonmechanical_business_tradeoff, verifiable_consequence_or_risk_position, continuing_or_complete_event_accountability, personal_attribution]
+    state_card: {levels: [S1, S2, S3], single_event_does_not_create_state: true}
+    event_card: {levels: [E1, E2, E3]}
+    result_layers: [business_architecture_and_resource_integration, business_operation_and_return_structure, business_adjustment_and_continuity_disposition]
+    competing_functions: [F01, F03, F04, F05, F07]
+    strongest_competing_explanation: transaction_advancement_passive_investment_single_resource_professional_process_project_or_identity_governance
+    theory_origin_gate: single_school_seven_link_chain_and_theory_dual_gate
+    source_gate: traceable_source_binding_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {center_max: 1, alternatives_max: 2, taxonomy_gap: TAXONOMY_GAP}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: partial, specific_occupation_outcome: strong}
+    output_precision: null
+    contradiction_guards: [identity_ownership_control_result_not_backfill, evidence_layers_one_way, failure_stops_at_layer]
+    unresolved_fields: [output_precision]
+    remaining_gaps: [source_traceability, case_window_binding]
+    source_refs: [SRC-SNAPSHOT-F08]
+
+  F09:
+    function_id: F09
+    label: 资本配置与风险承担
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主对可识别资本或信用资源，围绕边界明确的经济对象，实施不可约为机械执行的配置裁量，和／或承担可归属的本金、偿付、信用或损益暴露；配置位置或风险位置须在基准日或指定时间窗独立核验，并按配置轴、风险轴或双轴裁决。
+    reality_objects: [capital_or_credit_resource, bounded_economic_object]
+    reality_actions: [substantive_allocation_discretion, commitment_or_implementation, risk_exposure_assumption]
+    action_attribution: allocation_or_exposure_attributable_to_subject
+    necessary_reality_gates: [resource, object, allocation_axis_or_risk_axis, attribution, time_validity]
+    state_card: {levels: [S1, S2, S3], role: baseline_position}
+    event_card: {levels: [E1, E2, E3], role: window_change}
+    result_layers: [action_consequence, capital_consequence, responsibility_consequence]
+    competing_functions: [F08]
+    strongest_competing_explanation: business_responsibility_wealth_result_general_debt_consumption_or_passive_holding
+    theory_origin_gate: structural_legality_and_function_completion_by_axis
+    source_gate: traceable_source_binding_required
+    root_assessment: [R1_DIRECT_ROOT, R2_SINGLE_COMPLETABLE_GAP, R3_BACKGROUND_SUPPORT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {types_count: 7, attributes: [axis, action, object, tense]}
+    coverage: null
+    coverage_profile:
+      D1_resource_and_object: {scale: [0, 1, 2], scope: resource_and_bounded_object}
+      D2_role_and_attribution: {scale: [0, 1, 2], scope: allocation_discretion_or_risk_responsibility_attribution}
+      D3_function_axis_closure: {scale: [0, 1, 2], axis_labels: [allocation, risk, dual_axis]}
+      D4_tense_and_change: {scale: [0, 1, 2], scope: natal_root_window_completion_state_event_and_direction}
+      aggregation: no_sum_and_shortfall_dimensions_do_not_compensate
+    validation_timepoints: [T0_FACT_FREEZE, T1_THEORY_COMPLETION, T2_OBSERVATION]
+    output_precision: null
+    contradiction_guards: [theory_candidate_not_reality, explicit_termination_priority, consequence_not_backfill_gate, unresolved_conflict_abstains]
+    unresolved_fields: [coverage, output_precision]
+    source_refs: [SRC-SNAPSHOT-F09]
+
+  F10:
+    function_id: F10
+    label: 教育培养与知识传递
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主把可识别、可学习的知识、经验、方法、规则或技能，以实际外化方式定向提供给可识别学习对象；主张教育培养时还须存在持续教学／训练过程及命主对学习进度、反馈或评估承担的责任。
+    reality_objects: [learnable_content, identifiable_learner]
+    reality_actions: [explanation, demonstration, correction, question_answering, assessment, textbook_externalization, recorded_externalization]
+    action_attribution: teaching_action_attributable_to_subject
+    necessary_reality_gates: [content, learner, actual_transfer_action, attribution]
+    cultivation_additional_gates: [continuing_process, progress_guidance_or_assessment_responsibility]
+    state_card: {levels: [S0, S1, S2, S3]}
+    event_card: {levels: [E0, E1, E2, E3]}
+    result_layers: [action_completion, cultivation_responsibility_result, learning_result]
+    competing_functions: [F02, F04, F07, F08, F12]
+    strongest_competing_explanation: research_creation_consulting_promotion_enrollment_organization_business_administration_or_dissemination
+    theory_origin_gate: same_school_structural_legality_and_education_directed_externalization
+    source_gate: traceable_source_binding_required
+    root_assessment: [R1_DIRECT_ROOT, R2_SINGLE_COMPLETABLE_GAP, R3_BACKGROUND_SUPPORT, NON_ROOT_OR_ABSTAIN]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: [direct_knowledge_transfer, structured_course_teaching, skill_demonstration_and_training, continuing_guidance_and_cultivation, asynchronous_teaching_transfer]
+    coverage: null
+    coverage_profile: [D1_CONTENT_OBJECT, D2_ACTION_ATTRIBUTION, D3_FUNCTION_CLOSURE, D4_TENSE_VALIDITY]
+    validation_timepoints: [T0_FREEZE, T1_OBSERVATION_WINDOW, T2_AS_OF_DECISION]
+    output_precision: null
+    contradiction_guards: [identity_medium_result_not_backfill, explicit_stop_or_transfer_priority, evidence_layers_one_way, reality_theory_no_backwrite]
+    unresolved_fields: [coverage, output_precision]
+    source_refs: [SRC-SNAPSHOT-F10]
+
+  F11:
+    function_id: F11
+    label: 医疗照护与身心风险处置
+    recovery_status: frozen_complete_recovered
+    frozen_definition: 命主面向可识别个人或具有共同身心健康／安全风险的边界明确群体，实际实施评估、诊断、治疗、手术、护理、康复、监测、急救或危机干预之一；动作须归属于命主。持续照护是增强形态而非普遍前提。
+    reality_objects: [identifiable_person, bounded_group_with_shared_health_or_safety_risk]
+    reality_actions: [assessment, diagnosis, treatment, surgery, nursing, rehabilitation, monitoring, emergency_aid, crisis_intervention]
+    action_attribution: action_attributable_to_subject_not_patient_team_or_institution
+    necessary_reality_gates: [risk_object, at_least_one_qualified_intervention, subject_attribution]
+    state_card: {levels: [S0, S1, S2, S3], independent_from_event: true}
+    event_card: {levels: [E0, E1, E2, E3], independent_from_state: true}
+    result_layers: [establishment_or_entry, strengthening_or_stability, weakening_pause_termination_or_transfer, temporary_analogy]
+    competing_functions: [F02, F05, F07, F08, F10, F12]
+    strongest_competing_explanation: research_business_sales_administration_education_dissemination_wellness_comfort_divination_religion_or_patient_fact
+    theory_origin_gate: object_gate_O_and_action_gate_A_same_school_same_chart_same_chain
+    source_gate: traceable_source_binding_required
+    root_assessment: [STRONG_ROOT, WEAK_ROOT, NO_ROOT]
+    timing_completion: [ACTIVATE_EXISTING, COMPLETE_LATENT, REPAIR_DEFECT, TEMPORARY_SUBSTITUTE, INVALID_COMPLETION]
+    bounded_real_world_outcomes: {directions_count: 4, center_max: 1, alternatives_max: 2, taxonomy_gap: TAXONOMY_GAP}
+    coverage: {theory_family: partial, modern_lineage: strong, mid_granularity_function: strong, specific_occupation_outcome: partial}
+    output_precision: {T0: medical_association, T1: mid_granularity_function, T2: restricted_role_occupation_or_specialty, default_max: T1}
+    contradiction_guards: [health_context_only, actual_crisis_intervention_only, temporary_substitute_not_reality_hit, four_layer_no_backfill, negative_evidence_priority, abstention_priority]
+    source_refs: [SRC-SNAPSHOT-F11]
+
+  F12:
+    function_id: F12
+    label: 内容生产、传播与影响
+    recovery_status: frozen_complete_recovered
+    frozen_definition: F12 识别命主对可识别、已外化且可被他人理解或感知之内容／表达成果的直接生产或传播功能；生产以内容形成并完成外化为核心，传播以命主实施发布、呈现、播送、分发等动作并具有可识别受众或现实可达方向为核心；实际触达与内容影响仅作独立增强，不是基础成立条件。
+    reality_objects:
+      qualified: [identifiable_externalized_content_or_expression_understandable_or_perceptible_by_others]
+      excluded: [thought, theme, material, data, blank_template, product_itself, unfinished_draft]
+    reality_actions:
+      production: [creation, writing, substantive_editing, recording, completed_production]
+      dissemination: [publication, public_presentation, broadcasting, curatorial_display, audience_directed_distribution, attributable_retelling_or_commentary]
+      excluded: [pure_copying, logistics_delivery, equipment_operation, platform_maintenance, typesetting_or_printing, product_sales, passive_interview_or_reporting_or_appearance, likes_or_bookmarks, private_forwarding]
+    action_attribution:
+      roles: [content_creator, content_editor, content_presenter, content_publisher_or_distributor, dissemination_organizer_or_manager]
+      rule: 前三类及实际执行发布／分发者按各自动作过门；纯组织管理不自动成立；共同创作只按可核验个人贡献归属，团队成果不得整体归命主。
+    necessary_reality_gates:
+      production:
+        - identifiable_content_or_expression
+        - subject_creation_writing_substantive_editing_recording_or_completed_production
+        - externalized_form_receivable_by_others
+        - subject_attribution
+      dissemination:
+        - identifiable_content
+        - subject_publication_presentation_broadcast_distribution_or_dissemination
+        - identifiable_audience_or_realistic_reachability_direction
+        - subject_attribution
+      path_closure: either_path_independently_sufficient_for_base_F12
+      publication_required_for_production: false
+      actual_reach_required_for_base_F12: false
+      influence_required_for_base_F12: false
+    state_card:
+      production:
+        P0: no_evidence
+        P1: single_or_stage_completion
+        P2: repeated_but_unstable_production
+        P3: sustained_stable_production
+      dissemination:
+        D0: no_evidence
+        D1: single_or_stage_dissemination
+        D2: repeated_but_unstable_dissemination
+        D3: sustained_stable_dissemination
+      guards: [production_and_dissemination_separate, state_and_event_separate, L1_or_L2_does_not_upgrade_state, position_or_institution_does_not_prove_action_continuity]
+    event_card:
+      events: [creation_start, content_completion, substantive_edit_completion, recording_or_production_completion, first_publication, republication_or_reissue, public_presentation_or_broadcast, distribution_expansion, pause, resumption, termination, withdrawal_or_takedown, exit_from_direct_action, actual_reach, influence_emergence_or_expansion_or_weakening]
+      guards: [single_event_does_not_create_P3_or_D3, historical_event_does_not_prove_current_state, production_publication_reach_and_influence_have_separate_timepoints]
+    result_layers:
+      L0:
+        meaning: base_function_established
+        proof: production_path_closed_or_dissemination_path_closed
+      L1:
+        meaning: actual_reach
+        proof: independent_evidence_of_actual_receipt_viewing_listening_reading_or_participation
+      L2:
+        meaning: content_influence
+        proof: independent_evidence_that_specific_content_caused_or_materially_contributed_to_cognitive_attitudinal_emotional_discussion_decision_or_behavior_change
+      guards: [no_mutual_backfill, reachability_is_not_actual_reach, actual_reach_is_not_influence, scale_followers_clicks_awards_liking_fame_income_controversy_or_negative_exposure_record_only_what_they_directly_prove]
+    competing_functions: [F02, F04, F05, F06, F07, F08, F10, F11]
+    strongest_competing_explanation:
+      method: action_slice_plus_direct_function_purpose_plus_independent_gate
+      unique_competing_function: null
+      candidates:
+        F02: new_knowledge_or_method_research_output
+        F04: project_organization_or_resource_coordination_without_direct_content_action
+        F05_F06: organizational_compliance_procedure_or_rule_implementation
+        F07: customer_acquisition_or_transaction_closing
+        F08: platform_media_or_cultural_business_responsibility
+        F10: identifiable_learner_mastery
+        F11: one_to_one_health_or_crisis_intervention_expression
+      coexistence_boundary: only_independently_closed_actions_may_coexist
+      unresolved_disambiguation: [UNKNOWN, HUMAN_REVIEW]
+    theory_origin_gate:
+      O_object_gate: 同一派同一命局在组合语境中形成可定位内容／表达对象，并区分思想能力、素材、载体、职业名与已形成内容。
+      A_action_gate: 同一派同一命局出现命主对该对象的形成、编辑、呈现、发布、连通、扩散或面向受众作用之一，并可定位作用方向与承载。
+      production_candidate: content_object_plus_formation_or_completion_action
+      dissemination_candidate: content_object_plus_dissemination_action_plus_audience_or_external_reachability_direction
+      guards: [same_school_same_chart_same_chain, each_school_independent, no_reality_occupation_feedback_backfill, no_single_symbol_stacking, influence_is_enhancement_not_O_or_A, theory_does_not_backfill_reality_PD_or_L0_L2]
+    source_gate: null
+    root_assessment:
+      dimensions: [content_object, action_direction, audience_or_external_reachability_direction, carrier]
+      production_and_dissemination_rated_separately: true
+      STRONG_ROOT: 原局同派同局同链已闭合 O＋A，并具备对应生产或传播链全部核心节点。
+      WEAK_ROOT: 原局已有可定位内容对象及同方向作用基础，但缺一个非核心连接、外部可达方向或稳定承载，允许岁运补全。
+      NO_ROOT: 原局未闭合 O 门、未见命主同方向作用，或只有食伤、印、纸张、丙丁、网络、媒体、名气、职业等关联象。
+      guards: [production_root_does_not_upgrade_dissemination_root, dissemination_candidate_cannot_skip_content_object, stronger_competing_explanation_downgrades_or_excludes, each_school_rated_independently, reality_and_later_timing_do_not_upgrade_root]
+    timing_completion:
+      separate_paths: [production, dissemination]
+      ACTIVATE_EXISTING: 原局同派同局同链已闭合对应 O＋A 及核心承载，岁运仅使既有内容形成、发布或呈现节点到位或发动。
+      COMPLETE_LATENT: 原局已有可定位内容对象和同方向作用基础，岁运只补一个缺失连接、外部可达方向或承载。
+      REPAIR_DEFECT: 原局已有对应链但形成、编辑、呈现、发布、连通或承载受阻，岁运解除障碍或恢复作用。
+      TEMPORARY_SUBSTITUTE: 岁运临时引入相似内容对象、媒介、平台、受众或作用关系，仅支持阶段性借象，不宣称原局长期生产或传播路径。
+      INVALID_COMPLETION: 只凑齐表面关联，或对象错误、动作不归命主、无受众方向、跨派拼门、竞争解释更强。
+      guards: [one_completion_per_path_and_window, NO_ROOT_cannot_ACTIVATE_EXISTING, NO_ROOT_COMPLETE_LATENT_defaults_to_temporary_assembly, timing_does_not_backfill_root_reality_PD_L0_L2_work_or_occupation]
+    bounded_real_world_outcomes:
+      establishment_or_entry:
+        center: first_qualified_externalized_content_completion_or_first_qualified_dissemination
+        alternatives: [new_long_term_verifiable_content_duty, resumption_of_interrupted_direct_action]
+        weak_hit: short_term_assistance_or_single_limited_dissemination
+      strengthening_or_stability:
+        center: material_increase_in_P_or_D_continuity_responsibility_scope_or_content_reception
+        alternatives: [stable_content_series, reach_or_channel_expansion_while_direct_action_continues]
+        weak_hit: increased_frequency_without_stability
+      weakening_pause_termination_or_exit:
+        center: substantive_pause_termination_or_exit_from_verified_P_or_D_state
+        alternatives: [shift_to_pure_management_business_technology_or_sales_without_direct_content_action, substantive_responsibility_contraction]
+        weak_hit: short_reduction_or_local_duty_change
+      temporary_or_stage_analogy:
+        center: qualified_content_or_dissemination_completed_in_limited_window_without_stable_path
+        alternatives: [verifiable_personal_contribution_in_temporary_collaboration, one_time_public_presentation_or_distribution]
+        weak_hit: only_partial_action_or_timepoint_confirmed
+      common_limits:
+        center_max: 1
+        alternatives_max: 2
+        alternatives_same_domain_and_direction: true
+        L1_or_L2_does_not_replace_outcome: true
+        counterevidence: [plan_only, ability_only, occupation_only, institution_only, platform_only, work_title_only, fame_only, followers_only, clicks_only, awards_only, income_only, controversy_only, team_result_only, being_reported_only]
+        taxonomy_gap: TAXONOMY_GAP
+    coverage:
+      theory_family: partial
+      modern_lineage: strong
+      mid_granularity_function: strong
+      specific_occupation_outcome: partial
+    output_precision:
+      T0:
+        allowed: 存在内容形成或传播方向候选
+        forbidden: [real_production, publication, actual_reach, influence, specific_role, specific_occupation]
+      T1:
+        separate_paths: [production, dissemination]
+        allowed_states: [established, strengthened, weakened, temporary]
+        requires: [same_school_same_chart_same_chain, reality_gate, theory_origin_gate, root_assessment, timing_completion]
+        forbidden_specificity: [medium, content_type, occupation]
+      T2:
+        restricted: true
+        examples: [记者, 编辑, 作家, 主持, 演员, 主播, 自媒体, 宣传岗位, 文章, 节目, 影像]
+        requires: [same_school_subclassification_constraint, independent_real_world_action_evidence, strongest_competing_explanation_excluded]
+        insufficient_evidence_fallback: T1
+      default_max: T1
+    counterexamples:
+      - {id: F12-X01, fact: 有思想无外化成果, verdict: not_established}
+      - {id: F12-X02, fact: 有完成稿未发布, verdict: production_only}
+      - {id: F12-X03, fact: 转载或转述但无可核验归属, verdict: not_established}
+      - {id: F12-X04, fact: 纯排版、印刷、物流、设备或平台维护, verdict: not_established}
+      - {id: F12-X05, fact: 被采访、被报道或被动出镜, verdict: not_established}
+      - {id: F12-X06, fact: 团队作品但个人贡献不可核验, verdict: not_attributed_to_subject}
+      - {id: F12-X07, fact: 媒体或文化机构任职但无直接动作, verdict: not_established}
+      - {id: F12-X08, fact: 广告、直播或演讲以成交为核心, verdict: F07_priority}
+      - {id: F12-X09, fact: 课程表达以学习者掌握为核心, verdict: F10_priority}
+      - {id: F12-X10, fact: 研究成果本身, verdict: F02_priority_and_F12_only_with_independent_externalization_or_publication}
+      - {id: F12-X11, fact: 行政宣传以服从、程序或规则实施为核心, verdict: F05_or_F06_priority}
+      - {id: F12-X12, fact: 粉丝、点击、获奖、名气、收入、争议或负面曝光, verdict: record_direct_proof_only_and_no_base_gate_backfill}
+    contradiction_guards:
+      reality: {independent_fields: [object, action, attribution, audience], mutual_backfill_forbidden: true}
+      theory: {cross_school_chart_case_splicing_forbidden: true}
+      timing: {event_backfills_root_forbidden: true, historical_event_proves_current_state_forbidden: true, event_layer_upgrades_state_layer_forbidden: true}
+      output: {T_upgrade_from: [coverage, confidence, occupation_feedback, single_symbol], forbidden: true}
+    conflict_priority: [negative_evidence, strongest_competing_explanation, abstention]
+    unresolved_output: [UNKNOWN, HUMAN_REVIEW]
+    unresolved_fields: [source_gate]
+    source_refs: [SRC-SNAPSHOT-F12]
+
+competition_matrix:
+  status: complete_recovery
+  decision_dimensions:
+    - primary_responsibility
+    - primary_action
+    - direct_object
+    - primary_deliverable
+    - primary_uncertainty
+    - stable_input
+    - strongest_competing_explanation
+  coexistence_requires_independent_closed_chains: true
+  recovered_edges:
+    - functions: [F01, F02]
+      priority_rule: 使用已有知识解决已知现实问题归 F01；产生新增知识或方法并完成验证归 F02。
+      source_refs: [SRC-SNAPSHOT-F01, SRC-SNAPSHOT-F02]
+    - functions: [F01, F03]
+      priority_rule: 专业诊断、设计、核算、审查或复杂调试归 F01；按既定方法稳定转换与连续交付归 F03。
+      source_refs: [SRC-SNAPSHOT-F01, SRC-SNAPSHOT-F03]
+    - functions: [F01, F04]
+      priority_rule: 专业方案责任归 F01；多人、资源、进度与整体交付协调归 F04。
+      source_refs: [SRC-SNAPSHOT-F01]
+    - functions: [F01, F09]
+      priority_rule: 核算、审计和财务专业判断归 F01；投资、融资与资本波动承担归 F09。
+      source_refs: [SRC-SNAPSHOT-F01]
+    - functions: [F01, F11]
+      priority_rule: 一般专业技术解决归 F01；直接面向患者健康风险的诊疗处置归 F11。
+      source_refs: [SRC-SNAPSHOT-F01]
+    - functions: [F02, F03]
+      priority_rule: 新工艺或新方法的研发验证归 F02；验收后按既定工艺稳定执行归 F03。
+      source_refs: [SRC-SNAPSHOT-F02, SRC-SNAPSHOT-F03]
+    - functions: [F02, F10]
+      priority_rule: 面向知识缺口生产新知识归 F02；面向学习者传递既有知识归 F10。
+      source_refs: [SRC-SNAPSHOT-F02]
+    - functions: [F02, F11]
+      priority_rule: 医学未知、新药或新疗法研究归 F02；患者诊疗和健康风险处置归 F11。
+      source_refs: [SRC-SNAPSHOT-F02]
+    - functions: [F02, F12]
+      priority_rule: 研究成果本身归 F02；存在独立外化制作或发布动作时可并存 F12。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F04, F12]
+      priority_rule: 纯组织协调归 F04；不得借团队内容成果补 F12。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F05, F12]
+      priority_rule: 行政宣传以组织成员、服从或制度执行为核心时 F05 优先。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F06, F12]
+      priority_rule: 行政宣传以程序、规则实施或对外规范效力为核心时 F06 优先。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F07, F12]
+      priority_rule: 广告、直播或演讲以成交为核心时 F07 优先。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F10, F12]
+      priority_rule: 课程表达以学习者掌握为核心时 F10 优先。
+      source_refs: [SRC-SNAPSHOT-F12]
+    - functions: [F03, F04]
+      priority_rule: 稳定转换与连续交付归 F03；跨主体／跨节点行动协同与整体交付归 F04。
+      source_refs: [SRC-SNAPSHOT-F04]
+    - functions: [F01, F08]
+      priority_rule: 专业技术输出归 F01；经营单元资源、风险、损益与存续承担归 F08。
+      source_refs: [SRC-SNAPSHOT-F08]
+    - functions: [F03, F08]
+      priority_rule: 重复流程与连续交付归 F03；经营单元资源、风险、损益与存续承担归 F08。
+      source_refs: [SRC-SNAPSHOT-F08]
+    - functions: [F04, F05]
+      priority_rule: 任务行动关系归 F04；组织成员／任职身份关系治理归 F05。
+      source_refs: [SRC-SNAPSHOT-F04, SRC-SNAPSHOT-F05]
+    - functions: [F04, F06]
+      priority_rule: 行动协同归 F04；外部公共规范效力归 F06。
+      source_refs: [SRC-SNAPSHOT-F04, SRC-SNAPSHOT-F06]
+    - functions: [F04, F08]
+      priority_rule: 任务交付闭环归 F04；经营存续闭环归 F08。
+      source_refs: [SRC-SNAPSHOT-F04, SRC-SNAPSHOT-F08]
+    - functions: [F05, F06]
+      priority_rule: 内部成员／任职身份效力归 F05；外部公共规范效力归 F06。
+      source_refs: [SRC-SNAPSHOT-F05, SRC-SNAPSHOT-F06]
+    - functions: [F05, F08]
+      priority_rule: 组织成员／任职身份治理归 F05；经营单元资源、风险、损益与存续承担归 F08。
+      source_refs: [SRC-SNAPSHOT-F08]
+    - functions: [F07, F08]
+      priority_rule: 客户与交易进程推进归 F07；经营单元资源、风险、损益与存续承担归 F08。
+      source_refs: [SRC-SNAPSHOT-F07, SRC-SNAPSHOT-F08]
+    - functions: [F08, F09]
+      priority_rule: 经营职责链归 F08；资本／信用配置位置与风险暴露归 F09。该跨卡边由 F09 侧区间冻结，不属于 F08 卡片自有竞争边。
+      source_refs: [SRC-SNAPSHOT-F09]
+  pending_recovery: null
+
+source_index:
+  SRC-DESIGN-COMMON:
+    path: plans/as-of-life-state-reasoning-design-2026-07-18.md
+    lines:
+      - 76-86
+      - 273-350
+      - 419-460
+      - 510-522
+    supports:
+      - root_levels
+      - timing_completion
+      - bounded_real_world_outcomes
+      - TAXONOMY_GAP
+      - abstention_and_human_review
+  SRC-HANDOFF-COMMON:
+    path: handoff.md
+    lines:
+      - 145-187
+      - 248-300
+      - 304-347
+    supports:
+      - function_catalog
+      - theory_family_compilation
+      - minimum_sufficient_roles
+      - prohibited_outputs
+      - timing_traceability
+  SRC-HANDOFF-F01-F03:
+    path: handoff.md
+    lines: [193-199]
+    supports: [historical_F01_summary, historical_F02_summary, historical_F03_summary]
+  SRC-EVIDENCE-SNAPSHOT-F01-F03:
+    session_id: 019f73ac-488e-725e-89b4-e3cd22ab5315
+    snapshot_kind: normalized_json_range
+    snapshot_sha256: 87d3149d821d0f6cf19419341c99916c3ed7485f7522c7954fb502246a295e37
+    message_range: 288-470
+    critical_message_indices: [363, 364, 412, 413, 469, 470]
+    critical_manifest_sha256: 11750e779f8cb16b5bca10f25dc23843aa025585b8a34bd7aabe6caeb768855d
+    product_runtime_dependency: false
+  SRC-SNAPSHOT-F01:
+    parent: SRC-EVIDENCE-SNAPSHOT-F01-F03
+    message_range: 288-364
+    primary_evidence_range: 291-364
+    final_proposal_index: 363
+    final_confirmation_index: 364
+    final_confirmation_utc: 2026-07-18T08:03:07.088Z
+    final_confirmation_body_sha256: f760fdf27e16a42027175c533b652014b5ac96b7c4c75a0279cd4f547ce1c232
+    supports: [F01_frozen_card]
+  SRC-SNAPSHOT-F02:
+    parent: SRC-EVIDENCE-SNAPSHOT-F01-F03
+    message_range: 375-413
+    final_proposal_index: 412
+    final_confirmation_index: 413
+    final_confirmation_utc: 2026-07-18T08:22:40.453Z
+    final_confirmation_body_sha256: c11c0f6e2ffe109070e159fe284b571f8e77a5e18de29ed66e420b91a61484a7
+    supports: [F02_frozen_card]
+  SRC-SNAPSHOT-F03:
+    parent: SRC-EVIDENCE-SNAPSHOT-F01-F03
+    message_range: 414-470
+    primary_evidence_range: 428-470
+    final_proposal_index: 469
+    final_confirmation_index: 470
+    final_confirmation_utc: 2026-07-18T08:44:27.331Z
+    final_confirmation_body_sha256: 7f558f70a8e1801a2ad0ea493765049914e5f81013a381299831e5d0de65b174
+    supports: [F03_frozen_card]
+  SRC-HANDOFF-F04:
+    path: handoff.md
+    lines: [201-222]
+    supports: [F04_definition, F04_summary, F04_coverage]
+  SRC-CONVERSATION-SUMMARY-F12:
+    path: external_conversation_summary
+    locator: 2026-07-19 current task context
+    evidence_role: posterior_aid_only
+    cannot_prove_frozen_fields: true
+    supports: [navigation_only]
+  SRC-EVIDENCE-SNAPSHOT:
+    path: external_immutable_snapshot
+    session_id: 019f7470-1222-73d1-b8f8-ca27e8ece78d
+    file: ui_messages.indices-0-1312.canonical.json
+    sha256: 18EED789F7E6EABDAE214D67606B8B4A509B9619564881CED9FD26FEF9C2CB52
+    critical_file: critical-16.canonical.json
+    critical_sha256: 3D2AD15A2FD311427361D70ED55854664AE172108F25089DD8EA30FB0BD4DBD2
+    count: 1313
+    index_range: 0-1312
+  SRC-SNAPSHOT-F04:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 0-101
+    final_confirmation_index: 101
+    final_confirmation_utc: 2026-07-18T12:03:45.601000Z
+    final_confirmation_body_sha256: 68336512e9fd4358433271bca28987cbb941d78237fc5f5f00c006011e6b7535
+    supports: [F04_frozen_card]
+  SRC-SNAPSHOT-F05:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 102-251
+    final_confirmation_index: 251
+    final_confirmation_utc: 2026-07-18T14:23:46.832000Z
+    final_confirmation_body_sha256: bc8a594048fc9b2a1ad4893615abc35f7e53124153bcf91a7d025ec84dc0a49d
+    supports: [F05_frozen_card]
+  SRC-SNAPSHOT-F06:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 252-358
+    final_confirmation_index: 358
+    final_confirmation_utc: 2026-07-18T16:01:21.735000Z
+    final_confirmation_body_sha256: 9011bbd03d737ab484a399cb462bbc2f17b7809e0efa5efbf1f847fbb08cf280
+    supports: [F06_frozen_card]
+  SRC-SNAPSHOT-F07:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 359-447
+    final_confirmation_index: 447
+    final_confirmation_utc: 2026-07-18T16:28:08.047000Z
+    final_confirmation_body_sha256: 61aa3b74fcb0af70b2bd6f50ecc5322313c597732b5f024868ce24beb7c1e128
+    supports: [F07_frozen_card]
+  SRC-SNAPSHOT-F08:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 448-575
+    final_confirmation_index: 575
+    final_confirmation_utc: 2026-07-18T17:00:55.438000Z
+    final_confirmation_body_sha256: 10ee4c69552007b9652558c909311d011c52d764642487904974ce2d2cdd4e9e
+    supports: [F08_frozen_card]
+  SRC-SNAPSHOT-F09:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 576-843
+    final_confirmation_index: 843
+    final_confirmation_utc: 2026-07-19T00:32:51.913000Z
+    final_confirmation_body_sha256: ea81f17f5402b883963f02cb8b270c1a6179ef963c1ad7d4de3a295e53d70825
+    supports: [F09_frozen_card]
+  SRC-SNAPSHOT-F10:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 844-1166
+    final_confirmation_index: 1166
+    final_confirmation_utc: 2026-07-19T01:34:56.063000Z
+    final_confirmation_body_sha256: abcc6b0bdbc4ae3ab5db6db152038e625e96ff95ecb374b3292d360223ba9f65
+    supports: [F10_frozen_card]
+  SRC-SNAPSHOT-F11:
+    parent: SRC-EVIDENCE-SNAPSHOT
+    message_range: 1167-1312
+    final_confirmation_index: 1312
+    final_confirmation_utc: 2026-07-19T02:43:52.001000Z
+    final_confirmation_body_sha256: 164eec5fbab78cb5f9e9ec0316f879c01f61fd7fe1bc428941efdf26476cd2a6
+    supports: [F11_frozen_card]
+  SRC-EVIDENCE-SNAPSHOT-F12:
+    path: external_immutable_snapshot
+    session_id: 019f7470-1222-73d1-b8f8-ca27e8ece78d
+    snapshot_kind: canonical_json_closed_range
+    message_range: 1313-1393
+    canonicalization: canonical JSON of Roo ui_messages closed interval 1313-1393
+    canonical_sha256: 5aa09b990ee627fee9bc6b74d4b34a562351e7df08148fcb5de086f206a27cfa
+    canonical_bytes: 715549
+    product_runtime_dependency: false
+  SRC-SNAPSHOT-F12:
+    parent: SRC-EVIDENCE-SNAPSHOT-F12
+    message_range: 1313-1393
+    primary_evidence_range: 1335-1393
+    narrow_field_ranges:
+      necessary_reality_gates: 1335-1336
+      reality_objects_actions_and_attribution: 1343-1344
+      result_layers: 1351-1352
+      state_and_event_cards: 1354-1355
+      competing_functions: 1360-1361
+      theory_origin_gate: 1365-1366
+      root_assessment: 1368-1369
+      timing_completion: 1373-1374
+      bounded_real_world_outcomes: 1377-1378
+      coverage: 1383-1384
+      output_precision: 1386-1387
+      frozen_definition: 1389-1390
+      final_freeze: 1392-1393
+    final_proposal_index: 1392
+    final_confirmation_index: 1393
+    final_confirmation_utc: 2026-07-19T03:03:30.800000Z
+    final_confirmation_body_sha256: 3d3586dadfb55bfe2eb138a14536a72854de80671ee7a720d4099635a40bb8c2
+    supports: [F12_frozen_card]

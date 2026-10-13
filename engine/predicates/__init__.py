@@ -138,6 +138,9 @@ from engine.predicates.shensha import (  # noqa: F401
     has_any_shensha,
 )
 
+# 职业关系图专用：只判断标准藏干中的原字根存在，不表达强弱。
+from engine.predicates.career import is_rooted  # noqa: F401
+
 __all__ = [
     # types
     "Gan", "Zhi", "Wuxing", "YinYang", "ChangshengStatus", "Shishen", "PalaceName",
@@ -169,6 +172,8 @@ __all__ = [
     "is_in_dayun_transition", "get_adjacent_dayun",
     # tou_cang (Track-C)
     "is_tou", "is_canggan", "tou_chu", "get_all_tou_chars", "is_tou_at",
+    # career relation graph
+    "is_rooted",
     # shensha (Track-D)
     "has_shensha", "get_shensha_at",
     "is_taichi", "is_jinyu", "is_huagai",

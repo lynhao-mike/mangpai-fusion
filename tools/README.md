@@ -20,9 +20,15 @@
 | [`batch_review.py`](batch_review.py:1) | 批量复盘：已填 feedback.md → ingest | v1.3 D6 |
 | [`render_report.py`](render_report.py:1) | legacy standard report 渲染入口 | 当前正式兼容入口；固定使用 `templates/report-v1.3.md`，由 output_linter 兜底；不承载新增 run-centric 字段 |
 | [`render_report_v6.py`](render_report_v6.py:1) | run-centric preprod 五派报告渲染 | 旁路生成 report / `*.v5.json` / `*.run.json` / `*.decision-run.json` / `*.feedback-attachment.json`；新增报告字段必须先进入 run / decision 结构，再渲染 |
+| [`domain_analysis_cli.py`](domain_analysis_cli.py:1) | 六源三领域分析引擎 CLI | 交互与非交互双模式；写 `*.run.json` + `*-content-report.md`；`audit` 子命令只读校验 hash 与十八槽位覆盖完整性；不替代 `render_report.py`，不写 case 目录 |
+| [`domain_prospective_cohort.py`](domain_prospective_cohort.py:1) | 事业、财富、婚姻三领域 prospective 盲测基线 CLI | `intake / freeze / reveal / score / status`；盲态严格白名单、递归泄漏拒绝、create-only hash 链、domain/task/claim 分账及 historical/prospective 隔离；少于 30 个真实 prospective 案例固定 `not_ready`，production false；不写生产规则、权重或路由 |
+| [`domain_capability_status.py`](domain_capability_status.py:1) | 六源三领域十八槽位能力覆盖与弃权诊断 | 只读消费一个或多个 `*.run.json` 或目录；registration/runtime 严格分账，按 school/domain/task 输出同源 JSON/Markdown，支持 `--check` 校验 output hash、十八槽位身份、重复 run 与损坏输入；任务 4 正式门禁未落地时明确 `unavailable`；不写规则、权重或路由 |
+| [`domain_feedback.py`](domain_feedback.py:1) | 六源三领域命题级结构化反馈与只读校准候选 | `prepare / ingest / status / candidates`；反馈绑定 run ID、snapshot output hash、claim ID 与稳定 claim hash，create-only 且拒绝 symlink、篡改、孤儿 claim、重复 reviewer/反馈；unknown、partial、应期偏差独立分账，高风险候选强制人工 review；不自动 promotion，不写理论、权重、路由、规则或历史 snapshot |
 | [`output_linter.py`](output_linter.py:1) | 报告出口 lint / 禁越界输出 | 兜底护栏 #2 |
 | [`three_layer_check.py`](three_layer_check.py:1) | 应期三层门检查 | v1.2 W3 护栏 |
-| [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]` | v1.3 推荐反馈入口 |
+| [`feedback_ingest.py`](feedback_ingest.py:1) | 结构化反馈摄入：`[y]` / `[n]` / `[?]` / `[skip]`，并把真实 `statement_index.json` 中的并行域 statement fanout 到 expert / adjudication 反馈日志 | v1.3 推荐反馈入口；无并行域 statement 时保持零行兼容行为 |
+| [`parallel_domain_weight_status_scan.py`](parallel_domain_weight_status_scan.py:1) | 跨案例聚合 expert × domain 历史反馈并对账 canonical `feedback_overlay` | active 只读状态扫描；支持 `--format markdown|json` 与 `--check`，pending 时仅返回非零退出码供人工 review，不做 promotion、不写权重、不切换路由 |
+| [`promote_expert_weight_feedback.py`](promote_expert_weight_feedback.py:1) | 将 expert × domain 反馈统计提升到 canonical runtime `feedback_overlay` | 默认 dry-run；正式写入必须同时使用 `--apply --reviewed-by <人类姓名>`，version 严格递增；只写 `engine/expert-weights.yaml`，不修改 legacy `engine/domain-weights.yaml` |
 | [`v5_prediction_feedback.py`](v5_prediction_feedback.py:1) | v5 prediction-first 预测反馈 | 可读 `.v5.json` / `.run.json`；只写 `.v5.json`，拒绝写 run snapshot |
 | [`feedback_review_gate.py`](feedback_review_gate.py:1) | 反馈复核包摄入前置闸门 | 只读检查 `META/feedback-closure-review-pack-*.json` 是否已完成人工裁决 |
 | [`feedback_impact_report.py`](feedback_impact_report.py:1) | 反馈影响路径与置信度调整可视化 | dry-run 计算断语→规则→置信度变化，输出 Markdown + Mermaid |
@@ -36,6 +42,9 @@
 | [`timing_report.py`](timing_report.py:1) | 聚合 pipeline、batch、feedback、iteration timing.json | v1.2.1+ metrics；同时扫描 `cases/*/findings/timing.json` 与 `META/timings/*.json` |
 | [`production_api.py`](production_api.py:1) | 生产 MVP HTTP JSON API | stdlib 同步 API；封装分析提交、状态查询、SQLite 元数据与缓存；高并发场景后续演进为 job queue |
 | [`tool_registry.py`](tool_registry.py:1) | 扫描 tools/*.py 并生成可执行工具注册表 | 防止 README 与真实工具漂移 |
+| [`project_progress.py`](project_progress.py:1) | 校验阶段任务权重并生成纯文本项目进度仪表盘 | `--format markdown|json`；`--write` 生成仪表盘；`--record` 追加去重历史；不读取现实结果、不改变生产状态 |
+| [`measurement_registry.py`](measurement_registry.py:1) | 校验 CHART_L2 → 现实测量注册表的失败关闭边界 | `--format markdown|json`；`--check`；未批准、未冻结或缺少现实 falsifier 的候选不能进入 pilot |
+| [`chart_adjudication.py`](chart_adjudication.py:1) | 只用命盘事实输出原局结构层目标级裁决 | chart-only；递归拒绝 feedback / known facts / reality / outcome / report 等输入；不输出现实标签、不切换生产报告 |
 | [`school_capability_baseline.py`](school_capability_baseline.py:1) | 学派能力盲评基线的 audit / freeze / score / report CLI | 只读能力评估入口；`audit` 只生成 `school-capability-case-audit/v1`，不可直接评分，必须经人工审核并提升为含 `expected_schools` 的 reviewed `school-capability-case-manifest/v1`；仅写独立 artifact，不是生产校准、规则更新或权重写入入口 |
 | [`school_capability_dataset.py`](school_capability_dataset.py:1) | 学派能力评估 inventory、prospective intake、盲评 bundle 与结构化标签准备 | 数据治理辅助；`prospective-intake` 拒绝 feedback / labels / report / known facts 字段或文件，并将唯一匹配的短槽位任务键解析为完整 case ID；`prepare-blind` 仅写安全 canonical intake、tasks、rule snapshot、chart 与 manifest，记录逐文件及 bundle SHA-256，并拒绝 symlink 与已存在目标目录；所有写命令支持 `--dry-run`；不会更新生产规则或权重 |
 | [`school_capability_prospective.py`](school_capability_prospective.py:1) | prospective 盲包 staged 冻结、受控父链迁移与 freeze witness 链 | `stage-frozen-run` 从已校验盲包生成确定性六来源三态冻结制品；`migrate-single-case-parent-chain-v002` 仅用于获批的首案整条父链 v002 修订，先 sibling staging 复验、默认 dry-run、正式模式固定顺序 create-only；`witness-freeze-chain` 校验正式 intake、盲包与 staged run 后，一次安全生成或追加每案 `registered → prepared → freeze` 三事件段 |
@@ -46,10 +55,18 @@
 | [`school_capability_task8.py`](school_capability_task8.py:1) | 六个月计划 Task 8 的六来源历史隔离基线编排 | 严格拆分 stage-a 冻结与 stage-b 标签揭示，复用现有 runner/evaluation 契约并只读核验旧 prospective bundle；不写生产路由、权重或规则 |
 | [`theory_slice_status.py`](theory_slice_status.py:1) | 分账扫描理论目录条目与可执行切片清单 | 只读输出 `catalog_count` / `executable_slice_count`；不更新规则生命周期、生产 registry 或权重 |
 | [`rule_status_scan.py`](rule_status_scan.py:1) | 扫描 theory/*/index.yaml 的规则状态分布、N_eff、review 清单 | 易漂移规则状态的机器真相源 |
+| [`career_event_replay_harness.py`](career_event_replay_harness.py:1) | 事业角色变化 legacy/shared development replay 比较 | 严格拆分 `predict-freeze / reveal-score / compare` 三阶段：预测进程只读 chart-only blind cohort，冻结校验通过后才由独立阶段读取 labels；输出固定 `development_replay_only`、promotion false，不用于 Calibration、正式准确率或生产晋级 |
+| [`career_path_competition_harness.py`](career_path_competition_harness.py:1) | 预注册职业路径三模型竞争实验 | 严格 prepare/predict/freeze/reveal/score；绑定 cohort、预注册、代码/规则和预测哈希；一个预注册 ID 只允许评分一次；当前无新 holdout 时只返回 not_ready，不切生产入口 |
+| [`career_path_product_routing.py`](career_path_product_routing.py:1) | 冻结竞争 score receipt 的只读产品分流控制 | `status / report`；验证预注册、cohort、prediction、labels、freeze、model disposition、score receipt 与一次评分唯一性，失败关闭输出 blocked/shadow/structural-assistant/rejected；旧 invalidated v1 永不晋级，缺少预注册结构阈值时 not_evaluable，所有状态 production false；不评分、不创建 receipt、不切生产 |
+| [`career_relation_expert_annotation.py`](career_relation_expert_annotation.py:1) | 职业关系模型中间结构盲标、双审裁决与一致率门禁 | `status / prepare-blind / submit`；仅允许安全命盘事实与冻结理论引用，默认 dry-run、显式 `--write` 才 create-only 落盘，拒绝泄漏、symlink、覆盖、agent 冒充专家与重复 reviewer；无真实双审时返回 `not_ready`，只服务结构机制审计和新 model_id 设计，不评分、不解禁 invalidated model-v1、不切生产 |
+| [`career_path_prospective_cohort.py`](career_path_prospective_cohort.py:1) | 真正未见职业路径 cohort 的 prospective intake、隔离、双审裁决、时序标签与受控准入 | `status / intake / build-manifest / submit-review` 及 Python finalize/registry API；盲态白名单、源内容 SHA-256、case_id + 性别四柱身份去重、旧开发集排他，默认 dry-run/create-only/拒绝 symlink；mixed/unknown 保留但不计严格二分类分母；当前无真实样本固定 `not_ready`、0 案、production false，不预测、不评分 |
+| [`career_path_holdout_gate.py`](career_path_holdout_gate.py:1) | 职业路径真正未见 holdout 数据准入门禁 | 只读核验预注册、旧开发集排他、至少 30 个严格二分类及每类至少 10、真实 `human-*` 双审/第三方裁决、labels SHA-256；mixed/unknown 保留但不计严格二分类分母；当前返回 `not_ready`，不预测、不评分、不切生产 |
+| [`career_path_promotion_gate.py`](career_path_promotion_gate.py:1) | 冻结职业路径分类器的持续 promotion 门禁 | 只读重算 holdout 指标并校验预测哈希与一次冻结；显式接受旧标签或正式时序标签 schema，未知 schema 失败关闭；任一阈值失败即返回非零退出码，不写生产规则、权重或路由 |
 | [`l1_routing_holdout_audit.py`](l1_routing_holdout_audit.py:1) | L1 learned/static 无泄漏留出集竞争覆盖与效用审计 | 只读冻结历史 batch/score；按命主分组切分、重算 cfv-v1 原型，只有同案同任务至少两派可评分才允许对照；learned 必须改变至少一个选择且效用不退化才可 GO |
 | [`rebuild_l1_routing_evidence.py`](rebuild_l1_routing_evidence.py:1) | 重建 L1 路由盲测证据 | 从隔离命盘汇总重新冻结当前 runner 输出，揭示既有人工标签并评分；写 batch/scores/manifest，不写生产权重 |
 | [`conditional_learning.py`](conditional_learning.py:1) | L9 条件化学习离线治理 CLI | `decide` / `apply` / `rollback`；六维能力身份按 N_eff 分级，高风险与成熟更新须显式审批，所有写流程支持 `--dry-run`；只写独立内容寻址能力快照，不写静态权重、生产规则或历史 run snapshot |
 | [`event_archive.py`](event_archive.py:1) | 交互事件增量归档：把一次询问、分析、结果追加到报告侧 events 或 META 专项记录 | 处理后归档入口；case 可定位时写 `reports/*-events.md`，否则写 `META/session-events.md` |
+| [`archive_verified_artifact.py`](archive_verified_artifact.py:1) | 单用途 verified artifact 归档 CLI | 通用归档入口；接受 `SOURCE --archive-root ARCHIVE_ROOT`，委托 `engine.archive.archive_verified_artifact()`，不专属 as-of |
 
 ---
 
@@ -84,6 +101,27 @@
 | [`feedback_v2_preprocess.py`](feedback_v2_preprocess.py:1) | v2 反馈预处理 | 历史反馈治理辅助 |
 | [`chart_validation_calibrate.py`](chart_validation_calibrate.py:1) | 使用现有案例强制重算排盘并校准验证模块 | 内部只读审计；关闭问真可信来源旁路，输出 JSON/Markdown 校准记录 |
 | [`v6_preprod_coverage_audit.py`](v6_preprod_coverage_audit.py:1) | v6 preprod 报告覆盖审计 | 只读审计报告与配套 artifact，用于切默认入口前的证据积累 |
+| [`_generate_p_series_career_summary.py`](_generate_p_series_career_summary.py:1) | 生成 P 系列职业标签阶段摘要 | 内部一次性汇总脚本；不作为生产入口 |
+| [`_verify_p_series_career_labels.py`](_verify_p_series_career_labels.py:1) | 校验 P 系列职业标签制品 | 内部历史实验审计；不作为生产入口 |
+| [`as_of_admission_age_gate.py`](as_of_admission_age_gate.py:1) | as-of admission 年龄与截止日预筛 | as-of 内部证据门禁；不切换生产入口 |
+| [`as_of_prospective.py`](as_of_prospective.py:1) | as-of 前瞻冻结、反馈释放与核验制品 CLI | 内部前瞻证据链入口；仅创建新制品，不切换生产入口 |
+| [`as_of_blind_judgment_probe.py`](as_of_blind_judgment_probe.py:1) | as-of 盲态结构判断探针 | 历史/手动 side path，只用于方法验证 |
+| [`as_of_candidate_prioritizer.py`](as_of_candidate_prioritizer.py:1) | as-of 候选优先级排序 | 内部候选治理工具 |
+| [`as_of_contract_gate.py`](as_of_contract_gate.py:1) | as-of 输入契约预检查 | 内部失败关闭门禁 |
+| [`as_of_current_state_scanner.py`](as_of_current_state_scanner.py:1) | as-of 当前状态候选扫描 | 内部只读扫描 |
+| [`as_of_freeze_preflight.py`](as_of_freeze_preflight.py:1) | as-of 冻结前完整性检查 | 内部冻结证据门禁 |
+| [`as_of_freeze_scaffold.py`](as_of_freeze_scaffold.py:1) | as-of 冻结制品脚手架 | 内部制品生成辅助 |
+| [`as_of_methodology_diff.py`](as_of_methodology_diff.py:1) | as-of 方法论差异审计 | 内部只读审计 |
+| [`as_of_raw_feedback_paipan.py`](as_of_raw_feedback_paipan.py:1) | 原始反馈排盘转 as-of 候选 | 历史数据准备辅助 |
+| [`as_of_root_level_gate.py`](as_of_root_level_gate.py:1) | as-of 根层双证据正式校验 | 内部失败关闭门禁 |
+| [`as_of_running_stats.py`](as_of_running_stats.py:1) | as-of 运行统计聚合 | 内部只读统计 |
+| [`as_of_theory_lookup.py`](as_of_theory_lookup.py:1) | as-of 理论结构化检索 | 内部理论证据检索 |
+| [`as_of_verdict_stats.py`](as_of_verdict_stats.py:1) | as-of 盲态裁决统计 | 内部只读统计 |
+| [`audit_lunar_python_c2026.py`](audit_lunar_python_c2026.py:1) | C-2026 lunar-python 排盘审计 | 专项历史审计 |
+| [`batch_occupation_accuracy.py`](batch_occupation_accuracy.py:1) | 职业四分类批量准确率评估 | 历史实验工具；结果不作为生产资格证据 |
+| [`p_series_career_blind_harness.py`](p_series_career_blind_harness.py:1) | P 系列任职/经营标签隔离回放 | 历史开发回放，不得冒充 unseen holdout |
+| [`p_series_career_classifier_v2_harness.py`](p_series_career_classifier_v2_harness.py:1) | 职业路径 v2 标签隔离 harness | 已否决历史实验；不切生产 |
+| [`p_series_career_classifier_v3_harness.py`](p_series_career_classifier_v3_harness.py:1) | 职业路径 v3 标签隔离 harness | 已否决历史实验；不切生产 |
 
 ---
 
@@ -97,6 +135,9 @@
 
 | 工具 | 用途 | 说明 |
 |---|---|---|
+| [`as_of_integration.py`](as_of_integration.py:1) | G8 as-of 统一报告薄编排 | 运营者手动调用的旁路证明入口；仅在显式截止日与受控事件账本下追加状态快照，未接入默认 runner、生产服务或 HTTP API |
+| [`as_of_session_cli.py`](as_of_session_cli.py:1) | 历史/手动 as-of 事业会话旁路 | 手动 opt-in 的旁路证明入口；公开 `run_and_archive_session()` 与 CLI `main()`，不切换任何生产默认入口 |
+| [`production_as_of_cli.py`](production_as_of_cli.py:1) | G9-P1 as-of 生产目录约定 CLI 别名 | 仅把默认目录对齐当前工作目录下的 `cases/` / `reports/` 并委托 G8 薄层；仍是手动旁路，不代表默认生产入口已切换 |
 | [`case_feedback_intake.py`](case_feedback_intake.py:1) | 真实案例反馈语料抽取：原文归档、候选拆分、质量分级、JSONL 输出 | 真实反馈语料迁移 / 抽取辅助；支持 `--dry-run`，非日常反馈入口 |
 | [`case_feedback_promote.py`](case_feedback_promote.py:1) | A/B 级真实反馈样本转 case draft | 只生成 `cases/raw_feedback/case_drafts/RF-.../` 待补排盘草稿；不写正式 `cases-index.md` |
 | [`case_feedback_repan_index.py`](case_feedback_repan_index.py:1) | 问真排盘补录索引生成器 | 汇总 `case_drafts/RF-.../input.md` 的出生信息与排盘粘贴占位区；支持 `--dry-run` |
@@ -148,10 +189,19 @@ python tools/tool_registry.py --format markdown
 python tools/tool_registry.py --check
 python tools/rule_status_scan.py --format markdown
 python tools/rule_status_scan.py --check
+python tools/parallel_domain_weight_status_scan.py --format markdown
+python tools/parallel_domain_weight_status_scan.py --check
+python tools/domain_capability_status.py reports/domain-analysis --format markdown
+python tools/domain_capability_status.py reports/domain-analysis --check
+python -m tools.domain_feedback status --store META/domain-feedback --snapshot reports/domain-analysis/example.run.json
+python -m tools.domain_feedback candidates --store META/domain-feedback --snapshot reports/domain-analysis/example.run.json
 ```
 
 - 工具索引漂移检查以 [`tool_registry.py`](tool_registry.py:1) 为准。
 - 规则状态、N_eff、flagged/deprecated 清单以 [`rule_status_scan.py`](rule_status_scan.py:1) 为准；文档只引用扫描结果，不复制长期数字。
+- 多专家功能域反馈的跨案例 N_eff、overlay 对账与 pending promotion review 清单以 [`parallel_domain_weight_status_scan.py`](parallel_domain_weight_status_scan.py:1) 为准；这些易漂移结果不得复制到稳定文档。
+- 六源三领域的十八槽位 registration/runtime、命题质量与弃权原因以 [`domain_capability_status.py`](domain_capability_status.py:1) 运行时输出为准；不得把扫描数字复制到稳定文档。
+- 命题反馈先用 [`domain_feedback.py`](domain_feedback.py:1) 的 `prepare` 生成绑定草稿，再人工填写并用 `ingest` create-only 摄入；`candidates` 仅输出只读人工校准候选，不是 [`conditional_learning.py`](conditional_learning.py:1) 的 apply/promotion 授权。
 
 ---
 
@@ -201,7 +251,7 @@ python -m tools.school_capability_cohort report --immediate-gate <即时门禁�
 - manifest 记录内容 SHA-256；bundle hash 只由白名单文件的相对路径和内容 hash 决定，因此不受时间、源目录或目标目录影响。
 - 源文件及其路径链、目标路径链均拒绝 symlink；目标目录或输出文件必须不存在。所有写命令先执行 `--dry-run`；dry-run 只打印计划或制品 JSON，不创建输出。真实数据未到时状态仍为 HOLD，不创建空 intake、空盲包、空 frozen run 或空 witness registry。
 
-### Witness HMAC 可选审计边界
+### 受信独立见证边界（Witness HMAC 可选审计）
 
 - witness HMAC 不参与最小反馈门槛；仅在选择增强审计时，由独立 key holder 保管密钥并签署事件。
 - 本地完整性模型用于发现未持有 witness key 的本地篡改；**密钥泄漏**或**恶意见证**不在本地完整性模型覆盖范围内。

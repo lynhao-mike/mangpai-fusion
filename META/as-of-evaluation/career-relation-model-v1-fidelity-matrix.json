@@ -1,0 +1,134 @@
+{
+  "schema_version": "career-relation-fidelity-matrix/v1",
+  "model_id": "career-path-relation-model-v1",
+  "allowed_statuses": ["faithful", "approximation", "unsupported", "unresolved"],
+  "evidence_boundary": {
+    "development_replay": "P-series 40 cases are contaminated and may be used only for development replay",
+    "new_unseen_holdout_count": 0,
+    "formal_competition_scoring_run": false,
+    "production_changed": false
+  },
+  "rules": [
+    {
+      "rule_id": "CR-LOCATOR-STEP-1",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:233-238",
+      "theory_semantics": "我宫（日时）有官杀时，该柱为职业柱并结束后续搜索。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:41-51,105-115",
+      "implementation_location": "engine/asof/career_relation_graph.py:_find_step1_step2_candidates; engine/asof/career_relation_contract.py:infer_career_pillar",
+      "status": "faithful",
+      "validated_theory": true,
+      "risk": "多个同级候选必须冲突弃权，不能任意选取。",
+      "disposition": "retain"
+    },
+    {
+      "rule_id": "CR-LOCATOR-STEP-2",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:240-242",
+      "theory_semantics": "我宫无官杀时，以我宫官杀库所在柱为职业柱。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:45-49,136-141",
+      "implementation_location": "engine/asof/career_relation_graph.py:70-96,515-520",
+      "status": "unresolved",
+      "validated_theory": false,
+      "risk": "仓库无经验证的通用入库谓词；伪造候选会造成错误定位。",
+      "disposition": "retain explicit unresolved; do not emit enters_tomb or candidate"
+    },
+    {
+      "rule_id": "CR-LOCATOR-STEP-3",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:244-246",
+      "theory_semantics": "他宫官杀只有与时柱存在合、藏透、冲、刑等感应时才可成为职业柱。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:47,82,109-114",
+      "implementation_location": "engine/asof/career_relation_graph.py:_find_step3_candidates; engine/asof/career_relation_contract.py:_eligibility_rejection",
+      "status": "faithful",
+      "validated_theory": true,
+      "risk": "实现支持的确定性关系集合比理论语境保守，可能多弃权但不应补猜。",
+      "disposition": "retain conservative implementation"
+    },
+    {
+      "rule_id": "CR-LOCATOR-STEP-4",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:248-250",
+      "theory_semantics": "前三步皆无时看财星或财库，先我宫后他宫。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:48,51,140",
+      "implementation_location": "engine/asof/career_relation_graph.py:_find_step4_candidates",
+      "status": "approximation",
+      "validated_theory": false,
+      "risk": "财星顺序已实现，但财库依赖未解决的入库谓词，规则覆盖不完整。",
+      "disposition": "retain with explicit tomb gap; do not claim full step-4 validation"
+    },
+    {
+      "rule_id": "CR-LOCATOR-STEP-5",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:252-253",
+      "theory_semantics": "前四步皆无时，以必须关联我宫的成格星锁定职业柱。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:49,83,111",
+      "implementation_location": "engine/asof/career_relation_graph.py:70-96,523-528",
+      "status": "unresolved",
+      "validated_theory": false,
+      "risk": "成格星缺少契约级定义和确定性谓词。",
+      "disposition": "retain explicit unresolved; do not fabricate formation-star candidates"
+    },
+    {
+      "rule_id": "CR-LEFT-NEIGHBOR",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:256-260",
+      "theory_semantics": "职业柱锁定后，按年月至日时排列取其紧邻左侧一柱。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:92-103",
+      "implementation_location": "engine/asof/career_relation_contract.py:left_neighbor; engine/asof/career_relation_graph.py:LeftPillarCharacterization",
+      "status": "faithful",
+      "validated_theory": true,
+      "risk": "年柱没有左邻，必须显式为空而非补猜。",
+      "disposition": "retain"
+    },
+    {
+      "rule_id": "CR-LEFT-SIX-NATURES",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:262-273",
+      "theory_semantics": "左柱分正财、偏财、印、食伤、官杀、比劫六类描述职业性质；职业柱定类型，左柱定性质。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:15-21; engine/contracts/16-career-path-state-machine-v2.md:28-44",
+      "implementation_location": "engine/asof/career_relation_graph.py:LeftPillarCharacterization; engine/asof/career_relation_reasoner.py:24-27,66-138",
+      "status": "approximation",
+      "validated_theory": false,
+      "risk": "图仅保留十神特征是安全的，但 reasoner 未表达六类性质并将其中两种组合压缩为终态标签。",
+      "disposition": "retain graph characterization; redesign terminal semantics under a new model_id"
+    },
+    {
+      "rule_id": "CR-NATAL-EMPLOYMENT-CHAIN",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:264-273,314-323,352-382",
+      "theory_semantics": "理论没有建立‘职业柱官杀且左柱印’等价于任职终态；印仅指文化、教育、单位性质，且职业结论须经画像、力量、时代及五关注交叉验证。",
+      "contract_location": "engine/contracts/16-career-path-state-machine-v2.md:34-44",
+      "implementation_location": "engine/asof/career_relation_reasoner.py:24-27,66-138",
+      "status": "unsupported",
+      "validated_theory": false,
+      "risk": "把工作类型和职业性质错误压缩为 employment，产生不可辩护的二分类标签。",
+      "disposition": "invalidate model-v1 formal scoring; replacement requires new model_id and preregistration"
+    },
+    {
+      "rule_id": "CR-NATAL-ENTREPRENEURSHIP-CHAIN",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:264-280,296-310,352-382",
+      "theory_semantics": "理论没有建立‘职业柱财且左柱食伤’等价于经营终态；食伤描述技术、口才、创造，商业方向还依赖组合关系和求财方式等证据。",
+      "contract_location": "engine/contracts/16-career-path-state-machine-v2.md:34-44",
+      "implementation_location": "engine/asof/career_relation_reasoner.py:24-27,66-138",
+      "status": "unsupported",
+      "validated_theory": false,
+      "risk": "把技术性工作误判为创业，并遗漏正财稳定工资、偏财副业等左柱原义。",
+      "disposition": "invalidate model-v1 formal scoring; replacement requires new model_id and preregistration"
+    },
+    {
+      "rule_id": "CR-UNRESOLVED-NOT-VALIDATED",
+      "theory_source": "theory/raw/gao/promoted/appendix-zhiye.md:314-323,367-382",
+      "theory_semantics": "自检或验证维度未通过时必须降档或撤回，不能把缺失谓词当成已验证规则。",
+      "contract_location": "engine/contracts/15-career-relation-inference-v1.md:132-141; engine/contracts/16-career-path-state-machine-v2.md:17-26",
+      "implementation_location": "engine/asof/career_relation_graph.py:70-96,129-134; engine/asof/career_relation_reasoner.py:37-39",
+      "status": "faithful",
+      "validated_theory": true,
+      "risk": "下游若忽略 unresolved_refs，仍可能越界形成终态。",
+      "disposition": "retain explicit unresolved and enforce formal scoring invalidation for model-v1"
+    },
+    {
+      "rule_id": "CR-REALITY-SEPARATION",
+      "theory_source": "engine architecture boundary; not asserted as a Gao terminal rule",
+      "theory_semantics": "原局和大运信号不得覆盖已核验现实职业状态。",
+      "contract_location": "engine/contracts/16-career-path-state-machine-v2.md:17-26,92-114",
+      "implementation_location": "engine/asof/career_relation_reasoner.py:adapt_reality_career_status",
+      "status": "faithful",
+      "validated_theory": false,
+      "risk": "这是系统证据隔离不变量，不应伪称高派理论验证。",
+      "disposition": "retain staged-only; production switch remains forbidden"
+    }
+  ]
+}

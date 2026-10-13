@@ -1,0 +1,128 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000193-乾-庚辰乙酉丁亥丙午",
+  "status": "ADJUDICATED_AFTER_FEEDBACK",
+  "adjudicated_at": "2026-07-31T00:15:00+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000193-乾-庚辰乙酉丁亥丙午/asof-blind-freeze.json",
+    "sha256": "ecae9f55463c39152539dc90fc5f5081d6cb6437cdbf093e2bc9853a6d5c9561",
+    "sha256_verified_before_feedback_adjudication": true,
+    "frozen_center_statement": "职业更可能落在组织化专业岗位，以知识资质承接规则压力，并兼顾资源或业务结果",
+    "frozen_root_level": "STRONG_ROOT",
+    "frozen_e1": "2012年学习、责任或环境节奏出现一次可核验的边界调整。"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000193-乾-庚辰乙酉丁亥丙午/feedback.md",
+    "feedback_opened_after_freeze_sha_verified": true,
+    "freeze_modified_after_feedback": false,
+    "other_case_feedback_used": false
+  },
+  "feedback_evidence": [
+    {
+      "line": 10,
+      "year": 2008,
+      "fact": "疝气微创手术",
+      "domains": [
+        "health"
+      ]
+    },
+    {
+      "line": 11,
+      "year": 2018,
+      "fact": "考上普本并恋爱",
+      "domains": [
+        "marriage"
+      ]
+    },
+    {
+      "line": 12,
+      "year": 2020,
+      "fact": "遭电信诈骗，破财官司",
+      "domains": [
+        "income"
+      ]
+    },
+    {
+      "line": 13,
+      "year": 2024,
+      "fact": "订婚；医疗器械类工作，工作不稳定且年初被裁员",
+      "domains": [
+        "occupation",
+        "family"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "scoring_unit": "career_basic_state",
+    "verdict": "ABSTAIN",
+    "reason": "医疗器械类工作只提供行业标签，未直接描述知识资质、规则责任、组织岗位机制或资源业务结果；工作不稳定和裁员反而限制现实完成度，不能仅凭行业名称判中心命中。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "alternative_index": 1,
+      "verdict": "ABSTAIN",
+      "reason": "没有专业支持、技术执行或职权层级的职责级事实。"
+    },
+    {
+      "claim_id": "A2",
+      "alternative_index": 2,
+      "verdict": "ABSTAIN",
+      "reason": "工作不稳定和裁员支持组织位置不稳定，但项目/业务导向及收入机会未被直接描述，故完整备选仍不可评价。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_event_precision",
+      "window": "2012-01-01/2012-12-31",
+      "frozen_center_event": "2012年学习、责任或环境节奏出现一次可核验的边界调整。",
+      "verdict": "ABSTAIN",
+      "enters_denominator": false,
+      "reason": "反馈记录2008、2018、2020、2024，没有2012年事实；2008手术属于已在冻结中拒绝的preflight年份，不能挪作2012 E1命中或反证。"
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "shortcut_flag_at_freeze": false,
+    "policy": "root_level是冻结前结构判断；反馈只检验现实兑现，不回写或抬升根源等级。"
+  },
+  "theory_layer_adjudication": {
+    "lookup_changed_blind_judgment": false,
+    "verdict": "NOT_INDEPENDENTLY_TESTABLE_FROM_FEEDBACK",
+    "reason": "反馈可核验现实职业与事件，但不能单独证明所采纳理论规则的结构因果；理论层不计入E1得分。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "verdict": "ABSTAIN",
+      "evaluable": 0
+    },
+    "dated_event_precision": {
+      "verdict": "ABSTAIN",
+      "evaluable": 0,
+      "enters_denominator": false
+    },
+    "alternatives": [
+      "ABSTAIN",
+      "ABSTAIN"
+    ]
+  },
+  "overall_conclusion": {
+    "career_basic_state": "ABSTAIN",
+    "e1_result": "ABSTAIN",
+    "e1_enters_denominator": false,
+    "summary": "行业标签与裁员不足以核验冻结的职业机制；E1无2012窗口内反馈，ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_scored_atomic_verdicts_formal": true
+  }
+}

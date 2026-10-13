@@ -1,0 +1,99 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000421-坤-甲申丙寅己巳己巳",
+  "adjudicated_at": "2026-07-30T14:04:00+08:00",
+  "feedback_source": "cases/C-2026-RF000421-坤-甲申丙寅己巳己巳/feedback.md",
+  "freeze_source": "cases/C-2026-RF000421-坤-甲申丙寅己巳己巳/asof-blind-freeze.json",
+  "freeze_sha256_expected": "313229931df87a6426087eaaefd44289983c1509f08b2f806dd0be3bcb6ebc7f",
+  "freeze_sha256_observed_before_verdict": "313229931df87a6426087eaaefd44289983c1509f08b2f806dd0be3bcb6ebc7f",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2022,
+      "domain": "education",
+      "fact": "高考结果满意，进入211高校"
+    },
+    {
+      "year": 2023,
+      "domain": "education",
+      "fact": "学生工作表现较好，受同学欢迎，成绩尚可"
+    },
+    {
+      "year": 2024,
+      "domain": "education_and_responsibility",
+      "fact": "成绩很好，获老师提拔并晋升为小委员；职业状态仍为学生"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "NOT_ACTIVATED",
+    "verdict": "MISS",
+    "reason": "反馈截至2024明确为在读学生，未证明截止日已进入初入职场的执行岗位；教育阶段受规则约束虽相符，但不能替代冻结中心要求的现实职业位置。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "NOT_EVALUABLE",
+      "verdict": "ABSTAIN",
+      "reason": "反馈确认在读，未提供待业、转型或稳定职业位置形成情况，不能后验归入兑现不稳备选。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_education_to_career_direction_change",
+      "window": "2022-01-01/2022-12-31",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": "2022年高考结果满意，进入211高校。",
+      "reason": "冻结窗口内发生达到正式履历节点的升学变化，直接满足教育方向调整的中心事件；后续成绩和学生职务不作为额外预测所得。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 1,
+      "abstains": 1,
+      "summary": "职业中心未获反馈支持；兑现不稳备选信息不足。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "本冻结包未设置独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "E1由2022年高考并进入211高校直接命中。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "MISS",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "CENTER_HIT",
+    "summary": "2022升学节点命中，但截止职业中心缺少已入职证据，事件命中不吸收现实状态误差。"
+  },
+  "diagnostic_note": {
+    "failure_class": "CURRENT_STATE_COMPLETION_OVERCLAIM",
+    "minimum_correction": "年轻在读样本应把在读状态与初入职场状态严格拆分；官印承载不能直接推出已形成职业位置。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

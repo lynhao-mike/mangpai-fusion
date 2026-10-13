@@ -1,0 +1,271 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000308-坤-辛巳辛丑己卯乙亥",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:08:59+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000308-坤-辛巳辛丑己卯乙亥/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以专业输出处理组织压力并承担明确岗位职责",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "专业能力存在但岗位兑现不稳，职责阶段性调整"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "规则压力较强，工作以执行和适应为主"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业领域定位在年干、月干辛食神与时干乙七杀；双透食神对接透干七杀，存在专业输出—压力处理—岗位职责的显性承载路径，据此定为STRONG_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000308-坤-辛巳辛丑己卯乙亥",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "年干、月干辛食神与时干乙七杀",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "年干、月干辛食神与时干乙七杀"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "年干、月干辛食神与时干乙七杀"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "双透食神对接透干七杀，存在专业输出—压力处理—岗位职责的显性承载路径"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以专业输出处理组织压力并承担明确岗位职责",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "年干、月干辛食神与时干乙七杀"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "双透食神对接透干七杀，存在专业输出—压力处理—岗位职责的显性承载路径"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "年干、月干辛食神与时干乙七杀"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "双透食神对接透干七杀，存在专业输出—压力处理—岗位职责的显性承载路径"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\gao\\index.yaml",
+        "line": 1,
+        "excerpt": "公务员命理七格局 ①官印相生 ②杀印相生 ③食神制杀 ④阳刃驾杀 ⑤伤官佩印 ⑥特殊格局(从财/从杀/独象) ⑦调候得用"
+      }
+    ],
+    "competing_explanations": [
+      "专业能力存在但岗位兑现不稳，职责阶段性调整",
+      "规则压力较强，工作以执行和适应为主"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2025-01-01/2025-12-31",
+      "center_event": "2025年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "root_level": "STRONG_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "annual_trace": {
+        "year": 2025,
+        "liunian": "乙巳",
+        "dayun_ganzhi": "癸卯",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].relations[0]",
+            "excerpt": "流年支冲时支亥"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.hour.branch"
+        ],
+        "domains": [
+          "事业",
+          "健康"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].main_energy",
+            "excerpt": "工作变动 / 压力"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2025].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2025,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "gao",
+      "rule_id": "G-CS-031",
+      "citation": "[gao:G-CS-031] 公务员命理七格局 ①官印相生 ②杀印相生 ③食神制杀 ④阳刃驾杀 ⑤伤官佩印 ⑥特殊格局(从财/从杀/独象) ⑦调候得用 (来源: theory\\gao\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[gao:G-CS-031] 公务员命理七格局 ①官印相生 ②杀印相生 ③食神制杀 ④阳刃驾杀 ⑤伤官佩印 ⑥特殊格局(从财/从杀/独象) ⑦调候得用 (来源: theory\\gao\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "食神",
+          "制杀"
+        ],
+        "hit_count": 21,
+        "citations_reviewed": [
+          "[gao:G-CS-031] 公务员命理七格局 ①官印相生 ②杀印相生 ③食神制杀 ④阳刃驾杀 ⑤伤官佩印 ⑥特殊格局(从财/从杀/独象) ⑦调候得用 (来源: theory\\gao\\index.yaml)",
+          "[gao:G-CS-038] 公检法命理六格局 ①阳刃驾杀 ②食神制杀 ③伤官佩印 ④伤官驾杀 ⑤地支带刑穿害 ⑥阳制阴；庚辛申酉=白虎武性/丑戌亥辰巳=牢狱象/魁罡+金神+阳刃+勾绞煞 (来源: theory\\gao\\index.yaml)",
+          "[duan:M1-D-029] 偏官格 · 食神制杀格 (来源: theory\\duan\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "食神",
+          "事业"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

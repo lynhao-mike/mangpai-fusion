@@ -1,0 +1,338 @@
+{
+  "schema_version": "career-path-challenge-set/v1",
+  "created_from": [
+    "reports/p-series-career-path-blind-harness.md",
+    "cases/p-series-career-path-labels.jsonl",
+    "cases/fankui-feedback.md"
+  ],
+  "leakage_policy": {
+    "pillars_read_for_annotation": false,
+    "forbidden_source": "cases/shuru-input.md",
+    "natal_inclination_semantics": "由反馈事件轨迹反推的职业先验假设，仅用于提出待盲盘检验的结构机制，不声称已由四柱证实。"
+  },
+  "selection": {
+    "entrepreneurship_correct": [
+      "P-2026-001",
+      "P-2026-035",
+      "P-2026-037"
+    ],
+    "employment_predicted_entrepreneurship": [
+      "P-2026-041",
+      "P-2026-058",
+      "P-2026-073"
+    ],
+    "employment_abstained": [
+      "P-2026-004",
+      "P-2026-055"
+    ],
+    "mixed_transition": [
+      "P-2026-047",
+      "P-2026-051"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "P-2026-001",
+      "challenge_type": "entrepreneurship_correct",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "entrepreneurship"
+        ],
+        "hypothesis": "事件轨迹呈现主动外出、经营获利、受损后再起，支持自主经营先验；须由盲盘中的食伤生财与比劫协同结构另行检验。"
+      },
+      "dayun_realization": {
+        "period": "丙寅→丁卯",
+        "effect": "丙寅运于1997年兑现外出经商致富，2000年前后钱财被卷走形成经营受阻；丁卯运于2002年重新得财起家。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:27",
+          "cases/fankui-feedback.md:29",
+          "cases/fankui-feedback.md:30"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "entrepreneurial",
+        "summary": "已发生经商致富、损财和重新起家，经营身份有重复事件确认。"
+      },
+      "adapter_error": {
+        "is_error": false,
+        "effective_signal": "自主获利路径具有跨年份重复兑现，且损失后仍以经营方式重启；高经营分差在本案对应真实经营。",
+        "missing_dimension": null
+      }
+    },
+    {
+      "case_id": "P-2026-035",
+      "challenge_type": "entrepreneurship_correct",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "entrepreneurship"
+        ],
+        "hypothesis": "经商有所发展而事业多波折、财来财去，支持自主经营但稳定性弱的先验；须由盲盘检验食伤生财是否成链及制化是否完整。"
+      },
+      "dayun_realization": {
+        "period": "丁亥",
+        "effect": "截至2009年经营已有发展，但同时呈现事业波折、财来财去与理财弱；该运兑现经营路径而未兑现稳定积累。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:836",
+          "cases/fankui-feedback.md:841",
+          "cases/fankui-feedback.md:846"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "entrepreneurial",
+        "summary": "现实为经商有所发展，但收益留存和事业稳定性不足。"
+      },
+      "adapter_error": {
+        "is_error": false,
+        "effective_signal": "经营信号与现实路径一致；同时说明路径分类不能替代经营质量判断。",
+        "missing_dimension": "制化与经营质量应独立评分"
+      }
+    },
+    {
+      "case_id": "P-2026-037",
+      "challenge_type": "entrepreneurship_correct",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "entrepreneurship",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "entrepreneurship",
+          "employment_disrupted"
+        ],
+        "hypothesis": "现实同时出现无证经营与被迫辞职，支持自主经营倾向和组织路径受阻并存；须由盲盘检验食伤财链、比劫协作及官杀约束是否失衡。"
+      },
+      "dayun_realization": {
+        "period": "乙巳",
+        "effect": "截至2009年兑现地下活动、无证经营，同时事业多挫折且易被迫辞职；该运开放经营行为但未提供合规和组织稳定性。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:899",
+          "cases/fankui-feedback.md:905",
+          "cases/fankui-feedback.md:906"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "entrepreneurial",
+        "summary": "从商事实明确，但属于地下或无证经营，并伴随任职稳定性差。"
+      },
+      "adapter_error": {
+        "is_error": false,
+        "effective_signal": "经营分数优势对应真实自主交易行为；有效信号是做功落到交易，而非仅有财星数量。",
+        "missing_dimension": "合规性与组织路径受阻应作为附加状态"
+      }
+    },
+    {
+      "case_id": "P-2026-041",
+      "challenge_type": "employment_predicted_entrepreneurship",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "employment",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment"
+        ],
+        "hypothesis": "副处级、公路系统和党纪处分构成强组织位置链，支持官杀印绶式组织路径先验；须由盲盘检验官印链及其受制情况。"
+      },
+      "dayun_realization": {
+        "period": "丁未",
+        "effect": "2015年在既有副处级组织位置上被双规；大运表现为组织内约束和处分，而不是经营路径兑现。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1036",
+          "cases/fankui-feedback.md:1042"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "employed",
+        "summary": "公路系统副处级官员，反馈时遭党纪调查；受处分不等于转为经营。"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "把活跃财路或自主做功分数直接解释为所有权路径，未先判断现实位置是否被官印组织链锁定，也未把官杀大运的纪律约束作为经营否决信号。",
+        "missing_dimension": "位置+大运制约"
+      }
+    },
+    {
+      "case_id": "P-2026-058",
+      "challenge_type": "employment_predicted_entrepreneurship",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "employment",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment"
+        ],
+        "hypothesis": "长期在多个公办单位、跨教师和财务岗位，支持组织容器稳定而职能可变的任职先验；须由盲盘检验官印组织链是否持续成立。"
+      },
+      "dayun_realization": {
+        "period": null,
+        "effect": "反馈未给出可归属的大运；约37岁后事业财运下滑十余年，2013年后家庭财运转好，但均无自主经营事件。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1457",
+          "cases/fankui-feedback.md:1458",
+          "cases/fankui-feedback.md:1459"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "employed",
+        "summary": "半生在公办单位任职，做过教师和财务；换单位、做财务和家庭财运改善均不等于经营。"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "混淆岗位职能、单位迁移和财富事件与企业所有权；没有识别公办单位这一组织位置，也没有要求经营必须存在自主承担盈亏的做功闭环。",
+        "missing_dimension": "位置+标签定义+做功"
+      }
+    },
+    {
+      "case_id": "P-2026-073",
+      "challenge_type": "employment_predicted_entrepreneurship",
+      "frozen_prediction": "entrepreneurship",
+      "truth": "employment",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment"
+        ],
+        "hypothesis": "计划内本科、毕业后任乡镇干部并升职形成选拔—入职—晋升链，支持官杀印绶式组织路径先验；须由盲盘独立检验。"
+      },
+      "dayun_realization": {
+        "period": null,
+        "effect": "反馈未提供大运字段；可确认求学后直接进入干部体系，并在2018年前获得升职，职业路径持续在组织内兑现。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1787",
+          "cases/fankui-feedback.md:1789"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "employed",
+        "summary": "乡镇干部且已升职，属于明确组织任职路径。"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "经营分数虽高，但没有先执行官印组织链优先判别，也未要求自主经营证据必须由食伤生财并配合比劫做功形成。",
+        "missing_dimension": "位置+制化"
+      }
+    },
+    {
+      "case_id": "P-2026-004",
+      "challenge_type": "employment_abstained",
+      "frozen_prediction": "abstain",
+      "truth": "employment",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment"
+        ],
+        "hypothesis": "大学毕业后参加工作是单点任职证据，倾向组织路径但证据稀疏；原局先验应保持低置信并等待盲盘结构确认。"
+      },
+      "dayun_realization": {
+        "period": "甲辰",
+        "effect": "甲辰运完成求学并在毕业后参加工作、补办结婚证；职业信息只确认进入任职，未给出岗位发展。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:94"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "employed",
+        "summary": "已在大学毕业后参加工作，但单位、岗位及后续轨迹未知。"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "模型看到两类分数接近后合理弃权，但缺少教育完成后进入组织的阶段位置特征；本案适合作为低信息任职边界而非强迫分类样本。",
+        "missing_dimension": "位置+信息充分度"
+      }
+    },
+    {
+      "case_id": "P-2026-055",
+      "challenge_type": "employment_abstained",
+      "frozen_prediction": "abstain",
+      "truth": "employment",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment"
+        ],
+        "hypothesis": "31岁进入体制、39岁获小职务且明确否认开店，支持组织内路径先验；须由盲盘检验官印结构及辛卯运的制化。"
+      },
+      "dayun_realization": {
+        "period": "辛卯",
+        "effect": "辛卯运31岁进入体制，39岁获得小职务，任职路径持续兑现；明确无开店事实。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1383",
+          "cases/fankui-feedback.md:1384",
+          "cases/fankui-feedback.md:1386",
+          "cases/fankui-feedback.md:1387"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "employed",
+        "summary": "公职系统任职并取得小职务，且明确否认开店。"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "静态分差不足导致弃权，未利用大运把潜在组织倾向兑现为体制位置的机制；但在纯盲推条件下仍应在原局与大运相悖时保留弃权。",
+        "missing_dimension": "大运+位置"
+      }
+    },
+    {
+      "case_id": "P-2026-047",
+      "challenge_type": "mixed_transition",
+      "frozen_prediction": "abstain",
+      "truth": "mixed",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment",
+          "entrepreneurship"
+        ],
+        "hypothesis": "长期打工后转创业，支持双路径先验或运势触发的路径切换；须由盲盘检验官印与食伤财两链是否并存。"
+      },
+      "dayun_realization": {
+        "period": "丙午→乙巳",
+        "effect": "2012年丙午运由长期打工转为创业，2012至2013交入乙巳时创业仍劳心劳力、仅勉强维持，说明路径已切换但经营质量未成熟。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1183",
+          "cases/fankui-feedback.md:1189",
+          "cases/fankui-feedback.md:1190"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "mixed",
+        "summary": "历史为长期任职，反馈时已创业；mixed 表示有明确转换历史，不是脏标签。",
+        "transition_window": "2012"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "适配器把 mixed 分支一律压成 abstain，丢失路径转换这一有效状态；同时没有区分当前身份与历史路径。",
+        "missing_dimension": "标签定义+大运+现实位置"
+      }
+    },
+    {
+      "case_id": "P-2026-051",
+      "challenge_type": "mixed_transition",
+      "frozen_prediction": "abstain",
+      "truth": "mixed",
+      "feedback_derived_natal_paths": {
+        "supported": [
+          "employment",
+          "entrepreneurship"
+        ],
+        "hypothesis": "离职后合伙经营、继而持续跑业务并寻求转型，支持任职与经营路径并存且边界动态变化；须由盲盘检验两类结构及大运触发。"
+      },
+      "dayun_realization": {
+        "period": "庚寅",
+        "effect": "2006年庚寅运离职并合伙做手机生意，经营亏损；2007至2013持续跑业务，2012较好、2013转差并寻求转型，显示转换发生但经营路径反复受阻。",
+        "evidence_refs": [
+          "cases/fankui-feedback.md:1282",
+          "cases/fankui-feedback.md:1283",
+          "cases/fankui-feedback.md:1287",
+          "cases/fankui-feedback.md:1288"
+        ]
+      },
+      "reality_at_feedback": {
+        "status": "mixed",
+        "summary": "曾任职后离职合伙经营，随后业务身份边界不完全明确，反馈时处于寻求转型状态。",
+        "transition_window": "2006-2007"
+      },
+      "adapter_error": {
+        "is_error": true,
+        "why": "适配器将 mixed 强制转为 abstain，且未表达当前 transitioning 状态；也未将大运开放经营但盈利做功不成区分为路径成立、质量受阻。",
+        "missing_dimension": "标签定义+做功+大运"
+      }
+    }
+  ]
+}

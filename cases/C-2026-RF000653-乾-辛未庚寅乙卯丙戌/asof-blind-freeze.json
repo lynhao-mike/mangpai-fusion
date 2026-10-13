@@ -1,0 +1,299 @@
+{
+  "schema_version": "asof-prototype-v1",
+  "case_id": "C-2026-RF000653-乾-辛未庚寅乙卯丙戌",
+  "as_of_date": "2026-07-30",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "created_at": "2026-07-31",
+  "blindness_controls": {
+    "input_path": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+    "truncate_blind_section_called": true,
+    "boundary_line": null,
+    "boundary_type": null,
+    "empty_known_facts_fallback_verified": true,
+    "detect_table_embedded_annotation_called": true,
+    "embedded_annotation_lines": [],
+    "feedback_read_before_freeze": false,
+    "scaffold_source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+    "scaffold_mode": "EXISTING_READ"
+  },
+  "primary_landing_set": {
+    "center": {
+      "statement": "以组织职责和专业输出为中心的职业承担路径",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "statement": "能力存在但现实兑现不稳，可能仅表现为间断或项目化调整"
+      },
+      {
+        "statement": "年度结构触发可能落在家庭或健康而非职业中心"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业领域定位在年干辛七杀、年支未藏己偏财、年支未藏丁食神、月干庚正官；相关十神透出或潜藏并由原局节点承载，形成组织职责—专业输出—资源兑现路径，据此定为STRONG_ROOT，不以日主一般旺衰替代事业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000653-乾-辛未庚寅乙卯丙戌",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career-structure",
+        "function": "组织职责与专业输出承载",
+        "chart_evidence": [
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+            "locator": "年干",
+            "excerpt": "年干辛定位为七杀"
+          },
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+            "locator": "年支未藏",
+            "excerpt": "年支未藏己定位为偏财"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "年干",
+        "excerpt": "年干辛为七杀"
+      },
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "年支未藏",
+        "excerpt": "年支未藏己为偏财"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "月干",
+        "excerpt": "月干庚为正官"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career-path",
+        "function": "以官印/食伤/财星结构承接职业角色变化",
+        "node_ids": [
+          "career-structure"
+        ],
+        "evidence": [
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+            "locator": "年干",
+            "excerpt": "年干辛为七杀"
+          },
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+            "locator": "年支未藏",
+            "excerpt": "年支未藏己为偏财"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "原局边界",
+        "excerpt": "结构只表示可能承载，不保证现实兑现"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "年干",
+        "excerpt": "年干辛为七杀"
+      },
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "年支未藏",
+        "excerpt": "年支未藏己为偏财"
+      },
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "年支未藏",
+        "excerpt": "年支未藏丁为食神"
+      },
+      {
+        "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+        "locator": "月干",
+        "excerpt": "月干庚为正官"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\gao\\index.yaml",
+        "line": 1,
+        "excerpt": "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+      }
+    ],
+    "competing_explanations": [
+      "同一结构也可能只体现为学习、资格或项目性输出"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "职业或学业承担方式出现一次明确调整，职责与专业输出同步增强",
+      "window_start": "1995-01-01",
+      "window_end": "1995-12-31",
+      "natal_evidence": [
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+          "locator": "年干",
+          "excerpt": "年干辛为七杀"
+        },
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+          "locator": "年支未藏",
+          "excerpt": "年支未藏己为偏财"
+        }
+      ],
+      "daiyun_evidence": [
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+          "locator": "E1.trigger_basis",
+          "excerpt": "1995年流年乙亥，处于己丑大运；与原局形成2项干支关系，结构触发强度为高；关系摘要：流年干合月干庚化('金', '合绊')；流年支六合月支寅化木；领域提示：事业、家庭。本草稿关注领域：career。"
+        }
+      ],
+      "annual_trace": {
+        "year": 1995,
+        "liunian": "乙亥",
+        "dayun_ganzhi": "己丑",
+        "relations": [
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+            "locator": "E1.trigger_basis",
+            "excerpt": "1995年流年乙亥，处于己丑大运；与原局形成2项干支关系，结构触发强度为高；关系摘要：流年干合月干庚化('金', '合绊')；流年支六合月支寅化木；领域提示：事业、家庭。本草稿关注领域：career。"
+          }
+        ],
+        "activated_node_ids": [
+          "career-structure"
+        ],
+        "domains": [
+          "career"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+            "locator": "E1.trigger_basis",
+            "excerpt": "1995年流年乙亥，处于己丑大运；与原局形成2项干支关系，结构触发强度为高；关系摘要：流年干合月干庚化('金', '合绊')；流年支六合月支寅化木；领域提示：事业、家庭。本草稿关注领域：career。"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "root_level": "STRONG_ROOT",
+      "root_evidence": [
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+          "locator": "年干",
+          "excerpt": "年干辛为七杀"
+        },
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\input.md",
+          "locator": "年支未藏",
+          "excerpt": "年支未藏己为偏财"
+        }
+      ],
+      "source_citations": [
+        {
+          "source_path": "theory\\gao\\index.yaml",
+          "line": 1,
+          "excerpt": "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+        }
+      ],
+      "completion_mode": "ACTIVATE_EXISTING",
+      "supporting_evidence": [
+        {
+          "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+          "locator": "E1.trigger_basis",
+          "excerpt": "1995年流年乙亥，处于己丑大运；与原局形成2项干支关系，结构触发强度为高；关系摘要：流年干合月干庚化('金', '合绊')；流年支六合月支寅化木；领域提示：事业、家庭。本草稿关注领域：career。"
+        }
+      ],
+      "counter_evidence": [],
+      "alternative_hypotheses": [
+        "能力存在但现实兑现不稳，可能仅表现为间断或项目化调整"
+      ],
+      "frozen_version": "asof-prototype-v1",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "is_primary_event": true
+    }
+  ],
+  "annual_gate_selection": {
+    "source": "cases\\C-2026-RF000653-乾-辛未庚寅乙卯丙戌\\asof-freeze-scaffold-draft.json",
+    "selected_candidate": "E1",
+    "trigger_basis": "1995年流年乙亥，处于己丑大运；与原局形成2项干支关系，结构触发强度为高；关系摘要：流年干合月干庚化('金', '合绊')；流年支六合月支寅化木；领域提示：事业、家庭。本草稿关注领域：career。"
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "检索用于冻结前证据复核，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "gao",
+      "rule_id": "G-CY-018",
+      "citation": "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)",
+      "[duan:M1-D-078] 经营取财 — 内食神生财 (来源: theory\\duan\\index.yaml)",
+      "[yang:M2-Y-006] 谁生的财谁说了算 食神生财归属论；不生时财就走了 (来源: theory\\yang\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "食神",
+          "生财"
+        ],
+        "hit_count": 16,
+        "citations_reviewed": [
+          "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)",
+          "[duan:M1-D-078] 经营取财 — 内食神生财 (来源: theory\\duan\\index.yaml)",
+          "[yang:M2-Y-006] 谁生的财谁说了算 食神生财归属论；不生时财就走了 (来源: theory\\yang\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 3,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。"
+  },
+  "explicit_non_claims": [
+    "未读取feedback.md形成冻结判断",
+    "未把高触发年等同于现实事件"
+  ],
+  "verdict_policy": {
+    "E1": "反馈无冻结单年窗口事实则ABSTAIN；不得用其他年份替代"
+  }
+}

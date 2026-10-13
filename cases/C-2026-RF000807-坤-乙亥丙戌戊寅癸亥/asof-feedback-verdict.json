@@ -1,0 +1,160 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000807-坤-乙亥丙戌戊寅癸亥",
+  "adjudicated_at": "2026-07-30T14:30:02+08:00",
+  "feedback_source": "cases/C-2026-RF000807-坤-乙亥丙戌戊寅癸亥/feedback.md",
+  "freeze_source": "cases/C-2026-RF000807-坤-乙亥丙戌戊寅癸亥/asof-blind-freeze.json",
+  "freeze_sha256_expected": "61c4ece41435fd556ca58f6f9d0bdddae531beb769d5527ce94a4a0602865191",
+  "freeze_sha256_observed_before_verdict": "61c4ece41435fd556ca58f6f9d0bdddae531beb769d5527ce94a4a0602865191",
+  "freeze_immutable": true,
+  "feedback_evidence": [
+    {
+      "year": 2014,
+      "domain": "education_career_preparation",
+      "fact": "高考超常发挥，进入本硕连读临床医学专业。"
+    },
+    {
+      "year": 2017,
+      "domain": "education_exchange",
+      "fact": "赴加拿大温哥华UBC交流。"
+    },
+    {
+      "year": 2019,
+      "domain": "career_preparation",
+      "fact": "保研并选到心仪科室和导师。"
+    },
+    {
+      "year": 2020,
+      "domain": "career_change",
+      "fact": "发生工作变故。"
+    },
+    {
+      "year": 2022,
+      "domain": "career_preparation_disruption",
+      "fact": "延毕且考试未过。"
+    },
+    {
+      "year": 2023,
+      "domain": "career_preparation_recovery",
+      "fact": "考试通过。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_qualification",
+      "fact": "论文通过并取得硕士毕业证，职业为医生但暂未入职。"
+    }
+  ],
+  "primary_landing_adjudication": {
+    "claim_id": "C1",
+    "activation_status": "ALTERNATIVE_REALIZED",
+    "verdict": "ALTERNATIVE_HIT",
+    "reason": "反馈显示命主沿临床医学、科室导师、医生资格形成明确组织规则与专业职责主轴，但经历工作变故、延毕、考试未过以及取得毕业证后暂未入职，直接支持能力与资格存在而现实职位兑现不稳的冻结备选。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "activation_status": "ACTIVATED",
+      "verdict": "ALTERNATIVE_HIT",
+      "reason": "医学职业能力与资格路径已形成，但2020工作变故、2022延毕及考试未过、2024毕业后暂未入职，符合间断承接与尚未稳定兑现。"
+    }
+  ],
+  "phase_adjudications": [],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_path_disruption",
+      "window": "2013-01-01/2013-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈年表没有2013年事实；最近相邻事实为2009年与2014年。",
+      "reason": "相邻年份事实不能移入冻结的独立2013单年窗口，窗口内缺少直接证据。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_career_capacity_disruption",
+      "window": "2004-01-01/2004-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2004年事实。",
+      "reason": "窗口内无直接证据。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_career_resource_change",
+      "window": "2008-01-01/2008-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2008年事实。",
+      "reason": "窗口内无直接证据。"
+    },
+    {
+      "candidate_id": "E4",
+      "scoring_unit": "dated_career_output_change",
+      "window": "2011-01-01/2011-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2011年事实。",
+      "reason": "窗口内无直接证据。"
+    },
+    {
+      "candidate_id": "E5",
+      "scoring_unit": "dated_career_boundary_change",
+      "window": "2012-01-01/2012-12-31",
+      "verdict": "ABSTAIN",
+      "observed_feedback": "反馈未提供2012年事实。",
+      "reason": "窗口内无直接证据。"
+    }
+  ],
+  "section_9_4_alignment": {
+    "node_year": 2024,
+    "covered_by_e1": false,
+    "verdict": "ABSTAIN",
+    "reason": "冻结前既有脚手架只给出2004、2008、2011、2012、2013五个候选，事业L1+L2又全部通过；盲态证据选择的E1为关系数最高且处运界的2013年，无法在不预知反馈的前提下保证覆盖§9.4的2024年。冻结后不得后验改写E1。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 0,
+      "alternative_hits": 1,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "职业能力与资格路径存在，但现实入职兑现不稳，命中冻结备选。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "冻结包未设置独立阶段断语。"
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 5,
+      "summary": "五个独立单年候选均缺少窗口内直接反馈，全部弃权。"
+    }
+  },
+  "overall_conclusion": {
+    "primary_landing": "ALTERNATIVE_HIT",
+    "broad_phase_direction": "ABSTAIN",
+    "event_timing_precision": "ABSTAIN",
+    "e1_verdict": "ABSTAIN",
+    "summary": "职业能力与资格主轴成立但现实职位兑现不稳；E1因2013年窗口内无直接证据而弃权。"
+  },
+  "protocol_exception": {
+    "code": "SCAFFOLD_YEAR_COVERAGE_GAP",
+    "required_section_9_4_year": 2024,
+    "e1_year": 2013,
+    "strict_requirement_satisfied": false,
+    "reason": "盲态脚手架和L1+L2未提供可据以选择2024为E1的证据；为保持盲态诚信，没有在揭盲后修改冻结文件。"
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_formal": true
+  }
+}

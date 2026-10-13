@@ -7,20 +7,12 @@
 """
 from __future__ import annotations
 
-import dataclasses
 import hashlib
 import json
-from dataclasses import dataclass, field, asdict
-from typing import Any, Literal, Optional, Union
+from dataclasses import dataclass, field
+from typing import Any, Literal, Optional
 
 from engine import FINDINGS_SCHEMA_VERSION
-from engine.predicates.types import (
-    Bazi,
-    Gan,
-    GanZhi,
-    Wuxing,
-    Zhi,
-)
 
 
 # ============================================================
@@ -28,7 +20,7 @@ from engine.predicates.types import (
 # ============================================================
 
 OrdinalLevel = Literal["无", "弱", "中", "强", "极强"]
-School = Literal["段", "杨", "高", "任"]
+School = Literal["段", "杨", "高", "任", "子平", "滴天髓"]
 
 
 @dataclass

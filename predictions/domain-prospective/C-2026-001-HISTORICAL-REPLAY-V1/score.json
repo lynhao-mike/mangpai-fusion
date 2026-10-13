@@ -1,0 +1,147 @@
+{
+  "schema_version": "domain-prospective-score/v1",
+  "case_id": "C-2026-001-HISTORICAL-REPLAY-V1",
+  "track": "historical",
+  "freeze_hash": "e189a0b96dc38b3415918137d00dd640a11e8b59205ad8d68079fc14ee568eec",
+  "reveal_hash": "536fb0fb0781e6120b653edd50249be6a92bbeae89d9626da9f75aa23a828eba",
+  "metrics": {
+    "overall": {
+      "claim_count": 7,
+      "labeled_count": 7,
+      "scored_count": 4,
+      "hit_count": 2,
+      "miss_count": 2,
+      "pending_count": 3,
+      "abstain_count": 0,
+      "label_coverage": 1.0,
+      "scored_coverage": 0.571428571429,
+      "accuracy": 0.5
+    },
+    "by_domain": {
+      "career": {
+        "claim_count": 3,
+        "labeled_count": 3,
+        "scored_count": 2,
+        "hit_count": 2,
+        "miss_count": 0,
+        "pending_count": 1,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 0.666666666667,
+        "accuracy": 1.0
+      },
+      "marriage": {
+        "claim_count": 4,
+        "labeled_count": 4,
+        "scored_count": 2,
+        "hit_count": 0,
+        "miss_count": 2,
+        "pending_count": 2,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 0.5,
+        "accuracy": 0.0
+      }
+    },
+    "by_task": {
+      "career.change_window": {
+        "claim_count": 1,
+        "labeled_count": 1,
+        "scored_count": 0,
+        "hit_count": 0,
+        "miss_count": 0,
+        "pending_count": 1,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 0.0,
+        "accuracy": null
+      },
+      "career.path_type": {
+        "claim_count": 1,
+        "labeled_count": 1,
+        "scored_count": 1,
+        "hit_count": 1,
+        "miss_count": 0,
+        "pending_count": 0,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 1.0,
+        "accuracy": 1.0
+      },
+      "career.role_change": {
+        "claim_count": 1,
+        "labeled_count": 1,
+        "scored_count": 1,
+        "hit_count": 1,
+        "miss_count": 0,
+        "pending_count": 0,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 1.0,
+        "accuracy": 1.0
+      },
+      "marriage.divorce_or_remarriage": {
+        "claim_count": 2,
+        "labeled_count": 2,
+        "scored_count": 2,
+        "hit_count": 0,
+        "miss_count": 2,
+        "pending_count": 0,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 1.0,
+        "accuracy": 0.0
+      },
+      "marriage.event_window": {
+        "claim_count": 2,
+        "labeled_count": 2,
+        "scored_count": 0,
+        "hit_count": 0,
+        "miss_count": 0,
+        "pending_count": 2,
+        "abstain_count": 0,
+        "label_coverage": 1.0,
+        "scored_coverage": 0.0,
+        "accuracy": null
+      }
+    },
+    "by_claim": {
+      "domain-eval-08c97084252d07e5808a": {
+        "domain": "career",
+        "task_id": "career.change_window",
+        "status": "pending"
+      },
+      "domain-eval-1653ccbddd52b9389e47": {
+        "domain": "career",
+        "task_id": "career.role_change",
+        "status": "hit"
+      },
+      "domain-eval-2eabd2f98052a07a569e": {
+        "domain": "marriage",
+        "task_id": "marriage.event_window",
+        "status": "pending"
+      },
+      "domain-eval-6c335544d87b5e18eff1": {
+        "domain": "career",
+        "task_id": "career.path_type",
+        "status": "hit"
+      },
+      "domain-eval-916723e071ade5f32cee": {
+        "domain": "marriage",
+        "task_id": "marriage.event_window",
+        "status": "pending"
+      },
+      "domain-eval-c021d6b76d258c4fa026": {
+        "domain": "marriage",
+        "task_id": "marriage.divorce_or_remarriage",
+        "status": "miss"
+      },
+      "domain-eval-c9a3b492a0e8d0893945": {
+        "domain": "marriage",
+        "task_id": "marriage.divorce_or_remarriage",
+        "status": "miss"
+      }
+    }
+  },
+  "score_hash": "c6de6c3e95a610bba4e10633eb2067388d345c18a52652c785892c93114ca1b5"
+}

@@ -1,0 +1,273 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T13:32:22+08:00",
+  "as_of_date": "2026-07-30",
+  "as_of_date_basis": "采用任务指定的揭示前验证截止日；写入并计算哈希后不得根据反馈回写。",
+  "independent_blind_reviewer": true,
+  "blindness_controls": {
+    "source": "cases/C-2026-RF000897-乾-甲子丁丑丙寅庚子/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "annotation_detection_method": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "cutoff_line": 161,
+    "cutoff_marker_type": "yaml_key",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "embedded_annotation_count": 0,
+    "minimal_fence_completion_applied": true,
+    "empty_known_facts_completion_applied": true,
+    "legacy_gender_value_normalized_to_parser_enum": true,
+    "parser_gender_normalization": "男 -> M，仅用于盲前缀临时解析副本",
+    "known_fact_count_after_parse": 0,
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false,
+    "feedback_used": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "pillars_supplied": [
+      "甲子",
+      "丁丑",
+      "丙寅",
+      "庚子"
+    ],
+    "known_life_facts_used": [],
+    "parser_chain": [
+      "tools.preflight.parse",
+      "engine.predicates.types.adapt_parsed",
+      "engine.asof.annual_trace.build_annual_traces_with_gate"
+    ]
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "professional_judgment_with_project_delivery_responsibility",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能以专业判断和项目交付责任为职业主轴，持续承担从问题分析到结果落地的职责；具备把既有能力转成实际成果的基础，但不冻结行业、职级与经营身份。",
+      "strength": "MEDIUM",
+      "root_level": "CONDITIONAL_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：专业判断与交付能力存在，但现实兑现不稳，表现为职责增加而授权、持续项目或成果承接不足。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若中心不成立，则截至截止日主要职业仍以按既定流程完成常规任务为主，未形成持续的专业判断与项目交付责任。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有固定工作、掌握一项技能、偶尔提出建议或完成个人任务不算中心命中；主要职业价值须持续包含专业判断，并承担可识别的项目推进与结果交付责任。",
+    "falsifiers": [
+      "截至截止日长期从事低自主、低专业判断且只按固定流程完成个人重复任务的工作。",
+      "主要职业价值不依赖专业判断，也不承担持续项目推进或结果交付责任。",
+      "任务选择、推进节奏与结果责任始终由他人完整承担。"
+    ]
+  },
+  "reasoning_boundary": {
+    "natal_structure": "丙火日主生丑月，日坐寅为生扶根基，年时双子与月支丑使寒湿和官杀环境突出；月干丁、日支寅提供火木支持，时干庚形成现实资源与成果承接端。职业判断因此只冻结专业判断、责任承接与成果落地倾向，不把十神名义直接换算为职位或成败。",
+    "current_dayun": "当前辛巳运可提示财星与比肩主题被激活，支持既有能力走向现实承接，也可能带来竞争、资源分配和完成度波动；该提示不单独裁决行业、职级、收入或经营身份。",
+    "strength_cap": "职业基本方向冻结为中等；现实职位、行业、收入、管理层级与经营身份不冻结。",
+    "root_level_justification": "丙火坐寅且丁火透出，存在承接专业输出与责任的结构基础；但丑月寒湿、双子官杀和财官承载条件要求结合制化判断，现实完成度在反馈揭示前未知，因此采用ACTIVATE_EXISTING并设置兑现不稳备选。"
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_boundary_change",
+      "window": "2024-01-01/2024-12-31",
+      "center_event": "2024年主要职业职责边界发生一次可核验的明确变化。",
+      "confidence": 58,
+      "root_level": "CONDITIONAL_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "selection_basis": "2024为任务公开指定的§9.4时间节点所在年，故冻结为独立单年可证伪事件；该年未通过事业L1+L2候选门，不表述为算法确认命中，也不借用反馈区内容补强。",
+      "scaffold_high_trigger_coverage": "脚手架推荐高触发年1990、1991、1992、1993、1995在annual_gate_selection中逐年审计；其中1990、1991、1992、1995通过事业L1+L2，作为结构阶段背景，不扩张E1的2024单年评分窗口。",
+      "falsifier": "2024全年主要职业职责边界无明确变化。"
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "domain_argument": "事业",
+    "current_year": 2026,
+    "until_present_only": true,
+    "passed_years": [
+      1987,
+      1989,
+      1990,
+      1991,
+      1992,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2025,
+      2026
+    ],
+    "scaffold_recommended_high_years": [
+      1990,
+      1991,
+      1992,
+      1993,
+      1995
+    ],
+    "scaffold_high_year_gate_coverage": [
+      {
+        "year": 1990,
+        "liunian": "庚午",
+        "dayun": "戊寅",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "relation_count": 3,
+        "role": "通过L1+L2的脚手架高触发背景年；不替代E1。"
+      },
+      {
+        "year": 1991,
+        "liunian": "辛未",
+        "dayun": "戊寅",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "relation_count": 5,
+        "role": "通过L1+L2的脚手架高触发背景年；不替代E1。"
+      },
+      {
+        "year": 1992,
+        "liunian": "壬申",
+        "dayun": "戊寅",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "relation_count": 5,
+        "role": "通过L1+L2的脚手架高触发背景年；不替代E1。"
+      },
+      {
+        "year": 1993,
+        "liunian": "癸酉",
+        "strength": "high",
+        "crossed_candidate_gate": false,
+        "relation_count": 1,
+        "role": "脚手架推荐但未通过事业L1+L2，不冻结为日期事件。"
+      },
+      {
+        "year": 1995,
+        "liunian": "乙亥",
+        "dayun": "戊寅",
+        "strength": "high",
+        "crossed_candidate_gate": true,
+        "relation_count": 3,
+        "role": "通过L1+L2的脚手架高触发背景年；不替代E1。"
+      }
+    ],
+    "selected_year": {
+      "year": 2024,
+      "crossed_candidate_gate": false,
+      "selection_source": "task_disclosed_time_node",
+      "algorithmic_claim": false,
+      "reason": "任务要求覆盖公开说明的§9.4时间节点所在年；单独冻结为可证伪合同，不将其伪装为L1+L2通过年。"
+    },
+    "selection_policy": "优先保留通过L1+L2的脚手架高触发年作为审计背景；E1因任务明确指定2024而保持单年窗口。门控未通过的2024降低置信度并显式披露，不使用反馈资料补强。"
+  },
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260606-004",
+      "status": "active",
+      "locator": "theory/ziping/index-new.yaml:794-831",
+      "source_path": "sources/ziping/《三命通会》.md",
+      "source_excerpt": "财官印食伤不能按名称绝对定吉凶，必须随日主强弱、通月气与制化状态取用。",
+      "applied_summary": "限制职业断语回到丙火承载力、月气与制化，不凭财官名称直接冻结职位、财富或成败。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-053",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:2038-2077",
+      "source_path": "sources/ziping/《子平真诠》.md",
+      "source_excerpt": "财官叠叠日主不能任，虽有财官亦是身弱难享，多为劳碌破财。",
+      "applied_summary": "把财官结构与现实承载、兑现分开，支持中等强度和兑现不稳备选，不冻结稳定收益或行政晋升。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-837",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:34338-34377",
+      "source_path": "sources/ziping/穷通宝鉴-明-余春台_part1.md",
+      "source_excerpt": "十一月丙火，冬至一阳生，弱中复强，壬水为最，戊土佐之。",
+      "applied_summary": "用于识别寒月丙火的调候与制化边界；本案不满足原文全部透干条件，因此只作条件性结构依据，不采用科甲、功名等古籍等级铁断。"
+    }
+  ],
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "center_or_count": 0,
+    "center_likely_too_broad": false,
+    "event_windows_months": {
+      "E1": 11.992032690609664
+    },
+    "event_window_days": {
+      "E1": 365
+    },
+    "event_or_counts": {
+      "E1": 0
+    },
+    "event_exceeds_limit": {
+      "E1": false
+    },
+    "has_activate_existing_center": true,
+    "has_incomplete_realization_alternative": true,
+    "missing_realization_guard": false,
+    "any_issue_found": false,
+    "summary": "三项冻结契约预检均未发现提醒信号；本结果不保证冻结内容必然正确。"
+  },
+  "explicit_non_claims": [
+    "不冻结具体行业、单位性质、职业名称、职务等级、管理人数或企业所有权。",
+    "不冻结财富总量、高收入、行政晋升、创业成功或社会等级。",
+    "不把财官、比肩或古籍中的科甲功名措辞直接等同于现实成功。",
+    "不冻结婚姻、子女、疾病、灾祸及家庭财富。",
+    "E1仅按2024单年窗口和主要职业职责边界明确变化评分；脚手架高触发背景年不得替代该事件。",
+    "2024未通过事业L1+L2，故不作算法命中声明。"
+  ],
+  "verdict_policy": {
+    "verdict_created": false,
+    "allowed_after_feedback": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "career_basic_state_rule": "截止日职业中心与备选分别核验；普通上班、掌握技能或偶尔推进任务不得越过weak_hit_boundary。",
+    "event_precision_rule": "E1仅按2024单年窗口和主要职业职责边界明确变化评分；其他年份或其他事件类型不得替代。",
+    "unused_alternative_rule": "未激活备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED。",
+    "separate_score_units": [
+      "career_basic_state",
+      "dated_event_precision"
+    ],
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决必须写入独立文件并先复核本文件SHA-256。"
+  }
+}

@@ -439,6 +439,7 @@ def test_ziping_career_slice_never_sends_target_claims_to_adapter() -> None:
         and claim.claim_id
         and claim.school
         and claim.domain
+        and claim.stance != "abstain"
         and next(
             (item.role for item in applicability if item.school == claim.school),
             "co_lead",

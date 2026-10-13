@@ -1,0 +1,70 @@
+TASK 4 CERTIFICATION REGISTRY EVIDENCE
+Date: 2026-08-03
+Workspace: F:\多流派新思路
+
+OWNED DELIVERABLES
+- engine/governance/fact_certification.py
+- engine/governance/fact_certification_loader.py (private parser/path-boundary split)
+- engine/governance/registries.py (stable public exports only)
+- theory/multi-school-governance-v1.yaml
+- tests/governance/test_fact_certification_registry.py
+- .omo/start-work/artifacts/task4-certification-registry.txt
+
+PRE-EDIT RECEIPT
+- Scoped git status for the Task 4 named deliverables was empty.
+- Unrelated dirty worktree entries were preserved and never reverted.
+- Baseline command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py -q
+- Baseline result: PASS, exit 0, 65 passed, 1 pre-existing dual_engine_adapter deprecation warning, 4.67s.
+
+TDD RECEIPT
+- RED command: python -m pytest tests/governance/test_fact_certification_registry.py -q
+- RED result: expected exit 1, 11 failures, each ModuleNotFoundError for the not-yet-created engine.governance.registries module.
+- GREEN command: python -m pytest tests/governance/test_fact_certification_registry.py -q
+- GREEN result: PASS, exit 0, 11 passed, 0.34s.
+- Expanded/final focused repeat: PASS, 12 passed, exit 0, 0.44s; repeat PASS, 12 passed, exit 0, 0.41s.
+
+BEHAVIOR VERIFIED
+- Published L2A and L2B are distinct. L2A rejects cross-school refs; L2B requires two distinct canonical-school review:<school>:<verifiable-reference> refs.
+- Registration identity covers fact level/kind, calculator ID/version, and schema version; registration ID and specification SHA-256 digest bind certification content.
+- candidate and proposed entries parse but always yield explicit CERTIFICATION.UNSUPPORTED on consumption.
+- Exact version lookup has no adjacent-version fallback.
+- Duplicate IDs, conflicting semantic identities, unknown statuses, bad shapes including YAML false, digest tampering, relative escape, absolute paths, and symlink escape fail closed.
+- Loader accepts one explicit regular file below a resolved explicit workspace root; it does not scan theory.
+- Registry values are frozen/tuple or MappingProxyType-backed and expose no publish/promote/add/append API.
+
+FINAL JOINT REGRESSION
+- Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py tests/governance/test_fact_certification_registry.py -q
+- Result: PASS, exit 0, 77 passed, 1 pre-existing dual_engine_adapter deprecation warning, 4.87s.
+
+MANUAL CLI QA
+- Command: python -c "from pathlib import Path; from engine.governance.registries import load_fact_certification_registry; registry=load_fact_certification_registry(workspace_root=Path.cwd()); print(len(registry.registrations))"
+- Result: PASS, exit 0, stdout: 0.
+- Verdict: the formal YAML loads through the public registry surface and remains a conservative empty certification list.
+- Two earlier longer python -c probes exited 1 due Windows PowerShell quoting before library execution; they made no product changes and are not counted as QA success.
+
+QUALITY GATES
+- ruff check on all four Python files: PASS, exit 0, All checks passed.
+- ruff format --check on all four Python files: PASS, exit 0, 4 files already formatted.
+- Escape-hatch/conflict scan: PASS, no matches for conflict markers, Any annotations, object annotations, cast, ignore directives, or broad exceptions.
+- basedpyright: unavailable locally (command not found); not installed.
+- Bundled check-no-excuse-rules.py: unavailable at the documented cache path; no substitute was claimed.
+- Pure LOC: fact_certification.py=209; fact_certification_loader.py=182; registries.py=22; test_fact_certification_registry.py=235. Every Python file is below 250.
+
+ADVERSARIAL AND CLEANUP RECEIPT
+- malformed_input, stale/tamper, dirty_worktree, flaky_tests, misleading-success output, path traversal, and symlink escape are covered by explicit tests and real exit-code receipts.
+- No network, server, port, prompt-bearing external input, temporary long-lived resource, cancellation, or interruption occurred.
+- No Task 4 Python or pytest process remained after the final commands.
+- No Git commit was created.
+
+CANONICAL PEER-ID GATE REWORK
+- Gate finding: L2B review refs used short IDs (duan/yang/ren/gao) in a canonical certification boundary. The implementation plan requires only ziping, gao_dechen, duan_jianye, yang_qingjuan, and ren_fuhong.
+- TDD RED command: python -m pytest tests/governance/test_fact_certification_registry.py -q
+- RED result: expected exit 1, 2 failures. A formal ren_fuhong L2B fixture was rejected, while two short aliases ziping/ren were incorrectly accepted.
+- Minimal repair: engine/governance/fact_certification.py now uses exactly the five formal canonical IDs. Parsing retains exact split fields and exact set membership; it performs no alias, substring, or case normalization.
+- Focused repeat: PASS, 12 passed, exit 0, 0.47s; repeat PASS, 12 passed, exit 0, 0.54s.
+- Joint command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py tests/governance/test_fact_certification_registry.py -q
+- Joint result: PASS, exit 0, 77 passed, 1 pre-existing dual_engine_adapter deprecation warning, 5.39s.
+- Manual exact probe: PASS, exit 0. The runtime printed ('duan_jianye', 'gao_dechen', 'ren_fuhong', 'yang_qingjuan', 'ziping') and formal registry count 0.
+- ruff check: PASS. ruff format --check: PASS. Escape-hatch/conflict scan: clean. basedpyright remains unavailable locally and was not installed; bundled no-excuse checker remains unavailable at its documented cache path.
+- Rework pure LOC: fact_certification.py=211; fact_certification_loader.py=182; registries.py=22; test_fact_certification_registry.py=243.
+- Cleanup: no server, port, external resource, or Git commit was created.

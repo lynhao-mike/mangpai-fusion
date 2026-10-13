@@ -1,3 +1,19 @@
 {
-	"mcpServers": {}
+	"mcpServers": {
+		"graft": {
+			"command": "graft",
+			"args": [
+				"mcp",
+				"."
+			],
+			"alwaysAllow": [
+				"graft_check_freshness",
+				"graft_file_api",
+				"graft_trace_calls",
+				"graft_find_all",
+				"graft_repo_map",
+				"graft_find_code"
+			]
+		}
+	}
 }

@@ -1,0 +1,139 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "NEW-P-2026-001",
+  "adjudicated_at": "2026-07-29T21:14:53+08:00",
+  "frozen_artifact": "cases/NEW-P-2026-001-乾-丙寅己亥乙丑丁丑/asof-blind-freeze.json",
+  "frozen_sha256_expected": "642b34a9c282cd0ee8882189e4994cf942fb02976900c685b1e17c4da86f7e05",
+  "feedback_boundary": {
+    "facts_used": [
+      "2018年前后约32岁开始转好",
+      "2019年一年内两次跳槽升迁",
+      "2020年再次跳槽升迁并买房",
+      "2026年1月升迁至科级",
+      "反馈时任职大学专业技术岗，非行政管理岗",
+      "自幼家贫，父母为劳动百姓",
+      "无收入、存款、投资收益或财富总量资料"
+    ],
+    "not_inferred": [
+      "不把科级解释为行政管理岗",
+      "不推断工资、房产价值或财富等级",
+      "不把反馈中建议的评分标准当成冻结前预测"
+    ]
+  },
+  "overall_verdict": {
+    "primary_landing": "CENTER_HIT",
+    "event_timing_precision": "MISS",
+    "summary": "职业基本面中心落点命中，但关键事件、年份、次数和资产联动未被盲断冻结，不能用宽泛的阶段判断冒充精确应期命中。"
+  },
+  "claim_verdicts": [
+    {
+      "claim_id": "C1",
+      "verdict": "CENTER_HIT",
+      "matched": "大学专业技术岗与冻结的受雇专业骨干、依靠专业技能和专业输出创造价值相符；非行政管理岗也未与中心落点冲突。",
+      "limitations": "反馈没有证明商业结果、客户责任或运营责任，因此只确认职业性质中心，不确认C1中所有扩展描述。"
+    },
+    {
+      "claim_id": "A1",
+      "verdict": "NOT_ACTIVATED",
+      "matched": "无",
+      "limitations": "现实为大学受雇专业技术岗，不需要调用顾问、自由职业或项目制备选。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "NOT_ACTIVATED",
+      "matched": "无",
+      "limitations": "没有创业或合伙事实。"
+    },
+    {
+      "claim_id": "P1",
+      "verdict": "ABSTAIN",
+      "matched": "无可核验资料",
+      "limitations": "反馈未覆盖2003—2013的学业、资格、就业衔接或早期职业调整。"
+    },
+    {
+      "claim_id": "P2",
+      "verdict": "CENTER_HIT",
+      "matched": "壬寅运内2018年前后转好，2019年两次跳槽升迁，2020年再跳槽升迁，明确验证平台/岗位变化后职业位置上升。",
+      "limitations": "冻结只断出十年内至少一次明显变化，没有预报2019两次、2020再次变化，也没有冻结连续升迁，因此属于阶段方向命中，不是精确事件命中。"
+    },
+    {
+      "claim_id": "P3",
+      "verdict": "ABSTAIN",
+      "matched": "2026年1月升迁表明该阶段存在角色或职级变化。",
+      "limitations": "反馈没有证明冻结的路线重构、自主诉求增强、组织摩擦或收益留存压力；仅凭升迁不能确认整个命题。"
+    },
+    {
+      "claim_id": "F1",
+      "verdict": "ABSTAIN",
+      "matched": "2020年事业上升与买房同年，且当前职业依靠专业工作，和劳动/能力取得资产的方向相容。",
+      "limitations": "冻结未预测2020买房；反馈也没有收入、存款、投资、分配或留存资料，不能确认‘赚钱能力高于守成能力’。"
+    },
+    {
+      "claim_id": "T1",
+      "verdict": "ABSTAIN",
+      "matched": "无可核验资料",
+      "limitations": "职业事实不能替代人格反馈。"
+    }
+  ],
+  "unpredicted_verified_events": [
+    {
+      "event": "2019年一年内两次跳槽升迁",
+      "verdict": "MISS",
+      "reason": "冻结仅有2013—2023期间至少一次平台或岗位变化的宽窗口判断，未冻结2019、两次、跳槽且升迁。"
+    },
+    {
+      "event": "2020年再次跳槽升迁",
+      "verdict": "MISS",
+      "reason": "未冻结2020年或连续两年换平台上升。"
+    },
+    {
+      "event": "2020年买房并与跳槽升迁同年联动",
+      "verdict": "MISS",
+      "reason": "冻结未提出房产、大额资产事件或事业—置业同年联动。"
+    },
+    {
+      "event": "2026年1月升迁至科级",
+      "verdict": "MISS",
+      "reason": "冻结明确不把2026年度触发扩大为已发生事件，且没有冻结月份、升迁或层级。"
+    },
+    {
+      "event": "当前为大学专业技术岗、非行政管理岗",
+      "verdict": "CENTER_HIT",
+      "reason": "中心落点明确包含受雇专业骨干/专业输出型工作，且未冻结为行政岗位；但‘大学’这一机构类型没有预测。"
+    }
+  ],
+  "scorecard": {
+    "primary_landing": {
+      "CENTER_HIT": 1,
+      "ALTERNATIVE_HIT": 0,
+      "MISS": 0,
+      "TAXONOMY_GAP": 0,
+      "ABSTAIN": 0
+    },
+    "secondary_claims": {
+      "CENTER_HIT": 1,
+      "ALTERNATIVE_HIT": 0,
+      "MISS": 0,
+      "TAXONOMY_GAP": 0,
+      "ABSTAIN": 4
+    },
+    "high_value_verified_events": {
+      "predicted_with_required_precision": 0,
+      "missed": 4
+    }
+  },
+  "diagnosis": {
+    "what_worked": [
+      "theory支持下的原局承载方向没有膨胀成企业主、高管或财富等级，职业性质中心落在专业技术输出，避免了明显职业类别冲突。",
+      "壬寅运的变化和上升方向正确覆盖了2018—2020的职业转折。",
+      "中心命中与备选命中被分开，A1/A2没有因措辞相近而抬成命中。"
+    ],
+    "what_failed": [
+      "事件候选生成过于保守，没有从壬寅运后段进一步冻结2019—2020连续换平台升迁。",
+      "没有冻结2020事业变化与置业的联动链。",
+      "没有对2026丙午触发形成可核验的升迁候选，因而错失最强年月验证点。",
+      "P3把重点放在路线重构和变现摩擦，现实反馈只确认升迁，当前证据不足以支持该叙述。"
+    ],
+    "bottom_line": "本案证明theory检索改善了职业结构方向与强度克制，但尚未改善到关键事件和应期精度。若评分单位是截止日职业基本面，本案为CENTER_HIT；若评分单位是用户列出的四个高价值事件，本案为0/4，必须判MISS，不能合并成一个乐观命中率。"
+  }
+}

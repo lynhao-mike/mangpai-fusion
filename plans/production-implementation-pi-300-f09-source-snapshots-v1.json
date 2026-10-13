@@ -1,0 +1,42 @@
+{
+  "source_snapshot_id": "PI-300-F09-SOURCE-SNAPSHOT-V1",
+  "snapshot_schema_version": "reality-fact-source-snapshot.v1",
+  "contract_version": "pi-300-f09-source-snapshots-v1",
+  "content_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "RFC8785-JCS-UTF8",
+    "value": "67517fe2d04fb0fe580e031643dab2ad53fcdb8c90707ba4d496c316dd87f5e7"
+  },
+  "captured_at": "2026-07-19T00:00:00Z",
+  "payload": {
+    "objects": {
+      "SOURCE-STATE-1": {
+        "value": {
+          "level": "S2",
+          "position": "持续承担资本配置职责",
+          "as_of": "2026-06-30"
+        }
+      },
+      "SOURCE-EVENT-1": {
+        "value": {
+          "level": "E2",
+          "change": "配置责任范围扩大",
+          "interval": {
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "start_inclusive": true,
+            "end_inclusive": true
+          }
+        }
+      },
+      "SOURCE-OUTCOME-1": {
+        "value": {
+          "axis": "allocation",
+          "action": "重配资本额度",
+          "object": "经营单元A",
+          "tense": "current"
+        }
+      }
+    }
+  }
+}

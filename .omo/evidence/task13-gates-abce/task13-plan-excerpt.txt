@@ -1,0 +1,46 @@
+﻿**楠岃瘉鍛戒护**
+
+```bat
+python -m pytest tests/test_architecture_dependencies.py tests/governance/test_static_isolation.py tests/yang_marriage/test_static_isolation.py -q
+```
+
+### Task 13锛氭墽琛屽垎灞傚洖褰掗獙璇?
+
+**涓嶆柊澧炰笟鍔″姛鑳姐€?* 鍙慨澶嶇敱 Wave 1 寮曞叆涓旂鍚堟湰濂戠害鐨勫洖褰掞紱鑻ヤ慨澶嶉渶瑕佹敼鍙樺喕缁撴帴鍙ｆ垨鎵╁ぇ鑼冨洿锛屽仠姝㈠苟璇锋眰鎵瑰噯銆?
+
+**Gate A锛氭不鐞嗗崟鍏冩祴璇?*
+
+```bat
+python -m pytest tests/governance tests/application/test_governance_fact_builder.py tests/application/test_governance_claim_adapters.py tests/application/test_governance_shadow_runner.py -q
+```
+
+**Gate B锛氭牳蹇冨吋瀹规祴璇?*
+
+```bat
+python -m pytest tests/yang_marriage tests/ren_timing tests/decision/test_staged_arbitration.py tests/predicates/test_ten_god_structures.py tests/test_production_rule_loader.py tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+```
+
+**Gate C锛氭灦鏋勫拰椤圭洰鍏冩暟鎹?*
+
+```bat
+python -m pytest tests/test_architecture_dependencies.py tests/test_project_metadata.py -q
+```
+
+**Gate D锛氬叏閲忔祴璇?*
+
+```bat
+python -m pytest tests/ -q
+```
+
+**Gate E锛氶潤鎬佽川閲忥紙浠呬娇鐢ㄤ粨搴撳凡鏈夊伐鍏凤級**
+
+鍏堟煡鏄庝粨搴撳綋鍓嶆寮?lint/type-check 鍏ュ彛锛涜嫢 [`tools/README.md`](../tools/README.md) 鏈櫥璁板搴斿伐鍏凤紝涓嶄复鏃跺鍔犱緷璧栥€傝嚦灏戣繍琛岋細
+
+```bat
+python tools/tool_registry.py --check
+python tools/rule_status_scan.py --check
+```
+
+**楠岃瘉璁板綍**
+
+鍦ㄥ疄鏂藉畬鎴愭椂鏂板涓€浠芥棩鏈熷寲楠岃瘉璁板綍鍒?[`plans/`](../plans/)锛岃嚦灏戣褰曪細

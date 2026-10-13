@@ -81,7 +81,7 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert "{{" not in report_text
     assert "{%" not in report_text
 
-    assert '"schema_version": "5.0.0-five-school-mvp"' in json_text
+    assert '"schema_version": "5.1.0-six-source"' in json_text
     assert '"expert_system": "tiaohou_ditiansui"' in json_text
     assert '"selection": "v6_preprod_limited"' in json_text
     assert '"prediction_ledger"' in json_text

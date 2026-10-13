@@ -1,0 +1,102 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000421-坤-甲申丙寅己巳己巳",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T14:00:00+08:00",
+  "as_of_date": "2026-07-30",
+  "as_of_date_basis": "按本轮验证日期冻结；反馈揭示后不得回写。",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000421-坤-甲申丙寅己巳己巳/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 175,
+    "cutoff_marker": "yaml_key",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "坤",
+    "birth_datetime": "2004-02-20T10:21:00+08:00",
+    "pillars_supplied": ["甲申", "丙寅", "己巳", "己巳"],
+    "current_dayun": "甲子（2019-2029）",
+    "known_life_facts_used": []
+  },
+  "l1_l2_gate": {
+    "domain": "事业",
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "e1_year": 2022,
+    "l1_passed": true,
+    "l2_passed": true,
+    "crossed_candidate_gate": true,
+    "trace_summary": "2022壬寅年在甲子运，L1与L2均通过；形成7项关系并激活年、月、日、时支原局节点。"
+  },
+  "reasoning_boundary": {
+    "natal_structure": "己土生寅月，甲官透年、丙印透月，日时两己并坐双巳，官印与比印承载均清楚；申与寅冲、寅巳申三刑使学习规则、组织要求与自我执行之间容易出现强烈调整。财星仅藏申中壬，现实收入与职业完成度不作高估。",
+    "current_dayun": "甲子运以正官与偏财条件进入，职业与学业选择更受规则、资格和现实资源牵引；但原局刑冲重，兑现路径可能伴随改向、间断或压力性调整。",
+    "strength_cap": "命主截止日22岁，中心只冻结为教育到职业入口及受规则约束的执行型起步，不冻结稳定职位、管理权或高收入。",
+    "root_level_justification": "官印在原局有明根，规则学习与组织执行方向按STRONG_ROOT处理；现实职业稳定度因年龄与财星不显而保留兑现不稳备选。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能处在由学历资格和组织标准约束的学习—就业转换路径，现实位置以初入职场的执行岗位为中心。",
+      "strength": "MEDIUM_LOW",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "官印能力存在但现实兑现不稳，可能仍在待业或转型阶段，尚未形成稳定职业位置。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅有在校、参加普通考试或泛称上班不算命中；须有升学资格、专业方向、毕业就业或岗位规则中的可核验位置。",
+    "falsifiers": [
+      "截至截止日既无继续教育、资格训练或求职活动，也无任何组织岗位。",
+      "主要现实路径长期完全不受资格、规则、考试或组织标准约束。"
+    ]
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_education_to_career_direction_change",
+      "window": "2022-01-01/2022-12-31",
+      "center_event": "发生一次达到履历节点的教育方向调整或就业入口变化。",
+      "confidence": 64,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "2022壬寅在甲子运，L1+L2通过，寅伏吟月支并引动寅巳申刑冲链。",
+      "falsifier": "2022年升学、专业、毕业就业和资格路径均无可核验变化。"
+    }
+  ],
+  "theory_evidence": [
+    {
+      "school": "yang",
+      "rule_id": "M2-Y-003",
+      "status": "active",
+      "locator": "theory/yang/index.yaml",
+      "summary": "正官用印化，强调官印路径须由印承接；支持官印学习、资格与组织规则方向，但不直接推出职位等级。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-032",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml",
+      "summary": "官格取运重财印与官杀制化条件；支持把官印根源和现实完成度分开核验。"
+    }
+  ],
+  "contract_gate": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "center_or_count": 0,
+    "event_window_months": 11.96,
+    "has_incomplete_realization_alt": true,
+    "any_issue_found": false
+  },
+  "verdict_policy": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "event_precision_rule": "E1独立按冻结窗口、事件类型与最低一次履历节点评分。",
+    "immutability_rule": "反馈揭示后不得修改本文件；裁决写入独立文件并复核SHA-256。"
+  }
+}

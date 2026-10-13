@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,7 @@ from engine.v5.domain import (
     V5StructureGraph,
     V5_SCHOOLS,
 )
+from engine.v5.adjudication import build_v5_adjudication_units
 
 PROBABILISTIC_DOMAIN_WHITELIST = {"学业", "事业", "财富", "婚姻", "健康"}
 STRUCTURE_SCHOOLS = {"ziping", "ditiansui", "gao_dechen"}
@@ -65,6 +67,27 @@ BLIND_TOPIC_DOMAINS: dict[str, str] = {  # ponytail: 按实测覆盖调整，后
     "xiangfa": "性格",
     "mingong": "总体",
 }
+
+_DOMAIN_TARGET_PREFIXES = {
+    "事业": "career",
+    "财富": "wealth",
+    "婚姻": "marriage",
+    "健康": "health",
+    "学业": "education",
+    "性格": "personality",
+    "总体": "overall",
+}
+
+
+def _target_id_from_existing_topic(domain: str, *topics: object) -> str:
+    """把已有规则 topic 规范成内部 target_id；不创造现实 outcome 标签。"""
+
+    topic = next((str(item).strip() for item in topics if str(item).strip()), "")
+    if not topic:
+        return ""
+    normalized = re.sub(r"[^0-9A-Za-z\u3400-\u9fff]+", "_", topic).strip("_").lower()
+    prefix = _DOMAIN_TARGET_PREFIXES.get(domain, "")
+    return f"{prefix}.{normalized}" if prefix and normalized else ""
 
 
 # ── 婚姻应期推导（杨清娟 M2-Y-141: 印来+配偶星到=结婚年） ──────────────────────
@@ -178,6 +201,7 @@ def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".", c
 
     claims: list[V5Claim] = []
     for rule in selected:
+        target_id = _target_id_from_existing_topic(rule.domains[0] if rule.domains else "总体", rule.topic)
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, rule.id),
             source=rule.source.path,
@@ -212,6 +236,8 @@ def build_ziping_production_claims(case_id: str, *, workspace_root: str = ".", c
                     "review_notes": rule.review_notes,
                     "source_scope": "production_rules",
                     "runner_state": "production_rule",
+                    "task_id": target_id,
+                    "target_id": target_id,
                 },
             )
         )
@@ -332,6 +358,7 @@ def build_ditiansui_production_claims(
     selected.sort(key=lambda rule: _production_rule_rank(rule, chart))
     claims: list[V5Claim] = []
     for rule in selected[:limit]:
+        target_id = _target_id_from_existing_topic(rule.domains[0] if rule.domains else "总体", rule.topic)
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, rule.id),
             source=rule.source.path,
@@ -367,6 +394,8 @@ def build_ditiansui_production_claims(
                     "source_scope": "production_rules",
                     "runner_state": "production_rule",
                     "selection": "v6_preprod_limited",
+                    "task_id": target_id,
+                    "target_id": target_id,
                 },
             )
         )
@@ -463,6 +492,11 @@ def build_blind_school_rule_claims(
         rule_id = str(rule.get("id", _stable_id("blindrule", school, rule.get("title", ""))))
         conclusion = str(rule.get("conclusion") or rule.get("title") or "三盲派规则参与。")
         domain = _blind_rule_domain(rule)
+        target_id = _target_id_from_existing_topic(
+            domain,
+            rule.get("topic"),
+            rule.get("topic_label"),
+        )
         # 用谓词评分驱动置信度，而非硬编码
         relevance_score = score_blind_rule(rule, chart)
         star_count = max(2, min(5, round(relevance_score * 5)))
@@ -510,6 +544,8 @@ def build_blind_school_rule_claims(
                     "runner_state": "school_rule",
                     "selection": "v6_preprod_blind_predicate",
                     "relevance_score": round(relevance_score, 3),
+                    "task_id": target_id,
+                    "target_id": target_id,
                 },
             )
         )
@@ -548,6 +584,7 @@ def build_abstain_claims(
         "gao_dechen": "高德臣 runner 尚未接入生产规则；当前仅登记做功转化待判。",
         "duan_jianye": "段建业 runner 尚未接入生产规则；当前仅登记事件框架待判。",
         "yang_qingjuan": "杨清娟 runner 尚未接入生产规则；当前仅登记象法细节待判。",
+        "ren_fuhong": "任付红 runner 尚未接入 v5 领域应期规则；当前仅登记应期验证待判。",
     }
     claim_type = {
         "ziping": "structure_claim",
@@ -555,13 +592,14 @@ def build_abstain_claims(
         "gao_dechen": "event_claim",
         "duan_jianye": "event_claim",
         "yang_qingjuan": "event_claim",
+        "ren_fuhong": "timing_claim",
     }
     claims: list[V5Claim] = []
     for school in schools:
         evidence = V5Evidence(
             evidence_id=_stable_id("v5ev", case_id, school, label),
             source="chart_model",
-            text=f"五派共用同一 Chart Model：{label}",
+            text=f"六源共用同一 Chart Model：{label}",
             node_refs=["chart:root"],
             metadata={"runner_state": "stub"},
         )
@@ -577,7 +615,7 @@ def build_abstain_claims(
                 confidence=V5Confidence(tier="★", score=0.1, note="runner 骨架占位，不进入正式断语"),
                 evidence=[evidence],
                 probabilistic=False,
-                falsifiable="接入真实五派 runner 后，占位命题应消失。",
+                falsifiable="接入真实六源 runner 后，占位命题应消失。",
                 metadata={"case_id": case_id, "school_role": "see V5_SCHOOL_ROLES", "runner_state": "stub"},
             )
         )
@@ -877,9 +915,7 @@ def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
       → 段3 概率应期（只接受通过段2的命题）
     """
     # 结构门禁：无结构基础则 event_claim 强制降权
-    gated_claims = _apply_structure_gate(claims)
-    # P0b + P1：格局约束和药方向真正过滤 / 加分事件命题
-    gated_claims = _apply_geju_yao_constraints(gated_claims)
+    gated_claims = prepare_claims_for_adjudication(claims)
 
     # 全局结构命题（跨domain，用于判断整体结构基础是否建立）
     global_structure_claims = [
@@ -1010,6 +1046,13 @@ def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
             )
         )
     return results
+
+
+def prepare_claims_for_adjudication(claims: list[V5Claim]) -> list[V5Claim]:
+    """复用既有结构门禁与格局约束，供裁决结果和单位协议使用。"""
+
+    gated_claims = _apply_structure_gate(claims)
+    return _apply_geju_yao_constraints(gated_claims)
 
 
 def _default_prediction_specs(chart: dict[str, Any]) -> list[dict[str, Any]]:
@@ -1189,7 +1232,7 @@ def run_v5(
     claims: list[V5Claim] | None = None,
     workspace_root: str = ".",
 ) -> V5Output:
-    """运行 v5 五派命题图最小闭环。
+    """运行 v5 六源命题图最小闭环。
 
     参数：
     - chart：五派共享的标准命盘对象。
@@ -1206,6 +1249,9 @@ def run_v5(
     )
     graph = build_structure_graph(resolved_case_id, chart, resolved_claims)
     arbitration_results = arbitrate_claims(resolved_claims)
+    adjudication_units = build_v5_adjudication_units(
+        prepare_claims_for_adjudication(resolved_claims)
+    )
     ledger = build_prediction_ledger(resolved_case_id, resolved_claims, chart)
     learning_signals = build_learning_signals(resolved_case_id, resolved_claims, ledger)
     return V5Output(
@@ -1216,6 +1262,7 @@ def run_v5(
         arbitration_results=arbitration_results,
         prediction_ledger=ledger,
         learning_signals=learning_signals,
+        adjudication_units=list(adjudication_units),
     )
 
 

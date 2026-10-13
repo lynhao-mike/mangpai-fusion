@@ -1,0 +1,211 @@
+TASK 5 GOVERNANCE CLAIM EVIDENCE
+Date: 2026-08-03 Asia/Shanghai
+
+Owned deliverables
+- engine/governance/governance_claim.py
+- engine/governance/governance_claim_identity.py
+- engine/governance/governance_claim_values.py
+- engine/governance/__init__.py
+- engine/application/governance_claim_adapters.py
+- engine/application/governance_claim_adapter_values.py
+- tests/governance/test_governance_claim.py
+- tests/application/test_governance_claim_adapters.py
+
+Pre-edit joint baseline
+Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py tests/governance/test_fact_certification_registry.py -q
+Result: PASS, exit 0, 77 passed, 1 pre-existing dual_engine_adapter deprecation warning, 5.79s.
+
+TDD receipt
+- RED: python -m pytest tests/governance/test_governance_claim.py tests/application/test_governance_claim_adapters.py -q
+- Result: expected exit 1. Collection failed solely because ClaimEvidenceGrade and ClaimReferenceCategory were not yet exported by engine.governance.
+- Focused GREEN: PASS, exit 0, 15 passed, 1 pre-existing deprecation warning, 0.98s.
+
+Contract behavior
+- Closed claim kind, stance, evidence grade, and typed issue enums.
+- Frozen slots envelope and reference catalog. References are deduplicated and sorted.
+- Explicit TemporalScope is mandatory; abstentions require typed blockers.
+- Event, timing, and risk claims are explicitly high-risk and require counterevidence or a falsifier.
+- Readonly catalog verifies every reference category, ID, and exact version with no fallback.
+- Stable claim ID binds semantic identity; content digest binds mutable claim content separately.
+- Canonical core accepts exactly ziping, gao_dechen, duan_jianye, yang_qingjuan, ren_fuhong.
+
+Adapter behavior
+- Separate typed adapters accept only engine.decision.models.SchoolClaim and engine.claims.domain.Claim.
+- Exact legacy aliases normalize only at adapter entry.
+- Missing temporal scope returns TEMPORAL_SCOPE_MISSING; no natal guess.
+- Conditional and abstention loss paths are typed; Yang pressure remains unsupported and cannot become event support.
+- Adapter provenance retains adapter ID/version and legacy claim ID.
+- tests lock exact dataclasses.fields order for both unchanged legacy models.
+
+Final joint verification
+Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py tests/governance/test_fact_certification_registry.py tests/governance/test_governance_claim.py tests/application/test_governance_claim_adapters.py tests/yang_marriage/test_static_isolation.py -q
+Result: PASS, exit 0, 101 passed, 1 pre-existing deprecation warning, 6.23s.
+
+Static gates
+- ruff format --check: PASS, 8 files already formatted.
+- ruff check: PASS, All checks passed.
+- check-no-excuse-rules.py: PASS, no violations in 8 files.
+- git diff --check: PASS, no output.
+- basedpyright was unavailable locally; no installation attempted.
+
+Public CLI QA
+Command: python -c <public engine.governance import and build_governance_claim fixture>
+Result: PASS, exit 0.
+Observed canonical_school=ziping, stable governance_claim ID, and SHA-256 content digest.
+
+Pure LOC
+- governance_claim.py=247
+- governance_claim_identity.py=74
+- governance_claim_values.py=140
+- governance_claim_adapters.py=242
+- governance_claim_adapter_values.py=21
+- governance __init__.py=82
+- governance claim tests=130
+- adapter tests=157
+
+Cleanup
+No server, port, external service, temporary resource, or Git commit was created. Existing unrelated dirty worktree entries were preserved.
+
+GATE REWORK: ADAPTER BOUNDARIES
+TDD RED
+Command: python -m pytest tests/application/test_governance_claim_adapters.py -q
+Result: expected exit 1, 3 failures in 1.01s.
+- FakeSchoolClaim raised AttributeError instead of returning a typed result.
+- role_granted_by_l1=abstain with metadata stance=support produced a GovernanceClaim.
+- source_scope metadata and nonempty Claim applicability_snapshot were silently ignored.
+
+MINIMAL REPAIR
+- Both concrete adapters runtime-check isinstance against their exact legacy class and return ADAPTER_INPUT_INVALID for lookalikes.
+- SchoolClaim adapter rejects abstain role with LEGACY_ROLE_ABSTAIN before metadata stance is read.
+- SchoolClaim allowlist is exactly task_id, stance, temporal_scope, reference_version; additional keys return LEGACY_METADATA_UNAPPROVED.
+- Claim adapter admits no applicability_snapshot context; a nonempty mapping returns LEGACY_CONTEXT_UNAPPROVED.
+- Lookup/allowlist mechanics were moved to adapter_values.py so adapters.py remains within the LOC limit.
+
+FOCUSED GREEN / FLAKINESS
+- First focused green: python -m pytest tests/application/test_governance_claim_adapters.py -q; PASS, 9 passed, 0.90s.
+- After boundary-test split: python -m pytest tests/application/test_governance_claim_adapters.py tests/application/test_governance_claim_adapter_boundaries.py -q; PASS, 9 passed, 1.21s.
+
+PLANNED AND JOINT REGRESSION
+- Planned: governance claim, both adapter suites, and Yang static isolation: PASS, 27 passed, 1.32s.
+- Task1-5 joint plus Yang static isolation: PASS, 104 passed, 6.72s.
+
+MANUAL CLI MATRIX
+- FakeSchoolClaim -> ADAPTER_INPUT_INVALID, exit 0.
+- Concrete legacy abstain with support metadata -> LEGACY_ROLE_ABSTAIN, exit 0.
+- Concrete legacy source_scope injection -> LEGACY_METADATA_UNAPPROVED, exit 0.
+- Existing Yang builder: pressure_claims=0; abstain_claims=0, exit 0.
+
+FINAL STATIC GATES
+- ruff format --check: PASS.
+- ruff check: PASS.
+- check-no-excuse-rules.py: PASS, no violations in 9 files.
+- git diff --check: PASS.
+- basedpyright remains unavailable locally; no installation attempted.
+
+REWORK PURE LOC
+- engine/application/governance_claim_adapters.py=215
+- engine/application/governance_claim_adapter_values.py=68
+- engine/governance/governance_claim_values.py=145
+- tests/application/test_governance_claim_adapters.py=157
+- tests/application/test_governance_claim_adapter_boundaries.py=126
+
+CODE REVIEW REWORK: CANONICAL ENVELOPE AND CATALOG LOSSES
+TDD RED
+Command: python -m pytest tests/governance/test_governance_claim.py tests/application/test_governance_claim_adapter_boundaries.py -q
+Result: expected exit 1, 2 failures, 1.81s.
+- duplicate and singleton references had equal digest but unequal public specification/envelope.
+- empty catalog caused CLAIM.REFERENCE_UNKNOWN to escape the SchoolClaim adapter.
+
+MINIMAL REPAIR
+- build_governance_claim now creates canonical_spec after every collection is normalized; the public specification, identity material, and content digest all use that one object.
+- content_from_claim moved to governance_claim_identity.py to retain module-size headroom.
+- adapters catch only GovernanceClaimContractError and convert it to LEGACY_REFERENCE_REJECTED. Detail preserves original issue code and diagnostic.
+- concrete adapter input checks now use exact type equality, rejecting subclasses as well as lookalikes.
+
+FOCUSED GREEN / FLAKINESS
+- First green: 14 passed, 1 warning, 1.74s.
+- Repeat after size split: 14 passed, 1 warning, 1.10s.
+
+PLAN AND TASK1-5 JOINT
+- Planned governance/adapter/Yang isolation: PASS, 29 passed, 1 warning, 1.81s.
+- Task1-5 joint plus Yang isolation: PASS, 106 passed, 1 warning, 9.29s.
+
+REVIEWER REPRO
+- duplicate vs singleton: envelope_equal=True; specification_equal=True; digest_equal=True.
+- empty adapter catalog: claim_is_none=True; issue=LEGACY_REFERENCE_REJECTED; detail=CLAIM.REFERENCE_UNKNOWN: reference is unregistered.
+- Yang actual behavior: pressure_claims=0; abstain_claims=0.
+
+FINAL STATIC GATES
+- ruff format --check: PASS, 9 files already formatted.
+- ruff check: PASS, All checks passed.
+- check-no-excuse-rules.py: PASS, no violations in 9 files.
+- git diff --check: PASS.
+- basedpyright remains unavailable locally; no installation attempted.
+
+FINAL PURE LOC
+- engine/governance/governance_claim.py=245
+- engine/governance/governance_claim_identity.py=92
+- engine/governance/governance_claim_values.py=155
+- engine/application/governance_claim_adapters.py=222
+- tests/governance/test_governance_claim.py=142
+- tests/application/test_governance_claim_adapter_boundaries.py=189
+
+FINAL REVIEW REPAIR: DIRECT CONSTRUCTOR INTEGRITY AND LOSS CLASSIFICATION
+TDD RED
+Command: python -m pytest tests/governance/test_governance_claim.py tests/application/test_governance_claim_adapter_boundaries.py -q
+Result: expected exit 1, 2 failures, 2.45s.
+- Direct constructor with duplicate public references raised CLAIM.DIGEST rather than the required CLAIM.INTEGRITY.
+- Legacy confidence=1.5 was incorrectly classified as LEGACY_REFERENCE_REJECTED.
+
+MINIMAL REPAIR
+- New governance_claim_integrity.py owns canonical specification construction and validates that every direct GovernanceClaim public field, stable ID, and content digest equal its canonical specification.
+- Divergent direct construction, including forged IDs/digests and noncanonical public references, now raises CLAIM.INTEGRITY.
+- ClaimIssueCode adds LEGACY_CLAIM_REJECTED. Adapter losses use LEGACY_REFERENCE_REJECTED only when the caught source code starts with CLAIM.REFERENCE_; every other exact contract error preserves its source code/detail under LEGACY_CLAIM_REJECTED.
+- ClaimReferenceCategory public export now comes directly from governance_claim_values.py rather than relying on an unused intermediate import.
+
+GREEN AND REGRESSION
+- Focused direct-constructor/classification suite: PASS, 16 passed, 1 warning, 1.83s.
+- Planned governance/adapter/Yang isolation: PASS, 31 passed, 1 warning, 4.71s.
+- Task1-5 joint plus Yang static isolation: PASS, 108 passed, 1 warning, 12.62s.
+
+REVIEWER REPRO
+- Direct forged public content, claim_id, and content_digest each raise CLAIM.INTEGRITY.
+- Concrete SchoolClaim with valid catalog references and confidence=1.5 returns claim=None, issue=LEGACY_CLAIM_REJECTED, detail containing CLAIM.CONFIDENCE.
+
+FINAL STATIC GATES
+- ruff format: PASS.
+- ruff check: PASS, All checks passed.
+- check-no-excuse-rules.py: PASS, no violations in 7 changed repair files.
+- git diff --check: PASS; unrelated existing CRLF warnings only.
+- basedpyright remains unavailable locally; no installation attempted.
+
+FINAL REPAIR LOC
+- governance_claim.py and new governance_claim_integrity.py each remain below the 250 pure-LOC ceiling; all touched Task5 modules/tests passed the no-excuse size audit.
+
+TASK7 REVIEW REPAIR: DERIVATION CHAIN DIGEST
+TDD RED
+Command: python -m pytest tests/governance/test_governance_claim_derivation.py tests/application/test_governance_claim_adapter_derivation.py -q
+Result: expected exit 1, 6 failures, 1 warning, 2.21s.
+- GovernanceClaimSpec accepted no derivation field and rejected supplied derivation_chain_digest as an unknown keyword.
+- GovernanceClaim exposed no derivation_chain_digest.
+
+MINIMAL REPAIR
+- GovernanceClaimSpec and GovernanceClaim now require derivation_chain_digest: DigestRef; canonical specification rejects non-exact DigestRef values.
+- Claim content material includes the derivation digest, while identity material remains unchanged. A changed derivation therefore changes content_digest without changing claim_id.
+- Direct constructor integrity compares the public digest field against the canonical specification.
+- Both legacy adapters derive a stable digest from source claim reference, adapter ID/version, and only their approved, normalized source metadata. No unapproved legacy metadata contributes.
+- Adaptation result/loss values moved into governance_claim_adapter_values.py to preserve the <250 pure-LOC limit; behavior is unchanged.
+
+GREEN AND REPRO
+- Focused suites: PASS twice, 28 passed, 1 warning, 5.64s then 5.36s.
+- Planned Task5 plus Yang isolation before the size-only extraction: PASS, 37 passed, 1 warning, 7.72s.
+- Expanded Task1-5 joint before the size-only extraction: PASS, 114 passed, 1 warning, 9.81s.
+- Fresh-process SchoolClaim adaptation is deterministic for identical input and changes for source claim ID or approved reference version changes.
+- Domain Claim adaptation changes derivation digest for a changed source claim ID.
+
+FINAL STATIC GATES
+- ruff format: PASS.
+- ruff check: PASS, All checks passed.
+- check-no-excuse-rules.py: PASS, no violations in 9 changed files, including module-size limits.
+- git diff --check: PASS; unrelated existing CRLF warnings only.
+- basedpyright remains unavailable locally; no installation attempted.

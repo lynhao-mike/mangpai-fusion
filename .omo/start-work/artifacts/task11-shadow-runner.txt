@@ -1,0 +1,109 @@
+Task11 governance shadow runner evidence
+
+Scope
+- Added shadow-only public API in engine/application/governance_shadow_runner.py.
+- Split frozen value/result types into engine/application/governance_shadow_types.py.
+- Split School View legacy adaptation into engine/application/governance_shadow_school_views.py.
+- Added focused tests in tests/application/test_governance_shadow_runner.py.
+- No default orchestrator, run_decision_mvp, V5 adapter, reports, feedback, learning, production runner/registry, Task9 trigger module, or old L6 files were modified.
+
+Baseline before edits
+- Command: python -m pytest tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+  Artifact: .omo/start-work/artifacts/task11-baseline-compat.txt
+  Exit: 0
+  Result: 88 passed, 1 warning
+- Command: python -m pytest tests/governance/test_wave1_baseline_contract.py -q
+  Artifact: .omo/start-work/artifacts/task11-baseline-static-isolation.txt
+  Exit: 0
+  Result: 5 passed, 1 warning
+- Command: python import-state snapshot for engine.decision.orchestrator and engine.decision.v5_adapter
+  Artifact: .omo/start-work/artifacts/task11-baseline-import-state.txt
+  Exit: 0
+  Observable: orchestrator exports run_decision_mvp; v5_adapter exports no run_* or adapter symbols.
+
+RED
+- Command: python -m pytest tests/application/test_governance_shadow_runner.py -q
+  Artifact: .omo/start-work/artifacts/task11-red.txt
+  Exit: 2
+  Expected failure: ModuleNotFoundError: No module named 'engine.application.governance_shadow_runner'
+
+GREEN / focused
+- Command: python -m pytest tests/application/test_governance_shadow_runner.py -q
+  Artifact: .omo/start-work/artifacts/task11-green-focused-4.txt
+  Exit: 0
+  Result: 6 passed, 1 warning
+- Post-format command: python -m pytest tests/application/test_governance_shadow_runner.py -q
+  Artifact: .omo/start-work/artifacts/task11-post-format-focused.txt
+  Exit: 0
+  Result: 6 passed, 1 warning
+
+Required final verification
+- Exact plan command: python -m pytest tests/application/test_governance_shadow_runner.py tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+  Artifact: .omo/start-work/artifacts/task11-final-plan-command.txt
+  Exit: 0
+  Result: 94 passed, 1 warning
+- Governance joint: python -m pytest tests/governance tests/application/test_governance_fact_builder.py tests/application/test_governance_claim_adapters.py tests/application/test_governance_shadow_runner.py -q
+  Artifact: .omo/start-work/artifacts/task11-final-governance-joint.txt
+  Exit: 0
+  Result: 193 passed, 1 warning
+- Compatibility suite: python -m pytest tests/yang_marriage tests/ren_timing tests/decision/test_staged_arbitration.py tests/predicates/test_ten_god_structures.py tests/test_production_rule_loader.py tests/test_decision_mvp.py tests/test_decision_v5_adapter.py -q
+  Artifact: .omo/start-work/artifacts/task11-final-compatibility-suite.txt
+  Exit: 0
+  Result: 333 passed, 1 warning
+- Static/project gate: python -m pytest tests/test_architecture_dependencies.py tests/test_project_metadata.py -q
+  Artifact: .omo/start-work/artifacts/task11-static-project-gate.txt
+  Exit: 0
+  Result: 22 passed, 1 warning
+
+Quality gates
+- Ruff fresh pass: ruff check engine/application/governance_shadow_runner.py engine/application/governance_shadow_types.py engine/application/governance_shadow_school_views.py tests/application/test_governance_shadow_runner.py
+  Artifact: .omo/start-work/artifacts/task11-ruff-post-format.txt
+  Exit: 0
+  Result: All checks passed
+- Ruff format fresh pass: ruff format --check engine/application/governance_shadow_runner.py engine/application/governance_shadow_types.py engine/application/governance_shadow_school_views.py tests/application/test_governance_shadow_runner.py
+  Artifact: .omo/start-work/artifacts/task11-ruff-format-post-format.txt
+  Exit: 0
+  Result: 4 files already formatted
+- No-excuse: python C:/Users/Administrator/.codex/plugins/cache/sisyphuslabs/omo/4.13.0/skills/programming/scripts/python/check-no-excuse-rules.py engine/application/governance_shadow_runner.py engine/application/governance_shadow_types.py engine/application/governance_shadow_school_views.py tests/application/test_governance_shadow_runner.py
+  Artifact: .omo/start-work/artifacts/task11-no-excuse.txt
+  Exit: 0
+  Result: no violations in 4 file(s)
+- Compileall: python -m compileall -q engine/application/governance_shadow_runner.py engine/application/governance_shadow_types.py engine/application/governance_shadow_school_views.py tests/application/test_governance_shadow_runner.py
+  Artifact: .omo/start-work/artifacts/task11-compileall-post-format.txt
+  Exit: 0
+  Result: no output
+- LOC: PowerShell pure LOC counter over touched Python files
+  Artifact: .omo/start-work/artifacts/task11-loc-post-format.txt
+  Result: runner 242, types 184, school_views 55, tests 233
+- Diff check: git diff --check over touched files
+  Artifact: .omo/start-work/artifacts/task11-diff-check-final.txt
+  Exit: 0
+  Result: diff-check passed
+
+Public API replay / adversarial scenarios
+- Command: PowerShell here-string piped to python -, importing engine.application.governance_shadow_runner public API.
+  Artifact: .omo/start-work/artifacts/task11-public-api-replay.txt
+  Exit: 0
+  Binary observables:
+  1. success ok consensus
+  2. no_year False False ('missing_required_fact',)
+  3. ditiansui ('legacy-ditiansui',) ()
+  4. one_school_failure ren_fuhong ok
+  5. fact_conflict fail_closed True ARBITRATION.FACT_CONFLICT
+  6. deterministic_digest True
+  7. side_effects True True
+- The focused pytest file separately covers seven-gate trace order and retained-claim preservation.
+- The public replay plus focused pytest cover at least nine Task11 scenarios: success, no-year no liunian, trigger inactive without target year, ditiansui exclusion, one-school failure preservation, fact conflict fail-closed, deterministic digest, no registry mutation side effect, static banned-import isolation.
+
+Final import/static evidence
+- Command: python import-state snapshot for engine.decision.orchestrator, engine.decision.v5_adapter, engine.application.governance_shadow_runner
+  Artifact: .omo/start-work/artifacts/task11-final-import-state.txt
+  Exit: 0
+  Observable: orchestrator still exposes run_decision_mvp only; v5_adapter exposes no run_* or adapter symbols; shadow runner exposes run_governance_shadow only.
+- New file snapshots: .omo/start-work/artifacts/task11-final-new-file-snapshots.txt
+- Final status: .omo/start-work/artifacts/task11-final-status.txt
+
+Cleanup / notes
+- A first patch was accidentally created under F:/八字分析系统/ziweidoushu/tests/application/test_governance_shadow_runner.py; it was moved into F:/多流派新思路 and the misplaced copy no longer exists.
+- Stale failing artifacts kept for audit but not cited as passing evidence: task11-ruff.txt and task11-ruff-format.txt. Fresh passing evidence is task11-ruff-post-format.txt and task11-ruff-format-post-format.txt.
+- No commit was made.

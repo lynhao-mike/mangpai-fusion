@@ -1,0 +1,189 @@
+{
+  "session_schema_version": "asof-session/v1",
+  "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+  "as_of_date": "2023-12-31",
+  "session_id": "S-20260728T120000Z-00000118",
+  "blind_input": {
+    "schema_version": "asof-blind-input/v1",
+    "chart_source": "wenzhen_structured_v1",
+    "gender": "乾",
+    "pillars": {
+      "year": {"stem": "己", "branch": "巳", "hidden_stems": ["丙", "庚", "戊"], "changsheng": "死"},
+      "month": {"stem": "癸", "branch": "酉", "hidden_stems": ["辛"], "changsheng": "临官"},
+      "day": {"stem": "辛", "branch": "丑", "hidden_stems": ["己", "癸", "辛"], "changsheng": "养"},
+      "hour": {"stem": "己", "branch": "丑", "hidden_stems": ["己", "癸", "辛"], "changsheng": "养"}
+    },
+    "daiyun": [
+      {"sequence": 1, "stem": "癸", "branch": "酉", "start_date": "1999-01-01", "end_date": "2009-01-01"},
+      {"sequence": 2, "stem": "壬", "branch": "申", "start_date": "2009-01-01", "end_date": "2019-01-01"},
+      {"sequence": 3, "stem": "辛", "branch": "未", "start_date": "2019-01-01", "end_date": "2029-01-01"},
+      {"sequence": 4, "stem": "庚", "branch": "午", "start_date": "2029-01-01", "end_date": "2039-01-01"},
+      {"sequence": 5, "stem": "己", "branch": "巳", "start_date": "2039-01-01", "end_date": "2049-01-01"},
+      {"sequence": 6, "stem": "戊", "branch": "辰", "start_date": "2049-01-01", "end_date": "2059-01-01"},
+      {"sequence": 7, "stem": "丁", "branch": "卯", "start_date": "2059-01-01", "end_date": "2069-01-01"},
+      {"sequence": 8, "stem": "丙", "branch": "寅", "start_date": "2069-01-01", "end_date": "2079-01-01"}
+    ]
+  },
+  "draft": {
+    "fundamentals": [
+      {
+        "fundamental_id": "career-technical-employment-baseline",
+        "window_start": "2014-01-01",
+        "window_end": "2023-12-31",
+        "window_center": "2020-12-31",
+        "center": "技术就业路径持续但单位、待遇与工作强度可变化",
+        "reasonable_range": ["IT技术岗位", "单位变化", "待遇与工作强度变化"],
+        "strongest_alternative": "职业路径长期停滞且没有单位变化",
+        "falsifiers": ["2014至2023年没有进入IT行业或发生任何单位变化"]
+      }
+    ],
+    "events": [
+      {
+        "candidate": {
+          "candidate_id": "career-2020-job-change",
+          "event_type": "job_change",
+          "window_start": "2020-01-01",
+          "window_end": "2020-12-31",
+          "annual_trace": {
+            "year": 2020,
+            "liunian": "庚子",
+            "dayun_ganzhi": "辛未",
+            "relations": [
+              {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "四柱/大运.排布", "excerpt": "己巳 癸酉 辛丑 己丑；辛未 2019-2029"}
+            ],
+            "activated_node_ids": ["career-technical-employment"],
+            "domains": ["career"],
+            "supporting_evidence": [
+              {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "四柱/十二长生", "excerpt": "日干辛；月支临官；日支、时支养"}
+            ],
+            "counter_evidence": [],
+            "trigger_strength": "high",
+            "crossed_candidate_gate": true
+          },
+          "root_level": "STRONG_ROOT",
+          "completion_mode": "ACTIVATE_EXISTING",
+          "natal_evidence": [
+            {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "四柱", "excerpt": "年柱己巳；月柱癸酉；日柱辛丑；时柱己丑"}
+          ],
+          "daiyun_evidence": [
+            {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "大运.排布[3]", "excerpt": "辛未 2019-2029"}
+          ],
+          "root_evidence": [
+            {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "藏干/十二长生", "excerpt": "月支酉藏辛；日支与时支丑藏己癸辛；月支临官"}
+          ],
+          "source_citations": [
+            {"source_path": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "line": 36, "excerpt": "四柱:"},
+            {"source_path": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "line": 91, "excerpt": "序号: 3；干支: 辛未；起讫: 2019-2029"}
+          ],
+          "supporting_evidence": [
+            {"source": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md", "locator": "十二长生", "excerpt": "日干辛；月支临官；日支养；时支养"}
+          ],
+          "counter_evidence": [],
+          "alternative_hypotheses": ["单位不变但职责或待遇变化"],
+          "frozen_version": "asof-prototype-v1-unit11"
+        },
+        "landing_set": {
+          "function_candidate": "job_change",
+          "center": {"name": "更换单位且待遇与工作强度上升", "domain": "career", "direction": "job_change"},
+          "alternatives": [
+            {"name": "单位不变但职责或待遇上升", "domain": "career", "direction": "job_change"}
+          ],
+          "weak_hit_boundary": "只有模糊工作变化而无单位、待遇或职责事实视为弱命中",
+          "falsifiers": ["2020年未换单位且职责待遇均无变化"],
+          "exclusions": ["不把事业变化自动推广到未显式核验的财富结论"],
+          "frozen_version": "landing-v1-unit11-second-real-case"
+        }
+      }
+    ]
+  },
+  "verifications": [
+    {
+      "schema_version": "asof-career-verification/v1",
+      "freeze_package_sha256": "$computed",
+      "item_id": "career-2020-job-change",
+      "verdict": "CONFIRMED",
+      "actual_landing": {"name": "更换单位且待遇与工作强度上升", "domain": "career", "direction": "job_change"},
+      "reality_constraint": null,
+      "taxonomy_evidence": ["cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/feedback.md:34: 2020年4月跳槽到华为，工资大幅度提升，但是非常卷和累"]
+    }
+  ],
+  "suggestions": [
+    {
+      "schema_version": "asof-career-impact-suggestion/v1",
+      "freeze_package_sha256": "$computed",
+      "item_id": "career-2020-job-change",
+      "event_date": "2020-04-01",
+      "suggested_impact": "MAJOR",
+      "suggested_persistence": "CROSS_DAIYUN",
+      "suggested_scope": "PRIMARY_DOMAIN",
+      "suggested_short_term_until": null,
+      "state_value": "2020年4月跳槽华为，待遇与工作强度上升",
+      "opened_path_ids": [],
+      "closed_path_ids": []
+    }
+  ],
+  "impact_adjudications": [
+    {
+      "freeze_package_sha256": "$computed",
+      "item_id": "career-2020-job-change",
+      "final_impact": "MAJOR",
+      "final_persistence": "CROSS_DAIYUN",
+      "final_scope": "PRIMARY_DOMAIN",
+      "final_short_term_until": null,
+      "adjustment_reason": "命理师依据2020年真实反馈确认单位、待遇与工作强度变化",
+      "condition": "",
+      "difference_from_verified": "",
+      "changed_fundamental_ids": [],
+      "changed_future_conclusions": [],
+      "minimum_question": "",
+      "falsifier": ""
+    }
+  ],
+  "fundamental_adjudication": {
+    "freeze_package_sha256": "$computed",
+    "selected_fundamental_id": "career-technical-employment-baseline",
+    "reason": "核验后选择符合2014至2023年真实职业年表的冻结基本面"
+  },
+  "daiyun_end": "2028-12-31",
+  "career_candidates": [
+    {
+      "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+      "as_of_date": "2023-12-31",
+      "candidate_id": "career-future-from-verified-2020",
+      "conclusion": "仅以已核验的2020事业现实状态作为后续事业推演起点",
+      "required_active_state_ids": ["state:career-2020-job-change"],
+      "required_open_path_ids": []
+    }
+  ],
+  "wealth_bindings": [
+    {
+      "event_id": "career-2020-job-change",
+      "observed_conditions": ["工资大幅度提升", "已核验事业事件"],
+      "active_falsifiers": [],
+      "edges": [
+        {
+          "edge_id": "wealth-from-2020-salary-rise",
+          "source_event_type": "job_change",
+          "target_state": "税前年薪约45万",
+          "required_conditions": ["工资大幅度提升", "已核验事业事件"],
+          "delay_days": 0,
+          "persistence": "CROSS_DAIYUN",
+          "falsifiers": ["反馈否认工资提升"],
+          "verified": true,
+          "short_term_days": null
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "archive_root": "reports/asof-session-artifacts",
+    "artifact_id": "asof-unit11-rf000118",
+    "verified_at": "2026-07-28T12:00:00+00:00",
+    "verifier": "unit11-manual-real-case",
+    "verification_basis": [
+      "case-input-structured-chart",
+      "case-feedback-career-2020",
+      "existing-asof-session-chain"
+    ]
+  }
+}

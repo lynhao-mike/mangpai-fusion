@@ -1,0 +1,74 @@
+{
+  "schema_version": "career-path-holdout-preregistration/v1",
+  "preregistration_id": "career-path-holdout-preregistration-v1",
+  "registered_at": "2026-07-31T09:48:00Z",
+  "protocol_path": "engine/contracts/14-career-path-evaluation-protocol-v1.md",
+  "dataset_registry_path": "META/as-of-evaluation/career-path-dataset-registry-v1.json",
+  "status": "awaiting_unseen_holdout",
+  "holdout_ready": false,
+  "labels_revealed": false,
+  "holdout_manifest_path": null,
+  "labels_path": null,
+  "labels_sha256": null,
+  "minimum_strict_binary_cases": 30,
+  "minimum_cases_per_class": 10,
+  "strict_binary_labels": [
+    "employment",
+    "entrepreneurship"
+  ],
+  "models": [
+    {
+      "model_id": "majority_or_abstain_baseline-v1",
+      "role": "baseline"
+    },
+    {
+      "model_id": "career-path-counting-baseline-v3-frozen",
+      "role": "frozen_legacy_baseline",
+      "source_freeze": "META/as-of-evaluation/p-series-career-path-classifier-freeze-v3.json"
+    },
+    {
+      "model_id": "career-path-relation-model-v1",
+      "role": "candidate"
+    }
+  ],
+  "metrics": [
+    "balanced_accuracy",
+    "employment_recall",
+    "entrepreneurship_recall",
+    "coverage",
+    "majority_class_baseline_accuracy",
+    "career_pillar_location_consistency",
+    "trace_completeness",
+    "mixed_transitioning_recognition"
+  ],
+  "promotion_thresholds": {
+    "min_balanced_accuracy": 0.6,
+    "min_employment_recall": 0.55,
+    "min_entrepreneurship_recall": 0.55,
+    "min_coverage": 0.7,
+    "must_beat_majority_baseline": true,
+    "must_beat_frozen_counting_baseline": true
+  },
+  "freeze_policy": {
+    "one_shot_freeze": true,
+    "one_score_only": true,
+    "post_label_tuning_permitted": false,
+    "predictions_must_be_frozen_before_label_reveal": true,
+    "required_hashes": [
+      "cohort_sha256",
+      "labels_sha256",
+      "preregistration_sha256",
+      "predictions_sha256",
+      "code_or_rules_sha256"
+    ]
+  },
+  "label_review_policy": {
+    "independent_reviewers_required": 2,
+    "allowed_statuses": [
+      "double_review_agreed",
+      "adjudicated"
+    ],
+    "adjudication_required_on_disagreement": true
+  },
+  "current_blocker": "No real unseen holdout of at least 30 strictly binary, independently reviewed cases is registered. Placeholder or recycled cases are forbidden."
+}

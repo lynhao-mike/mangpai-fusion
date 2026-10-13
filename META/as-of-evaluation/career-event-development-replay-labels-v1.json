@@ -1,0 +1,32 @@
+{
+  "schema_version": "career-event-development-replay-labels/v1",
+  "dataset_id": "career-role-change-development-replay-v1",
+  "dataset_classification": "development_replay_only",
+  "promotion_eligible": false,
+  "unseen_holdout_evidence": "none",
+  "normalization_policy": {
+    "unit": "source_case_id@calendar_year",
+    "event_type": "Use the most specific explicitly stated career role event. Compound same-year transfer plus promotion is represented by two labels.",
+    "direction": "Positive for entry, promotion, or explicitly improved role; negative for dismissal, unemployment, failed entrepreneurship, or explicitly worsened role; neutral for job change or transfer with mixed/no clear role direction.",
+    "magnitude": "Development-only ordinal anchors: 0.60 material entry/job change, 0.70 promotion/transfer, 0.80 compound or high-impact change, 0.75 failed entrepreneurship.",
+    "negative_label": "Allowed only when the source explicitly states work was stable/no role change in the observation year.",
+    "income_only": "Excluded unless accompanied by a role/job/position change.",
+    "reveal_boundary": "This artifact may be opened only after predictions have been frozen. It contains no chart records and binds separately to each model freeze hash at reveal time."
+  },
+  "labels": [
+    {"label_id": "CER-RF000118-2015", "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2015", "start_year": 2015, "end_year": 2015, "domain": "事业", "event_type": "career.entry", "direction": "positive", "magnitude": 0.7, "source_ref": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md:164-166", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000118-2019", "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2019", "start_year": 2019, "end_year": 2019, "domain": "事业", "event_type": "career.entrepreneurship_failure", "direction": "negative", "magnitude": 0.75, "source_ref": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md:173-175", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000118-2021", "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2021", "start_year": 2021, "end_year": 2021, "domain": "事业", "event_type": "career.job_change", "direction": "neutral", "magnitude": 0.65, "source_ref": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md:179-181", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2005", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2005", "start_year": 2005, "end_year": 2005, "domain": "事业", "event_type": "career.entry", "direction": "positive", "magnitude": 0.65, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:186-188", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2017", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2017", "start_year": 2017, "end_year": 2017, "domain": "事业", "event_type": "career.promotion", "direction": "positive", "magnitude": 0.7, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:195-197", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2019-A", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2019", "start_year": 2019, "end_year": 2019, "domain": "事业", "event_type": "career.transfer", "direction": "neutral", "magnitude": 0.7, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:198-200", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2019-B", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2019", "start_year": 2019, "end_year": 2019, "domain": "事业", "event_type": "career.promotion", "direction": "positive", "magnitude": 0.8, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:198-200", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2021-A", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2021", "start_year": 2021, "end_year": 2021, "domain": "事业", "event_type": "career.transfer", "direction": "neutral", "magnitude": 0.7, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:201-203", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000178-2021-B", "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申@2021", "start_year": 2021, "end_year": 2021, "domain": "事业", "event_type": "career.promotion", "direction": "positive", "magnitude": 0.8, "source_ref": "cases/C-2026-RF000178-乾-庚申丁亥乙巳甲申/input.md:201-203", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000179-2014", "case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯@2014", "start_year": 2014, "end_year": 2014, "domain": "事业", "event_type": "career.job_change", "direction": "positive", "magnitude": 0.65, "source_ref": "cases/C-2026-RF000179-乾-丁卯丁未丙子辛卯/input.md:159-161", "confidence_grade": "A", "dataset_classification": "development_replay_only"},
+    {"label_id": "CER-RF000179-2018", "case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯@2018", "start_year": 2018, "end_year": 2018, "domain": "事业", "event_type": "career.job_change", "direction": "positive", "magnitude": 0.65, "source_ref": "cases/C-2026-RF000179-乾-丁卯丁未丙子辛卯/input.md:165-167", "confidence_grade": "A", "dataset_classification": "development_replay_only"}
+  ],
+  "no_event_cases": [
+    {"case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑@2022", "source_ref": "cases/C-2026-RF000118-乾-己巳癸酉辛丑己丑/input.md:182-184", "confidence_grade": "A", "dataset_classification": "development_replay_only"}
+  ]
+}

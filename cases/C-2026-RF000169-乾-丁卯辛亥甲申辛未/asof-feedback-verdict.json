@@ -1,0 +1,134 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+  "status": "ADJUDICATED_AFTER_FEEDBACK",
+  "adjudicated_at": "2026-07-31T00:15:00+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000169-乾-丁卯辛亥甲申辛未/asof-blind-freeze.json",
+    "sha256": "649acbfe3a03b89782d6bfc9c28903169eb09d6a94bb14e003c245f299c878a4",
+    "sha256_verified_before_feedback_adjudication": true,
+    "frozen_center_statement": "更适合规则明确的组织或专业体系，以责任、资格与规范执行建立职业位置",
+    "frozen_root_level": "STRONG_ROOT",
+    "frozen_e1": "1997年学习环境、家庭安排或居住节奏出现一次可核验调整。"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000169-乾-丁卯辛亥甲申辛未/feedback.md",
+    "feedback_opened_after_freeze_sha_verified": true,
+    "freeze_modified_after_feedback": false,
+    "other_case_feedback_used": false
+  },
+  "feedback_evidence": [
+    {
+      "line": 10,
+      "year": 2006,
+      "fact": "年少混迹街头、打架，被砍伤入院",
+      "domains": []
+    },
+    {
+      "line": 11,
+      "year": 2013,
+      "fact": "结婚",
+      "domains": [
+        "marriage"
+      ]
+    },
+    {
+      "line": 12,
+      "year": 2017,
+      "fact": "找到国企工作，非常稳定",
+      "domains": [
+        "occupation"
+      ]
+    },
+    {
+      "line": 13,
+      "year": 2023,
+      "fact": "2022起事业变差，2023遭遇小人并患精神疾病",
+      "domains": [
+        "occupation",
+        "health"
+      ]
+    },
+    {
+      "line": 14,
+      "year": 2024,
+      "fact": "后半年单位挤兑并强迫离职",
+      "domains": [
+        "occupation"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "scoring_unit": "career_basic_state",
+    "verdict": "CENTER_HIT",
+    "reason": "2017年直接进入国企且反馈明确评价为非常稳定，满足规则明确组织体系与稳定职业位置的最低核验边界；不据此补记资格、管理权或具体职责。"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "alternative_index": 1,
+      "verdict": "ABSTAIN",
+      "reason": "反馈没有专业技术、咨询支持或管理权范围的直接描述。"
+    },
+    {
+      "claim_id": "A2",
+      "alternative_index": 2,
+      "verdict": "ALTERNATIVE_HIT",
+      "reason": "2022起事业转差、2023单位关系恶化、2024被单位挤兑并强迫离职，直接支持既有岗位后来兑现不稳和组织压力反复。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_event_precision",
+      "window": "1997-01-01/1997-12-31",
+      "frozen_center_event": "1997年学习环境、家庭安排或居住节奏出现一次可核验调整。",
+      "verdict": "ABSTAIN",
+      "enters_denominator": false,
+      "reason": "反馈最早事件为2006年，对1997年没有可核验事实；不得把2006伤灾挪入1997单年窗口。"
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "shortcut_flag_at_freeze": false,
+    "policy": "root_level是冻结前结构判断；反馈只检验现实兑现，不回写或抬升根源等级。"
+  },
+  "theory_layer_adjudication": {
+    "lookup_changed_blind_judgment": false,
+    "verdict": "NOT_INDEPENDENTLY_TESTABLE_FROM_FEEDBACK",
+    "reason": "反馈可核验现实职业与事件，但不能单独证明所采纳理论规则的结构因果；理论层不计入E1得分。"
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "verdict": "CENTER_HIT",
+      "evaluable": 1
+    },
+    "dated_event_precision": {
+      "verdict": "ABSTAIN",
+      "evaluable": 0,
+      "enters_denominator": false
+    },
+    "alternatives": [
+      "ABSTAIN",
+      "ALTERNATIVE_HIT"
+    ]
+  },
+  "overall_conclusion": {
+    "career_basic_state": "CENTER_HIT",
+    "e1_result": "ABSTAIN",
+    "e1_enters_denominator": false,
+    "summary": "职业中心由2017国企稳定命中，兑现不稳备选由2022—2024恶化命中；E1无窗口内反馈，ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_scored_atomic_verdicts_formal": true
+  }
+}

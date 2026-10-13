@@ -1,0 +1,73 @@
+{
+  "schema_version": "prospective-immediate-retrospective-unbound/v1",
+  "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+  "subject_id_hash": "352a1dffc2857d20e46c901ab27d691ce504623b9d740c6582055bd6d6ce0e05",
+  "created_at": "2026-07-27T09:12:10.077Z",
+  "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--immediate-retrospective-unbound--v001.json",
+  "parents": [
+    {
+      "artifact_path": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/P-GO-2026-001-坤-壬戌己酉乙卯丁亥--feedback-release--v001.json",
+      "artifact_sha256": "c5f4729e06cc976304a85c031b0ae36fa875912b378bbf6baea5a98354e81026"
+    }
+  ],
+  "evidence_class": "prediction_first_immediate_retrospective",
+  "fact_cutoff_at": "2026-07-17T08:04:23.949068Z",
+  "collected_after_verification": true,
+  "custodian": "浩哥",
+  "facts": [
+    {
+      "task_id": "career.role_change",
+      "label": "unknown",
+      "occurred_at": null,
+      "relative_time": "unknown",
+      "source_refs": [
+        "custody://prospective-go/P-GO-2026-001/career-role-change/unverified"
+      ],
+      "high_risk": false,
+      "classification": "no_data",
+      "scorable": false,
+      "label_identity": "3909e9799e09e541a9ffff78a8c9b3401be298f88d458e5e962ab5136d527cb0"
+    },
+    {
+      "task_id": "career.change_window",
+      "label": "unknown",
+      "occurred_at": null,
+      "relative_time": "unknown",
+      "source_refs": [
+        "custody://prospective-go/P-GO-2026-001/career-change-window/unverified"
+      ],
+      "high_risk": false,
+      "classification": "no_data",
+      "scorable": false,
+      "label_identity": "30646b2cc8bd70ba091392198de597b8f4a5eb2dadc27380fb6e0cc028c70a4d"
+    },
+    {
+      "task_id": "structure.overview",
+      "label": "unknown",
+      "occurred_at": null,
+      "relative_time": "unknown",
+      "source_refs": [
+        "custody://prospective-go/P-GO-2026-001/structure-overview/unverified"
+      ],
+      "high_risk": false,
+      "classification": "no_data",
+      "scorable": false,
+      "label_identity": "c89952091a5793f1889367012b273ce5072d3a4971e2c9decf58bb62d239fef3"
+    },
+    {
+      "task_id": "wealth.debt",
+      "label": "unknown",
+      "occurred_at": null,
+      "relative_time": "unknown",
+      "source_refs": [
+        "custody://prospective-go/P-GO-2026-001/wealth-debt/unverified"
+      ],
+      "high_risk": true,
+      "classification": "no_data",
+      "scorable": false,
+      "label_identity": "19c3a23bc3357fe3c9a7fcb22d082f80f4b3638e254eab34069c7e00e1fa5fc1",
+      "review_status": "pending_independent_dual_review"
+    }
+  ],
+  "artifact_sha256": "7b6dc039d3be671af6ea668036aec4d4bd45e04bc60a087f824d71a0f0903fac"
+}

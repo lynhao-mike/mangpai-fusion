@@ -1,0 +1,308 @@
+Task 3 Fact Builder Evidence
+============================
+
+Owned files
+-----------
+- engine/application/governance_fact_builder.py
+- tests/application/test_governance_fact_builder.py
+- .omo/start-work/artifacts/task3-fact-builder.txt
+
+Scope
+-----
+- New application-only builder creates a governance FactSnapshot from
+  RawWenzhenPayload, ChartFactLedger, explicit target_year, and an optional
+  versioned ChartFeatureVector.
+- No engine/governance source, governance package initializer, or legacy
+  production path was modified.
+
+TDD evidence
+------------
+1. Pre-change baseline
+   Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py -q
+   Exit: 0
+   Result: 43 passed in 1.31s.
+
+2. Red test
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 1
+   Result: 10 failed because engine.application.governance_fact_builder did not exist.
+
+3. First green
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 10 passed in 1.34s; one pre-existing pipeline_runner deprecation warning.
+
+4. Expanded focused suite
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 13 passed in 3.92s; same pre-existing warning.
+
+5. Final required joint regression
+   Command: python -m pytest tests/application/test_governance_fact_builder.py tests/predicates/test_ten_god_structures.py -q
+   Exit: 0
+   Result: 26 passed in 3.13s; same pre-existing warning.
+
+Behavior covered
+----------------
+- Four pillars, sex marker, valid dayun ranges, and a matching explicit target
+  year are L0 canonical observations.
+- No target year means no liunian fact, even with ledger liunian rows or a
+  captured_at value that names a year.
+- No system clock, as_of_date, or captured_at input is consulted.
+- Versioned ChartFeatureVector day-master signals are L1 only; with no feature
+  vector, no L1 fact is created.
+- Fact payloads exclude school, conclusion, confidence, and role.
+- Same input/version is deterministic in-process and across separate Python
+  processes. The focused suite executes the separate-process case.
+- L0 fact identities remain stable across calculator versions while content
+  digests and snapshot content bindings change.
+- Adding dayun cannot modify the natal four-pillar fact.
+- Malformed dayun/liunian records are skipped rather than projected.
+- raw_source_hash mismatch is rejected as stale state.
+- Raw prompt-like text cannot be projected into fact payloads.
+- The implementation is pure, opens no resources, has no mutable module state,
+  and has no asynchronous work; cancellation, interruption cleanup, and hung
+  process paths are therefore not applicable to this adapter.
+
+Manual QA
+---------
+Command: python -c <builder fixture>
+Exit: 0
+Observed snapshot: fact_snapshot:36e758e2da00b8ffda5ebd9ccb908c636a9cc188b57567d79e40a4d011a49b12
+Observed facts:
+- chart.sex_marker, canonical_observation, natal
+- chart.liunian, canonical_observation, liunian
+- chart.dayun, canonical_observation, dayun
+- chart.four_pillars, canonical_observation, natal
+
+Quality gates
+-------------
+- python -m ruff format --check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: 2 files already formatted.
+- python -m ruff check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: All checks passed.
+- Manual no-excuse scan for Any, object, cast, type/pyright ignore, broad
+  except, asyncio, pandas, and conflict markers found no matches.
+- git diff --check on the two owned code files returned no output.
+- Product source pure LOC: 206, below the 250 limit. Test pure LOC: 210.
+- basedpyright unavailable: C:\Python314\python.exe: No module named basedpyright.
+
+Worktree handling
+-----------------
+The initial worktree was heavily dirty with unrelated tracked and untracked
+files. No existing modification was reverted, overwritten, staged, or cleaned.
+
+Rework: Fail-Closed Liunian Admission
+======================================
+
+Reason
+------
+Independent acceptance found that the original adapter admitted a target year
+outside declared dayun coverage and silently accepted both conflicting and
+identical duplicate liunian rows.
+
+Decision
+--------
+- A requested liunian now requires at least one valid declared dayun range.
+- The requested year must fall within one of those ranges.
+- Exactly one valid ganzhi row may exist for the target year.
+- Missing dayun context, out-of-range target years, conflicting duplicates, and
+  identical duplicates raise FactBuilderError with distinct issue codes.
+
+Rework TDD evidence
+-------------------
+1. Red
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 1
+   Result: 4 failed, 13 passed. The new tests failed only because the old
+   builder did not raise for:
+   - FACT_BUILDER.TARGET_YEAR_OUTSIDE_DAYUN
+   - FACT_BUILDER.DAYUN_CONTEXT_REQUIRED
+   - FACT_BUILDER.LIUNIAN_CONFLICT
+   - FACT_BUILDER.LIUNIAN_DUPLICATE
+
+2. First green
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 17 passed in 4.89s; one pre-existing pipeline_runner deprecation
+   warning.
+
+3. Focused repeat
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 17 passed in 3.00s; same pre-existing warning.
+
+4. Planned joint regression
+   Command: python -m pytest tests/application/test_governance_fact_builder.py tests/predicates/test_ten_god_structures.py -q
+   Exit: 0
+   Result: 30 passed in 7.10s; same pre-existing warning.
+
+5. Canonical/fact joint regression
+   Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 60 passed in 4.33s; same pre-existing warning.
+
+Manual malicious-input QA
+-------------------------
+Command: python -c <out-of-range and conflicting-liunian fixtures>
+Exit: 0
+Observed structured issue codes:
+- FACT_BUILDER.TARGET_YEAR_OUTSIDE_DAYUN
+- FACT_BUILDER.LIUNIAN_CONFLICT
+
+Rework quality gates
+--------------------
+- python -m ruff format --check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: 2 files already formatted.
+- python -m ruff check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: All checks passed.
+- Manual no-excuse and conflict-marker scan found no matches.
+- git diff --check on owned code files returned no output.
+- Product source pure LOC: 239, below the 250 limit (warning band). Test pure
+  LOC: 249. Module responsibility remains fact snapshot projection.
+- basedpyright remains unavailable: C:\Python314\python.exe: No module named
+  basedpyright.
+
+Second-round rework: Dayun integrity and L1 chart binding
+===========================================================
+
+Reason
+------
+Acceptance review required fail-closed validation of declared dayun intervals
+and proof that a supplied L1 feature vector belongs to the current chart.
+
+Decision
+--------
+- Each declared dayun row now requires a nonempty ganzhi and an inclusive,
+  valid year range; malformed rows raise FACT_BUILDER.DAYUN_STEP_INVALID.
+- Declared dayun ranges must not overlap; overlaps raise
+  FACT_BUILDER.DAYUN_OVERLAP.
+- A supplied ChartFeatureVector is rebound through the established feature
+  builder using its schema version. A mismatched chart_id raises
+  FACT_BUILDER.FEATURE_VECTOR_CHART_ID.
+- raw_source_hash remains an independent stale-source integrity check because
+  the established feature-vector chart_id intentionally excludes that hash.
+
+Rework TDD evidence
+-------------------
+1. Red
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 1
+   Result: 4 relevant failures: malformed/inverted dayun, overlapping dayun,
+   and cross-chart L1 vectors were accepted by the prior implementation.
+
+2. Green
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 20 passed; one existing pipeline_runner deprecation warning.
+
+3. Focused repeat
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 20 passed in 3.33s; same existing warning.
+
+4. Planned joint regression
+   Command: python -m pytest tests/application/test_governance_fact_builder.py tests/predicates/test_ten_god_structures.py -q
+   Exit: 0
+   Result: 33 passed in 3.12s; same existing warning.
+
+5. Canonical/fact joint regression
+   Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 63 passed in 4.92s; same existing warning.
+
+Manual typed-error QA
+---------------------
+Command: python -c <out-of-range, conflict, interval, and L1 fixtures>
+Exit: 0
+Observed FactBuilderError.issue_code values:
+- FACT_BUILDER.TARGET_YEAR_OUTSIDE_DAYUN
+- FACT_BUILDER.LIUNIAN_CONFLICT
+- FACT_BUILDER.DAYUN_STEP_INVALID
+- FACT_BUILDER.DAYUN_OVERLAP
+- FACT_BUILDER.FEATURE_VECTOR_CHART_ID
+
+Final quality gates
+-------------------
+- python -m ruff format --check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: 2 files already formatted.
+- python -m ruff check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: All checks passed.
+- Manual no-excuse and conflict-marker scan found no matches for Any, object,
+  cast, ignore directives, broad except, asyncio, pandas, or merge markers.
+- git diff --check on owned code files returned no output.
+- Product source pure LOC: 249. Test pure LOC: 246. Both are below the 250
+  limit; no further optimization was performed.
+- basedpyright unavailable: C:\Python314\python.exe: No module named
+  basedpyright.
+
+Third-round rework: Duplicate-range characterization and L0 projection typing
+===============================================================================
+
+Reason
+------
+Final acceptance required explicit regression coverage for identical and
+conflicting values declared over the same dayun interval. It also identified
+the six-parameter, raw-dict _l0_fact helper as an avoidable typed-boundary
+violation.
+
+Decision
+--------
+- The existing parameterized dayun-admission test now includes both identical
+  and conflicting same-range rows. Both characterize the intentionally single
+  FACT_BUILDER.DAYUN_OVERLAP admission result.
+- _l0_fact was removed. Frozen _L0Projection owns typed L0 metadata and a
+  CanonicalValue payload; its build method accepts only calculator version.
+- The test parameter is represented as typed range tuples and projected to the
+  legacy ledger row shape only at the test fixture boundary.
+
+Characterization and refactor evidence
+--------------------------------------
+1. Test-first characterization
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 22 passed in 3.38s; the newly added same-range duplicate and
+   same-range conflicting scenarios were already green as DAYUN_OVERLAP.
+
+2. Helper refactor green
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 22 passed in 4.75s; same existing pipeline_runner warning.
+
+3. Focused repeat after final formatting
+   Command: python -m pytest tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 22 passed in 2.85s; same existing warning.
+
+4. Planned joint regression
+   Command: python -m pytest tests/application/test_governance_fact_builder.py tests/predicates/test_ten_god_structures.py -q
+   Exit: 0
+   Result: 35 passed in 3.14s; same existing warning.
+
+5. Canonical/fact joint regression
+   Command: python -m pytest tests/governance/test_canonical.py tests/governance/test_fact_contracts.py tests/application/test_governance_fact_builder.py -q
+   Exit: 0
+   Result: 65 passed in 3.71s; same existing warning.
+
+Manual interval and L1 QA
+-------------------------
+Command: python -c <same-range duplicate, same-range conflict, and L1 fixture>
+Exit: 0
+Observed FactBuilderError.issue_code values:
+- same_range_duplicate=FACT_BUILDER.DAYUN_OVERLAP
+- same_range_conflict=FACT_BUILDER.DAYUN_OVERLAP
+- cross_chart_l1=FACT_BUILDER.FEATURE_VECTOR_CHART_ID
+
+Final quality gates
+-------------------
+- python -m ruff format --check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: 2 files already formatted.
+- python -m ruff check engine/application/governance_fact_builder.py tests/application/test_governance_fact_builder.py
+  Exit: 0. Result: All checks passed.
+- Manual no-excuse and conflict-marker scan found no matches for Any, object,
+  cast, ignore directives, broad except, asyncio, pandas, or merge markers.
+- git diff --check on owned code files returned no output.
+- Product source pure LOC: 246. Test pure LOC: 246. Both are below the 250
+  limit.
+- basedpyright unavailable: C:\Python314\python.exe: No module named
+  basedpyright.

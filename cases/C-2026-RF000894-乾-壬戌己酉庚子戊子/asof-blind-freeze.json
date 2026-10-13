@@ -1,0 +1,174 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000894",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-29T21:45:00+08:00",
+  "as_of_date": "2026-07-29",
+  "as_of_date_basis": "案例盲态前缀未另给求测截止日，采用本次验证日期；本文件写入并计算哈希后不得根据反馈回写。",
+  "blind_source_boundary": {
+    "source": "cases/C-2026-RF000894-乾-壬戌己酉庚子戊子/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "cutoff_line": 136,
+    "cutoff_marker": "yaml_key",
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "content_after_cutoff_read_before_freeze": false,
+    "feedback_read_before_freeze": false
+  },
+  "blind_input": {
+    "sex": "乾",
+    "birth_datetime": "1982-09-14T23:55:00+08:00",
+    "birthplace": "安徽省",
+    "true_solar_time_correction_supplied": true,
+    "true_solar_time_supplied": "1982-09-14T23:55:00+08:00",
+    "pillars_supplied": ["壬戌", "己酉", "庚子", "戊子"],
+    "dayun_supplied": [
+      {"pillar": "庚戌", "start_year": 1989, "end_year": 1999},
+      {"pillar": "辛亥", "start_year": 1999, "end_year": 2009},
+      {"pillar": "壬子", "start_year": 2009, "end_year": 2019},
+      {"pillar": "癸丑", "start_year": 2019, "end_year": 2029},
+      {"pillar": "甲寅", "start_year": 2029, "end_year": 2039},
+      {"pillar": "乙卯", "start_year": 2039, "end_year": 2049},
+      {"pillar": "丙辰", "start_year": 2049, "end_year": 2059},
+      {"pillar": "丁巳", "start_year": 2059, "end_year": 2069}
+    ],
+    "known_life_facts_used": []
+  },
+  "reasoning_boundary": {
+    "natal_structure": "庚金生酉月，酉为旺地，戊己印透，原局金土承载不弱；壬透且日时双子，食伤/水的表达、信息、方法、流通和问题处理功能明显。财星甲乙不现，官星丁仅藏戌，故可冻结‘以专业输出解决问题’的能力路径，但不能直接推出财富规模、行政权位或企业所有权。",
+    "current_dayun": "2019—2029癸丑运继续加强水的输出路径，并以丑印库带来制度、资格、流程、组织或稳定承载；同时水土偏重、木火不足，现实表现可能是专业化和复杂问题处理增强，但职位权力、商业兑现及上升速度不宜高估。",
+    "strength_cap": "原局能力承载评为中上，截止日现实职业落点只冻结为中等。中心优先专业技术、数据信息、分析研究、流程控制或复杂事务处理，不冻结行政领导、高管、企业主、高财富或精确行业。",
+    "root_level_justification": "事件功能定位在壬及双子所承载的食伤/信息输出路径，并有酉月庚金与戊己印提供持续承载；但财官仅弱藏或不现，因此职业基本面采用STRONG_ROOT，职位晋升和财富事件不得沿用同等强度。"
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "direction": "professional_information_or_method_output_inside_an_organization",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-29，命主更可能处于受雇或稳定组织中的专业型岗位，核心价值来自数据/信息处理、分析判断、技术方法、研究策划、流程质量或复杂问题解决；相较纯体力、纯销售或高度重复执行，其工作需要较强的独立判断和持续专业输出，但不必然拥有正式行政管理权。",
+      "strength": "MEDIUM",
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "若不属于狭义技术或数据岗，则更可能是运营控制、审计风控、财务流程、质量管理、供应链协调或制度执行中的专业骨干；仍以信息、规则、流程和问题处理为主要价值。",
+        "strength": "MEDIUM_LOW"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若职业表现偏表达和对外，则更可能是咨询、培训、方案策划、内容/沟通或专业服务岗位；核心仍是把知识、信息和方法转化为组织或客户可用结果，而非依赖资本所有权。",
+        "strength": "LOW"
+      }
+    ],
+    "weak_hit_boundary": "仅因工作中使用电脑、填表、偶尔写材料或接触数据，不算命中；主要职责必须稳定包含分析判断、专业方法、信息加工、流程控制、方案输出或复杂问题解决之一。泛称‘上班族’也不算命中。",
+    "falsifiers": [
+      "截至截止日主要职业长期是低技能体力劳动、简单销售或高度重复执行，且几乎不依赖专业方法、信息分析、流程判断或问题解决。",
+      "主要现实身份是依赖资本、家族资产或雇员团队运转的企业所有者，命主本人不承担持续专业输出。",
+      "长期处于纯行政权力或人事统辖路线，职业价值主要来自层级授权而非专业判断与方法输出。"
+    ]
+  },
+  "frozen_phase_claims": [
+    {
+      "claim_id": "P1",
+      "window": "1999-2009 辛亥运",
+      "statement": "此阶段比前运更明显地进入学习、技能形成、信息流动或离开原有环境的过程；至少有一次学业/资格、居住地点、就业入口或专业方向调整，但不冻结已取得高职位。",
+      "confidence": 57,
+      "falsifier": "该十年环境、学习方向和就业入口始终单线稳定，且没有任何可辨识的迁移、转向或技能重构。"
+    },
+    {
+      "claim_id": "P2",
+      "window": "2009-2019 壬子运",
+      "statement": "食伤/信息输出路径达到全局最强阶段，职业活动量、专业表达、跨岗位协作或工作方式变化应明显高于前运；十年内至少出现一次较大的平台、岗位职能、地点或职业方式变化，但收入与职位未必同步等幅上升。",
+      "confidence": 68,
+      "falsifier": "该十年职业平台、岗位职能、地点和工作方式均基本不变，专业输出及活动量也未增强。"
+    },
+    {
+      "claim_id": "P3",
+      "window": "2019-2026 癸丑运前段",
+      "statement": "职业从高流动/高输出进一步转向制度化、专业化、资格化或稳定承载；更可能形成较固定的专业职责、流程权或资深骨干位置，但晋升速度和商业回报可能慢于能力积累。",
+      "confidence": 70,
+      "falsifier": "2019年以来持续以无固定专业方向的短期流动作业为主，未形成稳定职责、专业积累、制度接口或组织承载。"
+    }
+  ],
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_or_location_change",
+      "window": "2009-01-01/2010-12-31",
+      "center_event": "大运切换前后出现一次可核验的学业到就业、单位/岗位、工作地点或职业方向变化，变化幅度达到现实履历节点。",
+      "confidence": 55,
+      "root_level": "WEAK_ROOT",
+      "completion_mode": "COMPLETE_LATENT",
+      "trigger_trace": "辛亥转壬子，水的输出与流动功能显著加重；2009己丑又引入现实承载和运界切换。",
+      "falsifier": "2009—2010无任何学业就业转换、换单位/岗位、迁移或职业方向变化。"
+    },
+    {
+      "candidate_id": "E2",
+      "scoring_unit": "dated_career_disruption_or_restructuring",
+      "window": "2018-01-01/2020-12-31",
+      "center_event": "出现至少一次较明显的工作结构变化，例如换单位、换岗位、职责重组、项目/业务显著变化或职业稳定性重置；本候选不冻结一定升职或一定降职。",
+      "confidence": 66,
+      "root_level": "STRONG_ROOT",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "2018戊戌与年支戌呼应，2019进入癸丑运，2020庚子与日柱及双子形成强重复，构成运界与原局输出轴连续触发。",
+      "falsifier": "2018—2020工作单位、岗位、职责、项目结构和职业稳定性均无明显变化。"
+    },
+    {
+      "candidate_id": "E3",
+      "scoring_unit": "dated_role_or_platform_change",
+      "window": "2023-01-01/2025-12-31",
+      "center_event": "出现一次可核验的岗位/平台调整、职责扩大、专业路线重构或收入结构变化；中心只冻结‘变化并增加现实责任或输出要求’，不冻结行政晋升。",
+      "confidence": 64,
+      "root_level": "WEAK_ROOT",
+      "completion_mode": "REPAIR_DEFECT",
+      "trigger_trace": "2023癸卯冲月支酉且与子有刑，2024甲辰、2025乙巳连续显出原局不现的财星，并逐步引入木火现实兑现条件。",
+      "falsifier": "2023—2025岗位、平台、职责、专业路线及收入结构均无可辨识变化。"
+    }
+  ],
+  "explicit_non_claims": [
+    "不冻结具体行业、单位性质、职务名称或学历层级。",
+    "不冻结行政领导、高管、企业主、公职、财务从业者或高净值身份。",
+    "不冻结任何事件必然为升职、降职、辞职、创业或失业；只有候选中明确写出的变化单位可评分。",
+    "不冻结事件次数超过候选所述下限，不以后验发生多次事件补记为精确命中。",
+    "不冻结财富总量、收入数额、房产数量、婚姻次数、子女数量、疾病或灾祸。",
+    "高派candidate规则只作职业形态弱证据，不以其单独判定财务、技术或单位求财身份。"
+  ],
+  "theory_evidence": [
+    {
+      "school": "ziping",
+      "rule_id": "ZP-SRC-20260617-057",
+      "status": "active",
+      "locator": "theory/_ir/ziping_rule_ir.yaml:2261-2279",
+      "summary": "八月庚金以丁甲及火的制炼为重要兑现条件；支持旺金结构需要木火才能提高现实职位/财富强度，故本案不把金水印旺直接抬为高职位。"
+    },
+    {
+      "school": "ziping",
+      "rule_id": "六庚日财官喜忌",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:12154-12169",
+      "summary": "庚子日以甲乙为财、丁丙为官杀；秋冬金水中财官气轻，木火运较利财官，支持当前职业能力判断与职位/财富强度分开。"
+    },
+    {
+      "school": "gao",
+      "rule_id": "G-CY-012",
+      "status": "candidate",
+      "locator": "theory/gao/index.yaml:2675-2686",
+      "summary": "候选规则把食伤与官印发生联系列为技术求财形态；本案仅据此辅助生成专业方法型职业备选，不作行业或成就等级铁断。"
+    },
+    {
+      "school": "gao",
+      "rule_id": "G-CS-035",
+      "status": "candidate",
+      "locator": "theory/gao/index.yaml:2495-2506",
+      "summary": "候选规则将水关联数据、伤官生财关联专业技术；因原局财星不现且规则未晋级，只作为数据/信息方向的低权重证据。"
+    }
+  ],
+  "verdict_policy": {
+    "allowed": ["CENTER_HIT", "ALTERNATIVE_HIT", "MISS", "TAXONOMY_GAP", "ABSTAIN"],
+    "career_basic_state_rule": "当前职业基本面按中心和备选分别核验；泛职业描述不得越过weak_hit_boundary。",
+    "event_precision_rule": "每个E候选独立按窗口、事件类型和最低次数评分；宽泛阶段方向不得吸收具体年份、次数、顺序、晋降性质或资产联动。",
+    "unused_alternative_rule": "未被现实反馈激活的备选使用ABSTAIN并另记activation_status=NOT_ACTIVATED，不得使用非正式 verdict 枚举。",
+    "immutability_rule": "反馈揭示后不得修改本冻结包；裁决写入独立文件，并在裁决时复核本文件SHA-256。"
+  }
+}

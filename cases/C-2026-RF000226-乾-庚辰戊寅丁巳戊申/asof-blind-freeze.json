@@ -1,0 +1,311 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000226-乾-庚辰戊寅丁巳戊申",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:06:19+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000226-乾-庚辰戊寅丁巳戊申/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以专业技能输出承接市场项目并形成工作收益",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "能力存在但现实兑现不稳，项目与收入呈阶段性"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "组织内专业执行岗位为主，市场收益不是稳定中心"
+      }
+    ]
+  },
+  "root_level": "STRONG_ROOT",
+  "root_level_justification": "候选事业领域定位在月干、时干戊伤官与年干庚正财；双透伤官直接连接透干正财，存在专业输出—市场交付—收益的显性承载路径，据此定为STRONG_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000226-乾-庚辰戊寅丁巳戊申",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "月干、时干戊伤官与年干庚正财",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干、时干戊伤官与年干庚正财"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干、时干戊伤官与年干庚正财"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "双透伤官直接连接透干正财，存在专业输出—市场交付—收益的显性承载路径"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以专业技能输出承接市场项目并形成工作收益",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干、时干戊伤官与年干庚正财"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "双透伤官直接连接透干正财，存在专业输出—市场交付—收益的显性承载路径"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干、时干戊伤官与年干庚正财"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "双透伤官直接连接透干正财，存在专业输出—市场交付—收益的显性承载路径"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\gao\\index.yaml",
+        "line": 1,
+        "excerpt": "看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败"
+      }
+    ],
+    "competing_explanations": [
+      "能力存在但现实兑现不稳，项目与收入呈阶段性",
+      "组织内专业执行岗位为主，市场收益不是稳定中心"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2022-01-01/2022-12-31",
+      "center_event": "2022年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "ACTIVATE_EXISTING",
+      "root_level": "STRONG_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "CROSS_DAIYUN_ELIGIBLE",
+      "annual_trace": {
+        "year": 2022,
+        "liunian": "壬寅",
+        "dayun_ganzhi": "辛巳",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[0]",
+            "excerpt": "流年干合日干丁化('木', '合绊')"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[1]",
+            "excerpt": "流年支冲时支申"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[2]",
+            "excerpt": "流年支穿日支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[3]",
+            "excerpt": "流年支穿大运支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[4]",
+            "excerpt": "流年支三刑日支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[5]",
+            "excerpt": "流年支三刑时支申"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[6]",
+            "excerpt": "流年支三刑大运支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[7]",
+            "excerpt": "流年伏吟月支(寅)"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.month.branch",
+          "natal.day.stem",
+          "natal.day.branch",
+          "natal.hour.branch"
+        ],
+        "domains": [
+          "事业",
+          "健康"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].main_energy",
+            "excerpt": "工作变动 / 压力"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2022,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2018,
+      2019,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "gao",
+      "rule_id": "G-CS-020",
+      "citation": "[gao:G-CS-020] 看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败 (来源: theory\\gao\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[gao:G-CS-020] 看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败 (来源: theory\\gao\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "伤官",
+          "生财"
+        ],
+        "hit_count": 30,
+        "citations_reviewed": [
+          "[gao:G-CS-020] 看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败 (来源: theory\\gao\\index.yaml)",
+          "[gao:G-CS-035] 财务工作七标志 ①财星合/冲印星 ②日支坐财/财库 ③财/财库伏吟(来回折腾钱) ④官杀下配财星 ⑤伤官生财(专业技术) ⑥水代表数据(壬癸亥子) ⑦比劫与财感应(手与钱打交道) (来源: theory\\gao\\index.yaml)",
+          "[gao:G-CY-018] 伤官生财格=时代型富命铁律 伤官生财是现代社会最典型命造（传媒=食神生财/科技=伤官生财）；格局高低差异在于①偏财月令有根②时柱透甲用神参与③财源为伤官库 (来源: theory\\gao\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "伤官",
+          "事业"
+        ],
+        "hit_count": 2,
+        "citations_reviewed": [
+          "[gao:G-CS-020] 看事业三步法 ①找主线(求财/求官目标) ②十神配置定格局(官印/枭杀/食伤生财/伤官制杀/阳刃架杀) ③找出处看位置确定格局大小成败 (来源: theory\\gao\\index.yaml)",
+          "[tiaohou_ditiansui:DTS-PROD-20260622-122] 八    地支 丁卯日元，生于季春。伤官生财，嫌其木盛土虚，书香难就。土得其伤官化劫，使丙火无争财之意，所以运至庚申辛酉，承先人事业虽微，而自创规模颇大，财发十余万。 滴天髓规则参与：丁卯日元，生于季春。伤官生财，嫌其木盛土虚，书香难就。土得其伤官化劫，使丙火无争财之意，所以运至庚申辛酉，承先人事业虽微，而自创规模颇大，财发十余万。 (来源: theory\\tiaohou_ditiansui\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": {
+      "root_qi_only_hit": false,
+      "domain_location_hit": true,
+      "source_citation_hit": false,
+      "likely_shortcut": false,
+      "note": "未发现根气强弱替代领域定位的捷径信号；本检测不保证判定本身正确。"
+    },
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

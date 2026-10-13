@@ -1,0 +1,8 @@
+........................                                                 [100%]
+============================== warnings summary ===============================
+tests/test_architecture_dependencies.py::test_default_pipeline_adapters_live_in_infrastructure
+  F:\多流派新思路\engine\application\pipeline_runner.py:11: DeprecationWarning: engine.application.dual_engine_adapter is deprecated. Use engine.v5.runner.run_v5 + tools.render_report.render_from_output instead. This adapter will be removed in v6.
+    from engine.application.dual_engine_adapter import analyze_dual_engine
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+24 passed, 1 warning in 5.00s

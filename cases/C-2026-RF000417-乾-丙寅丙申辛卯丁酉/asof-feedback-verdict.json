@@ -1,0 +1,221 @@
+{
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000417",
+  "adjudicated_at": "2026-07-30T12:23:20+08:00",
+  "feedback_source": "cases/C-2026-RF000417-乾-丙寅丙申辛卯丁酉/feedback.md",
+  "freeze_source": "cases/C-2026-RF000417-乾-丙寅丙申辛卯丁酉/asof-blind-freeze.json",
+  "freeze_sha256_expected": "eef2637e6288bc1b245c8e5c95e10fb73c356773a75dd3c1ce85651de129fde0",
+  "freeze_sha256_observed_before_feedback": "eef2637e6288bc1b245c8e5c95e10fb73c356773a75dd3c1ce85651de129fde0",
+  "freeze_sha256_observed_after_feedback": "eef2637e6288bc1b245c8e5c95e10fb73c356773a75dd3c1ce85651de129fde0",
+  "freeze_immutable": true,
+  "independent_blind_freeze_reviewer": true,
+  "feedback_reveal_control": {
+    "freeze_created_before_feedback_reveal": true,
+    "sha256_verified_before_feedback_reveal": true,
+    "sha256_verified_after_feedback_reveal": true,
+    "feedback_first_read_after_pre_reveal_hash": true
+  },
+  "feedback_evidence": [
+    {
+      "year": 2006,
+      "domain": "education",
+      "fact": "过一本线后进入东北石油大学读书。"
+    },
+    {
+      "year": 2010,
+      "domain": "education",
+      "fact": "大学阶段因学分不足未按期毕业，延长一年。"
+    },
+    {
+      "year": 2011,
+      "domain": "career",
+      "fact": "在上海开始工作，2011至2014年供职一家公司。"
+    },
+    {
+      "year": 2014,
+      "domain": "career",
+      "fact": "裸辞后短期做外包，9月进入大型企业。"
+    },
+    {
+      "year": 2017,
+      "domain": "career",
+      "fact": "内部转岗并开始带一个部门，奖金增加。"
+    },
+    {
+      "year": 2021,
+      "domain": "career",
+      "fact": "离职后进入一家外企。"
+    },
+    {
+      "year": 2024,
+      "domain": "career",
+      "fact": "公司通知裁员，9月26日前后劳动合同到期不续签，获赔30万元并开始找工作。"
+    },
+    {
+      "year": 2024,
+      "domain": "career_state_transition",
+      "fact": "变化前在外企任程序员；变化后合同到期不续签并开始找工作。"
+    },
+    {
+      "year": 2026,
+      "domain": "career_snapshot",
+      "fact": "2026-06-08快照记录就业状态为在职，当前岗位为程序员。"
+    }
+  ],
+  "career_baseline_adjudication": {
+    "scoring_unit": "career_basic_state",
+    "verdict": "CENTER_HIT",
+    "matched_facts": [
+      "2026-06-08职业快照为在职程序员",
+      "2011年以来职业年表持续显示组织内就业、外包、大型企业、部门转岗和外企经历"
+    ],
+    "reason": "冻结中心是组织内专业技术输出型职业，且明确不冻结行业、职级与收入。反馈直接给出程序员岗位，并显示长期在公司、大型企业和外企环境中工作，足以支持专业技术输出型职业基本面。反馈未细述精确分析、规则理解和细节处理的具体职责，因此这些能力机制仅作为职业类型的结构解释，不额外扩张为独立命中项。"
+  },
+  "alternative_adjudications": [
+    {
+      "alternative_index": 1,
+      "activation_status": "PARTIALLY_OBSERVED_NOT_PRIMARY",
+      "verdict": "ABSTAIN",
+      "matched_facts": [
+        "2014裸辞后短期外包",
+        "2024合同不续签后进入求职过渡"
+      ],
+      "reason": "职业兑现不稳在2014和2024均有直接事实，但2026快照又记录在职程序员，中心职业基本面已经获得直接支持。该备选作为阶段性波动得到观察，但不替代职业基本面中心裁决，故不另计ALTERNATIVE_HIT。"
+    },
+    {
+      "alternative_index": 2,
+      "activation_status": "NOT_ACTIVATED",
+      "verdict": "ABSTAIN",
+      "matched_facts": [],
+      "reason": "反馈没有证据表明主要工作是低专业门槛常规执行，程序员岗位反而支持中心方向。未激活备选按ABSTAIN记录。"
+    }
+  ],
+  "phase_adjudications": [
+    {
+      "dayun": "丁酉",
+      "window": "1993-2003",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "ABSTAIN",
+      "matched_facts": [
+        "2002中考失利后复读"
+      ],
+      "reason": "冻结阶段同时涉及规则、训练、评价、技能打底、竞争和自我标准，反馈仅有一次中考失利与复读，缺少足够连续截面判断整段方向。"
+    },
+    {
+      "dayun": "戊戌",
+      "window": "2003-2013",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2006进入大学",
+        "2010因学分不足延长一年毕业",
+        "2011在上海开始第一段公司职业经历"
+      ],
+      "reason": "从大学资质和能力积累到延迟毕业后进入组织就业，直接支持资质积累、组织适应与职业基础形成的阶段方向。"
+    },
+    {
+      "dayun": "己亥",
+      "window": "2013-2023",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2014裸辞、短期外包后进入大型企业",
+        "2017内部转岗并带部门",
+        "2021离职后进入外企"
+      ],
+      "reason": "该阶段既有专业能力和职业收益的持续兑现，也有裸辞、外包过渡、内部转岗及再次离职，符合能力由积累转向输出且岗位环境和机会连续性阶段性波动的冻结方向。"
+    },
+    {
+      "dayun": "庚子",
+      "window": "2023-2026截至反馈快照",
+      "scoring_unit": "broad_phase_direction",
+      "verdict": "CENTER_HIT",
+      "matched_facts": [
+        "2024外企程序员合同不续签并进入求职过渡",
+        "2026职业快照为在职程序员"
+      ],
+      "reason": "程序员岗位直接支持专业技能仍是主要职业价值来源，2024劳动关系终止和求职过渡直接支持职业兑现存在调整或中断风险；反馈未验证同业竞争和团队协作，不将这两项补记为命中。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_structure_change",
+      "window": "2024-01-01/2024-12-31",
+      "frozen_center_event": "2024年发生由用人单位主导的劳动关系终止，原岗位结束并进入求职过渡期。",
+      "verdict": "CENTER_HIT",
+      "observed_feedback": {
+        "time_node": "2024年9月26日前后",
+        "change_description": "公司通知裁员，劳动合同到期后不续签，获赔30万元并开始找工作",
+        "before_state": "在外企任程序员",
+        "after_state": "合同到期不续签，开始找工作"
+      },
+      "element_match": {
+        "within_2024_window": true,
+        "employer_initiated": true,
+        "employment_relationship_terminated": true,
+        "original_position_ended": true,
+        "entered_job_search_transition": true
+      },
+      "reason": "§9.4提供了明确日期、变化描述、变化前状态与变化后状态。冻结E1的时间窗口及五个最低事实要素均被逐项直接确认，因此E1可评价且为CENTER_HIT，不是ABSTAIN。赔偿30万元是伴随结果，不作为命中所必需的后验扩张。"
+    }
+  ],
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "程序员岗位及长期组织就业经历直接支持专业技术输出型职业基本面。"
+    },
+    "broad_phase_direction": {
+      "evaluable": 3,
+      "center_hits": 3,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 1,
+      "summary": "戊戌、己亥、庚子三个可核验阶段均获年表支持；丁酉阶段证据不足。"
+    },
+    "dated_event_precision": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstains": 0,
+      "summary": "E1由§9.4的日期、变化描述及前后状态直接确认，正式进入分母并命中中心事件。"
+    }
+  },
+  "overall_conclusion": {
+    "career_basic_state": "CENTER_HIT",
+    "broad_phase_direction": "CENTER_HIT_WITH_ONE_ABSTAIN",
+    "dated_event_precision": "CENTER_HIT",
+    "e1_result": "CENTER_HIT",
+    "summary": "职业基本面和三个有充分反馈的阶段方向得到支持；丁酉阶段缺少连续证据而ABSTAIN。核心日期候选E1因§9.4提供完整职责前后对比截面而可评价，并精确命中2024年劳动关系终止与求职过渡事件。"
+  },
+  "section_9_4_validation": {
+    "field_helped_event_enter_denominator": true,
+    "e1_would_be_abstain_without_comparison_slice": true,
+    "qualitative_assessment": "VALIDATED",
+    "reason": "年表虽然已有2024裁员文本，但§9.4把时间节点、变化描述、变化前岗位和变化后求职状态组织为同一可比较截面，明确证明劳动关系在窗口内发生状态迁移。它补齐了前三案缺失的职责前后对比证据，使E1从不可评价转为可评价样本并计入日期事件分母。",
+    "scope_limit": "本案验证的是§9.4字段对这一条日期职业事件的可评价性贡献，不等于证明所有填写§9.4的事件都会命中；若内容只有岗位名称、没有前后状态或没有候选窗口内日期，仍应ABSTAIN。"
+  },
+  "diagnostic_note": {
+    "failure_class": "NONE_FOR_E1",
+    "remaining_limit": "职业基本面中的精确分析、规则理解和细节处理机制缺少职责级文字，只能由程序员岗位支持职业类型，不能拆成更细能力项。",
+    "not_a_taxonomy_gap": true
+  },
+  "verdict_enum_check": {
+    "allowed": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_atomic_verdicts_formal": true,
+    "aggregate_labels_not_atomic": [
+      "CENTER_HIT_WITH_ONE_ABSTAIN"
+    ]
+  }
+}

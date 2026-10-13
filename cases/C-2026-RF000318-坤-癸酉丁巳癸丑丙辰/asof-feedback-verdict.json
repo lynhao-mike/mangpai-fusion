@@ -1,0 +1,108 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000318-坤-癸酉丁巳癸丑丙辰",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T01:10:25+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000318-坤-癸酉丁巳癸丑丙辰/asof-blind-freeze.json",
+    "sha256": "c259cfb0386d13bc3a384c60159d6c5df4bb200d50d73f3bebfcebb9f49addb7",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000318-坤-癸酉丁巳癸丑丙辰/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "feedback_evidence": [
+    {
+      "year": 2024,
+      "fact": "凶,事业不顺，薪资不高处于负债，面临失业其他信息: 身价年收入: 10w 出身: 父母农民，家庭不富裕",
+      "domains": [
+        "occupation",
+        "income",
+        "family"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈存在明确职业变化或岗位事实：2024年凶,事业不顺，薪资不高处于负债，面临失业其他信息: 身价年收入: 10w 出身: 父母农民，家庭不富裕"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2022-01-01/2022-12-31",
+      "verdict": "ABSTAIN",
+      "reason": "反馈无冻结窗口2022年记录（年表最高年份为2024），不得用其他年份事件替代精确窗口裁决。",
+      "enters_event_denominator": false
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "WEAK_ROOT",
+    "feedback_consistency": "NOT_REESTIMATED",
+    "reason": "反馈揭示后不回写冻结root_level；本字段仅保留边界说明。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "ziping:ZP-PROD-20260622-446",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论命中只作为冻结前结构证据，不单独决定现实裁决。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstentions": 1
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ABSTAIN"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "ABSTAIN"
+      }
+    ]
+  },
+  "overall_conclusion": {
+    "event_e1": "ABSTAIN",
+    "summary": "E1按冻结年份与反馈年份严格核对，裁为ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_valid": true
+  }
+}

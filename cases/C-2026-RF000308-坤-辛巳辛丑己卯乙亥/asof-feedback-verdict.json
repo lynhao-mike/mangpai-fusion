@@ -1,0 +1,136 @@
+{
+  "schema": "asof-feedback-verdict-v1",
+  "schema_version": "asof-feedback-verdict-v1",
+  "case_id": "C-2026-RF000308-坤-辛巳辛丑己卯乙亥",
+  "status": "ADJUDICATED_AFTER_FEEDBACK_REVEAL",
+  "adjudicated_at": "2026-07-31T01:09:18+08:00",
+  "freeze_reference": {
+    "path": "cases/C-2026-RF000308-坤-辛巳辛丑己卯乙亥/asof-blind-freeze.json",
+    "sha256": "8d28676c39620ce690a48c7a55cbbba916fcb62cdeef21c45abad3ce85c13930",
+    "sha256_verified_before_feedback_reveal": true,
+    "freeze_status_verified": "FROZEN_BEFORE_FEEDBACK"
+  },
+  "feedback_reveal_control": {
+    "feedback_path": "cases/C-2026-RF000308-坤-辛巳辛丑己卯乙亥/feedback.md",
+    "feedback_opened_only_after_hash_verification": true,
+    "freeze_modified_after_reveal": false
+  },
+  "feedback_evidence": [
+    {
+      "year": 2014,
+      "fact": "吉,考上了特别好的中学，连读六年，结识了很多特别优秀的同学朋友",
+      "domains": [
+        "personality"
+      ]
+    },
+    {
+      "year": 2017,
+      "fact": "吉,成立了乐队，获得持续时间长久的兴趣爱好/特长",
+      "domains": []
+    },
+    {
+      "year": 2019,
+      "fact": "凶,考试运差，评分制度较往年严格许多",
+      "domains": []
+    },
+    {
+      "year": 2020,
+      "fact": "吉,如愿去了想去的大学本科+专业（计算机）（海外）",
+      "domains": []
+    },
+    {
+      "year": 2023,
+      "fact": "凶,小人很多，背后受人口舌，烂桃花也带来很多麻烦。回国起了严重药物过敏反应，差点住院",
+      "domains": [
+        "health"
+      ]
+    },
+    {
+      "year": 2024,
+      "fact": "吉,得到了一份知名公司+高收入的工作机会（软件工程师）（海外）",
+      "domains": [
+        "occupation",
+        "income"
+      ]
+    }
+  ],
+  "career_basic_state_adjudication": {
+    "claim_id": "C1",
+    "verdict": "CENTER_HIT",
+    "reason": "反馈存在明确职业变化或岗位事实：2024年吉,得到了一份知名公司+高收入的工作机会（软件工程师）（海外）"
+  },
+  "alternative_adjudications": [
+    {
+      "claim_id": "A1",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    },
+    {
+      "claim_id": "A2",
+      "verdict": "ABSTAIN",
+      "reason": "备选缺少足以独立区分中心方向的精确反馈，不强裁。"
+    }
+  ],
+  "event_adjudications": [
+    {
+      "candidate_id": "E1",
+      "window": "2025-01-01/2025-12-31",
+      "verdict": "ABSTAIN",
+      "reason": "反馈无冻结窗口2025年记录（年表最高年份为2024），不得用其他年份事件替代精确窗口裁决。",
+      "enters_event_denominator": false
+    }
+  ],
+  "root_level_post_feedback_note": {
+    "frozen_root_level": "STRONG_ROOT",
+    "feedback_consistency": "NOT_REESTIMATED",
+    "reason": "反馈揭示后不回写冻结root_level；本字段仅保留边界说明。"
+  },
+  "theory_layer_adjudication": {
+    "adopted_rule": "gao:G-CS-031",
+    "changed_center_statement_before_freeze": false,
+    "changed_root_level_before_freeze": false,
+    "changed_completion_mode_before_freeze": false,
+    "post_feedback_note": "理论命中只作为冻结前结构证据，不单独决定现实裁决。"
+  },
+  "root_level_gate_advisory": {
+    "likely_shortcut": false
+  },
+  "separate_score_units": {
+    "career_basic_state": {
+      "evaluable": 1,
+      "center_hits": 1,
+      "misses": 0
+    },
+    "dated_event_precision": {
+      "evaluable": 0,
+      "center_hits": 0,
+      "alternative_hits": 0,
+      "misses": 0,
+      "abstentions": 1
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "verdict": "ABSTAIN"
+      },
+      {
+        "claim_id": "A2",
+        "verdict": "ABSTAIN"
+      }
+    ]
+  },
+  "overall_conclusion": {
+    "event_e1": "ABSTAIN",
+    "summary": "E1按冻结年份与反馈年份严格核对，裁为ABSTAIN。"
+  },
+  "verdict_enum_check": {
+    "allowed_atomic": [
+      "CENTER_HIT",
+      "ALTERNATIVE_HIT",
+      "MISS",
+      "TAXONOMY_GAP",
+      "ABSTAIN"
+    ],
+    "all_verdicts_valid": true
+  }
+}

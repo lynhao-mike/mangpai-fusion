@@ -1,0 +1,293 @@
+{
+  "schema": "asof-conversational-freeze-v1",
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000318-坤-癸酉丁巳癸丑丙辰",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "freeze_kind": "blind_pre_feedback",
+  "frozen_at": "2026-07-31T01:10:07+08:00",
+  "as_of_date": "2026-07-30",
+  "blindness_controls": {
+    "boundary_line": 56,
+    "boundary": "yaml_key",
+    "embedded_annotation_lines": [],
+    "known_facts_count": 0,
+    "inline_empty_known_facts_normalized_in_memory": true,
+    "strict_preflight_claimed": false,
+    "adapter": "RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS",
+    "source": "cases/C-2026-RF000318-坤-癸酉丁巳癸丑丙辰/input.md",
+    "extraction_method": "tools.as_of_blind_judgment_probe.truncate_blind_section",
+    "embedded_annotation_detector": "tools.as_of_blind_judgment_probe.detect_table_embedded_annotation",
+    "feedback_read_before_freeze": false,
+    "feedback_opened": false,
+    "existing_report_feedback_summary_read_before_freeze": false,
+    "verdict_created": false
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "以资源经营与专业资质协同承接工作职责",
+      "completion_mode": "COMPLETE_LATENT"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "资源能力存在但现实兑现不稳，岗位变化受外部平台影响"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "偏重稳定专业执行，经营收益并非职业中心"
+      }
+    ]
+  },
+  "root_level": "WEAK_ROOT",
+  "root_level_justification": "候选事业领域定位在月干丁偏财、时干丙正财与年支酉偏印；财星透出并可向丑辰所藏官杀、酉印形成资源—职责—资质路径，但官杀不透、承载链隔层，据此定为WEAK_ROOT，不以日主一般旺衰替代职业领域节点。",
+  "natal_capacity_graph": {
+    "case_id": "C-2026-RF000318-坤-癸酉丁巳癸丑丙辰",
+    "schema_version": "asof-prototype-v1",
+    "domain": "career",
+    "capacity_nodes": [
+      {
+        "node_id": "career.primary",
+        "function": "月干丁偏财、时干丙正财与年支酉偏印",
+        "chart_evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干丁偏财、时干丙正财与年支酉偏印"
+          }
+        ]
+      }
+    ],
+    "structural_features": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干丁偏财、时干丙正财与年支酉偏印"
+      }
+    ],
+    "vulnerabilities": [
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "财星透出并可向丑辰所藏官杀、酉印形成资源—职责—资质路径，但官杀不透、承载链隔层"
+      }
+    ],
+    "feasible_paths": [
+      {
+        "path_id": "career.primary_path",
+        "function": "以资源经营与专业资质协同承接工作职责",
+        "node_ids": [
+          "career.primary"
+        ],
+        "evidence": [
+          {
+            "source": "blind_chart",
+            "locator": "career.domain_nodes",
+            "excerpt": "月干丁偏财、时干丙正财与年支酉偏印"
+          },
+          {
+            "source": "blind_chart",
+            "locator": "career.carrying_path",
+            "excerpt": "财星透出并可向丑辰所藏官杀、酉印形成资源—职责—资质路径，但官杀不透、承载链隔层"
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "source": "blind_boundary",
+        "locator": "nonclaim",
+        "excerpt": "不以日主一般旺衰替代职业领域节点"
+      }
+    ],
+    "chart_evidence": [
+      {
+        "source": "blind_chart",
+        "locator": "career.domain_nodes",
+        "excerpt": "月干丁偏财、时干丙正财与年支酉偏印"
+      },
+      {
+        "source": "blind_chart",
+        "locator": "career.carrying_path",
+        "excerpt": "财星透出并可向丑辰所藏官杀、酉印形成资源—职责—资质路径，但官杀不透、承载链隔层"
+      }
+    ],
+    "source_citations": [
+      {
+        "source_path": "theory\\ziping\\index.yaml",
+        "line": 1,
+        "excerpt": "论偏财何谓偏财？ 乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相， 子平规则参与：乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相，福禄俱臻，一遇官乡，便可发福。柱中原带官。"
+      }
+    ],
+    "competing_explanations": [
+      "资源能力存在但现实兑现不稳，岗位变化受外部平台影响",
+      "偏重稳定专业执行，经营收益并非职业中心"
+    ],
+    "counter_evidence": []
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "domain": "career",
+      "event_type": "career_role_or_platform_change",
+      "window": "2022-01-01/2022-12-31",
+      "center_event": "2022年职业职责或工作平台发生一次可核验调整。",
+      "alternative": "仅工作内容短期波动，未形成持续的职责或平台改变",
+      "completion_mode": "COMPLETE_LATENT",
+      "root_level": "WEAK_ROOT",
+      "verification_status": "FROZEN",
+      "extension_boundary": "REMAINDER_ONLY_RECHECK_CROSS_DAIYUN",
+      "annual_trace": {
+        "year": 2022,
+        "liunian": "壬寅",
+        "dayun_ganzhi": "庚申",
+        "relations": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[0]",
+            "excerpt": "流年干合月干丁化('木', '合绊')"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[1]",
+            "excerpt": "流年支冲大运支申"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[2]",
+            "excerpt": "流年支穿月支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[3]",
+            "excerpt": "流年支三刑月支巳"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].relations[4]",
+            "excerpt": "流年支三刑大运支申"
+          }
+        ],
+        "activated_node_ids": [
+          "natal.month.stem",
+          "natal.month.branch"
+        ],
+        "domains": [
+          "事业",
+          "家庭"
+        ],
+        "supporting_evidence": [
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].main_energy",
+            "excerpt": "同业竞争 / 同辈互动"
+          },
+          {
+            "source": "engine.yingqi.retrospective.FlowYearEnergy",
+            "locator": "year[2022].strength",
+            "excerpt": "▲"
+          }
+        ],
+        "counter_evidence": [],
+        "trigger_strength": "high",
+        "crossed_candidate_gate": true
+      },
+      "public_api_decision": {
+        "accepted": true,
+        "reason_code": "CANDIDATE_FROZEN"
+      }
+    }
+  ],
+  "annual_gate_selection": {
+    "method": "engine.asof.annual_trace.build_annual_traces_with_gate",
+    "selected_year": 2022,
+    "crossed_candidate_gate": true,
+    "eligible_crossed_years": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "theory_lookup": {
+    "judgment_formed_before_lookup": true,
+    "theory_lookup_changed_judgment": false,
+    "theory_lookup_changed_root_level": false,
+    "theory_lookup_changed_completion_mode": false,
+    "change_reason": "理论检索仅用于冻结前证据校验，未改变先形成的中心、root_level或completion_mode。",
+    "adopted_rule": {
+      "school": "ziping",
+      "rule_id": "ZP-PROD-20260622-446",
+      "citation": "[ziping:ZP-PROD-20260622-446] 论偏财何谓偏财？ 乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相， 子平规则参与：乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相，福禄俱臻，一遇官乡，便可发福。柱中原带官。 (来源: theory\\ziping\\index.yaml)"
+    },
+    "theory_evidence": [
+      "[ziping:ZP-PROD-20260622-446] 论偏财何谓偏财？ 乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相， 子平规则参与：乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相，福禄俱臻，一遇官乡，便可发福。柱中原带官。 (来源: theory\\ziping\\index.yaml)"
+    ],
+    "search_audit": [
+      {
+        "keywords": [
+          "偏财",
+          "生官"
+        ],
+        "hit_count": 1,
+        "citations_reviewed": [
+          "[ziping:ZP-PROD-20260622-446] 论偏财何谓偏财？ 乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相， 子平规则参与：乃甲见戊、乙见己之例。非妻所带，乃众人之财也。切忌有姊妹兄弟分夺，柱无官星，祸患百出。经曰：偏财好出，亦不惧藏，唯怕分夺，及落空亡，有一于此，官将不成，财将不住。如财弱必待历旺乡而荣，财盛无往不利，但恐身势无力，不能胜任。偏财格，主人慷慨，不甚吝财，与人有情而多诈，若是得地，不止财丰，亦能旺官，以财盛自生官，运行旺相，福禄俱臻，一遇官乡，便可发福。柱中原带官。 (来源: theory\\ziping\\index.yaml)"
+        ],
+        "no_hit_audit": false
+      },
+      {
+        "keywords": [
+          "偏财",
+          "事业"
+        ],
+        "hit_count": 0,
+        "citations_reviewed": [],
+        "no_hit_audit": true
+      }
+    ]
+  },
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "any_issue_found": false,
+    "blocking_reasons": [],
+    "advisory_reasons": [],
+    "root_level_finding": null,
+    "root_level_likely_shortcut": false,
+    "theory_evidence_finding": {
+      "evidence_count": 1,
+      "placeholder_only": false,
+      "blocks_freeze": false,
+      "note": "theory_evidence 非空且不是占位文本，理论证据硬门控通过。"
+    },
+    "summary": "理论证据硬门控及四项冻结契约预检均通过；本结果不保证冻结内容必然正确。"
+  },
+  "reasoning_boundary": {
+    "public_event_api_domain_limit": "LifeEventCandidate原型固定为career；结构触发不等于现实事件。",
+    "strict_preflight_nonclaim": "RF自动排盘输入使用RF_AUTO_PAIPAN_BLIND_EMPTY_FACTS兼容适配，不声称strict preflight通过。"
+  },
+  "explicit_non_claims": [
+    "不读取或使用现实反馈形成冻结。",
+    "不把年度结构触发等同于现实事件必然发生。",
+    "不冻结具体行业、职级、收入或社会等级。",
+    "反馈揭示后不得修改本冻结文件。"
+  ],
+  "verdict_policy": {
+    "feedback_opened": false,
+    "verdict_created": false,
+    "immutability_rule": "SHA-256校验后仅在独立asof-feedback-verdict.json中裁决。"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "asof-conversational-freeze-v1",
+  "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+  "status": "FROZEN_BEFORE_FEEDBACK",
+  "frozen_at": "2026-07-30T20:15:43+08:00",
+  "as_of_date": "2026-07-30",
+  "independent_blind_freeze_reviewer": true,
+  "blindness_controls": {
+    "extraction_method": "truncate_blind_section + unique yaml key fallback",
+    "official_probe_boundary": null,
+    "cutoff_line": 56,
+    "cutoff_marker": "yaml_key_inline_fallback",
+    "fallback_match_count": 1,
+    "blind_char_count": 930,
+    "blind_line_count": 55,
+    "embedded_annotation_lines_in_blind_prefix": [],
+    "content_after_cutoff_read_by_reviewer": false,
+    "feedback_read_by_reviewer": false,
+    "known_life_facts_used": []
+  },
+  "blind_input": {
+    "sex": "坤",
+    "pillars_supplied": [
+      "戊辰",
+      "癸亥",
+      "癸巳",
+      "戊午"
+    ]
+  },
+  "primary_landing_set": {
+    "domain": "career_basic_state",
+    "center": {
+      "claim_id": "C1",
+      "statement": "截至2026-07-30，命主更可能依靠学习积累、文书流程和专业支持承担可追踪的工作责任；职业能力有持续沉淀倾向，但不冻结具体行业、职级和收入水平。",
+      "strength": "MEDIUM_LOW",
+      "completion_mode": "ACTIVATE_EXISTING"
+    },
+    "alternatives": [
+      {
+        "claim_id": "A1",
+        "statement": "同方向备选：专业能力存在，但现实兑现不稳，表现为职责增加而授权、稳定性与回报未同步。",
+        "strength": "MEDIUM"
+      },
+      {
+        "claim_id": "A2",
+        "statement": "若正式岗位承接不足，则以阶段性支持任务体现专业与交付责任。",
+        "strength": "MEDIUM_LOW"
+      }
+    ],
+    "falsifiers": [
+      "长期不在工作或项目责任场景中。",
+      "职业活动始终不依赖学习、文书或专业支持且不对交付负责。"
+    ]
+  },
+  "frozen_event_candidates": [
+    {
+      "candidate_id": "E1",
+      "scoring_unit": "dated_career_responsibility_upgrade",
+      "window": "2013-01-01/2013-12-31",
+      "center_event": "2013年发生一次可核验的职业责任升级，最低命中条件为主要工作任务范围明确扩大。",
+      "confidence": 60,
+      "completion_mode": "ACTIVATE_EXISTING",
+      "trigger_trace": "scaffold记录2013癸巳年处辛酉运，四项关系，领域提示事业、家庭；preflight缺藏干，未取得L1+L2复核。",
+      "falsifier": "2013全年主要工作任务范围没有明确扩大。"
+    }
+  ],
+  "annual_gate_selection": {
+    "preflight_status": "FAIL",
+    "preflight_error": {
+      "exception_type": "PreflightError",
+      "step": 3,
+      "field_path": "藏干",
+      "detail": "顶层必填字段缺失"
+    },
+    "l1_l2_status": "NOT_RUN_DUE_TO_PREFLIGHT_FAILURE",
+    "selected_year": {
+      "year": 2013,
+      "liunian": "癸巳",
+      "dayun": "辛酉",
+      "strength": "high_scaffold_only",
+      "crossed_candidate_gate": null,
+      "domains": [
+        "事业",
+        "家庭"
+      ],
+      "relation_count": 4
+    },
+    "selection_reason": "2013为事业候选中关系最多年份。"
+  },
+  "theory_evidence": [
+    {
+      "rule_id": "ZP-PROD-20260622-031",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:1177"
+    },
+    {
+      "rule_id": "ZP-PROD-20260622-053",
+      "status": "active",
+      "locator": "theory/ziping/index.yaml:2038"
+    }
+  ],
+  "contract_gate_audit": {
+    "tool": "tools.as_of_contract_gate.run_contract_gate",
+    "passed": true,
+    "center_or_count": 0,
+    "event_windows_months": {
+      "E1": 11.959177806525801
+    },
+    "event_or_counts": {
+      "E1": 0
+    },
+    "has_incomplete_realization_alternative": true,
+    "any_issue_found": false
+  },
+  "explicit_non_claims": [
+    "不声称preflight或L1+L2成功。",
+    "不冻结具体行业、职级、收入。",
+    "禁止本阶段创建verdict。"
+  ],
+  "immutability_policy": "计算SHA-256后不得修改；裁决写独立文件。"
+}

@@ -2,8 +2,8 @@
   "product_name": "mangpai-fusion",
   "product_version_source": "VERSION",
   "product_version": "1.3.1",
-  "current_phase": "v1.4-schema-and-reporting-convergence-plus-production-rules",
-  "last_updated": "2026-07-17",
+  "current_phase": "six-source-three-domain-verification-and-governance",
+  "last_updated": "2026-08-01",
   "ai_entrypoint": "AGENTS.md",
   "human_entrypoint": "README.md",
   "stable_status": "STATUS.md",
@@ -15,6 +15,13 @@
   "tool_registry": "tools/tool_registry.py",
   "rule_status_scanner": "tools/rule_status_scan.py",
   "iteration_state": "META/iteration-state.json",
+  "progress_dashboard": {
+    "machine_state": "progress/PROJECT_PROGRESS.json",
+    "human_dashboard": "progress/PROJECT_PROGRESS.md",
+    "milestones": "progress/MILESTONES.md",
+    "history": "progress/PROGRESS_HISTORY.md",
+    "entrypoint": "tools/project_progress.py"
+  },
   "changelog": "META/rule-changelog.md",
   "arbitration_log": "META/arbitration-log.md",
   "contract_overview": "engine/contracts/00-OVERVIEW.md",
@@ -37,7 +44,7 @@
     "pipeline_parallel_analysis_attachment": "landed",
     "parallel_domain_report_section": "landed",
     "parallel_domain_statement_index": "landed",
-    "dynamic_feedback_weighting": "landed_proposal_confirmed_overlay",
+    "dynamic_feedback_weighting": "landed_phase2_cross_case_promotion_observability_human_gated_promotion_default_overlay_and_routing_unchanged",
     "blind_expert_adapters": "deprecated_absent_no_references"
   },
   "intelligence_platform_status": {
@@ -48,18 +55,36 @@
     "l9_conditional_learning_governance": "landed_offline_staged",
     "ren_career_role_change_timing_slice": "staged_verified_production_unchanged",
     "ziping_career_official_path_disruption_slice": "staged_verified_production_unchanged",
-    "yang_marriage_discrimination_slice": "staged_verified_production_unchanged"
+    "yang_marriage_discrimination_slice": "staged_verified_production_unchanged",
+    "six_source_three_domain_analysis_engine": "landed_p3_career_wealth_marriage_eighteen_slots_auditable_cli_active",
+    "domain_prospective_evaluation": "landed_protocol_and_cli_real_cohort_not_ready_production_false",
+    "domain_claim_report_workbench": "landed_structured_viewmodel_internal_ids_hidden",
+    "domain_capability_diagnostics": "landed_read_only_registration_runtime_separated",
+    "high_risk_domain_claim_gate": "landed_fail_closed_human_review_required",
+    "domain_claim_feedback": "landed_create_only_read_only_candidates_no_automatic_promotion"
   },
   "conditional_learning_entrypoint": "tools/conditional_learning.py",
   "conditional_learning_config": "engine/conditional-learning.yaml",
   "active_feedback_entrypoints": [
     "tools/feedback_ingest.py",
     "tools/feedback_loop.py",
-    "tools/batch_review.py"
+    "tools/batch_review.py",
+    "tools/promote_expert_weight_feedback.py",
+    "tools/domain_feedback.py"
   ],
+  "domain_prospective_entrypoint": "tools/domain_prospective_cohort.py",
+  "domain_capability_status_entrypoint": "tools/domain_capability_status.py",
+  "domain_prospective_status": {
+    "engineering_implementation": "landed",
+    "real_cohort": "not_ready",
+    "production_ready": false,
+    "production_switch_permitted": false,
+    "status_source": "engine/contracts/20-domain-prospective-evaluation-v1.md"
+  },
   "active_report_entrypoints": [
     "tools/render_report.py",
-    "tools/output_linter.py"
+    "tools/output_linter.py",
+    "tools/domain_analysis_cli.py"
   ],
   "deprecated_tools": [],
   "removed_historical_tools": [
@@ -73,7 +98,7 @@
     "blind_bundle": "landed",
     "immutable_frozen_result": "landed",
     "feedback_release": "released",
-    "immediate_retrospective": "not_completed",
+    "immediate_retrospective": "landed",
     "future_observation": "not_completed",
     "status_source": "handoff.md",
     "artifact_root": "META/prospective-go/single-cases/P-GO-2026-001-坤-壬戌己酉乙卯丁亥/"
@@ -96,6 +121,8 @@
     "use_runtime_scanners": [
       "git rev-parse HEAD",
       "python tools/rule_status_scan.py --format markdown",
+      "python tools/parallel_domain_weight_status_scan.py --format markdown",
+      "python tools/parallel_domain_weight_status_scan.py --check",
       "python tools/tool_registry.py --check"
     ]
   }

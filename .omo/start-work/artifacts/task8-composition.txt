@@ -1,0 +1,116 @@
+Task8 constrained composition evidence
+
+RED
+- `python -m pytest tests/governance/test_composition_registry.py -q`
+- Result before implementation: 6 failed in 0.49s.
+- Cause: `ModuleNotFoundError: No module named 'engine.governance.composition'`.
+
+GREEN and regression gates
+- `python -m pytest tests/governance/test_composition_registry.py tests/governance/test_school_registry.py tests/governance/test_fact_certification_registry.py tests/governance/test_arbitration_properties.py -q`
+- Result: 47 passed in 1.85s.
+- `python -m pytest tests/governance tests/evaluation/test_task8_baseline.py -q`
+- Result: 131 passed, 1 warning in 20.63s. The warning is the existing `engine.application.dual_engine_adapter` deprecation.
+- `ruff check` and `ruff format --check` across Task8 production paths and touched registry paths: passed.
+- `python C:\Users\Administrator\.codex\plugins\cache\sisyphuslabs\omo\4.13.0\skills\programming\scripts\python\check-no-excuse-rules.py <12 scoped paths>`: `no violations in 12 file(s)`.
+- `git diff --check -- <tracked Task8 paths>`: passed.
+- `basedpyright`, `pyright`, and `uv` are unavailable in this environment.
+
+Manual public-API replay
+- Shadow: `shadow=composed/structure/corroborated`.
+- Production: `production=unsupported/COMPOSITION.PRODUCTION_FORBIDDEN`.
+- The formal YAML registers exactly one `synthetic_only` template; no production template is registered.
+
+Adversarial matrix
+1. Permuted components: canonical result digest is unchanged.
+2. Production authority for synthetic-only: typed unsupported result.
+3. Exact unknown template version: typed unsupported result.
+4. Missing required component count: typed conditional result.
+5. Dynamic YAML fields (`callback`, `expression`, `predicate`, `module_path`): loader rejects.
+6. Temporal-layer or scope mismatch: typed conflict, never union or inferred intersection.
+7. Support/oppose strong contradiction: typed human_review.
+8. Forged CompositionResult digest: direct constructor rejects.
+9. Forged CompositionTemplate digest: direct replacement constructor rejects.
+
+Cleanup receipt
+- New composition modules remain below 250 pure LOC: contracts 161, templates 200, loader 181, executor 187.
+- Task4's pre-existing oversized `test_fact_certification_registry.py` was not left in the Task8 changed-path set; the one Task8 fixture addition was removed. Task4/6 loaders recognize `composition_templates` as the unique optional new top-level field, still rejecting every other unknown field. The composition loader itself requires the field.
+- No commit was created.
+
+Final gate rework 2: legacy-loader parser cleanup
+
+Behavior lock before edit
+- Existing invalid loader tests: `9 passed in 0.84s`.
+- Public temporary-registry characterization before edit: `CERTIFICATION.LEVEL`, `CERTIFICATION.STATUS`, `CAPABILITY.CLAIM_KIND`, `CAPABILITY.EVIDENCE_GRADE`, `CAPABILITY.ROLE`, and `CAPABILITY.PUBLICATION_STATUS`.
+- The first characterization harness had a temporary-directory helper reuse mistake after the first successful level result. A corrected isolated-directory replay returned all six codes above; this did not exercise or alter product behavior.
+
+Cleanup and post-edit GREEN
+- Removed the six `assert_never` calls used after matching unbounded raw YAML strings from the two Task8-scoped loaders.
+- `_reject` in both loaders now returns `Never`. Fact level uses explicit accepted string checks; status/kind/grade/role parsers iterate their closed runtime enums and preserve the exact prior typed issue codes.
+- Loader focused: `24 passed in 1.01s`.
+- Post-edit public loader replay returned the same six typed issue codes as the behavior lock.
+- Task8 focused: `27 passed in 2.16s`.
+- Task1-8 joint: `135 passed, 1 existing deprecation warning in 22.59s`.
+- Ruff/format passed for 14 scoped files. No-excuse: `no violations in 14 file(s)`.
+- Loader pure LOC: fact certification 195; school registry 206.
+
+Handoff and QA
+- Manual QA: `.omo/evidence/task8-composition-manual-qa.md`.
+- Notepad: `.omo/notepads/multi-school-governance-wave1/task8-composition.md`.
+- Remaining environment limitation: `basedpyright`, `pyright`, and `uv` are unavailable.
+
+Remove-ai-slops audit (10 categories)
+1. obvious comments: PASS. Production parser cleanup adds no narration comments; test comments remain Given/When/Then behavior framing.
+2. over-defensive code: PASS. Parsing validates only raw YAML boundaries and immediately returns typed errors; no post-action revalidation was added.
+3. complexity: PASS. Six repetitive raw-string match fallthroughs became direct closed parser loops/checks; no new decision layer or score logic.
+4. needless abstraction: PASS. No helper/module/public API was introduced for the loader cleanup.
+5. boundary violations: PASS. Unknown strings retain exact typed errors; no callbacks, expressions, module paths, eval, or exec enter a loader.
+6. dead code: PASS. Removed `assert_never` imports and fallthrough statements; every remaining parser branch is reachable from raw YAML input.
+7. duplication: PASS. The existing loaders retain their local typed-error namespaces; cross-loader abstraction would blur those public contracts.
+8. performance: PASS. Enum scans are bounded tiny closed sets; loader I/O and YAML parsing paths are unchanged.
+9. missing tests: PASS. Existing invalid-loader tests plus isolated public replay lock every affected issue code; Task8 focused and joint regression suites pass.
+10. oversized modules: PASS. Fact loader 195 and school loader 206 pure LOC, each below the 250 limit. The untouched Task4 fact-certification test is outside this rework scope and was not refactored.
+
+Final cleanup receipt
+- No commit, reset, checkout, or revert was performed.
+- Manual QA and notepad now satisfy the final-gate handoff artifact requirement.
+
+Rework after independent code review
+
+New RED evidence
+- `python -m pytest tests/governance/test_composition_execution.py -q`
+- Before the independence fix: `1 failed, 2 passed in 0.65s`; repeating one identical GovernanceClaim produced `COMPOSED` instead of `CONDITIONAL`.
+- `python -m pytest tests/governance/test_composition_registry.py tests/governance/test_composition_execution.py -q`
+- Before the constructor fix: `2 failed, 11 passed in 2.30s`; `replace(template, output_kind="structure")` raised raw `AttributeError` and duplicate input still composed.
+
+Rework implementation and GREEN evidence
+- `independent_support` is now a closed slot name and requires both distinct `(claim_id, content_digest)` variants and distinct school IDs before its count can be met. Insufficient independent support returns `CONDITIONAL/COMPOSITION.INDEPENDENT_COMPONENTS_REQUIRED`.
+- CompositionTemplate validates `output_kind` and `evidence_cap` exact enum types before equality or digest materialization, producing typed CompositionContractError.
+- The dynamic-field test first loads a copied complete formal registry, then injects exactly one of `callback`, `expression`, `predicate`, or `module_path`; each now proves `COMPOSITION.YAML_FIELDS` at `composition_templates[0]`.
+- Raw YAML scalar parsing no longer uses `assert_never` on an unbounded string. `_reject` returns `Never`; boolean, evidence-grade, and status parsing use explicit closed lookup loops and typed rejection.
+- Evidence-cap test asserts `CORROBORATED` output from `DIRECT` components under the template cap. Counterevidence/falsifier test asserts the complete original claim envelope remains in CompositionResult.components.
+- Focused run 1: `13 passed in 0.96s`.
+- Focused run 2: `13 passed in 1.43s`.
+- Final Task1-8 joint: `python -m pytest tests/governance tests/evaluation/test_task8_baseline.py --disable-warnings -q` -> `135 passed, 1 warning in 19.93s`.
+- Ruff check and format check passed. `check-no-excuse-rules.py` -> `no violations in 8 file(s)`.
+- `git diff --check` on tracked Task8 boundary paths passed. basedpyright/pyright/uv remain unavailable.
+
+Rework public replay
+- Shadow: `shadow=composed/structure/corroborated`.
+- Duplicate: `duplicate=conditional/COMPOSITION.INDEPENDENT_COMPONENTS_REQUIRED`.
+- Production: `production=unsupported/COMPOSITION.PRODUCTION_FORBIDDEN`.
+
+Ultraqa matrix
+1. malformed_input: PASS. Raw enum-like template values and injected dynamic YAML fields return typed contract/schema rejection.
+2. stale_state: PASS. Exact unknown version still returns typed unsupported; replay reloads the formal registry from disk.
+3. dirty_worktree: PASS. Worktree is intentionally dirty/untracked for Wave1; scoped validation ran without reset, checkout, or unrelated reversion.
+4. flaky_tests: PASS. Focused suite passed twice independently; joint suite passed after the second focused replay.
+5. misleading_success_output: PASS. Dynamic-field regression first proves the copied complete baseline loads, then proves the one injected field causes the exact failure.
+6. hung_or_long_commands: PASS. Longest final joint command completed in 19.93s, below the 30-second execution window.
+7. repeated_interruptions: NOT_TRIGGERED. No test or replay command was cancelled or interrupted during rework.
+8. prompt_injection: NOT_TRIGGERED. No untrusted prompt input entered this code path; closed YAML field validation rejects execution escape hatches.
+9. cancel_resume: PASS. Work resumed from the review-requested rework state, recreated RED evidence, then reran focused, joint, and replay gates.
+
+Rework cleanup receipt
+- Pure LOC: composition.py 28; contracts 161; executor 195; loader 165; templates 206; fixtures 59; registry tests 197; execution tests 54.
+- Composition scope contains no `assert_never`, `Any`, `object`, `cast`, `type: ignore`, broad exception, `eval`, or `exec` usage.
+- No commit was created.
