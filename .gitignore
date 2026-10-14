@@ -47,6 +47,9 @@ _sandbox_shims/
 # Graft local graph cache — regenerable, not committed (run `graft build`).
 /graft/
 
+# 本地技能审查缓存，不是仓库内容
+.review-mattpocock-skills/
+
 # 禁止旧引擎膨胀产物入库
 cases/**/findings/
 cases/**/analysis_output.json
