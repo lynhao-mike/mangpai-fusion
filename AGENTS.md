@@ -149,8 +149,8 @@ pytest tests/test_project_metadata.py -q
 - 不要引用不存在的旧工具名作为可执行入口，例如 `seal_prediction.py`、`verify_evidence.py`。
 - 不要把 [`handoff.md`](handoff.md) 当作长期真相源；它只保留短期下一步。
 - 不要在报告标题遗漏性别命式（乾/坤）。
-- 不要把 F10 启动决策包收尾、多专家功能域主裁判路由 promotion、v1.4 V7 报告模板默认切换、子平/滴天髓生产规则扩充、八字指纹相似案检索，当作当前最高优先级长任务。这五项都在优化现有静态报告生成器（读取全部 known facts 后一次性生成报告）的局部参数，不解决“先盲断、后核验、再从核验后现实位置推演”的认识论缺口；它们必须排在 as-of 求测闭环（见 [`plans/as-of-life-state-reasoning-design-2026-07-18.md`](plans/as-of-life-state-reasoning-design-2026-07-18.md)）之后，除非用户明确改变优先级。
-- 不要把现有生产 pipeline（读取全部 known facts 后生成报告）当作已验证的推理系统去扩充规则或调整路由权重；它从未在“不知道答案”的条件下被测试过盲断准确率。规则扩充、多专家路由 promotion、指纹相似案检索的价值，必须等 as-of 求测闭环产生真实盲断—核验数据后才能被证实，不能凭已知答案下的报告吻合度自证。
+- 不要把 F10 启动决策包收尾、多专家功能域主裁判路由 promotion、v1.4 V7 报告模板默认切换、子平/滴天髓生产规则扩充、八字指纹相似案检索，当作当前最高优先级长任务。当前优先级是双核盲测与规则沉淀：盲测必须先封存、后核验；核验后的 as-of 状态推演不再具有默认优先地位，只在命理师明确选择未来预测时进行。边界见 [`plans/dual-core-blind-validation-design-2026-10-14.md`](plans/dual-core-blind-validation-design-2026-10-14.md)。
+- 不要把现有生产 pipeline（读取全部 known facts 后生成报告）当作已验证的推理系统去扩充规则或调整路由权重；它从未在“不知道答案”的条件下被测试过盲断准确率。规则扩充、多专家路由 promotion、指纹相似案检索的价值，必须等双核盲测流程产生真实封存与核验数据后才能被证实，不能凭已知答案下的报告吻合度自证。
 
 ---
 
@@ -180,3 +180,13 @@ pytest tests/test_project_metadata.py -q
 4. [`tools/README.md`](tools/README.md) 或对应工具源码
 
 只有在涉及架构、版本、契约或历史回溯时，才读取 [`STATUS.md`](STATUS.md)、[`plans/`](plans/) 与 [`META/rule-changelog.md`](META/rule-changelog.md)。
+
+### 8.1 AI 检索路由与证据取用
+
+按资料类型选择入口，先定位候选，再按精确位置取证；不要为了“读全”扩展整个图谱或语料库。完整预算、证据格式与验证要求见 [`plans/ai-retrieval-routing-contract-v1.md`](plans/ai-retrieval-routing-contract-v1.md)。
+
+- 代码符号、调用链、依赖与影响范围：优先使用 Graft MCP；若代码图不可用，明确记录能力缺口，再对相关文件做精确检索，不得假称图检索已完成。
+- Markdown 架构决策、契约与案例关系：使用 IWE MCP 做窄范围候选定位；默认不展开 references / referencedBy，也不批量读取全文。
+- 理论规则：使用 `tools/as_of_theory_lookup.py` 与 `theory/*/index.yaml` 定位候选；命中仅代表候选，须按规则 ID 和来源核验适用条件及原文依据。
+- 盲态任务：严格排除反馈、结果报告及已揭示事实；不得以节省 token 为由放宽盲态边界。
+- 证据不足时停止扩展，标记 `insufficient_evidence`，并说明尚缺的来源或定位信息。
