@@ -124,6 +124,15 @@ class CrossSchoolConflict:
             output_strategy=d.get("output_strategy", "并列显示"),
         )
 
+def _sidecar_ref(obj: Any) -> Optional[dict[str, Any]]:
+    """旁路对象序列化成计数引用，不展开完整候选和检索过程。"""
+    if obj is None:
+        return None
+    payload = obj.to_dict() if hasattr(obj, "to_dict") else obj
+    count = len(payload) if isinstance(payload, (list, dict)) else 1
+    return {"omitted": True, "present": True, "count": count}
+
+
 def _load_retrospective(d: Any) -> Optional[Any]:
     """延迟导入 + 容错的 RetrospectiveReport 反序列化。"""
     if not d:
@@ -231,6 +240,7 @@ class AnalysisOutput:
     prediction: Optional[Any] = None  # PredictionOutput（避免循环导入）
 
     def to_dict(self) -> dict[str, Any]:
+        # ponytail: 旁路对象只留计数，避免和 D1-D4 全量重复嵌套进同一 JSON。
         return {
             "schema_version": self.schema_version,
             "pipeline_version": self.pipeline_version,
@@ -251,42 +261,12 @@ class AnalysisOutput:
             "layer_summary": dict(self.layer_summary),
             "hash_chain_valid": self.hash_chain_valid,
             "hash_chain_notes": list(self.hash_chain_notes),
-            "retrospective": (
-                self.retrospective.to_dict()
-                if self.retrospective is not None
-                and hasattr(self.retrospective, "to_dict")
-                else None
-            ),
-            "parallel_analysis": (
-                self.parallel_analysis.to_dict()
-                if self.parallel_analysis is not None
-                and hasattr(self.parallel_analysis, "to_dict")
-                else None
-            ),
-            "theory_findings": (
-                self.theory_findings.to_dict()
-                if self.theory_findings is not None
-                and hasattr(self.theory_findings, "to_dict")
-                else None
-            ),
-            "blind_findings": (
-                self.blind_findings.to_dict()
-                if self.blind_findings is not None
-                and hasattr(self.blind_findings, "to_dict")
-                else None
-            ),
-            "fusion_findings": (
-                self.fusion_findings.to_dict()
-                if self.fusion_findings is not None
-                and hasattr(self.fusion_findings, "to_dict")
-                else None
-            ),
-            "prediction": (
-                self.prediction.to_dict()
-                if self.prediction is not None
-                and hasattr(self.prediction, "to_dict")
-                else None
-            ),
+            "retrospective": _sidecar_ref(self.retrospective),
+            "parallel_analysis": _sidecar_ref(self.parallel_analysis),
+            "theory_findings": _sidecar_ref(self.theory_findings),
+            "blind_findings": _sidecar_ref(self.blind_findings),
+            "fusion_findings": _sidecar_ref(self.fusion_findings),
+            "prediction": _sidecar_ref(self.prediction),
         }
 
     @classmethod

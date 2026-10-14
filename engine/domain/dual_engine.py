@@ -128,6 +128,7 @@ class FusionFindings:
     schema_version: str = DUAL_ENGINE_SCHEMA_VERSION
 
     def to_dict(self) -> dict[str, Any]:
+        # ponytail: parallel_analysis 已单独挂在 AnalysisOutput，这里不再嵌一份。
         return {
             "schema_version": self.schema_version,
             "case_id": self.case_id,
@@ -135,12 +136,7 @@ class FusionFindings:
             "theory_support": list(self.theory_support),
             "blind_support": list(self.blind_support),
             "confidence_summary": dict(self.confidence_summary),
-            "parallel_analysis": (
-                self.parallel_analysis.to_dict()
-                if self.parallel_analysis is not None
-                and hasattr(self.parallel_analysis, "to_dict")
-                else None
-            ),
+            "parallel_analysis": {"omitted": True, "present": self.parallel_analysis is not None},
         }
 
     @classmethod

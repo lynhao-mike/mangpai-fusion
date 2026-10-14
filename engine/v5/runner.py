@@ -468,13 +468,7 @@ def build_blind_school_rule_claims(
     limit: int = 15,
     min_candidate_score: float = 0.0,
 ) -> list[V5Claim]:
-    """把三盲派 index.yaml 规则筛选为 v5 命题。
-
-    变更：
-    - limit 从 8 提升到 15，覆盖更多高质量规则
-    - 用 score_blind_rule() 谓词评分替代固定 0.55 置信度
-    - 加 min_candidate_score 门槛过滤低质候选
-    """
+    """只召回通过显式结构门禁的盲派规则。未通过的文本不进入 support 投票。"""
 
     raw_rules = _load_blind_school_rules(school, workspace_root=workspace_root)
     if not raw_rules:
@@ -485,6 +479,7 @@ def build_blind_school_rule_claims(
         if str(rule.get("school", "")) == source_school
         and str(rule.get("status", "candidate")) not in {"deprecated", "rejected"}
         and float(rule.get("candidate_score") or 0.0) >= min_candidate_score
+        and score_blind_rule(rule, chart) > 0
     ]
     selected.sort(key=lambda rule: _blind_rule_chart_rank(rule, chart))
     claims: list[V5Claim] = []
@@ -906,6 +901,35 @@ def _extract_event_verdict(event_claims: list[V5Claim], structure_verdict: str, 
     return f"事件裁决（{support_n}条支持{conflict_note}，基于结构基础）：{top.claim[:80]}…"
 
 
+def _route_weight(school: str, chart: dict[str, Any]) -> float:
+    """复用 L1 静态路由分。路由失败时不抬分。"""
+    try:
+        from engine.decision.l1_school_router import _static_route_schools
+        from engine.decision.models import ChartFactLedger, ContextFactLedger
+
+        pillars = chart.get("pillars") or {}
+        four = pillars if isinstance(pillars, dict) else {}
+        routes = _static_route_schools(
+            ChartFactLedger(four_pillars={k: str(v) for k, v in four.items()}),
+            ContextFactLedger(),
+        )
+        matched = [item.applicability_score for item in routes if item.school == school]
+        return matched[0] if matched else 0.5
+    except Exception:  # noqa: BLE001
+        return 0.5
+
+
+def _evidence_confidence(claims: list[V5Claim], *, cap: float = 0.85) -> float:
+    """最高证据与 Top-3 均值，再乘该派路由权重。条数不再抬分。"""
+    if not claims:
+        return 0.2
+    ranked = sorted(claims, key=lambda c: float(c.confidence.score), reverse=True)
+    top = ranked[:3]
+    blended = float(ranked[0].confidence.score) * 0.7 + sum(float(c.confidence.score) for c in top) / len(top) * 0.3
+    weight = max(_route_weight(c.school, {"pillars": {}}) for c in top)
+    return round(min(cap, blended * weight), 3)
+
+
 def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
     """角色化三段式仲裁器。
 
@@ -952,7 +976,9 @@ def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
         structure_winners = list({c.school for c in structure_claims if c.stance == "support"})
         struct_support = len([c for c in structure_claims if c.stance == "support"])
         struct_oppose = len([c for c in structure_claims if c.stance == "oppose"])
-        struct_confidence_score = min(0.85, 0.45 + struct_support * 0.08) if struct_support else 0.2
+        struct_confidence_score = _evidence_confidence(
+            [c for c in structure_claims if c.stance == "support"]
+        )
         struct_confidence_tier = "★★★★" if struct_confidence_score >= 0.7 else "★★★" if struct_confidence_score >= 0.5 else "★★"
         struct_conflict = "stance_conflict" if struct_support and struct_oppose else "none"
 
@@ -987,7 +1013,10 @@ def arbitrate_claims(claims: list[V5Claim]) -> list[V5ArbitrationResult]:
         event_support = len([c for c in event_claims if c.stance == "support"])
         event_oppose = len([c for c in event_claims if c.stance == "oppose"])
         # 无结构基础则事件置信度上限 0.45
-        event_base_score = min(0.80, 0.40 + event_support * 0.07) if event_support else 0.2
+        event_base_score = _evidence_confidence(
+            [c for c in event_claims if c.stance == "support"],
+            cap=0.80,
+        )
         if not (has_domain_structure or has_global_structure):
             event_base_score = min(0.45, event_base_score)
         event_tier = "★★★★" if event_base_score >= 0.7 else "★★★" if event_base_score >= 0.5 else "★★" if event_base_score >= 0.35 else "★"

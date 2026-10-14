@@ -115,10 +115,6 @@ def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Pa
         assert kwargs.get("report_variant") == "standard"
         assert kwargs.get("template_name") == "report-v5.md"
         for filename in (
-            "energy.json",
-            "picture.json",
-            "gate_results.json",
-            "support.json",
             "analysis_output.json",
             "timing.json",
         ):
@@ -198,10 +194,6 @@ def test_submit_can_render_v6_preprod_artifacts(monkeypatch, tmp_path: Path) -> 
 
     def fake_run_pipeline_e2e(*args, **kwargs):
         for filename in (
-            "energy.json",
-            "picture.json",
-            "gate_results.json",
-            "support.json",
             "analysis_output.json",
             "timing.json",
         ):
@@ -325,10 +317,6 @@ def test_run_queued_marks_running_then_completes(monkeypatch, tmp_path: Path) ->
 
     def fake_run_pipeline_e2e(*args, **kwargs):
         for filename in (
-            "energy.json",
-            "picture.json",
-            "gate_results.json",
-            "support.json",
             "analysis_output.json",
             "timing.json",
         ):
@@ -403,4 +391,4 @@ def test_submit_hard_fails_when_required_artifact_is_missing(monkeypatch, tmp_pa
     assert job["status"] == "failed"
     assert "ArtifactGateError" in job["error"]
     assert "statement_rule_map" in job["error"]
-    assert "energy" in job["error"]
+    assert "timing" in job["error"]

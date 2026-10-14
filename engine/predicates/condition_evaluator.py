@@ -4,10 +4,11 @@
 
 两个入口：
 - evaluate_trigger(trigger, chart)  →  bool   用于有结构化 trigger 的生产规则
+- trigger_evidence_status(trigger)  →  str    区分真实命中与证据不足
 - score_blind_rule(rule_dict, chart) →  float  用于盲派 index.yaml 候选规则
 
 ponytail: 不写新命理推理，只用已有 predicates/ 库做条件判断。
-未知触发类型保守放行（return True），避免误杀有效规则。
+未知 trigger 返回 False，并标记 insufficient_evidence；不得因无法判断而放行。
 """
 from __future__ import annotations
 
@@ -126,12 +127,37 @@ def chart_has_liunian(chart: dict[str, Any]) -> bool:
 _TRIGGER_DISPATCH: dict[str, Any] = {}  # 延迟构建，下面 evaluate_trigger 内完成
 
 
+def trigger_evidence_status(trigger: str) -> str:
+    """返回 trigger 的证据状态，不把未知条件伪装成已满足。"""
+    known = {
+        "always",
+        "has_energy_structure",
+        "has_tiaohou_advice",
+        "wuxing_imbalanced",
+        "has_zhi_chong",
+        "has_dayun",
+        "has_xiaoyun",
+        "has_liunian",
+        "has_suiyun_interaction",
+        "has_sanhe_partial",
+        "has_sanxing",
+        "has_kongwang",
+        "has_zaisha",
+        "has_wealth_picture",
+        "has_official_picture",
+        "has_marriage_picture",
+    }
+    return "evaluable" if trigger in known else "insufficient_evidence"
+
+
 def evaluate_trigger(trigger: str, chart: dict[str, Any]) -> bool:
     """把结构化 trigger 字段映射到真实命盘谓词。
 
-    返回 True 表示规则在此命盘上激活。
-    未知 trigger 保守放行（True），不误杀有效规则。
+    返回 True 表示已知 trigger 在此命盘上激活。
+    未知 trigger 返回 False，状态由 trigger_evidence_status 标为 insufficient_evidence。
     """
+    if trigger_evidence_status(trigger) == "insufficient_evidence":
+        return False
     if trigger in ("always", "has_energy_structure", "has_tiaohou_advice"):
         return True
     if trigger == "wuxing_imbalanced":
@@ -161,8 +187,7 @@ def evaluate_trigger(trigger: str, chart: dict[str, Any]) -> bool:
         return bool(chart.get("picture", {}).get("guanming"))
     if trigger == "has_marriage_picture":
         return bool(chart.get("picture", {}).get("marriage_picture"))
-    # ponytail: 未知 trigger 保守放行
-    return True
+    return False
 
 
 # ── 盲派候选规则评分 ─────────────────────────────────────────────────────────
@@ -179,64 +204,26 @@ _NOTABLE_PAIRS: list[tuple[str, str]] = [
 ]
 
 
+def blind_rule_gate(rule: dict[str, Any], chart: dict[str, Any]) -> bool:
+    """有显式条件必须求值通过；纯文本不得凭干支撞字成为有效证据。"""
+    trigger = str(rule.get("condition") or rule.get("trigger") or "").strip()
+    if trigger:
+        return evaluate_trigger(trigger, chart)
+    text = "".join(str(rule.get(k, "")) for k in ("topic", "topic_label", "title", "conclusion"))
+    if any(tok in text for tok in _CHONG_TOKENS):
+        return chart_has_zhi_chong(chart)
+    if "墓" in text or "库" in text:
+        return bool(_zhi_set(chart) & frozenset("辰戌丑未"))
+    if "做功" in text:
+        return bool(chart.get("energy", {}).get("layer_count"))
+    return False
+
+
 def score_blind_rule(rule: dict[str, Any], chart: dict[str, Any]) -> float:
-    """给盲派 index.yaml 候选规则在当前命盘上打一个 0.0-1.0 的相关度分。
-
-    算法（ponytail：不写命理，只做结构性匹配）：
-    1. 基础分 = candidate_score（已有人工评估）
-    2. 规则结论中明确提及的干支，在命盘中真实存在 → 加分
-    3. 规则结论提及冲刑，且命盘有真实六冲 → 加分
-    4. 规则涉及应期词，且有大运流年 → 加分
-    5. 规则提及特定干支对（非单字），且两字同时在命盘 → 加分
-    6. 五行缺失规则只在命盘确实缺五行时加分
-
-    返回归一化分数，最高 1.0。
-    """
-    base = float(rule.get("candidate_score") or 0.5)
-
-    rule_text = "".join(
-        str(rule.get(k, ""))
-        for k in ("topic", "topic_label", "title", "conclusion", "raw_anchor")
-    )
-
-    pillars_text = _pillars_text(chart)
-    full_text    = _full_text(chart)
-    present_zhi  = _zhi_set(chart)
-    present_gan  = _gan_set(chart)
-    present_all  = present_zhi | present_gan
-
-    bonus = 0.0
-
-    # 1. 单字干支命中（规则提到的干支在命盘中存在）
-    rule_ganzhi = frozenset(ch for ch in rule_text if ch in _GANZHI)
-    if rule_ganzhi:
-        hit_ratio = len(rule_ganzhi & present_all) / len(rule_ganzhi)
-        bonus += 0.15 * hit_ratio
-
-    # 2. 显式干支对命中（两字同时存在）
-    pair_hits = sum(
-        1 for a, b in _NOTABLE_PAIRS
-        if a in rule_text and b in rule_text and a in full_text and b in full_text
-    )
-    bonus += 0.08 * min(pair_hits, 2)
-
-    # 3. 冲刑规则 + 命盘有真实六冲
-    if any(tok in rule_text for tok in _CHONG_TOKENS) and chart_has_zhi_chong(chart):
-        bonus += 0.10
-
-    # 4. 应期词 + 有大运流年
-    if any(tok in rule_text for tok in _TIMING_TOKENS) and (chart_has_dayun(chart) or chart_has_liunian(chart)):
-        bonus += 0.06
-
-    # 5. 五行偏枯规则：命盘确实缺五行才加分
-    if any(wx in rule_text for wx in ("偏枯", "缺")) and chart_wuxing_missing(chart):
-        bonus += 0.08
-
-    # 6. 三刑规则：命盘有真实三刑才加分
-    if "三刑" in rule_text and chart_has_sanxing(chart):
-        bonus += 0.08
-
-    return min(base + bonus, 1.0)
+    """只给通过结构门禁的规则打分；字符重合不再加分。"""
+    if not blind_rule_gate(rule, chart):
+        return 0.0
+    return min(float(rule.get("candidate_score") or 0.5), 1.0)
 
 
 def rank_blind_rule(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[float, int, str]:

@@ -46,12 +46,12 @@ def test_analysis_output_round_trips_dual_engine_findings() -> None:
     parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     output = run_pipeline(parsed, write_findings=False)
 
-    restored = AnalysisOutput.from_dict(output.to_dict())
+    payload = output.to_dict()
 
-    assert isinstance(restored.theory_findings, TheoryFindings)
-    assert isinstance(restored.blind_findings, BlindFindings)
-    assert isinstance(restored.fusion_findings, FusionFindings)
-    assert restored.theory_findings.evidence_rule_ids == output.theory_findings.evidence_rule_ids
-    assert restored.blind_findings.upstream_hashes == output.blind_findings.upstream_hashes
-    assert restored.fusion_findings.parallel_analysis is not None
-    assert restored.fusion_findings.conclusions == output.fusion_findings.conclusions
+    assert output.theory_findings is not None
+    assert output.blind_findings is not None
+    assert output.fusion_findings is not None
+    assert payload["theory_findings"]["omitted"] is True
+    assert payload["blind_findings"]["omitted"] is True
+    assert payload["fusion_findings"]["omitted"] is True
+    assert "conclusions" not in payload["fusion_findings"]

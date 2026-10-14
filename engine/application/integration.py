@@ -153,6 +153,22 @@ def _gate_to_conclusion(
     )
 
 
+def _dedupe_conclusions(conclusions: list[FinalConclusion]) -> list[FinalConclusion]:
+    """同一领域同一断语只留最高置信度一条。"""
+    best: dict[tuple[str, str], FinalConclusion] = {}
+    order: list[tuple[str, str]] = []
+    for item in conclusions:
+        key = (item.domain, item.statement.strip())
+        current = best.get(key)
+        if current is None:
+            best[key] = item
+            order.append(key)
+            continue
+        if item.confidence.posterior > current.confidence.posterior:
+            best[key] = item
+    return [best[key] for key in order]
+
+
 def _production_rule_to_conclusion(rule: Any, idx: int) -> FinalConclusion:
     """将子平 / 滴天髓生产规则转换为报告层互补断语。"""
 
@@ -294,6 +310,7 @@ def integrate(
         hash_notes.append(f"生产规则加载跳过：{exc}")
 
     # 7. 计算 layer_summary
+    conclusions = _dedupe_conclusions(conclusions)
     layer_summary: dict[str, int] = {"共识": 0, "互补": 0, "独门": 0, "冲突仲裁": 0}
     for c in conclusions:
         layer_summary[c.layer] = layer_summary.get(c.layer, 0) + 1

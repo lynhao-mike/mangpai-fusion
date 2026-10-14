@@ -16,10 +16,6 @@ from engine.infrastructure.analysis_store import AnalysisArtifactRecord
 
 
 FINDINGS_ARTIFACTS: tuple[tuple[str, str], ...] = (
-    ("energy", "energy.json"),
-    ("picture", "picture.json"),
-    ("gate_results", "gate_results.json"),
-    ("support", "support.json"),
     ("analysis_output", "analysis_output.json"),
     ("timing", "timing.json"),
 )

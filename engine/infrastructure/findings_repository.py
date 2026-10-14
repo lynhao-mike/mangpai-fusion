@@ -13,16 +13,10 @@ def _save_findings(
     *,
     cases_dir: Optional[Union[str, Path]] = None,
 ) -> Path:
-    """把 D1-D4 + AnalysisOutput 落盘到 cases/C-XXX/findings/。
+    """只落盘最终结论摘要。D1-D4 已在 analysis_output 内，不再各写一份。
 
-    与 ``tools/render_report.save_findings`` 等价的轻量副本——独立放在 engine
-    层，避免 engine→tools 的分层倒置（pipeline.py 不允许 import tools.*）。
-
+    ponytail: 命盘事实与检索候选不进落盘；要完整追溯时读内存对象。
     写入文件：
-        - energy.json
-        - picture.json
-        - gate_results.json
-        - support.json
         - analysis_output.json
 
     Returns:
@@ -51,14 +45,6 @@ def _save_findings(
             )
         return json.dumps(obj, ensure_ascii=False, indent=2)
 
-    (findings_dir / "energy.json").write_text(
-        _dump(output.energy), encoding="utf-8")
-    (findings_dir / "picture.json").write_text(
-        _dump(output.picture), encoding="utf-8")
-    (findings_dir / "gate_results.json").write_text(
-        _dump(output.gate_results), encoding="utf-8")
-    (findings_dir / "support.json").write_text(
-        _dump(output.support), encoding="utf-8")
     (findings_dir / "analysis_output.json").write_text(
         _dump(output), encoding="utf-8")
 

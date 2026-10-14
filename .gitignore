@@ -46,3 +46,15 @@ _sandbox_shims/
 
 # Graft local graph cache — regenerable, not committed (run `graft build`).
 /graft/
+
+# 禁止旧引擎膨胀产物入库
+cases/**/findings/
+cases/**/analysis_output.json
+cases/**/findings.after.json
+cases/**/findings.before.json
+cases/**/school_verdict_matrix.json
+cases/**/statement_records.json
+cases/**/conclusion_diff.json
+cases/**/confidence_delta.json
+reports/**/*.json
+theory/_ir/unified_rule_ir.yaml

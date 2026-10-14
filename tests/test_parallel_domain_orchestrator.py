@@ -94,12 +94,11 @@ def test_analysis_output_round_trips_parallel_analysis() -> None:
     parsed = load_case("C-2026-001-乾-庚申戊寅壬子辛丑")
     output = run_pipeline(parsed, write_findings=False)
 
-    restored = AnalysisOutput.from_dict(output.to_dict())
+    payload = output.to_dict()
 
-    assert restored.parallel_analysis is not None
-    assert restored.parallel_analysis.case_id == output.case_id
-    assert len(restored.parallel_analysis.domain_analyses) == 6
-    assert restored.to_dict()["parallel_analysis"]["domain_analyses"]
+    assert output.parallel_analysis is not None
+    assert payload["parallel_analysis"]["omitted"] is True
+    assert "domain_analyses" not in payload["parallel_analysis"]
 
 
 def test_parallel_domain_render_and_statement_index(tmp_path) -> None:
