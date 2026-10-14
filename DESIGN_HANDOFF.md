@@ -90,16 +90,31 @@
 
 ## 4. 数据结构与接口
 
-本次没有形成 Python `dataclass`、Pydantic、JSON Schema 或新的 YAML schema。以下是已确认的逻辑记录边界，不是可直接编码的最终接口。
-
-盲测轮次最低记录：
+已新增逻辑契约 [`engine/contracts/22-dual-core-blind-validation-v1.md`](engine/contracts/22-dual-core-blind-validation-v1.md)。它仍不是 Python `dataclass`、Pydantic 或 JSON Schema 实现。
 
 ```yaml
-round:
+record:
+  case_id: "案例标识"
+  round_index: 1
+  matter_category: "career"
+  time_scope: "natal"
+  direction: "positive"
   conclusion: "本轮结论"
-  rule_statement: "所用断语"
-  rationale: "由断语推出结论的理由"
+  rationale: "推理理由"
+  applied_rules:
+    - rule_id: "规则标识"
+      school: "ziping"
+      rule_direction: "positive"
+      rule_statement: "所用断语"
 ```
+
+- `matter_category`：`career`、`wealth`、`marriage`、`health`、`education`、`family`。
+- `direction` 与 `rule_direction`：`positive`、`negative`、`mixed`。
+- 分组键：`(rule_id, matter_category, rule_direction)`。
+- 去重统计单元：`(case_id, matter_category, rule_id)`。
+- 错杀率 = 独立命中且被推翻次数 / 被推翻总次数。
+- 纠偏率 = 独立未命中且被推翻次数 / 被推翻总次数。
+- 分母为零时比率为空，不得记为 0。
 
 明确排除在最低记录之外的内容：
 
@@ -127,7 +142,7 @@ rule_stat_revision:
   current_recomputed_snapshot: "并列生成"
 ```
 
-规则修改标记的分组键是“同一规则 + 同一结论方向”；具体修改点留到命理师复核时再拆。
+规则修改标记使用上方的三元分组键；具体修改点留到命理师复核时再拆。
 
 ## 5. 语料库改造与检索方案
 
@@ -149,7 +164,10 @@ rule_stat_revision:
 ### 已落地
 
 - 新建 [`plans/dual-core-blind-validation-design-2026-10-14.md`](plans/dual-core-blind-validation-design-2026-10-14.md)，记录全部已确认的阶段性边界。
+- 修改 [`AGENTS.md`](AGENTS.md) 第 6 节，取消核验后默认继续 as-of 推演的优先地位。
 - 修改 [`AGENTS.md`](AGENTS.md) 第 8.1 节，加入检索路由、候选定位、定向取证、盲态排除和证据不足停止规则。
+- 新建 [`engine/contracts/22-dual-core-blind-validation-v1.md`](engine/contracts/22-dual-core-blind-validation-v1.md)，定义多轮记录、分组、去重、错杀率和纠偏率。
+- 修改 [`engine/predicates/condition_evaluator.py`](engine/predicates/condition_evaluator.py)：未知 trigger 由 `evaluate_trigger()` 返回 `False`，`trigger_evidence_status()` 返回 `insufficient_evidence`。[`tests/test_condition_evaluator_trigger_status.py`](tests/test_condition_evaluator_trigger_status.py) 的 2 项测试已通过。
 - 新建 [`plans/ai-retrieval-routing-contract-v1.md`](plans/ai-retrieval-routing-contract-v1.md)，定义两阶段检索预算和证据包；30% token 节省目标尚未测量。
 - 修改 [`C:\Users\Administrator\.roo\skills\brainstorming\SKILL.md`](C:\Users\Administrator\.roo\skills\brainstorming\SKILL.md)：用户提出新问题或要求解释时先回答；解释后的选项只针对刚解释的未决点；解决后必须重新评估原定下一题。
 - 本文档 [`DESIGN_HANDOFF.md`](DESIGN_HANDOFF.md) 是外部评审同步稿。
@@ -164,15 +182,14 @@ rule_stat_revision:
 - 规则修改标记的独立文档、分组、人工确认和生效范围。
 - 固定 3 案的流程验收与失败后全量重验。
 
-没有新增或修改生产 Python 代码、规则库、历史案例数据或统计实现。
+没有修改规则库、历史案例数据，也没有实现完整统计存储或裁决器。
 
 ## 7. 卡点、冲突与待确认问题
 
-- [`AGENTS.md`](AGENTS.md) 第 6 节仍把 as-of“先盲断、后核验、再从核验后现实位置推演”作为优先路径；本次只在设计文档中取消推演的默认优先地位，尚未修改 `AGENTS.md`。
-- [`engine/contracts/20-domain-prospective-evaluation-v1.md`](engine/contracts/20-domain-prospective-evaluation-v1.md) 仍是事业、财富、婚姻三领域的离线、单次冻结评估协议，不能直接代表本次多轮流程。
-- 尚未选择具体 3 个案例，也尚未开始验证。
-- 案例准确率和规则命中率门槛均未确定。
-- “仲裁推翻率”尚无公式，特别是一条规则被多条规则推翻、跨事项推翻和多次轮次重复触发时如何计数。
-- 规则“同一结论方向”尚无机器可判定标准，目前依赖后续人工复核。
+- [`engine/contracts/20-domain-prospective-evaluation-v1.md`](engine/contracts/20-domain-prospective-evaluation-v1.md) 仍是事业、财富、婚姻三领域的离线、单次冻结评估协议；新多轮契约没有替代或迁移其制品。
+- 已列出但尚未确认的候选案例是 `C-2026-001-乾-庚申戊寅壬子辛丑`、`C-2026-020-坤-丁丑庚戌甲辰丁卯`、`C-2026-034-乾-甲子甲戌癸卯壬戌`。只确认存在 `input.md` 与 `feedback.md`，没有读取反馈。
+- 案例准确率和规则命中率门槛均未确定，首批验证尚未开始。
+- 错杀率与纠偏率公式已定义，但尚无持久化存储、实际计算实现和多规则联合推翻的端到端验证。
+- “同一结论方向”已映射为 `positive`、`negative`、`mixed`，但现有自由文本结论如何自动归类尚未实现。
 - 首批验证通过后，正式规格的汇总范围已确认，但案例验证尚未发生，因此还不能汇总最终规格。
 - Graft 当前无图；IWE 无边界关系扩展会返回大量上下文。这两项是检索能力缺口，不是已完成的基础设施改造。
