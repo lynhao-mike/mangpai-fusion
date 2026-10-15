@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,6 +85,184 @@ def test_cache_key_changes_when_render_options_change(tmp_path: Path) -> None:
     assert key_a == key_c
     assert key_a != key_d
     assert len(key_a) == 64
+
+
+def test_prepare_request_normalizes_paths_before_computing_cache_key(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    input_path = workspace / "cases" / "C-2026-999-X" / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("demo input", encoding="utf-8")
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=workspace,
+    )
+
+    relative_request = SubmitAnalysisRequest(
+        input_path=Path("cases/C-2026-999-X/input.md"),
+        render=True,
+        template_name="ignored-template.md",
+        cases_dir=Path("cases"),
+    )
+    absolute_request = SubmitAnalysisRequest(
+        input_path=input_path,
+        render=True,
+        template_name="another-ignored-template.md",
+        cases_dir=workspace / "cases",
+    )
+
+    relative_normalized, relative_sha256, relative_key = service._prepare_request(relative_request)
+    absolute_normalized, absolute_sha256, absolute_key = service._prepare_request(absolute_request)
+
+    assert relative_normalized == absolute_normalized
+    assert relative_normalized.input_path == input_path.resolve()
+    assert relative_normalized.template_name == "report-v5.md"
+    assert relative_sha256 == absolute_sha256
+    assert relative_key == absolute_key
+
+
+def test_prepare_request_uses_service_cache_key_method(tmp_path: Path, monkeypatch) -> None:
+    workspace = tmp_path / "workspace"
+    input_path = workspace / "cases" / "C-2026-999-X" / "input.md"
+    input_path.parent.mkdir(parents=True)
+    input_path.write_text("demo input", encoding="utf-8")
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=workspace,
+    )
+    observed: dict[str, Any] = {}
+
+    def fake_compute_cache_key(**kwargs: Any) -> str:
+        observed.update(kwargs)
+        return "service-cache-key"
+
+    monkeypatch.setattr(service, "compute_cache_key", fake_compute_cache_key)
+    normalized, input_sha256, cache_key = service._prepare_request(
+        SubmitAnalysisRequest(input_path=Path("cases/C-2026-999-X/input.md"))
+    )
+
+    assert normalized.input_path == input_path.resolve()
+    assert input_sha256
+    assert cache_key == "service-cache-key"
+    assert observed == {
+        "input_sha256": input_sha256,
+        "render": True,
+        "template_name": "report-v5.md",
+        "render_v6_preprod": False,
+    }
+
+
+def test_collect_artifacts_preserves_order_and_skips_missing_optional_v6_artifacts(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    case_id = "C-2026-999-X"
+    case_dir = workspace / "cases" / case_id
+    findings_dir = case_dir / "findings"
+    reports_dir = workspace / "reports"
+    findings_dir.mkdir(parents=True)
+    reports_dir.mkdir(parents=True)
+    for path in (
+        findings_dir / "analysis_output.json",
+        findings_dir / "timing.json",
+        case_dir / "statement_index.json",
+        case_dir / "statement_rule_map.json",
+        reports_dir / f"{case_id}-v6-preprod-content-report.md",
+        reports_dir / f"{case_id}-v6-preprod-content-report.v5.json",
+    ):
+        path.write_text("{}", encoding="utf-8")
+
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=workspace,
+    )
+    artifacts = service._collect_artifacts(
+        case_id=case_id,
+        output=SimpleNamespace(report_md=None),
+        timing=SimpleNamespace(total_seconds=0.01),
+        request=SubmitAnalysisRequest(
+            input_path=case_dir / "input.md",
+            render=False,
+            render_v6_preprod=True,
+            cases_dir=workspace / "cases",
+            reports_dir=reports_dir,
+        ),
+        completed_at="2026-05-30T00:00:00Z",
+    )
+
+    assert [artifact.kind for artifact in artifacts] == [
+        "analysis_output",
+        "timing",
+        "statement_index",
+        "statement_rule_map",
+        "v6_preprod_report",
+        "v5_prediction_ledger",
+    ]
+
+
+def test_build_summary_omits_confidence_when_unavailable(tmp_path: Path) -> None:
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+
+    summary = service._build_summary(
+        SimpleNamespace(
+            case_id="C-2026-999-X",
+            analysis_date="2026-05-30",
+            final_conclusions=["a", "b"],
+            conflicts=["c"],
+            gate_results=["d", "e", "f"],
+            hash_chain_valid=False,
+            overall_confidence=None,
+        ),
+        SimpleNamespace(total_seconds=0.125),
+    )
+
+    assert summary == {
+        "case_id": "C-2026-999-X",
+        "analysis_date": "2026-05-30",
+        "final_conclusions_count": 2,
+        "conflicts_count": 1,
+        "gate_results_count": 3,
+        "hash_chain_valid": False,
+        "pipeline_total_seconds": 0.125,
+    }
+
+
+def test_build_summary_includes_confidence_fields_when_available(tmp_path: Path) -> None:
+    service = ProductionAnalysisService(
+        store=SQLiteAnalysisStore(tmp_path / "analysis.sqlite3"),
+        workspace_root=tmp_path,
+    )
+
+    summary = service._build_summary(
+        SimpleNamespace(
+            case_id="C-2026-999-X",
+            analysis_date="2026-05-30",
+            final_conclusions=[],
+            conflicts=[],
+            gate_results=[],
+            hash_chain_valid=True,
+            overall_confidence=SimpleNamespace(star="★★★", percent=78, label="较高"),
+        ),
+        SimpleNamespace(total_seconds=0.01),
+    )
+
+    assert summary["overall_confidence"] == {
+        "star": "★★★",
+        "percent": 78,
+        "label": "较高",
+    }
+    assert set(summary) == {
+        "case_id",
+        "analysis_date",
+        "final_conclusions_count",
+        "conflicts_count",
+        "gate_results_count",
+        "hash_chain_valid",
+        "pipeline_total_seconds",
+        "overall_confidence",
+    }
 
 
 def test_submit_uses_cache_without_second_pipeline_run(monkeypatch, tmp_path: Path) -> None:

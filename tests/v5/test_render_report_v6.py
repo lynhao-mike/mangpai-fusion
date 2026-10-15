@@ -111,6 +111,7 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     assert attachment.feedback_path == (case_input.parent / "feedback.md").as_posix()
     assert attachment.validate_targets(run_snapshot) == []
     decision_payload = json.loads(rendered_decision_json.read_text(encoding="utf-8"))
+    assert decision_payload["run_id"] == run_snapshot.run_id
     assert decision_payload["schema_version"] == "decision-run-v1"
     assert decision_payload["case_id"] == "C-2026-001-乾-庚申戊寅壬子辛丑"
     assert decision_payload["feedback_signals"]
@@ -119,6 +120,7 @@ def test_render_report_v6_generates_report_and_v5_json(tmp_path: Path) -> None:
     expected = build_ziping_career_decision_run(
         run_snapshot.to_output(),
         raw_text=case_input.read_text(encoding="utf-8"),
+        run_id=run_snapshot.run_id,
     )
     assert expected.to_dict() == decision_payload
     assert expected.validate_trace() == []

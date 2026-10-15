@@ -617,6 +617,10 @@ class V5FeedbackAttachment:
 
     def validate_targets(self, snapshot: V5RunSnapshot) -> list[str]:
         issues: list[str] = []
+        if not self.run_id or self.run_id != snapshot.run_id:
+            issues.append(f"feedback attachment run_id mismatch: {self.run_id} != {snapshot.run_id}")
+        if self.case_id != snapshot.case_id:
+            issues.append(f"feedback attachment case_id mismatch: {self.case_id} != {snapshot.case_id}")
         claim_ids = {item.claim_id for item in snapshot.claims}
         prediction_ids = {item.prediction_id for item in snapshot.prediction_ledger.predictions}
         signal_ids = {item.signal_id for item in snapshot.learning_signals}

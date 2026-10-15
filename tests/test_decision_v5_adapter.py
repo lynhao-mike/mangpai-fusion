@@ -42,8 +42,17 @@ def test_decision_run_from_snapshot_matches_v5_output_adapter() -> None:
     from_snapshot = decision_run_from_snapshot(snapshot)
     from_output = decision_run_from_v5(snapshot.to_output())
 
-    assert from_snapshot.to_dict() == from_output.to_dict()
+    assert {**from_snapshot.to_dict(), "run_id": ""} == {**from_output.to_dict(), "run_id": ""}
     assert from_snapshot.validate_trace() == []
+
+
+def test_decision_run_from_snapshot_uses_snapshot_run_id_as_canonical_identity() -> None:
+    output = run_v5({"case_id": "C-TEST-CANONICAL-RUN", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    snapshot = V5RunSnapshot.from_output(output)
+
+    decision_run = decision_run_from_snapshot(snapshot)
+
+    assert decision_run.run_id == snapshot.run_id
 
 
 def test_v5_adapter_keeps_prediction_probability_ranges() -> None:

@@ -612,6 +612,33 @@ def test_v5_feedback_attachment_validation_selects_matching_run_id_in_multi_run_
     assert summary["issues"] == []
 
 
+def test_v5_feedback_attachment_validation_rejects_decision_run_identity_mismatch(tmp_path):
+    import json
+
+    from engine.v5 import V5FeedbackAttachment, run_v5_snapshot
+    from tools.feedback_ingest import _validate_v5_feedback_attachment
+
+    case_dir = tmp_path / "C-TEST-ATTACH-DECISION-MISMATCH"
+    case_dir.mkdir()
+    snapshot = run_v5_snapshot({"case_id": case_dir.name, "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    (case_dir / "case.run.json").write_text(snapshot.to_json(), encoding="utf-8")
+    (case_dir / "case.feedback-attachment.json").write_text(
+        V5FeedbackAttachment.from_run_snapshot(snapshot).to_json(), encoding="utf-8"
+    )
+    (case_dir / "case.decision-run.json").write_text(
+        json.dumps({"run_id": "run-not-canonical"}), encoding="utf-8"
+    )
+    (case_dir / "manifest.json").write_text(
+        json.dumps({"artifact_paths": {"decision_run_json": (case_dir / "case.decision-run.json").as_posix()}}),
+        encoding="utf-8",
+    )
+
+    summary = _validate_v5_feedback_attachment(case_dir, case_dir.name)
+
+    assert summary["status"] == "mismatch"
+    assert f"DecisionRun run_id mismatch: run-not-canonical != {snapshot.run_id}" in summary["issues"]
+
+
 def test_v5_feedback_attachment_validation_prefers_manifest_artifacts_outside_case_dir(tmp_path):
     import json
 

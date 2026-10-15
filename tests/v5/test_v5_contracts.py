@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
+import pytest
+
 from engine.v5 import run_v5, run_v5_snapshot
 from engine.v5.runner import build_blind_school_rule_claims, build_ditiansui_production_claims, build_ziping_production_claims
 from engine.v5.domain import (
@@ -176,6 +180,18 @@ def test_v5_feedback_attachment_binds_to_run_targets_without_report_markdown():
     assert attachment.target_prediction_ids == [item.prediction_id for item in snapshot.prediction_ledger.predictions]
     assert attachment.target_signal_ids == [item.signal_id for item in snapshot.learning_signals]
     assert attachment.validate_targets(snapshot) == []
+
+
+def test_v5_feedback_attachment_rejects_run_identity_or_case_mismatch():
+    snapshot = run_v5_snapshot({"case_id": "C-TEST-FEEDBACK-MISMATCH", "pillars": ["甲子", "乙丑", "丙寅", "丁卯"]})
+    attachment = V5FeedbackAttachment.from_run_snapshot(snapshot)
+
+    assert replace(attachment, run_id="run-other").validate_targets(snapshot) == [
+        f"feedback attachment run_id mismatch: run-other != {snapshot.run_id}"
+    ]
+    assert replace(attachment, case_id="C-OTHER").validate_targets(snapshot) == [
+        f"feedback attachment case_id mismatch: C-OTHER != {snapshot.case_id}"
+    ]
 
 
 def test_v5_feedback_attachment_reports_missing_targets():

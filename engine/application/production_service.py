@@ -7,7 +7,6 @@ artifact inventory, and stable response envelopes.
 
 from __future__ import annotations
 
-import hashlib
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -17,10 +16,16 @@ from typing import Any, Optional, Union
 from engine import FINDINGS_SCHEMA_VERSION, PIPELINE_SCHEMA_VERSION, __version__
 from engine.application.artifact_inventory import (
     append_artifact_if_exists,
-    collect_analysis_artifacts,
     display_path,
     file_sha256,
     write_report_artifact,
+)
+from engine.application._production_helpers import (
+    build_summary as _build_summary,
+    collect_production_artifacts,
+    normalize_request as _normalize_request,
+    prepare_request as _prepare_request,
+    resolve_under_workspace as _resolve_under_workspace,
 )
 from engine.application.cache_key import compute_cache_key as _compute_cache_key
 from engine.application.pipeline_runner import run_pipeline_e2e
@@ -223,16 +228,7 @@ class ProductionAnalysisService:
         ]
 
     def _prepare_request(self, request: SubmitAnalysisRequest) -> tuple[SubmitAnalysisRequest, str, str]:
-        normalized = self._normalize_request(request)
-        input_bytes = normalized.input_path.read_bytes()
-        input_sha256 = hashlib.sha256(input_bytes).hexdigest()
-        cache_key = self.compute_cache_key(
-            input_sha256=input_sha256,
-            render=normalized.render,
-            template_name=normalized.template_name,
-            render_v6_preprod=normalized.render_v6_preprod,
-        )
-        return normalized, input_sha256, cache_key
+        return _prepare_request(request, self.workspace_root, cache_key_for=self.compute_cache_key)
 
     def compute_cache_key(
         self,
@@ -289,47 +285,10 @@ class ProductionAnalysisService:
         )
 
     def _normalize_request(self, request: SubmitAnalysisRequest) -> SubmitAnalysisRequest:
-        input_path = self._resolve_under_workspace(request.input_path)
-        if not input_path.exists():
-            raise FileNotFoundError(f"input_path does not exist: {request.input_path}")
-        if input_path.name != "input.md":
-            raise ValueError(f"input_path must point to input.md: {request.input_path}")
-        cases_dir = (
-            self._resolve_under_workspace(request.cases_dir)
-            if request.cases_dir is not None
-            else self.workspace_root / "cases"
-        )
-        reports_dir = (
-            self._resolve_under_workspace(request.reports_dir)
-            if request.reports_dir is not None
-            else self.workspace_root / "reports"
-        )
-        cases_index_path = (
-            self._resolve_under_workspace(request.cases_index_path)
-            if request.cases_index_path is not None
-            else None
-        )
-        return SubmitAnalysisRequest(
-            input_path=input_path,
-            render=bool(request.render),
-            force=bool(request.force),
-            template_name=DEFAULT_TEMPLATE_NAME,
-            render_v6_preprod=bool(request.render_v6_preprod),
-            cases_dir=cases_dir,
-            reports_dir=reports_dir,
-            cases_index_path=cases_index_path,
-        )
+        return _normalize_request(request, self.workspace_root)
 
     def _resolve_under_workspace(self, path: Union[str, Path]) -> Path:
-        candidate = Path(path)
-        if not candidate.is_absolute():
-            candidate = self.workspace_root / candidate
-        resolved = candidate.resolve()
-        try:
-            resolved.relative_to(self.workspace_root)
-        except ValueError as exc:
-            raise ValueError(f"path must stay under workspace: {path}") from exc
-        return resolved
+        return _resolve_under_workspace(path, self.workspace_root)
 
     def _collect_artifacts(
         self,
@@ -340,36 +299,14 @@ class ProductionAnalysisService:
         request: SubmitAnalysisRequest,
         completed_at: str,
     ) -> list[AnalysisArtifactRecord]:
-        artifacts = collect_analysis_artifacts(
+        return collect_production_artifacts(
             case_id=case_id,
             output=output,
-            render=request.render,
-            cases_dir=request.cases_dir or self.workspace_root / "cases",
-            reports_dir=request.reports_dir or self.workspace_root / "reports",
+            request=request,
             workspace_root=self.workspace_root,
-            created_at=completed_at,
+            completed_at=completed_at,
+            append_if_exists=self._append_artifact_if_exists,
         )
-        if request.render_v6_preprod:
-            reports_dir = request.reports_dir or self.workspace_root / "reports"
-            self._append_artifact_if_exists(
-                artifacts,
-                kind="v6_preprod_report",
-                path=reports_dir / f"{case_id}-v6-preprod-content-report.md",
-                created_at=completed_at,
-            )
-            self._append_artifact_if_exists(
-                artifacts,
-                kind="v5_prediction_ledger",
-                path=reports_dir / f"{case_id}-v6-preprod-content-report.v5.json",
-                created_at=completed_at,
-            )
-            self._append_artifact_if_exists(
-                artifacts,
-                kind="decision_run_ledger",
-                path=reports_dir / f"{case_id}-v6-preprod-content-report.decision-run.json",
-                created_at=completed_at,
-            )
-        return artifacts
 
     def _write_report_artifact(self, *, case_id: str, report_md: str, reports_dir: Path) -> Path:
         return write_report_artifact(case_id=case_id, report_md=report_md, reports_dir=reports_dir)
@@ -391,23 +328,7 @@ class ProductionAnalysisService:
         )
 
     def _build_summary(self, output: Any, timing: Any) -> dict[str, Any]:
-        confidence = getattr(output, "overall_confidence", None)
-        summary: dict[str, Any] = {
-            "case_id": getattr(output, "case_id", ""),
-            "analysis_date": getattr(output, "analysis_date", ""),
-            "final_conclusions_count": len(getattr(output, "final_conclusions", []) or []),
-            "conflicts_count": len(getattr(output, "conflicts", []) or []),
-            "gate_results_count": len(getattr(output, "gate_results", []) or []),
-            "hash_chain_valid": bool(getattr(output, "hash_chain_valid", True)),
-            "pipeline_total_seconds": getattr(timing, "total_seconds", None),
-        }
-        if confidence is not None:
-            summary["overall_confidence"] = {
-                "star": getattr(confidence, "star", None),
-                "percent": getattr(confidence, "percent", None),
-                "label": getattr(confidence, "label", ""),
-            }
-        return summary
+        return _build_summary(output, timing)
 
     def _display_path(self, path: Union[str, Path]) -> str:
         return display_path(path, workspace_root=self.workspace_root)

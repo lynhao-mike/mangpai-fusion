@@ -833,6 +833,18 @@ def _validate_v5_feedback_attachment(case_dir: pathlib.Path, full_case_id: str) 
         }
 
     issues: list[str] = []
+    decision_path = _manifest_artifact_path(case_dir, "decision_run_json")
+    if decision_path is not None and decision_path.exists():
+        try:
+            decision_payload = json.loads(decision_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError, TypeError, ValueError) as exc:
+            issues.append(f"invalid DecisionRun artifact: {exc}")
+        else:
+            decision_run_id = str(decision_payload.get("run_id") or "")
+            if not decision_run_id or decision_run_id != snapshot.run_id:
+                issues.append(
+                    f"DecisionRun run_id mismatch: {decision_run_id} != {snapshot.run_id}"
+                )
     if attachment.case_id != full_case_id:
         issues.append(f"feedback attachment case_id mismatch: {attachment.case_id} != {full_case_id}")
     if snapshot.case_id != full_case_id:

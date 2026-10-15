@@ -1,8 +1,7 @@
-"""Statement runtime builder for production report rendering.
+"""Statement runtime builders for production report rendering.
 
-This module builds ``statement_record.v1`` artifacts from the structured report
-rendering context. It is intentionally facts-only: it does not update family,
-school, canon, or dynamic-confidence weights.
+The v1 builder remains a legacy-compatible facts layer. The separate v2
+builder emits explicit run- and rule-level records without updating weights.
 """
 from __future__ import annotations
 
@@ -14,8 +13,10 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Optional
 
 from engine import FINDINGS_SCHEMA_VERSION, __version__
+from engine.domain.ids import compute_statement_id
 
 SCHEMA_VERSION = "statement_record.v1"
+V2_SCHEMA_VERSION = "statement_record.v2"
 SOURCE_RULE_VERSION = f"findings-schema:{FINDINGS_SCHEMA_VERSION}"
 
 _REQUIRED_RECORD_FIELDS = (
@@ -46,6 +47,11 @@ _PHASE_A_REQUIRED_FIELDS = (
     "timestamp",
 )
 
+_V2_MATTER_CATEGORIES = frozenset(
+    {"career", "wealth", "marriage", "health", "education", "family"}
+)
+_V2_DIRECTIONS = frozenset({"positive", "negative", "mixed"})
+
 _UNMAPPED = "UNMAPPED"
 
 _RULE_PREFIX_RE = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)*")
@@ -75,10 +81,9 @@ def build_statement_records_envelope(
 ) -> dict[str, Any]:
     """Build the per-case ``statement_records.json`` envelope.
 
-    One output statement emits one record in this v1 facts layer. When multiple
-    evidence rules support the same visible statement, the first structured
-    evidence rule is used as the runtime anchor so ``statement_id`` remains
-    unique and directly joinable by feedback.
+    One output statement emits one record in this legacy v1 facts layer. When
+    multiple evidence rules support the same visible statement, the first
+    structured evidence rule remains the runtime anchor.
     """
 
     ts = generated_at or _utc_now()
@@ -124,6 +129,103 @@ def build_statement_records_envelope(
         "generated_at": ts,
         "statement_records_generated": stats.statement_records_generated,
         "missing_field_count": stats.missing_field_count,
+        "records": records,
+    }
+
+
+def build_statement_records_v2_envelope(
+    ctx: Mapping[str, Any],
+    case_id: str,
+    *,
+    run_id: str,
+    generated_at: Optional[str] = None,
+) -> dict[str, Any]:
+    """Build strict rule-level v2 records from explicit structured identity."""
+    run_id = run_id.strip() if isinstance(run_id, str) else ""
+    if not run_id:
+        raise ValueError("run_id must be a non-empty string")
+
+    ts = generated_at or _utc_now()
+    records: list[dict[str, Any]] = []
+    seen: dict[tuple[str, str], str] = {}
+    for item in _iter_statement_items(ctx):
+        statement_text = _statement_text(item)
+        if not statement_text:
+            continue
+        category = str(item.get("matter_category") or "").strip()
+        if category not in _V2_MATTER_CATEGORIES:
+            raise ValueError("matter_category must be an explicit supported category")
+        direction = str(item.get("rule_direction") or "").strip()
+        if direction not in _V2_DIRECTIONS:
+            raise ValueError("rule_direction must be explicit: positive, negative, or mixed")
+        section = str(item.get("section") or "").strip()
+        if not section:
+            raise ValueError("section must be explicit for statement_record.v2")
+
+        evidence = _evidence_items(item)
+        if not evidence and item.get("rule_id"):
+            evidence = [{
+                "rule_id": item.get("rule_id"),
+                "school": item.get("school"),
+                "rule_direction": item.get("rule_direction"),
+            }]
+        if not evidence:
+            raise ValueError("rule_id must be explicit in evidence for statement_record.v2")
+
+        for ev in evidence:
+            rule_id = str(ev.get("rule_id") or "").strip()
+            school = str(ev.get("school") or item.get("school") or "").strip()
+            if not rule_id or rule_id == _UNMAPPED:
+                raise ValueError("rule_id must be explicit for statement_record.v2")
+            if not school:
+                raise ValueError("school must be explicit for statement_record.v2")
+            rule_direction = str(ev.get("rule_direction") or direction).strip()
+            if rule_direction not in _V2_DIRECTIONS:
+                raise ValueError("rule_direction must be positive, negative, or mixed")
+            identity = (category, rule_id)
+            previous_direction = seen.get(identity)
+            if previous_direction is not None:
+                if previous_direction != rule_direction:
+                    raise ValueError(
+                        f"conflicting rule_direction for matter_category={category}, rule_id={rule_id}"
+                    )
+                continue
+            metadata = resolve_rule_metadata(rule_id, {**dict(ev), "school": school}, item)
+            statement_id = compute_statement_id(case_id, [f"{category}|{rule_id}"])
+            records.append({
+                "statement_id": statement_id,
+                "case_id": case_id,
+                "run_id": run_id,
+                "rule_id": rule_id,
+                "family_id": metadata["family_id"],
+                "school": school,
+                "canon": metadata["canon"],
+                "rule_type": metadata["rule_type"],
+                "section": section,
+                "matter_category": category,
+                "rule_direction": rule_direction,
+                "statement_text": statement_text,
+                "timestamp": ts,
+                "confidence_snapshot": _confidence_snapshot(item),
+                "generated_at": ts,
+                "source_engine_version": __version__,
+                "source_rule_version": SOURCE_RULE_VERSION,
+            })
+            seen[identity] = rule_direction
+
+    return {
+        "schema_version": V2_SCHEMA_VERSION,
+        "case_id": case_id,
+        "run_id": run_id,
+        "generated_at": ts,
+        "statement_records_generated": len(records),
+        "statistics": {
+            "rule_record_count": len(records),
+            "unique_rule_count": len({record["rule_id"] for record in records}),
+            "unique_matter_rule_count": len({
+                (record["matter_category"], record["rule_id"]) for record in records
+            }),
+        },
         "records": records,
     }
 

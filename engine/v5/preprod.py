@@ -262,7 +262,11 @@ def render_v6_preprod_case(
         "feedback": _display_path(feedback_path, workspace_root=root),
     }
     snapshot = V5RunSnapshot.from_output(output, artifact_bindings=artifact_bindings)
-    decision_run = build_ziping_career_decision_run(output, raw_text=input_text)
+    decision_run = build_ziping_career_decision_run(
+        output,
+        raw_text=input_text,
+        run_id=snapshot.run_id,
+    )
     decision_issues = decision_run.validate_trace()
     if decision_issues:
         raise ValueError(f"decision run trace validation failed: {decision_issues}")

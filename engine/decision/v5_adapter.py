@@ -6,6 +6,7 @@ L0-L7 账本。
 
 from __future__ import annotations
 
+from dataclasses import replace
 import hashlib
 from typing import Any
 
@@ -330,4 +331,7 @@ def decision_run_from_snapshot(snapshot: V5RunSnapshot) -> DecisionRun:
     """从 run snapshot 派生裁判账本，保持 snapshot 是事实源。"""
 
     output = snapshot.to_output()
-    return decision_run_from_v5(output, raw_text=output.to_json(indent=None))
+    return replace(
+        decision_run_from_v5(output, raw_text=output.to_json(indent=None)),
+        run_id=snapshot.run_id,
+    )

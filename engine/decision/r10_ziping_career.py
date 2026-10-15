@@ -85,6 +85,8 @@ def apply_ziping_career_slice(
 def build_ziping_career_decision_run(
     output: V5Output,
     raw_text: str = "",
+    *,
+    run_id: str | None = None,
 ) -> DecisionRun:
     """逐层装配子平·事业纵切片的唯一 DecisionRun。"""
 
@@ -112,7 +114,7 @@ def build_ziping_career_decision_run(
         case_id, report_items, decisions, feedback_signals
     )
     return DecisionRun(
-        run_id=v5_adapter._stable_id("drun", case_id, raw_hash),
+        run_id=run_id or v5_adapter._stable_id("drun", case_id, raw_hash),
         case_id=case_id,
         raw_payload=payload,
         chart_ledger=chart,
