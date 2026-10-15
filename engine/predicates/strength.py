@@ -1,5 +1,11 @@
 """engine/predicates/strength.py · v1.2 旺衰判定谓词（6 函数）
 
+.. deprecated::
+    新代码一律使用 ``engine.facts.strength_facts.build_strength_facts``（原子能量事实，
+    不出分数）。本模块只为旧 energy / picture / v5 路径保留；2026-10 修复了三处硬 bug：
+    ``calc_wuxing_strength`` 藏干二次打折、``is_dewang`` 自己帮自己、
+    ``calc_gan_strength`` 自身透干固定加分且不计印星。
+
 实现 02-predicate-library.md § 4.7 全部 6 个函数。
 
 段派理念（M1 §17）：旺衰只是工具，不是目的。但量化"得令/得地/得势"
@@ -30,6 +36,7 @@ from engine.predicates.types import (
 )
 from engine.predicates.ganzhi import gan_to_wuxing, zhi_to_wuxing
 from engine.predicates.wuxing import wuxing_same
+from engine.predicates.wuxing import wuxing_sheng as wuxing_sheng_of
 
 
 # 月令对天干的"得令"加权
@@ -91,23 +98,21 @@ def is_dishi(g: Gan, bazi: Bazi) -> bool:
 # ============================================================
 
 def is_dewang(g: Gan, bazi: Bazi) -> bool:
-    """天干是否得势（在天干上有比劫帮扶）。
+    """天干是否得势（其余天干中有同五行帮扶）。
 
-    比劫定义：与日干同五行的天干。
+    .. deprecated:: 使用 ``StemStrengthFacts.tou_same_wuxing``。
+
+    修复：旧实现对非日干会把自身所在柱计入，恒为 True。
+    现在先扣掉 ``g`` 自身的一次出现（``g`` 为日主时扣日柱），再看其余天干。
     """
     target_wx = gan_to_wuxing(g)
-    count_same = 0
-    for name, gan in bazi.all_gans():
-        if gan == g and name == "日柱":
-            # 日柱本干自身不计入"得势"
-            continue
-        if gan_to_wuxing(gan) == target_wx and gan != g:
-            # 严格：同五行不同干（比劫互见）
-            count_same += 1
-        elif gan_to_wuxing(gan) == target_wx and gan == g:
-            # 透干同字（自身比肩）
-            count_same += 1
-    return count_same >= 1
+    others = [(name, gan) for name, gan in bazi.all_gans()]
+    own = next((i for i, (name, gan) in enumerate(others) if gan == g and name == "日柱"), None)
+    if own is None:
+        own = next((i for i, (_, gan) in enumerate(others) if gan == g), None)
+    if own is not None:
+        others.pop(own)
+    return any(gan_to_wuxing(gan) == target_wx for _, gan in others)
 
 
 # ============================================================
@@ -125,6 +130,8 @@ def calc_wuxing_strength(
 ) -> dict[Wuxing, float]:
     """计算五行在原局的总力量。
 
+    .. deprecated:: 使用 ``StrengthFacts.climate.wuxing_layered``（分层计数，不加权）。
+
     加权规则：
     - 天干（4 干，每干 1.0）→ 天干贡献
     - 月令支主气：1.5 倍权重（段派"月令为提纲"）
@@ -132,8 +139,12 @@ def calc_wuxing_strength(
     - 中气：0.3
     - 余气：0.2
 
+    修复：旧实现先取藏干表里的力量（已是 1.0 / 0.3 / 0.2），再乘一次气位权重，
+    中气实际只剩 0.09、余气 0.04。现在只按气位权重计一次。
+
     返回：归一化后 dict[Wuxing, float]，总和 = 1.0。
     """
+    qi_weight = {"主气": zhi_zhuqi_weight, "中气": zhi_zhongqi_weight, "余气": zhi_yuqi_weight}
     raw: dict[Wuxing, float] = {wx: 0.0 for wx in WUXING_LIST}
 
     # 天干
@@ -156,15 +167,9 @@ def calc_wuxing_strength(
         else:
             cangs = [(g, t, l) for (g, t, l) in ZHI_CANGGAN_TABLE.get(zhi, [])]
         is_yueling = (key == "月支")
-        for (gan, typ, li) in cangs:
+        for (gan, typ, _li) in cangs:
             wx = gan_to_wuxing(gan)
-            base_w = li
-            if typ == "主气":
-                base_w *= zhi_zhuqi_weight
-            elif typ == "中气":
-                base_w *= zhi_zhongqi_weight
-            elif typ == "余气":
-                base_w *= zhi_yuqi_weight
+            base_w = qi_weight.get(typ, 0.0)
             if is_yueling:
                 base_w *= yueling_weight
             raw[wx] += base_w
@@ -183,11 +188,15 @@ def calc_wuxing_strength(
 def calc_gan_strength(g: Gan, bazi: Bazi) -> float:
     """单个天干在原局的力量（0.0-1.5）。
 
+    .. deprecated:: 使用 ``StemStrengthFacts``（得令关系、通根、透干、印气分别列出，不合成分数）。
+
     维度：
     - 得令 +0.40
     - 得地 +0.30
-    - 得势（天干透同行）+0.20 / 干
-    - 透干（自己出现于天干）+0.20
+    - 其余天干同五行（含同字重复出现）+0.20 / 干，上限 0.40
+    - 其余天干生我（透印）+0.15 / 干，上限 0.30
+
+    修复：旧实现把 ``g`` 自身的出现固定 +0.20，且完全不计印星。
 
     超过 1.0 表示极旺。
     """
@@ -200,16 +209,14 @@ def calc_gan_strength(g: Gan, bazi: Bazi) -> float:
         score += 0.30
 
     target_wx = gan_to_wuxing(g)
-    n_same_other_gan = 0
-    n_self_tou = 0
-    for name, gan in bazi.all_gans():
-        if gan == g:
-            n_self_tou += 1
-        elif gan_to_wuxing(gan) == target_wx:
-            n_same_other_gan += 1
+    gans = [gan for _, gan in bazi.all_gans()]
+    if g in gans:
+        gans.remove(g)                         # 扣掉自身一次出现
+    n_same = sum(1 for gan in gans if gan_to_wuxing(gan) == target_wx)
+    n_resource = sum(1 for gan in gans if wuxing_sheng_of(gan_to_wuxing(gan), target_wx))
 
-    score += 0.20 * min(n_same_other_gan, 2)  # 上限 0.40
-    score += 0.20 * min(n_self_tou, 2)        # 上限 0.40
+    score += 0.20 * min(n_same, 2)        # 上限 0.40
+    score += 0.15 * min(n_resource, 2)    # 上限 0.30
 
     # 不超过 1.5
     return min(score, 1.5)

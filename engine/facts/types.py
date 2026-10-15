@@ -224,3 +224,82 @@ class RelationGraph(_Dict):
     pair_index: dict[str, tuple[str, ...]]
     muku: tuple[MukuFact, ...]
     variants: tuple[Variant, ...] = ()
+
+
+# ── 原子能量事实 ───────────────────────────────────────────────────────────
+
+Qi = Literal["本气", "中气", "余气"]
+FiveRelation = Literal["同我", "生我", "我生", "我克", "克我"]
+
+
+@dataclass(frozen=True)
+class Root(_Dict):
+    """某天干在某地支藏干中的一处根气或印气（只记事实，不折算力量）。"""
+    addr: Addr                 # 地支地址，例如 "M.b"
+    hidden_char: str
+    qi: Qi
+    changsheng: str            # 该天干在该支的十二长生状态，随 yin_changsheng 口径
+    distance: int              # 与该天干所在柱的柱序差 0..3
+
+
+@dataclass(frozen=True)
+class SilingFact(_Dict):
+    """人元司令分野：出生时刻落在月令哪一藏干用事。"""
+    stem: str
+    source_ref: str
+
+
+@dataclass(frozen=True)
+class StemStrengthFacts(_Dict):
+    addr: Addr
+    char: str
+    wuxing: str
+    month_changsheng: str
+    month_main_qi_relation: FiveRelation       # 月令本气对该干：同我 / 生我 / 我生 / 我克 / 克我
+    siling: Optional[SilingFact]
+    roots: tuple[Root, ...]                    # 同五行藏干
+    resource_in_branches: tuple[Root, ...]     # 生该干的藏干（印气），不混入 roots
+    tou_same_wuxing: tuple[Addr, ...]          # 其余三柱天干同五行，排除自身所在柱
+    tou_resource: tuple[Addr, ...]             # 其余三柱天干生该干者
+
+
+@dataclass(frozen=True)
+class LayeredCount(_Dict):
+    """按位置分层的字数，不加权、不归一化。"""
+    stems: int
+    main_qi: int
+    mid_qi: int
+    residual_qi: int
+    month_main_qi: bool                        # 月令本气是否属于本组
+
+
+@dataclass(frozen=True)
+class TiaohouHit(_Dict):
+    day_stem: str
+    month_branch: str
+    listed_stems: tuple[str, ...]              # 《穷通宝鉴》原文所列用字，按原文顺序
+    present: dict[str, tuple[Addr, ...]]       # 盘中出现位置：.s 为透干，.b 为藏于该支
+    raw_excerpt: str
+    source_ref: str
+
+
+@dataclass(frozen=True)
+class ClimateFacts(_Dict):
+    month_branch: str
+    season: Literal["春", "夏", "秋", "冬"]
+    wuxing_layered: dict[str, LayeredCount]    # 木火土金水，含日干
+    dry_earth: tuple[Addr, ...]                # 戌、未
+    wet_earth: tuple[Addr, ...]                # 辰、丑
+    tiaohou_lookup: Optional[TiaohouHit]
+
+
+@dataclass(frozen=True)
+class StrengthFacts(_Dict):
+    schema_version: str
+    chart_id: str
+    profile: ProfileSet
+    day_master: StemStrengthFacts
+    stems: dict[Addr, StemStrengthFacts]       # Y.s / M.s / H.s
+    camp_counts: dict[str, LayeredCount]       # 印比 / 食伤 / 财 / 官杀 / 比劫 / 印；不含日干本身
+    climate: ClimateFacts
+    variants: tuple[Variant, ...] = ()
