@@ -1,0 +1,52 @@
+# engine/facts/profiles.yaml · 争议口径注册表（chart-facts/v1）
+#
+# 规则：
+# - 每个口径值必须带至少一条语料出处（相对路径:行号）；没有出处的值不允许注册。
+# - default 是 ChartFacts 主结果使用的口径；其余值只在与默认结果有差异时写进 variants。
+# - 不在此注册的维度（例如藏干表）一律使用标准表，不做多口径。
+schema_version: chart-facts-profiles/v1
+
+axes:
+  zi_shi:
+    description: 23:00-23:59 出生时的日柱与时柱取法
+    default: late_zi_split
+    values:
+      late_zi_split:
+        meaning: 晚子时日柱用当日，时柱按次日五鼠遁（lunar-python EightChar.setSect(2)）
+        source_refs:
+          - "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:960"
+          - "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:897"
+          - "sources/ren/MinerU_markdown_2012盲派命理民间实用八字高级面授班录音彩色笔记_2056026530313330688.md:382"
+      rollover_23:
+        meaning: 23:00 即换次日日柱，时柱为次日子时（lunar-python EightChar.setSect(1)）
+        source_refs:
+          - "sources/qianliminggao/千里命稿_part6.md:89"
+
+  yin_changsheng:
+    description: 五阴干十二长生的排法
+    default: yin_reverse
+    values:
+      yin_reverse:
+        meaning: 阳顺阴逆（乙生午、丁己生酉、辛生子、癸生卯）
+        source_refs:
+          - "sources/ziping/《子平真诠》.md:23"
+          - "sources/gao/2018弟子班_命宫长生诀择日篇_78页.md:614"
+      yin_same_as_yang:
+        meaning: 论强弱根气时五阴干从同五行阳干同生同旺同墓
+        source_refs:
+          - "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:791"
+
+  tu_jigong:
+    description: 土的寄宫与墓库归属（只影响墓库事实层）
+    default: duan_split_earth
+    values:
+      duan_split_earth:
+        meaning: 天干之土随火（长生寅、墓戌）；地支之土随水（辰为水墓亦为土墓，丑未入辰墓）
+        source_refs:
+          - "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:782"
+          - "sources/ren/MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:111"
+      fire_earth:
+        meaning: 火土同宫（戊寄巳、己寄午，土墓在戌），地支丑未不论入辰墓
+        source_refs:
+          - "sources/ziping/《子平真诠》.md:13"
+          - "sources/yang/MinerU_markdown_03清娟盲派八字命理讲座（基础篇）_2056033625439920128.md:688"

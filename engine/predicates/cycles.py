@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional, Union
 
 from engine.predicates.types import (
@@ -34,6 +35,14 @@ from engine.predicates.relations import (
 )
 
 
+class PreQiyun(ValueError):
+    """目标年龄/年份早于起运：此时应看小运或童限，不存在大运步。"""
+
+
+class CycleOutOfRange(ValueError):
+    """目标年龄/年份超出已排大运范围：不得静默套用最后一步。"""
+
+
 # ============================================================
 # 1. get_dayun_at_age
 # ============================================================
@@ -41,20 +50,22 @@ from engine.predicates.relations import (
 def get_dayun_at_age(dayun: Dayun, age: int) -> DayunStep:
     """指定虚岁所在大运步。
 
-    起运前（age < dayun.起运岁）抛 ValueError。
-    末步之后用最后一步（"超过排布范围则按最后一运处理"，避免下游崩）。
+    起运前抛 ``PreQiyun``；超出排布范围抛 ``CycleOutOfRange``。
+    两者都是 ``ValueError`` 子类，旧调用方的 ``except ValueError`` 仍然生效。
     """
     if not dayun.排布:
         raise ValueError("Dayun.排布 为空")
     if age < int(dayun.起运岁):
-        raise ValueError(
+        raise PreQiyun(
             f"年龄 {age} < 起运岁 {dayun.起运岁}，尚未交运"
         )
     for step in dayun.排布:
         if step.起岁 <= age <= step.止岁:
             return step
-    # 超过最后一步 → 用最后一步
-    return dayun.排布[-1]
+    raise CycleOutOfRange(
+        f"年龄 {age} 超出已排大运范围 "
+        f"{dayun.排布[0].起岁}-{dayun.排布[-1].止岁}"
+    )
 
 
 # ============================================================
@@ -80,13 +91,15 @@ def get_dayun_at_year(
     # Fallback：用年龄法
     age = target_year - birth_year
     if age < int(dayun.起运岁):
-        # 起运前
-        raise ValueError(
+        raise PreQiyun(
             f"目标年 {target_year} 早于起运年 "
             f"({birth_year}+{dayun.起运岁:.1f}) → 尚未交运"
         )
     if target_year >= dayun.排布[-1].起讫年[1]:
-        return dayun.排布[-1]
+        raise CycleOutOfRange(
+            f"目标年 {target_year} 超出已排大运范围 "
+            f"{dayun.排布[0].起讫年[0]}-{dayun.排布[-1].起讫年[1]}"
+        )
     return get_dayun_at_age(dayun, age)
 
 
@@ -94,21 +107,46 @@ def get_dayun_at_year(
 # 3. liunian_ganzhi
 # ============================================================
 
-def liunian_ganzhi(year: int) -> GanZhi:
-    """公历年份的流年干支。
+def year_ganzhi_of_lichun_year(year: int) -> GanZhi:
+    """公历 ``year`` 年立春之后那一命理年的干支。
 
-    公元 4 年 = 甲子年。年份 → 干支 = 60 甲子循环。
+    只按整数年取干支，不知道具体日期；1 月至立春前出生/发生的事件，
+    必须改用 :func:`ganzhi_at` 按精确时刻判定，否则会错一年。
 
-    验证锚点（与万年历一致）：
-        1980 = 庚申     1984 = 甲子     2005 = 乙酉
-        2013 = 癸巳     2020 = 庚子     2024 = 甲辰
+    公元 4 年 = 甲子年。验证锚点：1980 庚申 / 1984 甲子 / 2024 甲辰。
     """
     offset = (year - 4) % 60
-    if offset < 0:
-        offset += 60
     gan_idx = offset % 10
     zhi_idx = offset % 12
     return GanZhi(gan=GAN_LIST[gan_idx], zhi=ZHI_LIST[zhi_idx])
+
+
+def liunian_ganzhi(year: int) -> GanZhi:
+    """立春年干支（整数年语义），等同 :func:`year_ganzhi_of_lichun_year`。
+
+    事件落在 1 月至立春交节之间时，应改用 :func:`ganzhi_at`。
+    """
+    return year_ganzhi_of_lichun_year(year)
+
+
+def ganzhi_at(moment: datetime) -> tuple[GanZhi, GanZhi]:
+    """按精确时刻返回 (年柱, 月柱)，年以立春交节时刻、月以十二节交节时刻分界。
+
+    依赖 lunar-python 的 ``getYearInGanZhiExact`` / ``getMonthInGanZhiExact``。
+    ``moment`` 为无时区的本地时间，调用方负责时区与真太阳时校正。
+    """
+    from lunar_python import Solar
+
+    if moment.tzinfo is not None:
+        raise ValueError("moment must be a naive datetime")
+    lunar = Solar.fromYmdHms(
+        moment.year, moment.month, moment.day,
+        moment.hour, moment.minute, moment.second,
+    ).getLunar()
+    return (
+        GanZhi.parse(lunar.getYearInGanZhiExact()),
+        GanZhi.parse(lunar.getMonthInGanZhiExact()),
+    )
 
 
 # ============================================================
@@ -369,7 +407,12 @@ def _smoke() -> None:
     try:
         get_dayun_at_age(dy, 5)
         raise AssertionError("起运前应 raise")
-    except ValueError:
+    except PreQiyun:
+        pass
+    try:
+        get_dayun_at_age(dy, 80)
+        raise AssertionError("超出排布应 raise")
+    except CycleOutOfRange:
         pass
 
     # 4) get_dayun_at_year
