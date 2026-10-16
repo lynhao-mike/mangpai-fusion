@@ -245,8 +245,13 @@ class Root(_Dict):
 @dataclass(frozen=True)
 class SilingFact(_Dict):
     """人元司令分野：出生时刻落在月令哪一藏干用事。"""
-    stem: str
+    month_branch: str
+    days_since_jie: float
+    commanding_stem: str
+    normalized_hidden_stem: str
+    segment_days: int
     source_ref: str
+    source_term: str
 
 
 @dataclass(frozen=True)

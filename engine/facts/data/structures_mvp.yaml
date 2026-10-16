@@ -1,0 +1,381 @@
+# structures_mvp.yaml · StructureCheck 首批结构目录（structure-check/v1）
+#
+# 只列构成要件、破格条件与救应条件；核对器只给每条要件的状态与证据，
+# 不在此处或代码中写"成格 / 破格 / 层次 / 富贵档次"结论。
+#
+# check 语法（受控，无 DSL 解析）：
+#   {pred: <engine/facts/structure_check.py PREDICATES 中的谓词>, ...参数}
+#   {any: [...]} / {all: [...]}
+# judgment: true —— 关系事实已命中，但"夺 / 攻 / 得宜"取决于力量对比，状态降为 needs_judgment。
+# 十神角色：比肩 劫财 食神 伤官 偏财 正财 七杀 正官 偏印 正印，及别名 财 官杀 印 枭 比劫 食伤。
+
+schema_version: structure-catalog/mvp-1
+
+structures:
+  # ── 子平真诠八大正格 ────────────────────────────────────────────────────
+  - id: ziping_zhengguan
+    school: ziping
+    display_name_zh: 正官格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:129-130"
+      - "sources/ziping/《子平真诠》.md:228"
+    items:
+      - id: req_month_guan
+        kind: requirement
+        text: 月令正官本气，或月令藏正官而透干
+        check:
+          any:
+            - {pred: month_main_role, role: 正官}
+            - {pred: month_hidden_tou, role: 正官}
+      - id: aux_cai_sheng_guan
+        kind: requirement
+        text: 相辅：财生官
+        source_refs: ["sources/ziping/《子平真诠》.md:61", "sources/ziping/《子平真诠》.md:65"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 财, to_role: 正官}
+            - {pred: coexist, role_a: 财, role_b: 正官}
+      - id: aux_yin_hu_guan
+        kind: requirement
+        text: 相辅：印护官
+        source_refs: ["sources/ziping/《子平真诠》.md:61", "sources/ziping/《子平真诠》.md:65"]
+        check: {pred: role_tou, role: 印}
+      - id: brk_shangguan_jian_guan
+        kind: breaker
+        text: 破格：伤官见官（伤官克正官；官藏月令时以伤官透出、官在盘计）
+        source_refs: ["sources/ziping/《子平真诠》.md:53", "sources/ziping/《子平真诠》.md:130"]
+        check:
+          any:
+            - {pred: has_edge, kind: ke, from_role: 伤官, to_role: 正官}
+            - {pred: coexist, role_a: 伤官, role_b: 正官}
+      - id: brk_sha_hun_guan
+        kind: breaker
+        text: 破格：七杀透出混官
+        source_refs: ["sources/ziping/《子平真诠》.md:61", "sources/ziping/《子平真诠》.md:130"]
+        check: {pred: role_tou, role: 七杀}
+      - id: rsc_yin_zhi_shang
+        kind: rescuer
+        text: 救应：印制伤官
+        source_refs: ["sources/ziping/《子平真诠》.md:69"]
+        check: {pred: has_edge, kind: ke, from_role: 印, to_role: 伤官}
+      - id: rsc_he_qu_shang
+        kind: rescuer
+        text: 救应：合去伤官（如甲日壬合丁护辛）
+        source_refs: ["sources/ziping/《子平真诠》.md:53"]
+        check: {pred: has_edge, kind: wuhe, from_role: 伤官}
+    judgment_points:
+      - 伤官与救应之神的远近、合是否真能绊住伤官，需依原局位置裁决（:53）
+      - 身弱官旺喜印化、身旺官轻喜财生，日主与官星力量对比交调用方（:134）
+
+  - id: ziping_cai
+    school: ziping
+    display_name_zh: 财格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:136-137"
+      - "sources/ziping/《子平真诠》.md:229"
+    items:
+      - id: req_month_cai
+        kind: requirement
+        text: 月令财星
+        check:
+          any:
+            - {pred: month_main_role, role: 财}
+            - {pred: month_hidden_tou, role: 财}
+      - id: aux_shishang_sheng_cai
+        kind: requirement
+        text: 相辅：食神生财
+        source_refs: ["sources/ziping/《子平真诠》.md:137"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 食伤, to_role: 财}
+            - {pred: coexist, role_a: 食伤, role_b: 财}
+      - id: aux_guan_hu_cai
+        kind: requirement
+        text: 相辅：正官护财
+        source_refs: ["sources/ziping/《子平真诠》.md:137"]
+        check: {pred: role_tou, role: 正官}
+      - id: brk_bijie_duo_cai
+        kind: breaker
+        text: 破格：比劫夺财
+        source_refs: ["sources/ziping/《子平真诠》.md:137"]
+        judgment: true
+        check: {pred: has_edge, kind: ke, from_role: 比劫, to_role: 财}
+      - id: brk_sha_xie_cai
+        kind: breaker
+        text: 破格：七杀泄财（财生七杀）
+        source_refs: ["sources/ziping/《子平真诠》.md:89", "sources/ziping/《子平真诠》.md:137"]
+        judgment: true
+        check: {pred: has_edge, kind: sheng, from_role: 财, to_role: 七杀}
+      - id: rsc_shishang_tongguan
+        kind: rescuer
+        text: 救应：食伤通关，化劫生财
+        check:
+          all:
+            - {pred: role_tou, role: 食伤}
+            - {pred: role_tou, role: 比劫}
+      - id: rsc_guan_zhi_jie
+        kind: rescuer
+        text: 救应：官制比劫
+        check: {pred: has_edge, kind: ke, from_role: 官杀, to_role: 比劫}
+      - id: str_cai_vs_shen
+        kind: requirement
+        text: 身能任财（财旺身弱难任）
+        source_refs: ["sources/ziping/《子平真诠》.md:137"]
+        check: {pred: strength_judgment, roles_: [财, 比劫, 印]}
+    judgment_points:
+      - 财旺身弱难任财帛、身旺财弱财薄，力量对比交调用方（:137）
+
+  - id: ziping_yin
+    school: ziping
+    display_name_zh: 印绶格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:142-143"
+      - "sources/ziping/《子平真诠》.md:230"
+    items:
+      - id: req_month_yin
+        kind: requirement
+        text: 月令印星
+        check:
+          any:
+            - {pred: month_main_role, role: 印}
+            - {pred: month_hidden_tou, role: 印}
+      - id: aux_guansha_sheng_yin
+        kind: requirement
+        text: 相辅：官杀生印
+        source_refs: ["sources/ziping/《子平真诠》.md:143"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 官杀, to_role: 印}
+            - {pred: coexist, role_a: 官杀, role_b: 印}
+      - id: aux_shishang_tuxiu
+        kind: requirement
+        text: 相辅：印旺身强，食伤吐秀
+        source_refs: ["sources/ziping/《子平真诠》.md:143"]
+        judgment: true
+        check: {pred: role_tou, role: 食伤}
+      - id: brk_cai_po_yin
+        kind: breaker
+        text: 破格：财星破印
+        source_refs: ["sources/ziping/《子平真诠》.md:143", "sources/ziping/《子平真诠》.md:230"]
+        check: {pred: has_edge, kind: ke, from_role: 财, to_role: 印}
+      - id: rsc_bijie_zhi_cai
+        kind: rescuer
+        text: 救应：比劫制财护印
+        check: {pred: has_edge, kind: ke, from_role: 比劫, to_role: 财}
+    judgment_points:
+      - 食伤吐秀以印旺身强为前提，强弱交调用方（:143）
+
+  - id: ziping_shishen
+    school: ziping
+    display_name_zh: 食神格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:148-149"
+      - "sources/ziping/《子平真诠》.md:231"
+    items:
+      - id: req_month_shishen
+        kind: requirement
+        text: 月令食神
+        check:
+          any:
+            - {pred: month_main_role, role: 食神}
+            - {pred: month_hidden_tou, role: 食神}
+      - id: aux_shishen_sheng_cai
+        kind: requirement
+        text: 相辅：食神生财
+        source_refs: ["sources/ziping/《子平真诠》.md:149"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 食神, to_role: 财}
+            - {pred: coexist, role_a: 财, role_b: 食神}
+      - id: aux_shishen_zhi_sha
+        kind: requirement
+        text: 相辅：食神制杀
+        source_refs: ["sources/ziping/《子平真诠》.md:149"]
+        check: {pred: has_edge, kind: ke, from_role: 食神, to_role: 七杀}
+      - id: brk_xiao_duo_shi
+        kind: breaker
+        text: 破格：枭神夺食
+        source_refs: ["sources/ziping/《子平真诠》.md:92", "sources/ziping/《子平真诠》.md:149", "sources/ziping/《子平真诠》.md:231"]
+        check: {pred: has_edge, kind: ke, from_role: 枭, to_role: 食神}
+      - id: rsc_cai_zhi_xiao
+        kind: rescuer
+        text: 救应：偏财制枭护食
+        check: {pred: has_edge, kind: ke, from_role: 偏财, to_role: 枭}
+      - id: str_shen_wang_you_gen
+        kind: requirement
+        text: 身旺有根
+        source_refs: ["sources/ziping/《子平真诠》.md:149"]
+        check: {pred: strength_judgment, roles_: [食神, 比劫, 印]}
+    judgment_points:
+      - 食神格喜身旺有根，身弱食神过旺喜印护身，强弱交调用方（:149、:152）
+
+  - id: ziping_qisha
+    school: ziping
+    display_name_zh: 偏官（七杀）格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:155-156"
+      - "sources/ziping/《子平真诠》.md:232"
+    items:
+      - id: req_month_sha
+        kind: requirement
+        text: 月令七杀，或七杀透干通根
+        check:
+          any:
+            - {pred: month_main_role, role: 七杀}
+            - {pred: month_hidden_tou, role: 七杀}
+            - {pred: role_rooted_tou, role: 七杀}
+      - id: xs_shishen_zhi_sha
+        kind: requirement
+        text: 相神：食神制杀
+        source_refs: ["sources/ziping/《子平真诠》.md:92", "sources/ziping/《子平真诠》.md:156"]
+        check: {pred: has_edge, kind: ke, from_role: 食神, to_role: 七杀}
+      - id: xs_yin_hua_sha
+        kind: requirement
+        text: 相神：印绶化杀
+        source_refs: ["sources/ziping/《子平真诠》.md:159"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 七杀, to_role: 印}
+            - {pred: coexist, role_a: 印, role_b: 七杀}
+      - id: xs_ren_he_sha
+        kind: requirement
+        text: 相神：阳刃合杀 / 驾杀
+        source_refs: ["sources/ziping/《子平真诠》.md:156"]
+        check:
+          any:
+            - {pred: has_edge, kind: wuhe, from_role: 劫财, to_role: 七杀}
+            - {pred: month_branch_is, mark: 阳刃}
+            - {pred: day_master_sits_on, mark: 坐羊刃}
+      - id: brk_cai_zi_sha
+        kind: breaker
+        text: 破格：财星滋杀攻身
+        source_refs: ["sources/ziping/《子平真诠》.md:159"]
+        judgment: true
+        check: {pred: has_edge, kind: sheng, from_role: 财, to_role: 七杀}
+      - id: brk_xiao_duo_shi
+        kind: breaker
+        text: 破格：食印两立互碍（枭印克制杀之食神）
+        source_refs: ["sources/ziping/《子平真诠》.md:159"]
+        check: {pred: has_edge, kind: ke, from_role: 印, to_role: 食神}
+      - id: rsc_cai_zhi_xiao
+        kind: rescuer
+        text: 救应：偏财制枭护食
+        check: {pred: has_edge, kind: ke, from_role: 偏财, to_role: 枭}
+    judgment_points:
+      - 七杀有制无制、制伏是否得宜、七杀是否过重攻身，力量对比交调用方（:156、:232）
+
+  - id: ziping_shangguan
+    school: ziping
+    display_name_zh: 伤官格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:161-162"
+      - "sources/ziping/《子平真诠》.md:233"
+    items:
+      - id: req_month_shangguan
+        kind: requirement
+        text: 月令伤官
+        check:
+          any:
+            - {pred: month_main_role, role: 伤官}
+            - {pred: month_hidden_tou, role: 伤官}
+      - id: xs_pei_yin
+        kind: requirement
+        text: 相神：伤官配印
+        source_refs: ["sources/ziping/《子平真诠》.md:92", "sources/ziping/《子平真诠》.md:162"]
+        check: {pred: role_tou, role: 印}
+      - id: xs_sheng_cai
+        kind: requirement
+        text: 相神：伤官生财
+        source_refs: ["sources/ziping/《子平真诠》.md:162", "sources/ziping/《子平真诠》.md:233"]
+        check:
+          any:
+            - {pred: has_edge, kind: sheng, from_role: 伤官, to_role: 财}
+            - {pred: coexist, role_a: 财, role_b: 伤官}
+      - id: xs_jia_sha
+        kind: requirement
+        text: 相神：伤官驾杀
+        check: {pred: has_edge, kind: ke, from_role: 伤官, to_role: 七杀}
+      - id: brk_jian_guan
+        kind: breaker
+        text: 破格：伤官见官
+        source_refs: ["sources/ziping/《子平真诠》.md:162", "sources/ziping/《子平真诠》.md:233"]
+        check: {pred: role_tou, role: 正官}
+      - id: rsc_yin_or_cai
+        kind: rescuer
+        text: 救应：伤官见官，得印制伤或财通关
+        source_refs: ["sources/ziping/《子平真诠》.md:162"]
+        check:
+          any:
+            - {pred: has_edge, kind: ke, from_role: 印, to_role: 伤官}
+            - {pred: role_tou, role: 财}
+    judgment_points:
+      - 印、财是否足以解伤官见官，需依位置与力量裁决（:162）
+
+  - id: ziping_yangren
+    school: ziping
+    display_name_zh: 阳刃格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:167-168"
+      - "sources/ziping/《子平真诠》.md:234"
+    items:
+      - id: req_month_ren
+        kind: requirement
+        text: 月令为日主帝旺阳刃
+        check: {pred: month_branch_is, mark: 阳刃}
+      - id: xs_guansha_zhi_ren
+        kind: requirement
+        text: 相神：官杀制刃
+        source_refs: ["sources/ziping/《子平真诠》.md:92", "sources/ziping/《子平真诠》.md:168", "sources/ziping/《子平真诠》.md:234"]
+        check: {pred: role_present, role: 官杀}
+      - id: brk_no_zhi_bijie
+        kind: breaker
+        text: 破格：无官杀制伏而比劫叠见
+        source_refs: ["sources/ziping/《子平真诠》.md:168", "sources/ziping/《子平真诠》.md:171"]
+        check:
+          all:
+            - {pred: role_absent, role: 官杀, tou_only: false}
+            - {pred: role_count_at_least, role: 比劫, n: 2}
+    judgment_points:
+      - 官杀是否足以制刃、刃是否肆虐，力量对比交调用方（:168）
+
+  - id: ziping_jianlu
+    school: ziping
+    display_name_zh: 建禄月劫格
+    source_refs:
+      - "sources/ziping/《子平真诠》.md:173-174"
+      - "sources/ziping/《子平真诠》.md:235"
+    items:
+      - id: req_month_lu
+        kind: requirement
+        text: 月令为日主临官建禄（或同气月劫）
+        check:
+          any:
+            - {pred: month_branch_is, mark: 建禄}
+            - {pred: month_main_role, role: 劫财}
+      - id: xs_caiguan_tou
+        kind: requirement
+        text: 相神：财官食伤透干可用
+        source_refs: ["sources/ziping/《子平真诠》.md:174", "sources/ziping/《子平真诠》.md:235"]
+        check:
+          any:
+            - {pred: role_tou, role: 财}
+            - {pred: role_tou, role: 官杀}
+            - {pred: role_tou, role: 食伤}
+      - id: brk_caiguan_bei_jie
+        kind: breaker
+        text: 破格：财官被劫夺无护卫
+        judgment: true
+        check:
+          any:
+            - {pred: has_edge, kind: ke, from_role: 比劫, to_role: 财}
+            - {pred: has_edge, kind: ke, from_role: 伤官, to_role: 正官}
+      - id: rsc_hu_wei
+        kind: rescuer
+        text: 救应：用财则官护财，用官则财生官
+        source_refs: ["sources/ziping/《子平真诠》.md:177"]
+        check:
+          all:
+            - {pred: role_tou, role: 财}
+            - {pred: role_tou, role: 官杀}
+    judgment_points:
+      - 禄旺身强为前提，财官是否可用交调用方（:235）

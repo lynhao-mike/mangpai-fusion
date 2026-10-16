@@ -116,6 +116,7 @@
 | [`as_of_root_level_gate.py`](as_of_root_level_gate.py:1) | as-of 根层双证据正式校验 | 内部失败关闭门禁 |
 | [`as_of_running_stats.py`](as_of_running_stats.py:1) | as-of 运行统计聚合 | 内部只读统计 |
 | [`as_of_theory_lookup.py`](as_of_theory_lookup.py:1) | as-of 理论结构化检索 | 内部理论证据检索 |
+| [`query_theory.py`](query_theory.py:1) | 六源理论轻量缓存检索 | 支持多关键词加权与 JSON 输出 |
 | [`as_of_verdict_stats.py`](as_of_verdict_stats.py:1) | as-of 盲态裁决统计 | 内部只读统计 |
 | [`audit_lunar_python_c2026.py`](audit_lunar_python_c2026.py:1) | C-2026 lunar-python 排盘审计 | 专项历史审计 |
 | [`batch_occupation_accuracy.py`](batch_occupation_accuracy.py:1) | 职业四分类批量准确率评估 | 历史实验工具；结果不作为生产资格证据 |

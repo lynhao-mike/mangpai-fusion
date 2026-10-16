@@ -12,9 +12,12 @@ ten_god_profile 的月支 ×1.5、v5 ziping_runner 的 0.5 起步加减分），
 from __future__ import annotations
 
 from dataclasses import replace
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
+
+from lunar_python import Solar
 
 import yaml
 
@@ -28,6 +31,7 @@ from engine.facts.types import (
     Pillar,
     ProfileSet,
     Root,
+    SilingFact,
     StemStrengthFacts,
     StrengthFacts,
     TiaohouHit,
@@ -44,6 +48,21 @@ _DRY_EARTH = frozenset("戌未")
 _WET_EARTH = frozenset("辰丑")
 _QI_FIELD = {"本气": "main_qi", "中气": "mid_qi", "余气": "residual_qi"}
 _QI_LABEL = {"主气": "本气", "中气": "中气", "余气": "余气"}
+_SILING_SEGMENTS: dict[str, tuple[tuple[str, str, str, int], ...]] = {
+    "寅": (("艮土", "戊", "戊", 5), ("丙火", "丙", "丙", 5), ("甲木", "甲", "甲", 20)),
+    "卯": (("甲木", "甲", "甲", 7), ("乙木", "乙", "乙", 23)),
+    "辰": (("乙木", "乙", "乙", 7), ("壬水墓库", "壬", "癸", 5), ("戊土", "戊", "戊", 18)),
+    "巳": (("戊土", "戊", "戊", 7), ("庚金", "庚", "庚", 5), ("丙火", "丙", "丙", 18)),
+    "午": (("丙火", "丙", "丙", 7), ("丁火", "丁", "丁", 23)),
+    "未": (("丁火", "丁", "丁", 7), ("甲木墓库", "甲", "乙", 5), ("己土", "己", "己", 18)),
+    "申": (("坤土", "戊", "戊", 5), ("壬水", "壬", "壬", 5), ("庚金", "庚", "庚", 20)),
+    "酉": (("庚金", "庚", "庚", 7), ("辛金", "辛", "辛", 23)),
+    "戌": (("辛金", "辛", "辛", 7), ("丙火墓库", "丙", "丁", 5), ("戊土", "戊", "戊", 18)),
+    "亥": (("戊土", "戊", "戊", 5), ("甲木", "甲", "甲", 5), ("壬水", "壬", "壬", 20)),
+    "子": (("壬水", "壬", "壬", 7), ("癸水", "癸", "癸", 23)),
+    "丑": (("癸水", "癸", "癸", 7), ("庚金墓库", "庚", "辛", 5), ("己土", "己", "己", 18)),
+}
+_REF_SILING = "sources/ziping/《三命通会》.md:14"
 
 # 以日主为我的十神阵营（按五行关系；不分阴阳）
 _CAMPS: dict[str, frozenset[str]] = {
@@ -66,6 +85,48 @@ def relation_to(me: str, other: str) -> FiveRelation:
 
 def _hidden(zhi: str) -> list[tuple[str, str]]:
     return [(g, _QI_LABEL[t]) for g, t, _ in ZHI_CANGGAN_TABLE[zhi]]
+
+
+def _siling(chart: ChartFacts) -> Optional[SilingFact]:
+    if chart.input.mode != "solar" or not chart.input.solar_datetime:
+        return None
+
+    birth = datetime.fromisoformat(chart.input.solar_datetime)
+    lunar = Solar.fromYmdHms(
+        birth.year, birth.month, birth.day, birth.hour, birth.minute, birth.second
+    ).getLunar()
+    jie_solar = lunar.getPrevJie().getSolar()
+    jie = datetime(
+        jie_solar.getYear(), jie_solar.getMonth(), jie_solar.getDay(),
+        jie_solar.getHour(), jie_solar.getMinute(), jie_solar.getSecond(),
+    )
+    days_since_jie = (birth - jie).total_seconds() / 86400
+
+    month = chart.pillars[1].branch.char
+    elapsed = 0.0
+    for source_term, commanding_stem, hidden_stem, segment_days in _SILING_SEGMENTS[month]:
+        elapsed += segment_days
+        if days_since_jie < elapsed:
+            return SilingFact(
+                month_branch=month,
+                days_since_jie=days_since_jie,
+                commanding_stem=commanding_stem,
+                normalized_hidden_stem=hidden_stem,
+                segment_days=segment_days,
+                source_ref=_REF_SILING,
+                source_term=source_term,
+            )
+
+    source_term, commanding_stem, hidden_stem, segment_days = _SILING_SEGMENTS[month][-1]
+    return SilingFact(
+        month_branch=month,
+        days_since_jie=days_since_jie,
+        commanding_stem=commanding_stem,
+        normalized_hidden_stem=hidden_stem,
+        segment_days=segment_days,
+        source_ref=_REF_SILING,
+        source_term=source_term,
+    )
 
 
 # ── 单干事实 ────────────────────────────────────────────────────────────────
@@ -106,7 +167,7 @@ def _stem_facts(chart: ChartFacts, pillar: Pillar, profile: ProfileSet) -> StemS
         wuxing=wx,
         month_changsheng=changsheng(gan, month, profile),
         month_main_qi_relation=relation_to(wx, GAN_TO_WUXING[month_main]),
-        siling=None,      # 尚无带出处的人元司令分野表；有表并有出生时刻后再填
+        siling=_siling(chart),
         roots=tuple(roots),
         resource_in_branches=tuple(resource),
         tou_same_wuxing=tuple(tou_same),

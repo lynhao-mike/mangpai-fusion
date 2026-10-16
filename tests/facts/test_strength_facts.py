@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import json
 from dataclasses import fields
+from datetime import datetime
 
 import pytest
 
-from engine.facts import chart_from_pillars
+from engine.facts import chart_from_pillars, chart_from_solar
 from engine.facts.strength_facts import build_strength_facts, relation_to
 from engine.facts.types import StrengthFacts
 from engine.predicates.types import ZHI_CANGGAN_TABLE
@@ -34,6 +35,33 @@ def test_day_master_month_facts():
     assert dm.month_main_qi_relation == "我生"            # 寅本气甲木
     assert dm.siling is None
     assert set(sf.stems) == {"Y.s", "M.s", "H.s"}
+
+
+@pytest.mark.parametrize(
+    ("birth", "month_branch", "expected_stem", "normalized_hidden", "segment_days"),
+    [
+        (datetime(2024, 10, 11, 12), "戌", "辛", "辛", 7),  # 寒露后第三日
+        (datetime(2024, 2, 19, 12), "寅", "甲", "甲", 20),  # 立春后第十五日
+    ],
+)
+def test_siling_uses_san_ming_tong_hui_monthly_segments(
+    birth, month_branch, expected_stem, normalized_hidden, segment_days
+):
+    strength = build_strength_facts(chart_from_solar(birth, "乾"))
+    siling = strength.day_master.siling
+
+    assert siling is not None
+    assert siling.month_branch == month_branch
+    assert siling.commanding_stem == expected_stem
+    assert siling.normalized_hidden_stem == normalized_hidden
+    assert siling.segment_days == segment_days
+    assert 0 <= siling.days_since_jie < 31
+    assert siling.source_ref == "sources/ziping/《三命通会》.md:14"
+
+
+def test_siling_is_unavailable_for_pillars_without_solar_datetime():
+    strength = _sf(C001)
+    assert strength.day_master.siling is None
 
 
 def test_tou_same_wuxing_never_includes_own_pillar():
