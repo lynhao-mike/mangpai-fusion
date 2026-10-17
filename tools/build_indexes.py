@@ -580,19 +580,30 @@ def main():
         rules = extractor()
         base_count = len(rules)
 
-        # 合并深水区提取稿（deep-extract-*.md）。同名 id 以提取稿为准，
-        # 因为提取稿是人工按原文锚点精校过的，而 registry 表格可能只有标题。
+        # 合并深水区提取稿（deep-extract-*.md）。
+        # 两种覆盖情形：
+        #   a) 原条目缺正文或 pending_normalization → 用提取稿补全
+        #   b) 原条目 raw_anchor 非「line:N」行锚（如节号描述）而提取稿是
+        #      真实行锚 → 用提取稿升级（锚点审计修正批的价值所在）
+        # 同为行锚时以提取稿为准（人工精校优先于机械表格解析）。
         deep = extract_deep_extract(school)
         if deep:
             by_id = {r["id"]: r for r in rules}
-            added = 0
-            updated = 0
+            added = updated = upgraded = 0
+
+            def _is_line_anchor(v):
+                return bool(v) and str(v).startswith("line:")
+
             for rid, rule in deep.items():
                 if rid in by_id:
-                    # 仅当原条目缺正文时用提取稿补全，避免覆盖 registry 已有结论
-                    if not by_id[rid].get("conclusion") or by_id[rid].get("status") == "pending_normalization":
+                    old = by_id[rid]
+                    if not old.get("conclusion") or old.get("status") == "pending_normalization":
                         by_id[rid] = rule
                         updated += 1
+                    elif _is_line_anchor(rule.get("raw_anchor")) and not _is_line_anchor(old.get("raw_anchor")):
+                        # 锚点升级：节号描述 → 真实行锚
+                        by_id[rid] = rule
+                        upgraded += 1
                 else:
                     by_id[rid] = rule
                     added += 1
@@ -600,7 +611,7 @@ def main():
                 by_id.values(),
                 key=lambda x: (x["id"].rsplit("-", 1)[0], int(re.search(r"\d+$", x["id"]).group())),
             )
-            print(f"  深水区提取：新增 {added} 条，补全 {updated} 条")
+            print(f"  深水区提取：新增 {added} 条，补全 {updated} 条，锚点升级 {upgraded} 条")
 
         write_yaml(rules, ROOT / "theory" / school / "index.yaml")
         topic_counts = Counter(r["topic"] for r in rules)

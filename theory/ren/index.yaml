@@ -3,14 +3,13 @@
 # Generated at: The system cannot accept the date entered.
 Enter the new date: (yy-mm-dd)
 # Topic distribution:
-#   lifa: 138
+#   lifa: 144
 #   hunyin: 22
 #   yingqi: 20
 #   shensha: 14
-#   unmapped: 6
 # Status distribution:
 #   promoted: 194
-#   pending_normalization: 6
+#   candidate: 6
 
 rules:
   - id: M3-R-001
@@ -1813,6 +1812,78 @@ rules:
     raw_source: "任派 m3-rules-registry"
     raw_anchor: "职业判定完整体系 (M3-R-176..180) · 食伤生财/比劫做功"
     raw_file: "theory\\raw\\ren\\promoted\\m3-rules-registry.md"
+  - id: M3-R-181
+    school: ren
+    topic: lifa
+    title: "寅申巳亥入墓库法"
+    conclusion: "寅、申、巳、亥见各自墓库即入墓（寅见未/申见丑/巳见戌/亥见辰）；墓库表收藏、得到、占有、控制，有时表死亡；入墓后若库不开（无刑冲破）则所入之物被彻底关住，事物有伤不可得"
+    domain: "lifa"
+    tags: ["墓库", "寅申巳亥", "入墓", "库不开"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:12"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
+  - id: M3-R-182
+    school: ren
+    topic: lifa
+    title: "子午卯酉见墓一般不入墓法"
+    conclusion: "子、午、卯、酉见各自墓库一般不作入墓论、当拱局看（子辰拱水/卯未拱木/午戌拱火/酉丑拱金）；例外：极弱被制受伤时方入墓（如子被未穿卯破、见辰当入墓）"
+    domain: "lifa"
+    tags: ["墓库", "子午卯酉", "拱局", "例外"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:28"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
+  - id: M3-R-183
+    school: ren
+    topic: lifa
+    title: "多而入墓库法"
+    conclusion: "天干或地支合在一起有两个或两个以上者，见各自墓库则入墓、不再论拱局（辛酉见丑/庚辛见丑/两卯见未/水多见辰）；多入墓后库开则有用、不开则无用"
+    domain: "lifa"
+    tags: ["墓库", "多而入墓", "不论拱", "库开库不开"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:42"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
+  - id: M3-R-184
+    school: ren
+    topic: lifa
+    title: "天干坐墓不入墓法"
+    conclusion: "天干坐自己的墓库不以入墓论（丙戌一柱丙不入戌墓、乙未一柱乙不入未墓），此为普遍原则，适用于所有天干坐库"
+    domain: "lifa"
+    tags: ["墓库", "天干坐墓", "丙戌", "乙未"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:56"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
+  - id: M3-R-185
+    school: ren
+    topic: lifa
+    title: "土之墓库特殊规则"
+    conclusion: "辰为土墓也为水墓：丑入辰墓、未也入辰墓；但当丑未辰同时出现时因丑未相冲，丑未都不入辰墓；推论：未入辰库则财入别人处，乙合庚控辰则自己可得库中之物"
+    domain: "lifa"
+    tags: ["墓库", "辰", "丑未冲", "土墓", "财入库"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:68"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
+  - id: M3-R-186
+    school: ren
+    topic: lifa
+    title: "墓库看十神含义法"
+    conclusion: "看墓库不仅要看五行含义，更要看所墓十神含义：比劫羊刃库=军队/坏人集团；官杀入库+自己控制=管理官杀之人（贵命）；财入库+自己合控=可得财；食伤入库=才华自由被收"
+    domain: "lifa"
+    tags: ["墓库", "十神", "官杀库", "财库", "食伤库", "比劫库"]
+    status: candidate
+    layer: unmapped
+    raw_source: "deep-extract ren"
+    raw_anchor: "line:81"
+    raw_file: "theory/raw/ren/promoted/deep-extract-ren-fix-b01.md"
   - id: M3-R-187
     school: ren
     topic: shensha
@@ -1953,45 +2024,3 @@ rules:
     raw_source: "任派 m3-rules-registry"
     raw_anchor: "神煞/伏吟/空亡深化 + 综合断法 (M3-R-187..200) · 拜干亲/改名/方位/颜色"
     raw_file: "theory\\raw\\ren\\promoted\\m3-rules-registry.md"
-  - id: M3-R-181
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
-  - id: M3-R-182
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
-  - id: M3-R-183
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
-  - id: M3-R-184
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
-  - id: M3-R-185
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
-  - id: M3-R-186
-    school: ren
-    topic: unmapped
-    title: "(待补)"
-    status: pending_normalization
-    layer: unmapped
-    raw_source: "(see m3-rules-registry.md)"
