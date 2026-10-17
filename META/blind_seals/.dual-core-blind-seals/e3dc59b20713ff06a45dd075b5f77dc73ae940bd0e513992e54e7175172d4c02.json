@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#health",
+  "matter_category": "health",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#health",
+      "round_index": 1,
+      "matter_category": "health",
+      "time_scope": "2026-2026",
+      "direction": "negative",
+      "conclusion": "[p6] 火土极旺、水受克，丙午年血压或血糖指标越界",
+      "rationale": "[p6] 事件定义: 年度体检发现血压或空腹血糖指标超出参考范围，并被医生要求复查或开始用药（时段 2026，方向 negative）",
+      "applied_rules": [
+        {
+          "school": "mangpai_fusion",
+          "rule_statement": "火土成势而全局无水解，主代谢与循环系统指标异常",
+          "rule_id": "MP-08",
+          "rule_direction": "negative"
+        },
+        {
+          "school": "tiaohou_ditiansui",
+          "rule_statement": "调候用字受克，该运整体受压且病灶显于水系统",
+          "rule_id": "TH-01",
+          "rule_direction": "negative"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#health",
+      "round_index": 2,
+      "matter_category": "health",
+      "time_scope": "2026-2026",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2026-2026 内提供health相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "3c3a06a15341bacb28c48df321f1579a22fc8d57c1906bec3cb7d2f0632f7291"
+}

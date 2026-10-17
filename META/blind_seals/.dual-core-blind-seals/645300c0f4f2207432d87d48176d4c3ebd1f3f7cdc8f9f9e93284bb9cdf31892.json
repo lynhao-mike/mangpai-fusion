@@ -1,0 +1,53 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#marriage",
+  "matter_category": "marriage",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#marriage",
+      "round_index": 1,
+      "matter_category": "marriage",
+      "time_scope": "2025-2031",
+      "direction": "mixed",
+      "conclusion": "[p4] 庚戌年戌土填实空亡的夫妻宫，婚姻在 2030 年落定；[p5] 乙木正官透干却被己土合走，年内有对象出现但成不了",
+      "rationale": "[p4] 事件定义: 完成结婚登记，或与伴侣建立持续 12 个月以上的共同居住关系（时段 2030-2031，方向 positive）；[p5] 事件定义: 出现一位以结婚为前提的交往对象，但未在 2025 年内进入见家长、同居或订婚阶段（时段 2025，方向 negative）",
+      "applied_rules": [
+        {
+          "rule_statement": "夫妻宫空亡遇流年填实，主该宫事项落定",
+          "school": "mangpai_fusion",
+          "rule_direction": "positive",
+          "rule_id": "MP-07"
+        },
+        {
+          "rule_statement": "魁罡坐夫妻宫，主婚期迟、择偶门槛高",
+          "school": "gao",
+          "rule_direction": "negative",
+          "rule_id": "GW-02"
+        },
+        {
+          "rule_statement": "官星透干被合，主名分不立、对象易被合走",
+          "school": "mangpai_fusion",
+          "rule_direction": "negative",
+          "rule_id": "MP-05"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#marriage",
+      "round_index": 2,
+      "matter_category": "marriage",
+      "time_scope": "2025-2031",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2025-2031 内提供marriage相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "1b14ada047e1b84e86e4717fb769c864825d8545217759da62987c11e62d0766"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#career",
+  "matter_category": "career",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#career",
+      "round_index": 1,
+      "matter_category": "career",
+      "time_scope": "2026-2029",
+      "direction": "mixed",
+      "conclusion": "[p1] 丙午年印星护官，年内拿到一次职级或薪级的正式调整；[p2] 申酉两年冲开官局，出现一次被动或半被动的岗位调整",
+      "rationale": "[p1] 事件定义: 获得一次职级或薪级的正式调整（含晋升、晋级、调薪批文），以单位人事文件或工资单变动为准（时段 2026，方向 positive）；[p2] 事件定义: 发生一次岗位调整或单位内部调动（含轮岗、借调、换部门、换直属上级），以人事通知为准（时段 2028-2029，方向 mixed）",
+      "applied_rules": [
+        {
+          "school": "mangpai_fusion",
+          "rule_statement": "官杀当令而印星透干通关，压力转化为职级与资历",
+          "rule_id": "MP-03",
+          "rule_direction": "positive"
+        },
+        {
+          "school": "tiaohou_ditiansui",
+          "rule_statement": "调候用字在流年透干有根，该年整体顺遂",
+          "rule_id": "TH-02",
+          "rule_direction": "positive"
+        },
+        {
+          "school": "duan",
+          "rule_statement": "流年冲动月令或用神之根，主职业位置发生位移",
+          "rule_id": "DY-02",
+          "rule_direction": "mixed"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#career",
+      "round_index": 2,
+      "matter_category": "career",
+      "time_scope": "2026-2029",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2026-2029 内提供career相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "ffd0ce5c19ebc27b4462b8d58fabaa0323146776a3e711793fb36fbad4877954"
+}

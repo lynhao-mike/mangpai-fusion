@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#health",
+  "matter_category": "health",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#health",
+      "round_index": 1,
+      "matter_category": "health",
+      "time_scope": "2025-2026",
+      "direction": "negative",
+      "conclusion": "[p6] 水旺木漂、印重压身，两年内肝胆指标或睡眠出问题",
+      "rationale": "[p6] 事件定义: 体检或门诊查出肝功能指标（ALT/AST）超出参考范围，或确诊睡眠障碍并接受治疗（时段 2025-2026，方向 negative）",
+      "applied_rules": [
+        {
+          "rule_direction": "negative",
+          "rule_statement": "印比成势而食伤受制，主思虑过度、情绪内耗",
+          "school": "mangpai_fusion",
+          "rule_id": "MP-04"
+        },
+        {
+          "rule_direction": "negative",
+          "rule_statement": "调候用字受克则运受压，受克之局被合开则压力可解",
+          "school": "tiaohou_ditiansui",
+          "rule_id": "TH-01"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#health",
+      "round_index": 2,
+      "matter_category": "health",
+      "time_scope": "2025-2026",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2025-2026 内提供health相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "2a0a5c8ae4b6b0a717d1a6e0d7263faf74e6cd34c465682fd910e65147ea29cf"
+}

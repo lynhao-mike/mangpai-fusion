@@ -1,0 +1,41 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#family",
+  "matter_category": "family",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#family",
+      "round_index": 1,
+      "matter_category": "family",
+      "time_scope": "2027-2028",
+      "direction": "negative",
+      "conclusion": "[p8] 未土财库引动、申冲寅，母亲在两年内住院",
+      "rationale": "[p8] 事件定义: 母亲因疾病住院治疗，或需要子女安排长期照护（时段 2027-2028，方向 negative）",
+      "applied_rules": [
+        {
+          "rule_direction": "negative",
+          "rule_statement": "流年冲动月令或用神之根，主位置发生位移",
+          "school": "duan",
+          "rule_id": "DY-02"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#family",
+      "round_index": 2,
+      "matter_category": "family",
+      "time_scope": "2027-2028",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2027-2028 内提供family相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "abccc7f9ea82f4adc8699f49ff3840b58fa8aa184b733dbad4090f3d422d3558"
+}

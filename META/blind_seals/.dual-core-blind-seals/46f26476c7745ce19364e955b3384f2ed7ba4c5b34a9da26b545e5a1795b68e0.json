@@ -1,0 +1,59 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#career",
+  "matter_category": "career",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#career",
+      "round_index": 1,
+      "matter_category": "career",
+      "time_scope": "2028-2030",
+      "direction": "mixed",
+      "conclusion": "[p1] 戊申年申冲寅、巳申合，年内换一次工作或岗位；[p2] 巳酉合金、戌土填实，两年内拿到一次正式职级或职称提升",
+      "rationale": "[p1] 事件定义: 发生一次主动跳槽或单位内部转岗，工作单位或岗位名称发生变更（时段 2028，方向 mixed）；[p2] 事件定义: 获得一次职级、职称或薪级的正式提升（以人事文件或工资单为准）（时段 2029-2030，方向 positive）",
+      "applied_rules": [
+        {
+          "rule_statement": "流年冲动月令或用神之根，主位置发生位移",
+          "school": "duan",
+          "rule_direction": "mixed",
+          "rule_id": "DY-02"
+        },
+        {
+          "rule_statement": "交运前后两年主变动，旧局松动则新局可立",
+          "school": "duan",
+          "rule_direction": "mixed",
+          "rule_id": "DY-01"
+        },
+        {
+          "rule_statement": "身强有食伤透干，主以专业技能换取职位与现金",
+          "school": "mangpai_fusion",
+          "rule_direction": "positive",
+          "rule_id": "MP-02"
+        },
+        {
+          "rule_statement": "调候用字在流年或大运透干有根，该段整体顺遂",
+          "school": "tiaohou_ditiansui",
+          "rule_direction": "positive",
+          "rule_id": "TH-02"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#career",
+      "round_index": 2,
+      "matter_category": "career",
+      "time_scope": "2028-2030",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2028-2030 内提供career相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "5cfec3fd4a33146aae46bc836256d027a41cb6f10bb6be4fd902ff38a95322f5"
+}

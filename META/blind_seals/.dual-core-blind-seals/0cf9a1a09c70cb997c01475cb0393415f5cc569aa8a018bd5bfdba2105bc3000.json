@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#family",
+  "matter_category": "family",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#family",
+      "round_index": 1,
+      "matter_category": "family",
+      "time_scope": "2028-2028",
+      "direction": "negative",
+      "conclusion": "[p8] 申亥相害、长辈宫受损，戊申年长辈入院",
+      "rationale": "[p8] 事件定义: 一位直系长辈（父或母）住院治疗，或家庭开始安排其长期照护（时段 2028，方向 negative）",
+      "applied_rules": [
+        {
+          "school": "duan",
+          "rule_statement": "流年冲动月令或用神之根，主职业位置发生位移",
+          "rule_id": "DY-02",
+          "rule_direction": "negative"
+        },
+        {
+          "school": "mangpai_fusion",
+          "rule_statement": "火土成势而全局无水解，主代谢与循环系统指标异常",
+          "rule_id": "MP-08",
+          "rule_direction": "negative"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#family",
+      "round_index": 2,
+      "matter_category": "family",
+      "time_scope": "2028-2028",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2028-2028 内提供family相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "14a1c3fe1ff72fa2a7e86caed520cf290a7e8b7442ee6da402991f75589ad1d4"
+}

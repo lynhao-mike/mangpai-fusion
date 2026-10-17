@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#wealth",
+  "matter_category": "wealth",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#wealth",
+      "round_index": 1,
+      "matter_category": "wealth",
+      "time_scope": "2027-2029",
+      "direction": "positive",
+      "conclusion": "[p3] 庚金食神透干开出泄秀口，三年内收入抬升五成以上",
+      "rationale": "[p3] 事件定义: 年收入（税前，含工资与奖金）较 2025 年增长 50% 以上（时段 2027-2029，方向 positive）",
+      "applied_rules": [
+        {
+          "rule_statement": "身强有食伤透干，主以专业技能换取职位与现金",
+          "school": "mangpai_fusion",
+          "rule_direction": "positive",
+          "rule_id": "MP-02"
+        },
+        {
+          "rule_statement": "财星全无之局，食伤透干之运为唯一兑现窗口",
+          "school": "mangpai_fusion",
+          "rule_direction": "positive",
+          "rule_id": "MP-06"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#wealth",
+      "round_index": 2,
+      "matter_category": "wealth",
+      "time_scope": "2027-2029",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2027-2029 内提供wealth相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "90306a9512ca78e78fa0574031e909d3050a273a5ef6768752047a71e30dbacf"
+}

@@ -53,6 +53,9 @@ _sandbox_shims/
 # WorkBuddy 本地记忆目录，不是仓库内容
 .workbuddy/
 
+# WorkBuddy-AI 会话工作区（临时脚本 / 盲断任务包 / 抽样中间产物），不是仓库内容
+.workbuddy-ai/
+
 # 禁止旧引擎膨胀产物入库
 cases/**/findings/
 cases/**/analysis_output.json

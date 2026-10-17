@@ -1,0 +1,59 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#health",
+  "matter_category": "health",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#health",
+      "round_index": 1,
+      "matter_category": "health",
+      "time_scope": "2026-2029",
+      "direction": "negative",
+      "conclusion": "[p6] 寅午戌火局全成，火最旺，皮肤或神经症状在年内拿到明确诊断；[p7] 申冲寅、酉害戌，木受冲克，腰椎问题进入需要系统治疗的阶段",
+      "rationale": "[p6] 事件定义: 因皮肤或神经系统症状到专科就诊，并取得明确病名诊断（书面诊断书或病历记录）（时段 2026，方向 negative）；[p7] 事件定义: 因腰椎或坐骨神经问题接受手术、住院，或连续三个月以上的系统理疗（时段 2028-2029，方向 negative）",
+      "applied_rules": [
+        {
+          "rule_statement": "火土成势而全局无水解，主皮肤、神经与代谢之疾",
+          "school": "mangpai_fusion",
+          "rule_direction": "negative",
+          "rule_id": "MP-08"
+        },
+        {
+          "rule_statement": "流年补齐三合局，该年事项集中爆发",
+          "school": "gao",
+          "rule_direction": "negative",
+          "rule_id": "GW-03"
+        },
+        {
+          "rule_statement": "火土成势而全局无水解，主皮肤、神经与代谢之疾",
+          "school": "mangpai_fusion",
+          "rule_direction": "negative",
+          "rule_id": "MP-08"
+        },
+        {
+          "rule_statement": "流年冲动月令或用神之根，主位置发生位移",
+          "school": "duan",
+          "rule_direction": "negative",
+          "rule_id": "DY-02"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳#health",
+      "round_index": 2,
+      "matter_category": "health",
+      "time_scope": "2026-2029",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2026-2029 内提供health相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "86dc46fe346f1abbbcafddca79a98feb6b9517aac086aa9049e428cae67fc551"
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#education",
+  "matter_category": "education",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#education",
+      "round_index": 1,
+      "matter_category": "education",
+      "time_scope": "2026-2028",
+      "direction": "positive",
+      "conclusion": "[p7] 长女进入升学关口，按学区正常入学公办初中",
+      "rationale": "[p7] 事件定义: 长女完成小学升初中的入学登记，并进入公办初中就读（时段 2026-2028，方向 positive）",
+      "applied_rules": [
+        {
+          "rule_direction": "mixed",
+          "rule_statement": "财星有根而印比过重时，财透之年为唯一兑现窗口",
+          "school": "mangpai_fusion",
+          "rule_id": "MP-06"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#education",
+      "round_index": 2,
+      "matter_category": "education",
+      "time_scope": "2026-2028",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2026-2028 内提供education相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "207f7eb593a613f66a74a779a6e1e978945b2ef8b8ffe8bd5c2a3c35903162d8"
+}

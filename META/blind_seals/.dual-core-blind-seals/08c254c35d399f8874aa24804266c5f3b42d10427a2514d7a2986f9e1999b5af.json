@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#marriage",
+  "matter_category": "marriage",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#marriage",
+      "round_index": 1,
+      "matter_category": "marriage",
+      "time_scope": "2027-2029",
+      "direction": "negative",
+      "conclusion": "[p5] 夫妻宫伏吟被引动，三年内出现分居或离婚程序",
+      "rationale": "[p5] 事件定义: 夫妻因财务问题出现持续冲突，并至少发生下列之一：分居、提出离婚或签署离婚协议、共同接受婚姻咨询（时段 2027-2029，方向 negative）",
+      "applied_rules": [
+        {
+          "school": "mangpai_fusion",
+          "rule_statement": "夫妻宫坐比劫且伏吟，主婚内竞争与关系重复磨损",
+          "rule_id": "MP-07",
+          "rule_direction": "negative"
+        },
+        {
+          "school": "gao",
+          "rule_statement": "流年冲引夫妻宫，主关系进入断点",
+          "rule_id": "GW-04",
+          "rule_direction": "negative"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午#marriage",
+      "round_index": 2,
+      "matter_category": "marriage",
+      "time_scope": "2027-2029",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2027-2029 内提供marriage相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "f3064f453497bc1dd4e727644f1cfd02fdfe3c7837376626477f6d5a7b9b6716"
+}

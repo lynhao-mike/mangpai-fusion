@@ -1,0 +1,47 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#marriage",
+  "matter_category": "marriage",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#marriage",
+      "round_index": 1,
+      "matter_category": "marriage",
+      "time_scope": "2029-2029",
+      "direction": "negative",
+      "conclusion": "[p5] 己酉年酉冲卯，夫妻宫与日主禄根同被冲，婚姻走到断点",
+      "rationale": "[p5] 事件定义: 夫妻进入法定分居、提出离婚或签署离婚协议中的至少一项（时段 2029，方向 negative）",
+      "applied_rules": [
+        {
+          "rule_direction": "negative",
+          "rule_statement": "流年冲夫妻宫，主关系进入断点",
+          "school": "gao",
+          "rule_id": "GW-04"
+        },
+        {
+          "rule_direction": "negative",
+          "rule_statement": "夫妻宫坐比劫，主婚内竞争与关系重复磨损",
+          "school": "mangpai_fusion",
+          "rule_id": "MP-07"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申#marriage",
+      "round_index": 2,
+      "matter_category": "marriage",
+      "time_scope": "2029-2029",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2029-2029 内提供marriage相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "dac7d38d3a032890a71518cb85032fcf885d81ff7e29e6a4c44c98c76a4f8ea1"
+}

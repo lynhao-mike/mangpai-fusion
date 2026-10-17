@@ -1,0 +1,53 @@
+{
+  "schema_version": "dual_core_blind_seal.v1",
+  "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳#marriage",
+  "matter_category": "marriage",
+  "expected_round_count": 1,
+  "rounds": [
+    {
+      "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳#marriage",
+      "round_index": 1,
+      "matter_category": "marriage",
+      "time_scope": "2029-2031",
+      "direction": "mixed",
+      "conclusion": "[p4] 己酉年酉冲卯，冲掉夫星唯一的根，这段关系在 2029 年内结束；[p5] 庚戌年卯戌合住夫星，2029 年结束后两年内关系落定",
+      "rationale": "[p4] 事件定义: 与 2023 年 11 月确立的伴侣终止恋爱关系，且此后连续三个月以上未复合（时段 2029，方向 negative）；[p5] 事件定义: 确立以结婚为目的的稳定关系，至少完成见双方家长、同居或订婚中的一项（时段 2030-2031，方向 positive）",
+      "applied_rules": [
+        {
+          "rule_statement": "官星孤悬被冲，主名分不立、对象易散",
+          "rule_direction": "mixed",
+          "school": "mangpai_fusion",
+          "rule_id": "MP-05"
+        },
+        {
+          "rule_statement": "羊刃坐夫妻宫，主配偶性格刚硬、争执频繁",
+          "rule_direction": "negative",
+          "school": "gao",
+          "rule_id": "GW-01"
+        },
+        {
+          "rule_statement": "交运前后两年主变动，旧局松动则新局可立",
+          "rule_direction": "positive",
+          "school": "duan",
+          "rule_id": "DY-01"
+        }
+      ]
+    }
+  ],
+  "verification_records": [
+    {
+      "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳#marriage",
+      "round_index": 2,
+      "matter_category": "marriage",
+      "time_scope": "2029-2031",
+      "direction": "mixed",
+      "conclusion": "反馈未在 2029-2031 内提供marriage相关事件",
+      "rationale": "按 blind-scoring/v1：反馈未提及 ≠ 事件未发生。本记录不进正确率分母（undetermined）。",
+      "applied_rules": []
+    }
+  ],
+  "revealed_at": "2026-10-17T00:00:00Z",
+  "sealed": true,
+  "parents": [],
+  "artifact_sha256": "978447ddb9c1ac8c8e1e73e48b4511ab79ebd382933c1168908b2ca45f804b9d"
+}

@@ -16,7 +16,10 @@ engine/api/         无状态事实 API
 engine/cli.py       Agent JSON 入口：python -m engine.cli
  tools/query_theory.py  六源理论原子检索：python -m tools.query_theory
 theory/ + sources/  四派盲派与传统经典的结构化索引、原文及提取语料
- docs/agent_tools.md 工具调用细节、地址编码、返回字段与五步推演 SOP
+ docs/agent_tools.md 工具调用细节、地址编码、返回字段与六步推演 SOP
+ docs/analysis_human_touch.md   人话写作与翻译规范（Linter 配套，含引擎契约清单）
+ templates/report-v7-human.md   人话报告标准模板（单报告架构，默认产物）
+ tools/human_touch_linter.py    防骑墙门禁：python -m tools.human_touch_linter <file.md>
 ```
 
 按任务需要读取相关源码或语料；不要依据旧流程文档推断当前 Agent 工具入口。项目人类入口见 [`README.md`](README.md)，机器可读状态见 [`META/project-state.json`](META/project-state.json)。
@@ -48,3 +51,4 @@ pytest tests/
 - 对晚子时、阴干长生、土寄宫等争议口径，保留工具返回的 `boundary_warnings`、`variants` 及 profile 信息；有差异时并列呈现各口径及其影响，不悄然选边。
 - 四派盲派证据与《子平真诠》《滴天髓》《穷通宝鉴》《三命通会》《千里命稿》可交叉验证，但须分清来源、适用条件与推理路径；不得用单一流派抹杀其他流派的有效证据。
 - 对格局成败、做功含义、力量取舍等需要判断的项目，结合命主问题与岁运语境说明裁决理由；保留有依据的分歧，不把检索命中或结构候选写成确定断语。
+- **举证与呈现分歧不等于骑墙和稀泥**：Agent 在展示各派依据后必须给出主次裁决与人话落点；「各有道理 / 尚难定论」视为任务未完成。
