@@ -1,0 +1,35 @@
+{
+  "schema_version": "blind-verification/v1",
+  "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申",
+  "matter_category": "health",
+  "round_index": 1,
+  "time_scope": "2025-2026",
+  "round_direction": "negative",
+  "round_conclusion": "[p6] 水旺木漂、印重压身，两年内肝胆指标或睡眠出问题",
+  "generated_at": "2026-10-17T15:10:49+00:00",
+  "instructions": {
+    "matter_verdict": "填 ['correct', 'incorrect', 'undetermined'] 之一",
+    "rule_independent_hit": "逐规则判断：仅凭该规则能否推出 round_conclusion 的方向。能=true，不能或方向相反=false。不确定就保持 null（不得计算）。",
+    "note": "反馈未提及某事项时用 undetermined，不得填 incorrect。"
+  },
+  "matter_verdict": "undetermined",
+  "matter_evidence": "",
+  "rule_verdicts": [
+    {
+      "rule_id": "MP-04",
+      "school": "mangpai_fusion",
+      "rule_direction": "negative",
+      "rule_statement": "印比成势而食伤受制，主思虑过度、情绪内耗",
+      "independent_hit": null,
+      "evidence": ""
+    },
+    {
+      "rule_id": "TH-01",
+      "school": "tiaohou_ditiansui",
+      "rule_direction": "negative",
+      "rule_statement": "调候用字受克则运受压，受克之局被合开则压力可解",
+      "independent_hit": null,
+      "evidence": ""
+    }
+  ]
+}

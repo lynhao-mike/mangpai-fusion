@@ -1,0 +1,51 @@
+{
+  "schema_version": "blind-verification/v1",
+  "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳",
+  "matter_category": "career",
+  "round_index": 1,
+  "time_scope": "2028-2030",
+  "round_direction": "mixed",
+  "round_conclusion": "[p1] 戊申年申冲寅、巳申合，年内换一次工作或岗位；[p2] 巳酉合金、戌土填实，两年内拿到一次正式职级或职称提升",
+  "generated_at": "2026-10-17T15:10:48+00:00",
+  "instructions": {
+    "matter_verdict": "填 ['correct', 'incorrect', 'undetermined'] 之一",
+    "rule_independent_hit": "逐规则判断：仅凭该规则能否推出 round_conclusion 的方向。能=true，不能或方向相反=false。不确定就保持 null（不得计算）。",
+    "note": "反馈未提及某事项时用 undetermined，不得填 incorrect。"
+  },
+  "matter_verdict": "undetermined",
+  "matter_evidence": "",
+  "rule_verdicts": [
+    {
+      "rule_id": "DY-02",
+      "school": "duan",
+      "rule_direction": "mixed",
+      "rule_statement": "流年冲动月令或用神之根，主位置发生位移",
+      "independent_hit": null,
+      "evidence": ""
+    },
+    {
+      "rule_id": "DY-01",
+      "school": "duan",
+      "rule_direction": "mixed",
+      "rule_statement": "交运前后两年主变动，旧局松动则新局可立",
+      "independent_hit": null,
+      "evidence": ""
+    },
+    {
+      "rule_id": "MP-02",
+      "school": "mangpai_fusion",
+      "rule_direction": "positive",
+      "rule_statement": "身强有食伤透干，主以专业技能换取职位与现金",
+      "independent_hit": null,
+      "evidence": ""
+    },
+    {
+      "rule_id": "TH-02",
+      "school": "tiaohou_ditiansui",
+      "rule_direction": "positive",
+      "rule_statement": "调候用字在流年或大运透干有根，该段整体顺遂",
+      "independent_hit": null,
+      "evidence": ""
+    }
+  ]
+}
