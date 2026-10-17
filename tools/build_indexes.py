@@ -488,6 +488,16 @@ def extract_deep_extract(school):
             conclusion = str(it.get("conclusion") or it.get("statement") or "").strip()
             if not title and not conclusion:
                 continue
+            # raw_file/raw_anchor 必须指向**原稿**（sources/**），这是
+            # query_theory._source_ref 的唯一定位依据。此前把 raw_file 写成
+            # 提取稿路径、却保留原稿行号，两者错配导致 source_ref 全部失效
+            # （语义复核发现的系统性缺陷）。条目自带 source_ref（path+anchor
+            # 均指原稿）时以它为准；提取稿自身的位置记入 extract_file 供回溯。
+            src_ref = it.get("source_ref") or {}
+            src_path = str((src_ref or {}).get("path") or "").strip()
+            src_anchor = str((src_ref or {}).get("anchor") or "").strip()
+            raw_file = src_path if src_path else rel
+            raw_anchor = src_anchor if src_path and src_anchor else str(it.get("raw_anchor") or "").strip()
             out[rid] = {
                 "id": rid,
                 "school": school,
@@ -500,11 +510,12 @@ def extract_deep_extract(school):
                 "status": "candidate",
                 "layer": "unmapped",
                 "raw_source": f"deep-extract {school}",
-                "raw_anchor": str(it.get("raw_anchor") or "").strip(),
+                "raw_anchor": raw_anchor,
                 "candidate_score": None,
-                # 指向提取稿本身，便于回读锚点；原始原稿路径在 source_ref 里
-                "raw_file": rel,
+                "raw_file": raw_file,
             }
+            if src_path:
+                out[rid]["extract_file"] = rel
     return out
 
 
@@ -565,6 +576,8 @@ def write_yaml(rules, output_path):
                 fp.write(f'    raw_anchor: "{yaml_escape(r["raw_anchor"])}"\n')
             if r.get("raw_file"):
                 fp.write(f'    raw_file: "{yaml_escape(r["raw_file"])}"\n')
+            if r.get("extract_file"):
+                fp.write(f'    extract_file: "{yaml_escape(r["extract_file"])}"\n')
             if r.get("candidate_score") is not None:
                 fp.write(f"    candidate_score: {r['candidate_score']}\n")
 
