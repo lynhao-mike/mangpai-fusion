@@ -1,192 +1,50 @@
-# AGENTS.md · mangpai-fusion AI 调用入口
+# AGENTS.md · AI 导航入口
 
-> 本文件是任意 AI / LLM agent 进入本仓库后的第一入口。目标是在最短时间内明确：仓库用途、事实源、常用工作流、可执行工具与禁止事项。
+## 1. 项目定位与核心铁律
 
----
+本仓库融合高德臣、段建业、杨清娟、任付红四派盲派理论及传统经典，为八字分析提供可追溯的盘面事实与理论证据。
 
-## 1. 仓库目的
+- **确定性盘面事实**只从 `python -m engine.cli` 获取；**经典与流派理论**通过 `python -m tools.query_theory` 检索；**综合推理、证据权衡与最终裁决**由 Agent 完成。
+- 严禁心算排盘或编造干支关系、长生、空亡、神煞、起运等事实。输入不完整、口径不明或工具未返回时，明确标示不确定，不补造结果。
+- 引用结论时保留盘面地址 / 关系边 ID、理论出处 `source_ref` 与适用边界；工具列出的事实或候选不等于自动成立的命理结论。
 
-mangpai-fusion 是一个面向命理师实战调用的四派盲派融合八字分析系统，整合高德臣、段建业、杨清娟、任付红四派理论，输出带证据链、派别归属与双轨置信度（★ 等级 + 百分比）的分析报告，并通过案例反馈持续校准规则。
-
----
-
-## 2. 必读顺序
-
-AI agent 执行任务前按以下顺序读取：
-
-1. [`README.md`](README.md)：人类入口与总体导航。
-2. [`AGENTS.md`](AGENTS.md)：AI 调用规则与事实源矩阵。
-3. [`META/project-state.json`](META/project-state.json)：机器可读当前项目状态。
-4. [`STATUS.md`](STATUS.md)：稳定项目仪表盘。
-5. [`progress/PROJECT_PROGRESS.md`](progress/PROJECT_PROGRESS.md)：文本式阶段进度仪表盘；机器状态见 [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json)。
-6. [`tools/README.md`](tools/README.md)：唯一工具索引。
-7. [`engine/README.md`](engine/README.md)：引擎接口说明。
-8. [`engine/contracts/00-OVERVIEW.md`](engine/contracts/00-OVERVIEW.md)：契约总览。
-
-不要从历史计划、旧 handoff 或 deprecated 工具开始推断当前流程。
-
----
-
-## 3. 事实源矩阵
-
-| 信息类型 | 唯一事实源 | 说明 |
-|---|---|---|
-| 产品版本 | [`VERSION`](VERSION) | 单行机器可读版本号；不要从阶段名推断。 |
-| Python 包版本 | [`engine/__init__.py`](engine/__init__.py) | 必须与 [`VERSION`](VERSION) 一致。 |
-| 当前项目状态 | [`META/project-state.json`](META/project-state.json) | 给 AI / 脚本读取的项目级状态；`current_phase` 是工作阶段，不等同于产品版本。 |
-| 项目进度状态 | [`progress/PROJECT_PROGRESS.json`](progress/PROJECT_PROGRESS.json) | 阶段、任务、权重、阻塞项和进入/退出条件的机器状态源。 |
-| 迭代计数状态 | [`META/iteration-state.json`](META/iteration-state.json) | 反馈完成案、迭代序号等机器状态。 |
-| 工具状态 | [`tools/README.md`](tools/README.md) + [`tools/tool_registry.py`](tools/tool_registry.py) | 工具 active/deprecated/internal/missing 分类。 |
-| 规则状态快照 | [`tools/rule_status_scan.py`](tools/rule_status_scan.py) | 易漂移规则数量、N_eff、review 清单运行时扫描。 |
-| 规则生命周期 | [`engine/contracts/05-rule-lifecycle.md`](engine/contracts/05-rule-lifecycle.md) | 状态机与字段语义。 |
-| 置信度模型 | [`engine/contracts/06-confidence-model.md`](engine/contracts/06-confidence-model.md) | 双轨置信度与 Beta 切换口径。 |
-| 历史变更 | [`META/rule-changelog.md`](META/rule-changelog.md) | 只做历史追溯，不作为当前状态源。 |
-| 人工裁决 | [`META/arbitration-log.md`](META/arbitration-log.md) | 冲突与规则 review 的人工决议。 |
-
----
-
-## 4. 核心数据流
+## 2. 1 分钟快速导航图
 
 ```text
-问真八字 APP 排盘
-  → templates/input-from-wenzhen.md
-  → cases/C-YYYY-NNN-{乾/坤}-{干支}/input.md
-  → tools/preflight.py
-  → engine/pipeline.py
-  → tools/render_report.py
-  → reports/*.md
-  → cases/*/feedback.md
-  → tools/feedback_ingest.py / tools/feedback_loop.py
-  → theory/*/index.yaml + META/*
+engine/facts/       四层确定性事实底座：排盘、关系图、能量事实、格局/段派候选
+engine/api/         无状态事实 API
+engine/cli.py       Agent JSON 入口：python -m engine.cli
+ tools/query_theory.py  六源理论原子检索：python -m tools.query_theory
+theory/ + sources/  四派盲派与传统经典的结构化索引、原文及提取语料
+ docs/agent_tools.md 工具调用细节、地址编码、返回字段与五步推演 SOP
 ```
 
----
+按任务需要读取相关源码或语料；不要依据旧流程文档推断当前 Agent 工具入口。项目人类入口见 [`README.md`](README.md)，机器可读状态见 [`META/project-state.json`](META/project-state.json)。
 
-## 5. 常见任务
-
-### 5.1 新增案例
-
-1. 按 [`templates/input-from-wenzhen.md`](templates/input-from-wenzhen.md) 整理输入。
-2. 建立 [`cases/`](cases/) 下的案例目录。
-3. 若用户首次提交新命盘并要求“分析八字 / 看这个八字 / 分析这个八字 / 断这个八字”，默认自动生成《命理师内容报告（统一版）》，并执行 5.2 的 [`reports/`](reports/) 报告归档与 [`cases/`](cases/) 结构化 case 归档；不得只停留在会话分析。
-   - “生成报告 / 形成报告 / 出报告 / 输出报告”默认理解为生成统一版命理师内容报告。
-   - 自 V2 起取消“双侧报告模式”：不再分别生成 `analysis.md` 与 `analyst-report.md` 两份可读报告；只生成一份融合推演过程、裁决结论、三派依据、应期判断与风险提示的统一报告。
-   - 只有当用户明确说“生成用户报告 / 客户报告 / 命主可读报告 / 对外报告”时，才允许额外生成用户报告；不得把“报告”二字自动解释为用户报告。
-   - 若用户明确要求“临时口头分析 / 不归档 / 不生成报告”，可先只答复分析；但必须在答复中标记“未归档、不可进入反馈闭环”，后续一旦要求报告，必须把首次分析内容补入统一报告与 case 结构化文件。
-   - 所有正式统一报告必须覆盖学业 / 事业 / 财富 / 婚姻 / 健康 / 性格等主要事项；每个事项必须给出 15 层判断，格式至少包含“判断结果｜证据链｜置信度｜应期”。
-4. 运行入口校验：
+## 3. 常用 CLI 命令速查
 
 ```bash
-python -m tools.preflight cases/C-YYYY-NNN-乾-干支/input.md
-```
+# 公历排盘并返回完整事实
+python -m engine.cli all --birth "1980-02-15 02:30" --gender 乾 --json
 
-### 5.2 生成命理师内容报告（统一版）
+# 四柱直接分析，叠加第 3 步大运及 2026 流年
+python -m engine.cli all --pillars "庚申 戊寅 壬子 辛丑" --gender 乾 --dayun-index 3 --liunian 2026 --json
 
-> **最高硬性约束**：当用户要求“分析八字 / 看这个八字 / 断这个八字 / 生成报告 / 形成报告 / 出报告 / 输出报告”时，默认生成《命理师内容报告（统一版）》，并必须同时完成 [`reports/`](reports/) 单报告归档与 [`cases/`](cases/) 结构化 case 归档；只生成会话答复或缺少 case 目录，视为未完成任务。
->
-> **单报告约束**：自 V2 起取消“双侧报告模式”。不得再把同一案例拆成 `analysis.md` 与 `analyst-report.md` 两份可读报告；统一报告必须融合推演过程、裁决结论、三派分析依据、应期判断、风险提示与总评。
->
-> **展示层禁显约束**：统一报告中禁止展示共识 ID、互补 ID、独门 ID、冲突 ID、statement_id、报告章节编号、statement_index、关联裁判、内部推理索引、Agent 工作记录。这些只允许保留在系统内部数据结构中。
->
-> **用户报告禁令**：除非用户明确要求“生成用户报告 / 客户报告 / 命主可读报告 / 对外报告”，否则不得生成用户报告；历史命主可读报告已删除，不再作为默认产物。
->
-> **15 层判断约束**：统一报告的每个主要事项 / 功能域都必须有 15 层判断；缺少任一主要事项的判断结果、证据链、置信度或应期，视为报告未完成。
+# 分项事实：chart / relations / strength / structures
+python -m engine.cli chart --birth "1980-02-15 02:30" --gender 乾 --json
 
-1. 使用 [`engine/pipeline.py`](engine/pipeline.py) 的 pipeline 产出结构化 findings。
-2. 使用 [`tools/render_report.py`](tools/render_report.py) 渲染《命理师内容报告（统一版）》。
-3. 使用 [`tools/output_linter.py`](tools/output_linter.py) 做出口校验。
-4. 统一报告归档到 [`reports/`](reports/)，文件名必须包含 case_id、乾/坤与四柱，并默认使用 `-content-report.md` 后缀。
-5. 同步在 [`cases/`](cases/) 下建立同名 case 目录：`cases/C-YYYY-NNN-{乾/坤}-{四柱}/`。
-6. case 目录内至少生成：`input.md`、`feedback.md`、`statement_index.json`；如需保留系统内部推理过程，可写入结构化内部文件，但不得再作为用户可读的第二份报告。
-7. 统一报告结尾记录 case 目录与反馈入口路径，确保后续反馈摄入可追踪，但不得展示 statement_index 或内部编号。
-8. 统一报告必须包含主要事项 15 层判断表；内部 `statement_index.json` 负责挂载每个事项的层级判断，以便后续反馈校准。
-9. 若是先会话分析、后要求报告，需把会话首次分析与后续反馈校准融合进统一报告，并同步更新 `feedback.md` / `statement_index.json`。
+# 跨流派与经典检索（--schools 后名称以空格分隔）
+python -m tools.query_theory --query "寅申冲 食神制杀" --top-k 5 --per-school-cap 2 --json
+python -m tools.query_theory --query "夫妻宫 穿" --schools yang duan ren ziping --domain 婚姻 --top-k 5 --json
 
-### 5.3 摄入反馈
-
-1. 在案例目录维护 [`feedback.md`](templates/feedback.md) 格式反馈。
-2. 运行：
-
-```bash
-python -m tools.feedback_ingest C-YYYY-NNN-乾-干支
-```
-
-3. 若批量处理，使用：
-
-```bash
-python -m tools.batch_review
-```
-
-### 5.4 查看工具索引
-
-```bash
-python tools/tool_registry.py --format markdown
-python tools/tool_registry.py --check
-```
-
-### 5.5 查看规则状态
-
-```bash
-python tools/rule_status_scan.py --format markdown
-python tools/rule_status_scan.py --check
-```
-
-### 5.6 跑测试
-
-```bash
+# 核心回归测试
 pytest tests/
-pytest tests/test_project_metadata.py -q
 ```
 
----
+更多调用参数、字段说明与推演步骤见 [`docs/agent_tools.md`](docs/agent_tools.md)。
 
-## 6. 禁止事项
+## 4. 多流派与多口径争议处理原则
 
-- 不要在多个文档中手写产品版本号；版本以 [`VERSION`](VERSION) 为准。
-- 不要把 [`META/project-state.json`](META/project-state.json) 中的 `current_phase` 当成产品版本；它只是当前工作阶段。
-- 不要把 N_eff、规则数量、flagged/deprecated 清单长期写入普通文档；运行 [`tools/rule_status_scan.py`](tools/rule_status_scan.py) 获取。
-- 不要使用 [`tools/calibrate.py`](tools/calibrate.py) 作为新反馈入口；它是 deprecated 历史工具。
-- 不要引用不存在的旧工具名作为可执行入口，例如 `seal_prediction.py`、`verify_evidence.py`。
-- 不要把 [`handoff.md`](handoff.md) 当作长期真相源；它只保留短期下一步。
-- 不要在报告标题遗漏性别命式（乾/坤）。
-- 不要把 F10 启动决策包收尾、多专家功能域主裁判路由 promotion、v1.4 V7 报告模板默认切换、子平/滴天髓生产规则扩充、八字指纹相似案检索，当作当前最高优先级长任务。当前优先级是双核盲测与规则沉淀：盲测必须先封存、后核验；核验后的 as-of 状态推演不再具有默认优先地位，只在命理师明确选择未来预测时进行。边界见 [`plans/dual-core-blind-validation-design-2026-10-14.md`](plans/dual-core-blind-validation-design-2026-10-14.md)。
-- 不要把现有生产 pipeline（读取全部 known facts 后生成报告）当作已验证的推理系统去扩充规则或调整路由权重；它从未在“不知道答案”的条件下被测试过盲断准确率。规则扩充、多专家路由 promotion、指纹相似案检索的价值，必须等双核盲测流程产生真实封存与核验数据后才能被证实，不能凭已知答案下的报告吻合度自证。
-
----
-
-## 7. 文档分工
-
-| 文件 | 定位 |
-|---|---|
-| [`README.md`](README.md) | 人类入口与总体导航。 |
-| [`AGENTS.md`](AGENTS.md) | AI agent 操作手册。 |
-| [`STATUS.md`](STATUS.md) | 稳定仪表盘。 |
-| [`handoff.md`](handoff.md) | 短期下一步，不作事实源。 |
-| [`tools/README.md`](tools/README.md) | 工具唯一索引。 |
-| [`META/project-state.json`](META/project-state.json) | 机器可读项目状态。 |
-| [`META/iteration-state.json`](META/iteration-state.json) | 机器可读迭代状态。 |
-| [`META/rule-changelog.md`](META/rule-changelog.md) | 历史变更。 |
-| [`plans/`](plans/) | 架构方案与历史计划。 |
-
----
-
-## 8. 最小上下文原则
-
-通用 AI 在执行小任务时，优先读取：
-
-1. [`AGENTS.md`](AGENTS.md)
-2. [`META/project-state.json`](META/project-state.json)
-3. 任务直接相关文件
-4. [`tools/README.md`](tools/README.md) 或对应工具源码
-
-只有在涉及架构、版本、契约或历史回溯时，才读取 [`STATUS.md`](STATUS.md)、[`plans/`](plans/) 与 [`META/rule-changelog.md`](META/rule-changelog.md)。
-
-### 8.1 AI 检索路由与证据取用
-
-按资料类型选择入口，先定位候选，再按精确位置取证；不要为了“读全”扩展整个图谱或语料库。完整预算、证据格式与验证要求见 [`plans/ai-retrieval-routing-contract-v1.md`](plans/ai-retrieval-routing-contract-v1.md)。
-
-- 代码符号、调用链、依赖与影响范围：优先使用 Graft MCP；若代码图不可用，明确记录能力缺口，再对相关文件做精确检索，不得假称图检索已完成。
-- Markdown 架构决策、契约与案例关系：使用 IWE MCP 做窄范围候选定位；默认不展开 references / referencedBy，也不批量读取全文。
-- 理论规则：使用 `tools/as_of_theory_lookup.py` 与 `theory/*/index.yaml` 定位候选；命中仅代表候选，须按规则 ID 和来源核验适用条件及原文依据。
-- 盲态任务：严格排除反馈、结果报告及已揭示事实；不得以节省 token 为由放宽盲态边界。
-- 证据不足时停止扩展，标记 `insufficient_evidence`，并说明尚缺的来源或定位信息。
+- 对晚子时、阴干长生、土寄宫等争议口径，保留工具返回的 `boundary_warnings`、`variants` 及 profile 信息；有差异时并列呈现各口径及其影响，不悄然选边。
+- 四派盲派证据与《子平真诠》《滴天髓》《穷通宝鉴》《三命通会》《千里命稿》可交叉验证，但须分清来源、适用条件与推理路径；不得用单一流派抹杀其他流派的有效证据。
+- 对格局成败、做功含义、力量取舍等需要判断的项目，结合命主问题与岁运语境说明裁决理由；保留有依据的分歧，不把检索命中或结构候选写成确定断语。

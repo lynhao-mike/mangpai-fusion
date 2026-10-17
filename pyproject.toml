@@ -7,7 +7,14 @@
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-testpaths = ["tests"]
+# 日常 pytest 只跑有效事实层套件。旧实验/回测目录用 --ignore 隔离；
+# 显式指定路径时请加 `-o addopts="-ra --tb=short"` 以覆盖 ignore。
+testpaths = [
+    "tests/facts",
+    "tests/api",
+    "tests/predicates",
+    "tests/tools/test_query_theory.py",
+]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -15,6 +22,11 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--tb=short",
+    "--ignore=tests/evaluation",
+    "--ignore=tests/asof",
+    "--ignore=tests/r10",
+    "--ignore=tests/v1_3_acceptance",
+    "--ignore=tests/v5",
 ]
 markers = [
     "regression: 整合回归测试（Track-H 维护）",
