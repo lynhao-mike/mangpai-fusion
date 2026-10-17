@@ -204,7 +204,12 @@ def gen_questions(case_id: str, rng: random.Random) -> tuple[list[dict], dict] |
 
 
 def generate(case_id: str) -> bool:
-    rng = random.Random(hash(case_id) & 0xFFFFFFFF)  # 案例确定性随机
+    # 跨进程确定性种子：hash() 默认带 PYTHONHASHSEED 随机盐，每次进程启动
+    # 结果不同，会导致题面漂移、盲断者答的题与 answer_key 不一致。改用
+    # hashlib 稳定哈希（同一 case_id 永远同一题目集）。
+    import hashlib
+    seed = int.from_bytes(hashlib.sha256(case_id.encode("utf-8")).digest()[:4], "big")
+    rng = random.Random(seed)  # 案例确定性随机（跨进程稳定）
     result = gen_questions(case_id, rng)
     if result is None:
         print(f"SKIP {case_id}: 事件不足 3 条")
