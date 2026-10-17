@@ -37,6 +37,20 @@ def _chart_kwargs(args: argparse.Namespace) -> dict[str, Any]:
 
 
 def _run(command: str, args: argparse.Namespace) -> dict[str, Any]:
+    payload = _run_facts(command, args)
+    if args.pillars:
+        payload["input_limitations"] = {
+            "mode": "pillars",
+            "unavailable": {
+                "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+                "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+                "siling": "缺少出生时刻及节后天数，不能确定人元司令。",
+            },
+        }
+    return payload
+
+
+def _run_facts(command: str, args: argparse.Namespace) -> dict[str, Any]:
     extra = {"dayun_index": args.dayun_index, "liunian_year": args.liunian}
     if command == "all":
         return analyze_facts(**_chart_kwargs(args), **extra)
@@ -78,6 +92,10 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
     args = _parser().parse_args(argv)
     try:
         _dump(_run(args.command, args))
