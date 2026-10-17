@@ -413,7 +413,7 @@ schema: full（extraction_validator 补全 classic_name/source_ref/conclusion/to
   source_ref:
     path: sources/yang/MinerU_markdown_01.杨清娟命理基础电子书261页_2056033743757049856.md
     anchor: line:2880
-  verify_fragment: 前提条件是A 的力量要大于 B 的力量
+  verify_fragment: 前提条件是 A 的力量要大于 B 的力量
 - id: M2-Y-224
   school: yang
   classic_name: 杨清娟盲派

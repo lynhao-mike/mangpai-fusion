@@ -17,8 +17,12 @@ def cache_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 def test_injury_officer_returns_classic_and_blind_school(cache_path: Path) -> None:
-    hits = search_theory("伤官见官", cache_path=cache_path)
-    assert len(hits) <= 5
+    # 本测试验证的是「跨源覆盖」属性：同一查询能同时命中传统经典与盲派。
+    # 不用默认 top_k=5：语料会持续增长（如 2026-10-17 杨派深水区 +223 条），
+    # 检索结果按分数排序，新条目更相关时会把旧条目挤出前 5。若把 top_k 钉死在 5，
+    # 每次扩充语料都会误报「回归」。改为 top_k=10 仍足以验证覆盖意图。
+    hits = search_theory("伤官见官", top_k=10, per_school_cap=10, cache_path=cache_path)
+    assert 0 < len(hits) <= 10
     assert any(hit["school"] == "ziping" and hit["classic_name"] == "《子平真诠》" for hit in hits)
     assert any(hit["school"] in {"gao", "duan", "yang", "ren"} for hit in hits)
 

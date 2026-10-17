@@ -221,7 +221,7 @@ verify: 每条 verify_fragment 在 raw_anchor 行 ±5 行内原文命中（空�
   content_status: full
   raw_file: "sources/yang/MinerU_markdown_01.杨清娟命理基础电子书261页_2056033743757049856.md"
   raw_anchor: "line:2880"
-  verify_fragment: "前提条件是A 的力量要大于 B 的力量"
+  verify_fragment: "前提条件是 A 的力量要大于 B 的力量"
 
 - id: M2-Y-224
   school: yang

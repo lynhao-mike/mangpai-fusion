@@ -1,16 +1,34 @@
 #!/usr/bin/env python3
 """
-build_indexes.py · 从 theory/raw/ 抽取 4 派全部 914 条规律 → theory/{school}/index.yaml
+build_indexes.py · 从 theory/raw/ 抽取 4 派全部规律 → theory/{school}/index.yaml
 
 输入：
   theory/raw/gao/extracted/*.md          (高派 261 条，含 anchor + score)
   theory/raw/duan/promoted/m1-*.md       (段派 290 条，分布在 m1-patterns/practice/timing)
   theory/raw/yang/promoted/m2-rules-registry.md  (杨派 163 条 registry)
   theory/raw/ren/promoted/m3-rules-registry.md   (任派 200 条 registry)
+  theory/raw/{school}/promoted/deep-extract-*.md (深水区提取，YAML 块格式)
 
 每条索引项包含：
   id, school, topic, title, conclusion(if available),
   status, layer, raw_source, raw_anchor, candidate_score, raw_file
+  以及（深水区提取专有）domain, tags
+
+深水区提取（deep-extract-*.md）说明
+-----------------------------------
+这些文件不是表格，而是 ```yaml 代码块内的一段规则列表，字段为：
+  id, school, classic_name, title, topic, domain, tags, statement,
+  conclusion, content_status, raw_file, raw_anchor, source_ref, verify_fragment
+
+本脚本读取其中的 id/title/topic/domain/tags/conclusion/raw_file/raw_anchor，
+补齐为 index.yaml 的规则条目。`classic_name` 与 `source_ref` 由
+`query_theory._rule_record` 在重建缓存时按 school 与 raw_file 推导，无需落入
+index.yaml。
+
+⚠️ 维护提示：`theory/_light_index.json` 是**缓存**，任何 index.yaml 的
+size/mtime 变化都会触发 query_theory 重建。因此新增规则**必须**先落到
+`theory/raw/{school}/promoted/`，再运行本脚本，否则 `--rebuild-index` 会
+静默冲掉只存在于缓存里的条目。
 """
 import os
 import re
@@ -411,6 +429,86 @@ def extract_ren():
 
 
 # ============================================================
+# 深水区提取（deep-extract-*.md）通用读取器
+# ============================================================
+_YAML_BLOCK = re.compile(r"```yaml\s*\n(.*?)```", re.DOTALL)
+
+
+def _deep_extract_files(school):
+    """返回 theory/raw/{school}/promoted/deep-extract-*.md（按名排序）。"""
+    d = RAW / school / "promoted"
+    if not d.is_dir():
+        return []
+    return sorted(d.glob("deep-extract-*.md"))
+
+
+def extract_deep_extract(school):
+    """读取深水区提取稿，返回 {rule_id: index_rule_dict}。
+
+    容错：
+    - 缺 yaml 块 → 跳过该文件（打印警告）
+    - YAML 解析失败 → 跳过该文件（打印警告）
+    - 单条缺 id → 跳过该条
+    - 缺 conclusion → 用 statement 兜底
+    - 缺 raw_anchor → 空串
+    """
+    try:
+        import yaml
+    except ImportError:
+        print("  [warn] 缺 PyYAML，跳过深水区提取", file=sys.stderr)
+        return {}
+
+    out = {}
+    for f in _deep_extract_files(school):
+        try:
+            text = f.read_text(encoding="utf-8-sig")
+        except OSError as exc:
+            print(f"  [warn] 读取失败 {f.name}: {exc}", file=sys.stderr)
+            continue
+        m = _YAML_BLOCK.search(text)
+        if not m:
+            print(f"  [warn] {f.name} 无 yaml 块，跳过", file=sys.stderr)
+            continue
+        try:
+            items = yaml.safe_load(m.group(1)) or []
+        except Exception as exc:
+            print(f"  [warn] {f.name} YAML 解析失败: {exc}", file=sys.stderr)
+            continue
+        if not isinstance(items, list):
+            continue
+
+        rel = str(f.relative_to(ROOT)).replace("\\", "/")
+        for it in items:
+            if not isinstance(it, dict):
+                continue
+            rid = str(it.get("id") or "").strip()
+            if not rid:
+                continue
+            title = str(it.get("title") or "").strip()
+            conclusion = str(it.get("conclusion") or it.get("statement") or "").strip()
+            if not title and not conclusion:
+                continue
+            out[rid] = {
+                "id": rid,
+                "school": school,
+                "topic": str(it.get("topic") or it.get("domain") or "unmapped").strip(),
+                "topic_label": "",
+                "domain": str(it.get("domain") or "").strip(),
+                "tags": list(it.get("tags") or []),
+                "title": title[:80],
+                "conclusion": conclusion[:300],
+                "status": "candidate",
+                "layer": "unmapped",
+                "raw_source": f"deep-extract {school}",
+                "raw_anchor": str(it.get("raw_anchor") or "").strip(),
+                "candidate_score": None,
+                # 指向提取稿本身，便于回读锚点；原始原稿路径在 source_ref 里
+                "raw_file": rel,
+            }
+    return out
+
+
+# ============================================================
 # YAML 写出
 # ============================================================
 def yaml_escape(s):
@@ -451,6 +549,14 @@ def write_yaml(rules, output_path):
             fp.write(f'    title: "{yaml_escape(r["title"])}"\n')
             if r.get("conclusion"):
                 fp.write(f'    conclusion: "{yaml_escape(r["conclusion"])}"\n')
+            # 深水区提取的 domain/tags 必须保留：query_theory._domains 优先取
+            # domain，_tags 优先取 tags。丢掉它们会让重建后的缓存字段退化。
+            if r.get("domain"):
+                fp.write(f'    domain: "{yaml_escape(r["domain"])}"\n')
+            if r.get("tags"):
+                tags = [str(t) for t in r["tags"] if str(t).strip()]
+                if tags:
+                    fp.write("    tags: [" + ", ".join(f'"{yaml_escape(t)}"' for t in tags) + "]\n")
             fp.write(f"    status: {r['status']}\n")
             fp.write(f"    layer: {r['layer']}\n")
             if r.get("raw_source"):
@@ -472,15 +578,41 @@ def main():
         ("ren", extract_ren),
     ]:
         rules = extractor()
+        base_count = len(rules)
+
+        # 合并深水区提取稿（deep-extract-*.md）。同名 id 以提取稿为准，
+        # 因为提取稿是人工按原文锚点精校过的，而 registry 表格可能只有标题。
+        deep = extract_deep_extract(school)
+        if deep:
+            by_id = {r["id"]: r for r in rules}
+            added = 0
+            updated = 0
+            for rid, rule in deep.items():
+                if rid in by_id:
+                    # 仅当原条目缺正文时用提取稿补全，避免覆盖 registry 已有结论
+                    if not by_id[rid].get("conclusion") or by_id[rid].get("status") == "pending_normalization":
+                        by_id[rid] = rule
+                        updated += 1
+                else:
+                    by_id[rid] = rule
+                    added += 1
+            rules = sorted(
+                by_id.values(),
+                key=lambda x: (x["id"].rsplit("-", 1)[0], int(re.search(r"\d+$", x["id"]).group())),
+            )
+            print(f"  深水区提取：新增 {added} 条，补全 {updated} 条")
+
         write_yaml(rules, ROOT / "theory" / school / "index.yaml")
         topic_counts = Counter(r["topic"] for r in rules)
         status_counts = Counter(r["status"] for r in rules)
         summary[school] = {
             "total": len(rules),
+            "base": base_count,
+            "deep": len(rules) - base_count,
             "topics": dict(topic_counts),
             "status": dict(status_counts),
         }
-        print(f"{school}: {len(rules)} 条")
+        print(f"{school}: {len(rules)} 条（基础 {base_count} + 深水区 {len(rules) - base_count}）")
         print(f"  topics: {dict(topic_counts)}")
         print(f"  status: {dict(status_counts)}")
     

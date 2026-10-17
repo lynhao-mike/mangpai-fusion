@@ -1,0 +1,1521 @@
+{
+  "chart": {
+    "chart_id": "cf-c026c02040137e6aafa5",
+    "input": {
+      "mode": "solar",
+      "solar_datetime": "2006-04-01 11:30:00"
+    },
+    "profile": {
+      "zi_shi": "late_zi_split",
+      "yin_changsheng": "yin_reverse",
+      "tu_jigong": "duan_split_earth"
+    },
+    "gender": "乾",
+    "day_master": "庚",
+    "pillars": [
+      {
+        "index": 0,
+        "palace": "year",
+        "ganzhi": "丙戌",
+        "stem": {
+          "addr": "Y.s",
+          "char": "丙",
+          "wuxing": "火",
+          "yinyang": "阳",
+          "ten_god": "七杀"
+        },
+        "branch": {
+          "addr": "Y.b",
+          "char": "戌",
+          "wuxing": "土",
+          "yinyang": "阳",
+          "hidden": [
+            {
+              "c": "戊",
+              "q": "本气",
+              "g": "偏印"
+            },
+            {
+              "c": "辛",
+              "q": "中气",
+              "g": "劫财"
+            },
+            {
+              "c": "丁",
+              "q": "余气",
+              "g": "正官"
+            }
+          ],
+          "main_ten_god": "偏印"
+        },
+        "nayin": "屋上土",
+        "xun": "甲申旬",
+        "self_sit": {
+          "stem_changsheng": "墓",
+          "marks": [
+            "坐墓"
+          ],
+          "stem_branch_relation": "干生支",
+          "rooted_in_own_branch": [
+            "余气"
+          ]
+        },
+        "source_tags": [
+          "干支自合·需戌逢未刑",
+          "连体字(D-01列举)",
+          "带象(干生支)"
+        ]
+      },
+      {
+        "index": 1,
+        "palace": "month",
+        "ganzhi": "辛卯",
+        "stem": {
+          "addr": "M.s",
+          "char": "辛",
+          "wuxing": "金",
+          "yinyang": "阴",
+          "ten_god": "劫财"
+        },
+        "branch": {
+          "addr": "M.b",
+          "char": "卯",
+          "wuxing": "木",
+          "yinyang": "阴",
+          "hidden": [
+            {
+              "c": "乙",
+              "q": "本气",
+              "g": "正财"
+            }
+          ],
+          "main_ten_god": "正财"
+        },
+        "nayin": "松柏木",
+        "xun": "甲申旬",
+        "self_sit": {
+          "stem_changsheng": "绝",
+          "stem_branch_relation": "干克支"
+        }
+      },
+      {
+        "index": 2,
+        "palace": "day",
+        "ganzhi": "庚申",
+        "stem": {
+          "addr": "D.s",
+          "char": "庚",
+          "wuxing": "金",
+          "yinyang": "阳",
+          "ten_god": "日主"
+        },
+        "branch": {
+          "addr": "D.b",
+          "char": "申",
+          "wuxing": "金",
+          "yinyang": "阳",
+          "hidden": [
+            {
+              "c": "庚",
+              "q": "本气",
+              "g": "比肩"
+            },
+            {
+              "c": "壬",
+              "q": "中气",
+              "g": "食神"
+            },
+            {
+              "c": "戊",
+              "q": "余气",
+              "g": "偏印"
+            }
+          ],
+          "main_ten_god": "比肩"
+        },
+        "nayin": "石榴木",
+        "xun": "甲寅旬",
+        "self_sit": {
+          "stem_changsheng": "临官",
+          "marks": [
+            "坐禄"
+          ],
+          "stem_branch_relation": "同气",
+          "rooted_in_own_branch": [
+            "本气"
+          ]
+        },
+        "source_tags": [
+          "连体字(D-01列举)"
+        ]
+      },
+      {
+        "index": 3,
+        "palace": "hour",
+        "ganzhi": "壬午",
+        "stem": {
+          "addr": "H.s",
+          "char": "壬",
+          "wuxing": "水",
+          "yinyang": "阳",
+          "ten_god": "食神"
+        },
+        "branch": {
+          "addr": "H.b",
+          "char": "午",
+          "wuxing": "火",
+          "yinyang": "阳",
+          "hidden": [
+            {
+              "c": "丁",
+              "q": "本气",
+              "g": "正官"
+            },
+            {
+              "c": "己",
+              "q": "中气",
+              "g": "正印"
+            }
+          ],
+          "main_ten_god": "正官"
+        },
+        "nayin": "杨柳木",
+        "xun": "甲戌旬",
+        "self_sit": {
+          "stem_changsheng": "胎",
+          "stem_branch_relation": "干克支"
+        },
+        "source_tags": [
+          "干支自合·干合支"
+        ]
+      }
+    ],
+    "kongwang": {
+      "by_day_xun": [
+        "子",
+        "丑"
+      ],
+      "by_year_xun": [
+        "午",
+        "未"
+      ],
+      "hits": [
+        [
+          "H.b",
+          "year"
+        ]
+      ]
+    },
+    "cycles": {
+      "direction": "顺",
+      "qiyun": [
+        {
+          "method": "mangpai_rough",
+          "start_age": 1.0,
+          "source_ref": ""
+        },
+        {
+          "method": "precise",
+          "start_age": 1.260536265,
+          "start_datetime": "2007-06-29 06:32:00",
+          "source_ref": ""
+        }
+      ],
+      "dayun": [
+        {
+          "index": 1,
+          "ganzhi": "壬辰",
+          "start_year": 2007,
+          "end_year": 2016
+        },
+        {
+          "index": 2,
+          "ganzhi": "癸巳",
+          "start_year": 2017,
+          "end_year": 2026
+        },
+        {
+          "index": 3,
+          "ganzhi": "甲午",
+          "start_year": 2027,
+          "end_year": 2036
+        },
+        {
+          "index": 4,
+          "ganzhi": "乙未",
+          "start_year": 2037,
+          "end_year": 2046
+        },
+        {
+          "index": 5,
+          "ganzhi": "丙申",
+          "start_year": 2047,
+          "end_year": 2056
+        },
+        {
+          "index": 6,
+          "ganzhi": "丁酉",
+          "start_year": 2057,
+          "end_year": 2066
+        },
+        {
+          "index": 7,
+          "ganzhi": "戊戌",
+          "start_year": 2067,
+          "end_year": 2076
+        },
+        {
+          "index": 8,
+          "ganzhi": "己亥",
+          "start_year": 2077,
+          "end_year": 2086
+        },
+        {
+          "index": 9,
+          "ganzhi": "庚子",
+          "start_year": 2087,
+          "end_year": 2096
+        },
+        {
+          "index": 10,
+          "ganzhi": "辛丑",
+          "start_year": 2097,
+          "end_year": 2106
+        }
+      ]
+    },
+    "variants": [
+      {
+        "axis": "yin_changsheng",
+        "alt_value": "yin_same_as_yang",
+        "diffs": [
+          [
+            "/pillars/1/self_sit/stem_changsheng",
+            "胎"
+          ]
+        ]
+      }
+    ]
+  },
+  "relations": {
+    "nodes": [
+      [
+        "Y.s",
+        "丙"
+      ],
+      [
+        "Y.b",
+        "戌"
+      ],
+      [
+        "M.s",
+        "辛"
+      ],
+      [
+        "M.b",
+        "卯"
+      ],
+      [
+        "D.s",
+        "庚"
+      ],
+      [
+        "D.b",
+        "申"
+      ],
+      [
+        "H.s",
+        "壬"
+      ],
+      [
+        "H.b",
+        "午"
+      ]
+    ],
+    "edges": [
+      {
+        "id": "e001",
+        "layer": "stem",
+        "kind": "wuhe",
+        "members": [
+          "Y.s",
+          "M.s"
+        ],
+        "chars": [
+          "丙",
+          "辛"
+        ],
+        "scope": "natal",
+        "distance": 1,
+        "attrs": {
+          "huashen": "水",
+          "month_branch_wuxing_is_huashen": false,
+          "month_hidden_has_huashen": false,
+          "huashen_stem_tou": [
+            "H.s"
+          ]
+        }
+      },
+      {
+        "id": "e002",
+        "layer": "stem",
+        "kind": "ke",
+        "members": [
+          "Y.s",
+          "M.s"
+        ],
+        "chars": [
+          "丙",
+          "辛"
+        ],
+        "scope": "natal",
+        "distance": 1
+      },
+      {
+        "id": "e003",
+        "layer": "stem",
+        "kind": "ke",
+        "members": [
+          "Y.s",
+          "D.s"
+        ],
+        "chars": [
+          "丙",
+          "庚"
+        ],
+        "scope": "natal",
+        "distance": 2,
+        "between": [
+          "M.s"
+        ]
+      },
+      {
+        "id": "e004",
+        "layer": "stem",
+        "kind": "stem_chong",
+        "members": [
+          "Y.s",
+          "H.s"
+        ],
+        "chars": [
+          "丙",
+          "壬"
+        ],
+        "scope": "natal",
+        "distance": 3,
+        "between": [
+          "M.s",
+          "D.s"
+        ],
+        "source_refs": [
+          "MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:618",
+          "MinerU_markdown_03清娟盲派八字命理讲座（基础篇）_2056033625439920128.md:198"
+        ]
+      },
+      {
+        "id": "e005",
+        "layer": "stem",
+        "kind": "ke",
+        "members": [
+          "H.s",
+          "Y.s"
+        ],
+        "chars": [
+          "壬",
+          "丙"
+        ],
+        "scope": "natal",
+        "distance": 3,
+        "between": [
+          "M.s",
+          "D.s"
+        ]
+      },
+      {
+        "id": "e006",
+        "layer": "stem",
+        "kind": "same_qi",
+        "members": [
+          "M.s",
+          "D.s"
+        ],
+        "chars": [
+          "辛",
+          "庚"
+        ],
+        "scope": "natal",
+        "distance": 1
+      },
+      {
+        "id": "e007",
+        "layer": "stem",
+        "kind": "sheng",
+        "members": [
+          "M.s",
+          "H.s"
+        ],
+        "chars": [
+          "辛",
+          "壬"
+        ],
+        "scope": "natal",
+        "distance": 2,
+        "between": [
+          "D.s"
+        ]
+      },
+      {
+        "id": "e008",
+        "layer": "stem",
+        "kind": "sheng",
+        "members": [
+          "D.s",
+          "H.s"
+        ],
+        "chars": [
+          "庚",
+          "壬"
+        ],
+        "scope": "natal",
+        "distance": 1
+      },
+      {
+        "id": "e009",
+        "layer": "branch",
+        "kind": "liuhe",
+        "members": [
+          "Y.b",
+          "M.b"
+        ],
+        "chars": [
+          "戌",
+          "卯"
+        ],
+        "scope": "natal",
+        "distance": 1,
+        "attrs": {
+          "huashen": "火"
+        }
+      },
+      {
+        "id": "e010",
+        "layer": "branch",
+        "kind": "sanhui",
+        "members": [
+          "Y.b",
+          "D.b"
+        ],
+        "chars": [
+          "戌",
+          "申"
+        ],
+        "scope": "natal",
+        "distance": 2,
+        "between": [
+          "M.b"
+        ],
+        "group": "申酉戌",
+        "completeness": "partial",
+        "attrs": {
+          "wuxing": "金",
+          "group_full": false
+        }
+      },
+      {
+        "id": "e011",
+        "layer": "branch",
+        "kind": "sanhe",
+        "members": [
+          "Y.b",
+          "H.b"
+        ],
+        "chars": [
+          "戌",
+          "午"
+        ],
+        "scope": "natal",
+        "distance": 3,
+        "between": [
+          "M.b",
+          "D.b"
+        ],
+        "group": "寅午戌",
+        "completeness": "half_mu",
+        "attrs": {
+          "huashen": "火",
+          "center": "午",
+          "center_present": true
+        }
+      },
+      {
+        "id": "e012",
+        "layer": "branch",
+        "kind": "zhi_anhe",
+        "members": [
+          "M.b",
+          "D.b"
+        ],
+        "chars": [
+          "卯",
+          "申"
+        ],
+        "scope": "natal",
+        "distance": 1,
+        "attrs": {
+          "hidden_he": [
+            [
+              "乙",
+              "庚"
+            ]
+          ]
+        },
+        "source_refs": [
+          "MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:814"
+        ]
+      },
+      {
+        "id": "e013",
+        "layer": "branch",
+        "kind": "po",
+        "members": [
+          "M.b",
+          "H.b"
+        ],
+        "chars": [
+          "卯",
+          "午"
+        ],
+        "scope": "natal",
+        "distance": 2,
+        "between": [
+          "D.b"
+        ],
+        "attrs": {
+          "systems": [
+            "classic",
+            "duan"
+          ]
+        },
+        "source_refs": [
+          "2018弟子班_象法篇_83页.md:425",
+          "MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:860"
+        ]
+      },
+      {
+        "id": "e014",
+        "layer": "stem_branch",
+        "kind": "ganzhi_zihe",
+        "members": [
+          "Y.s",
+          "Y.b"
+        ],
+        "chars": [
+          "丙",
+          "戌"
+        ],
+        "scope": "natal",
+        "distance": 0,
+        "attrs": {
+          "hidden_partner": [
+            "辛"
+          ],
+          "branch_controls_stem": false,
+          "requires_xing": "戌未刑"
+        },
+        "source_refs": [
+          "MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1338",
+          "d01-deep-read.md:373"
+        ]
+      },
+      {
+        "id": "e015",
+        "layer": "stem_branch",
+        "kind": "ganzhi_zihe",
+        "members": [
+          "H.s",
+          "H.b"
+        ],
+        "chars": [
+          "壬",
+          "午"
+        ],
+        "scope": "natal",
+        "distance": 0,
+        "attrs": {
+          "hidden_partner": [
+            "丁"
+          ],
+          "branch_controls_stem": false
+        },
+        "source_refs": [
+          "MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1338"
+        ]
+      }
+    ],
+    "muku": [
+      {
+        "addr": "Y.b",
+        "branch": "戌",
+        "ku_of": [
+          "火",
+          "土"
+        ],
+        "hidden": [
+          {
+            "c": "戊",
+            "q": "本气",
+            "g": "偏印"
+          },
+          {
+            "c": "辛",
+            "q": "中气",
+            "g": "劫财"
+          },
+          {
+            "c": "丁",
+            "q": "余气",
+            "g": "正官"
+          }
+        ],
+        "candidates": [
+          {
+            "addr": "Y.s",
+            "char": "丙",
+            "wuxing": "火",
+            "char_class": "天干",
+            "same_wuxing_count": 2,
+            "rule_hits": [
+              {
+                "e": "不论入墓",
+                "r": "MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:107"
+              }
+            ],
+            "excluded": true,
+            "damaged_by_edges": [
+              "e004",
+              "e005"
+            ]
+          },
+          {
+            "addr": "H.b",
+            "char": "午",
+            "wuxing": "火",
+            "char_class": "四正支",
+            "same_wuxing_count": 2,
+            "rule_hits": [
+              {
+                "e": "一般作拱局",
+                "r": "MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:61"
+              },
+              {
+                "e": "入墓",
+                "r": "MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:73"
+              }
+            ],
+            "excluded": false,
+            "requires_judgment": [
+              "四正支见墓一般作拱局，极弱（被制受伤）才入墓，需判断（:63、:71）"
+            ],
+            "damaged_by_edges": [
+              "e013"
+            ],
+            "ku_link_edges": [
+              "e011"
+            ]
+          }
+        ],
+        "binders": [
+          "e009"
+        ],
+        "stem_he_on_pillar": [
+          "e001"
+        ],
+        "self_sit_excluded": [
+          "Y.s"
+        ]
+      }
+    ]
+  },
+  "strength": {
+    "day_master": {
+      "addr": "D.s",
+      "char": "庚",
+      "wuxing": "金",
+      "month_changsheng": "胎",
+      "month_main_qi_relation": "我克",
+      "siling": {
+        "month_branch": "卯",
+        "days_since_jie": 26.41759259259259,
+        "commanding_stem": "乙",
+        "normalized_hidden_stem": "乙",
+        "segment_days": 23,
+        "source_ref": "《三命通会》.md:14",
+        "source_term": "乙木"
+      },
+      "roots": [
+        {
+          "addr": "Y.b",
+          "hidden_char": "辛",
+          "qi": "中气",
+          "changsheng": "衰",
+          "distance": 2
+        },
+        {
+          "addr": "D.b",
+          "hidden_char": "庚",
+          "qi": "本气",
+          "changsheng": "临官",
+          "distance": 0
+        }
+      ],
+      "resource_in_branches": [
+        {
+          "addr": "Y.b",
+          "hidden_char": "戊",
+          "qi": "本气",
+          "changsheng": "衰",
+          "distance": 2
+        },
+        {
+          "addr": "D.b",
+          "hidden_char": "戊",
+          "qi": "余气",
+          "changsheng": "临官",
+          "distance": 0
+        },
+        {
+          "addr": "H.b",
+          "hidden_char": "己",
+          "qi": "中气",
+          "changsheng": "沐浴",
+          "distance": 1
+        }
+      ],
+      "tou_same_wuxing": [
+        "M.s"
+      ]
+    },
+    "stems": {
+      "Y.s": {
+        "addr": "Y.s",
+        "char": "丙",
+        "wuxing": "火",
+        "month_changsheng": "沐浴",
+        "month_main_qi_relation": "生我",
+        "siling": {
+          "month_branch": "卯",
+          "days_since_jie": 26.41759259259259,
+          "commanding_stem": "乙",
+          "normalized_hidden_stem": "乙",
+          "segment_days": 23,
+          "source_ref": "《三命通会》.md:14",
+          "source_term": "乙木"
+        },
+        "roots": [
+          {
+            "addr": "Y.b",
+            "hidden_char": "丁",
+            "qi": "余气",
+            "changsheng": "墓",
+            "distance": 0
+          },
+          {
+            "addr": "H.b",
+            "hidden_char": "丁",
+            "qi": "本气",
+            "changsheng": "帝旺",
+            "distance": 3
+          }
+        ],
+        "resource_in_branches": [
+          {
+            "addr": "M.b",
+            "hidden_char": "乙",
+            "qi": "本气",
+            "changsheng": "沐浴",
+            "distance": 1
+          }
+        ]
+      },
+      "M.s": {
+        "addr": "M.s",
+        "char": "辛",
+        "wuxing": "金",
+        "month_changsheng": "绝",
+        "month_main_qi_relation": "我克",
+        "siling": {
+          "month_branch": "卯",
+          "days_since_jie": 26.41759259259259,
+          "commanding_stem": "乙",
+          "normalized_hidden_stem": "乙",
+          "segment_days": 23,
+          "source_ref": "《三命通会》.md:14",
+          "source_term": "乙木"
+        },
+        "roots": [
+          {
+            "addr": "Y.b",
+            "hidden_char": "辛",
+            "qi": "中气",
+            "changsheng": "冠带",
+            "distance": 1
+          },
+          {
+            "addr": "D.b",
+            "hidden_char": "庚",
+            "qi": "本气",
+            "changsheng": "帝旺",
+            "distance": 1
+          }
+        ],
+        "resource_in_branches": [
+          {
+            "addr": "Y.b",
+            "hidden_char": "戊",
+            "qi": "本气",
+            "changsheng": "冠带",
+            "distance": 1
+          },
+          {
+            "addr": "D.b",
+            "hidden_char": "戊",
+            "qi": "余气",
+            "changsheng": "帝旺",
+            "distance": 1
+          },
+          {
+            "addr": "H.b",
+            "hidden_char": "己",
+            "qi": "中气",
+            "changsheng": "病",
+            "distance": 2
+          }
+        ],
+        "tou_same_wuxing": [
+          "D.s"
+        ]
+      },
+      "H.s": {
+        "addr": "H.s",
+        "char": "壬",
+        "wuxing": "水",
+        "month_changsheng": "死",
+        "month_main_qi_relation": "我生",
+        "siling": {
+          "month_branch": "卯",
+          "days_since_jie": 26.41759259259259,
+          "commanding_stem": "乙",
+          "normalized_hidden_stem": "乙",
+          "segment_days": 23,
+          "source_ref": "《三命通会》.md:14",
+          "source_term": "乙木"
+        },
+        "roots": [
+          {
+            "addr": "D.b",
+            "hidden_char": "壬",
+            "qi": "中气",
+            "changsheng": "长生",
+            "distance": 1
+          }
+        ],
+        "resource_in_branches": [
+          {
+            "addr": "Y.b",
+            "hidden_char": "辛",
+            "qi": "中气",
+            "changsheng": "冠带",
+            "distance": 3
+          },
+          {
+            "addr": "D.b",
+            "hidden_char": "庚",
+            "qi": "本气",
+            "changsheng": "长生",
+            "distance": 1
+          }
+        ],
+        "tou_resource": [
+          "M.s",
+          "D.s"
+        ]
+      }
+    },
+    "camp_counts": {
+      "印比": {
+        "stems": 1,
+        "main_qi": 2,
+        "mid_qi": 2,
+        "residual_qi": 1,
+        "month_main_qi": false
+      },
+      "食伤": {
+        "stems": 1,
+        "main_qi": 0,
+        "mid_qi": 1,
+        "residual_qi": 0,
+        "month_main_qi": false
+      },
+      "财": {
+        "stems": 0,
+        "main_qi": 1,
+        "mid_qi": 0,
+        "residual_qi": 0,
+        "month_main_qi": true
+      },
+      "官杀": {
+        "stems": 1,
+        "main_qi": 1,
+        "mid_qi": 0,
+        "residual_qi": 1,
+        "month_main_qi": false
+      },
+      "比劫": {
+        "stems": 1,
+        "main_qi": 1,
+        "mid_qi": 1,
+        "residual_qi": 0,
+        "month_main_qi": false
+      },
+      "印": {
+        "stems": 0,
+        "main_qi": 1,
+        "mid_qi": 1,
+        "residual_qi": 1,
+        "month_main_qi": false
+      }
+    },
+    "climate": {
+      "month_branch": "卯",
+      "season": "春",
+      "wuxing_layered": {
+        "木": {
+          "stems": 0,
+          "main_qi": 1,
+          "mid_qi": 0,
+          "residual_qi": 0,
+          "month_main_qi": true
+        },
+        "火": {
+          "stems": 1,
+          "main_qi": 1,
+          "mid_qi": 0,
+          "residual_qi": 1,
+          "month_main_qi": false
+        },
+        "土": {
+          "stems": 0,
+          "main_qi": 1,
+          "mid_qi": 1,
+          "residual_qi": 1,
+          "month_main_qi": false
+        },
+        "金": {
+          "stems": 2,
+          "main_qi": 1,
+          "mid_qi": 1,
+          "residual_qi": 0,
+          "month_main_qi": false
+        },
+        "水": {
+          "stems": 1,
+          "main_qi": 0,
+          "mid_qi": 1,
+          "residual_qi": 0,
+          "month_main_qi": false
+        }
+      },
+      "dry_earth": [
+        "Y.b"
+      ],
+      "tiaohou_lookup": {
+        "day_stem": "庚",
+        "month_branch": "卯",
+        "listed_stems": [
+          "丁",
+          "甲",
+          "丙"
+        ],
+        "present": {
+          "丁": [
+            "Y.b",
+            "H.b"
+          ],
+          "丙": [
+            "Y.s"
+          ]
+        },
+        "source_ref": "穷通宝鉴-明-余春台_part2.md:91"
+      }
+    },
+    "variants": [
+      {
+        "axis": "yin_changsheng",
+        "alt_value": "yin_same_as_yang",
+        "diffs": [
+          [
+            "/stems/M.s/month_changsheng",
+            "胎"
+          ],
+          [
+            "/stems/M.s/resource_in_branches/0/changsheng",
+            "衰"
+          ],
+          [
+            "/stems/M.s/resource_in_branches/1/changsheng",
+            "临官"
+          ],
+          [
+            "/stems/M.s/resource_in_branches/2/changsheng",
+            "沐浴"
+          ],
+          [
+            "/stems/M.s/roots/0/changsheng",
+            "衰"
+          ],
+          [
+            "/stems/M.s/roots/1/changsheng",
+            "临官"
+          ]
+        ]
+      }
+    ]
+  },
+  "shensha": {
+    "hits": [
+      {
+        "name": "驿马",
+        "anchor_addr": "Y.b",
+        "target_addr": "D.b",
+        "source_ref": "盲派神煞应用宝典.md:584"
+      },
+      {
+        "name": "桃花",
+        "anchor_addr": "Y.b",
+        "target_addr": "M.b",
+        "source_ref": "盲派神煞应用宝典.md:708"
+      },
+      {
+        "name": "将星",
+        "anchor_addr": "Y.b",
+        "target_addr": "H.b",
+        "source_ref": "盲派神煞应用宝典.md:322-324"
+      },
+      {
+        "name": "灾煞",
+        "anchor_addr": "D.b",
+        "target_addr": "H.b",
+        "source_ref": "盲派神煞应用宝典.md:1036"
+      },
+      {
+        "name": "太极贵人",
+        "anchor_addr": "Y.s",
+        "target_addr": "M.b",
+        "source_ref": "盲派神煞应用宝典.md:314-316"
+      },
+      {
+        "name": "文昌",
+        "anchor_addr": "Y.s",
+        "target_addr": "D.b",
+        "source_ref": "盲派神煞应用宝典.md:457"
+      },
+      {
+        "name": "金舆",
+        "anchor_addr": "D.s",
+        "target_addr": "Y.b",
+        "source_ref": "盲派神煞应用宝典.md:491"
+      },
+      {
+        "name": "禄神",
+        "anchor_addr": "D.s",
+        "target_addr": "D.b",
+        "source_ref": "盲派神煞应用宝典.md:553"
+      },
+      {
+        "name": "飞刃(阳)",
+        "anchor_addr": "D.s",
+        "target_addr": "M.b",
+        "source_ref": "盲派神煞应用宝典.md:1095-1098"
+      }
+    ]
+  },
+  "structures": [
+    {
+      "structure_id": "ziping_zhengguan",
+      "items": [
+        {
+          "id": "brk_sha_hun_guan",
+          "kind": "breaker",
+          "status": "met",
+          "evidence": [
+            "Y.s"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_cai",
+      "items": [
+        {
+          "id": "req_month_cai",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "M.b"
+          ]
+        },
+        {
+          "id": "aux_shishang_sheng_cai",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "H.s",
+            "M.b"
+          ]
+        },
+        {
+          "id": "rsc_shishang_tongguan",
+          "kind": "rescuer",
+          "status": "met",
+          "evidence": [
+            "H.s",
+            "M.s"
+          ]
+        },
+        {
+          "id": "rsc_guan_zhi_jie",
+          "kind": "rescuer",
+          "status": "met",
+          "evidence": [
+            "e002"
+          ]
+        },
+        {
+          "id": "str_cai_vs_shen",
+          "kind": "requirement",
+          "status": "needs_judgment",
+          "evidence": [
+            "D.s",
+            "M.b",
+            "M.s",
+            "Y.b",
+            "D.b",
+            "H.b"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_yin",
+      "items": [
+        {
+          "id": "aux_guansha_sheng_yin",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "Y.s",
+            "Y.b",
+            "D.b",
+            "H.b",
+            "e014"
+          ]
+        },
+        {
+          "id": "aux_shishang_tuxiu",
+          "kind": "requirement",
+          "status": "needs_judgment",
+          "evidence": [
+            "H.s"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_shishen",
+      "items": [
+        {
+          "id": "aux_shishen_zhi_sha",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "e005"
+          ]
+        },
+        {
+          "id": "str_shen_wang_you_gen",
+          "kind": "requirement",
+          "status": "needs_judgment",
+          "evidence": [
+            "D.s",
+            "H.s",
+            "D.b",
+            "M.s",
+            "Y.b",
+            "H.b"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_qisha",
+      "items": [
+        {
+          "id": "req_month_sha",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "Y.s",
+            "Y.b",
+            "H.b"
+          ]
+        },
+        {
+          "id": "xs_shishen_zhi_sha",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "e005"
+          ]
+        },
+        {
+          "id": "xs_ren_he_sha",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "e001"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_yangren",
+      "items": [
+        {
+          "id": "xs_guansha_zhi_ren",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "Y.s",
+            "Y.b",
+            "H.b"
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "ziping_jianlu",
+      "items": [
+        {
+          "id": "xs_caiguan_tou",
+          "kind": "requirement",
+          "status": "met",
+          "evidence": [
+            "Y.s",
+            "H.s"
+          ]
+        }
+      ]
+    }
+  ],
+  "duan_zuogong": {
+    "tiyong": {
+      "Y.s": "用",
+      "Y.b": "体",
+      "M.s": "体",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "双属",
+      "H.b": "用"
+    },
+    "candidates": [
+      {
+        "mode": "合用",
+        "relation_kind": "wuhe",
+        "edge_id": "e001",
+        "members": [
+          "Y.s",
+          "M.s"
+        ],
+        "ten_gods": [
+          "七杀",
+          "劫财"
+        ]
+      },
+      {
+        "mode": "制用",
+        "relation_kind": "ke",
+        "edge_id": "e002",
+        "members": [
+          "Y.s",
+          "M.s"
+        ],
+        "ten_gods": [
+          "七杀",
+          "劫财"
+        ],
+        "actor": "Y.s"
+      },
+      {
+        "mode": "制用",
+        "relation_kind": "ke",
+        "edge_id": "e003",
+        "members": [
+          "Y.s",
+          "D.s"
+        ],
+        "ten_gods": [
+          "七杀",
+          "日主"
+        ],
+        "actor": "Y.s"
+      },
+      {
+        "mode": "制用",
+        "relation_kind": "stem_chong",
+        "edge_id": "e004",
+        "members": [
+          "Y.s",
+          "H.s"
+        ],
+        "ten_gods": [
+          "七杀",
+          "食神"
+        ]
+      },
+      {
+        "mode": "制用",
+        "relation_kind": "ke",
+        "edge_id": "e005",
+        "members": [
+          "H.s",
+          "Y.s"
+        ],
+        "ten_gods": [
+          "食神",
+          "七杀"
+        ],
+        "actor": "H.s"
+      },
+      {
+        "mode": "生泄用",
+        "relation_kind": "sheng",
+        "edge_id": "e007",
+        "members": [
+          "M.s",
+          "H.s"
+        ],
+        "ten_gods": [
+          "劫财",
+          "食神"
+        ],
+        "actor": "M.s"
+      },
+      {
+        "mode": "生泄用",
+        "relation_kind": "sheng",
+        "edge_id": "e008",
+        "members": [
+          "D.s",
+          "H.s"
+        ],
+        "ten_gods": [
+          "日主",
+          "食神"
+        ],
+        "actor": "D.s"
+      },
+      {
+        "mode": "合用",
+        "relation_kind": "liuhe",
+        "edge_id": "e009",
+        "members": [
+          "Y.b",
+          "M.b"
+        ],
+        "ten_gods": [
+          "偏印",
+          "正财"
+        ]
+      },
+      {
+        "mode": "合用",
+        "relation_kind": "zhi_anhe",
+        "edge_id": "e012",
+        "members": [
+          "M.b",
+          "D.b"
+        ],
+        "ten_gods": [
+          "正财",
+          "比肩"
+        ]
+      },
+      {
+        "mode": "合用",
+        "relation_kind": "ganzhi_zihe",
+        "edge_id": "e014",
+        "members": [
+          "Y.s",
+          "Y.b"
+        ],
+        "ten_gods": [
+          "七杀",
+          "偏印"
+        ]
+      },
+      {
+        "mode": "合用",
+        "relation_kind": "ganzhi_zihe",
+        "edge_id": "e015",
+        "members": [
+          "H.s",
+          "H.b"
+        ],
+        "ten_gods": [
+          "食神",
+          "正官"
+        ]
+      },
+      {
+        "mode": "化用",
+        "relation_kind": "sheng(main_qi)",
+        "members": [
+          "H.b",
+          "Y.b"
+        ],
+        "ten_gods": [
+          "正官",
+          "偏印"
+        ],
+        "actor": "H.b"
+      },
+      {
+        "mode": "化用",
+        "relation_kind": "sheng(main_qi)",
+        "members": [
+          "Y.s",
+          "Y.b"
+        ],
+        "ten_gods": [
+          "七杀",
+          "偏印"
+        ],
+        "actor": "Y.s"
+      },
+      {
+        "mode": "墓用",
+        "relation_kind": "muku",
+        "members": [
+          "H.b",
+          "Y.b"
+        ],
+        "ten_gods": [
+          "正官",
+          "偏印"
+        ],
+        "actor": "H.b"
+      }
+    ]
+  }
+}
