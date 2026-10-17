@@ -92,7 +92,7 @@ schema: full
   raw_file: "sources/duan/MinerU_markdown_体用_2056043694349017088.md"
   raw_anchor: "line:12"
   source_ref: {path: "sources/duan/MinerU_markdown_体用_2056043694349017088.md", anchor: "line:12"}
-  verify_fragment: "如果“体” 受损,那应该会小产"
+  verify_fragment: "就会出身后子逢凶"
 
 - id: M1-D-336
   school: duan
@@ -299,9 +299,9 @@ schema: full
   statement: "官财之库，不刑、不冲是没有用的（库中物要流动才可用）"
   conclusion: "官财之库，不刑、不冲是没有用的（库中物要流动才可用）"
   content_status: full
-  raw_file: "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md"
+  raw_file: "sources/duan/MinerU_markdown_体用_2056043694349017088.md"
   raw_anchor: "line:217"
-  source_ref: {path: "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md", anchor: "line:217"}
+  source_ref: {path: "sources/duan/MinerU_markdown_体用_2056043694349017088.md", anchor: "line:217"}
   verify_fragment: "官财之库,不刑,不冲是没有用的"
 
 - id: M1-D-350
@@ -614,10 +614,10 @@ schema: full
   statement: "用禄最怕禄神伏吟也有例外：此禄为功神且局中是禄的气势，不怕出现；当禄神无功时、或禄出现遭局中回制穿害时、或禄神单薄无助时，出现就为凶"
   conclusion: "用禄最怕禄神伏吟也有例外：此禄为功神且局中是禄的气势，不怕出现；当禄神无功时、或禄出现遭局中回制穿害时、或禄神单薄无助时，出现就为凶"
   content_status: full
-  raw_file: "sources/duan/MinerU_markdown_体用_2056043694349017088.md"
-  raw_anchor: "line:147"
-  source_ref: {path: "sources/duan/MinerU_markdown_体用_2056043694349017088.md", anchor: "line:147"}
-  verify_fragment: "当禄神无功时,或禄出现遭局中回制穿害时,或禄神在八字中单薄无助时，出现就为凶"
+  raw_file: "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md"
+  raw_anchor: "line:148"
+  source_ref: {path: "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md", anchor: "line:148"}
+  verify_fragment: "此禄为功神,且局中是禄的气势，不怕出现"
 ```
 
 ## 本批提取发现
