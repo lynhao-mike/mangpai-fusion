@@ -1,0 +1,50 @@
+{
+  "schema_version": "year-probe-scoring/v1",
+  "scored_at": "2026-10-17T16:58:35+00:00",
+  "cases": [
+    {
+      "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
+      "status": "no_answer",
+      "probe_years": 10
+    },
+    {
+      "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
+      "status": "no_answer",
+      "probe_years": 11
+    },
+    {
+      "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+      "status": "no_answer",
+      "probe_years": 6
+    },
+    {
+      "case_id": "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳",
+      "status": "no_answer",
+      "probe_years": 6
+    },
+    {
+      "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
+      "status": "no_answer",
+      "probe_years": 11
+    },
+    {
+      "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+      "status": "no_answer",
+      "probe_years": 7
+    }
+  ],
+  "summary": {
+    "recorded_correct": 0,
+    "recorded_incorrect": 0,
+    "recorded_partial": 0,
+    "recorded_undetermined": 0,
+    "accuracy": null,
+    "control_years": 0,
+    "control_false_positive": 0,
+    "control_false_positive_rate": null
+  },
+  "notes": [
+    "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",
+    "对照年只统计误报倾向，用于测「逢冲必断灾」"
+  ]
+}
