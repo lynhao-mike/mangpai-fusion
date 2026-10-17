@@ -9,6 +9,7 @@ from typing import Any, Optional, Sequence
 from engine.api.facade import analyze_facts, build_chart, to_jsonable
 from engine.facts.chart_facts import ChartInputError
 from engine.facts.relation_graph import build_relation_graph
+from engine.facts.shensha import build_shensha_facts
 from engine.facts.strength_facts import build_strength_facts
 from engine.facts.structure_check import check_structures
 
@@ -48,6 +49,8 @@ def _run(command: str, args: argparse.Namespace) -> dict[str, Any]:
         ))
     if command == "strength":
         return to_jsonable(build_strength_facts(chart))
+    if command == "shensha":
+        return to_jsonable(build_shensha_facts(chart))
     graph = build_relation_graph(chart, dayun_index=args.dayun_index, liunian_year=args.liunian)
     return to_jsonable(check_structures(chart, graph, build_strength_facts(chart)))
 
@@ -66,6 +69,7 @@ def _parser() -> argparse.ArgumentParser:
         ("chart", "ChartFacts"),
         ("relations", "RelationGraph"),
         ("strength", "StrengthFacts"),
+        ("shensha", "神煞查表事实"),
         ("structures", "子平八格构成要件"),
         ("all", "完整 analyze_facts"),
     ):

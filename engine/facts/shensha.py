@@ -17,6 +17,13 @@ class ShenshaHit:
     source_ref: str
 
 
+@dataclass(frozen=True)
+class ShenshaFacts:
+    """原局神煞查表结果；只报告命中，不作吉凶判断。"""
+
+    hits: tuple[ShenshaHit, ...]
+
+
 _SOURCE = "sources/gao/盲派神煞应用宝典.md:"
 _BRANCH_ADDRS = ("Y.b", "M.b", "D.b", "H.b")
 _STEM_ADDRS = ("Y.s", "M.s", "D.s", "H.s")
@@ -63,6 +70,36 @@ _HEAVENLY_VIRTUE = {"寅": ("丁", "丁"), "卯": ("申", "申"), "辰": ("壬",
                     "午": ("亥", "亥"), "未": ("甲", "甲"), "申": ("癸", "癸"), "酉": ("寅", "寅"),
                     "戌": ("丙", "丙"), "亥": ("乙", "乙"), "子": ("巳", "巳"), "丑": ("庚", "庚")}
 _KUI_GANG = frozenset(("壬辰", "庚戌", "庚辰", "戊戌"))
+_YINCHA = frozenset((
+    "丙子", "丁丑", "戊寅", "辛卯", "壬辰", "癸巳",
+    "丙午", "丁未", "戊申", "辛酉", "壬戌", "癸亥",
+))
+_SHIE = frozenset((
+    "甲辰", "乙巳", "壬申", "丙申", "丁亥",
+    "庚辰", "戊戌", "癸亥", "辛巳", "己丑",
+))
+_TAIJI = {
+    "甲": ("子", "午"), "乙": ("子", "午"),
+    "丙": ("酉", "卯"), "丁": ("酉", "卯"),
+    "戊": ("辰", "戌", "丑", "未"), "己": ("辰", "戌", "丑", "未"),
+    "庚": ("寅", "亥"), "辛": ("寅", "亥"),
+    "壬": ("巳", "申"), "癸": ("巳", "申"),
+}
+_WENCHANG = {
+    "甲": "巳", "乙": "午", "丙": "申", "戊": "申",
+    "丁": "酉", "己": "酉", "庚": "亥", "辛": "子",
+    "壬": "寅", "癸": "卯",
+}
+_JINYU = {
+    "甲": "辰", "乙": "巳", "丙": "未", "戊": "未",
+    "丁": "申", "己": "申", "庚": "戌", "辛": "亥",
+    "壬": "丑", "癸": "寅",
+}
+_LU = {
+    "甲": "寅", "乙": "卯", "丙": "巳", "丁": "午",
+    "戊": "巳", "己": "午", "庚": "申", "辛": "酉",
+    "壬": "亥", "癸": "子",
+}
 
 # 高派阴阳刃、飞刃(阴阳)取法：羊刃/阴刃起于日干，飞刃为相冲之支。
 _YANG_BLADE = {"甲": "卯", "丙": "午", "戊": "午", "庚": "酉", "壬": "子"}
@@ -117,6 +154,27 @@ def _stem_rule_hits(
         ShenshaHit(name, "D.s", _BRANCH_ADDRS[i], method, _SOURCE + source_line)
         for i, branch in enumerate(branches) if branch in targets
     ]
+
+
+def _year_or_day_stem_hits(
+    chart: ChartFacts,
+    table: dict[str, str | tuple[str, ...]],
+    name: str,
+    source_line: str,
+    method: str,
+) -> list[ShenshaHit]:
+    stems = _stems(chart)
+    branches = _branches(chart)
+    hits: list[ShenshaHit] = []
+    for anchor_index, addr in ((0, "Y.s"), (2, "D.s")):
+        targets = table.get(stems[anchor_index], ())
+        if isinstance(targets, str):
+            targets = (targets,)
+        hits.extend(
+            ShenshaHit(name, addr, _BRANCH_ADDRS[i], method, _SOURCE + source_line)
+            for i, branch in enumerate(branches) if branch in targets
+        )
+    return hits
 
 
 def find_shensha(chart: ChartFacts) -> tuple[ShenshaHit, ...]:
@@ -184,6 +242,22 @@ def find_shensha(chart: ChartFacts) -> tuple[ShenshaHit, ...]:
                 "月德贵人", "M.b", _STEM_ADDRS[i], "按月令三合组对应月德干，四柱天干见者记录。", _SOURCE + "411",
             ))
 
+    hits.extend(_year_or_day_stem_hits(
+        chart, _TAIJI, "太极贵人", "314-316",
+        "口诀‘甲乙生人子午中…’，以年干或日干起，四柱地支见者记录。",
+    ))
+    hits.extend(_year_or_day_stem_hits(
+        chart, _WENCHANG, "文昌", "457",
+        "口诀‘甲乙巳午报君知…’，以年干或日干起，四柱地支见者记录。",
+    ))
+    hits.extend(_stem_rule_hits(
+        chart, _JINYU, "金舆", "491",
+        "口诀‘甲龙乙蛇丙戊羊…’，以日干起金舆，四柱地支见者记录。",
+    ))
+    hits.extend(_stem_rule_hits(
+        chart, _LU, "禄神", "553",
+        "甲禄寅、乙禄卯等，以日干起禄，四柱地支见者记录。",
+    ))
     hits.extend(_stem_rule_hits(
         chart, _YANG_BLADE, "羊刃", "1095", "五阳干按禄后一位起阳刃，以日干为起点，四柱地支见者记录。",
     ))
@@ -197,11 +271,27 @@ def find_shensha(chart: ChartFacts) -> tuple[ShenshaHit, ...]:
         chart, _FLYING_BLADE_YIN, "飞刃(阴)", "1095-1099", "五阴干阴刃所冲之支为飞刃(阴)，以日干为起点。",
     ))
 
-    if chart.pillars[2].ganzhi in _KUI_GANG:
+    day_gz = chart.pillars[2].ganzhi
+    if day_gz in _KUI_GANG:
         hits.append(ShenshaHit(
             "魁罡", "D", "D", "仅以日柱干支查壬辰、庚戌、庚辰、戊戌四日。", _SOURCE + "470",
         ))
+    if day_gz in _YINCHA:
+        hits.append(ShenshaHit(
+            "阴差阳错", "D", "D",
+            "六十甲子中十二阴阳差错日，仅以日柱干支查表。", _SOURCE + "911-917",
+        ))
+    if day_gz in _SHIE:
+        hits.append(ShenshaHit(
+            "十恶大败", "D", "D",
+            "十干无禄日，仅以日柱干支查甲辰、乙巳等十日。", _SOURCE + "939",
+        ))
     return tuple(hits)
+
+
+def build_shensha_facts(chart: ChartFacts) -> ShenshaFacts:
+    """纯表驱动的原局神煞事实。"""
+    return ShenshaFacts(hits=find_shensha(chart))
 
 
 _SANHE = {
@@ -212,4 +302,4 @@ _SANHE = {
 }
 
 
-__all__ = ["ShenshaHit", "find_shensha"]
+__all__ = ["ShenshaFacts", "ShenshaHit", "build_shensha_facts", "find_shensha"]

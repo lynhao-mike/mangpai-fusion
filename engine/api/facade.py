@@ -10,6 +10,7 @@ from typing import Any, Sequence
 
 from engine.facts.chart_facts import ChartInputError, chart_from_pillars, chart_from_solar
 from engine.facts.relation_graph import build_relation_graph
+from engine.facts.shensha import build_shensha_facts
 from engine.facts.strength_facts import build_strength_facts
 from engine.facts.structure_check import (
     build_duan_zuogong_candidates,
@@ -119,14 +120,6 @@ def _parse_pillars(pillars: Sequence[str] | str) -> list[str]:
     return parts
 
 
-def _find_shensha(chart: ChartFacts):
-    try:
-        from engine.facts.shensha import find_shensha
-    except ImportError:
-        return ()
-    return find_shensha(chart)
-
-
 def build_chart(
     birth_dt: str | None = None,
     pillars: Sequence[str] | None = None,
@@ -166,7 +159,7 @@ def analyze_facts(
         "chart": to_jsonable(chart),
         "relations": to_jsonable(graph),
         "strength": to_jsonable(strength),
-        "shensha": to_jsonable(_find_shensha(chart)),
+        "shensha": to_jsonable(build_shensha_facts(chart)),
         "structures": _compact_structures(to_jsonable(check_structures(chart, graph, strength))),
         "duan_zuogong": {
             "tiyong": tiyong_view(chart),

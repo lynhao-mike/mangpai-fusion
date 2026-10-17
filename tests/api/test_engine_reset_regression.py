@@ -165,4 +165,30 @@ def test_cli_all_json_under_15kb():
     assert proc.returncode == 0, proc.stderr
     payload = json.loads(proc.stdout)
     assert {"chart", "relations", "strength", "shensha", "structures", "duan_zuogong"} <= set(payload)
+    assert payload["shensha"]
+    th = payload["strength"]["climate"]["tiaohou_lookup"]
+    assert th["listed_stems"] and th["source_ref"]
     assert len(proc.stdout.encode("utf-8")) < 15_000
+
+
+def test_cli_shensha_subcommand_returns_hits():
+    proc = subprocess.run(
+        [
+            sys.executable, "-m", "engine.cli", "shensha",
+            "--pillars", "庚申 戊寅 壬子 辛丑",
+            "--gender", "乾",
+            "--json",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr
+    payload = json.loads(proc.stdout)
+    hits = payload["hits"] if isinstance(payload, dict) else payload
+    assert hits
+    names = {hit["name"] for hit in hits}
+    assert {"驿马", "金舆", "文昌", "太极贵人"} <= names
+    assert all(hit.get("anchor_addr") and hit.get("target_addr") and hit.get("source_ref") for hit in hits)
