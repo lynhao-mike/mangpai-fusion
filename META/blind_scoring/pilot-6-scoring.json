@@ -1,0 +1,256 @@
+{
+  "schema_version": "blind-scoring-result/v1",
+  "scored_at": "2026-10-17T16:52:30+00:00",
+  "cases": [
+    {
+      "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "education",
+          "answer": "大专或本科",
+          "expected": "高中或中专",
+          "verdict": "incorrect",
+          "note": "作答「大专或本科」≠ 期望「高中或中专」"
+        },
+        {
+          "qid": "q2",
+          "type": "career_type",
+          "answer": "体制内稳定型",
+          "expected": "企业管理或技术专业型",
+          "verdict": "incorrect",
+          "note": "作答「体制内稳定型」≠ 期望「企业管理或技术专业型」"
+        },
+        {
+          "qid": "q3",
+          "type": "year_compare",
+          "answer": "2012（negative）",
+          "expected": "1996（positive）",
+          "verdict": "incorrect",
+          "note": "期望年份 1996，作答「2012（negative）」"
+        },
+        {
+          "qid": "q4",
+          "type": "negative_control",
+          "answer": "2004（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "incorrect",
+          "note": "False Positive 误报（实际平稳却断凶）"
+        }
+      ],
+      "correct": 0,
+      "incorrect": 4,
+      "partial": 0,
+      "undetermined": 0
+    },
+    {
+      "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "education",
+          "answer": "大专或本科",
+          "expected": "高中或中专",
+          "verdict": "incorrect",
+          "note": "作答「大专或本科」≠ 期望「高中或中专」"
+        },
+        {
+          "qid": "q2",
+          "type": "career_type",
+          "answer": "企业管理或技术专业型",
+          "expected": "企业管理或技术专业型",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q3",
+          "type": "year_compare",
+          "answer": "2003（positive）",
+          "expected": "2003（positive）",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q4",
+          "type": "negative_control",
+          "answer": "2004（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "incorrect",
+          "note": "False Positive 误报（实际平稳却断凶）"
+        }
+      ],
+      "correct": 2,
+      "incorrect": 2,
+      "partial": 0,
+      "undetermined": 0
+    },
+    {
+      "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "education",
+          "answer": "大专或本科",
+          "expected": "大专或本科",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q2",
+          "type": "career_type",
+          "answer": "体制内稳定型",
+          "expected": "自由职业或多重身份型",
+          "verdict": "incorrect",
+          "note": "作答「体制内稳定型」≠ 期望「自由职业或多重身份型」"
+        },
+        {
+          "qid": "q3",
+          "type": "year_compare",
+          "answer": "2020（negative）",
+          "expected": "2021（negative）",
+          "verdict": "undetermined",
+          "note": "时柱跨界风险（巳午交界），该题不进分母"
+        },
+        {
+          "qid": "q4",
+          "type": "negative_control",
+          "answer": "2022（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "undetermined",
+          "note": "时柱跨界风险（巳午交界），该题不进分母"
+        }
+      ],
+      "correct": 1,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 2
+    },
+    {
+      "case_id": "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "education",
+          "answer": "大专或本科",
+          "expected": "大专或本科",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q2",
+          "type": "career_type",
+          "answer": "企业管理或技术专业型",
+          "expected": "自由职业或多重身份型",
+          "verdict": "incorrect",
+          "note": "作答「企业管理或技术专业型」≠ 期望「自由职业或多重身份型」"
+        },
+        {
+          "qid": "q3",
+          "type": "year_compare",
+          "answer": "2020（negative）",
+          "expected": "均平稳",
+          "verdict": "undetermined",
+          "note": "时柱跨界风险（巳午交界），该题不进分母"
+        },
+        {
+          "qid": "q4",
+          "type": "negative_control",
+          "answer": "2022（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "undetermined",
+          "note": "时柱跨界风险（巳午交界），该题不进分母"
+        }
+      ],
+      "correct": 1,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 2
+    },
+    {
+      "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "education",
+          "answer": "高中或中专",
+          "expected": "高中或中专",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q2",
+          "type": "career_type",
+          "answer": "自由职业或多重身份型",
+          "expected": "企业管理或技术专业型",
+          "verdict": "incorrect",
+          "note": "作答「自由职业或多重身份型」≠ 期望「企业管理或技术专业型」"
+        },
+        {
+          "qid": "q3",
+          "type": "year_compare",
+          "answer": "2022（negative）",
+          "expected": "均平稳",
+          "verdict": "incorrect",
+          "note": "期望均平稳，作答「2022（negative）」"
+        },
+        {
+          "qid": "q4",
+          "type": "negative_control",
+          "answer": "2002（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "incorrect",
+          "note": "False Positive 误报（实际平稳却断凶）"
+        }
+      ],
+      "correct": 1,
+      "incorrect": 3,
+      "partial": 0,
+      "undetermined": 0
+    },
+    {
+      "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+      "rows": [
+        {
+          "qid": "q1",
+          "type": "career_type",
+          "answer": "自由职业或多重身份型",
+          "expected": "自由职业或多重身份型",
+          "verdict": "correct",
+          "note": ""
+        },
+        {
+          "qid": "q2",
+          "type": "year_compare",
+          "answer": "2015（positive）",
+          "expected": "2022（positive）",
+          "verdict": "incorrect",
+          "note": "期望年份 2022，作答「2015（positive）」"
+        },
+        {
+          "qid": "q3",
+          "type": "negative_control",
+          "answer": "2017（negative）",
+          "expected": "该期平稳无重大负向事件",
+          "verdict": "incorrect",
+          "note": "False Positive 误报（实际平稳却断凶）"
+        }
+      ],
+      "correct": 1,
+      "incorrect": 2,
+      "partial": 0,
+      "undetermined": 0
+    }
+  ],
+  "summary": {
+    "correct": 6,
+    "incorrect": 13,
+    "partial": 0,
+    "undetermined": 4,
+    "item_accuracy": 0.3157894736842105,
+    "independent_samples": 5
+  },
+  "notes": [
+    "同人组 356/359 视为 1 个独立样本",
+    "时柱跨界案例的流年/负样本题记 undetermined"
+  ]
+}

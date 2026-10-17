@@ -1,0 +1,747 @@
+{
+  "schema_version": "blind-claim-scoring/v1",
+  "scored_at": "2026-10-17T16:53:39+00:00",
+  "cases": [
+    {
+      "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "1988-1992",
+          "direction": "positive",
+          "prediction": "杀印相生、正印透干，1988 至 1992 年间取得大专或本科文凭",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 1988-1992 无education事件记录",
+          "rule_ids": [
+            "MP-03",
+            "TH-02"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "1998-2017",
+          "direction": "positive",
+          "prediction": "壬午癸未两运食伤透干，二十年内做到科级或中级职称",
+          "matched_events": [
+            "2015:凶,辞去工作，休养至今。其他信息：现无工作无收入，个性内向，"
+          ],
+          "verdict": "incorrect",
+          "note": "方向不符：断「positive」，事件「['negative']」",
+          "rule_ids": [
+            "MP-03",
+            "TH-02"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2018-2024",
+          "direction": "negative",
+          "prediction": "甲申运甲财透而空、申冲寅，七年间财上出现一次明显回撤",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2018-2024 无wealth事件记录",
+          "rule_ids": [
+            "MP-05",
+            "DY-02"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "1995-2000",
+          "direction": "positive",
+          "prediction": "乙亥年正财填实空亡、亥合寅动夫妻宫，1995 年起五年内登记",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 1995-2000 无marriage事件记录",
+          "rule_ids": [
+            "GW-05",
+            "MP-07"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2011",
+          "direction": "negative",
+          "prediction": "辛卯年劫财透干、卯再空又被两戌争合，婚姻在年内出现实质断裂",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2011-2011 无marriage事件记录",
+          "rule_ids": [
+            "MP-01",
+            "MP-05"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "1990",
+          "direction": "negative",
+          "prediction": "寅午戌火局全成、七杀攻无根之身，年内住院或骨折",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 1990-1990 无health事件记录",
+          "rule_ids": [
+            "GW-03",
+            "DY-02"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2013-2020",
+          "direction": "negative",
+          "prediction": "癸未运未土空亡、卯未半合木局助财克印，八年间父母一方重病或离世",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2013-2020 无family事件记录",
+          "rule_ids": [
+            "MP-10"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "1992",
+          "direction": "negative",
+          "prediction": "壬申年寅申冲夫妻宫与财根，年内工作位置被迫移动",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 1992-1992 无career事件记录",
+          "rule_ids": [
+            "DY-02"
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 7
+    },
+    {
+      "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "1999",
+          "direction": "negative",
+          "prediction": "己卯年伤官见官、卯酉冲印，高考录取落在一本线以下",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 1999-1999 无education事件记录",
+          "rule_ids": [
+            "MP-05",
+            "GW-04"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "2005-2014",
+          "direction": "positive",
+          "prediction": "庚寅运偏财透干、日主合财，进入企业并做到中层带团队",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2005-2014 无career事件记录",
+          "rule_ids": [
+            "MP-09",
+            "MP-02"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2015-2024",
+          "direction": "positive",
+          "prediction": "己丑运伤官生财、丑酉合金成局，收入进入本地高收入段",
+          "matched_events": [
+            "2015:吉,开始自谋开店至今 虽赚钱 但是没有积蓄 赚了钱总被各种事",
+            "2019:吉,生孩子 很可爱其他信息：现金从事零售业 性格开朗喜欢说话"
+          ],
+          "verdict": "correct",
+          "note": "方向一致：2 条事件",
+          "rule_ids": [
+            "MP-02",
+            "GW-03"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "2010-2014",
+          "direction": "positive",
+          "prediction": "寅申冲动夫妻宫后复归，2010 至 2014 年间完成登记",
+          "matched_events": [
+            "2013:吉,结婚 婚姻还算幸福"
+          ],
+          "verdict": "correct",
+          "note": "方向一致：1 条事件",
+          "rule_ids": [
+            "GW-04",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2015-2019",
+          "direction": "negative",
+          "prediction": "夫妻宫申被巳刑破、偏财坐宫，婚后五年内出现一次实质分居",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2015-2019 无marriage事件记录",
+          "rule_ids": [
+            "MP-07"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "2010",
+          "direction": "negative",
+          "prediction": "寅巳申三刑全成，庚寅年伏吟，年内有刀刃或骨伤之事",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2010-2010 无health事件记录",
+          "rule_ids": [
+            "GW-03",
+            "DY-02"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2015-2024",
+          "direction": "negative",
+          "prediction": "己丑运丑酉合金、印星之根受制，十年内父母一方重病或离世",
+          "matched_events": [
+            "2019:吉,生孩子 很可爱其他信息：现金从事零售业 性格开朗喜欢说话"
+          ],
+          "verdict": "incorrect",
+          "note": "方向不符：断「negative」，事件「['positive']」",
+          "rule_ids": [
+            "TH-01"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "2010",
+          "direction": "negative",
+          "prediction": "寅申冲、运年伏吟，庚寅年内离开原有单位",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2010-2010 无career事件记录",
+          "rule_ids": [
+            "DY-02"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 5
+    },
+    {
+      "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "2007-2011",
+          "direction": "positive",
+          "prediction": "辛酉运正印得地，2007 至 2011 年间取得大专或本科文凭",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2007-2011 无education事件记录",
+          "rule_ids": [
+            "MP-12"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "2017-2024",
+          "direction": "positive",
+          "prediction": "庚申运正印透干护官，八年间进入体制序列并站住",
+          "matched_events": [
+            "2017:凶,主动离职，母亲生病住院（具体时间父母都记不清，没有出生牌",
+            "2021:凶,主动离职的是朋友淘宝店，那两年算待遇不错的",
+            "2024:凶,主动离职，父亲生病住院，待业至今其他信息: 职业：学历本"
+          ],
+          "verdict": "incorrect",
+          "note": "方向不符：断「positive」，事件「['negative', 'negative', 'negative']」",
+          "rule_ids": [
+            "MP-03",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2020",
+          "direction": "negative",
+          "prediction": "申子辰三合水局全成，比劫夺财，年内出现一次明显破财",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2020-2020 无wealth事件记录",
+          "rule_ids": [
+            "GW-03",
+            "MP-01"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "2015-2019",
+          "direction": "positive",
+          "prediction": "夫妻宫巳被亥冲，须流年合住方能落定，2015 至 2019 年间登记",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2015-2019 无marriage事件记录",
+          "rule_ids": [
+            "MP-07",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2022",
+          "direction": "negative",
+          "prediction": "壬寅年寅巳刑直击夫妻宫，同时寅申冲，年内关系出现实质断裂",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2022-2022 无marriage事件记录",
+          "rule_ids": [
+            "GW-04",
+            "MP-07"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "2020",
+          "direction": "negative",
+          "prediction": "水局全成、火土两宫受制，年内因妇科或泌尿系统进一次医院",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2020-2020 无health事件记录",
+          "rule_ids": [
+            "MP-11",
+            "GW-03"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2019-2022",
+          "direction": "negative",
+          "prediction": "亥水叠见冲巳，印星之根反复受击，四年间父母一方重病或离世",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2019-2022 无family事件记录",
+          "rule_ids": [
+            "TH-01"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "2019",
+          "direction": "negative",
+          "prediction": "己亥年亥水叠见、亥巳再冲，年内离开原有单位",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2019-2019 无career事件记录",
+          "rule_ids": [
+            "DY-02"
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 7
+    },
+    {
+      "case_id": "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "2007-2011",
+          "direction": "positive",
+          "prediction": "两巳各藏庚金正印，辛酉运印星得地，四年内取得本科文凭",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2007-2011 无education事件记录",
+          "rule_ids": [
+            "MP-12"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "2017-2024",
+          "direction": "positive",
+          "prediction": "官星合化为财、财透时干，八年间在企业做到带团队的专业岗",
+          "matched_events": [
+            "2017:凶,七月从工作 6 年单位主动离职，恰逢母亲生病住院",
+            "2021:吉,从工作两年的朋友淘宝店主动离职，那两年工资待遇不错",
+            "2024:凶,从工作两年待遇低的单位主动离职，七月份父亲生病住院，和母"
+          ],
+          "verdict": "partial",
+          "note": "事件性质不明确",
+          "rule_ids": [
+            "MP-14",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2020",
+          "direction": "negative",
+          "prediction": "申子辰三合水局全成，两个财根同被水制，年内一次明显破财",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2020-2020 无wealth事件记录",
+          "rule_ids": [
+            "GW-03",
+            "MP-13"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "2015-2019",
+          "direction": "positive",
+          "prediction": "夫妻宫巳被亥冲，须流年合住方能落定，2015 至 2019 年间登记",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2015-2019 无marriage事件记录",
+          "rule_ids": [
+            "MP-07",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2022",
+          "direction": "negative",
+          "prediction": "壬寅年寅巳刑直击夫妻宫，同时寅申冲，年内关系出现实质断裂",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2022-2022 无marriage事件记录",
+          "rule_ids": [
+            "GW-04",
+            "MP-07"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "2020",
+          "direction": "negative",
+          "prediction": "水局全成、两巳受冲，年内因妇科或泌尿系统进一次医院",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2020-2020 无health事件记录",
+          "rule_ids": [
+            "MP-11",
+            "GW-03"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2019-2022",
+          "direction": "negative",
+          "prediction": "亥水叠见冲两巳，印星双根反复受击，四年间父母一方重病或离世",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2019-2022 无family事件记录",
+          "rule_ids": [
+            "MP-15",
+            "DY-02"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "2019",
+          "direction": "negative",
+          "prediction": "己亥年亥水叠见、亥巳双冲，年内离开原有单位",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2019-2019 无career事件记录",
+          "rule_ids": [
+            "DY-02"
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 0,
+      "partial": 1,
+      "undetermined": 7
+    },
+    {
+      "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "2000",
+          "direction": "negative",
+          "prediction": "辰戌冲年柱、印星无根，高考未能进入本科",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2000-2000 无education事件记录",
+          "rule_ids": [
+            "MP-04",
+            "DY-02"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "2017-2024",
+          "direction": "negative",
+          "prediction": "两壬争合、位置不稳，八年内换两次以上东家",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2017-2024 无career事件记录",
+          "rule_ids": [
+            "MP-05"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2021",
+          "direction": "negative",
+          "prediction": "辛丑年丑戌刑、丑午穿叠加，年内有一笔六位数流出",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2021-2021 无wealth事件记录",
+          "rule_ids": [
+            "GW-05",
+            "MP-01"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "2010-2014",
+          "direction": "positive",
+          "prediction": "夫妻宫丑空亡，需流年填实，2010 至 2014 年间完成登记",
+          "matched_events": [
+            "2012:吉,结束了 4S 店工作，在家混了半年，朋友开公司叫我去帮忙"
+          ],
+          "verdict": "correct",
+          "note": "方向一致：1 条事件",
+          "rule_ids": [
+            "GW-05",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2021-2022",
+          "direction": "negative",
+          "prediction": "丑年填实夫妻宫又刑又穿，两年内关系出现实质断裂",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2021-2022 无marriage事件记录",
+          "rule_ids": [
+            "MP-07",
+            "GW-05"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "2021",
+          "direction": "negative",
+          "prediction": "火局燥烈、丑土被刑穿，年内因消化或泌尿系统进一次医院",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2021-2021 无health事件记录",
+          "rule_ids": [
+            "MP-08",
+            "GW-05"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2017-2024",
+          "direction": "negative",
+          "prediction": "庚戌运戌来加重刑，八年间父母一方重病或离世",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2017-2024 无family事件记录",
+          "rule_ids": [
+            "TH-01"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "2010",
+          "direction": "negative",
+          "prediction": "庚寅年火局再全、庚财透干，年内离开原有单位",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2010-2010 无career事件记录",
+          "rule_ids": [
+            "GW-03",
+            "DY-02"
+          ]
+        }
+      ],
+      "correct": 1,
+      "incorrect": 0,
+      "partial": 0,
+      "undetermined": 7
+    },
+    {
+      "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+      "rows": [
+        {
+          "prediction_id": "p1",
+          "matter": "education",
+          "time_scope": "2001-2005",
+          "direction": "positive",
+          "prediction": "乙丑运丑土为印之根，四年内取得大专或本科文凭",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2001-2005 无education事件记录",
+          "rule_ids": [
+            "MP-20"
+          ]
+        },
+        {
+          "prediction_id": "p2",
+          "matter": "career",
+          "time_scope": "2012-2021",
+          "direction": "positive",
+          "prediction": "丙寅运食神得地、官星不透，十年内转为自立执业",
+          "matched_events": [
+            "2019:凶,肺结节手术其他信息: 职业：国企职业经理人 身价年收入:"
+          ],
+          "verdict": "incorrect",
+          "note": "方向不符：断「positive」，事件「['negative']」",
+          "rule_ids": [
+            "MP-16",
+            "DY-01"
+          ]
+        },
+        {
+          "prediction_id": "p3",
+          "matter": "wealth",
+          "time_scope": "2015",
+          "direction": "positive",
+          "prediction": "乙未年亥卯未三合木局全成、戌未刑开财库，收入出现一次跃升",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2015-2015 无wealth事件记录",
+          "rule_ids": [
+            "GW-03",
+            "GW-06"
+          ]
+        },
+        {
+          "prediction_id": "p4",
+          "matter": "marriage",
+          "time_scope": "2013-2016",
+          "direction": "positive",
+          "prediction": "夫星藏戌被卯合，须流年刑开戌库方能定，2013 至 2016 年间登记",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2013-2016 无marriage事件记录",
+          "rule_ids": [
+            "MP-19",
+            "GW-06"
+          ]
+        },
+        {
+          "prediction_id": "p5",
+          "matter": "marriage",
+          "time_scope": "2017",
+          "direction": "negative",
+          "prediction": "丁酉年酉冲卯、酉害戌，夫妻宫与夫星之库同被击，年内关系断裂",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2017-2017 无marriage事件记录",
+          "rule_ids": [
+            "GW-04",
+            "MP-07"
+          ]
+        },
+        {
+          "prediction_id": "p6",
+          "matter": "health",
+          "time_scope": "2017",
+          "direction": "negative",
+          "prediction": "水旺无制、卯酉冲根，年内因妇科或内分泌问题进一次医院",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2017-2017 无health事件记录",
+          "rule_ids": [
+            "MP-11",
+            "MP-18"
+          ]
+        },
+        {
+          "prediction_id": "p7",
+          "matter": "family",
+          "time_scope": "2008-2015",
+          "direction": "negative",
+          "prediction": "亥亥自刑、印星之根反复受损，八年间父母一方重病或离世",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2008-2015 无family事件记录",
+          "rule_ids": [
+            "MP-18"
+          ]
+        },
+        {
+          "prediction_id": "p8",
+          "matter": "career",
+          "time_scope": "2008",
+          "direction": "positive",
+          "prediction": "戊子年正官首次透干、子丑相合，年内取得一项正式名分",
+          "matched_events": [],
+          "verdict": "undetermined",
+          "note": "反馈在 2008-2008 无career事件记录",
+          "rule_ids": [
+            "MP-16",
+            "DY-01"
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 7
+    }
+  ],
+  "summary": {
+    "total": 48,
+    "correct": 3,
+    "incorrect": 4,
+    "partial": 1,
+    "undetermined": 40,
+    "accuracy": 0.42857142857142855
+  }
+}

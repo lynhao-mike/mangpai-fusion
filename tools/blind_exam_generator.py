@@ -137,9 +137,12 @@ def gen_questions(case_id: str, rng: random.Random) -> tuple[list[dict], dict] |
     # Q1 学业（有学历事件才出）
     if edu_events:
         n += 1
+        # 选项文案必须与题面逐字一致，否则盲断者按题面作答会被判错
+        # （曾出现答案写「本科」「高中/中专」而题面写「大专或本科」
+        #  「高中或中专」的口径不一致，实测导致 3 例误判）。
         highest = "研究生及以上" if any("研" in e["text"] for e in edu_events) else \
-                  "本科" if any("大学" in e["text"] or "本" in e["text"] for e in edu_events) else \
-                  "高中/中专"
+                  "大专或本科" if any("大学" in e["text"] or "本" in e["text"] for e in edu_events) else \
+                  "高中或中专"
         questions.append({
             "id": f"q{n}", "type": "education", "matter": "education",
             "question": "判断命主的最高学历层次（四选一）：初中及以下 / 高中或中专 / 大专或本科 / 研究生及以上",
