@@ -325,6 +325,16 @@ def main(argv=None) -> int:
         seen.add(key)
         items.append(build_probe(pillars, rng))
 
+    # 清空旧目录：换 seed 会生成不同案例，若不清空则新旧题面混杂，
+    # 分析者会读到「一半新一半旧」的目录（2026-10-18 实际发生过：
+    # 10 个旧盘残留在目录里，分析者据此拒绝继续）。
+    # 合成盘是可再生产物，清空无损失。
+    import shutil as _shutil
+    if OUT_DIR.exists():
+        stale = [d for d in OUT_DIR.iterdir() if d.is_dir()]
+        if stale:
+            print(f"清理 {len(stale)} 个旧目录")
+            _shutil.rmtree(OUT_DIR)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for it in items:
         d = OUT_DIR / it["case_id"]
