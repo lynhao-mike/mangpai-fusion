@@ -110,18 +110,41 @@ def _same_person_groups(probes_root: Path) -> dict[str, list[str]]:
 
     同一出生日 + 不同时辰 = 同一个人的时辰假设对照盘，其 feedback 事件相同。
     逐例计分会把同一批事件多次计入分母，虚增样本量，故需去重。
+
+    出生信息查找顺序（旧版只查 CASES/<目录名>/input.md，probes 目录名与
+    cases 目录名不一致时会静默跳过 → 去重失效）：
+    1. probes_root/<case>/ 下的原始材料副本（若存在）
+    2. CASES/<case>/input.md
+    3. .workbuddy-ai/blind-bundle-v2/<case>/input.md（盲测任务包）
+    三者都无则跳过并记录，便于发现目录命名不一致。
     """
+    bundle_root = PROBES.parent / "blind-bundle-v2"
     groups: dict[str, list[str]] = {}
+    unresolved: list[str] = []
     for d in sorted(probes_root.iterdir()):
         if not d.is_dir():
             continue
-        inp = CASES / d.name / "input.md"
-        if not inp.exists():
+        candidates = [
+            d / "input.md",
+            CASES / d.name / "input.md",
+            bundle_root / d.name / "input.md",
+        ]
+        found = None
+        for c in candidates:
+            if c.is_file():
+                found = c
+                break
+        if found is None:
+            unresolved.append(d.name)
             continue
-        m = _BIRTH_RE.search(inp.read_text(encoding="utf-8-sig", errors="replace"))
+        m = _BIRTH_RE.search(found.read_text(encoding="utf-8-sig", errors="replace"))
         if not m:
+            unresolved.append(d.name)
             continue
         groups.setdefault(m.group(1), []).append(d.name)
+    if unresolved:
+        print(f"  [warn] {len(unresolved)} 例未能解析出生日（去重可能不完整）: "
+              f"{unresolved[:5]}", file=sys.stderr)
     return {k: v for k, v in groups.items() if len(v) > 1}
 
 

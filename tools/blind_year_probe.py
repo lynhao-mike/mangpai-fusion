@@ -97,15 +97,37 @@ def _detect_columns(header_line: str) -> tuple[int, int]:
     早期版本一律按 A 解析，导致格式 B 案例的「文本」只取到「其他/职业」
     这类类型标签，真值极性分类全废（194/253 事件受影响）。
 
-    返回 (text_idx, domain_idx)。无法识别时按 A 处理。
+    匹配优先级（避免同一单元格同时含两类关键词时误判）：
+    1. 强特征：含「事实/摘录/事件」→ 文本列；含「功能域/类型/域」→ 域列
+    2. 同一格同时命中两类时，按「文本优先」处理（文本列缺失代价远高于域列），
+       但记录冲突原因，便于发现异常表头。
+    3. 都无法识别 → 退回格式 A 的默认列（1, 2）。
+
+    返回 (text_idx, domain_idx)。
     """
     cells = [c.strip() for c in header_line.strip().strip("|").split("|")]
-    text_idx, dom_idx = 1, 2
+    text_kw = ("事实", "摘录", "事件", "描述")
+    dom_kw = ("功能域", "类型", "域", "类别")
+
+    text_cands, dom_cands = [], []
     for i, c in enumerate(cells):
-        if any(k in c for k in ("事实", "事件", "已知事实")):
-            text_idx = i
-        elif any(k in c for k in ("功能域", "类型", "域")):
-            dom_idx = i
+        hit_text = any(k in c for k in text_kw)
+        hit_dom = any(k in c for k in dom_kw)
+        if hit_text:
+            text_cands.append((i, len(c)))
+        if hit_dom:
+            dom_cands.append((i, len(c)))
+
+    # 冲突处理：某格同时是两类候选 → 归文本（文本缺失导致真值全废，
+    # 域列缺失只影响 matters 统计，代价低得多）
+    both = {i for i, _ in text_cands} & {i for i, _ in dom_cands}
+    if both:
+        dom_cands = [(i, n) for i, n in dom_cands if i not in both]
+
+    text_idx = text_cands[0][0] if text_cands else 1
+    dom_idx = dom_cands[0][0] if dom_cands else (2 if text_idx == 1 else 1)
+    if dom_idx == text_idx:                      # 兜底：绝不让两列重合
+        dom_idx = 2 if text_idx != 2 else 1
     return text_idx, dom_idx
 
 
