@@ -108,20 +108,127 @@ def make_chart(rng: random.Random) -> list[str]:
     return [year, month, day, hour]
 
 
+def _birth_year_from_pillar(year_pillar: str, today_year: int = 2026) -> int:
+    """由年柱反推一个合法的合成出生年份（最近一轮六十甲子内的年份）。"""
+    gan, zhi = year_pillar[0], year_pillar[1]
+    gi, zi = STEMS.index(gan), BRANCHES.index(zhi)
+    # 从 today_year 逐年回退，找干支匹配的年份
+    for y in range(today_year, today_year - 61, -1):
+        if STEMS[(y - 4) % 10] == gan and BRANCHES[(y - 4) % 12] == zhi:
+            return y
+    return today_year - 30
+
+
+def _compute_dayun(pillars: list[str], gender: str, birth_year: int) -> dict:
+    """计算大运表与起运年。
+
+    引擎 `--pillars` 模式能给出**大运干支序列与顺逆**（由年干阴阳 + 性别决定），
+    但没有出生时刻 → 算不出精确交节时差 → `qiyun` 与 `start_year` 为 None。
+
+    对合成盘而言，精确起运岁并非判断所必需（它只影响前后 1-2 年的边界）。
+    因此这里：
+    1. 用引擎 `--pillars` 取大运干支序列（这是精确的）；
+    2. 按合成规则给定起运岁 = 3（题面明示为「合成假设」）；
+    3. 由此推每年份的起讫年。
+
+    题面会明确写出「起运 3 岁为合成假设」，避免分析者以为这是真实排盘结果。
+    """
+    import json as _json
+    import subprocess as _sp
+
+    r = _sp.run(
+        [sys.executable, "-m", "engine.cli", "chart",
+         "--pillars", " ".join(pillars), "--gender", gender, "--json"],
+        cwd=ROOT, capture_output=True, encoding="utf-8",
+    )
+    if r.returncode != 0:
+        return {"dayun": [], "qiyun": None, "qiyun_year": None,
+                "error": (r.stderr or "")[:200]}
+    try:
+        d = _json.loads(r.stdout)
+    except _json.JSONDecodeError:
+        return {"dayun": [], "qiyun": None, "qiyun_year": None, "error": "输出非 JSON"}
+
+    chart = d.get("chart", d)
+    cycles = chart.get("cycles") or {}
+    raw_dayun = cycles.get("dayun") or []
+    direction = cycles.get("direction")
+
+    SYNTH_QIYUN_AGE = 3          # 合成假设，题面明示
+    qiyun_year = birth_year + SYNTH_QIYUN_AGE - 1
+
+    dayun = []
+    for i, dy in enumerate(raw_dayun):
+        start = qiyun_year + i * 10
+        dayun.append({
+            "index": dy.get("index", i + 1),
+            "ganzhi": dy.get("ganzhi"),
+            "start_year": start,
+            "end_year": start + 9,
+            "start_age": SYNTH_QIYUN_AGE + i * 10,
+        })
+
+    return {
+        "dayun": dayun,
+        "qiyun": SYNTH_QIYUN_AGE,
+        "qiyun_year": qiyun_year,
+        "direction": direction,
+        "synthetic_qiyun": True,     # 标记：起运岁是合成假设
+        "error": None,
+    }
+
+
 def build_probe(pillars: list[str], rng: random.Random) -> dict:
-    """合成盘的年份清单：以虚岁 6-60 的随机 8-12 年作为「待判年份」。"""
+    """合成盘：补全性别、出生年份、大运表，使题面信息自足。"""
+    gender = rng.choice(["乾", "坤"])
+    birth_year = _birth_year_from_pillar(pillars[0])
+    dy = _compute_dayun(pillars, gender, birth_year)
+
     n = rng.randint(8, 12)
-    years = sorted(rng.sample(range(1990, 2031), n))
+    # 待判年份限定在起运后、且不超过出生后 60 年，保证每年都能落进某步大运
+    lo = (dy.get("qiyun_year") or (birth_year + 3)) + 1
+    hi = min(birth_year + 60, 2030)
+    pool = list(range(lo, hi + 1))
+    if len(pool) < n:
+        pool = list(range(birth_year + 1, birth_year + 61))
+    years = sorted(rng.sample(pool, min(n, len(pool))))
+
     return {
         "case_id": "SYN-" + "".join(pillars),
         "pillars": pillars,
+        "gender": gender,
+        "birth_year": birth_year,
         "probe_years": years,
+        "dayun": dy.get("dayun") or [],
+        "qiyun": dy.get("qiyun"),
+        "qiyun_year": dy.get("qiyun_year"),
+        "dayun_error": dy.get("error"),
         "synthetic": True,
     }
 
 
 def render_exam(item: dict) -> str:
     years = item["probe_years"]
+    gender_cn = "男（乾造）" if item.get("gender") == "乾" else "女（坤造）"
+    dayun = item.get("dayun") or []
+
+    if dayun:
+        rows = []
+        by = item.get("birth_year") or 0
+        for d in dayun:
+            sy = d.get("start_year")
+            start_age = d.get("start_age")
+            if start_age is None and isinstance(sy, int) and by:
+                start_age = sy - by + 1
+            rows.append(
+                f"| {d.get('index', '')} | {d.get('ganzhi', '')} | "
+                f"{sy if sy is not None else '—'}–{d.get('end_year') if d.get('end_year') is not None else '—'} "
+                f"| {start_age if start_age is not None else '—'} |"
+            )
+        dayun_rows = "\n".join(rows)
+    else:
+        dayun_rows = "| — | （引擎未能推算，请按常规规则自推） | — | — |"
+
     return f"""# 合成盘盲测题 · {item['case_id']}
 
 > **这是一副合成盘**：四柱由程序构造，不对应任何真实个人的出生时刻。
@@ -132,13 +239,25 @@ def render_exam(item: dict) -> str:
 > - 是否严格执行五道前置关
 > - 是否滥用「平」来回避
 
-## 一、盘面
+## 一、盘面（信息已完整，无需推测）
 
 - 四柱：{' '.join(item['pillars'])}
+- 性别：{gender_cn}（决定大运顺逆）
+- 合成出生年份：{item.get('birth_year')} 年
+- 起运：{item.get('qiyun') or 3} 岁起运（{item.get('qiyun_year') or '—'} 年交运）
+  **此起运岁为合成假设**（合成盘无精确出生时刻，引擎算不出真实交节时差），
+  但大运干支序列由引擎精确推算。
 - 待判断年份共 {len(years)} 个：{'、'.join(str(y) for y in years)}
 
-（大运：请按阳男阴女顺排、阴男阳女逆排的常规规则自推，
-  起运按 3 天折 1 年。本题不提供大运表，这是考查的一部分。）
+### 大运表（干支由引擎推算，年份按 3 岁起运合成推算）
+
+| 序 | 大运 | 起讫年 | 起始虚岁 |
+|---|---|---|---|
+{dayun_rows}
+
+（说明：以上大运干支由引擎按年干阴阳 + 性别定顺逆精确推算；
+  起讫年份按「3 岁起运、10 年一步」的合成假设推算。
+  这是合成盘，不对应任何真实个人。）
 
 ## 二、作答要求（每年四项）
 
