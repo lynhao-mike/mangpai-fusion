@@ -17,12 +17,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PROBES = ROOT / ".workbuddy-ai" / "year-probes"
+CASES = ROOT / "cases"
 OUT = ROOT / "META" / "blind_scoring"
 
 POLARITY_MAP = {"吉": "positive", "凶": "negative", "平": "neutral"}
@@ -100,6 +102,29 @@ def score_case(case: str) -> dict | None:
     }
 
 
+_BIRTH_RE = re.compile(r'公历:\s*"?(\d{4}-\d{2}-\d{2})')
+
+
+def _same_person_groups(probes_root: Path) -> dict[str, list[str]]:
+    """按出生日找出同一人的多张盘。
+
+    同一出生日 + 不同时辰 = 同一个人的时辰假设对照盘，其 feedback 事件相同。
+    逐例计分会把同一批事件多次计入分母，虚增样本量，故需去重。
+    """
+    groups: dict[str, list[str]] = {}
+    for d in sorted(probes_root.iterdir()):
+        if not d.is_dir():
+            continue
+        inp = CASES / d.name / "input.md"
+        if not inp.exists():
+            continue
+        m = _BIRTH_RE.search(inp.read_text(encoding="utf-8-sig", errors="replace"))
+        if not m:
+            continue
+        groups.setdefault(m.group(1), []).append(d.name)
+    return {k: v for k, v in groups.items() if len(v) > 1}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="年份定向判断题判分")
     ap.add_argument("--case")
@@ -108,6 +133,7 @@ def main(argv=None) -> int:
     cases = [args.case] if args.case else sorted(
         p.name for p in PROBES.iterdir() if p.is_dir()
     )
+    probes_root = PROBES
     results = [r for r in (score_case(c) for c in cases) if r]
 
     OUT.mkdir(parents=True, exist_ok=True)
@@ -143,6 +169,35 @@ def main(argv=None) -> int:
         print(f"  对照年误报率 = {tfp}/{tctrl} = {tfp/tctrl*100:.1f}%"
               f"（断凶倾向；非准确率）")
 
+    # ── 同人去重：同一出生日的多张盘是同一个人的不同时辰假设，
+    # 其 feedback 事件相同，逐例计分会把同一批事件算多次，虚增样本量。
+    # 这里按出生日分组，组内只保留第一例计入「去重后」统计。
+    same_person_groups = _same_person_groups(probes_root)
+    if same_person_groups:
+        print()
+        print("=== 同人去重 ===")
+        dup_names = []
+        for date, cs in same_person_groups.items():
+            print(f"  出生日 {date}: {len(cs)} 例 → 计 1 例")
+            for c in cs:
+                print(f"      {c}")
+            dup_names += cs[1:]
+        # 去重口径
+        dc = di = dctrl = dfp = 0
+        for r in results:
+            if r.get("status") == "no_answer" or r["case_id"] in dup_names:
+                continue
+            dc += r["correct"]; di += r["incorrect"]
+            dctrl += r["control_years"]; dfp += r["control_false_positive"]
+        ddenom = dc + di
+        print()
+        print(f"  去重后：correct={dc} incorrect={di} 准确率 = "
+              f"{dc}/{ddenom} = {dc/ddenom*100:.1f}%" if ddenom else "  去重后：无可判定")
+        if dctrl:
+            print(f"  去重后对照年误报率 = {dfp}/{dctrl} = {dfp/dctrl*100:.1f}%")
+    else:
+        dc = di = ddenom = dctrl = dfp = None
+
     payload = {
         "schema_version": "year-probe-scoring/v1",
         "scored_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -153,6 +208,10 @@ def main(argv=None) -> int:
             "accuracy": (tc / denom) if denom else None,
             "control_years": tctrl, "control_false_positive": tfp,
             "control_false_positive_rate": (tfp / tctrl) if tctrl else None,
+            "same_person_groups": {k: v for k, v in (same_person_groups or {}).items()},
+            "dedup_correct": dc, "dedup_incorrect": di,
+            "dedup_accuracy": (dc / ddenom) if (dc is not None and ddenom) else None,
+            "dedup_control_years": dctrl, "dedup_control_false_positive": dfp,
         },
         "notes": [
             "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",
