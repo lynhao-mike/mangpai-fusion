@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # pyproject.toml · v1.2 最小 pytest 配置
 # ============================================================
 # Track-H 在 W2 阶段建立的 pytest 最小配置。
@@ -19,6 +19,7 @@ testpaths = [
     "tests/tools/test_anchor_span.py",
     "tests/tools/test_blind_toolchain.py",
     "tests/tools/test_gao_split.py",
+    "tests/tools/test_bundle_pii.py",
 ]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
