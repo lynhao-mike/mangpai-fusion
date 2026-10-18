@@ -1,6 +1,6 @@
 {
   "schema_version": "year-probe-scoring/v1",
-  "scored_at": "2026-10-18T01:11:41+00:00",
+  "scored_at": "2026-10-18T01:36:46+00:00",
   "cases": [
     {
       "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
@@ -124,6 +124,16 @@
       "undetermined": 4,
       "control_years": 4,
       "control_false_positive": 2
+    },
+    {
+      "case_id": "C-2026-RF000149-坤-壬戌己酉乙卯戊寅",
+      "status": "no_answer",
+      "probe_years": 12
+    },
+    {
+      "case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯",
+      "status": "no_answer",
+      "probe_years": 13
     },
     {
       "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
@@ -259,6 +269,197 @@
       "undetermined": 4,
       "control_years": 4,
       "control_false_positive": 1
+    },
+    {
+      "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+      "status": "no_answer",
+      "probe_years": 20
+    },
+    {
+      "case_id": "C-2026-RF000244-乾-戊寅甲寅辛丑戊戌",
+      "rows": [
+        {
+          "year": 2003,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸未年补齐 e011 丑戌未三刑，D.b 丑印库被刑动受损，未冲丑伤日主之根",
+          "real_events": [
+            "凶,玩漂流船翻了撞到头"
+          ]
+        },
+        {
+          "year": 2004,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "甲申年申冲 M.b/Y.b 寅财属动而无伤，申又逢年旬空亡，无实质损伤",
+          "real_events": [
+            "吉,平，小学学习优秀，但是被同学和高年级欺负"
+          ]
+        },
+        {
+          "year": 2005,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "乙酉年酉为辛禄，与 D.b 丑半合金局帮身，身强利学业",
+          "real_events": []
+        },
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丙戌年丙辛合官，H.b 戌印化官生身，官印相生利学业功名",
+          "real_events": [
+            "吉,平，家里在东莞买了房，转学"
+          ]
+        },
+        {
+          "year": 2007,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "丁亥年亥合 M.b 寅属动而无伤，丁杀有 H.s 戊印化之，无实质损伤",
+          "real_events": []
+        },
+        {
+          "year": 2010,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "庚寅年庚劫透干坐 M.b 寅财，劫财无强根仅平年",
+          "real_events": [
+            "凶,平，读初中，学习优秀，但被同学欺负"
+          ]
+        },
+        {
+          "year": 2011,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "辛卯年卯与 H.b 戌合火官星得用，丙辰运始官印相生利学业",
+          "real_events": []
+        },
+        {
+          "year": 2012,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "壬辰年辰填日旬空亡且辰冲 H.b 戌属库动无伤，壬伤官有 H.s 戊印制",
+          "real_events": [
+            "吉,小吉，回到老家读初三，学校尚可，和同学相处融洽"
+          ]
+        },
+        {
+          "year": 2013,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "癸巳年巳与 D.b 丑拱金局身强，巳官星到位利考试",
+          "real_events": []
+        },
+        {
+          "year": 2014,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "甲午年午填实 e008/e010 寅午戌三合火局成，七杀局克 D.s 辛身又丑午害",
+          "real_events": [
+            "凶,大凶，浑浑噩噩的一年，父亲的厂倒闭了"
+          ]
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "乙未年再补齐 e011 丑戌未三刑，D.b 丑印库被冲刑受损",
+          "real_events": [
+            "吉,大吉，否极泰来，重新振作起来读书，16 年考上本科"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "辛丑年流年丑与大运巳半合金局身强任官，比肩坐 D.b 印入丁巳官运",
+          "real_events": [
+            "凶,土木工作做不下去了，不知道做什么好"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "壬寅年壬伤官生 M.b 寅财，财星三透得地，伤官生财",
+          "real_events": [
+            "凶,不知道做什么"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "癸卯年癸食神制大运丁杀，卯与 H.b 戌合火官星得用，卯为偏财生助",
+          "real_events": [
+            "凶,不知道做什么其他信息: 职业：暂时无业 出身: 父亲开厂的，老来得子 健康情况:胖 婚姻情况: "
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 4,
+      "partial": 3,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 0
+    },
+    {
+      "case_id": "C-2026-RF000257-坤-壬子庚戌戊子壬戌",
+      "status": "no_answer",
+      "probe_years": 6
+    },
+    {
+      "case_id": "C-2026-RF000290-坤-甲申丙子戊寅庚申",
+      "status": "no_answer",
+      "probe_years": 5
+    },
+    {
+      "case_id": "C-2026-RF000353-坤-丙寅辛卯壬申戊申",
+      "status": "no_answer",
+      "probe_years": 14
     },
     {
       "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
@@ -419,6 +620,16 @@
       "control_false_positive": 1
     },
     {
+      "case_id": "C-2026-RF000373-乾-丙子庚子辛巳己亥",
+      "status": "no_answer",
+      "probe_years": 18
+    },
+    {
+      "case_id": "C-2026-RF000374-坤-甲戌丙寅辛未甲午",
+      "status": "no_answer",
+      "probe_years": 12
+    },
+    {
       "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
       "rows": [
         {
@@ -554,6 +765,11 @@
       "control_false_positive": 2
     },
     {
+      "case_id": "C-2026-RF000408-乾-辛亥甲午辛卯壬辰",
+      "status": "no_answer",
+      "probe_years": 16
+    },
+    {
       "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
       "rows": [
         {
@@ -641,17 +857,98 @@
       "undetermined": 3,
       "control_years": 3,
       "control_false_positive": 2
+    },
+    {
+      "case_id": "C-2026-RF000478-乾-己卯乙亥乙丑辛巳",
+      "status": "no_answer",
+      "probe_years": 5
+    },
+    {
+      "case_id": "C-2026-RF000508-坤-丁丑辛亥甲子壬申",
+      "status": "no_answer",
+      "probe_years": 10
+    },
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳",
+      "status": "no_answer",
+      "probe_years": 18
+    },
+    {
+      "case_id": "C-2026-RF000534-乾-丙子庚寅甲戌丙寅",
+      "status": "no_answer",
+      "probe_years": 3
+    },
+    {
+      "case_id": "C-2026-RF000548-坤-己卯辛未壬申丁未",
+      "status": "no_answer",
+      "probe_years": 11
+    },
+    {
+      "case_id": "C-2026-RF000595-乾-癸酉壬戌壬申丙午",
+      "status": "no_answer",
+      "probe_years": 14
+    },
+    {
+      "case_id": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+      "status": "no_answer",
+      "probe_years": 2
+    },
+    {
+      "case_id": "C-2026-RF000677-乾-壬申癸丑乙巳庚辰",
+      "status": "no_answer",
+      "probe_years": 9
+    },
+    {
+      "case_id": "C-2026-RF000703-乾-甲申庚午乙酉庚辰",
+      "status": "no_answer",
+      "probe_years": 6
+    },
+    {
+      "case_id": "C-2026-RF000713-乾-甲申丁丑丁酉丙午",
+      "status": "no_answer",
+      "probe_years": 11
+    },
+    {
+      "case_id": "C-2026-RF000868-乾-壬申戊申庚辰丁亥",
+      "status": "no_answer",
+      "probe_years": 18
+    },
+    {
+      "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
+      "status": "no_answer",
+      "probe_years": 14
+    },
+    {
+      "case_id": "C-2026-RF000918-乾-甲寅丙寅壬寅辛丑",
+      "status": "no_answer",
+      "probe_years": 15
+    },
+    {
+      "case_id": "C-2026-RF000990-乾-庚午己丑戊寅癸亥",
+      "status": "no_answer",
+      "probe_years": 17
     }
   ],
   "summary": {
-    "recorded_correct": 16,
-    "recorded_incorrect": 8,
-    "recorded_partial": 8,
-    "recorded_undetermined": 19,
-    "accuracy": 0.6666666666666666,
-    "control_years": 19,
+    "recorded_correct": 19,
+    "recorded_incorrect": 12,
+    "recorded_partial": 11,
+    "recorded_undetermined": 23,
+    "accuracy": 0.6129032258064516,
+    "control_years": 23,
     "control_false_positive": 9,
-    "control_false_positive_rate": 0.47368421052631576
+    "control_false_positive_rate": 0.391304347826087,
+    "same_person_groups": {
+      "1988-12-04": [
+        "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+        "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳"
+      ]
+    },
+    "dedup_correct": 16,
+    "dedup_incorrect": 12,
+    "dedup_accuracy": 0.5714285714285714,
+    "dedup_control_years": 21,
+    "dedup_control_false_positive": 8
   },
   "notes": [
     "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",

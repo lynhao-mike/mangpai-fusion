@@ -88,23 +88,57 @@ def matters_of(text: str, domains: list[str]) -> list[str]:
     return [m for m, kws in MATTER_KW.items() if any(k in blob for k in kws)]
 
 
+def _detect_columns(header_line: str) -> tuple[int, int]:
+    """从表头行解析「事实文本列」与「功能域/类型列」的索引。
+
+    feedback.md 存在两种表格式，列序相反：
+      格式 A: | 年份 | 已知事实 | 功能域 |   → 文本=1, 域=2
+      格式 B: | 年份 | 类型 | 事实摘录 |     → 域=1, 文本=2
+    早期版本一律按 A 解析，导致格式 B 案例的「文本」只取到「其他/职业」
+    这类类型标签，真值极性分类全废（194/253 事件受影响）。
+
+    返回 (text_idx, domain_idx)。无法识别时按 A 处理。
+    """
+    cells = [c.strip() for c in header_line.strip().strip("|").split("|")]
+    text_idx, dom_idx = 1, 2
+    for i, c in enumerate(cells):
+        if any(k in c for k in ("事实", "事件", "已知事实")):
+            text_idx = i
+        elif any(k in c for k in ("功能域", "类型", "域")):
+            dom_idx = i
+    return text_idx, dom_idx
+
+
 def load_events(case: str) -> list[dict[str, Any]]:
     p = CASES / case / "feedback.md"
     if not p.exists():
         return []
+    lines = p.read_text(encoding="utf-8-sig", errors="replace").splitlines()
+
+    # 先定位表头，确定列序
+    text_idx, dom_idx = 1, 2
+    for line in lines:
+        if "年份" in line and line.strip().startswith("|"):
+            text_idx, dom_idx = _detect_columns(line)
+            break
+
     out = []
-    for line in p.read_text(encoding="utf-8-sig", errors="replace").splitlines():
+    for line in lines:
         m = _EVENT_ROW.match(line.strip())
-        if m:
-            y, text, dom = m.groups()
-            doms = [d.strip() for d in dom.split(",") if d.strip()]
-            out.append({
-                "year": int(y),
-                "text": text.strip(),
-                "domains": doms,
-                "polarity": classify(text),
-                "matters": matters_of(text, doms),
-            })
+        if not m:
+            continue
+        y = m.group(1)
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        text = cells[text_idx] if text_idx < len(cells) else m.group(2)
+        dom = cells[dom_idx] if dom_idx < len(cells) else m.group(3)
+        doms = [d.strip() for d in re.split(r"[,，]", dom) if d.strip()]
+        out.append({
+            "year": int(y),
+            "text": text.strip(),
+            "domains": doms,
+            "polarity": classify(text),
+            "matters": matters_of(text, doms),
+        })
     return sorted(out, key=lambda e: e["year"])
 
 
