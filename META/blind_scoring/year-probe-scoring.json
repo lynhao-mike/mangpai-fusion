@@ -1,6 +1,6 @@
 {
   "schema_version": "year-probe-scoring/v1",
-  "scored_at": "2026-10-18T02:23:27+00:00",
+  "scored_at": "2026-10-18T03:42:45+00:00",
   "cases": [
     {
       "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
@@ -988,13 +988,149 @@
     },
     {
       "case_id": "C-2026-RF000257-坤-壬子庚戌戊子壬戌",
-      "status": "no_answer",
-      "probe_years": 6
+      "rows": [
+        {
+          "year": 1989,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "己巳年己劫透干夺 Y.s 壬财，巳与大运申刑合引动，忌神印比并动学业受阻",
+          "real_events": [
+            "凶,未考上好高中1992 年未考上好大学"
+          ]
+        },
+        {
+          "year": 1990,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "庚午年午填日旬空亡并冲 D.b/Y.b 双子财，用神财星被冲坏",
+          "real_events": []
+        },
+        {
+          "year": 1991,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "辛未年未填日旬空亡，子未害双子财又与 M.b/H.b 戌刑，财伤库损",
+          "real_events": []
+        },
+        {
+          "year": 1992,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "壬申年申为 M.s 庚食神之禄，金水用神齐临生财，得财",
+          "real_events": []
+        },
+        {
+          "year": 2002,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "壬午年午填日旬空亡再冲 D.b/Y.b 双子财，财星受损",
+          "real_events": [
+            "吉,随便结了个婚"
+          ]
+        },
+        {
+          "year": 2003,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "癸未年未填日旬空亡，子未害财又与 M.b/H.b 戌刑，库损财伤",
+          "real_events": [
+            "吉,生也个女儿其他信息: 职业：工作不稳定身体不好，胀气，脾气暴躁婚一般，女儿和我关系不好"
+          ]
+        }
+      ],
+      "correct": 1,
+      "incorrect": 2,
+      "partial": 0,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000290-坤-甲申丙子戊寅庚申",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "mixed",
+          "got": "negative",
+          "verdict": "partial",
+          "note": "期望 mixed，作答 negative",
+          "basis": "己亥年亥财旺与 M.b 子会水克 M.s 丙印，又合 D.b 寅杀，身弱财旺学业受损",
+          "real_events": [
+            "初三开始有了好转，因为合班换了班主任，她不在管我打骂我，欺负我的俩同学都转学走了，因为班上人员变动，"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "庚子年重演 e003/e004 甲庚冲，申子再会水局，忌神财星成局坏印",
+          "real_events": [
+            "吉,在这个风气很差的学校一年完全无心学习，但是那一年我在网上卖课赚了 3000 块钱"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "辛丑年丑与 M.b 子合绊忌神财星，丑劫帮身，印星得护利学业",
+          "real_events": [
+            "凶,自己觉得这样下去不行，给家里说想转学，去了一个管的很严的私立高中，结果一个班就 4 个女生，我当"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "壬寅年壬财透干克 M.s 丙印，寅申再冲驿马，考学受挫",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸卯年卯官星夫星到位，癸财与 D.s 戊合，财生官婚恋成",
+          "real_events": [
+            "吉,高三换班，班上氛围没那么压抑了，但是说实话我那年没有努力，高考完了本科线都没过我十分偏科只有日语"
+          ]
+        }
+      ],
+      "correct": 1,
+      "incorrect": 2,
+      "partial": 1,
+      "undetermined": 1,
+      "control_years": 1,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000353-坤-丙寅辛卯壬申戊申",
@@ -1327,8 +1463,222 @@
     },
     {
       "case_id": "C-2026-RF000373-乾-丙子庚子辛巳己亥",
-      "status": "no_answer",
-      "probe_years": 18
+      "rows": [
+        {
+          "year": 1996,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丙子年 Y.b/M.b 子加为三子，亥子丑会水局更旺，伤官重泄 D.s 辛身伤健康",
+          "real_events": [
+            "凶,出生三天发高烧，得肺炎差点烧死了"
+          ]
+        },
+        {
+          "year": 1997,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "丁丑年 M.b 丑为印库制伤官护 D.s 辛身，杀印相生，健康转安",
+          "real_events": []
+        },
+        {
+          "year": 1999,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "己卯年 H.s 己偏印透干生 D.s 辛身制伤，印星得力",
+          "real_events": [
+            "凶,玩**瓶子 ，把瓶子上的贴纸拿来贴在额头上 差点毒死，一直十岁前都大病小病不断 用药喂大的 ，还"
+          ]
+        },
+        {
+          "year": 2000,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "庚辰年辰印与 M.b 子半合化土帮身，H.s 庚劫帮身，身转强",
+          "real_events": [
+            "凶,一起玩游戏 右手碗被大孩子 掰脱臼了，后来让赤脚医生给正骨回来了"
+          ]
+        },
+        {
+          "year": 2001,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛巳年与 D.s/D.b 日柱伏吟，伏吟主病痛，健康受损",
+          "real_events": [
+            "凶,据我妈说我从橘子树上摔下来把牙齿黑了 ，可我记得的是我眼睛摔出个**点"
+          ]
+        },
+        {
+          "year": 2002,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "壬午年午杀填调候并冲 Y.b/M.b 忌神子水，忌神被制健康转好",
+          "real_events": []
+        },
+        {
+          "year": 2007,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁亥年 H.b 亥伤官旺与 H.s 丁杀合绊，官星被合伤，学业受挫",
+          "real_events": [
+            "凶,小学四年级转折点 ，厌学 扛上 叛逆从名列前茅到撕书 对抗老师 ，哪会儿就觉得人生没意义 反正直"
+          ]
+        },
+        {
+          "year": 2008,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "戊子年 H.s 戊印透干制 Y.b/M.b 伤官，印星护身利学业",
+          "real_events": []
+        },
+        {
+          "year": 2009,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "己丑年 H.s 己印透干、M.b 丑印库帮身，印比齐来利学业",
+          "real_events": [
+            "吉,尽管 2007. 2008 都在耍 但是经过各方面老师 家长的三司会省还在是最后三个月里收心学习"
+          ]
+        },
+        {
+          "year": 2010,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "庚寅年寅与 H.b 亥合木财局，H.s 庚劫透干夺财，家计是非",
+          "real_events": [
+            "凶,打架砍伤人了， 赔钱一千多 ，后面被每个班级抽几个成绩不好调皮的那种出去组成另一个班级去咯，不过"
+          ]
+        },
+        {
+          "year": 2011,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "辛卯年 D.s 辛比肩坐卯财，比劫夺财又 Y.b/M.b 子卯刑，财损家累",
+          "real_events": []
+        },
+        {
+          "year": 2014,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "甲午年午杀冲 Y.b/M.b 忌神子水且 Y.s 甲财生杀调候到位，考学得利",
+          "real_events": [
+            "凶,去做手术被人骗了几千块还没做好 ，差点给我废了 大凶"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "丙申年申填日旬空亡坐实比劫帮 D.s 辛身，身强任 Y.s 丙官，得职",
+          "real_events": [
+            "凶,因工作原因得了皮肤病 跟得了**一样那种，一双手烂完**不好，反反复复但是工资还勉强吧 一直到 "
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "己亥年 H.s 己印透干制 H.b 亥伤官，印星护身利求职",
+          "real_events": [
+            "凶,大凶 大转折点，差点思想崩溃 那一年是我人生中最黑暗的一次"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "庚子年 Y.b/M.b 三子伤官重又 H.s 庚劫透干，群劫争财破财",
+          "real_events": [
+            "凶,躺尸到六月份 整整一年反复锤炼自己思想 ，极其痛苦 ，下半年有工作了半吉半凶吧"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛丑年 D.s 辛比肩得 M.b 丑印库生，身强任事利事业",
+          "real_events": [
+            "吉, 风风火火的一年 哪怕疫情严重的不行 ，也不错 心情也阳光了 变得能说会道了 挣钱了几万块吧不多"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "壬寅年壬伤官旺克 Y.s 丙官，寅巳刑动 D.b 官根，事业是非",
+          "real_events": [
+            "吉,减肥六月到年底减了六十斤 棒棒棒，但是挣得不多 半吉半凶吧"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "癸卯年 Y.b 卯偏财得癸食神生，食神生财得财",
+          "real_events": [
+            "凶,忙的时候满足，结果却失望，为情所伤，半吉半凶"
+          ]
+        }
+      ],
+      "correct": 7,
+      "incorrect": 7,
+      "partial": 0,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000374-坤-甲戌丙寅辛未甲午",
@@ -1614,8 +1964,198 @@
     },
     {
       "case_id": "C-2026-RF000408-乾-辛亥甲午辛卯壬辰",
-      "status": "no_answer",
-      "probe_years": 16
+      "rows": [
+        {
+          "year": 1980,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "庚申年申与 Y.b 亥穿又庚辛比劫成群逆财杀之势，健康受损",
+          "real_events": [
+            "凶,庚申流年，上大运的前一年，踢球，伤了腿，休学几个月"
+          ]
+        },
+        {
+          "year": 1981,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "辛卯年 D.b 卯填年旬空亡坐实，Y.b 亥与 D.b 卯成亥卯半合财局得地，得财",
+          "real_events": []
+        },
+        {
+          "year": 1987,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁卯年丁杀透干生势，D.b 卯财再填年旬空亡，财杀有势利功名",
+          "real_events": [
+            "吉,癸巳大运，丁卯流年，考上了重点高中"
+          ]
+        },
+        {
+          "year": 1988,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "戊辰年辰印忌神与 D.b 卯穿动 e010，逆势印星动学业受阻",
+          "real_events": []
+        },
+        {
+          "year": 1990,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "庚午年 M.b 午杀填日旬空亡坐实，杀星得禄得用，利事业功名",
+          "real_events": [
+            "吉,癸巳大运，庚午流年，考上了 211 重点大学"
+          ]
+        },
+        {
+          "year": 1991,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "辛未年未与 D.b 卯成卯未半合财局成，财势得局得财",
+          "real_events": []
+        },
+        {
+          "year": 1994,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "甲戌年 Y.s 甲正财透干得势，D.b 卯与戌合火杀星得用，得财",
+          "real_events": [
+            "吉,壬辰大运，甲戌流年，考上了研究生"
+          ]
+        },
+        {
+          "year": 1995,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "乙亥年乙偏财妻星透干，Y.b 亥与 D.b 卯成亥卯半合财局，婚恋成",
+          "real_events": []
+        },
+        {
+          "year": 1997,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "丁丑年丑害 M.b 午用神七杀，印星忌神害用，健康受损",
+          "real_events": [
+            "吉,壬辰大运，丁丑流年，进入**机关，公务员，正科级"
+          ]
+        },
+        {
+          "year": 2000,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "庚辰年庚劫透干逆势夺财，辰忌神与 D.b 卯穿，破财",
+          "real_events": [
+            "吉,壬辰大运，庚辰流年，这一年辞去公务员，然后出国"
+          ]
+        },
+        {
+          "year": 2001,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛巳年辛比肩逆势，巳与 Y.b 亥冲伤伤官生财之路，事业受阻",
+          "real_events": [
+            "凶,辛卯大运，辛巳流年，这一年，和接下来的 2-3 年，在国外，找不到专业工作，只能一边学习，一边打"
+          ]
+        },
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丙戌年丙官透干得用，D.b 卯与戌合火官杀成势，利事业",
+          "real_events": [
+            "吉,辛卯大运，丙戌流年，这一年，在一个著名大公司，找到了专业工作，薪资上涨"
+          ]
+        },
+        {
+          "year": 2010,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "庚寅年寅财虽填年旬空亡，H.s 庚劫透干盖头夺财，破财",
+          "real_events": [
+            "吉, 辛卯大运，庚寅流年，这一年跳槽到了一个大银行工作，薪资上涨"
+          ]
+        },
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "辛卯年辛比肩盖头坐 D.b 卯财，比劫夺财，破财",
+          "real_events": [
+            "吉,庚寅大运，辛卯流年，这一年应该说有吉有凶（吉凶参半）。4 月份被大银行裁员。7 月份又找到另一个"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "戊戌年辰戌冲坏 H.b 印库，戊印忌神透干逆势，健康受损",
+          "real_events": [
+            "凶, 庚寅大运，戊戌流年，这一年 7 月份被银行裁员"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "己亥年 Y.b 亥与 D.b 卯再成亥卯半合财局，伤官生财得财",
+          "real_events": [
+            "凶,庚寅大运，己亥流年，这一年和接下来的 2020 庚子流年不顺，找不到工作，面试通不过。 收入少。"
+          ]
+        }
+      ],
+      "correct": 7,
+      "incorrect": 5,
+      "partial": 0,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
@@ -1708,13 +2248,192 @@
     },
     {
       "case_id": "C-2026-RF000478-乾-己卯乙亥乙丑辛巳",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "戊戌年 H.s 戊财透干，戌与 Y.b 卯合火调候得用，得财",
+          "real_events": [
+            "吉,",
+            "至东北某军工专业读大学"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "己亥年亥填日旬空亡坐实忌神印星，巳亥冲 e011 再动驿马，健康受损",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "庚子年庚官与 D.s 乙合，官来合我得职，子丑合动 D.b 财库",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "辛丑年辛杀透干重演 e005/e007 乙辛冲，杀无制攻 D.s 乙身，事业受挫",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "壬寅年壬印忌神透干生 M.s 乙比劫成群，寅巳刑动 H.b，破财",
+          "real_events": [
+            "吉,考研回云南，工商管理专业其他信息"
+          ]
+        }
+      ],
+      "correct": 1,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000508-坤-丁丑辛亥甲子壬申",
-      "status": "no_answer",
-      "probe_years": 10
+      "rows": [
+        {
+          "year": 2008,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "戊子年 H.s 戊财透干制亥子丑水局，调候得用健康转好",
+          "real_events": [
+            "凶,2008 年开始感觉不快乐，开始讨厌出生地城市的一切，讨厌家庭, 我妈跟他那个第二个帅哥老公分手"
+          ]
+        },
+        {
+          "year": 2009,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "己丑年己财透干、Y.b 丑财库伏吟到位，土制水护 D.s 甲身",
+          "real_events": []
+        },
+        {
+          "year": 2012,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "壬辰年辰填实 e013 申子辰三合水局全，忌神印星成局水泛木漂",
+          "real_events": [
+            "吉,2012 超聪明，稳定的年级第三，虽然不快乐感觉惶惶不可终日。控制不住快乐和悲伤"
+          ]
+        },
+        {
+          "year": 2013,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "癸巳年巳亥冲坏 M.b 调候火根，癸印忌神盖头克火，健康受损",
+          "real_events": []
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "乙未年未与 Y.b 丑冲开财库为我所用，得财",
+          "real_events": [
+            "凶,2015 第一次高考一般，普通二本，11-15 一直严重的哮喘对生活有影响，我妈神经兮兮一会儿管"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丙申年 H.s 丙食神调候透干，H.b 申填年旬空亡坐实杀印相生，利考学",
+          "real_events": [
+            "吉,16 第二次高考还行，自主招生也考得不错，去了医学院"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "丁酉年重演 e001 丁伤官克 M.s 辛官夫星，官星受伤婚恋受阻",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "辛丑年辛官透干得 D.b 子印化，官印相生利事业",
+          "real_events": [
+            "凶,18 年人挺漂亮，21 年毕业了。在大学也不快乐，心里四面楚歌的感觉，就是强撑。21 去了国外硕"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "壬寅年寅为 D.s 甲禄帮身任事，寅申冲动 H.b 杀忌神，利事业",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸卯年癸印忌神透干，D.b 子与卯刑动比劫争财，破财",
+          "real_events": [
+            "凶,23 年初摔断腿，又被渣男骗，成绩也不好，差点没读下去书。身边好多小人，学会好多啊"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 4,
+      "partial": 0,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳",
@@ -1939,13 +2658,187 @@
     },
     {
       "case_id": "C-2026-RF000534-乾-丙子庚寅甲戌丙寅",
-      "status": "no_answer",
-      "probe_years": 3
+      "rows": [
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "戊戌年 H.s 戊偏财透干，D.b 戌财库伏吟到位，财星入库得财",
+          "real_events": [
+            "吉,感觉桃花运旺"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "己亥年亥偏印忌神合绊 Y.b/H.b 双禄，己财坐亥被截，事业受制",
+          "real_events": [
+            "凶,7 月份离职"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "庚子年 Y.b 子印伏吟，庚杀透干得 Y.s/H.s 丙食神制之，食神制杀掌权",
+          "real_events": [
+            "凶,被骗，负债其他信息"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 0,
+      "control_years": 0,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000548-坤-己卯辛未壬申丁未",
-      "status": "no_answer",
-      "probe_years": 11
+      "rows": [
+        {
+          "year": 2013,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸巳年巳与 D.b 申刑合，财星刑坏 M.s 辛印之根，学业受损",
+          "real_events": [
+            "凶,在市重点上初二，成绩从 40/470 掉到 140/470，本来学的好的科目一落千丈；喜欢的男生"
+          ]
+        },
+        {
+          "year": 2014,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "甲午年甲食神生 H.s 丁财，午与 M.b/H.b 未合财坏印，学业受挫",
+          "real_events": []
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "乙未年 Y.b 卯未再合伤官局，M.b/H.b 未伏吟，伤官旺泄身学业不利",
+          "real_events": [
+            "吉,进入比较一般的高中，但是成绩拔尖，受老师重视，写作的天赋也发挥出来，同学也很崇拜我的才华。人缘不"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "丙申年 D.b 申伏吟又丙财冲克 D.s 壬，健康受损",
+          "real_events": [
+            "吉,成绩依然稳定在前面，决定出国，出国的科目和课内科目都学得好，不用听讲都能考得很好。交到了男朋友（"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁酉年酉为 M.s 辛印之禄生 D.s 壬身，丁壬合财不坏印，考学得利",
+          "real_events": [
+            "吉,出国了，学习中等，但是考运很好，在农历年之**上了全国前十的学校。感情稳定"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "戊戌年戊杀透干得 M.s 辛印化，杀印相生利学业",
+          "real_events": []
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "己亥年亥为 D.s 壬禄帮身，身强任 Y.s 己官，利事业",
+          "real_events": [
+            "凶,在大学里人缘一般，没有什么社团活动，学校、打工和家里三点一线。沉迷游戏挂了一科，差点无法升级。姥"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "庚子年庚印透干、子与 D.b 申半合水帮身，身强任官利事业",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛丑年丑与 M.b/H.b 未冲开官库，夫星得用，婚恋成",
+          "real_events": [
+            "吉,学习稳步提高，准备换国家读研，托福考出高分。感情稳定。和家里摩擦变少。因疫情一直在国内和姥姥一起"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "壬寅年寅申冲坏 D.b 印根，寅卯会木伤官局成克官，事业受挫",
+          "real_events": [
+            "凶,大凶的一年。被分手两次（分别是 5 月和 23 年 1 月），均挽回失败。陷入内耗和抑郁情绪，去"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "癸卯年卯伤官伏吟 Y.b 又合未成伤官局，伤官旺克官夫星，婚恋受阻",
+          "real_events": [
+            "吉,3 月认识了新男朋友，心情逐渐变好。换了很能鼓励人的导师，受益良多也顺利毕业。回国之后享受了 4"
+          ]
+        }
+      ],
+      "correct": 4,
+      "incorrect": 4,
+      "partial": 0,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000595-乾-癸酉壬戌壬申丙午",
@@ -2122,23 +3015,374 @@
     },
     {
       "case_id": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
-      "status": "no_answer",
-      "probe_years": 2
+      "rows": [
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "壬寅年壬印忌神透干，寅比劫伏吟 Y.b/M.b 成群争财，事业受挫",
+          "real_events": [
+            "凶,父亲癌症手术",
+            "凶,国考没通过"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸卯年卯与 H.b 辰害动财库，又卯酉冲坏 Y.b 七杀根，财官两伤",
+          "real_events": [
+            "凶,国考又没过其他信息: 职业：医务工作者"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 0,
+      "partial": 0,
+      "undetermined": 0,
+      "control_years": 0,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000677-乾-壬申癸丑乙巳庚辰",
-      "status": "no_answer",
-      "probe_years": 9
+      "rows": [
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "辛卯年卯填日旬空亡坐实为 D.s 乙禄帮身，身强利学业",
+          "real_events": [
+            "凶,高考没考好，二本"
+          ]
+        },
+        {
+          "year": 2012,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "壬辰年壬印透干生 D.s 乙身，印星得力利学业",
+          "real_events": []
+        },
+        {
+          "year": 2013,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "癸巳年 D.b 巳伏吟又与 Y.b 申刑合、与 M.b 丑拱金，动而伤身",
+          "real_events": []
+        },
+        {
+          "year": 2014,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "甲午年午害 M.b 丑财库，财库受损破财",
+          "real_events": []
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "乙未年未与 M.b 丑冲开金库，七杀出库攻 D.s 乙身，事业受挫",
+          "real_events": [
+            "吉,15 年底 16 年初做了扁桃体切除手术"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丙辰年丙伤官制 H.s 庚官，食伤吐秀吐出利事业",
+          "real_events": [
+            "吉,无锡买房，买完后半个月，房价才开始涨，算是低价买房"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁酉年酉填实 e012 巳酉丑三合金局全，杀局成重攻 D.s 乙身",
+          "real_events": [
+            "凶,转行互联网，一开始工资不高，公司也不好"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "戊戌年戊财透干，辰戌冲开 H.b 财库为我所用，得财",
+          "real_events": [
+            "吉,跳槽比较大的公司，工资翻倍"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "己亥年己财坏 Y.s/M.s 印，巳亥冲 D.b 伤身，健康受损",
+          "real_events": [
+            "吉,跳槽杭州上市公司，工资过万，干了几个月加班受不了，回无锡找了个初创公司。工资过万，20 年涨了一"
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 3,
+      "partial": 0,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000703-乾-甲申庚午乙酉庚辰",
-      "status": "no_answer",
-      "probe_years": 6
+      "rows": [
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁酉年丁食神透干坐酉长生，制 Y.s/H.s 庚杀有力，食神制杀利学业",
+          "real_events": [
+            "吉,升入重点初中，成绩在随后的几个月超出预期进入班级中上游，压力也随之增大"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "戊戌年戌填实申酉戌三会金局全，杀局成重攻 D.s 乙弱身",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "庚子年子与 H.b 辰合水成印局，杀印相生用神得局利学业",
+          "real_events": [
+            "凶,疫情时期较为懈怠，成绩较预期低，听从家长安排进入衡水模式的重点中学"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛丑年丑害 M.b 午用神食神，酉丑半合增杀势，杀无制攻身",
+          "real_events": [
+            "凶,文理分科，选择文科进入新班级，因为较有天赋成绩居于前列，随后三年压力极大，晚上通常只能睡四个半小"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "壬寅年壬印透干化杀，寅与 M.b 午半合火制杀，考学得利",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "癸卯年卯为 D.s 乙禄帮身，卯酉冲去 D.b 忌杀，身强得用",
+          "real_events": [
+            "凶,高考，较预期成绩低。虽以专业第一进入大学，但所选专业并不喜欢，竞争激烈。之后诸事不顺，学业不佳，"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 2,
+      "partial": 0,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000713-乾-甲申丁丑丁酉丙午",
-      "status": "no_answer",
-      "probe_years": 11
+      "rows": [
+        {
+          "year": 2013,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "癸巳年巳填实 e008 巳酉丑三合金局全，财多身弱攻 D.s 丁身",
+          "real_events": [
+            "凶,和别人打架和同学起冲突老师经常欺负"
+          ]
+        },
+        {
+          "year": 2014,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "甲午年 Y.s 甲印透干生身，H.b 午禄伏吟又填年旬空亡坐实，利学业",
+          "real_events": [
+            "吉,一整年很开心快乐全年很顺"
+          ]
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "乙未年 H.s 乙偏印透干，M.b 丑与未冲开未木库印星得用，利学业",
+          "real_events": [
+            "吉,吃喝玩乐，整体不错"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "丙申年 Y.b 申财伏吟又申酉会金，财多身弱家计劳",
+          "real_events": [
+            "吉,整体还行，没有坏运气"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "丁酉年 D.b 酉财伏吟，金财重重身弱不任，健康受损",
+          "real_events": [
+            "吉,整体挺顺利，还可以"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "戊戌年戌与 Y.b/D.b 申酉会成申酉戌三会金局全，财重攻弱身",
+          "real_events": [
+            "凶,下半年和同学经常起冲突，老师经常罚我冬天身体虚弱无力，每天劳累得肠胃炎、发烧"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "己亥年亥官杀与 Y.b 申穿动攻弱身，学业受挫",
+          "real_events": [
+            "凶,老师经常找我麻烦和同学打架冬天身体虚弱、疲惫不堪得肠胃炎且发烧"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "庚子年庚财透干生子杀，财杀两旺攻 D.s 丁身",
+          "real_events": [
+            "吉,身体健康，吃得好，玩的好。身体健壮中考取得满意成绩、超常发挥"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "辛丑年 M.b 丑伏吟财库又辛财透干，财旺身弱考学受挫",
+          "real_events": [
+            "凶,手被玻璃划伤，学习压力大，精神内耗严重，学习成绩下滑"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "壬寅年寅为 Y.s 甲印之禄，官印相生，寅申冲去 Y.b 忌财，考学得利",
+          "real_events": [
+            "凶,遇到一个喜欢的女生学习压力大，成绩上不去，抑郁"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "癸卯年卯为偏印坐禄化癸杀，杀印相生，卯酉冲去 D.b 忌财",
+          "real_events": [
+            "凶,喜欢一个女孩不敢表白高考考的不好，上了个普通本科其他信息: 出身: 城市普通家庭父母国企 性格特"
+          ]
+        }
+      ],
+      "correct": 6,
+      "incorrect": 5,
+      "partial": 0,
+      "undetermined": 0,
+      "control_years": 0,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000868-乾-壬申戊申庚辰丁亥",
@@ -2928,25 +4172,25 @@
     }
   ],
   "summary": {
-    "recorded_correct": 77,
-    "recorded_incorrect": 59,
-    "recorded_partial": 34,
-    "recorded_undetermined": 62,
-    "accuracy": 0.5661764705882353,
-    "control_years": 62,
-    "control_false_positive": 20,
-    "control_false_positive_rate": 0.3225806451612903,
+    "recorded_correct": 115,
+    "recorded_incorrect": 95,
+    "recorded_partial": 35,
+    "recorded_undetermined": 89,
+    "accuracy": 0.5476190476190477,
+    "control_years": 89,
+    "control_false_positive": 33,
+    "control_false_positive_rate": 0.3707865168539326,
     "same_person_groups": {
       "1988-12-04": [
         "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
         "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳"
       ]
     },
-    "dedup_correct": 74,
-    "dedup_incorrect": 59,
-    "dedup_accuracy": 0.556390977443609,
-    "dedup_control_years": 60,
-    "dedup_control_false_positive": 19
+    "dedup_correct": 112,
+    "dedup_incorrect": 95,
+    "dedup_accuracy": 0.5410628019323671,
+    "dedup_control_years": 87,
+    "dedup_control_false_positive": 32
   },
   "notes": [
     "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",
