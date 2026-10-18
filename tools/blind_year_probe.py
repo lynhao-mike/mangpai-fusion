@@ -58,7 +58,22 @@ MATTER_KW = {
 }
 
 
+_PREFIX_POLARITY = re.compile(r"^\s*(凶|吉)\s*[,，]")
+
+
 def classify(text: str) -> str:
+    """事件文本极性分类。
+
+    优先级设计（首轮判分踩过的坑）：
+    1. **命主自报前缀优先**——feedback 事件文本以「凶,」/「吉,」开头，
+       这是命主自己给这年定的性。正文关键词只是事件描述，不得翻盘
+       （曾因把「吉,出国学习」里的「学习」当负面词计票，判成 negative）。
+    2. 前缀缺失时回退关键词计票。
+    3. 计票仍不判时记 mixed，不强行二选一。
+    """
+    m = _PREFIX_POLARITY.match(text)
+    if m:
+        return "negative" if m.group(1) == "凶" else "positive"
     neg = sum(1 for k in NEG_KW if k in text)
     pos = sum(1 for k in POS_KW if k in text)
     if neg > pos:

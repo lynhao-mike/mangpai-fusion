@@ -1,47 +1,657 @@
 {
   "schema_version": "year-probe-scoring/v1",
-  "scored_at": "2026-10-17T16:58:35+00:00",
+  "scored_at": "2026-10-18T01:11:41+00:00",
   "cases": [
     {
       "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
-      "status": "no_answer",
-      "probe_years": 10
+      "rows": [
+        {
+          "year": 1985,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "庚辰运辰戌冲 Y.b/H.b 为整运常态，流年乙丑仅丑戌刑动，用神印比无实质得失",
+          "real_events": [
+            "凶,住院腹部开刀"
+          ]
+        },
+        {
+          "year": 1986,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年丙寅引动 e006 丙克 D.s，e008 寅戌半合火局成，火旺攻身",
+          "real_events": []
+        },
+        {
+          "year": 1993,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年癸酉得酉刃为根，酉卯冲 M.b 财星出，e007 卯戌合被冲动",
+          "real_events": [
+            "吉,外出工作"
+          ]
+        },
+        {
+          "year": 1994,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年甲戌三戌并见生金，甲木偏财被 D.s 庚克，e010 卯戌合火成局",
+          "real_events": []
+        },
+        {
+          "year": 1996,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年丙子引动 e006 丙克 D.s，子卯刑 M.b，伤官泄身",
+          "real_events": [
+            "吉,出国学习"
+          ]
+        },
+        {
+          "year": 1997,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年丁丑湿土生金与丑戌刑互见，e005 化杀之力未改，无实质得失",
+          "real_events": []
+        },
+        {
+          "year": 1999,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "运支午与 e008 寅戌合成火局，流年己卯卯木克 M.s 己土破印",
+          "real_events": [
+            "吉,顺利生小孩"
+          ]
+        },
+        {
+          "year": 2000,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年庚辰比肩透干帮身，辰戌冲开 Y.b/H.b 火库，运干壬制 e006 丙杀",
+          "real_events": [
+            "吉,半工半读"
+          ]
+        },
+        {
+          "year": 2001,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年辛巳巳火助杀，巳寅刑 D.b 夫妻宫，午运火旺克 D.s",
+          "real_events": []
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "戌未刑引动 e012 丙戌自合，乙庚合财，未土生金",
+          "real_events": [
+            "凶,辞去工作，休养至今。其他信息：现无工作无收入，个性内向，健康欠佳脚肝胆痛风，小时候家境清寒，现已"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 3,
+      "partial": 1,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
-      "status": "no_answer",
-      "probe_years": 11
+      "rows": [
+        {
+          "year": 1988,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "流年戊辰食神泄秀，e008 巳酉合金局与申辰半合水局成，壬辰运官星得地",
+          "real_events": [
+            "凶,出生在工人家庭 并不富裕 11 岁前搬家三次 1988-1991 这期间被车撞飞过 但没什么问题"
+          ]
+        },
+        {
+          "year": 1989,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年己巳巳火助身与 e011 巳申合、e008 巳酉合金互见，力量相抵",
+          "real_events": []
+        },
+        {
+          "year": 1995,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年乙亥亥冲 M.b 月令禄，亥卯半合木局生火，辛卯运印重身旺",
+          "real_events": [
+            "凶,开始学习还不错 但从初中二年看武侠小说成绩直线**"
+          ]
+        },
+        {
+          "year": 1996,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年丙子子午冲 H.b 羊刃，丙火比肩助旺，子卯刑运支",
+          "real_events": []
+        },
+        {
+          "year": 1998,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年戊寅寅午半合火局（e014）身旺无制，寅申冲 D.b",
+          "real_events": [
+            "吉, 去当兵入伍了"
+          ]
+        },
+        {
+          "year": 1999,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年己卯卯酉冲 Y.b 与辛卯运支伏吟，e002 辛丙合水未变，无实质得失",
+          "real_events": []
+        },
+        {
+          "year": 2003,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年癸未官星透干制丙（e005），未土泄火，庚寅运财星得地",
+          "real_events": [
+            "吉,开始工作 东奔西跑 但事业能力稳步提升"
+          ]
+        },
+        {
+          "year": 2004,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年甲申申金伏吟 D.b，寅申冲庚寅运支，财动而未得",
+          "real_events": []
+        },
+        {
+          "year": 2013,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年癸巳巳火助身，e011 巳申刑合引动 D.b 夫妻宫，寅巳刑",
+          "real_events": [
+            "吉,结婚 婚姻还算幸福"
+          ]
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "流年乙未午未合 H.b，丑未冲己丑运支，e002 辛丙合局未破，无实质得失",
+          "real_events": [
+            "吉,开始自谋开店至今 虽赚钱 但是没有积蓄 赚了钱总被各种事情花销掉"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年己亥伤官泄火、亥水制丙，己丑运湿土晦火，e005 官星得用",
+          "real_events": [
+            "吉,生孩子 很可爱其他信息：现金从事零售业 性格开朗喜欢说话 近些年自我调整性格 想看老师讲的用神 "
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 3,
+      "partial": 1,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
-      "status": "no_answer",
-      "probe_years": 6
+      "rows": [
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年丁酉酉辰合金、巳酉半合金局夺 e013 火气，e009 癸丁冲财星受伤",
+          "real_events": [
+            "凶,主动离职，母亲生病住院（具体时间父母都记不清，没有出生牌子，只记得是中午）"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年戊戌官星透干合身（e003），午戌半合火局生官，戌辰冲 Y.b",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "流年辛丑丑土官星得地与丑午害（e012 亥午暗合同宫）互见，无实质得失",
+          "real_events": [
+            "凶,主动离职的是朋友淘宝店，那两年算待遇不错的"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年壬寅寅巳刑 D.b（e011 亥巳冲同宫），寅午半合火局（e013），寅亥合 M.b",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "流年癸卯卯午破 H.b，亥卯半合木局泄身，比肩透干夺财",
+          "real_events": [
+            "吉,家里**搬家，卖了一套房"
+          ]
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年甲辰伤官见官克 Y.s/H.s 戊土，辰辰伏吟，庚申运申辰半合水局",
+          "real_events": [
+            "凶,主动离职，父亲生病住院，待业至今其他信息: 职业：学历本科，未婚未育不打算结婚，家境一般，独女，"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 0,
+      "partial": 2,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳",
-      "status": "no_answer",
-      "probe_years": 6
+      "rows": [
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年丁酉酉辰合金、巳酉半合金局，e009 癸丁冲财星受伤",
+          "real_events": [
+            "凶,七月从工作 6 年单位主动离职，恰逢母亲生病住院"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年戊戌官星透干合日主（e003），戌为 H.s 丁火财库，戌辰冲 Y.b",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "流年辛丑丑土官星得地，巳丑半合金局泄官生水，e013 癸巳自合未动",
+          "real_events": [
+            "吉,从工作两年的朋友淘宝店主动离职，那两年工资待遇不错"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年壬寅寅巳刑 D.b 与 H.b（e011/e012 亥巳冲同宫），寅亥合 M.b，壬水夺财",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年癸卯亥卯半合木局泄秀，卯木生 H.s 丁火财星，e013 癸巳自合得生",
+          "real_events": [
+            "吉,家里农村**搬到城里，卖了一套**房"
+          ]
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年甲辰伤官见官克 Y.s 戊土，辰辰伏吟 Y.b，庚申运申辰半合水局",
+          "real_events": [
+            "凶,从工作两年待遇低的单位主动离职，七月份父亲生病住院，和母亲一样的手术，但病情还算轻其他信息: 职"
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 0,
+      "partial": 1,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
-      "status": "no_answer",
-      "probe_years": 11
+      "rows": [
+        {
+          "year": 1995,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁未运未戌刑开 Y.b 火库，流年乙亥亥寅合木生火，e017 火局增旺",
+          "real_events": [
+            "凶,1996 年以前小时候读书都很差（都是倒数名次）自然老师是不喜欢，同学排挤，也就一两个好朋友还都"
+          ]
+        },
+        {
+          "year": 1996,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年丙子子午冲 M.b 建禄，丙火劫财助旺，子丑合 D.b",
+          "real_events": []
+        },
+        {
+          "year": 2000,
+          "recorded": true,
+          "expected": "mixed",
+          "got": "positive",
+          "verdict": "partial",
+          "note": "期望 mixed，作答 positive",
+          "basis": "流年庚辰财星透干，申辰半合水局（戊申运）官杀得地，辰戌冲开 Y.b 火库",
+          "real_events": [
+            "老房子**了！自然店也关了！15 岁的时候做过一个梦，天上金龙飞下来对我吼了一声就朝西方飞走了！老房"
+          ]
+        },
+        {
+          "year": 2001,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年辛巳丙辛合夺财（M.s），巳火助旺，巳申刑戊申运支、巳寅刑 H.b",
+          "real_events": []
+        },
+        {
+          "year": 2005,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "流年乙酉酉丑半合金局（e012 戌丑刑同宫），己酉运财星伏吟，财库开",
+          "real_events": [
+            "开始交到的男朋友都是烂桃花吧！不是无疾而终就是对方父母不同意！2008 年年底着凉生病去医院吊盐水（"
+          ]
+        },
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年丙戌劫财透干，戌丑刑（e012）开火库，午戌半合火局（e011）",
+          "real_events": [
+            "凶,2000 年开始家里买了电脑开始自学股票，陆陆续续赚了些小钱！2005 年上了夜校学的财务会计，"
+          ]
+        },
+        {
+          "year": 2007,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年丁亥亥水制火与丁火助旺互见，e009 丁壬合未破，无实质得失",
+          "real_events": []
+        },
+        {
+          "year": 2012,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年壬辰官星透干（e003 壬丁合），辰为水库，己酉运酉辰合金生水",
+          "real_events": [
+            "吉,结束了 4S 店工作，在家混了半年，朋友开公司叫我去帮忙！工资虽然不高一年 7 万吧，天天上班就"
+          ]
+        },
+        {
+          "year": 2013,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年癸巳杀星透干制火，巳火助旺 M.b 与巳酉半合金互见，无实质得失",
+          "real_events": []
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年丙申申酉戌三会金局（己酉运 + Y.b），财星成局，申寅冲 H.b",
+          "real_events": [
+            "吉,结婚三年，婆家上下各种事情鸡飞蛋打，绕的我们两口子时常因为婆家的事吵架！2016 年的时候儿子出"
+          ]
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "mixed",
+          "got": "negative",
+          "verdict": "partial",
+          "note": "期望 mixed，作答 negative",
+          "basis": "流年甲辰辰戌冲 Y.b 与庚戌运支，甲木印星生火，e012 戌丑刑动火库",
+          "real_events": [
+            "）也不知道自己的前途在哪里！总感觉自己的命运和国运和股票深深的勾连！希望股票能起来吧！希望中华民族再"
+          ]
+        }
+      ],
+      "correct": 4,
+      "incorrect": 1,
+      "partial": 2,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
-      "status": "no_answer",
-      "probe_years": 7
+      "rows": [
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "流年丙戌财星透干，e010 卯戌合火成财局，乙丑运丑戌刑开 H.b 火库",
+          "real_events": [
+            "凶,摔跤，手术失败可能瘫痪，得老医生帮助骨置换成功"
+          ]
+        },
+        {
+          "year": 2007,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年丁亥亥亥自刑（e007 引动），比劫夺财，D.s 癸克丁火财星",
+          "real_events": []
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "流年己亥亥亥自刑（e007），己土官星透干被卯木克，e010 卯戌合火未变",
+          "real_events": [
+            "凶,肺结节手术其他信息: 职业：国企职业经理人 身价年收入: 50 万 出身: 医生，** 健康情况"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年庚子子卯刑 D.b 夫妻宫，庚金生水助旺，e009 亥卯半合被水夺",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "丁卯运卯木伏吟 D.b，e008/e009 亥卯半合木局成，e010 卯戌合火",
+          "real_events": [
+            "吉,跳槽后升职，加薪"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年癸卯比肩透干夺财，卯木伏吟 D.b 与运支，e010 卯戌合火未变",
+          "real_events": []
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年甲辰卯辰穿 D.b 与丁卯运支，辰戌冲 H.b，e010 卯戌合被冲开",
+          "real_events": [
+            "凶,得赏识，频繁出差，工作辛苦收获少"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 1,
+      "partial": 1,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 2
     }
   ],
   "summary": {
-    "recorded_correct": 0,
-    "recorded_incorrect": 0,
-    "recorded_partial": 0,
-    "recorded_undetermined": 0,
-    "accuracy": null,
-    "control_years": 0,
-    "control_false_positive": 0,
-    "control_false_positive_rate": null
+    "recorded_correct": 16,
+    "recorded_incorrect": 8,
+    "recorded_partial": 8,
+    "recorded_undetermined": 19,
+    "accuracy": 0.6666666666666666,
+    "control_years": 19,
+    "control_false_positive": 9,
+    "control_false_positive_rate": 0.47368421052631576
   },
   "notes": [
     "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",
