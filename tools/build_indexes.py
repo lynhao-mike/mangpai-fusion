@@ -514,6 +514,13 @@ def extract_deep_extract(school):
                 "candidate_score": None,
                 "raw_file": raw_file,
             }
+            # anchor_span：合并型条目的内容跨多行（如 line:284-301），
+            # 仅用首行锚点会漏检。格式 `line:A-B`，与 extraction_validator
+            # 的搜索窗口约定一致。query_theory 的 record 白名单不含此字段，
+            # 故它只落在 index.yaml，供复核与人工回溯使用。
+            span = str(it.get("anchor_span") or "").strip()
+            if span:
+                out[rid]["anchor_span"] = span
             if src_path:
                 out[rid]["extract_file"] = rel
     return out
@@ -578,6 +585,8 @@ def write_yaml(rules, output_path):
                 fp.write(f'    raw_file: "{yaml_escape(r["raw_file"])}"\n')
             if r.get("extract_file"):
                 fp.write(f'    extract_file: "{yaml_escape(r["extract_file"])}"\n')
+            if r.get("anchor_span"):
+                fp.write(f'    anchor_span: "{yaml_escape(r["anchor_span"])}"\n')
             if r.get("candidate_score") is not None:
                 fp.write(f"    candidate_score: {r['candidate_score']}\n")
 

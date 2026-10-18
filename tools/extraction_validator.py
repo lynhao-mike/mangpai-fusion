@@ -96,11 +96,33 @@ def _check_one(rec: dict[str, Any]) -> tuple[str, str]:
     frag = (rec.get("verify_fragment") or "").strip()
     if not frag:
         return "SUSPECT", "缺 verify_fragment，无法机械保真"
-    lo = max(0, n - 1 - _TOLERANCE)
-    hi = min(len(lines), n + _TOLERANCE)
+
+    # anchor_span：合并型条目的内容跨多行，仅用首行 ±5 会漏检。
+    # 格式约定 `line:A-B`（B ≥ A）。给了 span 就以 span 为搜索窗口，
+    # 但仍校验 A 与 raw_anchor 的 N 一致（避免 span 与锚点各说各话）。
+    span = str(rec.get("anchor_span") or "").strip()
+    if span:
+        sm = re.fullmatch(r"line:(\d+)\s*-\s*(\d+)", span)
+        if not sm:
+            return "SUSPECT", f"anchor_span 格式非法（应为 line:A-B）: {span!r}"
+        a, b = int(sm.group(1)), int(sm.group(2))
+        if b < a:
+            return "SUSPECT", f"anchor_span 区间倒置: {span!r}"
+        if a != n:
+            return "SUSPECT", f"anchor_span 起点 {a} 与 raw_anchor {n} 不一致"
+        if b > len(lines):
+            return "FORGE", f"anchor_span 终点越界: {b}（文件共 {len(lines)} 行）"
+        lo = max(0, a - 1 - _TOLERANCE)
+        hi = min(len(lines), b + _TOLERANCE)
+        window_desc = f"anchor_span {a}-{b}±{_TOLERANCE}"
+    else:
+        lo = max(0, n - 1 - _TOLERANCE)
+        hi = min(len(lines), n + _TOLERANCE)
+        window_desc = f"±{_TOLERANCE} 行"
+
     window = "\n".join(lines[lo:hi])
     if frag not in window:
-        return "SUSPECT", f"verify_fragment 未在 ±{_TOLERANCE} 行命中: {frag[:30]!r}"
+        return "SUSPECT", f"verify_fragment 未在 {window_desc} 命中: {frag[:30]!r}"
 
     stmt = str(rec.get("statement") or "")
     if len(stmt) > 200:
