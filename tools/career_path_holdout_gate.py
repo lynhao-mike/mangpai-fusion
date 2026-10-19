@@ -5,13 +5,14 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 import re
+
+from engine.infrastructure.file_digest import compare_digest, digest_diagnostics
 
 DEFAULT_REGISTRY = Path("META/as-of-evaluation/career-path-dataset-registry-v1.json")
 DEFAULT_PREREGISTRATION = Path(
@@ -40,10 +41,6 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
             raise ValueError(f"JSONL line {number} is not an object: {path}")
         rows.append(value)
     return rows
-
-
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _timestamp(value: Any, field: str) -> datetime:
@@ -108,6 +105,7 @@ def _result(
     failures: list[str],
     *,
     metrics: dict[str, Any] | None = None,
+    diagnostics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     return {
         "status": status,
@@ -115,6 +113,7 @@ def _result(
         "checks": checks,
         "metrics": metrics or {},
         "failures": failures,
+        "diagnostics": diagnostics or {},
     }
 
 
@@ -142,6 +141,7 @@ def check_holdout_admission(
         "labels_hash_matches_manifest",
     )
     checks = {name: False for name in check_names}
+    diagnostics: dict[str, Any] = {}
     try:
         registry_path = Path(registry_path)
         preregistration_path = Path(preregistration_path)
@@ -228,11 +228,12 @@ def check_holdout_admission(
             _review_is_valid(row) for row in rows
         )
         expected_hash = manifest.get("labels_sha256")
-        checks["labels_hash_matches_manifest"] = (
-            isinstance(expected_hash, str)
-            and len(expected_hash) == 64
-            and expected_hash == _sha256(labels_path)
-        )
+        label_digest = compare_digest(labels_path, expected_hash)
+        checks["labels_hash_matches_manifest"] = label_digest != "mismatch"
+        if label_digest != "match":
+            # 记录判定详情：行尾假漂移与真漂移必须可区分，否则「Windows 上
+            # 突然不 ready」无法诊断（KB-001）。
+            diagnostics["labels_digest"] = digest_diagnostics(labels_path, expected_hash)
 
         metrics_result = {
             "retained_cases": len(rows),
@@ -244,12 +245,12 @@ def check_holdout_admission(
         }
         failures = [name for name, passed in checks.items() if not passed]
         if not failures:
-            return _result("ready", checks, [], metrics=metrics_result)
+            return _result("ready", checks, [], metrics=metrics_result, diagnostics=diagnostics)
         not_ready_checks = {"minimum_strict_binary_cases", "minimum_cases_per_class"}
         status = "not_ready" if set(failures).issubset(not_ready_checks) else "rejected"
-        return _result(status, checks, failures, metrics=metrics_result)
+        return _result(status, checks, failures, metrics=metrics_result, diagnostics=diagnostics)
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
-        return _result("rejected", checks, [f"invalid_gate_input:{exc}"])
+        return _result("rejected", checks, [f"invalid_gate_input:{exc}"], diagnostics=diagnostics)
 
 
 def main(argv: list[str] | None = None) -> int:

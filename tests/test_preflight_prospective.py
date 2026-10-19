@@ -13,9 +13,7 @@ PROSPECTIVE_INPUT = Path(
 def test_preflight_accepts_contractual_prospective_raw_input() -> None:
     result = subprocess.run(
         [sys.executable, "-m", "tools.preflight", str(PROSPECTIVE_INPUT)],
-        check=False,
-        capture_output=True,
-        text=True,
+        check=False, capture_output=True, text=True, encoding="utf-8",
     )
 
     assert result.returncode == 0, result.stdout + result.stderr

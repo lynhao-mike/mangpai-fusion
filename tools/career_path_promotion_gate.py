@@ -12,6 +12,12 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from engine.infrastructure.file_digest import (
+    MISMATCH,
+    compare_digest,
+    digest_diagnostics,
+)
+
 
 PROMOTION_REQUIREMENTS = {
     "min_holdout_cases": 30,
@@ -46,13 +52,30 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _failed_result(checks: dict[str, bool], reason: str) -> dict[str, Any]:
+def _hash_verdict(predictions_path: Path, recorded_sha: object) -> tuple[bool, str]:
+    """比对预测文件与冻结记录的 hash，区分「真漂移」与「行尾假漂移」。
+
+    返回 (passed, reason)。passed 为 False 时 reason 说明失败性质，便于门禁
+    输出可诊断信息而不是笼统的 false。
+    行尾语义见 KB-001 与 ``engine.infrastructure.file_digest``。
+    """
+    verdict = compare_digest(predictions_path, recorded_sha)
+    if verdict == MISMATCH:
+        return False, "content_mismatch"
+    # match / match_eol_normalized / match_crlf_recorded 均视为通过
+    return True, verdict
+
+
+def _failed_result(
+    checks: dict[str, bool], reason: str, diagnostics: dict[str, Any] | None = None
+) -> dict[str, Any]:
     return {
         "eligible": False,
         "requirements": dict(PROMOTION_REQUIREMENTS),
         "metrics": {},
         "checks": checks,
         "failures": [reason],
+        "diagnostics": diagnostics or {},
     }
 
 
@@ -119,21 +142,31 @@ def check_promotion_eligibility(
         "one_shot_freeze_required",
     )
     checks = {name: False for name in check_names}
+    diagnostics: dict[str, Any] = {}
 
     try:
         freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
         if not isinstance(freeze, dict):
             raise ValueError("freeze must be a JSON object")
-        checks["predictions_hash_matches_freeze"] = (
-            freeze.get("predictions_sha256") == _sha256(predictions_path)
+        hash_ok, hash_reason = _hash_verdict(
+            predictions_path, freeze.get("predictions_sha256")
         )
+        checks["predictions_hash_matches_freeze"] = hash_ok
+        diagnostics["predictions_hash_reason"] = hash_reason
+        if not hash_ok:
+            # 记录失败性质后继续计算真实指标：调用方需要可引用的 balanced_accuracy，
+            # 而不是被提前 return 丢弃成空 metrics（历史 bug：测试断言
+            # metrics["balanced_accuracy"] 时 KeyError）。可审计性优先于静默。
+            diagnostics["predictions_digest"] = digest_diagnostics(
+                predictions_path, freeze.get("predictions_sha256")
+            )
         checks["one_shot_freeze_required"] = (
             freeze.get("one_shot_freeze") is True
             if PROMOTION_REQUIREMENTS["one_shot_freeze_required"]
             else True
         )
         if not checks["predictions_hash_matches_freeze"]:
-            return _failed_result(checks, "predictions_hash_matches_freeze")
+            return _failed_result(checks, "predictions_hash_matches_freeze", diagnostics)
 
         prediction_rows = _read_jsonl(predictions_path)
         label_rows = _read_jsonl(labels_path)
@@ -146,7 +179,6 @@ def check_promotion_eligibility(
         checks["prediction_ids_match_labels"] = set(predictions) == set(labels)
         if not checks["prediction_ids_match_labels"]:
             return _failed_result(checks, "prediction_ids_match_labels")
-
         strict_ids = [case_id for case_id, truth in labels.items() if truth in _BINARY]
         truth_counts = Counter(labels[case_id] for case_id in strict_ids)
         correct = sum(predictions[case_id] == labels[case_id] for case_id in strict_ids)
@@ -239,9 +271,10 @@ def check_promotion_eligibility(
             "metrics": metrics,
             "checks": checks,
             "failures": failures,
+            "diagnostics": diagnostics,
         }
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
-        return _failed_result(checks, f"invalid_gate_input:{exc}")
+        return _failed_result(checks, f"invalid_gate_input:{exc}", diagnostics)
 
 
 def main(argv: list[str] | None = None) -> int:

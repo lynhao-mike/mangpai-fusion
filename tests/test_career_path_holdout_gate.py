@@ -95,6 +95,54 @@ def _check(paths: tuple[Path, Path, Path, Path]) -> dict:
     return check_holdout_admission(*paths)
 
 
+def test_labels_crlf_checkout_is_not_a_hash_mismatch(tmp_path: Path) -> None:
+    """标签文件被 Windows 检出成 CRLF 时，labels_hash_matches_manifest 必须仍为 True。
+
+    manifest 里记的是 LF 下的 hash；工作区行尾翻转到 CRLF 时内容完全一致，
+    不得判为标签被改（KB-001）。否则每次 Windows 检出门禁都假失败。
+    """
+    paths = _fixture(tmp_path, ["employment"] * 15 + ["entrepreneurship"] * 15)
+    manifest_path, labels_path, _, _ = paths
+    # 先把 labels 固定成 LF，再让 manifest 记录 LF hash（模拟 LF 环境下冻结）
+    lf_bytes = labels_path.read_bytes().replace(b"\r\n", b"\n")
+    labels_path.write_bytes(lf_bytes)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["labels_sha256"] = hashlib.sha256(lf_bytes).hexdigest()
+    _write_json(manifest_path, manifest)
+    recorded_lf = manifest["labels_sha256"]
+    assert recorded_lf == hashlib.sha256(labels_path.read_bytes()).hexdigest()
+    # 翻成 CRLF 后必须仍放行
+    labels_path.write_bytes(lf_bytes.replace(b"\n", b"\r\n"))
+    assert b"\r\n" in labels_path.read_bytes()
+
+    result = _check(paths)
+
+    assert result["checks"]["labels_hash_matches_manifest"] is True
+    assert result["ready"] is True
+    # 行尾一致时不写诊断噪声
+    assert result["diagnostics"].get("labels_digest", {}).get("digest_verdict") in (
+        None, "match", "match_eol_normalized"
+    )
+
+
+def test_labels_real_tampering_still_rejected_with_diagnostics(tmp_path: Path) -> None:
+    """真篡改必须继续拦截，且诊断能区分于行尾差异。"""
+    paths = _fixture(tmp_path, ["employment"] * 15 + ["entrepreneurship"] * 15)
+    manifest_path, labels_path, _, _ = paths
+    labels_path.write_text(labels_path.read_text(encoding="utf-8") + "{}\n", encoding="utf-8")
+
+    result = _check(paths)
+
+    assert result["checks"]["labels_hash_matches_manifest"] is False
+    assert "labels_hash_matches_manifest" in result["failures"]
+    diag = result["diagnostics"]["labels_digest"]
+    assert diag["digest_verdict"] == "mismatch"
+    # 三种归一化都试过仍不匹配 → 确认真漂移
+    assert diag["recorded_sha256"] != diag["actual_sha256"]
+    assert diag["recorded_sha256"] != diag["actual_sha256_lf"]
+    assert diag["recorded_sha256"] != diag["actual_sha256_crlf"]
+
+
 def test_current_repository_is_honestly_not_ready() -> None:
     result = check_holdout_admission(None, None)
 

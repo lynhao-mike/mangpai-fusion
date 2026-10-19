@@ -16,6 +16,7 @@ from typing import Any, Iterable
 from engine.asof.career_path_classifier_v3 import classify_career_path
 from engine.asof.career_relation_graph import build_career_relation_graph
 from engine.asof.career_relation_reasoner import reason_natal_career_inclination
+from engine.infrastructure.file_digest import digest_matches
 from engine.predicates.types import Bazi, GanZhi
 from tools.career_path_holdout_gate import (
     DEFAULT_PREREGISTRATION,
@@ -68,7 +69,21 @@ def _canonical(value: object) -> bytes:
 
 
 def _sha256(path: Path) -> str:
+    """记录侧：原始字节 sha256（历史记录语义，勿改为归一化）。
+
+    跨阶段比对请用 ``digest_matches``（行尾无关），见 KB-001。
+    """
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _bound_hash_matches(path: Path, recorded: object, what: str) -> None:
+    """行尾无关地校验绑定 hash；仅真漂移抛错。
+
+    冻结记录的 hash 多在 LF 下计算，Windows 检出会把文件转成 CRLF，
+    导致内容一致却误判为「制品被改动」。三种归一化皆不匹配才抛错。
+    """
+    if not digest_matches(path, recorded):
+        raise ValueError(f"{what} hash mismatch")
 
 
 def _hash_value(value: object) -> str:
@@ -251,8 +266,11 @@ def predict_competition(prepare_path: Path, blind_input_path: Path, out_path: Pa
     prepared = _read_json(prepare_path)
     if prepared.get("stage") != "prepare" or prepared.get("contract") != "case_ids_only_no_labels":
         raise ValueError("invalid prepare artifact")
-    if _sha256(Path(str(prepared["preregistration_path"]))) != prepared.get("preregistration_sha256"):
-        raise ValueError("preregistration hash mismatch")
+    _bound_hash_matches(
+        Path(str(prepared["preregistration_path"])),
+        prepared.get("preregistration_sha256"),
+        "preregistration",
+    )
     charts = {}
     for row in _read_jsonl(blind_input_path):
         case_id, pillars, dayun = _chart(row)
@@ -282,8 +300,9 @@ def freeze_predictions(
     prepared = _read_json(prepare_path)
     prereg = _read_json(preregistration_path)
     _assert_id(prereg, str(prepared.get("preregistration_id")))
-    if _sha256(preregistration_path) != prepared.get("preregistration_sha256"):
-        raise ValueError("preregistration hash mismatch")
+    _bound_hash_matches(
+        preregistration_path, prepared.get("preregistration_sha256"), "preregistration"
+    )
     rows = _read_jsonl(predictions_path)
     expected = {(case_id, model) for case_id in prepared["case_ids"] for model in MODEL_IDS}
     actual = {(row.get("case_id"), row.get("model_id")) for row in rows}
@@ -317,7 +336,9 @@ def reveal_labels(
 ) -> dict[str, Any]:
     """冻结完成后才绑定标签制品；再次调用 holdout gate 防止绕过准入。"""
     freeze = _read_json(freeze_path)
-    if freeze.get("stage") != "freeze" or _sha256(Path(str(freeze["predictions_path"]))) != freeze.get("predictions_sha256"):
+    if freeze.get("stage") != "freeze" or not digest_matches(
+        Path(str(freeze["predictions_path"])), freeze.get("predictions_sha256")
+    ):
         raise ValueError("invalid or tampered freeze")
     gate = check_holdout_admission(manifest_path, labels_path, registry_path, preregistration_path)
     if not gate["ready"]:
@@ -393,11 +414,13 @@ def score_competition(
     reveal = _read_json(reveal_path)
     freeze_path = Path(str(reveal["freeze_path"]))
     labels_path = Path(str(reveal["labels_path"]))
-    if _sha256(freeze_path) != reveal.get("freeze_sha256") or _sha256(labels_path) != reveal.get("labels_sha256"):
+    if not digest_matches(freeze_path, reveal.get("freeze_sha256")) or not digest_matches(
+        labels_path, reveal.get("labels_sha256")
+    ):
         raise ValueError("reveal-bound artifact hash mismatch")
     freeze = _read_json(freeze_path)
     predictions_path = Path(str(freeze["predictions_path"]))
-    if _sha256(predictions_path) != freeze.get("predictions_sha256"):
+    if not digest_matches(predictions_path, freeze.get("predictions_sha256")):
         raise ValueError("prediction hash mismatch")
     if Path(receipt_path).exists():
         raise ValueError("preregistration_id has already been scored")

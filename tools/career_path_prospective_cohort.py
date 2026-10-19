@@ -16,6 +16,8 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Sequence
 
+from engine.infrastructure.file_digest import digest_diagnostics, digest_matches
+
 DEFAULT_REGISTRY = Path("META/as-of-evaluation/career-path-dataset-registry-v1.json")
 HUMAN_ID = re.compile(r"^human-[A-Za-z0-9][A-Za-z0-9._-]*$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -46,6 +48,11 @@ def canonical_sha256(value: object) -> str:
 
 
 def _file_sha256(path: Path) -> str:
+    """记录侧：原始字节 sha256。
+
+    历史记录都用这个语义落盘，**不要改成归一化语义**，否则旧记录全部失配。
+    跨平台比对请用 ``digest_matches``（行尾无关）。
+    """
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -265,8 +272,17 @@ def _validate_intake_record(path: Path) -> dict[str, Any]:
         raise ValueError("intake schema mismatch")
     source = Path(str(record.get("source_path")))
     _reject_symlink_chain(source, "bound source path")
-    if not source.is_file() or _file_sha256(source) != record.get("source_sha256"):
-        raise ValueError("bound source hash mismatch")
+    if not source.is_file():
+        raise ValueError("bound source missing")
+    if not digest_matches(source, record.get("source_sha256")):
+        # 行尾无关地判定；仅当三种归一化都不匹配时才判为真漂移。
+        # 带上判定详情，避免 Windows 上「突然 hash mismatch」无法诊断（KB-001）。
+        diag = digest_diagnostics(source, record.get("source_sha256"))
+        raise ValueError(
+            "bound source hash mismatch (verdict={digest_verdict}); "
+            "recorded={recorded_sha256} actual={actual_sha256} "
+            "actual_lf={actual_sha256_lf} actual_crlf={actual_sha256_crlf}".format(**diag)
+        )
     safe_input = record.get("safe_input")
     if not isinstance(safe_input, dict):
         raise ValueError("safe_input is required")
@@ -522,7 +538,8 @@ def register_finalized_holdout(
         raise ValueError("only a ready finalized holdout may be registered")
     manifest_path, labels_path = Path(manifest_path), Path(labels_path)
     manifest = _read_json(manifest_path)
-    if _file_sha256(labels_path) != manifest.get("labels_sha256"):
+    if not digest_matches(labels_path, manifest.get("labels_sha256")):
+        # 行尾无关判定；真漂移才抛错（KB-001）
         raise ValueError("labels hash mismatch")
     registry = _read_json(Path(registry_path))
     if registry.get("unseen_holdout", {}).get("status") != "not_ready":

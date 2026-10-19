@@ -52,3 +52,52 @@ pytest tests/
 - 四派盲派证据与《子平真诠》《滴天髓》《穷通宝鉴》《三命通会》《千里命稿》可交叉验证，但须分清来源、适用条件与推理路径；不得用单一流派抹杀其他流派的有效证据。
 - 对格局成败、做功含义、力量取舍等需要判断的项目，结合命主问题与岁运语境说明裁决理由；保留有依据的分歧，不把检索命中或结构候选写成确定断语。
 - **举证与呈现分歧不等于骑墙和稀泥**：Agent 在展示各派依据后必须给出主次裁决与人话落点；「各有道理 / 尚难定论」视为任务未完成。
+
+## 5. Agent 协作约定
+
+### 验证命令
+
+本项目验收统一使用以下命令，退出码 0 为通过：
+
+```bash
+# 核心回归测试（范围以 pyproject.toml 的 testpaths 为准，已隔离旧实验/回测目录）
+python -m pytest -q
+
+# 显式指定被 ignore 的路径时，需覆盖 addopts
+python -m pytest tests/asof/test_daiyun_context.py -q -o addopts="-ra --tb=short"
+
+# 引擎事实入口冒烟（确定性盘面事实的唯一来源）
+python -m engine.cli all --pillars "庚申 戊寅 壬子 辛丑" --gender 乾 --json
+
+# 人话报告门禁
+python -m tools.human_touch_linter <file.md>
+```
+
+证据来源：[`pyproject.toml`](pyproject.toml) 的 `[tool.pytest.ini_options]`（testpaths 与 addopts）、[`AGENTS.md`](AGENTS.md) §2–§3、[`requirements-dev.txt`](requirements-dev.txt)。
+
+若任务产出无法用上述命令判定，为该任务写一个只依赖标准库的 `verify.py`，以退出码表达验收结果；**不得为了让命令通过而修改测试或断言**。
+
+### 保护区（不得修改，除非任务卡明确授权）
+
+- `tests/` 全部内容，尤其是 `tests/conftest.py`、`tests/fixtures/`、`tests/governance/static_isolation_*.py`（隔离性静态检查的判据本身）
+- `pyproject.toml`、`requirements.txt`、`requirements-dev.txt`
+- `theory/_ir/` 与 `sources/` 下的原文语料（只增不改，改动须走 ingestion-protocol）
+- `templates/report-v7-human.md`、`docs/analysis_human_touch.md`（引擎契约与写作规范）
+- `META/project-state.json`（机器可读状态，由维护流程更新）
+- `AGENTS.md`、`CLAUDE.md`
+- `tasks/` 下的 `PROMPT.md`（任务定义，只有中枢可写；Worker 只能写 `STATUS.md` / `BRIEF.md`）
+
+### 目录约定
+
+- 任务卡：`tasks/<ID>/PROMPT.md` 与 `tasks/<ID>/STATUS.md`
+- 简报：`tasks/<ID>/BRIEF.md`（Worker 写）
+- 插件状态：`.taskswarm/`、`.agent-teams/`，已在 `.gitignore` 中忽略
+
+### 执行规则
+
+1. **只读任务卡 `File Scope` 中列出的文件。** 需要接口定义时读对应源文件，不要 `ls` 全仓库——上下文成本是模型单价的 5–10 倍。
+2. **禁止修改测试或验收脚本使其通过。** 测试失败要改实现，不是改断言。
+3. **禁止执行 `git commit` / `checkout` / `stash` / `reset` / `clean`。** 版本操作由人工负责。
+4. **任务完成后必须更新 `STATUS.md`**，并在 Execution Log 追加一行。
+5. **发现任务卡本身有问题时**，写入 `PROMPT.md` 的 `Amendments` 段并在 `STATUS.md` 的 Blockers 记录，不要自行扩大范围。
+6. **不得心算排盘或编造干支关系、长生、空亡、神煞、起运等事实**；这类事实只从 `python -m engine.cli` 取，理论证据只从 `python -m tools.query_theory` 取。

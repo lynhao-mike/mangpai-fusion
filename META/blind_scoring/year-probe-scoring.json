@@ -1,11 +1,73 @@
 {
   "schema_version": "year-probe-scoring/v1",
-  "scored_at": "2026-10-18T03:59:24+00:00",
+  "scored_at": "2026-10-18T10:18:34+00:00",
   "cases": [
     {
       "case_id": "C-2026-RF000010-乾-乙丑己丑丁卯辛亥",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 1986,
+          "recorded": true,
+          "expected": "mixed",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 mixed，作答 neutral",
+          "basis": "出生年，未起运（大运戊子自1992起）。LN1986.s丙与H.s辛五合化水，化神克M.s己（食神），但丙生D.s同气、",
+          "real_events": [
+            "1 月 23 日 22：30，出生于湖南；2004-"
+          ]
+        },
+        {
+          "year": 1987,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "LN1987.s丁与D.s丁同气帮身，丁生M.s己、丁克H.s辛（制用神偏财得手）；LN1987.b卯与H.b亥三合木局",
+          "real_events": []
+        },
+        {
+          "year": 2008,
+          "recorded": true,
+          "expected": "mixed",
+          "got": "negative",
+          "verdict": "partial",
+          "note": "期望 mixed，作答 negative",
+          "basis": "LN2008.s戊与H.s辛相生，戊又生助运干丁，流年伤官加力；LN2008.b子破D.b卯（duan 系统）并刑卯，D",
+          "real_events": [
+            "本科，2008-"
+          ]
+        },
+        {
+          "year": 2009,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "LN2009.s己与D.s丁同性相生（食神得用），己土制H.s辛（偏财）为制用之功，且己坐丑双丑有根；LN2009.b丑",
+          "real_events": []
+        },
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "LN2011.s辛与Y.s乙天克地冲（乙辛相冲又相克），Y.s乙为体用偏印、D.s丁之原神，印星被流年偏财盖头克尽；LN",
+          "real_events": [
+            "硕士。毕业后任职央企研究院，收入尚可，但无官职。2009 年丧父，2017 年结婚，但尚无子嗣。请老"
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 1,
+      "partial": 2,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
@@ -1139,8 +1201,73 @@
     },
     {
       "case_id": "C-2026-RF000311-坤-癸未戊午庚申丁亥",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年丙透干直克D.s庚（七杀克身，丙生M.s戊之链被原局戊癸合分流，化火力在H.s丁，杀无真通关）；流年申填实D.b申构",
+          "real_events": [
+            "吉,2015 年 2016 年左右，学习突然变好，老全校第三，家里也换了新房子住，2015 到"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年丁透出为夫星临位（H.s丁），与运干己相生（己生丁），印制伤官留官即化解癸丁相冲（M2-Y-258化解二法之伤官配印",
+          "real_events": []
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年戊与Y.s癸五合化火、化神透H.s丁（huashen火，午月火当令、化神透干），印星合伤官之力转而生官；流年戌与M.",
+          "real_events": [
+            "三年持续班里前几名的好成绩",
+            "凶,精神出问题，其他信息: 职业：大四学生 健康情况: 骨盆，腰椎，倾斜，腰腿疼痛 性格特点: 脾气"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年亥与H.b亥伏吟自刑（食神宫自刑），且「M.b午暗合H.b亥」引动丁壬之合——夫星丁被流年亥中壬合走（配偶宫与配偶星",
+          "real_events": [
+            "凶,精神混乱出问题"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年庚与D.s庚、DY2.s庚三庚同气，比劫之势压过H.s丁官星（原局印比主气2位、官杀主气1位，流年庚子再加一重，比劫",
+          "real_events": [
+            "凶,精神问题严重，成绩下降，害怕见人"
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 1,
+      "partial": 0,
+      "undetermined": 1,
+      "control_years": 1,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000353-坤-丙寅辛卯壬申戊申",
@@ -1473,8 +1600,82 @@
     },
     {
       "case_id": "C-2026-RF000365-坤-辛巳壬辰辛丑癸巳",
-      "status": "no_answer",
-      "probe_years": 6
+      "rows": [
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年丁透出与原局三处形成克制链——丁克D.s辛、丁克M.s辛、丁克H.s癸（流年两丁相见），官杀克体无制；地支流年酉与原",
+          "real_events": [
+            "凶,父亲**去世，妈妈身体状况很差"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年戌冲M.b辰（辰戌冲）动月令印库，辰戌两字相对、group_full=false，不引丑戌未三刑之M2-Y-383；",
+          "real_events": []
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年亥冲Y.b巳与H.b巳两处（巳亥冲），官星之根被直冲——年支与时支并见官星、双根同冲，是流年对该边的实质加力（非原局",
+          "real_events": [
+            "凶,高考失利，少考了几十分，从 640 多掉到 580 左右，很崩溃"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年庚与D.s辛、Y.s辛同气，比劫三现；运干甲与流年庚天克地冲（甲庚冲），甲木正印被流年庚金盖头克尽——日主之原神被克",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "壬癸之病集中在流年——但2023流年癸与原局Y.s癸、H.s癸三癸同气（食伤透干三现），癸克官星：癸克M.b巳中丙、癸克",
+          "real_events": [
+            "吉,研究生保送了高中梦校，得到了一个性价比很高的研究生项目录取"
+          ]
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——运干甲坐午得官生、流年甲与运干甲同气（甲甲相见），印星之势在运级延续，且流年辰与M.b辰自",
+          "real_events": [
+            "吉,出国公派录取"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 1,
+      "partial": 1,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000373-乾-丙子庚子辛巳己亥",
@@ -2263,13 +2464,222 @@
     },
     {
       "case_id": "C-2026-RF000421-坤-甲申丙寅己巳己巳",
-      "status": "no_answer",
-      "probe_years": 10
+      "rows": [
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年辛透干与Y.s甲及DY1.s乙成乙辛冲（乙辛相冲），官杀之根的甲被冲；关键在地支——申寅巳三刑成 full（原局三字",
+          "real_events": [
+            "凶,不咋样，老师不太喜欢我，给我安排在角落里"
+          ]
+        },
+        {
+          "year": 2012,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年壬为财星透出，壬可通关「乙庚/甲乙」之克，且乙运乙干被壬生，杀星被化；流年辰与寅成寅卯",
+          "real_events": [
+            "凶,和同桌吵架，其实我也记不清了，就是很敏感，有些自卑"
+          ]
+        },
+        {
+          "year": 2013,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年巳与Y.b申、D.b巳、H.b巳构成申巳合刑并见——流年巳填实H.b本宫伏吟，同时引动原局申巳相刑（group_fu",
+          "real_events": [
+            "吉,遇到了一个好老师，她非常肯定并且鼓励我，然后我就渐渐有了很多信心，成绩上坡"
+          ]
+        },
+        {
+          "year": 2014,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年甲与Y.s甲同气，甲官两现并生日主之链（甲生丙→丙生己），印星通关官星之力成立；流年午与D.b巳、H.b巳会巳午火局",
+          "real_events": []
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年戊与Y.s甲相克（甲戊相克），官星被伤官盖头（戊为甲之偏官/七杀位，克官之物）；流年戊与DY1.s乙相克，运干七杀被",
+          "real_events": [
+            "吉,早恋与一个特别高的男生，分手了，谈了一个星期被举报了。最后发愤图强，考的非常好",
+            "高，一星期分"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "换甲子运，运干甲官与Y.s甲同气，官星得力；流年己与D.s己、H.s己三己同气，群比助身可担官；流年亥与M.b寅六合化木",
+          "real_events": [
+            "凶,一般般，自主招生考试非常不好，中考一般，平时水平偏下，但结果还行",
+            "不高，好像上高中就分了，具体细节没印象了，感觉这些都不太记得了子女情况: 不知道 性格特点: 比较守"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年庚与DY2.s甲、Y.s甲双双相冲（甲庚冲×2），官星两现被流年庚金盖头克尽；地支流年子与运支子同气相重，申子合水局",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年壬与M.s丙天克地冲（丙壬冲）直克印星——印为体用之源、名分之星，被流年财盖头；地支流年寅与原局M.b寅伏吟自刑（寅",
+          "real_events": [
+            "吉,口舌，高考满意，211"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年卯与DY2.b子相辅（子水生卯木），卯木为官之原神，且卯与Y.b申暗合（庚乙合）合绊伤",
+          "real_events": [
+            "吉,下半年**工作做的不错，很受同学欢迎，成绩可以"
+          ]
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年甲与DY2.s甲、Y.s甲三甲同气，官星气势汇聚；甲己合化神虽仍competitive（H.s己、D.s己争合），但",
+          "real_events": [
+            "吉,口舌，成绩很好，有贵人老师提拔，晋升了变成了小委员其他信息: 职业：学生 身价年收入: 无 出身"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 4,
+      "partial": 2,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000462-乾-辛巳乙未壬午丁未",
-      "status": "no_answer",
-      "probe_years": 7
+      "rows": [
+        {
+          "year": 2007,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年亥与DY2.b午暗合（丁壬相合）看似救应，实为亥中壬被午中丁合走；关键在地支——原局巳午未火局 full（group",
+          "real_events": [
+            "凶,",
+            "凶,2007 年左右胳膊摔断打了 4 个钢钉 当时摔的挺严重的，也是那个年份左右爷爷肺癌去世（后爷爷"
+          ]
+        },
+        {
+          "year": 2008,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——流年子为壬之根（阳刃），子水冲DY2.b午（午子冲）破火局之旺势，火势被削则日主得舒；且流",
+          "real_events": []
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "换运后关键在运干癸——癸壬同气帮身，日主终于有根可担原局之旺财；地支流年酉与DY3.b巳成巳酉半合金局（center_p",
+          "real_events": [
+            "凶,2017 年上学期 不想上学 想辍学打工，下半年家里不同意，留了一次级，继续上学 2022 年下"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年戌与M.b未、H.b未成丑戌未之刑不成立（缺丑）——仅两字：未戌相刑（group_full=false）、未戌相破（",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年庚与M.s乙五合化金（乙庚合化金），化神金克D.s壬——huashen_ke_stems 明列 D.s，即合出之物攻",
+          "real_events": [
+            "凶,2020 年谈了个对象，24年上 3 月份分的手，那天正好是在一起 4 周年其他信息"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年辛与M.s乙相冲（辛乙冲）为原局常态边，但同柱流年辛与D.s壬相生（辛生壬）——印星直接生日主，且辛坐丑库有根；运干",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年壬与D.s壬同气、与运干癸同气，比劫之势汇聚，帮身担财之力达癸巳运之顶峰；丁壬合化木（",
+          "real_events": [
+            "凶,20222023 2024 这几年出入社会感觉非常不顺 工作找不到好的，干一段时间就离职没有超过"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 1,
+      "partial": 1,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 1
     },
     {
       "case_id": "C-2026-RF000478-乾-己卯乙亥乙丑辛巳",
@@ -2730,8 +3140,116 @@
     },
     {
       "case_id": "C-2026-RF000537-乾-乙亥乙酉甲子丙寅",
-      "status": "no_answer",
-      "probe_years": 9
+      "rows": [
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年丙与H.s丙同气、食神之气得助，丙再生M.s乙/D.s甲之链（甲→丙→？实为丙为食神泄",
+          "real_events": [
+            "凶,父亲脑基底动脉瘤发病，北京上海各医院均无法手术，全身瘫痪"
+          ]
+        },
+        {
+          "year": 2007,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年亥与Y.b亥伏吟自刑（亥亥自刑），印星之根自刑受伤；运支申与流年亥相害（申亥相穿，M2-Y-190申亥穿为生穿：主腰",
+          "real_events": []
+        },
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年辛与M.s乙、Y.s乙双双相冲（乙辛冲×2），群比被官杀盖头克——辛为甲之官星（甲之官为辛），官杀现而群比受制，本应",
+          "real_events": [
+            "凶,父亲病发去世"
+          ]
+        },
+        {
+          "year": 2012,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "换运后运干癸生M.s乙、Y.s乙、D.s甲——印星生比劫之链成立（水生木），群比得源；流年壬与运干癸同气，印之势汇聚，壬",
+          "real_events": []
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "流年丁与H.s丙同气（食伤之气势延续），群比（乙乙甲）得食伤泄秀则不壅塞——泄秀非相克，是指比劫之气有出路而非互相争塞；",
+          "real_events": [
+            "凶,成都传媒学院摄影专业二本毕业，实习摄影助理两月，剧组亏损，没有拿到工资"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年戊与运干癸五合化火（戊癸合化火），化神火为食伤——合去的是运干之印（本来生群比之源），印被合走则群比失源；且月支酉中",
+          "real_events": [
+            "凶,工作状态不稳定，一直在小媒体公司断断续续，收入低"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年己与D.s甲五合化土（甲己合化土），甲日主合财，且己坐H.b亥为财之地、有根；运干癸克",
+          "real_events": [
+            "吉,从成都来深圳，小公司做市场运营，收入略增"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年庚与M.s乙、Y.s乙双双五合化金（乙庚合化金，两条 competitive），群比被合去；机检 attrs 明列 ",
+          "real_events": []
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年辛与M.s乙、Y.s乙双双相冲（乙辛冲×2），群比被官星盖头冲克——辛为甲之正官，官星透而群比受冲；地支运支未与流年",
+          "real_events": [
+            "吉,偶然机会，转行至 IT 软件行业，乙方身份，服务国企运维好岗位，边干边学"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 2,
+      "partial": 2,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000548-坤-己卯辛未壬申丁未",
@@ -2872,8 +3390,139 @@
     },
     {
       "case_id": "C-2026-RF000576-坤-乙亥戊寅己巳丙寅",
-      "status": "no_answer",
-      "probe_years": 11
+      "rows": [
+        {
+          "year": 2008,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：流年戊与Y.s乙相克（乙木克戊土），七杀与流年劫财直接相抗、杀星之克未得化解；地支流年子与D.",
+          "real_events": [
+            "凶,2008 年比较压抑，内心有情绪没有抒发渠道，跟朋友说我**相处不适，没有被理解，初中成绩班级中"
+          ]
+        },
+        {
+          "year": 2009,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年己与D.s己、DY1.s己三己同气，群比助身可担；运支卯与流年丑暗合（甲己、丙辛、戊癸",
+          "real_events": [
+            "凶,2009 年 9 月刚开学跟特长生同学说，学了一学期声乐后续 11 年 9 月分新班级时放弃学了"
+          ]
+        },
+        {
+          "year": 2010,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年庚与Y.s乙五合化金（乙庚合化金），机检 attrs 明列 huashen_ke_stems=[H.s]——合化之金",
+          "real_events": []
+        },
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年辛与Y.s乙相冲（乙辛冲），七杀被冲而解其对日主之克；地支运支卯与Y.b亥成亥卯半合木",
+          "real_events": [
+            "9 月新学期主动举手做了一年团支书，分在一个班主任比较关心，同学情谊比较多，气氛比较活跃的班级，选择",
+            "开始下焦不通（差不多这个年份）视力：2003 左右年份弱视-2011 年痊愈-14 年左右近视-后续"
+          ]
+        },
+        {
+          "year": 2012,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "换运后运支辰与原局H.b寅、前运之卯成寅卯辰三合木局 full（机检 attrs group_full=true），木局",
+          "real_events": []
+        },
+        {
+          "year": 2013,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：M.s戊与流年癸五合化火，attrs huashen_stem_tou=[H.s丙]、mont",
+          "real_events": [
+            "吉,2013 年复读一年考试成绩与 12 年考的分数差不多，10 分左右，录取了也是差不多的学校"
+          ]
+        },
+        {
+          "year": 2014,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年甲与D.s己五合化土（甲己合化土），机检 attrs：huashen_stem_tou=[M.s戊]、huashen",
+          "real_events": []
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：Y.s乙生LN.s丁（乙木生火），七杀生印、印生身之链完整；H.s丙与LN.s丁同气（丙丁同为",
+          "real_events": [
+            "吉,2017.3-2019.3 6 月毕业，在在亲戚公司文员+出纳工作；17 年 9 月遇到了 92"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年戌与运支辰相冲（辰戌冲）——辰为寅卯辰木局 full 之一，冲辰则 full 之势破，印星之源被断；且流年戌为火库，",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：Y.s乙与LN.s庚五合化金，attrs huashen_stem_tou=[DY2.s庚]、",
+          "real_events": [
+            "吉,20 年庚子年换了 2 个行业岗位都不同、最终进入的公司不顺更多，工资都较低、10 月领导欺凌"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：Y.s乙与LN.s辛相冲（乙辛相冲、辛克乙），破了乙庚合化金之合杀结构，七杀复出；地支流年丑与",
+          "real_events": [
+            "吉,21 年调整了心态，踏实为主；住房收入、支出开始按自己开始精细些的规划了，虽然也是负债。21 年"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 3,
+      "partial": 2,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000595-乾-癸酉壬戌壬申丙午",
@@ -3421,18 +4070,194 @@
     },
     {
       "case_id": "C-2026-RF000715-坤-癸亥癸亥癸卯癸丑",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 2005,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年酉与H.b丑三合金局 full（丑酉半合，中神酉现、center_present=tr",
+          "real_events": [
+            "吉,离开原生家庭，南下开启自我人生"
+          ]
+        },
+        {
+          "year": 2006,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年戌与H.b丑相刑（丑戌刑，group_full=false，两字刑）——刑开杀库，丑中己土七杀出库；更关键在原局库多",
+          "real_events": []
+        },
+        {
+          "year": 2010,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "流年庚与DY2.s乙五合化金（乙庚合化金），化神金为印——此盘最缺者印（财0、印仅丑中辛余气），合化出印即补全局之缺；且",
+          "real_events": [
+            "吉,年底移民外国，从此往后都**居住"
+          ]
+        },
+        {
+          "year": 2011,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "negative",
+          "verdict": "undetermined",
+          "note": "⚠️ 误报倾向：对无记录年断凶",
+          "basis": "流年辛与DY2.s乙相冲（乙辛冲）——破了2010年乙庚合化金之印；且辛生群比（辛生癸）反增壅塞，群比四癸无泄（H.s丙",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "换运后运干丙为正财——此盘财星0之局突现一财，群比（四癸双亥）见财必争（M2-Y-302劫财见财：不仅破财还有小人搅局；",
+          "real_events": [
+            "吉,收入增加，工作顺利"
+          ]
+        }
+      ],
+      "correct": 1,
+      "incorrect": 1,
+      "partial": 1,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 2
     },
     {
       "case_id": "C-2026-RF000742-乾-癸未乙卯丙戌己亥",
-      "status": "no_answer",
-      "probe_years": 4
+      "rows": [
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "流年庚透干与M.s乙五合化金（huashen金），化神金克D.s丙——huashen_ke_stems 明列 D.s，即",
+          "real_events": [
+            "吉,学业进步，年级前十"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "流年辛与D.s丙五合化水（丙辛合化水），化神水为官星、流年支丑为金库（辛之根在丑中），且运支丑同气——原局官星主气在H.",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——流年壬与Y.s癸同气官星，官杀双透本可论名分之应，且流年寅与M.b卯会木局 partial",
+          "real_events": [
+            "凶,抑郁，学业退步，社交出问题"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "流年癸与Y.s癸同气官星，并与D.b戌无冲；关键在地支——流年卯与M.b卯两卯相见，引动「H.b亥×D.s/D.b/D.",
+          "real_events": [
+            "凶,抑郁，精神不好其他信息: 职业：学生 出身: 父母老师 健康情况: 近两年胃不好，精神有些问题 "
+          ]
+        }
+      ],
+      "correct": 0,
+      "incorrect": 2,
+      "partial": 1,
+      "undetermined": 1,
+      "control_years": 1,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000793-乾-甲申丙子己巳辛未",
-      "status": "no_answer",
-      "probe_years": 5
+      "rows": [
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：流年戊与Y.s甲相克（甲木克戊土），且戊生H.s辛（土生金）助食神——食神辛得流年戊之生，辛又",
+          "real_events": [
+            "凶,8 月中旬，父亲因钱财事物与此人发生纠葛在家打架，被其殴打去世"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "机检 liunian 边：流年己与Y.s甲五合化土，attrs huashen_stem_tou=[D.s己]、comp",
+          "real_events": []
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检寅巳申三刑 full（group_full=true）且申寅相冲——运支寅直接冲Y.b申、刑D.b巳（机检：DY.b",
+          "real_events": [
+            "凶,艺考去外地集训被老师谩骂，同学排挤背刺 选曲不当，压力太大，考前阳了艺考失利，差投档一分，回去高"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——机检：H.b未与LN.b卯成亥卯未半合局（实为卯未半合、中神卯现于LN，center_pr",
+          "real_events": []
+        },
+        {
+          "year": 2024,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：LN.s甲与D.s己五合化土（甲己合化土），attrs huashen_stem_tou=[D",
+          "real_events": [
+            "吉,累，但有收获，班委竞选被压一头，但得民心拿到小班委，jiang 学金助学金，有小人与流言，但自己"
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 0,
+      "partial": 0,
+      "undetermined": 2,
+      "control_years": 2,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000868-乾-壬申戊申庚辰丁亥",
@@ -3658,8 +4483,176 @@
     },
     {
       "case_id": "C-2026-RF000877-乾-丙寅庚子乙巳己卯",
-      "status": "no_answer",
-      "probe_years": 14
+      "rows": [
+        {
+          "year": 2006,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 dayun 边：DY.s壬与M.s丙相冲又相克（丙壬冲、壬丙互克）——运干印星被原局伤官盖头克；机检 liunia",
+          "real_events": [
+            "吉,高考二本，算正常发挥吧"
+          ]
+        },
+        {
+          "year": 2007,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun+liunian 边：DY.s壬与LN.s丁五合化木（wuhe attrs",
+          "real_events": []
+        },
+        {
+          "year": 2008,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "机检 liunian 边：M.s丙生LN.s戊（丙火生戊土）——伤官生财，财星戊得流年之助；LN.s戊与DY.s壬相克（",
+          "real_events": []
+        },
+        {
+          "year": 2009,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——机检 liunian 边：M.s庚与LN.s己成 sheng 边（土生金），官星庚得流年己",
+          "real_events": []
+        },
+        {
+          "year": 2014,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun 边：DY.s癸克M.s丙（癸丙之克，水克火）——印制伤官，伤官不再克官星",
+          "real_events": [
+            "吉,换工作，工资翻倍，入职中韩合资企业，负责软件开发，但公司中国人和韩国人矛盾重重，干了一年就走了"
+          ]
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：LN.s乙与D.s乙同气（乙乙相见），比肩帮身之力增；机检 dayun 边：DY.s癸生LN.",
+          "real_events": [
+            "吉,上半年买房，下半年结婚，过程有些曲折，结果还算不错。下半年被朋友忽悠去合作开公司，辛苦，发展不如"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：Y.b寅与LN.b申相冲（寅申冲）且相刑（机检另列寅巳申三刑 full，group_full=",
+          "real_events": [
+            "吉,之前的中韩合资公司又请我回去担任开发经理，工资涨到 14k，回去重新组建了团队。但公司内斗问题依"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "positive",
+          "got": "positive",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：LN.s丁与D.s乙相生（乙木生丁火）——比劫生食伤，秀气之机在日主自身；且 LN.s丁与M.",
+          "real_events": [
+            "吉,跳槽去了家***，工资 18k，做软件开发"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 positive，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun+liunian 边：DY.s癸与LN.s戊五合化火（wuhe attrs",
+          "real_events": [
+            "吉,女儿出生，新公司首款产品面世，收到了一致好评"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 liunian 边：LN.s己被D.s乙所克（乙己之克，木克土）为日主制财，财星己为",
+          "real_events": [
+            "凶,公司重大危机，裁员，因为手里有项目，算是留了下来"
+          ]
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "机检 dayun 边：DY.b辰与Y.b寅、DY.b卯（前运已退、以 H.b卯 并观）成寅卯辰三合木局 full（机检 ",
+          "real_events": [
+            "凶,工作起色不大，较平稳。父亲在家盖房把脚据断了，花了十几万接好"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：LN.s辛与D.s乙相冲又相克（乙辛相冲、辛克乙）——日主被流年七杀盖头直克；且 LN.s辛与",
+          "real_events": [
+            "吉,调任小部门领导，加薪到 30K，到上海买房"
+          ]
+        },
+        {
+          "year": 2022,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun 边：寅卯辰木局 full 之势延续（DY.b辰×Y.b寅×H.b卯，gr",
+          "real_events": [
+            "凶,吉中带凶，公司战略转移，团队解散，准备辞职，老板不让走，调去武汉负责新团队组建，带新团队顺利完成"
+          ]
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun+liunian 边：DY.b辰与LN.b卯、Y.b寅、H.b卯成寅卯辰三",
+          "real_events": [
+            "凶,受领导**排挤，调去负责不靠谱的项目，11 月份，主动申请裁员，拿了一笔钱走人。一周后去北京朋友"
+          ]
+        }
+      ],
+      "correct": 2,
+      "incorrect": 4,
+      "partial": 5,
+      "undetermined": 3,
+      "control_years": 3,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
@@ -4019,8 +5012,163 @@
     },
     {
       "case_id": "C-2026-RF000986-乾-己巳庚午己酉戊辰",
-      "status": "no_answer",
-      "probe_years": 13
+      "rows": [
+        {
+          "year": 2008,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：LN.s子与M.b午相冲（午子冲）——午为偏印本宫被直冲；LN.b子与D.b酉相破（酉子破 c",
+          "real_events": [
+            "凶,高考不到 300 分，一度迷茫，同年被一个很烂的大专录取，学习中医"
+          ]
+        },
+        {
+          "year": 2009,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "机检 liunian 边：LN.b丑与Y.b巳成巳酉丑三合金局 full（机检 attrs：巳丑半合 center_pr",
+          "real_events": []
+        },
+        {
+          "year": 2011,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：LN.b卯与D.b酉相冲（卯酉冲）——食神本宫被直冲；LN.b卯与M.b午相破（午卯破 cla",
+          "real_events": [
+            "吉,考上专升本，进入中医药大学学习中医",
+            "吉,毕业就在学校工作，且在外坐诊，收入稳定"
+          ]
+        },
+        {
+          "year": 2012,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——机检：LN.b辰与D.b酉六合化金（酉辰合金），食神本宫得合，秀气有护；且流年壬被DY.s",
+          "real_events": []
+        },
+        {
+          "year": 2014,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "机检 liunian 边：LN.s甲与D.s己五合化土、与Y.s己五合化土（两条 wuhe，attrs huashen_",
+          "real_events": [
+            "凶,得了很严重的咽喉疾病，看了十几位医生都没有效果，痛苦难受，但是不知道为何同年高分考上研究生"
+          ]
+        },
+        {
+          "year": 2015,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：M.s庚与LN.s乙五合化金（乙庚合化金），attrs huashen_ke_stems=[D",
+          "real_events": [
+            "凶,咽痛持续，痛不欲生，自觉生活无望，但是不知道为何考到了医师证"
+          ]
+        },
+        {
+          "year": 2016,
+          "recorded": true,
+          "expected": "negative",
+          "got": "negative",
+          "verdict": "correct",
+          "note": "",
+          "basis": "机检 liunian 边：LN.b申与Y.b巳成巳申合刑并见（巳申六合化水 + 巳申相破 classic + 巳申相刑 ",
+          "real_events": [
+            "凶,突发重度焦虑症住院，以为自己要去世"
+          ]
+        },
+        {
+          "year": 2017,
+          "recorded": true,
+          "expected": "negative",
+          "got": "positive",
+          "verdict": "incorrect",
+          "note": "期望 negative，作答 positive",
+          "basis": "机检 liunian 边：LN.b酉与Y.b巳成巳酉半合金局（机检 attrs：center_present=true，",
+          "real_events": [
+            "凶,焦虑持续，吃药控制，同年硕士毕业去了某体制内医院上班，但是因为工作安排不合理，愤怒辞职，回家待业"
+          ]
+        },
+        {
+          "year": 2018,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：LN.b戌与M.b午成寅午戌半合火局（机检 attrs：center_present=true",
+          "real_events": [
+            "吉,考上了博士，身体情况转好，年底认识了现在的爱人"
+          ]
+        },
+        {
+          "year": 2019,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "neutral",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun+liunian 边：DY.b卯与LN.b亥成卯亥半合木局（机检 attr",
+          "real_events": []
+        },
+        {
+          "year": 2020,
+          "recorded": true,
+          "expected": "positive",
+          "got": "negative",
+          "verdict": "incorrect",
+          "note": "期望 positive，作答 negative",
+          "basis": "机检 liunian 边：LN.b子与M.b午相冲（午子冲）——偏印本宫被直冲；LN.b子与D.b酉相破（酉子破 cla",
+          "real_events": [
+            "吉,结婚，但是同年被骗了 10 几万，而且那年心脏不舒服，但是有**可以赚钱"
+          ]
+        },
+        {
+          "year": 2021,
+          "recorded": false,
+          "expected": "undetermined",
+          "got": "positive",
+          "verdict": "undetermined",
+          "note": "对照年（反馈无记录），不计对错",
+          "basis": "机检 liunian 边：LN.b丑与Y.b巳、D.b酉成巳酉丑三合金局 full（机检 attrs：center_pr",
+          "real_events": []
+        },
+        {
+          "year": 2023,
+          "recorded": true,
+          "expected": "negative",
+          "got": "neutral",
+          "verdict": "partial",
+          "note": "期望 negative，作答 neutral",
+          "basis": "双侧正查：①若判吉最强证据——机检 dayun 边：DY.b寅与M.b午成寅午半合火局（机检 attrs：center_",
+          "real_events": [
+            "凶,姥爷去世，爱人回老家工作，开始分居"
+          ]
+        }
+      ],
+      "correct": 3,
+      "incorrect": 5,
+      "partial": 1,
+      "undetermined": 4,
+      "control_years": 4,
+      "control_false_positive": 0
     },
     {
       "case_id": "C-2026-RF000990-乾-庚午己丑戊寅癸亥",
@@ -4232,14 +5380,14 @@
     }
   ],
   "summary": {
-    "recorded_correct": 115,
-    "recorded_incorrect": 95,
-    "recorded_partial": 35,
-    "recorded_undetermined": 89,
-    "accuracy": 0.5476190476190477,
-    "control_years": 89,
-    "control_false_positive": 33,
-    "control_false_positive_rate": 0.3707865168539326,
+    "recorded_correct": 137,
+    "recorded_incorrect": 120,
+    "recorded_partial": 53,
+    "recorded_undetermined": 118,
+    "accuracy": 0.5330739299610895,
+    "control_years": 118,
+    "control_false_positive": 43,
+    "control_false_positive_rate": 0.3644067796610169,
     "same_person_groups": {
       "1988-12-04": [
         "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
@@ -4250,11 +5398,11 @@
         "C-2026-RF000715-坤-癸亥癸亥癸卯癸丑"
       ]
     },
-    "dedup_correct": 112,
-    "dedup_incorrect": 95,
-    "dedup_accuracy": 0.5410628019323671,
-    "dedup_control_years": 87,
-    "dedup_control_false_positive": 32
+    "dedup_correct": 133,
+    "dedup_incorrect": 119,
+    "dedup_accuracy": 0.5277777777777778,
+    "dedup_control_years": 114,
+    "dedup_control_false_positive": 40
   },
   "notes": [
     "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",

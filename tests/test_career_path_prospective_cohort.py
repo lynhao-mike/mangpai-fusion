@@ -152,6 +152,54 @@ def test_candidate_manifest_detects_source_hash_tampering_and_preserves_order(tm
         build_candidate_manifest([first], cohort_id="cohort-1", registry=_registry())
 
 
+def test_bound_source_survives_windows_crlf_checkout(tmp_path: Path) -> None:
+    """绑定源文件被 Windows 检出成 CRLF 时不得判为篡改（KB-001）。
+
+    记录侧存的是 LF 下的 hash；工作区行尾翻转到 CRLF 时内容完全一致，
+    必须放行。否则每次 Windows 检出都会让 cohort 校验失败。
+    """
+    payload = _intake("U-2026-001", sex="坤")
+    source = tmp_path / "U-2026-001.json"
+    # 多行 LF 形式，便于验证行尾翻转（单行 JSON 无换行则无法测）
+    source.write_bytes(
+        (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    )
+    first = tmp_path / "U-2026-001.intake.json"
+    intake_candidate(source, first, registry=_registry(), write=True, ingested_at="2026-07-31T12:00:00Z")
+
+    lf_bytes = source.read_bytes()
+    assert b"\r\n" not in lf_bytes, "fixture 必须先归一化为 LF"
+    recorded_lf = hashlib.sha256(lf_bytes).hexdigest()
+    assert json.loads(first.read_text(encoding="utf-8"))["source_sha256"] == recorded_lf, (
+        "记录侧不是 LF hash；本测试无法验证 match_eol_normalized 分支"
+    )
+    # 翻成 CRLF，模拟 Windows 检出
+    source.write_bytes(lf_bytes.replace(b"\n", b"\r\n"))
+    assert b"\r\n" in source.read_bytes()
+
+    manifest = build_candidate_manifest([first], cohort_id="cohort-1", registry=_registry())
+    assert manifest["case_ids"] == ["U-2026-001"]
+
+
+def test_bound_source_crlf_recorded_also_survives_lf_checkout(tmp_path: Path) -> None:
+    """反向：记录侧存 CRLF hash、工作区是 LF，同样必须放行。
+
+    行尾差异有两个方向，只归一化一个方向会漏（KB-001 教训 4）。
+    """
+    payload = _intake("U-2026-003", sex="坤")
+    source = tmp_path / "U-2026-003.json"
+    source.write_bytes(
+        (json.dumps(payload, ensure_ascii=False) + "\n").encode("utf-8").replace(b"\n", b"\r\n")
+    )
+    record_path = tmp_path / "U-2026-003.intake.json"
+    intake_candidate(source, record_path, registry=_registry(), write=True, ingested_at="2026-07-31T12:03:00Z")
+    # 记录侧此时是 CRLF 的 hash；把工作区转回 LF 模拟另一平台检出
+    source.write_bytes(source.read_bytes().replace(b"\r\n", b"\n"))
+
+    manifest = build_candidate_manifest([record_path], cohort_id="cohort-1", registry=_registry())
+    assert manifest["case_ids"] == ["U-2026-003"]
+
+
 def test_review_requires_human_distinct_reviewers_and_adjudication() -> None:
     first = submit_label_review(_review("U-1", "human-a", "employment"))
     second = submit_label_review(_review("U-1", "human-b", "entrepreneurship"))

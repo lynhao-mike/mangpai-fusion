@@ -151,6 +151,16 @@ def _same_person_groups(probes_root: Path) -> dict[str, list[str]]:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="年份定向判断题判分")
     ap.add_argument("--case")
+    ap.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help=(
+            "判分输出路径（默认 META/blind_scoring/year-probe-scoring.json）。"
+            "注意：默认路径是全量基线文件，跑新批次前建议先备份，"
+            "或用 --out 指向独立文件以免覆盖既有基线。"
+        ),
+    )
     args = ap.parse_args(argv)
 
     cases = [args.case] if args.case else sorted(
@@ -183,11 +193,15 @@ def main(argv=None) -> int:
 
     denom = tc + ti
     print("=== 汇总 ===")
-    print(f"  记录年：correct={tc} incorrect={ti} partial={tp} undetermined={tu}")
+    print(f"  记录年：correct={tc} incorrect={ti} partial={tp} undetermined={tu}"
+          f"（记录年合计 = {tc + ti + tp}，含 partial）")
     if denom:
-        print(f"  准确率 = {tc}/{denom} = {tc/denom*100:.1f}%")
+        print(f"  准确率 = {tc}/{denom} = {tc/denom*100:.1f}%（分母为 correct+incorrect）")
     else:
         print("  准确率 = 不可计算（暂无记录年作答）")
+    if tc + ti + tp:
+        print(f"  判平率（partial/记录年）= {tp}/{tc + ti + tp} = "
+              f"{tp/(tc + ti + tp)*100:.1f}%")
     if tctrl:
         print(f"  对照年误报率 = {tfp}/{tctrl} = {tfp/tctrl*100:.1f}%"
               f"（断凶倾向；非准确率）")
@@ -226,8 +240,13 @@ def main(argv=None) -> int:
         "scored_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "cases": results,
         "summary": {
+            # 记录年 = correct + incorrect + partial（**含 partial**）。
+            # 历史上多次把 c+i 当作记录年，导致判平率分母错误（恶化幅度被放大
+            # 约 10pp）。这里显式输出，供下游直接取用。
+            "recorded_years": tc + ti + tp,
             "recorded_correct": tc, "recorded_incorrect": ti,
             "recorded_partial": tp, "recorded_undetermined": tu,
+            "neutral_rate_over_recorded": (tp / (tc + ti + tp)) if (tc + ti + tp) else None,
             "accuracy": (tc / denom) if denom else None,
             "control_years": tctrl, "control_false_positive": tfp,
             "control_false_positive_rate": (tfp / tctrl) if tctrl else None,
@@ -237,14 +256,17 @@ def main(argv=None) -> int:
             "dedup_control_years": dctrl, "dedup_control_false_positive": dfp,
         },
         "notes": [
+            "记录年 = correct+incorrect+partial（含 partial），不是 correct+incorrect",
             "对照年真值为 undetermined（反馈未提及≠未发生），不进准确率分母",
             "对照年只统计误报倾向，用于测「逢冲必断灾」",
         ],
     }
-    (OUT / "year-probe-scoring.json").write_text(
+    out_path = Path(args.out) if args.out else (OUT / "year-probe-scoring.json")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"\n已写入 {OUT / 'year-probe-scoring.json'}")
+    print(f"\n已写入 {out_path}")
     return 0
 
 
