@@ -380,9 +380,9 @@ def test_preprod_builds_r10_run_from_exact_input_text(
     calls: list[str] = []
     real_builder = build_ziping_career_decision_run
 
-    def recording_builder(output: V5Output, raw_text: str = ""):
+    def recording_builder(output: V5Output, raw_text: str = "", **kwargs):
         calls.append(raw_text)
-        return real_builder(output, raw_text=raw_text)
+        return real_builder(output, raw_text=raw_text, **kwargs)
 
     monkeypatch.setattr(preprod, "build_ziping_career_decision_run", recording_builder)
     preprod.render_v6_preprod_case(input_path, reports_dir=tmp_path, workspace_root=".")
