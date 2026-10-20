@@ -500,12 +500,177 @@ python -m pytest tests/r10 -q -o addopts=""  → 期望 4 failed, 60 passed（�
 
 ---
 
-## 八、Opus 请先回答这 5 个问题
+## 八、待定的战略抉择（比六个断点更上位，Opus 请裁决）
 
-1. **复核 6 个断点**：哪些你确认、哪些你推翻？特别是断点 1/5/6 是二手结论。
-2. **北极星指标是否可达**：以当前架构，严格口径 45.3% 有没有明确的提升路径？
-   如果没有，说明白缺什么。
-3. **四阶段顺序对不对**：阶段 1→2→3 是最短路径吗？有没有更高杠杆的切入口？
-4. **断点 4 和断点 6 哪个更该提前**：域归类错了，报告归错域；视图是桩文本，报告没内容。
-   从「让 Agent 做出更准判断」看，哪个更阻塞？
-5. **我可能错在哪**：Claude 已错 5 次，请重点审查上面的方向判断。
+> 以下问题 Claude 无法独自决定，因为它们决定「修什么」甚至「要不要修」。
+> 用户会 review Opus 的结论。
+
+### 抉择 1：`engine/v5/` 这条「引擎自治」路线还要不要保留？
+
+**背景**：仓库有两条报告产出路线。
+
+#### 路线 1：CLI + Agent（用户称为 B 选项）
+
+```
+engine.cli 出确定性事实 → tools.query_theory 检索理论 → Agent（大模型）综合推理 → 人话报告
+```
+
+**样板产物**：`reports/1980-02-09-乾-庚申戊寅壬子辛丑-human-report.md`
+
+实测质量（Claude 已读全文）：
+- 带证据地址：`e001` 戊生庚、`e005` 戊生辛、`M1-D-045`、`G-XF-014`
+- 明确分层：「板上钉钉」/「大概率主断」/「我不编的」
+- 主动声明信息边界：「命主未提供婚姻史/职业/学历，所有应期均为前瞻，未做回测」
+
+**这是用户第一性原则的正面样板。**
+
+#### 路线 2：v5 引擎自治（用户称为 A 选项）
+
+```
+engine/v5/preprod.py 解析输入 → runner.py 跑规则 → report_view.py 直接吐报告
+```
+
+**问题**：`engine/v5/report_view.py` 有 **22 处硬编码桩文本**（Claude 实测）：
+
+```
+体结构资源: "由五派结构裁判汇总，MVP 阶段待细化。"
+用现实目标: "由事件裁判与预测账本汇总，MVP 阶段待细化。"
+做功路径: "五派 runner 接入后输出自力、平台、配偶、贵人、经营等路径。"
+学校层级判断: "待反馈细分学校层级"
+单位层级判断: "待反馈单位性质与层级"
+资产层级判断: "待反馈资产与负债"
+...
+```
+
+22 个细分指标里 16 个是「待反馈」；15 层判断摘要里 12 行是套话。
+**只有「事业」域接了 L7 裁决**，其余 4 个域只截取 `event_result.conclusion` 前 80 字。
+
+**用户的倾向**：「既然 B 选项已经能解决问题，A 选项的 v5 就没有必要了吧」
+
+#### 但砍掉 v5 的代价（Claude 实测，需要 Opus 评估）
+
+**依赖 v5 的生产工具（8 个）**：
+
+```
+tools/domain_analysis_cli.py
+tools/domain_capability_status.py
+tools/domain_feedback.py
+tools/domain_prospective_cohort.py
+tools/feedback_ingest.py
+tools/p_series_career_blind_harness.py
+tools/render_report.py
+tools/render_report_v6.py
+```
+
+**依赖 v5 的测试**：
+
+```
+tests/v5/                    130 passed
+tests/r10/                    60 passed, 4 failed
+tests/evaluation/            538 passed（虽被 ignore）
+tests/f09/                  1183 passed
+tests/asof/                  609 passed
+```
+
+**关键疑点（Claude 尚未验证）**：
+- 盲断评分链（`tools/blind_year_score.py` 等 9 个工具）是否依赖 v5？
+  Claude grep 未发现直接依赖，但 `tools/p_series_career_blind_harness.py`
+  在依赖 v5 的列表里，而 balanced_accuracy 0.3625 正是 p-series 的指标。
+  **如果砍掉 v5，指标 B 的度量链路是否断？**
+
+**请 Opus 回答**：
+1. v5 是「必须保留的度量基础设施」还是「可以被 CLI+Agent 取代的报告生成器」？
+2. 如果砍掉，`balanced_accuracy` 这条度量链怎么接？
+3. 如果保留，22 处桩文本是修还是接受（作为"待人工补充"的显式标记）？
+
+---
+
+### 抉择 2：两个北极星指标是否都必要？
+
+**背景**（详见 0.2~0.4 节）：
+- 指标 A（盲断准确率 45.3%）无硬门槛，是参考基线
+- 指标 B（balanced_accuracy 0.3625）有硬门槛 0.425/0.60，可 CI 化
+
+**用户的疑问**：「这两个问题是关于什么的？是否有存在的必要性？」
+
+**Claude 的回答**（供 Opus 参考）：
+- 它们是唯一能证明「引擎 + Agent = 准确预测」的证据
+- 没有它们，无法区分「重构后变准了」和「只是代码变干净了」
+- 但**如果 v5 被砍，指标 B 的载体可能消失**
+
+**请 Opus 回答**：
+1. 指标 A 和 B 是否覆盖了「预测准确」的两个正交维度？
+2. 有没有第三个更直接的指标（比如端到端报告的人工评审通过率）？
+3. 如果只能保留一个，保留哪个？
+
+---
+
+### 抉择 3：六个断点还值不值得修？
+
+**背景**：如果抉择 1 的结论是「砍掉 v5」，那六个断点里的大部分失去意义：
+
+| 断点 | 是否只在 v5 内 |
+|---|---|
+| 1 四柱解析断 | **只在 v5**（`engine/v5/preprod.py`） |
+| 2 事实计算断 | **只在 v5**（v5 的 chart 缺 energy/shensha/picture） |
+| 3 规则召回断 | **只在 v5**（`runner.py:198`） |
+| 4 域归类断 | **跨两边**（BLIND_TOPIC_DOMAINS 在 v5，但域定义影响 Agent 读法） |
+| 5 置信度断 | **只在 v5**（`runner.py:929`） |
+| 6 视图渲染断 | **只在 v5**（`report_view.py` 桩文本） |
+
+**如果砍掉 v5，只剩断点 4 可能还对 Agent 有价值。**
+
+**请 Opus 回答**：
+1. 砍掉 v5 后，Agent 走 CLI 路线时，`engine.cli` 的输出够不够丰富？
+   （Claude 实测：`engine.cli all --json` 返回 chart/relations/strength/structures 四层，
+   但 `energy`/`picture`/`shensha` 是否在其中？**未验证**）
+2. 如果 CLI 输出不够，该扩展 CLI 而不是修 v5？
+3. 六个断点应该全部取消、部分保留、还是全部保留？
+
+---
+
+### 抉择 4：`engine/facts/` 是不是唯一事实源？
+
+**背景**：Gemini 建议「以 engine/facts/ 为唯一事实源，v5 只做轻量消费」。
+但如果 v5 被砍，这个建议是否升级为「engine/facts/ 是唯一引擎，其他全部冻结」？
+
+**已实测的事实**：
+- `engine/facts/` 在 `pyproject.toml` 的 testpaths 内（229 测试保护）
+- `engine/v5/preprod.py` 和 `runner.py` 对 `engine.facts` **零引用**
+- `engine/energy/` + `engine/picture/` 有纯函数实现（`evaluate_energy` / `match_picture`），
+  段派做功、杨派画面、任派应期、高派神煞四套确定性计算器
+- 但这四套由 `engine/application/pipeline_runner.py` 编排，**不在 v5 主链上**
+
+**请 Opus 回答**：
+1. 如果 v5 被砍，`engine/energy/` + `engine/picture/` 应该由谁调用？
+   CLI 直接暴露？还是 Agent 自己算？
+2. 四派确定性计算器（D1 做功 / D2 画面 / D3 应期 / D4 神煞）是引擎职责还是 Agent 职责？
+
+---
+
+## 九、Opus 请回答的完整问题清单
+
+合并第八节（技术）和新增的四个战略抉择：
+
+### A. 战略层（决定方向）
+
+1. **v5 砍不砍？**（抉择 1）
+   - 砍：给出 `balanced_accuracy` 度量链的接法
+   - 不砍：给出 22 处桩文本的处理方案
+2. **两个北极星指标保留几个？**（抉择 2）
+3. **六个断点该取消、部分保留、还是全修？**（抉择 3）
+4. **`engine/facts/` 是否升级为唯一引擎？**（抉择 4）
+   - 如果是，`energy`/`picture`/`shensha` 该由 CLI 暴露还是 Agent 计算？
+
+### B. 技术层（决定实现）
+
+5. **复核 6 个断点**：哪些确认、哪些推翻？断点 1/5/6 是二手结论。
+6. **如果 v5 保留**，四阶段顺序对不对？
+7. **如果 v5 砍掉**，Agent 走 CLI 路线缺什么？CLI 该扩展哪些输出？
+8. **我可能错在哪**：Claude 已错 5 次（见第七节），请重点审查方向判断。
+
+### C. 输出格式
+
+先回答 A（战略），再回答 B（技术）。
+**如果 A 的答案是「砍掉 v5」，B 的大部分可能不需要回答**——这会大幅减少工作量。
+
