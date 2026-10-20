@@ -44,7 +44,7 @@ def test_render_report_v6_includes_marriage_timing_for_c2026036(tmp_path: Path) 
     case_input = ROOT / "cases" / "C-2026-036-乾-辛巳壬辰甲寅乙丑" / "input.md"
     report_path = tmp_path / "c2026036-v6.md"
 
-    rendered_report, _ = render_case(case_input, output_path=report_path)
+    rendered_report, _ = render_case(case_input, output_path=report_path, manifest_root=tmp_path)
     report_text = rendered_report.read_text(encoding="utf-8")
 
     assert "2031 辛亥" in report_text

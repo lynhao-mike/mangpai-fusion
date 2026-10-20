@@ -74,3 +74,18 @@ theory/_ir/unified_rule_ir.yaml
 # 多 Agent 协作插件状态目录（不是仓库内容）
 .taskswarm/
 .agent-teams/
+
+# 仓库瘦身（T-107）：误入库的浏览器插件安装包，与项目无关
+plans/v5-learning-governance/phase1-registry/*.crx
+
+# 理论索引缓存：由 tools/query_theory.build_light_index 自动重建，不是真源
+theory/_light_index.json
+
+# 抽取中间产物：由 tools/extract_*_production_rules.py 重新生成（OUTPUT_JSON）
+theory/ziping/_extracted_rules.json
+theory/tiaohou_ditiansui/_extracted_rules.json
+
+# P0 任务本地回滚备份，不是仓库内容
+.p0_backup/
+.p0_backup/
+.p0_probe*.py

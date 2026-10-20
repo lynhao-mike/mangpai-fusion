@@ -180,14 +180,41 @@ def evaluate_trigger(trigger: str, chart: dict[str, Any]) -> bool:
     if trigger == "has_zaisha":
         return chart_has_shensha("灾煞", chart)
     if trigger == "has_wealth_picture":
-        return any(ch in _pillars_text(chart) for ch in ("财", "正财", "偏财")) or bool(
-            chart.get("picture", {}).get("caifu")
+        return any(ch in _pillars_text(chart) for ch in ("财", "正财", "偏财")) or _picture_rank_within(
+            chart, "caifu", 5
         )
     if trigger == "has_official_picture":
-        return bool(chart.get("picture", {}).get("guanming"))
+        return _picture_rank_within(chart, "guanming", 6)
     if trigger == "has_marriage_picture":
-        return bool(chart.get("picture", {}).get("marriage_picture"))
+        return _picture_rank_within(chart, "marriage_picture", 6)
     return False
+
+
+def _picture_rank_within(chart: dict[str, Any], key: str, max_rank: int) -> bool:
+    """类象谓词：只在实质命中有该象时为 True。
+
+    compute_caifu / compute_guanming / build_marriage_picture 对任何命盘都返回
+    非空对象（最差也是 {"rank": 7, "type": "普通"}），直接 bool() 会恒真。
+    以 rank 门槛判定：rank 数值越小越强，max_rank 即「有实质该象」的下限。
+    """
+    picture = chart.get("picture") or {}
+    node = picture.get(key) if isinstance(picture, dict) else None
+    if node is None:
+        return False
+    if isinstance(node, bool):
+        return node
+    if isinstance(node, (list, tuple, set)):
+        return bool(node)
+    if isinstance(node, dict):
+        rank = node.get("rank")
+        if rank is None:
+            # 没有 rank 字段的类象（如 industry_pointers）退回到「有实质内容」。
+            return bool(node)
+        try:
+            return int(rank) <= max_rank
+        except (TypeError, ValueError):
+            return False
+    return bool(node)
 
 
 # ── 盲派候选规则评分 ─────────────────────────────────────────────────────────
@@ -205,9 +232,17 @@ _NOTABLE_PAIRS: list[tuple[str, str]] = [
 
 
 def blind_rule_gate(rule: dict[str, Any], chart: dict[str, Any]) -> bool:
-    """有显式条件必须求值通过；纯文本不得凭干支撞字成为有效证据。"""
+    """有显式条件必须求值通过；纯文本不得凭干支撞字成为有效证据。
+
+    只有能映射到已知枚举的 trigger 才短路求值；中文自然语言 trigger
+    （来自原稿回填）无法求值时退回正文关键词兜底，避免整条规则恒 False。
+
+    注意：关键词兜底只扫 topic/title/conclusion，**不扫 condition/trigger**。
+    原稿 trigger 里大量是否定前置条件（"官杀同柱不冲刑"、"五行独旺无克泄"）
+    或元话术（"位置与生克关系已确定"），拼进来会让规则反向误召回。
+    """
     trigger = str(rule.get("condition") or rule.get("trigger") or "").strip()
-    if trigger:
+    if trigger and trigger_evidence_status(trigger) == "evaluable":
         return evaluate_trigger(trigger, chart)
     text = "".join(str(rule.get(k, "")) for k in ("topic", "topic_label", "title", "conclusion"))
     if any(tok in text for tok in _CHONG_TOKENS):
@@ -220,10 +255,18 @@ def blind_rule_gate(rule: dict[str, Any], chart: dict[str, Any]) -> bool:
 
 
 def score_blind_rule(rule: dict[str, Any], chart: dict[str, Any]) -> float:
-    """只给通过结构门禁的规则打分；字符重合不再加分。"""
+    """只给通过结构门禁的规则打分；字符重合不再加分。
+
+    candidate_score 存在两套量纲：高派/杨派为 0~1，段派为 3.0~5.0 分制。
+    超过 1.0 的按 5 分制归一化，否则 min(..., 1.0) 会把段派分数全部削平成 1.0，
+    排序退化为按 id 字典序（2026-10-19 实测）。
+    """
     if not blind_rule_gate(rule, chart):
         return 0.0
-    return min(float(rule.get("candidate_score") or 0.5), 1.0)
+    raw = float(rule.get("candidate_score") or 0.5)
+    if raw > 1.0:
+        return min(raw / 5.0, 1.0)
+    return min(raw, 1.0)
 
 
 def rank_blind_rule(rule: dict[str, Any], chart: dict[str, Any]) -> tuple[float, int, str]:

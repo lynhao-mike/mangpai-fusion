@@ -73,7 +73,7 @@ def test_preprod_career_report_matches_l7(tmp_path):
 
     input_path = "cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md"
     report_path, _ = render_v6_preprod_case(
-        input_path, reports_dir=tmp_path, workspace_root="."
+        input_path, reports_dir=tmp_path, workspace_root=".", manifest_root=tmp_path
     )
     report_text = pathlib.Path(report_path).read_text(encoding="utf-8")
     decision_json = pathlib.Path(str(report_path).replace(".md", ".decision-run.json"))

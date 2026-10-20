@@ -219,8 +219,14 @@ def render_v6_preprod_case(
     reports_dir: str | Path | None = None,
     template_path: str | Path = "templates/report-v6.md",
     workspace_root: str | Path = ".",
+    manifest_root: str | Path | None = None,
 ) -> tuple[Path, Path]:
-    """渲染一个 v6 预生产 case，返回 (report_path, json_path)。"""
+    """渲染一个 v6 预生产 case，返回 (report_path, json_path)。
+
+    manifest_root 默认 None 时 manifest 写回 case 目录（生产登记语义，行为不变）；
+    显式传入时写 ``manifest_root/<case_id>/manifest.json``（与 ``cases/<case_id>/`` 同构），
+    供测试等调用方把 manifest 副作用隔离到临时目录。``case_path`` 始终记录 case 真实位置。
+    """
 
     root = Path(workspace_root).resolve()
     input_file = Path(input_path)
@@ -290,7 +296,15 @@ def render_v6_preprod_case(
         ).to_json(),
         encoding="utf-8",
     )
-    manifest_path = case_dir / "manifest.json"
+    if manifest_root is None:
+        manifest_dir = case_dir
+    else:
+        manifest_dir = Path(manifest_root)
+        if not manifest_dir.is_absolute():
+            manifest_dir = root / manifest_dir
+        manifest_dir = manifest_dir / case_id
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = manifest_dir / "manifest.json"
     if manifest_path.exists():
         manifest = V5CaseManifest.from_json(manifest_path.read_text(encoding="utf-8")).bind_run(snapshot)
     else:

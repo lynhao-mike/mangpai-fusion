@@ -184,6 +184,7 @@ def test_falsifier_report_keeps_all_fifteen_judgment_layers(tmp_path: Path) -> N
         "cases/C-2026-035-乾-戊辰癸亥甲戌庚午/input.md",
         reports_dir=tmp_path,
         workspace_root=".",
+        manifest_root=tmp_path,
     )
     report_text = Path(report_path).read_text(encoding="utf-8")
     career_section = re.search(
@@ -385,7 +386,9 @@ def test_preprod_builds_r10_run_from_exact_input_text(
         return real_builder(output, raw_text=raw_text, **kwargs)
 
     monkeypatch.setattr(preprod, "build_ziping_career_decision_run", recording_builder)
-    preprod.render_v6_preprod_case(input_path, reports_dir=tmp_path, workspace_root=".")
+    preprod.render_v6_preprod_case(
+        input_path, reports_dir=tmp_path, workspace_root=".", manifest_root=tmp_path
+    )
 
     assert calls == [input_text]
 

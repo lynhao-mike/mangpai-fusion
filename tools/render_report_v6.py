@@ -34,14 +34,25 @@ def _display_path(path: Path) -> str:
         return path.as_posix()
 
 
-def render_case(input_path: str | Path, *, output_path: str | Path | None = None, template_path: str | Path = DEFAULT_TEMPLATE) -> tuple[Path, Path]:
-    """渲染一个 case，返回 (report_path, json_path)。"""
+def render_case(
+    input_path: str | Path,
+    *,
+    output_path: str | Path | None = None,
+    template_path: str | Path = DEFAULT_TEMPLATE,
+    manifest_root: str | Path | None = None,
+) -> tuple[Path, Path]:
+    """渲染一个 case，返回 (report_path, json_path)。
+
+    manifest_root 透传给 engine.v5.preprod.render_v6_preprod_case：
+    默认 None 时 manifest 写回真实 case 目录（CLI 生产语义不变）。
+    """
 
     return render_v6_preprod_case(
         input_path,
         output_path=output_path,
         template_path=template_path,
         workspace_root=REPO_ROOT,
+        manifest_root=manifest_root,
     )
 
 
