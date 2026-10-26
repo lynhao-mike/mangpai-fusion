@@ -106,6 +106,12 @@ def evaluate(node: Optional[dict], ctx: dict, env: Optional[dict[str, str]] = No
 
     res: AtomResult = fn(ctx, args)
     bindings = dict(res.bindings)
+    if res.value is True:
+        # 原子可自行发布具名绑定（如 zuogong 的 Z/T），供后续 $Z/$T 引用
+        for key, val in bindings.items():
+            if key in ("addr", "edge_id", "bind") or not isinstance(val, str):
+                continue
+            env[key] = val
     alias = node.get("as")
     if alias and res.value is True:
         bound = bindings.get("addr") or bindings.get("edge_id")

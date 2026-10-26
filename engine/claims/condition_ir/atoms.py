@@ -199,6 +199,12 @@ def palace_holds(ctx, args):
 
 
 def rooted(ctx, args):
+    at = args.get("at")
+    if at:
+        info = (ctx["strength"].get("stems") or {}).get(at)
+        if info is None:
+            return _u(f"{at} 无根数据（非天干地址）")
+        return _t(f"{at} 有根") if info.get("roots") else _f(f"{at} 无根")
     gods = _god_set(args.get("god", ""), ctx)
     if not gods:
         return _u("无法解析十神规格")
@@ -464,13 +470,37 @@ def geju_state(ctx, args):
 
 def zuogong(ctx, args):
     kind, involves = args.get("kind"), args.get("involves")
+    target_god, actor_god = args.get("target_god"), args.get("actor_god")
+    actor_at, target_at = args.get("actor_at"), args.get("target_at")
     gods = _god_set(involves, ctx) if involves else None
+    tset = _god_set(target_god, ctx) if target_god else None
+    aset = _god_set(actor_god, ctx) if actor_god else None
     for c in ctx["zuogong"]:
         if kind and c.get("mode") != kind:
             continue
-        if gods and not (set(c.get("ten_gods") or []) & set(gods)):
+        tgods = tuple(c.get("ten_gods") or ())
+        if gods and not (set(tgods) & set(gods)):
             continue
-        return _t(f"{c.get('mode')} {c.get('edge_id')}", edge_id=c.get("edge_id") or "")
+        members = tuple(c.get("members") or ())
+        ty = tuple(c.get("tiyong") or ())
+        actor = c.get("actor")
+        target = next((m for m, t in zip(members, ty) if t == "用"), members[-1] if members else None)
+        ia = next((i for i, m in enumerate(members) if m == actor), None)
+        it = next((i for i, m in enumerate(members) if m == target), None)
+        if tset and (it is None or tgods[it] not in tset):
+            continue
+        if aset and (ia is None or tgods[ia] not in aset):
+            continue
+        if actor_at and actor != actor_at:
+            continue
+        if target_at and target != target_at:
+            continue
+        bind = {}
+        if actor:
+            bind["Z"] = actor          # 制者（做功的一方）
+        if target:
+            bind["T"] = target         # 被制者（用）
+        return _t(f"{c.get('mode')} {c.get('edge_id')}", **bind)
     return _f()
 
 
@@ -613,7 +643,7 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "branch_is": (("at", "zhi"), ()),
     "sits_on": (("god", "zhi"), ()),
     "palace_holds": (("god", "palace"), ()),
-    "rooted": (("god",), ("min_qi",)),
+    "rooted": ((), ("god", "at", "min_qi")),
     "day_master": (("gan",), ()),
     "edge": (("type",), ("between", "as")),
     "edge_touches": (("type", "at"), ()),
@@ -636,7 +666,7 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "shensha": (("name",), ("at",)),
     "geju_met": ((), ("geju_type",)),
     "geju_state": (("state",), ("geju_type",)),
-    "zuogong": ((), ("kind", "involves")),
+    "zuogong": ((), ("kind", "involves", "target_god", "actor_god", "actor_at", "target_at")),
     "tiyong": (("role",), ("at",)),
     "binzhu": (("layer",), ()),
     "structure_break": ((), ("check",)),
