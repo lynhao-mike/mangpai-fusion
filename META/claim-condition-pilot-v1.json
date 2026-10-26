@@ -25,50 +25,51 @@
    "M3-R-166"
   ],
   "panel_size": 20,
-  "evaluable_rate": 0.9917,
+  "evaluable_rate": 0.9708,
   "address_binding_rate": 0.5833,
-  "distinct_pass_sets": 18,
+  "distinct_pass_sets": 19,
   "pass_set_distribution": {
-   "FTFFFTTTFFFF": 1,
-   "TFFTFTFTTTFF": 1,
-   "TTFTFTTFTFFF": 2,
-   "TTFFFTTTTFFF": 1,
-   "TFFTFTTTTTFF": 1,
-   "FFFFFTFTTTTF": 1,
-   "FFFTFTTTFFFF": 1,
-   "FTFTFTTTTFFF": 1,
-   "FFFFFTTTTFFF": 2,
-   "FFFFFTTTFTTF": 1,
-   "FFFFFTTTFFFF": 1,
-   "FFTFFTFTFFFF": 1,
-   "FFFTFTFFFTFU": 1,
-   "FTFTFTFTFFFF": 1,
-   "FTFFFTTFTFFU": 1,
-   "FFFTFTFFTTFF": 1,
-   "FFFTFTTFFTFF": 1,
-   "FFFTFTTFFTFT": 1
+   "FTFFFTTTFFFF": 2,
+   "FFFFFTFTFTFF": 1,
+   "TTTFFTFFTFFF": 1,
+   "FFFFFFTTTFFU": 1,
+   "FFFTFTFTFFFU": 1,
+   "TTFTFTTTFFFU": 1,
+   "FTFFFTFTFTFU": 1,
+   "FTFTFTTTFTFF": 1,
+   "FFFFFFTTFFFF": 1,
+   "FFFFFTTFTFFF": 1,
+   "FFFFFTFFFTFF": 1,
+   "FTFFFFFFTFFF": 1,
+   "FFTTFTFTFFFF": 1,
+   "FFFFFTFFTTTF": 1,
+   "TFFFFTTTFFFU": 1,
+   "FTFFFTTTTTTF": 1,
+   "TTFTFTTFTTFT": 1,
+   "FFFTFTFTTFFU": 1,
+   "FFFTFTTTFFFU": 1
   },
   "fire_rate": {
-   "G-SP-165": 0.25,
-   "G-SP-293": 0.35,
-   "G-SP-071": 0.05,
-   "G-SP-130": 0.55,
+   "G-SP-165": 0.2,
+   "G-SP-293": 0.45,
+   "G-SP-071": 0.1,
+   "G-SP-130": 0.35,
    "M1-D-298": 0.0,
-   "M1-D-009": 1.0,
-   "M1-D-013": 0.7,
+   "M1-D-009": 0.85,
+   "M1-D-013": 0.5,
    "M1-D-242": 0.65,
-   "M2-Y-251": 0.55,
-   "M2-Y-014": 0.4,
+   "M2-Y-251": 0.4,
+   "M2-Y-014": 0.35,
    "M3-R-013": 0.1,
    "M3-R-166": 0.0
   },
   "state_distribution": {
-   "rejected": 145,
-   "candidate": 92,
-   "needs_fact": 2,
-   "evidence_only": 1
+   "rejected": 151,
+   "candidate": 79,
+   "evidence_only": 3,
+   "needs_fact": 7
   },
-  "unknown_rate": 0.0083,
+  "unknown_rate": 0.0292,
   "unknown_explicit_rate": 1.0,
   "unmapped_prose_claims": [
    "G-SP-071",
@@ -105,7 +106,6 @@
   "outlier_claims": [
    "M1-D-298",
    "M1-D-009",
-   "M1-D-013",
    "M1-D-242",
    "M3-R-166"
   ],
@@ -243,138 +243,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
-     "claim_id": "G-SP-165",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "P": "Y.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "G-SP-165",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "P": "H.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "G-SP-165",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "P": "M.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "G-SP-165",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "P": "Y.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "G-SP-165",
-     "state": "rejected",
-     "value": false,
-     "bindings": {
-      "P": "H.b"
-     },
-     "failed_atoms": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "G-SP-165",
-     "state": "rejected",
-     "value": false,
-     "bindings": {
-      "P": "H.b"
-     },
-     "failed_atoms": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "G-SP-165",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "P": "H.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -397,7 +266,24 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+     "claim_id": "G-SP-165",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "P": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -420,30 +306,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "G-SP-165",
-     "state": "rejected",
-     "value": false,
-     "bindings": {
-      "P": "Y.b"
-     },
-     "failed_atoms": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -464,53 +327,24 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "G-SP-165",
-     "state": "rejected",
-     "value": false,
+     "state": "candidate",
+     "value": true,
      "bindings": {
-      "P": "Y.b"
+      "P": "M.b"
      },
-     "failed_atoms": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "G-SP-165",
-     "state": "rejected",
-     "value": false,
-     "bindings": {
-      "P": "Y.b"
-     },
-     "failed_atoms": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=$P)",
-      "kongwang(at=$P)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -533,7 +367,30 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {
+      "P": "D.b"
+     },
+     "failed_atoms": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -556,12 +413,75 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "hidden_god(god=印)",
+      "hidden_god(god=印)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
      "bindings": {
-      "P": "D.b"
+      "P": "Y.b"
      },
      "failed_atoms": [
       "kongwang(at=$P)",
@@ -579,12 +499,12 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
      "bindings": {
-      "P": "D.b"
+      "P": "Y.b"
      },
      "failed_atoms": [
       "kongwang(at=$P)",
@@ -602,7 +522,87 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {
+      "P": "Y.b"
+     },
+     "failed_atoms": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "G-SP-165",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "P": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "G-SP-165",
+     "state": "rejected",
+     "value": false,
+     "bindings": {
+      "P": "Y.b"
+     },
+     "failed_atoms": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=$P)",
+      "kongwang(at=$P)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "G-SP-165",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "P": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -625,7 +625,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "G-SP-165",
      "state": "rejected",
      "value": false,
@@ -670,7 +670,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -691,7 +691,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -706,7 +706,49 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "G-SP-293",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "G-SP-293",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -721,70 +763,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -799,7 +778,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -814,7 +793,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -835,7 +814,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -856,7 +835,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -877,49 +856,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -934,7 +871,49 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "G-SP-293",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "G-SP-293",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "kongwang(at=H.b)",
+      "kongwang(at=H.b)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
      "claim_id": "G-SP-293",
      "state": "candidate",
      "value": true,
@@ -949,7 +928,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -970,7 +949,37 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "G-SP-293",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "G-SP-293",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -991,28 +1000,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
-     "claim_id": "G-SP-293",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "kongwang(at=H.b)",
-      "kongwang(at=H.b)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "G-SP-293",
      "state": "rejected",
      "value": false,
@@ -1061,7 +1049,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1082,217 +1070,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "G-SP-071",
      "state": "candidate",
      "value": true,
@@ -1307,28 +1085,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "G-SP-071",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
-      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1349,7 +1106,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1370,7 +1127,28 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1391,7 +1169,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1412,7 +1190,49 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1433,7 +1253,169 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "G-SP-071",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'visible_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "G-SP-071",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)",
+      "count(atom={'atom': 'hidden_god', 'args': {'god': '财'}}, op=eq, value=0)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "G-SP-071",
      "state": "rejected",
      "value": false,
@@ -1482,41 +1464,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1537,24 +1485,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1575,58 +1506,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1647,7 +1527,41 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1668,7 +1582,24 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1689,7 +1620,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1710,41 +1641,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1765,58 +1662,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
      "claim_id": "G-SP-130",
      "state": "rejected",
      "value": false,
@@ -1835,6 +1681,158 @@
       "verdict": "pass"
      },
      "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "G-SP-130",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "G-SP-130",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "G-SP-130",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "G-SP-130",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "palace_holds(god=配偶星, palace=日支)",
+      "palace_holds(god=配偶星, palace=日支)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "G-SP-130",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "bind": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
     }
    ]
   },
@@ -1863,7 +1861,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1882,7 +1880,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1901,7 +1899,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1920,7 +1918,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1939,7 +1937,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1958,7 +1956,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1977,7 +1975,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -1996,7 +1994,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2015,7 +2013,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2034,7 +2032,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2053,7 +2051,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2072,7 +2070,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2091,7 +2089,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2110,7 +2108,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2129,7 +2127,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2148,7 +2146,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2167,7 +2165,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2186,7 +2184,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2205,7 +2203,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "M1-D-298",
      "state": "rejected",
      "value": false,
@@ -2251,12 +2249,12 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e002"
+      "edge_id": "e001"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -2271,147 +2269,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e002"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e002"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e006"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e002"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e002"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
@@ -2431,92 +2289,33 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M1-D-009",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
      "bindings": {
       "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e001"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e002"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -2531,27 +2330,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
-     "claim_id": "M1-D-009",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e001"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
@@ -2571,7 +2350,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
@@ -2591,7 +2370,68 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e001"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M1-D-009",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e003"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
@@ -2611,12 +2451,173 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-009",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=制用)",
+      "zuogong(kind=制用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
      "claim_id": "M1-D-009",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e001"
+      "edge_id": "e003"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e002"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e002"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e005"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e004"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "M.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e002"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e004"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M1-D-009",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e002"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -2658,7 +2659,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M1-D-013",
      "state": "rejected",
      "value": false,
@@ -2679,67 +2680,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M1-D-013",
      "state": "rejected",
      "value": false,
@@ -2760,7 +2701,45 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M1-D-013",
+     "state": "evidence_only",
+     "value": true,
+     "bindings": {
+      "edge_id": ""
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "reject"
+     },
+     "reason": "框架前置未成立"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -2774,53 +2753,34 @@
       "dependency": "requires_school_frame",
       "verdict": "pass",
       "frame_detail": {
-       "addr": "M.b"
+       "addr": "M.s"
       }
      },
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
      "unknown_facts": [],
-     "near_miss": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
+      "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -2840,27 +2800,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "M1-D-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": ""
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -2880,70 +2820,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M1-D-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "M1-D-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
-     "claim_id": "M1-D-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(kind=墓用)",
-      "zuogong(kind=墓用)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -2963,7 +2840,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M1-D-013",
      "state": "rejected",
      "value": false,
@@ -2984,7 +2861,70 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -3004,7 +2944,47 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-013",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": ""
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-013",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": ""
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "M.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -3024,7 +3004,28 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "M1-D-013",
      "state": "candidate",
      "value": true,
@@ -3071,12 +3072,12 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e003"
+      "edge_id": "e001"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3091,7 +3092,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M1-D-242",
      "state": "rejected",
      "value": false,
@@ -3112,27 +3113,24 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M1-D-242",
-     "state": "candidate",
+     "state": "evidence_only",
      "value": true,
      "bindings": {
-      "edge_id": "e010"
+      "edge_id": "e008"
      },
      "failed_atoms": [],
      "unknown_facts": [],
      "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.s"
-      }
+      "verdict": "reject"
      },
-     "reason": "前置条件全部成立"
+     "reason": "框架前置未成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
@@ -3152,12 +3150,12 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e003"
+      "edge_id": "e010"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3172,53 +3170,12 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "M1-D-242",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M1-D-242",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e001"
+      "edge_id": "e004"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3233,12 +3190,12 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e011"
+      "edge_id": "e005"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3253,47 +3210,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "M1-D-242",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "M.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M1-D-242",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass",
-      "frame_detail": {
-       "addr": "Y.b"
-      }
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
@@ -3307,13 +3224,13 @@
       "dependency": "requires_school_frame",
       "verdict": "pass",
       "frame_detail": {
-       "addr": "M.b"
+       "addr": "Y.b"
       }
      },
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M1-D-242",
      "state": "rejected",
      "value": false,
@@ -3334,12 +3251,95 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
      "bindings": {
-      "edge_id": "e001"
+      "edge_id": "e005"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M1-D-242",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e009"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3354,7 +3354,47 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-242",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e003"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-242",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e008"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "M.s"
+      }
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M1-D-242",
      "state": "rejected",
      "value": false,
@@ -3375,70 +3415,27 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "M1-D-242",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "edge_id": "e001"
+     },
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "pass",
+      "frame_detail": {
+       "addr": "Y.b"
+      }
      },
-     "reason": "preconditions 不成立"
+     "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
-     "claim_id": "M1-D-242",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
-     "claim_id": "M1-D-242",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "zuogong(involves=印)",
-      "zuogong(involves=印)"
-     ],
-     "framework": {
-      "dependency": "requires_school_frame",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "M1-D-242",
      "state": "candidate",
      "value": true,
@@ -3486,82 +3483,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M2-Y-251",
      "state": "rejected",
      "value": false,
@@ -3582,7 +3504,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M2-Y-251",
      "state": "candidate",
      "value": true,
@@ -3597,7 +3519,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M2-Y-251",
      "state": "candidate",
      "value": true,
@@ -3612,7 +3534,112 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M2-Y-251",
      "state": "candidate",
      "value": true,
@@ -3627,7 +3654,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M2-Y-251",
      "state": "rejected",
      "value": false,
@@ -3648,91 +3675,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M2-Y-251",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M2-Y-251",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-     "claim_id": "M2-Y-251",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
-     "claim_id": "M2-Y-251",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "camp_count(side=食伤, op=gte, value=3)",
-      "camp_count(side=食伤, op=gte, value=3)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
      "claim_id": "M2-Y-251",
      "state": "candidate",
      "value": true,
@@ -3747,22 +3690,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
-     "claim_id": "M2-Y-251",
-     "state": "candidate",
-     "value": true,
-     "bindings": {},
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
      "claim_id": "M2-Y-251",
      "state": "rejected",
      "value": false,
@@ -3783,7 +3711,22 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M2-Y-251",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
      "claim_id": "M2-Y-251",
      "state": "rejected",
      "value": false,
@@ -3804,7 +3747,28 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
      "claim_id": "M2-Y-251",
      "state": "candidate",
      "value": true,
@@ -3817,6 +3781,57 @@
       "verdict": "pass"
      },
      "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M2-Y-251",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M2-Y-251",
+     "state": "candidate",
+     "value": true,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M2-Y-251",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "camp_count(side=食伤, op=gte, value=3)",
+      "camp_count(side=食伤, op=gte, value=3)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
     }
    ]
   },
@@ -3847,13 +3862,13 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
      "bindings": {
       "C": "Y.s",
-      "edge_id": "e002"
+      "edge_id": "e001"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -3865,7 +3880,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M2-Y-014",
      "state": "rejected",
      "value": false,
@@ -3886,7 +3901,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M2-Y-014",
      "state": "rejected",
      "value": false,
@@ -3907,25 +3922,49 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M2-Y-014",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "C": "Y.s",
-      "edge_id": "e002"
-     },
-     "failed_atoms": [],
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
      "unknown_facts": [],
-     "near_miss": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
      "framework": {
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
@@ -3943,151 +3982,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "M2-Y-014",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "C": "H.s",
-      "edge_id": "e003"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M2-Y-014",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
@@ -4105,7 +4000,7 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M2-Y-014",
      "state": "rejected",
      "value": false,
@@ -4126,7 +4021,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M2-Y-014",
      "state": "rejected",
      "value": false,
@@ -4147,13 +4042,13 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
      "bindings": {
       "C": "H.s",
-      "edge_id": "e008"
+      "edge_id": "e007"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -4165,13 +4060,55 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
      "bindings": {
       "C": "Y.s",
-      "edge_id": "e003"
+      "edge_id": "e002"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -4183,13 +4120,73 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M2-Y-014",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "C": "M.s",
+      "edge_id": "e004"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M2-Y-014",
      "state": "candidate",
      "value": true,
      "bindings": {
       "C": "Y.s",
-      "edge_id": "e003"
+      "edge_id": "e002"
      },
      "failed_atoms": [],
      "unknown_facts": [],
@@ -4201,7 +4198,28 @@
      "reason": "前置条件全部成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M2-Y-014",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "M2-Y-014",
      "state": "rejected",
      "value": false,
@@ -4250,7 +4268,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4271,7 +4289,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4292,7 +4310,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4313,45 +4331,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "M3-R-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {
-      "C": "Y.s"
-     },
-     "failed_atoms": [
-      "?()"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "M3-R-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "C": "M.s"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4372,7 +4352,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4393,108 +4373,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M3-R-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
-     "claim_id": "M3-R-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "M3-R-013",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "C": "H.s"
-     },
-     "failed_atoms": [],
-     "unknown_facts": [],
-     "near_miss": [],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "前置条件全部成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M3-R-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M3-R-013",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4515,7 +4394,28 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M3-R-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {
+      "C": "M.s"
+     },
+     "failed_atoms": [
+      "?()"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "?()"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4536,7 +4436,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4557,7 +4457,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4578,7 +4478,125 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M3-R-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M3-R-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M3-R-013",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "C": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M3-R-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M3-R-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "visible_god(god=财)",
+      "visible_god(god=财)"
+     ],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M3-R-013",
+     "state": "candidate",
+     "value": true,
+     "bindings": {
+      "C": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "前置条件全部成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4599,19 +4617,19 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
-     "bindings": {
-      "C": "Y.s"
-     },
+     "bindings": {},
      "failed_atoms": [
-      "?()"
+      "visible_god(god=财)",
+      "visible_god(god=财)"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "visible_god(god=财)",
+      "visible_god(god=财)"
      ],
      "framework": {
       "dependency": "standalone",
@@ -4620,7 +4638,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
      "claim_id": "M3-R-013",
      "state": "rejected",
      "value": false,
@@ -4669,7 +4687,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M3-R-166",
      "state": "rejected",
      "value": false,
@@ -4690,7 +4708,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M3-R-166",
      "state": "rejected",
      "value": false,
@@ -4711,217 +4729,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
      "claim_id": "M3-R-166",
      "state": "needs_fact",
      "value": null,
@@ -4939,28 +4747,7 @@
      "reason": "preconditions 含未知"
     },
     {
-     "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
-     "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
-     "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
-     "framework": {
-      "dependency": "requires_pair",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "M3-R-166",
      "state": "needs_fact",
      "value": null,
@@ -4978,7 +4765,43 @@
      "reason": "preconditions 含未知"
     },
     {
-     "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M3-R-166",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [
+      "ru_mu(star=食神): 无法解析十神规格",
+      "ru_mu(star=食神)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M3-R-166",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [
+      "ru_mu(star=食神): 无法解析十神规格",
+      "ru_mu(star=食神)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
      "claim_id": "M3-R-166",
      "state": "rejected",
      "value": false,
@@ -4999,7 +4822,7 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
      "claim_id": "M3-R-166",
      "state": "rejected",
      "value": false,
@@ -5020,7 +4843,172 @@
      "reason": "preconditions 不成立"
     },
     {
-     "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M3-R-166",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [
+      "ru_mu(star=食神): 无法解析十神规格",
+      "ru_mu(star=食神)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "M3-R-166",
      "state": "evidence_only",
      "value": true,
@@ -5035,25 +5023,40 @@
      "reason": "配对命题 M2-Y-017 未裁决"
     },
     {
-     "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
      "claim_id": "M3-R-166",
-     "state": "rejected",
-     "value": false,
+     "state": "needs_fact",
+     "value": null,
      "bindings": {},
-     "failed_atoms": [
-      "ru_mu(star=食神)",
+     "failed_atoms": [],
+     "unknown_facts": [
+      "ru_mu(star=食神): 无法解析十神规格",
       "ru_mu(star=食神)"
      ],
-     "unknown_facts": [],
-     "near_miss": [
-      "ru_mu(star=食神)",
-      "ru_mu(star=食神)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_pair",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M3-R-166",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [
+      "ru_mu(star=食神): 无法解析十神规格",
+      "ru_mu(star=食神)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
     }
    ]
   }
@@ -5070,194 +5073,194 @@
    "gender": "乾"
   },
   {
-   "case": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+   "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
    "pillars": [
-    "壬戌",
-    "庚戌",
-    "戊辰",
-    "丙辰"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-007-乾-乙丑庚辰己丑庚午",
-   "pillars": [
-    "乙丑",
-    "庚辰",
-    "己丑",
-    "庚午"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-008-坤-壬申癸卯丁未壬寅",
-   "pillars": [
-    "壬申",
-    "癸卯",
-    "丁未",
-    "壬寅"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-009-乾-庚辰乙酉丙申乙未",
-   "pillars": [
-    "庚辰",
-    "乙酉",
-    "丙申",
-    "乙未"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-010-坤-甲子丁卯癸卯庚申",
-   "pillars": [
-    "甲子",
-    "丁卯",
-    "癸卯",
-    "庚申"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
-   "pillars": [
-    "乙丑",
-    "乙酉",
-    "丁丑",
-    "癸卯"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-012-坤-壬戌癸丑丙申壬辰",
-   "pillars": [
-    "壬戌",
-    "癸丑",
-    "丙申",
-    "壬辰"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-013-坤-壬申甲辰丙辰己丑",
-   "pillars": [
-    "壬申",
-    "甲辰",
-    "丙辰",
-    "己丑"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-014-乾-丙戌庚子乙亥辛巳",
-   "pillars": [
-    "丙戌",
-    "庚子",
     "乙亥",
-    "辛巳"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
-   "pillars": [
-    "甲寅",
-    "乙亥",
-    "丙辰",
-    "辛卯"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-016-坤-甲子丙子丙戌戊子",
-   "pillars": [
-    "甲子",
-    "丙子",
-    "丙戌",
-    "戊子"
-   ],
-   "gender": "坤"
-  },
-  {
-   "case": "C-2026-017-乾-庚申辛巳辛丑丁酉",
-   "pillars": [
-    "庚申",
-    "辛巳",
-    "辛丑",
-    "丁酉"
-   ],
-   "gender": "乾"
-  },
-  {
-   "case": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
-   "pillars": [
-    "乙丑",
     "戊寅",
-    "乙酉",
-    "乙酉"
+    "辛酉",
+    "癸巳"
    ],
    "gender": "坤"
   },
   {
-   "case": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+   "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
    "pillars": [
-    "辛巳",
-    "壬辰",
-    "甲寅",
-    "乙丑"
+    "乙丑",
+    "己卯",
+    "癸亥",
+    "壬子"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+   "pillars": [
+    "甲戌",
+    "丙寅",
+    "丁卯",
+    "乙巳"
    ],
    "gender": "乾"
   },
   {
-   "case": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+   "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
    "pillars": [
-    "丁丑",
-    "庚戌",
-    "甲辰",
+    "甲申",
+    "丙子",
+    "己卯",
     "丁卯"
    ],
    "gender": "坤"
   },
   {
-   "case": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+   "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
    "pillars": [
-    "丙寅",
-    "庚寅",
-    "甲辰",
-    "己巳"
+    "丁卯",
+    "辛亥",
+    "甲申",
+    "辛未"
    ],
    "gender": "乾"
   },
   {
-   "case": "C-2026-022-坤-癸亥庚申戊寅己未",
+   "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+   "pillars": [
+    "戊寅",
+    "丁巳",
+    "癸亥",
+    "庚申"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+   "pillars": [
+    "乙酉",
+    "戊寅",
+    "乙丑",
+    "癸未"
+   ],
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+   "pillars": [
+    "庚午",
+    "庚辰",
+    "庚戌",
+    "壬午"
+   ],
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+   "pillars": [
+    "甲戌",
+    "丁卯",
+    "甲寅",
+    "庚午"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+   "pillars": [
+    "戊寅",
+    "戊午",
+    "壬子",
+    "丙午"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
    "pillars": [
     "癸亥",
-    "庚申",
-    "戊寅",
-    "己未"
+    "癸亥",
+    "壬子",
+    "壬寅"
    ],
    "gender": "坤"
   },
   {
-   "case": "C-2026-023-乾-丙子戊戌壬寅丁未",
+   "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
    "pillars": [
-    "丙子",
-    "戊戌",
-    "壬寅",
-    "丁未"
+    "戊寅",
+    "丁巳",
+    "戊寅",
+    "甲寅"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+   "pillars": [
+    "癸未",
+    "辛酉",
+    "己酉",
+    "己巳"
+   ],
+   "gender": "坤"
+  },
+  {
+   "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+   "pillars": [
+    "丙戌",
+    "辛卯",
+    "庚申",
+    "壬午"
    ],
    "gender": "乾"
   },
   {
-   "case": "C-2026-024-坤-己巳壬申辛亥壬辰",
+   "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
    "pillars": [
-    "己巳",
-    "壬申",
-    "辛亥",
-    "壬辰"
+    "癸酉",
+    "甲寅",
+    "乙亥",
+    "庚辰"
    ],
-   "gender": "坤"
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+   "pillars": [
+    "己卯",
+    "庚午",
+    "丙辰",
+    "戊子"
+   ],
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+   "pillars": [
+    "庚辰",
+    "己丑",
+    "丁酉",
+    "戊申"
+   ],
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+   "pillars": [
+    "己卯",
+    "丁丑",
+    "庚辰",
+    "丁丑"
+   ],
+   "gender": "乾"
+  },
+  {
+   "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+   "pillars": [
+    "丁丑",
+    "壬子",
+    "甲辰",
+    "庚午"
+   ],
+   "gender": "乾"
   }
  ]
 }

@@ -31,7 +31,7 @@ OUT_JSON = ROOT / "META" / "claim-condition-pilot-v1.json"
 OUT_MD = ROOT / "META" / "claim-condition-pilot-v1.md"
 PANEL_SIZE = 20
 
-CASE_RE = re.compile(r"^(C-\d{4}-\d{3})-(乾|坤)-((?:[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4})$")
+CASE_RE = re.compile(r"^(C-\d{4}-[A-Za-z0-9]+)-(乾|坤)-((?:[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]){4})$")
 
 
 def load_claims() -> list[dict]:
