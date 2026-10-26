@@ -349,8 +349,10 @@ def muku_open(ctx, args):
 
 def ru_mu(ctx, args):
     chars = _chars_of_god(args.get("star", ""), ctx)
-    if not chars:
+    if chars is None:
         return _u("无法解析十神规格")
+    if not chars:
+        return _f("命局无此十神，入墓无从谈起")
     for m in ctx["muku"]:
         for c in m.get("candidates") or []:
             if c.get("excluded"):

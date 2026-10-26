@@ -260,5 +260,9 @@ def compile_claim(claim: dict) -> dict[str, Any]:
         return {"claim_id": claim.get("id"), "status": declared,
                 "reason": claim.get("compile_note", "")}
     errs = validate_claim(claim)
-    return {"claim_id": claim.get("id"), "status": "uncompilable" if errs else "compiled",
-            "errors": errs}
+    if errs:
+        return {"claim_id": claim.get("id"), "status": "uncompilable", "errors": errs}
+    if declared == "partial":
+        return {"claim_id": claim.get("id"), "status": "partial",
+                "reason": claim.get("compile_note", "")}
+    return {"claim_id": claim.get("id"), "status": "compiled", "errors": []}
