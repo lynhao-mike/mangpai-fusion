@@ -130,7 +130,7 @@ L9 以 `(school_id, task_id, chart_prototype_id, claim_type, time_horizon, evide
 | A | 排盘+大运+神煞 | 全部外部化，靠问真 APP，input.md 严格 schema |
 | B | DSL 形态 | YAML 结构 + Python 谓词函数库（约 60 个原子） |
 | C | 做功能量量化 | 浮点 0-1 内部计算，序数 5 级（无/弱/中/强/极强）外显 |
-| D | 引擎/AI 边界 | 引擎产骨架结论（铁断不可改），AI 仅润色"画像版/对命主话术"段，标 `[AI-polish]` |
+| D | 引擎/AI 边界 | 引擎产骨架结论（铁断不可改）——**已被 [ADR-001](../../docs/adr/ADR-001-engine-agent-boundary.md) 取代（2026-10-26）：现行为「引擎产事实与候选断语，Agent 做裁决」**——原意保留：AI 仅润色"画像版/对命主话术"段，标 `[AI-polish]` |
 | E | 置信度模型 | Beta 分布：`(hits+1) / (hits+misses+2)`，变异度>0.15 强制 -1 ★ |
 | F | 生命周期 | 全自动（升降级都自动），但降级需累计 3 次失验 |
 | G | confirmed 降级阈值 | 累计 3 次失验 → flagged_for_review |
@@ -196,7 +196,9 @@ engine/
 │   ├── 18-career-path-prospective-cohort-v1.md ← 真正未见职业路径 cohort 采集、隔离、双审裁决与准入契约
 │   ├── 19-career-path-product-routing-v1.md ← 冻结竞争证据链与失败关闭产品分流契约
 │   ├── 20-domain-prospective-evaluation-v1.md ← 事业、财富、婚姻三领域 prospective 盲测与失败关闭评分契约
-│   └── 21-high-risk-domain-claims-v1.md ← 高风险领域命题独立来源、失败关闭与人工复核契约
+│   ├── 21-high-risk-domain-claims-v1.md ← 高风险领域命题独立来源、失败关闭与人工复核契约
+│   ├── 22-dual-core-blind-validation-v1.md ← 多轮盲测封存、复核/预测分离与规则统计契约
+│   └── 23-claim-condition-protocol-v1.md ← 断语条件协议（谓词表 / 三值逻辑 / 框架依赖）
 │
 ├── energy/                      ← Track-A 段派 D1 引擎（Python 包）
 │   ├── __init__.py

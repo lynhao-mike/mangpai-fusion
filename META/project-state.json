@@ -2,8 +2,52 @@
   "product_name": "mangpai-fusion",
   "product_version_source": "VERSION",
   "product_version": "1.3.1",
-  "current_phase": "six-source-three-domain-verification-and-governance",
-  "last_updated": "2026-08-01",
+  "current_phase": "claim-condition-compilation-and-school-routing",
+  "last_updated": "2026-10-26",
+  "decision_log": {
+    "root": "docs/adr/",
+    "index": "docs/adr/README.md",
+    "accepted": [
+      {
+        "id": "ADR-001",
+        "title": "引擎/Agent 边界",
+        "path": "docs/adr/ADR-001-engine-agent-boundary.md",
+        "status": "accepted",
+        "date": "2026-10-26",
+        "supersedes": [
+          "engine/contracts/00-OVERVIEW.md#决策D",
+          "engine/contracts/README.md#决策摘要D"
+        ]
+      },
+      {
+        "id": "ADR-002",
+        "title": "交付与指标双层记分",
+        "path": "docs/adr/ADR-002-delivery-vs-metric.md",
+        "status": "accepted",
+        "date": "2026-10-26"
+      },
+      {
+        "id": "ADR-003",
+        "title": "断语条件化与流派路由协议",
+        "path": "docs/adr/ADR-003-claim-conditions-and-school-routing.md",
+        "status": "accepted",
+        "date": "2026-10-26"
+      }
+    ]
+  },
+  "claim_condition_protocol": {
+    "contract": "engine/contracts/23-claim-condition-protocol-v1.md",
+    "status": "pilot_verified_not_production",
+    "atom_registry_version": "v1-draft",
+    "ir_field": "conditions_v2",
+    "pilot": {
+      "claims": "theory/claims/conditions-v2/pilot-20.yaml",
+      "report_json": "META/claim-condition-pilot-v1.json",
+      "report_md": "META/claim-condition-pilot-v1.md",
+      "reproduce": "python -m tools.claim_condition_report",
+      "scope": "20 条真实断语；只出候选，不进报告、不进路由"
+    }
+  },
   "ai_entrypoint": "AGENTS.md",
   "human_entrypoint": "README.md",
   "stable_status": "STATUS.md",
@@ -25,6 +69,7 @@
   "changelog": "META/rule-changelog.md",
   "arbitration_log": "META/arbitration-log.md",
   "contract_overview": "engine/contracts/00-OVERVIEW.md",
+  "validation_corpus_inventory": "META/validation-corpus-v1.json",
   "rule_lifecycle_contract": "engine/contracts/05-rule-lifecycle.md",
   "confidence_contract": "engine/contracts/06-confidence-model.md",
   "v1_4_status": {

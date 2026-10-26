@@ -89,3 +89,15 @@ theory/tiaohou_ditiansui/_extracted_rules.json
 .p0_backup/
 .p0_backup/
 .p0_probe*.py
+
+# 会话临时产物（截图 / OCR / 微信导出），不是仓库内容
+_crop_top*.png
+_tmp_wechat.png
+_ocr.ps1
+_shot.ps1
+
+# pytest 临时目录（Windows 用户名变体）
+pytest-of-*/
+
+# 盲测探针工作区：含 key.json 答案，入库即泄漏
+.blind-probe/

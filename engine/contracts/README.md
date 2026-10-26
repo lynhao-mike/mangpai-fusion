@@ -56,7 +56,7 @@
 - A 排盘外部化（问真 APP）
 - B YAML + Python 谓词
 - C 浮点 + 序数双显
-- D 引擎产骨架，AI 仅润色画像段
+- D 引擎产骨架，AI 仅润色画像段（**已被 [ADR-001](../../docs/adr/ADR-001-engine-agent-boundary.md) 取代，2026-10-26：引擎产事实与候选，Agent 裁决**）
 - E Beta 分布置信度
 - F 全自动 + G 3 次降级缓冲
 - H 各 agent 各分支 + 整合 agent 合并

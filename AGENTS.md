@@ -77,6 +77,24 @@ python -m tools.human_touch_linter <file.md>
 
 若任务产出无法用上述命令判定，为该任务写一个只依赖标准库的 `verify.py`，以退出码表达验收结果；**不得为了让命令通过而修改测试或断言**。
 
+### 已知红灯：默认 pytest 门禁（2026-10-26 记录）
+
+`tests/tools/test_bundle_pii.py` 在**导入阶段**加载 `.workbuddy-ai/make_bundle_v2.py`。该目录被 `.gitignore` 忽略，且脚本已不存在，因此 `python -m pytest -q` 会在**收集阶段**失败（不是断言失败）。
+
+判定除该文件之外的回归是否通过，用显式路径覆盖 addopts：
+
+```bash
+python -m pytest -q -o addopts="-ra --tb=short" tests/facts tests/api tests/predicates \
+  tests/tools/test_query_theory.py tests/tools/test_human_touch_linter.py \
+  tests/tools/test_blind_ledger.py tests/tools/test_anchor_span.py \
+  tests/tools/test_blind_toolchain.py tests/tools/test_gao_split.py tests/test_project_metadata.py
+```
+
+修复方向（已授权）：把脱敏逻辑**生产化**为 `tools/bundle_sanitize.py`（跟踪任务 `tasks/T-114/PROMPT.md`），测试改为导入生产模块。
+
+2026-10-26 过渡措施：该测试在脚本缺失时显式 `pytest.skip(..., allow_module_level=True)`，reason 带任务号，默认门禁恢复为 `220 passed, 1 skipped`。**skip 只让门禁可用，不等于已修**：禁止改成永久 skip，也禁止把该测试移出 `testpaths`。
+另：`tools/blind_candidate_pick.py` 仍打印 `python .workbuddy-ai/make_bundle_v2.py …`，生产化后需同步改为新入口。
+
 ### 保护区（不得修改，除非任务卡明确授权）
 
 - `tests/` 全部内容，尤其是 `tests/conftest.py`、`tests/fixtures/`、`tests/governance/static_isolation_*.py`（隔离性静态检查的判据本身）
@@ -115,7 +133,7 @@ python -m tools.human_touch_linter <file.md>
 
 1. **只读任务卡 `File Scope` 中列出的文件。** 需要接口定义时读对应源文件，不要 `ls` 全仓库——上下文成本是模型单价的 5–10 倍。
 2. **禁止修改测试或验收脚本使其通过。** 测试失败要改实现，不是改断言。
-3. **禁止执行 `git commit` / `checkout` / `stash` / `reset` / `clean`。** 版本操作由人工负责。
+3. **版本操作**：`git commit` 与 `git push` 已获用户明确授权（2026-10-26）。执行前必须：跑 `python -m pytest -q`、只暂存与本轮改动相关的文件、提交信息写清范围。**仍然禁止** `checkout` / `stash` / `reset` / `clean` 等破坏性操作。
 4. **任务完成后必须更新 `STATUS.md`**，并在 Execution Log 追加一行。
 5. **发现任务卡本身有问题时**，写入 `PROMPT.md` 的 `Amendments` 段并在 `STATUS.md` 的 Blockers 记录，不要自行扩大范围。
 6. **不得心算排盘或编造干支关系、长生、空亡、神煞、起运等事实**；这类事实只从 `python -m engine.cli` 取，理论证据只从 `python -m tools.query_theory` 取。
