@@ -26,10 +26,18 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 
+# 本地脱敏脚本已被 .gitignore 忽略、且仓库内不存在（2026-10-26 确认）。
+# 过渡措施：缺失时显式 skip，让默认门禁可用并保留有脚本环境下的 PII 检查能力。
+# 跟踪任务 T-114：把脱敏逻辑生产化为 tools/bundle_sanitize.py，之后删除本段。
+_BUNDLE_SCRIPT = ROOT / ".workbuddy-ai" / "make_bundle_v2.py"
+if not _BUNDLE_SCRIPT.exists():
+    pytest.skip(
+        f"本地脱敏脚本缺失：{_BUNDLE_SCRIPT}；见 T-114（生产化为 tools/bundle_sanitize.py）",
+        allow_module_level=True,
+    )
+
 # make_bundle_v2 在 .workbuddy-ai 下（非包），用 spec 加载
-_SPEC = importlib.util.spec_from_file_location(
-    "make_bundle_v2", ROOT / ".workbuddy-ai" / "make_bundle_v2.py"
-)
+_SPEC = importlib.util.spec_from_file_location("make_bundle_v2", _BUNDLE_SCRIPT)
 _mod = importlib.util.module_from_spec(_SPEC)
 assert _SPEC and _SPEC.loader
 _SPEC.loader.exec_module(_mod)
