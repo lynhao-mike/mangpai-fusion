@@ -87,6 +87,11 @@ v1 把「造一个改了一个字的盘」当语义对比对，并给它**我预
 
 同理，`engine/energy/zuogong.py` 明言「墓 = 简化实现，只检测财官入辰戌丑未」，所以 `ru_mu(食神)` 永远为假——不是数据问题，是事实层不覆盖。
 
+> **⚠️ 2026-10-27 中枢更正：上面这一句已被证伪，不要据它派活。**
+> 复算（481 盘）：`ru_mu` 读的是 `engine/facts/relation_graph.py::_muku`，该扫描按**五行**建候选（`辰→水、戌→火、丑→金、未→木`），本就覆盖全部十神；`ru_mu(食神)` 实际命中 **41/481 盘**，十类十神命中 34–63 盘不等。
+> 「只检测财官」那句只在遗留链 `engine/energy/zuogong.py::detect_mu_paths:472` 成立，而该链与 `ru_mu` 之间**没有任何 import 关系**（`engine/facts/` 全目录不含 `engine.energy` import）。
+> `M3-R-166` 的 `fire=0` 真实原因是：`compile_state: partial` 被两个报告工具跳过，且 `requires_pair` 的配对命题 `M2-Y-017` 为 `needs_human`（缺「禄」原子）→ 只能落 `evidence_only`。解锁路径见 **T-135**，不是 T-132。
+
 ## 5. 顺序
 
 ```text

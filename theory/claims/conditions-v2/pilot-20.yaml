@@ -330,7 +330,7 @@ claims:
     source_quote: 食神入墓→寿到（食表自由/生命力，入墓则无）。
     falsifier: 食神入墓而寿元正常，则本条证伪
     compile_state: partial
-    compile_note: facts 的墓库扫描只覆盖财官（engine/energy/zuogong.py 明言「墓=简化实现，只检测财官入辰戌丑未」），食神入墓无事实来源，481 张盘命中 0；需先扩 muku 扫描范围
+    compile_note: 前版诊断「墓库扫描只覆盖财官、481 盘命中 0」经 2026-10-27 复算证伪：ru_mu 读的是 engine/facts/relation_graph.py::_muku，该扫描按五行建候选、本就覆盖全部十神（481 盘 818 条候选），ru_mu(食神) 实际命中 41 盘。财官限定只存在于遗留链 engine/energy/zuogong.py::detect_mu_paths:472，不在本断语读取路径上。本条仍标 partial 的真实原因有二：一是 requires_pair 的配对命题 M2-Y-017 为 needs_human（缺「禄」原子），配对永不裁决，只能落 evidence_only；二是 unmapped_prose 所述分支未建模。要让它可求值，先补 M2-Y-017，而非扩墓库。
     conditions_v2:
       framework_dependency: requires_pair
       pair_with: [M2-Y-017]
