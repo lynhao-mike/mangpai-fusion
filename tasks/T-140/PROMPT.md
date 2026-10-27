@@ -46,34 +46,46 @@ target = next((m for m, t in zip(members, ty) if t == "用"), members[-1] if mem
 .venv\Scripts\python.exe -m tools.verify_baseline  # 四项不降
 ```
 
-### ⚠️ 4.0 追加约束（2026-10-27 中枢补，因为实测撞了红线）
+### ⚠️ 4.0 追加约束（2026-10-27 中枢裁决：**改分档，不改断言**）
 
-`tests/api/test_engine_reset_regression.py::test_cli_all_json_under_15kb` 要求 `engine.cli all` 的输出 **< 15000 字节**。这是真实的产品约束：Agent 每次调工具都不该吃掉 15KB 上下文。
+**背景**：`tests/api/test_engine_reset_regression.py:171` 断言 `len(proc.stdout) < 15_000`。该盘现状 **14 904 B，余量仅 96 B**。按原卡扩 keep 后实测 18 556 B；即使只加 `tiyong` + `actor`（null）也约 15 300 B，**仍然超**。
 
-实测（盘 `庚申 戊寅 壬子 辛丑`，16 条做功候选）：
+**所以「D5 的任何正确修法都必然撞穿这条断言」这个判断成立。** 但**不许放宽 15 000**——那是改判据让红变绿（红线一）。
 
-| 字段 | 出现 | 约占字节 |
-|---|---|---|
-| `binzhu` | 16 条 | **3370** |
-| `tiyong` | 16 条 | 453 |
-| `distance` | 16 条 | 256 |
-| `actor` | 16 条 | 268 |
-| 合计 payload | — | **20196**（超限） |
+#### 根因：一个函数在服侍两个需求相反的调用方
 
-**裁决：不发字段不是选项，但 `binzhu` 必须换紧凑表示。**
+| 调用方 | 需要什么 |
+|---|---|
+| `claim_condition_corpus` / `claim_condition_report` / `education_label_sheet` / `engine_audit` / `relations_audit` / `zuogong_probe` | **完整事实**（必须含 `tiyong`，否则 `zuogong` 原子 target 恒错） |
+| `engine.cli`（Agent 入口） | **紧凑**（< 15KB，Agent 上下文预算） |
 
-原因：`binzhu` 由 `(addr, layer)` 唯一决定，同一地址在不同候选里重复了 16 次，每次还带 `sides` + `direction` 四个层级，是纯冗余。而 `engine/facts/chart_facts.py:125 binzhu_side(addr, layer)` 是纯函数，调用方可自行还原。
+现在压缩逻辑写在 `analyze_facts` 内部（`facade.py:190 return _compact(payload, ...)`），于是「事实视图」被「Agent 视图」的预算绑死了。`engine/cli.py:18` 的注释自己写着「compact JSON，保证 analyze_facts 默认输出 < 15KB」——**预算是 CLI 的，压缩却做在 API 里**。
 
-**要求**：
-- `tiyong` / `distance` / `actor` 照常发（体积可接受）。
-- `binzhu` 改为**紧凑形式**，二选一：
-  - (a) 只发 `binzhu` 的**方向摘要**，如 `"binzhu": {"1": "同在宾位", "2": "正向"}`；或
-  - (b) 候选里不发 `binzhu`，改在 payload **顶层**发一张 `binzhu_map`（每个地址一层，全局去重）。
-- 选哪种由你判断，**判据是：`binzhu` 原子（`atoms.py:517`）仍能拿到它需要的信息**。若原子只需 `direction`，就只发 `direction`。
+#### 裁决：事实视图与 Agent 视图分离
 
-**硬要求**：改完后 `pytest -q` 必须 0 failed，`test_cli_all_json_under_15kb` 必须通过。**不许为了过这条测试去删改那个断言**（放宽 15000 是改判据让红变绿）。
+1. **`analyze_facts()` 返回完整事实**：保留 `tiyong` / `binzhu` / `distance` / `actor`（`actor` 无方向时为 `null` 且键不消失）。
+   - 内部调用方（corpus / report / audit / probe）全部要吃这个完整版。
+2. **`engine/cli.py` 负责 Agent 视图**：在 `_dump` 之前套一层**紧凑投影**（例如新增 `facade.compact_for_agent(payload)`），把 Agent 不需要的字段削掉，保证默认输出仍 < 15 000 B。
+3. **`engine.cli all` 增加 `--full` 开关**：输出完整事实（不做紧凑投影），供审计/调试/验证使用。
+4. **`test_cli_all_json_under_15kb` 一个字都不许改**，它必须继续通过。
 
-若你认为 15KB 这条限制本身不合理（例如事实层确实需要更多字节），**停下报告理由**，由中枢决定是调限额还是调表示法。不要自己动手改限额。
+这样：Agent 默认输出体积不变（仍约 14.9KB），事实层完整性恢复，D5 修复，且没有任何断言被放宽。
+
+#### 如果 `binzhu` 仍然过大
+
+`binzhu` 实测占 3370 B（4 层 × 每条候选重复），是紧凑投影里该被削掉的首选项。可选加分项：
+- 默认视图不发 `binzhu`，`--full` 才发；或
+- 发方向摘要 `{"1":"同在宾位","2":"正向"}` 这种紧凑形式。
+
+**但这是次要优化。** 主修是分档。不要为了省字节去删 `tiyong`——那是 D5 要修的东西本身。
+
+#### 验收追加
+
+- `pytest -q` 必须 **0 failed**（当前是 1 failed / 219 passed，红的就是这条）。
+- `test_cli_all_json_under_15kb` 必须通过，且**该文件未被修改**（用 `git diff -- tests/api/test_engine_reset_regression.py` 证明为空）。
+- `engine.cli all --full` 的输出里，`duan_zuogong.candidates` 至少一条含 `tiyong` / `actor` 键。
+- `python -c` 直接调 `analyze_facts`（不经 CLI）时，候选里必须有 `tiyong`。
+
 
 **必须自证的三条**（把命令与原始输出贴进 BRIEF）：
 
