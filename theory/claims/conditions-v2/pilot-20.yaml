@@ -82,7 +82,14 @@ claims:
         all:
           - atom: palace_holds
             args: {god: 配偶星, palace: 日支}
-      invalidators: {any: []}
+      invalidators:
+        any:
+          # 反条件：夫妻宫落了夫妻星仍被「他星」六合/暗合，一合就被合走，不离不弃不成立。
+          - atom: he_at
+            args: {at: D.b, exclude_god: 配偶星}
+      invalidator_evidence:
+        - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 160, quote: 夫妻宫落夫妻星时，不喜他合，包括六合，暗合，一合就容易合走了，离婚者居多。}
+      invalidator_school_note: 本条为高德臣断语；失效条件取段建业《婚姻专辑》160 行同构原文（跨流派交叉验证），未以段派结论替代高派前提。
       unmapped_prose: ""
 
   - id: G-CH-035
@@ -115,23 +122,68 @@ claims:
     source_quote: 夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒，或六合，暗合他星。
     falsifier: 夫妻宫为用且安静但婚姻破裂，则本条证伪
     compile_state: compiled
+    source_refs:
+      - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 48, role: 主锚点·安静/有用/合他星, quote: 夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒，或六合，暗合他星（配偶星以外的星），也不宜杂透，多现。}
+      - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 58, role: 标杆盘·夫宫为喜，冲去夫星忌神, quote: 伤官亥冲巳，夫宫为喜，冲去夫星忌神}
+      - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 70, role: 夫星合到夫宫＝好婚姻（合他星要排除配偶星）, quote: 寅丑暗合，夫星合到夫宫}
+      - {path: sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md, line: 4109, role: 夫妻宫「用」＝财官食伤；制不住为坏婚姻, quote: 坐下为用（财官食伤）就不好}
+      - {path: sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md, line: 701, role: 夫妻宫制去夫妻星＝好婚姻，制死才好, quote: 如果制不死，就是坏婚姻。}
+    synthesis_note: >-
+      T-143 依 ADR-007 D11 升为多锚点：主句取 48 行；「用」的取值域取 4109 ⑨「坐下为用（财官食伤）」；
+      「制得死才算好」取 701 行；「配偶星本星相合不算坏」取 48 行括号自注 + 70 行实例；标杆盘取 58 行。
     conditions_v2:
       framework_dependency: requires_school_frame
-      frame_atom: {atom: tiyong, args: {role: 用, at: D.b}}
+      # 「夫妻宫有用」≠「日支本气是财官」。事实层 structure_check.tiyong_of 把食伤标双属
+      # （食神偏体、伤官偏用，不替调用方强择），而 4109 ⑨ 在夫妻宫语境下把「用」定义为财官食伤，
+      # 故 用/双属 均为「有用」，只有 体（印禄比）不是。标杆盘日支亥为伤官(双属)，原文判「夫宫为喜」。
+      frame_atom:
+        any:
+          - {atom: tiyong, args: {role: 用, at: D.b}}
+          - {atom: tiyong, args: {role: 双属, at: D.b}}
       time_window: natal
       preconditions:
         all:
+          # ① 穿/破：4109 ②「穿了夫妻宫…婚姻不好」「夫妻宫穿了夫妻星的那个字，必离婚」——两个方向都坏，
+          #    无需方向判断，作硬约束。
           - not:
               any:
-                - {atom: chong_at, args: {at: D.b}}
                 - {atom: chuan_at, args: {at: D.b}}
-                - {atom: xing_at, args: {at: D.b}}
                 - {atom: po_at, args: {at: D.b}}
+          # ② 合：48 行括号自注「配偶星以外的星」，故排除配偶星本星；
+          #    夫星合到夫宫是好事（70 行「寅丑暗合，夫星合到夫宫…一生好婚姻」）。
           - not:
               atom: he_at
-              args: {at: D.b}
-      invalidators: {any: []}
-      unmapped_prose: "「或六合、暗合他星（配偶星以外的星）」只按「日支被合」编译，未区分合的是否配偶星"
+              args: {at: D.b, exclude_god: 配偶星}
+          # ③ 冲/刑：既可能是「夫妻宫被坏」，也可能是「夫妻宫制去夫妻星」（58/701/4109①）。
+          #    关系边无向，机械层判不了方向与「制死」与否，故走 needs_judgment 推给 Agent。
+          - any:
+              - all:
+                  - not: {atom: chong_at, args: {at: D.b}}
+                  - not: {atom: xing_at, args: {at: D.b}}
+              - all:
+                  - {atom: zuogong, args: {kind: 制用, involves: 配偶星}}
+                  - atom: needs_judgment
+                    args:
+                      reason: >-
+                        夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死
+                        （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀，
+                        婚姻就不好了。」、4109①）；关系边无向，机械层判不了。
+      invalidators:
+        any:
+          # 反条件：配偶星既不透也不藏 → 无婚或克配偶，本条（婚姻较好）不成立。
+          - all:
+              - not: {atom: visible_god, args: {god: 配偶星}}
+              - not: {atom: hidden_god, args: {god: 配偶星}}
+          # 反条件（待判）：夫妻宫虽有用且安静，但夫妻星「制不死」→ 坏婚姻。
+          - atom: needs_judgment
+            args:
+              reason: >-
+                夫妻宫制夫妻星是否「制死」（力量比较）；大连面授讲义:701「如果制不死，就是坏婚姻」。
+                契约 23 §6.3 列 compare 为未实现缺口，此处不编造阈值。
+      invalidator_evidence:
+        - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 17, quote: 如无则另看：男命再无遁藏，基本可能确定无婚，或克配偶。}
+        - {path: sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md, line: 701, quote: 如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀，婚姻就不好了。}
+      unmapped_prose: ""
 
   - id: M1-D-341
     school: duan
@@ -151,8 +203,8 @@ claims:
     source_ref: {path: theory/raw/duan/promoted/m1-patterns.md, line: 42}
     source_quote: 八字通过体用与宾主之间制的关系，得到命主所用的东西。
     falsifier: 盘中有制用结构但该盘事业无相应表现，则本条证伪
-    compile_state: partial
-    compile_note: 「制用结构存在」≠「做功成立」。facts 层只出候选（engine/facts/structure_check.py 明言「不计层数、不折算富贵」）；原文的 80% 是「做功的命局里靠制用的比例」，结论要落到「做功层数→富贵层级」，需 zuogong_layers 原子，当前不存在
+    compile_state: compiled
+    compile_note: T-143：原 partial 转 compiled。「制用结构存在」≠「做功成立」这一未量化子条件不再删掉，改为 needs_judgment 显式挂在 preconditions.all，机制上必然产出 needs_fact 交 Agent；facts 层仍只出候选（engine/facts/structure_check.py 明言「不计层数、不折算富贵」），「做功层数→富贵层级」所需的 zuogong_layers 原子仍缺，故未量化部分不得视作已成立
     conditions_v2:
       framework_dependency: requires_school_frame
       frame_atom: {atom: tiyong, args: {role: 用}}
@@ -161,7 +213,21 @@ claims:
         all:
           - atom: zuogong
             args: {kind: 制用}
-      invalidators: {any: []}
+          - atom: needs_judgment
+            args:
+              reason: >-
+                「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、
+                功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把
+                compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。
+      invalidators:
+        any:
+          - atom: needs_judgment
+            args:
+              reason: >-
+                制用成立但「制不住」→ 不作功：婚姻专辑:64「原局水火之力量相当…夫宫就制不住夫星了」、
+                大连面授讲义:701「如果制不住官杀，婚姻就不好了」。力量比较无原子，交 Agent。
+      invalidator_evidence:
+        - {path: sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md, line: 64, quote: 此造坐支夫宫之伤官也欲制官星，但原局水火之力量相当，但行运入东方，泄子水又生助巳午火，这样夫宫就制不住夫星了}
       unmapped_prose: ""
       note: 「占八字的大多数（80%）」是频率陈述而非条件，未编译
 
@@ -172,8 +238,8 @@ claims:
     source_ref: {path: theory/raw/duan/promoted/m1-patterns.md, line: 46}
     source_quote: 入墓也是一种做功方式，墓可以理解成得到、控制、管理、拥有、占据。
     falsifier: 盘中有墓用结构但无相应控制/占有事实，则本条证伪
-    compile_state: partial
-    compile_note: 同为候选取代结论：「入墓」只说明存在墓库关系，是否「得到/控制」需独立证据（宾主方位 + 库是否被冲开），缺 zuogong_success 原子
+    compile_state: compiled
+    compile_note: T-143：原 partial 转 compiled。「入墓是否等于得到/控制」这一未量化子条件改为 needs_judgment 显式挂在 preconditions.all（必然 needs_fact），不再删掉当 compiled 跑；所需 zuogong_success 原子仍缺
     conditions_v2:
       framework_dependency: requires_school_frame
       frame_atom: {atom: tiyong, args: {role: 用}}
@@ -182,8 +248,13 @@ claims:
         all:
           - atom: zuogong
             args: {kind: 墓用}
+          - atom: needs_judgment
+            args:
+              reason: >-
+                入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开
+                （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。
       invalidators: {any: []}
-      unmapped_prose: "「冲为库活、不冲为墓死」需 muku_open 的前置，未并入本条"
+      unmapped_prose: ""
 
   - id: M1-D-242
     school: duan
@@ -192,8 +263,8 @@ claims:
     source_ref: {path: theory/raw/duan/promoted/m1-practice.md, line: 16}
     source_quote: 印星透干或坐支，且与他星形成制/合/冲等做功关系；印做功→学历高。
     falsifier: 印做功但学历为高中及以下，则本条证伪
-    compile_state: partial
-    compile_note: 同为候选取代结论：印与它星有制/合/冲的边，不等于印「做功成功」；成败还需印是否得根得令、是否被合解，缺 zuogong_success 原子
+    compile_state: compiled
+    compile_note: T-143：原 partial 转 compiled。「印做功是否成功」改为 needs_judgment 显式挂在 preconditions.all（必然 needs_fact）；「印虚透不做功→有文化但非高学历」这一反例分支同时写入 invalidators，不再只留在散文里。缺 zuogong_success 原子
     conditions_v2:
       framework_dependency: requires_school_frame
       frame_atom: {atom: tiyong, args: {role: 用}}
@@ -202,8 +273,16 @@ claims:
         all:
           - atom: zuogong
             args: {involves: 印}
+          - atom: needs_judgment
+            args:
+              reason: >-
+                印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解，
+                缺 zuogong_success 原子，交 Agent 裁决。
       invalidators: {any: []}
-      unmapped_prose: "「印虚透不做功→有文化但非高学历」为反例分支，未编译"
+      invalidator_pending: >-
+        not_found：反例分支「印虚透不做功→有文化但非高学历」目前只有库内摘要（theory/raw/duan/promoted/m1-practice.md:16
+        的 rule 名「印星做功=有学历/不做功=懒笨」），未在 sources/duan 原文找到逐字对应句，故不写入 invalidators（不编造）。
+      unmapped_prose: ""
 
   - id: M2-Y-395
     school: yang
@@ -213,8 +292,23 @@ claims:
     source_quote: 夫妻宫被冲，看谁能制了谁，对方制了我的时候婚姻不好，我制了对方的时候好婚姻。
     falsifier: 夫妻宫被冲且我制对方但婚姻不好，则本条证伪
     compile_state: needs_human
-    compile_note: 触发条件（夫妻宫被冲）可编译，但结论取决于「谁制谁」的方向判断，需人工裁决
-    conditions_v2: {framework_dependency: requires_pair, pair_with: [M1-D-298]}
+    compile_note: 触发条件（夫妻宫被冲）可编译，但结论取决于「谁制谁」的方向判断，需人工裁决。T-143 只补 invalidators（记录成败条件），未改本条的 compile_state
+    conditions_v2:
+      framework_dependency: requires_pair
+      pair_with: [M1-D-298]
+      # 本条仍为 needs_human，故以下 invalidators 在机械层不参与求值（compile_claim 早退）；
+      # 写入目的是把「我制了对方≠必然好婚姻」的失效条件显式留档，不留在散文里。
+      invalidators:
+        any:
+          - atom: needs_judgment
+            args:
+              reason: >-
+                「我制了对方」仍可能坏婚：日主身弱承载不住（杨清娟广州班:1529「夫妻感情好不等于不离婚，
+                她承载不了，身太弱了」）；且刑坏未必等于离婚（同书:1697「刑坏戌中辛金不等于离婚」）。
+                身强弱/承载能力属 compare 缺口，无原子可判，交 Agent。
+      invalidator_evidence:
+        - {path: sources/yang/MinerU_markdown_杨清娟盲派八字命理2018戊戌年1月广州班111页_2056036453193547776.md, line: 1529, quote: 夫妻感情好不等于不离婚，她承载不了，身太弱了}
+        - {path: sources/yang/MinerU_markdown_杨清娟盲派八字命理2018戊戌年1月广州班111页_2056036453193547776.md, line: 1697, quote: 刑坏戌中辛金不等于离婚}
 
   - id: M2-Y-251
     school: yang
@@ -329,8 +423,8 @@ claims:
     source_ref: {path: theory/raw/ren/promoted/m3-rules-registry.md, line: 233}
     source_quote: 食神入墓→寿到（食表自由/生命力，入墓则无）。
     falsifier: 食神入墓而寿元正常，则本条证伪
-    compile_state: partial
-    compile_note: 前版诊断「墓库扫描只覆盖财官、481 盘命中 0」经 2026-10-27 复算证伪：ru_mu 读的是 engine/facts/relation_graph.py::_muku，该扫描按五行建候选、本就覆盖全部十神（481 盘 818 条候选），ru_mu(食神) 实际命中 41 盘。财官限定只存在于遗留链 engine/energy/zuogong.py::detect_mu_paths:472，不在本断语读取路径上。本条仍标 partial 的真实原因有二：一是 requires_pair 的配对命题 M2-Y-017 为 needs_human（缺「禄」原子），配对永不裁决，只能落 evidence_only；二是 unmapped_prose 所述分支未建模。要让它可求值，先补 M2-Y-017，而非扩墓库。
+    compile_state: compiled
+    compile_note: 前版诊断「墓库扫描只覆盖财官、481 盘命中 0」经 2026-10-27 复算证伪：ru_mu 读的是 engine/facts/relation_graph.py::_muku，该扫描按五行建候选、本就覆盖全部十神（481 盘 818 条候选），ru_mu(食神) 实际命中 41 盘。财官限定只存在于遗留链 engine/energy/zuogong.py::detect_mu_paths:472，不在本断语读取路径上。T-143：把 unmapped_prose 的「寿元还需印星被坏/枭夺食等分支」改为 needs_judgment 显式挂在 preconditions.all，故 partial → compiled 后仍必然 needs_fact（不会恒真恒假）；requires_pair 仍指向 M2-Y-017，配对是否能裁决见 tasks/T-143/BRIEF.md §5（未改 M2-Y-017 的 compile_state）。
     conditions_v2:
       framework_dependency: requires_pair
       pair_with: [M2-Y-017]
@@ -339,5 +433,13 @@ claims:
         all:
           - atom: ru_mu
             args: {star: 食神}
+          - atom: needs_judgment
+            args:
+              reason: >-
+                食神入墓是否等于寿元受损，还缺「印星被坏」「枭夺食」「本字弱/旺」等分支的量化：
+                墓__穿:11 指出入墓作凶「有一个重要的前提，是本酉很弱了」。缺对应原子，交 Agent 裁决。
       invalidators: {any: []}
-      unmapped_prose: "寿元判定还需「印星被坏」「枭夺食」等分支，单独一条不足以定生死"
+      invalidator_pending: >-
+        not_found：暂无「食神入墓但寿元正常」的逐字反例句；墓__穿:11 只给「本字很弱」这一前提，
+        属放宽/收窄前置而非失效判据，故不写入 invalidators。
+      unmapped_prose: ""

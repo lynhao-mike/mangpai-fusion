@@ -15,14 +15,25 @@ import pytest
 from engine.api import analyze_facts, to_jsonable
 from engine.claims.condition_ir import ATOMS, SIGNATURES, build_context, evaluate, evaluate_claim
 from engine.claims.condition_ir.atoms import (
+    DUO_MIN,
+    GUA_MAX,
     HE_KINDS,
+    STRONG_MIN,
+    YUANSHEN,
     binzhu,
+    can_control,
     chong_at,
+    chong_kai_muku,
+    dayun_present,
     edge,
     group_complete,
     he_at,
+    liunian_present,
     lu_at,
     needs_judgment,
+    sanhe_with_suiyun,
+    suiyun_arrives,
+    suiyun_edge,
 )
 from engine.claims.condition_ir.ir import _label
 from engine.facts.chart_facts import _LU, binzhu_side
@@ -34,9 +45,10 @@ ZIHE_ONLY = ["甲子", "丙子", "丙戌", "戊子"]  # D.b=戌：只有 ganzhi_
 FULL_SANHE = ["甲寅", "庚午", "甲戌", "丙子"]  # 寅午戌完整三合，D.b=戌
 
 
-def _ctx(pillars=NATAL, gender="乾", liunian_year=None):
+def _ctx(pillars=NATAL, gender="乾", liunian_year=None, dayun_index=None):
     facts = to_jsonable(analyze_facts(
-        pillars=list(pillars), gender=gender, liunian_year=liunian_year))
+        pillars=list(pillars), gender=gender,
+        liunian_year=liunian_year, dayun_index=dayun_index))
     return build_context(facts)
 
 
@@ -52,13 +64,19 @@ def ctx_liunian():
 
 # ---------------------------------------------------------------- 契约记账
 
-def test_registry_has_44_atoms_and_new_signatures():
-    assert len(ATOMS) == 44
+def test_registry_has_46_atoms_and_new_signatures():
+    assert len(ATOMS) == 46
     assert set(ATOMS) == set(SIGNATURES)
     assert SIGNATURES["lu_at"] == ((), ("gan", "at"))
     assert SIGNATURES["needs_judgment"] == (("reason",), ())
     assert "scope" in SIGNATURES["edge"][1]
     assert "exclude_god" in SIGNATURES["he_at"][1]
+    # v1.2（T-145）
+    assert SIGNATURES["suiyun_edge"] == (("type", "at"), ("scope",))
+    assert SIGNATURES["sanhe_with_suiyun"] == ((), ("zhi_set",))
+    assert SIGNATURES["chong_kai_muku"] == ((), ("zhi", "year"))
+    assert SIGNATURES["suiyun_arrives"] == (("at",), ("via",))
+    assert SIGNATURES["can_control"] == (("actor", "target"), ())
 
 
 # ---------------------------------------------------------------- ① 岁运隔离
@@ -274,3 +292,190 @@ def test_failure_labels_are_traceable(ctx_natal):
     assert out2.value is None
     assert any("needs_judgment" in label for label in out2.unknowns)
     assert all("?()" not in label for label in out2.unknowns)
+
+
+# ---------------------------------------------------------------- ⑦ 岁运 4 原子（T-145 / ADR-007 D3）
+
+# 标杆盘 A（段派「伤官亥冲巳，冲去夫星忌神，婚姻好」）
+PLATE_A = ["癸丑", "癸亥", "辛亥", "癸巳"]
+# 标杆盘 B（原文对照组：「水火力量相当，制不住夫星」）
+PLATE_B = ["壬子", "乙巳", "庚子", "壬午"]
+
+
+@pytest.fixture(scope="module")
+def ctx_a_natal():
+    return _ctx(PLATE_A, gender="坤")
+
+
+@pytest.fixture(scope="module")
+def ctx_a_suiyun():
+    # 坤造逆排：dayun_index=1 = 甲子；2027 = 丁未。
+    # 未指定 dayun_index 时事实层不建 DY 节点，因此不会有任何大运边。
+    return _ctx(PLATE_A, gender="坤", liunian_year=2027, dayun_index=1)
+
+
+def test_suiyun_atoms_unknown_without_context(ctx_a_natal):
+    """未提供岁运 → unknown + 「未提供大运/流年上下文」，使 state = needs_fact。"""
+    for fn, args in (
+        (suiyun_edge, {"type": "liuhe", "at": "Y.b"}),
+        (sanhe_with_suiyun, {}),
+        (chong_kai_muku, {}),
+        (suiyun_arrives, {"at": "Y.s"}),
+    ):
+        result = fn(ctx_a_natal, args)
+        assert result.value is None, fn.__name__
+        assert "未提供大运/流年上下文" in result.note, fn.__name__
+
+
+def test_presence_atoms_are_false_not_unknown(ctx_a_natal, ctx_a_suiyun):
+    """探测存在性：未提供是客观事实，给 false 而不是 unknown（第四值禁止）。"""
+    assert dayun_present(ctx_a_natal, {}).value is True     # 有出生数据即可排大运
+    assert liunian_present(ctx_a_natal, {}).value is False  # 未指定年份
+    assert liunian_present(ctx_a_suiyun, {"year": 2027}).value is True
+    assert liunian_present(ctx_a_suiyun, {"year": 2030}).value is False
+
+
+def test_suiyun_edge_hits_liunian_and_binds_edge_id(ctx_a_suiyun):
+    """2027 丁未：未冲丑 → liunian 层的 chong(Y.b, LN2027.b)。"""
+    result = suiyun_edge(ctx_a_suiyun, {"type": "chong", "at": "Y.b"})
+    assert result.value is True
+    assert result.bindings["edge_id"].startswith("e")
+    assert result.bindings["scope"] == "liunian"
+    edge_ids = {e["id"]: e for e in ctx_a_suiyun["edges"]}
+    assert edge_ids[result.bindings["edge_id"]]["kind"] == "chong"
+    assert "LN2027.b" in edge_ids[result.bindings["edge_id"]]["members"]
+
+
+def test_suiyun_edge_only_scans_non_natal_edges(ctx_a_suiyun):
+    """原局 e011 chong(M.b,D.b) 存在，但 suiyun_edge 不得命中 natal 边。"""
+    natal = [e for e in ctx_a_suiyun["edges"]
+             if e.get("kind") == "chong" and e.get("scope") == "natal"]
+    assert natal, "该盘应存在原局冲边，否则本测试无意义"
+    for e in natal:
+        for addr in e["members"]:
+            got = suiyun_edge(ctx_a_suiyun, {"type": "chong", "at": addr})
+            assert got.value is False or got.bindings["edge_id"] != e["id"]
+
+
+def test_suiyun_edge_scope_filter(ctx_a_suiyun):
+    assert suiyun_edge(ctx_a_suiyun, {"type": "liuhe", "at": "Y.b"}).bindings["scope"] == "dayun"
+    assert suiyun_edge(ctx_a_suiyun, {"type": "chong", "at": "Y.b", "scope": "dayun"}).value is False
+    assert suiyun_edge(ctx_a_suiyun, {"type": "chong", "at": "Y.b", "scope": "liunian"}).value is True
+    assert suiyun_edge(ctx_a_suiyun, {"type": "chong", "at": "Y.b", "scope": "??"}).value is None
+
+
+def test_sanhe_with_suiyun_requires_full_group(ctx_a_suiyun):
+    """亥子丑：甲子运与月支亥、年支丑成完整三会（completeness=full）。"""
+    result = sanhe_with_suiyun(ctx_a_suiyun, {})
+    assert result.value is True
+    assert result.bindings["edge_id"].startswith("e")
+    full = [e for e in ctx_a_suiyun["edges"]
+            if e.get("completeness") == "full" and e.get("scope") != "natal"]
+    assert result.bindings["edge_id"] in {e["id"] for e in full}
+    assert sanhe_with_suiyun(ctx_a_suiyun, {"zhi_set": "亥子丑"}).value is True
+    assert sanhe_with_suiyun(ctx_a_suiyun, {"zhi_set": "巳午未"}).value is False
+
+
+def test_chong_kai_muku_hits_suiyun_opener(ctx_a_suiyun):
+    """原局丑库（Y.b）被 2027 未冲 + 丑未刑触及。"""
+    result = chong_kai_muku(ctx_a_suiyun, {})
+    assert result.value is True
+    assert result.bindings["addr"] == "Y.b"
+    opener = next(e for e in ctx_a_suiyun["edges"] if e["id"] == result.bindings["edge_id"])
+    assert opener["kind"] in ("chong", "xing")
+    assert opener["scope"] in ("dayun", "liunian")
+    assert chong_kai_muku(ctx_a_suiyun, {"zhi": "丑"}).value is True
+    assert chong_kai_muku(ctx_a_suiyun, {"zhi": "辰"}).value is False   # 盘无辰库
+    assert chong_kai_muku(ctx_a_suiyun, {"year": 2027}).value is True
+    assert chong_kai_muku(ctx_a_suiyun, {"year": 2030}).value is None  # 未提供该年上下文
+
+
+def test_suiyun_arrives_tonglu(ctx_a_suiyun):
+    """M1-D-042 通禄：原局天干癸的禄为子，甲子运地支正是子。"""
+    result = suiyun_arrives(ctx_a_suiyun, {"at": "Y.s"})
+    assert result.value is True
+    assert result.bindings["addr"] == "Y.s"
+    assert result.bindings["sui_addr"].endswith(".b")
+    assert result.bindings["sui_addr"].startswith("DY")
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "癸"}).bindings["addr"] == "Y.s"
+
+
+def test_suiyun_arrives_yuanshen_and_muku_exclusion(ctx_a_suiyun):
+    """M1-D-042 现原身：巳的原身为丙戊，甲子运 / 丁未年均未见 → false。
+
+    辰戌丑未无原身（M1-D-058 falsifiable_by）→ 丑判 false 并在 note 说明，不补造土支原身。
+    """
+    assert YUANSHEN["巳"] == ("丙", "戊")
+    assert YUANSHEN["午"] == ("丁", "己")
+    assert set(YUANSHEN) == set("寅卯巳午申酉亥子")
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "H.b"}).value is False
+    assert "丙" in suiyun_arrives(ctx_a_suiyun, {"at": "H.b"}).note
+    muku = suiyun_arrives(ctx_a_suiyun, {"at": "Y.b"})
+    assert muku.value is False and "无原身" in muku.note
+
+
+def test_suiyun_arrives_via_must_match_layer(ctx_a_suiyun):
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "Y.s", "via": "原身"}).value is None
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "H.b", "via": "通禄"}).value is None
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "Y.s", "via": "??"}).value is None
+    assert suiyun_arrives(ctx_a_suiyun, {"at": "不存在"}).value is None
+
+
+def test_natal_atoms_still_isolated_after_t145(ctx_a_suiyun):
+    """T-142 成果回归：原局原子仍看不见岁运边。"""
+    assert chong_at(ctx_a_suiyun, {"at": "Y.b"}).value is False       # 只有岁运冲丑
+    assert group_complete(ctx_a_suiyun, {"type": "sanhui"}).value is False  # 完整三会只在岁运层
+    natal_hui = [e for e in ctx_a_suiyun["edges"] if e.get("kind") == "sanhui"]
+    # 默认 scope 命中的只能是原局边（本盘有丑亥半会），不得是完整局
+    hit = edge(ctx_a_suiyun, {"type": "sanhui"})
+    assert hit.value is True
+    got = next(e for e in natal_hui if e["id"] == hit.bindings["edge_id"])
+    assert got.get("scope", "natal") == "natal" and got.get("completeness") != "full"
+    assert edge(ctx_a_suiyun, {"type": "sanhui", "scope": "dayun"}).value is True
+
+
+# ---------------------------------------------------------------- ⑧ can_control（T-145 / ADR-007 D4）
+
+def test_plate_a_controls(ctx_a_natal):
+    """标杆盘 A：伤官亥冲巳，水旺得令，巳火失令孤立受克 → 制得住。"""
+    result = can_control(ctx_a_natal, {"actor": "亥", "target": "巳"})
+    assert result.value is True
+    assert result.bindings["actor_addr"] in ("M.b", "D.b")
+    assert result.bindings["target_addr"] == "H.b"
+    assert "得令" in result.note and "受克" in result.note
+
+
+def test_plate_a_reverse_direction_is_false(ctx_a_natal):
+    """方向不可混淆：反向（火制水）必须为 false，与正判互为镜像。"""
+    result = can_control(ctx_a_natal, {"actor": "巳", "target": "亥"})
+    assert result.value is False
+    assert "制不住" in result.note
+
+
+def test_plate_b_is_undecidable():
+    """标杆盘 B：水火力量相当（水多以多旺、火以得令旺），必须 unknown 而非 True/False。"""
+    ctx_b = _ctx(PLATE_B)
+    for actor, target in (("子", "巳"), ("子", "午"), ("Y.b", "M.b")):
+        result = can_control(ctx_b, {"actor": actor, "target": target})
+        assert result.value is None, (actor, target, result.note)
+        assert "力量相当" in result.note
+    # 不允许「A 判未知而 B 判真」的错向
+    assert can_control(_ctx(PLATE_A), {"actor": "亥", "target": "巳"}).value is not None
+
+
+def test_can_control_note_carries_both_sides_detail():
+    """unknown 的 note 必须能把双方根气与党势讲清楚（供 Agent 追问，而不是黑箱）。"""
+    note = can_control(_ctx(PLATE_B), {"actor": "子", "target": "巳"}).note
+    for token in ("制者", "被制", "旺项", "衰项", "水", "火"):
+        assert token in note
+
+
+def test_can_control_thresholds_are_engineering_values():
+    """阈值是工程取值，必须集中可查、且不是原文数值——改动须同步 BRIEF。"""
+    assert (DUO_MIN, GUA_MAX, STRONG_MIN) == (3, 1, 2)
+
+
+def test_can_control_rejects_degenerate_input(ctx_a_natal):
+    assert can_control(ctx_a_natal, {"actor": "?", "target": "巳"}).value is None
+    assert can_control(ctx_a_natal, {"actor": "亥", "target": "不存在"}).value is None
+    assert can_control(ctx_a_natal, {"actor": "亥", "target": "亥"}).value is None  # 同五行不成对抗

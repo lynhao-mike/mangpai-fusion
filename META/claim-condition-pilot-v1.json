@@ -5,10 +5,9 @@
  "metrics": {
   "claims_total": 20,
   "compile_states": {
-   "compiled": 8,
+   "compiled": 12,
    "needs_human": 5,
    "uncompilable": 2,
-   "partial": 4,
    "reference_only": 1
   },
   "compiled_claims": [
@@ -17,55 +16,68 @@
    "G-SP-071",
    "G-SP-130",
    "M1-D-298",
+   "M1-D-009",
+   "M1-D-013",
+   "M1-D-242",
    "M2-Y-251",
    "M2-Y-014",
-   "M3-R-013"
+   "M3-R-013",
+   "M3-R-166"
   ],
   "panel_size": 20,
-  "evaluable_rate": 1.0,
-  "address_binding_rate": 0.5,
-  "distinct_pass_sets": 16,
+  "evaluable_rate": 0.8,
+  "address_binding_rate": 0.5833,
+  "distinct_pass_sets": 20,
   "pass_set_distribution": {
-   "FTFFFFFF": 2,
-   "FFFFFFTF": 2,
-   "TTTFFTFF": 1,
-   "FFFFFTFF": 2,
-   "FFFTFFFF": 2,
-   "TTFTFFFF": 1,
-   "FTFFFFTF": 1,
-   "FTFTFFTF": 1,
-   "FFFFFFFF": 1,
-   "FTFFFTFF": 1,
-   "FFTTFFFF": 1,
-   "FFFFFTTT": 1,
-   "TFFFFFFF": 1,
-   "FTFFFTTT": 1,
-   "TTFTFTTF": 1,
-   "FFFTFTFF": 1
+   "FTFFFUUUFFFF": 1,
+   "FFFFTUFUFTFF": 1,
+   "TTTFTUFFTFFF": 1,
+   "FFFFFUUUTFFF": 1,
+   "FFFFFUFUFFFF": 1,
+   "TTFFFUUUFFFF": 1,
+   "FTFFFUFUFTFF": 1,
+   "FTFFFUUUFTFF": 1,
+   "FFFFFUUUFFFF": 1,
+   "FFFFTUUFTFFF": 1,
+   "FFFFUUFFFTFF": 1,
+   "FTFFTUFFTFFF": 1,
+   "FFTTFUFUFFFF": 1,
+   "FFFFFUFUTTTF": 1,
+   "FTFFTUUUFFFF": 1,
+   "TFFFFUUUFFFF": 1,
+   "FTFFFUUUTTTF": 1,
+   "TTFFFUUFTTFU": 1,
+   "FFFTFUFUTFFF": 1,
+   "FFFTFUUUFFFF": 1
   },
   "fire_rate": {
    "G-SP-165": 0.2,
    "G-SP-293": 0.45,
    "G-SP-071": 0.1,
-   "G-SP-130": 0.35,
+   "G-SP-130": 0.15,
    "M1-D-298": 0.0,
+   "M1-D-009": 0.0,
+   "M1-D-013": 0.0,
+   "M1-D-242": 0.0,
    "M2-Y-251": 0.4,
    "M2-Y-014": 0.35,
-   "M3-R-013": 0.1
+   "M3-R-013": 0.1,
+   "M3-R-166": 0.0
   },
   "state_distribution": {
-   "rejected": 121,
-   "candidate": 39
+   "rejected": 152,
+   "candidate": 35,
+   "evidence_only": 5,
+   "needs_fact": 48
   },
-  "unknown_rate": 0.0,
+  "unknown_rate": 0.2,
   "unknown_explicit_rate": 1.0,
   "unmapped_prose_claims": [
    "G-SP-071",
-   "M1-D-298",
    "M2-Y-014",
    "M3-R-013"
   ],
-  "unmapped_rate": 0.5,
+  "unmapped_rate": 0.25,
   "anchor_ok_rate": 0.85,
   "anchor_exact_rate": 0.75,
   "anchor_failures": [
@@ -89,9 +101,13 @@
    }
   ],
   "outlier_claims": [
-   "M1-D-298"
+   "M1-D-298",
+   "M1-D-009",
+   "M1-D-013",
+   "M1-D-242",
+   "M3-R-166"
   ],
-  "atom_count": 42
+  "atom_count": 46
  },
  "compiles": [
   {
@@ -136,23 +152,23 @@
   },
   {
    "claim_id": "M1-D-009",
-   "status": "partial",
-   "reason": "「制用结构存在」≠「做功成立」。facts 层只出候选（engine/facts/structure_check.py 明言「不计层数、不折算富贵」）；原文的 80% 是「做功的命局里靠制用的比例」，结论要落到「做功层数→富贵层级」，需 zuogong_layers 原子，当前不存在"
+   "status": "compiled",
+   "errors": []
   },
   {
    "claim_id": "M1-D-013",
-   "status": "partial",
-   "reason": "同为候选取代结论：「入墓」只说明存在墓库关系，是否「得到/控制」需独立证据（宾主方位 + 库是否被冲开），缺 zuogong_success 原子"
+   "status": "compiled",
+   "errors": []
   },
   {
    "claim_id": "M1-D-242",
-   "status": "partial",
-   "reason": "同为候选取代结论：印与它星有制/合/冲的边，不等于印「做功成功」；成败还需印是否得根得令、是否被合解，缺 zuogong_success 原子"
+   "status": "compiled",
+   "errors": []
   },
   {
    "claim_id": "M2-Y-395",
    "status": "needs_human",
-   "reason": "触发条件（夫妻宫被冲）可编译，但结论取决于「谁制谁」的方向判断，需人工裁决"
+   "reason": "触发条件（夫妻宫被冲）可编译，但结论取决于「谁制谁」的方向判断，需人工裁决。T-143 只补 invalidators（记录成败条件），未改本条的 compile_state"
   },
   {
    "claim_id": "M2-Y-251",
@@ -191,8 +207,8 @@
   },
   {
    "claim_id": "M3-R-166",
-   "status": "partial",
-   "reason": "前版诊断「墓库扫描只覆盖财官、481 盘命中 0」经 2026-10-27 复算证伪：ru_mu 读的是 engine/facts/relation_graph.py::_muku，该扫描按五行建候选、本就覆盖全部十神（481 盘 818 条候选），ru_mu(食神) 实际命中 41 盘。财官限定只存在于遗留链 engine/energy/zuogong.py::detect_mu_paths:472，不在本断语读取路径上。本条仍标 partial 的真实原因有二：一是 requires_pair 的配对命题 M2-Y-017 为 needs_human（缺「禄」原子），配对永不裁决，只能落 evidence_only；二是 unmapped_prose 所述分支未建模。要让它可求值，先补 M2-Y-017，而非扩墓库。"
+   "status": "compiled",
+   "errors": []
   }
  ],
  "claims": [
@@ -294,13 +310,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "framework": {
       "dependency": "standalone",
@@ -401,13 +417,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "framework": {
       "dependency": "standalone",
@@ -422,13 +438,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "framework": {
       "dependency": "standalone",
@@ -443,13 +459,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "hidden_god(god=印)",
-      "hidden_god(god=印)"
+      "hidden_god(god=印) as=P",
+      "hidden_god(god=印) as=P"
      ],
      "framework": {
       "dependency": "standalone",
@@ -1430,20 +1446,14 @@
      "state": "rejected",
      "value": false,
      "bindings": {},
-     "failed_atoms": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
@@ -1493,29 +1503,21 @@
      "state": "rejected",
      "value": false,
      "bindings": {},
-     "failed_atoms": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
      "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
      "failed_atoms": [],
      "unknown_facts": [],
      "near_miss": [],
@@ -1523,16 +1525,14 @@
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
      "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
      "failed_atoms": [],
      "unknown_facts": [],
      "near_miss": [],
@@ -1540,7 +1540,7 @@
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
@@ -1548,29 +1548,6 @@
      "state": "rejected",
      "value": false,
      "bindings": {},
-     "failed_atoms": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
-     "unknown_facts": [],
-     "near_miss": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
-     "framework": {
-      "dependency": "standalone",
-      "verdict": "pass"
-     },
-     "reason": "preconditions 不成立"
-    },
-    {
-     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
-     "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
      "failed_atoms": [],
      "unknown_facts": [],
      "near_miss": [],
@@ -1578,7 +1555,22 @@
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "invalidator 成立"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "G-SP-130",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [],
+     "near_miss": [],
+     "framework": {
+      "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
@@ -1729,20 +1721,14 @@
      "state": "rejected",
      "value": false,
      "bindings": {},
-     "failed_atoms": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "palace_holds(god=配偶星, palace=日支)",
-      "palace_holds(god=配偶星, palace=日支)"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
@@ -1768,11 +1754,9 @@
     {
      "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
      "claim_id": "G-SP-130",
-     "state": "candidate",
-     "value": true,
-     "bindings": {
-      "bind": "D.b"
-     },
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
      "failed_atoms": [],
      "unknown_facts": [],
      "near_miss": [],
@@ -1780,7 +1764,7 @@
       "dependency": "standalone",
       "verdict": "pass"
      },
-     "reason": "前置条件全部成立"
+     "reason": "invalidator 成立"
     },
     {
      "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
@@ -1830,11 +1814,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1845,40 +1829,32 @@
     {
      "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "evidence_only",
+     "value": true,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "reject"
      },
-     "reason": "preconditions 不成立"
+     "reason": "框架前置未成立"
     },
     {
      "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "evidence_only",
+     "value": true,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "reject"
      },
-     "reason": "preconditions 不成立"
+     "reason": "框架前置未成立"
     },
     {
      "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
@@ -1887,11 +1863,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1906,11 +1882,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1925,11 +1901,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1944,11 +1920,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1963,11 +1939,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1982,11 +1958,15 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "all[not(chong_at(at=D.b)), not(xing_at(at=D.b))]",
+      "all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]",
+      "any[all[not(chong_at(at=D.b)), not(xing_at(at=D.b))], all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]]"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "all[not(chong_at(at=D.b)), not(xing_at(at=D.b))]",
+      "all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]",
+      "any[all[not(chong_at(at=D.b)), not(xing_at(at=D.b))], all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]]"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -1997,59 +1977,52 @@
     {
      "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "evidence_only",
+     "value": true,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "reject"
      },
-     "reason": "preconditions 不成立"
+     "reason": "框架前置未成立"
     },
     {
      "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "needs_fact",
+     "value": null,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。): 夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。",
+      "needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)",
+      "all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]",
+      "any[all[not(chong_at(at=D.b)), not(xing_at(at=D.b))], all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]]"
      ],
-     "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
       "verdict": "pass"
      },
-     "reason": "preconditions 不成立"
+     "reason": "preconditions 含未知"
     },
     {
      "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "evidence_only",
+     "value": true,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "reject"
      },
-     "reason": "preconditions 不成立"
+     "reason": "框架前置未成立"
     },
     {
      "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
@@ -2058,11 +2031,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2077,11 +2050,15 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "all[not(chong_at(at=D.b)), not(xing_at(at=D.b))]",
+      "all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]",
+      "any[all[not(chong_at(at=D.b)), not(xing_at(at=D.b))], all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]]"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "all[not(chong_at(at=D.b)), not(xing_at(at=D.b))]",
+      "all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]",
+      "any[all[not(chong_at(at=D.b)), not(xing_at(at=D.b))], all[zuogong(kind=制用, involves=配偶星), needs_judgment(reason=夫妻宫涉冲/刑时须判「夫妻宫被坏」还是「夫妻宫制去夫妻星」，以及是否制死 （大连面授讲义:701「如果制不死，就是坏婚姻。如果此造改为申年，制不住官杀， 婚姻就不好了。」、4109①）；关系边无向，机械层判不了。)]]"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2092,21 +2069,17 @@
     {
      "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
      "claim_id": "M1-D-298",
-     "state": "rejected",
-     "value": false,
+     "state": "evidence_only",
+     "value": true,
      "bindings": {},
-     "failed_atoms": [
-      "?()"
-     ],
+     "failed_atoms": [],
      "unknown_facts": [],
-     "near_miss": [
-      "?()"
-     ],
+     "near_miss": [],
      "framework": {
       "dependency": "requires_school_frame",
-      "verdict": "pass"
+      "verdict": "reject"
      },
-     "reason": "preconditions 不成立"
+     "reason": "框架前置未成立"
     },
     {
      "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
@@ -2115,11 +2088,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2134,11 +2107,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2153,11 +2126,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(he_at(at=D.b, exclude_god=配偶星))"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2172,11 +2145,11 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
@@ -2191,17 +2164,1290 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(any[chuan_at(at=D.b), po_at(at=D.b)])"
      ],
      "framework": {
       "dependency": "requires_school_frame",
       "verdict": "pass"
      },
      "reason": "preconditions 不成立"
+    }
+   ]
+  },
+  {
+   "claim_id": "M1-D-009",
+   "school": "duan",
+   "domain": "事业",
+   "per_chart": [
+    {
+     "case": "C-2026-001-乾-庚申戊寅壬子辛丑",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.b",
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.b",
+      "T": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.b",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.s",
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "D.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "D.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "D.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M1-D-009",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。): 「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。",
+      "needs_judgment(reason=「有制用结构」到「做功成立」之间还缺：制得住/制不住（力量相当）、是功神还是废神、 功的层数（zuogong_layers / zuogong_success 原子均不存在）。契约 23 §6.3 已把 compare 列为未实现缺口，此处不编造阈值，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    }
+   ]
+  },
+  {
+   "claim_id": "M1-D-013",
+   "school": "duan",
+   "domain": "财富",
+   "per_chart": [
+    {
+     "case": "C-2026-001-乾-庚申戊寅壬子辛丑",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.b",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.b",
+      "T": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.b",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.b",
+      "T": "H.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M1-D-013",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(kind=墓用)",
+      "zuogong(kind=墓用)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M1-D-013",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。): 入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。",
+      "needs_judgment(reason=入墓是否等于「得到/控制/拥有」，须另证：宾主方位（墓在谁宫）与库是否被冲开 （原文口径「冲为库活、不冲为墓死」）。缺 zuogong_success / 库开合的成败原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    }
+   ]
+  },
+  {
+   "claim_id": "M1-D-242",
+   "school": "duan",
+   "domain": "学历",
+   "per_chart": [
+    {
+     "case": "C-2026-001-乾-庚申戊寅壬子辛丑",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.s",
+      "T": "Y.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "Y.b",
+      "T": "Y.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.s",
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.b",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "M.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "H.s",
+      "T": "H.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "D.b"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M1-D-242",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "zuogong(involves=印)",
+      "zuogong(involves=印)"
+     ],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "Z": "M.s",
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M1-D-242",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {
+      "T": "M.s"
+     },
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。): 印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。",
+      "needs_judgment(reason=印与它星有制/合/冲的边 ≠ 印做功成功；成败还需印是否得根得令、是否被合解， 缺 zuogong_success 原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_school_frame",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
     }
    ]
   },
@@ -2596,13 +3842,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2635,13 +3881,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2656,13 +3902,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2677,13 +3923,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2698,13 +3944,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2755,13 +4001,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2776,13 +4022,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2815,13 +4061,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2836,13 +4082,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2875,13 +4121,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2896,13 +4142,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2953,13 +4199,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -2974,13 +4220,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3002,13 +4248,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3025,11 +4271,11 @@
       "C": "Y.s"
      },
      "failed_atoms": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3044,13 +4290,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3065,13 +4311,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3086,13 +4332,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3107,13 +4353,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3130,11 +4376,11 @@
       "C": "M.s"
      },
      "failed_atoms": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3151,11 +4397,11 @@
       "C": "M.s"
      },
      "failed_atoms": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3170,13 +4416,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3191,13 +4437,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3214,11 +4460,11 @@
       "C": "H.s"
      },
      "failed_atoms": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3233,13 +4479,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3254,13 +4500,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3292,13 +4538,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3313,13 +4559,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3353,11 +4599,11 @@
       "C": "Y.s"
      },
      "failed_atoms": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "?()"
+      "not(rooted(god=财))"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3372,13 +4618,13 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
@@ -3393,16 +4639,440 @@
      "value": false,
      "bindings": {},
      "failed_atoms": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "unknown_facts": [],
      "near_miss": [
-      "visible_god(god=财)",
-      "visible_god(god=财)"
+      "visible_god(god=财) as=C",
+      "visible_god(god=财) as=C"
      ],
      "framework": {
       "dependency": "standalone",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    }
+   ]
+  },
+  {
+   "claim_id": "M3-R-166",
+   "school": "ren",
+   "domain": "健康",
+   "per_chart": [
+    {
+     "case": "C-2026-001-乾-庚申戊寅壬子辛丑",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+     "claim_id": "M3-R-166",
+     "state": "needs_fact",
+     "value": null,
+     "bindings": {},
+     "failed_atoms": [],
+     "unknown_facts": [
+      "needs_judgment(reason=食神入墓是否等于寿元受损，还缺「印星被坏」「枭夺食」「本字弱/旺」等分支的量化： 墓__穿:11 指出入墓作凶「有一个重要的前提，是本酉很弱了」。缺对应原子，交 Agent 裁决。): 食神入墓是否等于寿元受损，还缺「印星被坏」「枭夺食」「本字弱/旺」等分支的量化： 墓__穿:11 指出入墓作凶「有一个重要的前提，是本酉很弱了」。缺对应原子，交 Agent 裁决。",
+      "needs_judgment(reason=食神入墓是否等于寿元受损，还缺「印星被坏」「枭夺食」「本字弱/旺」等分支的量化： 墓__穿:11 指出入墓作凶「有一个重要的前提，是本酉很弱了」。缺对应原子，交 Agent 裁决。)"
+     ],
+     "near_miss": [],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 含未知"
+    },
+    {
+     "case": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
+      "verdict": "pass"
+     },
+     "reason": "preconditions 不成立"
+    },
+    {
+     "case": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+     "claim_id": "M3-R-166",
+     "state": "rejected",
+     "value": false,
+     "bindings": {},
+     "failed_atoms": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "unknown_facts": [],
+     "near_miss": [
+      "ru_mu(star=食神)",
+      "ru_mu(star=食神)"
+     ],
+     "framework": {
+      "dependency": "requires_pair",
       "verdict": "pass"
      },
      "reason": "preconditions 不成立"

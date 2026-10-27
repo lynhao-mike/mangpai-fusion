@@ -1,11 +1,12 @@
 """engine/claims/atoms.py · 断语条件谓词表 v1（契约 23 §四）。
 
-44 个原子（v1.1：新增 `lu_at` / `needs_judgment`，见契约 23 §4.7 与 §九），
+46 个原子（v1.2：新增 `suiyun_arrives` / `can_control`，见契约 23 §4.5、§4.8 与 §九），
 全部只读 engine.facts 已产出的字段，返回 true / false / unknown（None）。
 缺字段一律返回 unknown，不得猜测；不得在此处做命理判断。
 
 岁运隔离（ADR-007 D3）：关系原子默认只扫 `scope == "natal"` 的边，
 避免「原局静态断语」被流年干支错误点燃；`edge` 可用 `scope` 参数显式查岁运边。
+岁运原子（§4.5）反过来专门消费 `scope != "natal"` 的边。
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ from typing import Any, Callable, Optional
 # 禄（甲禄寅…癸禄子）的唯一定义处在事实层；与 structure_check 同源导入，不在本层另造表。
 from engine.facts.chart_facts import _LU as LU_TABLE
 from engine.facts.chart_facts import binzhu_side
+from engine.predicates.types import GAN_TO_WUXING, KE_MAP, ZHI_TO_WUXING
 
 Value = Optional[bool]  # True / False / None(=unknown)
 
@@ -81,14 +83,16 @@ def build_context(facts: dict[str, Any]) -> dict[str, Any]:
             kong.add(hit[0])
 
     cycles = chart.get("cycles") or {}
+    relations = facts.get("relations") or {}
     return {
         "gender": chart.get("gender"),
         "day_master": chart.get("day_master"),
         "stems": stems,
         "branches": branches,
         "kongwang": kong,
-        "edges": (facts.get("relations") or {}).get("edges") or [],
-        "muku": (facts.get("relations") or {}).get("muku") or [],
+        "edges": relations.get("edges") or [],
+        "nodes": relations.get("nodes") or [],
+        "muku": relations.get("muku") or [],
         "strength": facts.get("strength") or {},
         "camp": (facts.get("strength") or {}).get("camp_counts") or {},
         "shensha": (facts.get("shensha") or {}).get("hits") or [],
@@ -677,34 +681,359 @@ def structure_rescue(ctx, args):
     return _check_items(ctx, args.get("check"), ("rescue", "aux"))
 
 
-# ---------------------------------------------------------------- 岁运 5
+# ---------------------------------------------------------------- 岁运 6
+#
+# 岁运原子专门消费 `scope != natal` 的边（ADR-007 D3 的镜像面）：原局原子被隔离在
+# natal，岁运原子则只在岁运层找。建边由 relation_graph._nodes() 完成，本层不重造。
+# 三值语义（ADR-007 D3 / 契约 23 §4.5）：
+#   - 探测存在性（dayun_present / liunian_present）：未提供 → False（客观输入事实）。
+#   - 实质关系（suiyun_edge / sanhe_with_suiyun / chong_kai_muku / suiyun_arrives）：
+#     未提供 → unknown（让 state = needs_fact，Agent 据此追问年份）。
+#   - 不引入「不适用」第四值；只问原局时由外层按 time_window == "natal" 过滤断语集合。
+
+NO_SUIYUN = "未提供大运/流年上下文"
+SUIYUN_HEADS = ("DY", "LN")
+SUIYUN_SCOPES = ("dayun", "liunian", "dayun+liunian")
+MUKU_OPENER_KINDS = ("chong", "xing")
+MUKU_OPENER_SCOPES = ("dayun", "liunian")
+
+# 「到位」两种机制（M1-D-042 反客为主：一为通禄，二为现原身）。
+ARRIVE_MODES = ("通禄", "原身")
+
+# 原身 = 禄的逆映射（D-02 M1-D-058 related_table）：
+#   甲↔寅 / 乙↔卯 / 丙戊↔巳 / 丁己↔午 / 庚↔申 / 辛↔酉 / 壬↔亥 / 癸↔子
+# 原文明言「辰戌丑未无原身，此 4 支不适用本规则」（同条 falsifiable_by），故不补造土支原身。
+YUANSHEN: dict[str, tuple[str, ...]] = {}
+for _gan, _zhi in LU_TABLE.items():          # _LU 的顺序保证 巳→(丙,戊)、午→(丁,己)
+    YUANSHEN[_zhi] = YUANSHEN.get(_zhi, ()) + (_gan,)
+
+
+def _suiyun_edges(ctx) -> list[dict]:
+    """scope 不是 natal 的关系边。"""
+    return [e for e in ctx["edges"] if e.get("scope", NATAL_SCOPE) != NATAL_SCOPE]
+
+
+def _has_suiyun(ctx) -> bool:
+    """本次输入是否带岁运上下文：以事实层是否真的建出岁运边为准。
+
+    不读 ctx["dayun"]——只要出生数据可排，大运十步恒在，未指定 dayun_index 时
+    并没有任何大运关系边，用它会误判「已提供岁运」。
+    """
+    return bool(_suiyun_edges(ctx))
+
+
+def _suiyun_nodes(ctx) -> dict[str, str]:
+    """岁运节点地址 → 干文字符（如 {"LN2027.b": "未"}）。
+
+    优先读事实层 `relations.nodes`（权威）；节点被裁剪时回落到从关系边的
+    members/chars 对齐反推。两种来源都不重算干支。
+    """
+    out: dict[str, str] = {}
+    for pair in ctx.get("nodes") or []:
+        if not isinstance(pair, (list, tuple)) or len(pair) != 2:
+            continue
+        addr, char = str(pair[0]), str(pair[1])
+        if addr.split(".", 1)[0][:2] in SUIYUN_HEADS:
+            out[addr] = char
+    if out:
+        return out
+    for e in _suiyun_edges(ctx):
+        members, chars = e.get("members") or [], e.get("chars") or []
+        if len(members) != len(chars):
+            continue
+        for addr, char in zip(members, chars):
+            if str(addr).split(".", 1)[0][:2] in SUIYUN_HEADS:
+                out.setdefault(str(addr), str(char))
+    return out
+
+
+def _resolve_natal(ctx, spec) -> list[str]:
+    """把 `at` 参数解析成原局地址：支持地址（"M.b"）与单字干支（"亥"）两种写法。"""
+    if not spec:
+        return []
+    text = str(spec)
+    if text in ctx["stems"] or text in ctx["branches"]:
+        return [text]
+    if len(text) != 1:
+        return []
+    hits = [a for a, v in ctx["stems"].items() if v.get("char") == text]
+    hits += [a for a, v in ctx["branches"].items() if v.get("char") == text]
+    return sorted(hits, key=ALL_ADDRS.index)
+
 
 def dayun_present(ctx, args):
     return _t() if ctx["dayun"] else _f()
 
 
 def liunian_present(ctx, args):
-    ln = ctx.get("liunian")
-    if not ln:
-        return _f()
+    """有指定流年。年份从岁运节点地址反推（facts 的 cycles.liunian 恒为 null）。"""
+    years = sorted({a.split(".", 1)[0][2:] for a in _suiyun_nodes(ctx) if a.startswith("LN")})
+    if not years:
+        if not ctx.get("liunian"):
+            return _f("本次输入未提供流年")
+        years = [str(ctx["liunian"])]
     year = args.get("year")
     if year is None:
-        return _t()
-    return _t() if str(year) in str(ln) else _f()
+        return _t(f"已提供流年 {'/'.join(years)}", year=years[0])
+    return _t(f"已提供流年 {year}") if str(year) in years else _f(f"未提供流年 {year}")
 
 
 def suiyun_edge(ctx, args):
-    if not ctx["dayun"] and not ctx.get("liunian"):
-        return _u("无岁运数据")
-    return _u("岁运关系边未接入（pilot 不启用）")
+    """岁运与某地址构成某关系（只看 scope != natal 的边）。
+
+    `scope?`：精确限定 dayun / liunian / dayun+liunian；缺省＝任一层。
+    命中绑定 `edge_id` 与 `scope`。
+    """
+    kind, at = args.get("type"), args.get("at")
+    scope = args.get("scope")
+    if scope is not None and scope not in SUIYUN_SCOPES:
+        return _u(f"scope 只有 {'/'.join(SUIYUN_SCOPES)}：{scope!r}")
+    if not _has_suiyun(ctx):
+        return _u(NO_SUIYUN)
+    for e in _suiyun_edges(ctx):
+        if e.get("kind") != kind:
+            continue
+        if scope and e.get("scope") != scope:
+            continue
+        if at not in (e.get("members") or []):
+            continue
+        return _t(f"{e.get('kind')} 边 {e.get('id')}（{e.get('scope')}）",
+                  edge_id=e.get("id"), scope=e.get("scope"))
+    return _f(f"岁运层无 {kind} 触及 {at} 的边")
 
 
 def sanhe_with_suiyun(ctx, args):
-    return _u("岁运三合未接入（pilot 不启用）")
+    """岁运与原局共同构成完整三合 / 三会（`completeness == "full"`）。
+
+    `zhi_set?`：限定必须包含的三支（字符串或列表），如 "亥子丑"。
+    完整局由 relation_graph 判定，本层只读 `completeness`，不自己补齐。
+    """
+    if not _has_suiyun(ctx):
+        return _u(NO_SUIYUN)
+    want = args.get("zhi_set")
+    if isinstance(want, str):
+        want = list(want)
+    want_set = {str(c) for c in (want or ())}
+    for e in _suiyun_edges(ctx):
+        if e.get("kind") not in ("sanhe", "sanhui"):
+            continue
+        if e.get("completeness") != "full":
+            continue
+        if e.get("layer") not in (None, "branch"):
+            continue
+        chars = {str(c) for c in (e.get("chars") or ())}
+        if want_set and not want_set.issubset(chars):
+            continue
+        group = e.get("group") or "".join(sorted(chars))
+        return _t(f"{group} 成局（{e.get('scope')}）边 {e.get('id')}",
+                  edge_id=e.get("id"), scope=e.get("scope"))
+    return _f("岁运层无完整三合/三会" + (f"（限定 {''.join(sorted(want_set))}）" if want_set else ""))
 
 
 def chong_kai_muku(ctx, args):
-    return _u("流年冲库未接入（pilot 不启用）")
+    """原局墓库被岁运冲 / 刑冲开。
+
+    只看 `scope ∈ {dayun, liunian}` 且 `kind ∈ {chong, xing}` 的边（MinerU_22 :1759
+    「开则为开墓」、:1770「岁冲则冲动冲开」）。原文区分「运冲为冲破、岁冲为冲动冲开」，
+    两者都计入，方向差异留在 note 的 scope 里。
+    `zhi?`：限定墓库地支；`year?`：限定由该流年触发的冲开。
+    """
+    zhi, year = args.get("zhi"), args.get("year")
+    if not _has_suiyun(ctx):
+        return _u(NO_SUIYUN)
+    if year is not None:
+        nodes = _suiyun_nodes(ctx)
+        if not any(a.startswith(f"LN{year}.") for a in nodes):
+            return _u(f"未提供 {year} 流年上下文")
+    kus = [m for m in ctx["muku"] if not zhi or m.get("branch") == zhi]
+    if not kus:
+        return _f(f"原局无{zhi or ''}墓库，无从冲开")
+    want_nodes = {f"LN{year}.s", f"LN{year}.b"} if year is not None else set()
+    for m in kus:
+        addr = m.get("addr")
+        for e in _suiyun_edges(ctx):
+            if e.get("kind") not in MUKU_OPENER_KINDS:
+                continue
+            if e.get("scope") not in MUKU_OPENER_SCOPES:
+                continue
+            members = e.get("members") or []
+            if addr not in members:
+                continue
+            if want_nodes and not (want_nodes & set(members)):
+                continue
+            return _t(f"{m.get('branch')}库（{addr}）被 {e.get('kind')} 边 {e.get('id')}（{e.get('scope')}）冲开",
+                      edge_id=e.get("id"), addr=addr)
+    return _f(f"{zhi or ''}墓库未被岁运冲刑触及")
+
+
+def suiyun_arrives(ctx, args):
+    """段派「到位」（M1-D-042 反客为主）：「运中出现八字中的字就为八字中的字到了」。
+
+    原文两种方式（`theory/raw/duan/d01-deep-read.md:287`）：
+      ① 通禄 —— 原局天干在运年地支见禄（M1-D-058「大运/流年的支是命中天干的禄」）；
+      ② 现原身 —— 原局地支所藏之干在运年天干透出（同条「运年的干是命中地支的原身」；
+         原身表见 YUANSHEN，辰戌丑未无原身不入此规则）。
+    `at`：原局地址或单字干支；`via?`：显式指定 通禄 / 原身（缺省按地址层级自动选）。
+    命中绑定原局地址 `addr` 与岁运节点 `sui_addr`。
+    """
+    at, via = args.get("at"), args.get("via")
+    if via is not None and via not in ARRIVE_MODES:
+        return _u(f"via 只有 {'/'.join(ARRIVE_MODES)}：{via!r}")
+    if not _has_suiyun(ctx):
+        return _u(NO_SUIYUN)
+    addrs = _resolve_natal(ctx, at)
+    if not addrs:
+        return _u(f"无法把 {at!r} 定位到原局地址")
+    nodes = _suiyun_nodes(ctx)
+    for addr in addrs:
+        is_stem = addr.endswith(".s")
+        mode = via or ("通禄" if is_stem else "原身")
+        if (mode == "通禄") != is_stem:
+            return _u(f"via={mode} 与 {addr} 层级不符（通禄看原局天干，原身看原局地支）")
+        char = (ctx["stems"] if is_stem else ctx["branches"])[addr].get("char") or ""
+        if mode == "通禄":
+            target = LU_TABLE.get(char)
+            if not target:
+                return _u(f"未知天干 {char!r}")
+            for sui_addr, sui_char in nodes.items():
+                if sui_addr.endswith(".b") and sui_char == target:
+                    return _t(f"原局天干{char}（{addr}）的禄{target}落到 {sui_addr}",
+                              addr=addr, sui_addr=sui_addr)
+            return _f(f"原局天干{char}禄在{target}，本次岁运地支未见")
+        yuanshen = YUANSHEN.get(char)
+        if not yuanshen:
+            return _f(f"{char}为墓库支，无原身（D-02 M1-D-058：辰戌丑未无原身）")
+        for sui_addr, sui_char in nodes.items():
+            if sui_addr.endswith(".s") and sui_char in yuanshen:
+                return _t(f"原局地支{char}（{addr}）的原身{''.join(yuanshen)}透于 {sui_addr}",
+                          addr=addr, sui_addr=sui_addr)
+        return _f(f"原局地支{char}原身{''.join(yuanshen)}，本次岁运天干未见")
+    return _f("未命中")
+
+
+# ---------------------------------------------------------------- 力量比较 1
+#
+# 段派核心判据「制得住 / 制不住」（ADR-007 D4）。原文依据：
+#   （行号按当前语料文件实测；任务卡 T-145 原引 :1759/:1844/:1850 有 3~30 行偏差）
+#   MinerU_markdown_22.盲派初级命理学 :1762 ——「冲神之旺衰判断，以多则为旺，寡则为衰；
+#     以合局会局为旺，以孤立受克为衰；以得令为旺，以失令为衰。」
+#   同书 :1812「戌辰力量相当，互相制不了」/ :1824「谁也制不了谁」——力量相当即不可裁。
+#   代码铁律 structure_check.py:255 strength_judgment：「力量对比不由代码裁决」。
+# 因此本原子只在极端清晰的盘面给真/假，双方各有旺项时一律 unknown（不是骑墙，是原文口径）。
+
+# ⚠ 以下阈值均为工程取值，不是原文数值（原文只说「多 / 寡」，未给数）：
+DUO_MIN = 3        # 「以多则为旺」的显性字数下限（天干 + 地支本气）
+GUA_MAX = 1        # 「寡则为衰」的显性字数上限
+STRONG_MIN = 2     # 判真/假所需的旺项数（ADR-007 D4 设计值，非原文）
+
+SIDE_KE_KINDS = ("chong", "ke", "stem_chong", "chuan")
+SIDE_JU_KINDS = ("sanhe", "sanhui")
+
+
+def _wx_at(ctx, addr) -> Optional[str]:
+    """地址的五行：天干查干表，地支按本气（与 facts 的 main_qi 计数同源）。"""
+    if addr.endswith(".s"):
+        return GAN_TO_WUXING.get((ctx["stems"].get(addr) or {}).get("char"))
+    return ZHI_TO_WUXING.get((ctx["branches"].get(addr) or {}).get("char"))
+
+
+def _side_addrs(ctx, wx) -> list[str]:
+    return [a for a in ALL_ADDRS if _wx_at(ctx, a) == wx]
+
+
+def _side_ju(ctx, wx) -> Optional[str]:
+    """原局是否有该五行的完整三合 / 三会（「以合局会局为旺」）。"""
+    for e in _edges(ctx):
+        if e.get("kind") not in SIDE_JU_KINDS or e.get("completeness") != "full":
+            continue
+        attrs = e.get("attrs") or {}
+        if (attrs.get("huashen") or attrs.get("wuxing")) == wx:
+            return f"{e.get('group') or ''}成局"
+    return None
+
+
+def _side_shou_ke(ctx, wx, occ) -> Optional[str]:
+    """「以孤立受克为衰」：该方某字被原局冲/克/穿边触及，且对方五行克该方。"""
+    for e in _edges(ctx):
+        if e.get("kind") not in SIDE_KE_KINDS:
+            continue
+        members = e.get("members") or []
+        if not any(a in members for a in occ):
+            continue
+        for other in members:
+            if other in occ:
+                continue
+            other_wx = _wx_at(ctx, other)
+            if other_wx and KE_MAP.get(other_wx) == wx:
+                return f"{other}({other_wx})克{wx}"
+    return None
+
+
+def _side_profile(ctx, wx) -> Optional[dict]:
+    """一侧的旺衰读数：旺项 / 衰项两条清单，逐项可追溯到原文口径。"""
+    layered = ((ctx["strength"].get("climate") or {}).get("wuxing_layered") or {}).get(wx)
+    if not layered:
+        return None
+    n_char = int(layered.get("stems") or 0) + int(layered.get("main_qi") or 0)
+    de_ling = bool(layered.get("month_main_qi"))
+    occ = _side_addrs(ctx, wx)
+    strong: list[str] = []
+    weak: list[str] = []
+    if de_ling:
+        strong.append(f"得令({(ctx['branches'].get('M.b') or {}).get('char')}月)")
+    else:
+        weak.append(f"失令({(ctx['branches'].get('M.b') or {}).get('char')}月)")
+    if n_char >= DUO_MIN:
+        strong.append(f"多({n_char}字)")
+    elif n_char <= GUA_MAX:
+        weak.append(f"寡({n_char}字)")
+    ju = _side_ju(ctx, wx)
+    if ju:
+        strong.append(ju)
+    ke = _side_shou_ke(ctx, wx, occ)
+    if ke:
+        weak.append(f"受克({ke})")
+    return {"wx": wx, "n": n_char, "addrs": occ, "strong": strong, "weak": weak}
+
+
+def _side_text(role: str, prof: dict) -> str:
+    return (f"{role} {prof['wx']}（{'/'.join(prof['addrs']) or '无字'}）"
+            f"旺项[{'、'.join(prof['strong']) or '无'}]"
+            f"衰项[{'、'.join(prof['weak']) or '无'}]")
+
+
+def can_control(ctx, args):
+    """制得住 / 制不住（段派核心判据），三值：True 制得住 / False 制不住 / None 不可裁。
+
+    `actor`：施制一方（制者）；`target`：被制一方。均可写地址（"M.b" / "D.s"）或单字干支（"亥"）。
+    判据（ADR-007 D4，全部来自 MinerU_22 :1759 的四条对句）：
+      True  —— actor 旺项 ≥2 且 target 无任何旺项、至少一项衰项；
+      False —— target 旺项 ≥2 且 actor 无任何旺项、至少一项衰项；
+      None  —— 其余（双方各有根气 / 两党对抗 / 力量相当）。
+    note 恒附双方旺衰明细与原文出处；unknown 不是失败，是原文「力量相当即制不了」的断言。
+    """
+    actor, target = args.get("actor"), args.get("target")
+    a_addrs, t_addrs = _resolve_natal(ctx, actor), _resolve_natal(ctx, target)
+    if not a_addrs:
+        return _u(f"无法把 actor={actor!r} 定位到原局地址")
+    if not t_addrs:
+        return _u(f"无法把 target={target!r} 定位到原局地址")
+    a_wx, t_wx = _wx_at(ctx, a_addrs[0]), _wx_at(ctx, t_addrs[0])
+    if not a_wx or not t_wx:
+        return _u("双方五行不可得")
+    if a_wx == t_wx:
+        return _u(f"actor 与 target 同属{t_wx}，不构成对抗")
+    a_prof, t_prof = _side_profile(ctx, a_wx), _side_profile(ctx, t_wx)
+    if a_prof is None or t_prof is None:
+        return _u("facts 未提供五行层次计数（strength.climate.wuxing_layered）")
+    a_n, t_n = len(a_prof["strong"]), len(t_prof["strong"])
+    detail = f"{_side_text('制者', a_prof)}；{_side_text('被制', t_prof)}"
+    bind = {"actor_addr": a_addrs[0], "target_addr": t_addrs[0]}
+    if a_n >= STRONG_MIN and t_n == 0 and t_prof["weak"]:
+        return _t(f"{detail} → 制得住（MinerU_22:1762 旺衰对句）", **bind)
+    if t_n >= STRONG_MIN and a_n == 0 and a_prof["weak"]:
+        return _f(f"{detail} → 制不住（MinerU_22:1762 旺衰对句）")
+    return _u(f"{detail} → 力量相当，不可裁（MinerU_22:1812/:1824「力量相当，互相制不了」）")
 
 
 # ---------------------------------------------------------------- 元谓词 3
@@ -772,7 +1101,9 @@ ATOMS: dict[str, Callable[[dict, dict], AtomResult]] = {
     # 岁运
     "dayun_present": dayun_present, "liunian_present": liunian_present,
     "suiyun_edge": suiyun_edge, "sanhe_with_suiyun": sanhe_with_suiyun,
-    "chong_kai_muku": chong_kai_muku,
+    "chong_kai_muku": chong_kai_muku, "suiyun_arrives": suiyun_arrives,
+    # 力量比较
+    "can_control": can_control,
     # 元谓词
     "count": count, "exists": exists, "cite": cite,
     # 显式未知占位（v1.1）
@@ -816,9 +1147,11 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "structure_rescue": ((), ("check",)),
     "dayun_present": ((), ()),
     "liunian_present": ((), ("year",)),
-    "suiyun_edge": (("type", "at"), ("layer",)),
-    "sanhe_with_suiyun": (("zhi_set",), ()),
-    "chong_kai_muku": ((), ("year",)),
+    "suiyun_edge": (("type", "at"), ("scope",)),
+    "sanhe_with_suiyun": ((), ("zhi_set",)),
+    "chong_kai_muku": ((), ("zhi", "year")),
+    "suiyun_arrives": (("at",), ("via",)),
+    "can_control": (("actor", "target"), ()),
     "count": (("atom", "op", "value"), ()),
     "exists": (("atom",), ()),
     "cite": (("claim_id",), ()),
@@ -827,4 +1160,5 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
 }
 
 # v1.1 新增 2 个（lu_at / needs_judgment），依据契约 23 §4.7 与 §九变更登记、ADR-007 D3/D12。
-assert len(ATOMS) == 44, f"原子表应为 44 个，实际 {len(ATOMS)}"
+# v1.2 新增 2 个（suiyun_arrives / can_control），依据契约 23 §4.5、§4.8 与 §九、ADR-007 D3/D4。
+assert len(ATOMS) == 46, f"原子表应为 46 个，实际 {len(ATOMS)}"

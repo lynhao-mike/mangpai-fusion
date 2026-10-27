@@ -81,7 +81,7 @@ conditions_v2:
 
 ---
 
-## 四、原子谓词表 v1（44 个，`v1.1`）
+## 四、原子谓词表 v1（46 个，`v1.2`）
 
 > 全部原子只能读 [`engine.facts`](../../engine/facts/) 已产出的字段；不得自行计算新事实。
 > 缺字段时返回 `unknown`，不得猜测。
@@ -170,15 +170,28 @@ v1.0 把 `wuhe` / `sanhe` / `sanhui` / `ganzhi_zihe` 一律算「被合」，导
 > `chart_facts.binzhu_side(addr, layer)`。第 4 层「原局为主、岁运为宾」需要岁运节点；
 > 本次输入未提供岁运时，`side="宾"` 判 `false` 并注明「无岁运节点」。
 
-### 4.5 岁运（5）
+### 4.5 岁运（6，v1.2 起全部实装）
 
 | 原子 | 参数 | 语义 | 缺字段时 |
 |---|---|---|---|
 | `dayun_present` | — | 有大运信息 | false（这是事实，不是未知） |
 | `liunian_present` | `year?` | 有指定流年 | false |
-| `suiyun_edge` | `type`, `at`, `layer?` | 岁运与某地址构成关系 | unknown |
-| `sanhe_with_suiyun` | `zhi_set` | 岁运与原局成三合 | unknown |
-| `chong_kai_muku` | `year?` | 流年冲开墓库 | unknown |
+| `suiyun_edge` | `type`, `at`, `scope?` | 某地址在岁运层构成指定关系；`scope` 精确限定 `dayun`/`liunian`/`dayun+liunian`，命中绑定 `edge_id` + `scope` | unknown「未提供大运/流年上下文」 |
+| `sanhe_with_suiyun` | `zhi_set?` | 岁运与原局共同构成**完整**三合/三会（`completeness == "full"`）；`zhi_set` 限定必须包含的支 | unknown（同上） |
+| `chong_kai_muku` | `zhi?`, `year?` | 原局墓库被 `scope ∈ {dayun, liunian}` 且 `kind ∈ {chong, xing}` 的边冲开；`year` 限定触发流年 | unknown（同上） |
+| `suiyun_arrives` | `at`, `via?` | 段派「到位」：`通禄`（原局天干在运年地支见禄）/ `原身`（原局地支所藏之干在运年天干透出）；`via` 缺省按地址层级自动选 | unknown（同上） |
+
+> **与 §4 开头的镜像关系**：§4 的关系原子被隔离在 `scope == "natal"`，岁运原子则**只扫
+> `scope != "natal"`**，两者不交叉。岁运边由 `relation_graph._nodes(chart, dayun_index,
+> liunian_year)` 产出，原子层不重造；未指定 `dayun_index` 时不会有大运边，因此
+> 「排得出大运」不等于「提供了大运上下文」——`dayun_present` 答前者，`suiyun_edge` 答后者。
+>
+> `suiyun_arrives` 的原文边界（`theory/raw/duan/d01-deep-read.md:287`，M1-D-042）：
+> 「如运中出现八字中的字就为八字中的字到了，反客为主了。有两种方式：一为通禄，二为现原身。」
+> 原身表按 D-02 M1-D-058 `related_table`（甲↔寅 / 乙↔卯 / 丙戊↔巳 / 丁己↔午 / 庚↔申 /
+> 辛↔酉 / 壬↔亥 / 癸↔子）实现，即禄表的逆映射；**辰戌丑未无原身**（同条 `falsifiable_by`），
+> 此 4 支判 `false` 并在 note 说明，不补造土支原身。M1-D-059 的「遁藏透干」（原局地支任一藏干
+> 透于运年天干）是更宽的独立规则，本版本**未实现**，只在 `原身` 范围内作答。
 
 ### 4.6 元谓词（3）
 
@@ -206,6 +219,38 @@ v1.0 把 `wuhe` / `sanhe` / `sanhui` / `ganzhi_zihe` 一律算「被合」，导
   `False AND Unknown = False` → `rejected`（过滤不相关盘）；
   `True AND Unknown = Unknown` → `needs_fact`（推给 Agent 裁决）。
   **凡含未量化子条件的断语，禁止删条件冒充 `compiled`。**
+
+### 4.8 力量比较（1，v1.2 新增）
+
+| 原子 | 参数 | 语义 | 缺字段时 |
+|---|---|---|---|
+| `can_control` | `actor`, `target` | 段派核心判据「制得住 / 制不住」：三值 `True` 制得住 / `False` 制不住 / `unknown` 力量相当不可裁。参数可写地址（`"M.b"`）或单字干支（`"亥"`）；命中绑定 `actor_addr` / `target_addr` | unknown（无法定位地址 / 五行计数缺失） |
+
+原文依据（`sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md`）：
+
+- `:1762`「冲神之旺衰判断，**以多则为旺，寡则为衰；以合局会局为旺，以孤立受克为衰；
+  以得令为旺，以失令为衰**。」→ 旺项 = {得令, 多, 合局会局}，衰项 = {失令, 寡, 孤立受克}。
+- `:1812`「戌辰**力量相当，互相制不了**」/ `:1824`「原局金水党和火土党对抗，**谁也制不了谁**」（任务卡 T-145 原引 :1844 / :1850 有偏差，此处取实测行号）
+  → 双方各有旺项时，`unknown` 不是算不出来，而是原文的结论。
+- 六党对（`MinerU_22:426`「木火可以一党，金水可以一党，水木可以一党；火与燥土可以为一党，
+  金与湿土可以为一党，水与湿土也可以为一党」）与党→所制（`:428`）→ 党势并入「多」这一项，
+  不单独作第四条判据；跨五行的六党对聚合本版本未实现（见 T-145 BRIEF「未实现」）。
+
+判定规则（ADR-007 D4）：
+
+| 结果 | 条件 |
+|---|---|
+| `True` | `actor` 旺项 ≥ 2，`target` 旺项 = 0 且衰项 ≥ 1 |
+| `False` | `target` 旺项 ≥ 2，`actor` 旺项 = 0 且衰项 ≥ 1 |
+| `unknown` | 其余全部情形（双方均有根气 / 两党对抗 / 力量相当） |
+
+`note` 恒附双方旺项与衰项明细（如 `制者 水（…）旺项[得令、多(5字)]衰项[无]`），
+承接 `structure_check.py:255 strength_judgment` 的代码铁律「力量对比不由代码裁决」——
+本原子只在极端清晰盘面裁真伪，其余交 Agent 结合命主问题裁决。
+
+> ⚠ `DUO_MIN = 3`（多）、`GUA_MAX = 1`（寡）、`STRONG_MIN = 2`（旺项门槛）均为**工程取值**，
+> 原文只说「多 / 寡 / 得令 / 失令」而未给数。三者集中在 `atoms.py` 顶部常量，
+> 改动必须同时更新 T-145 BRIEF 的「工程取值 vs 原文数值」清单。
 
 ---
 
@@ -257,7 +302,7 @@ preconditions 含 unknown     → needs_fact（缺事实，不出口）
 ### 6.2 分层求值（Pass 0 / 1 / 2，禁止跨层引用）
 
 ```text
-Pass 0  原子层：只跑 44 个基础原子，得真值表（无流派偏好）
+Pass 0  原子层：只跑 46 个基础原子，得真值表（无流派偏好）
 Pass 1  定局层：frame 准入条件只允许引用 Pass 0 的原子结果，产出 active_frames
 Pass 2  断语层：只对 active_frames 内的断语求值 conditions_v2
 ```
@@ -301,7 +346,7 @@ Pass 2  断语层：只对 active_frames 内的断语求值 conditions_v2
 
 ## 九、版本与变更
 
-- 原子表版本：`v1.1`；新增/修改原子必须更新本契约并登记变更原因。
+- 原子表版本：`v1.2`；新增/修改原子必须更新本契约并登记变更原因。
 - 条件字段版本：`conditions_v2`；独立文件 `theory/claims/conditions-v2/<school>.yaml` 是**唯一事实源**，生成物中的 `conditions_v2` 字段不得手改；旧 `trigger`/`condition` 字段保留，不再写入新值。
 - 任何批量条件化必须记录到 `META/rule-changelog.md`，并附批次报告路径。
 
@@ -314,4 +359,7 @@ Pass 2  断语层：只对 active_frames 内的断语求值 conditions_v2
 | 2026-10-27 | v1.1 | 关系原子默认只扫 `scope == "natal"` 的边；`edge` 增 `scope?` | ADR-007 D3「必须先加原局隔离，否则污染」 |
 | 2026-10-27 | v1.1 | `he_at` 收窄为六合 / 地支暗合，排除半局拱局、完整局（待裁定）、日柱自合、天干五合；增 `exclude_god?` | §4.2.1；`sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:48` |
 | 2026-10-27 | v1.1 | `binzhu` 由恒 `unknown` 改为读事实；增 `side?` / `at?` | ADR-007 D5；`chart_facts.binzhu_side` / `structure_check._binzhu` |
+| 2026-10-27 | v1.2 | 原子表 44 → 46：新增 `suiyun_arrives`（到位）、`can_control`（三值力量比较） | §4.5 / §4.8；ADR-007 D3 / D4；任务卡 T-145 |
+| 2026-10-27 | v1.2 | 3 个空壳岁运原子实装：`suiyun_edge` / `sanhe_with_suiyun` / `chong_kai_muku` 由恒 `unknown` 改为消费 `scope != natal` 的边；`suiyun_edge` 的 `layer?` 换为 `scope?`，`sanhe_with_suiyun.zhi_set` 改可选，`chong_kai_muku` 增 `zhi?` | §4.5；`relation_graph.py:85 _nodes()`；MinerU_22 :1762 / :1812 / :1824 |
+| 2026-10-27 | v1.2 | `liunian_present` 改从岁运节点反推年份（`facts.chart.cycles.liunian` 恒为 null，旧实现永假） | §4.5；T-142 BRIEF 遗留项 |
 | 2026-10-27 | v1.1 | `ir._label()` 支持 `all` / `any` / `not` 组合节点递归输出（原实现只认 `atom`，失败时给出 `?()`） | ADR-007 D12「人无法追责到具体子条件」 |
