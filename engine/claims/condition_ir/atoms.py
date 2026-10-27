@@ -500,7 +500,7 @@ def zuogong(ctx, args):
             bind["Z"] = actor          # 制者（做功的一方）
         if target:
             bind["T"] = target         # 被制者（用）
-        return _t(f"{c.get('mode')} {c.get('edge_id')}", **bind)
+        return _t(f"{c.get('mode')} {c.get('edge_id') or c.get('relation_kind')}", **bind)
     return _f()
 
 

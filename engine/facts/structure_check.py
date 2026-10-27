@@ -430,6 +430,24 @@ def _derived_sheng(chart: ChartFacts) -> list[tuple[Addr, Addr, Optional[int]]]:
     return out
 
 
+def _derived_canggan_ke(chart: ChartFacts) -> list[tuple[Addr, Addr, str, str]]:
+    """关系图不建「支→干」克边：按藏干五行推得地支克天干，供宫制星取 actor。
+
+    每对（支, 干）只取表内第一个能克之藏干（主气优先），与 _derived_sheng 同一约定。
+    """
+    out: list[tuple[Addr, Addr, str, str]] = []
+    seen: set[tuple[Addr, Addr]] = set()
+    for p in chart.pillars:
+        for g, qi, _ in ZHI_CANGGAN_TABLE[p.branch.char]:
+            for q in chart.pillars:
+                key = (p.branch.addr, q.stem.addr)
+                if key in seen or wuxing_relation(GAN_TO_WUXING[g], GAN_TO_WUXING[q.stem.char]) != "克":
+                    continue
+                seen.add(key)
+                out.append((p.branch.addr, q.stem.addr, g, qi))
+    return out
+
+
 def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tuple[ZuogongCandidate, ...]:
     """扫描体用相交的关系，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。"""
     chars = dict(graph.nodes)
@@ -467,6 +485,15 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
         if _crosses(ty[src], ty[dst]):
             emit(sheng_mode(src, dst), "sheng(main_qi)", None, (src, dst), src, abs(dist) if dist is not None else None,
                  (), ["关系图未建此生边，按本气五行推得"])
+
+    for br, st, via, qi in _derived_canggan_ke(chart):
+        if br.split(".", 1)[0] == st.split(".", 1)[0]:
+            continue  # 同柱干支相克属盖头/截脚，见 self_sit.stem_branch_relation，不是宫制星
+        if not _crosses(ty[br], ty[st]):
+            continue
+        dist = abs(_PILLAR_ORDER[br.split(".", 1)[0]] - _PILLAR_ORDER[st.split(".", 1)[0]])
+        emit("制用", "canggan_ke", None, (br, st), br, dist, (),
+             [f"宫制星：{chars[br]}藏{via}克{chars[st]}（{qi[0]}气）"])
 
     for m in graph.muku:
         for c in m.candidates:
