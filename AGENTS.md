@@ -97,13 +97,23 @@ python -m pytest -q -o addopts="-ra --tb=short" tests/facts tests/api tests/pred
 
 ### 保护区（不得修改，除非任务卡明确授权）
 
-- `tests/` 全部内容，尤其是 `tests/conftest.py`、`tests/fixtures/`、`tests/governance/static_isolation_*.py`（隔离性静态检查的判据本身）
+> 中枢指挥官的完全自主重构权限见 [`docs/adr/ADR-004-hub-commander-authority.md`](docs/adr/ADR-004-hub-commander-authority.md)：`tests/` 已由该 ADR 降级为「可改，但不得改断言让失败变绿」；其余各项不变。
+
+- ~~`tests/` 全部内容~~（ADR-004 降级：可改可重写，但不得删放宽判据让红变绿。`tests/governance/static_isolation_*.py` 是隔离性检查的判据本身，改动须说明理由）
 - `pyproject.toml`、`requirements.txt`、`requirements-dev.txt`
 - `theory/_ir/` 与 `sources/` 下的原文语料（只增不改，改动须走 ingestion-protocol）
 - `templates/report-v7-human.md`、`docs/analysis_human_touch.md`（引擎契约与写作规范）
 - `META/project-state.json`（机器可读状态，由维护流程更新）
 - `AGENTS.md`、`CLAUDE.md`
 - `tasks/` 下的 `PROMPT.md`（任务定义，只有中枢可写；Worker 只能写 `STATUS.md` / `BRIEF.md`）
+
+### 重构基线尺子（ADR-004 红线三）
+
+重构前后跑同一条命令对比，任一指标下降须在汇报中写明原因：
+
+```bash
+python -m tools.verify_baseline --compare
+```
 
 ### 目录约定
 

@@ -32,8 +32,28 @@
         "path": "docs/adr/ADR-003-claim-conditions-and-school-routing.md",
         "status": "accepted",
         "date": "2026-10-26"
+      },
+      {
+        "id": "ADR-004",
+        "title": "中枢指挥官授权：完全自主重构及其边界",
+        "path": "docs/adr/ADR-004-hub-commander-authority.md",
+        "status": "accepted",
+        "date": "2026-10-27",
+        "supersedes": [
+          "AGENTS.md#保护区（tests/ 冻结）"
+        ]
       }
     ]
+  },
+  "hub_commander": {
+    "authority": "docs/adr/ADR-004-hub-commander-authority.md",
+    "baseline_command": "python -m tools.verify_baseline",
+    "red_lines": [
+      "不得改断言让失败变绿",
+      "theory/_ir/ 与 sources/ 原文语料只增不改",
+      "重构前后用同一把尺子，指标下降须写明原因"
+    ],
+    "acceptance": "子代理结论只算待核，中枢须亲自执行命令读退出码"
   },
   "claim_condition_protocol": {
     "contract": "engine/contracts/23-claim-condition-protocol-v1.md",

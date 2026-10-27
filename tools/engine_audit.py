@@ -94,6 +94,19 @@ def read_birth(case_dir: pathlib.Path) -> str | None:
     return m.group(1) if m else None
 
 
+def solar_corrected(case_dir: pathlib.Path) -> bool:
+    """案例是否声明了真太阳时校正。
+
+    标的案例，其四柱是按校正后时刻排的，用钟表时间复算必然可能差一个时辰，
+    因此不能判「四柱与出生时间不符」——那是口径差异，不是数据错误。
+    """
+    p = case_dir / "input.md"
+    if not p.exists():
+        return False
+    m = re.search(r"真太阳时校正\s*[:：]\s*(\w+)", p.read_text(encoding="utf-8", errors="ignore")[:4000])
+    return bool(m and m.group(1).lower() == "true")
+
+
 def audit_one(name: str, pillars: str, gender: str) -> tuple[list[str], str]:
     bad: list[str] = []
     note = ""
@@ -120,7 +133,7 @@ def audit_one(name: str, pillars: str, gender: str) -> tuple[list[str], str]:
                 bad.append(f"时干 {h[0]} 违反五鼠遁（{d[0]}日{h[1]}时应为{exp}）")
 
     birth = read_birth(ROOT / "cases" / name)
-    if birth:
+    if birth and not solar_corrected(ROOT / "cases" / name):
         try:
             from engine.api import analyze_facts as _af
             base = to_jsonable(_af(birth_dt=birth, gender=gender))
@@ -129,6 +142,8 @@ def audit_one(name: str, pillars: str, gender: str) -> tuple[list[str], str]:
                 bad.append(f"四柱与出生时间不符：出生 {birth} 应为 {got}，案例写 {pillars}")
         except Exception as exc:  # noqa: BLE001
             bad.append(f"出生时间复算失败：{type(exc).__name__}: {exc}")
+    elif birth:
+        note = (note + "；" if note else "") + "已标真太阳时校正，钟表时间不可直接复算四柱（口径待定，见 ADR-004/A1）"
 
     facts = to_jsonable(analyze_facts(pillars=ps, gender=gender))
     chart = facts.get("chart") or {}
