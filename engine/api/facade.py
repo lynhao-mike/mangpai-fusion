@@ -42,8 +42,16 @@ def _short_ref(ref: str) -> str:
     return f"{name}:{loc}" if sep else name
 
 
-def _compact(obj: Any, *, drop_keys: frozenset[str] = frozenset()) -> Any:
-    """去掉空值、缩短出处，把 analyze_facts 压进 15KB。"""
+def _compact(
+    obj: Any,
+    *,
+    drop_keys: frozenset[str] = frozenset(),
+    keep_null_keys: frozenset[str] = frozenset(),
+) -> Any:
+    """去掉空值、缩短出处，把 analyze_facts 压进 15KB。
+
+    keep_null_keys 里的键即使值为 None 也保留（输出 null），供下游按键取值。
+    """
     if isinstance(obj, dict):
         out: dict[str, Any] = {}
         for key, value in obj.items():
@@ -63,13 +71,13 @@ def _compact(obj: Any, *, drop_keys: frozenset[str] = frozenset()) -> Any:
                     {"e": h.get("effect"), "r": _short_ref(h.get("source_ref", ""))}
                     if isinstance(h, dict) else h for h in value
                 ]
-            compact = _compact(value, drop_keys=drop_keys)
-            if compact in (None, [], {}):
+            compact = _compact(value, drop_keys=drop_keys, keep_null_keys=keep_null_keys)
+            if compact in (None, [], {}) and key not in keep_null_keys:
                 continue
             out[key] = compact
         return out
     if isinstance(obj, (list, tuple)):
-        return [_compact(item, drop_keys=drop_keys) for item in obj]
+        return [_compact(item, drop_keys=drop_keys, keep_null_keys=keep_null_keys) for item in obj]
     return obj
 
 
@@ -89,9 +97,55 @@ def _compact_structures(structures: list[dict[str, Any]]) -> list[dict[str, Any]
 
 
 def _compact_zuogong(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    # ponytail: chars/tiyong/distance/binzhu 均可从 relations + tiyong 还原
-    keep = ("mode", "relation_kind", "edge_id", "members", "ten_gods", "actor")
-    return [{k: cand[k] for k in keep if cand.get(k) not in (None, [], ())} for cand in candidates]
+    # ponytail: chars/source_refs/notes 仍不发给 Agent；tiyong 是 zuogong 原子判 target 的输入，必须保留
+    keep = ("mode", "relation_kind", "edge_id", "members", "ten_gods",
+            "tiyong", "actor", "binzhu", "distance")
+    # actor 无方向时为 null，仍保留键，供下游 cand["actor"] 直接取
+    return [
+        {k: cand.get(k) for k in keep if k == "actor" or cand.get(k) not in (None, [], ())}
+        for cand in candidates
+    ]
+
+
+# Agent 视图削掉的字段：全部可由保留字段唯一还原，需要原件时用 `engine.cli all --full`
+_AGENT_OMIT_CANDIDATE_KEYS = frozenset({"binzhu", "distance"})
+_AGENT_OMIT_EDGE_KEYS = frozenset({"chars", "between"})
+_AGENT_OMIT_RELATION_KEYS = frozenset({"nodes"})
+
+
+def compact_for_agent(payload: dict[str, Any]) -> dict[str, Any]:
+    """Agent 视图：把可还原的冗余从事实视图里投影掉，守住 CLI 的 15KB 上下文预算。
+
+    投影掉的字段及还原方式：
+    - candidates.binzhu：由 (addr, layer) 唯一决定（chart_facts.binzhu_side 纯函数）
+    - candidates.distance：由 members 的柱序差决定
+    - relations.nodes：addr → 字，见 chart.pillars[].stem/branch.char
+    - relations.edges[].chars / between：由 members 查 chart / 柱序得
+
+    tiyong / actor 不削：前者是 zuogong 原子判 target 的输入，后者要走 null 语义。
+    """
+    out = dict(payload)
+    duan = payload.get("duan_zuogong")
+    if isinstance(duan, dict) and isinstance(duan.get("candidates"), list):
+        out["duan_zuogong"] = {
+            **duan,
+            "candidates": [
+                {k: v for k, v in cand.items() if k not in _AGENT_OMIT_CANDIDATE_KEYS}
+                if isinstance(cand, dict) else cand
+                for cand in duan["candidates"]
+            ],
+        }
+    relations = payload.get("relations")
+    if isinstance(relations, dict):
+        projected = {k: v for k, v in relations.items() if k not in _AGENT_OMIT_RELATION_KEYS}
+        if isinstance(relations.get("edges"), list):
+            projected["edges"] = [
+                {k: v for k, v in edge.items() if k not in _AGENT_OMIT_EDGE_KEYS}
+                if isinstance(edge, dict) else edge
+                for edge in relations["edges"]
+            ]
+        out["relations"] = projected
+    return out
 
 
 def _parse_dt(value: str) -> datetime:
@@ -174,7 +228,7 @@ def analyze_facts(
         payload["relations"].pop(key, None)
         payload["strength"].pop(key, None)
     payload["chart"].pop("schema_version", None)
-    return _compact(payload)
+    return _compact(payload, keep_null_keys=frozenset({"actor"}))
 
 
-__all__ = ["analyze_facts", "build_chart", "to_jsonable"]
+__all__ = ["analyze_facts", "build_chart", "compact_for_agent", "to_jsonable"]

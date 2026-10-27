@@ -6,7 +6,7 @@ import json
 import sys
 from typing import Any, Optional, Sequence
 
-from engine.api.facade import analyze_facts, build_chart, to_jsonable
+from engine.api.facade import analyze_facts, build_chart, compact_for_agent, to_jsonable
 from engine.facts.chart_facts import ChartInputError
 from engine.facts.relation_graph import build_relation_graph
 from engine.facts.shensha import build_shensha_facts
@@ -15,7 +15,7 @@ from engine.facts.structure_check import check_structures
 
 
 def _dump(payload: Any) -> None:
-    # ponytail: compact JSON，保证 analyze_facts 默认输出 < 15KB
+    # ponytail: compact JSON，保证 CLI 默认输出 < 15KB（完整事实见 --full）
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, OSError):
@@ -47,6 +47,9 @@ def _run(command: str, args: argparse.Namespace) -> dict[str, Any]:
                 "siling": "缺少出生时刻及节后天数，不能确定人元司令。",
             },
         }
+    # Agent 视图：默认紧凑（< 15KB 上下文预算）；--full 出完整事实，供审计/调试
+    if command == "all" and not args.full:
+        payload = compact_for_agent(payload)
     return payload
 
 
@@ -77,6 +80,7 @@ def _parser() -> argparse.ArgumentParser:
     shared.add_argument("--dayun-index", type=int, dest="dayun_index")
     shared.add_argument("--liunian", type=int)
     shared.add_argument("--json", action="store_true", default=True, help="输出 UTF-8 JSON（默认）")
+    shared.add_argument("--full", action="store_true", help="输出完整事实，不做 Agent 紧凑投影")
     parser = argparse.ArgumentParser(prog="python -m engine.cli", description="事实引擎 JSON CLI")
     sub = parser.add_subparsers(dest="command", required=True)
     for name, help_ in (
