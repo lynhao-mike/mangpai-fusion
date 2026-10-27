@@ -166,4 +166,12 @@ def test_zuogong_candidates_carry_no_layer_or_grade():
 def test_zuogong_only_crosses_ti_yong(pillars):
     chart = chart_from_pillars(pillars, "乾")
     for c in build_duan_zuogong_candidates(chart, build_relation_graph(chart)):
-        assert set(c.tiyong) not in ({"体"}, {"用"})
+        assert set(c.tiyong) not in ({"体"}, {"用"}, {"双属"})
+
+
+def test_zuogong_excludes_dual_x_dual():
+    """食伤内部互见不构成体用相交做功：双属×双属 候选全部排除（ADR-007 D1）。"""
+    chart = chart_from_pillars(["甲子", "丙寅", "丙辰", "戊戌"], "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    assert cands
+    assert all(tuple(c.tiyong) != ("双属", "双属") for c in cands)

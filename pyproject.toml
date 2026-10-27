@@ -7,19 +7,44 @@
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-# 日常 pytest 只跑有效事实层套件。旧实验/回测目录用 --ignore 隔离；
+# 日常 pytest 只跑与现行架构直接相关的套件。旧实验/回测目录用 --ignore 隔离；
 # 显式指定路径时请加 `-o addopts="-ra --tb=short"` 以覆盖 ignore。
+#
+# T-144（ADR-007 D8 第一阶段）扩容：由 14 个路径扩到覆盖 claims / decision / application /
+# features / tools 全量 / governance 绿集 / 根目录保护测试 / Track-E 负向自测门禁。
+# 扩容时只收「本来就绿」的套件；以下 4 个治理层文件当前红，**未**纳入门禁，
+# 原因与清单见 tasks/T-144/BRIEF.md「红灯清单」，由中枢决定修实现还是判测试过期：
+#   tests/governance/test_school_registry.py          （frozen+slots 下 property 赋值抛 TypeError，需 CPython ≥3.13）
+#   tests/governance/test_static_isolation.py         （ast.parse 遇 PEP 695，需 CPython ≥3.12）
+#   tests/governance/test_structure_catalog.py        （同上）
+#   tests/governance/test_structure_catalog_integrity.py（同上）
 testpaths = [
     "tests/facts",
     "tests/api",
     "tests/predicates",
-    "tests/tools/test_query_theory.py",
-    "tests/tools/test_human_touch_linter.py",
-    "tests/tools/test_blind_ledger.py",
-    "tests/tools/test_anchor_span.py",
-    "tests/tools/test_blind_toolchain.py",
-    "tests/tools/test_gao_split.py",
-    "tests/tools/test_bundle_pii.py",
+    "tests/claims",
+    "tests/decision",
+    "tests/application",
+    "tests/features",
+    "tests/tools",
+    "tests/governance/test_arbitration_contract_boundaries.py",
+    "tests/governance/test_arbitration_gate_contracts.py",
+    "tests/governance/test_arbitration_gates.py",
+    "tests/governance/test_arbitration_properties.py",
+    "tests/governance/test_canonical.py",
+    "tests/governance/test_composition_execution.py",
+    "tests/governance/test_composition_registry.py",
+    "tests/governance/test_fact_certification_registry.py",
+    "tests/governance/test_fact_contracts.py",
+    "tests/governance/test_governance_claim.py",
+    "tests/governance/test_governance_claim_derivation.py",
+    "tests/governance/test_trigger_registry.py",
+    "tests/governance/test_v5_import_freeze.py",
+    "tests/governance/test_wave1_baseline_contract.py",
+    "tests/track_e_smoke/test_e_negatives_gate.py",
+    "tests/test_production_entrypoints_unchanged.py",
+    "tests/test_project_metadata.py",
+    "tests/test_error_policy.py",
 ]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]

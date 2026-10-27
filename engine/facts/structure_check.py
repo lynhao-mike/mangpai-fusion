@@ -379,7 +379,7 @@ def tiyong_view(chart: ChartFacts) -> dict[Addr, TiYong]:
 
 
 def _crosses(a: TiYong, b: TiYong) -> bool:
-    return {a, b} != {"体"} and {a, b} != {"用"}
+    return {a, b} not in ({"体"}, {"用"}, {"双属"})
 
 
 def _ti_yong_ends(ty: tuple[str, str]) -> Optional[tuple[int, int]]:
