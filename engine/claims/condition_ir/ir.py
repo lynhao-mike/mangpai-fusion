@@ -27,12 +27,28 @@ class Outcome:
         return self.value is True
 
 
-def _label(node: dict) -> str:
-    name = node.get("atom", "?")
+def _label(node: Any) -> str:
+    """人可读的条件标签：支持 all / any / not 组合节点，递归展开。
+
+    组合节点也必须可读（ADR-007 D12）：否则失败时只得到 `?()`，人无法追责到具体子条件。
+    """
+    if not isinstance(node, dict):
+        return repr(node)
+    if "all" in node:
+        return "all[" + ", ".join(_label(c) for c in node.get("all") or []) + "]"
+    if "any" in node:
+        return "any[" + ", ".join(_label(c) for c in node.get("any") or []) + "]"
+    if "not" in node:
+        return f"not({_label(node.get('not'))})"
+    name = node.get("atom")
+    if not name:
+        keys = ", ".join(sorted(str(k) for k in node)) or "空"
+        return f"<无原子:{keys}>"
     args = node.get("args") or {}
+    alias = f" as={node['as']}" if node.get("as") else ""
     if not args:
-        return f"{name}()"
-    return f"{name}({', '.join(f'{k}={v}' for k, v in args.items())})"
+        return f"{name}(){alias}"
+    return f"{name}({', '.join(f'{k}={v}' for k, v in args.items())}){alias}"
 
 
 def _resolve(value: Any, env: dict[str, str]) -> tuple[Any, Optional[str]]:

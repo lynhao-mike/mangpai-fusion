@@ -1,12 +1,20 @@
 """engine/claims/atoms.py · 断语条件谓词表 v1（契约 23 §四）。
 
-42 个原子，全部只读 engine.facts 已产出的字段，返回 true / false / unknown（None）。
+44 个原子（v1.1：新增 `lu_at` / `needs_judgment`，见契约 23 §4.7 与 §九），
+全部只读 engine.facts 已产出的字段，返回 true / false / unknown（None）。
 缺字段一律返回 unknown，不得猜测；不得在此处做命理判断。
+
+岁运隔离（ADR-007 D3）：关系原子默认只扫 `scope == "natal"` 的边，
+避免「原局静态断语」被流年干支错误点燃；`edge` 可用 `scope` 参数显式查岁运边。
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional
+
+# 禄（甲禄寅…癸禄子）的唯一定义处在事实层；与 structure_check 同源导入，不在本层另造表。
+from engine.facts.chart_facts import _LU as LU_TABLE
+from engine.facts.chart_facts import binzhu_side
 
 Value = Optional[bool]  # True / False / None(=unknown)
 
@@ -14,6 +22,8 @@ STEM_ADDRS = ("Y.s", "M.s", "D.s", "H.s")
 BRANCH_ADDRS = ("Y.b", "M.b", "D.b", "H.b")
 ALL_ADDRS = ("Y.s", "M.s", "D.s", "H.s", "Y.b", "M.b", "D.b", "H.b")
 PILLAR_INDEX = {"Y": 0, "M": 1, "D": 2, "H": 3}
+NATAL_SCOPE = "natal"
+ANY_SCOPE = ("any", "*", None)
 
 GOD_ALIASES = {
     "印": ("正印", "偏印"),
@@ -25,7 +35,14 @@ GOD_ALIASES = {
 SPOUSE = {"乾": ("正财", "偏财"), "坤": ("正官", "七杀")}
 CHILD = {"乾": ("正官", "七杀"), "坤": ("食神", "伤官")}
 
-HE_KINDS = ("liuhe", "wuhe", "zhi_anhe", "sanhe", "sanhui", "ganzhi_zihe")
+# he_at 默认只认「合他星」的合：六合（liuhe）、地支暗合（zhi_anhe）。
+# 依据 sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:48
+# 「不能被刑坏，冲破，穿倒，或六合，暗合他星」——原文只举这两种合。
+# 排除：三合/三会的半局与拱局（completeness ∈ partial/half_*/gong）、完整三合三会
+#      （原文无据，待中枢裁定，暂排除）、日柱自合 ganzhi_zihe（不涉他星）、天干五合 wuhe。
+HE_KINDS = ("liuhe", "zhi_anhe")
+HE_GROUP_HALF = frozenset({"partial", "half_sheng", "half_mu", "gong"})
+HE_KINDS_EXCLUDED = ("wuhe", "sanhe", "sanhui", "ganzhi_zihe")
 
 
 @dataclass
@@ -232,9 +249,18 @@ def day_master(ctx, args):
 
 # ---------------------------------------------------------------- 关系 10
 
+def _edges(ctx, scope: Any = NATAL_SCOPE) -> list[dict]:
+    """按 scope 取边。默认只取原局边（ADR-007 D3 的原局隔离）。"""
+    edges = ctx["edges"]
+    if scope in ANY_SCOPE:
+        return edges
+    return [e for e in edges if e.get("scope", NATAL_SCOPE) == scope]
+
+
 def edge(ctx, args):
     kind, between = args.get("type"), args.get("between")
-    for e in ctx["edges"]:
+    scope = args.get("scope", NATAL_SCOPE)
+    for e in _edges(ctx, scope):
         if e.get("kind") != kind:
             continue
         if between:
@@ -247,14 +273,14 @@ def edge(ctx, args):
 
 def edge_touches(ctx, args):
     kind, at = args.get("type"), args.get("at")
-    for e in ctx["edges"]:
+    for e in _edges(ctx):
         if e.get("kind") == kind and at in (e.get("members") or []):
             return _t(f"边 {e.get('id')}", edge_id=e.get("id"))
     return _f()
 
 
 def _touch(ctx, at, kinds):
-    for e in ctx["edges"]:
+    for e in _edges(ctx):
         if e.get("kind") in kinds and at in (e.get("members") or []):
             return _t(f"{e.get('kind')} 边 {e.get('id')}", edge_id=e.get("id"))
     return _f()
@@ -277,25 +303,48 @@ def po_at(ctx, args):
 
 
 def he_at(ctx, args):
+    """某地址被合（默认只认六合 / 地支暗合，且只扫原局边）。
+
+    `with_god`：合它的是某十神（合他星）。
+    `exclude_god`：排除「合它的是该十神」的边（如排除配偶星本星相合），默认不启用。
+    """
     at, with_god = args.get("at"), args.get("with_god")
+    exclude_god = args.get("exclude_god")
     gods = _god_set(with_god, ctx) if with_god else None
     if with_god and not gods:
         return _u("无法解析十神规格")
-    for e in ctx["edges"]:
-        if e.get("kind") not in HE_KINDS:
+    excluded = _god_set(exclude_god, ctx) if exclude_god else None
+    if exclude_god and not excluded:
+        return _u("无法解析十神规格")
+    for e in _edges(ctx):
+        if not _is_he_edge(e):
             continue
         members = e.get("members") or []
         if at not in members:
             continue
-        if not gods:
+        if not gods and not excluded:
             return _t(f"{e.get('kind')} 边 {e.get('id')}", edge_id=e.get("id"))
         for other in members:
             if other == at:
                 continue
             tg = _ten_god_at(ctx, other)
-            if tg in gods:
-                return _t(f"{e.get('kind')} 合 {other}", edge_id=e.get("id"), other=other)
+            if excluded and tg in excluded:
+                continue
+            if gods and tg not in gods:
+                continue
+            return _t(f"{e.get('kind')} 合 {other}", edge_id=e.get("id"), other=other)
     return _f()
+
+
+def _is_he_edge(e: dict) -> bool:
+    """是否算「被合」：只认六合与地支暗合。
+
+    排除半局/拱局（completeness ∈ partial/half_*/gong）、日柱自合 ganzhi_zihe、天干五合 wuhe。
+    完整三合/三会（full）同样排除：原文只举「六合、暗合他星」，无据支持完整局算被合，
+    该口径待中枢裁定（契约 23 §4.2）。
+    """
+    return e.get("kind") in HE_KINDS
+
 
 
 def _ten_god_at(ctx, addr):
@@ -308,7 +357,7 @@ def group_complete(ctx, args):
     kind = args.get("type")
     if kind not in ("sanhe", "sanhui"):
         return _u("仅支持 sanhe / sanhui")
-    for e in ctx["edges"]:
+    for e in _edges(ctx):
         if e.get("kind") == kind and len(e.get("members") or []) >= 3:
             return _t(f"边 {e.get('id')}")
     return _f()
@@ -347,7 +396,7 @@ def muku_open(ctx, args):
         if m.get("branch") != zhi:
             continue
         addr = m.get("addr")
-        if any(e.get("kind") in ("chong",) and addr in (e.get("members") or []) for e in ctx["edges"]):
+        if any(e.get("kind") in ("chong",) and addr in (e.get("members") or []) for e in _edges(ctx)):
             return _t(f"{zhi} 库在 {addr} 被冲开")
         return _f()
     return _f()
@@ -514,8 +563,100 @@ def tiyong(ctx, args):
     return _f()
 
 
+def _suiyun_addrs(ctx) -> list[str]:
+    """岁运层已出现的地址（从关系边的成员反推，不另建事实）。"""
+    out: list[str] = []
+    for e in ctx["edges"]:
+        for m in e.get("members") or []:
+            head = str(m).split(".", 1)[0]
+            if head.startswith(("DY", "LN")) and m not in out:
+                out.append(m)
+    return out
+
+
+def _binzhu_from_facts(ctx, addr, layer):
+    """优先读事实：做功候选自带每层 (sides, direction)（structure_check._binzhu 产出）。"""
+    for c in ctx["zuogong"]:
+        members = list(c.get("members") or [])
+        if addr not in members:
+            continue
+        pos = members.index(addr)
+        for b in c.get("binzhu") or []:
+            if b.get("layer") != layer:
+                continue
+            sides = b.get("sides") or []
+            if pos < len(sides):
+                return sides[pos], b.get("direction")
+    return None
+
+
 def binzhu(ctx, args):
-    return _u("facts 未提供宾主层级")
+    """宾主层级（段派 M1-D-001..004）：某地址在该层为主还是为宾。
+
+    `layer`：1 日干为主 / 2 日柱为主 / 3 日柱+时柱为主 / 4 原局为主、岁运为宾。
+    `side?`：主 / 宾；给定时要求该地址的层内身份相符。
+    `at?`：限定地址；缺省则在该层可能出现的地址中找第一个符合 `side` 的。
+    事实来源：做功候选的 `binzhu` 读数（事实层已产出）；候选未覆盖该地址时回落到
+    事实层的纯位置函数 `chart_facts.binzhu_side`，同一 SSOT，不另算。
+    """
+    try:
+        layer = int(args.get("layer"))
+    except (TypeError, ValueError):
+        return _u(f"宾主层必须是 1-4：{args.get('layer')!r}")
+    if layer not in (1, 2, 3, 4):
+        return _u(f"宾主层必须是 1-4：{layer}")
+    side = args.get("side")
+    if side is not None and side not in ("主", "宾"):
+        return _u(f"宾主只有 主/宾：{side!r}")
+    at = args.get("at")
+    if at:
+        addrs = [at]
+    else:
+        addrs = list(ALL_ADDRS) + (_suiyun_addrs(ctx) if layer == 4 else [])
+    for addr in addrs:
+        got = _binzhu_from_facts(ctx, addr, layer)
+        if got is None:
+            try:
+                got = (binzhu_side(addr, layer), None)  # type: ignore[arg-type]
+            except ValueError:
+                continue
+        cur, direction = got
+        if side and cur != side:
+            continue
+        note = f"{addr} 第{layer}层为{cur}" + (f"（{direction}）" if direction else "")
+        return _t(note, addr=addr)
+    if layer == 4 and not _suiyun_addrs(ctx):
+        return _f(f"本次输入未提供岁运节点，第 4 层只有原局主位，无{side or '宾'}可命中")
+    return _f(f"第{layer}层没有{side or ''}位地址")
+
+
+def lu_at(ctx, args):
+    """某天干的禄支是否落在指定（或缺省＝任一）地支上。禄表取自事实层 `chart_facts._LU`。"""
+    gan = args.get("gan")
+    if not gan:
+        dm = ctx.get("day_master")
+        gan = dm.get("char") if isinstance(dm, dict) else (str(dm) if dm else "")
+    if not gan:
+        return _u("未指定 gan 且无日主信息")
+    target = LU_TABLE.get(gan)
+    if not target:
+        return _u(f"未知天干 {gan!r}")
+    at = args.get("at")
+    if at and at not in BRANCH_ADDRS:
+        return _u(f"禄只看地支地址：{at!r}")
+    for addr in ([at] if at else BRANCH_ADDRS):
+        b = ctx["branches"].get(addr)
+        if b and b.get("char") == target:
+            return _t(f"{gan}禄在{target}（{addr}）", addr=addr, zhi=target)
+    return _f(f"{gan}禄在{target}，盘中{'该位' if at else '四支'}未见")
+
+
+def needs_judgment(ctx, args):
+    """显式未知占位（契约 23 §4.7，ADR-007 D12）：恒返回 unknown，说明缺哪一步判断。"""
+    reason = args.get("reason")
+    if not reason:
+        return _u("needs_judgment 缺 reason（契约 23 §4.7 要求写明缺什么判断）")
+    return _u(str(reason))
 
 
 def _check_items(ctx, check, kinds):
@@ -627,13 +768,15 @@ ATOMS: dict[str, Callable[[dict, dict], AtomResult]] = {
     # 结构与做功
     "geju_met": geju_met, "geju_state": geju_state, "zuogong": zuogong,
     "tiyong": tiyong, "binzhu": binzhu, "structure_break": structure_break,
-    "structure_rescue": structure_rescue,
+    "structure_rescue": structure_rescue, "lu_at": lu_at,
     # 岁运
     "dayun_present": dayun_present, "liunian_present": liunian_present,
     "suiyun_edge": suiyun_edge, "sanhe_with_suiyun": sanhe_with_suiyun,
     "chong_kai_muku": chong_kai_muku,
     # 元谓词
     "count": count, "exists": exists, "cite": cite,
+    # 显式未知占位（v1.1）
+    "needs_judgment": needs_judgment,
 }
 
 SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
@@ -645,10 +788,10 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "palace_holds": (("god", "palace"), ()),
     "rooted": ((), ("god", "at", "min_qi")),
     "day_master": (("gan",), ()),
-    "edge": (("type",), ("between", "as")),
+    "edge": (("type",), ("between", "as", "scope")),
     "edge_touches": (("type", "at"), ()),
     "chong_at": (("at",), ()),
-    "he_at": (("at",), ("with_god",)),
+    "he_at": (("at",), ("with_god", "exclude_god")),
     "chuan_at": (("at",), ()),
     "xing_at": (("at",), ()),
     "po_at": (("at",), ()),
@@ -668,7 +811,7 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "geju_state": (("state",), ("geju_type",)),
     "zuogong": ((), ("kind", "involves", "target_god", "actor_god", "actor_at", "target_at")),
     "tiyong": (("role",), ("at",)),
-    "binzhu": (("layer",), ()),
+    "binzhu": (("layer",), ("side", "at")),
     "structure_break": ((), ("check",)),
     "structure_rescue": ((), ("check",)),
     "dayun_present": ((), ()),
@@ -679,6 +822,9 @@ SIGNATURES: dict[str, dict[str, tuple[str, ...]]] = {
     "count": (("atom", "op", "value"), ()),
     "exists": (("atom",), ()),
     "cite": (("claim_id",), ()),
+    "lu_at": ((), ("gan", "at")),
+    "needs_judgment": (("reason",), ()),
 }
 
-assert len(ATOMS) == 42, f"原子表应为 42 个，实际 {len(ATOMS)}"
+# v1.1 新增 2 个（lu_at / needs_judgment），依据契约 23 §4.7 与 §九变更登记、ADR-007 D3/D12。
+assert len(ATOMS) == 44, f"原子表应为 44 个，实际 {len(ATOMS)}"
