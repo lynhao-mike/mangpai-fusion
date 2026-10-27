@@ -46,6 +46,35 @@ target = next((m for m, t in zip(members, ty) if t == "用"), members[-1] if mem
 .venv\Scripts\python.exe -m tools.verify_baseline  # 四项不降
 ```
 
+### ⚠️ 4.0 追加约束（2026-10-27 中枢补，因为实测撞了红线）
+
+`tests/api/test_engine_reset_regression.py::test_cli_all_json_under_15kb` 要求 `engine.cli all` 的输出 **< 15000 字节**。这是真实的产品约束：Agent 每次调工具都不该吃掉 15KB 上下文。
+
+实测（盘 `庚申 戊寅 壬子 辛丑`，16 条做功候选）：
+
+| 字段 | 出现 | 约占字节 |
+|---|---|---|
+| `binzhu` | 16 条 | **3370** |
+| `tiyong` | 16 条 | 453 |
+| `distance` | 16 条 | 256 |
+| `actor` | 16 条 | 268 |
+| 合计 payload | — | **20196**（超限） |
+
+**裁决：不发字段不是选项，但 `binzhu` 必须换紧凑表示。**
+
+原因：`binzhu` 由 `(addr, layer)` 唯一决定，同一地址在不同候选里重复了 16 次，每次还带 `sides` + `direction` 四个层级，是纯冗余。而 `engine/facts/chart_facts.py:125 binzhu_side(addr, layer)` 是纯函数，调用方可自行还原。
+
+**要求**：
+- `tiyong` / `distance` / `actor` 照常发（体积可接受）。
+- `binzhu` 改为**紧凑形式**，二选一：
+  - (a) 只发 `binzhu` 的**方向摘要**，如 `"binzhu": {"1": "同在宾位", "2": "正向"}`；或
+  - (b) 候选里不发 `binzhu`，改在 payload **顶层**发一张 `binzhu_map`（每个地址一层，全局去重）。
+- 选哪种由你判断，**判据是：`binzhu` 原子（`atoms.py:517`）仍能拿到它需要的信息**。若原子只需 `direction`，就只发 `direction`。
+
+**硬要求**：改完后 `pytest -q` 必须 0 failed，`test_cli_all_json_under_15kb` 必须通过。**不许为了过这条测试去删改那个断言**（放宽 15000 是改判据让红变绿）。
+
+若你认为 15KB 这条限制本身不合理（例如事实层确实需要更多字节），**停下报告理由**，由中枢决定是调限额还是调表示法。不要自己动手改限额。
+
 **必须自证的三条**（把命令与原始输出贴进 BRIEF）：
 
 1. 对 `癸丑 癸亥 辛亥 癸巳`（坤）跑 `engine.cli all`，`duan_zuogong.candidates` 里**至少一条**同时含 `tiyong` 与 `actor` 键，且 `actor` 明确是 `null` 或具体地址。
