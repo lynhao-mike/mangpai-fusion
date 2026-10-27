@@ -1,0 +1,156 @@
+version: 1
+batch: duan-marriage-anchors
+generated_at: "2026-10-27"
+task: T-133
+school: duan
+notes: |
+  段派婚姻五条判据的原文锚点（B1 编译前置）。只取锚点，不含编译、不改引擎、不动语料。
+  取证唯一入口：python -m tools.query_theory --schools duan（每条 source_ref 均为该 CLI 返回的 source_ref 原值）。
+  quote 逐字取自工具返回的 statement 字段，未改写、未补页码；工具在 200 字处截断，凡截断处只在 notes 说明，不补字。
+  状态取值：anchored=有原文锚点；unmodeled=原文只有定性描述、无可求值模型；not_found=原文无对应陈述，且未用相近段落顶替。
+  「克者无根」与「力量相当」两条为多锚点合成，原文无单句直述，已在各自 notes 中标明合成关系。
+
+anchors:
+  - criterion: 克者被合绊
+    source_ref: {path: sources/duan/MinerU_markdown_命格组合_2056043853946478592.md, anchor: line:31}
+    quote: "同为卯戌关系，级别大不相同：前造是戌绊卯不制，本造是卯合戌还制；合而制之者级别远大"
+    school: duan
+    status: anchored
+    tool_id: M1-D-316
+    notes: >-
+      原文以卯戌为例直接给出「绊则不制」：戌绊卯时卯不能制。这是五条判据里唯一逐字点到「绊→不制」的句子，但场景是过河拆桥的财富层次比较，非婚姻章。
+
+  - criterion: 克者被合绊
+    source_ref: {path: theory/raw/duan/d03-theory.md, anchor: line:556}
+    quote: "大运/流年与日主之忌神相合 conclusion: 忌神被合住 → 当年忌作用减弱 → 反成喜 falsifiable_by: 若合而不能化，仅减弱不消除"
+    school: duan
+    status: anchored
+    tool_id: M1-D-108
+    notes: >-
+      补充同一机制的另一表述：忌神（克方）被合住后作用减弱而非消失；原文 falsifiable_by 明说「若合而不能化，仅减弱不消除」，故合绊是削弱而非必然归零。场景为岁运合原局忌神。
+
+  - criterion: 克者被合绊
+    source_ref: {path: sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md, anchor: line:173}
+    quote: "合财看身强弱是从强弱角度讲；寅亥合绊、寅与亥不发挥作用，是这两字的做功角度看，而不是强弱角度看——两个角度不可混淆"
+    school: duan
+    status: anchored
+    tool_id: M1-D-364
+    notes: >-
+      给出合绊的定义性表述：合绊之两字「不发挥作用」。用于界定本条判据的语义，不含婚姻语境。
+
+  - criterion: 克者被合绊
+    source_ref: {path: theory/raw/duan/d19-d24-theory.md, anchor: line:303}
+    quote: "判定命主是否有婚外情 prerequisites=配偶星宫+桃花星分布 conclusion: 女命禄入主合他星=桃花；男命劫财合别人财=外遇；暗合(寅丑/亥午等)=暗中关系；伤官坐花宫/门户=明桃花；配偶宫被穿倒+他星趁虚=第三者 falsifiable_by: 有桃花象但被合绊锁死不应"
+    school: duan
+    status: anchored
+    tool_id: M1-D-194
+    notes: >-
+      婚姻章内唯一带「合绊」的表述，且方向相反（合绊使象「锁死不应」），可用于对齐「合绊 = 使某方失效」这一语义；但它讲的是桃花/婚外情之象被锁住，不是克者被绊。
+
+  - criterion: 克者无根
+    source_ref: {path: theory/raw/duan/d06-d09-theory.md, anchor: line:740}
+    quote: "命局以财作忌神 + 比劫制财 → 反主富 prerequisites=财星弱（虚透 / 被制 / 入墓） 比劫有力（旺 / 紧贴财 / 盖头）"
+    school: duan
+    status: anchored
+    tool_id: M1-D-152
+    notes: >-
+      原文以正述必要条件给出「制方须有力」：比劫制财成立的前提是「比劫有力（旺 / 紧贴财 / 盖头）」。与 M1-D-183 的「无根虚浮=虚」合起来才支撑「克者无根则制不成」；原文没有单句直写「克者无根」。
+
+  - criterion: 克者无根
+    source_ref: {path: theory/raw/duan/d15-d18-theory.md, anchor: line:566}
+    quote: "判定某天干在八字中的虚实状态 prerequisites=以坐支定虚实：有根有力=实，无根虚浮=虚 conclusion: 虚用（财虚/杀虚）论吉：财虚=才华不贪财/杀虚=名气无权；实用论实力；应期中虚透=该字要跑了/弱化了 falsifiable_by: 虚透之神被合实则不论虚"
+    school: duan
+    status: anchored
+    tool_id: M1-D-183
+    notes: >-
+      提供「根」的判定口径：以坐支定虚实，有根有力=实，无根虚浮=虚；并给出反向救应「虚透之神被合实则不论虚」。原文的结论段讲的是虚用论吉与应期弱化，未直接接到「不能制」。
+
+  - criterion: 力量相当
+    source_ref: {path: theory/raw/duan/d06-d09-theory.md, anchor: line:583}
+    quote: "命局有忌神（含官杀作忌） + 需识别该忌神的强弱状态 → 选取制法 prerequisites=完成忌神识别（M1-D-115 贼神理论 + M1-D-122 富贵贫贱档） 完成忌神强弱判定（弱 / 略偏旺 / 旺） conclusion: - 忌神 3 种制法（D-09 §十一 line 706 \"若是弱的官杀要旺制（贼神捕神）；若是官杀略偏旺要平衡制（用印化杀为用化敌为友）"
+    school: duan
+    status: anchored
+    tool_id: M1-D-149
+    notes: >-
+      原文按忌神强弱分三档选制法：弱→旺制；略偏旺→平衡制（用印化杀，不以克制胜）；旺→弱制。第三档在工具返回中被 200 字截断，此处只取到第二档。三档均为定性分级，无量化刻度。
+
+  - criterion: 力量相当
+    source_ref: {path: sources/duan/MinerU_markdown_体用_2056043694349017088.md, anchor: line:161}
+    quote: "在原局中确定穿与被穿：相克之穿看势在哪里，哪方得势即能穿了对方"
+    school: duan
+    status: anchored
+    tool_id: M1-D-343
+    notes: >-
+      给出穿制的胜负判据是「势」：相克之穿看哪方得势，得势者才能穿了对方。原文没有「力量相当」四字，也未说明双方均不得势时的结论；不得据此补写「相当则不制」。
+
+  - criterion: 力量相当
+    source_ref: {path: theory/raw/duan/d15-d18-theory.md, anchor: line:622}
+    quote: "命局/大运/流年出现六冲 prerequisites=区分远近强弱 conclusion: 近冲库=坏库中之物；远冲库=开库；旺冲衰=冲去/取代；流年冲八字=动；大运冲八字力量相当=破；强方取代弱方信息(换象) falsifiable_by: 远冲库但库中无有用之物则开库无益"
+    school: duan
+    status: anchored
+    tool_id: M1-D-185
+    notes: >-
+      原文实际使用「力量相当」一词，但语境是六冲：大运冲八字力量相当=破（两败），不是制局的成败判据。引用时须保留这一边界。
+
+  - criterion: 力量相当
+    source_ref: {path: theory/raw/duan/d25-d29-theory.md, anchor: line:291}
+    quote: "命局中弱方制强方（如辛制群丙、金制火势） prerequisites=存在力量悬殊的制克关系 conclusion: 反用=我方弱但借对方之力为己用（撒切尔辛合制群杀、徐向前丑金库集团军被火制）； 弱制=以弱力真正制住强方（需要特殊条件）；"
+    school: duan
+    status: anchored
+    tool_id: M1-D-220
+    notes: >-
+      补充强弱悬殊一侧的口径：弱方制强方分「反用」与「弱制」，弱制「需要特殊条件」。原文前提明写「存在力量悬殊的制克关系」，可反证本条判据针对的是非悬殊情形。
+
+  - criterion: 穿中带生不能制
+    source_ref: {path: theory/raw/duan/d01-deep-read.md, anchor: line:251}
+    quote: "> 初级讲义：「**六穿中，只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制**。**申亥穿、寅巳穿相生不能制**，但有个坏的象，可以坏了六亲或宫位。丑午之间也是相生，但因丑能晦午火，所以也有相克的意思。」"
+    school: duan
+    status: anchored
+    tool_id: M1-D-024
+    notes: >-
+      五条判据中锚点最硬的一条：初级讲义逐字列出可相制的四组穿（酉戌/卯辰/子未/丑午），并明言「申亥穿、寅巳穿相生不能制」。同一工具返回还提示同一合集另一节有「穿制不了对方」的相反说法，见下一条。
+
+  - criterion: 穿中带生不能制
+    source_ref: {path: theory/raw/duan/d15-d18-theory.md, anchor: line:435}
+    quote: "命局出现穿的组合 prerequisites=子未/丑午/卯辰/酉戌(克泄穿) vs 寅巳/申亥(生穿) conclusion: D-15将六穿分为克泄穿与生穿，并说明仇恨、不和、损坏、穿倒等含义；但“穿不能制”与D-21同合集后文及D-02初级讲义中的条件性穿制说法直接冲突。D-29另有穿后仍可作功但费力/不净的问答案例，证明“穿”不等于关系链必然失效，却不能单独解决其是否属于制的术语争议。"
+    school: duan
+    status: anchored
+    tool_id: M1-D-178
+    notes: >-
+      适用边界：D-15 把六穿分为克泄穿与生穿，但「穿不能制」与同合集后文及 D-02 初级讲义的条件性穿制说法直接冲突。B1 若把本条编译成硬条件，须同时保留这一来源冲突。
+
+  - criterion: 目标旺透得长生
+    source_ref: null
+    quote: null
+    school: duan
+    status: not_found
+    notes: >-
+      原文没有「旺 + 透 + 得长生」的组合判据。三部分证据是分散的、且结论各异：M1-D-149 说旺的官杀要弱制（不是不能制，而是换手法）；M1-D-133 说夫星临长生+拱局不可入墓（讲墓不讲制）；M1-D-345 说不能穿旺禄（禁忌而非制局成败）。另：单独检索「旺透」在 duan 索引中零命中（见 Q12 返回 []），说明「旺透」是任务卡的措辞而非原文用语。按「不许用相近段落顶替」，本条不合成、不锚定。
+
+  - criterion: 制净 / 制尽（是否存在稳定阈值）
+    source_ref: {path: theory/raw/duan/promoted/handoff-review-2026-10-05.md, anchor: line:13}
+    quote: "项：5；交接文档主题：制净 / 制尽；状态：已核对；核对结论 / 下一步：原文确有“制干净/制净/制尽/不尽”等定性用词，但未找到净与尽之间稳定的术语分级或数值阈值。初级/中级讲义支持夹制/夹冲常不尽；面授讲义也有夹住制净的具体案例，故不能作绝对状态。"
+    school: duan
+    status: unmodeled
+    tool_id: M1-D-047
+    notes: >-
+      查证结论：原文有「制干净 / 制净 / 制尽 / 不尽」等定性用词，但没有净与尽之间的稳定术语分级，也没有数值阈值；同一命局不同 occurrence 可分别判为未净/制净。工具返回在 200 字处截断（末尾为省略号），此处只取到该结论句。B1 不得自造阈值。
+
+  - criterion: 制净 / 制尽（是否存在稳定阈值）
+    source_ref: {path: theory/raw/duan/d02-theory.md, anchor: line:697}
+    quote: "字被制（合制 / 冲制 / 克制 / 穿制） prerequisites=制方与被制方力量比较已完成 conclusion: 制后该字本象消失或转为相反象（如官被制 = 没工作 / 印被制 = 没文凭 / 财被制 = 破财或得财，看制方为体或为用） falsifiable_by: 制不尽 = 留余烟，本象部分保留"
+    school: duan
+    status: unmodeled
+    tool_id: M1-D-075
+    notes: >-
+      第二条佐证：制象规则只给「制不尽 = 留余烟，本象部分保留」这样的定性描述，无任何比例或力度刻度。原文另有「制不尽当财」类用法（未列入本文件），同样只有定性区分。
+
+  - criterion: 制净 / 制尽（是否存在稳定阈值）
+    source_ref: {path: theory/raw/duan/d03-theory.md, anchor: line:132}
+    quote: "日主有刃 + 独杀清透 + 刃合杀 prerequisites=杀刃贴近 不见伤食过制 conclusion: 武职 / 兵权 / 实权统帅 falsifiable_by: 若杀被伤官克尽 / 刃被合化，格破"
+    school: duan
+    status: unmodeled
+    tool_id: M1-D-085
+    notes: >-
+      第三条佐证：原文确实会写「克尽」这类绝对化措辞（杀刃格「若杀被伤官克尽……格破」），说明「尽」是原文用语；但它只作为成格/破格的条件出现，全文没有任何可运算的刻度。定性词存在 + 无阈值 = unmodeled。
+

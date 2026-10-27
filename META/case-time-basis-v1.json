@@ -1,0 +1,5218 @@
+{
+  "schema": "case-time-basis-v1",
+  "adr": "docs/adr/ADR-005-case-time-basis.md",
+  "task": "T-130",
+  "cases_dir": "cases",
+  "coverage": 485,
+  "counts": {
+    "true_solar": 330,
+    "clock_beijing": 144,
+    "unknown": 11
+  },
+  "counts_sum": 485,
+  "basis_evidence_counts": {
+    "longitude_calc": 1,
+    "explicit_time": 326,
+    "label_only": 3,
+    "none": 155
+  },
+  "notation_counts": {
+    "other": 14,
+    "table_note": 7,
+    "structured_field": 119,
+    "importer_field": 345
+  },
+  "unknown_breakdown": {
+    "no_birth_time": 5,
+    "has_time_undecidable": 6
+  },
+  "duplicate_case_numbers": [
+    "C-2026-015",
+    "C-2026-038"
+  ],
+  "cases": [
+    {
+      "case_id": "_TEMPLATE",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "no_birth_time",
+      "evidence": [
+        "无任何出生时刻声明"
+      ]
+    },
+    {
+      "case_id": "C-2026-001-乾-庚申戊寅壬子辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （已校真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-002-坤-壬戌庚戌戊辰丙辰",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "有出生时刻但未声明排盘口径（沉默）"
+      ]
+    },
+    {
+      "case_id": "C-2026-007-乾-乙丑庚辰己丑庚午",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "有出生时刻但未声明排盘口径（沉默）"
+      ]
+    },
+    {
+      "case_id": "C-2026-008-坤-壬申癸卯丁未壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-009-乾-庚辰乙酉丙申乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-010-坤-甲子丁卯癸卯庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "longitude_calc",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （北京时间 · 真太阳时校正约 16:37 → 申时）",
+        "有出生地经度 + 可复现换算"
+      ]
+    },
+    {
+      "case_id": "C-2026-011-乾-乙丑乙酉丁丑癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-012-坤-壬戌癸丑丙申壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （真太阳时·辰时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-013-坤-壬申甲辰丙辰己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "table_note",
+      "unknown_kind": null,
+      "evidence": [
+        "出生行标注 （真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-014-乾-丙戌庚子乙亥辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段直接给出具体时刻",
+        "2006-12-12 09:45"
+      ]
+    },
+    {
+      "case_id": "C-2026-015-乾-甲寅乙亥丙辰辛卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "label_only",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "只有校正标记，无经度、无校正后时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-015-甲寅乙亥丙辰辛卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "label_only",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "只有校正标记，无经度、无校正后时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-016-坤-甲子丙子丙戌戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "出生行标注 （真太阳时）",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-017-乾-庚申辛巳辛丑丁酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段自我否定未校正"
+      ]
+    },
+    {
+      "case_id": "C-2026-018-坤-乙丑戊寅乙酉乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段直接给出具体时刻",
+        "1985-02-15 18:10"
+      ]
+    },
+    {
+      "case_id": "C-2026-019-乾-辛巳壬辰甲寅乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段自我否定未校正"
+      ]
+    },
+    {
+      "case_id": "C-2026-020-坤-丁丑庚戌甲辰丁卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false",
+        "太阳时字段自我否定未校正"
+      ]
+    },
+    {
+      "case_id": "C-2026-021-乾-丙寅庚寅甲辰己巳",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "no_birth_time",
+      "evidence": [
+        "案例明示未提供出生时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-022-坤-癸亥庚申戊寅己未",
+      "time_basis": "true_solar",
+      "basis_evidence": "label_only",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "只有校正标记，无经度、无校正后时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-023-乾-丙子戊戌壬寅丁未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-024-坤-己巳壬申辛亥壬辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-025-坤-辛未乙未甲辰乙亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-026-坤-癸未甲寅壬戌丙午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-027-乾-丁卯壬寅甲午乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-028-乾-壬戌癸卯壬子乙巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-029-坤-乙亥戊寅辛酉癸巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-030-乾-己卯庚午丙辰戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-031-乾-辛卯辛卯庚申乙酉",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "案例明示真太阳时口径未知"
+      ]
+    },
+    {
+      "case_id": "C-2026-032-乾-癸酉乙卯戊戌甲寅",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "证据互相矛盾：「是否真太阳时：未知」与 真太阳时校正: false 互相矛盾"
+      ]
+    },
+    {
+      "case_id": "C-2026-033-坤-戊午己未乙酉丁亥",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "证据互相矛盾：「是否真太阳时：未知」与 真太阳时校正: false 互相矛盾"
+      ]
+    },
+    {
+      "case_id": "C-2026-034-乾-甲子甲戌癸卯壬戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-035-乾-戊辰癸亥甲戌庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false",
+        "太阳时字段自我否定未校正"
+      ]
+    },
+    {
+      "case_id": "C-2026-036-乾-辛巳壬辰甲寅乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-037-坤-庚辰癸未丙子癸巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-038-乾-庚辰己卯壬午丙午",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": "has_time_undecidable",
+      "evidence": [
+        "案例明示真太阳时口径未知"
+      ]
+    },
+    {
+      "case_id": "C-2026-038-乾-辛卯壬辰己未庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: false"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000001-坤-己卯辛未丙寅乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000002-乾-辛未庚寅己酉壬申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000004-乾-癸酉丁巳癸丑庚申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000005-乾-乙酉戊寅乙丑癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000009-乾-丙子辛卯壬寅丙午",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "no_birth_time",
+      "evidence": [
+        "时间来源: none（未提供出生时刻）"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000010-乾-乙丑己丑丁卯辛亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000011-乾-庚辰己丑壬午庚戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000013-乾-丁亥己酉己未庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000015-坤-甲午戊辰丁卯甲辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000018-坤-戊寅丁巳壬申癸卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000024-坤-丙子己亥壬申丙午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000026-乾-庚午戊寅壬寅丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000029-乾-己卯丙子壬寅丙午",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "no_birth_time",
+      "evidence": [
+        "时间来源: none（未提供出生时刻）"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000030-坤-乙丑己卯癸亥壬子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000032-乾-庚辰丙戌丙寅辛卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000033-乾-丙寅戊戌癸卯戊午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000038-乾-丙辰己亥戊辰乙卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000045-乾-丙子戊戌己丑己巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000048-坤-辛巳庚子己未癸酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000053-乾-辛未庚寅己酉壬申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000054-乾-癸未壬戌丙寅丙申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000055-乾-丙寅壬辰己丑辛未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000057-乾-乙丑乙酉乙亥乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000058-坤-乙丑己卯癸亥壬子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000059-乾-庚辰甲申辛丑甲午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000060-乾-丁丑丙午丙午癸巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000063-乾-甲子甲戌甲申乙亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000065-乾-乙丑己丑壬戌丙午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000067-坤-辛巳庚子己未癸酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000070-乾-庚辰乙酉壬申甲辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000073-乾-庚午丁亥戊戌乙卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000075-坤-乙酉壬午庚午丙子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000077-乾-庚戌己卯庚寅丙戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000078-乾-癸未戊午甲戌庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000079-坤-己卯丙寅己亥庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000080-乾-己卯丁卯己未壬申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000082-乾-己卯癸酉丙子戊戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000083-乾-甲戌丙寅丁卯乙巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000084-乾-乙卯乙酉丁亥戊申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000085-乾-癸未戊午甲寅丙寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000086-乾-乙卯乙酉丁亥戊申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000087-乾-辛未辛卯甲辰丙寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000088-乾-己卯丁卯己未己巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000089-乾-庚辰戊寅丁未壬寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000092-乾-癸酉庚申丙子戊戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000093-乾-丙寅己亥壬午癸卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000094-坤-丁卯己酉辛巳乙未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000097-坤-丙子丙申庚子庚辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000099-乾-丙辰庚寅癸丑乙卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000100-乾-乙亥己丑庚戌丁亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000101-坤-壬子庚戌丁酉己酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000103-坤-丁巳癸丑庚寅辛巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000106-乾-辛巳戊戌癸酉丁巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000108-坤-乙丑甲申甲申辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000109-乾-庚午戊子甲戌辛未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000110-乾-丁卯丁未庚辰戊寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000112-乾-壬午壬子甲寅癸酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000115-乾-甲申己巳庚戌癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000117-乾-乙亥戊寅戊寅辛酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000118-乾-己巳癸酉辛丑己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000119-坤-己巳丙寅戊戌癸丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000120-坤-甲申丙子己卯丁卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000121-乾-丙子己亥丙子戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000122-乾-壬申丙午甲戌壬申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000123-坤-壬午甲辰戊申庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000125-乾-丁卯壬子辛丑乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000126-乾-丁卯壬寅丙戌丙申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000128-乾-丁卯丁未庚辰戊寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000130-乾-丙寅己亥甲申乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000131-乾-甲申丁卯癸巳壬戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000137-乾-丙戌丁酉己未丁卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000141-乾-壬午丁未甲午辛未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000142-乾-己卯癸酉庚午辛巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000143-乾-癸亥乙卯癸卯庚申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000144-乾-癸亥乙卯癸卯庚申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000148-乾-辛巳辛丑乙酉丁丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000149-坤-壬戌己酉乙卯戊寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000154-乾-甲戌丙寅丁卯乙巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000160-乾-庚辰己丑壬申己酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000161-乾-辛巳辛丑丁丑己酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000162-乾-己巳壬申癸卯戊午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000163-乾-丙子乙未辛酉丙申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000164-乾-戊寅戊午乙未壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000166-乾-辛巳癸巳丁亥庚戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000167-乾-壬午己酉壬寅乙巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000169-乾-丁卯辛亥甲申辛未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000170-乾-辛巳庚子己未乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000171-坤-壬午壬子丙辰乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000172-坤-辛巳丁酉乙亥癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000173-乾-癸酉己未丙辰己亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000174-坤-丁丑癸丑丙辰癸巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000175-坤-乙亥己卯丁未乙巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000176-乾-戊寅壬戌辛丑丙申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000177-坤-丙子壬辰丁亥丁未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000178-乾-庚申丁亥乙巳甲申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000179-乾-丁卯丁未丙子辛卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000180-乾-戊辰辛酉丙寅壬辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000181-坤-甲辰庚午乙巳癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000183-乾-庚辰辛巳壬午丁未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000184-乾-癸卯甲子丁酉甲辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000185-坤-甲申癸酉丙辰甲午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000187-坤-壬午癸丑丁酉丁未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000188-乾-甲戌甲戌丙申癸巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000190-乾-己卯辛未丁卯丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000191-乾-己卯己巳戊辰辛酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000192-乾-丁卯丙午壬寅壬寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000193-乾-庚辰乙酉丁亥丙午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000194-乾-乙丑己卯乙巳丙戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000195-乾-癸酉辛酉乙卯丙子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000196-坤-戊寅丁巳癸亥庚申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000197-乾-甲戌庚午甲申戊辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000198-乾-戊寅戊午癸丑丙辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000199-乾-戊寅戊午癸丑丙辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000200-乾-辛巳庚寅乙巳丁丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000201-乾-丁丑己酉丁丑庚戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000203-坤-辛巳辛丑丙子己亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000204-乾-己卯乙亥庚午甲申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000205-坤-甲戌丁丑庚子丁亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000206-坤-壬午壬子丁巳庚子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000207-乾-庚午己卯乙亥壬午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000208-乾-甲戌甲戌己卯甲戌",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000209-坤-辛酉庚寅庚申丙子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000210-乾-癸巳壬戌己酉己巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000211-乾-癸酉丁巳丙申己丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000212-坤-癸未辛酉己酉乙丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000213-乾-丙子己亥癸丑癸亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000214-乾-丙寅己亥乙丑癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000215-乾-甲戌乙亥乙卯辛巳",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000217-坤-辛巳辛丑癸卯壬子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000219-乾-辛酉癸巳丙申甲午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000220-乾-辛未庚子戊辰庚申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000221-乾-丁丑甲辰甲辰丙寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000223-乾-乙酉丙戌乙亥乙酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000224-乾-乙酉戊寅乙丑癸未",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000225-乾-己丑甲戌庚戌庚辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000226-乾-庚辰戊寅丁巳戊申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000227-坤-庚辰癸未丁卯戊申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000228-坤-甲申丙寅甲子丁卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000229-坤-甲午壬申壬戌辛亥",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000230-乾-己卯辛未丙子辛卯",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000232-坤-丁丑壬子辛亥丙申",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000233-乾-辛巳庚寅壬戌己酉",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000234-乾-戊子丁巳辛未壬辰",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000235-乾-庚辰戊寅丙申己丑",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000236-乾-戊寅乙丑丙戌戊子",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000238-乾-癸未辛酉己亥庚午",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000240-乾-庚辰癸未丁丑壬寅",
+      "time_basis": "clock_beijing",
+      "basis_evidence": "none",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: birth_datetime_raw"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000241-乾-丙戌己亥壬子己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000243-坤-己卯己巳戊午丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000244-乾-戊寅甲寅辛丑戊戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000248-乾-己卯庚午庚寅甲申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000249-坤-乙亥乙酉庚午戊寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000250-坤-壬午癸丑戊申乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000251-乾-戊辰丁巳戊辰辛酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000257-坤-壬子庚戌戊子壬戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000263-乾-丙寅己亥乙丑癸未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000264-乾-辛巳戊戌癸酉丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000266-乾-庚午庚辰庚戌壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000272-坤-癸亥癸亥癸卯癸丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000274-坤-戊戌庚申己卯乙丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000276-坤-庚辰丙戌戊申甲寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000277-乾-壬午癸丑辛卯辛卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000279-乾-己巳辛未癸巳乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000281-乾-己巳乙亥己丑戊辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000284-坤-癸亥乙丑丙午戊戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000286-坤-戊辰丙辰癸丑壬子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000287-坤-戊辰乙卯丁卯庚子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000290-坤-甲申丙子戊寅庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000291-乾-丙辰己亥乙亥丁亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000295-乾-乙酉乙酉己未辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000296-乾-丁丑辛亥乙亥壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000297-乾-丙子己亥庚午壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000301-乾-乙亥辛巳壬寅癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000302-乾-辛未癸巳癸卯丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000305-乾-丙戌丙申甲申庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000307-乾-庚辰丁亥辛巳丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000308-坤-辛巳辛丑己卯乙亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000310-坤-甲申丙子己卯丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000311-坤-癸未戊午庚申丁亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000317-乾-丙午戊戌辛酉庚寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000318-坤-癸酉丁巳癸丑丙辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000328-坤-甲戌丁卯甲寅庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000329-乾-癸酉丁巳癸丑庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000330-乾-庚子戊寅甲辰庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000331-乾-甲戌丁丑戊午甲子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000332-乾-己卯癸酉壬午壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000334-乾-甲申丙子己巳辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000338-乾-壬午辛亥戊申甲寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000341-乾-己丑己巳己未丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000343-乾-庚辰辛巳戊寅戊午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000344-坤-丙寅丙申癸卯乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000345-乾-癸酉乙丑乙卯乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000353-坤-丙寅辛卯壬申戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000354-坤-己巳壬申己酉壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000355-坤-丙子丙申乙未庚辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000356-坤-戊辰癸亥癸巳戊午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000359-坤-戊辰癸亥癸巳丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000360-乾-壬申乙巳丙申丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000364-乾-壬午壬子己巳丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000365-坤-辛巳壬辰辛丑癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000366-坤-甲申丙寅丁丑庚戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000371-坤-癸未丁巳乙巳壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000373-乾-丙子庚子辛巳己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000374-坤-甲戌丙寅辛未甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000375-乾-辛未癸巳戊戌己未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000382-坤-戊寅戊午壬子丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000386-乾-壬午癸丑戊子戊午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000388-乾-甲戌丙寅壬午己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000389-坤-甲戌丙子己巳辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000390-乾-甲子甲戌丙申癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000394-乾-壬戌丙午丁丑壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000396-坤-甲申丁卯丙午壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000398-乾-丙寅乙未壬戌癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000399-乾-己卯癸酉辛未戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000400-乾-己卯癸酉辛未己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000402-乾-戊寅癸亥戊子己未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000403-乾-庚辰己丑丁酉己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000406-乾-甲申癸酉辛亥戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000408-乾-辛亥甲午辛卯壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000410-乾-庚辰丙戌丁未庚戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000412-乾-己卯辛未丁卯丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000413-坤-癸亥癸亥癸卯壬戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000414-乾-丁丑辛亥甲子己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000417-乾-丙寅丙申辛卯丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000421-坤-甲申丙寅己巳己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000422-乾-戊寅壬戌辛丑丙申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000423-乾-庚辰丙戌丁卯己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000424-乾-庚辰丁亥丁丑己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000425-乾-庚辰丙戌丁卯己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000428-坤-癸亥癸亥壬子壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000432-坤-壬午丙午辛未己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000434-坤-甲子丁丑庚戌己卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000435-乾-丙子甲午庚子甲申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000436-乾-辛未戊戌乙亥丙子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000439-乾-戊辰乙卯丙戌丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000441-乾-癸亥己未己未庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000442-坤-癸未辛酉甲午癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000443-坤-丁丑癸丑己巳庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000444-坤-壬午壬寅辛亥癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000445-乾-庚辰壬午己未癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000446-乾-甲戌丙寅辛未壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000447-坤-癸酉庚申丙戌壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000448-乾-庚辰甲申癸亥癸亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000449-乾-丁丑癸卯甲戌乙丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000450-乾-丁丑癸丑乙卯壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000452-坤-戊寅壬戌丙辰辛卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000453-乾-丁亥戊申丙子己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000454-乾-丁亥戊申丙子己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000455-坤-丁卯壬子甲午辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000456-乾-丁巳庚戌甲子丁卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000460-乾-丙戌壬辰辛巳己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000462-乾-辛巳乙未壬午丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000464-坤-己卯辛未甲子甲戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000465-坤-戊寅丁巳戊寅甲寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000466-乾-辛酉戊戌壬申辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000467-乾-乙丑戊子丁亥癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000471-乾-戊寅己未壬戌乙巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000475-坤-戊辰辛酉己巳乙丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000476-乾-甲申癸酉乙巳辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000478-乾-己卯乙亥乙丑辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000480-坤-壬午甲辰壬申丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000482-乾-丙子丁酉丙寅壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000487-乾-乙酉己丑丙辰庚寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000489-乾-壬申壬寅辛未壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000492-乾-丙子丙申丁酉丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000494-乾-甲申壬申甲申壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000497-乾-己卯己巳壬午己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000499-乾-乙亥壬午壬午丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000500-乾-庚申甲申丁丑辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000502-乾-戊寅甲寅甲午壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000504-坤-癸未癸亥庚子癸未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000508-坤-丁丑辛亥甲子壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000510-坤-壬申癸丑壬寅癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000513-乾-甲戌丁卯辛亥甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000514-乾-癸亥己未甲子壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000515-乾-甲戌戊辰丁丑甲辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000518-坤-癸未戊午辛亥癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000521-坤-癸未辛酉己酉己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000523-乾-丁丑壬子戊申乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000524-坤-己巳丙寅戊戌丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000525-乾-辛亥甲午辛卯壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000526-乾-癸未辛酉癸丑癸丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000527-乾-丁丑壬子甲申癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000528-乾-丙寅甲午甲辰己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000529-坤-己卯辛未丁丑甲辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000530-乾-癸酉甲子丁亥庚戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000531-坤-乙亥庚辰己丑癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000533-坤-甲申癸酉丁巳甲辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000534-乾-丙子庚寅甲戌丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000535-乾-戊寅丁巳壬戌己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000536-乾-辛未庚寅戊申庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000537-乾-乙亥乙酉甲子丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000538-乾-乙亥甲申癸巳甲寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000540-坤-癸未丙辰戊午辛酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000541-乾-己卯甲戌丁酉丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000543-坤-己巳癸酉庚子庚辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000544-乾-壬午甲辰辛未乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000547-乾-戊寅辛酉丙子癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000548-坤-己卯辛未壬申丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000551-乾-壬戌丙午甲申丁卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000556-乾-庚申癸未辛巳丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000557-乾-丙戌辛卯庚申壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000563-坤-丁丑丁未丁巳癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000567-坤-癸酉乙卯壬子癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000568-乾-癸未乙丑丁酉庚戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000569-乾-丁亥辛亥甲子乙亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000570-坤-庚子甲申辛卯丙申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000572-乾-辛未丙申庚戌戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000573-乾-丁丑辛亥辛酉己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000576-坤-乙亥戊寅己巳丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000578-乾-壬申己酉丙午甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000581-乾-甲申戊辰癸未辛酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000582-坤-庚午癸未己丑甲戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000588-乾-癸未甲子戊寅丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000591-乾-庚午甲申甲寅己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000592-乾-丁卯壬寅壬寅戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000594-坤-庚辰己丑己巳壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000595-乾-癸酉壬戌壬申丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000597-乾-戊寅癸亥乙丑己卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000598-坤-辛巳辛丑己卯乙亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000599-坤-辛巳辛丑己卯己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000601-乾-癸酉辛酉壬寅丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000603-乾-乙酉戊子乙丑辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000604-乾-乙酉戊子乙丑辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000606-乾-庚午己丑甲申辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000607-乾-癸酉甲寅乙亥庚辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000609-乾-壬午乙巳己丑癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000610-乾-乙酉庚辰辛酉癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000611-乾-乙酉庚辰辛酉壬辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000612-坤-甲戌辛未丁巳丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000613-乾-丙子辛卯戊辰癸丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000615-乾-戊辰丙辰丁巳丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000617-乾-甲申丙寅庚午壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000623-坤-乙酉壬午壬戌癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000625-乾-辛巳壬辰癸丑壬戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000627-坤-丙子戊戌乙酉丙戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000631-坤-庚辰甲申丁卯乙巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000632-坤-乙亥戊寅乙酉丁丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000635-乾-戊寅乙卯丙寅戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000641-乾-壬午戊申丙辰丁酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000643-乾-丙子庚寅乙亥壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000644-乾-癸未甲寅辛亥癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000650-乾-庚辰庚辰壬寅壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000653-乾-辛未庚寅乙卯丙戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000654-乾-乙亥己丑戊申庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000658-乾-甲申壬申庚申壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000659-坤-丁丑己酉癸丑乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000663-坤-庚辰戊子壬子辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000664-乾-辛巳辛卯壬午辛亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000668-乾-己卯庚午丙辰戊子",
+      "time_basis": "unknown",
+      "basis_evidence": "none",
+      "notation": "other",
+      "unknown_kind": "no_birth_time",
+      "evidence": [
+        "时间来源: none（未提供出生时刻）"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000671-乾-己巳甲戌乙巳丙戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000677-乾-壬申癸丑乙巳庚辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000678-坤-壬申壬寅戊午己未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000679-乾-甲申辛未庚寅乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000682-乾-甲申辛未辛亥己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000683-乾-甲申己巳丙戌己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000684-坤-己巳丙子戊申戊午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000690-坤-癸未癸亥癸丑己未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000692-乾-己卯丁丑甲戌庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000699-坤-丙戌庚寅己丑乙亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000703-乾-甲申庚午乙酉庚辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000705-乾-甲申丁卯壬寅辛亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000708-坤-辛巳乙未乙亥乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000709-坤-庚辰癸未戊寅乙卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000710-乾-甲申丁卯辛卯乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000713-乾-甲申丁丑丁酉丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000714-坤-辛酉戊戌辛巳癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000715-坤-癸亥癸亥癸卯癸丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000716-坤-壬午癸卯癸巳壬戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000717-坤-辛酉戊戌辛巳己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000718-坤-庚辰辛巳壬午丁未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000725-乾-己卯丁卯甲申己巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000726-乾-壬午乙巳壬寅辛亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000727-乾-庚辰己丑丁酉戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000734-乾-辛巳戊戌甲戌戊辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000735-乾-庚辰丁亥戊寅丙辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000737-坤-辛酉癸巳辛卯戊戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000738-坤-甲申癸酉己未甲子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000742-乾-癸未乙卯丙戌己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000744-坤-癸未甲子丁丑戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000745-乾-癸未乙卯辛丑甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000747-乾-辛巳癸巳甲午甲戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000751-坤-庚辰丙戌辛丑己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000752-乾-辛巳丁酉庚寅辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000759-乾-乙亥丙戌丁亥辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000763-乾-壬午辛亥辛巳己亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000766-乾-乙酉丙戌辛卯癸巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000770-乾-丁亥壬寅丁丑戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000771-乾-癸亥壬戌壬午庚子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000772-乾-辛丑乙未庚午壬午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000773-乾-辛丑乙未辛未甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000774-坤-甲申乙亥丁酉丙午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000775-乾-戊寅丁巳丁卯辛亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000776-乾-己巳乙亥丙申甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000781-坤-庚寅辛巳辛未己丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000782-乾-辛巳辛丑甲午癸酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000785-乾-辛未乙未辛卯乙未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000786-乾-己卯丁丑庚辰丁丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000788-坤-戊辰甲寅庚子戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000790-坤-甲申庚午壬戌己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000791-乾-丁丑辛亥乙卯戊寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000792-乾-戊寅戊午丁未癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000793-乾-甲申丙子己巳辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000794-坤-己卯丙寅壬辰壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000795-乾-庚午丙戌乙丑丙戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000796-乾-丁丑辛亥丁丑戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000797-乾-丁丑己酉丙子丙申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000798-坤-辛未辛卯甲辰戊辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000799-乾-戊辰壬戌丁未壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000801-乾-乙酉丁亥壬寅甲辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000803-乾-庚午戊寅庚子乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000804-乾-戊辰壬戌丁未壬寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000805-乾-甲申丙寅辛酉丙申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000806-乾-丙子丙申甲辰辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000807-坤-乙亥丙戌戊寅癸亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000809-乾-乙酉丁亥壬寅甲辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000811-乾-庚午戊寅庚子乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000813-乾-辛巳乙未丁酉己酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000814-乾-癸酉癸亥丁酉戊申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000815-乾-乙亥丁亥戊辰庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000816-乾-辛未庚寅己酉壬申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000819-乾-丁丑壬子甲辰庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000820-乾-庚辰丁亥己卯丙寅",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "importer_field",
+      "unknown_kind": null,
+      "evidence": [
+        "时间来源: true_solar_time_raw",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000861-乾-癸酉甲寅庚午乙酉",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000864-乾-己巳丙子乙卯甲申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000865-乾-辛未丙申戊午癸亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000868-乾-壬申戊申庚辰丁亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000877-乾-丙寅庚子乙巳己卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000894-乾-壬戌己酉庚子戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000897-乾-甲子丁丑丙寅庚子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000900-乾-戊寅乙卯丙寅戊子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000903-坤-癸酉庚申己丑庚午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000914-坤-己未癸酉甲辰辛未",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000916-坤-戊寅甲子乙卯辛巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000918-乾-甲寅丙寅壬寅辛丑",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000957-乾-壬午庚戌壬子庚戌",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000963-乾-戊寅丙辰戊戌庚申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000965-坤-壬午乙巳甲午丙子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000968-乾-辛酉丙申丙寅甲午",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000970-乾-庚午戊寅丙寅丙申",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000975-乾-庚辰辛巳己丑甲子",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000977-坤-辛未丁酉丁酉癸卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000980-坤-丁卯己酉己卯丁卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000986-乾-己巳庚午己酉戊辰",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000989-乾-庚午己丑戊寅丁巳",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "C-2026-RF000990-乾-庚午己丑戊寅癸亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "structured_field",
+      "unknown_kind": null,
+      "evidence": [
+        "真太阳时校正: true",
+        "案例内直接给出校正后的具体时刻"
+      ]
+    },
+    {
+      "case_id": "P-2026-001-乾-戊寅乙丑甲子丁卯",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段直接给出具体时刻",
+        "1999-01-12 05:15"
+      ]
+    },
+    {
+      "case_id": "P-GO-2026-001-坤-壬戌己酉乙卯丁亥",
+      "time_basis": "true_solar",
+      "basis_evidence": "explicit_time",
+      "notation": "other",
+      "unknown_kind": null,
+      "evidence": [
+        "太阳时字段直接给出具体时刻",
+        "1982-09-29 21:04"
+      ]
+    }
+  ]
+}
