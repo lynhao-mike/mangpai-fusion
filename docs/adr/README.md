@@ -20,6 +20,7 @@
 | [ADR-002](ADR-002-delivery-vs-metric.md) | 交付与指标的双层记分 | accepted（已接受） | 2026-10-26 | 解决「交付优先 / 指标优先」之争 |
 | [ADR-003](ADR-003-claim-conditions-and-school-routing.md) | 断语条件化与流派路由协议 | accepted（已接受） | 2026-10-26 | 回答「为什么人能用、系统不能」并给出四段协议 |
 | [ADR-004](ADR-004-hub-commander-authority.md) | 中枢指挥官授权：完全自主重构及其边界 | accepted（已接受） | 2026-10-27 | 授权中枢指挥官重写已实现逻辑、改 `tests/`、退役 v5；保留三条红线 |
+| [ADR-005](ADR-005-case-time-basis.md) | 排盘口径：案例必须声明 `time_basis`，引擎不做换算 | accepted（已接受） | 2026-10-27 | 定案 A1 前置：三值口径 + 证据强度字段 + 断语验证分层 |
 
 ## 与既有文档的关系
 
