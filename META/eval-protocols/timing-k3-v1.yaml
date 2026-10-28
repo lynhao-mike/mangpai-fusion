@@ -1,0 +1,52 @@
+# META/eval-protocols/timing-k3-v1.yaml
+#
+# T-166 婚姻应期模型 v1 的预注册协议（排序型，不是单条断语）。
+# 格式遵循 META/eval-protocol-v1.md 的 11 个必填字段；本协议在评分前冻结，
+# 跑分阶段只执行、不改 K / 窗口 / 规则 / 权重。模型只交分数，不计算任何评测指标。
+
+protocol_id: timing-k3-v1
+claim_id: TIMING-MARRIAGE-K3
+frozen_at: "2026-10-29T07:44:53+08:00"
+commit: "2a0adc6eb576f3b202ab784048c6631e2dd01ac7"
+
+trigger_definition: >
+  计分对象是 case-year，不是单条断语：META/timing-eval-set-v1.json 中
+  usable_for_timing=true 的 382 例，每例 birth_year+20 … +35 的 16 个公历年全部计分，
+  不筛选、不剔除。评分函数 score_year(chart_facts, year, dayun_index) 只看盘面事实与候选年，
+  不接收 birth_year/age；出生年只在装配层生成候选年。
+
+direction_rule: >
+  分数 = R1+R2+R3+R4，每命中一项 +1，无权重、无阈值、不按年龄调权：
+  R1 夫妻宫引动：流年支与 D.b 的 chong / liuhe / xing / chuan 直边，按 kind 去重，上限 4；
+  R2 配偶星引动：男命财星 / 女命官杀的地支地址受流年 chong 或 liuhe，每个地址 +1，上限 2；
+     取不到地支地址 → R2=0 并记 no_spouse_star；
+  R3 冲开墓库：复用引擎 chong_kai_muku(year=…)，按该原子的既有口径（冲、刑）计 +1；
+     合开墓库无原语，不补，满足条件时记 muku_open_by_he_missing；
+  R4 三合/三会引动：含 D.b 的完整三合/三会且 scope 含流年（dayun-only 不计），+1。
+  同分排序：(-score, sha256(case_id|year) 升序)；Top-3 由 T-167 评测器取，模型不取。
+
+label_map:
+  event_year: [1]
+  no_event_year: [0]
+  # 标签 = 该候选年是否属于该例 20–35 窗口内的婚姻事件年（去重）。
+  # 只由评测器读取；模型源码不读标签，不参与建模。
+
+prediction_rule:
+  top3: >
+    每例按 (-score, sha256(case_id|year) 升序) 取前 3 年；
+    命中 = Top-3 中任一年属于该例窗口内事件年集合（0/1 计）。
+
+scored_set_rule: >
+  382 例全部计分，不剔除；每例 16 年（birth_year+20 … +35）。
+  窗口内无事件年的 90 例按结构性零计入（e=0 → p_case=0），不剔除、不补。
+  正分年不足 3 的例不补齐：仍输出全部 16 年分数，评测器按同一排序取前 3（可含 0 分年）。
+
+baseline: >
+  逐例事件置换零假设 p_case = 1 - C(16-e,3)/C(16,3)，e=0 → 0；382 例均值 18.02%（T-165 §5）。
+  实务门槛：同宽度最佳静态年龄带 [25,27] = 26.7%（382 例复算，T-165 §5）。
+
+decision_rule: >
+  主检验 K=3。Top-3 覆盖率减期望覆盖率 >= 8pp 且单侧精确 Poisson-binomial p < 0.01 → 有信号；
+  差值 < +3pp 或 p > 0.20 → 否证；Wilson 95% 下界须高于同 K 静态基线 26.7%，
+  才可称超过年龄先验；其余记「样本不足」，不得写成「有信号」。
+  K=5/7 只作次要/探索，不参与裁决。预注册后再改 K、窗口、规则或权重即作废。
