@@ -913,13 +913,17 @@ def suiyun_arrives(ctx, args):
 
 # ---------------------------------------------------------------- 力量比较 1
 #
-# 段派核心判据「制得住 / 制不住」（ADR-007 D4）。原文依据：
+# 段派核心判据「制得住 / 制不住」（ADR-007 D4；克关系门与「力量相当」语义由 T-149 修订）。
+# 原文依据：
 #   （行号按当前语料文件实测；任务卡 T-145 原引 :1759/:1844/:1850 有 3~30 行偏差）
 #   MinerU_markdown_22.盲派初级命理学 :1762 ——「冲神之旺衰判断，以多则为旺，寡则为衰；
 #     以合局会局为旺，以孤立受克为衰；以得令为旺，以失令为衰。」
-#   同书 :1812「戌辰力量相当，互相制不了」/ :1824「谁也制不了谁」——力量相当即不可裁。
-#   代码铁律 structure_check.py:255 strength_judgment：「力量对比不由代码裁决」。
-# 因此本原子只在极端清晰的盘面给真/假，双方各有旺项时一律 unknown（不是骑墙，是原文口径）。
+#   同书 :1812「戌辰力量相当，互相制不了」/ :1824「谁也制不了谁」——「制不了」是
+#     **确定的否定结论**，不是「不知道」。T-149 起力量相当返回 False；旧实现返回 unknown，
+#     丢掉了原文唯一给出的裁决点（docs/reviews/verdict-chatgpt6.md §1.2 与 §4.3）。
+#   代码铁律 structure_check.py:255 strength_judgment：「力量对比不由代码裁决」——所以只有
+#     「actor 极旺且 target 全无旺项」才判 True，其余克得上的情形按原文判「制不了」。
+# 先「能制」再比旺衰：进入旺衰比较前先过五行相克门（T-149），不克即「不构成制」。
 
 # ⚠ 以下阈值均为工程取值，不是原文数值（原文只说「多 / 寡」，未给数）：
 DUO_MIN = 3        # 「以多则为旺」的显性字数下限（天干 + 地支本气）
@@ -1003,14 +1007,19 @@ def _side_text(role: str, prof: dict) -> str:
 
 
 def can_control(ctx, args):
-    """制得住 / 制不住（段派核心判据），三值：True 制得住 / False 制不住 / None 不可裁。
+    """制得住 / 制不住（段派核心判据），三值：True 制得住 / False 制不住 / None 未知。
 
     `actor`：施制一方（制者）；`target`：被制一方。均可写地址（"M.b" / "D.s"）或单字干支（"亥"）。
-    判据（ADR-007 D4，全部来自 MinerU_22 :1759 的四条对句）：
-      True  —— actor 旺项 ≥2 且 target 无任何旺项、至少一项衰项；
-      False —— target 旺项 ≥2 且 actor 无任何旺项、至少一项衰项；
-      None  —— 其余（双方各有根气 / 两党对抗 / 力量相当）。
-    note 恒附双方旺衰明细与原文出处；unknown 不是失败，是原文「力量相当即制不了」的断言。
+    判据（ADR-007 D4 的四条对句 + T-149 的两处语义修正）：
+      0. 克关系门：克序复用 engine.predicates.types.KE_MAP（木克土、土克水、水克火、火克金、
+         金克木；五行相克为命理常识，非本文推断）。actor 不克 target → False「不构成制」，
+         不再进入旺衰比较；同五行 → None（不构成对抗）。
+      1. True  —— actor 旺项 ≥2 且 target 无任何旺项、至少一项衰项；
+      2. False —— target 旺项 ≥2 且 actor 无任何旺项、至少一项衰项（制不住）；
+      3. False —— 其余克得上的情形，即双方力量相当 / 各有旺项 / 两党对抗：
+         原文「力量相当，互相制不了」「谁也制不了谁」是确定否定，不是未知。
+    None 只保留三种：地址解析失败、事实缺失、同五行不构成对抗。
+    note 恒附双方旺衰明细与原文出处。
     """
     actor, target = args.get("actor"), args.get("target")
     a_addrs, t_addrs = _resolve_natal(ctx, actor), _resolve_natal(ctx, target)
@@ -1023,6 +1032,8 @@ def can_control(ctx, args):
         return _u("双方五行不可得")
     if a_wx == t_wx:
         return _u(f"actor 与 target 同属{t_wx}，不构成对抗")
+    if KE_MAP.get(a_wx) != t_wx:
+        return _f(f"不构成制：{a_wx}不克{t_wx}")
     a_prof, t_prof = _side_profile(ctx, a_wx), _side_profile(ctx, t_wx)
     if a_prof is None or t_prof is None:
         return _u("facts 未提供五行层次计数（strength.climate.wuxing_layered）")
@@ -1033,7 +1044,7 @@ def can_control(ctx, args):
         return _t(f"{detail} → 制得住（MinerU_22:1762 旺衰对句）", **bind)
     if t_n >= STRONG_MIN and a_n == 0 and a_prof["weak"]:
         return _f(f"{detail} → 制不住（MinerU_22:1762 旺衰对句）")
-    return _u(f"{detail} → 力量相当，不可裁（MinerU_22:1812/:1824「力量相当，互相制不了」）")
+    return _f(f"{detail} → 力量相当，制不了（MinerU_22:1812/:1824「力量相当，互相制不了」）")
 
 
 # ---------------------------------------------------------------- 元谓词 3

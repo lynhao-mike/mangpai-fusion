@@ -449,22 +449,47 @@ def test_plate_a_reverse_direction_is_false(ctx_a_natal):
     """方向不可混淆：反向（火制水）必须为 false，与正判互为镜像。"""
     result = can_control(ctx_a_natal, {"actor": "巳", "target": "亥"})
     assert result.value is False
-    assert "制不住" in result.note
+    # T-149 起先过克关系门：火不克水，note 说明「不构成制」，不再进入旺衰比较。
+    assert "不构成制：火不克水" in result.note
 
 
-def test_plate_b_is_undecidable():
-    """标杆盘 B：水火力量相当（水多以多旺、火以得令旺），必须 unknown 而非 True/False。"""
+# T-149 缺陷一（关系盲）：旧实现只比旺项/衰项计数，从不检查五行相克，对非克对也给自信的 True。
+# 实测盘「丁卯 癸卯 丁卯 癸卯」上 卯(木)→丁(火) 曾返回 True（木生火，不制火）。
+PLATE_NONKE = ["丁卯", "癸卯", "丁卯", "癸卯"]   # Y.b=卯木、Y.s=丁火、M.s=癸水
+
+
+@pytest.mark.parametrize("actor,target,a_wx,t_wx", [
+    ("Y.b", "Y.s", "木", "火"),   # 木生火，不克（旧实现判 True）
+    ("M.s", "Y.b", "水", "木"),   # 水生木，不克
+    ("Y.s", "M.s", "火", "水"),   # 反向相克：水克火，火不克水（旧实现判 unknown）
+])
+def test_can_control_requires_ke_relation(actor, target, a_wx, t_wx):
+    """T-149：只有 actor 五行克 target 五行才构成制；不克是确定的否定（False），不是未知。"""
+    result = can_control(_ctx(PLATE_NONKE), {"actor": actor, "target": target})
+    assert result.value is False
+    assert f"不构成制：{a_wx}不克{t_wx}" in result.note
+
+
+def test_plate_b_strength_parity_is_false():
+    """标杆盘 B：水火力量相当（水多以多旺、火以得令旺）→ 制不了，返回 False。
+
+    T-149 修正旧判据：旧断言要求 unknown，与原文不符。原文
+    MinerU_22:1812「戌辰力量相当，互相制不了」、:1824「谁也制不了谁」都是
+    **确定的否定结论**，不是「不知道」；unknown 只留给地址解析失败 / 事实缺失 /
+    同五行不构成对抗（docs/reviews/verdict-chatgpt6.md §1.2 与 §4.3）。
+    """
     ctx_b = _ctx(PLATE_B)
     for actor, target in (("子", "巳"), ("子", "午"), ("Y.b", "M.b")):
         result = can_control(ctx_b, {"actor": actor, "target": target})
-        assert result.value is None, (actor, target, result.note)
+        assert result.value is False, (actor, target, result.note)
         assert "力量相当" in result.note
+        assert "制不了" in result.note
     # 不允许「A 判未知而 B 判真」的错向
     assert can_control(_ctx(PLATE_A), {"actor": "亥", "target": "巳"}).value is not None
 
 
 def test_can_control_note_carries_both_sides_detail():
-    """unknown 的 note 必须能把双方根气与党势讲清楚（供 Agent 追问，而不是黑箱）。"""
+    """判不住（含力量相当）的 note 也必须把双方根气与党势讲清楚（供 Agent 追问）。"""
     note = can_control(_ctx(PLATE_B), {"actor": "子", "target": "巳"}).note
     for token in ("制者", "被制", "旺项", "衰项", "水", "火"):
         assert token in note
@@ -476,6 +501,11 @@ def test_can_control_thresholds_are_engineering_values():
 
 
 def test_can_control_rejects_degenerate_input(ctx_a_natal):
-    assert can_control(ctx_a_natal, {"actor": "?", "target": "巳"}).value is None
+    """unknown 只保留三种：地址解析失败、事实缺失、同五行不构成对抗。"""
+    assert can_control(ctx_a_natal, {"actor": "?", "target": "巳"}).value is None   # 地址解析失败
     assert can_control(ctx_a_natal, {"actor": "亥", "target": "不存在"}).value is None
     assert can_control(ctx_a_natal, {"actor": "亥", "target": "亥"}).value is None  # 同五行不成对抗
+    # 事实缺失（缺 strength.climate.wuxing_layered）→ unknown，不能降级成 False
+    broken = dict(ctx_a_natal)
+    broken["strength"] = {"climate": {}}
+    assert can_control(broken, {"actor": "亥", "target": "巳"}).value is None
