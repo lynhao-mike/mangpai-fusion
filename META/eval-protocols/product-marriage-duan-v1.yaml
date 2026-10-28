@@ -1,0 +1,69 @@
+# META/eval-protocols/product-marriage-duan-v1.yaml
+#
+# T-154 预注册协议（2026-10-28 冻结）。原文与依据：tasks/T-154/PROMPT.md §1 + §7 Amendments。
+# 跑分器只读本文件；卡面未写的口径以卡面为准。跑分中不得改本文件。
+#
+# 2026-10-28 23:05 中枢裁决（PROMPT §7）：
+#   1) 敏感性集为 336（947 的 label 是 unknown，不在 342；不为凑 335 另挑 1 例）。
+#   2) 判定改为两比例检验（Newcombe 95% CI + Fisher 精确检验双侧）：
+#      baseline_single 对「恒预测 N + 弃权」的单标签规则退化，accuracy 恒等于 baseline，
+#      「超过基线」分支不可达；accuracy / baseline 只作描述，不作判定。
+#
+# 硬口径：只用 triggered，不用 outcome 筛样本、不用 outcome 计分（T-152 §9）。
+# outcome 只作「反条件若可用会怎样」的描述，不参与任何判定。
+
+protocol_id: product-marriage-duan-v1
+claim_id: DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1
+frozen_at: "2026-10-28T22:40:00+08:00"
+amended_at: "2026-10-28T23:05:00+08:00"
+commit: "3c49d91dc27c3d18c6a26177855d30ab5cc184ef"
+commit_note: "执行基线 commit；T-154 产物本身未提交（任务卡禁止 commit）。"
+
+trigger_definition: >
+  规则 evaluate_rule(...).triggered is true，即 conditions 全中且 exclusions 未中。
+  只用 triggered；outcome 不参与触发、不参与计分、不参与样本筛选。
+
+direction_rule: >
+  triggered is true → 预测 N（negative：存在离婚/再婚风险）。
+  triggered is false → 弃权（prediction_letters: []，不进 claim_metric 的 scored 分母）。
+  本卡不存在反向预测分支；triggered is true 且 outcome=fail 的例仍按 N 计分，只作描述。
+
+label_map:
+  negative: [N]
+  positive: [P]
+
+prediction_rule:
+  triggered: negative
+  # untriggered 不入 claim_metric 的 scored；cases 中显式写 prediction_letters: []。
+
+scored_set_rule: >
+  claim_metric 的描述性口径：triggered is true 且 prediction_letters 非空且有 answer_letter。
+  triggered 非 true 记 n_not_triggered；触发后无预测记 n_abstain；缺答案记 n_missing_answer。
+  三者都不进该分母。样本为 label ∈ {negative, positive} 的 342 例；40 例 unknown 不折入。
+  判定不丢弃未触发组：两比例检验同时使用 triggered 与 triggered is false 两组。
+
+baseline: >
+  主判定不使用 baseline_single。退化证明：triggered=True 恒预测 N、triggered=False 弃权，
+  于是 scored 集 = 触发集，accuracy = 触发集负率；若 N 为 scored 集多数类，
+  baseline_single 也是同一负率 → accuracy 恒等于 baseline，「超过基线」分支不可达。
+  claim_metric 的 accuracy / baseline_single / Wilson 仍照报，但只作描述，不参与判定。
+
+decision_rule: >
+  两比例检验（同一份 342 例标签集）：
+  比较 P(negative | triggered) 与 P(negative | not triggered)。
+  差值 = p_triggered − p_not_triggered，以百分点报；区间用 Newcombe 95% CI
+  （两个 Wilson score 区间组合）；p 值用 Fisher 精确检验双侧。
+  判定词：
+    任一组 n < 30 → 「样本不足」；
+    差值 95% CI 下界 > 0 → 「有区分力」；
+    差值 95% CI 上界 < 0 → 「反向」；
+    其余 → 「无差异 / 样本不足」。
+  只依赖标准库（math.comb 计算 Fisher）；不新增依赖。
+
+sample_definition: >
+  META/timing-eval-set-v1.json 中 usable_for_timing=true，且
+  META/marriage-quality-labels-v1.json 中 label ∈ {negative, positive} → 342 例。
+  敏感性集：剔除 T-153 §9 的 7 例已知误判中落在 342 的 6 例 → 336 例
+  （947 的 label 是 unknown、不在 342；卡面原写 335，已由 PROMPT §7.1 更正）。
+
+source_task: tasks/T-154/PROMPT.md
