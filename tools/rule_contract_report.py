@@ -9,24 +9,30 @@
 * 本卡不改 ``matched``：报告里的 ``n_suppressed_if_flipped`` 只是「若下一卡把 matched 改为
   ``triggered and outcome != 'fail'``，会被压掉多少例」的预演，不改变任何产品输出。
 
-产物：
+产物（默认前缀 ``META/rule-contract-dryrun-v1``）：
 
-* ``META/rule-contract-dryrun-v1.json``（全量，含被压掉的 case_id）
-* ``META/rule-contract-dryrun-v1.md``（人读）
+* ``<prefix>.json``（全量，含被压掉的 case_id）
+* ``<prefix>.md``（人读）
 * 控制台 10 行表 + 每条规则被压掉的前 20 个 case_id
 
 用法::
 
     python -m tools.rule_contract_report
+    python -m tools.rule_contract_report --out-prefix META/rule-contract-dryrun-v2
+
+``--out-prefix`` 接受不带扩展名的路径前缀（相对路径按仓库根解析）；默认仍写
+``META/rule-contract-dryrun-v1``，现有调用行为不变。前缀所在目录必须已存在。
 
 两次运行输出必须逐字节一致（无时间戳、case 按 case_id 排序）。
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from collections import Counter
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -49,8 +55,7 @@ from engine.predicates.types import Bazi, GanZhi, adapt_bazi
 
 ROOT = Path(__file__).resolve().parents[1]
 EVAL_PATH = ROOT / "META" / "timing-eval-set-v1.json"
-JSON_PATH = ROOT / "META" / "rule-contract-dryrun-v1.json"
-MD_PATH = ROOT / "META" / "rule-contract-dryrun-v1.md"
+DEFAULT_OUT_PREFIX = "META/rule-contract-dryrun-v1"
 
 SCHEMA = "rule-contract-dryrun/v1"
 TASK_ID = "T-152"
@@ -604,11 +609,67 @@ def _render_markdown(payload: Mapping[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main() -> int:
+def _resolve_out_prefix(raw: str) -> Path:
+    """相对前缀按仓库根解析，使默认值与旧版固定路径等价。"""
+    prefix = Path(raw)
+    return prefix if prefix.is_absolute() else ROOT / prefix
+
+
+def _output_paths(prefix: Path) -> tuple[Path, Path]:
+    """前缀不带扩展名：实际写 ``<prefix>.json`` 与 ``<prefix>.md``。"""
+    return Path(f"{prefix}.json"), Path(f"{prefix}.md")
+
+
+def _display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _build_arg_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="T-152 规则契约干跑报告")
+    parser.add_argument(
+        "--out-prefix",
+        default=DEFAULT_OUT_PREFIX,
+        metavar="PATH",
+        help=(
+            "输出路径前缀，不带扩展名（相对路径按仓库根解析）；"
+            f"实际写 <prefix>.json 与 <prefix>.md，默认 {DEFAULT_OUT_PREFIX}"
+        ),
+    )
+    return parser
+
+
+def _write_outputs(json_path: Path, md_path: Path, payload: Mapping[str, Any]) -> bool:
+    """写两个产物；任一失败或只写成功一个文件都返回 False（调用方退出码 2）。"""
+    try:
+        json_path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        md_path.write_text(_render_markdown(payload), encoding="utf-8")
+    except OSError as exc:
+        print(f"错误：写出失败：{exc}", file=sys.stderr)
+        return False
+    missing = [str(path) for path in (json_path, md_path) if not path.is_file()]
+    if missing:
+        print("错误：未同时写出 JSON 与 Markdown：" + "、".join(missing), file=sys.stderr)
+        return False
+    return True
+
+
+def main(argv: Sequence[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8")
+
+    args = _build_arg_parser().parse_args(argv)
+    json_path, md_path = _output_paths(_resolve_out_prefix(args.out_prefix))
+    directory = json_path.parent
+    if not directory.is_dir():
+        print(f"错误：输出目录不存在：{directory}", file=sys.stderr)
+        return 2
 
     document = json.loads(EVAL_PATH.read_text(encoding="utf-8"))
     cases = [case for case in document["cases"] if case.get("usable_for_timing") is True]
@@ -618,10 +679,8 @@ def main() -> int:
     stats, failures = _evaluate_corpus(cases, rules)
     payload = _build_payload(registry.rules, stats, cases, failures)
 
-    JSON_PATH.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-    MD_PATH.write_text(_render_markdown(payload), encoding="utf-8")
+    if not _write_outputs(json_path, md_path, payload):
+        return 2
 
     print(f"语料：{len(cases)} 例（usable_for_timing=true）；建盘失败 {payload['corpus']['n_build_failed']} 例")
     structure_failures = [
@@ -632,8 +691,8 @@ def main() -> int:
     _print_table(payload)
     _print_counter_detail(payload)
     print()
-    print(f"已写出：{JSON_PATH.relative_to(ROOT)}")
-    print(f"已写出：{MD_PATH.relative_to(ROOT)}")
+    print(f"已写出：{_display_path(json_path)}")
+    print(f"已写出：{_display_path(md_path)}")
     return 0
 
 

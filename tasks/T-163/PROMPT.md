@@ -85,3 +85,12 @@ git status --porcelain META/rule-contract-dryrun-v1.json META/rule-contract-dryr
 - 不许改统计结果。
 - 不许把默认路径改掉（会破坏现有调用）。
 - 不许覆盖 v1 来「验证」。
+
+## 6. Amendments（中枢裁决，2026-10-29 00:50）
+
+1. **§5 的「与 v1 数值完全一致」写错了**：v1 是 T-156 反条件修复**之前**的产物
+   （totals `2219/965/1818/641`）；当前 YAML 重跑必然得到 v2 数值（`2219/965/379/185`）。
+   验收改为：①`--out-prefix` 产物与 `META/rule-contract-dryrun-v2.json` **逐条数值一致**；
+   ②v1 的 SHA256 与 `git status` 零改动；③同一新命令跑两次逐字节一致。
+2. **默认调用仍写 v1** 是刻意的兼容行为；调用方必须显式 `--out-prefix`。下一版建议加
+   「目标已存在则拒绝写入，除非 `--force`」，本卡不改默认。
