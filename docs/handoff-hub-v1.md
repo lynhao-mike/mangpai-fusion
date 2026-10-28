@@ -4,6 +4,8 @@
 > 用途：任何新会话接手本项目时，**先读本文件**，再读 `docs/dispatch/README.md`（派活队列）。
 > 本文件取代 `handoff.md`（2026-09-30 版，已过期一个月）与 `STATUS.md`（2026-10-07 版）。
 >
+> **⛔ 2026-10-29 起已被 `docs/handoff-hub-v2.md` 取代。** 新会话请先读 v2；本文只作历史留档。
+>
 > **⚠️ 2026-10-29 00:20 中枢更新：本文写于 T-149 之前，部分数字已过期。当前状态以 `docs/dispatch/README.md` 为准：**
 > 基线 **1142 passed / 1 skipped**、481 盘 0 错、关系图通过、宫制星 477 / 日支 346；
 > T-149–T-157 已完成；产品婚姻两规则首测「无差异 / 样本不足」（`docs/reviews/product-marriage-verdict-v1.md`）；
