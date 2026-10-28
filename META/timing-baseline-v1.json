@@ -1,0 +1,192 @@
+{
+  "schema": "timing-baseline/v1",
+  "task": "T-148",
+  "status": "frozen",
+  "immutable": true,
+  "notice": "此文件一经生成不得修改（T-148 §3.3 / §7.1）。如需变更，另建 v2 并由中枢裁决；本脚本拒绝覆盖不一致的冻结基线。",
+  "frozen_at": "2026-10-28T21:52:03+08:00",
+  "git_head": "6b1ffead",
+  "script": "tools/timing_eval_set.py",
+  "source": {
+    "path": "cases/raw_feedback/parsed/real_cases_990.jsonl",
+    "records": 992,
+    "sha256": "0c82a0e73cf3ff744be2447503935e22d3a39fe9cf33d2220965c544cf93153a"
+  },
+  "definition": {
+    "population": "原始 992 条记录（未去重；复现任务卡 §2 中枢实测口径）",
+    "filters": [
+      "gender in {男,女}",
+      "birth_datetime_raw 可按原值解析出日期（不二次换算农历）",
+      "events[].domains 含 'marriage' 且 year 为整数",
+      "age = event.year - birth.year，保留 15 <= age <= 50（上限非约束：本数据最大 50）",
+      "案例至少保留 1 条婚姻事件"
+    ],
+    "age_definition": "event.year - birth.year（整年差，无月日修正）",
+    "dedupe": "none",
+    "lunar": "birth_datetime_raw 按原值使用",
+    "bands": {
+      "age_26": [
+        26,
+        26
+      ],
+      "age_24_30": [
+        24,
+        30
+      ],
+      "age_22_28": [
+        22,
+        28
+      ],
+      "age_20_30": [
+        20,
+        30
+      ]
+    }
+  },
+  "sample_size": 392,
+  "bands": {
+    "age_26": {
+      "range": [
+        26,
+        26
+      ],
+      "hits": 44,
+      "rate_pct": 11.2
+    },
+    "age_24_30": {
+      "range": [
+        24,
+        30
+      ],
+      "hits": 177,
+      "rate_pct": 45.2
+    },
+    "age_22_28": {
+      "range": [
+        22,
+        28
+      ],
+      "hits": 191,
+      "rate_pct": 48.7
+    },
+    "age_20_30": {
+      "range": [
+        20,
+        30
+      ],
+      "hits": 245,
+      "rate_pct": 62.5
+    }
+  },
+  "card_expectation": {
+    "sample_size": 392,
+    "bands": {
+      "age_26": {
+        "range": [
+          26,
+          26
+        ],
+        "hits": 44,
+        "rate_pct": 11.2
+      },
+      "age_24_30": {
+        "range": [
+          24,
+          30
+        ],
+        "hits": 177,
+        "rate_pct": 45.2
+      },
+      "age_22_28": {
+        "range": [
+          22,
+          28
+        ],
+        "hits": 191,
+        "rate_pct": 48.7
+      },
+      "age_20_30": {
+        "range": [
+          20,
+          30
+        ],
+        "hits": 245,
+        "rate_pct": 62.5
+      }
+    }
+  },
+  "card_match": true,
+  "cleaned_reference": {
+    "notice": "参考对照，不是验收基线：去重 + 农历换算 + 出生时刻齐备 + 合理婚龄窗口",
+    "sample_size": 382,
+    "bands": {
+      "age_26": {
+        "range": [
+          26,
+          26
+        ],
+        "hits": 45,
+        "rate_pct": 11.8
+      },
+      "age_24_30": {
+        "range": [
+          24,
+          30
+        ],
+        "hits": 173,
+        "rate_pct": 45.3
+      },
+      "age_22_28": {
+        "range": [
+          22,
+          28
+        ],
+        "hits": 188,
+        "rate_pct": 49.2
+      },
+      "age_20_30": {
+        "range": [
+          20,
+          30
+        ],
+        "hits": 241,
+        "rate_pct": 63.1
+      }
+    }
+  },
+  "difference_classification": {
+    "missing": {
+      "note": "缺性别 / 缺出生 / 缺时刻 / 无婚姻事件导致剔除的案例，逐条见 excluded_records",
+      "raw_without_gender": 9,
+      "raw_without_birth_time": 16,
+      "raw_marriage_cases": 426,
+      "raw_marriage_events": 595,
+      "implausible_age_events_dropped_cases": 27
+    },
+    "duplicates": {
+      "note": "按 duplicate_key 去重；卡上 392 为未去重口径",
+      "raw_date_pool": 419,
+      "deduped_candidates": 411,
+      "sample_delta": -8
+    },
+    "lunar": {
+      "note": "birth_datetime_raw 对含「排盘所用公历」的农历记录已是公历；无该标记的按农历换算",
+      "lunar_records": 359,
+      "lunar_with_paipan_solar": 298,
+      "lunar_no_paipan": 61,
+      "lunar_converted": 54,
+      "lunar_convert_failed": 0,
+      "lunar_year_shift_after_conversion": 9
+    },
+    "age_field": {
+      "note": "年龄 = event.year - birth.year（整年差）",
+      "card_sample": 392,
+      "cleaned_sample": 382
+    },
+    "event_type": {
+      "note": "婚姻事件 = events[].domains 含 'marriage' 且 year 为整数",
+      "raw_marriage_events": 595
+    }
+  },
+  "payload_sha256": "52853c76d35e8f2c9bcf557fba6fd9e7aa1de69e7e86a3a3cc1ddd8cad5f64a0"
+}
