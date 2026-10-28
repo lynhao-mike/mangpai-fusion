@@ -1,0 +1,1214 @@
+{
+  "actor_none": {
+    "candidates_actor_none_by_mode": {
+      "制用": 523,
+      "合用": 719
+    },
+    "candidates_actor_none_total": 1242,
+    "candidates_by_mode": {
+      "制用": 3179,
+      "化用": 342,
+      "合用": 719,
+      "墓用": 384,
+      "生泄用": 1061
+    },
+    "candidates_total": 5685,
+    "cases": 382,
+    "cases_with_zhiyong": 378,
+    "cases_with_zhiyong_actor_none": 272,
+    "cases_with_zhiyong_actor_none_damage": 272,
+    "zhiyong_actor_none_by_relation_kind": {
+      "chong": 122,
+      "chuan": 116,
+      "stem_chong": 191,
+      "xing": 94
+    },
+    "zhiyong_actor_none_damage_total": 523,
+    "zhiyong_actor_none_on_day_branch": 140,
+    "zhiyong_actor_none_on_spouse_star": 218,
+    "zhiyong_actor_none_total": 523,
+    "zhiyong_by_relation_kind": {
+      "canggan_ke": 1752,
+      "chong": 122,
+      "chuan": 116,
+      "ke": 904,
+      "stem_chong": 191,
+      "xing": 94
+    },
+    "zhiyong_total": 3179
+  },
+  "address_vocabulary": [
+    {
+      "address_level": true,
+      "coverage": "每盘 8 个（4 干 + 4 支）",
+      "example": "乙@Y.s / 丑@Y.b",
+      "field": "chart.pillars[].stem.addr / branch.addr",
+      "note": "唯一物理地址；DY{n}.* 与 LN{year}.* 由 --dayun-index / --liunian 追加",
+      "path": "chart.pillars[0..3].stem.addr | branch.addr"
+    },
+    {
+      "address_level": true,
+      "coverage": "每盘 4 个",
+      "example": "year / month / day / hour",
+      "field": "chart.pillars[].palace",
+      "note": "英文宫位名，与 Y/M/D/H 一一对应；中文「年/月/日/时」只在文档里",
+      "path": "chart.pillars[0..3].palace"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘有 4 个天干十神",
+      "example": "乙@Y.s = 七杀",
+      "field": "chart.pillars[].stem.ten_god",
+      "note": "日干固定为「日主」",
+      "path": "chart.pillars[i].stem.ten_god"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘有 4 个地支本气十神",
+      "example": "卯@D.b = 偏印",
+      "field": "chart.pillars[].branch.main_ten_god",
+      "note": "只取本气；中气/余气见 hidden",
+      "path": "chart.pillars[i].branch.main_ten_god"
+    },
+    {
+      "address_level": false,
+      "coverage": "每盘 8–12 个藏干，全部无独立地址",
+      "example": "D.b 藏 己(本气,偏印)/癸(中气,食神)/辛(余气,比肩)",
+      "field": "chart.pillars[].branch.hidden[]",
+      "note": "只能写 addr⊕char 复合串；见缺口 G4",
+      "path": "chart.pillars[i].branch.hidden[j] = {char, qi, ten_god}"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘有边；每盘 6–22 条",
+      "example": "e010 sanhe ['D.b', 'H.b']",
+      "field": "relations.edges[]",
+      "note": "members 是地址；chars 是字；只有 sheng/ke 的 members 有序（from→to）",
+      "path": "relations.edges[j] = {id, kind, members, chars, scope, distance, between, group, completeness, attrs}"
+    },
+    {
+      "address_level": true,
+      "coverage": "仅 `engine.cli relations` 返回；analyze_facts / `all` 裁掉",
+      "example": "M.b|D.b → [e012, e013]",
+      "field": "relations.pair_index",
+      "note": "地址对 → 边 ID 的索引，可直接拿地址查边",
+      "path": "relations.pair_index['M.b|D.b'] = ['e012', ...]"
+    },
+    {
+      "address_level": true,
+      "coverage": "302/382 盘有墓库事实",
+      "example": "D.b=丑 的 openers=['e015', 'e016']",
+      "field": "relations.muku[]",
+      "note": "开闭只给边 ID，不给开/闭结论；候选里的 damaged_by_edges 同样是地址级",
+      "path": "relations.muku[j] = {addr, branch, ku_of, candidates[], openers[], chuan_po[], binders[]}"
+    },
+    {
+      "address_level": true,
+      "coverage": "381/382 盘有候选；actor 只在 ke/sheng/canggan_ke/muku 上非空",
+      "example": "制用 canggan_ke members=['D.b','H.s'] actor='D.b'",
+      "field": "duan_zuogong.candidates[].actor / members（structure_check 制用候选）",
+      "note": "冲/刑/穿/破/合用候选 actor=None（缺口 G2）",
+      "path": "duan_zuogong.candidates[k] = {mode, relation_kind, edge_id, members, ten_gods, actor}"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘 8 个地址",
+      "example": "{'D.s': '体', 'D.b': '体', 'M.s': '双属'}",
+      "field": "duan_zuogong.tiyong",
+      "note": "体用分类是地址属性，不是结论",
+      "path": "duan_zuogong.tiyong = {addr: 体|用|双属}"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘有命中项",
+      "example": "breaker met evidence=['e001']",
+      "field": "structures[].items[].evidence",
+      "note": "只覆盖子平八格；婚姻域没有对应结构（缺口 G5）",
+      "path": "structures[i].items[j].evidence = ['e001', 'D.b', ...]"
+    },
+    {
+      "address_level": true,
+      "coverage": "每盘若干通根项",
+      "example": "roots[0] addr=D.b hidden_char=辛 qi=余气",
+      "field": "strength.day_master.roots[]",
+      "note": "藏干用 addr + hidden_char 两个字段拼，不是独立地址",
+      "path": "strength.day_master.roots[j] = {addr, hidden_char, qi, changsheng, distance}"
+    },
+    {
+      "address_level": true,
+      "coverage": "382/382 盘有命中",
+      "example": "桃花 anchor_addr=Y.b target_addr=M.b",
+      "field": "shensha.hits[]",
+      "note": "明确区分锚点与目标，是现成的关系型地址词汇，但婚姻两规则不读",
+      "path": "shensha.hits[j] = {name, anchor_addr, target_addr, source_ref}"
+    },
+    {
+      "address_level": true,
+      "coverage": "每盘 0–8 项",
+      "example": "['D.b', 'day']",
+      "field": "chart.kongwang.hits[]",
+      "note": "空亡按旬取，地址级；婚姻规则不读",
+      "path": "chart.kongwang.hits[j] = [addr, 'day'|'year']"
+    },
+    {
+      "address_level": true,
+      "coverage": "46/46 原子有地址签名；engine/ 内产品零调用",
+      "example": "chong_at: 必需 ('at',)；he_at: ('at',) + ('with_god','exclude_god')",
+      "field": "condition_ir.atoms.SIGNATURES",
+      "note": "现成的地址级谓词层，未接任何产品规则（本卡不改、不启用）",
+      "path": "engine/claims/condition_ir/atoms.py:1124-1171（46 原子地址签名）"
+    }
+  ],
+  "classification_counts": {
+    "total_signals": 12,
+    "只有聚合": 11,
+    "有地址": 0,
+    "缺失": 1
+  },
+  "cli_parity": {
+    "cases": 3,
+    "checked": true,
+    "mismatches": []
+  },
+  "coverage": {
+    "branch_ke": {
+      "branch_ke_edges_in_fact_layer": 0,
+      "branch_ke_pairs": 880,
+      "cases": 382,
+      "cases_with_branch_ke_pair": 333
+    },
+    "drift": {
+      "cases": 382,
+      "chong_pair_mismatch_cases": 0,
+      "multi_member_group_edges": 4,
+      "samples": [],
+      "xing_hai_pair_mismatch_cases": 0
+    },
+    "labeled_342": {
+      "address_rule_damage_cases": 155,
+      "address_rule_input_cases": 311,
+      "cases": 342,
+      "day_branch_damage_cases": 165,
+      "day_branch_edge_cases": 330,
+      "day_branch_edge_kind_counts": {
+        "chong": 62,
+        "chuan": 70,
+        "ganzhi_zihe": 47,
+        "liuhe": 76,
+        "po": 114,
+        "sanhe": 183,
+        "sanhui": 191,
+        "xing": 113,
+        "zhi_anhe": 73
+      },
+      "signal_true_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 165,
+        "D2_MIXED_OFFICIAL_KILL": 178,
+        "D3_CHONG_AND_XINGHAI": 92,
+        "D4_ACTIVE_PATH_COUNT": 342,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 165,
+        "Y2_SPOUSE_STAR_WEAK": 68,
+        "Y3_PEER_COMPETITION": 253,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 57,
+        "Y5_FEMALE_MIXED_OFFICIAL": 50,
+        "Y6_COMPOUND_PALACE_PAIRS": 16,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "signal_true_without_address_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 0,
+        "D2_MIXED_OFFICIAL_KILL": 0,
+        "D3_CHONG_AND_XINGHAI": 0,
+        "D4_ACTIVE_PATH_COUNT": 342,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 0,
+        "Y2_SPOUSE_STAR_WEAK": 19,
+        "Y3_PEER_COMPETITION": 40,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 0,
+        "Y5_FEMALE_MIXED_OFFICIAL": 0,
+        "Y6_COMPOUND_PALACE_PAIRS": 0,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "signal_with_address_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 165,
+        "D2_MIXED_OFFICIAL_KILL": 178,
+        "D3_CHONG_AND_XINGHAI": 92,
+        "D4_ACTIVE_PATH_COUNT": 0,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 165,
+        "Y2_SPOUSE_STAR_WEAK": 323,
+        "Y3_PEER_COMPETITION": 213,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 322,
+        "Y5_FEMALE_MIXED_OFFICIAL": 50,
+        "Y6_COMPOUND_PALACE_PAIRS": 92,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "spouse_star_absent_cases": 19,
+      "spouse_star_cases": 323,
+      "spouse_star_controlled_cases": 153,
+      "spouse_star_hidden_only_cases": 48,
+      "spouse_star_main_cases": 208,
+      "spouse_star_stem_cases": 181,
+      "zhiyong_cases": 341,
+      "zhiyong_day_branch_cases": 326,
+      "zhiyong_directed_cases": 339
+    },
+    "usable_382": {
+      "address_rule_damage_cases": 173,
+      "address_rule_input_cases": 349,
+      "cases": 382,
+      "day_branch_damage_cases": 183,
+      "day_branch_edge_cases": 369,
+      "day_branch_edge_kind_counts": {
+        "chong": 69,
+        "chuan": 79,
+        "ganzhi_zihe": 52,
+        "liuhe": 84,
+        "po": 124,
+        "sanhe": 219,
+        "sanhui": 220,
+        "xing": 123,
+        "zhi_anhe": 79
+      },
+      "signal_true_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 183,
+        "D2_MIXED_OFFICIAL_KILL": 199,
+        "D3_CHONG_AND_XINGHAI": 102,
+        "D4_ACTIVE_PATH_COUNT": 382,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 183,
+        "Y2_SPOUSE_STAR_WEAK": 76,
+        "Y3_PEER_COMPETITION": 288,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 63,
+        "Y5_FEMALE_MIXED_OFFICIAL": 57,
+        "Y6_COMPOUND_PALACE_PAIRS": 18,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "signal_true_without_address_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 0,
+        "D2_MIXED_OFFICIAL_KILL": 0,
+        "D3_CHONG_AND_XINGHAI": 0,
+        "D4_ACTIVE_PATH_COUNT": 382,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 0,
+        "Y2_SPOUSE_STAR_WEAK": 20,
+        "Y3_PEER_COMPETITION": 45,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 0,
+        "Y5_FEMALE_MIXED_OFFICIAL": 0,
+        "Y6_COMPOUND_PALACE_PAIRS": 0,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "signal_with_address_cases": {
+        "D1_DAY_BRANCH_DISRUPTED": 183,
+        "D2_MIXED_OFFICIAL_KILL": 199,
+        "D3_CHONG_AND_XINGHAI": 102,
+        "D4_ACTIVE_PATH_COUNT": 0,
+        "Y1_SPOUSE_PALACE_DISRUPTED": 183,
+        "Y2_SPOUSE_STAR_WEAK": 362,
+        "Y3_PEER_COMPETITION": 243,
+        "Y4_OUTPUT_SPOUSE_CONFLICT": 360,
+        "Y5_FEMALE_MIXED_OFFICIAL": 57,
+        "Y6_COMPOUND_PALACE_PAIRS": 102,
+        "Y7_INDEPENDENT_SIGNAL_COUNT": 0,
+        "Y8_SPOUSE_STAR_BASIS": 0
+      },
+      "spouse_star_absent_cases": 20,
+      "spouse_star_cases": 362,
+      "spouse_star_controlled_cases": 171,
+      "spouse_star_hidden_only_cases": 54,
+      "spouse_star_main_cases": 229,
+      "spouse_star_stem_cases": 202,
+      "zhiyong_cases": 381,
+      "zhiyong_day_branch_cases": 364,
+      "zhiyong_directed_cases": 378
+    }
+  },
+  "examples": [
+    {
+      "birth_datetime": "1987-12-18 13:15:00",
+      "case_id": "RF-2026-000125",
+      "cli_check": {
+        "checked": true,
+        "mismatches": []
+      },
+      "cli_command": "python -m engine.cli relations --birth \"1987-12-18 13:15:00\" --gender 乾 --json",
+      "day_branch": "丑",
+      "day_branch_address": "D.b=丑（日支 / 夫妻宫）",
+      "day_branch_dui_ou": [
+        "D.b=丑 ←六合— M.b=子（edge e012）",
+        "D.b=丑 ←三会— M.b=子（edge e013）",
+        "D.b=丑 ←冲— H.b=未（edge e015）",
+        "D.b=丑 ←刑— H.b=未（edge e016）"
+      ],
+      "day_master": "辛",
+      "directed_control_examples": [
+        "M.s=壬 伤官 →克→ Y.s=丁 七杀（edge e002，zuogong 制用）",
+        "M.b=子（藏干）食神 →克→ Y.s=丁 七杀（zuogong 制用 canggan_ke，actor=M.b；藏干字未随候选输出，见 G4）"
+      ],
+      "edge_evidence": [
+        {
+          "chars": [
+            "壬",
+            "丁"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e002",
+          "kind": "ke",
+          "members": [
+            "M.s",
+            "Y.s"
+          ]
+        },
+        {
+          "chars": [
+            "子",
+            "丑"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e012",
+          "kind": "liuhe",
+          "members": [
+            "M.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "子",
+            "丑"
+          ],
+          "completeness": "partial",
+          "group": "亥子丑",
+          "id": "e013",
+          "kind": "sanhui",
+          "members": [
+            "M.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "丑",
+            "未"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e015",
+          "kind": "chong",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        },
+        {
+          "chars": [
+            "丑",
+            "未"
+          ],
+          "completeness": "partial",
+          "group": "丑戌未",
+          "id": "e016",
+          "kind": "xing",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        }
+      ],
+      "gender": "乾",
+      "label": "negative",
+      "pillars": [
+        "丁卯",
+        "壬子",
+        "辛丑",
+        "乙未"
+      ],
+      "spouse_star": [
+        "Y.b=卯 偏财（本气）",
+        "Y.b⊕乙 偏财（藏-本气）",
+        "H.s=乙 偏财（透干）",
+        "H.b⊕乙 偏财（藏-余气）"
+      ],
+      "spouse_star_basis": "财（乾）",
+      "spouse_star_controlled": [
+        "D.b=丑（藏干）偏印 →克→ H.s=乙 偏财（zuogong 制用 canggan_ke，actor=D.b；藏干字未随候选输出，见 G4）"
+      ],
+      "time_basis": "clock_beijing",
+      "unexpressible": [
+        "D4_ACTIVE_PATH_COUNT 在本例为真，但事实层取不到地址",
+        "地支克地支无 edge：Y.b=卯 克 D.b=丑、Y.b=卯 克 H.b=未、D.b=丑 克 M.b=子、H.b=未 克 M.b=子"
+      ],
+      "zhiyong_actor_none": []
+    },
+    {
+      "birth_datetime": "1990-02-23 01:48:00",
+      "case_id": "RF-2026-000438",
+      "cli_check": {
+        "checked": true,
+        "mismatches": []
+      },
+      "cli_command": "python -m engine.cli relations --birth \"1990-02-23 01:48:00\" --gender 坤 --json",
+      "day_branch": "未",
+      "day_branch_address": "D.b=未（日支 / 夫妻宫）",
+      "day_branch_dui_ou": [
+        "D.b=未 ←六合— Y.b=午（edge e009）",
+        "D.b=未 ←三会— Y.b=午（edge e010）",
+        "D.b=未 ←冲— H.b=丑（edge e013）",
+        "D.b=未 ←刑— H.b=丑（edge e014）"
+      ],
+      "day_master": "己",
+      "directed_control_examples": [
+        "Y.s=庚 伤官 →克→ H.s=乙 七杀（edge e004，zuogong 制用）"
+      ],
+      "edge_evidence": [
+        {
+          "chars": [
+            "庚",
+            "乙"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e004",
+          "kind": "ke",
+          "members": [
+            "Y.s",
+            "H.s"
+          ]
+        },
+        {
+          "chars": [
+            "午",
+            "未"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e009",
+          "kind": "liuhe",
+          "members": [
+            "Y.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "午",
+            "未"
+          ],
+          "completeness": "partial",
+          "group": "巳午未",
+          "id": "e010",
+          "kind": "sanhui",
+          "members": [
+            "Y.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "未",
+            "丑"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e013",
+          "kind": "chong",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        },
+        {
+          "chars": [
+            "未",
+            "丑"
+          ],
+          "completeness": "partial",
+          "group": "丑戌未",
+          "id": "e014",
+          "kind": "xing",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        }
+      ],
+      "gender": "坤",
+      "label": "negative",
+      "pillars": [
+        "庚午",
+        "戊寅",
+        "己未",
+        "乙丑"
+      ],
+      "spouse_star": [
+        "M.b=寅 正官（本气）",
+        "M.b⊕甲 正官（藏-本气）",
+        "D.b⊕乙 七杀（藏-余气）",
+        "H.s=乙 七杀（透干）"
+      ],
+      "spouse_star_basis": "官杀（坤）",
+      "spouse_star_controlled": [
+        "Y.s=庚 伤官 →克→ H.s=乙 七杀（edge e004，zuogong 制用）"
+      ],
+      "time_basis": "true_solar",
+      "unexpressible": [
+        "D4_ACTIVE_PATH_COUNT 在本例为真，但事实层取不到地址",
+        "地支克地支无 edge：M.b=寅 克 D.b=未、M.b=寅 克 H.b=丑"
+      ],
+      "zhiyong_actor_none": []
+    },
+    {
+      "birth_datetime": "1990-08-17 10:21:00",
+      "case_id": "RF-2026-000591",
+      "cli_check": {
+        "checked": true,
+        "mismatches": []
+      },
+      "cli_command": "python -m engine.cli relations --birth \"1990-08-17 10:21:00\" --gender 乾 --json",
+      "day_branch": "寅",
+      "day_branch_address": "D.b=寅（日支 / 夫妻宫）",
+      "day_branch_dui_ou": [
+        "D.b=寅 ←三合— Y.b=午（edge e011）",
+        "D.b=寅 ←冲— M.b=申（edge e013）",
+        "D.b=寅 ←刑— M.b=申（edge e014）",
+        "D.b=寅 ←穿— H.b=巳（edge e018）",
+        "D.b=寅 ←刑— H.b=巳（edge e019）",
+        "D.b=寅 ←刑— H.b=巳（edge e020）",
+        "D.b=寅 ←刑— M.b=申（edge e020）"
+      ],
+      "day_master": "甲",
+      "directed_control_examples": [
+        "M.s=甲 比肩 →克→ H.s=己 正财（edge e008，zuogong 制用）",
+        "D.b=寅（藏干）比肩 →克→ H.s=己 正财（zuogong 制用 canggan_ke，actor=D.b；藏干字未随候选输出，见 G4）",
+        "H.b=巳（藏干）食神 →克→ Y.s=庚 七杀（zuogong 制用 canggan_ke，actor=H.b；藏干字未随候选输出，见 G4）"
+      ],
+      "edge_evidence": [
+        {
+          "chars": [
+            "甲",
+            "己"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e008",
+          "kind": "ke",
+          "members": [
+            "M.s",
+            "H.s"
+          ]
+        },
+        {
+          "chars": [
+            "午",
+            "寅"
+          ],
+          "completeness": "half_sheng",
+          "group": "寅午戌",
+          "id": "e011",
+          "kind": "sanhe",
+          "members": [
+            "Y.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "申",
+            "寅"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e013",
+          "kind": "chong",
+          "members": [
+            "M.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "申",
+            "寅"
+          ],
+          "completeness": "partial",
+          "group": "寅巳申",
+          "id": "e014",
+          "kind": "xing",
+          "members": [
+            "M.b",
+            "D.b"
+          ]
+        },
+        {
+          "chars": [
+            "寅",
+            "巳"
+          ],
+          "completeness": null,
+          "group": null,
+          "id": "e018",
+          "kind": "chuan",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        },
+        {
+          "chars": [
+            "寅",
+            "巳"
+          ],
+          "completeness": "partial",
+          "group": "寅巳申",
+          "id": "e019",
+          "kind": "xing",
+          "members": [
+            "D.b",
+            "H.b"
+          ]
+        },
+        {
+          "chars": [
+            "寅",
+            "巳",
+            "申"
+          ],
+          "completeness": "full",
+          "group": "寅巳申",
+          "id": "e020",
+          "kind": "xing",
+          "members": [
+            "D.b",
+            "H.b",
+            "M.b"
+          ]
+        }
+      ],
+      "gender": "乾",
+      "label": "unknown（不进 342 分母）",
+      "pillars": [
+        "庚午",
+        "甲申",
+        "甲寅",
+        "己巳"
+      ],
+      "spouse_star": [
+        "Y.b⊕己 正财（藏-中气）",
+        "M.b⊕戊 偏财（藏-余气）",
+        "D.b⊕戊 偏财（藏-余气）",
+        "H.s=己 正财（透干）",
+        "H.b⊕戊 偏财（藏-余气）"
+      ],
+      "spouse_star_basis": "财（乾）",
+      "spouse_star_controlled": [
+        "M.s=甲 比肩 →克→ H.s=己 正财（edge e008，zuogong 制用）",
+        "D.b=寅（藏干）比肩 →克→ H.s=己 正财（zuogong 制用 canggan_ke，actor=D.b；藏干字未随候选输出，见 G4）"
+      ],
+      "time_basis": "true_solar",
+      "unexpressible": [
+        "D4_ACTIVE_PATH_COUNT 在本例为真，但事实层取不到地址",
+        "D.b 的冲/刑/穿制用候选 4 个 actor=None：写不出「谁作用于谁」",
+        "地支克地支无 edge：Y.b=午 克 M.b=申、M.b=申 克 D.b=寅、H.b=巳 克 M.b=申"
+      ],
+      "zhiyong_actor_none": [
+        "制用 chong ['M.b', 'D.b']（['七杀', '比肩']，edge e013，actor=None）",
+        "制用 xing ['M.b', 'D.b']（['七杀', '比肩']，edge e014，actor=None）",
+        "制用 chuan ['D.b', 'H.b']（['比肩', '食神']，edge e018，actor=None）",
+        "制用 xing ['D.b', 'H.b']（['比肩', '食神']，edge e019，actor=None）"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "code_loc": [
+        "engine/features/chart_feature_vector.py:133-157（_branch_relations）",
+        "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+        "engine/v5/duan_runner.py:251-258（_marriage_divorce_or_remarriage）"
+      ],
+      "evidence": "chart_feature_vector._branch_relations 用 engine/predicates/relations.py 的 zhi_chong/zhi_xing/zhi_chuan 另判一次，只存 (字,字) 对；yang_runner/duan_runner 只消费这些字对与 counts，从不读 relations.edges。因此边 ID、地址、柱序全部丢失。",
+      "id": "G1",
+      "impact": "两条婚姻规则无法引用任何 e0xx 或 Y/M/D/H 地址；地址串只能被新规则重算，不能从规则输入取。",
+      "primitive": false,
+      "priority": "P0（改造既有规则的前置；新规则可直接读 edges 绕过）",
+      "title": "规则输入侧没接地址层：婚姻信号与关系图是两套独立的关系判定"
+    },
+    {
+      "code_loc": [
+        "engine/facts/structure_check.py:475-478（actor = members[0] if kind == 'ke' else None）",
+        "engine/facts/types.py:167-174（Edge.members 仅 sheng/ke 有序）"
+      ],
+      "evidence": "build_duan_zuogong_candidates 对制用只给 ke 设 actor，其余 kind 一律 None；Edge.members 的 from→to 语义只在 sheng/ke 上成立。实测见 actor_none 段。",
+      "id": "G2",
+      "impact": "「夫妻宫被穿」与「宫穿星」不可区分；写出的是对偶，不是「谁作用于谁」。",
+      "primitive": true,
+      "priority": "P0",
+      "title": "冲/刑/穿/破边无方向，制用候选 actor=None"
+    },
+    {
+      "code_loc": [
+        "engine/facts/relation_graph.py:210-258（_branch_pair_edges）",
+        "engine/facts/structure_check.py:433-448（_derived_canggan_ke）",
+        "engine/energy/types.py:100-107（ZuogongPath.chain: list[str]）"
+      ],
+      "evidence": "_branch_pair_edges 只建冲/合/穿/破/刑/三合/三会/暗合，没有支克支；_derived_canggan_ke 只产出 (branch, stem) 对；ZuogongPath.chain 是 list[str]。",
+      "id": "G3",
+      "impact": "比劫夺财、伤官制官当双方都在地支时无 edge/actor；做功路径无法回地址。",
+      "primitive": true,
+      "priority": "P1",
+      "title": "地支之间不建克边；宫制星只推「支→干」，做功路径只存字"
+    },
+    {
+      "code_loc": [
+        "engine/facts/types.py:69-74（HiddenStem 只有 char/qi/ten_god）",
+        "engine/claims/condition_ir/atoms.py:354-357（_ten_god_at 只取 main_ten_god）",
+        "engine/api/facade.py:99-107（_compact_zuogong 丢掉 notes）"
+      ],
+      "evidence": "HiddenStem 只有 char/qi/ten_god，地址只能写成 addr⊕char 复合串；atoms._ten_god_at 对地支只取 main_ten_god；canggan_ke 候选的 notes（「丑藏辛克乙」）在 Agent 视图被裁掉，下游只知 D.b 克 H.s，不知经哪个藏干。",
+      "id": "G4",
+      "impact": "「财藏月支中气被制」不能作为 edge 端点；藏干层的宫星作用只能人读。",
+      "primitive": true,
+      "priority": "P1",
+      "title": "藏干没有独立地址，宫制星丢了 «via» 字"
+    },
+    {
+      "code_loc": [
+        "engine/facts/structure_check.py:30,332-352（仅子平八格有 met/unmet/needs_judgment）",
+        "engine/claims/condition_ir/atoms.py:666-690（structure_rescue 只读八格）"
+      ],
+      "evidence": "事实层的 met/unmet/needs_judgment 只覆盖子平八格（structures_mvp.yaml）；婚姻域没有 counter-edge、没有 rescue 原语，condition_ir 的 structure_rescue 只读八格且产品零调用。",
+      "id": "G5",
+      "impact": "复审要求的「有忌象但得救应」无法作为独立断语带地址输出，只能压成不触发。",
+      "primitive": true,
+      "priority": "P2",
+      "title": "婚姻域没有救应/反制事实，三态里的 countered_resolved 无地址承载"
+    }
+  ],
+  "inputs": {
+    "marriage_quality_labels": {
+      "path": "META/marriage-quality-labels-v1.json",
+      "sha256": "59d3764b7d574e543242575fe3f26e131083249ed36946640ea1c498099118d8"
+    },
+    "timing_eval_set": {
+      "path": "META/timing-eval-set-v1.json",
+      "sha256": "e7b7f770b521276d66ff61c57d1693b0023ad4868cc7687f6a7f5ebb1089b4f5"
+    }
+  },
+  "method": {
+    "address_level_rule": "有地址=规则消费的字段本身就是 addr 或 edge id；只有聚合=消费计数/布尔/字对/强度，底层虽有地址但产品路径已丢弃；缺失=所需原语不存在或该字段不是盘面证据。",
+    "example_selection": "382 例按 7 项地址可写性覆盖度降序、同分按 case_id 升序取前 3；是最大可写性样本，不是随机样本，总体覆盖率见 coverage。",
+    "read_only": true,
+    "signal_replication": "信号真值按 engine/v5/yang_runner.py:39-91 与 duan_runner.py:251-258 逐行复刻；未导入 runner，避免规则注册表副作用。特征向量用 build_chart_feature_vector 原样构建。"
+  },
+  "population": {
+    "cases_total": 411,
+    "gender": {
+      "乾": 264,
+      "坤": 118
+    },
+    "labeled_negative_positive": 342,
+    "note": "342 = usable 382 中 negative(186)+positive(156)；unknown 40 不进分母（T-153 口径）",
+    "time_basis": {
+      "clock_beijing": 117,
+      "true_solar": 265
+    },
+    "usable_for_timing": 382
+  },
+  "primitive_check": [
+    {
+      "name": "十神在支上的地址",
+      "note": "本气十神可直引到 Y.b…H.b；中气/余气只能写 addr⊕char（G4），但地址本身存在。",
+      "status": "已有",
+      "where": "chart.pillars[].branch.main_ten_god（+ hidden[].ten_god）"
+    },
+    {
+      "name": "墓库开闭",
+      "note": "开闭相关的边 ID 有，开/闭结论没有（relation_graph 刻意不判）；「库被冲开」只能写边，不能写结论。",
+      "status": "半有",
+      "where": "relations.muku[].openers / binders / chuan_po / candidates[].damaged_by_edges"
+    },
+    {
+      "name": "大运 / 流年引动",
+      "note": "地址形态已存在（scope=dayun/liunian 的边），但应期建模归 T-165，本卡不深挖。",
+      "status": "不在本卡",
+      "where": "engine.cli --dayun-index / --liunian → DY{n}.s/b、LN{year}.s/b"
+    }
+  ],
+  "schema": "address-level-evidence-audit/v1",
+  "script": "tools/address_level_evidence_audit.py",
+  "signal_map": [
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/duan_runner.py:251-258（_marriage_divorce_or_remarriage）",
+      "consumes": "features.chong_pairs / features.xing_hai_pairs（字对，无地址、无边 ID）",
+      "coverage": {
+        "address_reconstructable": 183,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 165,
+          "cases": 342,
+          "signal_true": 165,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 183,
+        "signal_true_without_address": 0
+      },
+      "direction": "部分",
+      "direction_note": "能写「D.b ↔ X.b 冲/刑/穿」对偶；主客方向不可写（Edge.members 只对 sheng/ke 有序，冲刑穿候选 actor=None）",
+      "gaps": [
+        "G1",
+        "G2"
+      ],
+      "id": "D1_DAY_BRANCH_DISRUPTED",
+      "reconstruct": "D.b 的 chong/xing/chuan 边（cov_D1）",
+      "rule_id": "DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1",
+      "upstream_object": "relations.edges（chong/xing/chuan，带 id/members/chars）",
+      "zh": "日支受扰（冲/刑/害）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/duan_runner.py:251-258（_marriage_divorce_or_remarriage）",
+      "consumes": "features.mixed_official_kill = bool(ten_god_counts['正官'] and ten_god_counts['七杀'])",
+      "coverage": {
+        "address_reconstructable": 199,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 178,
+          "cases": 342,
+          "signal_true": 178,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 199,
+        "signal_true_without_address": 0
+      },
+      "direction": "否",
+      "direction_note": "只能指认官、杀各自的地址；「混杂」是计数事实，没有谁作用于谁",
+      "gaps": [
+        "G3",
+        "G4"
+      ],
+      "id": "D2_MIXED_OFFICIAL_KILL",
+      "reconstruct": "正官/七杀逐字地址（藏干为 addr⊕char 复合串，见 G4）",
+      "rule_id": "DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1",
+      "upstream_object": "chart.pillars[].stem.ten_god / branch.main_ten_god / branch.hidden[].ten_god",
+      "zh": "官杀混杂（十神计数）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/duan_runner.py:251-258（_marriage_divorce_or_remarriage）",
+      "consumes": "bool(features.chong_pairs) and bool(features.xing_hai_pairs)",
+      "coverage": {
+        "address_reconstructable": 102,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 92,
+          "cases": 342,
+          "signal_true": 92,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 102,
+        "signal_true_without_address": 0
+      },
+      "direction": "否",
+      "direction_note": "两个布尔求交，不落到具体边；同一字对可同时计入冲与刑（如丑未）",
+      "gaps": [
+        "G1"
+      ],
+      "id": "D3_CHONG_AND_XINGHAI",
+      "reconstruct": "取首条 chong 边与首条 xing/chuan 边作代表（cov_D3）",
+      "rule_id": "DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1",
+      "upstream_object": "relations.edges（chong ∪ xing/chuan）",
+      "zh": "冲与刑害并见（布尔复合）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/duan_runner.py:58-69,293-296（_duan_structure）",
+      "consumes": "len([p for p in evaluate_zuogong(...) if p.layer_count >= 1])",
+      "coverage": {
+        "address_reconstructable": 0,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 0,
+          "cases": 342,
+          "signal_true": 342,
+          "signal_true_without_address": 342
+        },
+        "signal_true": 382,
+        "signal_true_without_address": 382
+      },
+      "direction": "否",
+      "direction_note": "ZuogongPath.chain 只有字（['辛','乙']），柱位只出现在 description 中文文本里，不能当证据引用",
+      "gaps": [
+        "G3"
+      ],
+      "id": "D4_ACTIVE_PATH_COUNT",
+      "reconstruct": "无地址可回填（cov_D4 恒空）；description 里的「时支未」只能人读",
+      "rule_id": "DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1",
+      "upstream_object": "engine.energy.types.ZuogongPath（chain: list[str]；description: 自然语言）",
+      "zh": "段派做功路径数（active_path_count）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "features.chong_pairs / features.xing_hai_pairs 中 day_branch 参与的对",
+      "coverage": {
+        "address_reconstructable": 183,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 165,
+          "cases": 342,
+          "signal_true": 165,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 183,
+        "signal_true_without_address": 0
+      },
+      "direction": "部分",
+      "direction_note": "与 D1 同源：对偶可写，主客不可写",
+      "gaps": [
+        "G1",
+        "G2"
+      ],
+      "id": "Y1_SPOUSE_PALACE_DISRUPTED",
+      "reconstruct": "D.b 的 chong/xing/chuan 边（cov_Y1）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "relations.edges（chong/xing/chuan）",
+      "zh": "夫妻宫被冲/刑/害"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "ten_god_counts[正财/偏财 或 正官/七杀] 与 has_wealth/has_official",
+      "coverage": {
+        "address_reconstructable": 362,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 323,
+          "cases": 342,
+          "signal_true": 68,
+          "signal_true_without_address": 19
+        },
+        "signal_true": 76,
+        "signal_true_without_address": 20
+      },
+      "direction": "否",
+      "direction_note": "计数把透干、本气、中气、余气同等计数；配偶星位置与受制关系都不进入判定",
+      "gaps": [
+        "G4"
+      ],
+      "id": "Y2_SPOUSE_STAR_WEAK",
+      "reconstruct": "配偶星逐字地址（cov_Y2）；藏干只能写 addr⊕char（G4）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "chart.pillars[].stem.ten_god / branch.main_ten_god / branch.hidden[].ten_god",
+      "zh": "配偶星弱（数量阈值）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "ten_god_counts[比肩]+ten_god_counts[劫财] >= 3",
+      "coverage": {
+        "address_reconstructable": 243,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 213,
+          "cases": 342,
+          "signal_true": 253,
+          "signal_true_without_address": 40
+        },
+        "signal_true": 288,
+        "signal_true_without_address": 45
+      },
+      "direction": "部分",
+      "direction_note": "「比劫夺财」只有走 ke 边（干→干）或 canggan_ke（支→干）才有方向；支→支无克边（G3）",
+      "gaps": [
+        "G1",
+        "G3"
+      ],
+      "id": "Y3_PEER_COMPETITION",
+      "reconstruct": "比劫地址 ≥3（cov_Y3）；夺财方向需再查 ke/canggan_ke",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "chart 十神 + relations.edges(ke) + duan_zuogong.candidates(canggan_ke)",
+      "zh": "比劫竞争（比劫计数 ≥3）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "食伤计数 >= 4 且 spouse_present",
+      "coverage": {
+        "address_reconstructable": 360,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 322,
+          "cases": 342,
+          "signal_true": 57,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 63,
+        "signal_true_without_address": 0
+      },
+      "direction": "部分",
+      "direction_note": "「伤官制官」仅当双方都在天干（ke）或支→干（canggan_ke）时可得方向；支上伤官制官不可写",
+      "gaps": [
+        "G1",
+        "G3"
+      ],
+      "id": "Y4_OUTPUT_SPOUSE_CONFLICT",
+      "reconstruct": "食伤地址 + 配偶星地址（cov_Y4）；制需另查 actor 非空候选",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "chart 十神 + relations.edges(ke) + duan_zuogong.candidates",
+      "zh": "食伤重与配偶星并存"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "sex == female and features.mixed_official_kill",
+      "coverage": {
+        "address_reconstructable": 57,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 50,
+          "cases": 342,
+          "signal_true": 50,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 57,
+        "signal_true_without_address": 0
+      },
+      "direction": "否",
+      "direction_note": "同 D2，另加性别门槛",
+      "gaps": [
+        "G3",
+        "G4"
+      ],
+      "id": "Y5_FEMALE_MIXED_OFFICIAL",
+      "reconstruct": "正官/七杀逐字地址（cov_Y5）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "chart 十神",
+      "zh": "女命官杀混杂"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "palace_pair_count >= 2 and palace_chong and palace_xing_hai",
+      "coverage": {
+        "address_reconstructable": 102,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 92,
+          "cases": 342,
+          "signal_true": 16,
+          "signal_true_without_address": 0
+        },
+        "signal_true": 18,
+        "signal_true_without_address": 0
+      },
+      "direction": "否",
+      "direction_note": "字对集合的基数，不指向具体边",
+      "gaps": [
+        "G1"
+      ],
+      "id": "Y6_COMPOUND_PALACE_PAIRS",
+      "reconstruct": "D.b 上不同边的 id 计数（cov_Y6 = cov_D3）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": "relations.edges（chong/xing/chuan 的 id 集合）",
+      "zh": "夫妻宫冲刑复合（≥2 个不同字对）"
+    },
+    {
+      "classification": "只有聚合",
+      "code_loc": "engine/v5/yang_runner.py:39-92（_palace_disruption / signals）",
+      "consumes": "sum(int(v) for v in signals.values())",
+      "coverage": {
+        "address_reconstructable": 0,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 0,
+          "cases": 342,
+          "signal_true": null,
+          "signal_true_without_address": null
+        },
+        "signal_true": null,
+        "signal_true_without_address": null
+      },
+      "direction": "否",
+      "direction_note": "布尔求和；它是「聚合的聚合」，本身不可能带地址",
+      "gaps": [
+        "G1"
+      ],
+      "id": "Y7_INDEPENDENT_SIGNAL_COUNT",
+      "reconstruct": "无（cov_none）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": null,
+      "zh": "独立信号数（规则唯一主条件）"
+    },
+    {
+      "classification": "缺失",
+      "code_loc": "engine/v5/yang_runner.py:67-74",
+      "consumes": "spouse_star_basis = 'wealth' if male else 'official'",
+      "coverage": {
+        "address_reconstructable": 0,
+        "cases": 382,
+        "labeled_342": {
+          "address_reconstructable": 0,
+          "cases": 342,
+          "signal_true": null,
+          "signal_true_without_address": null
+        },
+        "signal_true": null,
+        "signal_true_without_address": null
+      },
+      "direction": "否",
+      "direction_note": "不是盘面证据，是性别→配偶星的取用口径；事实层没有「为何取财/取官」的地址级判据（如财透干/官透干、宫星同宫）",
+      "gaps": [
+        "G1"
+      ],
+      "id": "Y8_SPOUSE_STAR_BASIS",
+      "reconstruct": "无地址；只能按性别字符串回推（cov_none）",
+      "rule_id": "YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1",
+      "upstream_object": null,
+      "zh": "配偶星取用口径（wealth / official）"
+    }
+  ],
+  "task": "T-164",
+  "verdict": {
+    "answer": "不够",
+    "primitives_needed": [
+      {
+        "gap": "G2",
+        "name": "冲/刑/穿/破边方向绑定（actor/target）",
+        "priority": "P0",
+        "why": "523/3179 个制用候选 actor=None"
+      },
+      {
+        "gap": "G5",
+        "name": "婚姻域救应/反制事实（counter-edge / rescue）",
+        "priority": "P0",
+        "why": "三态输出里 countered_resolved 目前无地址承载"
+      },
+      {
+        "gap": "G3",
+        "name": "地支克边 + 藏干地址（G4 一并）",
+        "priority": "P1",
+        "why": "支上制/夺与藏干端点当前不可写"
+      }
+    ],
+    "scope": "针对「某宫某神通过冲/合/刑/穿/制/化作用于某宫某神 + 救应三态」的完整语义：12 个婚姻信号里 0 个有地址、11 个只有聚合、1 个缺失；规则输入侧拿不到任何 e0xx 或 Y/M/D/H。",
+    "wiring_prerequisite": {
+      "gap": "G1",
+      "note": "既有两条规则要变地址级，必须先在 cfv 输入侧接 relations.edges；新规则可直接读 edges 绕过。"
+    },
+    "writable_today": {
+      "blocked_sentences": [
+        "地支之间的克（比劫夺财 / 伤官制官双方都在支上）——无 edge（G3）",
+        "冲/刑/穿的主客方向——actor=None（G2）",
+        "有忌象得救应（countered_resolved）——无救应原语（G5）"
+      ],
+      "cases_with_day_branch_damage_and_spouse_star": 173,
+      "cases_with_day_branch_edge_and_spouse_star": 349,
+      "cases_with_directed_spouse_control": 171,
+      "directed_spouse_control_note": "只算「日主以外」的神克配偶星；日主克财/官是正常取用，已排除",
+      "of": 382,
+      "scope": "只读 relations.edges + chart 十神 + duan_zuogong.actor，可写「D.b 对偶边 + 配偶星地址 + 干/支→干制化」两态规则"
+    }
+  }
+}
