@@ -1,0 +1,5201 @@
+{
+ "meta": {
+  "protocol_id": "m2y395-v2",
+  "task": "T-155",
+  "generated_by": "python -m tools.m2y395_real_direction",
+  "data_source": "META/timing-eval-set-v1.json",
+  "n_usable_cases": 382,
+  "n_built": 382,
+  "n_build_failed": 0,
+  "n_triggered": 67,
+  "trigger_rate": 0.1754,
+  "case_unit": "一个人（case）一例；同一人多条冲边只算一例",
+  "direction_counts": {
+   "self_controls": 20,
+   "other_controls": 28,
+   "no_ke": 19,
+   "ambiguous": 0,
+   "no_chong": 315
+  },
+  "ambiguous_split": {
+   "opposed_self_vs_other": 0,
+   "mixed_with_no_ke": 0
+  },
+  "n_skipped_edges": 0,
+  "ke_map_source": "engine/predicates/types.py:60-62",
+  "zhi_wuxing_source": "engine/predicates/types.py:73-79",
+  "chong_edge_source": "engine/facts/relation_graph.py:210-222",
+  "direction_fn_source": "tools/m2y395_direction.py:124-130 (direction_of，只读复用)",
+  "definition": "触发器=原局(kind=chong, scope=natal)且成员含 D.b 的边；方向=按 KE_MAP 比较 D.b 与 other 的本气五行（同五行/无克→no_ke）；同一人多条同向冲边→该方向，方向冲突→ambiguous；预测=self_controls→P、other_controls→N、no_ke/ambiguous→弃权；计数单位=一个人(case)",
+  "notes": [
+   "本文件不读任何标签/答案文件；标签只在 tools/m2y395_real_score.py 并入",
+   "触发只看原局（scope=natal），不含大运/流年/天干冲",
+   "建盘入口 engine.api.analyze_facts，性别 男→乾 / 女→坤"
+  ]
+ },
+ "build_failures": [],
+ "skipped_edges": [],
+ "cases": [
+  {
+   "case_id": "RF-2026-000010",
+   "pillars": "乙丑 己丑 丁卯 辛亥",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-01-23 22:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000011",
+   "pillars": "庚辰 己丑 壬午 庚戌",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-01-19 20:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000024",
+   "pillars": "丙子 己亥 壬申 丙午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-12-01 11:05:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000026",
+   "pillars": "庚午 戊寅 壬寅 丙午",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-02-06 11:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000030",
+   "pillars": "乙丑 己卯 癸亥 壬子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-03-25 00:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000034",
+   "pillars": "甲子 庚午 戊戌 丙辰",
+   "day_branch": "戌",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1984-07-03 08:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000045",
+   "pillars": "丙子 戊戌 己丑 己巳",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-10-19 09:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000050",
+   "pillars": "戊寅 乙卯 癸亥 癸亥",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-03-17 21:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000057",
+   "pillars": "乙丑 乙酉 乙亥 乙酉",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-10-03 17:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000058",
+   "pillars": "乙丑 己卯 癸亥 壬子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-03-25 00:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000061",
+   "pillars": "己巳 丁卯 癸巳 辛酉",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-04-03 18:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000062",
+   "pillars": "丁丑 丁未 乙亥 戊子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-08-01 23:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000063",
+   "pillars": "甲子 甲戌 甲申 乙亥",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1984-10-17 21:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000065",
+   "pillars": "乙丑 己丑 壬戌 丙午",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-01-18 12:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000066",
+   "pillars": "壬申 己酉 己酉 甲戌",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-09-30 20:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000070",
+   "pillars": "庚辰 乙酉 壬申 甲辰",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-09-11 08:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000072",
+   "pillars": "癸未 乙丑 庚寅 庚辰",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-01-12 08:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000081",
+   "pillars": "壬申 壬子 壬午 辛丑",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1993-01-01 01:11:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000085",
+   "pillars": "癸未 戊午 甲寅 丙寅",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-06-10 04:54:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000086",
+   "pillars": "乙卯 乙酉 丁亥 戊申",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1975-10-08 16:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000087",
+   "pillars": "辛未 辛卯 甲辰 丙寅",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-04-04 04:28:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000090",
+   "pillars": "己卯 丙寅 己亥 庚午",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-02-16 11:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000092",
+   "pillars": "癸酉 庚申 丙子 戊戌",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-08-23 20:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000093",
+   "pillars": "丙寅 己亥 壬午 癸卯",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-12-04 06:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000094",
+   "pillars": "丁卯 己酉 辛巳 乙未",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-09-29 14:28:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000096",
+   "pillars": "己巳 乙亥 癸酉 壬戌",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-11-09 20:10:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000100",
+   "pillars": "乙亥 己丑 庚戌 丁亥",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-01-14 21:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000101",
+   "pillars": "壬子 庚戌 丁酉 己酉",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1972-11-02 18:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000103",
+   "pillars": "丁巳 癸丑 庚寅 辛巳",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1978-01-28 10:20:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000108",
+   "pillars": "乙丑 甲申 甲申 辛未",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-08-13 13:51:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000109",
+   "pillars": "庚午 戊子 甲戌 辛未",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-01-04 14:12:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000111",
+   "pillars": "丙寅 乙未 己未 甲戌",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-07-14 20:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000113",
+   "pillars": "壬申 己酉 丁酉 丙午",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-09-18 12:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000118",
+   "pillars": "己巳 癸酉 辛丑 己丑",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-10-08 01:35:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000119",
+   "pillars": "己巳 丙寅 戊戌 癸丑",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-02-07 02:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000122",
+   "pillars": "壬申 丙午 甲戌 壬申",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-06-27 16:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000125",
+   "pillars": "丁卯 壬子 辛丑 乙未",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e015",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1987-12-18 13:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000126",
+   "pillars": "丁卯 壬寅 丙戌 丙申",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-02-06 15:38:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000128",
+   "pillars": "丁卯 丁未 庚辰 戊寅",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-07-30 04:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000130",
+   "pillars": "丙寅 己亥 甲申 乙丑",
+   "day_branch": "申",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1986-12-06 02:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000131",
+   "pillars": "甲申 丁卯 癸巳 壬戌",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-03-15 20:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000132",
+   "pillars": "壬午 辛亥 丙申 庚子",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-11-24 23:10:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000136",
+   "pillars": "辛未 甲午 戊辰 庚申",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-06-27 16:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000139",
+   "pillars": "戊辰 戊午 癸丑 甲子",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-06-27 23:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000140",
+   "pillars": "甲子 丁丑 己巳 癸酉",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-01-30 18:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000142",
+   "pillars": "己卯 癸酉 庚午 辛巳",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-09-15 09:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000143",
+   "pillars": "癸亥 乙卯 癸卯 庚申",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-03-16 16:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000149",
+   "pillars": "壬戌 己酉 乙卯 戊寅",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1982-09-29 04:15:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000151",
+   "pillars": "己巳 丁丑 丁丑 己酉",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-01-12 18:10:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000153",
+   "pillars": "戊辰 辛酉 庚辰 戊子",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-09-22 23:35:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000162",
+   "pillars": "己巳 壬申 癸卯 戊午",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-08-11 12:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000163",
+   "pillars": "丙子 乙未 辛酉 丙申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-07-23 16:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000169",
+   "pillars": "丁卯 辛亥 甲申 辛未",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-12-01 14:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000170",
+   "pillars": "辛巳 庚子 己未 乙丑",
+   "day_branch": "未",
+   "edges": [
+    {
+     "edge_id": "e015",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2001-12-22 01:58:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000171",
+   "pillars": "壬午 壬子 丙辰 乙未",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-12-14 14:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000176",
+   "pillars": "戊寅 壬戌 辛丑 丙申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-10-21 16:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000178",
+   "pillars": "庚申 丁亥 乙巳 甲申",
+   "day_branch": "巳",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1980-11-28 16:38:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000180",
+   "pillars": "戊辰 辛酉 丙寅 壬辰",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-09-08 08:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000188",
+   "pillars": "甲戌 甲戌 丙申 癸巳",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-11-06 10:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000189",
+   "pillars": "癸酉 壬戌 壬午 辛亥",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-10-28 21:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000191",
+   "pillars": "己卯 己巳 戊辰 辛酉",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-05-16 17:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000192",
+   "pillars": "丁卯 丙午 壬寅 壬寅",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-06-22 04:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000193",
+   "pillars": "庚辰 乙酉 丁亥 丙午",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-09-26 11:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000196",
+   "pillars": "戊寅 丁巳 癸亥 庚申",
+   "day_branch": "亥",
+   "edges": [
+    {
+     "edge_id": "e015",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1998-05-16 16:08:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000197",
+   "pillars": "甲戌 庚午 甲申 戊辰",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-06-27 08:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000205",
+   "pillars": "甲戌 丁丑 庚子 丁亥",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-01-09 21:15:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000207",
+   "pillars": "庚午 己卯 乙亥 壬午",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-03-11 11:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000209",
+   "pillars": "辛酉 庚寅 庚申 丙子",
+   "day_branch": "申",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1981-02-11 00:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000211",
+   "pillars": "癸酉 丁巳 丙申 己丑",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-05-15 01:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000212",
+   "pillars": "癸未 辛酉 己酉 乙丑",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-10-03 02:58:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000213",
+   "pillars": "丙子 己亥 癸丑 癸亥",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-11-12 21:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000215",
+   "pillars": "甲戌 乙亥 乙卯 辛巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-11-25 10:38:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000216",
+   "pillars": "戊辰 甲子 甲寅 甲戌",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-12-25 19:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000217",
+   "pillars": "辛巳 辛丑 癸卯 壬子",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-02-04 00:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000218",
+   "pillars": "乙丑 戊子 乙未 戊子",
+   "day_branch": "未",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1985-12-22 23:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000219",
+   "pillars": "辛酉 癸巳 丙申 甲午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1981-05-18 11:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000224",
+   "pillars": "乙酉 戊寅 乙丑 癸未",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2005-02-10 14:28:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000240",
+   "pillars": "庚辰 癸未 丁丑 壬寅",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2000-07-18 04:39:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000243",
+   "pillars": "己卯 己巳 戊午 丁巳",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-05-06 10:18:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000244",
+   "pillars": "戊寅 甲寅 辛丑 戊戌",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-02-23 19:25:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000245",
+   "pillars": "癸亥 丙辰 丙子 乙未",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-04-18 13:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000247",
+   "pillars": "辛巳 乙未 乙酉 己卯",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2001-07-21 05:02:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000248",
+   "pillars": "己卯 庚午 庚寅 甲申",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e014",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1999-06-07 15:14:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000249",
+   "pillars": "乙亥 乙酉 庚午 戊寅",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-10-06 04:08:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000251",
+   "pillars": "戊辰 丁巳 戊辰 辛酉",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-05-13 17:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000252",
+   "pillars": "丁丑 癸卯 癸丑 壬戌",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-03-12 19:42:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000255",
+   "pillars": "戊寅 壬戌 丙午 辛卯",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-10-26 05:54:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000258",
+   "pillars": "丁丑 丙午 丁酉 辛丑",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-06-24 01:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000259",
+   "pillars": "辛未 己亥 己酉 甲戌",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-12-05 19:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000266",
+   "pillars": "庚午 庚辰 庚戌 壬午",
+   "day_branch": "戌",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1990-04-15 12:22:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000267",
+   "pillars": "辛未 辛卯 癸巳 壬戌",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-03-24 20:29:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000268",
+   "pillars": "庚申 戊子 丁卯 辛丑",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1980-12-20 02:47:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000269",
+   "pillars": "庚申 戊子 丁卯 壬寅",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1980-12-20 03:33:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000279",
+   "pillars": "己巳 辛未 癸巳 乙卯",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-08-01 05:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000281",
+   "pillars": "己巳 乙亥 己丑 戊辰",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-11-25 07:02:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000286",
+   "pillars": "戊辰 丙辰 癸丑 壬子",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-04-28 00:10:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000287",
+   "pillars": "戊辰 乙卯 丁卯 庚子",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-03-13 00:10:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000288",
+   "pillars": "庚辰 甲申 乙丑 丁亥",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-09-04 21:11:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000291",
+   "pillars": "丙辰 己亥 乙亥 丁亥",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1976-11-19 21:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000292",
+   "pillars": "己巳 癸酉 丁酉 戊申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-10-04 16:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000298",
+   "pillars": "辛酉 戊戌 戊辰 乙卯",
+   "day_branch": "辰",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1981-10-17 05:16:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000302",
+   "pillars": "辛未 癸巳 癸卯 丁巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-06-02 10:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000304",
+   "pillars": "庚戌 甲申 庚午 癸未",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1970-08-18 13:58:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000309",
+   "pillars": "庚申 乙酉 乙酉 甲申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1980-09-09 15:13:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000317",
+   "pillars": "丙午 戊戌 辛酉 庚寅",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1966-10-29 03:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000321",
+   "pillars": "甲戌 丁卯 庚申 戊子",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-04-04 23:58:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000322",
+   "pillars": "甲戌 丁卯 辛卯 丁酉",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1994-03-06 18:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000323",
+   "pillars": "辛未 辛丑 戊申 乙卯",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-02-02 06:17:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000329",
+   "pillars": "癸酉 丁巳 癸丑 庚申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-06-01 16:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000331",
+   "pillars": "甲戌 丁丑 戊午 甲子",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1995-01-27 23:39:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000332",
+   "pillars": "己卯 癸酉 壬午 壬寅",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-09-27 04:17:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000333",
+   "pillars": "甲子 丁丑 甲寅 庚午",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-01-15 11:34:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000336",
+   "pillars": "丙子 乙未 辛酉 丙申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-07-23 15:12:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000337",
+   "pillars": "丁卯 戊申 己丑 癸酉",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-08-08 17:51:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000342",
+   "pillars": "丁卯 丁未 癸亥 庚申",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-07-13 16:28:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000344",
+   "pillars": "丙寅 丙申 癸卯 乙卯",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-08-27 06:05:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000345",
+   "pillars": "癸酉 乙丑 乙卯 乙酉",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    },
+    {
+     "edge_id": "e011",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 2,
+   "birth_dt": "1994-01-29 18:42:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000346",
+   "pillars": "戊午 癸亥 辛巳 己丑",
+   "day_branch": "巳",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1978-11-15 02:44:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000347",
+   "pillars": "戊午 壬戌 庚戌 戊寅",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1978-10-15 03:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000350",
+   "pillars": "丙子 辛卯 甲辰 己巳",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-03-08 09:13:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000352",
+   "pillars": "癸亥 甲子 丙子 戊戌",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-12-14 19:15:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000353",
+   "pillars": "丙寅 辛卯 壬申 戊申",
+   "day_branch": "申",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1986-03-29 16:50:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000354",
+   "pillars": "己巳 壬申 己酉 壬申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-08-17 16:19:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000355",
+   "pillars": "丙子 丙申 乙未 庚辰",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-08-26 08:18:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000356",
+   "pillars": "戊辰 癸亥 癸巳 戊午",
+   "day_branch": "巳",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1988-12-04 11:03:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000357",
+   "pillars": "乙丑 己卯 壬戌 壬子",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-03-24 23:16:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000359",
+   "pillars": "戊辰 癸亥 癸巳 丁巳",
+   "day_branch": "巳",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1988-12-04 10:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000360",
+   "pillars": "壬申 乙巳 丙申 丁酉",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-05-20 17:31:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000362",
+   "pillars": "丁丑 乙巳 丙寅 乙未",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-05-24 13:43:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000367",
+   "pillars": "庚申 戊子 戊寅 甲寅",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1980-12-31 03:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000369",
+   "pillars": "癸亥 癸亥 乙卯 戊子",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-11-23 23:21:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000370",
+   "pillars": "戊辰 戊午 己酉 戊辰",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-06-23 07:23:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000372",
+   "pillars": "己巳 庚午 丁卯 甲辰",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-07-06 07:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000375",
+   "pillars": "辛未 癸巳 戊戌 己未",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-05-28 14:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000377",
+   "pillars": "丙子 庚寅 丁丑 辛亥",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-02-10 21:02:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000378",
+   "pillars": "癸酉 癸亥 辛酉 庚寅",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-12-06 03:39:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000379",
+   "pillars": "乙亥 己卯 甲子 庚午",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e016",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1995-04-03 11:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000380",
+   "pillars": "戊午 甲寅 己酉 丁卯",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1978-02-16 05:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000388",
+   "pillars": "甲戌 丙寅 壬午 己酉",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-02-25 17:35:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000390",
+   "pillars": "甲子 甲戌 丙申 癸巳",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1984-10-29 09:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000391",
+   "pillars": "壬午 辛亥 庚辰 辛巳",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-11-08 09:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000392",
+   "pillars": "丙子 庚子 己卯 乙亥",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-12-08 21:24:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000394",
+   "pillars": "壬戌 丙午 丁丑 壬寅",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1982-06-23 04:12:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000397",
+   "pillars": "戊寅 己未 辛酉 丁酉",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-07-13 17:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000401",
+   "pillars": "己巳 丙子 庚戌 乙酉",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-12-16 18:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000402",
+   "pillars": "戊寅 癸亥 戊子 己未",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-12-07 13:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000411",
+   "pillars": "丙子 丙申 壬辰 乙巳",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-08-23 10:14:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000412",
+   "pillars": "己卯 辛未 丁卯 丁未",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-07-14 14:27:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000413",
+   "pillars": "癸亥 癸亥 癸卯 壬戌",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-11-11 19:15:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000415",
+   "pillars": "壬午 辛亥 丁酉 癸卯",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2002-11-25 06:22:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000417",
+   "pillars": "丙寅 丙申 辛卯 丁酉",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e014",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1986-08-15 17:02:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000418",
+   "pillars": "丙寅 癸巳 庚辰 壬午",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-06-05 11:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000421",
+   "pillars": "甲申 丙寅 己巳 己巳",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-02-20 10:21:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000422",
+   "pillars": "戊寅 壬戌 辛丑 丙申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-10-21 16:10:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000427",
+   "pillars": "己巳 丙子 己酉 辛未",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-12-15 13:20:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000435",
+   "pillars": "丙子 甲午 庚子 甲申",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1996-07-02 16:32:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000436",
+   "pillars": "辛未 戊戌 乙亥 丙子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-11-01 00:49:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000438",
+   "pillars": "庚午 戊寅 己未 乙丑",
+   "day_branch": "未",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1990-02-23 01:48:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000439",
+   "pillars": "戊辰 乙卯 丙戌 丁酉",
+   "day_branch": "戌",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1988-04-01 18:07:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000441",
+   "pillars": "癸亥 己未 己未 庚午",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-07-30 11:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000447",
+   "pillars": "癸酉 庚申 丙戌 壬辰",
+   "day_branch": "戌",
+   "edges": [
+    {
+     "edge_id": "e014",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1993-09-02 08:50:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000448",
+   "pillars": "庚辰 甲申 癸亥 癸亥",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-09-02 21:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000449",
+   "pillars": "丁丑 癸卯 甲戌 乙丑",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-04-02 01:57:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000450",
+   "pillars": "丁丑 癸丑 乙卯 壬午",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-01-08 12:01:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000455",
+   "pillars": "丁卯 壬子 甲午 辛未",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1987-12-11 14:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000461",
+   "pillars": "辛巳 丙申 辛未 乙未",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-09-05 13:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000462",
+   "pillars": "辛巳 乙未 壬午 丁未",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-07-18 13:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000466",
+   "pillars": "辛酉 戊戌 壬申 辛丑",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1981-10-21 02:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000468",
+   "pillars": "庚辰 戊子 丙寅 辛卯",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-01-03 05:24:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000470",
+   "pillars": "乙亥 戊子 乙酉 戊寅",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-12-20 03:47:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000471",
+   "pillars": "戊寅 己未 壬戌 乙巳",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-07-14 09:49:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000473",
+   "pillars": "壬申 庚戌 癸亥 庚申",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-10-14 15:54:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000475",
+   "pillars": "戊辰 辛酉 己巳 乙丑",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-09-11 01:14:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000477",
+   "pillars": "辛未 辛丑 庚寅 乙酉",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-01-15 17:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000479",
+   "pillars": "己巳 庚午 辛亥 庚寅",
+   "day_branch": "亥",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1989-06-20 03:28:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000480",
+   "pillars": "壬午 甲辰 壬申 丙午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-05-04 11:23:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000481",
+   "pillars": "丁丑 丙午 癸巳 壬戌",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-06-20 19:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000483",
+   "pillars": "丙子 辛丑 癸酉 戊午",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-01-31 12:02:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000484",
+   "pillars": "乙亥 己卯 壬子 甲辰",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-03-22 07:53:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000489",
+   "pillars": "壬申 壬寅 辛未 壬辰",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-02-25 08:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000492",
+   "pillars": "丙子 丙申 丁酉 丙午",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-08-28 12:25:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000493",
+   "pillars": "丁丑 乙巳 庚午 甲申",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-05-28 15:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000494",
+   "pillars": "甲申 壬申 甲申 壬申",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-09-02 15:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000495",
+   "pillars": "癸酉 甲子 庚寅 丙子",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-01-04 00:58:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000499",
+   "pillars": "乙亥 壬午 壬午 丙午",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-06-20 12:39:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000500",
+   "pillars": "庚申 甲申 丁丑 辛丑",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1980-09-01 01:03:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000503",
+   "pillars": "癸未 癸亥 庚子 癸未",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-11-23 14:23:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000504",
+   "pillars": "癸未 癸亥 庚子 癸未",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-11-23 14:23:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000507",
+   "pillars": "辛巳 壬辰 癸卯 癸丑",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-04-10 01:48:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000510",
+   "pillars": "壬申 癸丑 壬寅 癸卯",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e007",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1993-01-21 06:47:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000512",
+   "pillars": "丁卯 己酉 丁丑 丁未",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1987-09-25 13:27:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000513",
+   "pillars": "甲戌 丁卯 辛亥 甲午",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-03-26 11:46:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000515",
+   "pillars": "甲戌 戊辰 丁丑 甲辰",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-04-21 08:34:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000519",
+   "pillars": "辛巳 丁酉 戊子 戊午",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2001-09-22 12:18:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000522",
+   "pillars": "辛巳 丁酉 甲戌 庚午",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-09-08 12:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000524",
+   "pillars": "己巳 丙寅 戊戌 丁巳",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-02-07 10:05:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000527",
+   "pillars": "丁丑 壬子 甲申 癸酉",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-12-08 18:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000528",
+   "pillars": "丙寅 甲午 甲辰 己巳",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-06-29 10:04:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000529",
+   "pillars": "己卯 辛未 丁丑 甲辰",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1999-07-24 07:26:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000530",
+   "pillars": "癸酉 甲子 丁亥 庚戌",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-01-01 19:52:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000531",
+   "pillars": "乙亥 庚辰 己丑 癸酉",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-04-28 17:07:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000536",
+   "pillars": "辛未 庚寅 戊申 庚申",
+   "day_branch": "申",
+   "edges": [
+    {
+     "edge_id": "e007",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1991-02-07 15:37:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000542",
+   "pillars": "庚辰 戊子 癸丑 庚申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-12-21 15:25:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000543",
+   "pillars": "己巳 癸酉 庚子 庚辰",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-10-07 07:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000544",
+   "pillars": "壬午 甲辰 辛未 乙未",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-05-03 13:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000548",
+   "pillars": "己卯 辛未 壬申 丁未",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-07-19 13:22:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000550",
+   "pillars": "丙寅 戊戌 乙卯 辛巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-11-07 10:28:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000551",
+   "pillars": "壬戌 丙午 甲申 丁卯",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1982-06-30 06:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000557",
+   "pillars": "丙戌 辛卯 庚申 壬午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2006-04-01 11:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000558",
+   "pillars": "辛巳 丙申 戊辰 癸丑",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-09-02 01:00:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000560",
+   "pillars": "丁丑 乙巳 丁巳 癸卯",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-05-15 06:14:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000561",
+   "pillars": "丁丑 戊申 庚寅 己卯",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1997-08-16 05:59:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000572",
+   "pillars": "辛未 丙申 庚戌 戊子",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-08-08 23:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000579",
+   "pillars": "癸未 乙丑 庚寅 己卯",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-01-12 06:34:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000581",
+   "pillars": "甲申 戊辰 癸未 辛酉",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-05-04 18:07:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000583",
+   "pillars": "戊辰 癸亥 乙酉 甲申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-11-26 16:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000585",
+   "pillars": "丙子 辛丑 己巳 戊辰",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-01-27 07:04:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000587",
+   "pillars": "癸酉 壬戌 辛未 丙申",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-10-17 15:11:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000591",
+   "pillars": "庚午 甲申 甲寅 己巳",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1990-08-17 10:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000592",
+   "pillars": "丁卯 壬寅 壬寅 戊申",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e014",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1987-02-22 15:48:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000593",
+   "pillars": "乙丑 庚辰 丁亥 甲辰",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-04-18 07:46:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000594",
+   "pillars": "庚辰 己丑 己巳 壬申",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-01-06 16:12:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000595",
+   "pillars": "癸酉 壬戌 壬申 丙午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-10-18 12:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000597",
+   "pillars": "戊寅 癸亥 乙丑 己卯",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-11-14 05:43:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000598",
+   "pillars": "辛巳 辛丑 己卯 乙亥",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-01-11 21:52:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000599",
+   "pillars": "辛巳 辛丑 己卯 己巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-01-11 09:52:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000600",
+   "pillars": "辛未 甲午 丁丑 甲辰",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1991-07-06 07:17:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000601",
+   "pillars": "癸酉 辛酉 壬寅 丁未",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-09-18 13:29:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000602",
+   "pillars": "辛巳 庚寅 癸丑 己未",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2001-02-19 14:16:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000605",
+   "pillars": "辛未 辛卯 丙申 辛卯",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-03-27 06:58:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000606",
+   "pillars": "庚午 己丑 甲申 辛未",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-01-14 13:54:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000612",
+   "pillars": "甲戌 辛未 丁巳 丁未",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-07-30 13:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000616",
+   "pillars": "庚辰 辛巳 辛巳 甲午",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-05-23 11:51:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000619",
+   "pillars": "庚辰 丙戌 丙辰 丙申",
+   "day_branch": "辰",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2000-10-25 16:59:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000621",
+   "pillars": "己卯 癸酉 壬辰 癸卯",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-10-07 05:12:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000624",
+   "pillars": "己卯 癸酉 己丑 壬申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-10-04 15:03:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000627",
+   "pillars": "丙子 戊戌 乙酉 丙戌",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-10-15 19:22:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000638",
+   "pillars": "丁丑 己酉 丁巳 壬子",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-09-12 23:50:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000643",
+   "pillars": "丙子 庚寅 乙亥 壬午",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-02-08 12:58:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000648",
+   "pillars": "丁丑 壬子 戊子 丁巳",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-12-12 09:11:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000650",
+   "pillars": "庚辰 庚辰 壬寅 壬寅",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-04-14 04:09:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000651",
+   "pillars": "乙亥 壬午 丙戌 癸巳",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-06-24 10:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000652",
+   "pillars": "己卯 辛未 乙酉 丙子",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1999-08-01 00:14:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000653",
+   "pillars": "辛未 庚寅 乙卯 丙戌",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-02-14 20:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000655",
+   "pillars": "戊寅 甲寅 丙戌 癸巳",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-02-08 10:52:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000656",
+   "pillars": "乙酉 庚辰 庚申 甲申",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2005-04-06 16:54:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000658",
+   "pillars": "甲申 壬申 庚申 壬午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-08-09 11:57:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000659",
+   "pillars": "丁丑 己酉 癸丑 乙卯",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-09-08 06:21:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000660",
+   "pillars": "庚辰 壬午 乙未 癸未",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-06-06 14:08:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000664",
+   "pillars": "辛巳 辛卯 壬午 辛亥",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-03-20 21:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000667",
+   "pillars": "己卯 庚午 丙辰 庚子",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-07-03 23:43:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000668",
+   "pillars": "己卯 庚午 丙辰 庚子",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-07-03 23:04:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000670",
+   "pillars": "己巳 甲戌 乙巳 乙酉",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-10-12 18:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000671",
+   "pillars": "己巳 甲戌 乙巳 丙戌",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-10-12 19:02:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000674",
+   "pillars": "庚辰 壬午 辛亥 壬辰",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-06-22 08:21:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000676",
+   "pillars": "壬申 庚戌 壬申 辛丑",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-10-23 01:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000682",
+   "pillars": "甲申 辛未 辛亥 己亥",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-07-31 22:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000684",
+   "pillars": "己巳 丙子 戊申 戊午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-12-14 11:53:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000686",
+   "pillars": "甲申 癸酉 丙申 乙未",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-09-14 13:11:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000687",
+   "pillars": "癸亥 壬戌 戊戌 乙卯",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-11-06 05:28:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000689",
+   "pillars": "甲戌 戊辰 丙寅 乙未",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-04-10 13:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000692",
+   "pillars": "己卯 丁丑 甲戌 庚午",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-01-17 12:59:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000693",
+   "pillars": "甲戌 乙亥 乙卯 丁丑",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1994-11-25 01:10:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000694",
+   "pillars": "己巳 丁丑 丁酉 庚子",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-02-01 00:03:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000704",
+   "pillars": "壬午 甲辰 丁未 戊申",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-04-09 16:09:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000710",
+   "pillars": "甲申 丁卯 辛卯 乙未",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-03-13 13:16:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000712",
+   "pillars": "戊辰 己未 己巳 戊辰",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-07-13 07:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000714",
+   "pillars": "辛酉 戊戌 辛巳 癸巳",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1981-10-30 09:02:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000720",
+   "pillars": "癸亥 乙卯 甲寅 己巳",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-03-27 10:59:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000721",
+   "pillars": "癸亥 乙卯 甲寅 庚午",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-03-27 11:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000728",
+   "pillars": "己未 癸酉 甲辰 辛未",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1979-10-04 13:53:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000736",
+   "pillars": "辛酉 辛卯 丙申 戊戌",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1981-03-19 20:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000737",
+   "pillars": "辛酉 癸巳 辛卯 戊戌",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1981-05-13 20:21:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000738",
+   "pillars": "甲申 癸酉 己未 甲子",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-10-07 00:28:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000740",
+   "pillars": "丙子 丁酉 庚午 乙酉",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1996-09-30 17:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000744",
+   "pillars": "癸未 甲子 丁丑 戊申",
+   "day_branch": "丑",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2003-12-30 15:10:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000753",
+   "pillars": "丁卯 壬子 丙申 戊戌",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-12-13 20:41:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000754",
+   "pillars": "丁卯 壬子 丙申 己亥",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-12-13 21:57:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000755",
+   "pillars": "丙戌 乙未 癸卯 丁巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2006-07-13 09:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000757",
+   "pillars": "丙子 甲午 庚子 甲申",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1996-07-02 16:06:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000758",
+   "pillars": "壬申 庚戌 戊午 辛酉",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-10-09 17:13:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000764",
+   "pillars": "癸亥 庚申 辛未 甲午",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-08-11 11:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000765",
+   "pillars": "壬午 丙午 甲戌 庚午",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-07-05 12:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000769",
+   "pillars": "庚午 戊寅 庚子 乙酉",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1990-02-04 17:13:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000771",
+   "pillars": "癸亥 壬戌 壬午 庚子",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1983-10-21 00:48:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000775",
+   "pillars": "戊寅 丁巳 丁卯 辛亥",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-05-20 21:57:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000780",
+   "pillars": "丁卯 癸卯 壬申 辛丑",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-03-24 01:58:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000786",
+   "pillars": "己卯 丁丑 庚辰 丁丑",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-01-23 02:24:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000787",
+   "pillars": "丁卯 癸卯 戊寅 甲子",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-03-30 23:02:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000788",
+   "pillars": "戊辰 甲寅 庚子 戊子",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-02-15 23:13:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000789",
+   "pillars": "癸酉 庚申 庚午 丙戌",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-08-17 19:33:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000791",
+   "pillars": "丁丑 辛亥 乙卯 戊寅",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-11-09 04:01:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000792",
+   "pillars": "戊寅 戊午 丁未 癸卯",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-06-29 05:40:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000793",
+   "pillars": "甲申 丙子 己巳 辛未",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2004-12-16 13:29:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000796",
+   "pillars": "丁丑 辛亥 丁丑 戊申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-12-01 15:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000797",
+   "pillars": "丁丑 己酉 丙子 丙申",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-10-01 15:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000804",
+   "pillars": "戊辰 壬戌 丁未 壬寅",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-10-19 04:33:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000806",
+   "pillars": "丙子 丙申 甲辰 辛未",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-09-04 14:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000807",
+   "pillars": "乙亥 丙戌 戊寅 癸亥",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-10-14 21:38:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000814",
+   "pillars": "癸酉 癸亥 丁酉 戊申",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-11-12 15:54:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000815",
+   "pillars": "乙亥 丁亥 戊辰 庚申",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1995-12-03 16:59:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000819",
+   "pillars": "丁丑 壬子 甲辰 庚午",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-12-28 12:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000821",
+   "pillars": "壬午 庚戌 壬申 癸卯",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-10-31 06:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000822",
+   "pillars": "辛巳 癸巳 戊子 癸丑",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-05-25 02:07:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000825",
+   "pillars": "壬申 己酉 丁未 壬寅",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1992-09-28 04:55:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000828",
+   "pillars": "戊辰 壬戌 庚申 乙酉",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-11-01 18:56:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000829",
+   "pillars": "辛巳 壬辰 丙寅 己亥",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-05-03 21:41:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000838",
+   "pillars": "庚戌 庚辰 己未 戊辰",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1970-04-09 07:05:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000840",
+   "pillars": "辛巳 乙未 丁酉 庚戌",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-08-02 19:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000841",
+   "pillars": "丙子 戊戌 丁亥 庚子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-10-17 00:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000842",
+   "pillars": "己未 乙亥 庚辰 乙酉",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1979-11-09 17:32:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000843",
+   "pillars": "庚戌 庚辰 己未 戊辰",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1970-04-09 07:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000844",
+   "pillars": "丁丑 丁未 丙辰 己亥",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-07-13 22:43:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000845",
+   "pillars": "癸酉 癸亥 戊戌 己未",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-11-13 14:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000849",
+   "pillars": "甲申 丁卯 庚寅 癸未",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2004-03-12 14:44:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000850",
+   "pillars": "庚午 戊寅 壬寅 丙午",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-02-06 12:58:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000855",
+   "pillars": "戊寅 乙丑 乙酉 戊寅",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-02-02 04:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000856",
+   "pillars": "乙酉 丙戌 乙酉 辛巳",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2005-10-28 10:17:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000857",
+   "pillars": "戊辰 甲子 庚申 壬午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1988-12-31 11:48:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000859",
+   "pillars": "甲子 丙寅 乙亥 丙子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1984-02-11 00:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000861",
+   "pillars": "癸酉 甲寅 庚午 乙酉",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-02-18 17:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000862",
+   "pillars": "庚辰 癸未 丁亥 己酉",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-07-28 17:20:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000864",
+   "pillars": "己巳 丙子 乙卯 甲申",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-12-21 16:36:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000865",
+   "pillars": "辛未 丙申 戊午 癸亥",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-08-16 22:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000871",
+   "pillars": "己巳 丙子 壬寅 庚子",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-12-08 00:24:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000872",
+   "pillars": "庚辰 癸未 戊辰 丙辰",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-07-09 08:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000877",
+   "pillars": "丙寅 庚子 乙巳 己卯",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-12-27 06:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000878",
+   "pillars": "辛巳 戊戌 癸亥 丁巳",
+   "day_branch": "亥",
+   "edges": [
+    {
+     "edge_id": "e009",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 2,
+   "birth_dt": "2001-10-27 10:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000879",
+   "pillars": "辛巳 癸巳 庚寅 壬午",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-05-27 12:40:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000881",
+   "pillars": "己酉 戊辰 戊午 辛酉",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1969-04-13 18:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000886",
+   "pillars": "戊子 丙辰 乙酉 庚辰",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2008-04-15 08:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000887",
+   "pillars": "己卯 乙亥 丁亥 庚戌",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-12-01 19:10:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000889",
+   "pillars": "乙酉 乙酉 乙巳 壬午",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2005-09-18 11:16:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000890",
+   "pillars": "己卯 甲戌 己亥 丁卯",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-10-14 05:19:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000892",
+   "pillars": "庚午 丙戌 辛亥 己丑",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1990-10-13 02:21:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000894",
+   "pillars": "壬戌 己酉 庚子 戊子",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1982-09-14 23:55:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000896",
+   "pillars": "丙寅 庚寅 己丑 壬申",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1986-02-14 16:25:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000897",
+   "pillars": "甲子 丁丑 丙寅 庚子",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-01-27 23:57:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000900",
+   "pillars": "戊寅 乙卯 丙寅 戊子",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-03-20 00:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000901",
+   "pillars": "癸亥 丙辰 己卯 丙寅",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-04-21 04:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000902",
+   "pillars": "己卯 甲戌 乙巳 戊子",
+   "day_branch": "巳",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-10-20 23:35:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000903",
+   "pillars": "癸酉 庚申 己丑 庚午",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-09-05 12:32:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000904",
+   "pillars": "乙酉 戊子 乙丑 辛巳",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2005-12-07 09:05:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000907",
+   "pillars": "己卯 丙寅 甲午 甲子",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e014",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1999-02-11 00:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000909",
+   "pillars": "戊子 壬戌 丁未 辛亥",
+   "day_branch": "未",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2008-11-03 22:27:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000911",
+   "pillars": "辛巳 戊戌 壬申 丙午",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2001-11-05 12:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000912",
+   "pillars": "戊午 乙卯 甲午 癸酉",
+   "day_branch": "午",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1978-04-02 17:40:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000914",
+   "pillars": "己未 癸酉 甲辰 辛未",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1979-10-04 14:26:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000916",
+   "pillars": "戊寅 甲子 乙卯 辛巳",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-01-03 09:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000917",
+   "pillars": "丁卯 壬子 辛亥 壬辰",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-12-28 08:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000918",
+   "pillars": "甲寅 丙寅 壬寅 辛丑",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1974-03-02 01:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000920",
+   "pillars": "壬申 癸丑 己亥 癸酉",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-01-18 17:01:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000924",
+   "pillars": "辛未 丙申 乙亥 癸未",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-09-02 14:45:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000928",
+   "pillars": "癸酉 丁巳 戊子 乙卯",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1993-05-07 05:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000932",
+   "pillars": "壬午 癸丑 戊申 乙卯",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-02-04 05:50:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000935",
+   "pillars": "辛巳 辛卯 丁亥 辛丑",
+   "day_branch": "亥",
+   "edges": [
+    {
+     "edge_id": "e007",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2001-03-25 01:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000937",
+   "pillars": "丙子 庚子 庚辰 戊寅",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1996-12-09 04:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000938",
+   "pillars": "丁卯 丁未 丁亥 己酉",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1987-08-06 17:30:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000939",
+   "pillars": "丁卯 癸丑 癸未 乙卯",
+   "day_branch": "未",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1988-01-29 06:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000940",
+   "pillars": "壬午 癸丑 丁亥 壬子",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-01-14 23:16:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000941",
+   "pillars": "壬午 己酉 己丑 丙子",
+   "day_branch": "丑",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2002-09-18 23:16:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000943",
+   "pillars": "壬午 癸丑 丙戌 甲午",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2003-01-13 12:24:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000947",
+   "pillars": "癸亥 辛酉 庚戌 己卯",
+   "day_branch": "戌",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1983-09-19 05:14:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000957",
+   "pillars": "壬午 庚戌 壬子 庚戌",
+   "day_branch": "子",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2002-10-11 20:30:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000960",
+   "pillars": "丙戌 丙申 庚寅 己卯",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e010",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2006-08-29 06:37:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000961",
+   "pillars": "丙戌 丙申 辛卯 辛卯",
+   "day_branch": "卯",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2006-08-30 06:37:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000964",
+   "pillars": "壬申 壬寅 丙寅 辛卯",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1992-02-20 05:18:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000965",
+   "pillars": "壬午 乙巳 甲午 丙子",
+   "day_branch": "午",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "2002-05-26 23:38:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000968",
+   "pillars": "辛酉 丙申 丙寅 甲午",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1981-08-16 11:09:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000969",
+   "pillars": "丙辰 庚寅 壬辰 庚戌",
+   "day_branch": "辰",
+   "edges": [
+    {
+     "edge_id": "e013",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1976-02-10 20:17:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000970",
+   "pillars": "庚午 戊寅 丙寅 丙申",
+   "day_branch": "寅",
+   "edges": [
+    {
+     "edge_id": "e011",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1990-03-02 15:15:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000971",
+   "pillars": "庚辰 戊子 丙辰 己丑",
+   "day_branch": "辰",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "2000-12-24 02:03:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000973",
+   "pillars": "戊寅 壬戌 丁酉 癸卯",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e015",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1998-10-17 05:20:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000974",
+   "pillars": "己卯 乙亥 甲子 辛未",
+   "day_branch": "子",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1999-11-08 14:00:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000977",
+   "pillars": "辛未 丁酉 丁酉 癸卯",
+   "day_branch": "酉",
+   "edges": [
+    {
+     "edge_id": "e012",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "P"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1991-09-24 06:20:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000978",
+   "pillars": "丁丑 丙午 丁酉 辛丑",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1997-06-24 02:56:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000980",
+   "pillars": "丁卯 己酉 己卯 丁卯",
+   "day_branch": "卯",
+   "edges": [
+    {
+     "edge_id": "e008",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "N"
+   ],
+   "triggered": true,
+   "n_chong_edges": 1,
+   "birth_dt": "1987-09-27 05:02:00",
+   "gender": "女"
+  },
+  {
+   "case_id": "RF-2026-000981",
+   "pillars": "甲子 丁丑 庚申 庚辰",
+   "day_branch": "申",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1985-01-21 07:26:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000986",
+   "pillars": "己巳 庚午 己酉 戊辰",
+   "day_branch": "酉",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1989-06-18 08:36:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000989",
+   "pillars": "庚午 己丑 戊寅 丁巳",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-01-08 09:45:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000990",
+   "pillars": "庚午 己丑 戊寅 癸亥",
+   "day_branch": "寅",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1991-01-08 21:50:00",
+   "gender": "男"
+  },
+  {
+   "case_id": "RF-2026-000992",
+   "pillars": "戊寅 戊午 辛亥 庚寅",
+   "day_branch": "亥",
+   "edges": [],
+   "direction": "no_chong",
+   "prediction_letters": [],
+   "triggered": false,
+   "n_chong_edges": 0,
+   "birth_dt": "1998-07-03 03:34:00",
+   "gender": "男"
+  }
+ ]
+}

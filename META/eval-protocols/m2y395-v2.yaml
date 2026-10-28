@@ -1,0 +1,34 @@
+protocol_id: m2y395-v2
+claim_id: M2-Y-395
+frozen_at: "2026-10-28T22:34:00+08:00"
+commit: 3c49d91d
+trigger_definition: >-
+  原局（relations.edges 中 scope=natal、kind=chong）存在成员含日支地址 D.b 的边，
+  即「夫妻宫被冲」。计数单位 = 一个人（case）：同一人多条冲边只算一例，
+  多条同向取该方向，方向冲突（self_controls 与 other_controls 并存，或含 no_ke 的混合）记 ambiguous。
+  无冲的 case 记 triggered=false，不进分母。
+direction_rule: >-
+  「夫妻宫被冲，谁制谁」：对本气五行比较，KE_MAP[wx(D.b)] == wx(other) → self_controls（我制对方）；
+  KE_MAP[wx(other)] == wx(D.b) → other_controls（对方制我）；其余（含同五行）→ no_ke。
+  判定函数复用 tools/m2y395_direction.py 的 direction_of（只读，未改）；KE_MAP/ZHI_TO_WUXING
+  取自 engine/predicates/types.py:60-79。方向来自盘面与五行克序，不追认答案、不按标签挑案例。
+label_map:
+  negative: [N]
+  positive: [P]
+prediction_rule:
+  self_controls: positive
+  other_controls: negative
+scored_set_rule: >-
+  scored 集 = triggered is true 且 prediction_letters 非空且 answer_letter 非空。
+  self_controls 预测 ["P"]（婚姻不差）、other_controls 预测 ["N"]（负面婚姻事件）；
+  no_ke / ambiguous 显式 prediction_letters: [] 记 n_abstain；无冲 triggered=false 记 n_not_triggered。
+  样本固定 342 例（label ∈ {negative, positive}，40 例 unknown 不折入分母）；敏感性集 = 剔除
+  tasks/T-153/PROMPT.md §9 列名的 7 例已知误判后重算，两套各自报分。
+baseline: >-
+  baseline_single：同一 scored 集上出现最多的单个字母的命中率（并列按字母序）。
+  不借用 342 全集的 54.39%（多数类随 scored 集变化，必须在本集上重算）。
+decision_rule: >-
+  先看样本量：n_scored < 50 一律判「样本不足」，不论区间如何落。
+  否则按 Wilson 95% 区间判定：上界 < baseline_single → 「否证」（方向 alone 在新标签上仍被否证）；
+  下界 > baseline_single → 「有信号」；其余 → 「样本不足」，不得宣布有效。
+  342 与敏感性两套结论若翻转 → 判「标签不足以裁决」。baseline_same_k 仅作乐观参考，不参与判定。
