@@ -24,7 +24,9 @@
 
 用法：python -m tools.tiekoulu_eval
 产物：META/tiekoulu-eval-v1.json、META/tiekoulu-eval-v1.md
-退出码：0 = 管道跑完并出分；1 = 结构性失败（数据缺失 / 全部期数失败）
+映射：L4 的方向预测表与不映射理由在 `META/claim-instrument-map-v1.yaml`（T-150 §4
+      「尺子与映射分离」搬出），本文件只负责读取与计分；映射表缺失即结构性失败。
+退出码：0 = 管道跑完并出分；1 = 结构性失败（数据缺失 / 映射表不可用 / 全部期数失败）
 """
 from __future__ import annotations
 
@@ -70,39 +72,35 @@ CATEGORY_RULES: tuple[tuple[str, str], ...] = (
 # 原局类：断语 time_window=natal，只有这些类别能当断语的检验场。流年属岁运层面，单列附表。
 NATAL_CATEGORIES = frozenset({"学历", "婚姻", "子女", "职业", "财富", "家境", "父母", "其他"})
 
-# L4 方向预测表：只收录「断语本身给出了可对照方向」的条目。
-# predict 是断语命中时预测的答案字母集合；k = len(predict)，基线也按 k 个字母算。
-# 未收录的条目在报告 §6 逐条说明理由，不做静默丢弃。
-PREDICTION_MAP: dict[str, dict[str, Any]] = {
-    "G-SP-165": {"category": "学历", "predict": ("A", "B"),
-                 "why": "印星空亡→学业难成，方向=低学历（小学及以下/初高中技校）"},
-    "G-SP-293": {"category": "子女", "predict": ("A",),
-                 "why": "时柱空亡→子女缘薄，方向=无子女"},
-    "G-SP-071": {"category": "财富", "predict": ("A",),
-                 "why": "无财星→一生难富裕，方向=负债～温饱"},
-    "G-SP-130": {"category": "婚姻", "predict": ("B",),
-                 "why": "配偶星守宫→不离不弃，方向=一婚"},
-    "M1-D-298": {"category": "婚姻", "predict": ("B",),
-                 "why": "夫妻宫为用不受刑冲穿破合→婚姻较好，方向=一婚"},
-    "M2-Y-251": {"category": "职业", "predict": ("B",),
-                 "why": "食伤旺→倾向自由职业，方向=自由职业"},
-    "M2-Y-014": {"category": "财富", "predict": ("A", "B"),
-                 "why": "财星受克→财不完整财不大，方向=负债～温饱/小康"},
-}
-
-NO_MAP_REASON = {
-    "M1-D-009": "断语陈述的是「哪种做功方式最常见」的统计性判断，不指向任何一期命主的具体选项",
-    "M1-D-013": "断语陈述墓用结构的机制，未给出可对照的吉凶/程度方向",
-    "M1-D-242": "断语方向明确（学历较高），但 36 期内命中 0 次，无法验证",
-    "M3-R-013": "断语讲「财星虚透主才华」，题库无「才华」类题目，无法对应到选项",
-    "M3-R-166": "断语属健康域，题库 36 期无任何健康题，无对应类别",
-}
+# L4 方向预测表已搬到 META/claim-instrument-map-v1.yaml（T-150 §4 尺子与映射分离）。
+# 这里只保留路径与 schema 名；搬家不改逻辑、不改阈值、不改题。
+MAP_PATH = ROOT / "META" / "claim-instrument-map-v1.yaml"
+MAP_SCHEMA = "claim-instrument-map/v1"
 
 PERM_ROUNDS = 2000
 PERM_SEED = 20261028
 MIN_TYPE_N = 5             # 题目类型样本量下限：低于此不做字母级统计
 MIN_HIT_FOR_STATS = 3      # 关联度：命中组/未命中组样本下限
 MIN_HIT_FOR_PRED = 5       # 方向预测：命中组样本下限
+
+
+# ─────────────────────────────────────────────────────────────── 映射层
+
+def load_instrument_map(path: pathlib.Path = MAP_PATH) -> dict[str, Any]:
+    """读尺子映射表（T-150 §4）。缺失或 schema 不符 → 结构性失败，不静默跳过 L4。"""
+    if not path.exists():
+        raise FileNotFoundError(f"尺子映射表缺失：{path}")
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or data.get("schema") != MAP_SCHEMA:
+        raise ValueError(f"尺子映射表 schema 不符（期望 {MAP_SCHEMA}）：{path}")
+    for key in ("prediction_map", "no_map_reason"):
+        if not isinstance(data.get(key), dict):
+            raise ValueError(f"尺子映射表缺 {key} 段：{path}")
+    for cid, spec in data["prediction_map"].items():
+        if not isinstance(spec, dict) or not spec.get("category") \
+                or not spec.get("predict") or not spec.get("why"):
+            raise ValueError(f"尺子映射表 {cid} 缺 category / predict / why：{path}")
+    return data
 
 
 # ─────────────────────────────────────────────────────────────── 解析层
@@ -329,6 +327,11 @@ def main() -> int:
     if not BANK.exists():
         print(f"[FATAL] 答案集缺失：{BANK}", file=sys.stderr)
         return 1
+    try:
+        instrument_map = load_instrument_map()
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        print(f"[FATAL] 尺子映射表不可用：{exc}", file=sys.stderr)
+        return 1
 
     bank = json.loads(BANK.read_text(encoding="utf-8"))
     claims, skipped_claims = load_claims()
@@ -432,10 +435,10 @@ def main() -> int:
     for c in claims:
         cid = c["id"]
         hit_set = {pid for pid, st in states[cid].items() if st == "candidate"}
-        spec = PREDICTION_MAP.get(cid)
+        spec = instrument_map["prediction_map"].get(cid)
         if not spec:
             pred_rows.append({"claim": cid, "category": None, "acc_hit": None,
-                              "note": NO_MAP_REASON.get(cid, "未建立可对照映射"),
+                              "note": instrument_map["no_map_reason"].get(cid, "未建立可对照映射"),
                               "statement": c["statement"]})
             continue
         cat = spec["category"]

@@ -1,6 +1,13 @@
 """engine/claims/condition_ir/ir.py · 条件 IR 求值（契约 23 §二/§三/§五）。
 
 三值逻辑：True / False / None(unknown)。unknown 不得折叠成 False 或 True。
+
+v1.4（T-150）把「结构是否触发」与「触发后结论成不成」拆成两个字段：
+  - `triggered`: True / False / None —— 结构（前置 + 框架）是否成立
+  - `outcome`:   "success" / "fail" / "unknown" —— 结构成立后，失效条件是否推翻断语
+`triggered` 不是 True 时 `outcome` 必为 "unknown"；`invalidator=None` 必为 "unknown"。
+旧字段 `state` / `value` / `reason` / `bindings` / `failed_atoms` / `unknown_facts` /
+`near_miss` / `framework` 语义不变（`state` 仍按契约 23 §五 的旧优先级合成）。
 """
 from __future__ import annotations
 
@@ -146,6 +153,13 @@ def evaluate(node: Optional[dict], ctx: dict, env: Optional[dict[str, str]] = No
 # ------------------------------------------------------------------ 断语求值
 
 def evaluate_claim(claim: dict, ctx: dict) -> dict[str, Any]:
+    """断语求值：先判「结构触发」（preconditions + 框架），再判「成败」（invalidators）。
+
+    判定表见契约 23 §五.1。两条硬规则：
+    - `triggered` 不是 True 时 `outcome` 一律 "unknown"（不存在 False + fail）。
+    - `preconditions` 求值为 False / None 时短路，**不**求值 `invalidators`
+      （与 v1.3 一致：前置不成立就没有结构可谈）。
+    """
     spec = claim.get("conditions_v2") or {}
     out: dict[str, Any] = {
         "claim_id": claim.get("id"),
@@ -157,25 +171,21 @@ def evaluate_claim(claim: dict, ctx: dict) -> dict[str, Any]:
         "near_miss": [],
         "framework": {"dependency": spec.get("framework_dependency", "requires_school_frame"),
                       "verdict": "pass"},
+        "triggered": None,
+        "outcome": "unknown",
     }
 
-    inv = evaluate(spec.get("invalidators"), ctx)
-    if inv.value is True:
-        out.update(state="rejected", value=False, failed_atoms=inv.failed,
-                   near_miss=inv.failed)
-        out["reason"] = "invalidator 成立"
-        return out
-
+    # 先算前置：拿不到 triggered 就没法把「结构不存在」与「结构存在但失败」分开。
     pre = evaluate(spec.get("preconditions"), ctx)
     out.update(value=pre.value, bindings=pre.bindings,
                failed_atoms=pre.failed, unknown_facts=pre.unknowns, near_miss=pre.failed)
 
     if pre.value is False:
-        out["state"] = "rejected"
+        out.update(state="rejected", triggered=False)
         out["reason"] = "preconditions 不成立"
         return out
     if pre.value is None:
-        out["state"] = "needs_fact"
+        out.update(state="needs_fact", triggered=None)
         out["reason"] = "preconditions 含未知"
         return out
 
@@ -185,31 +195,45 @@ def evaluate_claim(claim: dict, ctx: dict) -> dict[str, Any]:
         cited = (ctx.get("cited") or {}).get(pair)
         if cited is None:
             out["framework"]["verdict"] = "unknown"
-            out["state"] = "evidence_only"
+            out.update(state="evidence_only", triggered=None)
             out["reason"] = f"配对命题 {pair} 未裁决"
             return out
         if cited is not True:
             out["framework"]["verdict"] = "reject"
-            out["state"] = "rejected"
+            out.update(state="rejected", triggered=False)
             out["reason"] = f"配对命题 {pair} 未成立"
             return out
     elif dep == "requires_school_frame":
         frame = spec.get("frame_atom")
         if not frame:
             out["framework"]["verdict"] = "unknown"
-            out["state"] = "evidence_only"
+            out.update(state="evidence_only", triggered=None)
             out["reason"] = "缺少 frame_atom（框架前置）"
             return out
         fo = evaluate(frame, ctx)
         if fo.value is not True:
             out["framework"]["verdict"] = "unknown" if fo.value is None else "reject"
-            out["state"] = "evidence_only"
+            # 框架假 = 结构确实不成立（False）；框架未知 = 还不知道（None），不得折叠。
+            out.update(state="evidence_only",
+                       triggered=None if fo.value is None else False)
             out["reason"] = "框架前置未成立"
             return out
         out["framework"]["frame_detail"] = fo.bindings
 
+    # 前置 + 框架成立：结构已触发，此时失效条件才决定成败。
+    inv = evaluate(spec.get("invalidators"), ctx)
+    out["triggered"] = True
+    if inv.value is True:
+        # 与 v1.3 输出保持一致：失效条件成立时 value=False、bindings 清空、
+        # failed_atoms / near_miss 取失效条件自身（不是 preconditions）。
+        out.update(state="rejected", value=False, bindings={},
+                   failed_atoms=inv.failed, near_miss=inv.failed, outcome="fail")
+        out["reason"] = "invalidator 成立"
+        return out
+
     out["state"] = "candidate"
     out["reason"] = "前置条件全部成立"
+    out["outcome"] = "success" if inv.value is False else "unknown"
     return out
 
 

@@ -1,6 +1,8 @@
 # 契约 23 · 断语条件协议 v1（Claim Condition Protocol）
 
 > 状态：`accepted`（已接受）· 2026-10-26
+> 契约版本：`v1.4`（2026-10-28，T-150 新增 `triggered` / `outcome`；**原子表本身仍为 `v1.2`**，
+> 本条不新增、不改动任何原子语义）
 > 上位裁决：[ADR-001](../../docs/adr/ADR-001-engine-agent-boundary.md)、[ADR-003](../../docs/adr/ADR-003-claim-conditions-and-school-routing.md)
 > 本契约只定义**断语如何被条件化、如何求值、如何被否决**。它不新增理论、不改生产权重与路由，也不授权任何规则晋升。
 
@@ -281,7 +283,9 @@ v1.0 把 `wuhe` / `sanhe` / `sanhui` / `ganzhi_zihe` 一律算「被合」，导
 ```json
 {
   "claim_id": "M1-D-247",
-  "state": "candidate | needs_fact | rejected",
+  "state": "candidate | needs_fact | rejected | evidence_only",
+  "triggered": true,
+  "outcome": "success | fail | unknown",
   "value": true,
   "bindings": {"subject": "M.s", "object": "Y.b", "edges": ["e012"]},
   "failed_atoms": [],
@@ -291,13 +295,55 @@ v1.0 把 `wuhe` / `sanhe` / `sanhui` / `ganzhi_zihe` 一律算「被合」，导
 }
 ```
 
-`state` 判定顺序：
+### 5.1 触发器 / 结果分离（v1.4，T-150）
+
+**问题**：v1.3 把「结构不存在」与「结构存在但失败」都压成 `rejected`，正确率无法归因——
+断语没命中，是结构压根没出现，还是结构出现而断语说错了？两者的含义相反。
+
+**修法**：新增两个字段，一句话分工：
+
+- `triggered: bool | None` —— **结构是否触发**：`preconditions` 与框架前置是否全部成立。
+  `True` 成立 / `False` 确定不成立 / `None` 事实不足（未知）。
+- `outcome: "success" | "fail" | "unknown"` —— 结构触发后，**失效条件是否推翻断语**。
+  `success` 未被推翻 / `fail` 被推翻 / `unknown` 失效条件本身未知。
+
+所有评测只在 `triggered is True` 的集合内计分，口径见 `META/eval-protocol-v1.md`。
+
+判定表（实现：`engine/claims/condition_ir/ir.py::evaluate_claim`；逐行由
+`tests/claims/test_claim_contract.py` 覆盖）：
+
+| # | 情形 | `triggered` | `outcome` | `state`（v1.3 旧值，不变） |
+|---|---|---|---|---|
+| 1 | `preconditions` 求值 = `False` | `False` | `unknown` | `rejected` |
+| 2 | `preconditions` 求值 = `None` | `None` | `unknown` | `needs_fact` |
+| 3 | `requires_pair`，配对命题 = `False` | `False` | `unknown` | `rejected` |
+| 4 | `requires_pair`，配对命题 = `None` / 缺失 | `None` | `unknown` | `evidence_only` |
+| 5 | `requires_school_frame`，`frame_atom` 缺失或求值 = `None` | `None` | `unknown` | `evidence_only` |
+| 6 | `requires_school_frame`，`frame_atom` 求值 = `False` | `False` | `unknown` | `evidence_only` |
+| 7 | 前置 + 框架成立，`invalidators` = `True` | `True` | `fail` | `rejected` |
+| 8 | 前置 + 框架成立，`invalidators` = `False` | `True` | `success` | `candidate` |
+| 9 | 前置 + 框架成立，`invalidators` = `None` | `True` | `unknown` | `candidate` |
+
+硬规则（实现违约即度量器拒绝该条输入，退出码 2）：
+
+1. `triggered` 不是 `True` 时，`outcome` **必须**是 `unknown`；`triggered=False` + `outcome=fail`
+   这种组合不存在。
+2. `invalidators = None` → `outcome="unknown"`，**不得**当 `success`（未知不是通过）。
+3. `preconditions = None` → `triggered=None`，**不得**当 `False`（未知不是不存在）。
+4. `value` 仍是 **preconditions** 的求值结果（v1.3 语义），`outcome` 才是最终成败；
+   两者可以不一致：`value=true` + `outcome=unknown` 表示「前置成立，但失效条件未知」。
+5. `state` 取值集合不新增；但 v1.4 的**求值顺序**改为「先 `preconditions`，后
+   `invalidators`」：`preconditions` 为 `False` / `None` 时短路，不再求值 `invalidators`。
+   因此 v1.3 里「失效条件成立 + 前置未知 → `rejected`」的盘面，v1.4 判 `needs_fact`——
+   未知不得被失效条件折叠成否定（§二）。前置不成立时 `state` 仍为 `rejected`。
+
+`state` 判定顺序（v1.4）：
 
 ```text
+preconditions 任一为 false   → rejected（不成立；不求值 invalidators）
+preconditions 含 unknown     → needs_fact（缺事实，不出口；不求值 invalidators）
+框架前置不成立               → evidence_only；配对命题为 false 时 rejected
 invalidators 任一为真        → rejected（撤销，记原因）
-preconditions 任一为 false   → rejected（不成立）
-preconditions 含 unknown     → needs_fact（缺事实，不出口）
-框架前置不成立               → evidence_only（降级为旁证）
 全部为真                     → candidate（进入裁决）
 ```
 
@@ -369,6 +415,7 @@ Pass 2  断语层：只对 active_frames 内的断语求值 conditions_v2
 ## 九、版本与变更
 
 - 原子表版本：`v1.2`；新增/修改原子必须更新本契约并登记变更原因。
+- 契约版本：`v1.4`（求值输出新增 `triggered` / `outcome`，见 §5.1；不改原子表）。
 - 条件字段版本：`conditions_v2`；独立文件 `theory/claims/conditions-v2/<school>.yaml` 是**唯一事实源**，生成物中的 `conditions_v2` 字段不得手改；旧 `trigger`/`condition` 字段保留，不再写入新值。
 - 任何批量条件化必须记录到 `META/rule-changelog.md`，并附批次报告路径。
 
@@ -385,3 +432,5 @@ Pass 2  断语层：只对 active_frames 内的断语求值 conditions_v2
 | 2026-10-27 | v1.2 | 3 个空壳岁运原子实装：`suiyun_edge` / `sanhe_with_suiyun` / `chong_kai_muku` 由恒 `unknown` 改为消费 `scope != natal` 的边；`suiyun_edge` 的 `layer?` 换为 `scope?`，`sanhe_with_suiyun.zhi_set` 改可选，`chong_kai_muku` 增 `zhi?` | §4.5；`relation_graph.py:85 _nodes()`；MinerU_22 :1762 / :1812 / :1824 |
 | 2026-10-27 | v1.2 | `liunian_present` 改从岁运节点反推年份（`facts.chart.cycles.liunian` 恒为 null，旧实现永假） | §4.5；T-142 BRIEF 遗留项 |
 | 2026-10-27 | v1.1 | `ir._label()` 支持 `all` / `any` / `not` 组合节点递归输出（原实现只认 `atom`，失败时给出 `?()`） | ADR-007 D12「人无法追责到具体子条件」 |
+| 2026-10-28 | v1.3 | `can_control` 增「克关系门」（actor 五行不克 target → `False`）、「力量相当」由 `unknown` 改判 `False`；补登记（§4.8 已写，本表当时漏记） | §4.8；T-149 BRIEF；MinerU_22 :1812 / :1824 |
+| 2026-10-28 | v1.4 | 求值输出新增 `triggered` / `outcome`，把「结构不存在」与「结构存在但失败」分开；求值顺序改为先 `preconditions` 后 `invalidators`（前置 False/None 短路） | §5.1；T-150；`docs/reviews/verdict-chatgpt6.md` §4.1 |

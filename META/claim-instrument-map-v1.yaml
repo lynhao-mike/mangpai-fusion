@@ -1,0 +1,51 @@
+# META/claim-instrument-map-v1.yaml · 尺子与映射分离（T-150 §4）
+#
+# 从 tools/tiekoulu_eval.py 原样搬出：只搬家，不改评测逻辑、不改阈值、不改题。
+# 「搬出前后 python -m tools.tiekoulu_eval 输出逐字节一致」的比对记录见
+# tasks/T-150/BRIEF.md。
+#
+# schema 供工具做 fail-closed 校验；缺失或版本不符时工具退出码 1（结构性失败），
+# 不接受「没有映射表就静默跳过 L4」。
+schema: claim-instrument-map/v1
+task: T-150
+source: tools/tiekoulu_eval.py（T-146 原始实现）
+
+# L4 方向预测表：只收录「断语本身给出了可对照方向」的条目。
+# predict 是断语命中时预测的答案字母集合；k = len(predict)，基线也按 k 个字母算。
+# 未收录的条目在报告 §6 逐条说明理由（见 no_map_reason），不做静默丢弃。
+prediction_map:
+  G-SP-165:
+    category: 学历
+    predict: [A, B]
+    why: 印星空亡→学业难成，方向=低学历（小学及以下/初高中技校）
+  G-SP-293:
+    category: 子女
+    predict: [A]
+    why: 时柱空亡→子女缘薄，方向=无子女
+  G-SP-071:
+    category: 财富
+    predict: [A]
+    why: 无财星→一生难富裕，方向=负债～温饱
+  G-SP-130:
+    category: 婚姻
+    predict: [B]
+    why: 配偶星守宫→不离不弃，方向=一婚
+  M1-D-298:
+    category: 婚姻
+    predict: [B]
+    why: 夫妻宫为用不受刑冲穿破合→婚姻较好，方向=一婚
+  M2-Y-251:
+    category: 职业
+    predict: [B]
+    why: 食伤旺→倾向自由职业，方向=自由职业
+  M2-Y-014:
+    category: 财富
+    predict: [A, B]
+    why: 财星受克→财不完整财不大，方向=负债～温饱/小康
+
+no_map_reason:
+  M1-D-009: 断语陈述的是「哪种做功方式最常见」的统计性判断，不指向任何一期命主的具体选项
+  M1-D-013: 断语陈述墓用结构的机制，未给出可对照的吉凶/程度方向
+  M1-D-242: 断语方向明确（学历较高），但 36 期内命中 0 次，无法验证
+  M3-R-013: 断语讲「财星虚透主才华」，题库无「才华」类题目，无法对应到选项
+  M3-R-166: 断语属健康域，题库 36 期无任何健康题，无对应类别
