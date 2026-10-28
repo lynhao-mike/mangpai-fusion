@@ -1,0 +1,3587 @@
+{
+ "meta": {
+  "protocol_id": "m2y395-v1",
+  "task": "T-151",
+  "generated_by": "python -m tools.m2y395_score",
+  "cases_source": "META/m2y395-cases-v1.json",
+  "answer_source": "tiekoulu_1507_to_1428.json（题干含「日主婚姻状况」的单选题）",
+  "n_cases": 78,
+  "n_scored_cases": 78,
+  "n_join_failures": 0,
+  "n_bank_periods": 284,
+  "n_bank_join_problems": 1,
+  "predictions": {
+   "self_controls": [
+    "B"
+   ],
+   "other_controls": [
+    "C",
+    "E"
+   ],
+   "no_ke": [],
+   "ambiguous": []
+  },
+  "notes": [
+   "correct=null 表示弃权（no_ke/ambiguous），不进分母",
+   "一条冲边=一例；59 例 scored 集对应 53 个独立期",
+   "claim_id 固定 M2-Y-395；triggered 全 true；outcome 固定 unknown（未建模 invalidator，不写 success）"
+  ]
+ },
+ "fingerprint": {
+  "edge_level": {
+   "unit": "chong_edge",
+   "branches": {
+    "self_controls": {
+     "n": 34,
+     "dist": {
+      "A": 9,
+      "B": 19,
+      "C": 5,
+      "D": 1,
+      "E": 0
+     },
+     "predict": [
+      "B"
+     ],
+     "abstain": false,
+     "scored_n": 34,
+     "hits": 19,
+     "hit_rate": 0.5588
+    },
+    "other_controls": {
+     "n": 25,
+     "dist": {
+      "A": 8,
+      "B": 13,
+      "C": 2,
+      "D": 1,
+      "E": 1
+     },
+     "predict": [
+      "C",
+      "E"
+     ],
+     "abstain": false,
+     "scored_n": 25,
+     "hits": 3,
+     "hit_rate": 0.12
+    },
+    "no_ke": {
+     "n": 19,
+     "dist": {
+      "A": 1,
+      "B": 9,
+      "C": 6,
+      "D": 2,
+      "E": 1
+     },
+     "predict": [],
+     "abstain": true,
+     "scored_n": 0,
+     "hits": 0,
+     "hit_rate": null
+    },
+    "ambiguous": {
+     "n": 0,
+     "dist": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0
+     },
+     "predict": [],
+     "abstain": true,
+     "scored_n": 0,
+     "hits": 0,
+     "hit_rate": null
+    }
+   },
+   "total": 78,
+   "scored": {
+    "n": 59,
+    "hits": 22,
+    "hit_rate": 0.3729,
+    "wilson95": [
+     0.2608,
+     0.5005
+    ],
+    "b_baseline": {
+     "letter": "B",
+     "hits": 32,
+     "rate": 0.5424
+    },
+    "n_distinct_periods": 53
+   }
+  },
+  "period_level": {
+   "unit": "period",
+   "branches": {
+    "self_controls": {
+     "n": 29,
+     "dist": {
+      "A": 6,
+      "B": 17,
+      "C": 5,
+      "D": 1,
+      "E": 0
+     },
+     "predict": [
+      "B"
+     ],
+     "abstain": false,
+     "scored_n": 29,
+     "hits": 17,
+     "hit_rate": 0.5862
+    },
+    "other_controls": {
+     "n": 24,
+     "dist": {
+      "A": 7,
+      "B": 13,
+      "C": 2,
+      "D": 1,
+      "E": 1
+     },
+     "predict": [
+      "C",
+      "E"
+     ],
+     "abstain": false,
+     "scored_n": 24,
+     "hits": 3,
+     "hit_rate": 0.125
+    },
+    "no_ke": {
+     "n": 17,
+     "dist": {
+      "A": 1,
+      "B": 7,
+      "C": 6,
+      "D": 2,
+      "E": 1
+     },
+     "predict": [],
+     "abstain": true,
+     "scored_n": 0,
+     "hits": 0,
+     "hit_rate": null
+    },
+    "ambiguous": {
+     "n": 0,
+     "dist": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0
+     },
+     "predict": [],
+     "abstain": true,
+     "scored_n": 0,
+     "hits": 0,
+     "hit_rate": null
+    }
+   },
+   "total": 70,
+   "scored": {
+    "n": 53,
+    "hits": 20,
+    "hit_rate": 0.3774,
+    "wilson95": [
+     0.2594,
+     0.5119
+    ],
+    "b_baseline": {
+     "letter": "B",
+     "hits": 30,
+     "rate": 0.566
+    },
+    "n_distinct_periods": 53
+   }
+  },
+  "definition": "触发器=原局(kind=chong, scope=natal)且成员含 D.b 的边；方向=按 KE_MAP 比较 D.b 与 other 的本气五行（同五行/无克→no_ke）；预测=self_controls→B、other_controls→C/E、no_ke/ambiguous→弃权；计数单位=一条 (D.b, other) 冲边一例",
+  "case_unit": "冲边：一条 (D.b, other) 冲边 = 一例；同期多条冲边产出多例",
+  "n_distinct_periods_total": 70
+ },
+ "join_failures": [],
+ "join_problems": [
+  {
+   "period": "第1454期",
+   "reason": "题干含「日主婚姻状况」的题有 0 道"
+  }
+ ],
+ "cases": [
+  {
+   "case_id": "tiekoulu-1225",
+   "period": "第1225期",
+   "period_no": "1225",
+   "pillars": "庚申 壬午 癸丑 己未",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "E",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1226",
+   "period": "第1226期",
+   "period_no": "1226",
+   "pillars": "戊辰 庚申 丁酉 癸卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e015",
+   "chong": [
+    {
+     "edge_id": "e015",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "clock_beijing",
+   "fallback": true,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1228#e008",
+   "period": "第1228期",
+   "period_no": "1228",
+   "pillars": "乙丑 己丑 辛未 丁酉",
+   "day_branch": "未",
+   "day_branch_wx": "土",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    },
+    {
+     "edge_id": "e011",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1228#e011",
+   "period": "第1228期",
+   "period_no": "1228",
+   "pillars": "乙丑 己丑 辛未 丁酉",
+   "day_branch": "未",
+   "day_branch_wx": "土",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    },
+    {
+     "edge_id": "e011",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1237#e009",
+   "period": "第1237期",
+   "period_no": "1237",
+   "pillars": "乙亥 庚辰 辛巳 己亥",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    },
+    {
+     "edge_id": "e011",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1237#e011",
+   "period": "第1237期",
+   "period_no": "1237",
+   "pillars": "乙亥 庚辰 辛巳 己亥",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    },
+    {
+     "edge_id": "e011",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1240",
+   "period": "第1240期",
+   "period_no": "1240",
+   "pillars": "甲寅 辛未 乙丑 己卯",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e011",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "D",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1252",
+   "period": "第1252期",
+   "period_no": "1252",
+   "pillars": "癸酉 辛酉 甲辰 甲戌",
+   "day_branch": "辰",
+   "day_branch_wx": "土",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1254",
+   "period": "第1254期",
+   "period_no": "1254",
+   "pillars": "甲戌 辛未 己酉 丁卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1256",
+   "period": "第1256期",
+   "period_no": "1256",
+   "pillars": "壬申 癸卯 丁酉 壬寅",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1258",
+   "period": "第1258期",
+   "period_no": "1258",
+   "pillars": "甲子 乙亥 戊午 丁巳",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1266",
+   "period": "第1266期",
+   "period_no": "1266",
+   "pillars": "庚午 甲申 辛亥 癸巳",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1267",
+   "period": "第1267期",
+   "period_no": "1267",
+   "pillars": "戊辰 甲子 庚子 壬午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e011",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1269",
+   "period": "第1269期",
+   "period_no": "1269",
+   "pillars": "戊辰 己未 丁丑 戊申",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1272#e010",
+   "period": "第1272期",
+   "period_no": "1272",
+   "pillars": "庚午 壬午 甲子 庚午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e014",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 3,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1272#e012",
+   "period": "第1272期",
+   "period_no": "1272",
+   "pillars": "庚午 壬午 甲子 庚午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e014",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 3,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1272#e014",
+   "period": "第1272期",
+   "period_no": "1272",
+   "pillars": "庚午 壬午 甲子 庚午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e014",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 3,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1280",
+   "period": "第1280期",
+   "period_no": "1280",
+   "pillars": "癸亥 乙卯 乙巳 丙子",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1282",
+   "period": "第1282期",
+   "period_no": "1282",
+   "pillars": "癸酉 甲子 壬午 丙午",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e011",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1286",
+   "period": "第1286期",
+   "period_no": "1286",
+   "pillars": "壬申 壬寅 庚申 辛巳",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1287",
+   "period": "第1287期",
+   "period_no": "1287",
+   "pillars": "丙子 丁酉 庚申 戊寅",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1288",
+   "period": "第1288期",
+   "period_no": "1288",
+   "pillars": "癸酉 壬戌 辛卯 辛卯",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1290",
+   "period": "第1290期",
+   "period_no": "1290",
+   "pillars": "己未 丙子 庚午 甲申",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "clock_beijing",
+   "fallback": true,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1292",
+   "period": "第1292期",
+   "period_no": "1292",
+   "pillars": "己未 癸酉 己丑 甲戌",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "clock_beijing",
+   "fallback": true,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1303",
+   "period": "第1303期",
+   "period_no": "1303",
+   "pillars": "丁卯 乙巳 癸亥 癸丑",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "D",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1309",
+   "period": "第1309期",
+   "period_no": "1309",
+   "pillars": "乙丑 癸未 己未 戊辰",
+   "day_branch": "未",
+   "day_branch_wx": "土",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1317",
+   "period": "第1317期",
+   "period_no": "1317",
+   "pillars": "丁卯 丁未 庚申 戊寅",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1324",
+   "period": "第1324期",
+   "period_no": "1324",
+   "pillars": "庚午 乙酉 己卯 戊辰",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1327",
+   "period": "第1327期",
+   "period_no": "1327",
+   "pillars": "甲子 丙寅 甲午 甲戌",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e007",
+   "chong": [
+    {
+     "edge_id": "e007",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1332",
+   "period": "第1332期",
+   "period_no": "1332",
+   "pillars": "壬戌 辛亥 丁巳 庚戌",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1335",
+   "period": "第1335期",
+   "period_no": "1335",
+   "pillars": "辛未 癸巳 丁亥 癸卯",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1340",
+   "period": "第1340期",
+   "period_no": "1340",
+   "pillars": "丁丑 癸卯 辛酉 甲午",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1343",
+   "period": "第1343期",
+   "period_no": "1343",
+   "pillars": "己巳 乙亥 己亥 癸酉",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1345",
+   "period": "第1345期",
+   "period_no": "1345",
+   "pillars": "辛未 辛卯 辛丑 辛卯",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1348",
+   "period": "第1348期",
+   "period_no": "1348",
+   "pillars": "癸酉 乙卯 辛卯 辛卯",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "E",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1357",
+   "period": "第1357期",
+   "period_no": "1357",
+   "pillars": "癸亥 戊午 丙子 辛卯",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1358",
+   "period": "第1358期",
+   "period_no": "1358",
+   "pillars": "甲戌 辛未 丁未 辛丑",
+   "day_branch": "未",
+   "day_branch_wx": "土",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1359",
+   "period": "第1359期",
+   "period_no": "1359",
+   "pillars": "乙亥 甲申 辛丑 乙未",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1368",
+   "period": "第1368期",
+   "period_no": "1368",
+   "pillars": "辛酉 癸巳 己亥 乙丑",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1371",
+   "period": "第1371期",
+   "period_no": "1371",
+   "pillars": "辛未 乙未 丙戌 壬辰",
+   "day_branch": "戌",
+   "day_branch_wx": "土",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1372",
+   "period": "第1372期",
+   "period_no": "1372",
+   "pillars": "辛未 己亥 癸巳 壬子",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1374",
+   "period": "第1374期",
+   "period_no": "1374",
+   "pillars": "壬申 甲辰 丙寅 丁酉",
+   "day_branch": "寅",
+   "day_branch_wx": "木",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1377",
+   "period": "第1377期",
+   "period_no": "1377",
+   "pillars": "丁卯 己酉 丙子 甲午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e014",
+   "chong": [
+    {
+     "edge_id": "e014",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1384",
+   "period": "第1384期",
+   "period_no": "1384",
+   "pillars": "戊午 乙丑 乙未 甲申",
+   "day_branch": "未",
+   "day_branch_wx": "土",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "丑",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1387",
+   "period": "第1387期",
+   "period_no": "1387",
+   "pillars": "甲子 戊辰 庚午 壬午",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1398",
+   "period": "第1398期",
+   "period_no": "1398",
+   "pillars": "己巳 己巳 己丑 辛未",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e011",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1404",
+   "period": "第1404期",
+   "period_no": "1404",
+   "pillars": "丙寅 乙未 乙卯 乙酉",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1406",
+   "period": "第1406期",
+   "period_no": "1406",
+   "pillars": "己巳 丙寅 癸亥 甲寅",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1413",
+   "period": "第1413期",
+   "period_no": "1413",
+   "pillars": "甲子 癸酉 庚午 壬午",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "D",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1416",
+   "period": "第1416期",
+   "period_no": "1416",
+   "pillars": "癸酉 庚申 庚寅 戊寅",
+   "day_branch": "寅",
+   "day_branch_wx": "木",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1425",
+   "period": "第1425期",
+   "period_no": "1425",
+   "pillars": "己巳 戊辰 己亥 戊辰",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e007",
+   "chong": [
+    {
+     "edge_id": "e007",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1435",
+   "period": "第1435期",
+   "period_no": "1435",
+   "pillars": "癸酉 戊午 辛酉 辛卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e013",
+   "chong": [
+    {
+     "edge_id": "e013",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1442",
+   "period": "第1442期",
+   "period_no": "1442",
+   "pillars": "壬戌 丁未 癸卯 辛酉",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e015",
+   "chong": [
+    {
+     "edge_id": "e015",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1443",
+   "period": "第1443期",
+   "period_no": "1443",
+   "pillars": "甲戌 庚午 丙戌 壬辰",
+   "day_branch": "戌",
+   "day_branch_wx": "土",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e012",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1446",
+   "period": "第1446期",
+   "period_no": "1446",
+   "pillars": "己巳 戊辰 庚戌 壬午",
+   "day_branch": "戌",
+   "day_branch_wx": "土",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "辰",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "D",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1449",
+   "period": "第1449期",
+   "period_no": "1449",
+   "pillars": "乙亥 乙酉 乙卯 己卯",
+   "day_branch": "卯",
+   "day_branch_wx": "木",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "酉",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1462",
+   "period": "第1462期",
+   "period_no": "1462",
+   "pillars": "壬申 癸丑 壬寅 丁未",
+   "day_branch": "寅",
+   "day_branch_wx": "木",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "申",
+     "other_wx": "金",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1468",
+   "period": "第1468期",
+   "period_no": "1468",
+   "pillars": "壬戌 乙巳 甲午 丙子",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e011",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": true,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1470",
+   "period": "第1470期",
+   "period_no": "1470",
+   "pillars": "庚午 辛巳 辛丑 乙未",
+   "day_branch": "丑",
+   "day_branch_wx": "土",
+   "edge_id": "e016",
+   "chong": [
+    {
+     "edge_id": "e016",
+     "other": "未",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "placeholder",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1473",
+   "period": "第1473期",
+   "period_no": "1473",
+   "pillars": "己巳 乙亥 辛巳 壬辰",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1474",
+   "period": "第1474期",
+   "period_no": "1474",
+   "pillars": "戊辰 戊午 戊申 甲寅",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1476",
+   "period": "第1476期",
+   "period_no": "1476",
+   "pillars": "己未 壬申 癸酉 乙卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1477",
+   "period": "第1477期",
+   "period_no": "1477",
+   "pillars": "乙丑 庚辰 壬午 壬子",
+   "day_branch": "午",
+   "day_branch_wx": "火",
+   "edge_id": "e013",
+   "chong": [
+    {
+     "edge_id": "e013",
+     "other": "子",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": true,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1479",
+   "period": "第1479期",
+   "period_no": "1479",
+   "pillars": "己巳 壬申 甲子 庚午",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e015",
+   "chong": [
+    {
+     "edge_id": "e015",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1480",
+   "period": "第1480期",
+   "period_no": "1480",
+   "pillars": "甲戌 戊辰 乙酉 己卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e015",
+   "chong": [
+    {
+     "edge_id": "e015",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1484#e009",
+   "period": "第1484期",
+   "period_no": "1484",
+   "pillars": "壬戌 壬子 庚辰 丙戌",
+   "day_branch": "辰",
+   "day_branch_wx": "土",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    },
+    {
+     "edge_id": "e011",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1484#e011",
+   "period": "第1484期",
+   "period_no": "1484",
+   "pillars": "壬戌 壬子 庚辰 丙戌",
+   "day_branch": "辰",
+   "day_branch_wx": "土",
+   "edge_id": "e011",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    },
+    {
+     "edge_id": "e011",
+     "other": "戌",
+     "other_wx": "土",
+     "direction": "no_ke"
+    }
+   ],
+   "direction": "no_ke",
+   "prediction_letters": [],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "no_ke",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": null,
+   "abstained": true
+  },
+  {
+   "case_id": "tiekoulu-1485#e010",
+   "period": "第1485期",
+   "period_no": "1485",
+   "pillars": "庚午 壬午 甲子 己巳",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1485#e012",
+   "period": "第1485期",
+   "period_no": "1485",
+   "pillars": "庚午 壬午 甲子 己巳",
+   "day_branch": "子",
+   "day_branch_wx": "水",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "午",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1486",
+   "period": "第1486期",
+   "period_no": "1486",
+   "pillars": "庚午 丁亥 辛巳 丙申",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1487",
+   "period": "第1487期",
+   "period_no": "1487",
+   "pillars": "己巳 癸酉 乙亥 己卯",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 5,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1488",
+   "period": "第1488期",
+   "period_no": "1488",
+   "pillars": "戊辰 甲寅 丙申 癸巳",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "C",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1489#e008",
+   "period": "第1489期",
+   "period_no": "1489",
+   "pillars": "丙寅 戊戌 戊申 甲寅",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e008",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1489#e012",
+   "period": "第1489期",
+   "period_no": "1489",
+   "pillars": "丙寅 戊戌 戊申 甲寅",
+   "day_branch": "申",
+   "day_branch_wx": "金",
+   "edge_id": "e012",
+   "chong": [
+    {
+     "edge_id": "e008",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e012",
+     "other": "寅",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "A",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 3,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1491",
+   "period": "第1491期",
+   "period_no": "1491",
+   "pillars": "己巳 乙亥 乙酉 己卯",
+   "day_branch": "酉",
+   "day_branch_wx": "金",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "卯",
+     "other_wx": "木",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1499",
+   "period": "第1499期",
+   "period_no": "1499",
+   "pillars": "乙亥 戊子 癸巳 戊午",
+   "day_branch": "巳",
+   "day_branch_wx": "火",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e010",
+     "other": "亥",
+     "other_wx": "水",
+     "direction": "other_controls"
+    }
+   ],
+   "direction": "other_controls",
+   "prediction_letters": [
+    "C",
+    "E"
+   ],
+   "n_chong_in_period": 1,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "other_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": false,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1500#e009",
+   "period": "第1500期",
+   "period_no": "1500",
+   "pillars": "己巳 甲戌 癸亥 丁巳",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e009",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  },
+  {
+   "case_id": "tiekoulu-1500#e010",
+   "period": "第1500期",
+   "period_no": "1500",
+   "pillars": "己巳 甲戌 癸亥 丁巳",
+   "day_branch": "亥",
+   "day_branch_wx": "水",
+   "edge_id": "e010",
+   "chong": [
+    {
+     "edge_id": "e009",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    },
+    {
+     "edge_id": "e010",
+     "other": "巳",
+     "other_wx": "火",
+     "direction": "self_controls"
+    }
+   ],
+   "direction": "self_controls",
+   "prediction_letters": [
+    "B"
+   ],
+   "n_chong_in_period": 2,
+   "time_basis": "true_solar",
+   "fallback": false,
+   "late_zi": false,
+   "day_boundary_shift": false,
+   "gender_basis": "bank",
+   "claim_id": "M2-Y-395",
+   "branch": "self_controls",
+   "triggered": true,
+   "outcome": "unknown",
+   "answer_letter": "B",
+   "options": {
+    "A": "未婚",
+    "B": "一婚",
+    "C": "一婚离丧",
+    "D": "二婚",
+    "E": "多婚（二婚离丧或三婚以上）"
+   },
+   "q_index": 4,
+   "correct": true,
+   "abstained": false
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+# META/eval-protocols/m2y395-v1.yaml
+#
+# 预注册的机器可读副本。原文与依据：tasks/T-151/PROMPT.md §1（2026-10-28 21:35 中枢冻结）。
+# 本文件不是新口径：与卡面冲突时以卡面为准；跑分器只读本文件，不接受口头解释。
+#
+# 冻结说明：卡面 §1.5 的 78 是「(D.b, other) 冲边数」，不是「期数」。
+# 独立复算：70 期有冲、78 条冲边，7 期多冲；59 例 scored 来自 53 个独立期。
+# 期级敏感性另报，不作主口径。
+
+protocol_id: m2y395-v1
+claim_id: M2-Y-395
+frozen_at: "2026-10-28T21:35:00+08:00"
+commit: "pre-T-151（base 6b1ffead）"
+
+trigger_definition: >
+  原局存在 kind=chong 的关系边，且边成员含日支地址 D.b。
+  只看 scope=natal；不含天干冲（stem_chong）、大运/流年、刑/穿/合，也不做「合解冲」消解。
+
+direction_rule: >
+  对每条与 D.b 相冲的边，比较本气五行：
+  KE_MAP[wx(D.b)] == wx(other) → self_controls（我制对方）；
+  KE_MAP[wx(other)] == wx(D.b) → other_controls（对方制我）；
+  其余（含同五行，如辰戌、丑未）→ no_ke（无克，弃权）。
+  多个冲并存且方向冲突 → ambiguous（弃权；本次预期 0，实测 0）。
+
+label_map:
+  married_once: [B]          # 题库选项 B = 一婚
+  divorce_or_multi: [C, E]   # 题库选项 C = 一婚离丧，E = 多婚（二婚离丧或三婚以上）
+
+prediction_rule:
+  self_controls: married_once
+  other_controls: divorce_or_multi
+  # no_ke / ambiguous 不映射：cases 里显式写 prediction_letters: []，记 n_abstain
+
+scored_set_rule: >
+  triggered is true 且 prediction_letters 非空且有 answer_letter。
+  no_ke 记 n_abstain（触发后弃权），缺答案记 n_missing_answer，二者都不进分母。
+
+baseline: >
+  baseline_single：同一 scored 集上出现最多的单个字母（本例 B）。
+  baseline_same_k 只作「多猜字母占便宜」的乐观参考，不参与判定。
+
+decision_rule: >
+  第一步是复现，不是打赢：n_scored=59、n_correct=22、baseline B=32/59。
+  复现后才套用 docs/reviews/verdict-chatgpt6.md:249 的否证判据：
+  95% CI 上界 < baseline + 10pp → 「方向 alone 值得继续」被否证；
+  95% CI 下界 > baseline → 方向 alone 有信号；
+  其余 → 「样本不足」，不得直接宣布有效。
+  期级敏感性（n_scored=53，correct=20，baseline B=30/53）另报，不作主口径。
