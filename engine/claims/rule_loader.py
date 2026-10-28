@@ -14,6 +14,7 @@ import yaml
 CLAIM_RULE_SCHEMA_VERSION = "claim-executable-rules/v1"
 DEFAULT_CLAIM_RULE_PATH = Path(__file__).resolve().parents[2] / "theory" / "production" / "claim-rules-v1.yaml"
 _ALLOWED_OPERATORS = frozenset({"eq", "ne", "gte", "lte", "in", "not_in", "truthy", "falsy"})
+_ALLOWED_OUTCOMES = frozenset({"success", "fail", "unknown"})
 _ALLOWED_SCHOOLS = frozenset({"duan", "gao", "yang"})
 _ALLOWED_LIFECYCLE_STATES = frozenset({"staged", "production-candidate"})
 _TOP_LEVEL_FIELDS = frozenset({"schema_version", "rules"})
@@ -103,6 +104,14 @@ class RuleEvaluationResult:
     failed_conditions: tuple[RuleCondition, ...]
     matched_exclusions: tuple[RuleCondition, ...]
     matched_counter_conditions: tuple[RuleCondition, ...]
+    triggered: bool = False
+    outcome: str = "unknown"
+
+    def __post_init__(self) -> None:
+        if self.outcome not in _ALLOWED_OUTCOMES:
+            raise ValueError(f"unknown rule outcome: {self.outcome}")
+        if not self.triggered and self.outcome != "unknown":
+            raise ValueError(f"outcome={self.outcome!r} requires triggered=True")
 
 
 @dataclass(frozen=True)
@@ -350,10 +359,20 @@ def evaluate_rule(rule: ExecutableClaimRule, context: Mapping[str, Any]) -> Rule
     failed_conditions = tuple(item for item in rule.conditions if item not in matched_conditions)
     matched_exclusions = tuple(item for item in rule.exclusions if _condition_matches(item, context))
     matched_counters = tuple(item for item in rule.counter_conditions if _condition_matches(item, context))
+    triggered = not failed_conditions and not matched_exclusions
+    # 本卡只新增 triggered / outcome；matched 仍是旧语义，是否翻转另案裁决。
+    if not triggered:
+        outcome = "unknown"
+    elif matched_counters:
+        outcome = "fail"
+    else:
+        outcome = "success"
     return RuleEvaluationResult(
         matched=not failed_conditions and not matched_exclusions,
         matched_conditions=matched_conditions,
         failed_conditions=failed_conditions,
         matched_exclusions=matched_exclusions,
         matched_counter_conditions=matched_counters,
+        triggered=triggered,
+        outcome=outcome,
     )
