@@ -135,5 +135,46 @@ class Claim:
         }
 
 
+_STATEMENT_FACT_SEPARATOR = "｜本盘依据："
+
+
+def _format_statement_value(value: Any) -> str:
+    """把本盘事实值格式化为稳定的 repr 风格，浮点保留 4 位。"""
+    if isinstance(value, bool):
+        return "True" if value else "False"
+    if isinstance(value, float):
+        return f"{value:.4f}"
+    if isinstance(value, str):
+        return repr(value)
+    if value is None:
+        return "None"
+    return repr(value)
+
+
+def _resolve_statement_fact(context: Mapping[str, Any], fact: str) -> Any:
+    current: Any = context
+    for part in fact.split("."):
+        if not isinstance(current, Mapping) or part not in current:
+            raise KeyError(f"missing context fact: {fact}")
+        current = current[part]
+    return current
+
+
+def render_statement(rule: Any, result: Any, context: Mapping[str, Any]) -> str:
+    """把规则结论模板与本盘命中的 fact=value 装配成断语句子。
+
+    只取 ``result.matched_conditions`` 里的 fact，从 ``context`` 取值，按 fact 名排序。
+    至少输出一个 ``fact=value``；若一条命中条件都没有，显式追加 ``[no-fact]``，不静默退回模板。
+    """
+    facts = sorted({condition.fact for condition in result.matched_conditions})
+    pairs = [
+        f"{fact}={_format_statement_value(_resolve_statement_fact(context, fact))}"
+        for fact in facts
+    ]
+    if not pairs:
+        return f"{rule.conclusion_template}{_STATEMENT_FACT_SEPARATOR}[no-fact]"
+    return f"{rule.conclusion_template}{_STATEMENT_FACT_SEPARATOR}" + "；".join(pairs)
+
+
 class TaskUnsupported(ValueError):
     """runner 的知识范围不覆盖指定任务。"""

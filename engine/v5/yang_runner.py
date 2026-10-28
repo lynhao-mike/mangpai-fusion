@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 
 from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
+from engine.claims.domain import render_statement
 from engine.claims.rule_loader import evaluate_rule, load_claim_rule_registry
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
@@ -96,7 +97,8 @@ def generate_claims(
         "independent_signal_count": independent_signal_count,
     }
     rule = _CLAIM_RULES.get("YANG-MARRIAGE-DIVORCE-REMARRIAGE-RISK-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
 
     rule_id = rule.rule_id
@@ -123,7 +125,7 @@ def generate_claims(
         task_id=task.task_id,
         claim_type=rule.claim_type,
         stance="support",
-        statement=rule.conclusion_template,
+        statement=render_statement(rule, result, context),
         evidence=(evidence,),
         falsifier=rule.falsifier,
         time_window=_LIFETIME,

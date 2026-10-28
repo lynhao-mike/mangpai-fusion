@@ -6,7 +6,8 @@ import hashlib
 from dataclasses import dataclass
 
 from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
-from engine.claims.rule_loader import ExecutableClaimRule, evaluate_rule, load_claim_rule_registry
+from engine.claims.domain import render_statement
+from engine.claims.rule_loader import ExecutableClaimRule, RuleEvaluationResult, evaluate_rule, load_claim_rule_registry
 from engine.decision.models import ChartFactLedger
 from engine.energy.tiyong import evaluate_tiyong
 from engine.energy.zuogong import evaluate_zuogong
@@ -97,6 +98,8 @@ def _claim(
     structure: _DuanStructure,
     *,
     rule: ExecutableClaimRule,
+    result: RuleEvaluationResult,
+    context: dict[str, object],
     feature_refs: tuple[str, ...],
     evidence_text: str,
     snapshot: dict[str, object],
@@ -123,7 +126,7 @@ def _claim(
         task_id=task.task_id,
         claim_type=rule.claim_type,
         stance="support",
-        statement=rule.conclusion_template,
+        statement=render_statement(rule, result, context),
         evidence=(evidence,),
         falsifier=rule.falsifier,
         time_window=_LIFETIME,
@@ -160,11 +163,14 @@ def _career_role_change(
         "branch_conflict_intensity": features.branch_conflict_intensity,
     }
     rule = _CLAIM_RULES.get("DUAN-EVENT-CAREER-ROLE-CHANGE-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     return _claim(
         chart, features, task, structure,
         rule=rule,
+        result=result,
+        context=context,
         feature_refs=("ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正官", "ten_god_counts.七杀", "mixed_official_kill", "branch_conflict_intensity"),
         evidence_text=f"食伤={output_count}，官杀={official_count}，有效做功路径={structure.active_path_count}，冲突强度={features.branch_conflict_intensity:.2f}。",
         snapshot=context,
@@ -195,11 +201,14 @@ def _career_path_type(
         "active_path_count": structure.active_path_count,
     }
     rule = _CLAIM_RULES.get(f"DUAN-EVENT-CAREER-PATH-{predicted_label.upper()}-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     return _claim(
         chart, features, task, structure,
         rule=rule,
+        result=result,
+        context=context,
         feature_refs=("ten_god_counts.正官", "ten_god_counts.七杀", "ten_god_counts.正印", "ten_god_counts.偏印", "ten_god_counts.食神", "ten_god_counts.伤官", "ten_god_counts.正财", "ten_god_counts.偏财", "branch_conflict_intensity"),
         evidence_text=f"任职信号={employment_score}，经营信号={entrepreneurship_score}，有效做功路径={structure.active_path_count}。",
         snapshot=context,
@@ -222,11 +231,14 @@ def _wealth_debt(
         "active_path_count": structure.active_path_count,
     }
     rule = _CLAIM_RULES.get("DUAN-EVENT-WEALTH-DEBT-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     return _claim(
         chart, features, task, structure,
         rule=rule,
+        result=result,
+        context=context,
         feature_refs=("ten_god_counts.正财", "ten_god_counts.偏财", "ten_god_counts.比肩", "ten_god_counts.劫财", "supporting_count", "draining_count", "branch_conflict_intensity"),
         evidence_text=f"财星={wealth_count}，比劫={peer_pressure}，克泄耗减生扶={imbalance}，冲突强度={features.branch_conflict_intensity:.2f}。",
         snapshot=context,
@@ -250,11 +262,14 @@ def _marriage_divorce_or_remarriage(
         "active_path_count": structure.active_path_count,
     }
     rule = _CLAIM_RULES.get("DUAN-EVENT-MARRIAGE-DIVORCE-REMARRIAGE-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     return _claim(
         chart, features, task, structure,
         rule=rule,
+        result=result,
+        context=context,
         feature_refs=("chong_pairs", "xing_hai_pairs", "mixed_official_kill", "branch_conflict_intensity"),
         evidence_text=f"日支受扰={day_branch_disrupted}，官杀混杂={features.mixed_official_kill}，冲刑害复合={bool(features.chong_pairs) and bool(features.xing_hai_pairs)}。",
         snapshot={**context, "day_branch": day_branch, "day_branch_disrupted": day_branch_disrupted, "mixed_official_kill": features.mixed_official_kill},

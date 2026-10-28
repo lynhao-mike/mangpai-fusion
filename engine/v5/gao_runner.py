@@ -5,7 +5,8 @@ from __future__ import annotations
 import hashlib
 
 from engine.claims import Claim, Evidence, TaskUnsupported, TimeWindow, stable_claim_id, validate_claim_evidence
-from engine.claims.rule_loader import ExecutableClaimRule, evaluate_rule, load_claim_rule_registry
+from engine.claims.domain import render_statement
+from engine.claims.rule_loader import ExecutableClaimRule, RuleEvaluationResult, evaluate_rule, load_claim_rule_registry
 from engine.decision.models import ChartFactLedger
 from engine.evaluation.models import BlindTask
 from engine.features import ChartFeatureVector
@@ -50,6 +51,8 @@ def _claim(
     task: BlindTask,
     *,
     rule: ExecutableClaimRule,
+    result: RuleEvaluationResult,
+    context: dict[str, object],
     refs: tuple[str, ...],
     evidence_text: str,
     snapshot: dict[str, object],
@@ -60,7 +63,7 @@ def _claim(
         task_id=task.task_id,
         claim_type=rule.claim_type,
         stance="support",
-        statement=rule.conclusion_template,
+        statement=render_statement(rule, result, context),
         evidence=(_evidence(features, task, rule_id=rule.rule_id, refs=refs, text=evidence_text),),
         falsifier=rule.falsifier,
         time_window=_LIFETIME,
@@ -100,7 +103,8 @@ def _wealth_debt(
         "pressure_signal_count": pressure_count,
     }
     rule = _CLAIM_RULES.get("GAO-WEALTH-DEBT-STRUCTURAL-CORROBORATION-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     refs = (
         "ten_god_counts.正财", "ten_god_counts.偏财", "ten_god_counts.比肩", "ten_god_counts.劫财",
@@ -110,6 +114,8 @@ def _wealth_debt(
     return _claim(
         chart, features, task,
         rule=rule,
+        result=result,
+        context=context,
         refs=refs,
         evidence_text=f"财星={wealth_count}，比劫={peer_count}，克泄耗减生扶={imbalance}，压力信号={pressure_count}。",
         snapshot={**context, **signals, "wealth_count": wealth_count, "peer_count": peer_count},
@@ -139,7 +145,8 @@ def _health_system_risk(
         "risk_signal_count": signal_count,
     }
     rule = _CLAIM_RULES.get(f"GAO-HEALTH-SYSTEM-RISK-{predicted_label.upper()}-V1")
-    if not evaluate_rule(rule, context).matched:
+    result = evaluate_rule(rule, context)
+    if not result.matched:
         return []
     refs = (
         "supporting_count", "draining_count", "cold_warm_axis", "dry_wet_axis", "climate_extreme",
@@ -148,6 +155,8 @@ def _health_system_risk(
     return _claim(
         chart, features, task,
         rule=rule,
+        result=result,
+        context=context,
         refs=refs,
         evidence_text=f"克泄耗减生扶={imbalance}，复合强风险代理={signal_count}，分层={predicted_label}。",
         snapshot={**context, **strong_signals, "support_drain_imbalance": imbalance},
