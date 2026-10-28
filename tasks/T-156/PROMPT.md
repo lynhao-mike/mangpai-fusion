@@ -110,3 +110,41 @@
 - 不许为了让压制率好看改阈值或删 B 类。
 - 不许把「证据不足」的 C 类当 A 类删掉。
 - 不许碰杨派 sex 条件（已核实非 bug）。
+
+## 9. Amendments（中枢裁决，2026-10-29 00:05）
+
+### 9.1 允许改 `tests/claims/test_rule_contract.py` 的 2 个参数化用例（仅此 4 行）
+
+T-152 的 `test_positive_and_counter_overlap_is_triggered_fail_but_still_matched` 拿**生产 YAML 的 MIXED /
+WEALTH-DEBT 边界上下文**当夹具；这两条正是本卡 A 类，删反条件后测试必红——卡 §5「禁止改既有测试」与 §6
+「pytest 0 failed」互斥。裁决：**允许解耦，但不许减弱**：
+
+1. `matched_counter_conditions` 非空、`outcome == "fail"`、`matched is True` 三条断言**原样保留**；
+2. 用 `dataclasses.replace(rule, counter_conditions=(RuleCondition(fact, op, value),))` 显式钉住旧反条件；
+3. 额外加 `assert production_rule.counter_conditions == ()`，记录本卡状态；
+4. BRIEF 写清「测试与生产 YAML 解耦，不是把红改绿」。
+
+### 9.2 v1 干跑必须原样保留
+
+`tools/rule_contract_report.py` 硬编码写 `META/rule-contract-dryrun-v1.{json,md}`（第 52–53 行）。允许
+「备份 v1 → 生成 v2 → 按 SHA256 还原」，但最终必须满足：
+
+- `git diff META/rule-contract-dryrun-v1.json META/rule-contract-dryrun-v1.md` 为空；
+- v1 的 SHA256 与备份一致（写进 BRIEF）。
+
+### 9.3 允许更新生产入口哈希测试（一处）
+
+`tests/test_production_entrypoints_unchanged.py:56` 钉了 `theory/production/claim-rules-v1.yaml` 的 sha256；
+本卡删除 7 条反条件后该断言必红。裁决：**允许把哈希更新为新值**，条件：
+
+1. 先确认 YAML diff 只有 7 处 `counter_conditions`；
+2. 只改哈希值，**保留断言、测试名、函数体**，不许删测试/改名/放宽；
+3. 加注释：`# T-156（2026-10-28）：A 类 counter_conditions 删除；审计见 META/counter-condition-audit-v1.md`；
+4. 最终全量 `pytest -q` 必须 0 failed。
+
+这是「变更检测器重新基线」，不是把红改绿：下一次未经授权的 YAML 改动仍会报警。
+
+### 9.4 其余不变
+
+只改 A 类 `counter_conditions`；不改正条件/阈值/结论/B/C 类；`matched` 不动；v1/v2 的 `n_matched` / `n_triggered`
+必须逐条相同。

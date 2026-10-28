@@ -77,7 +77,7 @@ def test_triggered_outcome_table(
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize(
-    ("rule_id", "context"),
+    ("rule_id", "context", "legacy_counter"),
     [
         (
             "DUAN-EVENT-CAREER-PATH-MIXED-V1",
@@ -89,6 +89,7 @@ def test_triggered_outcome_table(
                 "branch_conflict_intensity": 0.35,
                 "active_path_count": 1,
             },
+            RuleCondition("branch_conflict_intensity", "lte", 0.4),
         ),
         (
             "DUAN-EVENT-WEALTH-DEBT-V1",
@@ -101,13 +102,18 @@ def test_triggered_outcome_table(
                 "branch_conflict_intensity": 0.55,
                 "active_path_count": 1,
             },
+            RuleCondition("support_drain_imbalance", "lte", 3),
         ),
     ],
 )
 def test_positive_and_counter_overlap_is_triggered_fail_but_still_matched(
-    rule_id: str, context: dict[str, object]
+    rule_id: str, context: dict[str, object], legacy_counter: RuleCondition
 ) -> None:
-    rule = load_claim_rule_registry(RULE_PATH).get(rule_id)
+    # T-156：这两条的旧反条件属 A 类（与结论同阈值），已从生产 YAML 删除；
+    # 判定表语义改由这里显式钉住的旧反条件验证，测试与生产 YAML 解耦（不是放宽判据）。
+    production_rule = load_claim_rule_registry(RULE_PATH).get(rule_id)
+    assert production_rule.counter_conditions == ()
+    rule = replace(production_rule, counter_conditions=(legacy_counter,))
     result = evaluate_rule(rule, context)
 
     assert result.failed_conditions == ()

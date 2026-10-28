@@ -53,6 +53,7 @@ def test_production_weight_defaults_and_file_are_unchanged() -> None:
 
 
 def test_ren_staged_slice_does_not_modify_production_claim_rules() -> None:
+    # T-156（2026-10-28）：A 类 counter_conditions 删除；审计见 META/counter-condition-audit-v1.md
     assert _sha256(Path("theory/production/claim-rules-v1.yaml")) == (
-        "6396883d8db0b8d24c6c15435c130c6f9ae045c8c6d1fe8d2a84748c5b0bebef"
+        "14d34deaaf37decaef4be2df76318c9d39202dc645f91f927cefab398f3e6467"
     )
