@@ -15,4 +15,4 @@
 | 23:10 | 子代理 G 完成：新建 `tools/product_claim_eval.py`、`META/eval-protocols/product-marriage-{duan,yang}-v1.yaml`、`META/product-marriage-score-v1.json`、`META/product-marriage-report-v1.md`；342 段派 138 触发（76/138=55.07%）、杨派 204（107/204=52.45%）；两比例检验 342/336 均「无差异 / 样本不足」、未翻转；pytest 1099 passed 1 skipped；两次运行哈希一致；详见 `BRIEF.md` |
 | 23:20 | 中枢验收：`product_claim_eval` 连跑两次 `diff_count=0`；最终哈希 JSON `89e1016a…` / MD `b69f044c…` / 工具 `906986ee…` 与 Worker 补充一致。首次哈希不同是 Worker 仍在改产物，不是不确定性 |
 | 23:22 | 中枢独立复算 4 组 2×2：触发/未触发负率、差值、Fisher p、Newcombe CI **逐项一致**；全量 `pytest -q` **1099 passed / 1 skipped / 0 failed** |
-| 23:24 | 裁决：两规则均「无差异 / 样本不足」，**不晋升**；杨派 `sex truthy` 性别门 bug 记录在案；写入 `docs/reviews/product-marriage-verdict-v1.md` |
+| 23:24 | 裁决：两规则均「无差异 / 样本不足」，**不晋升**；杨派 `sex truthy` 初判为 bug、**复核后撤回**（规则性别中立，`sex` 门=「性别已知」）；写入 `docs/reviews/product-marriage-verdict-v1.md` |
