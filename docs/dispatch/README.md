@@ -47,16 +47,23 @@
 | T-167 | 应期评测器 v1 | K=3、事件置换 null、同 K 基线 26.70%；25 tests |
 | T-168 | 事件年份审计 | 544/547 有原文记号；剔除 20 例；22 tests |
 
-## 三、当前在途（2026-10-29 12:00 P1 方向召回）
+## 三、当前在途（2026-10-29 12:10 P1 快车道）
+
+**长目标**：`docs/goals/first-principle-fast-track-v1.md`（P1 方向≥80/边≥90；3 份真实盘卡；<60 kill）。
 
 **独立 Agent 分支 `rethink/2026-10-29` @ `6a40bcb5`（worktree `..\mangpai-fusion-rethink`）**：
 33 条原书主功标注 → 事实层方向召回 **7/17 = 41.2%**，低于 60% 阻塞线 → `facts_blocking`。
-**golden-20 盲推暂缓**；第一证明点改为 **P1 hold-out 方向召回**（≥80% 方向、≥90% 边；<60% kill）。
+**golden-20 盲推暂缓**；第一证明点改为 **P1 hold-out 方向召回**。
 
-**第 1 步（3 天，不改代码）**：
-1. 未参与标注的第二人复核 33 条，重算 7/17；
-2. 另一 Agent 策展 20 例 hold-out（非名人、非 dev、盲测/答案分离、先冻结）；
-3. 阈值/输入哈希入库；完成后才进第 2 步（只改 `structure_check.py` 三处）。
+**并行三路（第 1 步，不改代码）**：
+| 序 | 任务 | 提示词 | 状态 |
+|---|---|---|---|
+| 1 | **T-174** 33 条第二人复核 | `tasks/T-174/PROMPT.md` | 🟡 子代理 X |
+| 2 | **T-175** 20 例独立 hold-out 策展 | `tasks/T-175/PROMPT.md` | 🟡 子代理 Y |
+| 3 | **T-176** 3 张 pre-P1 真实盘卡 | `tasks/T-176/PROMPT.md` | 🟡 子代理 Z |
+
+**第 2 步**：hold-out 冻结后，独立 Agent 在分支只改 `structure_check.py` 三处；
+P1 ≥80/90 才进 P2；<60 kill；60–80 只做局部修。
 
 **不做**：补 880 支克边、写 analyzer、跑 golden-20、标签/应期统计、物理删除旧层。
 详见 `docs/reviews/p1-direction-recall-verdict-v1.md`。
