@@ -1,6 +1,6 @@
 # T-188 STATUS
 
-- 状态：🟡 Dispatched（2026-10-29，中枢）
+- 状态：✅ **已验收 / 已合并**（2026-10-29 17:24，中枢）
 - 执行者：子代理 AL
 - 任务卡：`tasks/T-188/PROMPT.md`
 - 验收：中枢亲自跑；只做自刑候选过滤
@@ -16,3 +16,4 @@
 | 17:14 | 全量 `pytest -q`：1496 passed / 1 skipped（基线 1489 + 7）；`engine_audit` 481/0；`relations_audit` 全部通过；`verify_baseline --compare` 基线未退步；15KB 盘 14,653 B |
 | 17:15 | dev-20 否决一次（`--out-json META/p1-dev20-selfx-veto.json --artifact-label dev20_selfx_veto`）：directed 13/20 (65.0%)，与 `META/p1-dev20-veto-v1.json` 20/20 逐例全等，无回退 |
 | 17:16 | 代码 commit `2e80c5fb`（2 files，+87/−1）；写 BRIEF / STATUS；未 push main |
+| 17:24 | 中枢合并 `p1/selfxing`；主仓 verify_baseline **1496/1、481/0、relations 全过**；15KB 14,653；dev-20 20/20 逐例全等；73 自刑边/66 盘剔除、非自刑 xing 272 保留；基线刷新 |
