@@ -100,6 +100,7 @@
 | 覆盖 v1 | `--out-prefix` | T-163 |
 | 测试寄生生产 | fixture / `replace` | T-156 §9.1 |
 | 假诊断/假通过 | 派活前 12 问 | 中枢亲自跑 |
+| 量具错配（T-187） | 盲输入未给目标边；28/40 边错配；Agent 层未跑；source locator 泄漏 | A-09 / `docs/reviews/t187-instrument-verdict-v1.md` | 先给边 E1、再选边 E2；nj 计错；no locator |
 
 ---
 
