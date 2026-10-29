@@ -1,0 +1,2113 @@
+{
+  "schema_version": "p1-system-run/v1",
+  "task": "T-187",
+  "generated_at": "2026-10-29",
+  "case_count": 45,
+  "cases": [
+    {
+      "assertion_id": "PD-PF-001-01",
+      "case_id": "PF-001",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "表外：寅申巳亥冲（G2）；party delta=4"
+    },
+    {
+      "assertion_id": "PD-PF-002-01",
+      "case_id": "PF-002",
+      "a": "M.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库；party delta=-4",
+      "party": {
+        "fire": 4,
+        "water": 8,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "丙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "H.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [],
+        "delta": -4
+      }
+    },
+    {
+      "assertion_id": "PD-PF-003-01",
+      "case_id": "PF-003",
+      "a": "M.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "辰戌冲库（同盘另一例取丑未冲）；party delta=4",
+      "party": {
+        "fire": 7,
+        "water": 3,
+        "items": [
+          {
+            "addr": "M.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "Y.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          }
+        ],
+        "delta": 4
+      }
+    },
+    {
+      "assertion_id": "PD-PF-004-01",
+      "case_id": "PF-004",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e007",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2872",
+      "verbatim_quote": "其做功的条件是一方之党一定要大于另一方之党， 否则这此冲都不能做功。",
+      "notes": "辰戌冲库，delta=0；delta=0 打平",
+      "party": {
+        "fire": 4,
+        "water": 4,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "甲",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "甲",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "D.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          }
+        ],
+        "delta": 0
+      }
+    },
+    {
+      "assertion_id": "PD-PF-005-01",
+      "case_id": "PF-005",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "表外：寅申冲（G2）；party delta=-4"
+    },
+    {
+      "assertion_id": "PD-PF-006-01",
+      "case_id": "PF-006",
+      "a": "M.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "卯酉冲；party delta=4",
+      "party": {
+        "fire": 7,
+        "water": 3,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "M.s",
+            "char": "乙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "D.s",
+            "char": "甲",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "辛",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "酉",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "卯",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "寅",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "卯",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [],
+        "delta": 4
+      }
+    },
+    {
+      "assertion_id": "PD-PF-007-01",
+      "case_id": "PF-007",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2872",
+      "verbatim_quote": "其做功的条件是一方之党一定要大于另一方之党， 否则这此冲都不能做功。",
+      "notes": "卯酉冲，delta=0；delta=0 打平"
+    },
+    {
+      "assertion_id": "PD-PF-008-01",
+      "case_id": "PF-008",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库；party delta=-2",
+      "party": {
+        "fire": 3,
+        "water": 5,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "M.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "寅",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "巳",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "D.s",
+            "char": "己",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "H.s",
+            "char": "己",
+            "reason": "天干土中立"
+          }
+        ],
+        "delta": -2
+      }
+    },
+    {
+      "assertion_id": "PD-PF-009-01",
+      "case_id": "PF-009",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "寅亥六合，未作功则合绊；party delta=4"
+    },
+    {
+      "assertion_id": "PD-PF-010-01",
+      "case_id": "PF-010",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e012",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "子未穿；party delta=-1"
+    },
+    {
+      "assertion_id": "PD-PF-011-01",
+      "case_id": "PF-011",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "刑",
+      "direction": "mutual",
+      "mutual": true,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2870",
+      "verbatim_quote": "戌未刑是两个都坏了 。",
+      "notes": "酉酉自刑（无第二端）；party delta=-8"
+    },
+    {
+      "assertion_id": "PD-PF-012-01",
+      "case_id": "PF-012",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "戌酉穿（同盘另一例取卯酉冲）；party delta=0"
+    },
+    {
+      "assertion_id": "PD-PF-013-01",
+      "case_id": "PF-013",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "辰卯穿；party delta=-5"
+    },
+    {
+      "assertion_id": "PD-PF-014-01",
+      "case_id": "PF-014",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e007",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "子丑六合，未作功则合绊；party delta=-9"
+    },
+    {
+      "assertion_id": "PD-PF-015-01",
+      "case_id": "PF-015",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库；party delta=2",
+      "party": {
+        "fire": 6,
+        "water": 4,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "乙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "寅",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "子",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "H.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "H.b⊕戊",
+            "char": "戊",
+            "reason": "中立"
+          }
+        ],
+        "delta": 2
+      }
+    },
+    {
+      "assertion_id": "PD-PF-016-01",
+      "case_id": "PF-016",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "寅亥六合，未作功则合绊；party delta=6"
+    },
+    {
+      "assertion_id": "PD-PF-017-01",
+      "case_id": "PF-017",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "未子穿；party delta=8"
+    },
+    {
+      "assertion_id": "PD-PF-018-01",
+      "case_id": "PF-018",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库；party delta=-1",
+      "party": {
+        "fire": 4,
+        "water": 5,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "丙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "辛",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "H.s",
+            "char": "辛",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "午",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕辛",
+            "char": "辛",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "丑",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "D.s",
+            "char": "己",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "Y.b⊕己",
+            "char": "己",
+            "reason": "中立"
+          }
+        ],
+        "delta": -1
+      }
+    },
+    {
+      "assertion_id": "PD-PF-019-01",
+      "case_id": "PF-019",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "酉戌穿；party delta=5"
+    },
+    {
+      "assertion_id": "PD-PF-020-01",
+      "case_id": "PF-020",
+      "a": "D.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "辰戌冲库；party delta=1",
+      "party": {
+        "fire": 4,
+        "water": 3,
+        "items": [
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "甲",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "酉",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "午",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "午",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "Y.s",
+            "char": "己",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "H.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "M.b⊕己",
+            "char": "己",
+            "reason": "中立"
+          }
+        ],
+        "delta": 1
+      }
+    },
+    {
+      "assertion_id": "PD-PF-021-01",
+      "case_id": "PF-021",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "酉戌穿；party delta=2"
+    },
+    {
+      "assertion_id": "PD-PF-022-01",
+      "case_id": "PF-022",
+      "a": "Y.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "酉卯冲；party delta=-7",
+      "party": {
+        "fire": 1,
+        "water": 8,
+        "items": [
+          {
+            "addr": "D.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "H.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "酉",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "申",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "卯",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "D.b⊕壬",
+            "char": "壬",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "Y.s",
+            "char": "己",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "M.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "D.b⊕戊",
+            "char": "戊",
+            "reason": "中立"
+          }
+        ],
+        "delta": -7
+      }
+    },
+    {
+      "assertion_id": "PD-PF-023-01",
+      "case_id": "PF-023",
+      "a": "H.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库（同盘另一例取辰戌冲）；party delta=4",
+      "party": {
+        "fire": 7,
+        "water": 3,
+        "items": [
+          {
+            "addr": "M.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "Y.s",
+            "char": "戊",
+            "reason": "天干土中立"
+          }
+        ],
+        "delta": 4
+      }
+    },
+    {
+      "assertion_id": "PD-PF-024-01",
+      "case_id": "PF-024",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "申亥穿；party delta=-3"
+    },
+    {
+      "assertion_id": "PD-PF-025-01",
+      "case_id": "PF-025",
+      "a": "M.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "刑",
+      "direction": "mutual",
+      "mutual": true,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e013",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2870",
+      "verbatim_quote": "戌未刑是两个都坏了 。",
+      "notes": "戌未刑；party delta=5"
+    },
+    {
+      "assertion_id": "PD-PF-026-01",
+      "case_id": "PF-026",
+      "a": "D.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "丑未冲库；party delta=4",
+      "party": {
+        "fire": 8,
+        "water": 4,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "卯",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "D.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "卯",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [],
+        "delta": 4
+      }
+    },
+    {
+      "assertion_id": "PD-PF-027-01",
+      "case_id": "PF-027",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "未丑冲库；party delta=5",
+      "party": {
+        "fire": 9,
+        "water": 4,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "乙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "丑",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "戌",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [],
+        "delta": 5
+      }
+    },
+    {
+      "assertion_id": "PD-PF-028-01",
+      "case_id": "PF-028",
+      "a": "Y.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "表外：巳亥冲（G2）；party delta=1"
+    },
+    {
+      "assertion_id": "PD-PF-029-01",
+      "case_id": "PF-029",
+      "a": "Y.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "寅亥六合，未作功则合绊；party delta=-6"
+    },
+    {
+      "assertion_id": "PD-PF-030-01",
+      "case_id": "PF-030",
+      "a": "M.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e013",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "辰戌冲库；party delta=-1",
+      "party": {
+        "fire": 5,
+        "water": 6,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "乙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "H.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [],
+        "delta": -1
+      }
+    },
+    {
+      "assertion_id": "PD-PF-031-01",
+      "case_id": "PF-031",
+      "a": "M.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2868",
+      "verbatim_quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。",
+      "notes": "戌辰冲库；party delta=-1",
+      "party": {
+        "fire": 6,
+        "water": 7,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "癸",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "H.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "戌",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "未",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "巳",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b⊕癸",
+            "char": "癸",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "D.b⊕丁",
+            "char": "丁",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "H.b⊕庚",
+            "char": "庚",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [],
+        "delta": -1
+      }
+    },
+    {
+      "assertion_id": "PD-PF-032-01",
+      "case_id": "PF-032",
+      "a": "Y.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "刑",
+      "direction": "mutual",
+      "mutual": true,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2870",
+      "verbatim_quote": "戌未刑是两个都坏了 。",
+      "notes": "亥亥自刑（无第二端）；party delta=-4"
+    },
+    {
+      "assertion_id": "PD-PF-033-01",
+      "case_id": "PF-033",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "子未穿；party delta=1"
+    },
+    {
+      "assertion_id": "PD-PF-034-01",
+      "case_id": "PF-034",
+      "a": "H.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2770",
+      "verbatim_quote": "巳 申合的效率最高， 既可以金水有势， 申制 巳， 也可以木火有势 巳制 申 ， 都是将原神用神全能制死。",
+      "notes": "巳申合（同盘另一例取卯辰穿）；party delta=-1",
+      "party": {
+        "fire": 5,
+        "water": 6,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "乙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "辛",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "H.s",
+            "char": "丙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "巳",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "卯",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "H.b",
+            "char": "申",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b⊕庚",
+            "char": "庚",
+            "item": "C",
+            "party": "W"
+          },
+          {
+            "addr": "M.b⊕乙",
+            "char": "乙",
+            "item": "C",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "辰",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [],
+        "delta": -1
+      }
+    },
+    {
+      "assertion_id": "PD-PF-035-01",
+      "case_id": "PF-035",
+      "a": "M.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "刑",
+      "direction": "mutual",
+      "mutual": true,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e013",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2870",
+      "verbatim_quote": "戌未刑是两个都坏了 。",
+      "notes": "午午自刑（无第二端）；party delta=2"
+    },
+    {
+      "assertion_id": "PD-PF-036-01",
+      "case_id": "PF-036",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e010",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "午丑穿；party delta=5"
+    },
+    {
+      "assertion_id": "PD-PF-037-01",
+      "case_id": "PF-037",
+      "a": "H.b",
+      "b": "Y.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "卯酉冲；party delta=-3",
+      "party": {
+        "fire": 3,
+        "water": 6,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "辛",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "M.s",
+            "char": "庚",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "D.s",
+            "char": "丙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "H.s",
+            "char": "丁",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "Y.b",
+            "char": "卯",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "M.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "D.b",
+            "char": "申",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "酉",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "子",
+            "item": "D",
+            "party": "W"
+          }
+        ],
+        "excluded": [],
+        "delta": -3
+      }
+    },
+    {
+      "assertion_id": "PD-PF-038-01",
+      "case_id": "PF-038",
+      "a": "M.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e013",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "卯辰穿（同盘另一例取巳申合）；party delta=-1"
+    },
+    {
+      "assertion_id": "PD-PF-039-01",
+      "case_id": "PF-039",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "actor→target",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "子午冲；party delta=-2",
+      "party": {
+        "fire": 3,
+        "water": 5,
+        "items": [
+          {
+            "addr": "Y.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "M.s",
+            "char": "丙",
+            "item": "A",
+            "party": "F"
+          },
+          {
+            "addr": "D.s",
+            "char": "壬",
+            "item": "A",
+            "party": "W"
+          },
+          {
+            "addr": "Y.b",
+            "char": "子",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "午",
+            "item": "B",
+            "party": "F"
+          },
+          {
+            "addr": "D.b",
+            "char": "辰",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "H.b",
+            "char": "酉",
+            "item": "B",
+            "party": "W"
+          },
+          {
+            "addr": "M.b",
+            "char": "午",
+            "item": "D",
+            "party": "F"
+          }
+        ],
+        "excluded": [
+          {
+            "addr": "H.s",
+            "char": "己",
+            "reason": "天干土中立"
+          },
+          {
+            "addr": "M.b⊕己",
+            "char": "己",
+            "reason": "中立"
+          }
+        ],
+        "delta": -2
+      }
+    },
+    {
+      "assertion_id": "PD-PF-040-01",
+      "case_id": "PF-040",
+      "a": "Y.b",
+      "b": "D.b",
+      "kind": "制",
+      "mechanism": "冲",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。",
+      "notes": "原盘时柱甲寅非法，按引擎提示丙寅取支级事实；表外寅申冲（G2）；party delta=4"
+    },
+    {
+      "assertion_id": "PD-PF-R01-01",
+      "case_id": "PF-R01",
+      "a": "Y.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "路由：穿制不判；party delta=0"
+    },
+    {
+      "assertion_id": "PD-PF-R02-01",
+      "case_id": "PF-R02",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "穿",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2425",
+      "verbatim_quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。",
+      "notes": "路由：穿制不判；party delta=0"
+    },
+    {
+      "assertion_id": "PD-PF-R03-01",
+      "case_id": "PF-R03",
+      "a": "D.b",
+      "b": "H.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e015",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "路由：辰酉合绊；party delta=-2"
+    },
+    {
+      "assertion_id": "PD-PF-R04-01",
+      "case_id": "PF-R04",
+      "a": "Y.s",
+      "b": "H.s",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e003",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "路由：戊癸合，合绊/不作功；party delta=-1"
+    },
+    {
+      "assertion_id": "PD-PF-R05-01",
+      "case_id": "PF-R05",
+      "a": "Y.b",
+      "b": "M.b",
+      "kind": "制",
+      "mechanism": "合",
+      "direction": "needs_judgment",
+      "mutual": false,
+      "no_control": false,
+      "syntax_subject": null,
+      "edge_id": "e007",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "state_evidence": null,
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L605",
+      "verbatim_quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论",
+      "notes": "路由：辰酉合绊；party delta=0"
+    }
+  ]
+}
