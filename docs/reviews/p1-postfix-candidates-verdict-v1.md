@@ -73,6 +73,22 @@ H09–H12（T-180 审计 4/4）：
 ## 6. 证据
 
 - post-fix：`META/p1-holdout-postfix-candidates-v1.json` / `.md`
+- post-T-181：`META/p1-holdout-postfix-hua-v1.json` / `.md`
 - 墓审计/规则表：`META/p1-muku-actor-audit-v1.*`、`docs/specs/actor-rules-v1.md`
 - pre-fix：`META/p1-holdout-baseline-v1.*`
-- 基线：1425 passed / 1 skipped；481/0；relations 全过
+- 基线：1430 passed / 1 skipped；481/0；relations 全过
+
+## 7. T-181 实测（2026-10-29 13:45，合并后）
+
+- main `1430 passed / 1 skipped`；481/0；relations 全过；15KB 测试盘 14,804 B。
+- **all20 方向 9/20 = 45%**（ok 9 / reversed 1 / actor_none 7 / no_edge 3）；**defined16 7/16 = 43.75%**。
+- H09–H11 已 ok；H12 仍 reversed（财→杀 known_gap）；H18 顺带 ok（rescue ok=2）。
+- **8 条制仍全部卡 G3 支克**：H01–H05/H08 actor_none（只有 chong，无 ke），H06/H07 no_edge。
+- 边 strict 8/20、muku 12/20、候选 17/20 不变。
+
+**A 的量化收益**：补支克/支生后，8 条制可望修好 →
+defined16 **15/16（93.75%）**（H12 gap）、all20 **17/20（85%）**、关系覆盖 20/20；
+方向/边目标都能过。
+**不选 A**：defined16 43.75%、all20 45%、关系覆盖 60% → 按目标 **kill**。
+
+结论不变：**A 或 K，没有第三条路。**
