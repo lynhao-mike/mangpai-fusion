@@ -484,8 +484,15 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
             source_refs=tuple(dict.fromkeys(refs + _REF_ZUOGONG)), notes=tuple(notes + _notes(t)),
         ))
 
-    def sheng_mode(src: Addr, dst: Addr) -> str:
-        return "化用" if gods[src] in roles("官杀") and gods[dst] in roles("印") else "生泄用"
+    def sheng_view(src: Addr, dst: Addr) -> tuple[str, tuple[Addr, Addr], Addr]:
+        """生/化候选的 mode、members 与 actor。
+
+        生：生者 → 被生者，actor=生者；化（官杀→印，检测仍在生方向做）：被化者（生端）→
+        化者（受生端），actor=化者（T-180 审计：化者恒为受生端）。只翻化用，不全局翻 sheng。
+        """
+        if gods[src] in roles("官杀") and gods[dst] in roles("印"):
+            return "化用", (dst, src), dst
+        return "生泄用", (src, dst), src
 
     for e in graph.edges:
         if len(e.members) != 2:
@@ -496,13 +503,15 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
             notes = [f"用克体（{gods[actor]}克{gods[e.members[1]]}）"] if actor and ty[actor] == "用" else []
             emit("制用", e.kind, e.id, members, actor, e.distance, e.source_refs, notes)
         elif e.kind == "sheng":
-            emit(sheng_mode(*members), e.kind, e.id, members, e.members[0], e.distance, e.source_refs, [])
+            mode, s_members, s_actor = sheng_view(*members)
+            emit(mode, e.kind, e.id, s_members, s_actor, e.distance, e.source_refs, [])
         elif e.kind in _HE_KINDS:
             emit("合用", e.kind, e.id, members, None, e.distance, e.source_refs, [])
 
     for src, dst, dist in _derived_sheng(chart):
-        emit(sheng_mode(src, dst), "sheng(main_qi)", None, (src, dst), src, abs(dist) if dist is not None else None,
-             (), ["关系图未建此生边，按本气五行推得"])
+        mode, s_members, s_actor = sheng_view(src, dst)
+        emit(mode, "sheng(main_qi)", None, s_members, s_actor,
+             abs(dist) if dist is not None else None, (), ["关系图未建此生边，按本气五行推得"])
 
     sheng_edges = {e.members: e for e in graph.edges if e.kind == "sheng" and len(e.members) == 2}
     for src, dst, dist in _derived_sheng_adjacent(chart, chars):
