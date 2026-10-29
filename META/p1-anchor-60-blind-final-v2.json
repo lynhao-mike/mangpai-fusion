@@ -1,0 +1,868 @@
+{
+  "schema_version": "p1-anchor-60-blind/v1",
+  "task": "T-190",
+  "generated_at": "2026-10-29",
+  "annotator": "A",
+  "note": "final v2: A60-042 mechanism 刑->合; 8 unmarked gender from B; A/B 92.5%",
+  "isolation": {
+    "no_source_path": true,
+    "no_locator": true,
+    "no_answers": true,
+    "dev_sets_excluded": [
+      "golden-20",
+      "holdout-20",
+      "fresh-40",
+      "fresh-40-routing"
+    ]
+  },
+  "case_count": 60,
+  "chart_count": 53,
+  "max_relations_per_chart": 2,
+  "layers": {
+    "fixed": 10,
+    "dynamic": 40,
+    "ambiguous": 10
+  },
+  "cases": [
+    {
+      "case_id": "A60-001",
+      "chart_id": "A60-CH01",
+      "four_pillars": "丁未 辛亥 戊子 丁巳",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "未",
+        "char_b": "子",
+        "mechanism": "克"
+      }
+    },
+    {
+      "case_id": "A60-002",
+      "chart_id": "A60-CH02",
+      "four_pillars": "己巳 辛未 丙午 丁酉",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "午",
+        "char_b": "酉",
+        "mechanism": "克"
+      }
+    },
+    {
+      "case_id": "A60-003",
+      "chart_id": "A60-CH03",
+      "four_pillars": "丙午 戊戌 丙午 己亥",
+      "gender": "坤",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "戌",
+        "char_b": "亥",
+        "mechanism": "克"
+      }
+    },
+    {
+      "case_id": "A60-004",
+      "chart_id": "A60-CH04",
+      "four_pillars": "辛卯 戊戌 己亥 癸酉",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "Y.b",
+        "char_a": "亥",
+        "char_b": "卯",
+        "mechanism": "生"
+      }
+    },
+    {
+      "case_id": "A60-005",
+      "chart_id": "A60-CH05",
+      "four_pillars": "壬子 壬寅 庚辰 辛巳",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "巳",
+        "char_b": "辰",
+        "mechanism": "生"
+      }
+    },
+    {
+      "case_id": "A60-006",
+      "chart_id": "A60-CH06",
+      "four_pillars": "癸卯 壬戌 癸巳 庚申",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "卯",
+        "char_b": "巳",
+        "mechanism": "生"
+      }
+    },
+    {
+      "case_id": "A60-007",
+      "chart_id": "A60-CH07",
+      "four_pillars": "甲申 戊辰 甲寅 甲子",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "Y.b",
+        "char_a": "子",
+        "char_b": "申",
+        "mechanism": "化"
+      }
+    },
+    {
+      "case_id": "A60-008",
+      "chart_id": "A60-CH08",
+      "four_pillars": "丁亥 壬子 庚辰 壬午",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "辰",
+        "char_b": "午",
+        "mechanism": "化"
+      }
+    },
+    {
+      "case_id": "A60-009",
+      "chart_id": "A60-CH09",
+      "four_pillars": "丁未 壬寅 辛丑 丁酉",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "M.b",
+        "char_a": "未",
+        "char_b": "寅",
+        "mechanism": "墓"
+      }
+    },
+    {
+      "case_id": "A60-010",
+      "chart_id": "A60-CH10",
+      "four_pillars": "壬子 丙午 壬辰 丁未",
+      "gender": "乾",
+      "layer": "fixed",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "辰",
+        "char_b": "未",
+        "mechanism": "墓"
+      }
+    },
+    {
+      "case_id": "A60-011",
+      "chart_id": "A60-CH11",
+      "four_pillars": "戊辰 壬戌 乙未 己卯",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "戌",
+        "char_b": "辰",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-012",
+      "chart_id": "A60-CH12",
+      "four_pillars": "乙巳 己丑 己未 庚午",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "未",
+        "char_b": "丑",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-013",
+      "chart_id": "A60-CH13",
+      "four_pillars": "癸巳 庚申 甲寅 甲戌",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "D.b",
+        "char_a": "申",
+        "char_b": "寅",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-014",
+      "chart_id": "A60-CH14",
+      "four_pillars": "丙戌 丙申 乙丑 戊寅",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "M.b",
+        "char_a": "寅",
+        "char_b": "申",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-015",
+      "chart_id": "A60-CH15",
+      "four_pillars": "癸卯 戊午 己酉 甲戌",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "卯",
+        "char_b": "酉",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-016",
+      "chart_id": "A60-CH16",
+      "four_pillars": "丁丑 辛亥 己未 甲子",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "丑",
+        "char_b": "未",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-017",
+      "chart_id": "A60-CH08",
+      "four_pillars": "丁亥 壬子 庚辰 壬午",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "子",
+        "char_b": "午",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-018",
+      "chart_id": "A60-CH17",
+      "four_pillars": "丙午 癸巳 丁亥 戊申",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "D.b",
+        "char_a": "巳",
+        "char_b": "亥",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-019",
+      "chart_id": "A60-CH18",
+      "four_pillars": "甲寅 己巳 癸亥 戊午",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "亥",
+        "char_b": "巳",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-020",
+      "chart_id": "A60-CH19",
+      "four_pillars": "丙申 辛卯 甲戌 戊辰",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "辰",
+        "char_b": "戌",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-021",
+      "chart_id": "A60-CH04",
+      "four_pillars": "辛卯 戊戌 己亥 癸酉",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "戌",
+        "char_b": "卯",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-022",
+      "chart_id": "A60-CH20",
+      "four_pillars": "辛亥 戊戌 庚寅 己卯",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "M.b",
+        "char_a": "卯",
+        "char_b": "戌",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-023",
+      "chart_id": "A60-CH21",
+      "four_pillars": "乙未 壬午 甲子 甲戌",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "午",
+        "char_b": "未",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-024",
+      "chart_id": "A60-CH22",
+      "four_pillars": "癸酉 丁巳 辛卯 辛卯",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "巳",
+        "char_b": "酉",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-025",
+      "chart_id": "A60-CH23",
+      "four_pillars": "甲寅 癸酉 丁丑 庚子",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "丑",
+        "char_b": "子",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-026",
+      "chart_id": "A60-CH24",
+      "four_pillars": "丙申 壬辰 辛酉 己亥",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "D.b",
+        "char_a": "辰",
+        "char_b": "酉",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-027",
+      "chart_id": "A60-CH25",
+      "four_pillars": "乙酉 乙酉 癸未 癸亥",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "亥",
+        "char_b": "未",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-028",
+      "chart_id": "A60-CH26",
+      "four_pillars": "丁酉 癸卯 甲午 戊辰",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "Y.b",
+        "char_a": "辰",
+        "char_b": "酉",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-029",
+      "chart_id": "A60-CH06",
+      "four_pillars": "癸卯 壬戌 癸巳 庚申",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "巳",
+        "char_b": "申",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-030",
+      "chart_id": "A60-CH27",
+      "four_pillars": "丙子 戊戌 丁丑 丁未",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "Y.b",
+        "char_a": "丑",
+        "char_b": "子",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-031",
+      "chart_id": "A60-CH28",
+      "four_pillars": "戊戌 甲寅 丁卯 甲辰",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "卯",
+        "char_b": "辰",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-032",
+      "chart_id": "A60-CH29",
+      "four_pillars": "戊辰 辛酉 壬子 癸卯",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "Y.b",
+        "char_a": "卯",
+        "char_b": "辰",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-033",
+      "chart_id": "A60-CH30",
+      "four_pillars": "癸未 乙卯 甲子 己巳",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "未",
+        "char_b": "子",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-034",
+      "chart_id": "A60-CH31",
+      "four_pillars": "甲辰 壬申 戊子 己未",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "子",
+        "char_b": "未",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-035",
+      "chart_id": "A60-CH32",
+      "four_pillars": "乙未 乙酉 丙戌 己丑",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "戌",
+        "char_b": "酉",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-036",
+      "chart_id": "A60-CH33",
+      "four_pillars": "壬寅 乙巳 乙亥 壬午",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "巳",
+        "char_b": "寅",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-037",
+      "chart_id": "A60-CH34",
+      "four_pillars": "癸丑 甲寅 戊午 丁巳",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "丑",
+        "char_b": "午",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-038",
+      "chart_id": "A60-CH35",
+      "four_pillars": "戊申 丁巳 庚子 戊寅",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "巳",
+        "char_b": "寅",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-039",
+      "chart_id": "A60-CH36",
+      "four_pillars": "癸丑 壬戌 癸未 辛酉",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "戌",
+        "char_b": "酉",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-040",
+      "chart_id": "A60-CH37",
+      "four_pillars": "丙午 辛丑 辛卯 癸巳",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "丑",
+        "char_b": "午",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-041",
+      "chart_id": "A60-CH38",
+      "four_pillars": "壬子 癸卯 壬戌 丁未",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "未",
+        "char_b": "戌",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-042",
+      "chart_id": "A60-CH39",
+      "four_pillars": "癸卯 壬戌 壬寅 乙巳",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "M.b",
+        "char_a": "卯",
+        "char_b": "戌",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-043",
+      "chart_id": "A60-CH40",
+      "four_pillars": "丙午 辛丑 戊戌 戊午",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "戌",
+        "char_b": "丑",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-044",
+      "chart_id": "A60-CH41",
+      "four_pillars": "戊午 壬戌 乙巳 丁丑",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "戌",
+        "char_b": "丑",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-045",
+      "chart_id": "A60-CH05",
+      "four_pillars": "壬子 壬寅 庚辰 辛巳",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "寅",
+        "char_b": "巳",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-046",
+      "chart_id": "A60-CH42",
+      "four_pillars": "戊戌 己未 乙巳 丁亥",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "未",
+        "char_b": "戌",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-047",
+      "chart_id": "A60-CH43",
+      "four_pillars": "己丑 丁丑 乙卯 丙子",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "子",
+        "char_b": "卯",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-048",
+      "chart_id": "A60-CH44",
+      "four_pillars": "丙戌 辛丑 壬寅 甲辰",
+      "gender": "坤",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "Y.b",
+        "char_a": "丑",
+        "char_b": "戌",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-049",
+      "chart_id": "A60-CH45",
+      "four_pillars": "戊午 戊午 甲寅 己巳",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "巳",
+        "char_b": "寅",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-050",
+      "chart_id": "A60-CH46",
+      "four_pillars": "壬子 庚戌 辛丑 乙未",
+      "gender": "乾",
+      "layer": "dynamic",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "丑",
+        "char_b": "戌",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-051",
+      "chart_id": "A60-CH47",
+      "four_pillars": "戊戌 甲子 甲子 庚午",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "H.b",
+        "char_a": "戌",
+        "char_b": "午",
+        "mechanism": "墓"
+      }
+    },
+    {
+      "case_id": "A60-052",
+      "chart_id": "A60-CH48",
+      "four_pillars": "辛亥 丁酉 庚戌 己卯",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "D.b",
+        "char_a": "酉",
+        "char_b": "戌",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-053",
+      "chart_id": "A60-CH49",
+      "four_pillars": "壬寅 辛亥 甲戌 己巳",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "M.b",
+        "char_a": "寅",
+        "char_b": "亥",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-054",
+      "chart_id": "A60-CH21",
+      "four_pillars": "乙未 壬午 甲子 甲戌",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "未",
+        "char_b": "子",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-055",
+      "chart_id": "A60-CH50",
+      "four_pillars": "丁亥 癸丑 丁未 辛亥",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "M.b",
+        "char_a": "未",
+        "char_b": "丑",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-056",
+      "chart_id": "A60-CH51",
+      "four_pillars": "丁酉 壬子 壬戌 癸卯",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "H.b",
+        "addr_b": "D.b",
+        "char_a": "卯",
+        "char_b": "戌",
+        "mechanism": "合"
+      }
+    },
+    {
+      "case_id": "A60-057",
+      "chart_id": "A60-CH52",
+      "four_pillars": "己酉 甲戌 丁丑 丙午",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "D.b",
+        "addr_b": "H.b",
+        "char_a": "丑",
+        "char_b": "午",
+        "mechanism": "穿"
+      }
+    },
+    {
+      "case_id": "A60-058",
+      "chart_id": "A60-CH32",
+      "four_pillars": "乙未 乙酉 丙戌 己丑",
+      "gender": "坤",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "D.b",
+        "char_a": "未",
+        "char_b": "戌",
+        "mechanism": "刑"
+      }
+    },
+    {
+      "case_id": "A60-059",
+      "chart_id": "A60-CH53",
+      "four_pillars": "戊申 壬戌 己巳 戊辰",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "M.b",
+        "addr_b": "H.b",
+        "char_a": "戌",
+        "char_b": "辰",
+        "mechanism": "冲"
+      }
+    },
+    {
+      "case_id": "A60-060",
+      "chart_id": "A60-CH18",
+      "four_pillars": "甲寅 己巳 癸亥 戊午",
+      "gender": "乾",
+      "layer": "ambiguous",
+      "target_relation": {
+        "addr_a": "Y.b",
+        "addr_b": "M.b",
+        "char_a": "寅",
+        "char_b": "巳",
+        "mechanism": "穿"
+      }
+    }
+  ]
+}
