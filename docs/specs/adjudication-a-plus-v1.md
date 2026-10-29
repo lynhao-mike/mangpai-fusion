@@ -1,65 +1,92 @@
-# A+ 裁决规格 v1.1（Gemini + WB 收敛，草案待冻结）
+# A+ 裁决规格 v1.3（Opus/WB/Gemini 三方收敛，草案待冻结）
 
-> 依据：`docs/reviews/t187-gemini4-verdict-v1.md`、`docs/reviews/t187-wb-v4-verdict-v1.md`。
-> 状态：阈值已统一；待 Opus/owner 最终确认后 hash 冻结。不得在 dev-20/fresh-40 上调。
+> 依据：`docs/reviews/t187-gemini4-verdict-v1.md`、`t187-wb-v4-verdict-v1.md`、Gemini v5、Opus v6（2026-10-29）。
+> 状态：阈值已收敛；采三方更严线；待最终确认后 hash 冻结。
+> 杀的只是“自动方向产品”；事实 + 分流层保留。
 
-## 1. 输入契约
-
-- `case_id/chart_id/four_pillars/gender`
-- `target_relation: {addr_a, addr_b, char_a, char_b, mechanism}`；地址用 `Y.s/Y.b/M.s/M.b/D.s/D.b/H.s/H.b` 钉死两端；
-  `mechanism ∈ {冲,合,穿,刑,克,生,化,墓}`；**禁止 source.path / source.locator**。
-- 盲卷先过 `engine.cli` 合法性；非法时柱不得入卷。
-
-## 2. 三层分栏
+## 1. 三层
 
 | 层 | 条数 | 计分 |
 |---|---:|---|
-| fixed gate | 10 | 克/生/化/墓；≥9/10；**新策展，非 dev-20**；不进动态主分母 |
+| fixed gate | 10 | 克/生/化/墓；**10/10**（Opus v6；不过先修 bug）；新策展；不进动态主分母 |
 | decidable dynamic | 40 | 冲/合/穿/刑；必须 actor→target 或 mutual；nj=miss；主分母 |
-| ambiguous | 10 | 真歧义/边界；允许 nj，但必须带正反冲突双引文 `conflict_quotes[2]`；单列 |
+| ambiguous | 10 | 真歧义；允许 nj，但必须 conflict_quotes[2]；单列 |
 
-- anchor-60：≥30 盘、≤2/盘；与 golden-20、p1-holdout-20、fresh-40 三重零重叠；标注/运行/裁判分离；双人复核；答案先 hash。
-- ambiguous 标签审计：>20% 在语料里其实可判 = 标注放水，需重标。
+anchor-60：≥30 盘、≤2/盘；与 golden-20 / holdout-20 / fresh-40 三重零重叠；标注/运行/裁判分离；双人复核；engine.cli 预检；无 locator；答案先 hash。
 
-## 3. 引擎 / Agent 边界
+## 2. 引擎 / Agent
 
-- 引擎：事实 + 固定克/生/化/墓；**不发射任何党势方向**（R1/R2/R3/R5b 全死）；党数回执仅披露，不作方向依据。
-- 刑：只保留 mutual **候选**（未戌刑/三刑齐），双向可表达；PF-025 单向、PF-027 mutual 都可能。
-- 自刑边（酉酉/亥亥/午午）：保留事实边，**逐条 logged 剔除出做功候选**，不静默丢弃。
-- Agent：读 `engine.cli` + `query_theory` + 原文；给 actor→target / mutual；带 edge_id、source_ref、逐字 quote、党势/主宾依据。
-- `needs_judgment`：仅 ambiguous 可用，且必须 `conflict_quotes[2]`；decidable 上 nj=miss。
+- 引擎只发射：克 / 生 / 化（印为 actor）/ 墓（库为 actor）四个固定类。
+- 冲 / 合 / 穿 / 破：`actor=None`；A+ 机制枚举不含破，不得逼 Agent 为破编单向 actor。
+- 刑（未戌/子卯/三刑）：只保留 `mutual` **候选**；PF-025 证明可单向未→戌，PF-027 证明键可 mutual；双向可表达。
+- 自刑边（辰辰/午午/酉酉/亥亥）：保留 `RelationGraph.edges`（completeness="zixing"，保 481/0 与关系图测试），
+  但在 `build_duan_zuogong_candidates` 中逐条 logged 剔除（不静默丢弃；`excluded` 原则）。
+- 党数回执只作披露事实，永不作方向判据；引擎不发射任何党势方向（R1/R2/R3/R5b 全死）。
+- Agent：读 `engine.cli` + `query_theory` + 原文；给 actor→target / mutual；带 edge_id、source_ref、逐字 quote、主宾/连体/库位依据。
+- decidable 上 nj=miss；ambiguous 上 nj 必须 `conflict_quotes[2]`（正反两条逐字冲突/无功条件原文）。
 
-## 4. 阈值（冻结）
+## 3. 阈值（Gemini v5 严格版；WB v4 的 24–27 红、nj 5–6 灰已并入更严线）
 
-| 项 | 规则 |
-|---|---|
-| 主指标 | decidable 40 delivered-verdict correct；nj=miss；ambiguous 单列 |
-| fixed 10 | ≥9/10；不过=事实层回归 |
-| pass | ≥32/40 且 Wilson LB>50%（≈65.2%）且 chart 聚类 ≥78% 且 margin ≥+8 |
-| 琥珀 28–31 | 可演示、不可宣称；只允许换新盲集复测一次 |
-| 红 24–27 | 不宣称、不发布方向特性；事实+分流层可发；新预注册 |
-| 硬 kill | <24/40 或 margin <+6 |
-| margin +6–+7 | 灰：绝对分 ≥32 也压琥珀 |
-| nj 逃票 | ≤4/40 正常；5–6/40 灰封顶琥珀；>6/40 kill |
-| 引文 | 伪造/行内不可检出/与机制无关 >2/40 kill |
-| 一致性 | 3 次方向一致 <90% kill |
-| E2 | 本轮只披露（基线 12/40）；下轮 top-3 ≥50%；两轮 chance → 产品级 kill |
-| 3 卡 | direction_known 3/3、rescue 3/3 且挂源、移植拒绝 ≥95%/同构 ≥80%、单字反事实翻转（预注册翻哪个字）、第三人可重推 |
+| 项 | Pass | Gray | Kill |
+|---|---|---|---|
+| fixed 10 | **10/10** | 不设 | <10 先修 bug；修后仍 <10 |
+| dynamic 40 | ≥32/40 且 Wilson LB>65% 且 chart 聚类 ≥78% | 28–31（只作带引文候选；换新盲集复测一次；复测 ≤31 kill） | **≤27；或复测 ≤31（方向产品 kill；事实+分流层保留）** |
+| 基线增量 | correct − max(B1,B2) ≥ +8 | +6～+7 | ≤+5 |
+| decidable nj | ≤4/40 | 不设 | ≥5/40 |
+| ambiguous | ≥7/10 且双引文 100% 行内可检出 | 5–6/10 | ≤4/10 |
+| 引文 | 伪造/失配 ≤2/40 | 不设 | ≥3/40 |
+| 一致性 | 3 次方向一致 ≥90% | 不设 | <90% |
+| E2 选边 | 本轮只披露（T-187 12/40 基线） | — | P1 通过后 P2 top-3 ≥70%；P1 未过 E2 一并停 |
 
-## 5. 最小证明点
+## 4. B2 笨基线必须写死 fallback
 
-E1：给足 relation identity 的 decidable 40，未污染 Agent 必须表态；一次评分按 §4。E2 只披露；不混测。
-scorer v2 必须先用 T-187 fixture 复算出 **12/40、2/20、28/40**，证明量具修好，才上新卷。
+B2 = ① 本气相克取克方 → ② 本气相生取生方 → ③ 本气同五行（含全部四墓库冲刑：辰戌/丑未/丑戌/未戌）
+一律取**主位端**（D/H 优先于 Y/M；同主或同宾取柱序靠后者）。否则 B2 在四库冲刑上弃权得 0，
+系统会白捡“高出基线 +8”的假象。
 
-## 6. 步骤
+B1 = T-184 整数 delta 符号（delta=0 按柱序左端）。评分器 v2 必须自动计 B1/B2 的较高者。
 
-1. 冻结本规格 + scorer v2 + T-187 回归 fixture。
-2. 双人隔离策展 anchor-60（10 fixed +40 dynamic +10 ambiguous）；engine.cli 预检；无 locator；先 hash。
-3. 未污染 Agent 跑 3 次；中枢一次性评分 + 3 卡门禁。
-4. 按表判 pass/琥珀/红/kill；不调阈值。
+## 5. 3 张真实盘卡（四个硬补丁）
 
-## 7. 禁止
+1. **L09 死锁**：`single-chart-analysis-v1.md` §2.3 / L09 硬拦 `rescue_judged=已判`；必须放行，并新增
+   `rescue_evidence`：无救应时列出已扫描原局/岁运候选字及为何不构成救应（虚透/被合绊/隔柱），禁止只改两个字。
+2. **C3 po 边**：C3（RF-2026-000894）夫妻宫唯一边是 e009 po（酉/子）；段派 M1-D-143 不把破并入四类制法，
+   A+ 枚举不含 po。允许 C3 改锚全盘有向主功边，或把有据 mutual 计入 direction_known=true；
+   严禁逼 Agent 为子酉破编单向施力方。
+3. **双快照隔离**：t1 原局边与 t4 岁运引动边分别绑定 `snapshot{chart_id,dayun_index,liunian_year}`；
+   加岁运会使 edge_id 重编号（C1 16→39），禁止跨快照混用 edge_id。
+4. **反事实实跑**：替换的 1 个非目标端点字必须构成合法六十甲子柱（防 PF-040 甲日甲寅时）；
+   必须附替换后 `engine.cli` 实跑的新 chart_id 与翻转输出。
 
-- 不复活引擎党势；不为 PF-008/PF-018/R8 调规则；不把 fixed 混进 40；
-- 不在 dev-20/fresh-40 上重跑宣称；不留 locator；decidable 不给 nj；
-- 看过答案的人不当裁判；不事后移阈值；不扩岁运/P2；不把旧卡当证明。
+3 卡门槛：direction_known 3/3、rescue 3/3 且挂源、随机异盘移植拒绝 ≥95%、同构异盘 ≥80%、
+单字反事实翻转（跑前预注册翻哪个字/翻到什么）、第三人凭 CLI+锚点可重推。旧卡只演示。
+
+## 6. 预注册顺序（严禁倒置）
+
+1. 冻结 D-05 勘误 + 本规格 SHA-256；
+2. scorer v2 + 合成 fixture，锁 hash；**先用 T-187 fixture 复算 12/40、2/20、28/40**；
+3. 双人隔离策展 anchor-60；engine.cli 预检；无 locator；锁盲卷与答案 hash；
+4. 未污染 Agent 盲跑 3 次 + 中枢一次性开盒评分。
+
+## 7. 4 步
+
+1. Day1–2：冻结规格；`structure_check.py` 过滤 `completeness=="zixing"` 的自刑候选；1489/1、481/0 全绿。
+2. Day3–5：`tools/p1_assertion_eval_v2.py`：地址/字双向、三层、nj=miss、conflict_quotes、B1/B2、聚类 CI、3 次一致；合成 fixture 锁 hash。
+3. Day6–9：双人策展 anchor-60（10+40+10）；四柱/原文行区间三重零重叠；十神库位复核；engine.cli 合法；无 locator；hash。
+4. Day10–14：未污染 Agent 跑 3 次 + 一次性评分 + 3 卡门禁。
+
+## 8. Kill（方向产品）
+
+- dynamic ≤27/40；或复测 ≤31；或 Wilson LB≤65%；或 chart 聚类 <78%；
+- 基线净胜 ≤+5；或 decidable nj ≥5/40；或引文伪造 ≥3/40；或 3 次一致 <90%；
+- **双人复核一致率 <75%**（>10 条分歧）：原书判不出方向，“裁决器”定位不成立；
+- 3 卡移植拒绝 <95%/同构 <80%，或反事实实跑不翻转；
+- 策展失败：剔除已烧 85 例后，连 40 条双人复核一致、方向明确的冲/合/穿/刑原局断言都策不出来 → 语料底座证伪，产品停。
+
+命中任一：关方向产品，保留 engine.cli + query_theory 事实/检索层。
+
+## 9. 禁止
+
+- 不复活引擎党势；不写 party-direction-v2；不为 PF-008/PF-018/寅申巳亥/刑/穿打引擎规则补丁；
+- 不在 dev-20/holdout-20/fresh-40 上重跑宣称；不把 fixed 混进 40；不留 locator；
+- decidable 不给 nj；不事后移阈值；不扩岁运/P2；不把旧卡当证明；看过答案的人不当裁判。
