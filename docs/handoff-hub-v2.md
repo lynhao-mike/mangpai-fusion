@@ -143,6 +143,7 @@ n<50 → **样本不足**，不能确认也不能推翻。详见 `docs/reviews/m
 | Golden-20（T-170，现为 dev 集） | `META/golden-20-v1.md` |
 | 依赖审计（T-171） | `META/kill-list-dependency-audit-v1.md` |
 | 错误档案（派活前必读） | `docs/reviews/failure-ledger-v1.md` |
+| **第三方裁决：新开/续聊规则** | `docs/dispatch/third-party-adjudication-policy.md` |
 | 方向审计 2026-10-29 | `docs/reviews/direction-audit-2026-10-29.md` |
 | 应期首测裁决 | `docs/reviews/timing-k3-verdict-v1.md` |
 | 标签可行性 | `docs/reviews/label-feasibility-verdict-v1.md` |
