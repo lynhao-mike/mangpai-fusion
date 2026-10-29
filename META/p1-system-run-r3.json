@@ -1,0 +1,1079 @@
+{
+  "schema_version": "p1-adjudication-system-output/v2",
+  "task": "T-191",
+  "runner": "r3",
+  "note": "uncontaminated blind run; direction basis = duan 原文 rules (克/生/化/墓 from engine facts; 冲/穿/刑 by 党势; 合 by pair-specific 原文; 体用/主宾 fallback). No scoring performed.",
+  "case_count": 60,
+  "layers": {
+    "fixed": 10,
+    "dynamic": 40,
+    "ambiguous": 10
+  },
+  "counts": {
+    "direction_actor_target": 47,
+    "mutual": 3,
+    "needs_judgment": 10
+  },
+  "cases": [
+    {
+      "case_id": "A60-001",
+      "a": "未",
+      "b": "子",
+      "kind": "克",
+      "direction": "actor→target",
+      "edge_id": "derived:zhi_ke",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:244",
+      "verbatim_quote": "克制就是如戌克亥、子，午克申、酉之类"
+    },
+    {
+      "case_id": "A60-002",
+      "a": "午",
+      "b": "酉",
+      "kind": "克",
+      "direction": "actor→target",
+      "edge_id": "derived:zhi_ke",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:244",
+      "verbatim_quote": "克制就是如戌克亥、子，午克申、酉之类"
+    },
+    {
+      "case_id": "A60-003",
+      "a": "戌",
+      "b": "亥",
+      "kind": "克",
+      "direction": "actor→target",
+      "edge_id": "derived:zhi_ke",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:244",
+      "verbatim_quote": "克制就是如戌克亥、子，午克申、酉之类"
+    },
+    {
+      "case_id": "A60-004",
+      "a": "亥",
+      "b": "卯",
+      "kind": "生",
+      "direction": "actor→target",
+      "edge_id": "derived:sheng(main_qi)",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:141",
+      "verbatim_quote": "一种是伤食生财"
+    },
+    {
+      "case_id": "A60-005",
+      "a": "巳",
+      "b": "辰",
+      "kind": "生",
+      "direction": "actor→target",
+      "edge_id": "derived:sheng(main_qi)",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:141",
+      "verbatim_quote": "一种是伤食生财"
+    },
+    {
+      "case_id": "A60-006",
+      "a": "卯",
+      "b": "巳",
+      "kind": "生",
+      "direction": "actor→target",
+      "edge_id": "derived:sheng(main_qi)",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:141",
+      "verbatim_quote": "一种是伤食生财"
+    },
+    {
+      "case_id": "A60-007",
+      "a": "子",
+      "b": "申",
+      "kind": "化",
+      "direction": "actor→target",
+      "edge_id": "derived:sheng(main_qi)",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2856",
+      "verbatim_quote": "化以印化七杀"
+    },
+    {
+      "case_id": "A60-008",
+      "a": "辰",
+      "b": "午",
+      "kind": "化",
+      "direction": "actor→target",
+      "edge_id": "derived:sheng(main_qi)",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2856",
+      "verbatim_quote": "化以印化七杀"
+    },
+    {
+      "case_id": "A60-009",
+      "a": "未",
+      "b": "寅",
+      "kind": "墓",
+      "direction": "actor→target",
+      "edge_id": "derived:muku",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md:line:4",
+      "verbatim_quote": "入墓有二：多而墓之，寅申巳亥见墓入之"
+    },
+    {
+      "case_id": "A60-010",
+      "a": "辰",
+      "b": "未",
+      "kind": "墓",
+      "direction": "actor→target",
+      "edge_id": "derived:muku",
+      "basis": "fixed_wuxing",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md:line:4",
+      "verbatim_quote": "入墓有二：多而墓之，寅申巳亥见墓入之"
+    },
+    {
+      "case_id": "A60-011",
+      "a": "戌",
+      "b": "辰",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e007",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "木火与燥土成势，则未可以坏丑库，戌可以坏辰库与丑库",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-012",
+      "a": "未",
+      "b": "丑",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "木火与燥土成势，则未可以坏丑库，戌可以坏辰库与丑库",
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-013",
+      "a": "寅",
+      "b": "申",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "M.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-014",
+      "a": "寅",
+      "b": "申",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "H.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-015",
+      "a": "卯",
+      "b": "酉",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-016",
+      "a": "丑",
+      "b": "未",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "金水与湿土成势，丑可坏未与戌库，辰可坏戌库",
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-017",
+      "a": "子",
+      "b": "午",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e012",
+      "basis": "party_dominance",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-018",
+      "a": "巳",
+      "b": "亥",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "M.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-019",
+      "a": "巳",
+      "b": "亥",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2852",
+      "verbatim_quote": "子午卯酉寅申巳亥之冲一定要形成势力",
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-020",
+      "a": "戌",
+      "b": "辰",
+      "kind": "冲",
+      "direction": "actor→target",
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "木火与燥土成势，则未可以坏丑库，戌可以坏辰库与丑库",
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-021",
+      "a": "戌",
+      "b": "卯",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:line:31",
+      "verbatim_quote": "前造是戌绊卯不制",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-022",
+      "a": "戌",
+      "b": "卯",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:line:31",
+      "verbatim_quote": "前造是戌绊卯不制",
+      "target_addrs": [
+        "H.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-023",
+      "a": "午",
+      "b": "未",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e007",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:228",
+      "verbatim_quote": "午未合不制，仅相生",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-024",
+      "a": "巳",
+      "b": "酉",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:224",
+      "verbatim_quote": "巳酉半合（火旺时）",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-025",
+      "a": "丑",
+      "b": "子",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e012",
+      "basis": "agent_anchor",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:177",
+      "verbatim_quote": "如果八字的主位是体，宾位是用，用主位的体去制宾位的用，这就叫正用",
+      "target_addrs": [
+        "D.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-026",
+      "a": "酉",
+      "b": "辰",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e012",
+      "basis": "source_text",
+      "state": "救应",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:146",
+      "verbatim_quote": "这类为合用结构",
+      "target_addrs": [
+        "M.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-027",
+      "a": "亥",
+      "b": "未",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e008",
+      "basis": "agent_anchor",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:177",
+      "verbatim_quote": "如果八字的主位是体，宾位是用，用主位的体去制宾位的用，这就叫正用",
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-028",
+      "a": "辰",
+      "b": "酉",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:146",
+      "verbatim_quote": "这类为合用结构",
+      "target_addrs": [
+        "H.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-029",
+      "a": "申",
+      "b": "巳",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e010",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:222",
+      "verbatim_quote": "既可以金水有势，申制巳，也可以木火有势巳制申",
+      "target_addrs": [
+        "D.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-030",
+      "a": "丑",
+      "b": "子",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e007",
+      "basis": "agent_anchor",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:177",
+      "verbatim_quote": "如果八字的主位是体，宾位是用，用主位的体去制宾位的用，这就叫正用",
+      "target_addrs": [
+        "D.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-031",
+      "a": "卯",
+      "b": "辰",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e012",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "D.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-032",
+      "a": "辰",
+      "b": "卯",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "H.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-033",
+      "a": "未",
+      "b": "子",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-034",
+      "a": "子",
+      "b": "未",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "D.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-035",
+      "a": "戌",
+      "b": "酉",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-036",
+      "a": "巳",
+      "b": "寅",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e007",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-037",
+      "a": "午",
+      "b": "丑",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e010",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-038",
+      "a": "巳",
+      "b": "寅",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e014",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-039",
+      "a": "酉",
+      "b": "戌",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e013",
+      "basis": "party_dominance",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-040",
+      "a": "丑",
+      "b": "午",
+      "kind": "穿",
+      "direction": "actor→target",
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:line:161",
+      "verbatim_quote": "相克之穿看势在哪里，哪方得势即能穿了对方",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-041",
+      "a": "未",
+      "b": "戌",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e016",
+      "basis": "source_text",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "未戌刑是开火库，火更大，戌中金受制",
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-042",
+      "a": "卯",
+      "b": "戌",
+      "kind": "合",
+      "direction": "actor→target",
+      "edge_id": "e007",
+      "basis": "source_text",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:line:31",
+      "verbatim_quote": "本造是卯合戌还制",
+      "target_addrs": [
+        "Y.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-043",
+      "a": "戌",
+      "b": "丑",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "丑戌刑灭戌中火，戌旺时灭丑中水",
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-044",
+      "a": "戌",
+      "b": "丑",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e011",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "丑戌刑灭戌中火，戌旺时灭丑中水",
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-045",
+      "a": "寅",
+      "b": "巳",
+      "kind": "刑",
+      "direction": "mutual",
+      "edge_id": "e011",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:line:412",
+      "verbatim_quote": "寅刑巳，以木动火，火喜旺则吉，火忌旺则凶；巳刑寅，寅动而泄",
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-046",
+      "a": "未",
+      "b": "戌",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "未戌刑是开火库，火更大，戌中金受制",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-047",
+      "a": "子",
+      "b": "卯",
+      "kind": "刑",
+      "direction": "mutual",
+      "edge_id": "e012",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:line:412",
+      "verbatim_quote": "子卯刑为败刑，子水将木之根腐败而不起生的作用；卯刑子则子水死于卯，子受损伤",
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-048",
+      "a": "丑",
+      "b": "戌",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e009",
+      "basis": "party_dominance",
+      "state": "救应",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "丑戌刑灭戌中火，戌旺时灭丑中水",
+      "target_addrs": [
+        "M.b",
+        "Y.b"
+      ]
+    },
+    {
+      "case_id": "A60-049",
+      "a": "巳",
+      "b": "寅",
+      "kind": "刑",
+      "direction": "mutual",
+      "edge_id": "e014",
+      "basis": "source_text",
+      "state": "成",
+      "source_ref": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:line:412",
+      "verbatim_quote": "寅刑巳，以木动火，火喜旺则吉，火忌旺则凶；巳刑寅，寅动而泄",
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-050",
+      "a": "丑",
+      "b": "戌",
+      "kind": "刑",
+      "direction": "actor→target",
+      "edge_id": "e012",
+      "basis": "party_dominance",
+      "state": "败",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "丑戌刑灭戌中火，戌旺时灭丑中水",
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-051",
+      "a": "戌",
+      "b": "午",
+      "kind": "墓",
+      "direction": "needs_judgment",
+      "edge_id": "derived:muku",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md:line:4",
+      "verbatim_quote": "午戌论拱不是入墓",
+      "conflict_quotes": [
+        "午戌论拱不是入墓",
+        "入墓有二：多而墓之，寅申巳亥见墓入之"
+      ],
+      "source_refs": [
+        {
+          "path": "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md",
+          "anchor": "line:4"
+        },
+        {
+          "path": "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md",
+          "anchor": "line:4"
+        }
+      ],
+      "target_addrs": [
+        "Y.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-052",
+      "a": "酉",
+      "b": "戌",
+      "kind": "穿",
+      "direction": "needs_judgment",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:252",
+      "verbatim_quote": "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+      "conflict_quotes": [
+        "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+        "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了"
+      ],
+      "source_refs": [
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:252"
+        },
+        {
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "anchor": "line:2425"
+        }
+      ],
+      "target_addrs": [
+        "M.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-053",
+      "a": "寅",
+      "b": "亥",
+      "kind": "合",
+      "direction": "needs_judgment",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md:line:173",
+      "verbatim_quote": "寅亥合绊,寅与亥不发挥作用",
+      "conflict_quotes": [
+        "寅亥合绊,寅与亥不发挥作用",
+        "寅亥=合木"
+      ],
+      "source_refs": [
+        {
+          "path": "sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md",
+          "anchor": "line:173"
+        },
+        {
+          "path": "theory/raw/duan/d02-theory.md",
+          "anchor": "line:644"
+        }
+      ],
+      "target_addrs": [
+        "Y.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-054",
+      "a": "未",
+      "b": "子",
+      "kind": "穿",
+      "direction": "needs_judgment",
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:252",
+      "verbatim_quote": "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+      "conflict_quotes": [
+        "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+        "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了"
+      ],
+      "source_refs": [
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:252"
+        },
+        {
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "anchor": "line:2425"
+        }
+      ],
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-055",
+      "a": "未",
+      "b": "丑",
+      "kind": "冲",
+      "direction": "needs_judgment",
+      "edge_id": "e012",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "金水与湿土成势，丑可坏未与戌库，辰可坏戌库",
+      "conflict_quotes": [
+        "金水与湿土成势，丑可坏未与戌库，辰可坏戌库",
+        "木火与燥土成势，则未可以坏丑库，戌可以坏辰库与丑库"
+      ],
+      "source_refs": [
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:237"
+        },
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:237"
+        }
+      ],
+      "target_addrs": [
+        "D.b",
+        "M.b"
+      ]
+    },
+    {
+      "case_id": "A60-056",
+      "a": "卯",
+      "b": "戌",
+      "kind": "合",
+      "direction": "needs_judgment",
+      "edge_id": "e016",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:line:31",
+      "verbatim_quote": "前造是戌绊卯不制",
+      "conflict_quotes": [
+        "前造是戌绊卯不制",
+        "本造是卯合戌还制"
+      ],
+      "source_refs": [
+        {
+          "path": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+          "anchor": "line:31"
+        },
+        {
+          "path": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+          "anchor": "line:31"
+        }
+      ],
+      "target_addrs": [
+        "H.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-057",
+      "a": "丑",
+      "b": "午",
+      "kind": "穿",
+      "direction": "needs_judgment",
+      "edge_id": "e014",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:252",
+      "verbatim_quote": "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+      "conflict_quotes": [
+        "只有酉戌穿、卯辰穿、子未穿、丑午穿都可以相制",
+        "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了"
+      ],
+      "source_refs": [
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:252"
+        },
+        {
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "anchor": "line:2425"
+        }
+      ],
+      "target_addrs": [
+        "D.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-058",
+      "a": "未",
+      "b": "戌",
+      "kind": "刑",
+      "direction": "needs_judgment",
+      "edge_id": "e008",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:1312",
+      "verbatim_quote": "未戌刑是开火库，火更大，戌中金受制",
+      "conflict_quotes": [
+        "未戌刑是开火库，火更大，戌中金受制",
+        "戌未刑是两个都坏了"
+      ],
+      "source_refs": [
+        {
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "anchor": "line:1312"
+        },
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:238"
+        }
+      ],
+      "target_addrs": [
+        "Y.b",
+        "D.b"
+      ]
+    },
+    {
+      "case_id": "A60-059",
+      "a": "戌",
+      "b": "辰",
+      "kind": "冲",
+      "direction": "needs_judgment",
+      "edge_id": "e012",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "theory/raw/duan/d01-deep-read.md:line:237",
+      "verbatim_quote": "金水与湿土成势，丑可坏未与戌库，辰可坏戌库",
+      "conflict_quotes": [
+        "金水与湿土成势，丑可坏未与戌库，辰可坏戌库",
+        "木火与燥土成势，则未可以坏丑库，戌可以坏辰库与丑库"
+      ],
+      "source_refs": [
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:237"
+        },
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:237"
+        }
+      ],
+      "target_addrs": [
+        "M.b",
+        "H.b"
+      ]
+    },
+    {
+      "case_id": "A60-060",
+      "a": "寅",
+      "b": "巳",
+      "kind": "穿",
+      "direction": "needs_judgment",
+      "edge_id": "e009",
+      "basis": "source_text",
+      "state": "needs_judgment",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:line:2425",
+      "verbatim_quote": "寅巳穿，申亥穿，穿中生力小，只有穿动、穿倒不和之象",
+      "conflict_quotes": [
+        "寅巳穿，申亥穿，穿中生力小，只有穿动、穿倒不和之象",
+        "申亥穿、寅巳穿相生不能制"
+      ],
+      "source_refs": [
+        {
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "anchor": "line:2425"
+        },
+        {
+          "path": "theory/raw/duan/d01-deep-read.md",
+          "anchor": "line:252"
+        }
+      ],
+      "target_addrs": [
+        "Y.b",
+        "M.b"
+      ]
+    }
+  ]
+}
