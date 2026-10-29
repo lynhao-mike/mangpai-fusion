@@ -1,0 +1,461 @@
+{
+ "schema_version": "p1-fixed-20-answers/v1",
+ "task": "T-194b",
+ "annotator": "B",
+ "generated_at": "2026-10-29",
+ "note": "盲卷独立复核：只读 META/p1-fixed-20-blind-v1.json、sources/duan/ 与 engine.cli；未读 META/p1-fixed-20-answers-v1.json 或任何 anchor/fresh/holdout/golden answers；未跑评分器；无 git 写。端点 a/b 按盲卷 target_relation 原序；actor 按 actor-rules-v1 的句法/力向规则。",
+ "isolation": {
+  "read_a_answers": false,
+  "read_other_answer_sets": false,
+  "ran_scorer": false,
+  "git_writes": false
+ },
+ "engine_precheck": {
+  "command": "python -m engine.cli chart --pillars <四柱> --gender <性别> --json",
+  "charts_ok": 20,
+  "chart_id_match": 20,
+  "endpoint_addr_match": 20,
+  "boundary_warnings": [
+   "F20-013 hour_stem_next_day",
+   "F20-015 hour_stem_next_day",
+   "F20-020 hour_stem_next_day"
+  ],
+  "gender_override": [
+   "F20-012: blind=未注明, CLI 以乾仅作排盘解析"
+  ]
+ },
+ "case_count": 20,
+ "mechanisms": {
+  "克": 5,
+  "生": 5,
+  "化": 5,
+  "墓": 5
+ },
+ "evidence": {
+  "same_line": 6,
+  "doctrine_only": 14
+ },
+ "cases": [
+  {
+   "case_id": "F20-001",
+   "chart_id": "cf-fee600218b19b441a567",
+   "four_pillars": "丁亥 庚戌 己巳 庚午",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "克",
+   "relation": {
+    "a": "亥",
+    "b": "戌",
+    "mechanism": "克",
+    "actor": "戌",
+    "target": "亥"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L536-L536",
+   "quote": "戌土克亥水",
+   "quote_line": 536,
+   "evidence": "same_line",
+   "note": "蒋介石造（22:L530-532，丁亥庚戌己巳庚午）；同段直断『戌土克亥水』，克者戌为 actor。"
+  },
+  {
+   "case_id": "F20-002",
+   "chart_id": "cf-8c92d1b119d0e478e614",
+   "four_pillars": "甲午 丁卯 癸酉 乙卯",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "克",
+   "relation": {
+    "a": "午",
+    "b": "酉",
+    "mechanism": "克",
+    "actor": "午",
+    "target": "酉"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1449-L1449",
+   "quote": "午火克酉金",
+   "quote_line": 1449,
+   "evidence": "doctrine_only",
+   "note": "本造原书（命理珍宝 L826-828）未直述午/酉；取 21:L1449 同字对直断『午火克酉金』，克者午为 actor。"
+  },
+  {
+   "case_id": "F20-003",
+   "chart_id": "cf-0dec002f2eece26cac6f",
+   "four_pillars": "壬子 丙午 乙酉 戊寅",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "克",
+   "relation": {
+    "a": "午",
+    "b": "酉",
+    "mechanism": "克",
+    "actor": "午",
+    "target": "酉"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2956-L2956",
+   "quote": "午克酉",
+   "quote_line": 2956,
+   "evidence": "doctrine_only",
+   "note": "取 22:L2956『午克酉，为劫制财』同字对规则，克者午为 actor。"
+  },
+  {
+   "case_id": "F20-004",
+   "chart_id": "cf-4594768fd80eba942916",
+   "four_pillars": "庚戌 丁亥 丁巳 癸卯",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "克",
+   "relation": {
+    "a": "戌",
+    "b": "亥",
+    "mechanism": "克",
+    "actor": "戌",
+    "target": "亥"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:L1181-L1181",
+   "quote": "戌克亥水",
+   "quote_line": 1181,
+   "evidence": "same_line",
+   "note": "本造（命理珍宝 L1177，庚戌丁亥丁巳癸卯）分析直断『今戌克亥水官为忌』，克者戌为 actor。"
+  },
+  {
+   "case_id": "F20-005",
+   "chart_id": "cf-f8577dedd884fcbd07ec",
+   "four_pillars": "己卯 丙子 丁未 甲辰",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "克",
+   "relation": {
+    "a": "卯",
+    "b": "未",
+    "mechanism": "克",
+    "actor": "卯",
+    "target": "未"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_26..段建业《命理真诀导读风火集》_2056044863754526720.md:L1567-L1567",
+   "quote": "卯木克未土",
+   "quote_line": 1567,
+   "evidence": "doctrine_only",
+   "note": "本造（命理珍宝 L578）只论伏吟；取 26:L1567『卯木克未土』同字对直断，克者卯为 actor。"
+  },
+  {
+   "case_id": "F20-006",
+   "chart_id": "cf-d40ec8604323278f8275",
+   "four_pillars": "乙未 丁亥 乙酉 丙戌",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "生",
+   "relation": {
+    "a": "亥",
+    "b": "酉",
+    "mechanism": "生",
+    "actor": "酉",
+    "target": "亥"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L4949-L4949",
+   "quote": "酉金生亥水",
+   "quote_line": 4949,
+   "evidence": "same_line",
+   "note": "本造（大连 L4945，乙未丁亥乙酉丙戌）分析直断『酉金生亥水』，生者酉为 actor。"
+  },
+  {
+   "case_id": "F20-007",
+   "chart_id": "cf-e6727a7c7df5e3351fd8",
+   "four_pillars": "癸卯 丁巳 癸丑 癸亥",
+   "gender": "坤",
+   "blind_gender": "坤",
+   "layer": "fixed",
+   "mechanism": "生",
+   "relation": {
+    "a": "卯",
+    "b": "巳",
+    "mechanism": "生",
+    "actor": "卯",
+    "target": "巳"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L523-L523",
+   "quote": "卯木生巳火",
+   "quote_line": 523,
+   "evidence": "doctrine_only",
+   "note": "取 19:L523『卯木生巳火』同字对直断，生者卯为 actor。"
+  },
+  {
+   "case_id": "F20-008",
+   "chart_id": "cf-14bfcbffb8e51c3493f4",
+   "four_pillars": "甲辰 丙寅 甲午 丁卯",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "生",
+   "relation": {
+    "a": "辰",
+    "b": "午",
+    "mechanism": "生",
+    "actor": "午",
+    "target": "辰"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L2467-L2467",
+   "quote": "午火有生辰官之意",
+   "quote_line": 2467,
+   "evidence": "doctrine_only",
+   "note": "取杭州财官班 L2467『午火有生辰官之意』：火生辰土，生者午为 actor。"
+  },
+  {
+   "case_id": "F20-009",
+   "chart_id": "cf-96f4ce6c5f417964893f",
+   "four_pillars": "戊申 壬戌 甲子 丙寅",
+   "gender": "坤",
+   "blind_gender": "坤",
+   "layer": "fixed",
+   "mechanism": "生",
+   "relation": {
+    "a": "申",
+    "b": "子",
+    "mechanism": "生",
+    "actor": "申",
+    "target": "子"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L854-L854",
+   "quote": "申金生子水",
+   "quote_line": 854,
+   "evidence": "doctrine_only",
+   "note": "取 21:L854『申金生子水』同字对直断，生者申为 actor。"
+  },
+  {
+   "case_id": "F20-010",
+   "chart_id": "cf-6119a39113ff922f390d",
+   "four_pillars": "癸巳 甲子 癸卯 癸亥",
+   "gender": "坤",
+   "blind_gender": "坤",
+   "layer": "fixed",
+   "mechanism": "生",
+   "relation": {
+    "a": "巳",
+    "b": "卯",
+    "mechanism": "生",
+    "actor": "卯",
+    "target": "巳"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L4243-L4243",
+   "quote": "卯木生巳火",
+   "quote_line": 4243,
+   "evidence": "doctrine_only",
+   "note": "本造（开山 L1852）原段只作『食神生宾位的财』；取 21:L4243『卯木生巳火』同字对直断，生者卯为 actor。"
+  },
+  {
+   "case_id": "F20-011",
+   "chart_id": "cf-e371149459d53da99171",
+   "four_pillars": "己亥 癸酉 甲寅 甲子",
+   "gender": "坤",
+   "blind_gender": "坤",
+   "layer": "fixed",
+   "mechanism": "化",
+   "relation": {
+    "a": "亥",
+    "b": "酉",
+    "mechanism": "化",
+    "actor": "亥",
+    "target": "酉"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L2136-L2136",
+   "quote": "酉官为忌，自化生亥印为贵",
+   "quote_line": 2136,
+   "evidence": "doctrine_only",
+   "note": "官化印：酉官→亥印，化者=受生端=亥（§4.8），actor=亥。句中有『自化』，若按自化主语取酉则反向；本卷按化者=受生端裁量并记张力。"
+  },
+  {
+   "case_id": "F20-012",
+   "chart_id": "cf-d72f1e0d69bf4feb05f2",
+   "four_pillars": "壬午 己酉 甲申 甲子",
+   "gender": "未注明",
+   "blind_gender": "未注明",
+   "layer": "fixed",
+   "mechanism": "化",
+   "relation": {
+    "a": "申",
+    "b": "子",
+    "mechanism": "化",
+    "actor": "子",
+    "target": "申"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2394-L2394",
+   "quote": "时支子水化其申金",
+   "quote_line": 2394,
+   "evidence": "same_line",
+   "note": "本造（命理指要 例8-18，录自《滴天髓》）直断『时支子水化其申金』，化者=子（印/受生端），actor=子；原书未标乾坤。",
+   "gender_note": "原书 28:L2394（录自《滴天髓》）只称『甲木日主…由郎署出为观察，从臬宪而转封疆』，未标乾/坤；B 不补造，记未注明。若强判，官职叙述倾向乾，但属推断，且不影响本关系标注。"
+  },
+  {
+   "case_id": "F20-013",
+   "chart_id": "cf-b7ebd2f1a5f4407e4fa3",
+   "four_pillars": "乙未 丁亥 甲午 丙子",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "化",
+   "relation": {
+    "a": "未",
+    "b": "亥",
+    "mechanism": "化",
+    "actor": "未",
+    "target": "亥"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2650-L2650",
+   "quote": "亥未拱局了嘛， 把亥化了",
+   "quote_line": 2650,
+   "evidence": "same_line",
+   "note": "本造（22:L2646-2648，乙未丁亥甲午丙子）本段直断『亥未拱局…把亥化了』；未被化者亥，未为木库/受生端，actor=未。合化成局按 §4.8 可判 null，本卷取单字裁量。"
+  },
+  {
+   "case_id": "F20-014",
+   "chart_id": "cf-e45885f8f92fc0d4a7e1",
+   "four_pillars": "丙申 壬辰 丙辰 戊子",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "化",
+   "relation": {
+    "a": "申",
+    "b": "子",
+    "mechanism": "化",
+    "actor": "子",
+    "target": "申"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L5019-L5019",
+   "quote": "原神申,辰都化入子水主位",
+   "quote_line": 5019,
+   "evidence": "same_line",
+   "note": "本造（大连 L5015，丙申壬辰丙辰戊子）分析：申、辰化入子水主位；子为化神/中神/受生端，actor=子。三合水局按 §6 表外本可 null，本卷取化神单字裁量。"
+  },
+  {
+   "case_id": "F20-015",
+   "chart_id": "cf-d0bb0a9999e83c8f037e",
+   "four_pillars": "丙午 庚寅 丙辰 庚子",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "化",
+   "relation": {
+    "a": "寅",
+    "b": "子",
+    "mechanism": "化",
+    "actor": "寅",
+    "target": "子"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127-L127",
+   "quote": "财子水被寅化",
+   "quote_line": 127,
+   "evidence": "doctrine_only",
+   "note": "被动句『子水被寅化』：被化者子水，施动方/化者=寅，actor=寅。"
+  },
+  {
+   "case_id": "F20-016",
+   "chart_id": "cf-afc4150ff8a4a7de18b1",
+   "four_pillars": "丁未 壬子 甲寅 戊辰",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "墓",
+   "relation": {
+    "a": "未",
+    "b": "寅",
+    "mechanism": "墓",
+    "actor": "未",
+    "target": "寅"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2288-L2288",
+   "quote": "未墓寅， 就是此造的做功方式",
+   "quote_line": 2288,
+   "evidence": "doctrine_only",
+   "note": "墓=库→入库方（§4.9）：『未墓寅』定向句，库未为 actor、寅为入库方。"
+  },
+  {
+   "case_id": "F20-017",
+   "chart_id": "cf-33d0303052aba71e60ee",
+   "four_pillars": "壬子 癸丑 辛酉 乙未",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "墓",
+   "relation": {
+    "a": "丑",
+    "b": "酉",
+    "mechanism": "墓",
+    "actor": "丑",
+    "target": "酉"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2338-L2338",
+   "quote": "当然丑也有墓酉之象",
+   "quote_line": 2338,
+   "evidence": "doctrine_only",
+   "note": "『丑…墓酉之象』，库丑为 actor。注：21:L724 有『丑墓申不墓酉』的反向口诀，本卷按盲卷 mechanism=墓 取值并单列分歧。"
+  },
+  {
+   "case_id": "F20-018",
+   "chart_id": "cf-ba0095d81d3c2e1b8d57",
+   "four_pillars": "壬子 辛亥 戊午 丙辰",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "墓",
+   "relation": {
+    "a": "亥",
+    "b": "辰",
+    "mechanism": "墓",
+    "actor": "辰",
+    "target": "亥"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L724-L724",
+   "quote": "辰为水墓，墓亥水",
+   "quote_line": 724,
+   "evidence": "doctrine_only",
+   "note": "『辰为水墓，墓亥水』定向句，库辰为 actor、亥为入库方。"
+  },
+  {
+   "case_id": "F20-019",
+   "chart_id": "cf-1ac2793af650af3244a6",
+   "four_pillars": "戊申 丙辰 乙丑 戊寅",
+   "gender": "乾",
+   "blind_gender": "乾",
+   "layer": "fixed",
+   "mechanism": "墓",
+   "relation": {
+    "a": "申",
+    "b": "丑",
+    "mechanism": "墓",
+    "actor": "丑",
+    "target": "申"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L724-L724",
+   "quote": "丑墓申不墓酉",
+   "quote_line": 724,
+   "evidence": "doctrine_only",
+   "note": "『丑墓申』定向句，库丑为 actor、申为入库方；同句『不墓酉』见 F20-017/020 分歧注。"
+  },
+  {
+   "case_id": "F20-020",
+   "chart_id": "cf-efe9bf699966a8cb15e8",
+   "four_pillars": "辛酉 辛卯 己丑 丙子",
+   "gender": "坤",
+   "blind_gender": "坤",
+   "layer": "fixed",
+   "mechanism": "墓",
+   "relation": {
+    "a": "酉",
+    "b": "丑",
+    "mechanism": "墓",
+    "actor": "丑",
+    "target": "酉"
+   },
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2338-L2338",
+   "quote": "当然丑也有墓酉之象",
+   "quote_line": 2338,
+   "evidence": "doctrine_only",
+   "note": "同 F20-017，库丑为 actor；酉丑半合/墓之争见 21:L724 与 22:L2338、22:L2116、35:L1720。"
+  }
+ ]
+}
