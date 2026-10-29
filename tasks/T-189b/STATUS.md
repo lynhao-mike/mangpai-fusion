@@ -1,12 +1,15 @@
 # T-189b STATUS
 
-- 状态：✅ **交付待验收**（2026-10-29）
+- 状态：✅ **已验收 / 已合并**（2026-10-29 17:54，中枢）
 - 执行者：子代理 AP（T-189b）
 - 任务卡：`tasks/T-189b/PROMPT.md`
 - 分支：`p1/assertion-v2b`（worktree `..\mangpai-fusion-av2b`）
 - 代码提交：`9a0b90f9`
 - 验证：`pytest tests/tools/test_p1_assertion_eval_v2.py -q` → **73 passed**；
   全仓 `pytest -q` → **1569 passed, 1 skipped**；T-187 三数 **12/40、2/20、28/40** 已钉在测试里。
+- 中枢：主仓合并后 1569/1、481/0、15KB 14,653；blockers 按
+  `docs/specs/adjudication-a-plus-v1-notes.md` 钉死（cluster=macro、chart_id 从 blind 合并、
+  fixed 全地支、margin 扣 mutual）。
 
 ## Execution Log
 
