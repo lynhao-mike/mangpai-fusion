@@ -5,7 +5,9 @@
 （= `engine.cli all` 默认视图）的事实，评分器不排盘、不读 `sources/` 原文，
 只把答案里的 `quote`/`source_ref` 当展示字段。
 
-这是 **pre-fix 基线**：先在当前引擎上跑一次，供三处修复后对比。
+产物带 `artifact` 标签（`--artifact-label`，默认 `pre_fix_baseline`）：正式 P1 用 `official_p1`，
+诊断用 `post_fix_candidates` / `post_fix_hua`；标签写进 JSON 的 `artifact`、MD 头与控制台标题，
+防止把旧基线数字当修复后结果引用。
 本工具**不改** engine / 规则 / 测试 / hold-out / answers，也**不**用 hold-out 调规则。
 
 口径（与 dev 工具 `mangpai-fusion-rethink/tools/golden_core_edge_recall.py` 同构）
@@ -33,17 +35,21 @@ kind 映射表（改这张表就是改尺子，须走任务卡；答案 `kind` �
     破         po                     同左                    六破
     克         ke                     同左                    只在同层建边：支不建克边（G3）
     生         sheng                  同左                    sheng(main_qi) 去掉括号后缀后同名
-    化         sheng                  同左                    官杀→印的「化」= 生边；引擎无「化」边（dev 同口径）
+    化         sheng                  同左                    化=被化者→化者；引擎无「化」边，化用候选 actor=化者（T-181）
     墓         （空：引擎不建墓边）     muku                    引擎只有 relations.muku 与「墓用」候选；主口径不计 muku 为边
 
   未登记的值一律 `ValueError`，不静默当「不过滤」——尺子不认的答案不许悄悄抬高召回。
 
-两处必须写进报告的口径差异
+三处必须写进报告的口径差异
 --------------------------
 - **墓的方向**：dev 标注把入库方写 a、库写 b（`muku:{enter:a,ku:b}`）；本 hold-out 相反
   （a = 库 = 施力方，b = 入库方）。T-178 审计判定 **4/4 `engine_wrong`**：原文力向是库→入库方，
-  引擎墓用候选 `actor` 是入库方，方向反了；T-179 修复后应 `ok`。评分器按答案 actor 比引擎 actor，
-  逻辑不变；修复前出现 `reversed` 是引擎缺陷，不是口径对立。
+  引擎墓用候选应为 `members=(库,入库方)`、`actor=库`；T-179 已按此修复，命中候选时应 `ok`。
+  评分器按答案 actor 比引擎 actor，逻辑不变；修复前出现 `reversed` 是引擎缺陷，不是口径对立。
+- **化的方向**：T-180 审计判定 **4/4 `engine_wrong`**：化 = 被化者→化者，化者=受生端（与「生」相反），
+  答案 `a/actor` 取化者。引擎无「化」kind，`化`→`sheng` 只是 kind 映射（候选召回用），**不等于 actor 等价**。
+  T-181 已把 `mode=化用` 候选改为 `members=(化者,被化者)`、`actor=化者`，H09–H11 应 `ok`；
+  H12（财→杀）不被化用谓词识别，仍 `reversed`（`known_gap`，不扩类、不剔分母）。
 - **muku 等价口径**：dev 工具把 `relations.muku` 入库算作「边与候选都能表达」。主口径按任务卡
   §2.2 只认 `relations.edges` + `candidates`；另报 `muku_equivalent_edge_recall` 作敏感性，
   供中枢裁决，二者都在产物里，不混算。
@@ -51,10 +57,13 @@ kind 映射表（改这张表就是改尺子，须走任务卡；答案 `kind` �
 用法
 ----
     python -m tools.p1_holdout_eval --holdout META/p1-holdout-v1.json --answers META/p1-holdout-answers-v1.json
+    python -m tools.p1_holdout_eval ... --artifact-label official_p1   # 正式 P1；诊断用 post_fix_*
     python -m tools.p1_holdout_eval ... --json          # stdout 打完整 JSON
     python -m tools.p1_holdout_eval ... --out-json <p> --out-md <p>   # 改产物路径（测试用）
 
 默认写 `META/p1-holdout-baseline-v1.json` + `.md`；产物**不含时间戳**，同一引擎两次运行逐字节一致。
+`--artifact-label` 默认 `pre_fix_baseline`；正式 P1 用 `official_p1`，诊断用 `post_fix_candidates` /
+`post_fix_hua`。标签写进 JSON 的 `artifact`、MD 头与控制台标题。
 退出码：0 = 20 条全部评到；2 = 输入不合口径（case 不匹配 / 端点未解析 / kind 未登记）。
 """
 from __future__ import annotations
@@ -77,6 +86,9 @@ DEFAULT_HOLDOUT = ROOT / "META" / "p1-holdout-v1.json"
 DEFAULT_ANSWERS = ROOT / "META" / "p1-holdout-answers-v1.json"
 DEFAULT_OUT_JSON = ROOT / "META" / "p1-holdout-baseline-v1.json"
 DEFAULT_OUT_MD = ROOT / "META" / "p1-holdout-baseline-v1.md"
+
+#: 产物标签：默认 pre-fix 基线；正式 P1 用 official_p1，post-fix 诊断用 post_fix_*。
+DEFAULT_ARTIFACT_LABEL = "pre_fix_baseline"
 
 SCHEMA_VERSION = "p1-holdout-baseline/v1"
 
@@ -278,7 +290,7 @@ def score_relation(rel: dict[str, Any], facts: dict[str, Any], *, case_id: str,
     candidates = [c for c in facts["duan_zuogong"].get("candidates", [])
                   if _kind_ok(cand_kinds, c["relation_kind"]) and _spans(c["members"], a, b)]
 
-    # 墓：hold-out 记 a = 库（施力方）、b = 入库方；只作敏感性口径，不进主口径。
+    # 墓：hold-out 记 a = 库（施力方）、b = 入库方（T-178）；muku 只作敏感性口径，不进主口径。
     muku_hits: list[str] = []
     if rel.get("mechanism") == "墓" or rel.get("kind") == "墓":
         for m in facts["relations"].get("muku") or []:
@@ -336,8 +348,13 @@ def _kind_map_view(mapping: dict[str, frozenset[str] | None]) -> dict[str, Any]:
 
 
 def run(holdout_path: Path | str = DEFAULT_HOLDOUT,
-        answers_path: Path | str = DEFAULT_ANSWERS) -> dict[str, Any]:
-    """跑完一整个 hold-out，返回可 JSON 化的结果（不含时间戳，逐字节可复现）。"""
+        answers_path: Path | str = DEFAULT_ANSWERS,
+        artifact_label: str = DEFAULT_ARTIFACT_LABEL) -> dict[str, Any]:
+    """跑完一整个 hold-out，返回可 JSON 化的结果（不含时间戳，逐字节可复现）。
+
+    `artifact_label` 写进结果的 `artifact`，用于区分 pre-fix 基线 / 正式 P1 / post-fix 诊断；
+    评分逻辑与分母不随标签变化。
+    """
     holdout_path, answers_path = Path(holdout_path), Path(answers_path)
     holdout = json.loads(holdout_path.read_text(encoding="utf-8"))
     answers = json.loads(answers_path.read_text(encoding="utf-8"))
@@ -372,8 +389,9 @@ def run(holdout_path: Path | str = DEFAULT_HOLDOUT,
     result: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "task": "T-177",
-        "artifact": "pre_fix_baseline",
-        "note": ("当前引擎的 pre-fix 基线；三处修复落地后必须整体重跑覆盖，本表数字不得当修复后结果引用。"
+        "artifact": artifact_label,
+        "note": ("当前引擎的评分产物，口径标签见 `artifact`（默认 pre_fix_baseline = 修复前基线）；"
+                 "三处修复落地后必须整体重跑覆盖，本表数字不得跨标签当修复后结果引用。"
                  "分母是冻结 hold-out 的关系数，不是 dev 33 条。"),
         "inputs": {
             "holdout": _display_path(holdout_path),
@@ -456,14 +474,17 @@ def render_md(result: dict[str, Any]) -> str:
     reversed_muku = [r["case_id"] for r in rows if r["mechanism"] == "墓" and r["direction"] == "reversed"]
     reversed_hua = [r["case_id"] for r in rows if r["mechanism"] == "化" and r["direction"] == "reversed"]
     lines = [
-        "# P1 hold-out pre-fix 基线（T-177）",
+        "# P1 hold-out 评分（T-177）",
         "",
-        f"- 生成器：`python -m tools.p1_holdout_eval --holdout {inputs['holdout']} --answers {inputs['answers']}`",
+        f"- artifact：`{result['artifact']}`（默认 `pre_fix_baseline` 即 pre-fix 基线；正式 P1 用 `official_p1`，"
+        "诊断用 `post_fix_candidates` / `post_fix_hua`）",
+        f"- 生成器：`python -m tools.p1_holdout_eval --holdout {inputs['holdout']} --answers {inputs['answers']} "
+        f"--artifact-label {result['artifact']}`",
         f"- 输入 sha256：holdout `{inputs['sha256']['holdout']}`；answers `{inputs['sha256']['answers']}`"
         "（与 `META/p1-holdout-freeze-v1.json` 对照）",
         f"- 规模：{inputs['cases']} 例 / {inputs['relations']} 条 `core_work_relations`",
         "- 口径：冻结 hold-out 的全部关系；**不是** dev 33 条，不做跨集比较（freeze `no_comparison_to_dev`）",
-        "- 性质：**pre-fix 基线**。三处修复落地后必须整体重跑覆盖本表，本表数字不得当修复后结果引用。",
+        "- 性质：同一 `artifact` 标签内可比；三处修复落地后必须整体重跑覆盖本表，本表数字不得跨标签当修复后结果引用。",
         "",
         "## 1. 主口径（20 条）",
         "",
@@ -527,11 +548,14 @@ def render_md(result: dict[str, Any]) -> str:
         "若改判为只认 `ke`，主口径边召回会下降（逐例表里 `kind_filter=any` 的行就是受这条影响的）。",
         "2. **`墓` 不是边**：engine 不建墓边，只有 `relations.muku` 与「墓用」muku 候选。主口径按任务卡 §2.2"
         " 只认 `edges`，故 墓 4 例边召回恒为 0；dev 工具的 muku 等价口径见 §2，二者不混算。",
-        "3. **`墓` 方向与 dev 相反**：本 hold-out 的 `a` 是库（施力方），engine 墓用候选的 `actor` 是入库方，"
-        f"命中候选时方向为 `reversed`——这是标注约定对立，不是引擎 bug（本版：{_ids_text(reversed_muku)}）。",
-        "4. **`化` 只能借 `sheng`**：engine 无「化」边；`化` 映射到 sheng 是 dev 同口径的近似，"
-        "且 sheng 源端在生者一侧，与答案「化者=受生方」的 actor 方向天然相反"
-        f"（本版 `reversed`：{_ids_text(reversed_hua)}）。",
+        "3. **`墓` 方向（T-178 审计 4/4 `engine_wrong`）**：本 hold-out 的 `a` 是库（施力方）、`b` 是入库方；"
+        "engine 墓用候选应为 `members=(库,入库方)`、`actor=库`，T-179 已按此修复，命中候选时应 `ok`。"
+        f"修复前命中候选为 `reversed`（本版：{_ids_text(reversed_muku)}），那是引擎缺陷，不是口径对立。",
+        "4. **`化` 只能借 `sheng`（T-180 审计 4/4 `engine_wrong`）**：engine 无「化」边，`化`→`sheng` 只是"
+        " kind 映射，**不是 actor 等价**；化 = 被化者（生端）→ 化者（受生端），答案 `a/actor` 取化者。"
+        "T-181 已把 `mode=化用` 候选修为 `(化者,被化者)`、`actor=化者`，H09–H11 应 `ok`；"
+        "H12（财→杀）仍 `reversed`（`known_gap`，不扩类、不剔分母；"
+        f"本版 `reversed`：{_ids_text(reversed_hua)}）。",
         "5. **方向只用候选的 actor**：`relations.edges` 无 actor 字段（G2：冲/刑/穿/破不设方向）；"
         "故边命中不等于方向可判，方向分母仍按答案 actor 非空计。",
         "6. **地址多解**：单字干支或十神在不同柱重复出现时解析成多个地址，任一组合命中即算；"
@@ -565,11 +589,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--answers", type=Path, default=DEFAULT_ANSWERS)
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT_JSON)
     ap.add_argument("--out-md", type=Path, default=DEFAULT_OUT_MD)
+    ap.add_argument("--artifact-label", default=DEFAULT_ARTIFACT_LABEL,
+                    help="产物标签，写进 JSON 的 artifact 与控制台标题（默认 pre_fix_baseline；"
+                         "正式 P1 用 official_p1，诊断用 post_fix_candidates / post_fix_hua）")
     ap.add_argument("--json", action="store_true", help="stdout 打完整 JSON（默认打一行摘要）")
     args = ap.parse_args(argv)
 
     try:
-        result = run(args.holdout, args.answers)
+        result = run(args.holdout, args.answers, artifact_label=args.artifact_label)
     except (ValueError, OSError) as exc:
         print(f"[p1_holdout_eval] 输入不合口径：{exc}", file=sys.stderr)
         return 2
@@ -584,7 +611,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(payload, end="")
     else:
-        print(f"P1 hold-out pre-fix 基线（{result['inputs']['relations']} 条）："
+        print(f"P1 hold-out {result['artifact']}（{result['inputs']['relations']} 条）："
               f"edge {primary['edge_recall']} ({_pct_text(primary['edge_recall_pct'])}) · "
               f"candidate {primary['candidate_recall']} ({_pct_text(primary['candidate_recall_pct'])}) · "
               f"directed {primary['directed_recall']} ({_pct_text(primary['directed_recall_pct'])})")
