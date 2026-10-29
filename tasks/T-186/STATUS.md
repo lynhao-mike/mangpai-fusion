@@ -42,6 +42,7 @@
 | 15:29 | `pytest -q` → **1469 passed, 1 skipped, 1 warning**，退出码 0 |
 | 15:29 | 只读装载真实 answers（无 system output、未算分）：40 cases / mutual 1 / actor==a 40 / 8 类 mechanism 全覆盖 |
 | 15:30 | 合成场景 A–E 跑通（BRIEF §2.4）；写 BRIEF + 本 STATUS |
+| 15:31 | commit `c8fe7fc7`（4 files / +1626 −3）；分支 `p1/assertion-eval`（基线 `f158014d`）；未 push |
 
 ## Blockers
 

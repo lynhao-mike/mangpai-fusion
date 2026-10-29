@@ -2,6 +2,8 @@
 
 - 状态：✅ **交付待验收**（只写评分器与合成测试；未跑真实 fresh-40、未改 engine / 规则 / hold-out / answers / 阈值 / 分母 / 其他 worktree；未 push main）
 - 分支：`p1/assertion-eval`（worktree `..\mangpai-fusion-assertion`）
+- 交付 commit：`c8fe7fc7`（评分器 + 测试 + BRIEF/STATUS 首版，4 files / +1626 −3）；
+  其后只有一个 doc 补记提交（写这个 hash），HEAD 以 `git log -1` 为准。
 - 基线：从 `f158014d`（= 当前 main tip，已含 `f003d216`）起
   —— 卡面写 `f003d216` 是写卡时的 main；按字面从 `f003d216` 起会缺 T-184 规格与 T-186 卡本身，故取其后继提交，`f003d216` 仍是祖先。
 - 一句话：把「40 条方向断言 + 5 条 routing」逐条比对成**六个记账桶**，输出
@@ -143,7 +145,8 @@ total == correct + wrong + abstain_expected + abstain_unexpected + missing + rou
 ```text
 $ git branch --show-current
 p1/assertion-eval
-$ git log --oneline -1
+$ git log --oneline -2
+c8fe7fc7 feat(tools): P1′ 系统级断言评分器（T-186）+ 合成测试
 f158014d feat(spec): 党势方向预注册 v1（T-184）；派 T-186 系统级评分器
 ```
 
