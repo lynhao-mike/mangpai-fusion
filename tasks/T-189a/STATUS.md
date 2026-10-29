@@ -1,6 +1,6 @@
 # T-189a STATUS
 
-- 状态：✅ 交付待验收（2026-10-29 17:25，子代理）
+- 状态：✅ **已验收 / 已合并**（2026-10-29 17:30，中枢）
 - 执行者：子代理（评分器 Agent）
 - 任务卡：`tasks/T-189a/PROMPT.md`
 - 分支：`p1/assertion-v2a`（worktree `..\mangpai-fusion-av2a`）
@@ -18,6 +18,7 @@
 | 17:21 | 写 `tests/tools/test_p1_assertion_eval_v2.py`（493 行，19 函数 / 24 用例）；首轮 19 failed（`case_id` 未透传）→ 3 failed（delivered 口径、fixture 缺 book）→ **24 passed** |
 | 17:24 | 全仓 `pytest -q`：**1513 passed, 1 skipped**（T-114 既有 skip），exit 0；合成 fixture A–E 用 CLI 跑完（`%TEMP%\t189a-smoke\`，非真实盘） |
 | 17:25 | rebase 到 `457c3cdc`（让卡与 STATUS 在位，避免 add/add 冲突）；提交 `654b11e5`；写 BRIEF/STATUS |
+| 17:30 | 中枢合并 `p1/assertion-v2a`；主仓 verify_baseline **1520/1、481/0、relations 全过**；15KB 14,653；24 个 v2 用例全过。注：子代理分支 1513 是 T-188 合并前（1496）基数；主仓 1520=1496+24。T-189b 补 B1/B2/聚类/3次/T-187 回归 |
 
 ## Blockers
 
