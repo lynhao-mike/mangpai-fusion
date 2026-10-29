@@ -1,0 +1,715 @@
+{
+  "schema": "p1-hua-actor-audit/v1",
+  "task": "T-180",
+  "title": "化 actor 约定审计（P1-H09–P1-H12）+ actor 规则表「化」条款依据",
+  "mode": "read_only_audit",
+  "scope": {
+    "changed_answers": false,
+    "changed_holdout": false,
+    "changed_engine": false,
+    "changed_rules": false,
+    "changed_tests": false,
+    "wrote_code": false,
+    "git_write": false,
+    "ran_scorer": false
+  },
+  "inputs": [
+    {
+      "name": "holdout_answers",
+      "path": "META/p1-holdout-answers-v1.json",
+      "sha256": "b1075a394dc1954f27e7de1b06b38283174223e223e3d6b17993723bef37762f"
+    },
+    {
+      "name": "postfix_candidates",
+      "path": "META/p1-holdout-postfix-candidates-v1.json",
+      "sha256": "4709fd475281eb23221547a25e54d6758e9bd8b4cbcffbd3f461a84df9ee0d58"
+    },
+    {
+      "name": "holdout_freeze_v3",
+      "path": "META/p1-holdout-freeze-v3.json",
+      "sha256": "0a03705bebb31283293769bbe77809e3744fb74f1ddaaad18f9eec36f1b00ee5"
+    },
+    {
+      "name": "holdout_freeze_v2",
+      "path": "META/p1-holdout-freeze-v2.json",
+      "sha256": "f2750a73a861b7b473c6f81a197478d6273c11a2a08f6f680d448b2cf0286a15"
+    },
+    {
+      "name": "pre_fix_baseline",
+      "path": "META/p1-holdout-baseline-v1.json",
+      "sha256": "7086c4611f5165f0f90af9380e4934237e013e9da67ca627c6994ab54458f01d"
+    },
+    {
+      "name": "postfix_verdict",
+      "path": "docs/reviews/p1-postfix-candidates-verdict-v1.md",
+      "sha256": "5d78e198b0586bfe8d748fffe2358be0b94a9b2789cd8472f389bd386b819e38"
+    },
+    {
+      "name": "actor_rules_spec",
+      "path": "docs/specs/actor-rules-v1.md",
+      "sha256": "00d48c16ff4c5d400b466f74dd20e707c555c4b93812a323776d54e7e4de9023"
+    },
+    {
+      "name": "structure_check_py",
+      "path": "engine/facts/structure_check.py",
+      "sha256": "bc37e40562c3962c2f5cc37b0daa94532acb56db13ecb58d718d6875f16ca9ba"
+    },
+    {
+      "name": "holdout_eval_py",
+      "path": "tools/p1_holdout_eval.py",
+      "sha256": "35c2565ceec2e2fbf62e4c5bcd775cff4ce1fde0ecbd2f6333cb70cb590084a2"
+    }
+  ],
+  "convention": {
+    "decision": "hua_actor_is_receiving_end_of_sheng",
+    "a_role": "化者（施力方；五行上被被化者所生的一端）",
+    "b_role": "被化者（受力方；五行上生入化者的一端）",
+    "actor_role": "化者",
+    "members_order": ["化者", "被化者"],
+    "statement": "原文用「化」描述一对相生关系时，化者恒为受生端：被化者的五行生入化者，化者把来力消化／转化为己用，故化者是施动方。及物句「A化B」「A化尽B」的 A、被动句「B被A化」「B被A所化」的 A 都是化者；「B 化 A」语序（如「七杀化印」）是转化句，主语是被化者，句中没有施动方，actor=null，不得按语序把主语当 actor。",
+    "mechanical_test": "取 A、B 本气五行：若 B 生 A，则 A=化者、B=被化者、actor=A；若 A 生 B，则 A=被化者，需看句子语态：及物句仍以 A 为被化者（actor=B），转化句 actor=null。化的力向 === 五行生的反向（生者→受生者 变成 被化者→化者）。",
+    "basis": [
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055",
+        "quote": "午火印星化杀生身主贵",
+        "reading": "午火=印、杀=寅（甲寅七杀）。及物句：化者是午（火），被化者是寅（木）；木生火，午是受生端。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055",
+        "quote": "甲寅七杀被旺火所化",
+        "reading": "被动式「被旺火所化」：施动方是旺火（午），甲寅是被化者。与上一句同一力向。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055",
+        "quote": "化用不如制用效率高",
+        "reading": "作者把这组杀印叫「化用」：化用的主体是印（午火），不是杀。引擎 mode=化用 正取自此。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186",
+        "quote": "巳化尽旺杀生身",
+        "reading": "巳（火/印）化尽旺杀（乙卯木）。木生火，巳是受生端；及物句主语巳=化者。同一行的「生身」另给一条生边，巳在那里是生者——同一个字在两条关系里分别是化者与生者。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186",
+        "quote": "所以真正的做功是印化了杀",
+        "reading": "同段明示做功主体是印；印化杀，不是杀化印。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2174",
+        "quote": "印化杀为我所用",
+        "reading": "化者为印；化杀的结果是「为我所用」，即化者把被化者的力收为己用。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2174",
+        "quote": "两个杀都被午化了",
+        "reading": "被动式：施动方是午（印），两个杀是被化者。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1640",
+        "quote": "寅杀被午化",
+        "reading": "被动式：午（印）是施动方，寅杀是被化者；与 H10 同对。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L788",
+        "quote": "杀被化了生身",
+        "reading": "同句前文「坐下杀，被月上印化了」明示施动方是印；杀是被化者。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L982",
+        "quote": "为杀被印化主学历",
+        "reading": "「杀被印化」：印是施动方，杀是被化者。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L672",
+        "quote": "印化杀生身",
+        "reading": "定义句：印化杀、再生身。化者=印。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1301",
+        "quote": "杀印格：印化杀生身",
+        "reading": "杀印格的定义句：官杀→印的化，化者是印。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:L1145",
+        "quote": "用印去化杀为用",
+        "reading": "「用印去化杀」：化者=印；同段把制杀三法与「化敌为友」并列，制度化者是印。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1461",
+        "quote": "印化七杀，化用结构",
+        "reading": "「化用结构」=印化七杀；化者=印。同段另有「七杀化印再生身」的转化句（见 counter_reading）。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3233",
+        "quote": "辰土化杀生身 辰也做功",
+        "reading": "H11 原句：辰土（印）化杀；火生土，辰是受生端，及物句主语辰=化者，且明言「辰也做功」。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127",
+        "quote": "财子水被寅化",
+        "reading": "H12 原句：被动式，寅是施动方；子财被化。水生木，寅是受生端。此例的化是财→杀（不是官杀→印）。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2645",
+        "quote": "甲木化水",
+        "reading": "T-174 n16 的反证句：甲木（受生端）化水；化者=甲，水是被化者。水生木，甲是受生端，与四条同一结构。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2645",
+        "quote": "只能靠甲木化杀为功",
+        "reading": "同段：甲木化杀为功——做功主体是甲（受生端），不是壬水杀。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2647",
+        "quote": "化天干之壬水杀",
+        "reading": "「甲为死木，化天干之壬水杀」：甲化壬水杀，化者=甲（木，受生端）。"
+      }
+    ],
+    "counter_reading": {
+      "frames": [
+        {
+          "name": "及物／被动（本表采用）",
+          "pattern": "A化B、A化尽B、B被A化、B被A所化",
+          "actor": "A（化者，受生端）",
+          "evidence": "本节 basis 全部 19 条；四条 hold-out 的 quote 全属此式。"
+        },
+        {
+          "name": "不及物转化（不得据此赋向）",
+          "pattern": "A化B（B 是转化结果／化神）、A化为B，如「七杀化印再生身」",
+          "actor": "null（句中没有施动方；A 是被化者，不是化者）",
+          "evidence": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1461「七杀化印再生身」；sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L5523「三合化寅」（局化，同型）。"
+        }
+      ],
+      "why_not_engine_reading": "引擎 actor=生端（=被化者）。它既不是及物句的施动方（化者），也不是转化句里可赋向的一方（转化句按「只认明示」应 null）。两条读法都不支持把生端写成 actor，故四条不是 convention_conflict，而是 engine_wrong。",
+      "residual": "转化句若按字面语序把主语（被化者）当 actor，就会得到引擎现状的方向；这是本表要显式禁止的读法（规则句须写明「转化句 actor=null」），不是并存的合法约定。"
+    },
+    "engine_current": {
+      "code": "engine/facts/structure_check.py",
+      "sheng_mode": {
+        "source_ref": "engine/facts/structure_check.py:L488",
+        "quote": "return \"化用\" if gods[src] in roles(\"官杀\") and gods[dst] in roles(\"印\") else \"生泄用\"",
+        "meaning": "引擎把「官杀（生者）→印（受生者）」这条生边标成 mode=化用；检测方向是 生者→受生者。"
+      },
+      "emit": [
+        {
+          "source_ref": "engine/facts/structure_check.py:L499",
+          "quote": "emit(sheng_mode(*members), e.kind, e.id, members, e.members[0], e.distance, e.source_refs, [])",
+          "meaning": "关系图生边：members=(生者,被生者)，actor=members[0]=生者。"
+        },
+        {
+          "source_ref": "engine/facts/structure_check.py:L504",
+          "quote": "emit(sheng_mode(src, dst), \"sheng(main_qi)\", None, (src, dst), src, abs(dist) if dist is not None else None,",
+          "meaning": "推得生边（_derived_sheng 按本气五行：src=生者、dst=被生者），actor=src=生者；四条化的候选都走这条。"
+        }
+      ],
+      "no_hua_kind": "引擎没有「化」kind；freeze v2 与评测器把 化 映射到 sheng 只为候选召回（tools/p1_holdout_eval.py:L42-44：化 → sheng，「官杀→印的『化』= 生边；引擎无『化』边」）。actor 语义并未随之定义。",
+      "docstring": {
+        "source_ref": "engine/facts/structure_check.py:L72",
+        "quote": "# 有方向关系（克/生/入墓）的发出方",
+        "meaning": "字段注释把 actor 定义为「发出的源端」，与 maker 的 生 语义自洽，但没有区分 化（化者在受生端）。"
+      }
+    },
+    "engine_fix": {
+      "scope": "只改 mode=化用 的候选：members=(化者,被化者)=(受生端,生端)，actor=受生端。检测仍在生方向做（gods[src]∈官杀、gods[dst]∈印），只翻转 emit 的 members/actor。",
+      "precedent": "T-179 已用同一手法翻墓用候选（structure_check.py:L527-529），且 relations.* 事实层不动。",
+      "not_global_flip": "不得把 sheng/生泄用 的 actor 一并翻转：生的 actor 是生者（actor-rules-v1 §4.7；22:L2186 的同一个巳既是化者(对卯)又是生者(对身)）。",
+      "h12_gap": "H12 的化是 财→杀（水生木），引擎 mode 判为 生泄用（gods[src]=正财，不在官杀集），翻转化用 actor 也碰不到它；H12 仍会 reversed，除非另立「财化杀／忌神受生化」子类规则。",
+      "side_effects": [
+        "_binzhu 不受影响：members 翻转后 ty 元组顺序同时翻转，_ti_yong_ends 按体／用与双属补位取端（structure_check.py:L381-404），体端／用端地址不变，主宾 direction 不变。",
+        "distance 用柱距绝对值，顺序无关。",
+        "候选召回（_spans / kind 过滤）与 members 顺序无关，候选命中不变。",
+        "tests/facts/test_structure_check.py:L147-151 与 tests/api/test_engine_reset_regression.py:L135-136 现在断言 members=(杀,印)、actor=杀，改引擎后须按新约定重写构造（ADR-004：可改测试，不得放宽断言）。",
+        "docs/specs/single-chart-analysis-v1.md:L165 把「化」的方向契约写成「引擎 actor」，引擎修好前下游报告会照抄反端，须同步。"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "case_id": "P1-H09",
+      "four_pillars": "癸巳 乙卯 己巳 己巳",
+      "gender": "乾",
+      "answer": {
+        "a": "巳",
+        "b": "卯",
+        "actor": "巳",
+        "kind": "化",
+        "mechanism": "化",
+        "quote": "巳化尽旺杀生身",
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186"
+      },
+      "clauses": [
+        {
+          "type": "force",
+          "text": "巳化尽旺杀生身",
+          "line": 2186,
+          "subject": "巳",
+          "verb": "化尽",
+          "object": "旺杀（乙卯）",
+          "force": "hua_actor_is_subject",
+          "note": "及物句：巳（火／正印）化尽卯（木／七杀）。木生火，巳是受生端。"
+        },
+        {
+          "type": "attribution",
+          "text": "所以真正的做功是印化了杀",
+          "line": 2186,
+          "subject": "印",
+          "object": "杀",
+          "force": "hua_actor_is_subject",
+          "note": "同段明示做功主体是印；印化杀。"
+        },
+        {
+          "type": "answer_mapping",
+          "note": "a=巳=化者（受生端，三个巳支同字，解析为 D.b/H.b/Y.b）；b=卯=被化者；actor=巳=a 端。"
+        }
+      ],
+      "roles": {
+        "hua_zhe": "巳 · 正印（火，受生端；D/H/Y 三支）",
+        "bei_hua_zhe": "卯 · 七杀（木，生端；月支）",
+        "wu_xing": "卯木生巳火（被化者→化者）",
+        "answer_a_semantics": "化者（施力方）",
+        "answer_actor_semantics": "化者",
+        "engine_actor_semantics": "被化者（五行生源）"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "答案 a=巳、actor=巳 与「巳化尽旺杀」「印化了杀」一致；引擎化用候选 members=(卯,巳)、actor=卯，actor 落在被化者 b 端。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 全部维持，不更正、不剔除。",
+      "evidence": {
+        "grade": "same_line",
+        "note": "化者与被化者都在所引行；b=卯 由同段「己见乙卯是杀」与十神本气确定。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-postfix-candidates-v1.json（P1-H09 行）+ 现场 engine.cli 复核",
+        "mode": "化用",
+        "candidates": [
+          {"kind": "sheng(main_qi)", "members": ["M.b", "Y.b"], "actor": "M.b", "mode": "化用"},
+          {"kind": "sheng(main_qi)", "members": ["M.b", "D.b"], "actor": "M.b", "mode": "化用"},
+          {"kind": "sheng(main_qi)", "members": ["M.b", "H.b"], "actor": "M.b", "mode": "化用"},
+          {"kind": "sheng", "members": ["M.b", "Y.b"], "actor": "M.b", "mode": "sheng"},
+          {"kind": "sheng", "members": ["M.b", "D.b"], "actor": "M.b", "mode": "sheng"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；现场 engine.cli 另有 (M.b,H.b) 的 sheng 行与 (D.b/H.b 同柱) 生泄用，均不改变方向。",
+        "engine_members_order": ["被化者 b", "化者 a"],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor=M.b=卯 落在 b 端。"
+      },
+      "engine_fix": "化用候选翻转为 (巳,卯)、actor=巳（受生端）。"
+    },
+    {
+      "case_id": "P1-H10",
+      "four_pillars": "戊午 戊午 戊午 甲寅",
+      "gender": "乾",
+      "answer": {
+        "a": "午",
+        "b": "寅",
+        "actor": "午",
+        "kind": "化",
+        "mechanism": "化",
+        "quote": "午火印星化杀生身主贵 甲寅七杀被旺火所化",
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055"
+      },
+      "clauses": [
+        {
+          "type": "force",
+          "text": "午火印星化杀生身主贵",
+          "line": 3055,
+          "subject": "午火（印星）",
+          "verb": "化",
+          "object": "杀",
+          "force": "hua_actor_is_subject",
+          "note": "及物句：午（火／正印）化杀（寅木／七杀）。木生火，午是受生端。"
+        },
+        {
+          "type": "passive",
+          "text": "甲寅七杀被旺火所化",
+          "line": 3055,
+          "subject": "甲寅七杀（受方）",
+          "agent": "旺火（午）",
+          "force": "hua_actor_is_agent",
+          "note": "被动式：施动方是旺火；甲寅是被化者。"
+        },
+        {
+          "type": "mode",
+          "text": "化用不如制用效率高",
+          "line": 3055,
+          "note": "作者称此组为「化用」，化用主体是印（午），不是杀（寅）。"
+        },
+        {
+          "type": "answer_mapping",
+          "note": "a=午（Y/M/D 三支）=化者；b=寅（时支）=被化者；actor=午=a 端。"
+        }
+      ],
+      "roles": {
+        "hua_zhe": "午 · 正印（火，受生端；年/月/日三支）",
+        "bei_hua_zhe": "寅 · 七杀（木，生端；时支）",
+        "wu_xing": "寅木生午火（被化者→化者）",
+        "answer_a_semantics": "化者（施力方）",
+        "answer_actor_semantics": "化者",
+        "engine_actor_semantics": "被化者（五行生源）"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "答案 a=午、actor=午 与「午火印星化杀」「甲寅七杀被旺火所化」一致；引擎化用候选 members=(寅,午)、actor=寅，落在 b 端。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 全部维持。",
+      "evidence": {
+        "grade": "same_line",
+        "note": "化者与被化者在同一行；「甲寅七杀」逐字给出 b 端。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-postfix-candidates-v1.json（P1-H10 行）+ 现场 engine.cli 复核",
+        "mode": "化用",
+        "candidates": [
+          {"kind": "sheng(main_qi)", "members": ["H.b", "Y.b"], "actor": "H.b", "mode": "化用"},
+          {"kind": "sheng(main_qi)", "members": ["H.b", "M.b"], "actor": "H.b", "mode": "化用"},
+          {"kind": "sheng(main_qi)", "members": ["H.b", "D.b"], "actor": "H.b", "mode": "化用"},
+          {"kind": "sheng", "members": ["H.b", "D.b"], "actor": "H.b", "mode": "sheng"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图。",
+        "engine_members_order": ["被化者 b", "化者 a"],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor=H.b=寅 落在 b 端。"
+      },
+      "engine_fix": "化用候选翻转为 (午,寅)、actor=午（受生端）。"
+    },
+    {
+      "case_id": "P1-H11",
+      "four_pillars": "乙巳 己丑 庚午 庚辰",
+      "gender": "乾",
+      "answer": {
+        "a": "辰",
+        "b": "巳",
+        "actor": "辰",
+        "kind": "化",
+        "mechanism": "化",
+        "quote": "辰土化杀生身 辰也做功",
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3233"
+      },
+      "clauses": [
+        {
+          "type": "force",
+          "text": "辰土化杀生身 辰也做功",
+          "line": 3233,
+          "subject": "辰土",
+          "verb": "化",
+          "object": "杀",
+          "force": "hua_actor_is_subject",
+          "note": "及物句：辰（土／偏印）化杀；火生土，辰是受生端，且明言「辰也做功」。"
+        },
+        {
+          "type": "ten_god_mapping",
+          "note": "b=巳 由十神本气确定：庚日主，巳中丙火为七杀（引擎 chart 事实）；quote 未逐字点出巳，但「杀」即巳中之丙。"
+        },
+        {
+          "type": "answer_mapping",
+          "note": "a=辰（时支）=化者；b=巳（年支）=被化者；actor=辰=a 端。"
+        }
+      ],
+      "roles": {
+        "hua_zhe": "辰 · 偏印（土，受生端；时支）",
+        "bei_hua_zhe": "巳 · 七杀（火，生端；年支）",
+        "wu_xing": "巳火生辰土（被化者→化者）",
+        "answer_a_semantics": "化者（施力方）",
+        "answer_actor_semantics": "化者",
+        "engine_actor_semantics": "被化者（五行生源）"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "答案 a=辰、actor=辰 与「辰土化杀生身 辰也做功」一致；引擎化用候选 members=(巳,辰)、actor=巳，落在 b 端。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 全部维持。",
+      "evidence": {
+        "grade": "same_line",
+        "note": "化者辰逐字明示；被化者「杀」=巳中丙火，由十神本气映射，属盘面事实而非引文缺环。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-postfix-candidates-v1.json（P1-H11 行）+ 现场 engine.cli 复核",
+        "mode": "化用",
+        "candidates": [
+          {"kind": "sheng(main_qi)", "members": ["Y.b", "H.b"], "actor": "Y.b", "mode": "化用"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；现场另有 (Y.b,M.b) 巳→丑、(D.b,M.b) 午→丑、(D.b,H.b) 午→辰 三条化用，但不跨答案端点。",
+        "engine_members_order": ["被化者 b", "化者 a"],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor=Y.b=巳 落在 b 端。"
+      },
+      "engine_fix": "化用候选翻转为 (辰,巳)、actor=辰（受生端）。"
+    },
+    {
+      "case_id": "P1-H12",
+      "four_pillars": "乙巳 乙酉 戊子 甲寅",
+      "gender": "乾",
+      "answer": {
+        "a": "寅",
+        "b": "子",
+        "actor": "寅",
+        "kind": "化",
+        "mechanism": "化",
+        "quote": "财的源头酉被巳制，财子水被寅化",
+        "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127"
+      },
+      "clauses": [
+        {
+          "type": "passive",
+          "text": "财子水被寅化",
+          "line": 127,
+          "subject": "财子水（受方）",
+          "agent": "寅",
+          "force": "hua_actor_is_agent",
+          "note": "被动式：施动方是寅；子财被化。水生木，寅是受生端。"
+        },
+        {
+          "type": "attribution",
+          "text": "戊土通根寅木，寅为自己，泄给寅木等于给了自己",
+          "line": 127,
+          "subject": "寅",
+          "object": "子财",
+          "note": "同段说明寅是「自己」、财泄给寅等于给自己——化者是得方（寅），不是被化方（子）。"
+        },
+        {
+          "type": "subtype",
+          "note": "本条的化是 财→杀（水生木），不属「官杀→印」；规则句仍适用（化者=受生端），但 §4.8 的类型覆盖需补。"
+        },
+        {
+          "type": "answer_mapping",
+          "note": "a=寅（时支）=化者；b=子（日支）=被化者；actor=寅=a 端。"
+        }
+      ],
+      "roles": {
+        "hua_zhe": "寅 · 七杀（木，受生端；时支）",
+        "bei_hua_zhe": "子 · 正财（水，生端；日支）",
+        "wu_xing": "子水生寅木（被化者→化者）",
+        "answer_a_semantics": "化者（施力方）",
+        "answer_actor_semantics": "化者",
+        "engine_actor_semantics": "被化者（五行生源）"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "答案 a=寅、actor=寅 与「财子水被寅化」一致；引擎对同一对只发 (子,寅) 的 生泄用 候选、actor=子，落在 b 端；引擎没有把这条识别成 化用。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 全部维持；不改标签为「生」。",
+      "evidence": {
+        "grade": "same_line",
+        "note": "化者寅与被化者子在同一行逐字出现；「财子水」明示十神与五行。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-postfix-candidates-v1.json（P1-H12 行）+ 现场 engine.cli 复核",
+        "mode": "生泄用（不是 化用）",
+        "candidates": [
+          {"kind": "sheng(main_qi)", "members": ["D.b", "H.b"], "actor": "D.b", "mode": "生泄用"},
+          {"kind": "sheng", "members": ["D.b", "H.b"], "actor": "D.b", "mode": "sheng"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；引擎另有 (H.b,Y.b) 寅→巳 的 化用（杀→印，不跨答案端点），与 H12 的财→杀无关。",
+        "engine_members_order": ["被化者 b", "化者 a"],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor=D.b=子 落在 b 端。",
+        "extra_gap": "化用检测只看 官杀→印（structure_check.py:L487-488），财→杀不在其中；即使化用 actor 修好，本条仍 reversed。"
+      },
+      "engine_fix": "本条单靠化用翻转不够；须另立「财化杀／忌神受生化」子类（或明确记为引擎能力缺口）。"
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "label_wrong": 0,
+    "engine_wrong": 4,
+    "convention_conflict": 0,
+    "overall_verdict": "engine_wrong",
+    "overall_statement": "四条化的原文力向都是 被化者→化者（化者=受生端），标注 a/actor 都取化者，四条的 quote 全是及物或被动式，没有第二种读法；引擎 sheng 候选的 actor 取五行生源=被化者，四条方向全反。",
+    "by_case": {
+      "P1-H09": "engine_wrong",
+      "P1-H10": "engine_wrong",
+      "P1-H11": "engine_wrong",
+      "P1-H12": "engine_wrong"
+    },
+    "answer_actor_vs_engine_actor": {
+      "P1-H09": {"answer_actor": "巳（化者/受生端）", "engine_actor": "卯（被化者/生端）", "engine_mode": "化用"},
+      "P1-H10": {"answer_actor": "午（化者/受生端）", "engine_actor": "寅（被化者/生端）", "engine_mode": "化用"},
+      "P1-H11": {"answer_actor": "辰（化者/受生端）", "engine_actor": "巳（被化者/生端）", "engine_mode": "化用"},
+      "P1-H12": {"answer_actor": "寅（化者/受生端）", "engine_actor": "子（被化者/生端）", "engine_mode": "生泄用"}
+    },
+    "why_not_label_wrong": "label_wrong 的前提是「答案把被化者当 actor」。四条答案的 actor 都是化者（巳/午/辰/寅），与原文主语／被动施动方一致，故不成立。",
+    "why_not_convention_conflict": "convention_conflict 要求原文对同一力向有两种读法。四条 quote 全及物/被动式，化者唯一；另存的不及物转化式（「七杀化印」）只把被化者当主语，不给施动方，按「只认明示」应 actor=null，不是第二条力向。类级确有语序两式，但四条逐条可判，故不计 pending。",
+    "evidence_grades": {
+      "same_line": ["P1-H09", "P1-H10", "P1-H11", "P1-H12"]
+    },
+    "residual_risk": "若中枢把「引擎 actor=生者」本身当成合法约定（即承认化可以用生端施力），则四条会转成 convention_conflict；但该读法与 actor-rules-v1 §1 规则 3（不得用五行流向代替句法主语）、§4.8 全部正例、以及 T-174 n16「甲木化水」反证都冲突，本审计不采用。"
+  },
+  "defined16_ruling": {
+    "question": "defined16 里 4 条化（H09–H12）该算 ok / reversed / definition_pending",
+    "answer": "reversed",
+    "detail": "4/4 reversed（0 ok、0 pending）。理由：quote 力向唯一、标注 a/actor 正确、引擎 actor 落在被化者一端，属真实方向失败；definition_pending 是约定未定时的临时桶，本次审计已把约定定到「化者=受生端」，该桶对四条作废。",
+    "accounting": {
+      "defined16": {"n": 16, "ok": 4, "reversed": 4, "actor_none": 6, "no_edge": 2, "pct": "4/16 = 25.0%"},
+      "all20": {"n": 20, "ok": 5, "reversed": 5, "actor_none": 7, "no_edge": 3, "pct": "5/20 = 25.0%"},
+      "source": "META/p1-holdout-postfix-candidates-v1.json（逐条 direction 计数复核）；与 docs/reviews/p1-postfix-candidates-verdict-v1.md §1/§4 一致。"
+    },
+    "unchanged_after_audit": true,
+    "unchanged_note": "本次不改分数：4 化本来就在 reversed 档，审计只是把「暂定 pending」的提法撤掉，defined16 仍是 4/16 = 25.0%。",
+    "projection_if_hua_actor_fixed": {
+      "fixed": ["P1-H09", "P1-H10", "P1-H11"],
+      "not_fixed": ["P1-H12"],
+      "defined16": "7/16 = 43.8%",
+      "all20": "8/20 = 40.0%",
+      "label": "推演值，未实测；H12 仍 reversed"
+    },
+    "withdraw_claim": "docs/reviews/p1-postfix-candidates-verdict-v1.md §5 第 2 条「4 化在约定定稿前不进失败统计，单独列 definition_pending」应撤回；同文 §4 表格已把 4 化记作 reversed，两处自相矛盾，以本审计为准。"
+  },
+  "freeze_v4_recommendation": {
+    "primary_direction_denominator": 20,
+    "defined16_role": "diagnostic / sensitivity only（H01–H16 子集，单列不替换主口径）",
+    "thresholds": {"target_pct": 80, "kill_pct": 60},
+    "hua_status_in_v4": "计入方向失败：4/4 reversed、engine_wrong；不剔除、不改 ok、不转 definition_pending。",
+    "record_in_v4": [
+      "化 actor 规则：化者=受生端（本审计 convention）；引擎 sheng actor=生端 → 反向。",
+      "四条逐条判定：H09–H11 可由「化用候选翻转」修复；H12 因 财→杀 不被化用谓词识别，修复后仍 reversed（已知能力缺口）。",
+      "冻结口径冲突须消解：verdict 说「主分母暂定 16」，freeze v3 写的是 20；v4 应明确 20 为主、16 为诊断，并撤回「16 暂定」。",
+      "post-fix 产物 header 的 artifact=pre_fix_baseline / task=T-177 与实际 post-fix 内容不符，v4 引用时以内容与 verdict 为准，重生成时修 header。",
+      "freeze v3 的 muku_actor_correction.h13_note 说 H13 仍 no_candidate，T-179 后 post-fix 已 ok——该注记过时，不得原样复制进 v4。"
+    ],
+    "do_not": [
+      "不得为让 4 化变绿而把化移出分母或改标 ok。",
+      "不得全局翻转 sheng/生泄用 的 actor（会同时毁掉生）。",
+      "不得用 post-fix 结果回头调化规则（freeze discipline）。",
+      "不得把 H12 的 财→杀 改标成「生」来回避缺口。"
+    ],
+    "if_central_wants_16": "若中枢坚持 16 为唯一主口径，post-fix 必须同时报 raw 20，且 4 化仍按 reversed 计，不得用 16 的单值宣称达标。"
+  },
+  "rule_table": {
+    "spec_path": "docs/specs/actor-rules-v1.md",
+    "class_policy": {
+      "化": {
+        "actor": "化者（及物句主语／被动句『被』后施动方；五行上=受生端）",
+        "a_role": "化者",
+        "b_role": "被化者",
+        "unknown": "null",
+        "engine": "现以 sheng 边表达，(生者,被生者)、actor=生者=被化者（错）；应只对 mode=化用 改为 (化者,被化者)、actor=化者"
+      }
+    },
+    "subclauses": [
+      {
+        "name": "官杀→印",
+        "actor": "印（受生端）",
+        "positive": [
+          "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055「午火印星化杀生身主贵」「甲寅七杀被旺火所化」",
+          "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186「巳化尽旺杀生身」「印化了杀」",
+          "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1301「杀印格：印化杀生身」"
+        ],
+        "counter": [
+          "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1461「七杀化印再生身」——转化句，主语是被化者杀，句中无施动方 → actor=null；若按语序写杀为 actor，就是把被化者当施力方（引擎现状）。"
+        ],
+        "note": "官杀→印的化，五行方向是官杀生印；化者=印，与生的方向相反。"
+      },
+      {
+        "name": "财→杀（忌神受生化）",
+        "actor": "杀（受生端）",
+        "positive": [
+          "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127「财子水被寅化」（子财被寅杀化）"
+        ],
+        "counter": [
+          "把 财→杀 当纯「生」而不给化读法：引擎 mode=生泄用、actor=子（生端）即此误；原文既写「被寅化」，force 属寅。"
+        ],
+        "note": "本条是 §4.8 现标题「官杀→印」之外的子类；规则句通用（化者=受生端），但类型覆盖须补，否则引擎化用谓词永远认不出。"
+      },
+      {
+        "name": "合化（五合化气／三合化局／六合化）",
+        "actor": "null",
+        "positive": [
+          "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L469「用神被合化成忌神」——化的是申子辰三合水局整体，无单一施动方。",
+          "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L757「甲己合化土」——化神是土，合的两干无施受。"
+        ],
+        "counter": [
+          "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L447「合化：旺的控制弱的」／sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2079「合化，旺的控制弱」——若据此把旺端写成 actor，就是把五合的衰旺对比当成化的施力方；合是对称关系（§3 合行），actor=null。"
+        ],
+        "note": "段派另有更硬的否定：22:L1352「天干五合只讲合不讲化……化在盲派命理国无实质性意义」；合化只作象／化气格用，不作为做功力向。"
+      },
+      {
+        "name": "从化（化气格／从格）",
+        "actor": "null",
+        "positive": [
+          "sources/ziping/《子平真诠》.md:L187「天干五合有从化，化气真者，弃日主之本气，从所化之五行。」——日主从化神，是格局层。",
+          "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L3503「化气者，甲己合化土」——化气格以化神论，无两端施受。",
+          "sources/ziping/穷通宝鉴-明-余春台_part2.md:L569「三月癸水，从化者多」"
+        ],
+        "counter": [
+          "sources/tiaohou_ditiansui/滴天髓_part1.md:L120「见火土多即从化矣」——主语是癸水日主；若把「从化」的主语（日主）当 actor，就把格局从势写成对某一端的施力。从化只判格，不赋向。"
+        ],
+        "note": "任派同调：sources/ren/MinerU_markdown_任付红十八道法门_2056029302244958208.md:L666「弱而从化是贵基」——从化是贵格判断，不是两造力向。"
+      },
+      {
+        "name": "自化／自泄",
+        "actor": "null",
+        "positive": [
+          "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1527「杀印相生自化能任公职」——印杀相生而自化，无外部施动方。"
+        ],
+        "counter": [
+          "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L795「甲木生午火自化」——自化=泄，若把被泄方（午）当 actor 或把自化当有向做功，都错；22:L1527 的「印杀不能自化」反证自化需两端俱在。"
+        ],
+        "note": "自化只描述一端气泄入另一端，没有外部化者 → actor=null（与 §4.8 现反例 16:L1527 同）。"
+      }
+    ],
+    "spec_defects": [
+      "§0 规则 3 与 §4.8 陷阱句自相矛盾：前者禁止「因为水生木就把被生的一方写成生者」，后者却写「化在引擎里用 sheng 边表达……actor 恒为生者；标注时不要因为『化』字倒过来就写受方」——按这句标的 actor 会落在被化者，正是四条 reversed 的成因。",
+      "§5.1 表格「化 | sheng | (化者,被化者) | members[0] | 保持」与实现不符：实现是 (生者,受生者)、actor=生者=被化者；「保持」二字把错误固化了。",
+      "§4.8 标题「官杀→印」过窄：H12 是 财→杀，规则句通用但类型未覆盖；引擎化用谓词只认 官杀→印，故 H12 修不到。",
+      "§4.8 判据「A化B／A化尽B／B被A化／B被A所化 → actor=A」只按语序：对不及物「A化为B／七杀化印」会把主语（被化者）当 actor；应改为按力向判（化者=受生端；转化句 actor=null）。",
+      "§2 教训表把 n16「甲木化水」写成「被动句 被…所化 取施动方」的证据，但 n16 的句子不是被动式；用本审计的力向规则解释更准确（甲=受生端=化者）。"
+    ],
+    "spec_revision_text": {
+      "§4.8_replacement": "化（官杀→印；财→杀；合化、从化另计）\n- 力向：被化者（生端）→ 化者（受生端）。化者＝把来力消化／转化为己用的一端。\n- 判据：及物句「A化B／A化尽B」→ 化者=A；被动句「B被A化／B被A所化」→ 化者=A；不及物转化句「A化为B／七杀化印」→ A 是被化者，句中无施动方，actor=null。\n- 校验：取 A、B 本气五行，若 B 生 A 则 A 必须是化者；若句子的 a 端不是受生端，先改 a/b 再标 actor（a 恒为化者）。\n- 反例（不得赋向）：16:L469「用神被合化成忌神」（合化局整体）、16:L1527「杀印相生自化」、16:L795「甲木生午火自化」。\n- 正例：23:L3055「午火印星化杀生身主贵」/「甲寅七杀被旺火所化」；22:L2186「巳化尽旺杀生身」/「印化了杀」；19:L127「财子水被寅化」；23:L2645「甲木化水」。\n- 引擎：（现）sheng 边 (生者,被生者)、actor=生者=被化者——反；（应）仅 mode=化用 的候选改为 (化者,被化者)、actor=化者；生泄用与 sheng 候选不动。",
+      "§5.1_row_replacement": "| 化 | sheng（仅 kind 映射）／候选 mode=化用 | （现）(生者=被化者, 受生者=化者)；（应）(化者, 被化者) | 现 members[0]=被化者（**错**）→ 应 actor=化者 | **改**（仅化用候选） |",
+      "§0_or_§1_addition": "化 的句法主语可以是被化者（转化句）。actor 只认施动方：及物句取化者主语，被动句取『被』后一方；转化句无施动方 → null。不得用五行生源（生者）代替化的施力方。"
+    },
+    "gaps": [
+      "§4.8 未覆盖 财→杀（H12）与更一般的「忌神受生化」；是否需要引擎化用检测扩类，须另卡并由原文给判据（不能用 hold-out 反推）。",
+      "化 与 生／泄 共用一条 sheng 边：同一个字可以同时是某边的化者与另一边的生者（22:L2186 的巳）。引擎若要同时表达两种做功，只能靠 mode 区分，不能靠翻转全局 sheng。",
+      "合化／从化／自化 在引擎无 kind，均归 null；若将来要做方向，须先有「局」对象，不能塞进两元 members。"
+    ]
+  },
+  "downstream": {
+    "must_change": [
+      "engine/facts/structure_check.py:L487-488、:498-505、:510：mode=化用 的候选改为 members=(受生端,生端)、actor=受生端；检测仍在生方向做，只翻 emit；sheng/生泄用 候选不动。",
+      "docs/specs/actor-rules-v1.md §4.8 陷阱句、§5.1 化行、§3 化行、§2 n16 说明按本审计 §rule_table.spec_revision_text 修订（另卡，本卡只给建议）。",
+      "docs/specs/single-chart-analysis-v1.md:L165：化的方向契约现写「引擎 actor」，引擎修好前下游会照抄反端，须同步为「候选 mode=化用 的 actor（化者）」。",
+      "tools/p1_holdout_eval.py:L41-46：口径差异只写了墓，须补化——「化→sheng 只是 kind 映射，actor 不等价；修复后化用候选 actor 才可比」。",
+      "tests/facts/test_structure_check.py:L147-151、tests/api/test_engine_reset_regression.py:L135-136：化用 fixture 现断言 members=(杀,印)、actor=杀，改引擎后按新约定重写（ADR-004：可改测试，不得放宽断言）。",
+      "META/p1-holdout-freeze-v3.json → v4：主分母 20 不变，写入化 4/4 engine_wrong、H12 缺口、撤回「16 暂定」。"
+    ],
+    "must_not_change": [
+      "META/p1-holdout-answers-v1.json（H09–H12 的 a/b/actor 全部不变）",
+      "META/p1-holdout-v1.json（盲测输入）",
+      "生的 actor=生者：不得为了化把全局 sheng actor 翻转",
+      "四条化不得剔除、不得改判 ok 或 definition_pending"
+    ],
+    "spec_rule_to_implement": "docs/specs/actor-rules-v1.md §4.8（改力向判据）+ §5.1（化行改为「改」）；structure_check.py 只按表实现，不按 case 调。"
+  },
+  "risks": [
+    {
+      "id": "R1",
+      "level": "medium",
+      "text": "H12（财→杀）不属 官杀→印，引擎化用谓词认不出；即使翻转化用 actor，H12 仍 reversed。需另卡决定是否扩化用检测（须原文判据，不能用 hold-out 反推），否则 v4 须明记已知缺口。"
+    },
+    {
+      "id": "R2",
+      "level": "medium",
+      "text": "不及物转化句（21:L1461「七杀化印再生身」）若按语序标 actor，会把被化者当施力方——正是引擎现状；规则表须显式规定该类 actor=null，否则将来会再出同类分歧。"
+    },
+    {
+      "id": "R3",
+      "level": "medium",
+      "text": "契约文档 docs/specs/single-chart-analysis-v1.md:L165 以「引擎 actor」为化方向；引擎修复前，下游报告会照抄反端，且该文档未列入本卡 File Scope，需另卡同步。"
+    },
+    {
+      "id": "R4",
+      "level": "low",
+      "text": "META/p1-holdout-postfix-candidates-v1.json 的 header 仍是 schema_version=p1-holdout-baseline/v1、task=T-177、artifact=pre_fix_baseline，与它的 post-fix 内容（墓 4/4 ok、化 4/4 reversed）不符；引用时以逐条 direction 为准，重生成时修 header。"
+    },
+    {
+      "id": "R5",
+      "level": "low",
+      "text": "META/p1-holdout-freeze-v3.json 的 h13_note 仍说 H13 修后仍 no_candidate；T-179 后 post-fix H13 已 ok，该注记过时，v4 不得原样复制。"
+    },
+    {
+      "id": "R6",
+      "level": "low",
+      "text": "docs/reviews/p1-postfix-candidates-verdict-v1.md §4 把 4 化记作 reversed，§5.2 又说「不进失败统计／definition_pending」，自相矛盾；本审计以 reversed 为准并建议撤回 §5.2 的提法。"
+    }
+  ],
+  "blockers": []
+}

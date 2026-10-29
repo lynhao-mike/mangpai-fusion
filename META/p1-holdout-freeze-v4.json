@@ -1,0 +1,51 @@
+{
+  "schema": "p1-holdout-freeze/v4",
+  "frozen_at": "2026-10-29T13:40:00+08:00",
+  "supersedes": "META/p1-holdout-freeze-v3.json",
+  "based_on_baseline": "META/p1-holdout-baseline-v1.json",
+  "reason": "T-180 审计：P1-H09-H12 四条化 4/4 engine_wrong。原文力向=被化者→化者，化者恒为受生端；引擎化用候选 actor 放在被化者（生者）上，反了。4 化算 reversed，不是 pending。",
+  "metrics": {
+    "relation_coverage": {
+      "definition": "edge OR muku-equivalent",
+      "denominator": 20,
+      "target_pct": 90,
+      "baseline": "12/20 = 60.0%",
+      "strict_edge_secondary": "8/20 = 40.0%"
+    },
+    "direction_recall": {
+      "definition": "answer actor == engine actor; primary 20, including 4 muku and 4 hua",
+      "denominator": 20,
+      "target_pct": 80,
+      "kill_pct": 60,
+      "baseline": "5/20 = 25.0% (post-T-179 candidates)",
+      "defined16_diagnostic": "4/16 = 25.0% (H01-H16: 制/化/墓)",
+      "sensitivity_exclude_f28": "1/16 = 6.25%",
+      "projected_after_T181": "defined16 7/16; all20 8/20; still <60"
+    }
+  },
+  "hua_correction": {
+    "actor_direction": "被化者 → 化者; 化者 = 受生端",
+    "engine_change": "only mode=化用 candidates: members=(化者,被化者), actor=化者; do not globally flip sheng/生泄用",
+    "h12_gap": "财→杀 not recognized as 化用; remains reversed; known_gap; do not extend category in T-181",
+    "labels_unchanged": true
+  },
+  "muku_correction": {
+    "engine_change": "muku candidates: members=(库,入库方), actor=库; relations.muku unchanged",
+    "h13_note": "after T-179 body-body filter H13 is ok; v3 note is stale"
+  },
+  "sensitivity_sets": {
+    "exclude_f28_rescue": ["P1-H17", "P1-H18", "P1-H19", "P1-H20"],
+    "defined16": ["P1-H01", "P1-H02", "P1-H03", "P1-H04", "P1-H05", "P1-H06", "P1-H07", "P1-H08", "P1-H09", "P1-H10", "P1-H11", "P1-H12", "P1-H13", "P1-H14", "P1-H15", "P1-H16"]
+  },
+  "scorer_sync": [
+    "postfix artifact header still says artifact=pre_fix_baseline (T-177 tool constant); relabel before official P1",
+    "single-chart-analysis-v1.md L165 uses engine actor as 化 direction; sync to 化者 (受生端)",
+    "actor-rules-v1.md §4.8 trap sentence; T-181 sync"
+  ],
+  "discipline": [
+    "this is a pre-fix correction based on T-180 source audit, not post-fix tuning",
+    "do not change denominators/thresholds after the official P1 run",
+    "hold-out is scoring-only; never use it to tune rules"
+  ],
+  "scope_warning": "The 8 制 relations (H01-H08, except H06/H07 already no_edge) still need branch-ke (G3). Without branch-ke, defined16 max 8/16=50% <60% kill; edge max 17/20=85% <90%. The current goal's no-880 constraint is mathematically set to fail. Human decision A/B/C required."
+}
