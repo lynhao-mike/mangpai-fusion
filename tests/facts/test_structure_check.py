@@ -144,10 +144,10 @@ def test_zuogong_kaishan_1342_sha_sheng_yin_and_zihe():
     graph = build_relation_graph(chart)
     cands = build_duan_zuogong_candidates(chart, graph)
 
-    hua = next(c for c in cands if c.mode == "化用" and c.members == ("H.b", "D.b"))
-    assert hua.ten_gods == ("七杀", "偏印") and hua.actor == "H.b"
+    hua = next(c for c in cands if c.mode == "化用" and c.members == ("D.b", "H.b"))
+    assert hua.ten_gods == ("偏印", "七杀") and hua.actor == "D.b"   # T-181：actor=化者（辰，受生端）
     by_layer = {b.layer: b.direction for b in hua.binzhu}
-    assert by_layer[2] == "正向"         # 日柱为主，辰印在主位、巳杀在宾位
+    assert by_layer[2] == "正向"         # 日柱为主，辰印（化者）在主位、巳杀（被化者）在宾位
     assert by_layer[3] == "同在主位"
 
     he = next(c for c in cands if c.mode == "合用" and c.relation_kind == "ganzhi_zihe")
@@ -240,3 +240,72 @@ def test_zuogong_muku_actor_is_ku_t179():
     assert mu.actor == "H.b"
     assert mu.chars == ("丑", "庚")
     assert "Y.s" in {c.addr for c in muku_at(graph, "H.b").candidates}
+
+
+# ── T-181：化用候选 actor=化者（受生端），只翻化用 ─────────────────────────────
+
+_HUA_CASES = [
+    ("P1-H09", ["癸巳", "乙卯", "己巳", "己巳"], {
+        (("Y.b", "M.b"), "Y.b"),
+        (("D.b", "M.b"), "D.b"),
+        (("H.b", "M.b"), "H.b"),
+    }),
+    ("P1-H10", ["戊午", "戊午", "戊午", "甲寅"], {
+        (("Y.b", "H.b"), "Y.b"),
+        (("M.b", "H.b"), "M.b"),
+        (("D.b", "H.b"), "D.b"),
+    }),
+    ("P1-H11", ["乙巳", "己丑", "庚午", "庚辰"], {
+        (("M.b", "Y.b"), "M.b"),
+        (("H.b", "Y.b"), "H.b"),
+        (("M.b", "D.b"), "M.b"),
+        (("H.b", "D.b"), "H.b"),
+    }),
+]
+
+
+@pytest.mark.parametrize("case_id,pillars,expected", _HUA_CASES)
+def test_hua_candidate_actor_is_hua_zhe_t180_fixture(case_id, pillars, expected):
+    """T-180 审计 fixture：P1-H09 巳化卯 / H10 午化寅 / H11 辰化巳，化者=受生端。
+
+    契约：化用候选 members=(化者, 被化者)、actor=化者；被化者（生端）生入化者（受生端）。
+    """
+    chart = chart_from_pillars(pillars, "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    hua = [c for c in cands if c.mode == "化用"]
+    assert {(c.members, c.actor) for c in hua} == expected
+    for c in hua:
+        assert c.actor == c.members[0]                              # 化用 actor=members[0]=化者
+        assert wuxing_relation(ZHI_TO_WUXING[c.chars[1]], ZHI_TO_WUXING[c.chars[0]]) == "生", (
+            f"{case_id} {c.chars}: 被化者必须生入化者（化者=受生端）"
+        )
+        assert c.ten_gods[0] in {"正印", "偏印"} and c.ten_gods[1] in {"正官", "七杀"}
+
+
+def test_h12_cai_sha_hua_known_gap():
+    """known_gap · P1-H12（乙巳 乙酉 戊子 甲寅）：财子水被寅化，化者=寅（受生端），引擎不识别。
+
+    T-180 §3.2/§6.3：化用谓词只认官杀→印，财→杀 不在其内；本条只有 mode=生泄用、
+    actor=子（生者=被化者，方向仍是 reversed）。T-181 不扩类，缺口留给另卡。
+    """
+    chart = chart_from_pillars(["乙巳", "乙酉", "戊子", "甲寅"], "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    assert not [c for c in cands if c.mode == "化用" and set(c.members) == {"D.b", "H.b"}]
+    sheng = next(c for c in cands if c.mode == "生泄用" and c.members == ("D.b", "H.b"))
+    assert sheng.chars == ("子", "寅") and sheng.ten_gods == ("正财", "七杀")
+    assert sheng.actor == "D.b"        # 生者=子=被化者；化者寅未被识别（known_gap，不扩类）
+
+
+def test_hua_flip_does_not_touch_sheng_or_shengxie_t181():
+    """T-181：只翻 mode=化用；sheng / 生泄用 的 actor 仍是生者（规则表 §4.7），不得全局翻。
+
+    同一对 巳→辰 同时以化用（actor=辰=化者）与生（actor=巳=生者）出现，正好区分两套约定。
+    """
+    chart = chart_from_pillars(["壬子", "壬寅", "庚辰", "辛巳"], "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    hua = next(c for c in cands if c.mode == "化用" and set(c.members) == {"D.b", "H.b"})
+    sheng = next(c for c in cands if c.mode == "sheng" and c.members == ("H.b", "D.b"))
+    sheng_qi = next(c for c in cands if c.mode == "生泄用" and c.members == ("M.s", "M.b"))
+    assert hua.members == ("D.b", "H.b") and hua.actor == "D.b"        # 化者=辰（受生端）
+    assert sheng.chars == ("巳", "辰") and sheng.actor == "H.b"         # 生者=巳
+    assert sheng_qi.chars == ("壬", "寅") and sheng_qi.actor == "M.s"   # 生者=壬

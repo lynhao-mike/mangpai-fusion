@@ -162,7 +162,7 @@
 | `克` | `edge.kind=ke`（members 有序 from→to） | true | `members[0]` |
 | `制` | `candidate.mode=制用` 且 `actor` 非空 | true | 引擎 `actor` |
 | `生` / `泄` | `edge.kind=sheng` 或 `candidate.relation_kind=sheng(main_qi)` | true | 引擎 `actor` |
-| `化` | `candidate.mode=化用`（官杀→印） | true | 引擎 `actor` |
+| `化` | `candidate.mode=化用`（官杀→印） | true | 引擎 `actor`=化者（受生端；被化者→化者） |
 | `合` | `kind ∈ {wuhe,liuhe,zhi_anhe,ganzhi_zihe}` | **false** | `null` |
 | `墓` | `candidate.mode=墓用`（入墓字 → 库） | true | 引擎 `actor` |
 | `冲`/`刑`/`穿`/`害`/`破` | `kind ∈ {chong,xing,chuan,po}`、`stem_chong` 另计 | **false** | `null`（G2） |

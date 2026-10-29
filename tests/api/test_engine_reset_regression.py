@@ -132,8 +132,8 @@ def test_zhengguan_requirement_breaker_rescuer_met():
 def test_duan_zuogong_hua_yong_and_ganzhi_zihe_without_fugui_score():
     payload = analyze_facts(pillars=["壬子", "壬寅", "庚辰", "辛巳"], gender="乾")
     cands = payload["duan_zuogong"]["candidates"]
-    hua = next(c for c in cands if c["mode"] == "化用" and c["members"] == ["H.b", "D.b"])
-    assert hua["ten_gods"] == ["七杀", "偏印"] and hua["actor"] == "H.b"
+    hua = next(c for c in cands if c["mode"] == "化用" and c["members"] == ["D.b", "H.b"])
+    assert hua["ten_gods"] == ["偏印", "七杀"] and hua["actor"] == "D.b"   # T-181：actor=化者（辰，受生端）
 
     he = next(c for c in cands if c["mode"] == "合用" and c["relation_kind"] == "ganzhi_zihe")
     assert he["members"] == ["H.s", "H.b"]
