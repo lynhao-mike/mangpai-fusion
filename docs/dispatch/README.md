@@ -47,28 +47,33 @@
 | T-167 | 应期评测器 v1 | K=3、事件置换 null、同 K 基线 26.70%；25 tests |
 | T-168 | 事件年份审计 | 544/547 有原文记号；剔除 20 例；22 tests |
 
-## 三、当前在途（2026-10-29 12:10 P1 快车道）
+## 三、当前在途（2026-10-29 12:50 P1 快车道）
 
 **长目标**：`docs/goals/first-principle-fast-track-v1.md`（P1 方向≥80/边≥90；3 份真实盘卡；<60 kill）。
 
-**独立 Agent 分支 `rethink/2026-10-29` @ `6a40bcb5`（worktree `..\mangpai-fusion-rethink`）**：
-33 条原书主功标注 → 事实层方向召回 **7/17 = 41.2%**，低于 60% 阻塞线 → `facts_blocking`。
-**golden-20 盲推暂缓**；第一证明点改为 **P1 hold-out 方向召回**。
+**独立 Agent 分支 `rethink/2026-10-29` @ `6a40bcb5`（worktree `..\mangpai-fusion-rethink`，尚未有新提交）**：
+33 条标注 → 原标注 41.2%（上界不是中值）；复核主口径 37.5%、从严 26.7%、
+放宽 46.7%/47.4%；**所有口径无一 ≥60% → `facts_blocking` 维持**。
 
-**并行三路（第 1 步，不改代码）**：
+**已完成（第 1 步）**：
+| 序 | 任务 | 产物 | 状态 |
+|---|---|---|---|
+| 1 | T-174 33 条第二复核 | `META/p1-second-review-v1.*` | ✅ 41.2 非上界；全口径 26.7–47.4，无一 ≥60 |
+| 2 | T-175 20 例 hold-out | `META/p1-holdout-v1.*` + freeze | ✅ 制8/化4/墓4/救应4；hash `593f4dbe` |
+| 3 | T-176 3 张 pre-P1 卡 | `docs/demo/single-chart-cards-v1.md` | ✅ direction_known=false 3/3 |
+
+**当前在跑（第 2 步）**：
 | 序 | 任务 | 提示词 | 状态 |
 |---|---|---|---|
-| 1 | **T-174** 33 条第二人复核 | `tasks/T-174/PROMPT.md` | 🟡 子代理 X |
-| 2 | **T-175** 20 例独立 hold-out 策展 | `tasks/T-175/PROMPT.md` | 🟡 子代理 Y |
-| 3 | **T-176** 3 张 pre-P1 真实盘卡 | `tasks/T-176/PROMPT.md` | 🟡 子代理 Z |
+| 4 | **T-177** P1 hold-out 评分器 + pre-fix 基线 | `tasks/T-177/PROMPT.md` | 🟡 子代理 AA |
+| 5 | 独立 Agent 三处修复 | `rethink/2026-10-29` | 🟡 等新提交 |
 
-**第 2 步**：hold-out 冻结后，独立 Agent 在分支只改 `structure_check.py` 三处；
-P1 ≥80/90 才进 P2；<60 kill；60–80 只做局部修。
+**第 2 步完成后**：T-177 用同一评分器复跑修复后引擎；P1 ≥80/90 进 P2；<60 kill；60–80 只做局部修。
 
 **不做**：补 880 支克边、写 analyzer、跑 golden-20、标签/应期统计、物理删除旧层。
-详见 `docs/reviews/p1-direction-recall-verdict-v1.md`。
+详见 `docs/reviews/p1-evidence-freeze-verdict-v1.md`。
 
-**已收口**：T-150–T-171 全部验收并提交。
+**已收口**：T-150–T-176 全部验收并提交。
 
 ## 四、队列现状（旧的六张卡已全部完成）
 
