@@ -1,6 +1,7 @@
 """StructureCheck 第 4 层：目录驱动的构成要件核对 + 段派做功候选。"""
 from __future__ import annotations
 
+import logging
 from dataclasses import fields
 
 import pytest
@@ -351,3 +352,68 @@ def test_hua_flip_does_not_touch_sheng_or_shengxie_t181():
     assert hua.members == ("D.b", "H.b") and hua.actor == "D.b"        # 化者=辰（受生端）
     assert sheng.chars == ("巳", "辰") and sheng.actor == "H.b"         # 生者=巳
     assert sheng_qi.chars == ("壬", "寅") and sheng_qi.actor == "M.s"   # 生者=壬
+
+
+# ── T-188：自刑（辰辰/午午/酉酉/亥亥）保留事实边、剔除做功候选 ─────────────────
+
+_ZIXING_CASES = [
+    ("酉", ["辛酉", "丁酉", "甲子", "丙寅"]),
+    ("亥", ["己亥", "乙亥", "甲寅", "丙寅"]),
+    ("午", ["戊午", "戊午", "戊午", "甲寅"]),
+    ("辰", ["庚辰", "庚辰", "戊子", "甲寅"]),
+]
+
+
+@pytest.mark.parametrize("zhi,pillars", _ZIXING_CASES)
+def test_selfxing_edge_kept_in_graph_dropped_from_candidates(zhi, pillars, caplog):
+    """T-188 / A+ v1.3 §2：自刑边不删、不改 ID；只在 duan_zuogong 候选中逐条 logged 剔除。"""
+    chart = chart_from_pillars(pillars, "乾")
+    graph = build_relation_graph(chart)
+    edges_before = [(e.id, e.kind, e.members, e.completeness) for e in graph.edges]
+
+    zixing = [e for e in graph.edges if e.kind == "xing" and e.completeness == "zixing"]
+    assert zixing, f"{zhi}{zhi} 应建出自刑边"
+    assert all(e.chars == (zhi, zhi) for e in zixing)
+    assert all(len(e.members) == 2 and e.members[0] != e.members[1] for e in zixing)
+
+    with caplog.at_level(logging.DEBUG, logger="engine.facts.structure_check"):
+        cands = build_duan_zuogong_candidates(chart, graph)
+
+    zixing_ids = {e.id for e in zixing}
+    assert not [c for c in cands if c.edge_id in zixing_ids]
+    assert not [c for c in cands if c.relation_kind == "xing" and c.chars[0] == c.chars[1]]
+    # 事实层原样：边数、ID、members、completeness 逐项不变
+    assert [(e.id, e.kind, e.members, e.completeness) for e in graph.edges] == edges_before
+    # 逐条 logged，不得静默
+    for eid in zixing_ids:
+        assert f"edge={eid}" in caplog.text
+    assert cands, "同盘其他候选必须保留（不是整盘清空）"
+
+
+@pytest.mark.parametrize("pillars,pair", [
+    (["丁丑", "庚戌", "甲子", "丙寅"], ("丑", "戌")),
+    (["乙未", "丙戌", "甲子", "丁卯"], ("未", "戌")),
+])
+def test_non_selfxing_xing_still_candidate(pillars, pair):
+    """T-188：非自刑刑（丑戌/未戌，completeness="partial"）仍保留候选，actor 仍 None。"""
+    chart = chart_from_pillars(pillars, "乾")
+    graph = build_relation_graph(chart)
+    xing_edges = [e for e in graph.edges if e.kind == "xing" and set(e.chars) == set(pair)]
+    assert xing_edges and all(e.completeness == "partial" for e in xing_edges)
+
+    cands = build_duan_zuogong_candidates(chart, graph)
+    hit = [c for c in cands if c.relation_kind == "xing" and set(c.chars) == set(pair)]
+    assert hit
+    assert {c.edge_id for c in hit} == {e.id for e in xing_edges}
+    assert all(c.chars[0] != c.chars[1] and c.mode == "制用" and c.actor is None for c in hit)
+
+
+def test_huxing_zi_mao_still_candidate():
+    """T-188：子卯（completeness="huxing"）不是自刑，仍保留候选。"""
+    chart = chart_from_pillars(["乙未", "丙戌", "甲子", "丁卯"], "乾")
+    graph = build_relation_graph(chart)
+    huxing = [e for e in graph.edges if e.kind == "xing" and e.completeness == "huxing"]
+    assert huxing and all(e.chars == ("子", "卯") for e in huxing)
+
+    cands = build_duan_zuogong_candidates(chart, graph)
+    assert [c for c in cands if c.edge_id in {e.id for e in huxing}]

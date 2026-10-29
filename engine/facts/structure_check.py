@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import combinations
@@ -22,6 +23,8 @@ from engine.facts.chart_facts import REF_KAISHAN, _LU, _YANG_REN, binzhu_side, w
 from engine.facts.types import Addr, ChartFacts, Edge, RelationGraph, StrengthFacts, _Dict
 from engine.predicates.palace import get_shishen
 from engine.predicates.types import GAN_TO_WUXING, ZHI_CANGGAN_TABLE, ZHI_TO_WUXING
+
+logger = logging.getLogger(__name__)
 
 SCHEMA_VERSION = "structure-check/v1"
 CATALOG_PATH = Path(__file__).parent / "data" / "structures_mvp.yaml"
@@ -489,8 +492,21 @@ def _derived_gan_ke_zhi(chart: ChartFacts) -> list[tuple[Addr, Addr, int]]:
     return out
 
 
+def _is_zixing_edge(e: Edge) -> bool:
+    """自刑边（辰辰/午午/酉酉/亥亥）：kind="xing" 且两端地支同字（或 completeness="zixing"）。
+
+    T-188 / A+ v1.3 §2：边是事实，保留在 RelationGraph.edges；只从做功候选剔除，不删边、不改 ID。
+    """
+    return e.kind == "xing" and (
+        e.completeness == "zixing" or (len(e.chars) == 2 and e.chars[0] == e.chars[1])
+    )
+
+
 def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tuple[ZuogongCandidate, ...]:
-    """扫描关系与同柱/相邻柱相生，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。"""
+    """扫描关系与同柱/相邻柱相生，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。
+
+    自刑边（辰辰/午午/酉酉/亥亥）只留在关系图，不进候选（T-188，A+ v1.3 §2）。
+    """
     chars = dict(graph.nodes)
     gods = {a: _ten_god(a, c, chart.day_master) for a, c in graph.nodes}
     ty = {a: tiyong_of(g) for a, g in gods.items()}
@@ -531,6 +547,10 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
         members = (e.members[0], e.members[1])
         if e.kind in _ZHI_KINDS:
             if e.id in emitted_ke:
+                continue
+            if _is_zixing_edge(e):
+                # T-188：自刑边仍是 RelationGraph 事实边，只剔除候选；逐条 logged，不静默
+                logger.debug("duan_zuogong 剔除自刑候选 edge=%s chars=%s", e.id, e.chars)
                 continue
             emit_zhi_edge(e)
         elif e.kind == "sheng":
