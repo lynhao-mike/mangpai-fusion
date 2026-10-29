@@ -1,12 +1,14 @@
-"""tests/tools/test_p1_holdout_eval.py · T-177 · P1 hold-out 评分器的合成 fixture 测试。
+"""tests/tools/test_p1_holdout_eval.py · T-177（T-182 同步 artifact 标签与墓/化契约）· P1 评分器合成 fixture 测试。
 
 只测尺子，不测命理结论，也**不**读真实答案做断言（`META/p1-holdout-answers-v1.json` 只由中枢跑）：
 
 1. 端点解析：地址 / 单字干支 / 十神 / 分组 / 一对多；
 2. kind 映射：制=不过滤、化=sheng、墓=无边 + muku 候选、未登记值报错；
 3. 逐例五值：全中、全不中、actor 反、无候选、无方向（actor_none）、多地址、端点不在盘；
+   墓用 `(库,入库方)/actor=库` → ok；化用 `(化者,被化者)/actor=化者` → ok；H12 财→杀 `known_gap` → reversed；
 4. 汇总：分母、百分比、方向分布、actor 为空不进方向分母、muku 等价口径；
-5. 端到端：20/16 子集切分、两次运行逐字节一致、case 不匹配报错、CLI 退出码；
+5. 端到端：20/16 子集切分、两次运行逐字节一致、case 不匹配报错、CLI 退出码、
+   `--artifact-label` 默认/自定义写入 JSON 与控制台标题；
 6. 引擎冒烟：真实 `facts_for` 只断言不变量（不锁边数，免得修复后误红）。
 """
 from __future__ import annotations
@@ -25,6 +27,22 @@ PILLARS = [
     ("丙", "食神", "午", "伤官"),
     ("甲", "比肩", "寅", "比肩"),
     ("壬", "偏印", "戌", "偏财"),
+]
+
+#: T-180 H09 盘（癸巳 乙卯 己巳 己巳）：答案 a=巳（化者/受生端）、b=卯（被化者/生端）。
+HUA09_PILLARS = [
+    ("癸", "正财", "巳", "正印"),
+    ("乙", "七杀", "卯", "七杀"),
+    ("己", "日主", "巳", "正印"),
+    ("己", "比肩", "巳", "正印"),
+]
+
+#: T-180 H12 盘（乙巳 乙酉 戊子 甲寅）：答案 a=寅（化者/受生端）、b=子（被化者/生端），财→杀。
+HUA12_PILLARS = [
+    ("乙", "正官", "巳", "偏印"),
+    ("乙", "正官", "酉", "伤官"),
+    ("戊", "日主", "子", "正财"),
+    ("甲", "七杀", "寅", "七杀"),
 ]
 
 
@@ -47,10 +65,12 @@ def edge(edge_id: str, kind: str, *members: str) -> dict:
     return {"id": edge_id, "kind": kind, "members": list(members)}
 
 
-def cand(kind: str, *members: str, actor="__absent__") -> dict:
+def cand(kind: str, *members: str, actor="__absent__", mode: str | None = None) -> dict:
     out = {"relation_kind": kind, "members": list(members)}
     if actor != "__absent__":
         out["actor"] = actor
+    if mode is not None:
+        out["mode"] = mode
     return out
 
 
@@ -171,9 +191,10 @@ def test_endpoint_absent_is_not_scored():
 
 
 def test_muku_candidate_and_excluded_filter():
+    # T-178/T-179：墓用候选 members=(库,入库方)、actor=库；答案 a=库 → ok
     facts = make_facts(
         edges=[edge("e011", "chong", "Y.b", "M.b")],
-        candidates=[cand("muku", "M.b", "Y.b", actor="M.b")],
+        candidates=[cand("muku", "Y.b", "M.b", actor="Y.b", mode="墓用")],
         muku=[{"addr": "Y.b", "candidates": [{"addr": "M.b", "excluded": False},
                                              {"addr": "H.b", "excluded": True}]}],
     )
@@ -181,7 +202,7 @@ def test_muku_candidate_and_excluded_filter():
     assert row["edge_hit"] is False                 # 墓 的边映射为空：盘上有 chong 也不算
     assert row["candidate_hit"] is True
     assert row["muku_hits"] == ["M.b->Y.b"]         # excluded 的 H.b 不计
-    assert row["direction"] == "reversed"           # 墓用候选的 actor 是入库方（b 端）
+    assert row["direction"] == "ok"                 # 墓用候选的 actor 是库（a 端）
 
 
 def test_muku_hits_only_for_mu_relations():
@@ -191,9 +212,49 @@ def test_muku_hits_only_for_mu_relations():
 
 
 def test_candidate_kind_suffix_is_stripped():
-    facts = make_facts(candidates=[cand("sheng(main_qi)", "Y.b", "M.b", actor="M.b")])
+    # T-180/T-181：化用候选 members=(化者,被化者)、actor=化者；答案 a=化者 → ok
+    facts = make_facts(candidates=[cand("sheng(main_qi)", "Y.b", "M.b", actor="Y.b", mode="化用")])
     row = mod.score_relation(rel("子", "午", kind="化", mechanism="化"), facts, case_id="T-11")
-    assert row["candidate_hit"] is True and row["direction"] == "reversed"
+    assert row["candidate_hit"] is True and row["direction"] == "ok"
+
+
+def test_hua_candidate_actor_is_hua_zhe_t180():
+    """T-180/T-181 化用：a=化者（受生端）、b=被化者（生端），候选 (化者,被化者)、actor=化者 → ok。
+
+    H09（癸巳 乙卯 己巳 己巳）：巳火印化卯木杀，卯生巳，化者=巳；三条化用候选 actor 均落 a 端。
+    """
+    facts = make_facts(
+        pillars=HUA09_PILLARS,
+        candidates=[cand("sheng(main_qi)", "Y.b", "M.b", actor="Y.b", mode="化用"),
+                    cand("sheng(main_qi)", "D.b", "M.b", actor="D.b", mode="化用"),
+                    cand("sheng(main_qi)", "H.b", "M.b", actor="H.b", mode="化用")],
+    )
+    row = mod.score_relation(rel("巳", "卯", kind="化", mechanism="化"), facts, case_id="P1-H09")
+    assert row["a_addrs"] == ["D.b", "H.b", "Y.b"]
+    assert row["b_addrs"] == ["M.b"]
+    assert row["candidate_hit"] is True
+    assert row["candidates"] == [
+        {"kind": "sheng(main_qi)", "members": ["Y.b", "M.b"], "actor": "Y.b"},
+        {"kind": "sheng(main_qi)", "members": ["D.b", "M.b"], "actor": "D.b"},
+        {"kind": "sheng(main_qi)", "members": ["H.b", "M.b"], "actor": "H.b"},
+    ]
+    assert row["direction"] == "ok"
+
+
+def test_h12_cai_sha_hua_known_gap_t180():
+    """H12 财→杀是 known_gap：引擎只有 mode=生泄用，(子,寅) actor=子（被化者）→ 仍 reversed。
+
+    按 T-180 §6.3 / T-181：不扩类、不改标签、不剔分母；修复化用 actor 碰不到本条。
+    """
+    facts = make_facts(
+        pillars=HUA12_PILLARS,
+        candidates=[cand("sheng(main_qi)", "D.b", "H.b", actor="D.b", mode="生泄用")],
+    )
+    row = mod.score_relation(rel("寅", "子", kind="化", mechanism="化"), facts, case_id="P1-H12")
+    assert (row["a_addrs"], row["b_addrs"]) == (["H.b"], ["D.b"])
+    assert row["candidate_hit"] is True
+    assert row["direction"] == "reversed"            # known_gap：不是 ok，也不从分母剔除
+    assert row["actor_consistent"] is True
 
 
 def test_actor_not_equal_a_is_flagged():
@@ -314,6 +375,13 @@ def test_run_records_input_hashes(tmp_path, monkeypatch):
     assert result["inputs"]["sha256"]["answers"] == mod._sha256(answers_path)
 
 
+def test_run_artifact_label_default_and_override(monkeypatch, tmp_path):
+    holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
+    monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
+    assert mod.run(holdout_path, answers_path)["artifact"] == "pre_fix_baseline"
+    assert mod.run(holdout_path, answers_path, artifact_label="official_p1")["artifact"] == "official_p1"
+
+
 def test_run_rejects_pillar_mismatch(monkeypatch, tmp_path):
     holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
     monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
@@ -364,6 +432,24 @@ def test_cli_writes_byte_identical_artifacts(monkeypatch, tmp_path):
     text = outs[0][1].decode("utf-8")
     assert "| 边召回 `edge_recall` | 2/2 | 100.0% |" in text
     assert "pre-fix 基线" in text
+
+
+@pytest.mark.parametrize("label", [None, "official_p1", "post_fix_hua"])
+def test_cli_artifact_label_in_json_and_console_title(monkeypatch, tmp_path, capsys, label):
+    holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
+    monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
+    out_json, out_md = tmp_path / "o.json", tmp_path / "o.md"
+    argv = ["--holdout", str(holdout_path), "--answers", str(answers_path),
+            "--out-json", str(out_json), "--out-md", str(out_md)]
+    if label is not None:
+        argv += ["--artifact-label", label]
+
+    assert mod.main(argv) == 0
+    expected = label or "pre_fix_baseline"       # 默认 pre_fix_baseline
+    assert json.loads(out_json.read_text(encoding="utf-8"))["artifact"] == expected
+    title = capsys.readouterr().out.splitlines()[0]
+    assert title.startswith("P1 hold-out ") and expected in title
+    assert f"- artifact：`{expected}`" in out_md.read_text(encoding="utf-8")
 
 
 def test_cli_json_flag_prints_payload(monkeypatch, tmp_path, capsys):
