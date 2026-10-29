@@ -1,0 +1,10045 @@
+{
+ "schema": "fact-audit/v1",
+ "task": "T-193",
+ "generated_at": "2026-10-29 21:13:07",
+ "repo_head": "342a05b8",
+ "engine_entry": "python -m engine.cli chart --birth <YYYY-MM-DD HH:MM> --gender <乾|坤> --full",
+ "engine_profile": {
+  "zi_shi": "late_zi_split",
+  "yin_changsheng": "yin_reverse",
+  "tu_jigong": "duan_split_earth"
+ },
+ "verdict": {
+  "card_rule": "差异必须为 0；任何差异列为缺陷，不静默；>0 不宣称通过",
+  "strict_zero_diff": false,
+  "discrete_facts_zero_diff": true,
+  "unexplained_diff_count": 0,
+  "discrete_diff_count": 0,
+  "timing_diff_count": 50,
+  "summary": "严格 0 差异未达成：50 项时刻类差异（25 盘 × 精确起运岁数/精确交运时刻）。离散盘面事实 1500 项差异 0；差异可被节气表秒差 ×120 逐盘算尽，未解释差异 0。按卡口径不宣称通过。"
+ },
+ "coverage": {
+  "by_category": {
+   "late_zi": 7,
+   "near_jie": 6,
+   "qiyun_edge": 7,
+   "normal": 5
+  },
+  "gender": {
+   "乾": 14,
+   "坤": 11
+  },
+  "direction": {
+   "顺": 11,
+   "逆": 14
+  },
+  "birth_year_range": [
+   1953,
+   2019
+  ],
+  "hour_23": 5,
+  "hour_00": 2,
+  "near_jie_hours_max": 0.753
+ },
+ "independent_sources": [
+  {
+   "name": "sxtwl（寿星天文历 Python 绑定）",
+   "version": "2.0.7",
+   "role": "primary",
+   "scope": "四柱（年/月/日/时）、十二节交节时刻、起运/交运/大运年份",
+   "independence": "独立 C++ 历法实现；本 runner 以 sxtwl 交节时刻 + 立春换年 + 十二节换月 + 00:00 换日 + 五虎遁/五鼠遁独立推算四柱"
+  },
+  {
+   "name": "《三命通会》通行地支藏干表 + 子平十神生克定义 + 六十甲子旬空",
+   "version": "通行本（runner 内置表）",
+   "role": "primary",
+   "scope": "藏干字符/气位、天干十神、本气十神、旬空"
+  },
+  {
+   "name": "lunar_python",
+   "version": "1.4.8",
+   "role": "secondary_crosscheck_only",
+   "scope": "藏干/十神/旬空的第二实现交叉核对（不计入主差异）",
+   "independence": "engine 的四柱亦由 lunar_python 生成，故该库对四柱不构成独立来源；本审计的四柱独立值不使用该库"
+  }
+ ],
+ "method": {
+  "compare": "逐盘逐字段严格相等比对，不设容差；浮点精确比较，交运时刻按 engine 输出的秒级字符串比对",
+  "late_zi_rule": "23:00–23:59 日柱取当日、时干按次日五鼠遁（engine 默认 profile zi_shi=late_zi_split；独立侧同规则）",
+  "qiyun_rules": {
+   "mangpai_rough": "出生与方向性十二节之差按整日 ÷3，余二进一，夹在 1–10 岁",
+   "precise": "diff_hours/72 年；交运 = 出生 + 5×diff_hours 日",
+   "dayun_years": "传统时辰差法：3 日=1 年、1 日=4 月、1 时辰=10 天；起运年 = 出生 + 年/月/日后的公历年，逐年 +10"
+  },
+  "timing_sensitivity": "交运时刻 = 出生 + 5×diff_hours 日：参考节每差 1 秒，交运时刻差 120 秒；精确岁数差 1/259200 年",
+  "excluded": "不比对纳音、神煞、关系图、格局；不做方向/断语"
+ },
+ "coverage_definitions": {
+  "late_zi": "出生钟点 23:00–00:59（5 盘 23 点 + 2 盘 0 点）",
+  "near_jie": "出生时刻距十二节交节 ≤1 小时",
+  "qiyun_edge": "出生与方向性十二节之差落在粗略起运岁数翻转边界（5/8/11 日，误差 ≤30 分钟）或 29 日封顶附近",
+  "normal": "距十二节 >1 天且不在 23:00–00:59"
+ },
+ "known_limitations": [
+  "精确交运时刻不具备秒级独立可复现性：engine 用 lunar_python 节气表，独立值用 sxtwl 天文学交节，两者本批最大差 6.914 秒；交运时刻被 ×120 放大，故该字段只能按节气表精度核对。",
+  "公开万年历通常只给到分钟，无法用公开表仲裁秒级节气差；本审计不据此判定哪一方更准。",
+  "样本时间为北京时间钟表时间；engine 不做经度/真太阳时校正，独立来源同口径，真太阳时不在本卡范围。",
+  "藏干/十神/旬空为通行表事实：由 runner 内置表独立实现，并以 lunar_python 1.4.8 第二实现交叉核对；两实现一致不等于典籍唯一口径。"
+ ],
+ "summary": {
+  "charts": 25,
+  "by_category": {
+   "late_zi": 7,
+   "near_jie": 6,
+   "qiyun_edge": 7,
+   "normal": 5
+  },
+  "field_checks": 1550,
+  "checks_discrete": 1500,
+  "checks_timing": 50,
+  "diff_count": 50,
+  "diff_discrete": 0,
+  "diff_timing": 50,
+  "unexplained_diff_count": 0,
+  "max_reference_jie_delta_s": 6.9141,
+  "max_start_datetime_delta_s": 829.0,
+  "start_datetime_delta_bands": {
+   "<=60s": 22,
+   "60-300s": 2,
+   ">300s": 1
+  },
+  "supplementary_checks": 23,
+  "supplementary_diff_count": 0,
+  "secondary_crosscheck_checks": 125,
+  "secondary_crosscheck_diffs": 0,
+  "strict_pass": false
+ },
+ "diffs": [
+  {
+   "chart": "LZ-01",
+   "field": "qiyun.precise_start_age",
+   "engine": 8.103310185,
+   "independent": 8.10330892492284,
+   "class": "timing",
+   "delta_engine_minus_independent": 1.260077159059847e-06,
+   "predicted_by_jie_delta": 1.260077158665101e-06,
+   "residual": 3.947459407824738e-16
+  },
+  {
+   "chart": "LZ-01",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1998-05-08 03:56:00",
+   "independent": "1998-05-08 03:55:20",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 40.0,
+   "predicted_by_jie_delta_s": 39.193,
+   "residual_s": 0.807
+  },
+  {
+   "chart": "LZ-02",
+   "field": "qiyun.precise_start_age",
+   "engine": 8.847781636,
+   "independent": 8.847783062191358,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.4261913570123852e-06,
+   "predicted_by_jie_delta": -1.4261913558281474e-06,
+   "residual": -1.1842378223474214e-15
+  },
+  {
+   "chart": "LZ-02",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1993-07-25 04:35:00",
+   "independent": "1993-07-25 04:35:44",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -44.0,
+   "predicted_by_jie_delta_s": -44.36,
+   "residual_s": 0.36
+  },
+  {
+   "chart": "LZ-03",
+   "field": "qiyun.precise_start_age",
+   "engine": 6.307893519,
+   "independent": 6.307892887681327,
+   "class": "timing",
+   "delta_engine_minus_independent": 6.313186728945652e-07,
+   "predicted_by_jie_delta": 6.313186733879977e-07,
+   "residual": -4.934324789176514e-16
+  },
+  {
+   "chart": "LZ-03",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1978-11-07 19:17:00",
+   "independent": "1978-11-07 19:16:40",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 20.0,
+   "predicted_by_jie_delta_s": 19.637,
+   "residual_s": 0.363
+  },
+  {
+   "chart": "LZ-04",
+   "field": "qiyun.precise_start_age",
+   "engine": 6.286450617,
+   "independent": 6.286452443510802,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.8265108021608967e-06,
+   "predicted_by_jie_delta": -1.8265108023582698e-06,
+   "residual": 1.973730762703553e-16
+  },
+  {
+   "chart": "LZ-04",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2007-04-28 02:51:00",
+   "independent": "2007-04-28 02:51:56",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -56.0,
+   "predicted_by_jie_delta_s": -56.812,
+   "residual_s": 0.812
+  },
+  {
+   "chart": "LZ-05",
+   "field": "qiyun.precise_start_age",
+   "engine": 8.030729167,
+   "independent": 8.030730000246914,
+   "class": "timing",
+   "delta_engine_minus_independent": -8.332469132454889e-07,
+   "predicted_by_jie_delta": -8.332469134428619e-07,
+   "residual": 1.973729703912369e-16
+  },
+  {
+   "chart": "LZ-05",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2003-12-01 02:05:00",
+   "independent": "2003-12-01 02:05:25",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -25.0,
+   "predicted_by_jie_delta_s": -25.917,
+   "residual_s": 0.917
+  },
+  {
+   "chart": "LZ-06",
+   "field": "qiyun.precise_start_age",
+   "engine": 7.97400463,
+   "independent": 7.974007241153548,
+   "class": "timing",
+   "delta_engine_minus_independent": -2.6111535484929504e-06,
+   "predicted_by_jie_delta": -2.611153549183756e-06,
+   "residual": 6.908053434297699e-16
+  },
+  {
+   "chart": "LZ-06",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2016-11-09 15:34:00",
+   "independent": "2016-11-09 15:35:21",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -81.0,
+   "predicted_by_jie_delta_s": -81.217,
+   "residual_s": 0.217
+  },
+  {
+   "chart": "LZ-07",
+   "field": "qiyun.precise_start_age",
+   "engine": 8.344255401,
+   "independent": 8.344254493715278,
+   "class": "timing",
+   "delta_engine_minus_independent": 9.072847220181757e-07,
+   "predicted_by_jie_delta": 9.072847212286838e-07,
+   "residual": 7.894918815649476e-16
+  },
+  {
+   "chart": "LZ-07",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1996-05-21 21:52:00",
+   "independent": "1996-05-21 21:51:31",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 29.0,
+   "predicted_by_jie_delta_s": 28.22,
+   "residual_s": 0.78
+  },
+  {
+   "chart": "NJ-01",
+   "field": "qiyun.precise_start_age",
+   "engine": 9.826948302,
+   "independent": 9.82694999669753,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.6946975307519097e-06,
+   "predicted_by_jie_delta": -1.6946975307519097e-06,
+   "residual": 0.0
+  },
+  {
+   "chart": "NJ-01",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1991-10-13 04:25:00",
+   "independent": "1991-10-13 04:25:52",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -52.0,
+   "predicted_by_jie_delta_s": -52.712,
+   "residual_s": 0.712
+  },
+  {
+   "chart": "NJ-02",
+   "field": "qiyun.precise_start_age",
+   "engine": 0.00220679,
+   "independent": 0.002208254953703704,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.4649537037037495e-06,
+   "predicted_by_jie_delta": -1.464953703703605e-06,
+   "residual": -1.4463087574367178e-19
+  },
+  {
+   "chart": "NJ-02",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1982-02-05 06:59:00",
+   "independent": "1982-02-05 06:59:45",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -45.0,
+   "predicted_by_jie_delta_s": -45.566,
+   "residual_s": 0.566
+  },
+  {
+   "chart": "NJ-03",
+   "field": "qiyun.precise_start_age",
+   "engine": 0.007978395,
+   "independent": 0.00797908217978395,
+   "class": "timing",
+   "delta_engine_minus_independent": -6.871797839508309e-07,
+   "predicted_by_jie_delta": -6.871797839508309e-07,
+   "residual": 0.0
+  },
+  {
+   "chart": "NJ-03",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1993-03-08 19:13:00",
+   "independent": "1993-03-08 19:13:21",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -21.0,
+   "predicted_by_jie_delta_s": -21.374,
+   "residual_s": 0.374
+  },
+  {
+   "chart": "NJ-04",
+   "field": "qiyun.precise_start_age",
+   "engine": 10.458541667,
+   "independent": 10.458542124429012,
+   "class": "timing",
+   "delta_engine_minus_independent": -4.5742901200185315e-07,
+   "predicted_by_jie_delta": -4.574290118044802e-07,
+   "residual": -1.973729703912369e-16
+  },
+  {
+   "chart": "NJ-04",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1984-11-28 07:00:00",
+   "independent": "1984-11-28 07:00:14",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -14.0,
+   "predicted_by_jie_delta_s": -14.228,
+   "residual_s": 0.228
+  },
+  {
+   "chart": "NJ-05",
+   "field": "qiyun.precise_start_age",
+   "engine": 0.005748457,
+   "independent": 0.0057502057831790125,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.7487831790122949e-06,
+   "predicted_by_jie_delta": -1.7487831790121022e-06,
+   "residual": -1.9269999550035333e-19
+  },
+  {
+   "chart": "NJ-05",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1997-10-10 16:10:00",
+   "independent": "1997-10-10 16:10:54",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -54.0,
+   "predicted_by_jie_delta_s": -54.394,
+   "residual_s": 0.394
+  },
+  {
+   "chart": "NJ-06",
+   "field": "qiyun.precise_start_age",
+   "engine": 0.004710648,
+   "independent": 0.004704067442129629,
+   "class": "timing",
+   "delta_engine_minus_independent": 6.5805578703705125e-06,
+   "predicted_by_jie_delta": 6.580557870370127e-06,
+   "residual": 3.8539999100070665e-19
+  },
+  {
+   "chart": "NJ-06",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2015-12-09 11:15:00",
+   "independent": "2015-12-09 11:11:35",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 205.0,
+   "predicted_by_jie_delta_s": 204.682,
+   "residual_s": 0.318
+  },
+  {
+   "chart": "QY-01",
+   "field": "qiyun.precise_start_age",
+   "engine": 2.671516204,
+   "independent": 2.6715167628395062,
+   "class": "timing",
+   "delta_engine_minus_independent": -5.588395062261498e-07,
+   "predicted_by_jie_delta": -5.588395062261498e-07,
+   "residual": 0.0
+  },
+  {
+   "chart": "QY-01",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1986-12-15 09:24:00",
+   "independent": "1986-12-15 09:24:17",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -17.0,
+   "predicted_by_jie_delta_s": -17.382,
+   "residual_s": 0.382
+  },
+  {
+   "chart": "QY-02",
+   "field": "qiyun.precise_start_age",
+   "engine": 2.662256944,
+   "independent": 2.662257503580247,
+   "class": "timing",
+   "delta_engine_minus_independent": -5.595802470281797e-07,
+   "predicted_by_jie_delta": -5.595802470281797e-07,
+   "residual": 0.0
+  },
+  {
+   "chart": "QY-02",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1986-12-12 02:04:00",
+   "independent": "1986-12-12 02:04:17",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -17.0,
+   "predicted_by_jie_delta_s": -17.405,
+   "residual_s": 0.405
+  },
+  {
+   "chart": "QY-03",
+   "field": "qiyun.precise_start_age",
+   "engine": 1.669934414,
+   "independent": 1.6699341738657407,
+   "class": "timing",
+   "delta_engine_minus_independent": 2.401342593660871e-07,
+   "predicted_by_jie_delta": 2.401342593414155e-07,
+   "residual": 2.4671634533794413e-17
+  },
+  {
+   "chart": "QY-03",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1986-04-05 20:46:00",
+   "independent": "1986-04-05 20:45:52",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 8.0,
+   "predicted_by_jie_delta_s": 7.469,
+   "residual_s": 0.531
+  },
+  {
+   "chart": "QY-04",
+   "field": "qiyun.precise_start_age",
+   "engine": 1.662989969,
+   "independent": 1.6629897294212963,
+   "class": "timing",
+   "delta_engine_minus_independent": 2.395787037645647e-07,
+   "predicted_by_jie_delta": 2.3957870373989306e-07,
+   "residual": 2.4671634533794413e-17
+  },
+  {
+   "chart": "QY-04",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1986-04-03 08:16:00",
+   "independent": "1986-04-03 08:15:52",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 8.0,
+   "predicted_by_jie_delta_s": 7.452,
+   "residual_s": 0.548
+  },
+  {
+   "chart": "QY-05",
+   "field": "qiyun.precise_start_age",
+   "engine": 3.67148534,
+   "independent": 3.6714866408603393,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.3008603394482066e-06,
+   "predicted_by_jie_delta": -1.300860339546893e-06,
+   "residual": 9.868653813517765e-17
+  },
+  {
+   "chart": "QY-05",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1994-05-11 14:31:00",
+   "independent": "1994-05-11 14:31:40",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -40.0,
+   "predicted_by_jie_delta_s": -40.462,
+   "residual_s": 0.462
+  },
+  {
+   "chart": "QY-06",
+   "field": "qiyun.precise_start_age",
+   "engine": 3.66222608,
+   "independent": 3.6622273816010797,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.3016010798061473e-06,
+   "predicted_by_jie_delta": -1.301601080348923e-06,
+   "residual": 5.427757479852403e-16
+  },
+  {
+   "chart": "QY-06",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1994-05-08 07:11:00",
+   "independent": "1994-05-08 07:11:40",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -40.0,
+   "predicted_by_jie_delta_s": -40.485,
+   "residual_s": 0.485
+  },
+  {
+   "chart": "QY-07",
+   "field": "qiyun.precise_start_age",
+   "engine": 9.673800154,
+   "independent": 9.673801455675154,
+   "class": "timing",
+   "delta_engine_minus_independent": -1.301675153442261e-06,
+   "predicted_by_jie_delta": -1.3016751536396341e-06,
+   "residual": 1.973730762703553e-16
+  },
+  {
+   "chart": "QY-07",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2000-03-23 10:21:00",
+   "independent": "2000-03-23 10:21:40",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -40.0,
+   "predicted_by_jie_delta_s": -40.487,
+   "residual_s": 0.487
+  },
+  {
+   "chart": "NM-01",
+   "field": "qiyun.precise_start_age",
+   "engine": 2.204884259,
+   "independent": 2.204882639425154,
+   "class": "timing",
+   "delta_engine_minus_independent": 1.6195748457903392e-06,
+   "predicted_by_jie_delta": 1.6195748457903392e-06,
+   "residual": 0.0
+  },
+  {
+   "chart": "NM-01",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1955-09-16 03:32:00",
+   "independent": "1955-09-16 03:31:09",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 51.0,
+   "predicted_by_jie_delta_s": 50.375,
+   "residual_s": 0.625
+  },
+  {
+   "chart": "NM-02",
+   "field": "qiyun.precise_start_age",
+   "engine": 4.654058642,
+   "independent": 4.654058950918209,
+   "class": "timing",
+   "delta_engine_minus_independent": -3.089182092352871e-07,
+   "predicted_by_jie_delta": -3.089182093339736e-07,
+   "residual": 9.868648519561845e-17
+  },
+  {
+   "chart": "NM-02",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1970-06-26 03:44:00",
+   "independent": "1970-06-26 03:44:09",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -9.0,
+   "predicted_by_jie_delta_s": -9.609,
+   "residual_s": 0.609
+  },
+  {
+   "chart": "NM-03",
+   "field": "qiyun.precise_start_age",
+   "engine": 8.777017747,
+   "independent": 8.777018026068673,
+   "class": "timing",
+   "delta_engine_minus_independent": -2.7906867217097897e-07,
+   "predicted_by_jie_delta": -2.7906867217097897e-07,
+   "residual": 0.0
+  },
+  {
+   "chart": "NM-03",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "1996-12-03 00:31:00",
+   "independent": "1996-12-03 00:31:08",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -8.0,
+   "predicted_by_jie_delta_s": -8.68,
+   "residual_s": 0.68
+  },
+  {
+   "chart": "NM-04",
+   "field": "qiyun.precise_start_age",
+   "engine": 6.736593364,
+   "independent": 6.7365925047145065,
+   "class": "timing",
+   "delta_engine_minus_independent": 8.592854934263983e-07,
+   "predicted_by_jie_delta": 8.592854933277117e-07,
+   "residual": 9.868653813517765e-17
+  },
+  {
+   "chart": "NM-04",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2011-05-20 00:25:00",
+   "independent": "2011-05-20 00:24:33",
+   "class": "timing",
+   "delta_engine_minus_independent_s": 27.0,
+   "predicted_by_jie_delta_s": 26.727,
+   "residual_s": 0.273
+  },
+  {
+   "chart": "NM-05",
+   "field": "qiyun.precise_start_age",
+   "engine": 3.428294753,
+   "independent": 3.4283214277700615,
+   "class": "timing",
+   "delta_engine_minus_independent": -2.6674770061685393e-05,
+   "predicted_by_jie_delta": -2.6674770061734738e-05,
+   "residual": 4.934475137524652e-17
+  },
+  {
+   "chart": "NM-05",
+   "field": "qiyun.precise_start_datetime",
+   "engine": "2022-08-01 16:28:00",
+   "independent": "2022-08-01 16:41:49",
+   "class": "timing",
+   "delta_engine_minus_independent_s": -829.0,
+   "predicted_by_jie_delta_s": -829.692,
+   "residual_s": 0.692
+  }
+ ],
+ "supplementary": {
+  "checks": 23,
+  "diffs": []
+ },
+ "secondary_crosscheck": {
+  "checks": 125,
+  "diffs": []
+ },
+ "charts": [
+  {
+   "id": "LZ-01",
+   "category": "late_zi",
+   "birth": "1990-05-12 23:20",
+   "gender": "乾",
+   "place": "北京",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "庚午",
+     "辛巳",
+     "丁丑",
+     "壬子"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "正财",
+     "偏财",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "食神",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "劫财",
+     "食神",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 8.0,
+     "precise_start_age": 8.103310185,
+     "precise_start_datetime": "1998-05-08 03:56:00"
+    },
+    "dayun": [
+     [
+      "壬午",
+      1998,
+      2007
+     ],
+     [
+      "癸未",
+      2008,
+      2017
+     ],
+     [
+      "甲申",
+      2018,
+      2027
+     ],
+     [
+      "乙酉",
+      2028,
+      2037
+     ],
+     [
+      "丙戌",
+      2038,
+      2047
+     ],
+     [
+      "丁亥",
+      2048,
+      2057
+     ],
+     [
+      "戊子",
+      2058,
+      2067
+     ],
+     [
+      "己丑",
+      2068,
+      2077
+     ],
+     [
+      "庚寅",
+      2078,
+      2087
+     ],
+     [
+      "辛卯",
+      2088,
+      2097
+     ]
+    ],
+    "boundary_warnings": [
+     "late_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-14b1357d2823c89b64bc"
+   },
+   "independent": {
+    "pillars": [
+     "庚午",
+     "辛巳",
+     "丁丑",
+     "壬子"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "正财",
+     "偏财",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "食神",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "劫财",
+     "食神",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "芒种",
+      "datetime": "1990-06-06 06:46:17",
+      "datetime_precise": "1990-06-06 06:46:17.673340"
+     },
+     "diff_hours": 583.4382425944445,
+     "mangpai_rough_start_age": 8,
+     "precise_start_age": 8.10330892492284,
+     "precise_start_datetime": "1998-05-08 03:55:20"
+    },
+    "dayun": [
+     [
+      "壬午",
+      1998,
+      2007
+     ],
+     [
+      "癸未",
+      2008,
+      2017
+     ],
+     [
+      "甲申",
+      2018,
+      2027
+     ],
+     [
+      "乙酉",
+      2028,
+      2037
+     ],
+     [
+      "丙戌",
+      2038,
+      2047
+     ],
+     [
+      "丁亥",
+      2048,
+      2057
+     ],
+     [
+      "戊子",
+      2058,
+      2067
+     ],
+     [
+      "己丑",
+      2068,
+      2077
+     ],
+     [
+      "庚寅",
+      2078,
+      2087
+     ],
+     [
+      "辛卯",
+      2088,
+      2097
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "芒种",
+     "sxtwl": "1990-06-06 06:46:17",
+     "engine_implied": "1990-06-06 06:46:17",
+     "delta_s_sxtwl_minus_engine": -0.326612
+    },
+    "d_engine_hours": 583.43833332,
+    "d_independent_hours": 583.438242594,
+    "d_delta_hours": -9.0725555e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 40.0,
+     "predicted_engine_minus_independent_s": 39.193,
+     "residual_s": 0.807
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 1.260077159059847e-06,
+     "predicted_engine_minus_independent": 1.260077158665101e-06,
+     "residual": 3.947459407824738e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 8.103310185,
+     "independent": 8.10330892492284,
+     "class": "timing",
+     "delta_engine_minus_independent": 1.260077159059847e-06,
+     "predicted_by_jie_delta": 1.260077158665101e-06,
+     "residual": 3.947459407824738e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1998-05-08 03:56:00",
+     "independent": "1998-05-08 03:55:20",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 40.0,
+     "predicted_by_jie_delta_s": 39.193,
+     "residual_s": 0.807
+    }
+   ]
+  },
+  {
+   "id": "LZ-02",
+   "category": "late_zi",
+   "birth": "1984-11-03 23:45",
+   "gender": "坤",
+   "place": "成都",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲子",
+     "甲戌",
+     "辛丑",
+     "庚子"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正财",
+     "日主",
+     "劫财"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "比肩",
+      "七杀"
+     ],
+     [
+      "偏印",
+      "食神",
+      "比肩"
+     ],
+     [
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏印",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 9.0,
+     "precise_start_age": 8.847781636,
+     "precise_start_datetime": "1993-07-25 04:35:00"
+    },
+    "dayun": [
+     [
+      "癸酉",
+      1993,
+      2002
+     ],
+     [
+      "壬申",
+      2003,
+      2012
+     ],
+     [
+      "辛未",
+      2013,
+      2022
+     ],
+     [
+      "庚午",
+      2023,
+      2032
+     ],
+     [
+      "己巳",
+      2033,
+      2042
+     ],
+     [
+      "戊辰",
+      2043,
+      2052
+     ],
+     [
+      "丁卯",
+      2053,
+      2062
+     ],
+     [
+      "丙寅",
+      2063,
+      2072
+     ],
+     [
+      "乙丑",
+      2073,
+      2082
+     ],
+     [
+      "甲子",
+      2083,
+      2092
+     ]
+    ],
+    "boundary_warnings": [
+     "late_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-d341c672bb5fb8bc6778"
+   },
+   "independent": {
+    "pillars": [
+     "甲子",
+     "甲戌",
+     "辛丑",
+     "庚子"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正财",
+     "日主",
+     "劫财"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "比肩",
+      "七杀"
+     ],
+     [
+      "偏印",
+      "食神",
+      "比肩"
+     ],
+     [
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏印",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "寒露",
+      "datetime": "1984-10-08 10:42:34",
+      "datetime_precise": "1984-10-08 10:42:34.630280"
+     },
+     "diff_hours": 637.0403804777777,
+     "mangpai_rough_start_age": 9,
+     "precise_start_age": 8.847783062191358,
+     "precise_start_datetime": "1993-07-25 04:35:44"
+    },
+    "dayun": [
+     [
+      "癸酉",
+      1993,
+      2002
+     ],
+     [
+      "壬申",
+      2003,
+      2012
+     ],
+     [
+      "辛未",
+      2013,
+      2022
+     ],
+     [
+      "庚午",
+      2023,
+      2032
+     ],
+     [
+      "己巳",
+      2033,
+      2042
+     ],
+     [
+      "戊辰",
+      2043,
+      2052
+     ],
+     [
+      "丁卯",
+      2053,
+      2062
+     ],
+     [
+      "丙寅",
+      2063,
+      2072
+     ],
+     [
+      "乙丑",
+      2073,
+      2082
+     ],
+     [
+      "甲子",
+      2083,
+      2092
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "寒露",
+     "sxtwl": "1984-10-08 10:42:34",
+     "engine_implied": "1984-10-08 10:42:34",
+     "delta_s_sxtwl_minus_engine": -0.369669
+    },
+    "d_engine_hours": 637.040277792,
+    "d_independent_hours": 637.040380478,
+    "d_delta_hours": 0.000102685778,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -44.0,
+     "predicted_engine_minus_independent_s": -44.36,
+     "residual_s": 0.36
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.4261913570123852e-06,
+     "predicted_engine_minus_independent": -1.4261913558281474e-06,
+     "residual": -1.1842378223474214e-15
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 8.847781636,
+     "independent": 8.847783062191358,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.4261913570123852e-06,
+     "predicted_by_jie_delta": -1.4261913558281474e-06,
+     "residual": -1.1842378223474214e-15
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1993-07-25 04:35:00",
+     "independent": "1993-07-25 04:35:44",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -44.0,
+     "predicted_by_jie_delta_s": -44.36,
+     "residual_s": 0.36
+    }
+   ]
+  },
+  {
+   "id": "LZ-03",
+   "category": "late_zi",
+   "birth": "1972-08-19 23:05",
+   "gender": "乾",
+   "place": "沈阳",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "壬子",
+     "戊申",
+     "壬午",
+     "壬子"
+    ],
+    "day_master": "壬",
+    "stem_ten_god": [
+     "比肩",
+     "七杀",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "劫财"
+     ],
+     [
+      "偏印",
+      "比肩",
+      "七杀"
+     ],
+     [
+      "正财",
+      "正官"
+     ],
+     [
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "劫财",
+     "偏印",
+     "正财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "寅",
+      "卯"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 6.0,
+     "precise_start_age": 6.307893519,
+     "precise_start_datetime": "1978-11-07 19:17:00"
+    },
+    "dayun": [
+     [
+      "己酉",
+      1978,
+      1987
+     ],
+     [
+      "庚戌",
+      1988,
+      1997
+     ],
+     [
+      "辛亥",
+      1998,
+      2007
+     ],
+     [
+      "壬子",
+      2008,
+      2017
+     ],
+     [
+      "癸丑",
+      2018,
+      2027
+     ],
+     [
+      "甲寅",
+      2028,
+      2037
+     ],
+     [
+      "乙卯",
+      2038,
+      2047
+     ],
+     [
+      "丙辰",
+      2048,
+      2057
+     ],
+     [
+      "丁巳",
+      2058,
+      2067
+     ],
+     [
+      "戊午",
+      2068,
+      2077
+     ]
+    ],
+    "boundary_warnings": [
+     "late_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-4ceec38a79960245f1f0"
+   },
+   "independent": {
+    "pillars": [
+     "壬子",
+     "戊申",
+     "壬午",
+     "壬子"
+    ],
+    "day_master": "壬",
+    "stem_ten_god": [
+     "比肩",
+     "七杀",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "劫财"
+     ],
+     [
+      "偏印",
+      "比肩",
+      "七杀"
+     ],
+     [
+      "正财",
+      "正官"
+     ],
+     [
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "劫财",
+     "偏印",
+     "正财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "寅",
+      "卯"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "白露",
+      "datetime": "1972-09-07 21:15:05",
+      "datetime_precise": "1972-09-07 21:15:05.836487"
+     },
+     "diff_hours": 454.16828791305556,
+     "mangpai_rough_start_age": 6,
+     "precise_start_age": 6.307892887681327,
+     "precise_start_datetime": "1978-11-07 19:16:40"
+    },
+    "dayun": [
+     [
+      "己酉",
+      1978,
+      1987
+     ],
+     [
+      "庚戌",
+      1988,
+      1997
+     ],
+     [
+      "辛亥",
+      1998,
+      2007
+     ],
+     [
+      "壬子",
+      2008,
+      2017
+     ],
+     [
+      "癸丑",
+      2018,
+      2027
+     ],
+     [
+      "甲寅",
+      2028,
+      2037
+     ],
+     [
+      "乙卯",
+      2038,
+      2047
+     ],
+     [
+      "丙辰",
+      2048,
+      2057
+     ],
+     [
+      "丁巳",
+      2058,
+      2067
+     ],
+     [
+      "戊午",
+      2068,
+      2077
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "白露",
+     "sxtwl": "1972-09-07 21:15:05",
+     "engine_implied": "1972-09-07 21:15:06",
+     "delta_s_sxtwl_minus_engine": -0.163638
+    },
+    "d_engine_hours": 454.168333368,
+    "d_independent_hours": 454.168287913,
+    "d_delta_hours": -4.5454944e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 20.0,
+     "predicted_engine_minus_independent_s": 19.637,
+     "residual_s": 0.363
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 6.313186728945652e-07,
+     "predicted_engine_minus_independent": 6.313186733879977e-07,
+     "residual": -4.934324789176514e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 6.307893519,
+     "independent": 6.307892887681327,
+     "class": "timing",
+     "delta_engine_minus_independent": 6.313186728945652e-07,
+     "predicted_by_jie_delta": 6.313186733879977e-07,
+     "residual": -4.934324789176514e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1978-11-07 19:17:00",
+     "independent": "1978-11-07 19:16:40",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 20.0,
+     "predicted_by_jie_delta_s": 19.637,
+     "residual_s": 0.363
+    }
+   ]
+  },
+  {
+   "id": "LZ-04",
+   "category": "late_zi",
+   "birth": "2001-02-14 23:55",
+   "gender": "坤",
+   "place": "广州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "辛巳",
+     "庚寅",
+     "戊申",
+     "甲子"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "伤官",
+     "食神",
+     "日主",
+     "七杀"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏印",
+      "食神",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "正财"
+     ]
+    ],
+    "main_ten_god": [
+     "偏印",
+     "七杀",
+     "食神",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 6.0,
+     "precise_start_age": 6.286450617,
+     "precise_start_datetime": "2007-04-28 02:51:00"
+    },
+    "dayun": [
+     [
+      "辛卯",
+      2007,
+      2016
+     ],
+     [
+      "壬辰",
+      2017,
+      2026
+     ],
+     [
+      "癸巳",
+      2027,
+      2036
+     ],
+     [
+      "甲午",
+      2037,
+      2046
+     ],
+     [
+      "乙未",
+      2047,
+      2056
+     ],
+     [
+      "丙申",
+      2057,
+      2066
+     ],
+     [
+      "丁酉",
+      2067,
+      2076
+     ],
+     [
+      "戊戌",
+      2077,
+      2086
+     ],
+     [
+      "己亥",
+      2087,
+      2096
+     ],
+     [
+      "庚子",
+      2097,
+      2106
+     ]
+    ],
+    "boundary_warnings": [
+     "late_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-bab1835705e548054f6e"
+   },
+   "independent": {
+    "pillars": [
+     "辛巳",
+     "庚寅",
+     "戊申",
+     "甲子"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "伤官",
+     "食神",
+     "日主",
+     "七杀"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏印",
+      "食神",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "正财"
+     ]
+    ],
+    "main_ten_god": [
+     "偏印",
+     "七杀",
+     "食神",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "惊蛰",
+      "datetime": "2001-03-05 20:32:28",
+      "datetime_precise": "2001-03-05 20:32:28.473358"
+     },
+     "diff_hours": 452.62457593277776,
+     "mangpai_rough_start_age": 6,
+     "precise_start_age": 6.286452443510802,
+     "precise_start_datetime": "2007-04-28 02:51:56"
+    },
+    "dayun": [
+     [
+      "辛卯",
+      2007,
+      2016
+     ],
+     [
+      "壬辰",
+      2017,
+      2026
+     ],
+     [
+      "癸巳",
+      2027,
+      2036
+     ],
+     [
+      "甲午",
+      2037,
+      2046
+     ],
+     [
+      "乙未",
+      2047,
+      2056
+     ],
+     [
+      "丙申",
+      2057,
+      2066
+     ],
+     [
+      "丁酉",
+      2067,
+      2076
+     ],
+     [
+      "戊戌",
+      2077,
+      2086
+     ],
+     [
+      "己亥",
+      2087,
+      2096
+     ],
+     [
+      "庚子",
+      2097,
+      2106
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "惊蛰",
+     "sxtwl": "2001-03-05 20:32:28",
+     "engine_implied": "2001-03-05 20:32:27",
+     "delta_s_sxtwl_minus_engine": 0.473432
+    },
+    "d_engine_hours": 452.624444424,
+    "d_independent_hours": 452.624575933,
+    "d_delta_hours": 0.000131508778,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -56.0,
+     "predicted_engine_minus_independent_s": -56.812,
+     "residual_s": 0.812
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.8265108021608967e-06,
+     "predicted_engine_minus_independent": -1.8265108023582698e-06,
+     "residual": 1.973730762703553e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 6.286450617,
+     "independent": 6.286452443510802,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.8265108021608967e-06,
+     "predicted_by_jie_delta": -1.8265108023582698e-06,
+     "residual": 1.973730762703553e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2007-04-28 02:51:00",
+     "independent": "2007-04-28 02:51:56",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -56.0,
+     "predicted_by_jie_delta_s": -56.812,
+     "residual_s": 0.812
+    }
+   ]
+  },
+  {
+   "id": "LZ-05",
+   "category": "late_zi",
+   "birth": "1996-01-01 00:35",
+   "gender": "乾",
+   "place": "上海",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "乙亥",
+     "戊子",
+     "丁酉",
+     "庚子"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "偏印",
+     "伤官",
+     "日主",
+     "正财"
+    ],
+    "hidden_char": [
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正官",
+      "正印"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "七杀"
+     ]
+    ],
+    "main_ten_god": [
+     "正官",
+     "七杀",
+     "偏财",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 8.0,
+     "precise_start_age": 8.030729167,
+     "precise_start_datetime": "2003-12-01 02:05:00"
+    },
+    "dayun": [
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "丙戌",
+      2014,
+      2023
+     ],
+     [
+      "乙酉",
+      2024,
+      2033
+     ],
+     [
+      "甲申",
+      2034,
+      2043
+     ],
+     [
+      "癸未",
+      2044,
+      2053
+     ],
+     [
+      "壬午",
+      2054,
+      2063
+     ],
+     [
+      "辛巳",
+      2064,
+      2073
+     ],
+     [
+      "庚辰",
+      2074,
+      2083
+     ],
+     [
+      "己卯",
+      2084,
+      2093
+     ],
+     [
+      "戊寅",
+      2094,
+      2103
+     ]
+    ],
+    "boundary_warnings": [
+     "early_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-f7a9373e5b4aa9676309"
+   },
+   "independent": {
+    "pillars": [
+     "乙亥",
+     "戊子",
+     "丁酉",
+     "庚子"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "偏印",
+     "伤官",
+     "日主",
+     "正财"
+    ],
+    "hidden_char": [
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正官",
+      "正印"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "七杀"
+     ]
+    ],
+    "main_ten_god": [
+     "正官",
+     "七杀",
+     "偏财",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "大雪",
+      "datetime": "1995-12-07 22:22:14",
+      "datetime_precise": "1995-12-07 22:22:14.783936"
+     },
+     "diff_hours": 578.2125600177778,
+     "mangpai_rough_start_age": 8,
+     "precise_start_age": 8.030730000246914,
+     "precise_start_datetime": "2003-12-01 02:05:25"
+    },
+    "dayun": [
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "丙戌",
+      2014,
+      2023
+     ],
+     [
+      "乙酉",
+      2024,
+      2033
+     ],
+     [
+      "甲申",
+      2034,
+      2043
+     ],
+     [
+      "癸未",
+      2044,
+      2053
+     ],
+     [
+      "壬午",
+      2054,
+      2063
+     ],
+     [
+      "辛巳",
+      2064,
+      2073
+     ],
+     [
+      "庚辰",
+      2074,
+      2083
+     ],
+     [
+      "己卯",
+      2084,
+      2093
+     ],
+     [
+      "戊寅",
+      2094,
+      2103
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "大雪",
+     "sxtwl": "1995-12-07 22:22:14",
+     "engine_implied": "1995-12-07 22:22:14",
+     "delta_s_sxtwl_minus_engine": -0.215978
+    },
+    "d_engine_hours": 578.212500024,
+    "d_independent_hours": 578.212560018,
+    "d_delta_hours": 5.9993778e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -25.0,
+     "predicted_engine_minus_independent_s": -25.917,
+     "residual_s": 0.917
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -8.332469132454889e-07,
+     "predicted_engine_minus_independent": -8.332469134428619e-07,
+     "residual": 1.973729703912369e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 8.030729167,
+     "independent": 8.030730000246914,
+     "class": "timing",
+     "delta_engine_minus_independent": -8.332469132454889e-07,
+     "predicted_by_jie_delta": -8.332469134428619e-07,
+     "residual": 1.973729703912369e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2003-12-01 02:05:00",
+     "independent": "2003-12-01 02:05:25",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -25.0,
+     "predicted_by_jie_delta_s": -25.917,
+     "residual_s": 0.917
+    }
+   ]
+  },
+  {
+   "id": "LZ-06",
+   "category": "late_zi",
+   "birth": "2008-12-31 00:10",
+   "gender": "坤",
+   "place": "西安",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "戊子",
+     "甲子",
+     "乙巳",
+     "丙子"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正财",
+     "劫财",
+     "日主",
+     "伤官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏印"
+     ],
+     [
+      "偏印"
+     ],
+     [
+      "伤官",
+      "正官",
+      "正财"
+     ],
+     [
+      "偏印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏印",
+     "偏印",
+     "伤官",
+     "偏印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 8.0,
+     "precise_start_age": 7.97400463,
+     "precise_start_datetime": "2016-11-09 15:34:00"
+    },
+    "dayun": [
+     [
+      "癸亥",
+      2016,
+      2025
+     ],
+     [
+      "壬戌",
+      2026,
+      2035
+     ],
+     [
+      "辛酉",
+      2036,
+      2045
+     ],
+     [
+      "庚申",
+      2046,
+      2055
+     ],
+     [
+      "己未",
+      2056,
+      2065
+     ],
+     [
+      "戊午",
+      2066,
+      2075
+     ],
+     [
+      "丁巳",
+      2076,
+      2085
+     ],
+     [
+      "丙辰",
+      2086,
+      2095
+     ],
+     [
+      "乙卯",
+      2096,
+      2105
+     ],
+     [
+      "甲寅",
+      2106,
+      2115
+     ]
+    ],
+    "boundary_warnings": [
+     "early_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-bf0ca40e062899faf986"
+   },
+   "independent": {
+    "pillars": [
+     "戊子",
+     "甲子",
+     "乙巳",
+     "丙子"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正财",
+     "劫财",
+     "日主",
+     "伤官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏印"
+     ],
+     [
+      "偏印"
+     ],
+     [
+      "伤官",
+      "正官",
+      "正财"
+     ],
+     [
+      "偏印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏印",
+     "偏印",
+     "伤官",
+     "偏印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "大雪",
+      "datetime": "2008-12-07 02:02:17",
+      "datetime_precise": "2008-12-07 02:02:17.323093"
+     },
+     "diff_hours": 574.1285213630555,
+     "mangpai_rough_start_age": 8,
+     "precise_start_age": 7.974007241153548,
+     "precise_start_datetime": "2016-11-09 15:35:21"
+    },
+    "dayun": [
+     [
+      "癸亥",
+      2016,
+      2025
+     ],
+     [
+      "壬戌",
+      2026,
+      2035
+     ],
+     [
+      "辛酉",
+      2036,
+      2045
+     ],
+     [
+      "庚申",
+      2046,
+      2055
+     ],
+     [
+      "己未",
+      2056,
+      2065
+     ],
+     [
+      "戊午",
+      2066,
+      2075
+     ],
+     [
+      "丁巳",
+      2076,
+      2085
+     ],
+     [
+      "丙辰",
+      2086,
+      2095
+     ],
+     [
+      "乙卯",
+      2096,
+      2105
+     ],
+     [
+      "甲寅",
+      2106,
+      2115
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "大雪",
+     "sxtwl": "2008-12-07 02:02:17",
+     "engine_implied": "2008-12-07 02:02:17",
+     "delta_s_sxtwl_minus_engine": -0.676811
+    },
+    "d_engine_hours": 574.12833336,
+    "d_independent_hours": 574.128521363,
+    "d_delta_hours": 0.000188003056,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -81.0,
+     "predicted_engine_minus_independent_s": -81.217,
+     "residual_s": 0.217
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -2.6111535484929504e-06,
+     "predicted_engine_minus_independent": -2.611153549183756e-06,
+     "residual": 6.908053434297699e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 7.97400463,
+     "independent": 7.974007241153548,
+     "class": "timing",
+     "delta_engine_minus_independent": -2.6111535484929504e-06,
+     "predicted_by_jie_delta": -2.611153549183756e-06,
+     "residual": 6.908053434297699e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2016-11-09 15:34:00",
+     "independent": "2016-11-09 15:35:21",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -81.0,
+     "predicted_by_jie_delta_s": -81.217,
+     "residual_s": 0.217
+    }
+   ]
+  },
+  {
+   "id": "LZ-07",
+   "category": "late_zi",
+   "birth": "1988-02-29 23:30",
+   "gender": "坤",
+   "place": "厦门",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "戊辰",
+     "甲寅",
+     "甲寅",
+     "丙子"
+    ],
+    "day_master": "甲",
+    "stem_ten_god": [
+     "偏财",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "比肩",
+      "食神",
+      "偏财"
+     ],
+     [
+      "比肩",
+      "食神",
+      "偏财"
+     ],
+     [
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏财",
+     "比肩",
+     "比肩",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 8.0,
+     "precise_start_age": 8.344255401,
+     "precise_start_datetime": "1996-05-21 21:52:00"
+    },
+    "dayun": [
+     [
+      "癸丑",
+      1996,
+      2005
+     ],
+     [
+      "壬子",
+      2006,
+      2015
+     ],
+     [
+      "辛亥",
+      2016,
+      2025
+     ],
+     [
+      "庚戌",
+      2026,
+      2035
+     ],
+     [
+      "己酉",
+      2036,
+      2045
+     ],
+     [
+      "戊申",
+      2046,
+      2055
+     ],
+     [
+      "丁未",
+      2056,
+      2065
+     ],
+     [
+      "丙午",
+      2066,
+      2075
+     ],
+     [
+      "乙巳",
+      2076,
+      2085
+     ],
+     [
+      "甲辰",
+      2086,
+      2095
+     ]
+    ],
+    "boundary_warnings": [
+     "late_zi"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-91705f853eafb42df9ac"
+   },
+   "independent": {
+    "pillars": [
+     "戊辰",
+     "甲寅",
+     "甲寅",
+     "丙子"
+    ],
+    "day_master": "甲",
+    "stem_ten_god": [
+     "偏财",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "比肩",
+      "食神",
+      "偏财"
+     ],
+     [
+      "比肩",
+      "食神",
+      "偏财"
+     ],
+     [
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏财",
+     "比肩",
+     "比肩",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "立春",
+      "datetime": "1988-02-04 22:42:49",
+      "datetime_precise": "1988-02-04 22:42:49.235229"
+     },
+     "diff_hours": 600.7863235475,
+     "mangpai_rough_start_age": 8,
+     "precise_start_age": 8.344254493715278,
+     "precise_start_datetime": "1996-05-21 21:51:31"
+    },
+    "dayun": [
+     [
+      "癸丑",
+      1996,
+      2005
+     ],
+     [
+      "壬子",
+      2006,
+      2015
+     ],
+     [
+      "辛亥",
+      2016,
+      2025
+     ],
+     [
+      "庚戌",
+      2026,
+      2035
+     ],
+     [
+      "己酉",
+      2036,
+      2045
+     ],
+     [
+      "戊申",
+      2046,
+      2055
+     ],
+     [
+      "丁未",
+      2056,
+      2065
+     ],
+     [
+      "丙午",
+      2066,
+      2075
+     ],
+     [
+      "乙巳",
+      2076,
+      2085
+     ],
+     [
+      "甲辰",
+      2086,
+      2095
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立春",
+     "sxtwl": "1988-02-04 22:42:49",
+     "engine_implied": "1988-02-04 22:42:49",
+     "delta_s_sxtwl_minus_engine": 0.235168
+    },
+    "d_engine_hours": 600.786388872,
+    "d_independent_hours": 600.786323548,
+    "d_delta_hours": -6.53245e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 29.0,
+     "predicted_engine_minus_independent_s": 28.22,
+     "residual_s": 0.78
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 9.072847220181757e-07,
+     "predicted_engine_minus_independent": 9.072847212286838e-07,
+     "residual": 7.894918815649476e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 8.344255401,
+     "independent": 8.344254493715278,
+     "class": "timing",
+     "delta_engine_minus_independent": 9.072847220181757e-07,
+     "predicted_by_jie_delta": 9.072847212286838e-07,
+     "residual": 7.894918815649476e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1996-05-21 21:52:00",
+     "independent": "1996-05-21 21:51:31",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 29.0,
+     "predicted_by_jie_delta_s": 28.22,
+     "residual_s": 0.78
+    }
+   ]
+  },
+  {
+   "id": "NJ-01",
+   "category": "near_jie",
+   "birth": "1982-02-04 11:35",
+   "gender": "乾",
+   "place": "天津",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "辛酉",
+     "辛丑",
+     "戊午",
+     "戊午"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "伤官",
+     "伤官",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "伤官"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "正印",
+      "劫财"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "伤官",
+     "劫财",
+     "正印",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 10.0,
+     "precise_start_age": 9.826948302,
+     "precise_start_datetime": "1991-10-13 04:25:00"
+    },
+    "dayun": [
+     [
+      "庚子",
+      1991,
+      2000
+     ],
+     [
+      "己亥",
+      2001,
+      2010
+     ],
+     [
+      "戊戌",
+      2011,
+      2020
+     ],
+     [
+      "丁酉",
+      2021,
+      2030
+     ],
+     [
+      "丙申",
+      2031,
+      2040
+     ],
+     [
+      "乙未",
+      2041,
+      2050
+     ],
+     [
+      "甲午",
+      2051,
+      2060
+     ],
+     [
+      "癸巳",
+      2061,
+      2070
+     ],
+     [
+      "壬辰",
+      2071,
+      2080
+     ],
+     [
+      "辛卯",
+      2081,
+      2090
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-881ea06fd6e7e0b65457"
+   },
+   "independent": {
+    "pillars": [
+     "辛酉",
+     "辛丑",
+     "戊午",
+     "戊午"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "伤官",
+     "伤官",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "伤官"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "正印",
+      "劫财"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "伤官",
+     "劫财",
+     "正印",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "小寒",
+      "datetime": "1982-01-06 00:02:34",
+      "datetime_precise": "1982-01-06 00:02:34.560856"
+     },
+     "diff_hours": 707.5403997622223,
+     "mangpai_rough_start_age": 10,
+     "precise_start_age": 9.82694999669753,
+     "precise_start_datetime": "1991-10-13 04:25:52"
+    },
+    "dayun": [
+     [
+      "庚子",
+      1991,
+      2000
+     ],
+     [
+      "己亥",
+      2001,
+      2010
+     ],
+     [
+      "戊戌",
+      2011,
+      2020
+     ],
+     [
+      "丁酉",
+      2021,
+      2030
+     ],
+     [
+      "丙申",
+      2031,
+      2040
+     ],
+     [
+      "乙未",
+      2041,
+      2050
+     ],
+     [
+      "甲午",
+      2051,
+      2060
+     ],
+     [
+      "癸巳",
+      2061,
+      2070
+     ],
+     [
+      "壬辰",
+      2071,
+      2080
+     ],
+     [
+      "辛卯",
+      2081,
+      2090
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "小寒",
+     "sxtwl": "1982-01-06 00:02:34",
+     "engine_implied": "1982-01-06 00:02:35",
+     "delta_s_sxtwl_minus_engine": -0.439266
+    },
+    "d_engine_hours": 707.540277744,
+    "d_independent_hours": 707.540399762,
+    "d_delta_hours": 0.000122018222,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -52.0,
+     "predicted_engine_minus_independent_s": -52.712,
+     "residual_s": 0.712
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.6946975307519097e-06,
+     "predicted_engine_minus_independent": -1.6946975307519097e-06,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 9.826948302,
+     "independent": 9.82694999669753,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.6946975307519097e-06,
+     "predicted_by_jie_delta": -1.6946975307519097e-06,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1991-10-13 04:25:00",
+     "independent": "1991-10-13 04:25:52",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -52.0,
+     "predicted_by_jie_delta_s": -52.712,
+     "residual_s": 0.712
+    }
+   ]
+  },
+  {
+   "id": "NJ-02",
+   "category": "near_jie",
+   "birth": "1982-02-04 11:55",
+   "gender": "坤",
+   "place": "天津",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "壬戌",
+     "壬寅",
+     "戊午",
+     "戊午"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "偏财",
+     "偏财",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "伤官",
+      "正印"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "正印",
+      "劫财"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "七杀",
+     "正印",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 1.0,
+     "precise_start_age": 0.00220679,
+     "precise_start_datetime": "1982-02-05 06:59:00"
+    },
+    "dayun": [
+     [
+      "辛丑",
+      1982,
+      1991
+     ],
+     [
+      "庚子",
+      1992,
+      2001
+     ],
+     [
+      "己亥",
+      2002,
+      2011
+     ],
+     [
+      "戊戌",
+      2012,
+      2021
+     ],
+     [
+      "丁酉",
+      2022,
+      2031
+     ],
+     [
+      "丙申",
+      2032,
+      2041
+     ],
+     [
+      "乙未",
+      2042,
+      2051
+     ],
+     [
+      "甲午",
+      2052,
+      2061
+     ],
+     [
+      "癸巳",
+      2062,
+      2071
+     ],
+     [
+      "壬辰",
+      2072,
+      2081
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-eada0821700794a8cf14"
+   },
+   "independent": {
+    "pillars": [
+     "壬戌",
+     "壬寅",
+     "戊午",
+     "戊午"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "偏财",
+     "偏财",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "伤官",
+      "正印"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "正印",
+      "劫财"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "七杀",
+     "正印",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "立春",
+      "datetime": "1982-02-04 11:45:27",
+      "datetime_precise": "1982-02-04 11:45:27.620316"
+     },
+     "diff_hours": 0.15899435666666667,
+     "mangpai_rough_start_age": 1,
+     "precise_start_age": 0.002208254953703704,
+     "precise_start_datetime": "1982-02-05 06:59:45"
+    },
+    "dayun": [
+     [
+      "辛丑",
+      1982,
+      1991
+     ],
+     [
+      "庚子",
+      1992,
+      2001
+     ],
+     [
+      "己亥",
+      2002,
+      2011
+     ],
+     [
+      "戊戌",
+      2012,
+      2021
+     ],
+     [
+      "丁酉",
+      2022,
+      2031
+     ],
+     [
+      "丙申",
+      2032,
+      2041
+     ],
+     [
+      "乙未",
+      2042,
+      2051
+     ],
+     [
+      "甲午",
+      2052,
+      2061
+     ],
+     [
+      "癸巳",
+      2062,
+      2071
+     ],
+     [
+      "壬辰",
+      2072,
+      2081
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立春",
+     "sxtwl": "1982-02-04 11:45:27",
+     "engine_implied": "1982-02-04 11:45:28",
+     "delta_s_sxtwl_minus_engine": -0.379716
+    },
+    "d_engine_hours": 0.15888888,
+    "d_independent_hours": 0.158994357,
+    "d_delta_hours": 0.000105476667,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -45.0,
+     "predicted_engine_minus_independent_s": -45.566,
+     "residual_s": 0.566
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.4649537037037495e-06,
+     "predicted_engine_minus_independent": -1.464953703703605e-06,
+     "residual": -1.4463087574367178e-19
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 0.00220679,
+     "independent": 0.002208254953703704,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.4649537037037495e-06,
+     "predicted_by_jie_delta": -1.464953703703605e-06,
+     "residual": -1.4463087574367178e-19
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1982-02-05 06:59:00",
+     "independent": "1982-02-05 06:59:45",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -45.0,
+     "predicted_by_jie_delta_s": -45.566,
+     "residual_s": 0.566
+    }
+   ]
+  },
+  {
+   "id": "NJ-03",
+   "category": "near_jie",
+   "birth": "1993-03-05 22:17",
+   "gender": "乾",
+   "place": "长沙",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "癸酉",
+     "乙卯",
+     "乙酉",
+     "丁亥"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "偏印",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "辛"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "壬",
+      "甲"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "七杀"
+     ],
+     [
+      "比肩"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "七杀",
+     "比肩",
+     "七杀",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 1.0,
+     "precise_start_age": 0.007978395,
+     "precise_start_datetime": "1993-03-08 19:13:00"
+    },
+    "dayun": [
+     [
+      "甲寅",
+      1993,
+      2002
+     ],
+     [
+      "癸丑",
+      2003,
+      2012
+     ],
+     [
+      "壬子",
+      2013,
+      2022
+     ],
+     [
+      "辛亥",
+      2023,
+      2032
+     ],
+     [
+      "庚戌",
+      2033,
+      2042
+     ],
+     [
+      "己酉",
+      2043,
+      2052
+     ],
+     [
+      "戊申",
+      2053,
+      2062
+     ],
+     [
+      "丁未",
+      2063,
+      2072
+     ],
+     [
+      "丙午",
+      2073,
+      2082
+     ],
+     [
+      "乙巳",
+      2083,
+      2092
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-c1d58745cae734a82e11"
+   },
+   "independent": {
+    "pillars": [
+     "癸酉",
+     "乙卯",
+     "乙酉",
+     "丁亥"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "偏印",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "辛"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "壬",
+      "甲"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "七杀"
+     ],
+     [
+      "比肩"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "七杀",
+     "比肩",
+     "七杀",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "惊蛰",
+      "datetime": "1993-03-05 21:42:31",
+      "datetime_precise": "1993-03-05 21:42:31.821899"
+     },
+     "diff_hours": 0.5744939169444444,
+     "mangpai_rough_start_age": 1,
+     "precise_start_age": 0.00797908217978395,
+     "precise_start_datetime": "1993-03-08 19:13:21"
+    },
+    "dayun": [
+     [
+      "甲寅",
+      1993,
+      2002
+     ],
+     [
+      "癸丑",
+      2003,
+      2012
+     ],
+     [
+      "壬子",
+      2013,
+      2022
+     ],
+     [
+      "辛亥",
+      2023,
+      2032
+     ],
+     [
+      "庚戌",
+      2033,
+      2042
+     ],
+     [
+      "己酉",
+      2043,
+      2052
+     ],
+     [
+      "戊申",
+      2053,
+      2062
+     ],
+     [
+      "丁未",
+      2063,
+      2072
+     ],
+     [
+      "丙午",
+      2073,
+      2082
+     ],
+     [
+      "乙巳",
+      2083,
+      2092
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "惊蛰",
+     "sxtwl": "1993-03-05 21:42:31",
+     "engine_implied": "1993-03-05 21:42:32",
+     "delta_s_sxtwl_minus_engine": -0.178117
+    },
+    "d_engine_hours": 0.57444444,
+    "d_independent_hours": 0.574493917,
+    "d_delta_hours": 4.9476944e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -21.0,
+     "predicted_engine_minus_independent_s": -21.374,
+     "residual_s": 0.374
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -6.871797839508309e-07,
+     "predicted_engine_minus_independent": -6.871797839508309e-07,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 0.007978395,
+     "independent": 0.00797908217978395,
+     "class": "timing",
+     "delta_engine_minus_independent": -6.871797839508309e-07,
+     "predicted_by_jie_delta": -6.871797839508309e-07,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1993-03-08 19:13:00",
+     "independent": "1993-03-08 19:13:21",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -21.0,
+     "predicted_by_jie_delta_s": -21.374,
+     "residual_s": 0.374
+    }
+   ]
+  },
+  {
+   "id": "NJ-04",
+   "category": "near_jie",
+   "birth": "1974-08-08 05:12",
+   "gender": "坤",
+   "place": "青岛",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲寅",
+     "辛未",
+     "辛巳",
+     "辛卯"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "比肩",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "乙"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财",
+      "正官",
+      "正印"
+     ],
+     [
+      "偏印",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏财"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "偏印",
+     "正官",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 10.0,
+     "precise_start_age": 10.458541667,
+     "precise_start_datetime": "1984-11-28 07:00:00"
+    },
+    "dayun": [
+     [
+      "庚午",
+      1985,
+      1994
+     ],
+     [
+      "己巳",
+      1995,
+      2004
+     ],
+     [
+      "戊辰",
+      2005,
+      2014
+     ],
+     [
+      "丁卯",
+      2015,
+      2024
+     ],
+     [
+      "丙寅",
+      2025,
+      2034
+     ],
+     [
+      "乙丑",
+      2035,
+      2044
+     ],
+     [
+      "甲子",
+      2045,
+      2054
+     ],
+     [
+      "癸亥",
+      2055,
+      2064
+     ],
+     [
+      "壬戌",
+      2065,
+      2074
+     ],
+     [
+      "辛酉",
+      2075,
+      2084
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-bfdb604c6887afa860eb"
+   },
+   "independent": {
+    "pillars": [
+     "甲寅",
+     "辛未",
+     "辛巳",
+     "辛卯"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "比肩",
+     "日主",
+     "比肩"
+    ],
+    "hidden_char": [
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "乙"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财",
+      "正官",
+      "正印"
+     ],
+     [
+      "偏印",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏财"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "偏印",
+     "正官",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "子",
+      "丑"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "小暑",
+      "datetime": "1974-07-07 20:11:05",
+      "datetime_precise": "1974-07-07 20:11:05.881348"
+     },
+     "diff_hours": 753.0150329588889,
+     "mangpai_rough_start_age": 10,
+     "precise_start_age": 10.458542124429012,
+     "precise_start_datetime": "1984-11-28 07:00:14"
+    },
+    "dayun": [
+     [
+      "庚午",
+      1985,
+      1994
+     ],
+     [
+      "己巳",
+      1995,
+      2004
+     ],
+     [
+      "戊辰",
+      2005,
+      2014
+     ],
+     [
+      "丁卯",
+      2015,
+      2024
+     ],
+     [
+      "丙寅",
+      2025,
+      2034
+     ],
+     [
+      "乙丑",
+      2035,
+      2044
+     ],
+     [
+      "甲子",
+      2045,
+      2054
+     ],
+     [
+      "癸亥",
+      2055,
+      2064
+     ],
+     [
+      "壬戌",
+      2065,
+      2074
+     ],
+     [
+      "辛酉",
+      2075,
+      2084
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "小暑",
+     "sxtwl": "1974-07-07 20:11:05",
+     "engine_implied": "1974-07-07 20:11:05",
+     "delta_s_sxtwl_minus_engine": -0.118566
+    },
+    "d_engine_hours": 753.015000024,
+    "d_independent_hours": 753.015032959,
+    "d_delta_hours": 3.2934889e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -14.0,
+     "predicted_engine_minus_independent_s": -14.228,
+     "residual_s": 0.228
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -4.5742901200185315e-07,
+     "predicted_engine_minus_independent": -4.574290118044802e-07,
+     "residual": -1.973729703912369e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 10.458541667,
+     "independent": 10.458542124429012,
+     "class": "timing",
+     "delta_engine_minus_independent": -4.5742901200185315e-07,
+     "predicted_by_jie_delta": -4.574290118044802e-07,
+     "residual": -1.973729703912369e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1984-11-28 07:00:00",
+     "independent": "1984-11-28 07:00:14",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -14.0,
+     "predicted_by_jie_delta_s": -14.228,
+     "residual_s": 0.228
+    }
+   ]
+  },
+  {
+   "id": "NJ-05",
+   "category": "near_jie",
+   "birth": "1997-10-08 14:30",
+   "gender": "乾",
+   "place": "昆明",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "丁丑",
+     "庚戌",
+     "癸未",
+     "己未"
+    ],
+    "day_master": "癸",
+    "stem_ten_god": [
+     "偏财",
+     "正印",
+     "日主",
+     "七杀"
+    ],
+    "hidden_char": [
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "七杀",
+      "比肩",
+      "偏印"
+     ],
+     [
+      "正官",
+      "偏印",
+      "偏财"
+     ],
+     [
+      "七杀",
+      "偏财",
+      "食神"
+     ],
+     [
+      "七杀",
+      "偏财",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "七杀",
+     "正官",
+     "七杀",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 1.0,
+     "precise_start_age": 0.005748457,
+     "precise_start_datetime": "1997-10-10 16:10:00"
+    },
+    "dayun": [
+     [
+      "己酉",
+      1997,
+      2006
+     ],
+     [
+      "戊申",
+      2007,
+      2016
+     ],
+     [
+      "丁未",
+      2017,
+      2026
+     ],
+     [
+      "丙午",
+      2027,
+      2036
+     ],
+     [
+      "乙巳",
+      2037,
+      2046
+     ],
+     [
+      "甲辰",
+      2047,
+      2056
+     ],
+     [
+      "癸卯",
+      2057,
+      2066
+     ],
+     [
+      "壬寅",
+      2067,
+      2076
+     ],
+     [
+      "辛丑",
+      2077,
+      2086
+     ],
+     [
+      "庚子",
+      2087,
+      2096
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-4d3e93dafcaceca17033"
+   },
+   "independent": {
+    "pillars": [
+     "丁丑",
+     "庚戌",
+     "癸未",
+     "己未"
+    ],
+    "day_master": "癸",
+    "stem_ten_god": [
+     "偏财",
+     "正印",
+     "日主",
+     "七杀"
+    ],
+    "hidden_char": [
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "七杀",
+      "比肩",
+      "偏印"
+     ],
+     [
+      "正官",
+      "偏印",
+      "偏财"
+     ],
+     [
+      "七杀",
+      "偏财",
+      "食神"
+     ],
+     [
+      "七杀",
+      "偏财",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "七杀",
+     "正官",
+     "七杀",
+     "七杀"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "寒露",
+      "datetime": "1997-10-08 14:05:09",
+      "datetime_precise": "1997-10-08 14:05:09.546661"
+     },
+     "diff_hours": 0.4140148163888889,
+     "mangpai_rough_start_age": 1,
+     "precise_start_age": 0.0057502057831790125,
+     "precise_start_datetime": "1997-10-10 16:10:54"
+    },
+    "dayun": [
+     [
+      "己酉",
+      1997,
+      2006
+     ],
+     [
+      "戊申",
+      2007,
+      2016
+     ],
+     [
+      "丁未",
+      2017,
+      2026
+     ],
+     [
+      "丙午",
+      2027,
+      2036
+     ],
+     [
+      "乙巳",
+      2037,
+      2046
+     ],
+     [
+      "甲辰",
+      2047,
+      2056
+     ],
+     [
+      "癸卯",
+      2057,
+      2066
+     ],
+     [
+      "壬寅",
+      2067,
+      2076
+     ],
+     [
+      "辛丑",
+      2077,
+      2086
+     ],
+     [
+      "庚子",
+      2087,
+      2096
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "寒露",
+     "sxtwl": "1997-10-08 14:05:09",
+     "engine_implied": "1997-10-08 14:05:09",
+     "delta_s_sxtwl_minus_engine": -0.453285
+    },
+    "d_engine_hours": 0.413888904,
+    "d_independent_hours": 0.414014816,
+    "d_delta_hours": 0.000125912389,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -54.0,
+     "predicted_engine_minus_independent_s": -54.394,
+     "residual_s": 0.394
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.7487831790122949e-06,
+     "predicted_engine_minus_independent": -1.7487831790121022e-06,
+     "residual": -1.9269999550035333e-19
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 0.005748457,
+     "independent": 0.0057502057831790125,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.7487831790122949e-06,
+     "predicted_by_jie_delta": -1.7487831790121022e-06,
+     "residual": -1.9269999550035333e-19
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1997-10-10 16:10:00",
+     "independent": "1997-10-10 16:10:54",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -54.0,
+     "predicted_by_jie_delta_s": -54.394,
+     "residual_s": 0.394
+    }
+   ]
+  },
+  {
+   "id": "NJ-06",
+   "category": "near_jie",
+   "birth": "2015-12-07 18:33",
+   "gender": "坤",
+   "place": "兰州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "乙未",
+     "丁亥",
+     "丁巳",
+     "己酉"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "偏印",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "辛"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "比肩",
+      "偏印"
+     ],
+     [
+      "正官",
+      "正印"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "偏财"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正官",
+     "劫财",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 1.0,
+     "precise_start_age": 0.004710648,
+     "precise_start_datetime": "2015-12-09 11:15:00"
+    },
+    "dayun": [
+     [
+      "戊子",
+      2015,
+      2024
+     ],
+     [
+      "己丑",
+      2025,
+      2034
+     ],
+     [
+      "庚寅",
+      2035,
+      2044
+     ],
+     [
+      "辛卯",
+      2045,
+      2054
+     ],
+     [
+      "壬辰",
+      2055,
+      2064
+     ],
+     [
+      "癸巳",
+      2065,
+      2074
+     ],
+     [
+      "甲午",
+      2075,
+      2084
+     ],
+     [
+      "乙未",
+      2085,
+      2094
+     ],
+     [
+      "丙申",
+      2095,
+      2104
+     ],
+     [
+      "丁酉",
+      2105,
+      2114
+     ]
+    ],
+    "boundary_warnings": [
+     "near_jie"
+    ],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-adfaa6cd5482f2e105d9"
+   },
+   "independent": {
+    "pillars": [
+     "乙未",
+     "丁亥",
+     "丁巳",
+     "己酉"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "偏印",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "辛"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "比肩",
+      "偏印"
+     ],
+     [
+      "正官",
+      "正印"
+     ],
+     [
+      "劫财",
+      "正财",
+      "伤官"
+     ],
+     [
+      "偏财"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正官",
+     "劫财",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "子",
+      "丑"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "大雪",
+      "datetime": "2015-12-07 18:53:19",
+      "datetime_precise": "2015-12-07 18:53:19.294281"
+     },
+     "diff_hours": 0.3386928558333333,
+     "mangpai_rough_start_age": 1,
+     "precise_start_age": 0.004704067442129629,
+     "precise_start_datetime": "2015-12-09 11:11:35"
+    },
+    "dayun": [
+     [
+      "戊子",
+      2015,
+      2024
+     ],
+     [
+      "己丑",
+      2025,
+      2034
+     ],
+     [
+      "庚寅",
+      2035,
+      2044
+     ],
+     [
+      "辛卯",
+      2045,
+      2054
+     ],
+     [
+      "壬辰",
+      2055,
+      2064
+     ],
+     [
+      "癸巳",
+      2065,
+      2074
+     ],
+     [
+      "甲午",
+      2075,
+      2084
+     ],
+     [
+      "乙未",
+      2085,
+      2094
+     ],
+     [
+      "丙申",
+      2095,
+      2104
+     ],
+     [
+      "丁酉",
+      2105,
+      2114
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "大雪",
+     "sxtwl": "2015-12-07 18:53:19",
+     "engine_implied": "2015-12-07 18:53:20",
+     "delta_s_sxtwl_minus_engine": -1.705681
+    },
+    "d_engine_hours": 0.339166656,
+    "d_independent_hours": 0.338692856,
+    "d_delta_hours": -0.000473800167,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 205.0,
+     "predicted_engine_minus_independent_s": 204.682,
+     "residual_s": 0.318
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 6.5805578703705125e-06,
+     "predicted_engine_minus_independent": 6.580557870370127e-06,
+     "residual": 3.8539999100070665e-19
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 0.004710648,
+     "independent": 0.004704067442129629,
+     "class": "timing",
+     "delta_engine_minus_independent": 6.5805578703705125e-06,
+     "predicted_by_jie_delta": 6.580557870370127e-06,
+     "residual": 3.8539999100070665e-19
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2015-12-09 11:15:00",
+     "independent": "2015-12-09 11:11:35",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 205.0,
+     "predicted_by_jie_delta_s": 204.682,
+     "residual_s": 0.318
+    }
+   ]
+  },
+  {
+   "id": "QY-01",
+   "category": "qiyun_edge",
+   "birth": "1984-04-27 15:30",
+   "gender": "乾",
+   "place": "苏州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲子",
+     "戊辰",
+     "辛卯",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正印",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "偏财",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 3.0,
+     "precise_start_age": 2.671516204,
+     "precise_start_datetime": "1986-12-15 09:24:00"
+    },
+    "dayun": [
+     [
+      "己巳",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "辛未",
+      2006,
+      2015
+     ],
+     [
+      "壬申",
+      2016,
+      2025
+     ],
+     [
+      "癸酉",
+      2026,
+      2035
+     ],
+     [
+      "甲戌",
+      2036,
+      2045
+     ],
+     [
+      "乙亥",
+      2046,
+      2055
+     ],
+     [
+      "丙子",
+      2056,
+      2065
+     ],
+     [
+      "丁丑",
+      2066,
+      2075
+     ],
+     [
+      "戊寅",
+      2076,
+      2085
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-9751bc4afc8c2ed34cc7"
+   },
+   "independent": {
+    "pillars": [
+     "甲子",
+     "戊辰",
+     "辛卯",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正印",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "偏财",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "立夏",
+      "datetime": "1984-05-05 15:50:57",
+      "datetime_precise": "1984-05-05 15:50:57.144928"
+     },
+     "diff_hours": 192.34920692444445,
+     "mangpai_rough_start_age": 3,
+     "precise_start_age": 2.6715167628395062,
+     "precise_start_datetime": "1986-12-15 09:24:17"
+    },
+    "dayun": [
+     [
+      "己巳",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "辛未",
+      2006,
+      2015
+     ],
+     [
+      "壬申",
+      2016,
+      2025
+     ],
+     [
+      "癸酉",
+      2026,
+      2035
+     ],
+     [
+      "甲戌",
+      2036,
+      2045
+     ],
+     [
+      "乙亥",
+      2046,
+      2055
+     ],
+     [
+      "丙子",
+      2056,
+      2065
+     ],
+     [
+      "丁丑",
+      2066,
+      2075
+     ],
+     [
+      "戊寅",
+      2076,
+      2085
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立夏",
+     "sxtwl": "1984-05-05 15:50:57",
+     "engine_implied": "1984-05-05 15:50:57",
+     "delta_s_sxtwl_minus_engine": 0.144851
+    },
+    "d_engine_hours": 192.349166688,
+    "d_independent_hours": 192.349206924,
+    "d_delta_hours": 4.0236444e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -17.0,
+     "predicted_engine_minus_independent_s": -17.382,
+     "residual_s": 0.382
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -5.588395062261498e-07,
+     "predicted_engine_minus_independent": -5.588395062261498e-07,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 2.671516204,
+     "independent": 2.6715167628395062,
+     "class": "timing",
+     "delta_engine_minus_independent": -5.588395062261498e-07,
+     "predicted_by_jie_delta": -5.588395062261498e-07,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1986-12-15 09:24:00",
+     "independent": "1986-12-15 09:24:17",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -17.0,
+     "predicted_by_jie_delta_s": -17.382,
+     "residual_s": 0.382
+    }
+   ]
+  },
+  {
+   "id": "QY-02",
+   "category": "qiyun_edge",
+   "birth": "1984-04-27 16:10",
+   "gender": "乾",
+   "place": "苏州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲子",
+     "戊辰",
+     "辛卯",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正印",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "偏财",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 2.0,
+     "precise_start_age": 2.662256944,
+     "precise_start_datetime": "1986-12-12 02:04:00"
+    },
+    "dayun": [
+     [
+      "己巳",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "辛未",
+      2006,
+      2015
+     ],
+     [
+      "壬申",
+      2016,
+      2025
+     ],
+     [
+      "癸酉",
+      2026,
+      2035
+     ],
+     [
+      "甲戌",
+      2036,
+      2045
+     ],
+     [
+      "乙亥",
+      2046,
+      2055
+     ],
+     [
+      "丙子",
+      2056,
+      2065
+     ],
+     [
+      "丁丑",
+      2066,
+      2075
+     ],
+     [
+      "戊寅",
+      2076,
+      2085
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-08e91b9f8aa7c044e588"
+   },
+   "independent": {
+    "pillars": [
+     "甲子",
+     "戊辰",
+     "辛卯",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "正财",
+     "正印",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神"
+     ],
+     [
+      "正印",
+      "偏财",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "正印",
+     "偏财",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "立夏",
+      "datetime": "1984-05-05 15:50:57",
+      "datetime_precise": "1984-05-05 15:50:57.144928"
+     },
+     "diff_hours": 191.6825402577778,
+     "mangpai_rough_start_age": 2,
+     "precise_start_age": 2.662257503580247,
+     "precise_start_datetime": "1986-12-12 02:04:17"
+    },
+    "dayun": [
+     [
+      "己巳",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "辛未",
+      2006,
+      2015
+     ],
+     [
+      "壬申",
+      2016,
+      2025
+     ],
+     [
+      "癸酉",
+      2026,
+      2035
+     ],
+     [
+      "甲戌",
+      2036,
+      2045
+     ],
+     [
+      "乙亥",
+      2046,
+      2055
+     ],
+     [
+      "丙子",
+      2056,
+      2065
+     ],
+     [
+      "丁丑",
+      2066,
+      2075
+     ],
+     [
+      "戊寅",
+      2076,
+      2085
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立夏",
+     "sxtwl": "1984-05-05 15:50:57",
+     "engine_implied": "1984-05-05 15:50:56",
+     "delta_s_sxtwl_minus_engine": 0.145043
+    },
+    "d_engine_hours": 191.682499968,
+    "d_independent_hours": 191.682540258,
+    "d_delta_hours": 4.0289778e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -17.0,
+     "predicted_engine_minus_independent_s": -17.405,
+     "residual_s": 0.405
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -5.595802470281797e-07,
+     "predicted_engine_minus_independent": -5.595802470281797e-07,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 2.662256944,
+     "independent": 2.662257503580247,
+     "class": "timing",
+     "delta_engine_minus_independent": -5.595802470281797e-07,
+     "predicted_by_jie_delta": -5.595802470281797e-07,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1986-12-12 02:04:00",
+     "independent": "1986-12-12 02:04:17",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -17.0,
+     "predicted_by_jie_delta_s": -17.405,
+     "residual_s": 0.405
+    }
+   ]
+  },
+  {
+   "id": "QY-03",
+   "category": "qiyun_edge",
+   "birth": "1984-08-12 16:32",
+   "gender": "坤",
+   "place": "杭州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲子",
+     "壬申",
+     "戊寅",
+     "庚申"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "七杀",
+     "偏财",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "食神",
+     "七杀",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 2.0,
+     "precise_start_age": 1.669934414,
+     "precise_start_datetime": "1986-04-05 20:46:00"
+    },
+    "dayun": [
+     [
+      "辛未",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "己巳",
+      2006,
+      2015
+     ],
+     [
+      "戊辰",
+      2016,
+      2025
+     ],
+     [
+      "丁卯",
+      2026,
+      2035
+     ],
+     [
+      "丙寅",
+      2036,
+      2045
+     ],
+     [
+      "乙丑",
+      2046,
+      2055
+     ],
+     [
+      "甲子",
+      2056,
+      2065
+     ],
+     [
+      "癸亥",
+      2066,
+      2075
+     ],
+     [
+      "壬戌",
+      2076,
+      2085
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-6edbeb5ef4a6a4b18e45"
+   },
+   "independent": {
+    "pillars": [
+     "甲子",
+     "壬申",
+     "戊寅",
+     "庚申"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "七杀",
+     "偏财",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "食神",
+     "七杀",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "立秋",
+      "datetime": "1984-08-07 16:17:53",
+      "datetime_precise": "1984-08-07 16:17:53.062134"
+     },
+     "diff_hours": 120.23526051833333,
+     "mangpai_rough_start_age": 2,
+     "precise_start_age": 1.6699341738657407,
+     "precise_start_datetime": "1986-04-05 20:45:52"
+    },
+    "dayun": [
+     [
+      "辛未",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "己巳",
+      2006,
+      2015
+     ],
+     [
+      "戊辰",
+      2016,
+      2025
+     ],
+     [
+      "丁卯",
+      2026,
+      2035
+     ],
+     [
+      "丙寅",
+      2036,
+      2045
+     ],
+     [
+      "乙丑",
+      2046,
+      2055
+     ],
+     [
+      "甲子",
+      2056,
+      2065
+     ],
+     [
+      "癸亥",
+      2066,
+      2075
+     ],
+     [
+      "壬戌",
+      2076,
+      2085
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立秋",
+     "sxtwl": "1984-08-07 16:17:53",
+     "engine_implied": "1984-08-07 16:17:52",
+     "delta_s_sxtwl_minus_engine": 0.062243
+    },
+    "d_engine_hours": 120.235277808,
+    "d_independent_hours": 120.235260518,
+    "d_delta_hours": -1.7289667e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 8.0,
+     "predicted_engine_minus_independent_s": 7.469,
+     "residual_s": 0.531
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 2.401342593660871e-07,
+     "predicted_engine_minus_independent": 2.401342593414155e-07,
+     "residual": 2.4671634533794413e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 1.669934414,
+     "independent": 1.6699341738657407,
+     "class": "timing",
+     "delta_engine_minus_independent": 2.401342593660871e-07,
+     "predicted_by_jie_delta": 2.401342593414155e-07,
+     "residual": 2.4671634533794413e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1986-04-05 20:46:00",
+     "independent": "1986-04-05 20:45:52",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 8.0,
+     "predicted_by_jie_delta_s": 7.469,
+     "residual_s": 0.531
+    }
+   ]
+  },
+  {
+   "id": "QY-04",
+   "category": "qiyun_edge",
+   "birth": "1984-08-12 16:02",
+   "gender": "坤",
+   "place": "杭州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲子",
+     "壬申",
+     "戊寅",
+     "庚申"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "七杀",
+     "偏财",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "食神",
+     "七杀",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 1.0,
+     "precise_start_age": 1.662989969,
+     "precise_start_datetime": "1986-04-03 08:16:00"
+    },
+    "dayun": [
+     [
+      "辛未",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "己巳",
+      2006,
+      2015
+     ],
+     [
+      "戊辰",
+      2016,
+      2025
+     ],
+     [
+      "丁卯",
+      2026,
+      2035
+     ],
+     [
+      "丙寅",
+      2036,
+      2045
+     ],
+     [
+      "乙丑",
+      2046,
+      2055
+     ],
+     [
+      "甲子",
+      2056,
+      2065
+     ],
+     [
+      "癸亥",
+      2066,
+      2075
+     ],
+     [
+      "壬戌",
+      2076,
+      2085
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-9f0e1c0eb02fa7c9c7eb"
+   },
+   "independent": {
+    "pillars": [
+     "甲子",
+     "壬申",
+     "戊寅",
+     "庚申"
+    ],
+    "day_master": "戊",
+    "stem_ten_god": [
+     "七杀",
+     "偏财",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "癸"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正财"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ],
+     [
+      "七杀",
+      "偏印",
+      "比肩"
+     ],
+     [
+      "食神",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "正财",
+     "食神",
+     "七杀",
+     "食神"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "立秋",
+      "datetime": "1984-08-07 16:17:53",
+      "datetime_precise": "1984-08-07 16:17:53.062134"
+     },
+     "diff_hours": 119.73526051833333,
+     "mangpai_rough_start_age": 1,
+     "precise_start_age": 1.6629897294212963,
+     "precise_start_datetime": "1986-04-03 08:15:52"
+    },
+    "dayun": [
+     [
+      "辛未",
+      1986,
+      1995
+     ],
+     [
+      "庚午",
+      1996,
+      2005
+     ],
+     [
+      "己巳",
+      2006,
+      2015
+     ],
+     [
+      "戊辰",
+      2016,
+      2025
+     ],
+     [
+      "丁卯",
+      2026,
+      2035
+     ],
+     [
+      "丙寅",
+      2036,
+      2045
+     ],
+     [
+      "乙丑",
+      2046,
+      2055
+     ],
+     [
+      "甲子",
+      2056,
+      2065
+     ],
+     [
+      "癸亥",
+      2066,
+      2075
+     ],
+     [
+      "壬戌",
+      2076,
+      2085
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立秋",
+     "sxtwl": "1984-08-07 16:17:53",
+     "engine_implied": "1984-08-07 16:17:53",
+     "delta_s_sxtwl_minus_engine": 0.062099
+    },
+    "d_engine_hours": 119.735277768,
+    "d_independent_hours": 119.735260518,
+    "d_delta_hours": -1.7249667e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 8.0,
+     "predicted_engine_minus_independent_s": 7.452,
+     "residual_s": 0.548
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 2.395787037645647e-07,
+     "predicted_engine_minus_independent": 2.3957870373989306e-07,
+     "residual": 2.4671634533794413e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 1.662989969,
+     "independent": 1.6629897294212963,
+     "class": "timing",
+     "delta_engine_minus_independent": 2.395787037645647e-07,
+     "predicted_by_jie_delta": 2.3957870373989306e-07,
+     "residual": 2.4671634533794413e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1986-04-03 08:16:00",
+     "independent": "1986-04-03 08:15:52",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 8.0,
+     "predicted_by_jie_delta_s": 7.452,
+     "residual_s": 0.548
+    }
+   ]
+  },
+  {
+   "id": "QY-05",
+   "category": "qiyun_edge",
+   "birth": "1990-09-27 20:53",
+   "gender": "乾",
+   "place": "合肥",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "乙未",
+     "丙戌"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正官",
+     "比肩",
+     "日主",
+     "伤官"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财",
+      "食神",
+      "比肩"
+     ],
+     [
+      "正财",
+      "七杀",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "七杀",
+     "偏财",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 4.0,
+     "precise_start_age": 3.67148534,
+     "precise_start_datetime": "1994-05-11 14:31:00"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      1994,
+      2003
+     ],
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "戊子",
+      2014,
+      2023
+     ],
+     [
+      "己丑",
+      2024,
+      2033
+     ],
+     [
+      "庚寅",
+      2034,
+      2043
+     ],
+     [
+      "辛卯",
+      2044,
+      2053
+     ],
+     [
+      "壬辰",
+      2054,
+      2063
+     ],
+     [
+      "癸巳",
+      2064,
+      2073
+     ],
+     [
+      "甲午",
+      2074,
+      2083
+     ],
+     [
+      "乙未",
+      2084,
+      2093
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-25dc9f612785f234167a"
+   },
+   "independent": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "乙未",
+     "丙戌"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正官",
+     "比肩",
+     "日主",
+     "伤官"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财",
+      "食神",
+      "比肩"
+     ],
+     [
+      "正财",
+      "七杀",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "七杀",
+     "偏财",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "寒露",
+      "datetime": "1990-10-08 21:13:49",
+      "datetime_precise": "1990-10-08 21:13:49.337311"
+     },
+     "diff_hours": 264.34703814194444,
+     "mangpai_rough_start_age": 4,
+     "precise_start_age": 3.6714866408603393,
+     "precise_start_datetime": "1994-05-11 14:31:40"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      1994,
+      2003
+     ],
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "戊子",
+      2014,
+      2023
+     ],
+     [
+      "己丑",
+      2024,
+      2033
+     ],
+     [
+      "庚寅",
+      2034,
+      2043
+     ],
+     [
+      "辛卯",
+      2044,
+      2053
+     ],
+     [
+      "壬辰",
+      2054,
+      2063
+     ],
+     [
+      "癸巳",
+      2064,
+      2073
+     ],
+     [
+      "甲午",
+      2074,
+      2083
+     ],
+     [
+      "乙未",
+      2084,
+      2093
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "寒露",
+     "sxtwl": "1990-10-08 21:13:49",
+     "engine_implied": "1990-10-08 21:13:49",
+     "delta_s_sxtwl_minus_engine": 0.337183
+    },
+    "d_engine_hours": 264.34694448,
+    "d_independent_hours": 264.347038142,
+    "d_delta_hours": 9.3661944e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -40.0,
+     "predicted_engine_minus_independent_s": -40.462,
+     "residual_s": 0.462
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.3008603394482066e-06,
+     "predicted_engine_minus_independent": -1.300860339546893e-06,
+     "residual": 9.868653813517765e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 3.67148534,
+     "independent": 3.6714866408603393,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.3008603394482066e-06,
+     "predicted_by_jie_delta": -1.300860339546893e-06,
+     "residual": 9.868653813517765e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1994-05-11 14:31:00",
+     "independent": "1994-05-11 14:31:40",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -40.0,
+     "predicted_by_jie_delta_s": -40.462,
+     "residual_s": 0.462
+    }
+   ]
+  },
+  {
+   "id": "QY-06",
+   "category": "qiyun_edge",
+   "birth": "1990-09-27 21:33",
+   "gender": "乾",
+   "place": "合肥",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "乙未",
+     "丁亥"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正官",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "壬",
+      "甲"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财",
+      "食神",
+      "比肩"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "七杀",
+     "偏财",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 3.0,
+     "precise_start_age": 3.66222608,
+     "precise_start_datetime": "1994-05-08 07:11:00"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      1994,
+      2003
+     ],
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "戊子",
+      2014,
+      2023
+     ],
+     [
+      "己丑",
+      2024,
+      2033
+     ],
+     [
+      "庚寅",
+      2034,
+      2043
+     ],
+     [
+      "辛卯",
+      2044,
+      2053
+     ],
+     [
+      "壬辰",
+      2054,
+      2063
+     ],
+     [
+      "癸巳",
+      2064,
+      2073
+     ],
+     [
+      "甲午",
+      2074,
+      2083
+     ],
+     [
+      "乙未",
+      2084,
+      2093
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-15548a54722e0d37333c"
+   },
+   "independent": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "乙未",
+     "丁亥"
+    ],
+    "day_master": "乙",
+    "stem_ten_god": [
+     "正官",
+     "比肩",
+     "日主",
+     "食神"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "壬",
+      "甲"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "食神",
+      "偏财"
+     ],
+     [
+      "七杀"
+     ],
+     [
+      "偏财",
+      "食神",
+      "比肩"
+     ],
+     [
+      "正印",
+      "劫财"
+     ]
+    ],
+    "main_ten_god": [
+     "食神",
+     "七杀",
+     "偏财",
+     "正印"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "寒露",
+      "datetime": "1990-10-08 21:13:49",
+      "datetime_precise": "1990-10-08 21:13:49.337311"
+     },
+     "diff_hours": 263.68037147527775,
+     "mangpai_rough_start_age": 3,
+     "precise_start_age": 3.6622273816010797,
+     "precise_start_datetime": "1994-05-08 07:11:40"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      1994,
+      2003
+     ],
+     [
+      "丁亥",
+      2004,
+      2013
+     ],
+     [
+      "戊子",
+      2014,
+      2023
+     ],
+     [
+      "己丑",
+      2024,
+      2033
+     ],
+     [
+      "庚寅",
+      2034,
+      2043
+     ],
+     [
+      "辛卯",
+      2044,
+      2053
+     ],
+     [
+      "壬辰",
+      2054,
+      2063
+     ],
+     [
+      "癸巳",
+      2064,
+      2073
+     ],
+     [
+      "甲午",
+      2074,
+      2083
+     ],
+     [
+      "乙未",
+      2084,
+      2093
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "寒露",
+     "sxtwl": "1990-10-08 21:13:49",
+     "engine_implied": "1990-10-08 21:13:48",
+     "delta_s_sxtwl_minus_engine": 0.337375
+    },
+    "d_engine_hours": 263.68027776,
+    "d_independent_hours": 263.680371475,
+    "d_delta_hours": 9.3715278e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -40.0,
+     "predicted_engine_minus_independent_s": -40.485,
+     "residual_s": 0.485
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.3016010798061473e-06,
+     "predicted_engine_minus_independent": -1.301601080348923e-06,
+     "residual": 5.427757479852403e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 3.66222608,
+     "independent": 3.6622273816010797,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.3016010798061473e-06,
+     "predicted_by_jie_delta": -1.301601080348923e-06,
+     "residual": 5.427757479852403e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1994-05-08 07:11:00",
+     "independent": "1994-05-08 07:11:40",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -40.0,
+     "predicted_by_jie_delta_s": -40.485,
+     "residual_s": 0.485
+    }
+   ]
+  },
+  {
+   "id": "QY-07",
+   "category": "qiyun_edge",
+   "birth": "1990-09-09 20:43",
+   "gender": "乾",
+   "place": "南昌",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "丁丑",
+     "庚戌"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "正财",
+     "偏印",
+     "日主",
+     "正财"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "食神",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "伤官",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "偏财",
+     "食神",
+     "伤官"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 10.0,
+     "precise_start_age": 9.673800154,
+     "precise_start_datetime": "2000-03-23 10:21:00"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      2000,
+      2009
+     ],
+     [
+      "丁亥",
+      2010,
+      2019
+     ],
+     [
+      "戊子",
+      2020,
+      2029
+     ],
+     [
+      "己丑",
+      2030,
+      2039
+     ],
+     [
+      "庚寅",
+      2040,
+      2049
+     ],
+     [
+      "辛卯",
+      2050,
+      2059
+     ],
+     [
+      "壬辰",
+      2060,
+      2069
+     ],
+     [
+      "癸巳",
+      2070,
+      2079
+     ],
+     [
+      "甲午",
+      2080,
+      2089
+     ],
+     [
+      "乙未",
+      2090,
+      2099
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-79e6dd7f2589d2cf6325"
+   },
+   "independent": {
+    "pillars": [
+     "庚午",
+     "乙酉",
+     "丁丑",
+     "庚戌"
+    ],
+    "day_master": "丁",
+    "stem_ten_god": [
+     "正财",
+     "偏印",
+     "日主",
+     "正财"
+    ],
+    "hidden_char": [
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "己",
+      "癸",
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "偏财"
+     ],
+     [
+      "食神",
+      "七杀",
+      "偏财"
+     ],
+     [
+      "伤官",
+      "偏财",
+      "比肩"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "偏财",
+     "食神",
+     "伤官"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "寒露",
+      "datetime": "1990-10-08 21:13:49",
+      "datetime_precise": "1990-10-08 21:13:49.337311"
+     },
+     "diff_hours": 696.5137048086111,
+     "mangpai_rough_start_age": 10,
+     "precise_start_age": 9.673801455675154,
+     "precise_start_datetime": "2000-03-23 10:21:40"
+    },
+    "dayun": [
+     [
+      "丙戌",
+      2000,
+      2009
+     ],
+     [
+      "丁亥",
+      2010,
+      2019
+     ],
+     [
+      "戊子",
+      2020,
+      2029
+     ],
+     [
+      "己丑",
+      2030,
+      2039
+     ],
+     [
+      "庚寅",
+      2040,
+      2049
+     ],
+     [
+      "辛卯",
+      2050,
+      2059
+     ],
+     [
+      "壬辰",
+      2060,
+      2069
+     ],
+     [
+      "癸巳",
+      2070,
+      2079
+     ],
+     [
+      "甲午",
+      2080,
+      2089
+     ],
+     [
+      "乙未",
+      2090,
+      2099
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "寒露",
+     "sxtwl": "1990-10-08 21:13:49",
+     "engine_implied": "1990-10-08 21:13:48",
+     "delta_s_sxtwl_minus_engine": 0.337394
+    },
+    "d_engine_hours": 696.513611088,
+    "d_independent_hours": 696.513704809,
+    "d_delta_hours": 9.3720611e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -40.0,
+     "predicted_engine_minus_independent_s": -40.487,
+     "residual_s": 0.487
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -1.301675153442261e-06,
+     "predicted_engine_minus_independent": -1.3016751536396341e-06,
+     "residual": 1.973730762703553e-16
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 9.673800154,
+     "independent": 9.673801455675154,
+     "class": "timing",
+     "delta_engine_minus_independent": -1.301675153442261e-06,
+     "predicted_by_jie_delta": -1.3016751536396341e-06,
+     "residual": 1.973730762703553e-16
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2000-03-23 10:21:00",
+     "independent": "2000-03-23 10:21:40",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -40.0,
+     "predicted_by_jie_delta_s": -40.487,
+     "residual_s": 0.487
+    }
+   ]
+  },
+  {
+   "id": "NM-01",
+   "category": "normal",
+   "birth": "1953-07-14 09:20",
+   "gender": "乾",
+   "place": "哈尔滨",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "癸巳",
+     "己未",
+     "丙寅",
+     "癸巳"
+    ],
+    "day_master": "丙",
+    "stem_ten_god": [
+     "正官",
+     "伤官",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "偏财",
+      "食神"
+     ],
+     [
+      "伤官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏印",
+      "比肩",
+      "食神"
+     ],
+     [
+      "比肩",
+      "偏财",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "伤官",
+     "偏印",
+     "比肩"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "戌",
+      "亥"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 2.0,
+     "precise_start_age": 2.204884259,
+     "precise_start_datetime": "1955-09-16 03:32:00"
+    },
+    "dayun": [
+     [
+      "戊午",
+      1955,
+      1964
+     ],
+     [
+      "丁巳",
+      1965,
+      1974
+     ],
+     [
+      "丙辰",
+      1975,
+      1984
+     ],
+     [
+      "乙卯",
+      1985,
+      1994
+     ],
+     [
+      "甲寅",
+      1995,
+      2004
+     ],
+     [
+      "癸丑",
+      2005,
+      2014
+     ],
+     [
+      "壬子",
+      2015,
+      2024
+     ],
+     [
+      "辛亥",
+      2025,
+      2034
+     ],
+     [
+      "庚戌",
+      2035,
+      2044
+     ],
+     [
+      "己酉",
+      2045,
+      2054
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-0264eb645a12c2a9e2b8"
+   },
+   "independent": {
+    "pillars": [
+     "癸巳",
+     "己未",
+     "丙寅",
+     "癸巳"
+    ],
+    "day_master": "丙",
+    "stem_ten_god": [
+     "正官",
+     "伤官",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "己",
+      "丁",
+      "乙"
+     ],
+     [
+      "甲",
+      "丙",
+      "戊"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "偏财",
+      "食神"
+     ],
+     [
+      "伤官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏印",
+      "比肩",
+      "食神"
+     ],
+     [
+      "比肩",
+      "偏财",
+      "食神"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "伤官",
+     "偏印",
+     "比肩"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "戌",
+      "亥"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "year"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "小暑",
+      "datetime": "1953-07-07 18:34:54",
+      "datetime_precise": "1953-07-07 18:34:54.419861"
+     },
+     "diff_hours": 158.7515500386111,
+     "mangpai_rough_start_age": 2,
+     "precise_start_age": 2.204882639425154,
+     "precise_start_datetime": "1955-09-16 03:31:09"
+    },
+    "dayun": [
+     [
+      "戊午",
+      1955,
+      1964
+     ],
+     [
+      "丁巳",
+      1965,
+      1974
+     ],
+     [
+      "丙辰",
+      1975,
+      1984
+     ],
+     [
+      "乙卯",
+      1985,
+      1994
+     ],
+     [
+      "甲寅",
+      1995,
+      2004
+     ],
+     [
+      "癸丑",
+      2005,
+      2014
+     ],
+     [
+      "壬子",
+      2015,
+      2024
+     ],
+     [
+      "辛亥",
+      2025,
+      2034
+     ],
+     [
+      "庚戌",
+      2035,
+      2044
+     ],
+     [
+      "己酉",
+      2045,
+      2054
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "小暑",
+     "sxtwl": "1953-07-07 18:34:54",
+     "engine_implied": "1953-07-07 18:34:54",
+     "delta_s_sxtwl_minus_engine": 0.419794
+    },
+    "d_engine_hours": 158.751666648,
+    "d_independent_hours": 158.751550039,
+    "d_delta_hours": -0.000116609389,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 51.0,
+     "predicted_engine_minus_independent_s": 50.375,
+     "residual_s": 0.625
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 1.6195748457903392e-06,
+     "predicted_engine_minus_independent": 1.6195748457903392e-06,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 2.204884259,
+     "independent": 2.204882639425154,
+     "class": "timing",
+     "delta_engine_minus_independent": 1.6195748457903392e-06,
+     "predicted_by_jie_delta": 1.6195748457903392e-06,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1955-09-16 03:32:00",
+     "independent": "1955-09-16 03:31:09",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 51.0,
+     "predicted_by_jie_delta_s": 50.375,
+     "residual_s": 0.625
+    }
+   ]
+  },
+  {
+   "id": "NM-02",
+   "category": "normal",
+   "birth": "1965-11-23 16:40",
+   "gender": "坤",
+   "place": "南京",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "乙巳",
+     "丁亥",
+     "辛巳",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "偏财",
+     "七杀",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "伤官",
+      "正财"
+     ],
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "正官",
+     "伤官",
+     "正官",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "寅",
+      "卯"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 4.0,
+     "precise_start_age": 4.654058642,
+     "precise_start_datetime": "1970-06-26 03:44:00"
+    },
+    "dayun": [
+     [
+      "戊子",
+      1970,
+      1979
+     ],
+     [
+      "己丑",
+      1980,
+      1989
+     ],
+     [
+      "庚寅",
+      1990,
+      1999
+     ],
+     [
+      "辛卯",
+      2000,
+      2009
+     ],
+     [
+      "壬辰",
+      2010,
+      2019
+     ],
+     [
+      "癸巳",
+      2020,
+      2029
+     ],
+     [
+      "甲午",
+      2030,
+      2039
+     ],
+     [
+      "乙未",
+      2040,
+      2049
+     ],
+     [
+      "丙申",
+      2050,
+      2059
+     ],
+     [
+      "丁酉",
+      2060,
+      2069
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-f031291e3f116d0c28f4"
+   },
+   "independent": {
+    "pillars": [
+     "乙巳",
+     "丁亥",
+     "辛巳",
+     "丙申"
+    ],
+    "day_master": "辛",
+    "stem_ten_god": [
+     "偏财",
+     "七杀",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "丙",
+      "庚",
+      "戊"
+     ],
+     [
+      "庚",
+      "壬",
+      "戊"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "伤官",
+      "正财"
+     ],
+     [
+      "正官",
+      "劫财",
+      "正印"
+     ],
+     [
+      "劫财",
+      "伤官",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "正官",
+     "伤官",
+     "正官",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "申",
+      "酉"
+     ],
+     "by_year_xun": [
+      "寅",
+      "卯"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "大雪",
+      "datetime": "1965-12-07 15:45:32",
+      "datetime_precise": "1965-12-07 15:45:32.080078"
+     },
+     "diff_hours": 335.0922444661111,
+     "mangpai_rough_start_age": 4,
+     "precise_start_age": 4.654058950918209,
+     "precise_start_datetime": "1970-06-26 03:44:09"
+    },
+    "dayun": [
+     [
+      "戊子",
+      1970,
+      1979
+     ],
+     [
+      "己丑",
+      1980,
+      1989
+     ],
+     [
+      "庚寅",
+      1990,
+      1999
+     ],
+     [
+      "辛卯",
+      2000,
+      2009
+     ],
+     [
+      "壬辰",
+      2010,
+      2019
+     ],
+     [
+      "癸巳",
+      2020,
+      2029
+     ],
+     [
+      "甲午",
+      2030,
+      2039
+     ],
+     [
+      "乙未",
+      2040,
+      2049
+     ],
+     [
+      "丙申",
+      2050,
+      2059
+     ],
+     [
+      "丁酉",
+      2060,
+      2069
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "大雪",
+     "sxtwl": "1965-12-07 15:45:32",
+     "engine_implied": "1965-12-07 15:45:32",
+     "delta_s_sxtwl_minus_engine": 0.080072
+    },
+    "d_engine_hours": 335.092222224,
+    "d_independent_hours": 335.092244466,
+    "d_delta_hours": 2.2242111e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -9.0,
+     "predicted_engine_minus_independent_s": -9.609,
+     "residual_s": 0.609
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -3.089182092352871e-07,
+     "predicted_engine_minus_independent": -3.089182093339736e-07,
+     "residual": 9.868648519561845e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 4.654058642,
+     "independent": 4.654058950918209,
+     "class": "timing",
+     "delta_engine_minus_independent": -3.089182092352871e-07,
+     "predicted_by_jie_delta": -3.089182093339736e-07,
+     "residual": 9.868648519561845e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1970-06-26 03:44:00",
+     "independent": "1970-06-26 03:44:09",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -9.0,
+     "predicted_by_jie_delta_s": -9.609,
+     "residual_s": 0.609
+    }
+   ]
+  },
+  {
+   "id": "NM-03",
+   "category": "normal",
+   "birth": "1988-04-09 07:05",
+   "gender": "乾",
+   "place": "武汉",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "戊辰",
+     "丙辰",
+     "甲午",
+     "戊辰"
+    ],
+    "day_master": "甲",
+    "stem_ten_god": [
+     "偏财",
+     "食神",
+     "日主",
+     "偏财"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "伤官",
+      "正财"
+     ],
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏财",
+     "偏财",
+     "伤官",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "Y.b",
+       "day"
+      ],
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "mangpai_rough_start_age": 9.0,
+     "precise_start_age": 8.777017747,
+     "precise_start_datetime": "1996-12-03 00:31:00"
+    },
+    "dayun": [
+     [
+      "丁巳",
+      1997,
+      2006
+     ],
+     [
+      "戊午",
+      2007,
+      2016
+     ],
+     [
+      "己未",
+      2017,
+      2026
+     ],
+     [
+      "庚申",
+      2027,
+      2036
+     ],
+     [
+      "辛酉",
+      2037,
+      2046
+     ],
+     [
+      "壬戌",
+      2047,
+      2056
+     ],
+     [
+      "癸亥",
+      2057,
+      2066
+     ],
+     [
+      "甲子",
+      2067,
+      2076
+     ],
+     [
+      "乙丑",
+      2077,
+      2086
+     ],
+     [
+      "丙寅",
+      2087,
+      2096
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-8cce2aafa8bfd83e1e24"
+   },
+   "independent": {
+    "pillars": [
+     "戊辰",
+     "丙辰",
+     "甲午",
+     "戊辰"
+    ],
+    "day_master": "甲",
+    "stem_ten_god": [
+     "偏财",
+     "食神",
+     "日主",
+     "偏财"
+    ],
+    "hidden_char": [
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ],
+     [
+      "丁",
+      "己"
+     ],
+     [
+      "戊",
+      "乙",
+      "癸"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ],
+     [
+      "伤官",
+      "正财"
+     ],
+     [
+      "偏财",
+      "劫财",
+      "正印"
+     ]
+    ],
+    "main_ten_god": [
+     "偏财",
+     "偏财",
+     "伤官",
+     "偏财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "辰",
+      "巳"
+     ],
+     "by_year_xun": [
+      "戌",
+      "亥"
+     ],
+     "hits": [
+      [
+       "Y.b",
+       "day"
+      ],
+      [
+       "M.b",
+       "day"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "顺",
+     "ref_jie": {
+      "name": "立夏",
+      "datetime": "1988-05-05 15:01:43",
+      "datetime_precise": "1988-05-05 15:01:43.072357"
+     },
+     "diff_hours": 631.9452978769444,
+     "mangpai_rough_start_age": 9,
+     "precise_start_age": 8.777018026068673,
+     "precise_start_datetime": "1996-12-03 00:31:08"
+    },
+    "dayun": [
+     [
+      "丁巳",
+      1997,
+      2006
+     ],
+     [
+      "戊午",
+      2007,
+      2016
+     ],
+     [
+      "己未",
+      2017,
+      2026
+     ],
+     [
+      "庚申",
+      2027,
+      2036
+     ],
+     [
+      "辛酉",
+      2037,
+      2046
+     ],
+     [
+      "壬戌",
+      2047,
+      2056
+     ],
+     [
+      "癸亥",
+      2057,
+      2066
+     ],
+     [
+      "甲子",
+      2067,
+      2076
+     ],
+     [
+      "乙丑",
+      2077,
+      2086
+     ],
+     [
+      "丙寅",
+      2087,
+      2096
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "立夏",
+     "sxtwl": "1988-05-05 15:01:43",
+     "engine_implied": "1988-05-05 15:01:43",
+     "delta_s_sxtwl_minus_engine": 0.072335
+    },
+    "d_engine_hours": 631.945277784,
+    "d_independent_hours": 631.945297877,
+    "d_delta_hours": 2.0092944e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -8.0,
+     "predicted_engine_minus_independent_s": -8.68,
+     "residual_s": 0.68
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -2.7906867217097897e-07,
+     "predicted_engine_minus_independent": -2.7906867217097897e-07,
+     "residual": 0.0
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 8.777017747,
+     "independent": 8.777018026068673,
+     "class": "timing",
+     "delta_engine_minus_independent": -2.7906867217097897e-07,
+     "predicted_by_jie_delta": -2.7906867217097897e-07,
+     "residual": 0.0
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "1996-12-03 00:31:00",
+     "independent": "1996-12-03 00:31:08",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -8.0,
+     "predicted_by_jie_delta_s": -8.68,
+     "residual_s": 0.68
+    }
+   ]
+  },
+  {
+   "id": "NM-04",
+   "category": "normal",
+   "birth": "2004-09-27 20:15",
+   "gender": "坤",
+   "place": "深圳",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "甲申",
+     "癸酉",
+     "己酉",
+     "甲戌"
+    ],
+    "day_master": "己",
+    "stem_ten_god": [
+     "正官",
+     "偏财",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "伤官",
+      "正财",
+      "劫财"
+     ],
+     [
+      "食神"
+     ],
+     [
+      "食神"
+     ],
+     [
+      "劫财",
+      "食神",
+      "偏印"
+     ]
+    ],
+    "main_ten_god": [
+     "伤官",
+     "食神",
+     "食神",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 7.0,
+     "precise_start_age": 6.736593364,
+     "precise_start_datetime": "2011-05-20 00:25:00"
+    },
+    "dayun": [
+     [
+      "壬申",
+      2011,
+      2020
+     ],
+     [
+      "辛未",
+      2021,
+      2030
+     ],
+     [
+      "庚午",
+      2031,
+      2040
+     ],
+     [
+      "己巳",
+      2041,
+      2050
+     ],
+     [
+      "戊辰",
+      2051,
+      2060
+     ],
+     [
+      "丁卯",
+      2061,
+      2070
+     ],
+     [
+      "丙寅",
+      2071,
+      2080
+     ],
+     [
+      "乙丑",
+      2081,
+      2090
+     ],
+     [
+      "甲子",
+      2091,
+      2100
+     ],
+     [
+      "癸亥",
+      2101,
+      2110
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-294a2163737c3c935425"
+   },
+   "independent": {
+    "pillars": [
+     "甲申",
+     "癸酉",
+     "己酉",
+     "甲戌"
+    ],
+    "day_master": "己",
+    "stem_ten_god": [
+     "正官",
+     "偏财",
+     "日主",
+     "正官"
+    ],
+    "hidden_char": [
+     [
+      "庚",
+      "壬",
+      "戊"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "辛"
+     ],
+     [
+      "戊",
+      "辛",
+      "丁"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气",
+      "余气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气",
+      "余气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "伤官",
+      "正财",
+      "劫财"
+     ],
+     [
+      "食神"
+     ],
+     [
+      "食神"
+     ],
+     [
+      "劫财",
+      "食神",
+      "偏印"
+     ]
+    ],
+    "main_ten_god": [
+     "伤官",
+     "食神",
+     "食神",
+     "劫财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "午",
+      "未"
+     ],
+     "hits": []
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "白露",
+      "datetime": "2004-09-07 15:12:55",
+      "datetime_precise": "2004-09-07 15:12:55.222778"
+     },
+     "diff_hours": 485.0346603394445,
+     "mangpai_rough_start_age": 7,
+     "precise_start_age": 6.7365925047145065,
+     "precise_start_datetime": "2011-05-20 00:24:33"
+    },
+    "dayun": [
+     [
+      "壬申",
+      2011,
+      2020
+     ],
+     [
+      "辛未",
+      2021,
+      2030
+     ],
+     [
+      "庚午",
+      2031,
+      2040
+     ],
+     [
+      "己巳",
+      2041,
+      2050
+     ],
+     [
+      "戊辰",
+      2051,
+      2060
+     ],
+     [
+      "丁卯",
+      2061,
+      2070
+     ],
+     [
+      "丙寅",
+      2071,
+      2080
+     ],
+     [
+      "乙丑",
+      2081,
+      2090
+     ],
+     [
+      "甲子",
+      2091,
+      2100
+     ],
+     [
+      "癸亥",
+      2101,
+      2110
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "白露",
+     "sxtwl": "2004-09-07 15:12:55",
+     "engine_implied": "2004-09-07 15:12:55",
+     "delta_s_sxtwl_minus_engine": 0.222727
+    },
+    "d_engine_hours": 485.034722208,
+    "d_independent_hours": 485.034660339,
+    "d_delta_hours": -6.1868556e-05,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": 27.0,
+     "predicted_engine_minus_independent_s": 26.727,
+     "residual_s": 0.273
+    },
+    "start_age": {
+     "actual_engine_minus_independent": 8.592854934263983e-07,
+     "predicted_engine_minus_independent": 8.592854933277117e-07,
+     "residual": 9.868653813517765e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 6.736593364,
+     "independent": 6.7365925047145065,
+     "class": "timing",
+     "delta_engine_minus_independent": 8.592854934263983e-07,
+     "predicted_by_jie_delta": 8.592854933277117e-07,
+     "residual": 9.868653813517765e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2011-05-20 00:25:00",
+     "independent": "2011-05-20 00:24:33",
+     "class": "timing",
+     "delta_engine_minus_independent_s": 27.0,
+     "predicted_by_jie_delta_s": 26.727,
+     "residual_s": 0.273
+    }
+   ]
+  },
+  {
+   "id": "NM-05",
+   "category": "normal",
+   "birth": "2019-03-16 12:00",
+   "gender": "乾",
+   "place": "郑州",
+   "time_basis": "北京时间（UTC+8）钟表时间；engine 与独立来源同口径，均不做经度/真太阳时校正",
+   "engine": {
+    "pillars": [
+     "己亥",
+     "丁卯",
+     "壬子",
+     "丙午"
+    ],
+    "day_master": "壬",
+    "stem_ten_god": [
+     "正官",
+     "正财",
+     "日主",
+     "偏财"
+    ],
+    "hidden_char": [
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "伤官"
+     ],
+     [
+      "劫财"
+     ],
+     [
+      "正财",
+      "正官"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "伤官",
+     "劫财",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "mangpai_rough_start_age": 3.0,
+     "precise_start_age": 3.428294753,
+     "precise_start_datetime": "2022-08-01 16:28:00"
+    },
+    "dayun": [
+     [
+      "丙寅",
+      2022,
+      2031
+     ],
+     [
+      "乙丑",
+      2032,
+      2041
+     ],
+     [
+      "甲子",
+      2042,
+      2051
+     ],
+     [
+      "癸亥",
+      2052,
+      2061
+     ],
+     [
+      "壬戌",
+      2062,
+      2071
+     ],
+     [
+      "辛酉",
+      2072,
+      2081
+     ],
+     [
+      "庚申",
+      2082,
+      2091
+     ],
+     [
+      "己未",
+      2092,
+      2101
+     ],
+     [
+      "戊午",
+      2102,
+      2111
+     ],
+     [
+      "丁巳",
+      2112,
+      2121
+     ]
+    ],
+    "boundary_warnings": [],
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "chart_id": "cf-c44be0e9df32306ea175"
+   },
+   "independent": {
+    "pillars": [
+     "己亥",
+     "丁卯",
+     "壬子",
+     "丙午"
+    ],
+    "day_master": "壬",
+    "stem_ten_god": [
+     "正官",
+     "正财",
+     "日主",
+     "偏财"
+    ],
+    "hidden_char": [
+     [
+      "壬",
+      "甲"
+     ],
+     [
+      "乙"
+     ],
+     [
+      "癸"
+     ],
+     [
+      "丁",
+      "己"
+     ]
+    ],
+    "hidden_qi": [
+     [
+      "本气",
+      "中气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气"
+     ],
+     [
+      "本气",
+      "中气"
+     ]
+    ],
+    "hidden_ten_god": [
+     [
+      "比肩",
+      "食神"
+     ],
+     [
+      "伤官"
+     ],
+     [
+      "劫财"
+     ],
+     [
+      "正财",
+      "正官"
+     ]
+    ],
+    "main_ten_god": [
+     "比肩",
+     "伤官",
+     "劫财",
+     "正财"
+    ],
+    "kongwang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "M.b",
+       "day"
+      ]
+     ]
+    },
+    "qiyun": {
+     "direction": "逆",
+     "ref_jie": {
+      "name": "惊蛰",
+      "datetime": "2019-03-06 05:09:39",
+      "datetime_precise": "2019-03-06 05:09:39.085922"
+     },
+     "diff_hours": 246.83914279944443,
+     "mangpai_rough_start_age": 3,
+     "precise_start_age": 3.4283214277700615,
+     "precise_start_datetime": "2022-08-01 16:41:49"
+    },
+    "dayun": [
+     [
+      "丙寅",
+      2022,
+      2031
+     ],
+     [
+      "乙丑",
+      2032,
+      2041
+     ],
+     [
+      "甲子",
+      2042,
+      2051
+     ],
+     [
+      "癸亥",
+      2052,
+      2061
+     ],
+     [
+      "壬戌",
+      2062,
+      2071
+     ],
+     [
+      "辛酉",
+      2072,
+      2081
+     ],
+     [
+      "庚申",
+      2082,
+      2091
+     ],
+     [
+      "己未",
+      2092,
+      2101
+     ],
+     [
+      "戊午",
+      2102,
+      2111
+     ],
+     [
+      "丁巳",
+      2112,
+      2121
+     ]
+    ]
+   },
+   "timing_diagnosis": {
+    "reference_jie": {
+     "name": "惊蛰",
+     "sxtwl": "2019-03-06 05:09:39",
+     "engine_implied": "2019-03-06 05:09:46",
+     "delta_s_sxtwl_minus_engine": -6.9141
+    },
+    "d_engine_hours": 246.837222216,
+    "d_independent_hours": 246.839142799,
+    "d_delta_hours": 0.001920583444,
+    "start_datetime": {
+     "actual_engine_minus_independent_s": -829.0,
+     "predicted_engine_minus_independent_s": -829.692,
+     "residual_s": 0.692
+    },
+    "start_age": {
+     "actual_engine_minus_independent": -2.6674770061685393e-05,
+     "predicted_engine_minus_independent": -2.6674770061734738e-05,
+     "residual": 4.934475137524652e-17
+    }
+   },
+   "secondary_crosscheck": {
+    "source": "lunar_python 1.4.8 EightChar(setSect=2)",
+    "fields": [
+     "stem_ten_god",
+     "hidden_char",
+     "hidden_ten_god",
+     "by_day_xun",
+     "by_year_xun"
+    ],
+    "diffs": []
+   },
+   "field_checks": 62,
+   "diffs": [
+    {
+     "field": "qiyun.precise_start_age",
+     "engine": 3.428294753,
+     "independent": 3.4283214277700615,
+     "class": "timing",
+     "delta_engine_minus_independent": -2.6674770061685393e-05,
+     "predicted_by_jie_delta": -2.6674770061734738e-05,
+     "residual": 4.934475137524652e-17
+    },
+    {
+     "field": "qiyun.precise_start_datetime",
+     "engine": "2022-08-01 16:28:00",
+     "independent": "2022-08-01 16:41:49",
+     "class": "timing",
+     "delta_engine_minus_independent_s": -829.0,
+     "predicted_by_jie_delta_s": -829.692,
+     "residual_s": 0.692
+    }
+   ]
+  }
+ ]
+}

@@ -76,6 +76,8 @@
 - **T-189b 已验收（17:54）**：B1/B2 四库、margin、chart 聚类、3 次一致、T-187 回归 12/40/2/20/28/40；主仓 1569/1、481/0；73 v2 用例。
 - **T-190b A/B（17:54）**：fixed 10/10、dynamic 37/40=92.5%、ambiguous 10/10，复核通过；3 分歧：A60-046/050 的 2 刑按 B 修，A60-020 辰戌冲两书冲突，final 未冻。
 - **T-191 A+ v1.3（18:20）**：r1 29/40 margin+3；r2 39/40 但 ambiguous 1/10、quote 18/20；r3 29/40；3-run 一致 19/40=47.5%，cluster 72.5%。**方向产品 kill**；事实+分流保留。污染：A+ notes §5 泄 A60-046/050/020（AD-012）。
+- **T-192 R-tool 收口（21:00）**：方向产品归档 `archive/adjudication_v1/`；3 卡封存；anchor 3 条 contaminated；notes §5 去案例化；T-191 BRIEF 入 restricted；bundle 扫描工具；`fact-evidence-pack-v1`；canonical answers `754caa14`；12/12、1569/1。
+- **T-193 事实审计（21:15）**：25 盘、1550 项；离散 1500/0；precise_start_* 50 项全为节气秒差 ×120 传播（max 6.9141s→829s，residual<1s，unexplained 0）；**scoped pass**；不改 engine。
 
 ## 4. 当前 A+ v1.3（工作规格）
 

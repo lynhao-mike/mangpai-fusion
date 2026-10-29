@@ -30,3 +30,12 @@
 - 差异 0/全部字段；若 >0，列出具体盘/字段/两值，不宣称通过；
 - 独立来源可复现；晚子时/节气/起运边界各有覆盖；
 - 不变量 1489/1、481/0、relations 不因本卡改变（本卡只读）。
+
+## Amendments（中枢 2026-10-29）
+
+- 严格 0 差异只适用于 **1500 项离散事实**（四柱/日主/藏干/十神/旬空/粗略起运岁数/大运十步）；
+- `qiyun.precise_start_age` / `precise_start_datetime` 是**派生字段**，接受
+  `|Δ| ≤ 120 × |Δterm|`（独立节气表秒差传播上界），并要求 residual <1s、unexplained=0；
+- 本批 max Δterm=6.9141s → max Δstart=829s，residual<1s；不是 engine 公式错误；
+- JSON 的 `strict_pass:false` 保留为诚实记录；中枢判定为 **scoped pass**；
+- 不改 engine/规则/测试。
