@@ -1,0 +1,51 @@
+{
+  "schema": "p1-holdout-freeze/v2",
+  "frozen_at": "2026-10-29T12:55:00+08:00",
+  "supersedes": "META/p1-holdout-freeze-v1.json",
+  "based_on_baseline": "META/p1-holdout-baseline-v1.json",
+  "reason": "pre-fix 基线暴露：4 条墓用使 strict-edge 90% 结构性不可达；8 条支克/支生是 G3 缺口；墓的 a=库 与 actor=入库方 是约定冲突。口径 v2 在修复前冻结。",
+  "metrics": {
+    "relation_coverage": {
+      "definition": "edge OR muku-equivalent",
+      "denominator": 20,
+      "target_pct": 90,
+      "baseline": "12/20 = 60.0%",
+      "strict_edge_secondary": "8/20 = 40.0%"
+    },
+    "direction_recall": {
+      "definition": "answer actor == a address; primary denominator excludes 4 muku-convention cases H13-H16",
+      "denominator": 16,
+      "target_pct": 80,
+      "kill_pct": 60,
+      "baseline": "1/16 = 6.25%",
+      "raw_20_secondary": "1/20 = 5.0%"
+    }
+  },
+  "excluded_from_direction_primary": {
+    "cases": ["H13", "H14", "H15", "H16"],
+    "reason": "墓用约定冲突：hold-out a=库（施力方）vs 引擎 candidate actor=入库方；需第三人核对原文后再定"
+  },
+  "sensitivity_sets": {
+    "exclude_f28_rescue": ["H17", "H18", "H19", "H20"],
+    "exclude_muku_convention": ["H13", "H14", "H15", "H16"]
+  },
+  "kind_mapping": {
+    "制": "no-kind-filter (dev convention)",
+    "合": ["wuhe", "liuhe"],
+    "冲": ["chong", "stem_chong"],
+    "刑": ["xing"],
+    "穿": ["chuan"],
+    "破": ["po"],
+    "克": ["ke"],
+    "生": ["sheng"],
+    "化": ["sheng"],
+    "墓": "edge: none; candidate: muku"
+  },
+  "discipline": [
+    "revision is based on pre-fix baseline (definition conflicts / coverage gaps), not on post-fix results",
+    "post-fix must write META/p1-holdout-postfix-v1.json and must not overwrite pre-fix baseline",
+    "do not change denominators/thresholds after post-fix",
+    "hold-out is scoring-only; never use it to tune rules"
+  ],
+  "scope_warning": "The independent agent's three fixes are insufficient: 8/20 edge misses are branch-ke/sheng (G3) and 4/20 are muku. Add general branch-ke/sheng primitives + muku relation-equivalence before the three fixes; otherwise relation coverage cannot reach 90%."
+}
