@@ -1,0 +1,314 @@
+{
+ "schema_version": "p1-fixed-20-blind/v1",
+ "task": "T-194",
+ "generated_at": "2026-10-29",
+ "annotator": "A",
+ "note": "盲卷：只含 case_id/chart_id/四柱/性别/层/target_relation（地支端点，a/b 按柱位 Y→M→D→H 排序，不含方向）；不含原文定位、引文文本、答案或 actor。fixed 20 = 克 5 + 生 5 + 化 5 + 墓 5。",
+ "isolation": {
+  "no_source_path": true,
+  "no_citation_text": true,
+  "no_answer_fields": true,
+  "dev_sets_excluded": [
+   "golden-20(dev-20)",
+   "holdout-20",
+   "fresh-40",
+   "anchor-60"
+  ],
+  "extra_sets_excluded": [
+   "fresh-40-routing"
+  ]
+ },
+ "case_count": 20,
+ "chart_count": 20,
+ "layers": {
+  "fixed": 20
+ },
+ "mechanisms": {
+  "克": 5,
+  "生": 5,
+  "化": 5,
+  "墓": 5
+ },
+ "cases": [
+  {
+   "case_id": "F20-001",
+   "chart_id": "cf-fee600218b19b441a567",
+   "four_pillars": "丁亥 庚戌 己巳 庚午",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "M.b",
+    "char_a": "亥",
+    "char_b": "戌",
+    "mechanism": "克"
+   }
+  },
+  {
+   "case_id": "F20-002",
+   "chart_id": "cf-8c92d1b119d0e478e614",
+   "four_pillars": "甲午 丁卯 癸酉 乙卯",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "午",
+    "char_b": "酉",
+    "mechanism": "克"
+   }
+  },
+  {
+   "case_id": "F20-003",
+   "chart_id": "cf-0dec002f2eece26cac6f",
+   "four_pillars": "壬子 丙午 乙酉 戊寅",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "M.b",
+    "addr_b": "D.b",
+    "char_a": "午",
+    "char_b": "酉",
+    "mechanism": "克"
+   }
+  },
+  {
+   "case_id": "F20-004",
+   "chart_id": "cf-4594768fd80eba942916",
+   "four_pillars": "庚戌 丁亥 丁巳 癸卯",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "M.b",
+    "char_a": "戌",
+    "char_b": "亥",
+    "mechanism": "克"
+   }
+  },
+  {
+   "case_id": "F20-005",
+   "chart_id": "cf-f8577dedd884fcbd07ec",
+   "four_pillars": "己卯 丙子 丁未 甲辰",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "卯",
+    "char_b": "未",
+    "mechanism": "克"
+   }
+  },
+  {
+   "case_id": "F20-006",
+   "chart_id": "cf-d40ec8604323278f8275",
+   "four_pillars": "乙未 丁亥 乙酉 丙戌",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "M.b",
+    "addr_b": "D.b",
+    "char_a": "亥",
+    "char_b": "酉",
+    "mechanism": "生"
+   }
+  },
+  {
+   "case_id": "F20-007",
+   "chart_id": "cf-e6727a7c7df5e3351fd8",
+   "four_pillars": "癸卯 丁巳 癸丑 癸亥",
+   "gender": "坤",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "M.b",
+    "char_a": "卯",
+    "char_b": "巳",
+    "mechanism": "生"
+   }
+  },
+  {
+   "case_id": "F20-008",
+   "chart_id": "cf-14bfcbffb8e51c3493f4",
+   "four_pillars": "甲辰 丙寅 甲午 丁卯",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "辰",
+    "char_b": "午",
+    "mechanism": "生"
+   }
+  },
+  {
+   "case_id": "F20-009",
+   "chart_id": "cf-96f4ce6c5f417964893f",
+   "four_pillars": "戊申 壬戌 甲子 丙寅",
+   "gender": "坤",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "申",
+    "char_b": "子",
+    "mechanism": "生"
+   }
+  },
+  {
+   "case_id": "F20-010",
+   "chart_id": "cf-6119a39113ff922f390d",
+   "four_pillars": "癸巳 甲子 癸卯 癸亥",
+   "gender": "坤",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "巳",
+    "char_b": "卯",
+    "mechanism": "生"
+   }
+  },
+  {
+   "case_id": "F20-011",
+   "chart_id": "cf-e371149459d53da99171",
+   "four_pillars": "己亥 癸酉 甲寅 甲子",
+   "gender": "坤",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "M.b",
+    "char_a": "亥",
+    "char_b": "酉",
+    "mechanism": "化"
+   }
+  },
+  {
+   "case_id": "F20-012",
+   "chart_id": "cf-d72f1e0d69bf4feb05f2",
+   "four_pillars": "壬午 己酉 甲申 甲子",
+   "gender": "未注明",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "D.b",
+    "addr_b": "H.b",
+    "char_a": "申",
+    "char_b": "子",
+    "mechanism": "化"
+   }
+  },
+  {
+   "case_id": "F20-013",
+   "chart_id": "cf-b7ebd2f1a5f4407e4fa3",
+   "four_pillars": "乙未 丁亥 甲午 丙子",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "M.b",
+    "char_a": "未",
+    "char_b": "亥",
+    "mechanism": "化"
+   }
+  },
+  {
+   "case_id": "F20-014",
+   "chart_id": "cf-e45885f8f92fc0d4a7e1",
+   "four_pillars": "丙申 壬辰 丙辰 戊子",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "H.b",
+    "char_a": "申",
+    "char_b": "子",
+    "mechanism": "化"
+   }
+  },
+  {
+   "case_id": "F20-015",
+   "chart_id": "cf-d0bb0a9999e83c8f037e",
+   "four_pillars": "丙午 庚寅 丙辰 庚子",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "M.b",
+    "addr_b": "H.b",
+    "char_a": "寅",
+    "char_b": "子",
+    "mechanism": "化"
+   }
+  },
+  {
+   "case_id": "F20-016",
+   "chart_id": "cf-afc4150ff8a4a7de18b1",
+   "four_pillars": "丁未 壬子 甲寅 戊辰",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "未",
+    "char_b": "寅",
+    "mechanism": "墓"
+   }
+  },
+  {
+   "case_id": "F20-017",
+   "chart_id": "cf-33d0303052aba71e60ee",
+   "four_pillars": "壬子 癸丑 辛酉 乙未",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "M.b",
+    "addr_b": "D.b",
+    "char_a": "丑",
+    "char_b": "酉",
+    "mechanism": "墓"
+   }
+  },
+  {
+   "case_id": "F20-018",
+   "chart_id": "cf-ba0095d81d3c2e1b8d57",
+   "four_pillars": "壬子 辛亥 戊午 丙辰",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "M.b",
+    "addr_b": "H.b",
+    "char_a": "亥",
+    "char_b": "辰",
+    "mechanism": "墓"
+   }
+  },
+  {
+   "case_id": "F20-019",
+   "chart_id": "cf-1ac2793af650af3244a6",
+   "four_pillars": "戊申 丙辰 乙丑 戊寅",
+   "gender": "乾",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "申",
+    "char_b": "丑",
+    "mechanism": "墓"
+   }
+  },
+  {
+   "case_id": "F20-020",
+   "chart_id": "cf-efe9bf699966a8cb15e8",
+   "four_pillars": "辛酉 辛卯 己丑 丙子",
+   "gender": "坤",
+   "layer": "fixed",
+   "target_relation": {
+    "addr_a": "Y.b",
+    "addr_b": "D.b",
+    "char_a": "酉",
+    "char_b": "丑",
+    "mechanism": "墓"
+   }
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "schema_version": "routing-prereg/v1",
+ "task": "T-194",
+ "generated_at": "2026-10-29",
+ "status": "PREREGISTERED（annotator A）；B 复核待中枢另派",
+ "scope": "只测证据包召回覆盖（recall）：宫位地址 / 关系边 ID / source_ref 区间；不测方向、吉凶、断语。",
+ "inputs": {
+  "questions_file": "META/routing-questions-v1.json",
+  "questions_sha256": "580dc36a48c1602db909e95daa7ae22aa9ace8e66c334f5681c02276b9d688d4",
+  "question_count": 15,
+  "item_counts": {
+   "palaces": 35,
+   "edges": 32,
+   "source_refs": 30
+  }
+ },
+ "evidence_types": {
+  "palace": "宫位地址（Y/M/D/H + .s/.b），精确匹配",
+  "edge": "关系边：edge_id 精确匹配；或 members 集合 + kind 与预注册 key 一致（防边号重排）",
+  "source_ref": "同一文件内，返回区间与预注册区间至少重叠 1 行"
+ },
+ "metrics": {
+  "per_question_recall": "命中项数 / 该题预注册项数（palace/edge/source_ref 每项等权 1）",
+  "macro_recall": "全部题目 per_question_recall 的算术平均（主判定指标）",
+  "micro_recall": "全部命中项数 / 全部预注册项数（副指标，仅报告，不用于判定）",
+  "domain_macro_recall": "按 domain 分组的 macro（诊断用，不改变总判定）"
+ },
+ "thresholds": {
+  "pass_min": 0.8,
+  "kill_below": 0.6,
+  "gray": [
+   0.6,
+   0.8
+  ],
+  "gray_note": "0.60 ≤ macro_recall < 0.80 为灰区；灰区允许重测一次，仍落灰区则记灰，不得改阈值或删题",
+  "decision_rule": "macro_recall ≥ 0.80 → PASS；macro_recall < 0.60 → KILL；0.60–0.79 → GRAY"
+ },
+ "procedure": [
+  "1. runner 只拿 runner_visible_fields（question_id/domain/question/chart），不读 expected_evidence。",
+  "2. runner 对每题产出一份事实证据包：宫位地址列表 + 关系边列表（id/members/kind）+ source_ref 区间列表。",
+  "3. 按 evidence_types 的匹配规则逐项比对；重复返回只算一次；每项最多匹配一次。",
+  "4. 算 per_question_recall → macro_recall → 按 thresholds.decision_rule 判 PASS/KILL/GRAY。",
+  "5. 记录 macro/micro/domain 三组数字与逐题明细；不得事后加删题或改区间。"
+ ],
+ "non_goals": [
+  "不测方向（actor→target）",
+  "不测断语/吉凶/应期",
+  "不测冲合穿刑的方向与吉凶",
+  "不调 A+ 阈值（adjudication-a-plus-v1 的阈值不动）",
+  "不跑评分器、不改分"
+ ],
+ "leakage_guard": {
+  "questions_file_restricted": true,
+  "runner_must_not_read": [
+   "expected_evidence",
+   "META/p1-fixed-20-answers-v1.json"
+  ],
+  "fixed20_pair_excluded": "routing 期望边中已剔除该盘在 fixed-20 里被考的那一对端点（防串答案）"
+ },
+ "freeze": {
+  "questions_sha256": "580dc36a48c1602db909e95daa7ae22aa9ace8e66c334f5681c02276b9d688d4",
+  "frozen_at": "2026-10-29",
+  "mutation_policy": "hash 冻结后不得改题、改区间、改阈值；如需修订另开 v2"
+ }
+}

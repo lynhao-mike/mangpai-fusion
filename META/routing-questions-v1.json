@@ -1,0 +1,954 @@
+{
+ "schema_version": "routing-questions/v1",
+ "task": "T-194",
+ "generated_at": "2026-10-29",
+ "annotator": "A",
+ "note": "分流问题集：15 个真实问题（婚姻/事业/健康/财运），每题预注册应召回证据项（宫位地址 / 关系边 ID / source_ref 区间）。盘取自 fixed-20 同一批（卡允许），与 dev-20/holdout-20/fresh-40/anchor-60 四套四柱零重叠。不含方向、吉凶、断语。",
+ "scope": "只测证据包召回覆盖（recall），不测方向/断语",
+ "access": {
+  "level": "restricted",
+  "reason": "expected_evidence 是预注册标签（应召回证据项），runner 不得读取",
+  "runner_visible_fields": [
+   "question_id",
+   "domain",
+   "question",
+   "chart"
+  ],
+  "restricted_fields": [
+   "expected_evidence"
+  ]
+ },
+ "chart_pool": {
+  "source": "META/p1-fixed-20-blind-v1.json",
+  "count": 15,
+  "zero_overlap_with": [
+   "golden-20(dev-20)",
+   "holdout-20",
+   "fresh-40",
+   "anchor-60"
+  ]
+ },
+ "counts": {
+  "questions": 15,
+  "by_domain": {
+   "婚姻": 4,
+   "事业": 4,
+   "健康": 3,
+   "财运": 4
+  },
+  "items": {
+   "palaces": 35,
+   "edges": 32,
+   "source_refs": 30
+  }
+ },
+ "questions": [
+  {
+   "question_id": "RQ-01",
+   "domain": "婚姻",
+   "question": "我这几年的婚姻一直不顺，想知道这段婚姻还能不能稳定？",
+   "chart": {
+    "case_id": "F20-001",
+    "chart_id": "cf-fee600218b19b441a567",
+    "four_pillars": "丁亥 庚戌 己巳 庚午",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "basis": "日支为配偶宫（婚姻专辑 L15-L17）"
+     },
+     {
+      "addr": "Y.b",
+      "role": "配偶星：财星（男命）",
+      "basis": "地支主气十神=正财"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "key": "D.b-Y.b|chong",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "亥",
+       "巳"
+      ]
+     },
+     {
+      "edge_id": "e010",
+      "key": "D.b-H.b|sanhui",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "巳",
+       "午"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-02",
+   "domain": "婚姻",
+   "question": "我和老婆经常吵架，会不会走到离婚？",
+   "chart": {
+    "case_id": "F20-004",
+    "chart_id": "cf-4594768fd80eba942916",
+    "four_pillars": "庚戌 丁亥 丁巳 癸卯",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "basis": "日支为配偶宫（婚姻专辑 L15-L17）"
+     },
+     {
+      "addr": "Y.s",
+      "role": "配偶星：财星（男命）（透干）",
+      "basis": "天干十神=正财"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e010",
+      "key": "D.b-M.b|chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "亥",
+       "巳"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-03",
+   "domain": "婚姻",
+   "question": "我结婚晚，婚后两人聚少离多，婚姻质量怎么样？",
+   "chart": {
+    "case_id": "F20-007",
+    "chart_id": "cf-e6727a7c7df5e3351fd8",
+    "four_pillars": "癸卯 丁巳 癸丑 癸亥",
+    "gender": "坤"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "basis": "日支为配偶宫（婚姻专辑 L15-L17）"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e011",
+      "key": "D.b-M.b|sanhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "巳",
+       "丑"
+      ]
+     },
+     {
+      "edge_id": "e013",
+      "key": "D.b-H.b|sanhui",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "丑",
+       "亥"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-04",
+   "domain": "婚姻",
+   "question": "我一直遇不到合适的人，是不是婚姻缘分薄？",
+   "chart": {
+    "case_id": "F20-011",
+    "chart_id": "cf-e371149459d53da99171",
+    "four_pillars": "己亥 癸酉 甲寅 甲子",
+    "gender": "坤"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "basis": "日支为配偶宫（婚姻专辑 L15-L17）"
+     },
+     {
+      "addr": "M.b",
+      "role": "配偶星：官杀（女命）",
+      "basis": "地支主气十神=正官"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "key": "D.b-Y.b|liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "liuhe",
+      "chars": [
+       "亥",
+       "寅"
+      ]
+     },
+     {
+      "edge_id": "e010",
+      "key": "D.b-Y.b|po",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "po",
+      "chars": [
+       "亥",
+       "寅"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-05",
+   "domain": "事业",
+   "question": "我现在在单位上班，想知道有没有升职当官的可能？",
+   "chart": {
+    "case_id": "F20-002",
+    "chart_id": "cf-8c92d1b119d0e478e614",
+    "four_pillars": "甲午 丁卯 癸酉 乙卯",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "basis": "月支为事业与格局之根（官命看法 L2819-L2827）"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "key": "M.b-Y.b|po",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "po",
+      "chars": [
+       "午",
+       "卯"
+      ]
+     },
+     {
+      "edge_id": "e011",
+      "key": "D.b-M.b|chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "卯",
+       "酉"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-06",
+   "domain": "事业",
+   "question": "我想辞职自己创业，事业上该往哪个方向走？",
+   "chart": {
+    "case_id": "F20-008",
+    "chart_id": "cf-14bfcbffb8e51c3493f4",
+    "four_pillars": "甲辰 丙寅 甲午 丁卯",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "basis": "月支为事业与格局之根（官命看法 L2819-L2827）"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "key": "M.b-Y.b|sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "辰",
+       "寅"
+      ]
+     },
+     {
+      "edge_id": "e010",
+      "key": "D.b-M.b|sanhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "寅",
+       "午"
+      ]
+     },
+     {
+      "edge_id": "e011",
+      "key": "H.b-M.b|sanhui",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "寅",
+       "卯"
+      ]
+     },
+     {
+      "edge_id": "e013",
+      "key": "H.b-M.b-Y.b|sanhui",
+      "members": [
+       "M.b",
+       "H.b",
+       "Y.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "寅",
+       "卯",
+       "辰"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-07",
+   "domain": "事业",
+   "question": "我在部队/体制内，未来能不能往上走？",
+   "chart": {
+    "case_id": "F20-016",
+    "chart_id": "cf-afc4150ff8a4a7de18b1",
+    "four_pillars": "丁未 壬子 甲寅 戊辰",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "basis": "月支为事业与格局之根（官命看法 L2819-L2827）"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "key": "M.b-Y.b|chuan",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "chuan",
+      "chars": [
+       "未",
+       "子"
+      ]
+     },
+     {
+      "edge_id": "e009",
+      "key": "H.b-M.b|sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "子",
+       "辰"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-08",
+   "domain": "事业",
+   "question": "我适合做律师还是进体制？事业上怎么定位？",
+   "chart": {
+    "case_id": "F20-020",
+    "chart_id": "cf-efe9bf699966a8cb15e8",
+    "four_pillars": "辛酉 辛卯 己丑 丙子",
+    "gender": "坤"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "basis": "月支为事业与格局之根（官命看法 L2819-L2827）"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "key": "M.b-Y.b|chong",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "酉",
+       "卯"
+      ]
+     },
+     {
+      "edge_id": "e012",
+      "key": "H.b-M.b|po",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "kind": "po",
+      "chars": [
+       "卯",
+       "子"
+      ]
+     },
+     {
+      "edge_id": "e013",
+      "key": "H.b-M.b|xing",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "kind": "xing",
+      "chars": [
+       "卯",
+       "子"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-09",
+   "domain": "健康",
+   "question": "我最近身体总出问题，八字上看哪些部位要当心？",
+   "chart": {
+    "case_id": "F20-003",
+    "chart_id": "cf-0dec002f2eece26cac6f",
+    "four_pillars": "壬子 丙午 乙酉 戊寅",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "basis": "日支为身体与配偶宫，疾病专辑 L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "basis": "月令定寒燥，阴阳失衡主病"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "key": "D.b-Y.b|po",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "po",
+      "chars": [
+       "子",
+       "酉"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L33-L33"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-10",
+   "domain": "健康",
+   "question": "我血压和心脏不太好，和八字有关系吗？",
+   "chart": {
+    "case_id": "F20-005",
+    "chart_id": "cf-f8577dedd884fcbd07ec",
+    "four_pillars": "己卯 丙子 丁未 甲辰",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "basis": "日支为身体与配偶宫，疾病专辑 L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "basis": "月令定寒燥，阴阳失衡主病"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e013",
+      "key": "D.b-M.b|chuan",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "chuan",
+      "chars": [
+       "子",
+       "未"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L29-L29"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-11",
+   "domain": "健康",
+   "question": "我常年肠胃不好，是不是八字里土被克？",
+   "chart": {
+    "case_id": "F20-013",
+    "chart_id": "cf-b7ebd2f1a5f4407e4fa3",
+    "four_pillars": "乙未 丁亥 甲午 丙子",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "basis": "日支为身体与配偶宫，疾病专辑 L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "basis": "日干为本人"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "basis": "月令定寒燥，阴阳失衡主病"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "key": "D.b-Y.b|liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "liuhe",
+      "chars": [
+       "未",
+       "午"
+      ]
+     },
+     {
+      "edge_id": "e009",
+      "key": "D.b-Y.b|sanhui",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "未",
+       "午"
+      ]
+     },
+     {
+      "edge_id": "e011",
+      "key": "D.b-M.b|zhi_anhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "kind": "zhi_anhe",
+      "chars": [
+       "亥",
+       "午"
+      ]
+     },
+     {
+      "edge_id": "e013",
+      "key": "D.b-H.b|chong",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "午",
+       "子"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27-L27"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-12",
+   "domain": "财运",
+   "question": "我这几年财运一般，什么时候能攒下钱？",
+   "chart": {
+    "case_id": "F20-006",
+    "chart_id": "cf-d40ec8604323278f8275",
+    "four_pillars": "乙未 丁亥 乙酉 丙戌",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "Y.b",
+      "role": "财星",
+      "basis": "地支主气十神=偏财"
+     },
+     {
+      "addr": "H.b",
+      "role": "财星",
+      "basis": "地支主气十神=正财"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "basis": "日支为主位，财要归主位"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "key": "M.b-Y.b|sanhe",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "未",
+       "亥"
+      ]
+     },
+     {
+      "edge_id": "e008",
+      "key": "H.b-Y.b|po",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "kind": "po",
+      "chars": [
+       "未",
+       "戌"
+      ]
+     },
+     {
+      "edge_id": "e009",
+      "key": "H.b-Y.b|xing",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "kind": "xing",
+      "chars": [
+       "未",
+       "戌"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+     "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-13",
+   "domain": "财运",
+   "question": "我做生意总是财来财去，问题出在哪？",
+   "chart": {
+    "case_id": "F20-009",
+    "chart_id": "cf-96f4ce6c5f417964893f",
+    "four_pillars": "戊申 壬戌 甲子 丙寅",
+    "gender": "坤"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "财星",
+      "basis": "地支主气十神=偏财"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "basis": "日支为主位，财要归主位"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "key": "M.b-Y.b|sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "申",
+       "戌"
+      ]
+     },
+     {
+      "edge_id": "e012",
+      "key": "H.b-M.b|sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "戌",
+       "寅"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+     "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-14",
+   "domain": "财运",
+   "question": "我适合靠技术赚钱还是靠人脉资源？",
+   "chart": {
+    "case_id": "F20-015",
+    "chart_id": "cf-d0bb0a9999e83c8f037e",
+    "four_pillars": "丙午 庚寅 丙辰 庚子",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "M.s",
+      "role": "财星（透干）",
+      "basis": "天干十神=偏财"
+     },
+     {
+      "addr": "H.s",
+      "role": "财星（透干）",
+      "basis": "天干十神=偏财"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "basis": "日支为主位，财要归主位"
+     }
+    ],
+    "edges": [],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+     "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+    ]
+   }
+  },
+  {
+   "question_id": "RQ-15",
+   "domain": "财运",
+   "question": "我投资老是亏，八字里财库能不能用？",
+   "chart": {
+    "case_id": "F20-018",
+    "chart_id": "cf-ba0095d81d3c2e1b8d57",
+    "four_pillars": "壬子 辛亥 戊午 丙辰",
+    "gender": "乾"
+   },
+   "expected_evidence": {
+    "palaces": [
+     {
+      "addr": "Y.b",
+      "role": "财星",
+      "basis": "地支主气十神=正财"
+     },
+     {
+      "addr": "M.b",
+      "role": "财星",
+      "basis": "地支主气十神=偏财"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "basis": "日支为主位，财要归主位"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "key": "M.b-Y.b|sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "kind": "sanhui",
+      "chars": [
+       "子",
+       "亥"
+      ]
+     },
+     {
+      "edge_id": "e010",
+      "key": "D.b-Y.b|chong",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "kind": "chong",
+      "chars": [
+       "子",
+       "午"
+      ]
+     },
+     {
+      "edge_id": "e011",
+      "key": "H.b-Y.b|sanhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "kind": "sanhe",
+      "chars": [
+       "子",
+       "辰"
+      ]
+     }
+    ],
+    "source_refs": [
+     "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+     "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+    ]
+   }
+  }
+ ]
+}
