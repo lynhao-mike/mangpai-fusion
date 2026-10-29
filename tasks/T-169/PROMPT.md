@@ -149,3 +149,23 @@
 - 不许把聚合 count 写成结论。
 - 不许用「可能有风险」这类模板句充数。
 - 不许把「合开墓库/actor=None」写成「已解决」；缺口就是缺口。
+
+## 12. 中枢裁决（2026-10-29 09:00）
+
+1. **9.13 允许（有条件）**：婚姻域没有结构项（G5），允许 `basis.kind=edge` + 原文结构判据
+   （如 `M1-D-298`「夫妻宫不能被刑坏/冲破/穿倒」）判 `破局`，但必须：
+   - 双锚点齐全：edge id + 原文 `path:line`；
+   - `assert` 写明「目标受冲/刑/穿/破」，`evidence` 给地址；
+   - `rescue_judged=未判`（G5），不得写「化解」；
+   - 只用于本卡，不升级为通用规则/新原子。
+2. **9.12 禁止**：原文不得用来补 `actor=None` 的施力方向；`actor=None` 一律
+   `direction_known=false` + `actor/target=null`。
+   区分：9.13 是「原文作成败判据 + 已知边」；9.12 是「原文补缺失事实」——前者允许，后者禁止。
+3. **9.9 允许为结构条件**：`activation` 可写边种 + `DY/LN` 地址 + 条件；
+   `scene` 不得出现年份/年龄/概率/事件；不得把 `LN{year}` 翻译成「该年会发生 X」。
+4. **Linter 不现在实现**：13 条待外部审计（9.1–9.13）里有语义项；等独立 Agent 复审 + golden-20
+   后再开 T-172。规格 §4 的 L01–L21 是判据，不得放宽。
+5. **两条实测接受并升级为铁律**：
+   - 一卡一快照（`snapshot{chart_id,dayun_index,liunian_year}`；跨快照 edge_id 即错）；
+   - `candidates` ≠ 边全集（推演器/答案必须 edges 全集 + candidates 方向两路并读；
+     只有 candidate 无 edge 的标 `candidate_only`）。

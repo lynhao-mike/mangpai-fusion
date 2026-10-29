@@ -97,3 +97,13 @@
 - 不许为了凑 20 把「只有断语没有推演」的例塞进来。
 - 不许把答案字段泄漏进盲测输入。
 - 不许改原文一个字。
+
+## 9. 中枢补充（2026-10-29 09:00，T-169 实测后）
+
+1. **任何 `edge_id` 必须带 `snapshot{chart_id, dayun_index, liunian_year}`**：
+   加 `--dayun-index/--liunian` 会全量重编号（C1 `e012` 从 `liuhe[M.b,D.b]` 变
+   `ke[M.s,LN2026.s]`，16→39 条）。没有快照就只能写地址，不许写裸边号。
+2. **`candidate_id` 与 `relations.edge_id` 两路都给**：`duan_zuogong.candidates` 不是边全集
+   （三盘夫妻宫漏 3/4/1 条）。只有 candidate 没有 edge 的，标 `candidate_only`，不得当已成立。
+3. 若已生成 JSON，按上面两条补字段；来不及就在 BRIEF 的「风险」列出未带 snapshot 的条目，
+   验收按不合格处理。

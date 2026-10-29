@@ -1,0 +1,672 @@
+{
+  "schema": "single-chart-cases/v1",
+  "task": "T-169",
+  "status": "draft-for-hub-review",
+  "generated_at": "2026-10-29",
+  "purpose": "为 docs/specs/single-chart-analysis-v1.md 选定 3 张真实盘，并记录每张盘当前事实层能拿到什么、缺什么（只记录事实与缺口，不含断语）。",
+  "minimal_unit": "五元组断语卡（原局象 / 体用宾主与施力方向 / 成败救应三态 / 落事+岁运引动 / 双锚点）；本文件的 card_support 字段说明每张盘能支撑哪几元组。",
+  "source_dataset": "META/timing-eval-set-v1.json",
+  "facts_source": "python -m engine.cli",
+  "selection_policy": {
+    "rule": "只从 META/timing-eval-set-v1.json 的 usable_for_timing=true 记录中选；不合成、不改造、不编造地址。",
+    "why_not_cases_dir": "cases/ 目录含既有分析与命主反馈，用它会被旧结论污染；eval set 只有 case_id/性别/出生时刻，适合做盲判。",
+    "coverage": [
+      "乾造：结构完整、做功候选 >= 2 且方向可定",
+      "坤造：配偶星/夫妻宫有可查地址",
+      "边界盘：晚子时 / 无配偶星 / boundary_warnings 之一 / 多冲"
+    ],
+    "engine_profiles": {
+      "zi_shi": "late_zi_split",
+      "yin_changsheng": "yin_reverse",
+      "tu_jigong": "duan_split_earth"
+    }
+  },
+  "address_conventions": {
+    "physical": ["Y.s", "M.s", "D.s", "H.s", "Y.b", "M.b", "D.b", "H.b"],
+    "hidden_stem": "addr⊕char（如 D.b⊕己）：藏干无独立地址，见缺口 G4",
+    "edge": "e0xx 只在本快照内有效（T-165 P6：381/382 例同一 (kind,members) 边相邻两年 id 不同）",
+    "palace": "year/month/day/hour 与 年/月/日/时 一一对应",
+    "snapshot_rule": "一张断语卡只能有一个快照 (chart_id, dayun_index, liunian_year)；加 --dayun-index/--liunian 会给全部边重新编号，实测 RF-2026-000125 原局 e012=liuhe[M.b,D.b]，在 dayun_index=5+liunian=2026 快照里 e012=ke[M.s,LN2026.s]（边数 16→39）；RF-2026-000438 原局 e009=liuhe[Y.b,D.b]，岁运快照里 e009=ke[H.s,M.s]（边数 14→39）",
+    "reading_traps": [
+      "engine.cli all 会删掉空值：boundary_warnings=[] 时整个键不出现，必须用 engine.cli chart 看边界",
+      "engine.cli all 削掉 candidates[].binzhu / distance、edges[].chars / between、relations.nodes、pair_index",
+      "duan_zuogong.candidates 只扫「体用相交」且 kind in {ke, stem_chong, chong, xing, chuan} ∪ {wuhe, liuhe, zhi_anhe, ganzhi_zihe}；po / sanhe / sanhui / 同体边不在候选内",
+      "chart 只有 4 柱、tiyong 只有 8 个原局地址 → DY/LN 的十神与体用取不到（suiyun_ten_god）"
+    ]
+  },
+  "gap_catalog": {
+    "G2": "冲/刑/穿/破无方向：structure_check.py 只对 ke 设 actor，制用候选 actor=None 523/3179",
+    "G3": "地支之间不建克边：地支五克对 880 个，事实层「支→支克」边 0 条",
+    "G4": "藏干无独立地址：只能写 addr⊕char，且宫制星候选不输出 via 字",
+    "G5": "盲派域无救应/反制事实：structures 只覆盖子平八格，countered_resolved 无地址承载",
+    "muku_open_close": "墓库只给 openers（冲/刑）与 binders（六合等），不给开/闭结论；合能否开库待外部审计（规格 9.1）",
+    "no_spouse_star": "八字无配偶星（乾无财/坤无官杀）：20/382，任何「配偶星受制」的句子都不能写",
+    "boundary_zi_shi": "晚子时：日柱随时辰口径变化，chart.variants[axis=zi_shi] 给出另一张盘",
+    "near_jie": "交节前后 2 小时内：月柱/年柱可能不同",
+    "suiyun_ten_god": "DY/LN 的十神与体用不在 CLI 输出里（chart 只有 4 柱，tiyong 只有 8 个原局地址）：可写边种+地址，不可对岁运字下十神判断（T-165 E3）"
+  },
+  "cases": [
+    {
+      "case_index": "C1",
+      "snapshot": {"chart_id": "cf-5735e1472538ad92664b", "dayun_index": null, "liunian_year": null},
+      "case_id": "RF-2026-000125",
+      "role": "乾造·结构完整",
+      "gender": "乾",
+      "gender_raw": "男",
+      "birth_dt": "1987-12-18 13:15:00",
+      "birth_datetime_raw": "1987-12-18 13:15 分",
+      "time_basis": "clock_beijing",
+      "birth_source": "solar_asis",
+      "calendar_type_raw": "solar",
+      "usable_for_timing": true,
+      "quality_grade": "B",
+      "pillars": "丁卯 壬子 辛丑 乙未",
+      "day_master": "辛",
+      "selection_reason": "做功候选 17 个、其中 actor 非空 12 个，远超「候选 >=2」门槛；夫妻宫 D.b 恰有 4 条不同 kind 的边（六合/三会/冲/刑），且其中 3 条不在 duan_zuogong.candidates 里，正好演示「只抄候选会漏边」；墓库 openers 与 binders 并存，可演示合开墓库缺口。",
+      "boundary": {
+        "warnings": [],
+        "variants": [
+          {
+            "axis": "yin_changsheng",
+            "alt_value": "yin_same_as_yang",
+            "affects": "仅十二长生（changsheng）字段，不改变四柱"
+          }
+        ],
+        "note": "无边界警告；engine.cli chart 返回 boundary_warnings=[]，engine.cli all 里该键被删。"
+      },
+      "chart_facts": {
+        "palace_ten_gods": {
+          "Y.s": "七杀",
+          "Y.b": "偏财",
+          "M.s": "伤官",
+          "M.b": "食神",
+          "D.s": "日主",
+          "D.b": "偏印",
+          "H.s": "偏财",
+          "H.b": "偏印"
+        },
+        "hidden_stems": {
+          "Y.b": [["乙", "本气", "偏财"]],
+          "M.b": [["癸", "本气", "食神"]],
+          "D.b": [["己", "本气", "偏印"], ["癸", "中气", "食神"], ["辛", "余气", "比肩"]],
+          "H.b": [["己", "本气", "偏印"], ["丁", "中气", "七杀"], ["乙", "余气", "偏财"]]
+        },
+        "kongwang": {
+          "by_day_xun": ["辰", "巳"],
+          "by_year_xun": ["戌", "亥"],
+          "hits": []
+        },
+        "dayun": {
+          "direction": "逆",
+          "qiyun": {"mangpai_rough_age": 3.0, "precise_age": 3.519166667, "precise_datetime": "1991-06-07 10:51:00"},
+          "first_8": ["DY1 辛亥 1991-2000", "DY2 庚戌 2001-2010", "DY3 己酉 2011-2020", "DY4 戊申 2021-2030", "DY5 丁未 2031-2040", "DY6 丙午 2041-2050", "DY7 乙巳 2051-2060", "DY8 甲辰 2061-2070"]
+        },
+        "tiyong": {
+          "体": ["D.s", "D.b", "H.b"],
+          "用": ["Y.s", "Y.b", "H.s"],
+          "双属": ["M.s", "M.b"]
+        }
+      },
+      "edges": [
+        {"id": "e001", "kind": "wuhe", "members": ["Y.s", "M.s"]},
+        {"id": "e002", "kind": "ke", "members": ["M.s", "Y.s"]},
+        {"id": "e003", "kind": "ke", "members": ["Y.s", "D.s"]},
+        {"id": "e004", "kind": "sheng", "members": ["H.s", "Y.s"]},
+        {"id": "e005", "kind": "sheng", "members": ["D.s", "M.s"]},
+        {"id": "e006", "kind": "sheng", "members": ["M.s", "H.s"]},
+        {"id": "e007", "kind": "stem_chong", "members": ["D.s", "H.s"]},
+        {"id": "e008", "kind": "ke", "members": ["D.s", "H.s"]},
+        {"id": "e009", "kind": "po", "members": ["Y.b", "M.b"]},
+        {"id": "e010", "kind": "xing", "members": ["Y.b", "M.b"], "group": "子卯", "completeness": "huxing"},
+        {"id": "e011", "kind": "sanhe", "members": ["Y.b", "H.b"], "group": "亥卯未", "completeness": "half_mu"},
+        {"id": "e012", "kind": "liuhe", "members": ["M.b", "D.b"]},
+        {"id": "e013", "kind": "sanhui", "members": ["M.b", "D.b"], "group": "亥子丑", "completeness": "partial"},
+        {"id": "e014", "kind": "chuan", "members": ["M.b", "H.b"]},
+        {"id": "e015", "kind": "chong", "members": ["D.b", "H.b"]},
+        {"id": "e016", "kind": "xing", "members": ["D.b", "H.b"], "group": "丑戌未", "completeness": "partial"}
+      ],
+      "spouse_palace": {
+        "addr": "D.b",
+        "char": "丑",
+        "edges": ["e012", "e013", "e015", "e016"]
+      },
+      "zuogong": {
+        "total": 17,
+        "by_mode": {"制用": 11, "生泄用": 3, "合用": 2, "墓用": 1},
+        "with_actor": 12,
+        "without_actor": 5,
+        "without_actor_detail": [
+          {"mode": "合用", "kind": "wuhe", "edge_id": "e001", "members": ["Y.s", "M.s"]},
+          {"mode": "制用", "kind": "stem_chong", "edge_id": "e007", "members": ["D.s", "H.s"], "gap": "G2"},
+          {"mode": "制用", "kind": "xing", "edge_id": "e010", "members": ["Y.b", "M.b"], "gap": "G2"},
+          {"mode": "合用", "kind": "liuhe", "edge_id": "e012", "members": ["M.b", "D.b"]},
+          {"mode": "制用", "kind": "chuan", "edge_id": "e014", "members": ["M.b", "H.b"], "gap": "G2"}
+        ],
+        "derived_without_edge_id": [
+          {"mode": "制用", "kind": "canggan_ke", "members": ["M.b", "Y.s"], "actor": "M.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["D.b", "M.s"], "actor": "D.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["D.b", "Y.s"], "actor": "D.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["D.b", "H.s"], "actor": "D.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["H.b", "M.s"], "actor": "H.b"},
+          {"mode": "生泄用", "kind": "sheng(main_qi)", "members": ["M.b", "Y.b"], "actor": "M.b"},
+          {"mode": "墓用", "kind": "muku", "members": ["Y.b", "H.b"], "actor": "Y.b"}
+        ]
+      },
+      "edges_not_in_candidates": [
+        {"id": "e004", "kind": "sheng", "members": ["H.s", "Y.s"], "why": "两端同属「用」，不 cross 体用"},
+        {"id": "e009", "kind": "po", "members": ["Y.b", "M.b"], "why": "po 不在候选 kind 清单内"},
+        {"id": "e011", "kind": "sanhe", "members": ["Y.b", "H.b"], "why": "sanhe 不在候选 kind 清单内"},
+        {"id": "e013", "kind": "sanhui", "members": ["M.b", "D.b"], "why": "sanhui 不在候选 kind 清单内；且落在夫妻宫"},
+        {"id": "e015", "kind": "chong", "members": ["D.b", "H.b"], "why": "两端皆「体」，不 cross 体用；落在夫妻宫"},
+        {"id": "e016", "kind": "xing", "members": ["D.b", "H.b"], "why": "两端皆「体」，不 cross 体用；落在夫妻宫"}
+      ],
+      "muku": [
+        {
+          "addr": "D.b",
+          "branch": "丑",
+          "ku_of": ["金"],
+          "openers": ["e015", "e016"],
+          "binders": ["e012"],
+          "candidates": [{"addr": "D.s", "char": "辛", "char_class": "天干", "excluded": true, "damaged_by_edges": ["e003", "e007"]}]
+        },
+        {
+          "addr": "H.b",
+          "branch": "未",
+          "ku_of": ["木"],
+          "openers": ["e015", "e016"],
+          "binders": [],
+          "chuan_po": ["e014"],
+          "candidates": [
+            {"addr": "Y.b", "char": "卯", "char_class": "四正支", "excluded": false, "requires_judgment": ["四正支见墓一般作拱局，极弱（被制受伤）才入墓，需判断"], "damaged_by_edges": ["e009", "e010"], "ku_link_edges": ["e011"]},
+            {"addr": "H.s", "char": "乙", "char_class": "天干", "excluded": true, "damaged_by_edges": ["e007", "e008"]}
+          ]
+        }
+      ],
+      "structures": {
+        "rescuers_met": [
+          {"structure_id": "ziping_zhengguan", "item_id": "rsc_he_qu_shang", "evidence": ["e001"]},
+          {"structure_id": "ziping_shangguan", "item_id": "rsc_yin_or_cai", "evidence": ["H.s"]},
+          {"structure_id": "ziping_jianlu", "item_id": "rsc_hu_wei", "evidence": ["H.s", "Y.s"]}
+        ],
+        "breakers_met": [
+          {"structure_id": "ziping_zhengguan", "item_id": "brk_sha_hun_guan", "evidence": ["Y.s"]}
+        ],
+        "needs_judgment": [
+          {"structure_id": "ziping_cai", "item_id": "brk_sha_xie_cai", "evidence": ["e004"]},
+          {"structure_id": "ziping_qisha", "item_id": "brk_cai_zi_sha", "evidence": ["e004"]}
+        ],
+        "note": "met 只表示要件命中，不等于成格（docs/agent_tools.md）。"
+      },
+      "spouse_star": {
+        "basis": "财（乾）",
+        "present": true,
+        "addresses": [
+          {"addr": "Y.b", "char": "卯", "ten_god": "偏财", "source": "本气"},
+          {"addr": "Y.b⊕乙", "char": "乙", "ten_god": "偏财", "source": "藏-本气"},
+          {"addr": "H.s", "char": "乙", "ten_god": "偏财", "source": "透干"},
+          {"addr": "H.b⊕乙", "char": "乙", "ten_god": "偏财", "source": "藏-余气"}
+        ]
+      },
+      "facts_available": [
+        "8 个物理地址 + 8 个十神 + 4 支的全部藏干",
+        "16 条关系边（含 group/completeness）",
+        "17 个做功候选，12 个 actor 非空（6 条带 edge_id、5 条 canggan_ke、1 条生泄用派生、1 条墓用）",
+        "夫妻宫 D.b 的 4 条边（e012 六合 / e013 三会 / e015 冲 / e016 刑）",
+        "两个墓库的开边/合边与入墓候选（含 excluded / requires_judgment）",
+        "空亡：日旬空辰巳、年旬空戌亥，全盘无命中",
+        "子平八格 8 个结构，3 条 rescuer.met（含 e001）与 1 条 breaker.met",
+        "4 个配偶星地址（Y.b / Y.b⊕乙 / H.s / H.b⊕乙）"
+      ],
+      "gaps_present": ["G2", "G3", "G4", "G5", "muku_open_close"],
+      "what_this_chart_cannot_say": [
+        "e007（D.s/H.s 天干冲）、e010（Y.b/M.b 刑）、e014（M.b/H.b 穿）三条制用候选 actor=None → 不能写「谁冲谁」「谁穿谁」（G2）",
+        "D.b 金库 openers=[e015,e016] 与 binders=[e012] 并存 → 不能写「库被冲开」或「库被合住」（muku_open_close）",
+        "Y.b=卯 入 H.b=未 墓带 requires_judgment（四正支一般作拱局）→ 不能写「卯已入墓」，只能写「入墓候选 + 需判断」",
+        "地支之间的克（如 Y.b=卯 克 D.b=丑、M.b=子 克…）事实层无 edge → 不能写「支上相克」的做功结论（G3）",
+        "藏干无独立地址 → D.b 藏己/癸/辛 只能写 D.b⊕己 等复合串，不能声称有独立地址（G4）",
+        "盲派域无救应事实 → 只能引子平八格的 rescuer 项，不能写「有忌象得救应化解」（G5）",
+        "17 个候选是「候选」不是「做功成功」→ 不能写「本盘做成 17 条功」"
+      ],
+      "suiyun_activation": {
+        "snapshot": {"dayun_index": 5, "liunian_year": 2026, "edges_total": 39},
+        "note": "整卡必须换到该快照；原局的 e012/e015/e016 在本快照编号全变，不能混用。",
+        "spouse_palace_edges_in_scoped_snapshot": [
+          {"id": "e026", "kind": "liuhe", "members": ["M.b", "D.b"], "scope": "natal"},
+          {"id": "e027", "kind": "sanhui", "members": ["M.b", "D.b"], "scope": "natal", "group": "亥子丑"},
+          {"id": "e031", "kind": "chong", "members": ["D.b", "H.b"], "scope": "natal"},
+          {"id": "e032", "kind": "xing", "members": ["D.b", "H.b"], "scope": "natal", "group": "丑戌未"},
+          {"id": "e033", "kind": "chong", "members": ["D.b", "DY5.b"], "scope": "dayun"},
+          {"id": "e034", "kind": "xing", "members": ["D.b", "DY5.b"], "scope": "dayun", "group": "丑戌未"},
+          {"id": "e035", "kind": "chuan", "members": ["D.b", "LN2026.b"], "scope": "liunian"}
+        ]
+      },
+      "card_support": {
+        "t1_local_image": "齐：8 地址、16 边、藏干可写 addr⊕char",
+        "t2_role_and_force": "齐：12 个 actor 非空；e007/e010/e014 只能写「方向未定」(G2)",
+        "t3_outcome": "部分：有 3 条 rescuer.met + 1 条 breaker.met，但都是子平八格；婚姻域无结构 → 破局只能靠 edge basis + 原文",
+        "t4_scene_and_activation": "齐：岁运快照有 e033/e034/e035 可作引动；但 DY5.b/LN2026.b 的十神取不到 (suiyun_ten_god)",
+        "t5_dual_anchor": "齐：地址锚点 + 原文 M1-D-009/M1-D-012/M1-D-013 均可查",
+        "hardest_gap": "G2（冲/刑/穿主客）+ muku_open_close（开边与合边并存）"
+      },
+      "reproduce": [
+        "python -m engine.cli all --birth \"1987-12-18 13:15:00\" --gender 乾 --json",
+        "python -m engine.cli chart --birth \"1987-12-18 13:15:00\" --gender 乾 --json",
+        "python -m engine.cli relations --birth \"1987-12-18 13:15:00\" --gender 乾 --json"
+      ]
+    },
+    {
+      "case_index": "C2",
+      "snapshot": {"chart_id": "cf-f10b5515f2019638f42f", "dayun_index": null, "liunian_year": null},
+      "case_id": "RF-2026-000438",
+      "role": "坤造·配偶星可查",
+      "gender": "坤",
+      "gender_raw": "女",
+      "birth_dt": "1990-02-23 01:48:00",
+      "birth_datetime_raw": "1990-02-23 01:48",
+      "time_basis": "true_solar",
+      "birth_source": "solar_from_paipan",
+      "calendar_type_raw": "lunar",
+      "calendar_note": "原记录日历标注为农历；birth_dt 为 eval set 换算后的公历时刻（T-164 §1 口径：按记录原值喂入，引擎不做真太阳时换算）。重跑必须用 birth_dt，不要用农历原文重排。",
+      "usable_for_timing": true,
+      "quality_grade": "B",
+      "pillars": "庚午 戊寅 己未 乙丑",
+      "day_master": "己",
+      "selection_reason": "坤造且官杀配偶星有 4 个可查地址（M.b 本气正官 / M.b⊕甲 / D.b⊕乙 / H.s 透干七杀），满足「配偶星/夫妻宫有可查地址」；夫妻宫 D.b 的 4 条边（六合/三会/冲/刑）全都不在 candidates 里；D.b=未 木库的 openers 与 binders 并存，可演示合开墓库缺口；H.b 落空亡，可演示「空亡只有地址、不是结论」。",
+      "boundary": {
+        "warnings": [],
+        "variants": [
+          {
+            "axis": "yin_changsheng",
+            "alt_value": "yin_same_as_yang",
+            "affects": "仅十二长生（changsheng）字段，不改变四柱"
+          }
+        ],
+        "note": "无边界警告；01:48 属丑时，不触发晚子时/早子时。"
+      },
+      "chart_facts": {
+        "palace_ten_gods": {
+          "Y.s": "伤官",
+          "Y.b": "偏印",
+          "M.s": "劫财",
+          "M.b": "正官",
+          "D.s": "日主",
+          "D.b": "比肩",
+          "H.s": "七杀",
+          "H.b": "比肩"
+        },
+        "hidden_stems": {
+          "Y.b": [["丁", "本气", "偏印"], ["己", "中气", "比肩"]],
+          "M.b": [["甲", "本气", "正官"], ["丙", "中气", "正印"], ["戊", "余气", "劫财"]],
+          "D.b": [["己", "本气", "比肩"], ["丁", "中气", "偏印"], ["乙", "余气", "七杀"]],
+          "H.b": [["己", "本气", "比肩"], ["癸", "中气", "偏财"], ["辛", "余气", "食神"]]
+        },
+        "kongwang": {
+          "by_day_xun": ["子", "丑"],
+          "by_year_xun": ["戌", "亥"],
+          "hits": [["H.b", "day"]]
+        },
+        "dayun": {
+          "direction": "逆",
+          "qiyun": {"mangpai_rough_age": 6.0, "precise_age": 6.216203704, "precise_datetime": "1996-04-09 21:48:00"},
+          "first_8": ["DY1 丁丑 1996-2005", "DY2 丙子 2006-2015", "DY3 乙亥 2016-2025", "DY4 甲戌 2026-2035", "DY5 癸酉 2036-2045", "DY6 壬申 2046-2055", "DY7 辛未 2056-2065", "DY8 庚午 2066-2075"]
+        },
+        "tiyong": {
+          "体": ["Y.b", "M.s", "D.s", "D.b", "H.b"],
+          "用": ["M.b", "H.s"],
+          "双属": ["Y.s"]
+        }
+      },
+      "edges": [
+        {"id": "e001", "kind": "sheng", "members": ["M.s", "Y.s"]},
+        {"id": "e002", "kind": "sheng", "members": ["D.s", "Y.s"]},
+        {"id": "e003", "kind": "wuhe", "members": ["Y.s", "H.s"]},
+        {"id": "e004", "kind": "ke", "members": ["Y.s", "H.s"]},
+        {"id": "e005", "kind": "same_qi", "members": ["M.s", "D.s"]},
+        {"id": "e006", "kind": "ke", "members": ["H.s", "M.s"]},
+        {"id": "e007", "kind": "ke", "members": ["H.s", "D.s"]},
+        {"id": "e008", "kind": "sanhe", "members": ["Y.b", "M.b"], "group": "寅午戌", "completeness": "half_sheng"},
+        {"id": "e009", "kind": "liuhe", "members": ["Y.b", "D.b"]},
+        {"id": "e010", "kind": "sanhui", "members": ["Y.b", "D.b"], "group": "巳午未", "completeness": "partial"},
+        {"id": "e011", "kind": "chuan", "members": ["Y.b", "H.b"]},
+        {"id": "e012", "kind": "zhi_anhe", "members": ["M.b", "H.b"]},
+        {"id": "e013", "kind": "chong", "members": ["D.b", "H.b"]},
+        {"id": "e014", "kind": "xing", "members": ["D.b", "H.b"], "group": "丑戌未", "completeness": "partial"}
+      ],
+      "spouse_palace": {
+        "addr": "D.b",
+        "char": "未",
+        "edges": ["e009", "e010", "e013", "e014"],
+        "note": "四条边全部不在 duan_zuogong.candidates 内（e009/e013/e014 两端皆体，e010 的 kind 不在清单）。"
+      },
+      "zuogong": {
+        "total": 13,
+        "by_mode": {"制用": 6, "化用": 1, "生泄用": 2, "合用": 2, "墓用": 2},
+        "with_actor": 11,
+        "without_actor": 2,
+        "without_actor_detail": [
+          {"mode": "合用", "kind": "wuhe", "edge_id": "e003", "members": ["Y.s", "H.s"]},
+          {"mode": "合用", "kind": "zhi_anhe", "edge_id": "e012", "members": ["M.b", "H.b"]}
+        ],
+        "derived_without_edge_id": [
+          {"mode": "制用", "kind": "canggan_ke", "members": ["M.b", "D.s"], "actor": "M.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["M.b", "Y.s"], "actor": "M.b"},
+          {"mode": "制用", "kind": "canggan_ke", "members": ["D.b", "Y.s"], "actor": "D.b"},
+          {"mode": "化用", "kind": "sheng(main_qi)", "members": ["M.b", "Y.b"], "actor": "M.b"},
+          {"mode": "墓用", "kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"mode": "墓用", "kind": "muku", "members": ["H.s", "D.b"], "actor": "H.s"}
+        ]
+      },
+      "edges_not_in_candidates": [
+        {"id": "e005", "kind": "same_qi", "members": ["M.s", "D.s"], "why": "kind 不在候选清单内"},
+        {"id": "e008", "kind": "sanhe", "members": ["Y.b", "M.b"], "why": "sanhe 不在候选 kind 清单内"},
+        {"id": "e009", "kind": "liuhe", "members": ["Y.b", "D.b"], "why": "两端皆「体」，不 cross 体用；落在夫妻宫"},
+        {"id": "e010", "kind": "sanhui", "members": ["Y.b", "D.b"], "why": "sanhui 不在候选 kind 清单内；落在夫妻宫"},
+        {"id": "e011", "kind": "chuan", "members": ["Y.b", "H.b"], "why": "两端皆「体」，不 cross 体用"},
+        {"id": "e013", "kind": "chong", "members": ["D.b", "H.b"], "why": "两端皆「体」，不 cross 体用；落在夫妻宫"},
+        {"id": "e014", "kind": "xing", "members": ["D.b", "H.b"], "why": "两端皆「体」，不 cross 体用；落在夫妻宫"}
+      ],
+      "muku": [
+        {
+          "addr": "D.b",
+          "branch": "未",
+          "ku_of": ["木"],
+          "openers": ["e013", "e014"],
+          "binders": ["e009"],
+          "candidates": [
+            {"addr": "M.b", "char": "寅", "char_class": "四生支", "excluded": false},
+            {"addr": "H.s", "char": "乙", "char_class": "天干", "excluded": false, "damaged_by_edges": ["e004"]}
+          ]
+        },
+        {
+          "addr": "H.b",
+          "branch": "丑",
+          "ku_of": ["金"],
+          "openers": ["e013", "e014"],
+          "binders": ["e012"],
+          "chuan_po": ["e011"],
+          "stem_he_on_pillar": ["e003"],
+          "candidates": []
+        }
+      ],
+      "structures": {
+        "rescuers_met": [
+          {"structure_id": "ziping_zhengguan", "item_id": "rsc_he_qu_shang", "evidence": ["e003"]},
+          {"structure_id": "ziping_cai", "item_id": "rsc_shishang_tongguan", "evidence": ["Y.s", "M.s"]},
+          {"structure_id": "ziping_cai", "item_id": "rsc_guan_zhi_jie", "evidence": ["e006"]}
+        ],
+        "breakers_met": [
+          {"structure_id": "ziping_zhengguan", "item_id": "brk_shangguan_jian_guan", "evidence": ["Y.s", "M.b"]},
+          {"structure_id": "ziping_zhengguan", "item_id": "brk_sha_hun_guan", "evidence": ["H.s"]}
+        ],
+        "needs_judgment": [
+          {"structure_id": "ziping_cai", "item_id": "str_cai_vs_shen", "evidence": ["D.s", "H.b", "M.s", "Y.b", "M.b", "D.b"]}
+        ],
+        "note": "met 只表示要件命中，不等于成格（docs/agent_tools.md）。"
+      },
+      "spouse_star": {
+        "basis": "官杀（坤）",
+        "present": true,
+        "addresses": [
+          {"addr": "M.b", "char": "寅", "ten_god": "正官", "source": "本气"},
+          {"addr": "M.b⊕甲", "char": "甲", "ten_god": "正官", "source": "藏-本气"},
+          {"addr": "H.s", "char": "乙", "ten_god": "七杀", "source": "透干"},
+          {"addr": "D.b⊕乙", "char": "乙", "ten_god": "七杀", "source": "藏-余气（夫妻宫藏夫妻星）"}
+        ]
+      },
+      "facts_available": [
+        "8 个物理地址 + 8 个十神 + 4 支的全部藏干",
+        "14 条关系边（含 group/completeness）",
+        "13 个做功候选，11 个 actor 非空（含 canggan_ke 3 条、化用 1 条、墓用 2 条）",
+        "夫妻宫 D.b 的 4 条边（e009 六合 / e010 三会 / e013 冲 / e014 刑），全部不在候选内",
+        "D.b 木库：入墓候选 2 个（M.b 寅、H.s 乙）+ openers e013/e014 + binders e009",
+        "空亡：日旬空子丑，命中 H.b（夫妻宫对冲的丑）",
+        "子平八格 8 个结构，3 条 rescuer.met 与 2 条 breaker.met",
+        "4 个配偶星地址（M.b / M.b⊕甲 / H.s / D.b⊕乙）"
+      ],
+      "gaps_present": ["G2", "G3", "G4", "G5", "muku_open_close"],
+      "what_this_chart_cannot_say": [
+        "夫妻宫 4 条边全部不在 candidates 内 → 只读 candidates 会得出「夫妻宫无作用」的错误结论；必须读 relations.edges（规格 §3.4-4）",
+        "e013（冲）与 e014（刑）的 actor 恒为 None → 不能写「丑冲未」「丑刑未」的主客（G2）",
+        "D.b 木库 openers=[e013,e014] 与 binders=[e009] 并存 → 不能写「库被冲开/合住」（muku_open_close）",
+        "H.b=丑 只是落空亡（kongwang.hits=[['H.b','day']]）→ 空亡不是吉凶结论，不能写「空亡故X」",
+        "地支之间的克（如 M.b=寅 克 D.b=未）事实层无 edge → 不能写支上相克的做功（G3）",
+        "藏干地址只能 D.b⊕乙 这种复合串（G4）",
+        "救应只能引子平八格的 rescuer 项，不能写「化解」（G5）",
+        "候选 13 个 ≠ 做功成功 13 条"
+      ],
+      "suiyun_activation": {
+        "snapshot": {"dayun_index": 4, "liunian_year": 2026, "edges_total": 39},
+        "note": "原局 e009/e010/e013/e014 在本快照变成 e020/e021/e028/e029；e009 被别的边占用。整卡换快照，不许混用。",
+        "spouse_palace_edges_in_scoped_snapshot": [
+          {"id": "e020", "kind": "liuhe", "members": ["Y.b", "D.b"], "scope": "natal"},
+          {"id": "e021", "kind": "sanhui", "members": ["Y.b", "D.b"], "scope": "natal", "group": "巳午未"},
+          {"id": "e028", "kind": "chong", "members": ["D.b", "H.b"], "scope": "natal"},
+          {"id": "e029", "kind": "xing", "members": ["D.b", "H.b"], "scope": "natal", "group": "丑戌未"},
+          {"id": "e030", "kind": "po", "members": ["D.b", "DY4.b"], "scope": "dayun"},
+          {"id": "e031", "kind": "xing", "members": ["D.b", "DY4.b"], "scope": "dayun", "group": "丑戌未"},
+          {"id": "e032", "kind": "liuhe", "members": ["D.b", "LN2026.b"], "scope": "liunian"},
+          {"id": "e033", "kind": "sanhui", "members": ["D.b", "LN2026.b"], "scope": "liunian", "group": "巳午未"},
+          {"id": "e039", "kind": "xing", "members": ["H.b", "DY4.b", "D.b"], "scope": "dayun", "group": "丑戌未"}
+        ]
+      },
+      "card_support": {
+        "t1_local_image": "齐：8 地址、14 边、4 个配偶星地址",
+        "t2_role_and_force": "齐：11 个 actor 非空；夫妻宫 4 条边全部 actor=None → 只能写「方向未定」(G2)",
+        "t3_outcome": "部分：3 条 rescuer.met + 2 条 breaker.met 都在子平八格；夫妻宫破局只能靠 edge basis + M1-D-298",
+        "t4_scene_and_activation": "齐：岁运快照有 e030–e033、e039 可作引动；DY4.b/LN2026.b 的十神取不到 (suiyun_ten_god)",
+        "t5_dual_anchor": "齐：M1-D-298（夫妻宫不能被刑坏/冲破，sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:48）、M1-D-304（:160）、M2-Y-395（夫妻宫被冲看制化）均可查",
+        "hardest_gap": "G2（夫妻宫冲/刑无主客）+ 夫妻宫 4 条边全不在 candidates"
+      },
+      "reproduce": [
+        "python -m engine.cli all --birth \"1990-02-23 01:48:00\" --gender 坤 --json",
+        "python -m engine.cli chart --birth \"1990-02-23 01:48:00\" --gender 坤 --json",
+        "python -m engine.cli relations --birth \"1990-02-23 01:48:00\" --gender 坤 --json"
+      ]
+    },
+    {
+      "case_index": "C3",
+      "snapshot": {"chart_id": "cf-8b541a506fc413884431", "dayun_index": null, "liunian_year": null},
+      "case_id": "RF-2026-000894",
+      "role": "边界盘·晚子时 + 无配偶星",
+      "gender": "乾",
+      "gender_raw": "男",
+      "birth_dt": "1982-09-14 23:55:00",
+      "birth_datetime_raw": "1982-09-14 23:55",
+      "time_basis": "clock_beijing",
+      "birth_source": "solar_asis",
+      "calendar_type_raw": "solar_unspecified",
+      "usable_for_timing": true,
+      "quality_grade": "B",
+      "pillars": "壬戌 己酉 庚子 戊子",
+      "day_master": "庚",
+      "selection_reason": "一张盘同时命中两类边界：(1) 23:55 晚子时，zi_shi=rollover_23 口径下日柱变为辛丑、另有 alt_chart_id，四柱本身不唯一；(2) 八字无财 = 乾造无配偶星（T-165 census has_spouse_star=false），配偶星一路全部不可写。另加：夫妻宫 D.b=子 落年旬空，且它唯一的关系边是 e009 po（破），而 po 不在做功候选 kind 清单内——正好演示「缺口 + 漏边」叠加。",
+      "boundary": {
+        "warnings": [
+          {"kind": "late_zi", "detail": "23:00-23:59 晚子时：日柱随 zi_shi 口径变化，见 variants"}
+        ],
+        "variants": [
+          {
+            "axis": "zi_shi",
+            "alt_value": "rollover_23",
+            "diffs": [["/pillars/2/ganzhi", "辛丑"]],
+            "alt_chart_id": "cf-62995823c069f1deacba",
+            "meaning": "23:00 即换次日日柱：另一口径下日柱为 辛丑，日主变辛，整张盘的十神、体用、候选都会变"
+          },
+          {
+            "axis": "yin_changsheng",
+            "alt_value": "yin_same_as_yang",
+            "affects": "仅十二长生（changsheng）字段，不改变四柱"
+          }
+        ],
+        "note": "本盘是「边界盘」的第一类理由：四柱不唯一。任何引用本盘的结论都必须声明用的是 late_zi_split 口径。"
+      },
+      "chart_facts": {
+        "palace_ten_gods": {
+          "Y.s": "食神",
+          "Y.b": "偏印",
+          "M.s": "正印",
+          "M.b": "劫财",
+          "D.s": "日主",
+          "D.b": "伤官",
+          "H.s": "偏印",
+          "H.b": "伤官"
+        },
+        "hidden_stems": {
+          "Y.b": [["戊", "本气", "偏印"], ["辛", "中气", "劫财"], ["丁", "余气", "正官"]],
+          "M.b": [["辛", "本气", "劫财"]],
+          "D.b": [["癸", "本气", "伤官"]],
+          "H.b": [["癸", "本气", "伤官"]]
+        },
+        "kongwang": {
+          "by_day_xun": ["辰", "巳"],
+          "by_year_xun": ["子", "丑"],
+          "hits": [["D.b", "year"], ["H.b", "year"]],
+          "note": "夫妻宫 D.b 与时支 H.b 都落年旬空（子丑）。"
+        },
+        "dayun": {
+          "direction": "顺",
+          "qiyun": {"mangpai_rough_age": 8.0, "precise_age": 7.987766204, "precise_datetime": "1990-07-30 14:13:00"},
+          "first_8": ["DY1 庚戌 1990-1999", "DY2 辛亥 2000-2009", "DY3 壬子 2010-2019", "DY4 癸丑 2020-2029", "DY5 甲寅 2030-2039", "DY6 乙卯 2040-2049", "DY7 丙辰 2050-2059", "DY8 丁巳 2060-2069"]
+        },
+        "tiyong": {
+          "体": ["Y.b", "M.s", "M.b", "D.s", "H.s"],
+          "用": [],
+          "双属": ["Y.s", "D.b", "H.b"]
+        }
+      },
+      "edges": [
+        {"id": "e001", "kind": "ke", "members": ["M.s", "Y.s"]},
+        {"id": "e002", "kind": "sheng", "members": ["D.s", "Y.s"]},
+        {"id": "e003", "kind": "ke", "members": ["H.s", "Y.s"]},
+        {"id": "e004", "kind": "sheng", "members": ["M.s", "D.s"]},
+        {"id": "e005", "kind": "same_qi", "members": ["M.s", "H.s"]},
+        {"id": "e006", "kind": "sheng", "members": ["H.s", "D.s"]},
+        {"id": "e007", "kind": "chuan", "members": ["Y.b", "M.b"]},
+        {"id": "e008", "kind": "sanhui", "members": ["Y.b", "M.b"], "group": "申酉戌", "completeness": "partial"},
+        {"id": "e009", "kind": "po", "members": ["M.b", "D.b"]},
+        {"id": "e010", "kind": "po", "members": ["M.b", "H.b"]},
+        {"id": "e011", "kind": "ganzhi_zihe", "members": ["Y.s", "Y.b"]},
+        {"id": "e012", "kind": "ganzhi_zihe", "members": ["H.s", "H.b"]}
+      ],
+      "spouse_palace": {
+        "addr": "D.b",
+        "char": "子",
+        "edges": ["e009"],
+        "note": "夫妻宫只有一条关系边 e009 po（与之相对的是 M.b=酉），全盘无冲边；e009 不在 candidates 内（po 不在 kind 清单）。"
+      },
+      "zuogong": {
+        "total": 8,
+        "by_mode": {"制用": 2, "生泄用": 4, "合用": 2},
+        "with_actor": 6,
+        "without_actor": 2,
+        "without_actor_detail": [
+          {"mode": "合用", "kind": "ganzhi_zihe", "edge_id": "e011", "members": ["Y.s", "Y.b"]},
+          {"mode": "合用", "kind": "ganzhi_zihe", "edge_id": "e012", "members": ["H.s", "H.b"]}
+        ],
+        "derived_without_edge_id": [
+          {"mode": "生泄用", "kind": "sheng(main_qi)", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"mode": "生泄用", "kind": "sheng(main_qi)", "members": ["M.b", "H.b"], "actor": "M.b"},
+          {"mode": "生泄用", "kind": "sheng(main_qi)", "members": ["D.s", "D.b"], "actor": "D.s"}
+        ]
+      },
+      "edges_not_in_candidates": [
+        {"id": "e004", "kind": "sheng", "members": ["M.s", "D.s"], "why": "两端同属「体」，不 cross 体用"},
+        {"id": "e005", "kind": "same_qi", "members": ["M.s", "H.s"], "why": "kind 不在候选清单内"},
+        {"id": "e006", "kind": "sheng", "members": ["H.s", "D.s"], "why": "两端同属「体」，不 cross 体用"},
+        {"id": "e007", "kind": "chuan", "members": ["Y.b", "M.b"], "why": "两端同属「体」，不 cross 体用"},
+        {"id": "e008", "kind": "sanhui", "members": ["Y.b", "M.b"], "why": "sanhui 不在候选 kind 清单内"},
+        {"id": "e009", "kind": "po", "members": ["M.b", "D.b"], "why": "po 不在候选 kind 清单内；落在夫妻宫"},
+        {"id": "e010", "kind": "po", "members": ["M.b", "H.b"], "why": "po 不在候选 kind 清单内"}
+      ],
+      "muku": [
+        {
+          "addr": "Y.b",
+          "branch": "戌",
+          "ku_of": ["火", "土"],
+          "openers": [],
+          "binders": [],
+          "chuan_po": ["e007"],
+          "candidates": [],
+          "note": "空库：无入墓候选、无开边、无合边；按 T-165 P4「空库过滤」缺口，不得写「库冲开」。"
+        }
+      ],
+      "structures": {
+        "rescuers_met": [],
+        "breakers_met": [
+          {"structure_id": "ziping_shishen", "item_id": "brk_xiao_duo_shi", "evidence": ["e003"]},
+          {"structure_id": "ziping_qisha", "item_id": "brk_xiao_duo_shi", "evidence": ["e001", "e003"]}
+        ],
+        "needs_judgment": [
+          {"structure_id": "ziping_cai", "item_id": "str_cai_vs_shen", "evidence": ["D.s", "Y.b", "M.b", "M.s", "H.s"]},
+          {"structure_id": "ziping_yin", "item_id": "aux_shishang_tuxiu", "evidence": ["Y.s"]},
+          {"structure_id": "ziping_shishen", "item_id": "str_shen_wang_you_gen", "evidence": ["D.s", "Y.s", "Y.b", "M.b", "M.s", "H.s", "D.b", "H.b"]}
+        ],
+        "note": "met 只表示要件命中，不等于成格（docs/agent_tools.md）；本盘 3 个结构共 0 条 rescuer.met。"
+      },
+      "spouse_star": {
+        "basis": "财（乾）",
+        "present": false,
+        "addresses": [],
+        "explain": "四柱与全部藏干均无正财/偏财（木）：天干 壬食神/己正印/戊偏印，支本气 偏印/劫财/伤官/伤官，藏干 戊辛丁/辛/癸/癸。T-165 census 独立记为 has_spouse_star=false。"
+      },
+      "facts_available": [
+        "8 个物理地址 + 8 个十神 + 4 支的全部藏干（无财）",
+        "12 条关系边；全盘无冲边、无六合边",
+        "8 个做功候选，6 个 actor 非空",
+        "边界事实：late_zi 警告 + variants[zi_shi].alt_chart_id",
+        "空亡：日旬空辰巳、年旬空子丑；命中 D.b 与 H.b（均为年旬）",
+        "夫妻宫 D.b=子 的唯一关系边 e009 po",
+        "子平八格 8 个结构，2 条 breaker.met（枭夺食，证据 e001/e003），0 条 rescuer.met",
+        "戌库为空库（无入墓候选、无开/合边）"
+      ],
+      "gaps_present": ["no_spouse_star", "boundary_zi_shi", "G2", "G3", "G4", "G5", "muku_open_close"],
+      "what_this_chart_cannot_say": [
+        "无配偶星（八字无财）→ 任何「配偶星受制/被合/无根」的句子全部不能写；只能写「本盘无配偶星地址」（no_spouse_star）",
+        "夫妻宫唯一关系边 e009 是 po，且 po 无方向、不在候选内 → 不能写「酉破子」的主客，也不能声称夫妻宫「无作用」（G2 / 规格 §3.4-4）",
+        "晚子时：四柱不唯一——rollover_23 口径下日柱为辛丑（cf-62995823c069f1deacba）→ 不能把「庚子日主」当唯一前提；任何结论必须声明口径（boundary_zi_shi）",
+        "D.b 落年旬空只是空亡地址 → 不能写「夫妻宫空亡故X」",
+        "地支克（酉克子、子克…）事实层无 edge → 不能写支上相克（G3）",
+        "藏干只能 D.b⊕癸 这种复合串（G4）",
+        "0 条 rescuer.met ≠「无救应」→ 只能写「本盘未命中救应项」（G5）",
+        "戌库为空库 → 不能写「库冲开/库合住」（muku_open_close）"
+      ],
+      "suiyun_activation": {
+        "snapshot": {"dayun_index": 4, "liunian_year": 2026, "edges_total": 34},
+        "note": "原局 e009 po 在本快照变成 e022；整卡换快照，不许混用。",
+        "spouse_palace_edges_in_scoped_snapshot": [
+          {"id": "e022", "kind": "po", "members": ["M.b", "D.b"], "scope": "natal"},
+          {"id": "e026", "kind": "liuhe", "members": ["D.b", "DY4.b"], "scope": "dayun"},
+          {"id": "e027", "kind": "sanhui", "members": ["D.b", "DY4.b"], "scope": "dayun", "group": "亥子丑"},
+          {"id": "e028", "kind": "chong", "members": ["D.b", "LN2026.b"], "scope": "liunian"}
+        ]
+      },
+      "card_support": {
+        "t1_local_image": "齐：8 地址、12 边；但夫妻宫 D.b 只有 1 条边（po），且无冲边",
+        "t2_role_and_force": "部分：6 个 actor 非空；po/ganzhi_zihe 只能写「方向未定」(G2)",
+        "t3_outcome": "部分：2 条 breaker.met（枭夺食，e001/e003）+ 0 条 rescuer.met；③ 可写破局，但「逢救应化解」不可写",
+        "t4_scene_and_activation": "部分：岁运快照有 e026/e027/e028 可作引动；DY4.b/LN2026.b 十神取不到 (suiyun_ten_god)；且配偶星一路不可写 (no_spouse_star)",
+        "t5_dual_anchor": "齐：地址锚点 + 原文（如 M1-D-013 墓用、M1-D-002 宾主）均可查",
+        "hardest_gap": "no_spouse_star + boundary_zi_shi（四柱不唯一）+ 夫妻宫唯一关系边 po 不在候选"
+      },
+      "reproduce": [
+        "python -m engine.cli all --birth \"1982-09-14 23:55:00\" --gender 乾 --json",
+        "python -m engine.cli chart --birth \"1982-09-14 23:55:00\" --gender 乾 --json",
+        "python -m engine.cli relations --birth \"1982-09-14 23:55:00\" --gender 乾 --json"
+      ]
+    }
+  ],
+  "coverage_check": {
+    "乾造": "C1（结构完整、候选 17 个）；C3 亦为乾，但角色是边界盘",
+    "坤造": "C2（官杀配偶星 4 个地址、夫妻宫 4 条边）",
+    "边界盘": "C3 同时满足「晚子时」与「无配偶星」两类；另注：39 例 boundary_warnings 中另有 1 例 near_jie（RF-2026-000904，2005-12-07 09:05），本卡未选，如需换盘应走新卡",
+    "做功候选>=2": "C1 12 个 actor 非空；C2 11 个；C3 6 个",
+    "配偶星/夫妻宫可查地址": "C2 具备；C1 亦具备（乾造财星 4 地址）；C3 无配偶星（故意）",
+    "五元组可支撑度": "三盘都能给齐 ① 与 ⑤；② 三盘都有 actor=None 的边（只能写「方向未定」）；③ 婚姻域无结构（G5），破局只能靠 edge basis + 原文；④ 三盘都有真实岁运引动边，但岁运字十神取不到（suiyun_ten_god）"
+  },
+  "known_limits": [
+    "本文件只记录事实与缺口，不含任何断语；3 张盘的「能不能判」由中枢按规格 §6 执行。",
+    "所有 edge_id 只对 reproduce 命令的默认快照（dayun_index=null, liunian_year=null）有效；加 --dayun-index/--liunian 会全量重编号（实测 125：e012 从 liuhe[M.b,D.b] 变 ke[M.s,LN2026.s]；438：e009 从 liuhe[Y.b,D.b] 变 ke[H.s,M.s]），所以 suiyun_activation 里的边号单独列、不得与原局卡混用。",
+    "C3 的 alt_chart_id 对应 rollover_23 口径的另一张盘，本文件未展开其事实；若要分析该口径需另跑一次 CLI。",
+    "C1/C2/C3 的 suiyun_activation 用的是 dayun_index=5/4/4 + liunian=2026 这一组快照，只为证明「引动边可写」，不代表任何事件判断。"
+  ]
+}
