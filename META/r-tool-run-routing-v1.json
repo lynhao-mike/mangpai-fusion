@@ -1,0 +1,7367 @@
+{
+ "schema": "r-tool-run-routing/v1",
+ "task": "T-195b",
+ "generated_at": "2026-10-30T00:10:34+08:00",
+ "spec": "docs/specs/fact-evidence-pack-v1.md",
+ "upstream": {
+  "task": "T-195",
+  "script": "tasks/T-195/run_r_tool.py",
+  "reuse": "导入并直接调用其 build_pack/palaces_for/edges_for/theory_for/query_theory_hits/engine_all；未调用 main()，未重跑 fixed-20"
+ },
+ "runner": {
+  "script": "tasks/T-195b/run_r_tool_routing.py",
+  "python": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe",
+  "input": "META/routing-questions-runner-v1.json",
+  "input_sha256": "fd2876ad6d4e6b682337d7e94d0e13aed8a89aebf83b439de18391c905c8163c",
+  "input_bytes": 5559,
+  "input_digest_prefix": "fd2876ad",
+  "runner_visible_fields": [
+   "question_id",
+   "domain",
+   "question",
+   "chart"
+  ]
+ },
+ "isolation": {
+  "read_whitelist": [
+   "tasks/T-195b/PROMPT.md",
+   "META/routing-questions-runner-v1.json",
+   "docs/specs/fact-evidence-pack-v1.md",
+   "tasks/T-195/run_r_tool.py（仅导入 routing 逻辑）",
+   "engine.cli",
+   "tools.query_theory",
+   "sources/"
+  ],
+  "read_forbidden": false,
+  "read_restricted_fields": false,
+  "read_prereg": false,
+  "read_answers": false,
+  "read_restricted_artifacts": false,
+  "notes": [
+   "只读 sanitized runner 文件；未打开未脱敏问题文件，未接触任何 restricted 字段",
+   "未读 META/routing-prereg-v1.json、任何 answers / anchor / fresh / holdout / golden / p1-system-run*",
+   "未重跑 fixed-20；未评分、未自评；未做 git 写",
+   "routing 证据包由 T-195 同一生成逻辑产出，仅输入改为脱敏 runner 视图"
+  ]
+ },
+ "routing": {
+  "schema": "fact-evidence-pack/v1",
+  "input": "META/routing-questions-runner-v1.json",
+  "question_count": 15,
+  "complete": true,
+  "blind_valid": true,
+  "blind_valid_reason": "输入文件仅含 question_id/domain/question/chart 四字段，无 restricted 字段",
+  "out_of_class_emissions": 0,
+  "emission_policy": "routing 包不发射任何克/生/化/墓或冲/合/穿/刑/破方向事实，只发宫位/边/原文锚点",
+  "packs": [
+   {
+    "question_id": "RQ-01",
+    "question": "我这几年的婚姻一直不顺，想知道这段婚姻还能不能稳定？",
+    "domain": "婚姻",
+    "prereg_id": "RQ-01",
+    "chart_id": "cf-fee600218b19b441a567",
+    "case_id": "F20-001",
+    "snapshot": {
+     "chart_id": "cf-fee600218b19b441a567",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "丁亥",
+       "stem": {
+        "addr": "Y.s",
+        "char": "丁",
+        "ten_god": "偏印"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "亥",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "正财"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "正官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "庚戌",
+       "stem": {
+        "addr": "M.s",
+        "char": "庚",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "戌",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "劫财"
+         },
+         {
+          "c": "辛",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "丁",
+          "q": "余气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "己巳",
+       "stem": {
+        "addr": "D.s",
+        "char": "己",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "巳",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "丙",
+          "q": "本气",
+          "g": "正印"
+         },
+         {
+          "c": "庚",
+          "q": "中气",
+          "g": "伤官"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "劫财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "庚午",
+       "stem": {
+        "addr": "H.s",
+        "char": "庚",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "午",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "偏印"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "比肩"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "己",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "丁",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "M.s",
+       "char": "庚",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "D.s",
+       "char": "己",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "庚",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "Y.b",
+       "char": "亥",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.b",
+       "char": "戌",
+       "ten_god": "劫财"
+      },
+      {
+       "addr": "D.b",
+       "char": "巳",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "H.b",
+       "char": "午",
+       "ten_god": "偏印"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "正官"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "戌",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "巳",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "正印"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "伤官"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "劫财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "偏印"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "比肩"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "戌",
+       "亥"
+      ],
+      "by_year_xun": [
+       "午",
+       "未"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ],
+       [
+        "M.b",
+        "day"
+       ],
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "用",
+      "M.s": "双属",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "双属",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "M.b",
+       "branch": "戌",
+       "ku_of": [
+        "火",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "ten_god": "正印",
+      "mapping_rule": "M-01",
+      "mapping_rules": [
+       "M-01"
+      ],
+      "mapping_basis": "配偶宫为日主坐支",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "addr": "Y.b",
+      "role": "配偶星：财星（男命）",
+      "ten_god": "正财",
+      "mapping_rule": "M-02",
+      "mapping_rules": [
+       "M-02"
+      ],
+      "mapping_basis": "配偶星：男命财星、女命官杀",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "kind": "chong",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e008",
+      "kind": "zhi_anhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "sanhui",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "巳午未",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": "M1-D-291",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+      "quote": "看婚姻的好坏，应以配偶宫为主，配偶星为辅。",
+      "applicability": "配偶宫/配偶星定义",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": "M1-D-295",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44",
+      "quote": "凡配偶宫与配偶星了生相关性，都表示婚姻或两性关系；所谓相关性，包括以后几种类型：",
+      "applicability": "配偶宫与配偶星的相关性类型",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "配偶宫 配偶星",
+     "hits": [
+      {
+       "entry_id": "M1-D-291",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:15",
+       "score": 44.0,
+       "title": "婚姻以配偶宫为主配偶星为辅"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 44.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-295",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:41",
+       "score": 20.0,
+       "title": "宫星相关性定婚姻关系"
+      },
+      {
+       "entry_id": "M1-D-211",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:744",
+       "score": 14.0,
+       "title": "配偶宫精化（正宫/副宫）"
+      },
+      {
+       "entry_id": "M1-D-212",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:769",
+       "score": 14.0,
+       "title": "配偶星性别差异"
+      },
+      {
+       "entry_id": "M1-D-249",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:211",
+       "score": 14.0,
+       "title": "配偶宫为主+星为辅"
+      },
+      {
+       "entry_id": "M1-D-296",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:43",
+       "score": 12.0,
+       "title": "宫星穿刑破主婚姻问题"
+      },
+      {
+       "entry_id": "M1-D-159",
+       "source_ref": "theory/raw/duan/d06-d09-theory.md",
+       "anchor": "line:1058",
+       "score": 4.0,
+       "title": "婚姻好坏简判 — 宫为主星为辅"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-01"
+     },
+     {
+      "type": "palace",
+      "ref": "Y.b",
+      "mapping_rule": "M-02"
+     },
+     {
+      "type": "edge",
+      "ref": "e007"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"丁亥 庚戌 己巳 庚午\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"配偶宫 配偶星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-02",
+    "question": "我和老婆经常吵架，会不会走到离婚？",
+    "domain": "婚姻",
+    "prereg_id": "RQ-02",
+    "chart_id": "cf-4594768fd80eba942916",
+    "case_id": "F20-004",
+    "snapshot": {
+     "chart_id": "cf-4594768fd80eba942916",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "庚戌",
+       "stem": {
+        "addr": "Y.s",
+        "char": "庚",
+        "ten_god": "正财"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "戌",
+        "main_ten_god": "伤官",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "伤官"
+         },
+         {
+          "c": "辛",
+          "q": "中气",
+          "g": "偏财"
+         },
+         {
+          "c": "丁",
+          "q": "余气",
+          "g": "比肩"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丁亥",
+       "stem": {
+        "addr": "M.s",
+        "char": "丁",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "亥",
+        "main_ten_god": "正官",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "正官"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "正印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "丁巳",
+       "stem": {
+        "addr": "D.s",
+        "char": "丁",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "巳",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "丙",
+          "q": "本气",
+          "g": "劫财"
+         },
+         {
+          "c": "庚",
+          "q": "中气",
+          "g": "正财"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "伤官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "癸卯",
+       "stem": {
+        "addr": "H.s",
+        "char": "癸",
+        "ten_god": "七杀"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "卯",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "偏印"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "丁",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "庚",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.s",
+       "char": "丁",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "D.s",
+       "char": "丁",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "癸",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "Y.b",
+       "char": "戌",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "ten_god": "正官"
+      },
+      {
+       "addr": "D.b",
+       "char": "巳",
+       "ten_god": "劫财"
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "ten_god": "偏印"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "戌",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "偏财"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "比肩"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "正官"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "正印"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "巳",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "正财"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "伤官"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "偏印"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "子",
+       "丑"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "用",
+      "Y.b": "双属",
+      "M.s": "体",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "用",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "Y.b",
+       "branch": "戌",
+       "ku_of": [
+        "火",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "ten_god": "劫财",
+      "mapping_rule": "M-01",
+      "mapping_rules": [
+       "M-01"
+      ],
+      "mapping_basis": "配偶宫为日主坐支",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "addr": "Y.s",
+      "role": "配偶星：财星（男命）（透干）",
+      "ten_god": "正财",
+      "mapping_rule": "M-02",
+      "mapping_rules": [
+       "M-02"
+      ],
+      "mapping_basis": "配偶星：男命财星、女命官杀",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e010",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": "M1-D-291",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+      "quote": "看婚姻的好坏，应以配偶宫为主，配偶星为辅。",
+      "applicability": "配偶宫/配偶星定义",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": "M1-D-295",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44",
+      "quote": "凡配偶宫与配偶星了生相关性，都表示婚姻或两性关系；所谓相关性，包括以后几种类型：",
+      "applicability": "配偶宫与配偶星的相关性类型",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "配偶宫 配偶星",
+     "hits": [
+      {
+       "entry_id": "M1-D-291",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:15",
+       "score": 44.0,
+       "title": "婚姻以配偶宫为主配偶星为辅"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 44.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-295",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:41",
+       "score": 20.0,
+       "title": "宫星相关性定婚姻关系"
+      },
+      {
+       "entry_id": "M1-D-211",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:744",
+       "score": 14.0,
+       "title": "配偶宫精化（正宫/副宫）"
+      },
+      {
+       "entry_id": "M1-D-212",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:769",
+       "score": 14.0,
+       "title": "配偶星性别差异"
+      },
+      {
+       "entry_id": "M1-D-249",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:211",
+       "score": 14.0,
+       "title": "配偶宫为主+星为辅"
+      },
+      {
+       "entry_id": "M1-D-296",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:43",
+       "score": 12.0,
+       "title": "宫星穿刑破主婚姻问题"
+      },
+      {
+       "entry_id": "M1-D-159",
+       "source_ref": "theory/raw/duan/d06-d09-theory.md",
+       "anchor": "line:1058",
+       "score": 4.0,
+       "title": "婚姻好坏简判 — 宫为主星为辅"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-01"
+     },
+     {
+      "type": "palace",
+      "ref": "Y.s",
+      "mapping_rule": "M-02"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"庚戌 丁亥 丁巳 癸卯\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"配偶宫 配偶星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-03",
+    "question": "我结婚晚，婚后两人聚少离多，婚姻质量怎么样？",
+    "domain": "婚姻",
+    "prereg_id": "RQ-03",
+    "chart_id": "cf-e6727a7c7df5e3351fd8",
+    "case_id": "F20-007",
+    "snapshot": {
+     "chart_id": "cf-e6727a7c7df5e3351fd8",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "癸卯",
+       "stem": {
+        "addr": "Y.s",
+        "char": "癸",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "卯",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "食神"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丁巳",
+       "stem": {
+        "addr": "M.s",
+        "char": "丁",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "巳",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "丙",
+          "q": "本气",
+          "g": "正财"
+         },
+         {
+          "c": "庚",
+          "q": "中气",
+          "g": "正印"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "正官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "癸丑",
+       "stem": {
+        "addr": "D.s",
+        "char": "癸",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "丑",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "七杀"
+         },
+         {
+          "c": "癸",
+          "q": "中气",
+          "g": "比肩"
+         },
+         {
+          "c": "辛",
+          "q": "余气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "癸亥",
+       "stem": {
+        "addr": "H.s",
+        "char": "癸",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "亥",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "劫财"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "伤官"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "癸",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "癸",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "M.s",
+       "char": "丁",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "D.s",
+       "char": "癸",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "癸",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "Y.b",
+       "char": "卯",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "M.b",
+       "char": "巳",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "D.b",
+       "char": "丑",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "H.b",
+       "char": "亥",
+       "ten_god": "劫财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "食神"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "巳",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "正印"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "正官"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "丑",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "七杀"
+        },
+        {
+         "c": "癸",
+         "q": "中气",
+         "g": "比肩"
+        },
+        {
+         "c": "辛",
+         "q": "余气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "伤官"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "寅",
+       "卯"
+      ],
+      "by_year_xun": [
+       "辰",
+       "巳"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ],
+       [
+        "M.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "双属",
+      "M.s": "用",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "用",
+      "H.s": "体",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "D.b",
+       "branch": "丑",
+       "ku_of": [
+        "金"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）；配偶星：官杀（女命）",
+      "ten_god": "七杀",
+      "mapping_rule": "M-01",
+      "mapping_rules": [
+       "M-01",
+       "M-02"
+      ],
+      "mapping_basis": "配偶宫为日主坐支",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e011",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "巳酉丑",
+      "completeness": "gong",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e013",
+      "kind": "sanhui",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥子丑",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": "M1-D-291",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+      "quote": "看婚姻的好坏，应以配偶宫为主，配偶星为辅。",
+      "applicability": "配偶宫/配偶星定义",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": "M1-D-295",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44",
+      "quote": "凡配偶宫与配偶星了生相关性，都表示婚姻或两性关系；所谓相关性，包括以后几种类型：",
+      "applicability": "配偶宫与配偶星的相关性类型",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "配偶宫 配偶星",
+     "hits": [
+      {
+       "entry_id": "M1-D-291",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:15",
+       "score": 44.0,
+       "title": "婚姻以配偶宫为主配偶星为辅"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 44.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-295",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:41",
+       "score": 20.0,
+       "title": "宫星相关性定婚姻关系"
+      },
+      {
+       "entry_id": "M1-D-211",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:744",
+       "score": 14.0,
+       "title": "配偶宫精化（正宫/副宫）"
+      },
+      {
+       "entry_id": "M1-D-212",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:769",
+       "score": 14.0,
+       "title": "配偶星性别差异"
+      },
+      {
+       "entry_id": "M1-D-249",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:211",
+       "score": 14.0,
+       "title": "配偶宫为主+星为辅"
+      },
+      {
+       "entry_id": "M1-D-296",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:43",
+       "score": 12.0,
+       "title": "宫星穿刑破主婚姻问题"
+      },
+      {
+       "entry_id": "M1-D-159",
+       "source_ref": "theory/raw/duan/d06-d09-theory.md",
+       "anchor": "line:1058",
+       "score": 4.0,
+       "title": "婚姻好坏简判 — 宫为主星为辅"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-01"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "edge",
+      "ref": "e013"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"癸卯 丁巳 癸丑 癸亥\" --gender 坤 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"配偶宫 配偶星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-04",
+    "question": "我一直遇不到合适的人，是不是婚姻缘分薄？",
+    "domain": "婚姻",
+    "prereg_id": "RQ-04",
+    "chart_id": "cf-e371149459d53da99171",
+    "case_id": "F20-011",
+    "snapshot": {
+     "chart_id": "cf-e371149459d53da99171",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "己亥",
+       "stem": {
+        "addr": "Y.s",
+        "char": "己",
+        "ten_god": "正财"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "亥",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "偏印"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "比肩"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "癸酉",
+       "stem": {
+        "addr": "M.s",
+        "char": "癸",
+        "ten_god": "正印"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "酉",
+        "main_ten_god": "正官",
+        "hidden": [
+         {
+          "c": "辛",
+          "q": "本气",
+          "g": "正官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "甲寅",
+       "stem": {
+        "addr": "D.s",
+        "char": "甲",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "寅",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "偏财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "甲子",
+       "stem": {
+        "addr": "H.s",
+        "char": "甲",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "子",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正印"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "甲",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "己",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.s",
+       "char": "癸",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "甲",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "Y.b",
+       "char": "亥",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "M.b",
+       "char": "酉",
+       "ten_god": "正官"
+      },
+      {
+       "addr": "D.b",
+       "char": "寅",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "ten_god": "正印"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "偏印"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "比肩"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "酉",
+       "hidden": [
+        {
+         "c": "辛",
+         "q": "本气",
+         "g": "正官"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正印"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "子",
+       "丑"
+      ],
+      "by_year_xun": [
+       "辰",
+       "巳"
+      ],
+      "hits": [
+       [
+        "H.b",
+        "day"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "用",
+      "Y.b": "体",
+      "M.s": "体",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "体",
+      "H.b": "体"
+     },
+     "muku": []
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "配偶宫（夫妻宫）",
+      "ten_god": "比肩",
+      "mapping_rule": "M-01",
+      "mapping_rules": [
+       "M-01"
+      ],
+      "mapping_basis": "配偶宫为日主坐支",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "addr": "M.b",
+      "role": "配偶星：官杀（女命）",
+      "ten_god": "正官",
+      "mapping_rule": "M-02",
+      "mapping_rules": [
+       "M-02"
+      ],
+      "mapping_basis": "配偶星：男命财星、女命官杀",
+      "basis_source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "kind": "liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e012",
+      "kind": "po",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": "M1-D-291",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17",
+      "quote": "看婚姻的好坏，应以配偶宫为主，配偶星为辅。",
+      "applicability": "配偶宫/配偶星定义",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": "M1-D-295",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44",
+      "quote": "凡配偶宫与配偶星了生相关性，都表示婚姻或两性关系；所谓相关性，包括以后几种类型：",
+      "applicability": "配偶宫与配偶星的相关性类型",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "配偶宫 配偶星",
+     "hits": [
+      {
+       "entry_id": "M1-D-291",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:15",
+       "score": 44.0,
+       "title": "婚姻以配偶宫为主配偶星为辅"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 44.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-295",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:41",
+       "score": 20.0,
+       "title": "宫星相关性定婚姻关系"
+      },
+      {
+       "entry_id": "M1-D-211",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:744",
+       "score": 14.0,
+       "title": "配偶宫精化（正宫/副宫）"
+      },
+      {
+       "entry_id": "M1-D-212",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:769",
+       "score": 14.0,
+       "title": "配偶星性别差异"
+      },
+      {
+       "entry_id": "M1-D-249",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:211",
+       "score": 14.0,
+       "title": "配偶宫为主+星为辅"
+      },
+      {
+       "entry_id": "M1-D-296",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:43",
+       "score": 12.0,
+       "title": "宫星穿刑破主婚姻问题"
+      },
+      {
+       "entry_id": "M1-D-159",
+       "source_ref": "theory/raw/duan/d06-d09-theory.md",
+       "anchor": "line:1058",
+       "score": 4.0,
+       "title": "婚姻好坏简判 — 宫为主星为辅"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-01"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-02"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e012"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15-L17"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L37-L44"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "boundary_zi_shi"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"己亥 癸酉 甲寅 甲子\" --gender 坤 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"配偶宫 配偶星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-05",
+    "question": "我现在在单位上班，想知道有没有升职当官的可能？",
+    "domain": "事业",
+    "prereg_id": "RQ-05",
+    "chart_id": "cf-8c92d1b119d0e478e614",
+    "case_id": "F20-002",
+    "snapshot": {
+     "chart_id": "cf-8c92d1b119d0e478e614",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "甲午",
+       "stem": {
+        "addr": "Y.s",
+        "char": "甲",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "午",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丁卯",
+       "stem": {
+        "addr": "M.s",
+        "char": "丁",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "卯",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "食神"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "癸酉",
+       "stem": {
+        "addr": "D.s",
+        "char": "癸",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "酉",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "辛",
+          "q": "本气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "乙卯",
+       "stem": {
+        "addr": "H.s",
+        "char": "乙",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "卯",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "食神"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "癸",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "甲",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "M.s",
+       "char": "丁",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "D.s",
+       "char": "癸",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "乙",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "Y.b",
+       "char": "午",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "M.b",
+       "char": "卯",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "ten_god": "食神"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "食神"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "hidden": [
+        {
+         "c": "辛",
+         "q": "本气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "食神"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "戌",
+       "亥"
+      ],
+      "by_year_xun": [
+       "辰",
+       "巳"
+      ]
+     },
+     "tiyong": {
+      "Y.s": "双属",
+      "Y.b": "用",
+      "M.s": "用",
+      "M.b": "双属",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "双属",
+      "H.b": "双属"
+     },
+     "muku": []
+    },
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "ten_god": "食神",
+      "mapping_rule": "M-03",
+      "mapping_rules": [
+       "M-03"
+      ],
+      "mapping_basis": "月令为事业与格局之根",
+      "basis_source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+      "quote": "一、 官命的核心必须有官、 杀及印星。 官杀主职务， 印主权柄。",
+      "applicability": "官命核心：官杀与印星",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831",
+      "quote": "四 官命组合中 如出现申 酉两字做功 一般是检察 法院 法律有关的官职； 如出现申酉、 丑、 寅字的组合做功， 一般与公安部门 的官。",
+      "applicability": "官职类型组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "官命 官杀 印星",
+     "hits": [
+      {
+       "entry_id": "M1-D-311",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:5",
+       "score": 22.0,
+       "title": "过河拆桥原理一：弄住宾位官杀"
+      },
+      {
+       "entry_id": "M1-D-318",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:49",
+       "score": 22.0,
+       "title": "过河拆桥例四：官杀重亦同构"
+      },
+      {
+       "entry_id": "M1-D-408",
+       "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+       "anchor": "line:902",
+       "score": 22.0,
+       "title": "官杀旺等伤官来即当官"
+      },
+      {
+       "entry_id": "M1-D-420",
+       "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+       "anchor": "line:2216",
+       "score": 22.0,
+       "title": "官杀混杂的真假定性"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 16.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      },
+      {
+       "entry_id": "M1-D-186",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:91",
+       "score": 16.0,
+       "title": "官命 5 大结构类型"
+      },
+      {
+       "entry_id": "M1-D-241",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:101",
+       "score": 16.0,
+       "title": "学历三星判定法（官杀/印/食 vs 财/伤/比）"
+      },
+      {
+       "entry_id": "M1-D-244",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:140",
+       "score": 16.0,
+       "title": "官杀配印=学业有成标准结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-03"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"甲午 丁卯 癸酉 乙卯\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"官命 官杀 印星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-06",
+    "question": "我想辞职自己创业，事业上该往哪个方向走？",
+    "domain": "事业",
+    "prereg_id": "RQ-06",
+    "chart_id": "cf-14bfcbffb8e51c3493f4",
+    "case_id": "F20-008",
+    "snapshot": {
+     "chart_id": "cf-14bfcbffb8e51c3493f4",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "甲辰",
+       "stem": {
+        "addr": "Y.s",
+        "char": "甲",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "辰",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "乙",
+          "q": "中气",
+          "g": "劫财"
+         },
+         {
+          "c": "癸",
+          "q": "余气",
+          "g": "正印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丙寅",
+       "stem": {
+        "addr": "M.s",
+        "char": "丙",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "寅",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "偏财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "甲午",
+       "stem": {
+        "addr": "D.s",
+        "char": "甲",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "午",
+        "main_ten_god": "伤官",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "伤官"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "正财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丁卯",
+       "stem": {
+        "addr": "H.s",
+        "char": "丁",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "卯",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "劫财"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "甲",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "甲",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "M.s",
+       "char": "丙",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丁",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "Y.b",
+       "char": "辰",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "M.b",
+       "char": "寅",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "ten_god": "劫财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "辰",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "劫财"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "正印"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "正财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "劫财"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "辰",
+       "巳"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ],
+       [
+        "M.b",
+        "year"
+       ],
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "用",
+      "M.s": "双属",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "双属",
+      "H.s": "双属",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "Y.b",
+       "branch": "辰",
+       "ku_of": [
+        "水",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "ten_god": "比肩",
+      "mapping_rule": "M-03",
+      "mapping_rules": [
+       "M-03"
+      ],
+      "mapping_basis": "月令为事业与格局之根",
+      "basis_source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "kind": "sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅卯辰",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅午戌",
+      "completeness": "half_sheng",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "sanhui",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅卯辰",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e013",
+      "kind": "sanhui",
+      "members": [
+       "M.b",
+       "H.b",
+       "Y.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅卯辰",
+      "completeness": "full",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+      "quote": "一、 官命的核心必须有官、 杀及印星。 官杀主职务， 印主权柄。",
+      "applicability": "官命核心：官杀与印星",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831",
+      "quote": "四 官命组合中 如出现申 酉两字做功 一般是检察 法院 法律有关的官职； 如出现申酉、 丑、 寅字的组合做功， 一般与公安部门 的官。",
+      "applicability": "官职类型组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "官命 官杀 印星",
+     "hits": [
+      {
+       "entry_id": "M1-D-311",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:5",
+       "score": 22.0,
+       "title": "过河拆桥原理一：弄住宾位官杀"
+      },
+      {
+       "entry_id": "M1-D-318",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:49",
+       "score": 22.0,
+       "title": "过河拆桥例四：官杀重亦同构"
+      },
+      {
+       "entry_id": "M1-D-408",
+       "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+       "anchor": "line:902",
+       "score": 22.0,
+       "title": "官杀旺等伤官来即当官"
+      },
+      {
+       "entry_id": "M1-D-420",
+       "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+       "anchor": "line:2216",
+       "score": 22.0,
+       "title": "官杀混杂的真假定性"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 16.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      },
+      {
+       "entry_id": "M1-D-186",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:91",
+       "score": 16.0,
+       "title": "官命 5 大结构类型"
+      },
+      {
+       "entry_id": "M1-D-241",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:101",
+       "score": 16.0,
+       "title": "学历三星判定法（官杀/印/食 vs 财/伤/比）"
+      },
+      {
+       "entry_id": "M1-D-244",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:140",
+       "score": 16.0,
+       "title": "官杀配印=学业有成标准结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-03"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "edge",
+      "ref": "e007"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "edge",
+      "ref": "e013"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"甲辰 丙寅 甲午 丁卯\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"官命 官杀 印星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-07",
+    "question": "我在部队/体制内，未来能不能往上走？",
+    "domain": "事业",
+    "prereg_id": "RQ-07",
+    "chart_id": "cf-afc4150ff8a4a7de18b1",
+    "case_id": "F20-016",
+    "snapshot": {
+     "chart_id": "cf-afc4150ff8a4a7de18b1",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "丁未",
+       "stem": {
+        "addr": "Y.s",
+        "char": "丁",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "未",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "正财"
+         },
+         {
+          "c": "丁",
+          "q": "中气",
+          "g": "伤官"
+         },
+         {
+          "c": "乙",
+          "q": "余气",
+          "g": "劫财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "壬子",
+       "stem": {
+        "addr": "M.s",
+        "char": "壬",
+        "ten_god": "偏印"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "子",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "甲寅",
+       "stem": {
+        "addr": "D.s",
+        "char": "甲",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "寅",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "偏财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "戊辰",
+       "stem": {
+        "addr": "H.s",
+        "char": "戊",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "辰",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "乙",
+          "q": "中气",
+          "g": "劫财"
+         },
+         {
+          "c": "癸",
+          "q": "余气",
+          "g": "正印"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "甲",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "丁",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "M.s",
+       "char": "壬",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "戊",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.b",
+       "char": "子",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "D.b",
+       "char": "寅",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "ten_god": "偏财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "丁",
+         "q": "中气",
+         "g": "伤官"
+        },
+        {
+         "c": "乙",
+         "q": "余气",
+         "g": "劫财"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正印"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "劫财"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "正印"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "子",
+       "丑"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "M.b",
+        "day"
+       ],
+       [
+        "D.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "双属",
+      "Y.b": "用",
+      "M.s": "体",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "用",
+      "H.b": "用"
+     },
+     "muku": [
+      {
+       "addr": "Y.b",
+       "branch": "未",
+       "ku_of": [
+        "木"
+       ]
+      },
+      {
+       "addr": "H.b",
+       "branch": "辰",
+       "ku_of": [
+        "水",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "ten_god": "正印",
+      "mapping_rule": "M-03",
+      "mapping_rules": [
+       "M-03"
+      ],
+      "mapping_basis": "月令为事业与格局之根",
+      "basis_source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "kind": "chuan",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申子辰",
+      "completeness": "half_mu",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+      "quote": "一、 官命的核心必须有官、 杀及印星。 官杀主职务， 印主权柄。",
+      "applicability": "官命核心：官杀与印星",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831",
+      "quote": "四 官命组合中 如出现申 酉两字做功 一般是检察 法院 法律有关的官职； 如出现申酉、 丑、 寅字的组合做功， 一般与公安部门 的官。",
+      "applicability": "官职类型组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "官命 官杀 印星",
+     "hits": [
+      {
+       "entry_id": "M1-D-311",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:5",
+       "score": 22.0,
+       "title": "过河拆桥原理一：弄住宾位官杀"
+      },
+      {
+       "entry_id": "M1-D-318",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:49",
+       "score": 22.0,
+       "title": "过河拆桥例四：官杀重亦同构"
+      },
+      {
+       "entry_id": "M1-D-408",
+       "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+       "anchor": "line:902",
+       "score": 22.0,
+       "title": "官杀旺等伤官来即当官"
+      },
+      {
+       "entry_id": "M1-D-420",
+       "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+       "anchor": "line:2216",
+       "score": 22.0,
+       "title": "官杀混杂的真假定性"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 16.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      },
+      {
+       "entry_id": "M1-D-186",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:91",
+       "score": 16.0,
+       "title": "官命 5 大结构类型"
+      },
+      {
+       "entry_id": "M1-D-241",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:101",
+       "score": 16.0,
+       "title": "学历三星判定法（官杀/印/食 vs 财/伤/比）"
+      },
+      {
+       "entry_id": "M1-D-244",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:140",
+       "score": 16.0,
+       "title": "官杀配印=学业有成标准结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-03"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"丁未 壬子 甲寅 戊辰\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"官命 官杀 印星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-08",
+    "question": "我适合做律师还是进体制？事业上怎么定位？",
+    "domain": "事业",
+    "prereg_id": "RQ-08",
+    "chart_id": "cf-efe9bf699966a8cb15e8",
+    "case_id": "F20-020",
+    "snapshot": {
+     "chart_id": "cf-efe9bf699966a8cb15e8",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "辛酉",
+       "stem": {
+        "addr": "Y.s",
+        "char": "辛",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "酉",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "辛",
+          "q": "本气",
+          "g": "食神"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "辛卯",
+       "stem": {
+        "addr": "M.s",
+        "char": "辛",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "卯",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "己丑",
+       "stem": {
+        "addr": "D.s",
+        "char": "己",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "丑",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "癸",
+          "q": "中气",
+          "g": "偏财"
+         },
+         {
+          "c": "辛",
+          "q": "余气",
+          "g": "食神"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丙子",
+       "stem": {
+        "addr": "H.s",
+        "char": "丙",
+        "ten_god": "正印"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "子",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "偏财"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "己",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "辛",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "M.s",
+       "char": "辛",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "D.s",
+       "char": "己",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丙",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "Y.b",
+       "char": "酉",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "M.b",
+       "char": "卯",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "D.b",
+       "char": "丑",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "ten_god": "偏财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "酉",
+       "hidden": [
+        {
+         "c": "辛",
+         "q": "本气",
+         "g": "食神"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "丑",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "癸",
+         "q": "中气",
+         "g": "偏财"
+        },
+        {
+         "c": "辛",
+         "q": "余气",
+         "g": "食神"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "偏财"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "午",
+       "未"
+      ],
+      "by_year_xun": [
+       "子",
+       "丑"
+      ],
+      "hits": [
+       [
+        "D.b",
+        "year"
+       ],
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "双属",
+      "Y.b": "双属",
+      "M.s": "双属",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "体",
+      "H.b": "用"
+     },
+     "muku": [
+      {
+       "addr": "D.b",
+       "branch": "丑",
+       "ku_of": [
+        "金"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "M.b",
+      "role": "月令/事业宫",
+      "ten_god": "七杀",
+      "mapping_rule": "M-03",
+      "mapping_rules": [
+       "M-03"
+      ],
+      "mapping_basis": "月令为事业与格局之根",
+      "basis_source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "kind": "chong",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e012",
+      "kind": "po",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e013",
+      "kind": "xing",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "子卯",
+      "completeness": "huxing",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827",
+      "quote": "一、 官命的核心必须有官、 杀及印星。 官杀主职务， 印主权柄。",
+      "applicability": "官命核心：官杀与印星",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831",
+      "quote": "四 官命组合中 如出现申 酉两字做功 一般是检察 法院 法律有关的官职； 如出现申酉、 丑、 寅字的组合做功， 一般与公安部门 的官。",
+      "applicability": "官职类型组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "官命 官杀 印星",
+     "hits": [
+      {
+       "entry_id": "M1-D-311",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:5",
+       "score": 22.0,
+       "title": "过河拆桥原理一：弄住宾位官杀"
+      },
+      {
+       "entry_id": "M1-D-318",
+       "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md",
+       "anchor": "line:49",
+       "score": 22.0,
+       "title": "过河拆桥例四：官杀重亦同构"
+      },
+      {
+       "entry_id": "M1-D-408",
+       "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+       "anchor": "line:902",
+       "score": 22.0,
+       "title": "官杀旺等伤官来即当官"
+      },
+      {
+       "entry_id": "M1-D-420",
+       "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+       "anchor": "line:2216",
+       "score": 22.0,
+       "title": "官杀混杂的真假定性"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 16.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      },
+      {
+       "entry_id": "M1-D-186",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:91",
+       "score": 16.0,
+       "title": "官命 5 大结构类型"
+      },
+      {
+       "entry_id": "M1-D-241",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:101",
+       "score": 16.0,
+       "title": "学历三星判定法（官杀/印/食 vs 财/伤/比）"
+      },
+      {
+       "entry_id": "M1-D-244",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:140",
+       "score": 16.0,
+       "title": "官杀配印=学业有成标准结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-03"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e012"
+     },
+     {
+      "type": "edge",
+      "ref": "e013"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2819-L2827"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2829-L2831"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close",
+     "boundary_zi_shi"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"辛酉 辛卯 己丑 丙子\" --gender 坤 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"官命 官杀 印星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-09",
+    "question": "我最近身体总出问题，八字上看哪些部位要当心？",
+    "domain": "健康",
+    "prereg_id": "RQ-09",
+    "chart_id": "cf-0dec002f2eece26cac6f",
+    "case_id": "F20-003",
+    "snapshot": {
+     "chart_id": "cf-0dec002f2eece26cac6f",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "壬子",
+       "stem": {
+        "addr": "Y.s",
+        "char": "壬",
+        "ten_god": "正印"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "子",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丙午",
+       "stem": {
+        "addr": "M.s",
+        "char": "丙",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "午",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "食神"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "偏财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "乙酉",
+       "stem": {
+        "addr": "D.s",
+        "char": "乙",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "酉",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "辛",
+          "q": "本气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "戊寅",
+       "stem": {
+        "addr": "H.s",
+        "char": "戊",
+        "ten_god": "正财"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "寅",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "劫财"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "伤官"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "正财"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "乙",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "壬",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "M.s",
+       "char": "丙",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "D.s",
+       "char": "乙",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "戊",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "Y.b",
+       "char": "子",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "M.b",
+       "char": "午",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "H.b",
+       "char": "寅",
+       "ten_god": "劫财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "食神"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "偏财"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "hidden": [
+        {
+         "c": "辛",
+         "q": "本气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "伤官"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "正财"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "午",
+       "未"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "M.b",
+        "day"
+       ],
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "体",
+      "M.s": "双属",
+      "M.b": "双属",
+      "D.s": "体",
+      "D.b": "用",
+      "H.s": "用",
+      "H.b": "体"
+     },
+     "muku": []
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "ten_god": "七杀",
+      "mapping_rule": "M-05",
+      "mapping_rules": [
+       "M-05"
+      ],
+      "mapping_basis": "日支为身体宫",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "ten_god": "食神",
+      "mapping_rule": "M-06",
+      "mapping_rules": [
+       "M-06"
+      ],
+      "mapping_basis": "月令定阴阳寒燥",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L5-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "kind": "chong",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "po",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅午戌",
+      "completeness": "half_sheng",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+      "quote": "看疾病与八字做功关系，要结合八字的宫位与干支象法。需要关注几个方面。",
+      "applicability": "疾病总则：宫位与干支象法",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L33",
+      "quote": "酉：肺、耳",
+      "applicability": "日支酉的身体象（branch_to_organ_line）",
+      "quote_verified": true,
+      "basis": "branch_to_organ_line"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "疾病 日支 身体",
+     "hits": [
+      {
+       "entry_id": "M1-D-202",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:508",
+       "score": 28.0,
+       "title": "疾病象法体系（干支→脏腑+六淫+宫位）"
+      },
+      {
+       "entry_id": "M1-D-283",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:695",
+       "score": 26.0,
+       "title": "疾病五大类型判定法"
+      },
+      {
+       "entry_id": "M1-D-342",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:154",
+       "score": 22.0,
+       "title": "日支被制也是做功"
+      },
+      {
+       "entry_id": "M1-D-219",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:263",
+       "score": 14.0,
+       "title": "日支被制做功法"
+      },
+      {
+       "entry_id": "M1-D-282",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:682",
+       "score": 14.0,
+       "title": "干支→脏腑映射表"
+      },
+      {
+       "entry_id": "M1-D-362",
+       "source_ref": "sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md",
+       "anchor": "line:157",
+       "score": 10.0,
+       "title": "不看衰旺从与不从只看功"
+      },
+      {
+       "entry_id": "M1-D-372",
+       "source_ref": "sources/duan/MinerU_markdown_象法_2056043579454447616.md",
+       "anchor": "line:15",
+       "score": 10.0,
+       "title": "干支有基本象与衍生象"
+      },
+      {
+       "entry_id": "M1-D-012",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:145",
+       "score": 2.0,
+       "title": "做功 4 — 合用结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-05"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-06"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L33"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"壬子 丙午 乙酉 戊寅\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"疾病 日支 身体\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-10",
+    "question": "我血压和心脏不太好，和八字有关系吗？",
+    "domain": "健康",
+    "prereg_id": "RQ-10",
+    "chart_id": "cf-f8577dedd884fcbd07ec",
+    "case_id": "F20-005",
+    "snapshot": {
+     "chart_id": "cf-f8577dedd884fcbd07ec",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "己卯",
+       "stem": {
+        "addr": "Y.s",
+        "char": "己",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "卯",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "乙",
+          "q": "本气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丙子",
+       "stem": {
+        "addr": "M.s",
+        "char": "丙",
+        "ten_god": "劫财"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "子",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "丁未",
+       "stem": {
+        "addr": "D.s",
+        "char": "丁",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "未",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "食神"
+         },
+         {
+          "c": "丁",
+          "q": "中气",
+          "g": "比肩"
+         },
+         {
+          "c": "乙",
+          "q": "余气",
+          "g": "偏印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "甲辰",
+       "stem": {
+        "addr": "H.s",
+        "char": "甲",
+        "ten_god": "正印"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "辰",
+        "main_ten_god": "伤官",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "伤官"
+         },
+         {
+          "c": "乙",
+          "q": "中气",
+          "g": "偏印"
+         },
+         {
+          "c": "癸",
+          "q": "余气",
+          "g": "七杀"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "丁",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "己",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "M.s",
+       "char": "丙",
+       "ten_god": "劫财"
+      },
+      {
+       "addr": "D.s",
+       "char": "丁",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "甲",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "Y.b",
+       "char": "卯",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "M.b",
+       "char": "子",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "D.b",
+       "char": "未",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "ten_god": "伤官"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "卯",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "未",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "食神"
+        },
+        {
+         "c": "丁",
+         "q": "中气",
+         "g": "比肩"
+        },
+        {
+         "c": "乙",
+         "q": "余气",
+         "g": "偏印"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "偏印"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "七杀"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "寅",
+       "卯"
+      ],
+      "by_year_xun": [
+       "申",
+       "酉"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "双属",
+      "Y.b": "体",
+      "M.s": "体",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "双属",
+      "H.s": "体",
+      "H.b": "双属"
+     },
+     "muku": [
+      {
+       "addr": "D.b",
+       "branch": "未",
+       "ku_of": [
+        "木"
+       ]
+      },
+      {
+       "addr": "H.b",
+       "branch": "辰",
+       "ku_of": [
+        "水",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "ten_god": "食神",
+      "mapping_rule": "M-05",
+      "mapping_rules": [
+       "M-05"
+      ],
+      "mapping_basis": "日支为身体宫",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "ten_god": "七杀",
+      "mapping_rule": "M-06",
+      "mapping_rules": [
+       "M-06"
+      ],
+      "mapping_basis": "月令定阴阳寒燥",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L5-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "xing",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "子卯",
+      "completeness": "huxing",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥卯未",
+      "completeness": "half_mu",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e013",
+      "kind": "chuan",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e014",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申子辰",
+      "completeness": "half_mu",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+      "quote": "看疾病与八字做功关系，要结合八字的宫位与干支象法。需要关注几个方面。",
+      "applicability": "疾病总则：宫位与干支象法",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L29",
+      "quote": "未：脾胃、饭食、力",
+      "applicability": "日支未的身体象（branch_to_organ_line）",
+      "quote_verified": true,
+      "basis": "branch_to_organ_line"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "疾病 日支 身体",
+     "hits": [
+      {
+       "entry_id": "M1-D-202",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:508",
+       "score": 28.0,
+       "title": "疾病象法体系（干支→脏腑+六淫+宫位）"
+      },
+      {
+       "entry_id": "M1-D-283",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:695",
+       "score": 26.0,
+       "title": "疾病五大类型判定法"
+      },
+      {
+       "entry_id": "M1-D-342",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:154",
+       "score": 22.0,
+       "title": "日支被制也是做功"
+      },
+      {
+       "entry_id": "M1-D-219",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:263",
+       "score": 14.0,
+       "title": "日支被制做功法"
+      },
+      {
+       "entry_id": "M1-D-282",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:682",
+       "score": 14.0,
+       "title": "干支→脏腑映射表"
+      },
+      {
+       "entry_id": "M1-D-362",
+       "source_ref": "sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md",
+       "anchor": "line:157",
+       "score": 10.0,
+       "title": "不看衰旺从与不从只看功"
+      },
+      {
+       "entry_id": "M1-D-372",
+       "source_ref": "sources/duan/MinerU_markdown_象法_2056043579454447616.md",
+       "anchor": "line:15",
+       "score": 10.0,
+       "title": "干支有基本象与衍生象"
+      },
+      {
+       "entry_id": "M1-D-012",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:145",
+       "score": 2.0,
+       "title": "做功 4 — 合用结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-05"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-06"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e013"
+     },
+     {
+      "type": "edge",
+      "ref": "e014"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L29"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"己卯 丙子 丁未 甲辰\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"疾病 日支 身体\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-11",
+    "question": "我常年肠胃不好，是不是八字里土被克？",
+    "domain": "健康",
+    "prereg_id": "RQ-11",
+    "chart_id": "cf-b7ebd2f1a5f4407e4fa3",
+    "case_id": "F20-013",
+    "snapshot": {
+     "chart_id": "cf-b7ebd2f1a5f4407e4fa3",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "乙未",
+       "stem": {
+        "addr": "Y.s",
+        "char": "乙",
+        "ten_god": "劫财"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "未",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "正财"
+         },
+         {
+          "c": "丁",
+          "q": "中气",
+          "g": "伤官"
+         },
+         {
+          "c": "乙",
+          "q": "余气",
+          "g": "劫财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丁亥",
+       "stem": {
+        "addr": "M.s",
+        "char": "丁",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "亥",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "偏印"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "比肩"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "甲午",
+       "stem": {
+        "addr": "D.s",
+        "char": "甲",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "午",
+        "main_ten_god": "伤官",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "伤官"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "正财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丙子",
+       "stem": {
+        "addr": "H.s",
+        "char": "丙",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "子",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正印"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "甲",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "乙",
+       "ten_god": "劫财"
+      },
+      {
+       "addr": "M.s",
+       "char": "丁",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丙",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "ten_god": "正印"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "丁",
+         "q": "中气",
+         "g": "伤官"
+        },
+        {
+         "c": "乙",
+         "q": "余气",
+         "g": "劫财"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "偏印"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "比肩"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "正财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正印"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "辰",
+       "巳"
+      ],
+      "by_year_xun": [
+       "辰",
+       "巳"
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "用",
+      "M.s": "双属",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "双属",
+      "H.s": "双属",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "Y.b",
+       "branch": "未",
+       "ku_of": [
+        "木"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "D.b",
+      "role": "日支/身体宫",
+      "ten_god": "伤官",
+      "mapping_rule": "M-05",
+      "mapping_rules": [
+       "M-05"
+      ],
+      "mapping_basis": "日支为身体宫",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "addr": "D.s",
+      "role": "日主",
+      "ten_god": "日主",
+      "mapping_rule": "M-04",
+      "mapping_rules": [
+       "M-04"
+      ],
+      "mapping_basis": "日干为本人（engine chart.day_master）"
+     },
+     {
+      "addr": "M.b",
+      "role": "月令/气候",
+      "ten_god": "偏印",
+      "mapping_rule": "M-06",
+      "mapping_rules": [
+       "M-06"
+      ],
+      "mapping_basis": "月令定阴阳寒燥",
+      "basis_source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L5-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥卯未",
+      "completeness": "gong",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e008",
+      "kind": "liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "sanhui",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "巳午未",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "zhi_anhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e012",
+      "kind": "sanhui",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥子丑",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e013",
+      "kind": "chong",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11",
+      "quote": "看疾病与八字做功关系，要结合八字的宫位与干支象法。需要关注几个方面。",
+      "applicability": "疾病总则：宫位与干支象法",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27",
+      "quote": "午：心脏、阳亢、血压、神经",
+      "applicability": "日支午的身体象（branch_to_organ_line）",
+      "quote_verified": true,
+      "basis": "branch_to_organ_line"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "疾病 日支 身体",
+     "hits": [
+      {
+       "entry_id": "M1-D-202",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:508",
+       "score": 28.0,
+       "title": "疾病象法体系（干支→脏腑+六淫+宫位）"
+      },
+      {
+       "entry_id": "M1-D-283",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:695",
+       "score": 26.0,
+       "title": "疾病五大类型判定法"
+      },
+      {
+       "entry_id": "M1-D-342",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:154",
+       "score": 22.0,
+       "title": "日支被制也是做功"
+      },
+      {
+       "entry_id": "M1-D-219",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:263",
+       "score": 14.0,
+       "title": "日支被制做功法"
+      },
+      {
+       "entry_id": "M1-D-282",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:682",
+       "score": 14.0,
+       "title": "干支→脏腑映射表"
+      },
+      {
+       "entry_id": "M1-D-362",
+       "source_ref": "sources/duan/MinerU_markdown_宾主作用_2056044174571667456.md",
+       "anchor": "line:157",
+       "score": 10.0,
+       "title": "不看衰旺从与不从只看功"
+      },
+      {
+       "entry_id": "M1-D-372",
+       "source_ref": "sources/duan/MinerU_markdown_象法_2056043579454447616.md",
+       "anchor": "line:15",
+       "score": 10.0,
+       "title": "干支有基本象与衍生象"
+      },
+      {
+       "entry_id": "M1-D-012",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:145",
+       "score": 2.0,
+       "title": "做功 4 — 合用结构"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-05"
+     },
+     {
+      "type": "palace",
+      "ref": "D.s",
+      "mapping_rule": "M-04"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-06"
+     },
+     {
+      "type": "edge",
+      "ref": "e007"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "edge",
+      "ref": "e012"
+     },
+     {
+      "type": "edge",
+      "ref": "e013"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L3-L11"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close",
+     "boundary_zi_shi"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"乙未 丁亥 甲午 丙子\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"疾病 日支 身体\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-12",
+    "question": "我这几年财运一般，什么时候能攒下钱？",
+    "domain": "财运",
+    "prereg_id": "RQ-12",
+    "chart_id": "cf-d40ec8604323278f8275",
+    "case_id": "F20-006",
+    "snapshot": {
+     "chart_id": "cf-d40ec8604323278f8275",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "乙未",
+       "stem": {
+        "addr": "Y.s",
+        "char": "乙",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "未",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "己",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "丁",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "乙",
+          "q": "余气",
+          "g": "比肩"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "丁亥",
+       "stem": {
+        "addr": "M.s",
+        "char": "丁",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "亥",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "正印"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "劫财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "乙酉",
+       "stem": {
+        "addr": "D.s",
+        "char": "乙",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "酉",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "辛",
+          "q": "本气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丙戌",
+       "stem": {
+        "addr": "H.s",
+        "char": "丙",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "戌",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "正财"
+         },
+         {
+          "c": "辛",
+          "q": "中气",
+          "g": "七杀"
+         },
+         {
+          "c": "丁",
+          "q": "余气",
+          "g": "食神"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "乙",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "乙",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "M.s",
+       "char": "丁",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "D.s",
+       "char": "乙",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丙",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "H.b",
+       "char": "戌",
+       "ten_god": "正财"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "未",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "丁",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "乙",
+         "q": "余气",
+         "g": "比肩"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "正印"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "劫财"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "酉",
+       "hidden": [
+        {
+         "c": "辛",
+         "q": "本气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "戌",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "七杀"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "食神"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "午",
+       "未"
+      ],
+      "by_year_xun": [
+       "辰",
+       "巳"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "用",
+      "M.s": "双属",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "用",
+      "H.s": "双属",
+      "H.b": "用"
+     },
+     "muku": [
+      {
+       "addr": "Y.b",
+       "branch": "未",
+       "ku_of": [
+        "木"
+       ]
+      },
+      {
+       "addr": "H.b",
+       "branch": "戌",
+       "ku_of": [
+        "火",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "Y.b",
+      "role": "财星",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "H.b",
+      "role": "财星",
+      "ten_god": "正财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "ten_god": "七杀",
+      "mapping_rule": "M-08",
+      "mapping_rules": [
+       "M-08"
+      ],
+      "mapping_basis": "主位取财之身",
+      "basis_source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e007",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥卯未",
+      "completeness": "gong",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e008",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "xing",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "丑戌未",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "chuan",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "sanhui",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申酉戌",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+      "quote": "八字一般都是食神伤官落门户或年上生财临驿马星，或者财星虚透带驿马在年时，或天干食神伤官高透合了虚印见财星了。",
+      "applicability": "求财取象",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7",
+      "quote": "其一：主位财重，生宾位的官杀，官杀聚集了财的能量，只要将这个官杀弄住（制住、合住、穿住）就会发大财，原局弄住功大，大运弄住功小。",
+      "applicability": "主位/宾位与财官组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "求财 财星",
+     "hits": [
+      {
+       "entry_id": "M1-D-341",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:163",
+       "score": 22.0,
+       "title": "合用财星的虚实条件"
+      },
+      {
+       "entry_id": "M1-D-218",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:234",
+       "score": 14.0,
+       "title": "合用财星身强弱分论"
+      },
+      {
+       "entry_id": "M1-D-272",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:538",
+       "score": 14.0,
+       "title": "口才求财=食伤落门户+驿马"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 10.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-130",
+       "source_ref": "theory/raw/duan/d05-theory.md",
+       "anchor": "line:278",
+       "score": 4.0,
+       "title": "病药+引动应期通用方法论"
+      },
+      {
+       "entry_id": "M1-D-210",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:714",
+       "score": 4.0,
+       "title": "印包财局=做生意铁判"
+      },
+      {
+       "entry_id": "M1-D-005",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "体的分类 — 工具（日干/比劫/印/禄/刃）"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "Y.b",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "H.b",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-08"
+     },
+     {
+      "type": "edge",
+      "ref": "e007"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"乙未 丁亥 乙酉 丙戌\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"求财 财星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-13",
+    "question": "我做生意总是财来财去，问题出在哪？",
+    "domain": "财运",
+    "prereg_id": "RQ-13",
+    "chart_id": "cf-96f4ce6c5f417964893f",
+    "case_id": "F20-009",
+    "snapshot": {
+     "chart_id": "cf-96f4ce6c5f417964893f",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "戊申",
+       "stem": {
+        "addr": "Y.s",
+        "char": "戊",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "申",
+        "main_ten_god": "七杀",
+        "hidden": [
+         {
+          "c": "庚",
+          "q": "本气",
+          "g": "七杀"
+         },
+         {
+          "c": "壬",
+          "q": "中气",
+          "g": "偏印"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "偏财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "壬戌",
+       "stem": {
+        "addr": "M.s",
+        "char": "壬",
+        "ten_god": "偏印"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "戌",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "辛",
+          "q": "中气",
+          "g": "正官"
+         },
+         {
+          "c": "丁",
+          "q": "余气",
+          "g": "伤官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "甲子",
+       "stem": {
+        "addr": "D.s",
+        "char": "甲",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "子",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正印"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丙寅",
+       "stem": {
+        "addr": "H.s",
+        "char": "丙",
+        "ten_god": "食神"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "寅",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "食神"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "偏财"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "甲",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "戊",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "M.s",
+       "char": "壬",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丙",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "Y.b",
+       "char": "申",
+       "ten_god": "七杀"
+      },
+      {
+       "addr": "M.b",
+       "char": "戌",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "D.b",
+       "char": "子",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "H.b",
+       "char": "寅",
+       "ten_god": "比肩"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "申",
+       "hidden": [
+        {
+         "c": "庚",
+         "q": "本气",
+         "g": "七杀"
+        },
+        {
+         "c": "壬",
+         "q": "中气",
+         "g": "偏印"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "戌",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "正官"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "伤官"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正印"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "戌",
+       "亥"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "M.b",
+        "day"
+       ],
+       [
+        "H.b",
+        "year"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "用",
+      "Y.b": "用",
+      "M.s": "体",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "双属",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "M.b",
+       "branch": "戌",
+       "ku_of": [
+        "火",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "Y.s",
+      "role": "财星（透干）",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "M.b",
+      "role": "财星",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "ten_god": "正印",
+      "mapping_rule": "M-08",
+      "mapping_rules": [
+       "M-08"
+      ],
+      "mapping_basis": "主位取财之身",
+      "basis_source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e008",
+      "kind": "sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申酉戌",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e009",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申子辰",
+      "completeness": "half_sheng",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e012",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅午戌",
+      "completeness": "gong",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+      "quote": "八字一般都是食神伤官落门户或年上生财临驿马星，或者财星虚透带驿马在年时，或天干食神伤官高透合了虚印见财星了。",
+      "applicability": "求财取象",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7",
+      "quote": "其一：主位财重，生宾位的官杀，官杀聚集了财的能量，只要将这个官杀弄住（制住、合住、穿住）就会发大财，原局弄住功大，大运弄住功小。",
+      "applicability": "主位/宾位与财官组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "求财 财星",
+     "hits": [
+      {
+       "entry_id": "M1-D-341",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:163",
+       "score": 22.0,
+       "title": "合用财星的虚实条件"
+      },
+      {
+       "entry_id": "M1-D-218",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:234",
+       "score": 14.0,
+       "title": "合用财星身强弱分论"
+      },
+      {
+       "entry_id": "M1-D-272",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:538",
+       "score": 14.0,
+       "title": "口才求财=食伤落门户+驿马"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 10.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-130",
+       "source_ref": "theory/raw/duan/d05-theory.md",
+       "anchor": "line:278",
+       "score": 4.0,
+       "title": "病药+引动应期通用方法论"
+      },
+      {
+       "entry_id": "M1-D-210",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:714",
+       "score": 4.0,
+       "title": "印包财局=做生意铁判"
+      },
+      {
+       "entry_id": "M1-D-005",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "体的分类 — 工具（日干/比劫/印/禄/刃）"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "Y.s",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-08"
+     },
+     {
+      "type": "edge",
+      "ref": "e008"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e012"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"戊申 壬戌 甲子 丙寅\" --gender 坤 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"求财 财星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-14",
+    "question": "我适合靠技术赚钱还是靠人脉资源？",
+    "domain": "财运",
+    "prereg_id": "RQ-14",
+    "chart_id": "cf-d0bb0a9999e83c8f037e",
+    "case_id": "F20-015",
+    "snapshot": {
+     "chart_id": "cf-d0bb0a9999e83c8f037e",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "丙午",
+       "stem": {
+        "addr": "Y.s",
+        "char": "丙",
+        "ten_god": "比肩"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "午",
+        "main_ten_god": "劫财",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "劫财"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "伤官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "庚寅",
+       "stem": {
+        "addr": "M.s",
+        "char": "庚",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "寅",
+        "main_ten_god": "偏印",
+        "hidden": [
+         {
+          "c": "甲",
+          "q": "本气",
+          "g": "偏印"
+         },
+         {
+          "c": "丙",
+          "q": "中气",
+          "g": "比肩"
+         },
+         {
+          "c": "戊",
+          "q": "余气",
+          "g": "食神"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "丙辰",
+       "stem": {
+        "addr": "D.s",
+        "char": "丙",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "辰",
+        "main_ten_god": "食神",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "食神"
+         },
+         {
+          "c": "乙",
+          "q": "中气",
+          "g": "正印"
+         },
+         {
+          "c": "癸",
+          "q": "余气",
+          "g": "正官"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "庚子",
+       "stem": {
+        "addr": "H.s",
+        "char": "庚",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "子",
+        "main_ten_god": "正官",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正官"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "丙",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "丙",
+       "ten_god": "比肩"
+      },
+      {
+       "addr": "M.s",
+       "char": "庚",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "D.s",
+       "char": "丙",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "庚",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "Y.b",
+       "char": "午",
+       "ten_god": "劫财"
+      },
+      {
+       "addr": "M.b",
+       "char": "寅",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "D.b",
+       "char": "辰",
+       "ten_god": "食神"
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "ten_god": "正官"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "伤官"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "寅",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "偏印"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "比肩"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "食神"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "辰",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "食神"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "正印"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "正官"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正官"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "子",
+       "丑"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "M.b",
+        "year"
+       ],
+       [
+        "H.b",
+        "day"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "体",
+      "Y.b": "体",
+      "M.s": "用",
+      "M.b": "体",
+      "D.s": "体",
+      "D.b": "双属",
+      "H.s": "用",
+      "H.b": "用"
+     },
+     "muku": [
+      {
+       "addr": "D.b",
+       "branch": "辰",
+       "ku_of": [
+        "水",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "M.s",
+      "role": "财星（透干）",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "H.s",
+      "role": "财星（透干）",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "ten_god": "食神",
+      "mapping_rule": "M-08",
+      "mapping_rules": [
+       "M-08"
+      ],
+      "mapping_basis": "主位取财之身",
+      "basis_source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "kind": "sanhui",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "寅卯辰",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "sanhe",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申子辰",
+      "completeness": "half_mu",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+      "quote": "八字一般都是食神伤官落门户或年上生财临驿马星，或者财星虚透带驿马在年时，或天干食神伤官高透合了虚印见财星了。",
+      "applicability": "求财取象",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7",
+      "quote": "其一：主位财重，生宾位的官杀，官杀聚集了财的能量，只要将这个官杀弄住（制住、合住、穿住）就会发大财，原局弄住功大，大运弄住功小。",
+      "applicability": "主位/宾位与财官组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "求财 财星",
+     "hits": [
+      {
+       "entry_id": "M1-D-341",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:163",
+       "score": 22.0,
+       "title": "合用财星的虚实条件"
+      },
+      {
+       "entry_id": "M1-D-218",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:234",
+       "score": 14.0,
+       "title": "合用财星身强弱分论"
+      },
+      {
+       "entry_id": "M1-D-272",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:538",
+       "score": 14.0,
+       "title": "口才求财=食伤落门户+驿马"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 10.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-130",
+       "source_ref": "theory/raw/duan/d05-theory.md",
+       "anchor": "line:278",
+       "score": 4.0,
+       "title": "病药+引动应期通用方法论"
+      },
+      {
+       "entry_id": "M1-D-210",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:714",
+       "score": 4.0,
+       "title": "印包财局=做生意铁判"
+      },
+      {
+       "entry_id": "M1-D-005",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "体的分类 — 工具（日干/比劫/印/禄/刃）"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "M.s",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "H.s",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-08"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close",
+     "boundary_zi_shi"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"丙午 庚寅 丙辰 庚子\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"求财 财星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   },
+   {
+    "question_id": "RQ-15",
+    "question": "我投资老是亏，八字里财库能不能用？",
+    "domain": "财运",
+    "prereg_id": "RQ-15",
+    "chart_id": "cf-ba0095d81d3c2e1b8d57",
+    "case_id": "F20-018",
+    "snapshot": {
+     "chart_id": "cf-ba0095d81d3c2e1b8d57",
+     "dayun_index": null,
+     "liunian_year": null
+    },
+    "facts": {
+     "pillars": [
+      {
+       "palace": "year",
+       "ganzhi": "壬子",
+       "stem": {
+        "addr": "Y.s",
+        "char": "壬",
+        "ten_god": "偏财"
+       },
+       "branch": {
+        "addr": "Y.b",
+        "char": "子",
+        "main_ten_god": "正财",
+        "hidden": [
+         {
+          "c": "癸",
+          "q": "本气",
+          "g": "正财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "month",
+       "ganzhi": "辛亥",
+       "stem": {
+        "addr": "M.s",
+        "char": "辛",
+        "ten_god": "伤官"
+       },
+       "branch": {
+        "addr": "M.b",
+        "char": "亥",
+        "main_ten_god": "偏财",
+        "hidden": [
+         {
+          "c": "壬",
+          "q": "本气",
+          "g": "偏财"
+         },
+         {
+          "c": "甲",
+          "q": "中气",
+          "g": "七杀"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "day",
+       "ganzhi": "戊午",
+       "stem": {
+        "addr": "D.s",
+        "char": "戊",
+        "ten_god": "日主"
+       },
+       "branch": {
+        "addr": "D.b",
+        "char": "午",
+        "main_ten_god": "正印",
+        "hidden": [
+         {
+          "c": "丁",
+          "q": "本气",
+          "g": "正印"
+         },
+         {
+          "c": "己",
+          "q": "中气",
+          "g": "劫财"
+         }
+        ]
+       }
+      },
+      {
+       "palace": "hour",
+       "ganzhi": "丙辰",
+       "stem": {
+        "addr": "H.s",
+        "char": "丙",
+        "ten_god": "偏印"
+       },
+       "branch": {
+        "addr": "H.b",
+        "char": "辰",
+        "main_ten_god": "比肩",
+        "hidden": [
+         {
+          "c": "戊",
+          "q": "本气",
+          "g": "比肩"
+         },
+         {
+          "c": "乙",
+          "q": "中气",
+          "g": "正官"
+         },
+         {
+          "c": "癸",
+          "q": "余气",
+          "g": "正财"
+         }
+        ]
+       }
+      }
+     ],
+     "day_master": "戊",
+     "ten_gods": [
+      {
+       "addr": "Y.s",
+       "char": "壬",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "M.s",
+       "char": "辛",
+       "ten_god": "伤官"
+      },
+      {
+       "addr": "D.s",
+       "char": "戊",
+       "ten_god": "日主"
+      },
+      {
+       "addr": "H.s",
+       "char": "丙",
+       "ten_god": "偏印"
+      },
+      {
+       "addr": "Y.b",
+       "char": "子",
+       "ten_god": "正财"
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "ten_god": "偏财"
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "ten_god": "正印"
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "ten_god": "比肩"
+      }
+     ],
+     "hidden_stems": [
+      {
+       "addr": "Y.b",
+       "char": "子",
+       "hidden": [
+        {
+         "c": "癸",
+         "q": "本气",
+         "g": "正财"
+        }
+       ]
+      },
+      {
+       "addr": "M.b",
+       "char": "亥",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "七杀"
+        }
+       ]
+      },
+      {
+       "addr": "D.b",
+       "char": "午",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "正印"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "劫财"
+        }
+       ]
+      },
+      {
+       "addr": "H.b",
+       "char": "辰",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "正官"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "正财"
+        }
+       ]
+      }
+     ],
+     "kong_wang": {
+      "by_day_xun": [
+       "子",
+       "丑"
+      ],
+      "by_year_xun": [
+       "寅",
+       "卯"
+      ],
+      "hits": [
+       [
+        "Y.b",
+        "day"
+       ]
+      ]
+     },
+     "tiyong": {
+      "Y.s": "用",
+      "Y.b": "用",
+      "M.s": "双属",
+      "M.b": "用",
+      "D.s": "体",
+      "D.b": "体",
+      "H.s": "体",
+      "H.b": "体"
+     },
+     "muku": [
+      {
+       "addr": "H.b",
+       "branch": "辰",
+       "ku_of": [
+        "水",
+        "土"
+       ]
+      }
+     ]
+    },
+    "palaces": [
+     {
+      "addr": "Y.s",
+      "role": "财星（透干）",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "Y.b",
+      "role": "财星",
+      "ten_god": "正财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "M.b",
+      "role": "财星",
+      "ten_god": "偏财",
+      "mapping_rule": "M-07",
+      "mapping_rules": [
+       "M-07"
+      ],
+      "mapping_basis": "财星取象",
+      "basis_source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "addr": "D.b",
+      "role": "主位/取财之身",
+      "ten_god": "正印",
+      "mapping_rule": "M-08",
+      "mapping_rules": [
+       "M-08"
+      ],
+      "mapping_basis": "主位取财之身",
+      "basis_source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e009",
+      "kind": "sanhui",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "亥子丑",
+      "completeness": "partial",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e010",
+      "kind": "chong",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e011",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": "申子辰",
+      "completeness": "half_mu",
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     },
+     {
+      "edge_id": "e012",
+      "kind": "zhi_anhe",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": null,
+      "scope": "natal",
+      "group": null,
+      "completeness": null,
+      "direction": "undetermined",
+      "actor": null,
+      "target": null
+     }
+    ],
+    "theory": [
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5",
+      "quote": "八字一般都是食神伤官落门户或年上生财临驿马星，或者财星虚透带驿马在年时，或天干食神伤官高透合了虚印见财星了。",
+      "applicability": "求财取象",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     },
+     {
+      "entry_id": null,
+      "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7",
+      "quote": "其一：主位财重，生宾位的官杀，官杀聚集了财的能量，只要将这个官杀弄住（制住、合住、穿住）就会发大财，原局弄住功大，大运弄住功小。",
+      "applicability": "主位/宾位与财官组合",
+      "quote_verified": true,
+      "basis": "domain_album_passage"
+     }
+    ],
+    "retrieval": {
+     "engine": "tools.query_theory",
+     "query": "求财 财星",
+     "hits": [
+      {
+       "entry_id": "M1-D-341",
+       "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md",
+       "anchor": "line:163",
+       "score": 22.0,
+       "title": "合用财星的虚实条件"
+      },
+      {
+       "entry_id": "M1-D-218",
+       "source_ref": "theory/raw/duan/d25-d29-theory.md",
+       "anchor": "line:234",
+       "score": 14.0,
+       "title": "合用财星身强弱分论"
+      },
+      {
+       "entry_id": "M1-D-272",
+       "source_ref": "theory/raw/duan/d-small-theory.md",
+       "anchor": "line:538",
+       "score": 14.0,
+       "title": "口才求财=食伤落门户+驿马"
+      },
+      {
+       "entry_id": "M1-D-292",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+       "anchor": "line:17",
+       "score": 10.0,
+       "title": "配偶宫与配偶星的取法"
+      },
+      {
+       "entry_id": "M1-D-130",
+       "source_ref": "theory/raw/duan/d05-theory.md",
+       "anchor": "line:278",
+       "score": 4.0,
+       "title": "病药+引动应期通用方法论"
+      },
+      {
+       "entry_id": "M1-D-210",
+       "source_ref": "theory/raw/duan/d19-d24-theory.md",
+       "anchor": "line:714",
+       "score": 4.0,
+       "title": "印包财局=做生意铁判"
+      },
+      {
+       "entry_id": "M1-D-005",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "体的分类 — 工具（日干/比劫/印/禄/刃）"
+      },
+      {
+       "entry_id": "M1-D-006",
+       "source_ref": "theory/raw/duan/d01-deep-read.md",
+       "anchor": "line:100",
+       "score": 2.0,
+       "title": "用的分类 — 目的（财/官杀）"
+      }
+     ]
+    },
+    "evidence_items": [
+     {
+      "type": "palace",
+      "ref": "Y.s",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "Y.b",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "M.b",
+      "mapping_rule": "M-07"
+     },
+     {
+      "type": "palace",
+      "ref": "D.b",
+      "mapping_rule": "M-08"
+     },
+     {
+      "type": "edge",
+      "ref": "e009"
+     },
+     {
+      "type": "edge",
+      "ref": "e010"
+     },
+     {
+      "type": "edge",
+      "ref": "e011"
+     },
+     {
+      "type": "edge",
+      "ref": "e012"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_求财_2056043780500029440.md:L3-L5"
+     },
+     {
+      "type": "source",
+      "ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L3-L7"
+     }
+    ],
+    "gaps": [
+     "G2",
+     "G3",
+     "G4",
+     "G5",
+     "suiyun_ten_god",
+     "muku_open_close"
+    ],
+    "non_claims": [
+     "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+     "不判吉凶、成败、应期、事件、概率、置信度",
+     "不判主次/体用胜负",
+     "不把固定克/生/化/墓写成结论（只作事实发射）",
+     "不判救应、不判岁运引动、不判党势"
+    ],
+    "provenance": {
+     "engine_cmd": "python -m engine.cli all --pillars \"壬子 辛亥 戊午 丙辰\" --gender 乾 --json",
+     "theory_cmd": "python -m tools.query_theory --query \"求财 财星\" --schools duan --top-k 8 --per-school-cap 0 --json",
+     "pack_version": "v1"
+    }
+   }
+  ],
+  "evidence_item_count": 116,
+  "evidence_breakdown": {
+   "palaces": 37,
+   "edges": 49,
+   "source_refs": 30
+  },
+  "per_question_counts": {
+   "RQ-01": 7,
+   "RQ-02": 5,
+   "RQ-03": 5,
+   "RQ-04": 7,
+   "RQ-05": 6,
+   "RQ-06": 8,
+   "RQ-07": 6,
+   "RQ-08": 7,
+   "RQ-09": 9,
+   "RQ-10": 10,
+   "RQ-11": 11,
+   "RQ-12": 10,
+   "RQ-13": 8,
+   "RQ-14": 7,
+   "RQ-15": 10
+  }
+ },
+ "non_claims": [
+  "不判冲/合/穿/刑/破的方向（一律 direction=undetermined、actor=null、target=null）",
+  "不判吉凶、成败、应期、事件、概率、置信度",
+  "不判主次/体用胜负",
+  "不把固定克/生/化/墓写成结论（只作事实发射）",
+  "不判救应、不判岁运引动、不判党势"
+ ]
+}
