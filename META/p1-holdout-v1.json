@@ -1,0 +1,198 @@
+{
+  "schema_version": "p1-holdout-blind-input/v1",
+  "task": "T-175",
+  "generated_at": "2026-10-29",
+  "note": "盲测输入：每例只含 case_id / 四柱 / 性别 / source；不含 category、core_work_relations、actor、quote 或任何答案字段。答案在 META/p1-holdout-answers-v1.json。",
+  "isolation": {
+    "dev_set": "META/golden-20-v1.json（只读 case_id 与四柱用于排除）",
+    "not_read": [
+      "META/golden-20-answers-v1.json（答案字段）",
+      "../mangpai-fusion-rethink/META/golden-20-core-edges-v1.json",
+      "../mangpai-fusion-rethink/META/golden-20-core-edge-recall-v1.json"
+    ],
+    "selection": "20/20 四柱与 dev 20 例不同；source 行区间不重叠。"
+  },
+  "case_count": 20,
+  "cases": [
+    {
+      "case_id": "P1-H01",
+      "four_pillars": "庚子 庚辰 庚午 乙酉",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2242-L2246"
+      }
+    },
+    {
+      "case_id": "P1-H02",
+      "four_pillars": "癸巳 壬戌 庚申 乙酉",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2248-L2252"
+      }
+    },
+    {
+      "case_id": "P1-H03",
+      "four_pillars": "丙午 辛卯 丁卯 壬子",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2404-L2408"
+      }
+    },
+    {
+      "case_id": "P1-H04",
+      "four_pillars": "戊申 己未 癸巳 己未",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2440-L2444"
+      }
+    },
+    {
+      "case_id": "P1-H05",
+      "four_pillars": "壬子 丙午 己巳 己巳",
+      "gender": "坤",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2700-L2704"
+      }
+    },
+    {
+      "case_id": "P1-H06",
+      "four_pillars": "辛丑 丁酉 癸酉 戊午",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2928-L2932"
+      }
+    },
+    {
+      "case_id": "P1-H07",
+      "four_pillars": "乙巳 戊子 丁巳 庚戌",
+      "gender": "坤",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md",
+        "locator": "L345-L353"
+      }
+    },
+    {
+      "case_id": "P1-H08",
+      "four_pillars": "己酉 丁卯 戊戌 戊午",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+        "locator": "L5719-L5727"
+      }
+    },
+    {
+      "case_id": "P1-H09",
+      "four_pillars": "癸巳 乙卯 己巳 己巳",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2182-L2186"
+      }
+    },
+    {
+      "case_id": "P1-H10",
+      "four_pillars": "戊午 戊午 戊午 甲寅",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+        "locator": "L3051-L3055"
+      }
+    },
+    {
+      "case_id": "P1-H11",
+      "four_pillars": "乙巳 己丑 庚午 庚辰",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+        "locator": "L3229-L3233"
+      }
+    },
+    {
+      "case_id": "P1-H12",
+      "four_pillars": "乙巳 乙酉 戊子 甲寅",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md",
+        "locator": "L119-L127"
+      }
+    },
+    {
+      "case_id": "P1-H13",
+      "four_pillars": "壬辰 壬寅 己丑 戊辰",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2290-L2294"
+      }
+    },
+    {
+      "case_id": "P1-H14",
+      "four_pillars": "壬寅 己酉 丁丑 己酉",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2296-L2300"
+      }
+    },
+    {
+      "case_id": "P1-H15",
+      "four_pillars": "壬午 辛亥 庚辰 丁亥",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2322-L2326"
+      }
+    },
+    {
+      "case_id": "P1-H16",
+      "four_pillars": "戊申 甲寅 己未 辛未",
+      "gender": "坤",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+        "locator": "L4101-L4105"
+      }
+    },
+    {
+      "case_id": "P1-H17",
+      "four_pillars": "己亥 癸酉 丁巳 庚子",
+      "gender": "未注明",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+        "locator": "L2058-L2069"
+      }
+    },
+    {
+      "case_id": "P1-H18",
+      "four_pillars": "丁亥 壬子 己卯 丁卯",
+      "gender": "未注明",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+        "locator": "L1882"
+      }
+    },
+    {
+      "case_id": "P1-H19",
+      "four_pillars": "甲申 丙寅 甲申 庚午",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+        "locator": "L2114"
+      }
+    },
+    {
+      "case_id": "P1-H20",
+      "four_pillars": "己亥 甲戌 戊寅 丙辰",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md",
+        "locator": "L2142"
+      }
+    }
+  ]
+}

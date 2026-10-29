@@ -1,0 +1,425 @@
+{
+  "schema_version": "p1-holdout-answers/v1",
+  "task": "T-175",
+  "generated_at": "2026-10-29",
+  "note": "答案文件：与盲测输入物理分离。quote 为原书逐字片段（保留 OCR 空格），可用 source_ref 行内直接检索。",
+  "kind_enum": [
+    "制",
+    "化",
+    "墓",
+    "救应"
+  ],
+  "mechanism_enum": [
+    "制",
+    "合",
+    "冲",
+    "穿",
+    "克",
+    "刑",
+    "墓",
+    "化",
+    "生"
+  ],
+  "field_semantics": {
+    "a": "施力方；救应类为解救方",
+    "b": "受力方；救应类为被作用/威胁方，被救对象见 rescued",
+    "actor": "原文明确指出的施力方，必须等于 a",
+    "kind": "四类主功关系：制 / 化 / 墓 / 救应",
+    "mechanism": "底层可机械匹配的关系类型：制 / 合 / 冲 / 穿 / 克 / 刑 / 墓 / 化 / 生",
+    "quote": "原文逐字片段，含 OCR 空格；可在 source_ref 指向的行内直接检索",
+    "source_ref": "sources/duan/...md:Lnnn"
+  },
+  "category_counts": {
+    "制": 8,
+    "化": 4,
+    "墓": 4,
+    "救应": 4
+  },
+  "case_count": 20,
+  "cases": [
+    {
+      "case_id": "P1-H01",
+      "school": "duan",
+      "four_pillars": "庚子 庚辰 庚午 乙酉",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "子",
+          "b": "午",
+          "kind": "制",
+          "mechanism": "制",
+          "actor": "子",
+          "quote": "年上子伤制午有功。",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2246"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H02",
+      "school": "duan",
+      "four_pillars": "癸巳 壬戌 庚申 乙酉",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "酉",
+          "b": "戌",
+          "kind": "制",
+          "mechanism": "穿",
+          "actor": "酉",
+          "quote": "戌酉穿， 羊刃穿了官杀库",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2252"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H03",
+      "school": "duan",
+      "four_pillars": "丙午 辛卯 丁卯 壬子",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "丙",
+          "b": "辛",
+          "kind": "制",
+          "mechanism": "合",
+          "actor": "丙",
+          "quote": "丙辛合意在去财。 为劫去财。",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2408"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H04",
+      "school": "duan",
+      "four_pillars": "戊申 己未 癸巳 己未",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "巳",
+          "b": "申",
+          "kind": "制",
+          "mechanism": "合",
+          "actor": "巳",
+          "quote": "巳 申合， 制了劫和印",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2444"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H05",
+      "school": "duan",
+      "four_pillars": "壬子 丙午 己巳 己巳",
+      "gender": "坤",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "午",
+          "b": "子",
+          "kind": "制",
+          "mechanism": "冲",
+          "actor": "午",
+          "quote": "壬被丙冲制， 子被午冲制。",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2704"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H06",
+      "school": "duan",
+      "four_pillars": "辛丑 丁酉 癸酉 戊午",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "午",
+          "b": "酉",
+          "kind": "制",
+          "mechanism": "克",
+          "actor": "午",
+          "quote": "要用坐下的午火， 因此此造是财制印",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2932"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H07",
+      "school": "duan",
+      "four_pillars": "乙巳 戊子 丁巳 庚戌",
+      "gender": "坤",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "戊",
+          "b": "子",
+          "kind": "制",
+          "mechanism": "克",
+          "actor": "戊",
+          "quote": "夫妻宫透出来的用神戊土伤官，制去忌神夫星七杀",
+          "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L353"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H08",
+      "school": "duan",
+      "four_pillars": "己酉 丁卯 戊戌 戊午",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "制",
+      "core_work_relations": [
+        {
+          "a": "酉",
+          "b": "卯",
+          "kind": "制",
+          "mechanism": "冲",
+          "actor": "酉",
+          "quote": "卯酉冲制官了",
+          "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L5727"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H09",
+      "school": "duan",
+      "four_pillars": "癸巳 乙卯 己巳 己巳",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "化",
+      "core_work_relations": [
+        {
+          "a": "巳",
+          "b": "卯",
+          "kind": "化",
+          "mechanism": "化",
+          "actor": "巳",
+          "quote": "巳化尽旺杀生身",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H10",
+      "school": "duan",
+      "four_pillars": "戊午 戊午 戊午 甲寅",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "化",
+      "core_work_relations": [
+        {
+          "a": "午",
+          "b": "寅",
+          "kind": "化",
+          "mechanism": "化",
+          "actor": "午",
+          "quote": "午火印星化杀生身主贵 甲寅七杀被旺火所化",
+          "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H11",
+      "school": "duan",
+      "four_pillars": "乙巳 己丑 庚午 庚辰",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "化",
+      "core_work_relations": [
+        {
+          "a": "辰",
+          "b": "巳",
+          "kind": "化",
+          "mechanism": "化",
+          "actor": "辰",
+          "quote": "辰土化杀生身 辰也做功",
+          "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3233"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H12",
+      "school": "duan",
+      "four_pillars": "乙巳 乙酉 戊子 甲寅",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "化",
+      "core_work_relations": [
+        {
+          "a": "寅",
+          "b": "子",
+          "kind": "化",
+          "mechanism": "化",
+          "actor": "寅",
+          "quote": "财的源头酉被巳制，财子水被寅化",
+          "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H13",
+      "school": "duan",
+      "four_pillars": "壬辰 壬寅 己丑 戊辰",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "墓",
+      "core_work_relations": [
+        {
+          "a": "辰",
+          "b": "丑",
+          "kind": "墓",
+          "mechanism": "墓",
+          "actor": "辰",
+          "quote": "二是丑入辰墓， 为食伤库入了财库",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2294"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H14",
+      "school": "duan",
+      "four_pillars": "壬寅 己酉 丁丑 己酉",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "墓",
+      "core_work_relations": [
+        {
+          "a": "丑",
+          "b": "酉",
+          "kind": "墓",
+          "mechanism": "墓",
+          "actor": "丑",
+          "quote": "酉入坐下的丑库",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2300"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H15",
+      "school": "duan",
+      "four_pillars": "壬午 辛亥 庚辰 丁亥",
+      "gender": "乾",
+      "gender_basis": "source_label",
+      "category": "墓",
+      "core_work_relations": [
+        {
+          "a": "辰",
+          "b": "亥",
+          "kind": "墓",
+          "mechanism": "墓",
+          "actor": "辰",
+          "quote": "亥入辰墓为伤入墓",
+          "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2326"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H16",
+      "school": "duan",
+      "four_pillars": "戊申 甲寅 己未 辛未",
+      "gender": "坤",
+      "gender_basis": "source_label",
+      "category": "墓",
+      "core_work_relations": [
+        {
+          "a": "未",
+          "b": "寅",
+          "kind": "墓",
+          "mechanism": "墓",
+          "actor": "未",
+          "quote": "此造夫星甲寅入墓于夫宫未",
+          "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4105"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H17",
+      "school": "duan",
+      "four_pillars": "己亥 癸酉 丁巳 庚子",
+      "gender": "未注明",
+      "gender_basis": "not_stated",
+      "category": "救应",
+      "core_work_relations": [
+        {
+          "a": "己",
+          "b": "癸",
+          "kind": "救应",
+          "mechanism": "制",
+          "actor": "己",
+          "quote": "金赖年干己土制杀，日主得以救应",
+          "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2069",
+          "rescued": "日主"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H18",
+      "school": "duan",
+      "four_pillars": "丁亥 壬子 己卯 丁卯",
+      "gender": "未注明",
+      "gender_basis": "not_stated",
+      "category": "救应",
+      "core_work_relations": [
+        {
+          "a": "丁",
+          "b": "卯",
+          "kind": "救应",
+          "mechanism": "化",
+          "actor": "丁",
+          "quote": "此造年月支财,日时支杀,财杀尽占,日主虚弱。唯喜时上透出丁火印星,化杀生身,为日主救应。",
+          "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L1882",
+          "rescued": "日主"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H19",
+      "school": "duan",
+      "four_pillars": "甲申 丙寅 甲申 庚午",
+      "gender": "乾",
+      "gender_basis": "inferred_from_occupation",
+      "category": "救应",
+      "core_work_relations": [
+        {
+          "a": "午",
+          "b": "申",
+          "kind": "救应",
+          "mechanism": "克",
+          "actor": "午",
+          "quote": "有时上午火,紧克申金,救应寅木",
+          "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2114",
+          "rescued": "寅木"
+        }
+      ]
+    },
+    {
+      "case_id": "P1-H20",
+      "school": "duan",
+      "four_pillars": "己亥 甲戌 戊寅 丙辰",
+      "gender": "乾",
+      "gender_basis": "inferred_from_occupation",
+      "category": "救应",
+      "core_work_relations": [
+        {
+          "a": "己",
+          "b": "甲",
+          "kind": "救应",
+          "mechanism": "合",
+          "actor": "己",
+          "quote": "喜年干透己劫合杀",
+          "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2142",
+          "rescued": "日主"
+        }
+      ]
+    }
+  ]
+}

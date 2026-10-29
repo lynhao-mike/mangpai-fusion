@@ -1,0 +1,2426 @@
+{
+ "schema_version": "p1-second-review/v1",
+ "task": "T-174",
+ "role": "第二人（未参与标注）只读复核",
+ "date": "2026-10-29",
+ "baseline": {
+  "rethink_worktree": "E:\\Git hub\\mangpai-fusion-rethink",
+  "rethink_head": "6a40bcb5",
+  "main_head_at_fact_collection": "7569c025",
+  "main_head_at_delivery": "17095645",
+  "main_advanced_during_review": "17095645 只动 META/docs/tasks（T-176），engine/ 与 sources/ 未变，事实不受影响",
+  "engine_changed_between_branches": false,
+  "sources_changed_between_branches": false,
+  "answers_file_identical_after_eol_normalization": true
+ },
+ "inputs": [
+  {
+   "name": "claims",
+   "path": "..\\mangpai-fusion-rethink\\META\\golden-20-core-edges-v1.json",
+   "sha256": "fc82d4b03dc360e4c8ffc9a1cfbf8f186b871e1fbf5504c85e33ae44dde52254"
+  },
+  {
+   "name": "result",
+   "path": "..\\mangpai-fusion-rethink\\META\\golden-20-core-edge-recall-v1.json",
+   "sha256": "66863a8afc475d383129da055e6aa1c131f853af9c5e34f94ac66016a53423bd"
+  },
+  {
+   "name": "answers",
+   "path": "META\\golden-20-answers-v1.json",
+   "sha256": "f23ec47f8bbbe63ea307f88db7ba6d6f55867a460b19dce655f9df24f481e7c8"
+  },
+  {
+   "name": "cases",
+   "path": "META\\golden-20-v1.json",
+   "sha256": "5fafe2b0c90c343e1761d17be75b9d3d11d7dbd19b5489d563e7e63e72338cba"
+  }
+ ],
+ "method": {
+  "facts_source": "python -m engine.cli all --pillars <四柱> --gender <性别> --json（20 例逐盘）",
+  "reproduction": "另写匹配/判向实现（不复用 tools/golden_core_edge_recall.py），与结果文件逐行比对",
+  "quote_check": "quote ∈ 答案字段 且 ∈ source_refs[field] 的 path:line 原文行",
+  "actor_rule": "预注册：actor 只在原书句式明示施力方时给 a（X 去/制/合去/生/克 Y）",
+  "read_only": [
+   "未改 rethink 分支",
+   "未改 33 条原文件",
+   "未改 engine/规则/测试",
+   "未跑评分脚本",
+   "无 git 写操作"
+  ]
+ },
+ "counts": {
+  "claims_total": 33,
+  "status_counts": {
+   "scored": 23,
+   "out_of_scope:suiyun": 3,
+   "endpoint_absent": 6,
+   "out_of_scope:non_relational": 1
+  },
+  "scored": 23,
+  "edge_recall": "19/23",
+  "edge_recall_pct": 82.6,
+  "candidate_recall": "17/23",
+  "candidate_recall_pct": 73.9,
+  "directed_recall": "7/17",
+  "directed_recall_pct": 41.2,
+  "direction_breakdown": {
+   "actor_none": 3,
+   "ok": 7,
+   "reversed": 2,
+   "no_candidate": 5
+  },
+  "reproduced_result_file": {
+   "edge_recall": "19/23",
+   "candidate_recall": "17/23",
+   "directed_recall": "7/17",
+   "direction_breakdown": {
+    "actor_none": 3,
+    "no_candidate": 5,
+    "ok": 7,
+    "reversed": 2
+   },
+   "row_diffs": 0
+  }
+ },
+ "claims": [
+  {
+   "n": 1,
+   "case_id": "G20-001",
+   "field": "core_work",
+   "quote": "伤官去官",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:257"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:257"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "伤官"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "正官",
+       "七杀"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b"
+     ],
+     "b_addrs": [
+      "H.b",
+      "Y.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "「伤官去官」：去 的主语是伤官，施力方明示。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "去 未点关系种类，按预注册给 null。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "actor_none"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 2,
+   "case_id": "G20-001",
+   "field": "core_work",
+   "quote": "比劫去财",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:257"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:257"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "比肩",
+       "劫财"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "正财",
+       "偏财"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b",
+      "Y.s"
+     ],
+     "b_addrs": [
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "「比劫去财」：比劫为施力方。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "去 未点关系种类。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 3,
+   "case_id": "G20-002",
+   "field": "role_direction",
+   "quote": "伤官去官而得官",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:263"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:263"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "伤官"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "正官",
+       "七杀"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.s"
+     ],
+     "b_addrs": [
+      "Y.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "「伤官去官而得官」：主语是伤官。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "去 未点种类。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": false,
+    "candidate_hit": true,
+    "direction": "reversed"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 4,
+   "case_id": "G20-003",
+   "field": "core_work",
+   "quote": "用1点食神制之",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:482"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:482"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "食神"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "七杀"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.s"
+     ],
+     "b_addrs": [
+      "D.b",
+      "M.b",
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "食神 制 之（之＝role_direction 的七杀）。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "制 未点种类。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 5,
+   "case_id": "G20-004",
+   "field": "role_direction",
+   "quote": "辛金为羊刃，入主邻身，合制群杀",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:724"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:724"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "辛"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "七杀"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.s"
+     ],
+     "b_addrs": [
+      "H.b",
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "「辛金…合制群杀」：主语是辛金。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "deviation",
+    "note": "原文「合制」明说「合」，按预注册 合→wuhe 应为 [\"wuhe\"]；给 null 使无关候选 ganzhi_zihe（辛巳自合 H.s-H.b）计入 candidate 集合。方向仍 reversed，数字不变。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "reversed"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 6,
+   "case_id": "G20-005",
+   "field": "core_work",
+   "quote": "原局中忌神丁火被壬水合去",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:468"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:468"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "壬"
+      ]
+     },
+     "b": {
+      "chars": [
+       "丁"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.s",
+      "M.s"
+     ],
+     "b_addrs": [
+      "Y.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "被动句「被壬水合去」明示施力方＝壬。"
+   },
+   "kind_review": {
+    "declared": [
+     "wuhe"
+    ],
+    "verdict": "confirmed",
+    "note": "合去→wuhe。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "actor_none"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 7,
+   "case_id": "G20-006",
+   "field": "core_work",
+   "quote": "天干乙庚合,制财",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "乙"
+      ]
+     },
+     "b": {
+      "chars": [
+       "庚"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "Y.s"
+     ],
+     "b_addrs": [
+      "H.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "symmetric",
+    "note": "「乙庚合」是对称句，未点名施力方；「制财」也没说是谁制。同一文件对「辰酉合」「子丑合」都给 null，口径不一致 → 应为 null（出分母）。"
+   },
+   "kind_review": {
+    "declared": [
+     "wuhe"
+    ],
+    "verdict": "confirmed",
+    "note": "合→wuhe。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "actor_none"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 8,
+   "case_id": "G20-006",
+   "field": "core_work",
+   "quote": "地支未刑丑",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "未"
+      ]
+     },
+     "b": {
+      "chars": [
+       "丑"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "Y.b"
+     ],
+     "b_addrs": [
+      "D.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "未 刑 丑：主语明示。"
+   },
+   "kind_review": {
+    "declared": [
+     "xing"
+    ],
+    "verdict": "confirmed",
+    "note": "刑→xing。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": false,
+    "direction": "no_candidate"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 9,
+   "case_id": "G20-006",
+   "field": "core_work",
+   "quote": "戌刑丑",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:4813"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "戌"
+      ]
+     },
+     "b": {
+      "chars": [
+       "丑"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.b"
+     ],
+     "b_addrs": [
+      "D.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "戌 刑 丑：主语明示（原局时支戌；L4813 另有「戌运在刑丑」，本句属原局）。"
+   },
+   "kind_review": {
+    "declared": [
+     "xing"
+    ],
+    "verdict": "confirmed",
+    "note": "刑→xing。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": false,
+    "direction": "no_candidate"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 10,
+   "case_id": "G20-007",
+   "field": "core_work",
+   "quote": "泄官杀生自己",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "正官",
+       "七杀"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "正印",
+       "偏印"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b",
+      "H.b",
+      "H.s",
+      "Y.b"
+     ],
+     "b_addrs": [
+      "M.b",
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "defensible",
+    "note": "句法主语是「印」（印泄官杀、印生身）；a=官杀 依据的是章首 L1605「形成杀生印、印生身的结构」的五行流向，不是所引句。按预注册（actor 只在句式明示施力方时给 a）应为 b 或 null。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "生/化→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 11,
+   "case_id": "G20-007",
+   "field": "role_direction",
+   "quote": "印再生身",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "正印",
+       "偏印"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "日主"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b",
+      "M.s"
+     ],
+     "b_addrs": [
+      "D.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "印 生 身。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "生→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": false,
+    "direction": "no_candidate"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 12,
+   "case_id": "G20-007",
+   "field": "rescue",
+   "quote": "但时上官化不了，贴身克日主是个毛病",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1614"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "addrs": [
+       "H.s"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "日主"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.s"
+     ],
+     "b_addrs": [
+      "D.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "时上官 克 日主。"
+   },
+   "kind_review": {
+    "declared": [
+     "ke"
+    ],
+    "verdict": "deviation",
+    "note": "给 [\"ke\"]，但预注册写「克/制且未说种类→null」。偏严，不虚增召回，数字不变。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 13,
+   "case_id": "G20-008",
+   "field": "role_direction",
+   "quote": "年支杀生月支印",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1746"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1746"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "addrs": [
+       "Y.b"
+      ]
+     },
+     "b": {
+      "addrs": [
+       "M.b"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "Y.b"
+     ],
+     "b_addrs": [
+      "M.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "宫位＋生：年支→月支。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "生→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": false,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 14,
+   "case_id": "G20-008",
+   "field": "role_direction",
+   "quote": "月支印再生到日柱",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1746"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1746"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "addrs": [
+       "M.b"
+      ]
+     },
+     "b": {
+      "addrs": [
+       "D.s",
+       "D.b"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b"
+     ],
+     "b_addrs": [
+      "D.b",
+      "D.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "月支→日柱。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "生→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": false,
+    "candidate_hit": false,
+    "direction": "no_candidate"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 15,
+   "case_id": "G20-009",
+   "field": "core_work",
+   "quote": "印化七杀",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:1461"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:1461"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "七杀"
+      ]
+     },
+     "b": {
+      "ten_gods": [
+       "正印",
+       "偏印"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b",
+      "Y.s"
+     ],
+     "b_addrs": [
+      "H.s",
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "defensible",
+    "note": "句法主语是「印」（印化七杀）；但同段 L1461 作者自述「七杀化印再生身」「杀印格」，即明确给出七杀→印的方向。方向有原文依据，但不在所引句里（跨句）。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "化→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 16,
+   "case_id": "G20-010",
+   "field": "core_work",
+   "quote": "只能靠甲木化杀为功",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:2645"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:2645"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "七杀"
+      ]
+     },
+     "b": {
+      "chars": [
+       "甲"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.s",
+      "Y.s"
+     ],
+     "b_addrs": [
+      "H.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "contradicted",
+    "note": "原文另有「甲木化水」（L2645）、「甲为死木 化天干之壬水杀」（L2647）：施力方是甲，不是七杀；A/B 应互换。"
+   },
+   "kind_review": {
+    "declared": [
+     "sheng"
+    ],
+    "verdict": "confirmed",
+    "note": "化→sheng。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": "ok"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 17,
+   "case_id": "G20-011",
+   "field": "core_work",
+   "quote": "行丑运墓库不逢冲害，故待辛未年冲墓而发",
+   "scope": "suiyun",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:239"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:239"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": null,
+     "b": null
+    },
+    "engine": {
+     "a_addrs": null,
+     "b_addrs": null
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "scope_review": {
+    "declared": "suiyun",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "out_of_scope:suiyun",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 18,
+   "case_id": "G20-012",
+   "field": "core_work",
+   "quote": "丑运用神入墓",
+   "scope": "suiyun",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:229"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:229"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": null,
+     "b": null
+    },
+    "engine": {
+     "a_addrs": null,
+     "b_addrs": null
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "scope_review": {
+    "declared": "suiyun",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "out_of_scope:suiyun",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 19,
+   "case_id": "G20-013",
+   "field": "core_work",
+   "quote": "两未为日主之墓库",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:912"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:912"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "日主"
+      ]
+     },
+     "b": {
+      "chars": [
+       "未"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.s"
+     ],
+     "b_addrs": [
+      "D.b",
+      "H.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "「为…墓库」是判断句，无施力方。"
+   },
+   "kind_review": {
+    "declared": [
+     "muku"
+    ],
+    "verdict": "confirmed",
+    "note": "墓/库→muku。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": [
+    "muku 只命中 D.s->H.b；日支未 的 D.s 候选被 self_sit_excluded 排除，「两未」只表达一半（布尔口径仍算命中）。"
+   ]
+  },
+  {
+   "n": 20,
+   "case_id": "G20-014",
+   "field": "role_direction",
+   "quote": "用主位辰墓双丑",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1830"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1830"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "丑"
+      ]
+     },
+     "b": {
+      "chars": [
+       "辰"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "H.b",
+      "M.b"
+     ],
+     "b_addrs": [
+      "D.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "墓 不在预注册施力动词表（去/制/合去/生/克）→ null。若把「墓」当施力方，施力方是库（辰＝b），方向约定需重定义。"
+   },
+   "kind_review": {
+    "declared": [
+     "muku"
+    ],
+    "verdict": "confirmed",
+    "note": "墓→muku。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 21,
+   "case_id": "G20-015",
+   "field": "core_work",
+   "quote": "未墓寅",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1708"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md:1708"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "寅"
+      ]
+     },
+     "b": {
+      "chars": [
+       "未"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b"
+     ],
+     "b_addrs": [
+      "Y.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "同上（「未墓寅」主语是库未）。"
+   },
+   "kind_review": {
+    "declared": [
+     "muku"
+    ],
+    "verdict": "confirmed",
+    "note": "墓→muku。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 22,
+   "case_id": "G20-016",
+   "field": "core_work",
+   "quote": "寅入未库",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "寅"
+      ]
+     },
+     "b": {
+      "chars": [
+       "未"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "Y.b"
+     ],
+     "b_addrs": [
+      "M.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "入 不在施力动词表 → null。若把「入」列入，主语是寅（入库者），muku 候选 actor＝寅，会判 ok（±2 的一条可能来源）。"
+   },
+   "kind_review": {
+    "declared": [
+     "muku"
+    ],
+    "verdict": "confirmed",
+    "note": "库→muku。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 23,
+   "case_id": "G20-016",
+   "field": "core_work",
+   "quote": "巳入戍库",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "巳"
+      ]
+     },
+     "b": {
+      "chars": [
+       "戌"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b"
+     ],
+     "b_addrs": [
+      "H.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "同 22（巳入库者）。"
+   },
+   "kind_review": {
+    "declared": [
+     "muku"
+    ],
+    "verdict": "confirmed",
+    "note": "库→muku（OCR「戍」＝戌）。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": true,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 24,
+   "case_id": "G20-016",
+   "field": "core_work",
+   "quote": "寅 巳穿",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "寅"
+      ]
+     },
+     "b": {
+      "chars": [
+       "巳"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "Y.b"
+     ],
+     "b_addrs": [
+      "D.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "穿 无方向。"
+   },
+   "kind_review": {
+    "declared": [
+     "chuan"
+    ],
+    "verdict": "confirmed",
+    "note": "穿→chuan。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": true,
+    "candidate_hit": false,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": [
+    "边 e009(chuan) 有，候选集合没有 chuan。"
+   ]
+  },
+  {
+   "n": 25,
+   "case_id": "G20-016",
+   "field": "rescue",
+   "quote": "亥冲了 巳也解了穿",
+   "scope": "suiyun",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109",
+     "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:3109"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": null,
+     "b": null
+    },
+    "engine": {
+     "a_addrs": null,
+     "b_addrs": null
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "scope_review": {
+    "declared": "suiyun",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "out_of_scope:suiyun",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 26,
+   "case_id": "G20-017",
+   "field": "core_work",
+   "quote": "此因酉戌相穿",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:364"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:364"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "酉"
+      ]
+     },
+     "b": {
+      "chars": [
+       "戌"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b"
+     ],
+     "b_addrs": []
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": [
+     "chuan"
+    ],
+    "verdict": "confirmed",
+    "note": "穿→chuan。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "原文「又行戌土财运」：戌是大运字，scope 应为 suiyun。分类仍是 endpoint_absent（不进分母），数字无影响。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 27,
+   "case_id": "G20-017",
+   "field": "rescue",
+   "quote": "辰酉合解酉戌之穿",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:364"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:364"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "辰"
+      ]
+     },
+     "b": {
+      "chars": [
+       "酉"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [],
+     "b_addrs": [
+      "D.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": [
+     "liuhe"
+    ],
+    "verdict": "confirmed",
+    "note": "合→liuhe。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "辰＝戊辰流年（L364），scope 应 suiyun。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 28,
+   "case_id": "G20-018",
+   "field": "core_work",
+   "quote": "本巳酉丑三合局",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:181"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:181"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "巳"
+      ]
+     },
+     "b": {
+      "chars": [
+       "酉",
+       "丑"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "D.b"
+     ],
+     "b_addrs": []
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": [
+     "sanhe"
+    ],
+    "verdict": "rule_gap",
+    "note": "sanhe 不在预注册 kind 枚举（合/刑/穿/冲/墓/生/克）里；引擎有 sanhe 且原文写「三合局」，可接受，属规则缺口。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "酉＝己酉运、丑＝丁丑年（L181），scope 应 suiyun。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 29,
+   "case_id": "G20-018",
+   "field": "rescue",
+   "quote": "然逢子丑合，六合能解三合",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:181"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:181"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "子"
+      ]
+     },
+     "b": {
+      "chars": [
+       "丑"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b"
+     ],
+     "b_addrs": []
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": [
+     "liuhe"
+    ],
+    "verdict": "confirmed",
+    "note": "六合→liuhe。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "丑＝丁丑年（L181），scope 应 suiyun。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 30,
+   "case_id": "G20-019",
+   "field": "core_work",
+   "quote": "以申金正印当财看",
+   "scope": "non_relational",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:676"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:676"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": null,
+     "b": null
+    },
+    "engine": {
+     "a_addrs": null,
+     "b_addrs": null
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "n/a",
+    "note": ""
+   },
+   "scope_review": {
+    "declared": "non_relational",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "out_of_scope:non_relational",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 31,
+   "case_id": "G20-019",
+   "field": "rescue",
+   "quote": "甲合去己土救日主",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:676"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md:676"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "甲"
+      ]
+     },
+     "b": {
+      "chars": [
+       "己"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [],
+     "b_addrs": [
+      "M.s"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "confirmed",
+    "note": "「甲合去己土」：甲 合去 己，施力方明示。"
+   },
+   "kind_review": {
+    "declared": [
+     "wuhe"
+    ],
+    "verdict": "confirmed",
+    "note": "合去→wuhe。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "甲＝甲寅运（L666：43甲），scope 应 suiyun。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 32,
+   "case_id": "G20-020",
+   "field": "role_direction",
+   "quote": "午禄紧贴劫财",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:215"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:215"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "ten_gods": [
+       "劫财"
+      ]
+     },
+     "b": {
+      "chars": [
+       "午"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [
+      "M.b",
+      "Y.s"
+     ],
+     "b_addrs": [
+      "Y.b"
+     ]
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "defensible",
+    "note": "「紧贴」是位置词，不是施力动词；施力依据在 L211 通则「劫财有分禄之意」，不在所引句。"
+   },
+   "kind_review": {
+    "declared": null,
+    "verdict": "confirmed",
+    "note": "未点种类。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "confirmed",
+    "note": ""
+   },
+   "result_row": {
+    "status": "scored",
+    "edge_hit": false,
+    "candidate_hit": false,
+    "direction": "no_candidate"
+   },
+   "reproduced": true,
+   "extra": []
+  },
+  {
+   "n": 33,
+   "case_id": "G20-020",
+   "field": "rescue",
+   "quote": "但庚甲相冲解甲己之合",
+   "scope": "natal",
+   "quote_check": {
+    "answer_field_verbatim": true,
+    "source_refs": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:215"
+    ],
+    "source_verbatim": [
+     "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md:215"
+    ],
+    "ok": true
+   },
+   "endpoints": {
+    "declared": {
+     "a": {
+      "chars": [
+       "庚"
+      ]
+     },
+     "b": {
+      "chars": [
+       "甲"
+      ]
+     }
+    },
+    "engine": {
+     "a_addrs": [],
+     "b_addrs": []
+    },
+    "ok": true,
+    "note": "端点按 chars/ten_gods/addrs 由 engine 表解析，逐条与原文宫位/十神核对：33/33 一致；缺端点者均为岁运字（见 divergences.scope_mismatch）。"
+   },
+   "actor_review": {
+    "declared": "a",
+    "verdict": "symmetric",
+    "note": "「相冲」对称，给 a 与同文件对「寅巳穿」「酉戌相穿」给 null 不一致；因 endpoint_absent 出分母，无数字影响。"
+   },
+   "kind_review": {
+    "declared": [
+     "stem_chong"
+    ],
+    "verdict": "rule_gap",
+    "note": "stem_chong 不在预注册 kind 枚举；引擎有该 kind 且原文写「庚甲相冲」，可接受，属规则缺口。"
+   },
+   "scope_review": {
+    "declared": "natal",
+    "verdict": "mismatch",
+    "note": "庚＝庚辰年、甲＝甲寅运（L215），scope 应 suiyun。"
+   },
+   "result_row": {
+    "status": "endpoint_absent",
+    "edge_hit": null,
+    "candidate_hit": null,
+    "direction": null
+   },
+   "reproduced": true,
+   "extra": []
+  }
+ ],
+ "divergences": {
+  "count_claims": 14,
+  "count_findings": 18,
+  "by_type": {
+   "quote_not_verbatim": 0,
+   "address_wrong": 0,
+   "actor": 6,
+   "kind": 2,
+   "kind_rule_gap": 2,
+   "scope": 6,
+   "other": 2
+  },
+  "items": [
+   {
+    "type": "quote_not_verbatim",
+    "claims": [],
+    "detail": "33/33 quote 同时命中答案字段与 source_refs 的 path:line；无不逐字项。",
+    "effect": "none"
+   },
+   {
+    "type": "address_wrong",
+    "claims": [],
+    "detail": "33 条端点（chars/ten_gods/addrs）经 engine.cli 解析出的地址与标注/结果行一致；0 条地址错。宫位型（年支/月支/日柱/时干）逐条核过。",
+    "effect": "none"
+   },
+   {
+    "type": "actor_symmetric",
+    "claims": [
+     7,
+     33
+    ],
+    "detail": "「乙庚合」(n7)、「庚甲相冲」(n33)：合/冲为对称句，未点施力方，却给了 actor=a；同一文件对「辰酉合」(n27)、「子丑合」(n29)、「寅巳穿」(n24)、「酉戌相穿」(n26) 均给 null。口径不一致。n33 因 endpoint_absent 无数字影响。",
+    "effect": "n7 出分母（-1）"
+   },
+   {
+    "type": "actor_defensible",
+    "claims": [
+     10,
+     15,
+     32
+    ],
+    "detail": "n10「泄官杀生自己」：句法主语是印，a=官杀 依据章首 L1605「形成杀生印、印生身的结构」；n15「印化七杀」：句法主语是印，a=七杀 依据同段 L1461「七杀化印再生身」「杀印格」；n32「午禄紧贴劫财」：「紧贴」非施力动词，依据 L211「劫财有分禄之意」。三条都有原文依据，但都不在所引句里。",
+    "effect": "从严时 n10 n15 反向、n32 出分母"
+   },
+   {
+    "type": "actor_contradicted",
+    "claims": [
+     16
+    ],
+    "detail": "n16「只能靠甲木化杀为功」：同段 L2645「甲木化水」、L2647「甲为死木 化天干之壬水杀」明示甲为施力方；标注取 a=七杀，A/B 应互换。",
+    "effect": "主口径 ok→reversed（-1 分子）"
+   },
+   {
+    "type": "kind_deviation",
+    "claims": [
+     5,
+     12
+    ],
+    "detail": "n5「合制群杀」：原文明说「合」，按预注册应给 [\"wuhe\"]，给 null 使无关的 ganzhi_zihe 计入候选；n12「贴身克日主」：预注册写「克/制且未说种类→null」，却给 [\"ke\"]（偏严）。两条均未改变方向判定。",
+    "effect": "none（数字不变）"
+   },
+   {
+    "type": "kind_rule_gap",
+    "claims": [
+     28,
+     33
+    ],
+    "detail": "sanhe (n28)、stem_chong (n33) 不在预注册 kind 枚举里。两条都因 endpoint_absent 不计分；但枚举应在 hold-out 前补齐。",
+    "effect": "none"
+   },
+   {
+    "type": "scope_mismatch",
+    "claims": [
+     26,
+     27,
+     28,
+     29,
+     31,
+     33
+    ],
+    "detail": "6 条 scope 写 natal，但缺端点是岁运字：n26/n27 戌＝庚戌运、辰＝戊辰年；n28/n29 酉＝己酉运、丑＝丁丑年；n31 甲＝甲寅运；n33 庚＝庚辰年、甲＝甲寅运。分类仍落到 endpoint_absent（按预注册不进分母），故不动数字，但同一文件对 n17/n18/n25 用了 scope=suiyun，口径不一致，hold-out 会继承这个不一致。",
+    "effect": "none"
+   },
+   {
+    "type": "other_muku_partial",
+    "claims": [
+     19
+    ],
+    "detail": "n19「两未为日主之墓库」：只有时支未命中（日支未的 D.s 候选被 self_sit_excluded 排除）；布尔口径算命中，但「两未」只表达一半。召回口径应区分「部分表达」。",
+    "effect": "none（布尔口径）"
+   },
+   {
+    "type": "other_traceability",
+    "claims": [],
+    "detail": "33 条标注本身不带 path:line，只能经 golden-20-answers-v1.json 的 source_refs 反查；本次能 100% 追溯，但 hold-out 若只交 claims 文件则不可独立核验。建议 claims 增 source_ref 字段。",
+    "effect": "none"
+   }
+  ]
+ },
+ "recompute": {
+  "as_annotated": {
+   "directed": 17,
+   "ok": 7,
+   "pct": 41.2,
+   "label": "与结果文件一致（独立复现，0 行差异）"
+  },
+  "review_adjusted": {
+   "directed": 16,
+   "ok": 6,
+   "pct": 37.5,
+   "label": "复核主口径"
+  },
+  "scenarios": {
+   "S0_as_annotated": {
+    "directed": 17,
+    "ok": 7,
+    "pct": 41.2,
+    "label": "原标注口径（复现）",
+    "ci95": [
+     21.6,
+     64.0
+    ]
+   },
+   "S1_primary": {
+    "directed": 16,
+    "ok": 6,
+    "pct": 37.5,
+    "label": "复核主口径（n16 A/B 互换＝原文相反；n7 对称合出分母）",
+    "ci95": [
+     18.5,
+     61.4
+    ]
+   },
+   "S2_strict": {
+    "directed": 15,
+    "ok": 4,
+    "pct": 26.7,
+    "label": "从严（+ n10 n15 按句法主语反向、n32 出分母）",
+    "ci95": [
+     10.9,
+     52.0
+    ]
+   },
+   "S3_lenient_muku": {
+    "directed": 19,
+    "ok": 9,
+    "pct": 47.4,
+    "label": "最宽松 A（把「入」也算施力方：n22 n23）",
+    "ci95": [
+     27.3,
+     68.3
+    ]
+   },
+   "S4_lenient_drop": {
+    "directed": 15,
+    "ok": 7,
+    "pct": 46.7,
+    "label": "最宽松 B（只把 2 条明显弱的非 ok 剔出分母：n7 n32）",
+    "ci95": [
+     24.8,
+     69.9
+    ]
+   }
+  },
+  "pm2": {
+   "S0_pm2": {
+    "pct_range": [
+     29.4,
+     52.9
+    ],
+    "counts": [
+     5,
+     9
+    ],
+    "den": 17
+   },
+   "S3_pm2": {
+    "pct_range": [
+     36.8,
+     57.9
+    ],
+    "counts": [
+     7,
+     11
+    ],
+    "den": 19
+   },
+   "contrived_upper": {
+    "pct": 60.0,
+    "label": "S4 + 2 条假阴性（= 剔 2 条非 ok、补 2 条假阴性）"
+   }
+  },
+  "note": "S1 主口径只动 2 条（n7 出分母、n16 反向）；n10 n15 n32 的 actor 有原文依据但不在所引句中，单列在 S2。"
+ },
+ "threshold": {
+  "verdict": "facts_blocking 维持",
+  "change_value": false,
+  "reason": "41.2% 在 ±2 内（29.4–52.9%）仍 <60%；复核主口径 37.5%、从严 26.7%、两条最宽松口径 46.7% / 47.4% 均 <60%。唯一触及 60.0% 的组合（S4 剔 2 条非 ok + 补 2 条假阴性）需要 2 条假阴性，本次逐条复核 10 条失败未发现任何假阴性。",
+  "needs": [
+   "先冻结 actor 规则（对称合/冲/穿、化/泄、入墓）再跑 hold-out",
+   "n=17 的判定粒度过粗：±2 条＝12pp，Wilson 95% CI 见 scenarios",
+   "kinds=null 会抬高 candidate_recall，修 kinds 前不宜用 73.9% 对 70% 线论证"
+  ]
+ },
+ "blockers": [],
+ "determinism": {
+  "runs": 2,
+  "byte_identical": true
+ }
+}

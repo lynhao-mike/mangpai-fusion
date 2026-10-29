@@ -1,0 +1,38 @@
+{
+  "schema": "p1-holdout-freeze/v1",
+  "frozen_at": "2026-10-29T12:35:00+08:00",
+  "git_head": "17095645",
+  "files": {
+    "holdout": "META/p1-holdout-v1.json",
+    "answers": "META/p1-holdout-answers-v1.json",
+    "md": "META/p1-holdout-v1.md"
+  },
+  "sha256": {
+    "holdout": "593f4dbea76a4959550c326eea31a8d9feae895cb9272028813982de96bbf045",
+    "answers": "b1075a394dc1954f27e7de1b06b38283174223e223e3d6b17993723bef37762f"
+  },
+  "counts": {
+    "cases": 20,
+    "relations": 20,
+    "categories": {"制用": 8, "化用": 4, "墓用": 4, "救应": 4}
+  },
+  "subsets": {
+    "primary_all": 20,
+    "exclude_f28_rescue": 16,
+    "f28_rescue_cases": ["H17", "H18", "H19", "H20"],
+    "gender_unknown": ["H17", "H18"],
+    "gender_inferred": ["H19", "H20"],
+    "exclude_f28_and_gender_uncertain": 16
+  },
+  "decisions": {
+    "f28_rescue": "接受为传统子平救应子集，标 source_school=ziping_traditional；P1 主口径 20，敏感性 16；若只认盲派核心，16 例无救应类，须在报告注明。",
+    "gender": "H17/H18 未注明、H19/H20 由官职推定；P1 方向召回不依赖性别；这 4 例不进入大运类指标。",
+    "denominator": "P1 分母是 20 条主关系，不是 dev 33 条；不得与 33 比较。",
+    "h20_quote": "HTML 表格断行导致 quote 截断，整句在同一行可读；quote 为逐字子串，actor/kind 支撑不变。",
+    "no_comparison_to_dev": true
+  },
+  "p1_primary_denominator": 20,
+  "p1_sensitivity_denominator": 16,
+  "scoring_owner": "中枢一次性执行；独立 Agent 不跑 hold-out",
+  "note": "冻结后不得改例、改 quote、改 actor；P1 只跑一次。"
+}
