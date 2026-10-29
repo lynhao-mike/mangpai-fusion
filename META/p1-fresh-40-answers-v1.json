@@ -1,0 +1,691 @@
+{
+  "schema_version": "p1-fresh-40-answers/v1",
+  "task": "T-185",
+  "generated_at": "2026-10-29",
+  "note": "40 条原书明确方向的作用断言；与 META/p1-fresh-40-v1.json 逐条对齐。kind=作用效果类别（制/化/墓/救应或机械类型回落），mechanism=机械关系（冲/合/穿/刑/克/生/化/墓/制）。actor 为施力端，恒等于 a；mutual=true 仅用于刑的两败例（不填 actor）。",
+  "conventions": {
+    "kind": "本条断言的作用效果类别：制（施力端去/制对方）、化（印化杀等转化）、墓（库收入）、救应；若原书只断言机械关系而无做功效果，则 kind 回落为同名机械类型（冲/合/穿/刑/克/生/化/墓）。",
+    "mechanism": "底层机械关系，取值 ∈ {冲,合,穿,刑,克,生,化,墓,制}。",
+    "actor": "施力方（谁对谁），要求 actor == a；direction 评分按 a 端判定。",
+    "mutual": "刑的两败/三刑俱坏例为 true，不硬填 actor；其余不出现该字段。",
+    "source_ref": "sources/duan/<书>.md:L<quote 所在行>，quote 为该行逐字片段。"
+  },
+  "case_count": 40,
+  "chart_count": 37,
+  "mechanism_counts": {
+    "冲": 7,
+    "合": 8,
+    "穿": 6,
+    "刑": 5,
+    "墓": 5,
+    "克": 3,
+    "生": 4,
+    "化": 2
+  },
+  "kind_counts": {
+    "克": 3,
+    "冲": 1,
+    "刑": 1,
+    "制": 16,
+    "化": 2,
+    "合": 5,
+    "墓": 5,
+    "生": 4,
+    "穿": 3
+  },
+  "gender_counts": {
+    "乾": 29,
+    "坤": 11
+  },
+  "source_files": [
+    "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md",
+    "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md",
+    "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+    "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+    "sources/duan/MinerU_markdown_段建业09年10月广州讲义_2056045375967125504.md"
+  ],
+  "cases": [
+    {
+      "case_id": "PF-001",
+      "chart_id": "PF-CH01",
+      "four_pillars": "己卯 己巳 辛亥 甲午",
+      "gender": "乾",
+      "relation": {
+        "a": "巳",
+        "b": "亥",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "巳"
+      },
+      "quote": "巳亥冲午亥暗合， 把亥伤制尽了",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2606",
+      "annotation": "木火结党制亥水，巳冲亥制尽。"
+    },
+    {
+      "case_id": "PF-002",
+      "chart_id": "PF-CH02",
+      "four_pillars": "丁未 癸丑 丙子 壬辰",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "未",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "丑"
+      },
+      "quote": "此造之要点是丑未相冲 丑中癸水辛金制去未中丁火与乙木",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L1743",
+      "annotation": "丑中癸辛制去未中丁乙。"
+    },
+    {
+      "case_id": "PF-003",
+      "chart_id": "PF-CH03",
+      "four_pillars": "戊辰 壬戌 丁丑 丁未",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "未",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "丑"
+      },
+      "quote": "丑未冲， 丑戌刑是制财库",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L81",
+      "annotation": "朱元璋造；原注：丑未冲、丑戌刑为制财库。"
+    },
+    {
+      "case_id": "PF-004",
+      "chart_id": "PF-CH04",
+      "four_pillars": "甲辰 甲戌 戊子 壬子",
+      "gender": "乾",
+      "relation": {
+        "a": "辰",
+        "b": "戌",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "辰"
+      },
+      "quote": "辰戌冲，效率特别高，财库去印库的结构",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1414",
+      "annotation": "辰财库冲去戌印库。"
+    },
+    {
+      "case_id": "PF-005",
+      "chart_id": "PF-CH05",
+      "four_pillars": "庚寅 甲申 癸卯 癸丑",
+      "gender": "乾",
+      "relation": {
+        "a": "申",
+        "b": "寅",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "申"
+      },
+      "quote": "寅申冲，坏了木，活木怕被金克",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L819",
+      "annotation": "申冲坏寅木（六亲：奶奶）。"
+    },
+    {
+      "case_id": "PF-006",
+      "chart_id": "PF-CH06",
+      "four_pillars": "癸酉 乙卯 甲寅 辛未",
+      "gender": "坤",
+      "relation": {
+        "a": "卯",
+        "b": "酉",
+        "kind": "冲",
+        "mechanism": "冲",
+        "actor": "卯"
+      },
+      "quote": "原局卯酉冲，冲官杀",
+      "source_ref": "sources/duan/MinerU_markdown_段建业09年10月广州讲义_2056045375967125504.md:L3359",
+      "annotation": "禄刃冲官杀（原书断车祸，非制功）。"
+    },
+    {
+      "case_id": "PF-007",
+      "chart_id": "PF-CH07",
+      "four_pillars": "庚戌 己卯 丁酉 辛亥",
+      "gender": "坤",
+      "relation": {
+        "a": "酉",
+        "b": "亥",
+        "kind": "生",
+        "mechanism": "生",
+        "actor": "酉"
+      },
+      "quote": "主位的酉生了宾位的亥官",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2267",
+      "annotation": "主位酉生宾位亥官（与第 12 条同盘）。"
+    },
+    {
+      "case_id": "PF-008",
+      "chart_id": "PF-CH08",
+      "four_pillars": "壬寅 癸丑 己未 己巳",
+      "gender": "乾",
+      "relation": {
+        "a": "未",
+        "b": "丑",
+        "kind": "制",
+        "mechanism": "冲",
+        "actor": "未"
+      },
+      "quote": "丑是财和财的原神， 也当财看， 所以丑未冲也是制财",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2430",
+      "annotation": "未冲丑（财与原神）为制财。"
+    },
+    {
+      "case_id": "PF-009",
+      "chart_id": "PF-CH09",
+      "four_pillars": "甲辰 丙寅 己亥 庚午",
+      "gender": "乾",
+      "relation": {
+        "a": "寅",
+        "b": "亥",
+        "kind": "合",
+        "mechanism": "合",
+        "actor": "寅"
+      },
+      "quote": "寅亥合，丙火印星灭了，丙为工作，没有工作了。亥水妻宫被合走了",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L619",
+      "annotation": "寅合走亥（妻宫），印星被合灭。"
+    },
+    {
+      "case_id": "PF-010",
+      "chart_id": "PF-CH10",
+      "four_pillars": "辛亥 庚子 乙未 丁亥",
+      "gender": "乾",
+      "relation": {
+        "a": "庚",
+        "b": "乙",
+        "kind": "制",
+        "mechanism": "合",
+        "actor": "庚"
+      },
+      "quote": "乙庚合乙木日主被庚官合坏",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1739",
+      "annotation": "庚官合坏乙木日主（破格）。"
+    },
+    {
+      "case_id": "PF-011",
+      "chart_id": "PF-CH11",
+      "four_pillars": "壬子 己酉 辛酉 己丑",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "子",
+        "kind": "合",
+        "mechanism": "合",
+        "actor": "丑"
+      },
+      "quote": "此命以伤食当财看，子丑合，把财都合过来了",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L203",
+      "annotation": "丑（主位）合子财过来。"
+    },
+    {
+      "case_id": "PF-012",
+      "chart_id": "PF-CH07",
+      "four_pillars": "庚戌 己卯 丁酉 辛亥",
+      "gender": "坤",
+      "relation": {
+        "a": "戌",
+        "b": "卯",
+        "kind": "制",
+        "mechanism": "合",
+        "actor": "戌"
+      },
+      "quote": "卯戌合制了卯， 制了卯等于制了亥",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2267",
+      "annotation": "戌合制卯，制卯等于制亥。"
+    },
+    {
+      "case_id": "PF-013",
+      "chart_id": "PF-CH12",
+      "four_pillars": "壬辰 癸卯 戊辰 丙辰",
+      "gender": "乾",
+      "relation": {
+        "a": "戊",
+        "b": "癸",
+        "kind": "合",
+        "mechanism": "合",
+        "actor": "戊"
+      },
+      "quote": "戊癸合，妻星合入日主",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L149",
+      "annotation": "日主戊合妻星癸。"
+    },
+    {
+      "case_id": "PF-014",
+      "chart_id": "PF-CH13",
+      "four_pillars": "壬子 癸丑 壬寅 辛亥",
+      "gender": "坤",
+      "relation": {
+        "a": "亥",
+        "b": "寅",
+        "kind": "制",
+        "mechanism": "合",
+        "actor": "亥"
+      },
+      "quote": "但寅亥合把财给坏了",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1029",
+      "annotation": "亥合坏寅财，成去财结构。"
+    },
+    {
+      "case_id": "PF-015",
+      "chart_id": "PF-CH14",
+      "four_pillars": "丁未 壬子 乙丑 戊寅",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "子",
+        "kind": "合",
+        "mechanism": "合",
+        "actor": "丑"
+      },
+      "quote": "首先看丑，子丑合，得到印",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L896",
+      "annotation": "丑合子印，得印（权力）。"
+    },
+    {
+      "case_id": "PF-016",
+      "chart_id": "PF-CH15",
+      "four_pillars": "甲寅 辛未 乙亥 癸未",
+      "gender": "坤",
+      "relation": {
+        "a": "寅",
+        "b": "亥",
+        "kind": "合",
+        "mechanism": "合",
+        "actor": "寅"
+      },
+      "quote": "寅亥合，配偶宫亥水被合走",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L673",
+      "annotation": "寅合走亥（配偶宫），婚姻难成。"
+    },
+    {
+      "case_id": "PF-017",
+      "chart_id": "PF-CH16",
+      "four_pillars": "乙未 丙戌 甲子 甲戌",
+      "gender": "乾",
+      "relation": {
+        "a": "未",
+        "b": "子",
+        "kind": "制",
+        "mechanism": "穿",
+        "actor": "未"
+      },
+      "quote": "子未穿为制子水印星意思， 也是去印的结构",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L664",
+      "annotation": "未穿制子水印星（去印）。"
+    },
+    {
+      "case_id": "PF-018",
+      "chart_id": "PF-CH17",
+      "four_pillars": "丙午 辛丑 己未 辛未",
+      "gender": "乾",
+      "relation": {
+        "a": "午",
+        "b": "丑",
+        "kind": "制",
+        "mechanism": "穿",
+        "actor": "午"
+      },
+      "quote": "丑午穿， 丑未冲都是制丑土的",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2150",
+      "annotation": "午穿丑，与丑未冲同为制丑土。"
+    },
+    {
+      "case_id": "PF-019",
+      "chart_id": "PF-CH18",
+      "four_pillars": "乙未 乙酉 丙戌 庚寅",
+      "gender": "坤",
+      "relation": {
+        "a": "戌",
+        "b": "酉",
+        "kind": "穿",
+        "mechanism": "穿",
+        "actor": "戌"
+      },
+      "quote": "戌酉穿， 是比劫库穿了月 令的财",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L3028",
+      "annotation": "戌（比劫库）穿月令酉财；原书只断与财无缘，不作制断。"
+    },
+    {
+      "case_id": "PF-020",
+      "chart_id": "PF-CH19",
+      "four_pillars": "己酉 庚午 甲戌 戊辰",
+      "gender": "坤",
+      "relation": {
+        "a": "戌",
+        "b": "酉",
+        "kind": "穿",
+        "mechanism": "穿",
+        "actor": "戌"
+      },
+      "quote": "此造是夫宫戌土穿夫星酉金",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3623",
+      "annotation": "夫宫戌穿夫星酉（多婚）。"
+    },
+    {
+      "case_id": "PF-021",
+      "chart_id": "PF-CH20",
+      "four_pillars": "己酉 甲戌 甲申 乙丑",
+      "gender": "坤",
+      "relation": {
+        "a": "戌",
+        "b": "酉",
+        "kind": "穿",
+        "mechanism": "穿",
+        "actor": "戌"
+      },
+      "quote": "财坐官，官主男人、公 家，官被戌穿",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1295",
+      "annotation": "官（酉）被戌穿。"
+    },
+    {
+      "case_id": "PF-022",
+      "chart_id": "PF-CH21",
+      "four_pillars": "己酉 戊辰 壬申 癸卯",
+      "gender": "坤",
+      "relation": {
+        "a": "辰",
+        "b": "卯",
+        "kind": "制",
+        "mechanism": "穿",
+        "actor": "辰"
+      },
+      "quote": "卯辰穿， 卯酉冲都是卯被制",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2664",
+      "annotation": "辰穿卯、酉冲卯，皆为卯被制。"
+    },
+    {
+      "case_id": "PF-023",
+      "chart_id": "PF-CH03",
+      "four_pillars": "戊辰 壬戌 丁丑 丁未",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "戌",
+        "kind": "制",
+        "mechanism": "刑",
+        "actor": "丑"
+      },
+      "quote": "丑戌刑是制财库",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L81",
+      "annotation": "丑戌刑制财库（与第 3 条同盘）。"
+    },
+    {
+      "case_id": "PF-024",
+      "chart_id": "PF-CH22",
+      "four_pillars": "辛亥 丙申 己丑 甲戌",
+      "gender": "乾",
+      "relation": {
+        "a": "丑",
+        "b": "戌",
+        "kind": "制",
+        "mechanism": "刑",
+        "actor": "丑"
+      },
+      "quote": "丑戌刑，制去戌中印星，财库制去印库",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1574",
+      "annotation": "丑刑戌，制戌中印星。"
+    },
+    {
+      "case_id": "PF-025",
+      "chart_id": "PF-CH23",
+      "four_pillars": "壬寅 庚戌 壬午 丁未",
+      "gender": "乾",
+      "relation": {
+        "a": "未",
+        "b": "戌",
+        "kind": "制",
+        "mechanism": "刑",
+        "actor": "未"
+      },
+      "quote": "局中未戌刑， 制戌中辛金印星有小功",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2803",
+      "annotation": "未刑戌，制戌中辛金印（小功）。"
+    },
+    {
+      "case_id": "PF-026",
+      "chart_id": "PF-CH24",
+      "four_pillars": "丁丑 癸卯 丁未 庚戌",
+      "gender": "乾",
+      "relation": {
+        "a": "未",
+        "b": "戌",
+        "kind": "制",
+        "mechanism": "刑",
+        "actor": "未"
+      },
+      "quote": "未戌刑去财能得财",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L1025",
+      "annotation": "未刑戌去财。"
+    },
+    {
+      "case_id": "PF-027",
+      "chart_id": "PF-CH25",
+      "four_pillars": "丁未 庚戌 乙丑 庚辰",
+      "gender": "乾",
+      "relation": {
+        "a": "戌",
+        "b": "丑",
+        "kind": "刑",
+        "mechanism": "刑",
+        "mutual": true,
+        "actor": null
+      },
+      "quote": "三刑不叫做功 是三个字都坏了 功就没有了",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1986",
+      "annotation": "丑戌未三刑全，三字俱坏、无功可论，故 mutual=true 不填 actor。"
+    },
+    {
+      "case_id": "PF-028",
+      "chart_id": "PF-CH26",
+      "four_pillars": "乙巳 庚辰 丁未 辛亥",
+      "gender": "乾",
+      "relation": {
+        "a": "辰",
+        "b": "亥",
+        "kind": "墓",
+        "mechanism": "墓",
+        "actor": "辰"
+      },
+      "quote": "再看亥入辰墓",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2235",
+      "annotation": "亥入库于辰（月令官墓）。"
+    },
+    {
+      "case_id": "PF-029",
+      "chart_id": "PF-CH27",
+      "four_pillars": "庚寅 庚辰 癸未 癸亥",
+      "gender": "乾",
+      "relation": {
+        "a": "未",
+        "b": "寅",
+        "kind": "墓",
+        "mechanism": "墓",
+        "actor": "未"
+      },
+      "quote": "年上寅入未库做功",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L942",
+      "annotation": "寅入未库做功。"
+    },
+    {
+      "case_id": "PF-030",
+      "chart_id": "PF-CH28",
+      "four_pillars": "乙未 庚辰 壬子 庚戌",
+      "gender": "乾",
+      "relation": {
+        "a": "辰",
+        "b": "未",
+        "kind": "墓",
+        "mechanism": "墓",
+        "actor": "辰"
+      },
+      "quote": "乙之根未却入辰墓",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3715",
+      "annotation": "未（乙之根）入辰墓。"
+    },
+    {
+      "case_id": "PF-031",
+      "chart_id": "PF-CH29",
+      "four_pillars": "庚戌 庚辰 癸未 丁巳",
+      "gender": "乾",
+      "relation": {
+        "a": "辰",
+        "b": "未",
+        "kind": "墓",
+        "mechanism": "墓",
+        "actor": "辰"
+      },
+      "quote": "未一是入了辰墓",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L560",
+      "annotation": "日支未入辰墓。"
+    },
+    {
+      "case_id": "PF-032",
+      "chart_id": "PF-CH30",
+      "four_pillars": "辛亥 壬辰 乙酉 丁亥",
+      "gender": "乾",
+      "relation": {
+        "a": "辰",
+        "b": "亥",
+        "kind": "墓",
+        "mechanism": "墓",
+        "actor": "辰"
+      },
+      "quote": "而亥入辰墓 辰是印墓是学术机构的意思",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4257",
+      "annotation": "亥入辰（印墓）。"
+    },
+    {
+      "case_id": "PF-033",
+      "chart_id": "PF-CH31",
+      "four_pillars": "甲子 辛未 己未 戊辰",
+      "gender": "乾",
+      "relation": {
+        "a": "辛",
+        "b": "甲",
+        "kind": "克",
+        "mechanism": "克",
+        "actor": "辛"
+      },
+      "quote": "辛金克甲木，为不爱学习",
+      "source_ref": "sources/duan/MinerU_markdown_段建业09年10月广州讲义_2056045375967125504.md:L1685",
+      "annotation": "辛克甲（官星被坏）。"
+    },
+    {
+      "case_id": "PF-034",
+      "chart_id": "PF-CH32",
+      "four_pillars": "乙巳 庚辰 辛卯 丙申",
+      "gender": "乾",
+      "relation": {
+        "a": "丙",
+        "b": "辛",
+        "kind": "克",
+        "mechanism": "克",
+        "actor": "丙"
+      },
+      "quote": "官透出来克他，首先无官，并且有官灾",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L601",
+      "annotation": "丙官透出克辛日主（官灾）。"
+    },
+    {
+      "case_id": "PF-035",
+      "chart_id": "PF-CH33",
+      "four_pillars": "己酉 庚午 甲寅 庚午",
+      "gender": "乾",
+      "relation": {
+        "a": "庚",
+        "b": "甲",
+        "kind": "克",
+        "mechanism": "克",
+        "actor": "庚"
+      },
+      "quote": "月上透出庚金克自 己",
+      "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1709",
+      "annotation": "月干庚克甲日主（多婚之象）。"
+    },
+    {
+      "case_id": "PF-036",
+      "chart_id": "PF-CH34",
+      "four_pillars": "甲午 己巳 己丑 丁卯",
+      "gender": "坤",
+      "relation": {
+        "a": "巳",
+        "b": "丑",
+        "kind": "生",
+        "mechanism": "生",
+        "actor": "巳"
+      },
+      "quote": "巳生丑， 午穿丑",
+      "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L806",
+      "annotation": "巳生丑（木火之势生/制丑）。"
+    },
+    {
+      "case_id": "PF-037",
+      "chart_id": "PF-CH35",
+      "four_pillars": "辛卯 庚子 丙申 丁酉",
+      "gender": "乾",
+      "relation": {
+        "a": "申",
+        "b": "子",
+        "kind": "生",
+        "mechanism": "生",
+        "actor": "申"
+      },
+      "quote": "申子生合， 是以官统财了",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2205",
+      "annotation": "申生子（生合，官统财）。"
+    },
+    {
+      "case_id": "PF-038",
+      "chart_id": "PF-CH32",
+      "four_pillars": "乙巳 庚辰 辛卯 丙申",
+      "gender": "乾",
+      "relation": {
+        "a": "卯",
+        "b": "丙",
+        "kind": "生",
+        "mechanism": "生",
+        "actor": "卯"
+      },
+      "quote": "自己的财（财在坐支）生官克身",
+      "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L601",
+      "annotation": "坐支卯财生丙官（与第 34 条同盘）。"
+    },
+    {
+      "case_id": "PF-039",
+      "chart_id": "PF-CH36",
+      "four_pillars": "壬子 丙午 壬辰 己酉",
+      "gender": "坤",
+      "relation": {
+        "a": "酉",
+        "b": "辰",
+        "kind": "化",
+        "mechanism": "化",
+        "actor": "酉"
+      },
+      "quote": "以酉印化杀生身",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L451",
+      "annotation": "酉印化辰杀生身。"
+    },
+    {
+      "case_id": "PF-040",
+      "chart_id": "PF-CH37",
+      "four_pillars": "戊申 甲子 甲寅 甲寅",
+      "gender": "乾",
+      "relation": {
+        "a": "子",
+        "b": "申",
+        "kind": "化",
+        "mechanism": "化",
+        "actor": "子"
+      },
+      "quote": "此为 印化杀生身 的结构 是当官的",
+      "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3039",
+      "annotation": "子印化申杀（年上七杀生印、印又生身）。"
+    }
+  ]
+}

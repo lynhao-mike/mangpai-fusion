@@ -1,0 +1,59 @@
+{
+  "schema_version": "p1-fresh-40-routing-blind/v1",
+  "task": "T-185",
+  "generated_at": "2026-10-29",
+  "note": "5 条 needs_judgment 路由例的盲测输入：只含 case_id / chart_id / 四柱 / 性别 / source；不含 relation、routing_type、quote、expected_direction。评分只统计 needs_judgment 命中与类型覆盖，不进 40 条方向精度分母。",
+  "case_count": 5,
+  "cases": [
+    {
+      "case_id": "PF-R01",
+      "chart_id": "PF-RCH1",
+      "four_pillars": "壬子 壬寅 己巳 辛未",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md",
+        "locator": "L965-L973"
+      }
+    },
+    {
+      "case_id": "PF-R02",
+      "chart_id": "PF-RCH2",
+      "four_pillars": "丙午 辛丑 戊寅 丙辰",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md",
+        "locator": "L509-L513"
+      }
+    },
+    {
+      "case_id": "PF-R03",
+      "chart_id": "PF-RCH3",
+      "four_pillars": "丙戌 戊戌 辛酉 壬辰",
+      "gender": "未注明",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L1726-L1732"
+      }
+    },
+    {
+      "case_id": "PF-R04",
+      "chart_id": "PF-RCH4",
+      "four_pillars": "戊申 辛酉 丁未 癸卯",
+      "gender": "坤",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md",
+        "locator": "L2722-L2726"
+      }
+    },
+    {
+      "case_id": "PF-R05",
+      "chart_id": "PF-RCH5",
+      "four_pillars": "丁酉 甲辰 戊辰 甲寅",
+      "gender": "乾",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+        "locator": "L483-L491"
+      }
+    }
+  ]
+}
