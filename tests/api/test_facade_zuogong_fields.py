@@ -3,7 +3,8 @@
 三件事必须同时成立：
 1. `analyze_facts` 是**完整事实**：候选里 tiyong / binzhu / distance / actor 都在，
    且 actor 无方向时是 `null` 而不是「键消失」。
-2. `compact_for_agent` 是**Agent 视图**：只削可由保留字段还原的冗余，tiyong / actor 不动。
+2. `compact_for_agent` 是**Agent 视图**：只削可由保留字段还原的冗余；T-183 起候选 `tiyong`
+   也削（由 `duan_zuogong.tiyong[addr]` 还原），`actor` 不动。
 3. `zuogong` 原子的 target 不再恒等于 `members[-1]`。
 """
 from __future__ import annotations
@@ -53,11 +54,18 @@ def test_compact_for_agent_drops_only_restorable_fields():
 
     full_cand = full["duan_zuogong"]["candidates"][0]
     agent_cand = agent["duan_zuogong"]["candidates"][0]
-    assert {"mode", "tiyong", "actor", "members"} <= set(agent_cand)
-    assert {"binzhu", "distance", "ten_gods"} & set(agent_cand) == set()
+    assert {"mode", "actor", "members"} <= set(agent_cand)
+    assert {"binzhu", "distance", "ten_gods", "tiyong"} & set(agent_cand) == set()
     if "edge_id" in full_cand:                     # 有边候选必须保留 edge_id
         assert agent_cand["edge_id"] == full_cand["edge_id"]
     assert "tiyong" in full_cand and "ten_gods" in full_cand, "投影不得回改事实视图"
+
+    # 候选 tiyong 可还原：members 地址 → duan_zuogong.tiyong（T-183：默认视图压字节，全量视图保留）
+    tiyong_map = agent["duan_zuogong"]["tiyong"]
+    assert tuple(tiyong_map[m] for m in agent_cand["members"]) == tuple(full_cand["tiyong"])
+    for cand in agent["duan_zuogong"]["candidates"]:
+        assert "tiyong" not in cand
+        assert len(tuple(tiyong_map[m] for m in cand["members"])) == len(cand["members"])
 
     # ten_gods 可还原：members 地址 → chart.pillars 的干/支本气十神
     gods: dict[str, str] = {}
@@ -103,7 +111,12 @@ def test_cli_full_keeps_facts_default_stays_compact():
     full_bytes, full = _cli("--full")
 
     assert default_bytes < 15_000 < full_bytes
-    assert default["duan_zuogong"]["candidates"][0]["tiyong"]
+    assert all("tiyong" not in c for c in default["duan_zuogong"]["candidates"])
+    assert all("tiyong" in c for c in full["duan_zuogong"]["candidates"])
+    # 默认视图的候选 tiyong 由 top-level 映射还原（T-183）
+    tiyong_map = default["duan_zuogong"]["tiyong"]
+    for cand in default["duan_zuogong"]["candidates"]:
+        assert len(tuple(tiyong_map[m] for m in cand["members"])) == len(cand["members"])
     assert default["duan_zuogong"]["candidates"][0]["actor"] is None or isinstance(
         default["duan_zuogong"]["candidates"][0]["actor"], str
     )

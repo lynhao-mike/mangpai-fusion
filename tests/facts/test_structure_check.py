@@ -17,7 +17,7 @@ from engine.facts.structure_check import (
     load_structures,
     tiyong_view,
 )
-from engine.predicates.types import ZHI_TO_WUXING
+from engine.predicates.types import GAN_TO_WUXING, ZHI_TO_WUXING
 
 ZIPING_EIGHT = {
     "ziping_zhengguan", "ziping_cai", "ziping_yin", "ziping_shishen",
@@ -216,18 +216,60 @@ def test_zuogong_sheng_not_generated_beyond_adjacent_pillars():
 
 
 @pytest.mark.parametrize("pillars", [["甲子", "丙寅", "丙辰", "戊戌"], ["庚申", "戊寅", "壬子", "辛丑"]])
-def test_zuogong_has_no_branch_branch_ke_edge_or_candidate(pillars):
-    """目标约束：不补 880 支克边，也不生成支克候选（地支克向在五行层确实存在）。"""
+def test_zuogong_branch_ke_candidate_without_branch_ke_edge(pillars):
+    """T-183 取代 T-179 的「不生成支克候选」约束：关系图仍不建支克边（G3 不变），
+    但按本气五行推得 `zhi_ke` 候选，actor=克方、members=(克方,被克方)、edge_id=None。
+    """
     chart = chart_from_pillars(pillars, "乾")
     graph = build_relation_graph(chart)
+    pillar_index = {head: i for i, head in enumerate("YMDH")}
     branch_addrs = {p.branch.addr for p in chart.pillars}
     ke_pairs = [(p.branch.char, q.branch.char) for p in chart.pillars for q in chart.pillars
                 if p.index != q.index
                 and wuxing_relation(ZHI_TO_WUXING[p.branch.char], ZHI_TO_WUXING[q.branch.char]) == "克"]
     assert ke_pairs, "该盘地支五行应有克对（否则本测试无判别力）"
     assert not [e for e in graph.edges if e.kind == "ke" and set(e.members) <= branch_addrs]
-    assert not [c for c in build_duan_zuogong_candidates(chart, graph)
-                if c.relation_kind == "ke" and set(c.members) <= branch_addrs]
+
+    cands = build_duan_zuogong_candidates(chart, graph)
+    zhi_ke = [c for c in cands if c.relation_kind == "zhi_ke"]
+    assert zhi_ke, "本气五行有克对时必须出 zhi_ke 候选"
+    for cand in zhi_ke:
+        assert cand.mode == "制用" and cand.edge_id is None
+        assert cand.actor == cand.members[0]
+        assert set(cand.members) <= branch_addrs
+        assert wuxing_relation(ZHI_TO_WUXING[cand.chars[0]], ZHI_TO_WUXING[cand.chars[1]]) == "克"
+        assert cand.distance == abs(pillar_index[cand.members[0][0]] - pillar_index[cand.members[1][0]])
+    # 同对已有冲/刑/合边候选时仍各列一条（T-179「既克且冲各列一条」约定延续），不合并、不去重
+    assert [c for c in zhi_ke if any(o is not c and set(o.members) == set(c.members) for o in cands)]
+
+
+def test_zuogong_gan_ke_zhi_candidate_all_pairs():
+    """T-183：天干克地支（含同柱盖头）推得 `gan_ke_zhi` 候选，actor=天干、不建边。"""
+    chart = chart_from_pillars(["乙巳", "戊子", "丁巳", "庚戌"], "坤")
+    graph = build_relation_graph(chart)
+    cands = build_duan_zuogong_candidates(chart, graph)
+    gan_ke = [c for c in cands if c.relation_kind == "gan_ke_zhi"]
+    assert gan_ke
+    for cand in gan_ke:
+        assert cand.mode == "制用" and cand.edge_id is None
+        assert cand.actor == cand.members[0]
+        assert cand.members[0].endswith(".s") and cand.members[1].endswith(".b")
+        assert wuxing_relation(GAN_TO_WUXING[cand.chars[0]], ZHI_TO_WUXING[cand.chars[1]]) == "克"
+    same_pillar = next(c for c in gan_ke if c.members == ("M.s", "M.b"))
+    assert same_pillar.chars == ("戊", "子") and same_pillar.distance == 0    # 同柱盖头
+
+
+def test_zuogong_ke_candidate_precedes_wuhe_for_same_pair_t183():
+    """T-183：同一对天干既有 ke 又有 wuhe 时，ke 候选排在 wuhe 前（不去重、不改 edges）。"""
+    chart = chart_from_pillars(["丙午", "辛卯", "丁卯", "壬子"], "乾")
+    graph = build_relation_graph(chart)
+    cands = build_duan_zuogong_candidates(chart, graph)
+    pair = {"Y.s", "M.s"}                      # 丙辛：ke e002（丙）与 wuhe e001 同 members
+    same = [c for c in cands if set(c.members) == pair]
+    assert [c.relation_kind for c in same] == ["ke", "wuhe"]
+    assert same[0].actor == "Y.s" and same[0].chars == ("丙", "辛") and same[0].edge_id == "e002"
+    assert same[1].actor is None               # 合仍无向（T-178 契约保持）
+    assert {e.kind for e in graph.edges if set(e.members) == pair} == {"ke", "wuhe"}
 
 
 def test_zuogong_muku_actor_is_ku_t179():
