@@ -1,0 +1,390 @@
+{
+  "schema": "party-direction-prereg/v1",
+  "preregistration_id": "party-direction-prereg-v1",
+  "task": "T-184",
+  "status": "frozen",
+  "frozen_at": "2026-10-29T15:03:27+08:00",
+  "spec_hash_computed_at": "2026-10-29T15:03:27+08:00",
+  "frozen_by": "T-184 worker (spec-only; no code, no chart run)",
+  "spec_path": "docs/specs/party-direction-v1.md",
+  "spec_sha256": "922ede83d9f3af340162edf39ed924f2959c23fab5f682934189bb02523cbc2c",
+  "spec_bytes": 37767,
+  "hash_algorithm": "sha256 over the UTF-8 bytes of spec_path",
+  "supersedes": null,
+  "why": "段派原文要求「一方之党一定要大于另一方之党」才能做功（22:L2872）；本预注册把党势计数写成只用整序数、只允许严格大于的口径，并把 needs_judgment / mutual 固化为断言 schema。冻结后跑盘，跑后不得改。",
+  "authority": {
+    "primary": "theory/raw/duan/d01-deep-read.md:216-262",
+    "actor_rules": "docs/specs/actor-rules-v1.md",
+    "muku_audit": "META/p1-muku-actor-audit-v1.md",
+    "hua_audit": "META/p1-hua-actor-audit-v1.md",
+    "answers_layer": "META/p1-holdout-answers-v1.json",
+    "freeze_layer": "META/p1-holdout-freeze-v4.json"
+  },
+  "source_refs": [
+    {"id": "S01", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 422, "quote": "势就是党", "role": "party_definition"},
+    {"id": "S02", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 426, "quote": "木火可以一党， 金水可以一党， 水木可以一党； 火与燥土可以为一党， 金与湿土可以为一党， 水与湿土也可以为一党。", "role": "party_pairs"},
+    {"id": "S03", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 428, "quote": "成党之后， 还看是否有功， 也就是必须有所制的神", "role": "party_needs_work"},
+    {"id": "S04", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 430, "quote": "辰戌冲， 一般是戌被辰制， （水制了火）， 但若火成势， 则戌制了辰。", "role": "rejected_default_chenxu"},
+    {"id": "S05", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 596, "quote": "成两个党， 谁也不制谁。", "role": "tie_no_work"},
+    {"id": "S06", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 614, "quote": "但戌冲辰制不了辰， 辰本在月令， 又有两个辰", "role": "direction_not_equal_outcome"},
+    {"id": "S07", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1416, "quote": "合绊： 力量想当 的两个字相合为合绊。", "role": "heban_definition"},
+    {"id": "S08", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1460, "quote": "闭气了就不能发挥作用", "role": "biqi_not_control"},
+    {"id": "S09", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1762, "quote": "以得令为旺， 以失令为衰。", "role": "deling_is_wang"},
+    {"id": "S10", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1812, "quote": "戌辰力量相当， 互相制不了 。", "role": "tie_chenxu_case"},
+    {"id": "S11", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1882, "quote": "未土为羊刃库 羊刃库穿倒印星子水", "role": "agent_anchor_example"},
+    {"id": "S12", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 1968, "quote": "丑戌未三刑， 金水有势， 坏了戌中 的丁火杀", "role": "sanxing_directional_case"},
+    {"id": "S13", "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md", "line": 2179, "quote": "制官杀不干净", "role": "edge_not_equal_clean_control"},
+    {"id": "S14", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2252, "quote": "戌酉穿， 羊刃穿了官杀库", "role": "H02_quote"},
+    {"id": "S15", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2770, "quote": "既可以金水有势， 申制 巳， 也可以木火有势 巳制 申", "role": "sishen_he_direction"},
+    {"id": "S16", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2778, "quote": "午未合， 是两字相生， 不制。", "role": "wuweii_no_control"},
+    {"id": "S17", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2868, "quote": "金水与湿土成势， 丑可坏未与戌库， 辰可坏戌库； 木火与燥土成势， 则未可以坏丑库， 戌可以坏辰库与丑库。", "role": "chongku_direction"},
+    {"id": "S18", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2870, "quote": "戌未刑是两个都坏了 。", "role": "xing_mutual"},
+    {"id": "S19", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2872, "quote": "其做功的条件是一方之党一定要大于另一方之党， 否则这此冲都不能做功。", "role": "party_strictly_greater"},
+    {"id": "S20", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2874, "quote": "中神相冲的力量不如长生相冲", "role": "within_class_efficiency_only"},
+    {"id": "S21", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2924, "quote": "克制就是如戌克亥、 子， 午克 申 、 酉之类， 克制的效率是比较低的", "role": "ke_direction_fixed"},
+    {"id": "S22", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2926, "quote": "克制中做功效率最高的方式是围克", "role": "weike_efficiency_not_direction"},
+    {"id": "S23", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2980, "quote": "六穿中 ， 只有酉戌穿、 卯辰穿、 子未穿、 丑午穿都可以相制。", "role": "chuan_can_control"},
+    {"id": "S24", "path": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md", "line": 2988, "quote": "卯与局中寅、 甲 、 戌结成一党， 占有绝对优势， 辰被穿制", "role": "chuan_dominance_case"},
+    {"id": "S25", "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md", "line": 2425, "quote": "穿制不了对方是一种坏，冲合克都可以制，唯有穿制不了。", "role": "chuan_cannot_control"},
+    {"id": "S26", "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md", "line": 2852, "quote": "子午卯酉寅申巳亥之冲一定要形成势力，如二冲三冲一或有生的旺冲衰，这样能冲伤冲去对方，形成制。", "role": "chong_party_condition"},
+    {"id": "S27", "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md", "line": 3717, "quote": "子未，卯辰，酉戌，丑午相穿力量要大，穿也为制了，但必须要旺。", "role": "chuan_can_control_2"},
+    {"id": "S28", "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md", "line": 3949, "quote": "⑷穿制。子未、酉戌、卯辰、丑午几种穿制。", "role": "chuan_listed_as_control"},
+    {"id": "S29", "path": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md", "line": 2767, "quote": "子卯刑，刑坏寿元星", "role": "zimo_xing_mutual"},
+    {"id": "S30", "path": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md", "line": 605, "quote": "地支的六合比较简单，不管是命局、大运、流年的合都以合绊论", "role": "liuhe_heban"},
+    {"id": "S31", "path": "sources/duan/MinerU_markdown_26..段建业《命理真诀导读风火集》_2056044863754526720.md", "line": 2293, "quote": "巳申合绊，将生水的原神绊住", "role": "sishen_heban_not_control"},
+    {"id": "S32", "path": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md", "line": 2114, "quote": "有时上午火,紧克申金,救应寅木", "role": "jiuying_example"},
+    {"id": "S33", "path": "theory/raw/duan/d01-deep-read.md", "line": 231, "quote": "合本身还可合绊、保护、闭气或改变作用方向，不能仅凭合名断为制。", "role": "editor_boundary_he"},
+    {"id": "S34", "path": "theory/raw/duan/d01-deep-read.md", "line": 240, "quote": "其做功的条件是一方之党一定要大于另一方之党，否则这些冲都不能做功", "role": "editor_quote_zhong"},
+    {"id": "S35", "path": "theory/raw/duan/d01-deep-read.md", "line": 249, "quote": "是否制净仍须逐案核对目标残余、根气、保护和反制。", "role": "editor_boundary_ke"}
+  ],
+  "counting_rubric": {
+    "unit": "integer_item",
+    "unit_value": 1,
+    "positions": ["Y.s", "M.s", "D.s", "H.s", "Y.b", "M.b", "D.b", "H.b"],
+    "position_unit_values": {"Y.s": 1, "M.s": 1, "D.s": 1, "H.s": 1, "Y.b": 1, "M.b": 1, "D.b": 1, "H.b": 1},
+    "position_note": "all eight positions carry exactly one unit; this is not a weighting scheme (no position may be multiplied)",
+    "items": [
+      {"id": "A", "name": "天干位", "match": "each of 4 stems", "count": 1, "rule": "party(stem_element); 戊/己 -> neutral 0"},
+      {"id": "B", "name": "地支本气位", "match": "each of 4 branches", "count": 1, "rule": "party(branch); soil branch resolved by 燥/湿"},
+      {"id": "C", "name": "中余气透干位", "match": "each (branch, non-primary hidden stem) pair, at most once per pair", "count": 1, "rule": "only if the same character appears in any of the 4 stems (exact stem, not same element); 戊/己 hidden stems -> 0"},
+      {"id": "D", "name": "得令", "match": "month branch M.b, at most one", "count": 1, "rule": "add 1 to the party of the month branch primary element; soil branch resolved by 燥/湿"}
+    ],
+    "hidden_stems_non_primary": {
+      "子": [],
+      "丑": ["癸", "辛"],
+      "寅": ["丙", "戊"],
+      "卯": [],
+      "辰": ["乙", "癸"],
+      "巳": ["庚", "戊"],
+      "午": ["己"],
+      "未": ["丁", "乙"],
+      "申": ["壬", "戊"],
+      "酉": [],
+      "戌": ["辛", "丁"],
+      "亥": ["甲"]
+    },
+    "hidden_stem_notes": [
+      "本气不计入 C，避免与 B 重复计数",
+      "中气与余气同权：原文未给整数权重，区分即须发明权重，违反本卡硬约束",
+      "藏干土（戊/己）一律中立，因此巳/申是否藏戊之类的底本差异对计数无影响"
+    ],
+    "party_map": {
+      "by_element": {"木": "F", "火": "F", "金": "W", "水": "W"},
+      "by_branch": {"子": "W", "丑": "W", "寅": "F", "卯": "F", "辰": "W", "巳": "F", "午": "F", "未": "F", "申": "W", "酉": "W", "戌": "F", "亥": "W"},
+      "branch_resolution": [
+        {"branch": "子", "element": "水", "soil": null, "party": "W"},
+        {"branch": "丑", "element": "土", "soil": "湿", "party": "W"},
+        {"branch": "寅", "element": "木", "soil": null, "party": "F"},
+        {"branch": "卯", "element": "木", "soil": null, "party": "F"},
+        {"branch": "辰", "element": "土", "soil": "湿", "party": "W"},
+        {"branch": "巳", "element": "火", "soil": null, "party": "F"},
+        {"branch": "午", "element": "火", "soil": null, "party": "F"},
+        {"branch": "未", "element": "土", "soil": "燥", "party": "F"},
+        {"branch": "申", "element": "金", "soil": null, "party": "W"},
+        {"branch": "酉", "element": "金", "soil": null, "party": "W"},
+        {"branch": "戌", "element": "土", "soil": "燥", "party": "F"},
+        {"branch": "亥", "element": "水", "soil": null, "party": "W"}
+      ],
+      "stem_earth_neutral": ["戊", "己"],
+      "neutral_reason": "原文六党对只用「燥土/湿土」给土配党（S02），天干戊己没有可核的燥湿归属；发明归属等于用未声明约定定方向"
+    },
+    "scope_limit": "只实现二元党 F/W；原文「水木一党」等其余党对不实现，木固定归 F（known_gap G1）",
+    "comparison": {
+      "delta_formula": "n_F - n_W",
+      "strictly_greater": "delta >= 1 (F) or delta <= -1 (W)",
+      "tie": "delta == 0",
+      "tie_result": "needs_judgment",
+      "nearness_operational_definition": "delta == 0 only; delta == 1 is already a strict win (S26 二冲一)",
+      "second_tiebreak_forbidden": true,
+      "division_forbidden": true,
+      "integer_only": true
+    },
+    "adjacency": {
+      "only_adjacent_counted": false,
+      "all_8_positions_equal": true,
+      "same_pillar_bonus": 0,
+      "day_master_bonus": 0,
+      "month_adjustment": "only item D (+1); month branch primary element therefore contributes 2 in total (B 1 + D 1)",
+      "same_pillar_counts_as_transparent": true
+    },
+    "audit_receipt_required": ["fire", "water", "delta", "items", "excluded"],
+    "receipt_invariants": [
+      "fire == count(items where party == F)",
+      "water == count(items where party == W)",
+      "delta == fire - water",
+      "every counted character must resolve in party_map; unresolved characters go to excluded",
+      "two independent re-sums must agree"
+    ],
+    "self_test_vector": {
+      "label": "synthetic; not any real chart; exercises A/B/C/D, exact-stem transparency, and the delta=-1 vs 0 boundary",
+      "branches": {"Y.b": "子", "M.b": "午", "D.b": "辰", "H.b": "戌"},
+      "variant_a": {
+        "stems": {"Y.s": "甲", "M.s": "戊", "D.s": "辛", "H.s": "壬"},
+        "items": [
+          {"addr": "Y.s", "char": "甲", "item": "A", "party": "F"},
+          {"addr": "D.s", "char": "辛", "item": "A", "party": "W"},
+          {"addr": "H.s", "char": "壬", "item": "A", "party": "W"},
+          {"addr": "Y.b", "char": "子", "item": "B", "party": "W"},
+          {"addr": "M.b", "char": "午", "item": "B", "party": "F"},
+          {"addr": "D.b", "char": "辰", "item": "B", "party": "W"},
+          {"addr": "H.b", "char": "戌", "item": "B", "party": "F"},
+          {"addr": "H.b⊕辛", "char": "辛", "item": "C", "party": "W"},
+          {"addr": "M.b", "char": "午", "item": "D", "party": "F"}
+        ],
+        "excluded": [{"addr": "M.s", "char": "戊", "reason": "天干土中立"}],
+        "expected": {"fire": 4, "water": 5, "delta": -1, "resolution": "W side strictly greater", "state": "needs_judgment"}
+      },
+      "variant_b": {
+        "stems": {"Y.s": "甲", "M.s": "戊", "D.s": "庚", "H.s": "壬"},
+        "items": [
+          {"addr": "Y.s", "char": "甲", "item": "A", "party": "F"},
+          {"addr": "D.s", "char": "庚", "item": "A", "party": "W"},
+          {"addr": "H.s", "char": "壬", "item": "A", "party": "W"},
+          {"addr": "Y.b", "char": "子", "item": "B", "party": "W"},
+          {"addr": "M.b", "char": "午", "item": "B", "party": "F"},
+          {"addr": "D.b", "char": "辰", "item": "B", "party": "W"},
+          {"addr": "H.b", "char": "戌", "item": "B", "party": "F"},
+          {"addr": "M.b", "char": "午", "item": "D", "party": "F"}
+        ],
+        "excluded": [{"addr": "M.s", "char": "戊", "reason": "天干土中立"}],
+        "expected": {"fire": 4, "water": 4, "delta": 0, "resolution": "needs_judgment", "state": "needs_judgment"}
+      },
+      "discriminator": "If transparency were same-element, 壬 (water) would make 辰-hidden 癸 transparent, giving water=6 / delta=-2. Spec requires exact stem match, so water=5 / delta=-1 (variant_a) and water=4 / delta=0 (variant_b)."
+    }
+  },
+  "party_direction_rules": [
+    {
+      "rule_id": "R1",
+      "mechanism": "冲",
+      "subtype": "子午卯酉冲",
+      "pairs": [["子", "午"], ["卯", "酉"]],
+      "end_party": {"子": "W", "午": "F", "卯": "F", "酉": "W"},
+      "direction_policy": "party_dominance",
+      "source_refs": ["S19", "S26", "S34"],
+      "positive_example": "S26 (二冲三冲一 -> 形成制)",
+      "negative_example": "S26 (一对一 -> 只是动和消耗) + S05 (谁也不制谁)",
+      "default_state": "needs_judgment",
+      "state_rule": "§4.5 evidence-bound",
+      "forbidden": ["auto direction from relation name", "efficiency comparison (S20) as direction"]
+    },
+    {
+      "rule_id": "R2",
+      "mechanism": "合",
+      "subtype": "巳申合",
+      "pairs": [["巳", "申"]],
+      "end_party": {"巳": "F", "申": "W"},
+      "direction_policy": "party_dominance",
+      "source_refs": ["S15", "S31", "S33"],
+      "positive_example": "S15 (金水有势申制巳 / 木火有势巳制申，且制死)",
+      "negative_example": "S31 (合绊，不是制) + S33 (不能仅凭合名断为制)",
+      "default_state": "needs_judgment",
+      "state_rule": "§4.5 evidence-bound"
+    },
+    {
+      "rule_id": "R2b",
+      "mechanism": "合",
+      "subtype": "午未合",
+      "pairs": [["午", "未"]],
+      "direction_policy": "no_control",
+      "source_refs": ["S16"],
+      "positive_example": "S16 (两字相生，不制)",
+      "negative_example": "writing 相生 as 制",
+      "default_state": "needs_judgment",
+      "assertion_flags": {"direction": "needs_judgment", "no_control": true}
+    },
+    {
+      "rule_id": "R3",
+      "mechanism": "冲",
+      "subtype": "辰戌丑未冲库",
+      "pairs": [["辰", "戌"], ["丑", "未"]],
+      "end_party": {"辰": "W", "戌": "F", "丑": "W", "未": "F"},
+      "direction_policy": "party_dominance",
+      "direction_map": {
+        "W_strictly_greater": {"辰->戌": "辰坏戌", "丑->未": "丑坏未"},
+        "F_strictly_greater": {"戌->辰": "戌坏辰", "未->丑": "未坏丑"}
+      },
+      "source_refs": ["S17", "S10", "S06", "S04"],
+      "positive_example": "S17 (湿党成势 丑坏未与戌库、辰坏戌库；燥党成势 未坏丑库、戌坏辰库与丑库)",
+      "negative_example": "S10 (力量相当互相制不了) + S06 (方向对但制不了)",
+      "default_state": "needs_judgment",
+      "state_rule": "§4.5 evidence-bound",
+      "rejected_default": "S04 的「辰戌一般戌被辰制」未采用：只覆盖辰戌、与 S10 冲突、且会绕过严格大于（known_gap G3）"
+    },
+    {
+      "rule_id": "R4",
+      "mechanism": "穿",
+      "subtype": "穿制",
+      "direction_policy": "always_needs_judgment",
+      "source_refs": ["S23", "S25", "S27", "S28", "S24", "S14"],
+      "positive_example": "S23 (四组穿都可以相制)",
+      "negative_example": "S25 (唯有穿制不了)",
+      "conflict": [
+        "S25 says 穿制不了对方",
+        "S27 says 穿也为制了，但必须要旺",
+        "S28 lists 穿制 as a category",
+        "S23 says 四组穿都可以相制，but requires 一方必须有很强大的力量"
+      ],
+      "why_needs_judgment": [
+        "原始转录语料内部直接冲突（d01:251-260 已记录）",
+        "即使采可制读法，条件「一方必须有很强大的力量」没有整序数定义，整数化即须发明阈值",
+        "S24 是唯一定向个案，但「结成一党」仍是定性描述，不能反推类规则"
+      ],
+      "default_state": "needs_judgment",
+      "forbidden": ["engine emits 制 candidate from a chuan edge", "direction=actor→target for 穿制"]
+    },
+    {
+      "rule_id": "R5",
+      "mechanism": "刑",
+      "subtype": "刑（默认）",
+      "direction_policy": "mutual",
+      "default_state": "needs_judgment",
+      "source_refs": ["S18", "S29", "S12", "S17"],
+      "positive_example": "S18 (戌未刑两个都坏了)",
+      "negative_example": "forcing a single actor on 丑戌未三刑",
+      "subtypes": [
+        {"name": "未戌刑", "direction": "mutual", "compare_party": false, "source": "S18"},
+        {"name": "子卯刑", "direction": "mutual", "compare_party": false, "source": "S29"},
+        {"name": "自刑", "direction": "mutual", "compare_party": false, "source": "actor-rules-v1 §4.3"},
+        {"name": "寅巳申三刑", "direction": "mutual", "compare_party": false, "source": "actor-rules-v1 §4.3"},
+        {"name": "丑戌未三刑(三字齐)", "direction": "mutual", "compare_party": false, "source": "actor-rules-v1 §4.3", "note": "S12 shows 三字齐 can be directional under party dominance; not used here (known_gap G4)"},
+        {"name": "丑戌刑(两字)", "direction": "party_dominance", "compare_party": true, "source": "S17", "tie": "mutual"}
+      ]
+    },
+    {
+      "rule_id": "R6",
+      "mechanism": "克",
+      "subtype": "克（含 ke / zhi_ke / gan_ke_zhi）",
+      "direction_policy": "fixed_wuxing",
+      "source_refs": ["S21", "S22", "S13", "S35"],
+      "positive_example": "S21 (方向由五行给出，与效率无关)",
+      "negative_example": "S13 (制官杀不干净) + S22 (围克是效率比较，不等于制尽)",
+      "default_state": "needs_judgment",
+      "state_rule": "§4.5 evidence-bound; ke edge existence never implies 制净",
+      "forbidden": ["state=成 merely because a ke edge exists", "using 克向 as 制"]
+    },
+    {
+      "rule_id": "R7",
+      "mechanism": "合",
+      "subtype": "合绊/保护/闭气",
+      "direction_policy": "always_needs_judgment",
+      "source_refs": ["S30", "S07", "S08", "S33"],
+      "positive_example": "S30 + S07 (合绊定义；力量相当即合绊)",
+      "negative_example": "S08 (闭气是失效，不是被制)",
+      "default_state": "needs_judgment",
+      "forbidden": ["mapping 合 to 制", "judging 被合住 as 被制净"]
+    },
+    {
+      "rule_id": "R8",
+      "mechanism": "表外",
+      "subtype": "寅申巳亥冲 / 三合 / 半合 / 三会 / 暗合 / 自合 / 伏吟 / 拱局 / 破 / 生 / 化 / 墓",
+      "direction_policy": "out_of_scope_needs_judgment",
+      "source_refs": [],
+      "positive_example": null,
+      "negative_example": null,
+      "default_state": "needs_judgment",
+      "note": "生/化/墓 的 actor 由 actor-rules-v1 §4.7-4.9 管，本规格不改"
+    }
+  ],
+  "assertion_schema": {
+    "required": ["assertion_id", "edge_id", "mechanism", "kind", "palace", "ten_gods", "addr", "direction", "mutual", "no_control", "syntax_subject", "basis", "state", "source_ref", "verbatim_quote"],
+    "conditional_required": {"state_evidence": "state != needs_judgment", "party": "rule_id in {R1,R2,R3,R5.chenxu}"},
+    "direction_enum": ["actor→target", "mutual", "needs_judgment"],
+    "basis_enum": ["fixed_wuxing", "party_dominance", "source_text", "agent_anchor"],
+    "state_enum": ["成", "败", "救应", "needs_judgment"],
+    "palace_values": ["年干", "年支", "月干", "月支", "日干", "日支", "时干", "时支", null],
+    "addr_values": ["Y.s", "Y.b", "M.s", "M.b", "D.s", "D.b", "H.s", "H.b", null],
+    "mutual_boolean_equals": "direction == \"mutual\"",
+    "invariants": [
+      "mutual == (direction == \"mutual\")",
+      "direction == \"needs_judgment\" implies mutual == false",
+      "direction == \"actor→target\" implies palace.actor != null and palace.actor != palace.target",
+      "state != \"needs_judgment\" implies state_evidence is a non-empty substring of verbatim_quote",
+      "party != null implies delta == fire - water and item sums match",
+      "no float values anywhere in the assertion",
+      "verbatim_quote must be found verbatim in the line pointed by source_ref",
+      "basis == \"agent_anchor\" implies state == \"needs_judgment\""
+    ],
+    "state_rule": "state is annotated from the quoted sentence only; direction resolution never implies state=成; needs_judgment is a first-class value and must not be collapsed into actor=null without a needs_judgment marker"
+  },
+  "validation_instances": [
+    {
+      "case_id": "P1-H02",
+      "mechanism": "穿",
+      "kind": "制",
+      "edge_id": "e013",
+      "rule_id": "R4",
+      "expected_direction": "needs_judgment",
+      "expected_state": "needs_judgment",
+      "expected_basis": "source_text",
+      "syntax_subject": "actor",
+      "source_ref": "S14",
+      "note": "不是专用规则：any kind=制 + mechanism=穿 falls here. Answers layer a=酉 / actor=酉 is unchanged; this layer judges whether 穿制 holds."
+    },
+    {
+      "case_id": "P1-H05",
+      "mechanism": "冲",
+      "kind": "制",
+      "rule_id": "R1",
+      "expected_direction": "computed_by_rule",
+      "expected_state": "needs_judgment",
+      "prewritten_counts": null,
+      "note": "Counts MUST be computed by the implementation. This prereg deliberately does not prewrite n_F/n_W for any real chart (prewriting equals running a chart). Answers layer a=午 / actor=午 is unchanged."
+    }
+  ],
+  "forbidden": [
+    "ratios: 4:1, 5:2, percentages, multiples",
+    "floats: 0.5, 1.5, any decimal in counts, thresholds, or comparisons",
+    "weights: any multiplier or coefficient other than item D (+1)",
+    "division or normalization: n_F/n_W, (n_F-n_W)/8",
+    "free-form nearness: the only non-strict-greater value is delta == 0; delta == 1 must not be judged needs_judgment",
+    "second tiebreak after delta == 0 (得令/透干/月令/紧贴)",
+    "case-specific rules or mapping tweaks (including H02 and H05)",
+    "auto-judging 制 from the existence of a chuan / ke / he edge",
+    "recording needs_judgment as ok / reversed / no_candidate",
+    "distinguishing 中气 vs 余气 weights",
+    "inventing a 燥/湿 assignment for stems 戊/己",
+    "mixing other party pairs (e.g. 水木一党) into the binary party",
+    "cross-relation efficiency comparisons (d01:236: comparisons are within-class only)",
+    "modifying this preregistration after a chart run",
+    "writing party counts into existing strength fields or can_control"
+  ],
+  "freeze_discipline": [
+    "spec_sha256 must equal sha256(UTF-8 bytes of spec_path); the md must not change after this JSON is written",
+    "charts may only be run after this freeze",
+    "no post-run tuning of rubric, party map, direction rules, or state rule",
+    "any change requires a new version (v2) plus a new task card plus source counter-evidence",
+    "hold-out is scoring-only; never use it to tune this spec",
+    "needs_judgment must never be converted to ok/reversed to improve recall"
+  ],
+  "known_gaps": [
+    {"id": "G1", "gap": "binary party only; 水木一党 not implemented; 木 fixed to F", "impact": "wood-heavy water-heavy charts may count wood toward fire", "resolution": "new card; must solve one-character-in-two-parties counting"},
+    {"id": "G2", "gap": "寅申巳亥冲 not given direction (card authorizes 子午卯酉 only)", "impact": "those pairs stay needs_judgment", "resolution": "R1 machinery extends directly, but needs a new prereg"},
+    {"id": "G3", "gap": "S04 default 戌被辰制 not adopted", "impact": "unstressed 辰戌 charts get needs_judgment", "resolution": "conflicts with S10 and with strict-greater; needs a new card"},
+    {"id": "G4", "gap": "三字齐丑戌未 does not resolve direction (S12 shows it can)", "impact": "三刑齐 charts stay mutual + needs_judgment", "resolution": "integerize three-way party comparison first"},
+    {"id": "G5", "gap": "穿制 always needs_judgment; S23 '很强大的力量' not integerized", "impact": "all 穿制 charts (including H02) unresolved", "resolution": "new card + integerized 'very strong' + non-hold-out calibration"},
+    {"id": "G6", "gap": "中气/余气 weights not distinguished", "impact": "differs from schools that weight them", "resolution": "distinguishing requires inventing weights, forbidden by T-184"},
+    {"id": "G7", "gap": "stems 戊/己 neutral", "impact": "earth-heavy charts produce smaller party counts", "resolution": "declared cost of not inventing a mapping"},
+    {"id": "G8", "gap": "state=成 depends on annotator reading of the quote", "impact": "annotator variance", "resolution": "state_evidence verbatim substring + double review"}
+  ],
+  "artifact_hash_note": "This JSON has no self-hash (self-reference is impossible). Its own sha256 is recorded in tasks/T-184/BRIEF.md §2.1 and tasks/T-184/STATUS.md."
+}
