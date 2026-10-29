@@ -61,3 +61,17 @@
 ## 6. 回报
 
 1. 分支/commit；2. 候选统计对比；3. 481/0 与测试；4. 风险（候选爆炸、排序变化、性能）；5. 下游须知（合并顺序、与 T-178 方向规则的接口）。
+
+## 7. 中枢裁决（2026-10-29 13:05）
+
+1. **授权改写 2 条既有测试，但必须做反向契约**：
+   - `test_zuogong_only_crosses_ti_yong` → `test_zuogong_includes_body_body_t179`
+   - `test_zuogong_excludes_dual_x_dual` → `test_zuogong_includes_dual_dual_t179`
+   - 同一组参数，断言「体-体 / 双属-双属现在进入候选」；注释「ADR-007 D1 被 T-179 取代」。
+   - 不许静默删除、不许 skip、不许放宽其他断言；只动这 2 条；BRIEF/commit 单列契约变更。
+2. **`mode="sheng"` 允许**：扩 `ZuogongCandidate.mode` 的 Literal；`members=[actor,target]`，
+   `members[1]` 即 target；补测试；检查所有按 mode 分支的消费者，不许静默吞掉。
+3. **跨柱口径**：新增 `mode="sheng"` 只允许同柱/相邻柱；既有 `_derived_sheng` 的远距离分支不删，
+   但 BRIEF 必须报「远距离 sheng 候选数 / 占总量比例 / 性能」；若候选总量 > 改前 2 倍
+   或 pytest 时间 > 2 倍，停下报告，不硬跑。
+4. 仍不补 880 支克、不跑 hold-out、不 push；只在 `p1/candidates`。
