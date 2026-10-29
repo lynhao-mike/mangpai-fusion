@@ -53,14 +53,31 @@ def test_compact_for_agent_drops_only_restorable_fields():
 
     full_cand = full["duan_zuogong"]["candidates"][0]
     agent_cand = agent["duan_zuogong"]["candidates"][0]
-    assert {"tiyong", "actor", "members", "ten_gods"} <= set(agent_cand)
-    assert "binzhu" not in agent_cand and "distance" not in agent_cand
-    assert "tiyong" in full_cand, "投影不得回改事实视图"
+    assert {"mode", "tiyong", "actor", "members"} <= set(agent_cand)
+    assert {"binzhu", "distance", "ten_gods"} & set(agent_cand) == set()
+    if "edge_id" in full_cand:                     # 有边候选必须保留 edge_id
+        assert agent_cand["edge_id"] == full_cand["edge_id"]
+    assert "tiyong" in full_cand and "ten_gods" in full_cand, "投影不得回改事实视图"
+
+    # ten_gods 可还原：members 地址 → chart.pillars 的干/支本气十神
+    gods: dict[str, str] = {}
+    for pillar in full["chart"]["pillars"]:
+        gods[pillar["stem"]["addr"]] = pillar["stem"]["ten_god"]
+        gods[pillar["branch"]["addr"]] = pillar["branch"]["main_ten_god"]
+    assert tuple(gods[m] for m in agent_cand["members"]) == tuple(full_cand["ten_gods"])
 
     assert "nodes" not in agent["relations"]
-    assert all("chars" not in e and "between" not in e for e in agent["relations"]["edges"])
-    assert all("id" in e and "members" in e for e in agent["relations"]["edges"])
+    assert all(not ({"chars", "between", "layer", "scope", "distance"} & set(e))
+               for e in agent["relations"]["edges"])
+    assert all({"id", "kind", "members"} <= set(e) for e in agent["relations"]["edges"])
     assert full["relations"]["nodes"], "投影后事实视图仍须保留 nodes"
+
+    # chart 干支的 wuxing/yinyang 可还原：保留 char 与十神字段即可
+    for pillar in agent["chart"]["pillars"]:
+        assert not ({"wuxing", "yinyang"} & set(pillar["stem"]))
+        assert not ({"wuxing", "yinyang"} & set(pillar["branch"]))
+        assert {"addr", "char", "ten_god"} <= set(pillar["stem"])
+        assert {"addr", "char", "main_ten_god"} <= set(pillar["branch"])
 
 
 def test_compact_for_agent_does_not_mutate_input():

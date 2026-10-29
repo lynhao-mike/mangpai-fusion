@@ -6,7 +6,8 @@ from dataclasses import fields
 import pytest
 
 from engine.facts import build_relation_graph, build_strength_facts, chart_from_pillars
-from engine.facts.relation_graph import edge_by_id
+from engine.facts.chart_facts import wuxing_relation
+from engine.facts.relation_graph import edge_by_id, muku_at
 from engine.facts.structure_check import (
     CheckItem,
     StructureCheck,
@@ -16,6 +17,7 @@ from engine.facts.structure_check import (
     load_structures,
     tiyong_view,
 )
+from engine.predicates.types import ZHI_TO_WUXING
 
 ZIPING_EIGHT = {
     "ziping_zhengguan", "ziping_cai", "ziping_yin", "ziping_shishen",
@@ -163,15 +165,78 @@ def test_zuogong_candidates_carry_no_layer_or_grade():
 
 
 @pytest.mark.parametrize("pillars", [["丁卯", "己酉", "甲子", "壬申"], ["庚申", "戊寅", "壬子", "辛丑"]])
-def test_zuogong_only_crosses_ti_yong(pillars):
+def test_zuogong_includes_body_body_t179(pillars):
+    """T-179 ①：体-体关系不再被丢（ADR-007 D1 的同体用过滤被 T-179 取代，不是放宽断言）。"""
     chart = chart_from_pillars(pillars, "乾")
-    for c in build_duan_zuogong_candidates(chart, build_relation_graph(chart)):
-        assert set(c.tiyong) not in ({"体"}, {"用"}, {"双属"})
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    assert cands
+    body_body = [c for c in cands if tuple(c.tiyong) == ("体", "体")]
+    assert body_body, "体-体候选必须在（体-体不再被过滤）"
+    assert all(len(c.members) == 2 for c in body_body)
 
 
-def test_zuogong_excludes_dual_x_dual():
-    """食伤内部互见不构成体用相交做功：双属×双属 候选全部排除（ADR-007 D1）。"""
+def test_zuogong_includes_dual_dual_t179():
+    """T-179 ①：双属-双属关系不再被丢（ADR-007 D1 的双属过滤被 T-179 取代）。"""
     chart = chart_from_pillars(["甲子", "丙寅", "丙辰", "戊戌"], "乾")
     cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
     assert cands
-    assert all(tuple(c.tiyong) != ("双属", "双属") for c in cands)
+    dual_dual = [c for c in cands if tuple(c.tiyong) == ("双属", "双属")]
+    assert dual_dual, "双属-双属候选必须在（双属不再被过滤）"
+    assert any(c.mode == "制用" and c.relation_kind == "chong" for c in dual_dual)
+
+
+# ── T-179 ②：同柱 / 相邻柱「生」进入候选 ──────────────────────────────────────
+
+def test_zuogong_same_and_adjacent_sheng_as_directed_candidates():
+    """T-179 ②：同柱/相邻柱相生生成 mode="sheng"，actor=生者、members[1]=被生者。"""
+    chart = chart_from_pillars(["壬子", "壬寅", "庚辰", "辛巳"], "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+
+    adjacent = next(c for c in cands if c.mode == "sheng" and c.members == ("H.b", "D.b"))
+    assert adjacent.relation_kind == "sheng"
+    assert adjacent.actor == "H.b"            # 巳火生辰土
+    assert adjacent.chars == ("巳", "辰")
+    assert adjacent.distance == 1
+    assert adjacent.edge_id is None           # 关系图不建地支生边
+
+    same = next(c for c in cands if c.mode == "sheng" and c.members == ("M.s", "M.b"))
+    assert same.actor == "M.s"                # 壬水生日支寅木
+    assert same.chars == ("壬", "寅")
+    assert same.distance == 0
+
+
+def test_zuogong_sheng_not_generated_beyond_adjacent_pillars():
+    """T-179 ②：跨柱两柱以上不新增 mode="sheng"（既有 sheng(main_qi) 远距离分支保留）。"""
+    chart = chart_from_pillars(["庚申", "戊寅", "壬子", "辛丑"], "乾")
+    cands = build_duan_zuogong_candidates(chart, build_relation_graph(chart))
+    assert all((c.distance or 0) <= 1 for c in cands if c.mode == "sheng")
+    # 申（年支）生子（日支）跨两柱：只保留既有 sheng(main_qi) 推得，不新增 mode="sheng"
+    assert not any(c.mode == "sheng" and c.members == ("Y.b", "D.b") for c in cands)
+    assert any(c.relation_kind == "sheng(main_qi)" and c.members == ("Y.b", "D.b") for c in cands)
+
+
+@pytest.mark.parametrize("pillars", [["甲子", "丙寅", "丙辰", "戊戌"], ["庚申", "戊寅", "壬子", "辛丑"]])
+def test_zuogong_has_no_branch_branch_ke_edge_or_candidate(pillars):
+    """目标约束：不补 880 支克边，也不生成支克候选（地支克向在五行层确实存在）。"""
+    chart = chart_from_pillars(pillars, "乾")
+    graph = build_relation_graph(chart)
+    branch_addrs = {p.branch.addr for p in chart.pillars}
+    ke_pairs = [(p.branch.char, q.branch.char) for p in chart.pillars for q in chart.pillars
+                if p.index != q.index
+                and wuxing_relation(ZHI_TO_WUXING[p.branch.char], ZHI_TO_WUXING[q.branch.char]) == "克"]
+    assert ke_pairs, "该盘地支五行应有克对（否则本测试无判别力）"
+    assert not [e for e in graph.edges if e.kind == "ke" and set(e.members) <= branch_addrs]
+    assert not [c for c in build_duan_zuogong_candidates(chart, graph)
+                if c.relation_kind == "ke" and set(c.members) <= branch_addrs]
+
+
+def test_zuogong_muku_actor_is_ku_t179():
+    """T-178 审计：墓用候选 members=(库, 入库方)、actor=库；relations.muku 事实层不动。"""
+    chart = chart_from_pillars(["庚申", "戊寅", "壬子", "辛丑"], "乾")
+    graph = build_relation_graph(chart)
+    cands = build_duan_zuogong_candidates(chart, graph)
+    mu = next(c for c in cands if c.mode == "墓用" and "Y.s" in c.members)
+    assert mu.members == ("H.b", "Y.s")        # 丑库 → 庚金
+    assert mu.actor == "H.b"
+    assert mu.chars == ("丑", "庚")
+    assert "Y.s" in {c.addr for c in muku_at(graph, "H.b").candidates}
