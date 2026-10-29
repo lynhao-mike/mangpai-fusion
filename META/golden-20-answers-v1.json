@@ -1,0 +1,1441 @@
+{
+  "schema_version": "golden-20-answers/v1",
+  "task": "T-170",
+  "note": "答案：字段值为原书原文的逐字截取（脚本断言为源文件该行的子串）；原书无明确判断的字段为 null。",
+  "structural_policy": {
+    "edge_id_rule": "T-169 实测：加 --dayun-index/--liunian 后 edge_id 会全量重编号。因此本文件不写任何裸边号；如需引用 edge_id，必须附 chart_snapshot{chart_id, dayun_index, liunian_year}。",
+    "candidate_rule": "duan_zuogong.candidates 不是关系边全集（只扫体用相交＋指定 kind）。引用主功/做功时 candidate_id 与 relations.edge_id 两路都要给；只有 candidate 的标 candidate_only，不得当作已成立。",
+    "v1_status": "本版答案只锚定原书文本（struct_refs.status=book_text_only），未做结构绑定，故 edge_ids/candidate_ids 为空。"
+  },
+  "category_legend": {
+    "制用": "以体制用（克去/合去/合绊忌神），原书称制用结构、伤官去官、弱制",
+    "化用": "官杀化印、印再生身，原书称化用结构、杀印相生",
+    "墓用": "入墓/库为做功或应期，原书称墓用结构、冲开墓库",
+    "救应": "原局有病（穿/合/克），岁运或原局某字解之，原书称解、救、治了病"
+  },
+  "cases": [
+    {
+      "case_id": "G20-001",
+      "category": "制用",
+      "four_pillars": "庚午 乙酉 庚子 壬午",
+      "gender": "乾",
+      "original_analysis": "此造金水伤官格，表示聪明绝顶，才华横溢，有官星、财星混局为病神，逢伤官去官，比劫去财，所谓去忌神时得忌喜，故能得官得财",
+      "core_work": "逢伤官去官，比劫去财",
+      "role_direction": "有官星、财星混局为病神",
+      "adjudication": "故能得官得财",
+      "rescue": null,
+      "timing": [
+        "行亥子丑北方水地，伤官去官，升为中堂",
+        "行入庚寅运，忌神午火逢长生，忌神财星临旺，己未年春被捕赐死"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-363b4a3afaecdbfb9045",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 255,
+          "quote": "乾：**庚午    乙酉    庚子    壬午                     运：丙戌    丁亥    戊子   己丑    庚寅**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "此造金水伤官格，表示聪明绝顶，才华横溢，有官星、财星混局为病神，逢伤官去官，比劫去财，所谓去忌神时得忌喜，故能得官得财"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "逢伤官去官，比劫去财"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "有官星、财星混局为病神"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "故能得官得财"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "行亥子丑北方水地，伤官去官，升为中堂"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 257,
+          "quote": "行入庚寅运，忌神午火逢长生，忌神财星临旺，己未年春被捕赐死"
+        }
+      ],
+      "curator_notes": "原书为提问式案例（\"为何当得官又最大\"），结论句明确。"
+    },
+    {
+      "case_id": "G20-002",
+      "category": "制用",
+      "four_pillars": "乙巳 庚辰 辛卯 壬辰",
+      "gender": "乾",
+      "original_analysis": "原文中只讲水为用神，什么道理没讲，其实此造比肩弱，壬水不为八字秀气，不成伤官泄秀格，而为伤官去官格",
+      "core_work": "伤官去官格",
+      "role_direction": "官星虚透与伤官相见，伤官去官而得官",
+      "adjudication": "当然这个命的结构伤官与官不紧贴，故官职不大",
+      "rescue": null,
+      "timing": [
+        "行丙子大运，官星虚透与伤官相见，伤官去官而得官，官职连升",
+        "至乙亥运的丁亥年官职升到头，居厅级之职"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-4734de91344c13e694fe",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 261,
+          "quote": "例乾：**乙巳    庚辰    辛 卯    壬辰              运：己卯     戊寅     丁丑    丙子     乙亥**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "原文中只讲水为用神，什么道理没讲，其实此造比肩弱，壬水不为八字秀气，不成伤官泄秀格，而为伤官去官格"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "伤官去官格"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "官星虚透与伤官相见，伤官去官而得官"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "当然这个命的结构伤官与官不紧贴，故官职不大"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "行丙子大运，官星虚透与伤官相见，伤官去官而得官，官职连升"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 263,
+          "quote": "至乙亥运的丁亥年官职升到头，居厅级之职"
+        }
+      ],
+      "curator_notes": "原书明言\"官职不大\"，成败判为小成。"
+    },
+    {
+      "case_id": "G20-003",
+      "category": "制用",
+      "four_pillars": "癸未 辛酉 乙酉 丁丑",
+      "gender": "乾",
+      "original_analysis": "阎命杀旺身极弱，应该从杀，以杀为用财为喜",
+      "core_work": "今阎命用1点食神制之，即表示恶人能为我所用，统治群僚",
+      "role_direction": "七杀为小人为恶人为官害",
+      "adjudication": "故而可知，旺的忌神所需是弱制则成，旺制反凶",
+      "rescue": null,
+      "timing": [
+        "反在戊午运克杀之运当都督",
+        "丁巳大运庚午流年，挑起中原大战，结果惨败告终，权力尽失"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-bcd26eaeeb1efa03fd2b",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 480,
+          "quote": "阎锡山：   **乾：癸未    辛酉    乙酉    丁 丑      运：辛酉  庚申  己未  戊午  丁巳   丙辰**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "阎命杀旺身极弱，应该从杀，以杀为用财为喜"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "今阎命用1点食神制之，即表示恶人能为我所用，统治群僚"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "七杀为小人为恶人为官害"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "故而可知，旺的忌神所需是弱制则成，旺制反凶"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "反在戊午运克杀之运当都督"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 482,
+          "quote": "丁巳大运庚午流年，挑起中原大战，结果惨败告终，权力尽失"
+        }
+      ],
+      "curator_notes": "原书标题即\"阎锡山\"；弱制（一点食神制旺杀）为成，旺制（丁巳运）反凶。"
+    },
+    {
+      "case_id": "G20-004",
+      "category": "制用",
+      "four_pillars": "乙丑 丙戌 庚午 辛巳",
+      "gender": "坤",
+      "original_analysis": "撤氏更为特别，别人都是用食伤来弱制众杀，她却用羊刃来弱制",
+      "core_work": "她却用羊刃来弱制",
+      "role_direction": "辛金为羊刃，入主邻身，合制群杀",
+      "adjudication": "行辛卯运，用神辛到位，擢权首相",
+      "rescue": null,
+      "timing": [
+        "行辛卯运，用神辛到位，擢权首相",
+        "到壬辰运与众杀不和，马岛战争后，不久便下野"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-b1d2af277678a5c933cc",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 716,
+          "quote": "例2、坤造，撤切尔夫人：乙 丙 庚 辛"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "撤氏更为特别，别人都是用食伤来弱制众杀，她却用羊刃来弱制"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "她却用羊刃来弱制"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "辛金为羊刃，入主邻身，合制群杀"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "行辛卯运，用神辛到位，擢权首相"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "行辛卯运，用神辛到位，擢权首相"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 724,
+          "quote": "到壬辰运与众杀不和，马岛战争后，不久便下野"
+        }
+      ],
+      "curator_notes": "原书标题\"例2、坤造，撤切尔夫人\"；羊刃弱制群杀，行运用神到位则应。"
+    },
+    {
+      "case_id": "G20-005",
+      "category": "制用",
+      "four_pillars": "丁丑 壬子 壬申 辛亥",
+      "gender": "乾",
+      "original_analysis": "此为某市长。行丙午运大运冲八字中极旺之子水，原局中忌神丁火被壬水合去，今逢忌神得根之大运主忌神制化的应期",
+      "core_work": "原局中忌神丁火被壬水合去",
+      "role_direction": "行丙午运大运冲八字中极旺之子水",
+      "adjudication": "此运升任教委主任，后升市长",
+      "rescue": null,
+      "timing": "此运升任教委主任，后升市长",
+      "chart_snapshot": {
+        "chart_id": "cf-5629707a511dc453133a",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 466,
+          "quote": "例：**乾：丁丑    壬子    壬申    辛亥      运：壬子  辛亥  庚戌  己酉  戊申   丁未  丙午**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 468,
+          "quote": "此为某市长。行丙午运大运冲八字中极旺之子水，原局中忌神丁火被壬水合去，今逢忌神得根之大运主忌神制化的应期"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 468,
+          "quote": "原局中忌神丁火被壬水合去"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 468,
+          "quote": "行丙午运大运冲八字中极旺之子水"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 468,
+          "quote": "此运升任教委主任，后升市长"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 468,
+          "quote": "此运升任教委主任，后升市长"
+        }
+      ],
+      "curator_notes": "原书自注\"丁火不为忌神，应叫做贼神\"，属贼捕口径的制用；应期在丙午运。"
+    },
+    {
+      "case_id": "G20-006",
+      "category": "制用",
+      "four_pillars": "乙未 己卯 丁丑 庚戌",
+      "gender": "乾",
+      "original_analysis": "此造亿万富翁,天干乙庚合,制财,地支未刑丑,戌刑丑,制财",
+      "core_work": "天干乙庚合,制财,地支未刑丑,戌刑丑,制财",
+      "role_direction": null,
+      "adjudication": "此造亿万富翁",
+      "rescue": null,
+      "timing": [
+        "子运子丑合,闭了财库,所以穷",
+        "乙亥运天干乙庚合,制财,发财",
+        "戌运在刑丑,制财,发财"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-384c049b1480af67d64c",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4809,
+          "quote": "乾造: 乙未    己卯   丁丑    庚戌"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "此造亿万富翁,天干乙庚合,制财,地支未刑丑,戌刑丑,制财"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "天干乙庚合,制财,地支未刑丑,戌刑丑,制财"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "此造亿万富翁"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "子运子丑合,闭了财库,所以穷"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "乙亥运天干乙庚合,制财,发财"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 4813,
+          "quote": "戌运在刑丑,制财,发财"
+        }
+      ],
+      "curator_notes": "大运表含岁数（3/13/23…）与起始年，起运年龄可核；原书未点体用宾主，role_direction 置 null。"
+    },
+    {
+      "case_id": "G20-007",
+      "category": "化用",
+      "four_pillars": "壬寅 丙午 戊寅 乙卯",
+      "gender": "乾",
+      "original_analysis": "官杀比较重，用印，即丙午这一柱化过来，印再生身，泄官杀生自己，化七杀为我所用，当官的命",
+      "core_work": "泄官杀生自己，化七杀为我所用",
+      "role_direction": "用印，即丙午这一柱化过来，印再生身",
+      "adjudication": "化七杀为我所用，当官的命",
+      "rescue": "但时上官化不了，贴身克日主是个毛病",
+      "timing": [
+        "己酉运冲卯可以，酉运开始升官",
+        "辛亥运，丙辛合，坏卯，亥卯会旺克身，此运就不能当官了"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-d3674e0bfbd3b6ddd675",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1607,
+          "quote": "乾造：年 月 日 时"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "官杀比较重，用印，即丙午这一柱化过来，印再生身，泄官杀生自己，化七杀为我所用，当官的命"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "泄官杀生自己，化七杀为我所用"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "用印，即丙午这一柱化过来，印再生身"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "化七杀为我所用，当官的命"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "但时上官化不了，贴身克日主是个毛病"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "己酉运冲卯可以，酉运开始升官"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1614,
+          "quote": "辛亥运，丙辛合，坏卯，亥卯会旺克身，此运就不能当官了"
+        }
+      ],
+      "curator_notes": "22 书同例补：庚戌运\"乙庚合，卯戌合，治了八字的病…此运当了官。是个正处级的官\"（L788）。"
+    },
+    {
+      "case_id": "G20-008",
+      "category": "化用",
+      "four_pillars": "戊申 甲子 甲寅 丙寅",
+      "gender": "乾",
+      "original_analysis": "此造看原局，是年支杀生月支印，月支印再生到日柱，是化用结构做功",
+      "core_work": "是化用结构做功",
+      "role_direction": "年支杀生月支印，月支印再生到日柱",
+      "adjudication": "杀印相生，印又生身。化用结构",
+      "rescue": null,
+      "timing": [
+        "到戊辰运，申子辰三合印局，回归到本局化用做功",
+        "到己巳运，水到绝地，印不能化杀了"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-6fa752e6462e1bf6c7f6",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1738,
+          "quote": "乾造：年月日时"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1746,
+          "quote": "此造看原局，是年支杀生月支印，月支印再生到日柱，是化用结构做功"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1746,
+          "quote": "是化用结构做功"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1746,
+          "quote": "年支杀生月支印，月支印再生到日柱"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 2625,
+          "quote": "杀印相生，印又生身。化用结构"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1748,
+          "quote": "到戊辰运，申子辰三合印局，回归到本局化用做功"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1748,
+          "quote": "到己巳运，水到绝地，印不能化杀了"
+        }
+      ],
+      "curator_notes": "21 书另记同一造\"此人是当秘书起家，是个当官的…现在是正处级\"（L764）；23 书该造时柱记为甲寅（与本例丙寅不合），已弃用该版本。"
+    },
+    {
+      "case_id": "G20-009",
+      "category": "化用",
+      "four_pillars": "癸巳 甲子 丁酉 甲辰",
+      "gender": "乾",
+      "original_analysis": "印化七杀，化用结构，杀印格",
+      "core_work": "印化七杀，化用结构",
+      "role_direction": "体巳在宾位，用酉在主位核心",
+      "adjudication": "因此为最高领袖",
+      "rescue": null,
+      "timing": null,
+      "chart_snapshot": {
+        "chart_id": "cf-398eb8a24c98f42475da",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 1457,
+          "quote": "毛泽东：癸甲丁甲    大运：癸壬辛庚己戊丁丙"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 1461,
+          "quote": "印化七杀，化用结构，杀印格"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 1461,
+          "quote": "印化七杀，化用结构"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 2738,
+          "quote": "体巳在宾位，用酉在主位核心"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md",
+          "line": 2738,
+          "quote": "因此为最高领袖"
+        }
+      ],
+      "curator_notes": "原书正文未给该造的应期（大运吉凶）判断，timing 置 null；不得以史实代答案。"
+    },
+    {
+      "case_id": "G20-010",
+      "category": "化用",
+      "four_pillars": "壬子 壬子 丙申 甲午",
+      "gender": "乾",
+      "original_analysis": "此造金水成势， 但木火在主位， 且有甲木化水， 不能去木火而只有用木火。",
+      "core_work": "只能靠甲木化杀为功",
+      "role_direction": "但木火在主位",
+      "adjudication": "是干体力劳动的 实际是个木匠",
+      "rescue": null,
+      "timing": null,
+      "chart_snapshot": {
+        "chart_id": "cf-4baad4928bfb6a1f4690",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 2641,
+          "quote": "乾： 壬壬丙 甲 癸 甲 乙 丙 丁 戊"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 2645,
+          "quote": "此造金水成势， 但木火在主位， 且有甲木化水， 不能去木火而只有用木火。"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 2645,
+          "quote": "只能靠甲木化杀为功"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 2645,
+          "quote": "但木火在主位"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 2645,
+          "quote": "是干体力劳动的 实际是个木匠"
+        }
+      ],
+      "curator_notes": "原书判\"效率非常低\"，化用而功小；无应期判断。"
+    },
+    {
+      "case_id": "G20-011",
+      "category": "墓用",
+      "four_pillars": "癸卯 丙辰 己丑 乙亥",
+      "gender": "乾",
+      "original_analysis": "行癸丑大运辛未流年，这1年开始作生意赚钱，以前1直是穷光蛋",
+      "core_work": "行丑运墓库不逢冲害，故待辛未年冲墓而发",
+      "role_direction": "用神在墓中，往往是冲墓之年开始转折",
+      "adjudication": "这1年开始作生意赚钱",
+      "rescue": null,
+      "timing": [
+        "这1年开始作生意赚钱，以前1直是穷光蛋",
+        "到丙子年合墓，生意关门"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-54ea3bdd3a74880c6512",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 145,
+          "quote": "例：乾：**癸卯    丙辰    己丑    乙亥       运：丙辰  乙卯  甲寅   癸丑  壬子  辛亥   庚戌**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 147,
+          "quote": "行癸丑大运辛未流年，这1年开始作生意赚钱，以前1直是穷光蛋"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 239,
+          "quote": "行丑运墓库不逢冲害，故待辛未年冲墓而发"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 143,
+          "quote": "用神在墓中，往往是冲墓之年开始转折"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 147,
+          "quote": "这1年开始作生意赚钱"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 147,
+          "quote": "这1年开始作生意赚钱，以前1直是穷光蛋"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 147,
+          "quote": "到丙子年合墓，生意关门"
+        }
+      ],
+      "curator_notes": "L143 为\"冲开墓库\"机制的正文定义，原书以此解释该造转折。"
+    },
+    {
+      "case_id": "G20-012",
+      "category": "墓用",
+      "four_pillars": "癸未 戊午 庚申 壬午",
+      "gender": "乾",
+      "original_analysis": "问此命何运何年能发财？此造行癸丑运发财",
+      "core_work": "丑运用神入墓",
+      "role_direction": "墓库被打开而不会墓金",
+      "adjudication": "此造行癸丑运发财",
+      "rescue": null,
+      "timing": "丙子年合墓为应期，冲墓喜合，该年发得最多",
+      "chart_snapshot": {
+        "chart_id": "cf-648cdd3eb9459b895be7",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 227,
+          "quote": "**乾：癸未   戊午   庚申   壬午     运：戊午  丁巳  丙辰  乙卯  甲寅   癸丑  壬子  辛亥**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 229,
+          "quote": "问此命何运何年能发财？此造行癸丑运发财"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 229,
+          "quote": "丑运用神入墓"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 229,
+          "quote": "墓库被打开而不会墓金"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 229,
+          "quote": "此造行癸丑运发财"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 229,
+          "quote": "丙子年合墓为应期，冲墓喜合，该年发得最多"
+        }
+      ],
+      "curator_notes": "原书以\"丑未冲、丑午穿打开墓库\"解释为何入墓运反发。"
+    },
+    {
+      "case_id": "G20-013",
+      "category": "墓用",
+      "four_pillars": "乙酉 己卯 乙未 癸未",
+      "gender": "乾",
+      "original_analysis": "这个命是杀星酉金冲禄而无印星化杀，杀作忌神",
+      "core_work": "两未为日主之墓库",
+      "role_direction": "杀作忌神",
+      "adjudication": "故此命不仅会坐牢，而且是两次牢狱",
+      "rescue": null,
+      "timing": [
+        "行丁丑运坐牢两次",
+        "癸卯年日主得禄而出"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-2b926de01c6c3e78030d",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 910,
+          "quote": "第1种类型：**乾：乙酉   己卯   乙未   癸未         运：戊寅  丁丑  丙子  乙亥  甲戌  癸酉**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "这个命是杀星酉金冲禄而无印星化杀，杀作忌神"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "两未为日主之墓库"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "杀作忌神"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "故此命不仅会坐牢，而且是两次牢狱"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "行丁丑运坐牢两次"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 912,
+          "quote": "癸卯年日主得禄而出"
+        }
+      ],
+      "curator_notes": "弱对照：同一造在 L926-L928 另立一解（两未制财、甲戌运大发），原书两说并存，本卡只取 L910-L912 的墓库口径。"
+    },
+    {
+      "case_id": "G20-014",
+      "category": "墓用",
+      "four_pillars": "乙巳 己丑 壬辰 辛丑",
+      "gender": "乾",
+      "original_analysis": "此造是用主位辰墓双丑，墓用做功，丑土又拱财星，故有大财",
+      "core_work": "墓用做功",
+      "role_direction": "用主位辰墓双丑",
+      "adjudication": "故有大财",
+      "rescue": null,
+      "timing": [
+        "行丙戌之戌运，财库冲入，发财数亿",
+        "到乙酉之乙运时，乙这里可以代表辰，乙透被原局中辛金克坏，等于坏了辰，所以此运大凶，因经济案件而坐牢"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-4d8fe4fe1b354d973a7b",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1826,
+          "quote": "乾造：年 月 日 时"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "此造是用主位辰墓双丑，墓用做功，丑土又拱财星，故有大财"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "墓用做功"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "用主位辰墓双丑"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "故有大财"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "行丙戌之戌运，财库冲入，发财数亿"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1830,
+          "quote": "到乙酉之乙运时，乙这里可以代表辰，乙透被原局中辛金克坏，等于坏了辰，所以此运大凶，因经济案件而坐牢"
+        }
+      ],
+      "curator_notes": "原文日支 OCR 作\"屈\"，正文自述\"主位辰\"，四柱按 乙巳 己丑 壬辰 辛丑 复原。"
+    },
+    {
+      "case_id": "G20-015",
+      "category": "墓用",
+      "four_pillars": "己未 癸酉 壬寅 庚子",
+      "gender": "乾",
+      "original_analysis": "寅木食神墓于未，寅是他主位的食神，表示他本人的才华，入于官墓",
+      "core_work": "未墓寅，就是此造的做功方式",
+      "role_direction": "寅是他主位的食神",
+      "adjudication": "所以他是个企业的经理人",
+      "rescue": null,
+      "timing": null,
+      "chart_snapshot": {
+        "chart_id": "cf-e476b4f382865abd0189",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1702,
+          "quote": "乾造：年月日时"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1708,
+          "quote": "寅木食神墓于未，寅是他主位的食神，表示他本人的才华，入于官墓"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1708,
+          "quote": "未墓寅，就是此造的做功方式"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1708,
+          "quote": "寅是他主位的食神"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_35.盲派命理开山之作_2056045397672648704.md",
+          "line": 1708,
+          "quote": "所以他是个企业的经理人"
+        }
+      ],
+      "curator_notes": "原书未给该造应期，timing 置 null。"
+    },
+    {
+      "case_id": "G20-016",
+      "category": "救应",
+      "four_pillars": "壬寅 丁未 丁巳 庚戌",
+      "gender": "乾",
+      "original_analysis": "丁壬合,壬寅为 印带官帽,寅入未库, 巳入戍库,寅 巳穿!",
+      "core_work": "寅入未库, 巳入戍库,寅 巳穿!",
+      "role_direction": "壬寅为 印带官帽,寅入未库, 巳入戍库",
+      "adjudication": "庚戍运, 巳入戍库,不穿寅了,做官!",
+      "rescue": [
+        "巳入戍库,不穿寅了",
+        "亥冲了 巳也解了穿"
+      ],
+      "timing": [
+        "庚戍运, 巳入戍库,不穿寅了,做官!",
+        "辛亥运 亥冲了 巳也解了穿 还在做官!",
+        "壬子运不当官了 穿了 !"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-b787f19dc4150c7b58bf",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3105,
+          "quote": "另一例 中午才看的八字 :乾: 壬 丁 丁 庚 戊 己 庚 辛 壬 癸"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "丁壬合,壬寅为 印带官帽,寅入未库, 巳入戍库,寅 巳穿!"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "寅入未库, 巳入戍库,寅 巳穿!"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "壬寅为 印带官帽,寅入未库, 巳入戍库"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "庚戍运, 巳入戍库,不穿寅了,做官!"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "巳入戍库,不穿寅了"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "亥冲了 巳也解了穿"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "庚戍运, 巳入戍库,不穿寅了,做官!"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "辛亥运 亥冲了 巳也解了穿 还在做官!"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md",
+          "line": 3109,
+          "quote": "壬子运不当官了 穿了 !"
+        }
+      ],
+      "curator_notes": "原文\"戍\"为\"戌\"的 OCR 变体，引用保留原字；病为寅巳穿，救为巳入戌库／亥冲巳解穿。"
+    },
+    {
+      "case_id": "G20-017",
+      "category": "救应",
+      "four_pillars": "壬寅 戊申 乙酉 戊寅",
+      "gender": "乾",
+      "original_analysis": "看此造的婚姻，戊土妻星在月干，又行戌土财运，该论婚姻较早",
+      "core_work": "此因酉戌相穿，妻宫受害之故",
+      "role_direction": "戊土妻星在月干",
+      "adjudication": "辰酉合解酉戌之穿，谈成对象",
+      "rescue": "辰酉合解酉戌之穿",
+      "timing": "辛亥运己巳年结婚",
+      "chart_snapshot": {
+        "chart_id": "cf-bf91d47534882e03c7ab",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 362,
+          "quote": "又例**乾：壬寅    戊申    乙酉     戊寅          运：己酉    庚戌    辛亥    壬子   癸丑   甲寅**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "看此造的婚姻，戊土妻星在月干，又行戌土财运，该论婚姻较早"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "此因酉戌相穿，妻宫受害之故"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "戊土妻星在月干"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "辰酉合解酉戌之穿，谈成对象"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "辰酉合解酉戌之穿"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 364,
+          "quote": "辛亥运己巳年结婚"
+        }
+      ],
+      "curator_notes": "救应为流年（戊辰）解原局之穿，不是大运解。"
+    },
+    {
+      "case_id": "G20-018",
+      "category": "救应",
+      "four_pillars": "丁未 壬子 丁巳 辛亥",
+      "gender": "乾",
+      "original_analysis": "八字用木火很明显，此造在行己酉运时，丁丑年发财，反而在戊寅己卯年破财，实际不是此人从了财",
+      "core_work": "本巳酉丑三合局，为忌神合身成忌神局大凶",
+      "role_direction": "子为宾，为忌",
+      "adjudication": "不克害用神，故大吉",
+      "rescue": "然逢子丑合，六合能解三合",
+      "timing": "此造在行己酉运时，丁丑年发财",
+      "chart_snapshot": {
+        "chart_id": "cf-9058faf0215a1819aedf",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 179,
+          "quote": "乾：**丁未    壬子    丁巳    辛亥              运：壬子   辛亥  庚戌  己酉  戊申   丁未   丙午**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "八字用木火很明显，此造在行己酉运时，丁丑年发财，反而在戊寅己卯年破财，实际不是此人从了财"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "本巳酉丑三合局，为忌神合身成忌神局大凶"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "子为宾，为忌"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "不克害用神，故大吉"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "然逢子丑合，六合能解三合"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 181,
+          "quote": "此造在行己酉运时，丁丑年发财"
+        }
+      ],
+      "curator_notes": "救应机制：六合解三合（原书自设的优先级，不同于\"合可解冲穿\"的一般说法）。"
+    },
+    {
+      "case_id": "G20-019",
+      "category": "救应",
+      "four_pillars": "壬申 己酉 癸巳 辛酉",
+      "gender": "乾",
+      "original_analysis": "其实这个八字可看作从强格，以申金正印当财看",
+      "core_work": "以申金正印当财看",
+      "role_direction": "申上透壬是指他人之财",
+      "adjudication": "故能掘起于商界",
+      "rescue": "甲合去己土救日主，为用神无疑",
+      "timing": [
+        "至癸丑运禄神透干，巳酉丑合印局助禄并去忌神财，故能掘起于商界",
+        "到庚申年，甲庚冲，甲木被庚金冲去无法再合绊己土"
+      ],
+      "chart_snapshot": {
+        "chart_id": "cf-0df14adf551f13f6529c",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 662,
+          "quote": "张克东：壬 己 癸 辛"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "其实这个八字可看作从强格，以申金正印当财看"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "以申金正印当财看"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "申上透壬是指他人之财"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "故能掘起于商界"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "甲合去己土救日主，为用神无疑"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 676,
+          "quote": "至癸丑运禄神透干，巳酉丑合印局助禄并去忌神财，故能掘起于商界"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_34.命理瑰宝段建业修正版_2056044446693916672.md",
+          "line": 680,
+          "quote": "到庚申年，甲庚冲，甲木被庚金冲去无法再合绊己土"
+        }
+      ],
+      "curator_notes": "原书标\"3庚戌 13辛亥 23壬子 33癸丑 43甲寅\"，起运年龄可核。"
+    },
+    {
+      "case_id": "G20-020",
+      "category": "救应",
+      "four_pillars": "戊午 丙辰 己未 己巳",
+      "gender": "坤",
+      "original_analysis": "己禄在午不在未",
+      "core_work": "禄作用神最怕见劫财，劫财有分禄之意",
+      "role_direction": "午禄紧贴劫财",
+      "adjudication": "破案后追回部分财物",
+      "rescue": "但庚甲相冲解甲己之合",
+      "timing": "庚辰年辰劫财凶，自刑辰开水库，被偷劫破财",
+      "chart_snapshot": {
+        "chart_id": "cf-534278da283118c90f0c",
+        "dayun_index": null,
+        "liunian_year": null,
+        "note": "原局快照：未叠加 --dayun-index / --liunian；若下游叠加岁运，edge_id 会全量重编号，必须新建快照。"
+      },
+      "struct_refs": {
+        "addresses": [],
+        "candidate_ids": [],
+        "edge_ids": [],
+        "status": "book_text_only",
+        "note": "本卡答案只做原文引用，未引用盘面 edge_id/candidate_id，故无裸边号；后续若要绑定结构，须同时给 candidate_id 与 relations.edge_id，并挂 chart_snapshot。"
+      },
+      "source_refs": [
+        {
+          "field": "four_pillars",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 213,
+          "quote": "**坤：戊午    丙辰    己未    己 巳     运：丙辰  乙卯  甲寅  癸丑  壬子  辛亥  庚戌  己酉**"
+        },
+        {
+          "field": "original_analysis",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 215,
+          "quote": "己禄在午不在未"
+        },
+        {
+          "field": "core_work",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 211,
+          "quote": "禄作用神最怕见劫财，劫财有分禄之意"
+        },
+        {
+          "field": "role_direction",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 215,
+          "quote": "午禄紧贴劫财"
+        },
+        {
+          "field": "adjudication",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 215,
+          "quote": "破案后追回部分财物"
+        },
+        {
+          "field": "rescue",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 215,
+          "quote": "但庚甲相冲解甲己之合"
+        },
+        {
+          "field": "timing",
+          "path": "sources/duan/MinerU_markdown_30..命理珍宝_2056044626612772864.md",
+          "line": 215,
+          "quote": "庚辰年辰劫财凶，自刑辰开水库，被偷劫破财"
+        }
+      ],
+      "curator_notes": "救应只\"部分\"化解（追回部分财物），不是全解。"
+    }
+  ]
+}
