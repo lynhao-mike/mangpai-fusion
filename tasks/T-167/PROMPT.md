@@ -93,3 +93,12 @@
 - 不许在真实分数上跑出结论再改判据。
 - 不许用 45.3% 当 Top-3 基线。
 - 不许把「样本不足」写成「有信号」。
+
+## 7. 中枢裁决（2026-10-29 08:05）
+
+1. **评测器验收通过**：25 tests；静态基线 [25,27] = 102/382 = **26.70%**（与 T-165 一致）；
+   4 例手算 `p_case`（3/16、0、17/28）与精确 Poisson-binomial p 一致；测试只读 docstring 提及真实文件，不实际读。
+2. **真实评分归中枢**：在 T-168 收口后跑一次；评测器动态读 `sensitivity.sensitivity_exclude`，不写死名单。
+3. **判定枚举**：`signal_above_static_baseline` / `signal_below_static_baseline` / `dead` / `inconclusive`；
+   fixture 的 +25.45pp 但 p=0.220 判 `dead`，符合卡。
+4. 本卡未生成 `META/timing-k3-report-v1.*`；真实报告由中枢跑后落盘。
