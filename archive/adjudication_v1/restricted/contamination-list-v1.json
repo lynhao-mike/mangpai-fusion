@@ -1,0 +1,43 @@
+{
+  "schema": "adjudication-contamination/v1",
+  "task": "T-192",
+  "generated_at": "2026-10-29",
+  "status": "contaminated",
+  "permanent_exclusion": true,
+  "source": "docs/specs/adjudication-a-plus-v1-notes.md §5（T-192 前版本）",
+  "reason": "T-192 前的 notes §5 公开写明这 3 条 dynamic 的方向与 A/B 分歧；T-191 三份 run 的这 3 条因此不独立。",
+  "impact": "T-191 3-run 方向一致率在这 3 条上不可视为独立观测。",
+  "conclusion_unchanged": "去掉 3 条后 57 条独立集上，margin/一致性/引文仍触 A+ v1.3 死线（verdict §3）。",
+  "excluded_from": [
+    "future_blind_sets",
+    "demos",
+    "scoring",
+    "published_evidence"
+  ],
+  "cases": [
+    {
+      "case_id": "A60-020",
+      "layer": "dynamic",
+      "mechanism": "冲",
+      "status": "contaminated",
+      "permanent_exclusion": true,
+      "note": "两书方向冲突，A/B 两种取向在 T-191 前已公开；来源层级裁决记录见 T-190b。"
+    },
+    {
+      "case_id": "A60-046",
+      "layer": "dynamic",
+      "mechanism": "刑",
+      "status": "contaminated",
+      "permanent_exclusion": true,
+      "note": "A/B 的 mutual 与单向分歧在 T-191 前已公开。"
+    },
+    {
+      "case_id": "A60-050",
+      "layer": "dynamic",
+      "mechanism": "刑",
+      "status": "contaminated",
+      "permanent_exclusion": true,
+      "note": "A/B 的 mutual 与单向分歧在 T-191 前已公开。"
+    }
+  ]
+}

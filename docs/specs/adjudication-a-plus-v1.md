@@ -1,5 +1,7 @@
 # A+ 裁决规格 v1.3（Opus/WB/Gemini 三方收敛，草案待冻结）
 
+> **DISPOSITION: KILLED**（2026-10-29，T-191 按 §8 判定；方向产品 kill，事实层 + 分流/检索保留）。本文件仅作研究归档，不再执行。
+
 > 依据：`docs/reviews/t187-gemini4-verdict-v1.md`、`t187-wb-v4-verdict-v1.md`、Gemini v5、Opus v6（2026-10-29）。
 > 状态：阈值已收敛；采三方更严线；待最终确认后 hash 冻结。
 > 杀的只是“自动方向产品”；事实 + 分流层保留。

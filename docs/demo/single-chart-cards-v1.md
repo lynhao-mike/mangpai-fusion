@@ -1,5 +1,7 @@
 # 单盘五元组断语卡 v1 · C1 / C2 / C3（三张真实盘）
 
+> **STATUS: ARCHIVED_RESEARCH_ARTIFACT**（2026-10-29，T-192）。方向产品已 kill；本文件只作研究归档，不是演示、不是能力证明，R-tool 不使用。
+
 > **当前能力展示，不是 P1 验证。** 这三张卡只证明「用现有事实层能把一条断语写到什么程度、哪些字段写不出来」，不构成对 `docs/specs/single-chart-analysis-v1.md` 的验收，也不构成任何预测。
 >
 > - `pre_p1: true`（三张卡逐卡标注）

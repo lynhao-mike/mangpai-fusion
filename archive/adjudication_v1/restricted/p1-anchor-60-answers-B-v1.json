@@ -1,0 +1,3185 @@
+{
+ "schema_version": "p1-adjudication-answers/v2",
+ "task": "T-190b",
+ "annotator": "B",
+ "generated_at": "2026-10-29",
+ "blind_ref": "META/p1-anchor-60-blind-v1.json",
+ "spec_ref": "docs/specs/adjudication-a-plus-v1.md",
+ "independence": {
+  "read_annotator_A_answers": false,
+  "read_dev_holdout_fresh_golden_answers": false,
+  "ran_scorer_or_runner": false,
+  "git_write_operations": false,
+  "inputs": [
+   "tasks/T-190b/PROMPT.md",
+   "META/p1-anchor-60-blind-v1.json",
+   "docs/specs/adjudication-a-plus-v1.md",
+   "sources/duan/",
+   "engine.cli"
+  ]
+ },
+ "case_count": 60,
+ "layers": {
+  "fixed": 10,
+  "dynamic": 40,
+  "ambiguous": 10
+ },
+ "gender_counts": {
+  "乾": 52,
+  "坤": 8
+ },
+ "disputed": [
+  "A60-042"
+ ],
+ "cases": [
+  {
+   "case_id": "A60-001",
+   "chart_id": "A60-CH01",
+   "four_pillars": "丁未 辛亥 戊子 丁巳",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "克",
+   "mechanism": "克",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "未",
+   "char_b": "子",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "克",
+    "mechanism": "克",
+    "actor": "未",
+    "target": "子",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "地支六穿以相克并相穿的情形最为严重，如子未穿，未克子",
+   "source_ref": "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L2386",
+   "annotation": "原文直断「未克子」；子未虽为穿，此处取支五行相克方向，未（土）为actor。",
+   "blind_mechanism": "克",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-89f1ae47c85a92f91cc0",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-002",
+   "chart_id": "A60-CH02",
+   "four_pillars": "己巳 辛未 丙午 丁酉",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "克",
+   "mechanism": "克",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "午",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "克",
+    "mechanism": "克",
+    "actor": "午",
+    "target": "酉",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "午克酉， 为劫制财",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2956",
+   "annotation": "原文「午克酉，为劫制财」，午火克酉金，actor=午。",
+   "blind_mechanism": "克",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-1fb985ce06c35619f2f5",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e013",
+      "kind": "po"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-003",
+   "chart_id": "A60-CH03",
+   "four_pillars": "丙午 戊戌 丙午 己亥",
+   "gender": "坤",
+   "layer": "fixed",
+   "kind": "克",
+   "mechanism": "克",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "戌",
+   "char_b": "亥",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "克",
+    "mechanism": "克",
+    "actor": "戌",
+    "target": "亥",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "戌克亥，戌墓午，午亥合难。",
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011武当山六亲班高级面授讲课笔记_2056046375041957888.md:L327",
+   "annotation": "原文「戌克亥」明示actor=戌、target=亥；同句又见戌墓午。",
+   "blind_mechanism": "克",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-8fe8672506f5a4b20f28",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-004",
+   "chart_id": "A60-CH04",
+   "four_pillars": "辛卯 戊戌 己亥 癸酉",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "生",
+   "mechanism": "生",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "亥",
+   "char_b": "卯",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "生",
+    "mechanism": "生",
+    "actor": "亥",
+    "target": "卯",
+    "actor_addr": "D.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "坐支亥水财星生到年上的卯木杀星",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2467",
+   "annotation": "原文「亥水财星生到年上的卯木杀星」，actor=亥。",
+   "blind_mechanism": "生",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-17ed6ae40b2e1b1ab39a",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "sanhe"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-005",
+   "chart_id": "A60-CH05",
+   "four_pillars": "壬子 壬寅 庚辰 辛巳",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "生",
+   "mechanism": "生",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "巳",
+   "char_b": "辰",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "生",
+    "mechanism": "生",
+    "actor": "巳",
+    "target": "辰",
+    "actor_addr": "H.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "庚坐辰是印， 巳生辰为杀生印",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L970",
+   "annotation": "原文「巳生辰为杀生印」，actor=巳、target=辰。",
+   "blind_mechanism": "生",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-fdfb3974e41de2c7ea07",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-006",
+   "chart_id": "A60-CH06",
+   "four_pillars": "癸卯 壬戌 癸巳 庚申",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "生",
+   "mechanism": "生",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "卯",
+   "char_b": "巳",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "生",
+    "mechanism": "生",
+    "actor": "卯",
+    "target": "巳",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "年上的食生了主位的财",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2363",
+   "annotation": "年上食神即卯（乙木），主位财即巳火；段派干支互通，卯生巳，actor=卯。",
+   "blind_mechanism": "生",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-d0a4b14a0860dbfed50b",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-007",
+   "chart_id": "A60-CH07",
+   "four_pillars": "甲申 戊辰 甲寅 甲子",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "化",
+   "mechanism": "化",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "子",
+   "char_b": "申",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "化",
+    "mechanism": "化",
+    "actor": "子",
+    "target": "申",
+    "actor_addr": "H.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "子水化了 申杀，合成水局生身",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3049",
+   "annotation": "原文「子水化了申杀」，印化杀，actor=子（印）、target=申（杀）。",
+   "blind_mechanism": "化",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-35308d7f8d2a7404a5ec",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "sanhe"
+     },
+     {
+      "id": "e013",
+      "kind": "sanhe"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-008",
+   "chart_id": "A60-CH08",
+   "four_pillars": "丁亥 壬子 庚辰 壬午",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "化",
+   "mechanism": "化",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "辰",
+   "char_b": "午",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "化",
+    "mechanism": "化",
+    "actor": "辰",
+    "target": "午",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "因辰化了午火， 午有些生用",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L498",
+   "annotation": "原文「辰化了午火」，湿土化火，actor=辰、target=午。",
+   "blind_mechanism": "化",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-485f4bd790373c84ff7f",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-009",
+   "chart_id": "A60-CH09",
+   "four_pillars": "丁未 壬寅 辛丑 丁酉",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "墓",
+   "mechanism": "墓",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "M.b",
+   "char_a": "未",
+   "char_b": "寅",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "墓",
+    "mechanism": "墓",
+    "actor": "未",
+    "target": "寅",
+    "actor_addr": "Y.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "然寅木却入墓于未， 丑未又冲",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3683",
+   "annotation": "原文「寅木却入墓于未」，库为actor，未墓寅。",
+   "blind_mechanism": "墓",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-46ce8caa9b9367916a7d",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-010",
+   "chart_id": "A60-CH10",
+   "four_pillars": "壬子 丙午 壬辰 丁未",
+   "gender": "乾",
+   "layer": "fixed",
+   "kind": "墓",
+   "mechanism": "墓",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "辰",
+   "char_b": "未",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "墓",
+    "mechanism": "墓",
+    "actor": "辰",
+    "target": "未",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "且未也入辰墓",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2943",
+   "annotation": "原文「未也入辰墓」，库为actor，辰墓未。",
+   "blind_mechanism": "墓",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-fc2ea195823a825a5d20",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-011",
+   "chart_id": "A60-CH11",
+   "four_pillars": "戊辰 壬戌 乙未 己卯",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "戌",
+   "char_b": "辰",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "戌",
+    "target": "辰",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "伤食库制去印库，印主权力，辰是权力库",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1212",
+   "annotation": "朱镕基造；戌为伤食库、辰为印库，原文以戌制辰，actor=戌（盲卷a端）。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-3770e58e09eff9fb4b3b",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "chong"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     },
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-012",
+   "chart_id": "A60-CH12",
+   "four_pillars": "乙巳 己丑 己未 庚午",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "未",
+   "char_b": "丑",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "未",
+    "target": "丑",
+    "actor_addr": "D.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "丑未冲制， 火与燥土成气势， 要制丑与丑中金水",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2888",
+   "annotation": "奥纳西斯造；火燥土成势制丑，未为actor。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-d9d80522a11a0f475eaf",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "chong"
+     },
+     {
+      "id": "e012",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-013",
+   "chart_id": "A60-CH13",
+   "four_pillars": "癸巳 庚申 甲寅 甲戌",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "D.b",
+   "char_a": "申",
+   "char_b": "寅",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "申",
+    "target": "寅",
+    "actor_addr": "M.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "申冲寅,不适合当官",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L4763",
+   "annotation": "原文「申冲寅」，actor=申、target=寅。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-dd83e553ea5d1b96a8aa",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e014",
+      "kind": "chong"
+     },
+     {
+      "id": "e015",
+      "kind": "xing"
+     },
+     {
+      "id": "e018",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-014",
+   "chart_id": "A60-CH14",
+   "four_pillars": "丙戌 丙申 乙丑 戊寅",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "M.b",
+   "char_a": "寅",
+   "char_b": "申",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "寅",
+    "target": "申",
+    "actor_addr": "H.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "寅申一冲，官跑了",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1443",
+   "annotation": "克林顿造；寅为火长生、申为官，寅冲申制官，actor=寅。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-05e7a36899b56325c4fb",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "chong"
+     },
+     {
+      "id": "e011",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-015",
+   "chart_id": "A60-CH15",
+   "four_pillars": "癸卯 戊午 己酉 甲戌",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "卯",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "卯",
+    "target": "酉",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "乙卯运， 卯冲酉， 发了财",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2001",
+   "annotation": "原文「卯冲酉」，actor=卯、target=酉。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-13e2f51a878fc5bc9ad7",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "chong"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-016",
+   "chart_id": "A60-CH16",
+   "four_pillars": "丁丑 辛亥 己未 甲子",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "丑",
+   "char_b": "未",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "丑",
+    "target": "未",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "丁火通根于日支未，被丑冲子穿",
+   "source_ref": "sources/duan/MinerU_markdown_26..段建业《命理真诀导读风火集》_2056044863754526720.md:L1811",
+   "annotation": "原文「丁火通根于日支未，被丑冲」，丑为actor、未为target。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-40d8202f4cc6946fa6a6",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "chong"
+     },
+     {
+      "id": "e010",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-017",
+   "chart_id": "A60-CH08",
+   "four_pillars": "丁亥 壬子 庚辰 壬午",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "子",
+   "char_b": "午",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "子",
+    "target": "午",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "主要是子冲午做功",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L496",
+   "annotation": "原文「主要是子冲午做功」，actor=子、target=午。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-485f4bd790373c84ff7f",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "chong"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-018",
+   "chart_id": "A60-CH17",
+   "four_pillars": "丙午 癸巳 丁亥 戊申",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "D.b",
+   "char_a": "巳",
+   "char_b": "亥",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "巳",
+    "target": "亥",
+    "actor_addr": "M.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "巳冲亥",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2751",
+   "annotation": "护士长造；原文「老公有情人了 巳冲亥」，actor=巳、target=亥。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-18aa24354f0fcf9b3c4f",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "chong"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-019",
+   "chart_id": "A60-CH18",
+   "four_pillars": "甲寅 己巳 癸亥 戊午",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "亥",
+   "char_b": "巳",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "亥",
+    "target": "巳",
+    "actor_addr": "D.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "伤官合制杀星，亥冲巳火制好",
+   "source_ref": "sources/duan/MinerU_markdown_（原版）段建业2010年高级面授笔记_2056045866600030208.md:L551",
+   "annotation": "原文「亥冲巳火制好」，actor=亥、target=巳。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-ef2dc50cddeb7a758488",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e014",
+      "kind": "chong"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-020",
+   "chart_id": "A60-CH19",
+   "four_pillars": "丙申 辛卯 甲戌 戊辰",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "戌",
+   "char_b": "辰",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": "戌",
+    "target": "辰",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "子息宫辰被戌冲，被申拱合",
+   "source_ref": "sources/duan/MinerU_markdown_26..段建业《命理真诀导读风火集》_2056044863754526720.md:L2503",
+   "annotation": "原文「辰被戌冲」，actor=戌（盲卷b端）、target=辰；答案按 actor→target 重排端点。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-5dc1f1c9a8ee22f4c78e",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e014",
+      "kind": "chong"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-021",
+   "chart_id": "A60-CH04",
+   "four_pillars": "辛卯 戊戌 己亥 癸酉",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "戌",
+   "char_b": "卯",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "戌",
+    "target": "卯",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "戌合住了卯 要用戌",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2283",
+   "annotation": "原文「戌合住了卯」，actor=戌、target=卯。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-17ed6ae40b2e1b1ab39a",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-022",
+   "chart_id": "A60-CH20",
+   "four_pillars": "辛亥 戊戌 庚寅 己卯",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "M.b",
+   "char_a": "卯",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "卯",
+    "target": "戌",
+    "actor_addr": "H.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "因卯合戌，合到父亲的宫位",
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011武当山六亲班高级面授讲课笔记_2056046375041957888.md:L3448",
+   "annotation": "原文「卯合戌」，actor=卯、target=戌。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-a2b12ba737db8a851208",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-023",
+   "chart_id": "A60-CH21",
+   "four_pillars": "乙未 壬午 甲子 甲戌",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "午",
+   "char_b": "未",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "午",
+    "target": "未",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "但他命中有午未相合， 午是伤官星",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L1767",
+   "annotation": "原文以午为主语「午未相合」，取午为actor、未为target；合本互见，存原文主述。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-33fa163f75fe9d9ff604",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "liuhe"
+     },
+     {
+      "id": "e008",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-024",
+   "chart_id": "A60-CH22",
+   "four_pillars": "癸酉 丁巳 辛卯 辛卯",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "巳",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "巳",
+    "target": "酉",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "主要作功是 巳火， 巳酉合是制酉金",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2566",
+   "annotation": "原文「巳酉合是制酉金」，actor=巳、target=酉。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-c174d6b715a2ea0bc03a",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "sanhe"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-025",
+   "chart_id": "A60-CH23",
+   "four_pillars": "甲寅 癸酉 丁丑 庚子",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "丑",
+   "char_b": "子",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "丑",
+    "target": "子",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "子水在外面漂，被丑合，得到子水",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L961",
+   "annotation": "原文「子水……被丑合」，actor=丑、target=子。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-dd2f2e097abb0b20d235",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "liuhe"
+     },
+     {
+      "id": "e013",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-026",
+   "chart_id": "A60-CH24",
+   "four_pillars": "丙申 壬辰 辛酉 己亥",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "D.b",
+   "char_a": "辰",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "辰",
+    "target": "酉",
+    "actor_addr": "M.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "辰印合了酉， 作夫看",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2087",
+   "annotation": "原文「辰印合了酉」，actor=辰、target=酉。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-8719651792a8dd20c342",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-027",
+   "chart_id": "A60-CH25",
+   "four_pillars": "乙酉 乙酉 癸未 癸亥",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "亥",
+   "char_b": "未",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "亥",
+    "target": "未",
+    "actor_addr": "H.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "唯一做功之神为亥水 拱合未土克其火土",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2657",
+   "annotation": "原文「亥水拱合未土克其火土」，actor=亥、target=未。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-470dce1b79d0ad9429a2",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "sanhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-028",
+   "chart_id": "A60-CH26",
+   "four_pillars": "丁酉 癸卯 甲午 戊辰",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "辰",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "辰",
+    "target": "酉",
+    "actor_addr": "H.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "辰酉合,合到主位",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L4794",
+   "annotation": "原文「辰酉合，合到主位」，actor=辰、target=酉。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-fe3c4caa776be1682ec0",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "H.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-029",
+   "chart_id": "A60-CH06",
+   "four_pillars": "癸卯 壬戌 癸巳 庚申",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "巳",
+   "char_b": "申",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "巳",
+    "target": "申",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "巳申合， 制时上印星",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2363",
+   "annotation": "原文「巳申合，制时上印星」，actor=巳、target=申。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-d0a4b14a0860dbfed50b",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "liuhe"
+     },
+     {
+      "id": "e011",
+      "kind": "po"
+     },
+     {
+      "id": "e012",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-030",
+   "chart_id": "A60-CH27",
+   "four_pillars": "丙子 戊戌 丁丑 丁未",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "丑",
+   "char_b": "子",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "丑",
+    "target": "子",
+    "actor_addr": "D.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "但日支丑土合子水， 意向反了",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L91",
+   "annotation": "原文「日支丑土合子水」，actor=丑、target=子。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-47149f72b9104388c194",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "liuhe"
+     },
+     {
+      "id": "e008",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-031",
+   "chart_id": "A60-CH28",
+   "four_pillars": "戊戌 甲寅 丁卯 甲辰",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "卯",
+   "char_b": "辰",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "卯",
+    "target": "辰",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "此造主位之卯穿时支之辰",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2988",
+   "annotation": "周恩来造；原文「主位之卯穿时支之辰」，actor=卯、target=辰。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-523fa5e6a034e9f9c572",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "chuan"
+     },
+     {
+      "id": "e013",
+      "kind": "sanhui"
+     },
+     {
+      "id": "e014",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "H.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-032",
+   "chart_id": "A60-CH29",
+   "four_pillars": "戊辰 辛酉 壬子 癸卯",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "卯",
+   "char_b": "辰",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "卯",
+    "target": "辰",
+    "actor_addr": "H.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "癸合戊而卯穿辰，是制去官杀合到主位的意思",
+   "source_ref": "sources/duan/MinerU_markdown_体用_2056043694349017088.md:L121",
+   "annotation": "原文「卯穿辰」，actor=卯、target=辰。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-02ad8837f6d231f31a10",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "chuan"
+     },
+     {
+      "id": "e011",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-033",
+   "chart_id": "A60-CH30",
+   "four_pillars": "癸未 乙卯 甲子 己巳",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "未",
+   "char_b": "子",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "未",
+    "target": "子",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "来穿制 日主坐下的子水",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L1755",
+   "annotation": "岳飞造；未为羊刃库，来穿制坐下子水，actor=未。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-96414beae2bfa50e1f38",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-034",
+   "chart_id": "A60-CH31",
+   "four_pillars": "甲辰 壬申 戊子 己未",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "子",
+   "char_b": "未",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "子",
+    "target": "未",
+    "actor_addr": "D.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "这样就是子穿了未",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L3004",
+   "annotation": "邓小平造；申子辰水局成势，原文「子穿了未」，actor=子、target=未。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-d99c6da5c0ffd835a009",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "H.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-035",
+   "chart_id": "A60-CH32",
+   "four_pillars": "乙未 乙酉 丙戌 己丑",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "戌",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "戌",
+    "target": "酉",
+    "actor_addr": "D.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "酉为父 戌酉穿倒父 死父",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4533",
+   "annotation": "原文「戌酉穿倒父」，actor=戌、target=酉。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-7217a083a2312962f448",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "chuan"
+     },
+     {
+      "id": "e012",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-036",
+   "chart_id": "A60-CH33",
+   "four_pillars": "壬寅 乙巳 乙亥 壬午",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "巳",
+   "char_b": "寅",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "巳",
+    "target": "寅",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "巳穿寅又冲亥",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L570",
+   "annotation": "原文「巳穿寅又冲亥」，actor=巳、target=寅。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-c194cb301128bc0b3ed7",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "chuan"
+     },
+     {
+      "id": "e008",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-037",
+   "chart_id": "A60-CH34",
+   "four_pillars": "癸丑 甲寅 戊午 丁巳",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "丑",
+   "char_b": "午",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "丑",
+    "target": "午",
+    "actor_addr": "Y.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "癸丑穿午",
+   "source_ref": "sources/duan/MinerU_markdown_段建业09年10月广州讲义_2056045375967125504.md:L1471",
+   "annotation": "原文「癸丑穿午」，丑为actor、午为target。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-3ad6d809ac15563de72d",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-038",
+   "chart_id": "A60-CH35",
+   "four_pillars": "戊申 丁巳 庚子 戊寅",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "巳",
+   "char_b": "寅",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "巳",
+    "target": "寅",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "巳穿寅，申冲寅，无气",
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011武当山六亲班高级面授讲课笔记_2056046375041957888.md:L3218",
+   "annotation": "原文「巳穿寅」，actor=巳、target=寅。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-bc065ce7f0a038ee9324",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e014",
+      "kind": "chuan"
+     },
+     {
+      "id": "e015",
+      "kind": "xing"
+     },
+     {
+      "id": "e016",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-039",
+   "chart_id": "A60-CH36",
+   "four_pillars": "癸丑 壬戌 癸未 辛酉",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "戌",
+   "char_b": "酉",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "戌",
+    "target": "酉",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "用戌穿酉 （ 印 ）",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4959",
+   "annotation": "原文「用戌穿酉（印）」，actor=戌、target=酉。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-f0884fbf7e90751ae5b8",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e013",
+      "kind": "chuan"
+     },
+     {
+      "id": "e014",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-040",
+   "chart_id": "A60-CH37",
+   "four_pillars": "丙午 辛丑 辛卯 癸巳",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "丑",
+   "char_b": "午",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": "丑",
+    "target": "午",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "还有更不好的是丑午之穿",
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011武当山六亲班高级面授讲课笔记_2056046375041957888.md:L921",
+   "annotation": "原文「丑午之穿，夫星被穿倒」，actor=丑、target=午。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-e48a993535c098e1a352",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-041",
+   "chart_id": "A60-CH38",
+   "four_pillars": "壬子 癸卯 壬戌 丁未",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "未",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "未",
+    "target": "戌",
+    "actor_addr": "H.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "未刑戌，有坏戌之意",
+   "source_ref": "sources/duan/MinerU_markdown_段建业2011武当山六亲班高级面授讲课笔记_2056046375041957888.md:L229",
+   "annotation": "原文「未刑戌」，actor=未、target=戌。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-4375d0f5531afaefdc6c",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e015",
+      "kind": "po"
+     },
+     {
+      "id": "e016",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-042",
+   "chart_id": "A60-CH39",
+   "four_pillars": "癸卯 壬戌 壬寅 乙巳",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "M.b",
+   "char_a": "卯",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": "卯",
+    "target": "戌",
+    "actor_addr": "Y.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "杀被卯合，弄住了，功在卯制戌",
+   "source_ref": "sources/duan/MinerU_markdown_命格组合_2056043853946478592.md:L27",
+   "annotation": "原文为卯戌六合、卯制戌，非刑；engine 亦只发 liuhe。按原文标合，actor=卯、target=戌。",
+   "blind_mechanism": "刑",
+   "disputed": true,
+   "dispute_reason": "盲卷 target_relation 标 mechanism=刑（卯/戌），与原书不符：卯戌为六合，原文作「卯戌合，弄住了戌」「功在卯制戌」，且 engine 关系图为 liuhe，无 xing 边。",
+   "engine": {
+    "chart_id": "cf-c47110353dd499eaba54",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-043",
+   "chart_id": "A60-CH40",
+   "four_pillars": "丙午 辛丑 戊戌 戊午",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "戌",
+   "char_b": "丑",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "戌",
+    "target": "丑",
+    "actor_addr": "D.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "原局戌刑丑 制得很好",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4503",
+   "annotation": "原文「戌刑丑」，actor=戌、target=丑。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-94a9a22a35a74b72419e",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-044",
+   "chart_id": "A60-CH41",
+   "four_pillars": "戊午 壬戌 乙巳 丁丑",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "戌",
+   "char_b": "丑",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "戌",
+    "target": "丑",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "伤官入库戌刑丑杀库",
+   "source_ref": "sources/duan/MinerU_markdown_（原版）段建业2010年高级面授笔记_2056045866600030208.md:L1975",
+   "annotation": "原文「戌刑丑杀库」，actor=戌、target=丑。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-f8d869eb61dd1ed3e44e",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-045",
+   "chart_id": "A60-CH05",
+   "four_pillars": "壬子 壬寅 庚辰 辛巳",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "寅",
+   "char_b": "巳",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "寅",
+    "target": "巳",
+    "actor_addr": "M.b",
+    "target_addr": "H.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "甲辰运戊寅年， 寅巳刑为动",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1962",
+   "annotation": "原局月令寅木穿巳，行运引动论刑（「寅巳刑为动」）；段派以寅穿巳为主、刑为附带，方向取寅→巳，actor=寅、target=巳。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-fdfb3974e41de2c7ea07",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e010",
+      "kind": "chuan"
+     },
+     {
+      "id": "e011",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-046",
+   "chart_id": "A60-CH42",
+   "four_pillars": "戊戌 己未 乙巳 丁亥",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "未",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "未",
+    "target": "戌",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "未戌刑 巳亥冲 都坏了",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L696",
+   "annotation": "原文「未戌刑」，actor=未、target=戌。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-a56a6ea1f7df62a48950",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "po"
+     },
+     {
+      "id": "e008",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "M.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-047",
+   "chart_id": "A60-CH43",
+   "four_pillars": "己丑 丁丑 乙卯 丙子",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "子",
+   "char_b": "卯",
+   "expected_direction": "mutual",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": true,
+    "expected_direction": "mutual"
+   },
+   "quote": "逢子卯刑，卯与子两伤",
+   "source_ref": "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L2356",
+   "annotation": "原文「子卯刑，卯与子两伤」，两伤无单向；标 mutual。段派初级另有「子卯为破非刑」口径，属流派内部争议，不判盲卷失配。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-95b7e235dfdc1bbb1fb6",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e011",
+      "kind": "po"
+     },
+     {
+      "id": "e012",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-048",
+   "chart_id": "A60-CH44",
+   "four_pillars": "丙戌 辛丑 壬寅 甲辰",
+   "gender": "坤",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "Y.b",
+   "char_a": "丑",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "丑",
+    "target": "戌",
+    "actor_addr": "M.b",
+    "target_addr": "Y.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "又丑刑戌，故不久（死亡）",
+   "source_ref": "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L1204",
+   "annotation": "梅加瓦蒂造；原文「丑刑戌」，actor=丑、target=戌。盲卷 gender 未注明，原书作「坤造」，据补。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-f9742f815a8d08d08bad",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-049",
+   "chart_id": "A60-CH45",
+   "four_pillars": "戊午 戊午 甲寅 己巳",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "巳",
+   "char_b": "寅",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "巳",
+    "target": "寅",
+    "actor_addr": "H.b",
+    "target_addr": "D.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "巳刑寅，又寅午半会火局",
+   "source_ref": "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L2791",
+   "annotation": "原文「巳刑寅」，actor=巳、target=寅。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-de8e7ae532cface8546a",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e013",
+      "kind": "chuan"
+     },
+     {
+      "id": "e014",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-050",
+   "chart_id": "A60-CH46",
+   "four_pillars": "壬子 庚戌 辛丑 乙未",
+   "gender": "乾",
+   "layer": "dynamic",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "丑",
+   "char_b": "戌",
+   "expected_direction": "actor→target",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": "丑",
+    "target": "戌",
+    "actor_addr": "D.b",
+    "target_addr": "M.b",
+    "mutual": false,
+    "expected_direction": "actor→target"
+   },
+   "quote": "丑戌刑制月令杀库",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L2391",
+   "annotation": "原文「丑戌刑制月令杀库」，actor=丑、target=戌。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-75a00722446a00ebfd89",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "xing"
+     },
+     {
+      "id": "e017",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-051",
+   "chart_id": "A60-CH47",
+   "four_pillars": "戊戌 甲子 甲子 庚午",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "墓",
+   "mechanism": "墓",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "H.b",
+   "char_a": "戌",
+   "char_b": "午",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "墓",
+    "mechanism": "墓",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "午见戌为归库",
+   "source_ref": "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L3453",
+   "conflict_quotes": [
+    "午见戌为归库",
+    "答：午戌论拱不是入墓。入墓有二：多而墓之，寅申巳亥见墓入之。"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L3453": "**那么这个武职为何会在丙辰年出任？因羊刃午主武，寅午戌得局，虽以中神为局党，但午见戌为归库，此局以寅中丙火为局党（这是火局的特殊性所在）。丙辰年冲开戌，羊刃出，故任武职。**",
+    "sources/duan/MinerU_markdown_墓__穿_2056043829099421696.md:L4": "答：午戌论拱不是入墓。入墓有二：多而墓之，寅申巳亥见墓入之。"
+   },
+   "annotation": "午/戌是否成墓：一说「午见戌为归库」，一说「午戌论拱不是入墓」；本盘又有午戌半合制子（盲派初级 654 行），engine 发 sanhe，真歧义。",
+   "blind_mechanism": "墓",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-933f837b5eb965a2fe2b",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "sanhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-052",
+   "chart_id": "A60-CH48",
+   "four_pillars": "辛亥 丁酉 庚戌 己卯",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "D.b",
+   "char_a": "酉",
+   "char_b": "戌",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "卯戌合救了命，酉戌穿力小",
+   "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1177",
+   "conflict_quotes": [
+    "卯戌合救了命，酉戌穿力小",
+    "合解不了穿 穿什么也解不了"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L1177": "亥食泄酉刃，胆子不大，卯戌合救了命，酉戌穿力小，卯财团合戌印，而不冲酉刃，走私犯罪坐牢。",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2998": "合解不了穿 穿什么也解不了"
+   },
+   "annotation": "卯戌合能否解酉戌穿：案例集说「卯戌合救了命，酉戌穿力小」，初级班又说「合解不了穿」；穿力大小/是否成立真歧义。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-138c7191faf1e10a8917",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "chuan"
+     },
+     {
+      "id": "e009",
+      "kind": "sanhui"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-053",
+   "chart_id": "A60-CH49",
+   "four_pillars": "壬寅 辛亥 甲戌 己巳",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "M.b",
+   "char_a": "寅",
+   "char_b": "亥",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "寅亥一合，这两个东西都坏了",
+   "source_ref": "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L967",
+   "conflict_quotes": [
+    "寅亥一合，这两个东西都坏了",
+    "寅亥合是亥中水制寅中 的火"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L967": "寅亥合什么意思？本来是坐正财，天干官印相生，官星还合身，很好的意思，有职有权，但是有个亥，寅亥一合，这两个东西都坏了。这种合叫合绊，丧失原性，原 来木是生火的，一合为湿木，不生火反而灭火了，亥水原来是财，表示老婆，一合，跑了，工作也丢了，本来是大学里的一个老师，老婆跑了，工作也丢了。找的第 二个老婆就不是亥了，看午，午亥合，往夫妻宫跑的就是老婆。这个老婆不错，是他的禄，一来就给他带了50万。同居了很长时间才结婚，是个二婚，带个孩子， 他也是二婚，带个孩子。",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2776": "寅亥合是亥中水制寅中 的火； 辰酉合是酉金制辰中 乙木； 午戌合， 午中火制戌中金。 此三者效率则较低； 卯未与亥未半合局， 如制未土， 其效率相对要低。"
+   },
+   "annotation": "寅亥合：一说合绊双伤、丧失原性；一说亥中水制寅中火（有单向合制义）。二者指向不同，标 needs_judgment。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-9f45d414061d72c9cabf",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e008",
+      "kind": "liuhe"
+     },
+     {
+      "id": "e009",
+      "kind": "po"
+     }
+    ],
+    "muku": []
+   }
+  },
+  {
+   "case_id": "A60-054",
+   "chart_id": "A60-CH21",
+   "four_pillars": "乙未 壬午 甲子 甲戌",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "未",
+   "char_b": "子",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "羊刃库穿倒印星子水",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1882",
+   "conflict_quotes": [
+    "羊刃库穿倒印星子水",
+    "这样就是子穿了未"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1882": "分析 此造未土为羊刃库 羊刃库穿倒印星子水 印在坐下为权力 是掌兵权的官 但午未合， 闭了羊刃库， 不是弄刀枪为刀枪入库。 甲木生在午月无根， 死木可去水， 如生在未月 有根， 活木， 不可去水， 去水就糟了 。 是个军政委， 师级干部， 不拿枪的官。",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L3004": "言明 ： 时辰是推的 此造申子辰三合财局 水有强势 日 时子未穿 此两字相穿 本来是未土克子水， 但因子水成局， 这样就是子穿了未。 未土这里一方面是羊刃 的含义， 另一方面 它还是官杀的墓 制去未土而做功 所以他不仅是军事家 而且是政治家 唯一不好就是不利妻与子。 实际是大儿子伤残， 早年克妻。 妻宫逢穿故， 时上官杀是儿子。"
+   },
+   "annotation": "子未穿方向：本盘未为羊刃库、午未合闭库，原文既说「未穿子」，又有「子成局则子穿未」的党势反转规则；本盘子未成局与否决定方向，真歧义。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-33fa163f75fe9d9ff604",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-055",
+   "chart_id": "A60-CH50",
+   "four_pillars": "丁亥 癸丑 丁未 辛亥",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "M.b",
+   "char_a": "未",
+   "char_b": "丑",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "妻宫未冲丑 是妻宫欲制妻星",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3877",
+   "conflict_quotes": [
+    "妻宫未冲丑 是妻宫欲制妻星",
+    "妻宫未冲丑，是妻宫制妻星，命中金水有势，而将未土冲坏，妻星坏妻宫"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3877": "此造以丑中辛金为妻星 妻宫未冲丑 是妻宫欲制妻星 但八字是金水有势而将未土冲坏是妻星反坏了妻宫， 所以是个独身命。 日主丁火通于未库， 未是主位的体， 是要用之做功的 ，现反被局中制坏 所以此命差了 此人一生穷困潦倒 还瞎一只眼 （丑未冲坏了未中丁火右眼瞎 左眼视力也不好 ） 乞食过 日 他兄弟在唐山地震中死去 他顶了班到了煤矿 后不愿干活 买断工龄拿了几万元回来了 这种组合懒得非常厉害",
+    "sources/duan/MinerU_markdown_（原版）段建业2010年高级面授笔记_2056045866600030208.md:L3619": "丑中辛金为妻星，妻宫未冲丑，是妻宫制妻星，命中金水有势，而将未土冲坏，妻星坏妻宫，所以独身，日主通丁未未库，未是主体的体，是用作功的，现反被局中冲坏，所以命差了，唯一的好运是戌运丙辰年！阴坏了阳，没力气，不爱动，懒，左眼也坏了。"
+   },
+   "annotation": "未冲丑：一说是妻宫制妻星（未→丑），一说是金水有势反将未冲坏、妻星坏妻宫（丑→未）；方向相反，真歧义。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-0b9c5e5253ad7ac5590a",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "chong"
+     },
+     {
+      "id": "e013",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-056",
+   "chart_id": "A60-CH51",
+   "four_pillars": "丁酉 壬子 壬戌 癸卯",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "合",
+   "mechanism": "合",
+   "blind_addr_a": "H.b",
+   "blind_addr_b": "D.b",
+   "char_a": "卯",
+   "char_b": "戌",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "合",
+    "mechanism": "合",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "卯戌合是食伤合杀有制杀的象",
+   "source_ref": "sources/duan/MinerU_markdown_段建业言明2011干支象法职业实战光盘讲座笔记_2056046186927423488.md:L2701",
+   "conflict_quotes": [
+    "卯戌合是食伤合杀有制杀的象",
+    "卯戌合，闭了火库，同时木和土两个都失去原性"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_段建业言明2011干支象法职业实战光盘讲座笔记_2056046186927423488.md:L2701": "做功：壬戌坐下是财库又是杀，卯戌合是食伤合杀有制杀的象，而且大运己酉，是印带官帽出现，表示当官的意思，原本酉戌穿把象坏了，但有卯合戌冲酉，己为丁。卯戌合做功，表示自己投资做实体生意。年上丁酉印带财合到日主，年上印为单位，也为国家，财为工资，在国家单位拿工资。官当的不大：酉戌穿，八字有劫财羊刃。酉戌穿也表示以后要离开单位，干啥去，从限运来看卯戌合，伤官合了财库去求财了，八字财不现食伤当财看，食伤合财库是搞实体的。癸卯时柱带了劫财是别人的股份。卯戌合地产、矿山的象。",
+    "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L2219": "卯戌合，闭了火库，同时木和土两个都失去原性。"
+   },
+   "annotation": "卯戌合：一说食伤合杀有制杀义（卯制戌），一说合绊闭库、木土俱失原性（互伤）；单向/互绊真歧义。",
+   "blind_mechanism": "合",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-f661ffa9bf3506570eb2",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e016",
+      "kind": "liuhe"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-057",
+   "chart_id": "A60-CH52",
+   "four_pillars": "己酉 甲戌 丁丑 丙午",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "D.b",
+   "blind_addr_b": "H.b",
+   "char_a": "丑",
+   "char_b": "午",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "丑午之间也是相生",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2980",
+   "conflict_quotes": [
+    "丑午之间也是相生",
+    "其次是丑午穿，午火被丑晦，坏午"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2980": "六穿中 ， 只有酉戌穿、 卯辰穿、 子未穿、 丑午穿都可以相制。 申亥穿、 寅 巳穿相生不能制， 但有个坏的象， 可以坏了六亲或宫位。 丑午之间也是相生， 但因丑能晦午火， 所以也有相克的意思。 相穿又相克的效率最高， 要想穿制做功， 一方必须有很强大的力量制另一方。",
+    "sources/duan/MinerU_markdown_32.命理瑰宝_2056044575031222272.md:L2386": "    地支六穿以相克并相穿的情形最为严重，如子未穿，未克子；卯辰穿，卯克辰。其次是丑午穿，午火被丑晦，坏午；酉戌穿，酉金被戌燥，坏酉。再次是寅巳穿与申亥穿为轻，这两对穿表意的成份多于表凶的成份。"
+   },
+   "annotation": "丑午：一说丑午本相生，一说丑能晦午火故相克、坏午；生克并存，方向真歧义。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-da854f8f18a5dd1d9cc0",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e014",
+      "kind": "chuan"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "D.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-058",
+   "chart_id": "A60-CH32",
+   "four_pillars": "乙未 乙酉 丙戌 己丑",
+   "gender": "坤",
+   "layer": "ambiguous",
+   "kind": "刑",
+   "mechanism": "刑",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "D.b",
+   "char_a": "未",
+   "char_b": "戌",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "刑",
+    "mechanism": "刑",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "原局戌穿酉刑未",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4533",
+   "conflict_quotes": [
+    "原局戌穿酉刑未",
+    "未戌刑是开火库，火更大，戌中金受制"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4533": "乙为母 未与乙连了 也是母 酉为父 戌酉穿倒父 死父 酉克不到乙 因支不克干 丑未戌三刑 母也有问题 16岁庚戌年死母 因大限定在18岁前 未戌刑了 16岁为标准应期 戌到了 19岁癸丑年死父 父在月柱 大限为18岁之后 原局戌穿酉刑未 大运丁亥丁到为戌到了 表戌厉害了 如丁 （原局天干） 有制 戌就厉害不起来 但丁透干无制 表戌是旺的状态 要应事 癸丑是墓到了 因酉太弱了 就不是拱了 而是要入墓 大限定死了 。 有一同年同月 同 日 生人因生于庚寅时， 父甲寅年去世， 因金绝在寅， 原局有寅， 故应寅年， 而此造则原局有丑， 故应了丑年。 母亲都是同一年去世。 此造儿女不会有问题， 年上伤",
+    "sources/duan/MinerU_markdown_21.大连段建业-面授讲义（合集）134页_2056045222002622464.md:L1312": "寅巳申、丑戌未这两个刑最重要，寅巳带穿，巳申带合，寅申带冲，全见时论三刑。丑未为冲，未戌、丑戌论刑，都是开库、制库的。丑戌刑灭戌中火，戌旺时灭丑中水；未戌刑是开火库，火更大，戌中金受制。三刑全见，里面有六亲时，主六亲有伤病或残疾。"
+   },
+   "annotation": "未戌刑：一说戌刑未（戌为actor），一说未戌刑开火库、火更大（互刑/未为主动）；且本盘丑未戌三刑全，方向真歧义。",
+   "blind_mechanism": "刑",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-7217a083a2312962f448",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e007",
+      "kind": "po"
+     },
+     {
+      "id": "e008",
+      "kind": "xing"
+     },
+     {
+      "id": "e015",
+      "kind": "xing"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "未",
+      "ku_of": [
+       "木"
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-059",
+   "chart_id": "A60-CH53",
+   "four_pillars": "戊申 壬戌 己巳 戊辰",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "冲",
+   "mechanism": "冲",
+   "blind_addr_a": "M.b",
+   "blind_addr_b": "H.b",
+   "char_a": "戌",
+   "char_b": "辰",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "冲",
+    "mechanism": "冲",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "戌冲辰制不净",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4377",
+   "conflict_quotes": [
+    "戌冲辰制不净",
+    "反而是被局中 的湿土坏掉"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4377": "此造巳火印星被辰土晦制， 戌冲辰制不净， 反而是被局中 的湿土坏掉。 走癸 巳大运时， 巳火到了被辰晦又入戌墓， 此人为杀人犯。",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2120": "4、 地支土之墓库比较特别， 辰为水墓也为土墓。 丑入辰墓， 未也入辰墓； 但当丑未辰都出现时， 丑未因冲的关系， 不入辰墓。 如命局中有水土同见， 为水入墓， 而土则不入墓。辰戌相见时论冲， 不论戌入辰墓。"
+   },
+   "annotation": "辰戌冲：一说戌冲辰但制不净，一说反被局中湿土坏掉（辰/湿土反制）；冲而反局，方向真歧义。",
+   "blind_mechanism": "冲",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-6a60f848d0915055989e",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e012",
+      "kind": "chong"
+     }
+    ],
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "case_id": "A60-060",
+   "chart_id": "A60-CH18",
+   "four_pillars": "甲寅 己巳 癸亥 戊午",
+   "gender": "乾",
+   "layer": "ambiguous",
+   "kind": "穿",
+   "mechanism": "穿",
+   "blind_addr_a": "Y.b",
+   "blind_addr_b": "M.b",
+   "char_a": "寅",
+   "char_b": "巳",
+   "expected_direction": "needs_judgment",
+   "relation": {
+    "kind": "穿",
+    "mechanism": "穿",
+    "actor": null,
+    "target": null,
+    "actor_addr": null,
+    "target_addr": null,
+    "mutual": false,
+    "expected_direction": "needs_judgment"
+   },
+   "quote": "寅与 巳 以相穿为主",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1952",
+   "conflict_quotes": [
+    "寅与 巳 以相穿为主",
+    "申亥穿、 寅 巳穿相生不能制"
+   ],
+   "source_texts": {
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L1952": "三刑的用法近于六冲， 并不表示刑法、 罪恶与疾病， 与六冲略有区别的地方在于三刑全时有责难 受过 废弃 损坏之意。 还有 寅 巳 申与丑戌未三刑都可以分开来解； 寅与 巳 以相穿为主， 寅与 申 以六冲为主， 申与 巳 以六合为主， 刑只是一种附带的作用 ， 只有三者同时出现时， 刑的意思就明显了 ； 丑与未以六冲为主， 只有丑戌与未戌以刑看， 且其用法与冲其本相同， 只有丑戌未三者俱现， 刑的意思就明显了 。 丑戌未三刑见金时， 六亲多为伤病残疾，三刑见父母星时多为父母早逝。",
+    "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2980": "六穿中 ， 只有酉戌穿、 卯辰穿、 子未穿、 丑午穿都可以相制。 申亥穿、 寅 巳穿相生不能制， 但有个坏的象， 可以坏了六亲或宫位。 丑午之间也是相生， 但因丑能晦午火， 所以也有相克的意思。 相穿又相克的效率最高， 要想穿制做功， 一方必须有很强大的力量制另一方。"
+   },
+   "annotation": "寅巳：三刑节说「寅与巳以相穿为主」，穿制节又说「寅巳穿相生不能制，只可坏六亲/宫位」；穿是否成制、方向真歧义。",
+   "blind_mechanism": "穿",
+   "disputed": false,
+   "dispute_reason": null,
+   "engine": {
+    "chart_id": "cf-ef2dc50cddeb7a758488",
+    "input_ok": true,
+    "chars_ok": true,
+    "edges": [
+     {
+      "id": "e009",
+      "kind": "chuan"
+     },
+     {
+      "id": "e010",
+      "kind": "xing"
+     }
+    ],
+    "muku": []
+   }
+  }
+ ]
+}

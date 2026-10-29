@@ -30,10 +30,7 @@
 
 ## 5. A/B 双人复核（T-190b）
 
-- fixed 10/10、dynamic 37/40=92.5%、ambiguous 10/10；≥75%，复核通过。
-- 3 条 dynamic 分歧：
-  - A60-046（未戌刑）：A mutual / B 未→戌；B 原书引文支持单向 → 按 B 修。
-  - A60-050（丑戌刑）：A mutual / B 丑→戌；B 原书引文支持单向 → 按 B 修。
-  - A60-020（辰戌冲）：A 辰→戌（30/命理瑰宝 L691–695）/ B 戌→辰（26/段建业 L2503）；
-    两书冲突，**不能硬当 decidable**；先按 source hierarchy 裁，裁不了移 ambiguous；final 暂不冻。
-- 在 A60-020 解决前，不跑 anchor-60、不宣称任何结果。
+- 复核通过（≥75%）；A/B 在 dynamic 上有 **3 条分歧**。
+- 具体案例 ID、端点与答案在 `archive/adjudication_v1/restricted/contamination-list-v1.json`
+  （runner 不可读），此处不再列。
+- 该 3 条已标 `contaminated`，永久排除出未来盲集；去污染后的独立集上结论不变（见 T-191 verdict §3）。

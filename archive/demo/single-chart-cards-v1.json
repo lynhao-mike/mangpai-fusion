@@ -1,0 +1,233 @@
+{
+  "schema": "single-chart-cards/v1",
+  "task": "T-176",
+  "generated_at": "2026-10-29",
+  "pre_p1": true,
+  "disclaimer": "当前能力展示，不是 P1 验证。卡内 unknowns 就是当前事实层写不出来的部分；三张卡都不构成对规格的验证。",
+  "spec": "docs/specs/single-chart-analysis-v1.md",
+  "cases_source": "META/single-chart-cases-v1.json",
+  "facts_source": "python -m engine.cli",
+  "theory_source": "python -m tools.query_theory / theory/duan/index.yaml 的 entry_id + raw_file + raw_anchor",
+  "snapshot_rule": "三张卡都是原局快照（dayun_index=null, liunian_year=null）；edge_id 只对该快照有效，跨快照引用即错（规格 §1.3）",
+  "reproduce": [
+    "python -m engine.cli all --birth \"1987-12-18 13:15:00\" --gender 乾 --json  # C1",
+    "python -m engine.cli all --birth \"1990-02-23 01:48:00\" --gender 坤 --json  # C2",
+    "python -m engine.cli all --birth \"1982-09-14 23:55:00\" --gender 乾 --json  # C3"
+  ],
+  "reproduce_note": "chart_id 由输入形态决定：用 --birth 得到本文件的 chart_id；用 --pillars 得到另一串 chart_id（C1 cf-ada5459163b88f49505e / C2 cf-f835f14ca5091eec536d / C3 cf-48de88b1324fbde0476f），但边号、edge kind/members、tiyong 完全一致（已逐盘比对）。卡里登记的是 --birth 口径。",
+  "summary": {
+    "cards": 3,
+    "cards_per_case": 1,
+    "direction_known_true": 0,
+    "direction_known_false": 3,
+    "rescue_judged_weipan": 3,
+    "edge_ids_used": ["e015", "e016", "e013", "e014", "e009"],
+    "text_anchors_used": ["M1-D-298:48", "M1-D-298:48", "M1-D-300:122"]
+  },
+  "known_schema_deviations": [
+    {
+      "field": "t4_scene_and_activation.scene_refs",
+      "deviation": "三张卡均为 []（空）",
+      "why": "规格 §2.4 要求 scene_refs 引用 ≥2 张同 case_id 的卡；本任务只交付「一盘一卡」，同盘不存在第 2 张卡，因此无法满足。补卡可解，但补卡超出 T-176 的「3 张卡」范围。",
+      "impact": "按 §2.4 字面判据，这三张卡在 scene_refs 一项不合格；L20/L21 不会命中（空数组不引用不存在的卡），但规格的「≥2」门槛未达。"
+    },
+    {
+      "field": "t4_scene_and_activation.activation.kind",
+      "deviation": "三张卡都写 none_observed，而不是 §3.4 示例里的 kind=chong/破 + 通配 LN{year}.b",
+      "why": "规格 §2.4 明确：若在该快照中未见引动边，写 activation.kind=none_observed + 该快照的边数证据。原局快照内 DY/LN 边恒为 0 条，故按更具体的 §2.4 执行。",
+      "impact": "§3.4 的合格卡示例本身用的是通配写法，两处口径不一致；本卡从 §2.4，并把「换快照后什么条件算引动」写进 condition。"
+    },
+    {
+      "field": "t3_outcome.state",
+      "deviation": "C3 的 basis[0].assert 写「目标受破」（po 边）",
+      "why": "规格 §2.3 的破局判据文字只列「冲/刑/穿」，但同段 basis.assert 枚举含「目标受破」，§3.3 的 direction 枚举也含「破」。",
+      "impact": "按判据文字 C3 的 po 边不该直接判破局，按枚举则可以。本卡从枚举；需外部审计拍板（见 §9.5 po 是否算做功）。"
+    }
+  ],
+  "cards": [
+    {
+      "card_id": "C1-01",
+      "case_id": "RF-2026-000125",
+      "pre_p1": true,
+      "snapshot": {
+        "chart_id": "cf-5735e1472538ad92664b",
+        "dayun_index": null,
+        "liunian_year": null
+      },
+      "t1_local_image": {
+        "palace": "day",
+        "addrs": ["D.b", "H.b"],
+        "ten_gods": ["偏印", "偏印"],
+        "relations": [
+          {"kind": "chong", "edge_id": "e015", "members": ["D.b", "H.b"], "group": null, "completeness": null},
+          {"kind": "xing", "edge_id": "e016", "members": ["D.b", "H.b"], "group": "丑戌未", "completeness": "partial"}
+        ]
+      },
+      "t2_role_and_force": {
+        "tiyong": {"actor_role": "体", "target_role": "体"},
+        "binzhu_layer": 3,
+        "direction": "冲",
+        "direction_known": false,
+        "actor": null,
+        "target": null
+      },
+      "t3_outcome": {
+        "state": "破局",
+        "basis": [
+          {"kind": "edge", "edge_id": "e015", "assert": "目标受冲", "evidence": ["D.b", "H.b"]},
+          {"kind": "edge", "edge_id": "e016", "assert": "目标受刑", "evidence": ["D.b", "H.b"]}
+        ],
+        "rescue_judged": "未判"
+      },
+      "t4_scene_and_activation": {
+        "scene": "日支 D.b（夫妻宫，偏印）与时支 H.b（偏印）之间同时挂着冲边 e015 与刑边 e016，两股作用落在同一宫位上。方向未定（G2），只能写「同一对地址上的双重牵连」，不能写成谁冲谁、谁刑谁。",
+        "scene_refs": [],
+        "activation": {
+          "kind": "none_observed",
+          "against_addr": "D.b",
+          "suiyun_addr": null,
+          "edge_id": null,
+          "condition": "本卡为原局快照（dayun_index=null, liunian_year=null），16 条边全部 scope=natal，DY/LN 边 0 条；只有换到带 --dayun-index/--liunian 的快照、且流年支与 D.b 成冲时，才算该结构被引动，本卡不跨快照判引动。",
+          "path": "relations.edges[]: 16 条全部 scope=natal，DY/LN 边 0 条（实测 --pillars 「丁卯 壬子 辛丑 乙未」 --gender 乾 --json）"
+        }
+      },
+      "t5_dual_anchor": {
+        "address_anchor": {"edge_ids": ["e015", "e016"], "addrs": ["D.b", "H.b"]},
+        "text_anchor": {
+          "entry_id": "M1-D-298",
+          "path": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+          "line": 48
+        }
+      },
+      "statement": "D.b=丑 与 H.b=未 之间有冲边 e015、刑边 e016（方向未定，G2）；按 M1-D-298「夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒」，本盘夫妻宫同时落在「冲破」与「刑坏」两类上，故记破局；救应未判（G5），不写化解。",
+      "boundary": {
+        "holds_when": "以 D.b=丑 为夫妻宫；e015/e016 在该原局快照（dayun_index=null, liunian_year=null）内成立，且 D.b 十神为偏印、体用为「体」",
+        "fails_when": "换成岁运快照后 edge_id 全量重编号（实测加 --dayun-index 5 --liunian 2026 后边数 16→39，同一对夫妻宫冲/刑边变为 e031/e032）；或夫妻宫改取其他柱；或 M1-D-298 的「如有用」前提不成立（同段 :124 另按破坏程度分级，本卡不判程度）"
+      },
+      "confidence": "中",
+      "unknowns": ["G2", "G5", "muku_open_close", "suiyun_ten_god"]
+    },
+    {
+      "card_id": "C2-01",
+      "case_id": "RF-2026-000438",
+      "pre_p1": true,
+      "snapshot": {
+        "chart_id": "cf-f10b5515f2019638f42f",
+        "dayun_index": null,
+        "liunian_year": null
+      },
+      "t1_local_image": {
+        "palace": "day",
+        "addrs": ["D.b", "H.b"],
+        "ten_gods": ["比肩", "比肩"],
+        "relations": [
+          {"kind": "chong", "edge_id": "e013", "members": ["D.b", "H.b"], "group": null, "completeness": null},
+          {"kind": "xing", "edge_id": "e014", "members": ["D.b", "H.b"], "group": "丑戌未", "completeness": "partial"}
+        ]
+      },
+      "t2_role_and_force": {
+        "tiyong": {"actor_role": "体", "target_role": "体"},
+        "binzhu_layer": 3,
+        "direction": "冲",
+        "direction_known": false,
+        "actor": null,
+        "target": null
+      },
+      "t3_outcome": {
+        "state": "破局",
+        "basis": [
+          {"kind": "edge", "edge_id": "e013", "assert": "目标受冲", "evidence": ["D.b", "H.b"]},
+          {"kind": "edge", "edge_id": "e014", "assert": "目标受刑", "evidence": ["D.b", "H.b"]}
+        ],
+        "rescue_judged": "未判"
+      },
+      "t4_scene_and_activation": {
+        "scene": "日支 D.b（夫妻宫，比肩）与时支 H.b（比肩）之间同时挂着冲边 e013 与刑边 e014，同一宫位被同一对方以两种方式连着。方向未定（G2），只能描述为「本位被同一处外力顶住」，不能说成丑冲未、丑刑未。",
+        "scene_refs": [],
+        "activation": {
+          "kind": "none_observed",
+          "against_addr": "D.b",
+          "suiyun_addr": null,
+          "edge_id": null,
+          "condition": "本卡为原局快照（dayun_index=null, liunian_year=null），14 条边全部 scope=natal，DY/LN 边 0 条；只有换到带 --dayun-index/--liunian 的快照、且流年支与 D.b 成冲时，才算该结构被引动，本卡不跨快照判引动。",
+          "path": "relations.edges[]: 14 条全部 scope=natal，DY/LN 边 0 条（实测 --pillars 「庚午 戊寅 己未 乙丑」 --gender 坤 --json）"
+        }
+      },
+      "t5_dual_anchor": {
+        "address_anchor": {"edge_ids": ["e013", "e014"], "addrs": ["D.b", "H.b"]},
+        "text_anchor": {
+          "entry_id": "M1-D-298",
+          "path": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+          "line": 48
+        }
+      },
+      "statement": "D.b=未 与 H.b=丑 之间有冲边 e013、刑边 e014（方向未定，G2）；按 M1-D-298「夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒」，本盘夫妻宫属被冲破、刑坏的一类，故记破局；救应未判（G5）。",
+      "boundary": {
+        "holds_when": "以 D.b=未 为夫妻宫；e013/e014 在该原局快照（dayun_index=null, liunian_year=null）内成立，且 D.b 十神为比肩、体用为「体」",
+        "fails_when": "换成岁运快照后 edge_id 全量重编号（实测加 --dayun-index 4 --liunian 2026 后边数 14→39，同一对夫妻宫冲/刑边变为 e028/e029）；或夫妻宫改取其他柱；或 M1-D-298 的「如有用」前提不成立（同段 :124 另按破坏程度分级，本卡不判程度）"
+      },
+      "confidence": "中",
+      "unknowns": ["G2", "G5", "muku_open_close", "suiyun_ten_god"]
+    },
+    {
+      "card_id": "C3-01",
+      "case_id": "RF-2026-000894",
+      "pre_p1": true,
+      "snapshot": {
+        "chart_id": "cf-8b541a506fc413884431",
+        "dayun_index": null,
+        "liunian_year": null
+      },
+      "t1_local_image": {
+        "palace": "day",
+        "addrs": ["M.b", "D.b"],
+        "ten_gods": ["劫财", "伤官"],
+        "relations": [
+          {"kind": "po", "edge_id": "e009", "members": ["M.b", "D.b"], "group": null, "completeness": null}
+        ]
+      },
+      "t2_role_and_force": {
+        "tiyong": {"actor_role": "体", "target_role": "双属"},
+        "binzhu_layer": 3,
+        "direction": "破",
+        "direction_known": false,
+        "actor": null,
+        "target": null
+      },
+      "t3_outcome": {
+        "state": "破局",
+        "basis": [
+          {"kind": "edge", "edge_id": "e009", "assert": "目标受破", "evidence": ["M.b", "D.b"]}
+        ],
+        "rescue_judged": "未判"
+      },
+      "t4_scene_and_activation": {
+        "scene": "日支 D.b（夫妻宫，伤官）与月支 M.b（劫财）之间只有一条破边 e009，是全盘落在夫妻宫上的唯一关系边。方向未定（G2），且本盘无配偶星地址（no_spouse_star），只能描述这条宫位上的结构，不能补出配偶星的作用。",
+        "scene_refs": [],
+        "activation": {
+          "kind": "none_observed",
+          "against_addr": "D.b",
+          "suiyun_addr": null,
+          "edge_id": null,
+          "condition": "本卡为原局快照（dayun_index=null, liunian_year=null），12 条边全部 scope=natal，DY/LN 边 0 条；只有换到带 --dayun-index/--liunian 的快照、且流年支与 D.b 成破时，才算该结构被引动，本卡不跨快照判引动。",
+          "path": "relations.edges[]: 12 条全部 scope=natal，DY/LN 边 0 条（实测 --pillars 「壬戌 己酉 庚子 戊子」 --gender 乾 --json）"
+        }
+      },
+      "t5_dual_anchor": {
+        "address_anchor": {"edge_ids": ["e009"], "addrs": ["M.b", "D.b"]},
+        "text_anchor": {
+          "entry_id": "M1-D-300",
+          "path": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+          "line": 122
+        }
+      },
+      "statement": "D.b=子 与 M.b=酉 之间只有一条破边 e009（方向未定，G2）；按 M1-D-300「夫妻宫位有用，却被刑、冲、破、穿」，本盘夫妻宫与月支构成相破的一类，故记破局；救应未判（G5），且本盘无配偶星地址（no_spouse_star），该句只落在宫位结构上。",
+      "boundary": {
+        "holds_when": "以 D.b=子 为夫妻宫；e009 在该原局快照内成立；口径取 engine profile zi_shi=late_zi_split（日柱 庚子，日主 庚）",
+        "fails_when": "换 zi_shi=rollover_23 口径后日柱变辛丑（alt_chart_id=cf-62995823c069f1deacba），日主/十神/体用/边全变；或换岁运快照后 e009 变为 e022（实测 --dayun-index 4 --liunian 2026 边数 12→34）；或 M1-D-300 的「夫妻宫有用」前提不成立（该条只讲宫被刑冲破穿，破坏程度本卡不判）；或把 po 当第 5 种制法（M1-D-143 明确不并入四类制法，对应规格 §9.5）"
+      },
+      "confidence": "低",
+      "unknowns": ["G2", "G5", "no_spouse_star", "boundary_zi_shi", "suiyun_ten_god"]
+    }
+  ]
+}
