@@ -22,12 +22,12 @@
     }
   },
   "excluded_from_direction_primary": {
-    "cases": ["H13", "H14", "H15", "H16"],
+    "cases": ["P1-H13", "P1-H14", "P1-H15", "P1-H16"],
     "reason": "墓用约定冲突：hold-out a=库（施力方）vs 引擎 candidate actor=入库方；需第三人核对原文后再定"
   },
   "sensitivity_sets": {
-    "exclude_f28_rescue": ["H17", "H18", "H19", "H20"],
-    "exclude_muku_convention": ["H13", "H14", "H15", "H16"]
+    "exclude_f28_rescue": ["P1-H17", "P1-H18", "P1-H19", "P1-H20"],
+    "exclude_muku_convention": ["P1-H13", "P1-H14", "P1-H15", "P1-H16"]
   },
   "kind_mapping": {
     "制": "no-kind-filter (dev convention)",
