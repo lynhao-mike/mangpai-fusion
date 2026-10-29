@@ -520,3 +520,21 @@
 |---|---|---|
 | 2026-10-29 | v1 草案 | 七段工作流 + 5 条地址门槛 + 判定表 + Kill criterion + 3 张真实盘 |
 | 2026-10-29 | **v1.1** | 按 `external-audit-adjudication-v2` §1.1/§7：最小单元改为**五元组断语卡**；七段降级为可选报告外壳；新增卡 schema（§3）、Linter 规则 L01–L21（§4）、段↔卡映射（§5.1）、一卡一快照铁律（§1.3）、`suiyun_ten_god` 缺口（§7.3）、待确认 9.9–9.13。3 张盘、判定表四等级、整份三判定、Kill criterion 不变 |
+| 2026-10-29 | **v1.2** | T-176 三张 pre-P1 卡暴露 4 处冲突：①standalone 卡 `scene_refs=[]` 可接受；②§2.3 加「破」；③原局卡用 `none_observed`、岁运卡才用 `DY/LN`；④9.13 维持有条件允许。详见 §13 |
+
+## 13 · v1.2 修订（2026-10-29 12:25，中枢）
+
+T-176 三张 pre-P1 卡暴露 4 处规格冲突，裁定如下；**不改变 P1 判据**。
+
+1. **standalone / pre-P1 卡**：`scene_refs` 可为 `[]`，但卡必须 `standalone: true`
+   （或顶层 `pre_p1: true`）；这类卡不是报告卡，不受 §5.3「≥3 张」门槛约束；
+   报告卡仍要求 `scene_refs ≥2` 且 ≥3 张。
+2. **§2.3 加入「破」**：edge 依据的 `assert` 含「目标受破」；`po` 是 `relations.edges` 的边、
+   不在 `duan_zuogong.candidates`（A-06），方向仍按 G2 写 `direction_known=false`。
+3. **§2.4 与 §3.4 的口径**：原局快照卡（`dayun_index`/`liunian_year` 均 null）的 `activation`
+   必须 `none_observed` + 该快照边数证据；岁运卡（有 DY/LN）才用 `kind` + `DY{n}`/`LN{year}`。
+   §3.4 示例是岁运卡，不构成冲突。
+4. **9.13 维持有条件允许**：婚姻域无 `structure_item` 时，`basis.kind=edge` + 原文结构判据
+   （如 `M1-D-298`）可以判「破局」，但必须双锚点、`rescue_judged=未判`、只用于本卡、
+   不升级为通用规则。C1/C2 卡成立为**卡级判断**，不作为 P1 证据；
+   若外部审计否掉，降级为假设。
