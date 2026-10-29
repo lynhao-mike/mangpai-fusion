@@ -1,0 +1,537 @@
+{
+  "schema": "p1-muku-actor-audit/v1",
+  "task": "T-178",
+  "title": "墓用 actor 约定审计（P1-H13–P1-H16）+ actor 规则表依据",
+  "mode": "read_only_audit",
+  "scope": {
+    "changed_answers": false,
+    "changed_holdout": false,
+    "changed_engine": false,
+    "changed_rules": false,
+    "changed_tests": false,
+    "git_write": false
+  },
+  "inputs": [
+    {
+      "name": "holdout_answers",
+      "path": "META/p1-holdout-answers-v1.json",
+      "sha256": "b1075a394dc1954f27e7de1b06b38283174223e223e3d6b17993723bef37762f"
+    },
+    {
+      "name": "holdout_freeze_v2",
+      "path": "META/p1-holdout-freeze-v2.json",
+      "sha256": "f2750a73a861b7b473c6f81a197478d6273c11a2a08f6f680d448b2cf0286a15"
+    },
+    {
+      "name": "holdout_baseline",
+      "path": "META/p1-holdout-baseline-v1.json",
+      "sha256": "7086c4611f5165f0f90af9380e4934237e013e9da67ca627c6994ab54458f01d"
+    },
+    {
+      "name": "holdout_blind_input",
+      "path": "META/p1-holdout-v1.json",
+      "sha256": "593f4dbea76a4959550c326eea31a8d9feae895cb9272028813982de96bbf045"
+    },
+    {
+      "name": "baseline_verdict",
+      "path": "docs/reviews/p1-baseline-verdict-v1.md",
+      "sha256": "9a287f8a1b373024add45c8ce515c457945d77da4017e5cb255753e61e7c7227"
+    },
+    {
+      "name": "structure_check_py",
+      "path": "engine/facts/structure_check.py",
+      "sha256": "9298cbfc35071e28dfe80301a1c5c1430be4437647cab7d5003111f0c52cdfee"
+    }
+  ],
+  "convention": {
+    "decision": "muku_force_direction_is_tomb_to_entrant",
+    "a_role": "库（墓方、施力方）",
+    "b_role": "入库方（被收藏、被控制方）",
+    "actor_role": "库",
+    "members_order": ["库", "入库方"],
+    "statement": "墓用是定向关系：库收藏、控制、拥有入库方。a=库、b=入库方、actor=库。入墓句（X 入 Y 墓）的句法主语是入库方 X，但「入」是位移动词，只表示 X 进入 Y，并不构成第二条力向；不得据此把 a 设为入库方。",
+    "basis": [
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2274",
+        "quote": "墓这里可以理解成得到 控制 管理 拥有 占据等含义",
+        "reading": "「得到／控制／拥有／占据」的施动者是库；入库方是这些动词的宾语。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2288",
+        "quote": "未墓寅， 就是此造的做功方式",
+        "reading": "库作主语、入库方作宾语的定向句；作者直接把它定义为做功方式。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2294",
+        "quote": "辰墓了丑",
+        "reading": "与同段的「丑入辰墓」并存；「辰墓了丑」是及物句，辰是施力方。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2326",
+        "quote": "被辰所控制",
+        "reading": "被动式「被 X 所控制」明确指出控制方是辰（库）。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2328",
+        "quote": "最后被主位的辰土控制",
+        "reading": "同一段的言明复述，控制方仍是库。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2338",
+        "quote": "当然丑也有墓酉之象",
+        "reading": "「丑墓酉」：库作主语的定向句（酉丑同对）。"
+      },
+      {
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4099",
+        "quote": "冲其墓或冲被墓之神",
+        "reading": "「被墓之神」是入库方；施动方是墓（库）。"
+      },
+      {
+        "source_ref": "sources/ren/MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:L21",
+        "quote": "墓库表示收藏，得到、获取、占有一控制等诸多意思",
+        "reading": "任派同一定义：库是收藏／得到／控制的一方。"
+      },
+      {
+        "source_ref": "sources/ren/MinerU_markdown_16、任付红-民间实用八字-地支四墓库的使用方法_2056026785004060672.md:L23",
+        "quote": "我们把地支墓库看作八字中一种重要的作用方式",
+        "reading": "紧接一句为「也表示『制』的意思」：墓=制，制者为库。"
+      }
+    ],
+    "counter_reading": {
+      "pattern": "X 入 Y 墓 / X 入 Y 库 / X 入墓于 Y",
+      "subject": "入库方 X（句法主语）",
+      "why_not_actor": "「入」是位移（X 进入 Y），句中没有对 Y 的施力动词；Y 是处所（Y 之墓／Y 库）。若把位移主语当 actor，会把「被收藏方」写成「收藏方」，与 L2274/L2288/L2294/L2326/L4099 的定向句相反。",
+      "rule": "只引用位语句时 actor=null（标 evidence_gap），不得据「入」赋向。"
+    },
+    "engine_current": {
+      "code": "engine/facts/structure_check.py:498-506",
+      "emit": "emit(\"墓用\", \"muku\", None, (c.addr, m.addr), c.addr, dist, ...)",
+      "members": ["入库方", "库"],
+      "actor": "入库方",
+      "facts_layer": "relations.muku 只记「库 → 入库候选」，无 actor 字段（engine/facts/types.py:203-214）；方向声明只出现在结构检查层的墓用候选。",
+      "docstring": "engine/facts/structure_check.py:72 写「有方向关系（克/生/入墓）的发出方」，与实现（入库方）自相矛盾。"
+    },
+    "t174_reconciliation": {
+      "prior_decision": "T-174 验收口径（tasks/T-174/STATUS.md 第 13 行）：对称合/冲/穿→null，化泄取句法主语，入墓→null。",
+      "refinement": "「入墓→null」只适用于只有位移句的情形；原文一旦给出库作主语的定向句（未墓寅/辰墓了丑/丑墓酉）或被动控制句（被辰所控制/被墓之神），actor 应为库。四条的定向依据见 cases[].clauses。",
+      "why_consistent": "T-174 BRIEF §4.3 原文即写「入墓 → actor=null，除非原文是『库墓X』定向句」；本次 H13/H15 有同行定向句、H14 有同页通句、H16 有定义句+通用句式，正落在该例外内。"
+    },
+    "engine_fix": {
+      "file": "engine/facts/structure_check.py",
+      "lines": "498-506",
+      "change": "墓用候选改为 emit(\"墓用\", \"muku\", None, (m.addr, c.addr), m.addr, dist, ...)：members=(库, 入库方)，actor=库。",
+      "side_effects": [
+        "members 顺序影响 _binzhu：但 _binzhu 先按 members 顺序取 ty 对，再由 _ti_yong_ends 按体/用补位，顺序整体翻转后主宾判读不变（engine/facts/structure_check.py:385-407）。",
+        "distance 取柱距绝对值（:503-504），顺序无关。",
+        "relations.muku 事实层与 muku 等价口径不变：评测只看「m.addr ∈ a、入库候选 ∈ b」（tools/p1_holdout_eval.py:281-287）。",
+        "tests/facts 无墓用 actor 断言；tests/tools/test_p1_holdout_eval.py:173-184 的 fixture 手工写死「候选 actor=入库方」的旧约定，改引擎后该 fixture 失去代表性，须同步重写注释/构造（不得放宽断言）。"
+      ],
+      "docstring_change": "engine/facts/structure_check.py:72 改为「有方向关系（克/生/墓用）的发出方」并注明墓用发出方是库。"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "P1-H13",
+      "four_pillars": "壬辰 壬寅 己丑 戊辰",
+      "gender": "乾",
+      "answer": {
+        "a": "辰",
+        "b": "丑",
+        "actor": "辰",
+        "kind": "墓",
+        "mechanism": "墓",
+        "quote": "二是丑入辰墓， 为食伤库入了财库",
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2294"
+      },
+      "clauses": [
+        {
+          "type": "entry",
+          "text": "二是丑入辰墓， 为食伤库入了财库",
+          "line": 2294,
+          "subject": "丑",
+          "object": "辰墓",
+          "force": "none",
+          "note": "位移句：丑（日支、食伤库）进入辰（时支、财库）。"
+        },
+        {
+          "type": "force",
+          "text": "辰墓了丑",
+          "line": 2294,
+          "subject": "辰",
+          "object": "丑",
+          "force": "tomb_controls_entrant",
+          "note": "同一行给出定向句：库作主语、入库方作宾语。"
+        },
+        {
+          "type": "attribution",
+          "text": "为别人大 自 己小",
+          "line": 2294,
+          "subject": "辰",
+          "object": "丑",
+          "force": "control_outcome",
+          "note": "辰是别人（戊劫财）的财库，丑是自己的食伤库；库大者得控。"
+        }
+      ],
+      "roles": {
+        "entrant": "丑 · 己之食伤库（日支主位）",
+        "tomb": "辰 · 己之财库（时支）",
+        "force": "辰（库）收藏、控制丑",
+        "answer_a_semantics": "库（施力方）",
+        "answer_actor_semantics": "库（不是入墓句的主语）"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "标注的 a=辰、actor=辰 与同行动向句「辰墓了丑」一致；引擎墓用候选若成立会把 actor 记为入库方丑，方向相反。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 维持；建议把 quote 换成或补上「辰墓了丑」这一定向句（见 quote_gap）。",
+      "quote_gap": {
+        "grade": "same_line",
+        "issue": "所引 quote 是入墓句，定向句在同一行但未引用。",
+        "suggested_quote": "辰墓了丑",
+        "recommendation": "只建议；本卡不改 answers。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-baseline-v1.json（P1-H13 行）+ 现场 engine.cli + engine/facts/structure_check.py:498-506",
+        "muku_facts": ["D.b->Y.b", "D.b->H.b"],
+        "candidates": [],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图（tools/p1_holdout_eval.py:276-279）；引擎完整墓用候选见 live_check。",
+        "live_check": [
+          {"kind": "muku", "members": ["M.s", "Y.b"], "actor": "M.s"},
+          {"kind": "muku", "members": ["Y.s", "H.b"], "actor": "Y.s"},
+          {"kind": "muku", "members": ["M.s", "H.b"], "actor": "M.s"}
+        ],
+        "candidate_absent_reason": "引擎确有墓用候选，但没有一条跨 a=辰 / b=丑：丑→辰 因两端皆体（丑=比肩、辰=劫财）被 _crosses 过滤（structure_check.py:381-382、500）；引擎发出的是 壬→辰（财入墓），与答案端点无关。",
+        "baseline_direction": "no_edge",
+        "baseline_direction_note": "no_edge 是端点候选覆盖缺失，不是 actor 反向；actor 修复后此例仍需 T-179 的体-体/双属过滤修复才可判方向。"
+      },
+      "engine_fix": "同上（structure_check.py:498-506 翻转 members/actor）；另有独立缺口：候选覆盖（T-179）。"
+    },
+    {
+      "case_id": "P1-H14",
+      "four_pillars": "壬寅 己酉 丁丑 己酉",
+      "gender": "乾",
+      "answer": {
+        "a": "丑",
+        "b": "酉",
+        "actor": "丑",
+        "kind": "墓",
+        "mechanism": "墓",
+        "quote": "酉入坐下的丑库",
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2300"
+      },
+      "clauses": [
+        {
+          "type": "entry",
+          "text": "酉入坐下的丑库",
+          "line": 2300,
+          "subject": "酉",
+          "object": "丑库",
+          "force": "none",
+          "note": "位移句：酉（月/时偏财）进入日支坐下的丑库。"
+        },
+        {
+          "type": "force",
+          "text": "（ 当然丑也有墓酉之象， ）",
+          "line": 2338,
+          "subject": "丑",
+          "object": "酉",
+          "force": "tomb_controls_entrant",
+          "note": "同页另一造的定向通句（同酉丑对）：库墓入库方。"
+        },
+        {
+          "type": "attribution",
+          "text": "这个财入了主位的丑库",
+          "line": 2302,
+          "subject": "酉（财）",
+          "object": "丑（主位库）",
+          "force": "control_outcome",
+          "note": "财入主位库＝主位得财、可支配；得控者是库方（丑）。"
+        }
+      ],
+      "roles": {
+        "entrant": "酉 · 丁之偏财（月支、时支）",
+        "tomb": "丑 · 丁之财库（日支坐下主位）",
+        "force": "丑（库）收藏财酉，主位得财",
+        "answer_a_semantics": "库（施力方）",
+        "answer_actor_semantics": "库"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "标注取「墓」的主语（库）而非「入」的主语（入库方）；与 L2338「丑也有墓酉之象」同向。引擎候选把 actor 记为酉（入库方），方向相反。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 维持；所引句只有位移，定向依据在同页异例 L2338，属证据缺口，建议补 quote（不改语义）。",
+      "quote_gap": {
+        "grade": "same_page_other_case",
+        "issue": "source_ref 行 L2300 只有入墓句；定向句 L2338 是同一本书、同一酉丑对，但属另一造。",
+        "suggested_quote": "当然丑也有墓酉之象",
+        "recommendation": "只建议；若中枢采用严格「所引句明示」口径，本例外置为 sensitivity。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-baseline-v1.json（P1-H14 行）+ 现场 engine.cli 复核",
+        "muku_facts": ["M.b->D.b", "H.b->D.b"],
+        "candidates": [
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["H.b", "D.b"], "actor": "H.b"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；本例引擎完整墓用候选与之一致（仅两条）。",
+        "live_check": [
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["H.b", "D.b"], "actor": "H.b"}
+        ],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor 在 b 端（酉），答案 actor 在 a 端（丑）。"
+      },
+      "engine_fix": "同上。"
+    },
+    {
+      "case_id": "P1-H15",
+      "four_pillars": "壬午 辛亥 庚辰 丁亥",
+      "gender": "乾",
+      "answer": {
+        "a": "辰",
+        "b": "亥",
+        "actor": "辰",
+        "kind": "墓",
+        "mechanism": "墓",
+        "quote": "亥入辰墓为伤入墓",
+        "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2326"
+      },
+      "clauses": [
+        {
+          "type": "entry",
+          "text": "另外， 亥入辰墓为伤入墓",
+          "line": 2326,
+          "subject": "亥",
+          "object": "辰墓",
+          "force": "none",
+          "note": "位移句：两亥（食伤）进入辰（时支主位库）。"
+        },
+        {
+          "type": "force",
+          "text": "制了官的伤最后都落入了主位的辰墓中 ， 被辰所控制",
+          "line": 2326,
+          "subject": "辰",
+          "object": "亥",
+          "force": "tomb_controls_entrant",
+          "note": "被动式明确指出控制方是辰。"
+        },
+        {
+          "type": "force_paraphrase",
+          "text": "制火之食神最后被主位的辰土控制",
+          "line": 2328,
+          "subject": "辰",
+          "object": "亥",
+          "force": "tomb_controls_entrant",
+          "note": "言明复述，同向。"
+        }
+      ],
+      "roles": {
+        "entrant": "亥 · 庚之食伤（月支、时支）",
+        "tomb": "辰 · 时支主位库（水库）",
+        "force": "辰（库）控制亥",
+        "answer_a_semantics": "库（施力方）",
+        "answer_actor_semantics": "库"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "标注 a=辰、actor=辰 与同一行的「被辰所控制」一致；引擎候选 actor=亥（入库方），方向相反。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 维持；定向句在同一行，证据充分。",
+      "quote_gap": {
+        "grade": "same_line",
+        "issue": "所引 quote 是入墓句；同行动向句是「被辰所控制」。",
+        "suggested_quote": "被辰所控制",
+        "recommendation": "只建议；本卡不改 answers。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-baseline-v1.json（P1-H15 行）",
+        "muku_facts": ["M.b->D.b", "H.b->D.b"],
+        "candidates": [
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["H.b", "D.b"], "actor": "H.b"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；引擎另有 (Y.s, D.b) 即 壬→辰 一条，不跨答案端点。",
+        "live_check": [
+          {"kind": "muku", "members": ["Y.s", "D.b"], "actor": "Y.s"},
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["H.b", "D.b"], "actor": "H.b"}
+        ],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor 在 b 端（亥），答案 actor 在 a 端（辰）。"
+      },
+      "engine_fix": "同上。"
+    },
+    {
+      "case_id": "P1-H16",
+      "four_pillars": "戊申 甲寅 己未 辛未",
+      "gender": "坤",
+      "answer": {
+        "a": "未",
+        "b": "寅",
+        "actor": "未",
+        "kind": "墓",
+        "mechanism": "墓",
+        "quote": "此造夫星甲寅入墓于夫宫未",
+        "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4105"
+      },
+      "clauses": [
+        {
+          "type": "entry",
+          "text": "此造夫星甲寅入墓于夫宫未",
+          "line": 4105,
+          "subject": "甲寅",
+          "object": "夫宫未",
+          "force": "none",
+          "note": "位移句：夫星进入夫宫未（日支木库）。"
+        },
+        {
+          "type": "force",
+          "text": "需冲刑其墓年结婚",
+          "line": 4105,
+          "subject": "未",
+          "object": "甲寅",
+          "force": "tomb_holds_entrant",
+          "note": "「其墓」指未；冲刑的对象是墓，说明未是收藏／控制一方。"
+        },
+        {
+          "type": "force_outcome",
+          "text": "甲戌年刑开墓之流年结婚 此年 27岁 甲戌年一刑 把官星释放出来",
+          "line": 4105,
+          "subject": "未",
+          "object": "甲寅",
+          "force": "tomb_holds_entrant",
+          "note": "开墓＝释放官星，反证未收藏官星。"
+        },
+        {
+          "type": "general_usage",
+          "text": "冲其墓或冲被墓之神",
+          "line": 4099,
+          "subject": "墓",
+          "object": "被墓之神",
+          "force": "tomb_holds_entrant",
+          "note": "同页通用句式：「被墓之神」＝入库方，施动方是墓。"
+        }
+      ],
+      "roles": {
+        "entrant": "甲寅 · 己之夫星（正官，月支）",
+        "tomb": "未 · 夫宫、木库（日支；时支亦未）",
+        "force": "未（夫宫库）收藏夫星",
+        "answer_a_semantics": "库（施力方）",
+        "answer_actor_semantics": "库"
+      },
+      "verdict": "engine_wrong",
+      "verdict_reason": "标注取收藏方未；引擎候选 actor=寅（入库方），方向相反。本例没有「未墓寅」逐字定向句，依据是 L2274 的墓定义 + L4105 的收藏/释放语义 + L4099 的「被墓之神」句式。",
+      "answer_change": "none",
+      "answer_change_note": "a/b/actor 维持；证据等级最弱，建议补 quote 或加字段；若中枢要最严口径，本例外置为 sensitivity。",
+      "quote_gap": {
+        "grade": "doctrine_only",
+        "issue": "无「未墓寅」定向句；定向依据是定义句 L2274 与同页通用句式 L4099，而非本造逐字句。",
+        "suggested_quote": "冲其墓或冲被墓之神",
+        "recommendation": "只建议；本卡不改 answers。"
+      },
+      "engine_observed": {
+        "source": "META/p1-holdout-baseline-v1.json（P1-H16 行）+ 现场 engine.cli 复核",
+        "muku_facts": ["M.b->D.b", "M.b->H.b"],
+        "candidates": [
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["M.b", "H.b"], "actor": "M.b"}
+        ],
+        "candidates_scope": "评测器按 a/b 端点过滤后的视图；引擎另有 (M.s, D.b) 即 甲→未 一条，不跨答案端点。",
+        "live_check": [
+          {"kind": "muku", "members": ["M.s", "D.b"], "actor": "M.s"},
+          {"kind": "muku", "members": ["M.b", "D.b"], "actor": "M.b"},
+          {"kind": "muku", "members": ["M.s", "H.b"], "actor": "M.s"},
+          {"kind": "muku", "members": ["M.b", "H.b"], "actor": "M.b"}
+        ],
+        "baseline_direction": "reversed",
+        "baseline_direction_note": "候选 actor 在 b 端（寅），答案 actor 在 a 端（未）。"
+      },
+      "engine_fix": "同上。"
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "label_wrong": 0,
+    "engine_wrong": 4,
+    "convention_conflict": 0,
+    "overall_verdict": "engine_wrong",
+    "overall_statement": "四条墓用的 a=库、actor=库 与原文力向一致，不需要改 answers；引擎墓用候选的 members/actor 反了，应改为 (库, 入库方) / actor=库。",
+    "evidence_grades": {
+      "same_line": ["P1-H13", "P1-H15"],
+      "same_page_other_case": ["P1-H14"],
+      "doctrine_only": ["P1-H16"]
+    },
+    "why_not_label_wrong": "label_wrong 的前提是「标注把库当施力方」为错；但 L2274 墓=得到/控制/拥有/占据、L2288「未墓寅」、L2294「辰墓了丑」、L2326「被辰所控制」、L2338「丑也有墓酉之象」、任 L21/L23 都指出库是施动／控制方。把库当施力方与原文一致，故不成立。",
+    "why_not_convention_conflict": "原文确有两种句式（入墓句／库墓句），但它们不是两条力向：入墓句的动词是「入」，只给位移，不给施力；库墓句的动词是「墓」，给施力。力向唯一（库→入库方）。因此不属 direction 意义上的两读并存；真正的冲突是「标注 quote 选句」与「引擎 actor」两处工程约定，前者是证据缺口、后者是 bug。",
+    "residual_risk": "P1-H14 的定向依据在同页另一造，P1-H16 只有定义与通用句式；若中枢采用「所引句逐字明示」的最严口径，这两条应转 sensitivity（18 例分母）而不是改变 verdict。"
+  },
+  "denominator_ruling": {
+    "question": "P1 方向主分母 16（剔除四条墓）是否成立；四条墓是否该更正/剔除",
+    "current_freeze": {
+      "path": "META/p1-holdout-freeze-v2.json",
+      "denominator": 16,
+      "excluded": ["P1-H13", "P1-H14", "P1-H15", "P1-H16"],
+      "reason_in_freeze": "墓的 a=库（施力方）与引擎 actor=入库方 是约定冲突，需第三人核对原文后再定"
+    },
+    "answer": {
+      "holds_as_provisional": true,
+      "holds_as_final": false,
+      "explanation": "16 在冻结时成立（约定未定，冻结理由写明待第三人核对）。本次核对完成：a=库 与原文力向一致，引擎 actor 反了。前提消失后，H13–H16 是四条真实的方向失败，不是定义冲突；继续剔除会把这 4 条必然失败从分母里拿掉，使修复后的方向召回被机械抬高。",
+      "recommendation": "修复前重冻 v3：方向主分母 20（四条墓回归），16 保留为 sensitivity；目标 80%（16/20），kill 60%（12/20）。",
+      "not_required": "不需要改 answers；不需要改 20 条 hold-out 输入；relation coverage 口径（edge OR muku-equivalent，分母 20）不变。"
+    },
+    "consequences": {
+      "pre_fix_primary": "1/20 = 5.0%（与 raw20 相同；当前 16 口径 1/16 = 6.25% 只作敏感性）",
+      "post_fix_target": "≥16/20；kill <12/20",
+      "muku_equivalence": "不受影响：评测的 muku 命中看「m.addr ∈ a 且入库候选 ∈ b」（tools/p1_holdout_eval.py:281-287），与 actor 约定无关，12/20 不变。",
+      "confound": "P1-H13 今日 direction=no_edge 是候选覆盖缺失（两端皆体被过滤），不是 actor 反向；即使 actor 修复，H13 仍要等 T-179 的体-体/双属过滤修复才可能转为 ok。把 H13 计入 20 分母是诚实的（引擎确实没表达该关系），但解读时应注明它考的是候选覆盖。"
+    },
+    "freeze_discipline": {
+      "compliant": true,
+      "why": "freeze v2 的 discipline 第 1 条允许基于 pre-fix 基线做定义冲突/覆盖缺口的修订；本次修订发生在任何 post-fix 评分之前，且不改阈值。post-fix 仍须另存 META/p1-holdout-postfix-v1.json，不得再改分母/阈值。",
+      "if_central_declines": "若中枢维持 16 为唯一主口径，则 post-fix 报告必须同时给 raw 20 的方向数，且不得用 16 的单值宣称达到 80%。"
+    }
+  },
+  "rule_table": {
+    "spec_path": "docs/specs/actor-rules-v1.md",
+    "classes": ["合", "冲", "刑", "穿", "破", "克", "生", "化", "墓"],
+    "coverage": {
+      "with_source_ref": 9,
+      "with_positive_example": 9,
+      "with_counter_example": 9,
+      "with_engine_mapping": 9,
+      "unknown_policy": "全部 null"
+    },
+    "class_policy": {
+      "合": {"actor": "仅及物句（A合B／A合杀／B被A合去）取 A；对称合、合化、合绊、合留 → null", "engine": "wuhe/liuhe/zhi_anhe/ganzhi_zihe，actor 已为 null（正确）"},
+      "冲": {"actor": "A冲B／B被A冲 取 A；相冲／并列 → null", "engine": "chong/stem_chong，actor 已为 null（正确）"},
+      "刑": {"actor": "单字主语 A刑B／A刑开B 取 A；三刑／自刑／子卯刑／刑开墓（以组为条件）→ null", "engine": "xing，actor 已为 null（正确）"},
+      "穿": {"actor": "A穿了B／B被A穿 取 A；并列 → null", "engine": "chuan，actor 已为 null（正确）"},
+      "破": {"actor": "A破B 取 A；互破 → null", "engine": "po，actor 已为 null（正确）"},
+      "克": {"actor": "克者（主动句主语；被动句的『被』后一方）", "engine": "ke members=(克者,被克者)，actor=members[0]（正确）"},
+      "生": {"actor": "生者（主动句主语；受生句的『受』前一方是被生者，不得倒置）", "engine": "sheng members=(生者,被生者)，actor=members[0]（正确）"},
+      "化": {"actor": "化者（A化B／B被A所化）；合化成局、自化 → null", "engine": "以 sheng 边表达，actor=members[0]（生者＝化者，正确）"},
+      "墓": {"actor": "库（Y墓X／X被Y所控制／X入Y墓且 Y 为收藏方）", "engine": "墓用候选 members=(入库方,库)、actor=入库方（错，须翻转为 (库,入库方)/actor=库）"}
+    },
+    "gaps": [
+      "表外 kind 未纳入九类：三合／半合／三会／暗合／自合／伏吟／拱局。它们在本仓库关系图中多为无向边，本表按运行时一律 null 处理（见 spec §6）；若要做方向，须另立卡。",
+      "批命语言的『制』是复合语义（合制／冲制／穿制／克／墓／合杀），本表只给底层 mechanism 的 actor，不替调用方把『制』折算成单一 kind；这与 freeze v2 的『制=不过滤 kind』一致。",
+      "G3：支克干（藏干克）与支-支生边在关系图中不建边（engine/facts/structure_check.py:433-448 只作推得用），其 actor 由推得函数给（宫制星=支端）；本表不改变该约定。",
+      "墓的『应期／条件』用法（冲开墓库、库不开）不是做功方向：本表规定 actor=null，不得把开库的冲／刑字当墓的施力方。"
+    ]
+  },
+  "downstream": {
+    "must_change": [
+      "engine/facts/structure_check.py:498-506：墓用候选 members/actor 翻转（T-179 落地，本卡只给规格）。",
+      "engine/facts/structure_check.py:72 的 actor 注释措辞。",
+      "META/p1-holdout-freeze-v2.json → 建议 v3（方向主分母 20，16 为 sensitivity），在修复前冻结。",
+      "tools/p1_holdout_eval.py:41-46 的口径说明把墓写成『口径对立，不是 bug』，与本次审计相反，须改。",
+      "tests/tools/test_p1_holdout_eval.py:173-184 的旧约定 fixture 注释/构造。"
+    ],
+    "must_not_change": [
+      "META/p1-holdout-answers-v1.json（四条 a/b/actor 不变）",
+      "META/p1-holdout-v1.json（盲测输入）",
+      "引擎事实层 relations.muku 的结构（库→候选，无 actor）",
+      "muku 等价口径与 20 条关系覆盖分母"
+    ],
+    "spec_rule_to_implement": "docs/specs/actor-rules-v1.md §3 第 9 行（墓）与 §5（引擎映射）；structure_check.py 只按表实现，不按 case 调。"
+  },
+  "blockers": []
+}

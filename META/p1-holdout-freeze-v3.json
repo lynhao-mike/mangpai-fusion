@@ -1,0 +1,47 @@
+{
+  "schema": "p1-holdout-freeze/v3",
+  "frozen_at": "2026-10-29T13:20:00+08:00",
+  "supersedes": "META/p1-holdout-freeze-v2.json",
+  "based_on_baseline": "META/p1-holdout-baseline-v1.json",
+  "reason": "T-178 审计：P1-H13-H16 四条墓用 4/4 engine_wrong。原文力向=库→入库方；引擎墓用候选 members=(入库方,库)、actor=入库方，方向反了。v2 把四条当 convention_conflict 剔出方向分母，是错的；四条是真实方向失败，不得剔除。",
+  "metrics": {
+    "relation_coverage": {
+      "definition": "edge OR muku-equivalent",
+      "denominator": 20,
+      "target_pct": 90,
+      "baseline": "12/20 = 60.0%",
+      "strict_edge_secondary": "8/20 = 40.0%"
+    },
+    "direction_recall": {
+      "definition": "answer actor == engine actor; all 20 relations, including 4 muku",
+      "denominator": 20,
+      "target_pct": 80,
+      "kill_pct": 60,
+      "baseline": "1/20 = 5.0%",
+      "sensitivity_16_exclude_f28": "1/16 = 6.25% (not primary)",
+      "sensitivity_18_exclude_weak_muku": "1/18 = 5.56% (H14/H16 evidence gap)"
+    }
+  },
+  "muku_actor_correction": {
+    "engine_change": "structure_check.py:498-506 muku candidates: members=(库,入库方), actor=库, target=入库方",
+    "facts_unchanged": "relations.muku facts unchanged",
+    "labels_unchanged": "no answer edit; H13/H15 same-line quote; H14/H16 page/doctrine evidence; supplement quotes only",
+    "h13_note": "even after actor fix H13 stays no_candidate until T-179 body-body filter; do not count as actor failure"
+  },
+  "sensitivity_sets": {
+    "exclude_f28_rescue": ["P1-H17", "P1-H18", "P1-H19", "P1-H20"],
+    "exclude_weak_muku_evidence": ["P1-H14", "P1-H16"]
+  },
+  "scorer_sync": [
+    "tools/p1_holdout_eval.py comment lines 41-46 say 'convention conflict, not bug' — must be corrected to engine_wrong",
+    "tests/tools/test_p1_holdout_eval.py muku fixture encodes actor=入库方 — rewrite to new convention without weakening assertions",
+    "scorer logic (answer actor vs engine actor) unchanged; only comments/fixtures need sync"
+  ],
+  "discipline": [
+    "this is a pre-fix correction based on T-178 source audit, not post-fix tuning",
+    "post-fix must write META/p1-holdout-postfix-v1.json; do not overwrite pre-fix baseline",
+    "do not change denominators/thresholds after post-fix",
+    "hold-out is scoring-only; never use it to tune rules"
+  ],
+  "scope_warning": "The independent agent's three fixes are still insufficient for relation coverage: 3/20 require branch-ke (P1-H06/H07/H19) and the goal forbids 880 branch-ke; max relation coverage 17/20=85% <90%. Human decision required."
+}

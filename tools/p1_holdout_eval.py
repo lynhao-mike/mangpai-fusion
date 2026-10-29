@@ -41,9 +41,9 @@ kind 映射表（改这张表就是改尺子，须走任务卡；答案 `kind` �
 两处必须写进报告的口径差异
 --------------------------
 - **墓的方向**：dev 标注把入库方写 a、库写 b（`muku:{enter:a,ku:b}`）；本 hold-out 相反
-  （a = 库 = 施力方，b = 入库方）。因此 muku 检查写成「`m.addr` ∈ a，入库候选 ∈ b」。
-  引擎「墓用」候选的 `actor` 是入库方（= b），故 墓 类若命中候选，方向多为 `reversed`——这是
-  口径对立，不是 bug。
+  （a = 库 = 施力方，b = 入库方）。T-178 审计判定 **4/4 `engine_wrong`**：原文力向是库→入库方，
+  引擎墓用候选 `actor` 是入库方，方向反了；T-179 修复后应 `ok`。评分器按答案 actor 比引擎 actor，
+  逻辑不变；修复前出现 `reversed` 是引擎缺陷，不是口径对立。
 - **muku 等价口径**：dev 工具把 `relations.muku` 入库算作「边与候选都能表达」。主口径按任务卡
   §2.2 只认 `relations.edges` + `candidates`；另报 `muku_equivalent_edge_recall` 作敏感性，
   供中枢裁决，二者都在产物里，不混算。
