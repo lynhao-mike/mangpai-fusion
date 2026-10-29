@@ -43,3 +43,13 @@
 
 - 不写党势/比值/权重/浮点；不为 H02/H05 写专用规则；引擎不判穿制；
 - 不改 hold-out/answers/分母；不跑官方 P1；不 push main。
+
+## 5. 中枢裁决（2026-10-29 15:05，两个阻塞）
+
+1. **15KB：选 facade 压缩**。默认 compact 删 `candidates[].tiyong`（可由 `duan_zuogong.tiyong[addr]` 还原）；
+   `--full` 保留；15,000 门禁不动；File Scope 扩到 `engine/api/facade.py` + 测试。
+   不合并 T-179 的 sheng 双候选；不放宽 guard。
+2. **评分器 kind：通用别名，不是阈值**。引擎保留 `zhi_ke`/`gan_ke_zhi` 作为证据；
+   `tools/p1_holdout_eval.py` 的 `MECHANISM_TO_CAND_KINDS`/`base_kind` 加
+   `zhi_ke→ke`、`gan_ke_zhi→ke`（只对“克”机制），加测试；不为 case 特判。
+3. E-08 继续；dev-20 只作否决，显式输出 `META/p1-dev20-veto-v1.json` + `--artifact-label dev20_veto`。
