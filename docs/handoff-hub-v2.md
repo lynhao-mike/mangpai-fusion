@@ -137,9 +137,11 @@ n<50 → **样本不足**，不能确认也不能推翻。详见 `docs/reviews/m
 | 要找什么 | 去哪 |
 |---|---|
 | 外部复审裁决 | `docs/reviews/external-review-adjudication-v1.md` |
-| 外部方向审计 v2（最新） | `docs/reviews/external-audit-adjudication-v2.md` |
-| Golden-20（T-170） | `META/golden-20-v1.md`（待生成） |
-| 依赖审计（T-171） | `META/kill-list-dependency-audit-v1.md`（待生成） |
+| 外部方向审计 v2 | `docs/reviews/external-audit-adjudication-v2.md` |
+| **P1 方向召回裁决（最新）** | `docs/reviews/p1-direction-recall-verdict-v1.md` |
+| 独立 Agent 分支 | `..\mangpai-fusion-rethink` @ `6a40bcb5`（未合并） |
+| Golden-20（T-170，现为 dev 集） | `META/golden-20-v1.md` |
+| 依赖审计（T-171） | `META/kill-list-dependency-audit-v1.md` |
 | 错误档案（派活前必读） | `docs/reviews/failure-ledger-v1.md` |
 | 方向审计 2026-10-29 | `docs/reviews/direction-audit-2026-10-29.md` |
 | 应期首测裁决 | `docs/reviews/timing-k3-verdict-v1.md` |
