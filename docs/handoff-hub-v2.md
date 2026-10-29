@@ -144,6 +144,7 @@ n<50 → **样本不足**，不能确认也不能推翻。详见 `docs/reviews/m
 | 依赖审计（T-171） | `META/kill-list-dependency-audit-v1.md` |
 | 错误档案（派活前必读） | `docs/reviews/failure-ledger-v1.md` |
 | **第三方裁决：新开/续聊规则** | `docs/dispatch/third-party-adjudication-policy.md` |
+| **裁决过程记忆（每次裁决必读/必写）** | `docs/adjudication/log-v1.md` |
 | 方向审计 2026-10-29 | `docs/reviews/direction-audit-2026-10-29.md` |
 | 应期首测裁决 | `docs/reviews/timing-k3-verdict-v1.md` |
 | 标签可行性 | `docs/reviews/label-feasibility-verdict-v1.md` |
