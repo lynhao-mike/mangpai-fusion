@@ -110,9 +110,13 @@ n<50 → **样本不足**，不能确认也不能推翻。详见 `docs/reviews/m
 
 ## 十一、坑（继续有效）
 
+> **错误档案：`docs/reviews/failure-ledger-v1.md`。派活前先读 §0 的「12 问」。**
+> 每次新错必须追加条目，不删旧条目；被推翻的写「更正」，不覆盖原文。
+
 | 坑 | 后果 |
 |---|---|
 | 把聚合特征当断语 | 丢地址，规则再调也没有信号 |
+| 同一形式化反复试 | edge-count / 聚合特征测得再准也没信号 |
 | 相信「测试通过」 | 子代理说通过，实跑是红的 |
 | 拿旧诊断直接派活 | 造出 T-132/T-135/T-147 三张假卡 |
 | 只测「恰好正确」的样例 | can_control 漏掉 79.9% 非克对 |
@@ -126,6 +130,9 @@ n<50 → **样本不足**，不能确认也不能推翻。详见 `docs/reviews/m
 | 要找什么 | 去哪 |
 |---|---|
 | 外部复审裁决 | `docs/reviews/external-review-adjudication-v1.md` |
+| 错误档案（派活前必读） | `docs/reviews/failure-ledger-v1.md` |
+| 方向审计 2026-10-29 | `docs/reviews/direction-audit-2026-10-29.md` |
+| 应期首测裁决 | `docs/reviews/timing-k3-verdict-v1.md` |
 | 标签可行性 | `docs/reviews/label-feasibility-verdict-v1.md` |
 | 婚姻两规则首测 | `docs/reviews/product-marriage-verdict-v1.md` |
 | M2-Y-395 | `docs/reviews/m2y395-verdict-v1.md` |
