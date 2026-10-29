@@ -77,3 +77,14 @@
 
 - 不许在本卡里删除/移动任何东西。
 - 不许把「看起来没人用」当成「安全」——必须有 import/运行期证据。
+
+## 7. 中枢裁决（2026-10-29 09:30）
+
+1. **审计通过**：343 条；194 安全 / 145 有引用 / 3 尺子 / 1 不可判；首批 130；
+   4 个 481/0 硬耦合；9 tests；全量 1374/1；两次 JSON 一致。
+2. **冻结，不批量移动**：117 个脚手架测试先不动；`condition_ir` 3 个保留（tests/api 尺子）；
+   `engine/asof` 4 个保留（`chart_facts.py:463` 延迟 import）；v5/claim-rules 被门禁测试钉住。
+3. **若将来清场**：先 pilot 13 个非测试叶子（9 engine + 4 tools），移到 `archive/`、
+   跑全量 pytest + 481/0；另立卡，不碰 tests/v5/asof/condition_ir。
+4. 清场不是关键路径；先做跨派 natal-only 集与事实三原语规格。
+   详见 `docs/reviews/kill-list-archive-verdict-v1.md`。
