@@ -136,6 +136,33 @@ def test_base_kind_strips_parenthetical_suffix():
     assert mod.base_kind("muku") == "muku"
 
 
+def test_base_kind_aliases_derived_ke_only():
+    """T-183：推得候选 kind `zhi_ke`/`gan_ke_zhi` 归一到 ke，只影响「克」；映射表本身不改。"""
+    assert mod.CAND_KIND_ALIASES == {"zhi_ke": "ke", "gan_ke_zhi": "ke"}
+    assert mod.base_kind("zhi_ke") == "ke"
+    assert mod.base_kind("gan_ke_zhi") == "ke"
+    assert mod.base_kind("ke(main_qi)") == "ke"          # 与既有剥括号约定同类
+    assert mod.base_kind("wuhe") == "wuhe"               # 别名只归一到 ke
+    assert mod._kind_ok(mod.MECHANISM_TO_CAND_KINDS["克"], "zhi_ke")
+    assert mod._kind_ok(mod.MECHANISM_TO_CAND_KINDS["克"], "gan_ke_zhi")
+    assert not mod._kind_ok(mod.MECHANISM_TO_CAND_KINDS["合"], "zhi_ke")
+    assert not mod._kind_ok(mod.MECHANISM_TO_CAND_KINDS["克"], "wuhe")
+    assert mod.MECHANISM_TO_CAND_KINDS["克"] == frozenset({"ke"})            # 别名不在表里
+    assert mod.MECHANISM_TO_CAND_KINDS["合"] == frozenset({"wuhe", "liuhe"})  # 合/冲/穿不扩
+
+
+def test_derived_ke_candidate_direction_ok():
+    """T-183：机制=克 时 zhi_ke / gan_ke_zhi 候选能被评分，actor 落在 a 端即 ok。"""
+    zhi = make_facts(candidates=[cand("zhi_ke", "Y.s", "M.b", actor="Y.s")])
+    row = mod.score_relation(rel("甲", "午", mechanism="克"), zhi, case_id="T-183-ZHI")
+    assert row["candidates"] == [{"kind": "zhi_ke", "members": ["Y.s", "M.b"], "actor": "Y.s"}]
+    assert (row["candidate_hit"], row["direction"]) == (True, "ok")
+
+    gan = make_facts(candidates=[cand("gan_ke_zhi", "Y.s", "M.b", actor="Y.s")])
+    row = mod.score_relation(rel("甲", "午", mechanism="克"), gan, case_id="T-183-GAN")
+    assert (row["candidate_hit"], row["direction"]) == (True, "ok")
+
+
 # ── 3. 逐例五值 ────────────────────────────────────────────────────────────
 
 def test_all_hit_direction_ok():
@@ -482,6 +509,52 @@ def test_cli_exit_2_on_unreadable_input(tmp_path, capsys):
                    "--out-json", str(tmp_path / "o.json"), "--out-md", str(tmp_path / "o.md")])
     assert rc == 2
     assert "输入不合口径" in capsys.readouterr().err
+
+
+# ── 6b. E-08：默认不写冻结基线 / 已存在拒绝覆盖 / --force ─────────────────────
+
+def test_cli_default_writes_no_artifact(monkeypatch, tmp_path, capsys):
+    """E-08：不传 --out-json/--out-md 时只打 stdout，绝不写默认 META 基线路径。"""
+    holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
+    monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
+    default_json, default_md = tmp_path / "baseline.json", tmp_path / "baseline.md"
+    monkeypatch.setattr(mod, "DEFAULT_OUT_JSON", default_json)
+    monkeypatch.setattr(mod, "DEFAULT_OUT_MD", default_md)
+
+    assert mod.main(["--holdout", str(holdout_path), "--answers", str(answers_path)]) == 0
+    assert not default_json.exists() and not default_md.exists()
+    assert "未写盘" in capsys.readouterr().out
+
+
+def test_cli_refuses_to_overwrite_without_force(monkeypatch, tmp_path, capsys):
+    """E-08：目标已存在且未 --force → 退出 2、原文不动、另一个目标也不写。"""
+    holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
+    monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
+    out_json, out_md = tmp_path / "o.json", tmp_path / "o.md"
+    out_json.write_text("SENTINEL", encoding="utf-8")
+
+    assert mod.main(["--holdout", str(holdout_path), "--answers", str(answers_path),
+                     "--out-json", str(out_json), "--out-md", str(out_md)]) == 2
+    assert out_json.read_text(encoding="utf-8") == "SENTINEL"
+    assert not out_md.exists()
+    assert "拒绝覆盖" in capsys.readouterr().err
+
+
+def test_cli_force_overwrites_existing(monkeypatch, tmp_path):
+    """E-08：显式 --force 才允许覆盖已存在目标。"""
+    holdout_path, answers_path = _write(tmp_path, [_case("P1-H01")])
+    monkeypatch.setattr(mod, "facts_for", lambda pillars, gender: FACTS)
+    out_json, out_md = tmp_path / "o.json", tmp_path / "o.md"
+    out_json.write_text("SENTINEL", encoding="utf-8")
+    out_md.write_text("SENTINEL", encoding="utf-8")
+
+    argv = ["--holdout", str(holdout_path), "--answers", str(answers_path),
+            "--out-json", str(out_json), "--out-md", str(out_md), "--force",
+            "--artifact-label", "dev20_veto"]
+    assert mod.main(argv) == 0
+    payload = json.loads(out_json.read_text(encoding="utf-8"))
+    assert payload["artifact"] == "dev20_veto"
+    assert "dev20_veto" in out_md.read_text(encoding="utf-8")
 
 
 # ── 7. 引擎冒烟（只断言不变量）─────────────────────────────────────────────

@@ -97,7 +97,7 @@ def _compact_structures(structures: list[dict[str, Any]]) -> list[dict[str, Any]
 
 
 def _compact_zuogong(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    # ponytail: chars/source_refs/notes 仍不发给 Agent；tiyong 是 zuogong 原子判 target 的输入，必须保留
+    # ponytail: chars/source_refs/notes 仍不发给 Agent；全量视图保留 tiyong（原子判 target 的输入）
     keep = ("mode", "relation_kind", "edge_id", "members", "ten_gods",
             "tiyong", "actor", "binzhu", "distance")
     # actor 无方向时为 null，仍保留键，供下游 cand["actor"] 直接取
@@ -109,7 +109,9 @@ def _compact_zuogong(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 # Agent 视图削掉的字段：全部可由保留字段唯一还原，需要原件时用 `engine.cli all --full`
 # T-179：候选扩容后默认视图重新压回 15KB；只削可还原字段，不碰事实层与全量视图。
-_AGENT_OMIT_CANDIDATE_KEYS = frozenset({"binzhu", "distance", "ten_gods"})
+# T-183：支克/干克支候选再加 6 条后，候选 tiyong 也改为可还原（duan_zuogong.tiyong[addr]），
+#        全量视图（analyze_facts / --full）仍逐字段保留，原子判 target 仍用全量视图。
+_AGENT_OMIT_CANDIDATE_KEYS = frozenset({"binzhu", "distance", "ten_gods", "tiyong"})
 _AGENT_OMIT_EDGE_KEYS = frozenset({"chars", "between", "layer", "scope", "distance"})
 _AGENT_OMIT_RELATION_KEYS = frozenset({"nodes"})
 _AGENT_OMIT_PILLAR_KEYS = frozenset({"wuxing", "yinyang"})
@@ -131,13 +133,13 @@ def compact_for_agent(payload: dict[str, Any]) -> dict[str, Any]:
     - candidates.binzhu：由 (addr, layer) 唯一决定（chart_facts.binzhu_side 纯函数）
     - candidates.distance：由 members 的柱序差决定
     - candidates.ten_gods：由 members 查 chart.pillars[].stem.ten_god / branch.main_ten_god
+    - candidates.tiyong：由 members 逐地址查 duan_zuogong.tiyong[addr]（同一映射，T-183）
     - relations.nodes：addr → 字，见 chart.pillars[].stem/branch.char
     - relations.edges[].chars / between：由 members 查 chart / 柱序得
     - relations.edges[].layer / scope / distance：由 members 的地址前缀、后缀与柱序得
     - chart.pillars[].stem/branch.wuxing / yinyang：由 char 查五行、阴阳表
 
-    tiyong / actor / mode / edge_id / members 不削：tiyong 是 zuogong 原子判 target 的输入，
-    actor 要走 null 语义，mode/edge_id 是候选身份。
+    actor / mode / edge_id / members 不削：actor 要走 null 语义，mode/edge_id 是候选身份。
     """
     out = dict(payload)
     duan = payload.get("duan_zuogong")

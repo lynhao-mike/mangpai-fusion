@@ -63,7 +63,7 @@ class BinzhuReading(_Dict):
 @dataclass(frozen=True)
 class ZuogongCandidate(_Dict):
     mode: Literal["制用", "化用", "生泄用", "合用", "墓用", "sheng"]
-    relation_kind: str                           # 边 kind；推得关系为 "sheng(main_qi)"；墓库为 "muku"
+    relation_kind: str                           # 边 kind；推得关系为 "sheng(main_qi)"/"canggan_ke"/"zhi_ke"/"gan_ke_zhi"；墓库为 "muku"
     edge_id: Optional[str]                       # 推得关系与墓库候选为 None
     members: tuple[Addr, ...]
     chars: tuple[str, ...]
@@ -467,6 +467,28 @@ def _derived_canggan_ke(chart: ChartFacts) -> list[tuple[Addr, Addr, str, str]]:
     return out
 
 
+def _derived_zhi_ke(chart: ChartFacts) -> list[tuple[Addr, Addr, Optional[int]]]:
+    """关系图不建地支克边（G3）：按本气五行推得地支两两相克，返回 (克方, 被克方, 柱距)。"""
+    out: list[tuple[Addr, Addr, Optional[int]]] = []
+    for p, q in combinations(chart.pillars, 2):
+        rel = wuxing_relation(ZHI_TO_WUXING[p.branch.char], ZHI_TO_WUXING[q.branch.char])
+        if rel == "克":
+            out.append((p.branch.addr, q.branch.addr, q.index - p.index))
+        elif rel == "被克":
+            out.append((q.branch.addr, p.branch.addr, q.index - p.index))
+    return out
+
+
+def _derived_gan_ke_zhi(chart: ChartFacts) -> list[tuple[Addr, Addr, int]]:
+    """关系图不建「天干→地支」克边：按本气五行推得天干克地支（含同柱盖头），返回 (干, 支, 柱距)。"""
+    out: list[tuple[Addr, Addr, int]] = []
+    for p in chart.pillars:
+        for q in chart.pillars:
+            if wuxing_relation(GAN_TO_WUXING[p.stem.char], ZHI_TO_WUXING[q.branch.char]) == "克":
+                out.append((p.stem.addr, q.branch.addr, abs(p.index - q.index)))
+    return out
+
+
 def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tuple[ZuogongCandidate, ...]:
     """扫描关系与同柱/相邻柱相生，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。"""
     chars = dict(graph.nodes)
@@ -494,18 +516,31 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
             return "化用", (dst, src), dst
         return "生泄用", (src, dst), src
 
+    def emit_zhi_edge(e: Edge) -> None:
+        """关系图上的克/冲/刑/穿边 → 制用候选；仍只有 ke 有 actor（T-178 契约）。"""
+        actor = e.members[0] if e.kind == "ke" else None
+        notes = [f"用克体（{gods[actor]}克{gods[e.members[1]]}）"] if actor and ty[actor] == "用" else []
+        emit("制用", e.kind, e.id, (e.members[0], e.members[1]), actor, e.distance, e.source_refs, notes)
+
+    # 同一对天干既有 wuhe 又有 ke 时，ke 候选排在 wuhe 前（不改 RelationGraph.edges，不去重）
+    ke_by_pair = {frozenset(e.members): e for e in graph.edges if e.kind == "ke" and len(e.members) == 2}
+    emitted_ke: set[str] = set()
     for e in graph.edges:
         if len(e.members) != 2:
             continue
         members = (e.members[0], e.members[1])
         if e.kind in _ZHI_KINDS:
-            actor = e.members[0] if e.kind == "ke" else None
-            notes = [f"用克体（{gods[actor]}克{gods[e.members[1]]}）"] if actor and ty[actor] == "用" else []
-            emit("制用", e.kind, e.id, members, actor, e.distance, e.source_refs, notes)
+            if e.id in emitted_ke:
+                continue
+            emit_zhi_edge(e)
         elif e.kind == "sheng":
             mode, s_members, s_actor = sheng_view(*members)
             emit(mode, e.kind, e.id, s_members, s_actor, e.distance, e.source_refs, [])
         elif e.kind in _HE_KINDS:
+            ke = ke_by_pair.get(frozenset(members))
+            if ke is not None and ke.id not in emitted_ke:
+                emit_zhi_edge(ke)
+                emitted_ke.add(ke.id)
             emit("合用", e.kind, e.id, members, None, e.distance, e.source_refs, [])
 
     for src, dst, dist in _derived_sheng(chart):
@@ -525,6 +560,14 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
         dist = abs(_PILLAR_ORDER[br.split(".", 1)[0]] - _PILLAR_ORDER[st.split(".", 1)[0]])
         emit("制用", "canggan_ke", None, (br, st), br, dist, (),
              [f"宫制星：{chars[br]}藏{via}克{chars[st]}（{qi[0]}气）"])
+
+    for src, dst, dist in _derived_zhi_ke(chart):
+        emit("制用", "zhi_ke", None, (src, dst), src, abs(dist) if dist is not None else None, (),
+             ["关系图不建地支克边（G3），按本气五行推得"])
+
+    for st, br, dist in _derived_gan_ke_zhi(chart):
+        emit("制用", "gan_ke_zhi", None, (st, br), st, dist, (),
+             ["关系图不建「干→支」克边，按本气五行推得（同柱为盖头）"])
 
     for m in graph.muku:
         for c in m.candidates:

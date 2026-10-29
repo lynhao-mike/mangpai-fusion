@@ -33,12 +33,15 @@ kind 映射表（改这张表就是改尺子，须走任务卡；答案 `kind` �
     刑         xing                   同左                    三刑/自刑/子卯刑
     穿         chuan                  同左                    六穿（害）
     破         po                     同左                    六破
-    克         ke                     同左                    只在同层建边：支不建克边（G3）
+    克         ke                     同左 + 别名             只在同层建边：支/干→支不建克边（G3）；
+                                                              推得候选 `zhi_ke`/`gan_ke_zhi` 按别名视同 `ke`（T-183，只影响「克」）
     生         sheng                  同左                    sheng(main_qi) 去掉括号后缀后同名
     化         sheng                  同左                    化=被化者→化者；引擎无「化」边，化用候选 actor=化者（T-181）
     墓         （空：引擎不建墓边）     muku                    引擎只有 relations.muku 与「墓用」候选；主口径不计 muku 为边
 
   未登记的值一律 `ValueError`，不静默当「不过滤」——尺子不认的答案不许悄悄抬高召回。
+  候选 kind 的**通用别名**（`CAND_KIND_ALIASES`）：`zhi_ke`/`gan_ke_zhi` → `ke`，与
+  `sheng(main_qi)` 剥括号同类；只归一到引擎已有的机械 kind，不是按 case 特判，也不改任何 mechanism 映射。
 
 三处必须写进报告的口径差异
 --------------------------
@@ -59,12 +62,14 @@ kind 映射表（改这张表就是改尺子，须走任务卡；答案 `kind` �
     python -m tools.p1_holdout_eval --holdout META/p1-holdout-v1.json --answers META/p1-holdout-answers-v1.json
     python -m tools.p1_holdout_eval ... --artifact-label official_p1   # 正式 P1；诊断用 post_fix_*
     python -m tools.p1_holdout_eval ... --json          # stdout 打完整 JSON
-    python -m tools.p1_holdout_eval ... --out-json <p> --out-md <p>   # 改产物路径（测试用）
+    python -m tools.p1_holdout_eval ... --out-json <p> --out-md <p>   # 显式写产物（已存在须 --force）
 
-默认写 `META/p1-holdout-baseline-v1.json` + `.md`；产物**不含时间戳**，同一引擎两次运行逐字节一致。
+**不传 `--out-json` / `--out-md` 时只打 stdout，不写任何文件**（E-08：默认不再覆盖冻结基线
+`META/p1-holdout-baseline-v1.*`）。显式传路径才写；目标已存在且未传 `--force` 时拒绝覆盖。
+产物**不含时间戳**，同一引擎同一 `--artifact-label` 两次运行逐字节一致。
 `--artifact-label` 默认 `pre_fix_baseline`；正式 P1 用 `official_p1`，诊断用 `post_fix_candidates` /
 `post_fix_hua`。标签写进 JSON 的 `artifact`、MD 头与控制台标题。
-退出码：0 = 20 条全部评到；2 = 输入不合口径（case 不匹配 / 端点未解析 / kind 未登记）。
+退出码：0 = 20 条全部评到；2 = 输入不合口径（case 不匹配 / 端点未解析 / kind 未登记）或目标已存在未 --force。
 """
 from __future__ import annotations
 
@@ -84,6 +89,7 @@ from engine.api.facade import analyze_facts, compact_for_agent
 
 DEFAULT_HOLDOUT = ROOT / "META" / "p1-holdout-v1.json"
 DEFAULT_ANSWERS = ROOT / "META" / "p1-holdout-answers-v1.json"
+#: 冻结基线产物路径。只作文档/测试引用；CLI 默认**不写**（E-08），要写须显式 `--out-json/--out-md`。
 DEFAULT_OUT_JSON = ROOT / "META" / "p1-holdout-baseline-v1.json"
 DEFAULT_OUT_MD = ROOT / "META" / "p1-holdout-baseline-v1.md"
 
@@ -208,9 +214,15 @@ def resolve(spec: str, table: list[dict[str, str]]) -> set[str]:
     return {r["addr"] for r in table if r["ten_god"] in gods}
 
 
+#: 推得关系的证据 kind → 引擎已有机械 kind（T-183）。与 `sheng(main_qi)` 剥括号是同一套归一：
+#: 只把「支克支 / 干克支」的推得候选归到 `ke`，因此只影响 mechanism=克 的匹配，不改合/冲/穿/刑/墓。
+CAND_KIND_ALIASES: dict[str, str] = {"zhi_ke": "ke", "gan_ke_zhi": "ke"}
+
+
 def base_kind(raw: str) -> str:
-    """候选 kind 可能带 `sheng(main_qi)` 后缀，比对只取主名（同 dev `_kind`）。"""
-    return str(raw).split("(")[0]
+    """候选 kind 比对口径：先剥 `sheng(main_qi)` 括号后缀，再按通用别名归到引擎机械 kind。"""
+    base = str(raw).split("(")[0]
+    return CAND_KIND_ALIASES.get(base, base)
 
 
 def _spans(members: list[str], a: set[str], b: set[str]) -> bool:
@@ -571,8 +583,10 @@ def render_md(result: dict[str, Any]) -> str:
         "## 5. 复跑",
         "",
         "```bash",
-        "python -m tools.p1_holdout_eval --holdout META/p1-holdout-v1.json --answers META/p1-holdout-answers-v1.json",
-        "python -m tools.p1_holdout_eval ... --json   # stdout 打完整 JSON",
+        "python -m tools.p1_holdout_eval --holdout META/p1-holdout-v1.json --answers META/p1-holdout-answers-v1.json"
+        " \\",
+        "    --out-json <p.json> --out-md <p.md> --artifact-label <label>   # 显式写产物；已存在须 --force",
+        "python -m tools.p1_holdout_eval ... --json   # 只打 stdout，不写盘（E-08 默认）",
         "```",
         "",
         "同一引擎两次运行产物逐字节一致（无时间戳、地址集合排序、case 顺序取 answers 文件顺序）。",
@@ -587,13 +601,23 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--holdout", type=Path, default=DEFAULT_HOLDOUT)
     ap.add_argument("--answers", type=Path, default=DEFAULT_ANSWERS)
-    ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT_JSON)
-    ap.add_argument("--out-md", type=Path, default=DEFAULT_OUT_MD)
+    ap.add_argument("--out-json", type=Path, default=None,
+                    help="JSON 产物路径；不传则只打 stdout，不写 META 冻结基线（E-08）")
+    ap.add_argument("--out-md", type=Path, default=None,
+                    help="Markdown 产物路径；不传则只打 stdout，不写 META 冻结基线（E-08）")
+    ap.add_argument("--force", action="store_true",
+                    help="允许覆盖已存在的 --out-json/--out-md 目标（默认拒绝，E-08）")
     ap.add_argument("--artifact-label", default=DEFAULT_ARTIFACT_LABEL,
                     help="产物标签，写进 JSON 的 artifact 与控制台标题（默认 pre_fix_baseline；"
                          "正式 P1 用 official_p1，诊断用 post_fix_candidates / post_fix_hua）")
     ap.add_argument("--json", action="store_true", help="stdout 打完整 JSON（默认打一行摘要）")
     args = ap.parse_args(argv)
+
+    existing = [p for p in (args.out_json, args.out_md) if p is not None and p.exists()]
+    if existing and not args.force:
+        print("[p1_holdout_eval] 目标已存在，拒绝覆盖（确认覆盖请加 --force）："
+              + "；".join(str(p) for p in existing), file=sys.stderr)
+        return 2
 
     try:
         result = run(args.holdout, args.answers, artifact_label=args.artifact_label)
@@ -602,10 +626,15 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     payload = json.dumps(result, ensure_ascii=False, indent=1) + "\n"
-    args.out_json.parent.mkdir(parents=True, exist_ok=True)
-    args.out_json.write_text(payload, encoding="utf-8")
-    args.out_md.parent.mkdir(parents=True, exist_ok=True)
-    args.out_md.write_text(render_md(result), encoding="utf-8")
+    written: list[Path] = []
+    if args.out_json is not None:
+        args.out_json.parent.mkdir(parents=True, exist_ok=True)
+        args.out_json.write_text(payload, encoding="utf-8")
+        written.append(args.out_json)
+    if args.out_md is not None:
+        args.out_md.parent.mkdir(parents=True, exist_ok=True)
+        args.out_md.write_text(render_md(result), encoding="utf-8")
+        written.append(args.out_md)
 
     primary = result["primary"]
     if args.json:
@@ -616,7 +645,8 @@ def main(argv: list[str] | None = None) -> int:
               f"candidate {primary['candidate_recall']} ({_pct_text(primary['candidate_recall_pct'])}) · "
               f"directed {primary['directed_recall']} ({_pct_text(primary['directed_recall_pct'])})")
         print(f"方向分布：{primary['direction_breakdown']}")
-        print(f"写盘：{args.out_json}；{args.out_md}")
+        print("写盘：" + "；".join(str(p) for p in written) if written
+              else "未写盘：未传 --out-json/--out-md（只打 stdout）")
 
     check = result["denominator_check"]
     if not check["ok"]:
