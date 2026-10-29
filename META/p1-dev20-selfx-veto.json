@@ -1,0 +1,1104 @@
+{
+ "schema_version": "p1-holdout-baseline/v1",
+ "task": "T-177",
+ "artifact": "dev20_selfx_veto",
+ "note": "当前引擎的评分产物，口径标签见 `artifact`（默认 pre_fix_baseline = 修复前基线）；三处修复落地后必须整体重跑覆盖，本表数字不得跨标签当修复后结果引用。分母是冻结 hold-out 的关系数，不是 dev 33 条。",
+ "inputs": {
+  "holdout": "META/p1-holdout-v1.json",
+  "answers": "META/p1-holdout-answers-v1.json",
+  "sha256": {
+   "holdout": "593f4dbea76a4959550c326eea31a8d9feae895cb9272028813982de96bbf045",
+   "answers": "b1075a394dc1954f27e7de1b06b38283174223e223e3d6b17993723bef37762f"
+  },
+  "cases": 20,
+  "relations": 20
+ },
+ "scoring": {
+  "mechanism_to_edge_kinds": {
+   "制": "any",
+   "合": [
+    "liuhe",
+    "wuhe"
+   ],
+   "冲": [
+    "chong",
+    "stem_chong"
+   ],
+   "刑": [
+    "xing"
+   ],
+   "穿": [
+    "chuan"
+   ],
+   "破": [
+    "po"
+   ],
+   "克": [
+    "ke"
+   ],
+   "生": [
+    "sheng"
+   ],
+   "化": [
+    "sheng"
+   ],
+   "墓": []
+  },
+  "mechanism_to_candidate_kinds": {
+   "制": "any",
+   "合": [
+    "liuhe",
+    "wuhe"
+   ],
+   "冲": [
+    "chong",
+    "stem_chong"
+   ],
+   "刑": [
+    "xing"
+   ],
+   "穿": [
+    "chuan"
+   ],
+   "破": [
+    "po"
+   ],
+   "克": [
+    "ke"
+   ],
+   "生": [
+    "sheng"
+   ],
+   "化": [
+    "sheng"
+   ],
+   "墓": [
+    "muku"
+   ]
+  },
+  "kind_enum_fallback": {
+   "制": "any",
+   "化": [
+    "sheng"
+   ],
+   "墓": [],
+   "救应": "any"
+  },
+  "direction_rule": "候选 actor ∈ a 端地址 = ok；∈ b 端 = reversed；候选非空但 actor 为空或不在两端 = actor_none；有边无候选 = no_candidate；边与候选皆无 = no_edge",
+  "muku_convention": "engine/muku/ 与 dev 相反：本 hold-out a = 库（施力方）、b = 入库方；muku 只进 muku_equivalent_edge_recall 敏感性，不进主口径",
+  "no_dev_comparison": true,
+  "dev_33_not_used": true
+ },
+ "denominator_check": {
+  "relations": 20,
+  "scored": 20,
+  "endpoint_absent": [],
+  "ok": true
+ },
+ "primary": {
+  "scored": 20,
+  "directed": 20,
+  "edge_recall": "8/20",
+  "edge_recall_pct": 40.0,
+  "candidate_recall": "20/20",
+  "candidate_recall_pct": 100.0,
+  "directed_recall": "13/20",
+  "directed_recall_pct": 65.0,
+  "direction_breakdown": {
+   "actor_none": 6,
+   "ok": 13,
+   "reversed": 1
+  },
+  "muku_equivalent_edge_recall": "12/20",
+  "muku_equivalent_edge_recall_pct": 60.0
+ },
+ "sensitivity_exclude_f28_rescue": {
+  "scored": 16,
+  "directed": 16,
+  "edge_recall": "6/16",
+  "edge_recall_pct": 37.5,
+  "candidate_recall": "16/16",
+  "candidate_recall_pct": 100.0,
+  "directed_recall": "10/16",
+  "directed_recall_pct": 62.5,
+  "direction_breakdown": {
+   "actor_none": 5,
+   "ok": 10,
+   "reversed": 1
+  },
+  "muku_equivalent_edge_recall": "10/16",
+  "muku_equivalent_edge_recall_pct": 62.5
+ },
+ "sensitivity_denominator": 16,
+ "cases": [
+  {
+   "case_id": "P1-H01",
+   "category": "制",
+   "a": "子",
+   "b": "午",
+   "kind": "制",
+   "mechanism": "制",
+   "actor": "子",
+   "gender_used": "乾",
+   "quote": "年上子伤制午有功。",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2246",
+   "a_addrs": [
+    "Y.b"
+   ],
+   "b_addrs": [
+    "D.b"
+   ],
+   "kind_basis": "mechanism:制",
+   "kind_filter": "any",
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e011"
+   ],
+   "candidates": [
+    {
+     "kind": "chong",
+     "members": [
+      "Y.b",
+      "D.b"
+     ],
+     "actor": null
+    },
+    {
+     "kind": "zhi_ke",
+     "members": [
+      "Y.b",
+      "D.b"
+     ],
+     "actor": "Y.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H02",
+   "category": "制",
+   "a": "酉",
+   "b": "戌",
+   "kind": "制",
+   "mechanism": "穿",
+   "actor": "酉",
+   "gender_used": "乾",
+   "quote": "戌酉穿， 羊刃穿了官杀库",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2252",
+   "a_addrs": [
+    "H.b"
+   ],
+   "b_addrs": [
+    "M.b"
+   ],
+   "kind_basis": "mechanism:穿",
+   "kind_filter": [
+    "chuan"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e013"
+   ],
+   "candidates": [
+    {
+     "kind": "chuan",
+     "members": [
+      "M.b",
+      "H.b"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  },
+  {
+   "case_id": "P1-H03",
+   "category": "制",
+   "a": "丙",
+   "b": "辛",
+   "kind": "制",
+   "mechanism": "合",
+   "actor": "丙",
+   "gender_used": "乾",
+   "quote": "丙辛合意在去财。 为劫去财。",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2408",
+   "a_addrs": [
+    "Y.s"
+   ],
+   "b_addrs": [
+    "M.s"
+   ],
+   "kind_basis": "mechanism:合",
+   "kind_filter": [
+    "liuhe",
+    "wuhe"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e001"
+   ],
+   "candidates": [
+    {
+     "kind": "wuhe",
+     "members": [
+      "Y.s",
+      "M.s"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  },
+  {
+   "case_id": "P1-H04",
+   "category": "制",
+   "a": "巳",
+   "b": "申",
+   "kind": "制",
+   "mechanism": "合",
+   "actor": "巳",
+   "gender_used": "乾",
+   "quote": "巳 申合， 制了劫和印",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2444",
+   "a_addrs": [
+    "D.b"
+   ],
+   "b_addrs": [
+    "Y.b"
+   ],
+   "kind_basis": "mechanism:合",
+   "kind_filter": [
+    "liuhe",
+    "wuhe"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e008"
+   ],
+   "candidates": [
+    {
+     "kind": "liuhe",
+     "members": [
+      "Y.b",
+      "D.b"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  },
+  {
+   "case_id": "P1-H05",
+   "category": "制",
+   "a": "午",
+   "b": "子",
+   "kind": "制",
+   "mechanism": "冲",
+   "actor": "午",
+   "gender_used": "坤",
+   "quote": "壬被丙冲制， 子被午冲制。",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2704",
+   "a_addrs": [
+    "M.b"
+   ],
+   "b_addrs": [
+    "Y.b"
+   ],
+   "kind_basis": "mechanism:冲",
+   "kind_filter": [
+    "chong",
+    "stem_chong"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e008"
+   ],
+   "candidates": [
+    {
+     "kind": "chong",
+     "members": [
+      "Y.b",
+      "M.b"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  },
+  {
+   "case_id": "P1-H06",
+   "category": "制",
+   "a": "午",
+   "b": "酉",
+   "kind": "制",
+   "mechanism": "克",
+   "actor": "午",
+   "gender_used": "乾",
+   "quote": "要用坐下的午火， 因此此造是财制印",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2932",
+   "a_addrs": [
+    "H.b"
+   ],
+   "b_addrs": [
+    "D.b",
+    "M.b"
+   ],
+   "kind_basis": "mechanism:克",
+   "kind_filter": [
+    "ke"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "zhi_ke",
+     "members": [
+      "H.b",
+      "M.b"
+     ],
+     "actor": "H.b"
+    },
+    {
+     "kind": "zhi_ke",
+     "members": [
+      "H.b",
+      "D.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H07",
+   "category": "制",
+   "a": "戊",
+   "b": "子",
+   "kind": "制",
+   "mechanism": "克",
+   "actor": "戊",
+   "gender_used": "坤",
+   "quote": "夫妻宫透出来的用神戊土伤官，制去忌神夫星七杀",
+   "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L353",
+   "a_addrs": [
+    "M.s"
+   ],
+   "b_addrs": [
+    "M.b"
+   ],
+   "kind_basis": "mechanism:克",
+   "kind_filter": [
+    "ke"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "gan_ke_zhi",
+     "members": [
+      "M.s",
+      "M.b"
+     ],
+     "actor": "M.s"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H08",
+   "category": "制",
+   "a": "酉",
+   "b": "卯",
+   "kind": "制",
+   "mechanism": "冲",
+   "actor": "酉",
+   "gender_used": "乾",
+   "quote": "卯酉冲制官了",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L5727",
+   "a_addrs": [
+    "Y.b"
+   ],
+   "b_addrs": [
+    "M.b"
+   ],
+   "kind_basis": "mechanism:冲",
+   "kind_filter": [
+    "chong",
+    "stem_chong"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e007"
+   ],
+   "candidates": [
+    {
+     "kind": "chong",
+     "members": [
+      "Y.b",
+      "M.b"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  },
+  {
+   "case_id": "P1-H09",
+   "category": "化",
+   "a": "巳",
+   "b": "卯",
+   "kind": "化",
+   "mechanism": "化",
+   "actor": "巳",
+   "gender_used": "乾",
+   "quote": "巳化尽旺杀生身",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2186",
+   "a_addrs": [
+    "D.b",
+    "H.b",
+    "Y.b"
+   ],
+   "b_addrs": [
+    "M.b"
+   ],
+   "kind_basis": "mechanism:化",
+   "kind_filter": [
+    "sheng"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "Y.b",
+      "M.b"
+     ],
+     "actor": "Y.b"
+    },
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "D.b",
+      "M.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "H.b",
+      "M.b"
+     ],
+     "actor": "H.b"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "M.b",
+      "Y.b"
+     ],
+     "actor": "M.b"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "M.b",
+      "D.b"
+     ],
+     "actor": "M.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H10",
+   "category": "化",
+   "a": "午",
+   "b": "寅",
+   "kind": "化",
+   "mechanism": "化",
+   "actor": "午",
+   "gender_used": "乾",
+   "quote": "午火印星化杀生身主贵 甲寅七杀被旺火所化",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3055",
+   "a_addrs": [
+    "D.b",
+    "M.b",
+    "Y.b"
+   ],
+   "b_addrs": [
+    "H.b"
+   ],
+   "kind_basis": "mechanism:化",
+   "kind_filter": [
+    "sheng"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "Y.b",
+      "H.b"
+     ],
+     "actor": "Y.b"
+    },
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "M.b",
+      "H.b"
+     ],
+     "actor": "M.b"
+    },
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "D.b",
+      "H.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "H.b",
+      "D.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H11",
+   "category": "化",
+   "a": "辰",
+   "b": "巳",
+   "kind": "化",
+   "mechanism": "化",
+   "actor": "辰",
+   "gender_used": "乾",
+   "quote": "辰土化杀生身 辰也做功",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L3233",
+   "a_addrs": [
+    "H.b"
+   ],
+   "b_addrs": [
+    "Y.b"
+   ],
+   "kind_basis": "mechanism:化",
+   "kind_filter": [
+    "sheng"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "H.b",
+      "Y.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H12",
+   "category": "化",
+   "a": "寅",
+   "b": "子",
+   "kind": "化",
+   "mechanism": "化",
+   "actor": "寅",
+   "gender_used": "乾",
+   "quote": "财的源头酉被巳制，财子水被寅化",
+   "source_ref": "sources/duan/MinerU_markdown_19.《盲派高级班面授班笔记》卜文(段建业)_2056045264046317568.md:L127",
+   "a_addrs": [
+    "H.b"
+   ],
+   "b_addrs": [
+    "D.b"
+   ],
+   "kind_basis": "mechanism:化",
+   "kind_filter": [
+    "sheng"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "D.b",
+      "H.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "D.b",
+      "H.b"
+     ],
+     "actor": "D.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "reversed"
+  },
+  {
+   "case_id": "P1-H13",
+   "category": "墓",
+   "a": "辰",
+   "b": "丑",
+   "kind": "墓",
+   "mechanism": "墓",
+   "actor": "辰",
+   "gender_used": "乾",
+   "quote": "二是丑入辰墓， 为食伤库入了财库",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2294",
+   "a_addrs": [
+    "H.b",
+    "Y.b"
+   ],
+   "b_addrs": [
+    "D.b"
+   ],
+   "kind_basis": "mechanism:墓",
+   "kind_filter": [],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "muku",
+     "members": [
+      "Y.b",
+      "D.b"
+     ],
+     "actor": "Y.b"
+    },
+    {
+     "kind": "muku",
+     "members": [
+      "H.b",
+      "D.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [
+    "D.b->Y.b",
+    "D.b->H.b"
+   ],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H14",
+   "category": "墓",
+   "a": "丑",
+   "b": "酉",
+   "kind": "墓",
+   "mechanism": "墓",
+   "actor": "丑",
+   "gender_used": "乾",
+   "quote": "酉入坐下的丑库",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2300",
+   "a_addrs": [
+    "D.b"
+   ],
+   "b_addrs": [
+    "H.b",
+    "M.b"
+   ],
+   "kind_basis": "mechanism:墓",
+   "kind_filter": [],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "muku",
+     "members": [
+      "D.b",
+      "M.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "muku",
+     "members": [
+      "D.b",
+      "H.b"
+     ],
+     "actor": "D.b"
+    }
+   ],
+   "muku_hits": [
+    "M.b->D.b",
+    "H.b->D.b"
+   ],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H15",
+   "category": "墓",
+   "a": "辰",
+   "b": "亥",
+   "kind": "墓",
+   "mechanism": "墓",
+   "actor": "辰",
+   "gender_used": "乾",
+   "quote": "亥入辰墓为伤入墓",
+   "source_ref": "sources/duan/MinerU_markdown_22.盲派初级命理学_2056045493286002688.md:L2326",
+   "a_addrs": [
+    "D.b"
+   ],
+   "b_addrs": [
+    "H.b",
+    "M.b"
+   ],
+   "kind_basis": "mechanism:墓",
+   "kind_filter": [],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "muku",
+     "members": [
+      "D.b",
+      "M.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "muku",
+     "members": [
+      "D.b",
+      "H.b"
+     ],
+     "actor": "D.b"
+    }
+   ],
+   "muku_hits": [
+    "M.b->D.b",
+    "H.b->D.b"
+   ],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H16",
+   "category": "墓",
+   "a": "未",
+   "b": "寅",
+   "kind": "墓",
+   "mechanism": "墓",
+   "actor": "未",
+   "gender_used": "坤",
+   "quote": "此造夫星甲寅入墓于夫宫未",
+   "source_ref": "sources/duan/MinerU_markdown_23.盲派中级命理学_2056045463376420864.md:L4105",
+   "a_addrs": [
+    "D.b",
+    "H.b"
+   ],
+   "b_addrs": [
+    "M.b"
+   ],
+   "kind_basis": "mechanism:墓",
+   "kind_filter": [],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "muku",
+     "members": [
+      "D.b",
+      "M.b"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "muku",
+     "members": [
+      "H.b",
+      "M.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [
+    "M.b->D.b",
+    "M.b->H.b"
+   ],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H17",
+   "category": "救应",
+   "a": "己",
+   "b": "癸",
+   "kind": "救应",
+   "mechanism": "制",
+   "actor": "己",
+   "gender_used": "乾",
+   "quote": "金赖年干己土制杀，日主得以救应",
+   "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2069",
+   "a_addrs": [
+    "Y.s"
+   ],
+   "b_addrs": [
+    "M.s"
+   ],
+   "kind_basis": "mechanism:制",
+   "kind_filter": "any",
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e001"
+   ],
+   "candidates": [
+    {
+     "kind": "ke",
+     "members": [
+      "Y.s",
+      "M.s"
+     ],
+     "actor": "Y.s"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H18",
+   "category": "救应",
+   "a": "丁",
+   "b": "卯",
+   "kind": "救应",
+   "mechanism": "化",
+   "actor": "丁",
+   "gender_used": "乾",
+   "quote": "此造年月支财,日时支杀,财杀尽占,日主虚弱。唯喜时上透出丁火印星,化杀生身,为日主救应。",
+   "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L1882",
+   "a_addrs": [
+    "H.s",
+    "Y.s"
+   ],
+   "b_addrs": [
+    "D.b",
+    "H.b"
+   ],
+   "kind_basis": "mechanism:化",
+   "kind_filter": [
+    "sheng"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "sheng(main_qi)",
+     "members": [
+      "H.s",
+      "H.b"
+     ],
+     "actor": "H.s"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "D.b",
+      "H.s"
+     ],
+     "actor": "D.b"
+    },
+    {
+     "kind": "sheng",
+     "members": [
+      "H.b",
+      "H.s"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H19",
+   "category": "救应",
+   "a": "午",
+   "b": "申",
+   "kind": "救应",
+   "mechanism": "克",
+   "actor": "午",
+   "gender_used": "乾",
+   "quote": "有时上午火,紧克申金,救应寅木",
+   "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2114",
+   "a_addrs": [
+    "H.b"
+   ],
+   "b_addrs": [
+    "D.b",
+    "Y.b"
+   ],
+   "kind_basis": "mechanism:克",
+   "kind_filter": [
+    "ke"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [],
+   "candidates": [
+    {
+     "kind": "zhi_ke",
+     "members": [
+      "H.b",
+      "Y.b"
+     ],
+     "actor": "H.b"
+    },
+    {
+     "kind": "zhi_ke",
+     "members": [
+      "H.b",
+      "D.b"
+     ],
+     "actor": "H.b"
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": false,
+   "candidate_hit": true,
+   "direction": "ok"
+  },
+  {
+   "case_id": "P1-H20",
+   "category": "救应",
+   "a": "己",
+   "b": "甲",
+   "kind": "救应",
+   "mechanism": "合",
+   "actor": "己",
+   "gender_used": "乾",
+   "quote": "喜年干透己劫合杀",
+   "source_ref": "sources/duan/MinerU_markdown_28.命理指要_2056045424658808832.md:L2142",
+   "a_addrs": [
+    "Y.s"
+   ],
+   "b_addrs": [
+    "M.s"
+   ],
+   "kind_basis": "mechanism:合",
+   "kind_filter": [
+    "liuhe",
+    "wuhe"
+   ],
+   "actor_stated": true,
+   "actor_consistent": true,
+   "status": "scored",
+   "edge_ids": [
+    "e001"
+   ],
+   "candidates": [
+    {
+     "kind": "wuhe",
+     "members": [
+      "Y.s",
+      "M.s"
+     ],
+     "actor": null
+    }
+   ],
+   "muku_hits": [],
+   "edge_hit": true,
+   "candidate_hit": true,
+   "direction": "actor_none"
+  }
+ ]
+}
