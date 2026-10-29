@@ -108,9 +108,20 @@ def _compact_zuogong(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 # Agent 视图削掉的字段：全部可由保留字段唯一还原，需要原件时用 `engine.cli all --full`
-_AGENT_OMIT_CANDIDATE_KEYS = frozenset({"binzhu", "distance"})
-_AGENT_OMIT_EDGE_KEYS = frozenset({"chars", "between"})
+# T-179：候选扩容后默认视图重新压回 15KB；只削可还原字段，不碰事实层与全量视图。
+_AGENT_OMIT_CANDIDATE_KEYS = frozenset({"binzhu", "distance", "ten_gods"})
+_AGENT_OMIT_EDGE_KEYS = frozenset({"chars", "between", "layer", "scope", "distance"})
 _AGENT_OMIT_RELATION_KEYS = frozenset({"nodes"})
+_AGENT_OMIT_PILLAR_KEYS = frozenset({"wuxing", "yinyang"})
+
+
+def _project_pillar(pillar: dict[str, Any]) -> dict[str, Any]:
+    out = dict(pillar)
+    for key in ("stem", "branch"):
+        side = pillar.get(key)
+        if isinstance(side, dict):
+            out[key] = {k: v for k, v in side.items() if k not in _AGENT_OMIT_PILLAR_KEYS}
+    return out
 
 
 def compact_for_agent(payload: dict[str, Any]) -> dict[str, Any]:
@@ -119,10 +130,14 @@ def compact_for_agent(payload: dict[str, Any]) -> dict[str, Any]:
     投影掉的字段及还原方式：
     - candidates.binzhu：由 (addr, layer) 唯一决定（chart_facts.binzhu_side 纯函数）
     - candidates.distance：由 members 的柱序差决定
+    - candidates.ten_gods：由 members 查 chart.pillars[].stem.ten_god / branch.main_ten_god
     - relations.nodes：addr → 字，见 chart.pillars[].stem/branch.char
     - relations.edges[].chars / between：由 members 查 chart / 柱序得
+    - relations.edges[].layer / scope / distance：由 members 的地址前缀、后缀与柱序得
+    - chart.pillars[].stem/branch.wuxing / yinyang：由 char 查五行、阴阳表
 
-    tiyong / actor 不削：前者是 zuogong 原子判 target 的输入，后者要走 null 语义。
+    tiyong / actor / mode / edge_id / members 不削：tiyong 是 zuogong 原子判 target 的输入，
+    actor 要走 null 语义，mode/edge_id 是候选身份。
     """
     out = dict(payload)
     duan = payload.get("duan_zuogong")
@@ -145,6 +160,15 @@ def compact_for_agent(payload: dict[str, Any]) -> dict[str, Any]:
                 for edge in relations["edges"]
             ]
         out["relations"] = projected
+    chart = payload.get("chart")
+    if isinstance(chart, dict) and isinstance(chart.get("pillars"), list):
+        out["chart"] = {
+            **chart,
+            "pillars": [
+                _project_pillar(pillar) if isinstance(pillar, dict) else pillar
+                for pillar in chart["pillars"]
+            ],
+        }
     return out
 
 

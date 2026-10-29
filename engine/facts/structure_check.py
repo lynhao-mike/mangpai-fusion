@@ -62,7 +62,7 @@ class BinzhuReading(_Dict):
 
 @dataclass(frozen=True)
 class ZuogongCandidate(_Dict):
-    mode: Literal["制用", "化用", "生泄用", "合用", "墓用"]
+    mode: Literal["制用", "化用", "生泄用", "合用", "墓用", "sheng"]
     relation_kind: str                           # 边 kind；推得关系为 "sheng(main_qi)"；墓库为 "muku"
     edge_id: Optional[str]                       # 推得关系与墓库候选为 None
     members: tuple[Addr, ...]
@@ -378,10 +378,6 @@ def tiyong_view(chart: ChartFacts) -> dict[Addr, TiYong]:
     return out
 
 
-def _crosses(a: TiYong, b: TiYong) -> bool:
-    return {a, b} not in ({"体"}, {"用"}, {"双属"})
-
-
 def _ti_yong_ends(ty: tuple[str, str]) -> Optional[tuple[int, int]]:
     """返回 (体端下标, 用端下标)；双属按对端补位，两端皆双属返回 None。"""
     a, b = ty
@@ -430,6 +426,29 @@ def _derived_sheng(chart: ChartFacts) -> list[tuple[Addr, Addr, Optional[int]]]:
     return out
 
 
+def _addr_wuxing(addr: Addr, chars: dict[Addr, str]) -> str:
+    return GAN_TO_WUXING[chars[addr]] if _layer(addr) == "s" else ZHI_TO_WUXING[chars[addr]]
+
+
+def _derived_sheng_adjacent(chart: ChartFacts, chars: dict[Addr, str]) -> list[tuple[Addr, Addr, int]]:
+    """同柱 / 相邻柱地址之间按五行推得的相生：返回 (生者, 被生者, 柱距)。
+
+    只取同柱（干支）与相邻柱（年-月、月-日、日-时）；跨柱两柱以上不生成。
+    """
+    addrs = [a for p in chart.pillars for a in (p.stem.addr, p.branch.addr)]
+    out: list[tuple[Addr, Addr, int]] = []
+    for x, y in combinations(addrs, 2):
+        dist = abs(_PILLAR_ORDER[x.split(".", 1)[0]] - _PILLAR_ORDER[y.split(".", 1)[0]])
+        if dist > 1:
+            continue
+        rel = wuxing_relation(_addr_wuxing(x, chars), _addr_wuxing(y, chars))
+        if rel == "生":
+            out.append((x, y, dist))
+        elif rel == "被生":
+            out.append((y, x, dist))
+    return out
+
+
 def _derived_canggan_ke(chart: ChartFacts) -> list[tuple[Addr, Addr, str, str]]:
     """关系图不建「支→干」克边：按藏干五行推得地支克天干，供宫制星取 actor。
 
@@ -449,7 +468,7 @@ def _derived_canggan_ke(chart: ChartFacts) -> list[tuple[Addr, Addr, str, str]]:
 
 
 def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tuple[ZuogongCandidate, ...]:
-    """扫描体用相交的关系，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。"""
+    """扫描关系与同柱/相邻柱相生，列出做功候选。只列候选与宾主方位，不计层数、不折算富贵。"""
     chars = dict(graph.nodes)
     gods = {a: _ten_god(a, c, chart.day_master) for a, c in graph.nodes}
     ty = {a: tiyong_of(g) for a, g in gods.items()}
@@ -469,7 +488,7 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
         return "化用" if gods[src] in roles("官杀") and gods[dst] in roles("印") else "生泄用"
 
     for e in graph.edges:
-        if len(e.members) != 2 or not _crosses(ty[e.members[0]], ty[e.members[1]]):
+        if len(e.members) != 2:
             continue
         members = (e.members[0], e.members[1])
         if e.kind in _ZHI_KINDS:
@@ -482,27 +501,31 @@ def build_duan_zuogong_candidates(chart: ChartFacts, graph: RelationGraph) -> tu
             emit("合用", e.kind, e.id, members, None, e.distance, e.source_refs, [])
 
     for src, dst, dist in _derived_sheng(chart):
-        if _crosses(ty[src], ty[dst]):
-            emit(sheng_mode(src, dst), "sheng(main_qi)", None, (src, dst), src, abs(dist) if dist is not None else None,
-                 (), ["关系图未建此生边，按本气五行推得"])
+        emit(sheng_mode(src, dst), "sheng(main_qi)", None, (src, dst), src, abs(dist) if dist is not None else None,
+             (), ["关系图未建此生边，按本气五行推得"])
+
+    sheng_edges = {e.members: e for e in graph.edges if e.kind == "sheng" and len(e.members) == 2}
+    for src, dst, dist in _derived_sheng_adjacent(chart, chars):
+        edge = sheng_edges.get((src, dst))
+        emit("sheng", "sheng", edge.id if edge else None, (src, dst), src, dist,
+             edge.source_refs if edge else (), ["同柱/相邻柱五行相生，按本气五行推得"])
 
     for br, st, via, qi in _derived_canggan_ke(chart):
         if br.split(".", 1)[0] == st.split(".", 1)[0]:
             continue  # 同柱干支相克属盖头/截脚，见 self_sit.stem_branch_relation，不是宫制星
-        if not _crosses(ty[br], ty[st]):
-            continue
         dist = abs(_PILLAR_ORDER[br.split(".", 1)[0]] - _PILLAR_ORDER[st.split(".", 1)[0]])
         emit("制用", "canggan_ke", None, (br, st), br, dist, (),
              [f"宫制星：{chars[br]}藏{via}克{chars[st]}（{qi[0]}气）"])
 
     for m in graph.muku:
         for c in m.candidates:
-            if c.excluded or not _crosses(ty[c.addr], ty[m.addr]):
+            if c.excluded:
                 continue
             notes = list(c.requires_judgment)
             pi = [_PILLAR_ORDER.get(a.split(".", 1)[0]) for a in (c.addr, m.addr)]
             dist = None if None in pi else abs(pi[0] - pi[1])  # type: ignore[operator]
-            emit("墓用", "muku", None, (c.addr, m.addr), c.addr, dist,
+            # 墓的力向是「库 → 入库方」（T-178 审计 4/4 engine_wrong；actor-rules-v1 §4.9/§5.2）
+            emit("墓用", "muku", None, (m.addr, c.addr), m.addr, dist,
                  tuple(h.source_ref for h in c.rule_hits), notes, c.ku_link_edges + c.damaged_by_edges)
     return tuple(out)
 
