@@ -1,12 +1,12 @@
 # P0 案例包 v1（T-197）· 4 例 · A / B1 / B2 / C
 
-- 生成：`2026-10-30T08:26:26+08:00`；任务：`T-197`；JSON：`META/p0-cards-v1.json`
+- 生成：`2026-10-30T08:26:26+08:00`；任务：`T-197`；修订：`r3` / `T-197e`；JSON：`META/p0-cards-v1.json`
 - 用途：给中枢/人类看的**证据包**。每例一页：盘面事实 → 原文锚点 → 方向候选 → 状态/救应候选 → 锚点题 → 引擎校验 → 缺口。
-- **本包不做选定**：`selected_option=null`、`anchor_a=[]`、`pending=anchor_q`。人只答**已发生事实**的是非题，不替 Agent 选方向。
+- **本包不做选定**：`selected_option` 仅在该层唯一收敛时填（本包均为 null）；`anchor_a` 按卡落盘（unknown 5 / yes 1）；人只答**已发生事实**的是非题，不替 Agent 选方向。
 
 ## 0. 一句话
 
-4 例真实盘（婚/事业/健康/财各 1），每例 3 个方向候选、1–2 个锚点事实题；全部候选过 engine 地址/边/十神/引文校验（含 20 个植入错误 fixture 全部被拦）。方向候选 12 条：A 3（固定克/生/化/墓）、B1 8、C 1；B2 触发 0，6 个待答单元（6 个事实题）全部留空。
+4 例真实盘（婚/事业/健康/财各 1），每例 2–3 个方向候选、1–2 个锚点事实题；全部候选过 engine 地址/边/十神/引文校验（含 20 个植入错误 fixture 全部被拦）。方向候选 11 条：A 3（固定克/生/化/墓）、B1 7、B2 0、C 1；B2 触发 0，6 个事实题。
 
 ## 1. 读取边界（自证）
 
@@ -36,7 +36,7 @@
 | B2 专家单选 | 0 项（未触发）；B2 / 全部 B 单元 = 0.00% |
 | 状态候选 / 救应候选 | 10 / 4 |
 | 引擎校验失败 | 0（候选作废 0） |
-| 原文/宫位引文逐字校验 | 24/24 通过 |
+| 原文/宫位引文逐字校验 | 25/25 通过 |
 | 植入错误（逐卡 4 类） | 16/16 全部拦截 |
 | 植入错误 self_test（20 fixture） | 20/20 → pass |
 
@@ -182,7 +182,7 @@
 - 答「是」：keep ['dc1']；eliminate ['dc2']
 - 答「否」：keep ['dc2']；eliminate ['dc1']
 - 答不出：`needs_anchor`，影响 ['dc1', 'dc2']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ1=unknown`（`answer_source=not_in_source`）
 
 ### AQ2 · direction · discriminates=['dc1', 'dc2', 'dc3']
 
@@ -193,7 +193,7 @@
 - 答「是」：keep ['dc3']；eliminate ['dc1', 'dc2']
 - 答「否」：keep ['dc1', 'dc2']；eliminate ['dc3']
 - 答不出：`needs_anchor`，影响 ['dc1', 'dc2', 'dc3']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ2=unknown`（`answer_source=not_in_source`）
 
 ## 6) 引擎校验
 
@@ -233,7 +233,7 @@
 | 问题 | 我在部队/单位里干了多年，想知道还能不能往上走、能走到哪一步。 |
 | 问题域 | career |
 | 原文出处 | `sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md` L17-L27（案例）；L1-L3（军官判据） |
-| 后续事实（备查，不作预测） | 原文后续事实：正师级干部、07 年转戊辰运提副军长（P0 仅备查，不作预测依据）。 |
+| 后续事实（备查，不作预测） | 原文后续事实：走丁卯运庚辰年提正团、壬午年提副师、甲申年提正师；07年转戊辰运08年提副军长，预测2012年还会提升正军级干部（P0 仅备查，不作预测依据）。 |
 
 ## 0.5) 宫位映射与 material edge
 
@@ -287,7 +287,7 @@
 
 - 命例四柱：`sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L17`「戊 癸 乙 己」
 - 命例四柱：`sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L19`「戌 亥 巳 卯」
-- 后续事实：`sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25`「此人婚姻非常好，一生2个孩子，一儿一女。」
+- 后续事实：`sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25`「07年转戊辰运08年提副军长，预测2012年还会提升正军级干部。」
 
 ## 3) 方向候选（2–3 条，均不自动选定）
 
@@ -309,7 +309,7 @@
 ### dc2（B1 / `human_anchor`）
 
 - 方向：actor→target，`H.s`(己) → `M.s`(癸)，evidence_gap=doctrine_only（只有定义/通用句）
-- 依据：同盘第二组财克印：e006 ke(己,癸)、actor=H.s。原文只说『财制印』未点名哪一个财；时干己(偏财)同样满足该机制，与 dc1 争同一个受印癸。
+- 依据：同盘第二组财克印：e006 ke(己,癸)、actor=H.s。原文 L27 明点『戊就是做工的重要的字』，并未点名己；『己(偏财)也是活财』缺少原文或命主事实支持（M-02）。故 dc2 只作机械备选（同一受印癸的第二组财制印），保留 B1 只为覆盖『两组财争一印』的结构，不因本句升格为与 dc1 并列的有源强候选。
 - 规则：`docs/specs/actor-rules-v1.md:L120-L127`
 - 引文（direction_support）：`sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27`「解析：八字是财制印得权的官命」
 - 校验：address=pass · edge=pass · ten_god=pass · quote=pass（边存在且 kind/members 一致；动态边 actor 由 engine 保持 null）
@@ -348,7 +348,7 @@
 - 答「是」：keep ['dc2']；eliminate ['dc1']
 - 答「否」：keep ['dc1']；eliminate ['dc2']
 - 答不出：`needs_anchor`，影响 ['dc1', 'dc2']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ1=unknown`（`answer_source=not_in_source`）
 
 ## 6) 引擎校验
 
@@ -476,13 +476,18 @@
 | st2 | state | B1 | 病 | 心脏/心慌（同章病性：丑午穿主心被伤） | ['AQ2'] |
 | rs1 | rescue | C | 救 | 戌坏丑 → 病源被制，未转移、治好 | — |
 
+- state_scope_note：本卡 state 层区分病位（st1 妇科 / st2 心脏），两个候选 result 都是『病』；AQ2 只定病位，不定病/不病。state_scope=candidate_only 表示只登记候选、未收敛，不表示该层在判『病/不病』。
+
 - **st1**（B1，病）：原文以丑午穿＋丑为阴/伤食之墓＋午为女体，直指妇科；并记子宫癌、午运手术。
+  - result_note：result=病 表示已病；本卡 state 层只区分病位（st1 妇科 / st2 心脏），不区分病/不病。
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139`「丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。」
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L17`「丑：生殖器、妇科、肛门」
-- **st2**（B1，病）：同章病性条把丑午穿读作心脏：『丑午穿--------心是被伤，心慌惊悸』；该读法与本造『午得寅生，旺，所以不得心脏病』的判据互斥，须以事实定夺。
+- **st2**（B1，病）：同章 L123『丑午穿--------心是被伤，心慌惊悸』是病性通例；L131『午得寅生，旺，所以不得心脏病』是另一造（乾 乙戊丙己 / 卯寅午丑，L127-L133）的判词，不是本造判词。本造（坤 壬寅 庚戌 己丑 庚午）与彼造同有寅午半合、午得寅生结构，故该判据只能作为可迁移规则引用，不能写作『本造』判词；st2 仍只是待 AQ2 定夺的竞争读法（M-04）。
+  - result_note：result=病 表示已病；本卡 state 层只区分病位（st1 妇科 / st2 心脏），不区分病/不病。
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123`「丑午穿--------心是被伤，心慌惊悸。」
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27`「午：心脏、阳亢、血压、神经」
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131`「原局的毛病是丑午穿，午得寅生，旺，所以不得心脏病。」
+    - 归属：L131 是另一造（乾 乙戊丙己 / 卯寅午丑，L127-L133）的判词，作为可迁移的反向判据引用，不是本造判词。
 - **rs1**（C，救）：原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应效果）。该关系原同时被登记为方向候选 dc3，T-197d 按同源去重并入本层（见 dedup[0]），此处只记救应一层。
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141`「后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。」
 
@@ -497,18 +502,18 @@
 - 答「是」：keep ['dc1']；eliminate ['dc2']
 - 答「否」：keep ['dc2']；eliminate ['dc1']
 - 答不出：`needs_anchor`，影响 ['dc1', 'dc2']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ1=unknown`（`answer_source=not_in_source`）
 
 ### AQ2 · state · discriminates=['st1', 'st2']
 
 > 在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？
 
-- 能区分的原因：st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。按原文互斥口径（同章『丑午穿→心是被伤，心慌惊悸』 vs 本造『午得寅生，旺，所以不得心脏病』），一组症状只能落在一个读法上：yes → 直接消 st1（不是降级），no → 消 st2；unknown → 两读法都无据，均不可选。
+- 能区分的原因：st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。按同章互斥口径（L123『丑午穿——心是被伤，心慌惊悸』 vs L131『午得寅生，旺，所以不得心脏病』），一组症状只能落在一个读法上。注意 L131 是另一造（乾 乙戊丙己 / 卯寅午丑，L127-L133）的判词，不是本造判词；本造只有同构的寅午半合可迁移该理。yes → 直接消 st1（不是降级），no → 消 st2；unknown → 两读法都无据，均不可选。
 - 规则：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9`；`source_mentions_answer=False`；proxy=high
 - 答「是」：keep ['st2']；eliminate ['st1']
 - 答「否」：keep ['st1']；eliminate ['st2']
 - 答不出：`needs_anchor`，影响 ['st1', 'st2']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ2=unknown`（`answer_source=not_in_source`）
 
 ## 6) 引擎校验
 
@@ -556,11 +561,13 @@
 | `M.b` | 月支丑：官星（正官）—财生官、官当财看 | 正官 | M-06 | `sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」 |
 | `D.b` | 日支辰：水库/土库，本造『主要功神』 | 七杀 | M-07 | `sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」 |
 | `Y.b` | 年支巳：偏财（财源） | 偏财 | M-02 | `sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」 |
+| `H.b` | 时支丑：官星（正官）—月时丑同入辰墓 | 正官 | M-05 | `sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」 |
 
 - material edge（问题命中的边）：
   - `e008`：巳丑三合拱(财生官的载体)
   - `e004`：辛克乙：破坏辰(功神)的克向
   - `e010`：丑辰破：库被动摇
+  - `e011`：辰丑破：时支丑(H.b)与日支辰(D.b)相破；L392『月时丑官都入辰墓』，时丑同入辰墓，e011 记库被动摇的第二条边。
 
 ## 1) engine 事实（`engine.cli all/relations`）
 
@@ -616,10 +623,11 @@
 ### dc1（A / `agent_auto`）
 
 - 方向：actor→target，`D.b`(辰) → `M.b`(丑)，evidence_gap=doctrine_only（只有定义/通用句）
-- 依据：engine 墓用候选 (D.b,M.b)、actor=D.b（库收，符合 actor-rules §4.9）。原文『月时丑官都入辰墓』是位移句（按 §4.9 只给位移不给向），但紧接『辰是主要功神』把辰标为主功方；两据合并取库→入库方。
+- 依据：engine 墓用候选有两条：(D.b,M.b) 与 (D.b,H.b)，actor 均为 D.b（库收，符合 actor-rules §4.9）。原文『月时丑官都入辰墓』明含月支丑(M.b)与时支丑(H.b)两丑，故本条 dc1 合并记两丑同向入辰墓（同一库收 claim 的两个原子）；另 L392 紧接『辰是主要功神』把辰标为主功方，两据合并取库→入库方。e011 辰丑破是时支丑与辰库的破，作为库被动摇的第二条 material edge 记录。
 - 规则：`docs/specs/actor-rules-v1.md:L150-L166`
 - 引文（direction_support）：`sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」
-- 校验：address=pass · edge=pass · ten_god=pass · quote=pass（engine 做功候选命中（固定类））
+- 同源原子：墓用 ['D.b', 'H.b']（actor `D.b`）→ `H.b`；`duan_zuogong.candidates 墓用[D.b,H.b]`；时支丑 H.b 入辰墓；e011 辰丑破是同支丑的库被动摇边。
+- 校验：address=pass · edge=pass · ten_god=pass · quote=pass（engine 做功候选命中（固定类）；同时存在第二条墓用[D.b,H.b]，actor 同为 D.b）
 
 ### dc2（A / `agent_auto`）
 
@@ -646,10 +654,14 @@
 | st3 | state | C | needs_anchor | 财弱官旺、官当财看（财的定义口径） | [] |
 | rs1 | rescue | C | 应 | 行戌运，财库冲入自己 → 岁运层面的『开库得财』 | — |
 
-- **st1**（B1，成）：原局：月时丑官入辰墓、巳生丑官，官当财看，故断富命；岁运戌运冲开财库，五年发财、资产4亿。
+- state_scope_note：state 层按『最终成败』口径：L392 富命 → L394 发财五年/资产4亿 → L396 主凶 → L398 坐牢/没收/判刑，是『先富后破』的时间序列；st1 与 st2 不是同一时点互斥。AQ1=yes 按最终成败消 st1、st2 唯一=败；若改按『一生轨迹』口径，st1 与 st2 可并存，state_selected 应为 null 或多 claim（本卡不采用该口径）。
+
+- **st1**（B1，成）（原局/戌运（先富：富命→发财五年/资产4亿））：原局：月时丑官入辰墓、巳生丑官，官当财看，故断富命；岁运戌运冲开财库，五年发财、资产4亿。
+  - result_note：result=成 是『最终成败』口径下的先富阶段；与 st2 是时间序列，不是同一时点互斥。
   - 引文：`sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392`「原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。」
   - 引文：`sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394`「行戌运，财库冲入自己发财五年，资产4亿。」
-- **st2**（B1，败）：岁运乙透（代表辰）被辛克、辰被破坏，原文判『主凶』；同运癸未年坐牢、没收财产、判刑十年。
+- **st2**（B1，败）（乙运（后破：主凶→坐牢/没收/判刑））：岁运乙透（代表辰）被辛克、辰被破坏，原文判『主凶』；同运癸未年坐牢、没收财产、判刑十年。
+  - result_note：result=败 是『最终成败』口径下的后破阶段；与 st1 是时间序列，不是同一时点互斥。
   - 引文：`sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396`「乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。」
   - 引文：`sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398`「癸未年刚入乙运坐牢，因非法集资而没收产财。判刑十年。现已出狱。」
 - **st3**（C，needs_anchor）：『官当财看』是本造把官星当财的口径说明；它决定『财』指什么，不回答能否守住，故不单独成断。
@@ -668,17 +680,17 @@
 - 答「是」：keep ['st2']；eliminate ['st1']
 - 答「否」：keep ['st1']；eliminate ['st2']
 - 答不出：`needs_anchor`，影响 ['st1', 'st2']
-- **答案（留空，待人类/命主）**：`anchor_a: []`
+- **答案**：`AQ1=yes`（`answer_source=source_outcome`）；原文 `sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398`「癸未年刚入乙运坐牢，因非法集资而没收产财。判刑十年。现已出狱。」
 
 ## 6) 引擎校验
 
 | 校验 | 通过/总数 |
 |---|---|
-| address | 7/7 |
+| address | 8/8 |
 | edge | 3/3 |
-| ten_god | 7/7 |
+| ten_god | 8/8 |
 | quote | 7/7 |
-| 原文/宫位引文 | 6/6 |
+| 原文/宫位引文 | 7/7 |
 
 植入错误自检：4/4 拦截（`pass`）
 
@@ -696,6 +708,21 @@
 - 非断言：方向层三条 A claim 互补（库收/克坏/财源），不折叠成单一方向结论
 
 ---
+
+# 缺证据清单（T-197c r2 / T-197e r3）
+
+- **M-01 · P0-02 · 事业结局引文**（`已补`）：source.outcome_quote 由 L25 婚姻句改为 L25 事业结局句『07年转戊辰运08年提副军长，预测2012年还会提升正军级干部。』；outcome_note 同步为晋升履历。
+  - 影响：不影响 selected；career 域结局引文已补。
+- **M-02 · P0-02 · dc2(己制癸) 的原文/事实依据**（`缺`）：原文 L27 明点『戊就是做工的重要的字』，未点名己；未找到『己(偏财)也是活财』的原文或命主事实。已删去 dc2 旧句『原文只说财制印未点名哪一个财』，dc2 保留为 decisive=false 的机械备选。
+  - 影响：不影响当前 selected；B1 竞争设计的必要性待补证。
+- **M-03 · P0-04 · 时支丑(H.b) 的入墓/破库证据**（`已补`）：L392『月时丑官都入辰墓』明含月丑与时丑；engine duan_zuogong 同时给 墓用[D.b,M.b] 与 墓用[D.b,H.b]；e011 辰丑破为时支丑与辰库的破。dc1 已补 H.b（claim.members/addrs/ten_god_claims/palaces/material_edges）。
+  - 影响：不影响 selected；方向 claim 覆盖已补全。
+- **M-04 · P0-03 · 本造专属的心脏/血压判据**（`缺`）：L123 是同章病性通例，L131『午得寅生，旺，所以不得心脏病』是另一造（乾 乙戊丙己 / 卯寅午丑，L127-L133）的判词；本造原文只写子宫癌/手术/中医治好，无本造心脏/血压记录。已改 st2 归属为『他造判词/可迁移规则』。
+  - 影响：不影响 selected；st2 仍只是待 AQ2 的竞争读法。
+- **M-05 · P0-04 · 窗口内命主事实**（`部分`）：AQ1 的 fact_window 已改为 2000-01..2025-12，覆盖 L398 癸未年（2003）；答案仍为 source_outcome（原文结局），不是命主自述。P0 允许 source_outcome，P1 需补 testimony。
+  - 影响：不影响 selected；窗口矛盾已消除，命主事实仍缺。
+- **M-06 · all · 逐卡独立的 seeded 注入项**（`缺`）：4 卡 seeded_error 复用同一组 fixture；tampered_quote:HY:L15 只在 P0-01 源内，P0-02/03/04 的『未找到逐字文本』是平凡真。16/16 card_scan 是 smoke check，不是逐卡独立验证；需为每卡各设 source-specific seeded quote/edge，本轮未做。
+  - 影响：不影响 selected；P0 gate 的 seeded 口径仍按 16/16 记。
 
 # 关键选择清单（交中枢/人类）
 
@@ -724,9 +751,9 @@
 # 第三方重推指引
 
 1. 盘面事实：按每卡 `provenance.engine_cmd` 重跑，比对 `chart_id`、四柱、十神、edge_id/kind/members。
-2. 引文：按 `source_ref`（`path:Ln`）打开原文，逐字比对；本包构建脚本对全部引文做了子串校验（24 条原文/宫位引文 + 每候选引文）。
+2. 引文：按 `source_ref`（`path:Ln`）打开原文，逐字比对；本包构建脚本对全部引文做了子串校验（25 条原文/宫位引文 + 每候选引文）。
 3. 候选：只看 `basis + quote + decisive + conflict_with + evidence_gap`；冲/合/穿/刑不得 A；无源即 C。
-4. 复现构建：`.venv\Scripts\python.exe tasks/T-197/build_p0_cards.py`（幂等，仅读 `tasks/T-197/_engine/*.json` 与 `sources/`）。
+4. 复现构建：`.venv\Scripts\python.exe tasks/T-197/build_p0_cards.py` → `tasks/T-197d/patch_p0_cards.py` → `tasks/T-197e/patch_p0_cards_r3.py`（幂等；仅读 `tasks/T-197/_engine/*.json` 与 `sources/`）。
 
 # 与 T-196 规格的对齐（analysis-card-v2 / agent-candidate-set/v1）
 
@@ -748,6 +775,8 @@
   - state_candidates[].selectable / tier_note：C 档定义口径候选不参与成败选择
   - dedup[]：同源关系只保留一层的登记记录（含被移除项的完整原记录）
   - field_semantics / selection_rules：字段语义与选择规则，供 verify 与第三方按同一口径复算
+  - state_candidates[].candidate_kind='definition/non_outcome' + label_note：P0-04 st3 的 C 标签属扩展借用（有源定义口径），不改 selectable=false。
+  - claim.members/targets：P0-04 dc1 将 engine 两条墓用 [D.b,M.b] 与 [D.b,H.b] 合并为一个互补 claim；engine 原始两条候选完整保留在 co_claims/atomic_members，不伪造单条三成员 engine 边。
 - 未实现（需选定后装配，或按 T-197 禁止代选）：
   - `selected_option/selected_state/selected_rescue`：按 selection_rules 处理：卡级 selected_option 仅在该层唯一收敛时填；P0-04 三条 A claim 互补 → selected_option=null + 逐 claim 记账（claim_id/claim_selected）；selected_state 仅在 state 锚点收敛后填（P0-04 AQ1=yes → st2 唯一 → 败）。
   - `t1–t5 与 statement/statement_claims`：analysis-card/v2 在选定后才装配；本包是候选集不是成品卡
@@ -766,6 +795,10 @@
 - 『寅申之冲，寅多作用一次』的『作用一次』是计数用语，本卡按 same_page 缺口记为方向依据，是否够格由中枢裁。
 - P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题 AQ1，并已由原文 L398 落 yes（source_mentions_answer=true），expert_decision 保持 null、B2 = 0。
 - P0-03 的 dc3（戌坏丑当疾病方向）与 rs1 同源，按 T-197d §2 只保留救应一层；被移除项的完整记录见 cards[P0-03].dedup[0].original_record。
+- P0-04 dc1 合并记月丑 M.b 与时丑 H.b 两原子的『官入辰墓』；engine 分两条候选 墓用[D.b,M.b] / [D.b,H.b]，e011 辰丑破同时支丑。
+- P0-04 st3 仍用 tier=C 作扩展标签，另记 candidate_kind=definition/non_outcome + label_note；严格 schema 下游按定义口径读，不改 selectable=false。
+- P0-03/P0-04 的 state_scope_note 明确：P0-03 只分病位、P0-04 是『先富后破』时间序列；不把两层读成同一时点互斥。
+- M-02/M-04/M-06 仍缺证据，逐条见 missing_evidence；不以补不齐为由删候选或改答案。
 - 本包 4 例的方向候选里，P0-01/P0-03 的『单侧施力』读法都依赖结果句/计数句（evidence_gap=same_page），是否够格作方向依据，需中枢裁。
 - 锚点题答案与原文后续事实存在部分可推测性（例：P0-01 原文已写五次婚姻）；本包题目刻意选原文**未写**的事实（原生家庭是否介入、分开后是否仍有往来、收入结构、发病前家庭变故、心脏症状）以降低泄漏。
 - P0-04 的『原局富 vs 岁运破』属**成败层**，按 analysis-card-v2 §5.3 不适用方向层 B2，已改为 state 锚点题（AQ1，`source_mentions_answer=true`）；本包 B2=0。

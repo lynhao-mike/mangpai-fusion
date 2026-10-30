@@ -39,17 +39,22 @@ GAP_CN = {
 }
 
 
+m = PACK["metrics"]
 A("# P0 案例包 v1（T-197）· 4 例 · A / B1 / B2 / C")
 A("")
-A(f"- 生成：`{PACK['generated_at']}`；任务：`{PACK['task']}`；JSON：`META/p0-cards-v1.json`")
+A(f"- 生成：`{PACK['generated_at']}`；任务：`{PACK['task']}`；"
+  f"修订：`{PACK.get('revision', {}).get('rev')}` / `{PACK.get('revision', {}).get('by')}`；JSON：`META/p0-cards-v1.json`")
 A("- 用途：给中枢/人类看的**证据包**。每例一页：盘面事实 → 原文锚点 → 方向候选 → 状态/救应候选 → 锚点题 → 引擎校验 → 缺口。")
-A("- **本包不做选定**：`selected_option=null`、`anchor_a=[]`、`pending=anchor_q`。人只答**已发生事实**的是非题，不替 Agent 选方向。")
+A("- **本包不做选定**：`selected_option` 仅在该层唯一收敛时填（本包均为 null）；`anchor_a` 按卡落盘"
+  f"（unknown {m['anchor_a_answers']['unknown']} / yes {m['anchor_a_answers']['yes']}）；人只答**已发生事实**的是非题，不替 Agent 选方向。")
 A("")
 A("## 0. 一句话")
 A("")
-A("4 例真实盘（婚/事业/健康/财各 1），每例 3 个方向候选、1–2 个锚点事实题；全部候选过 engine 地址/边/十神/引文校验"
-  "（含 20 个植入错误 fixture 全部被拦）。方向候选 12 条：A 3（固定克/生/化/墓）、B1 8、C 1；B2 触发 0，"
-  "6 个待答单元（6 个事实题）全部留空。")
+A(f"4 例真实盘（婚/事业/健康/财各 1），每例 2–3 个方向候选、1–2 个锚点事实题；全部候选过 engine 地址/边/十神/引文校验"
+  f"（含 20 个植入错误 fixture 全部被拦）。方向候选 {m['direction_candidates']} 条："
+  f"A {m['candidate_tiers']['A']}（固定克/生/化/墓）、B1 {m['candidate_tiers']['B1']}、"
+  f"B2 {m['candidate_tiers']['B2']}、C {m['candidate_tiers']['C']}；B2 触发 {m['b2_expert_decisions']}，"
+  f"{m['anchor_questions']} 个事实题。")
 A("")
 A("## 1. 读取边界（自证）")
 A("")
@@ -71,7 +76,6 @@ A("> 冲/合/穿/刑/破**一律不得 A**；「原文没写冲突」也不自�
 A("")
 A("## 3. 统计")
 A("")
-m = PACK["metrics"]
 A("| 指标 | 值 |")
 A("|---|---|")
 A(f"| 例数 / 覆盖域 | {m['case_count']} / {'、'.join(DOMAIN_CN.get(d, d) for d in m['domains'])} |")
@@ -196,6 +200,11 @@ for card in PACK["cards"]:
             A(f"- 规则：`{c['rule_ref']}`")
         for q in c.get("quotes") or []:
             A(f"- 引文（{q['role']}）：`{q['source_ref']}`「{q['text']}」")
+            if q.get("attribution_note"):
+                A(f"  - 归属：{q['attribution_note']}")
+        for cc in c.get("co_claims") or []:
+            A(f"- 同源原子：{cc['mode']} {cc['members']}（actor `{cc['actor']}`）→ `{cc['target']}`；"
+              f"`{cc['engine_candidate']}`；{cc['note']}")
         ev = c["engine_validation"]["checks"]
         A(f"- 校验：address={ev['address']['status']} · edge={ev['edge']['status']} · ten_god={ev['ten_god']['status']} · quote={ev['quote']['status']}"
           + (f"（{ev['edge'].get('detail')}）" if ev["edge"].get("detail") else ""))
@@ -209,10 +218,18 @@ for card in PACK["cards"]:
     for s in card["rescue_candidates"]:
         A(f"| {s['option_id']} | rescue | {s['tier']} | {s['result']} | {s['label']} | {s.get('anchored_by') or '—'} |")
     A("")
+    if card.get("state_scope_note"):
+        A(f"- state_scope_note：{card['state_scope_note']}")
+        A("")
     for s in card["state_candidates"] + card["rescue_candidates"]:
-        A(f"- **{s['option_id']}**（{s['tier']}，{s['result']}）：{s['basis_text']}")
+        scope = f"（{s['time_scope']}）" if s.get("time_scope") else ""
+        A(f"- **{s['option_id']}**（{s['tier']}，{s['result']}）{scope}：{s['basis_text']}")
+        if s.get("result_note"):
+            A(f"  - result_note：{s['result_note']}")
         for q in s.get("quotes") or []:
             A(f"  - 引文：`{q['source_ref']}`「{q['text']}」")
+            if q.get("attribution_note"):
+                A(f"    - 归属：{q['attribution_note']}")
     A("")
     A("## 5) 锚点题（只问已发生事实）")
     A("")
@@ -230,7 +247,15 @@ for card in PACK["cards"]:
         A(f"- 答「是」：keep {y['keep']}；eliminate {y['eliminate']}" + (f"；downgrade {y['downgrade']}" if y.get("downgrade") else ""))
         A(f"- 答「否」：keep {n['keep']}；eliminate {n['eliminate']}" + (f"；downgrade {n['downgrade']}" if n.get("downgrade") else ""))
         A(f"- 答不出：`{a['if_unknown']['action']}`，影响 {a['if_unknown']['affected']}")
-        A("- **答案（留空，待人类/命主）**：`anchor_a: []`")
+        aa = [e for e in (card.get("anchor_a") or []) if e.get("qid") == a["qid"]]
+        if aa:
+            e = aa[0]
+            line = f"- **答案**：`{e['qid']}={e['answer']}`（`answer_source={e['answer_source']}`）"
+            if e.get("quote"):
+                line += f"；原文 `{e['source_ref']}`「{e['quote']}」"
+            A(line)
+        else:
+            A("- **答案**：`anchor_a: []`（待人类/命主）")
         A("")
     ed = card.get("expert_decision") or {}
     if ed.get("required"):
@@ -268,6 +293,14 @@ for card in PACK["cards"]:
     A("---")
     A("")
 
+A("# 缺证据清单（T-197c r2 / T-197e r3）")
+A("")
+for me in PACK.get("missing_evidence") or []:
+    A(f"- **{me['id']} · {me['card_id']} · {me['item']}**（`{me['status']}`）：{me['detail']}")
+    if me.get("impact"):
+        A(f"  - 影响：{me['impact']}")
+A("")
+
 A("# 关键选择清单（交中枢/人类）")
 A("")
 A("> 只答事实，不选方向。答完由后续卡（T-197b）按每题 `elimination`（yes/no/unknown）机械淘汰候选；答不出→该候选转 `needs_anchor`。")
@@ -300,9 +333,12 @@ A("")
 A("# 第三方重推指引")
 A("")
 A("1. 盘面事实：按每卡 `provenance.engine_cmd` 重跑，比对 `chart_id`、四柱、十神、edge_id/kind/members。")
-A("2. 引文：按 `source_ref`（`path:Ln`）打开原文，逐字比对；本包构建脚本对全部引文做了子串校验（24 条原文/宫位引文 + 每候选引文）。")
+A(f"2. 引文：按 `source_ref`（`path:Ln`）打开原文，逐字比对；本包构建脚本对全部引文做了子串校验"
+  f"（{m['source_palace_quotes']['total']} 条原文/宫位引文 + 每候选引文）。")
 A("3. 候选：只看 `basis + quote + decisive + conflict_with + evidence_gap`；冲/合/穿/刑不得 A；无源即 C。")
-A("4. 复现构建：`.venv\\Scripts\\python.exe tasks/T-197/build_p0_cards.py`（幂等，仅读 `tasks/T-197/_engine/*.json` 与 `sources/`）。")
+A("4. 复现构建：`.venv\\Scripts\\python.exe tasks/T-197/build_p0_cards.py` → "
+  "`tasks/T-197d/patch_p0_cards.py` → `tasks/T-197e/patch_p0_cards_r3.py`"
+  "（幂等；仅读 `tasks/T-197/_engine/*.json` 与 `sources/`）。")
 A("")
 A("# 与 T-196 规格的对齐（analysis-card-v2 / agent-candidate-set/v1）")
 A("")
