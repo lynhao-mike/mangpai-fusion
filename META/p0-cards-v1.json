@@ -1039,7 +1039,8 @@
             }
           ],
           "fact_window": "2000-01..2025-12",
-          "fact_domain": "marriage"
+          "fact_domain": "marriage",
+          "anchor_a": null
         },
         {
           "layer": "direction",
@@ -1114,7 +1115,8 @@
             }
           ],
           "fact_window": "2000-01..2025-12",
-          "fact_domain": "marriage"
+          "fact_domain": "marriage",
+          "anchor_a": null
         }
       ],
       "gaps": [
@@ -1325,9 +1327,9 @@
       "state_scope": "not_claimed",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
-      "pending": "anchor_q",
+      "pending": null,
       "tier": "B1",
-      "decision_by": "anchor_fact",
+      "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
         "state:not_claimed",
@@ -2314,7 +2316,8 @@
         ],
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
-      }
+      },
+      "state_selected": null
     },
     {
       "card_id": "P0-02",
@@ -3123,7 +3126,8 @@
             }
           ],
           "fact_window": "2015-01..2025-12",
-          "fact_domain": "career"
+          "fact_domain": "career",
+          "anchor_a": null
         }
       ],
       "gaps": [
@@ -3333,9 +3337,9 @@
       "state_scope": "not_claimed",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
-      "pending": "anchor_q",
+      "pending": null,
       "tier": "B1",
-      "decision_by": "anchor_fact",
+      "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
         "state:not_claimed",
@@ -4217,7 +4221,8 @@
         ],
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
-      }
+      },
+      "state_selected": null
     },
     {
       "card_id": "P0-03",
@@ -5082,7 +5087,8 @@
             }
           ],
           "fact_window": "1995-01..2025-12",
-          "fact_domain": "health"
+          "fact_domain": "health",
+          "anchor_a": null
         },
         {
           "layer": "state",
@@ -5149,7 +5155,8 @@
             }
           ],
           "fact_window": "1995-01..2025-12",
-          "fact_domain": "health"
+          "fact_domain": "health",
+          "anchor_a": null
         }
       ],
       "gaps": [
@@ -5359,9 +5366,9 @@
       "state_scope": "not_claimed",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
-      "pending": "anchor_q",
+      "pending": null,
       "tier": "B1",
-      "decision_by": "anchor_fact",
+      "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
         "state:conflict",
@@ -6377,7 +6384,10 @@
         ],
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
-      }
+      },
+      "state_selected": null,
+      "state_decision": "needs_anchor",
+      "state_note": "AQ2 unknown：原文只写子宫癌/手术/中医治好，未写心脏血压症状"
     },
     {
       "card_id": "P0-04",
@@ -7260,7 +7270,8 @@
             }
           ],
           "fact_window": "2010-01..2025-12",
-          "fact_domain": "wealth"
+          "fact_domain": "wealth",
+          "anchor_a": null
         }
       ],
       "expert_decision": null,
@@ -8455,7 +8466,10 @@
         ],
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
-      }
+      },
+      "state_selected": "败",
+      "state_decision": "anchor_fact",
+      "state_note": "AQ1 yes：原文L398 癸未年坐牢、非法集资没收财产、判刑十年"
     }
   ],
   "anchor_questions": [
