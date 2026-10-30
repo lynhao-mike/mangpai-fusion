@@ -93,3 +93,5 @@
 - 未污染 Agent 3 次 + 一次性评分；3 卡四补丁；
 - E2 选边只披露；P1 过才 P2 top-3 ≥70%；
 - v6 离线包（A+ v1.3 + 三方复核 + 任务卡）；v4/v5 已过时。
+
+- **T-199/T-200 交接（14:55）**：T-199 = 六合靶点（22:L1444–L1468；15/25 跨书；≤15 抽象规则；弃权记 miss）；T-200 = 冲 deferred（22:L1788/L1808 同盘反结论；等连体/成党/力量代理）。旧 enum 化气0/合化6/争合2 覆盖率不足；30/6 留出改 15/25；两轮只反馈错误类型。新增 `docs/handoff/duan-school-v1.md`、`docs/reviews/failure-ledger-v2.md`、`docs/specs/duan-formalization-v1.md`。
