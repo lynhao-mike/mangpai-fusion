@@ -1,0 +1,8901 @@
+{
+ "schema": "p0-cards/v1",
+ "task": "T-197",
+ "generated_at": "2026-10-30T08:26:26+08:00",
+ "repo": "E:\\Git hub\\mangpai-fusion",
+ "spec_refs": [
+  "tasks/T-197/PROMPT.md",
+  "docs/specs/fact-evidence-pack-v1.md",
+  "docs/specs/actor-rules-v1.md",
+  "docs/specs/analysis-card-v2.md（T-196 落盘后据其对字段/枚举）",
+  "docs/specs/agent-candidate-generator-v1.md §7（agent-candidate-set/v1 字段）",
+  "docs/goals/first-principle-agent-first-v1.md"
+ ],
+ "tier_scheme": {
+  "A": "仅固定克/生/化/墓；engine 固定规则与原文同向、无竞争候选；可 agent_auto。冲/合/穿/刑/破一律不得 A；原文『无冲突』不能自动升 A。",
+  "B1": "锚点消歧（默认）：2–3 个候选的分歧可由『命主已发生事实』的是非题区分；只问事实，不让人选方向。",
+  "B2": "仅当没有任何可观测事实可区分候选时启用：专家单选或转 needs_anchor，必须带 source/quote；占比单列。",
+  "C": "无源（原文未给该方向）、或与已冻结规则冲突 → needs_anchor，不写成断语。"
+ },
+ "isolation": {
+  "read_answers": false,
+  "read_restricted": false,
+  "files_read": [
+   "tasks/T-197/PROMPT.md",
+   "docs/specs/fact-evidence-pack-v1.md",
+   "docs/specs/actor-rules-v1.md",
+   "tasks/T-196/PROMPT.md",
+   "tasks/T-196/STATUS.md",
+   "META/r-tool-run-v1.json",
+   "META/r-tool-run-routing-v1.json",
+   "sources/duan/*（引文原文）",
+   "engine.cli 输出（tasks/T-197/_engine/*.json）",
+   "盲卷/问题卷仅取四柱用于查重：META/p1-fixed-20-blind-v1.json、p1-fresh-40-v1.json、p1-anchor-60-blind-v1.json、p1-holdout-v1.json、single-chart-cases-v1.json"
+  ],
+  "not_read": [
+   "任何 answers / golden / anchor-answers / fresh-answers / holdout-answers 文件",
+   "META/p1-system-run*",
+   "META/routing-prereg-v1.json 及 routing-questions 的 expected_evidence"
+  ],
+  "exclusion_check": {
+   "method": "把上列盲卷/问题卷的 four_pillars 归一化后与本包 4 盘逐字比对",
+   "excluded_sets": {
+    "F20": 20,
+    "PF": 40,
+    "A60": 60,
+    "P1-H": 20,
+    "OLD3": 3
+   },
+   "unique_pillar_sets": 133,
+   "overlap": 0,
+   "note": "旧 3 卡（C1/C2/C3，RF-2026-000125/000438/000894）已并入排除集。"
+  },
+  "no_git_write": true,
+  "no_engine_change": true,
+  "no_scorer": true
+ },
+ "schema_compat": {
+  "target": "agent-candidate-set/v1（生成器 §7）；选定后装配为 analysis-card/v2",
+  "mapped_fields": [
+   "option_id / claim{relation,direction,members,actor,target} / basis[{kind,ref,note}] / source_ref / quote / decisive / conflict_with / conflict_class / engine_note",
+   "direction_tier / state_tier / rescue_tier / tier / decision_by / card_status / pending",
+   "anchor_q{qid,text,fact_window,fact_domain,answer_type=yes_no,discriminates,elimination[yes/no/unknown]} / anchor_a",
+   "engine_validation{snapshot,address,edge,ten_god,quote,seeded_error,overall}"
+  ],
+  "extensions": [
+   "claim.direction='undetermined'：v2 枚举只有 actor_to_target|mutual，本包为『合/冲但方向不可判』的候选保留第三值",
+   "basis_text：中文依据散文（v2 的 basis 只允许结构项）",
+   "state_label：成败候选的原文词（成/败/疑/多现/病/救/应），state 三态另存",
+   "facts / palaces / material_edges / material_edge_reasons：证据包层（供第三方重推）"
+  ],
+  "not_implemented": {
+   "selected_option/selected_state/selected_rescue": "T-197 明令不自动选定；pending=anchor_q 前不得填",
+   "t1–t5 与 statement/statement_claims": "analysis-card/v2 在选定后才装配；本包是候选集不是成品卡",
+   "anchor_a 实体答案": "待人类/命主回答；Agent 不代答",
+   "agent_top1": "生成器 §8.2 的 B1 lift 基线，本包未冻结（避免锚定）"
+  },
+  "known_conflicts": [
+   "v2 的 A 档要求 selected_option 已填且 pending=none；T-197 禁止代选 → direction_tier=A 的卡仍保持 selected_option=null",
+   "v2 的 C 档也用 selected_option=null + selection_source=needs_anchor；因此『待自动确认的 A』与『无源 C』在本包只能靠 direction_tier/pending 区分"
+  ]
+ },
+ "seeded_error_self_test": {
+  "mode": "self_test",
+  "checked": [
+   "addr:Q.b",
+   "addr:Z.b",
+   "addr:X1.b",
+   "addr:DY9.b",
+   "addr:LN2099.b",
+   "edge:e999",
+   "edge:e000",
+   "edge:e100",
+   "edge:e0001",
+   "edge:e20x",
+   "ten_god:C1:D.b=正印",
+   "ten_god:C2:D.b=正印",
+   "ten_god:C3:D.b=正印",
+   "ten_god:C4:D.b=正印",
+   "ten_god:C1:M.s=正印",
+   "quote:HY:L15",
+   "quote:HY:L29",
+   "quote:JG:L27",
+   "quote:JB:L139",
+   "quote:CG:L392"
+  ],
+  "failures": [],
+  "detected": 20,
+  "total": 20,
+  "status": "pass"
+ },
+ "metrics": {
+  "case_count": 4,
+  "domains": [
+   "career",
+   "health",
+   "marriage",
+   "wealth"
+  ],
+  "direction_candidates": 12,
+  "candidate_tiers": {
+   "A": 3,
+   "B1": 8,
+   "B2": 0,
+   "C": 1
+  },
+  "anchor_questions": 6,
+  "b2_expert_decisions": 0,
+  "state_candidates": 10,
+  "rescue_candidates": 4,
+  "engine_validation_failures": 0,
+  "source_palace_quotes": {
+   "total": 24,
+   "pass": 24
+  },
+  "seeded_error_pass": true,
+  "candidate_tier_share": {
+   "A": 0.25,
+   "B1": 0.6667,
+   "B2": 0.0,
+   "C": 0.0833
+  },
+  "b2_share_of_B_units": 0.0,
+  "a_share_vs_p0_gate": {
+   "gate": "A 档自动占比 ≥50%（T-196 卡 §1.1 P0 gate）",
+   "actual": 0.25,
+   "verdict": "未达",
+   "note": "冲/合/穿/刑不得 A（中枢 2026-10-30 追加），真实婚/事业/健康/财问题的 material edge 多为对称关系或带竞争候选，固定克/生/化/墓仅 3/12。"
+  },
+  "self_test": {
+   "detected": 20,
+   "total": 20,
+   "pass": true
+  }
+ },
+ "cards": [
+  {
+   "card_id": "P0-01",
+   "case_key": "C1",
+   "domain": "marriage",
+   "gender": "乾",
+   "four_pillars": "辛巳 庚寅 甲申 庚午",
+   "question": {
+    "text": "我婚姻一直不顺，离过几次，现在一个人过；想知道这段命里的婚姻还能不能稳定下来。",
+    "domain": "marriage",
+    "prereg_id": null,
+    "asked_by": "命主"
+   },
+   "source": {
+    "path": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+    "locator": "L21-L33（案例）；L15-L17、L44-L50（同章判据）",
+    "pillar_quote": [
+     {
+      "src": "HY",
+      "line": 21,
+      "text": "辛   庚    甲    庚",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L21"
+     },
+     {
+      "src": "HY",
+      "line": 23,
+      "text": "巳   寅    申    午",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L23"
+     }
+    ],
+    "outcome_quote": {
+     "src": "HY",
+     "line": 25,
+     "text": "这个例子记载他有五次婚姻，老婆带子女全跑了，最后还是孤家寡人。",
+     "role": "outcome_background",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25"
+    },
+    "outcome_note": "原文后续事实：五次婚姻、配偶带子女离开、无子女留在身边（P0 仅备查，不作预测依据）。"
+   },
+   "palaces": [
+    {
+     "addr": "D.b",
+     "role": "夫妻宫（配偶宫）",
+     "ten_god": "七杀",
+     "mapping_rule": "M-01",
+     "basis_quote": {
+      "src": "HY",
+      "line": 15,
+      "text": "看婚姻的好坏，应以配偶宫为主，配偶星为辅。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15"
+     }
+    },
+    {
+     "addr": "Y.b",
+     "role": "配偶星（男命财星）藏戊偏财",
+     "ten_god": "食神",
+     "mapping_rule": "M-02",
+     "basis_quote": {
+      "src": "HY",
+      "line": 17,
+      "text": "配偶宫为日主的坐支，配偶星则男命以财星为妻，女命以官杀星当夫，如无则另看：男命再无遁藏，基本可能确定无婚，或克配偶。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17"
+     }
+    },
+    {
+     "addr": "H.b",
+     "role": "配偶星（男命财星）藏己正财",
+     "ten_god": "伤官",
+     "mapping_rule": "M-02",
+     "basis_quote": {
+      "src": "HY",
+      "line": 17,
+      "text": "配偶宫为日主的坐支，配偶星则男命以财星为妻，女命以官杀星当夫，如无则另看：男命再无遁藏，基本可能确定无婚，或克配偶。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17"
+     }
+    }
+   ],
+   "material_edges": [
+    "e015",
+    "e011"
+   ],
+   "material_edge_reasons": {
+    "e015": "夫妻宫(M.b寅↔D.b申)相冲——问题直接问婚姻稳定",
+    "e011": "年支巳与夫妻宫申六合——配偶星来源侧，与冲争主线"
+   },
+   "direction_candidates": [
+    {
+     "layer": "direction",
+     "kind": "chong",
+     "class": "冲",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "actor_target",
+     "actor": "M.b",
+     "actor_char": "寅",
+     "target": "D.b",
+     "target_char": "申",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e015",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L86-L93",
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 29,
+       "text": "为何偏偏要离婚，而不是二奶三奶呢？因夫宫被冲克，处于不稳定状态。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29"
+      },
+      {
+       "src": "HY",
+       "line": 31,
+       "text": "巳、寅、午，三个老婆，巳申合，巳用了两次，多数一个，而寅申之冲，寅多作用一次，所以总算五个。",
+       "role": "actor_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc2",
+      "dc3"
+     ],
+     "evidence_gap": "same_page",
+     "addrs": [
+      "M.b",
+      "D.b"
+     ],
+     "ten_god_claims": {
+      "M.b": "比肩",
+      "D.b": "七杀"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e015",
+         "kind": "chong",
+         "members": [
+          "M.b",
+          "D.b"
+         ]
+        },
+        "edge_id": "e015",
+        "kind": "chong",
+        "members": [
+         "M.b",
+         "D.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "比肩",
+          "engine": "比肩",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "七杀",
+          "engine": "七杀",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+          "detail": "逐字命中该行",
+          "role": "actor_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc1",
+     "basis_text": "『夫宫被冲克』是被动句：受方=夫妻宫申；紧接一句『寅申之冲，寅多作用一次』把反复作用的一方指向月支寅（比肩＝月柱父母兄弟宫）。engine 边 e015 为 chong(M.b,D.b)、actor=null，方向由本候选补出。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e015",
+       "note": "chong['M.b', 'D.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+       "note": "direction_support"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+       "note": "actor_support"
+      }
+     ],
+     "claim": {
+      "relation": "chong",
+      "direction": "actor_to_target",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": "M.b",
+      "target": "D.b"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+     "quote": "为何偏偏要离婚，而不是二奶三奶呢？因夫宫被冲克，处于不稳定状态。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "chong",
+     "class": "冲",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "mutual",
+     "actor": null,
+     "target": null,
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e015",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L34-L42,L86-L93",
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 31,
+       "text": "巳、寅、午，三个老婆，巳申合，巳用了两次，多数一个，而寅申之冲，寅多作用一次，所以总算五个。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc1",
+      "dc3"
+     ],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "M.b",
+      "D.b"
+     ],
+     "ten_god_claims": {
+      "M.b": "比肩",
+      "D.b": "七杀"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e015",
+         "kind": "chong",
+         "members": [
+          "M.b",
+          "D.b"
+         ]
+        },
+        "edge_id": "e015",
+        "kind": "chong",
+        "members": [
+         "M.b",
+         "D.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "比肩",
+          "engine": "比肩",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "七杀",
+          "engine": "七杀",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc2",
+     "basis_text": "冲为对称关系，actor=null；『寅申之冲』是并列句，『寅多作用一次』是次数统计（计老婆个数），不是及物施受句法，不得据以单向赋向。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e015",
+       "note": "chong['M.b', 'D.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "chong",
+      "direction": "mutual",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "target": null
+     },
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+     "quote": "巳、寅、午，三个老婆，巳申合，巳用了两次，多数一个，而寅申之冲，寅多作用一次，所以总算五个。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "liuhe",
+     "class": "合",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "needs_anchor",
+     "actor": null,
+     "target": null,
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e011",
+      "kind": "liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L72-L84",
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 31,
+       "text": "巳、寅、午，三个老婆，巳申合，巳用了两次，多数一个，而寅申之冲，寅多作用一次，所以总算五个。",
+       "role": "relation_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc1",
+      "dc2"
+     ],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "Y.b",
+      "D.b"
+     ],
+     "ten_god_claims": {
+      "Y.b": "食神",
+      "D.b": "七杀"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e011",
+         "kind": "liuhe",
+         "members": [
+          "Y.b",
+          "D.b"
+         ]
+        },
+        "edge_id": "e011",
+        "kind": "liuhe",
+        "members": [
+         "Y.b",
+         "D.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.b",
+          "claimed": "食神",
+          "engine": "食神",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "七杀",
+          "engine": "七杀",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+          "detail": "逐字命中该行",
+          "role": "relation_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc3",
+     "basis_text": "同一夫妻宫另有『巳申合』（engine e011 liuhe 巳申）与『巳申破』（e012）。合不赋向；若婚姻主线是年支合夫妻宫而非冲，则施力方不可判（方向留空）。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e011",
+       "note": "liuhe['Y.b', 'D.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+       "note": "relation_support"
+      }
+     ],
+     "claim": {
+      "relation": "he",
+      "direction": "undetermined",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": null,
+      "target": null
+     },
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+     "quote": "巳、寅、午，三个老婆，巳申合，巳用了两次，多数一个，而寅申之冲，寅多作用一次，所以总算五个。",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "state_candidates": [
+    {
+     "layer": "state",
+     "result": "败",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ1"
+     ],
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 29,
+       "text": "为何偏偏要离婚，而不是二奶三奶呢？因夫宫被冲克，处于不稳定状态。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29"
+      },
+      {
+       "src": "HY",
+       "line": 25,
+       "text": "这个例子记载他有五次婚姻，老婆带子女全跑了，最后还是孤家寡人。",
+       "role": "outcome_background",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25"
+      }
+     ],
+     "conflict_with": [
+      "st3"
+     ],
+     "decisive": true,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+          "detail": "逐字命中该行",
+          "role": "outcome_background"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st1",
+     "state_label": "夫宫被冲克 → 婚姻不稳、多婚",
+     "state": "破局",
+     "basis_text": "原文把多婚直接归因于『夫宫被冲克』；且『寅申之冲，寅多作用一次』给出次数层面的解释。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+       "note": "outcome_background"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+     "quote": "为何偏偏要离婚，而不是二奶三奶呢？因夫宫被冲克，处于不稳定状态。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "多现",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ1"
+     ],
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 27,
+       "text": "申是妻宫，透出庚辛副宫，而副宫下边压着是伤食及财星，都是配偶星，表示跟他有婚姻关系的女人多。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27"
+      }
+     ],
+     "conflict_with": [],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st2",
+     "state_label": "副宫多现 → 有婚姻关系的女性多（配偶星伏于副宫之下）",
+     "state": null,
+     "basis_text": "『申是妻宫，透出庚辛副宫，而副宫下边压着是伤食及财星』——配偶星不在夫妻宫本身而在副宫之下，故主关系多。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27",
+       "note": "state_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27",
+     "quote": "申是妻宫，透出庚辛副宫，而副宫下边压着是伤食及财星，都是配偶星，表示跟他有婚姻关系的女人多。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "needs_anchor",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "anchored_by": [],
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 50,
+       "text": "原局夫妻宫为所忌之神，被夫星制之吉者婚姻较好。",
+       "role": "condition_reference",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L50"
+      }
+     ],
+     "conflict_with": [
+      "st1"
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L50",
+          "detail": "逐字命中该行",
+          "role": "condition_reference"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st3",
+     "state_label": "『夫妻宫为所忌之神，被夫星制之吉者婚姻较好』——本造不满足（反条件）",
+     "state": null,
+     "basis_text": "该句给出的是好婚姻条件；本造夫宫七杀为忌且被冲，条件不成立。是否另有救应，原文未给。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L50",
+       "note": "condition_reference"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L50",
+     "quote": "原局夫妻宫为所忌之神，被夫星制之吉者婚姻较好。",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "rescue_candidates": [
+    {
+     "layer": "rescue",
+     "label": "夫妻宫安静条件：不能被刑坏、冲破、穿倒，或六合/暗合他星",
+     "result": "needs_anchor",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "quotes": [
+      {
+       "src": "HY",
+       "line": 48,
+       "text": "夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒，或六合，暗合他星（配偶星以外的星），也不宜杂透，多现。",
+       "role": "condition_reference",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L48"
+      }
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L48",
+          "detail": "逐字命中该行",
+          "role": "condition_reference"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "rs1",
+     "rescuer": null,
+     "rescued": null,
+     "status": "not_evaluable",
+     "rescue_primitive": null,
+     "external_audit_id": null,
+     "basis_text": "该句是『好婚姻的组合』条件式，本造夫妻宫同时被 e015 冲、e011 六合、e012 破，无一满足；原文未给任何救应事实。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L48",
+       "note": "condition_reference"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L48",
+     "quote": "夫妻宫位要安静，如有用，不能被刑坏，冲破，穿倒，或六合，暗合他星（配偶星以外的星），也不宜杂透，多现。"
+    }
+   ],
+   "anchor_q": [
+    {
+     "layer": "direction",
+     "text": "你的婚姻破裂过程中，是否出现过『你的父母、兄弟或原生家庭出面介入、施压或替你做主』的具体事实？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "dc1 把施力方定在月支寅＝父母兄弟宫（家人在前推）；dc2 说两侧同损、没有单一推手。若确有原生家庭反复介入，则单侧施力读法成立；若没有，则对称读法保留。",
+     "rule_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+     "source_mentions_answer": false,
+     "proxy_strength": "medium",
+     "if_yes": {
+      "keep": [
+       "dc1"
+      ],
+      "eliminate": [
+       "dc2"
+      ],
+      "downgrade": []
+     },
+     "if_no": {
+      "keep": [
+       "dc2"
+      ],
+      "eliminate": [
+       "dc1"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "dc1",
+       "dc2"
+      ]
+     },
+     "qid": "AQ1",
+     "discriminates": [
+      "dc1",
+      "dc2"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [
+        "dc2"
+       ],
+       "keeps": [
+        "dc1"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "dc1"
+       ],
+       "keeps": [
+        "dc2"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "dc1",
+        "dc2"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "2000-01..2025-12",
+     "fact_domain": "marriage"
+    },
+    {
+     "layer": "direction",
+     "text": "你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 认为是冲（推走、断离）。若分开后仍长期有联系/往来，合读法保留；若彻底断绝，冲读法保留。",
+     "rule_ref": "docs/specs/actor-rules-v1.md:L72-L84",
+     "source_mentions_answer": false,
+     "proxy_strength": "medium",
+     "if_yes": {
+      "keep": [
+       "dc3"
+      ],
+      "eliminate": [
+       "dc1",
+       "dc2"
+      ],
+      "downgrade": []
+     },
+     "if_no": {
+      "keep": [
+       "dc1",
+       "dc2"
+      ],
+      "eliminate": [
+       "dc3"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "dc1",
+       "dc2",
+       "dc3"
+      ]
+     },
+     "qid": "AQ2",
+     "discriminates": [
+      "dc1",
+      "dc3"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [
+        "dc1",
+        "dc2"
+       ],
+       "keeps": [
+        "dc3"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "dc3"
+       ],
+       "keeps": [
+        "dc1",
+        "dc2"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "dc1",
+        "dc2",
+        "dc3"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "2000-01..2025-12",
+     "fact_domain": "marriage"
+    }
+   ],
+   "gaps": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "no_spouse_star_on_stem",
+    "muku_open_close",
+    "suiyun_ten_god"
+   ],
+   "non_claims": [
+    "不判冲/合的方向，不判吉凶、成败、离婚与否、应期",
+    "不把固定边（如 e002 ke）写成结论",
+    "不据原文『五次婚姻』反推本盘断语（仅作后续事实备查）",
+    "不判救应、不判岁运引动、不判党势"
+   ],
+   "snapshot": {
+    "chart_id": "cf-daef938eab28eb49e1b8",
+    "dayun_index": null,
+    "liunian_year": null
+   },
+   "source_quote_validation": [
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L21",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L23",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.outcome_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+     "detail": "逐字命中该行",
+     "role": "outcome_background"
+    },
+    {
+     "where": "palaces.D.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.Y.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.H.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    }
+   ],
+   "engine_validation": {
+    "aggregate": {
+     "address": {
+      "total": 7,
+      "pass": 7
+     },
+     "edge": {
+      "total": 3,
+      "pass": 3
+     },
+     "ten_god": {
+      "total": 7,
+      "pass": 7
+     },
+     "quote": {
+      "total": 7,
+      "pass": 7
+     }
+    },
+    "source_and_palace_quotes": {
+     "total": 6,
+     "pass": 6,
+     "items": [
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L21",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L23",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.outcome_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+       "detail": "逐字命中该行",
+       "role": "outcome_background"
+      },
+      {
+       "where": "palaces.D.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.Y.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.H.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      }
+     ]
+    },
+    "seeded_error": {
+     "tested": 4,
+     "caught": 4,
+     "pass": true,
+     "items": [
+      {
+       "seeded": "fake_address:Q.b",
+       "caught": true,
+       "detail": "engine 未输出该地址"
+      },
+      {
+       "seeded": "fake_edge:e999",
+       "caught": true,
+       "detail": "engine relations 无此 edge_id"
+      },
+      {
+       "seeded": "wrong_ten_god:D.b=正印",
+       "caught": true,
+       "detail": "十神不符"
+      },
+      {
+       "seeded": "tampered_quote:HY:L15",
+       "caught": true,
+       "detail": "该行未找到逐字文本"
+      }
+     ]
+    },
+    "invalid_items": [],
+    "all_pass": true,
+    "v2": {
+     "snapshot": {
+      "chart_id": "cf-daef938eab28eb49e1b8",
+      "dayun_index": null,
+      "liunian_year": null
+     },
+     "address": {
+      "status": "pass",
+      "checked": 7,
+      "failures": []
+     },
+     "edge": {
+      "status": "pass",
+      "checked": 3,
+      "failures": [],
+      "reason": null
+     },
+     "ten_god": {
+      "status": "pass",
+      "checked": 7,
+      "failures": []
+     },
+     "quote": {
+      "status": "pass",
+      "checked": 13,
+      "failures": []
+     },
+     "seeded_error": {
+      "status": "pass",
+      "mode": "card_scan",
+      "checked": [
+       "fake_address:Q.b",
+       "fake_edge:e999",
+       "wrong_ten_god:D.b=正印",
+       "tampered_quote:HY:L15"
+      ],
+      "failures": []
+     },
+     "overall": "pass"
+    }
+   },
+   "expert_decision": null,
+   "direction_tier": "B1",
+   "state_tier": "not_claimed",
+   "rescue_tier": "C",
+   "state_scope": "not_claimed",
+   "rescue_scope": "candidate_only",
+   "card_status": "valid",
+   "pending": "anchor_q",
+   "tier": "B1",
+   "decision_by": "anchor_fact",
+   "tier_reason": [
+    "direction:anchor_conflict",
+    "state:not_claimed",
+    "rescue:candidate_only"
+   ],
+   "anchor_a": [],
+   "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+   "selected_option": null,
+   "selection_source": "needs_anchor",
+   "not_auto_selected": true,
+   "facts": {
+    "chart_id": "cf-daef938eab28eb49e1b8",
+    "day_master": "甲",
+    "gender": "乾",
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "four_pillars": "辛巳 庚寅 甲申 庚午",
+    "pillars": [
+     {
+      "palace": "year",
+      "ganzhi": "辛巳",
+      "stem": {
+       "addr": "Y.s",
+       "char": "辛",
+       "ten_god": "正官"
+      },
+      "branch": {
+       "addr": "Y.b",
+       "char": "巳",
+       "main_ten_god": "食神",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "食神"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "七杀"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "month",
+      "ganzhi": "庚寅",
+      "stem": {
+       "addr": "M.s",
+       "char": "庚",
+       "ten_god": "七杀"
+      },
+      "branch": {
+       "addr": "M.b",
+       "char": "寅",
+       "main_ten_god": "比肩",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "day",
+      "ganzhi": "甲申",
+      "stem": {
+       "addr": "D.s",
+       "char": "甲",
+       "ten_god": "日主"
+      },
+      "branch": {
+       "addr": "D.b",
+       "char": "申",
+       "main_ten_god": "七杀",
+       "hidden": [
+        {
+         "c": "庚",
+         "q": "本气",
+         "g": "七杀"
+        },
+        {
+         "c": "壬",
+         "q": "中气",
+         "g": "偏印"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "偏财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "hour",
+      "ganzhi": "庚午",
+      "stem": {
+       "addr": "H.s",
+       "char": "庚",
+       "ten_god": "七杀"
+      },
+      "branch": {
+       "addr": "H.b",
+       "char": "午",
+       "main_ten_god": "伤官",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "正财"
+        }
+       ]
+      }
+     }
+    ],
+    "kong_wang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "申",
+      "酉"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "tiyong": {
+     "Y.s": "用",
+     "Y.b": "双属",
+     "M.s": "用",
+     "M.b": "体",
+     "D.s": "体",
+     "D.b": "用",
+     "H.s": "用",
+     "H.b": "双属"
+    },
+    "muku": [],
+    "edges": [
+     {
+      "edge_id": "e001",
+      "layer": "stem",
+      "kind": "same_qi",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "chars": [
+       "辛",
+       "庚"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e002",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "Y.s",
+       "D.s"
+      ],
+      "chars": [
+       "辛",
+       "甲"
+      ],
+      "distance": 2,
+      "between": [
+       "M.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e003",
+      "layer": "stem",
+      "kind": "same_qi",
+      "members": [
+       "Y.s",
+       "H.s"
+      ],
+      "chars": [
+       "辛",
+       "庚"
+      ],
+      "distance": 3,
+      "between": [
+       "M.s",
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e004",
+      "layer": "stem",
+      "kind": "stem_chong",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "chars": [
+       "庚",
+       "甲"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e005",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "chars": [
+       "庚",
+       "甲"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e006",
+      "layer": "stem",
+      "kind": "same_qi",
+      "members": [
+       "M.s",
+       "H.s"
+      ],
+      "chars": [
+       "庚",
+       "庚"
+      ],
+      "distance": 2,
+      "between": [
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e007",
+      "layer": "stem",
+      "kind": "stem_chong",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "chars": [
+       "甲",
+       "庚"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e008",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "H.s",
+       "D.s"
+      ],
+      "chars": [
+       "庚",
+       "甲"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e009",
+      "layer": "branch",
+      "kind": "chuan",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": [
+       "巳",
+       "寅"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e010",
+      "layer": "branch",
+      "kind": "xing",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": [
+       "巳",
+       "寅"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": "寅巳申",
+      "completeness": "partial",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e011",
+      "layer": "branch",
+      "kind": "liuhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": [
+       "巳",
+       "申"
+      ],
+      "distance": 2,
+      "between": [
+       "M.b"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e012",
+      "layer": "branch",
+      "kind": "po",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": [
+       "巳",
+       "申"
+      ],
+      "distance": 2,
+      "between": [
+       "M.b"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e013",
+      "layer": "branch",
+      "kind": "xing",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": [
+       "巳",
+       "申"
+      ],
+      "distance": 2,
+      "between": [
+       "M.b"
+      ],
+      "group": "寅巳申",
+      "completeness": "partial",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e014",
+      "layer": "branch",
+      "kind": "sanhui",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": [
+       "巳",
+       "午"
+      ],
+      "distance": 3,
+      "between": [
+       "M.b",
+       "D.b"
+      ],
+      "group": "巳午未",
+      "completeness": "partial",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e015",
+      "layer": "branch",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": [
+       "寅",
+       "申"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e016",
+      "layer": "branch",
+      "kind": "xing",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": [
+       "寅",
+       "申"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": "寅巳申",
+      "completeness": "partial",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e017",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": [
+       "寅",
+       "午"
+      ],
+      "distance": 2,
+      "between": [
+       "D.b"
+      ],
+      "group": "寅午戌",
+      "completeness": "half_sheng",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e018",
+      "layer": "branch",
+      "kind": "xing",
+      "members": [
+       "M.b",
+       "Y.b",
+       "D.b"
+      ],
+      "chars": [
+       "寅",
+       "巳",
+       "申"
+      ],
+      "distance": 2,
+      "between": [],
+      "group": "寅巳申",
+      "completeness": "full",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e019",
+      "layer": "stem_branch",
+      "kind": "ganzhi_zihe",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "chars": [
+       "辛",
+       "巳"
+      ],
+      "distance": 0,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     }
+    ],
+    "duan_candidates": [
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "D.s"
+      ],
+      "actor": "Y.s",
+      "edge_id": "e002"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "actor": null,
+      "edge_id": "e004"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e005"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "actor": null,
+      "edge_id": "e007"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "D.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e008"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": null,
+      "edge_id": "e009"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": null,
+      "edge_id": "e010"
+     },
+     {
+      "mode": "合用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e011"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e013"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e015"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e016"
+     },
+     {
+      "mode": "合用",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "actor": null,
+      "edge_id": "e019"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.b",
+       "Y.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "M.b",
+       "Y.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.s",
+       "H.b"
+      ],
+      "actor": "D.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "H.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "Y.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "H.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "Y.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "M.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.b",
+       "M.b"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "D.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "M.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "M.b"
+      ],
+      "actor": "M.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "M.b"
+      ],
+      "actor": "H.s",
+      "edge_id": null
+     }
+    ],
+    "structures": [
+     {
+      "structure_id": "ziping_zhengguan",
+      "items": [
+       {
+        "id": "brk_sha_hun_guan",
+        "kind": "breaker",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_cai",
+      "items": [
+       {
+        "id": "aux_guan_hu_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "str_cai_vs_shen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yin",
+      "items": [
+       {
+        "id": "aux_guansha_sheng_yin",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shishen",
+      "items": [
+       {
+        "id": "str_shen_wang_you_gen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_qisha",
+      "items": [
+       {
+        "id": "req_month_sha",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shangguan",
+      "items": [
+       {
+        "id": "brk_jian_guan",
+        "kind": "breaker",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yangren",
+      "items": [
+       {
+        "id": "xs_guansha_zhi_ren",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_jianlu",
+      "items": [
+       {
+        "id": "req_month_lu",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "xs_caiguan_tou",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     }
+    ],
+    "camp_counts": {
+     "印比": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": true
+     },
+     "食伤": {
+      "stems": 0,
+      "main_qi": 2,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "财": {
+      "stems": 0,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 3,
+      "month_main_qi": false
+     },
+     "官杀": {
+      "stems": 3,
+      "main_qi": 1,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "比劫": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 0,
+      "month_main_qi": true
+     },
+     "印": {
+      "stems": 0,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     }
+    },
+    "variants": [
+     {
+      "axis": "yin_changsheng",
+      "alt_value": "yin_same_as_yang",
+      "diffs": [
+       [
+        "/pillars/0/self_sit/marks",
+        [
+         "坐长生"
+        ]
+       ],
+       [
+        "/pillars/0/self_sit/stem_changsheng",
+        "长生"
+       ]
+      ]
+     }
+    ],
+    "input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    }
+   },
+   "provenance": {
+    "engine_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"辛巳 庚寅 甲申 庚午\" --gender 乾 --json",
+    "engine_relations_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli relations --pillars \"辛巳 庚寅 甲申 庚午\" --gender 乾 --json",
+    "engine_chart_id": "cf-daef938eab28eb49e1b8",
+    "engine_profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "engine_input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    },
+    "theory_cmd": null,
+    "quote_source": "直接回原文核对：每条 quote 用 path:Ln 定位并做逐字子串校验（不经过检索器摘要）",
+    "source_paths": [
+     "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md"
+    ],
+    "built_by": "T-197 P0 agent（子代理会话）",
+    "built_at": "2026-10-30T08:26:26+08:00"
+   }
+  },
+  {
+   "card_id": "P0-02",
+   "case_key": "C2",
+   "domain": "career",
+   "gender": "乾",
+   "four_pillars": "戊戌 癸亥 乙巳 己卯",
+   "question": {
+    "text": "我在部队/单位里干了多年，想知道还能不能往上走、能走到哪一步。",
+    "domain": "career",
+    "prereg_id": null,
+    "asked_by": "命主"
+   },
+   "source": {
+    "path": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md",
+    "locator": "L17-L27（案例）；L1-L3（军官判据）",
+    "pillar_quote": [
+     {
+      "src": "JG",
+      "line": 17,
+      "text": "戊 癸 乙 己",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L17"
+     },
+     {
+      "src": "JG",
+      "line": 19,
+      "text": "戌 亥 巳 卯",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L19"
+     }
+    ],
+    "outcome_quote": {
+     "src": "JG",
+     "line": 25,
+     "text": "此人婚姻非常好，一生2个孩子，一儿一女。",
+     "role": "outcome_background",
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25"
+    },
+    "outcome_note": "原文后续事实：正师级干部、07 年转戊辰运提副军长（P0 仅备查，不作预测依据）。"
+   },
+   "palaces": [
+    {
+     "addr": "M.s",
+     "role": "印星（偏印）＝权/印",
+     "ten_god": "偏印",
+     "mapping_rule": "M-03",
+     "basis_quote": {
+      "src": "AL",
+      "line": 39,
+      "text": "月——一父母、兄弟",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39"
+     }
+    },
+    {
+     "addr": "Y.s",
+     "role": "财星（正财）＝制印之力",
+     "ten_god": "正财",
+     "mapping_rule": "M-04",
+     "basis_quote": {
+      "src": "JG",
+      "line": 27,
+      "text": "解析：八字是财制印得权的官命",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+     }
+    },
+    {
+     "addr": "M.b",
+     "role": "月支（父母兄弟宫）",
+     "ten_god": "正印",
+     "mapping_rule": "M-03",
+     "basis_quote": {
+      "src": "AL",
+      "line": 39,
+      "text": "月——一父母、兄弟",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39"
+     }
+    }
+   ],
+   "material_edges": [
+    "e002",
+    "e006"
+   ],
+   "material_edge_reasons": {
+    "e002": "财制印(戊克癸)：原文判官命的核心机制",
+    "e006": "第二组财制印(己克癸)：同一受印癸的竞争候选"
+   },
+   "direction_candidates": [
+    {
+     "layer": "direction",
+     "kind": "ke",
+     "class": "克",
+     "class_tier": "A_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "actor_target",
+     "actor": "Y.s",
+     "actor_char": "戊",
+     "target": "M.s",
+     "target_char": "癸",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e002",
+      "kind": "ke",
+      "members": [
+       "Y.s",
+       "M.s"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L120-L127",
+     "quotes": [
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "解析：八字是财制印得权的官命",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      },
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "戊就是做工的重要的字，见到戊他出现或印被制，或印库出现，官杀被制之年都是提升的应期。",
+       "role": "actor_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      }
+     ],
+     "decisive": true,
+     "conflict_with": [
+      "dc2"
+     ],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "Y.s",
+      "M.s"
+     ],
+     "ten_god_claims": {
+      "Y.s": "正财",
+      "M.s": "偏印"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.s",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "M.s",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e002",
+         "kind": "ke",
+         "members": [
+          "Y.s",
+          "M.s"
+         ]
+        },
+        "edge_id": "e002",
+        "kind": "ke",
+        "members": [
+         "Y.s",
+         "M.s"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.s",
+          "claimed": "正财",
+          "engine": "正财",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "M.s",
+          "claimed": "偏印",
+          "engine": "偏印",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "actor_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc1",
+     "basis_text": "engine 固定规则：e002 ke(戊,癸)、actor=Y.s。原文把戊点为『做工的重要的字』并说『见到戊…或印被制』——即戊(正财)制癸(偏印)。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e002",
+       "note": "ke['Y.s', 'M.s']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "direction_support"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "actor_support"
+      }
+     ],
+     "claim": {
+      "relation": "ke",
+      "direction": "actor_to_target",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "actor": "Y.s",
+      "target": "M.s"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "quote": "解析：八字是财制印得权的官命",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "ke",
+     "class": "克",
+     "class_tier": "A_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "actor_target",
+     "actor": "H.s",
+     "actor_char": "己",
+     "target": "M.s",
+     "target_char": "癸",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e006",
+      "kind": "ke",
+      "members": [
+       "H.s",
+       "M.s"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L120-L127",
+     "quotes": [
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "解析：八字是财制印得权的官命",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc1"
+     ],
+     "evidence_gap": "doctrine_only",
+     "addrs": [
+      "H.s",
+      "M.s"
+     ],
+     "ten_god_claims": {
+      "H.s": "偏财",
+      "M.s": "偏印"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "H.s",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "M.s",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e006",
+         "kind": "ke",
+         "members": [
+          "H.s",
+          "M.s"
+         ]
+        },
+        "edge_id": "e006",
+        "kind": "ke",
+        "members": [
+         "H.s",
+         "M.s"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "H.s",
+          "claimed": "偏财",
+          "engine": "偏财",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "M.s",
+          "claimed": "偏印",
+          "engine": "偏印",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc2",
+     "basis_text": "同盘第二组财克印：e006 ke(己,癸)、actor=H.s。原文只说『财制印』未点名哪一个财；时干己(偏财)同样满足该机制，与 dc1 争同一个受印癸。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e006",
+       "note": "ke['H.s', 'M.s']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "ke",
+      "direction": "actor_to_target",
+      "members": [
+       "H.s",
+       "M.s"
+      ],
+      "actor": "H.s",
+      "target": "M.s"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "quote": "解析：八字是财制印得权的官命",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "chong",
+     "class": "冲",
+     "class_tier": "B_class",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "direction_type": "needs_anchor",
+     "actor": null,
+     "target": null,
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e009",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L86-L93",
+     "quotes": [
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "壬申92年是印化官杀生身",
+       "role": "absence_evidence",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [],
+     "evidence_gap": "gap",
+     "addrs": [
+      "M.b",
+      "D.b"
+     ],
+     "ten_god_claims": {
+      "M.b": "正印",
+      "D.b": "伤官"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e009",
+         "kind": "chong",
+         "members": [
+          "M.b",
+          "D.b"
+         ]
+        },
+        "edge_id": "e009",
+        "kind": "chong",
+        "members": [
+         "M.b",
+         "D.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "正印",
+          "engine": "正印",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "伤官",
+          "engine": "伤官",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "absence_evidence"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc3",
+     "basis_text": "原局亥(正印)与巳(伤官)相冲（e009），但原文对升迁只给岁运叙述（如『壬申92年是印化官杀生身』），未给本造原局亥巳冲的施动方；同书他造『寅申冲了印换了地方』属于另一造，不能移植。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e009",
+       "note": "chong['M.b', 'D.b']"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "absence_evidence"
+      }
+     ],
+     "claim": {
+      "relation": "chong",
+      "direction": "undetermined",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "target": null
+     },
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "quote": "壬申92年是印化官杀生身",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "state_candidates": [
+    {
+     "layer": "state",
+     "result": "成",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ1"
+     ],
+     "quotes": [
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "解析：八字是财制印得权的官命",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      }
+     ],
+     "conflict_with": [
+      "st2"
+     ],
+     "decisive": true,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st1",
+     "state_label": "财制印得权 → 官命",
+     "state": "成局",
+     "basis_text": "原文直断『八字是财制印得权的官命』，并以戊为工神；engine 亦有 e002 ke(戊,癸)。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "state_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "quote": "解析：八字是财制印得权的官命",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "疑",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ1"
+     ],
+     "quotes": [
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "但很难理解是部队的军官，因为八字无伤官制官杀，也无比劫羊刃做工，但是八字见了戌土火库，又是伤官库做工了",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      },
+      {
+       "src": "JG",
+       "line": 27,
+       "text": "戌本来就是火药、枪炮、炮弹的意思，所以能带火药的字做工了，肯定是军队部队的官了。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+      }
+     ],
+     "conflict_with": [
+      "st1"
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st2",
+     "state_label": "无伤官制官杀、无比劫羊刃做工 → 仅凭『戌为火药库』补象法才成军官",
+     "state": null,
+     "basis_text": "原文自陈『很难理解是部队的军官，因为八字无伤官制官杀，也无比劫羊刃做工』，改由戌土火库（火药、枪炮）取象成立。此路与 st1 的财制印并不同源。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "note": "state_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "quote": "但很难理解是部队的军官，因为八字无伤官制官杀，也无比劫羊刃做工，但是八字见了戌土火库，又是伤官库做工了",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "rescue_candidates": [
+    {
+     "layer": "rescue",
+     "label": "引擎 structures 救应要件命中：rsc_cai_zhi_xiao / rsc_yin_or_cai（met）",
+     "result": "needs_anchor",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "quotes": [],
+     "engine_ref": {
+      "source": "engine.cli structures",
+      "items": [
+       "rsc_cai_zhi_xiao",
+       "rsc_yin_or_cai"
+      ]
+     },
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": []
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "rs1",
+     "rescuer": null,
+     "rescued": null,
+     "status": "not_evaluable",
+     "rescue_primitive": null,
+     "external_audit_id": null,
+     "basis_text": "engine.structures 只报『救应要件命中』（ziping_shishen.rsc_cai_zhi_xiao、ziping_shangguan.rsc_yin_or_cai），按规格 §4.2 G5 救应未判，不构成救应结论；原文无对应救应句。",
+     "basis": [],
+     "source_ref": null,
+     "quote": null
+    }
+   ],
+   "anchor_q": [
+    {
+     "layer": "direction",
+     "text": "你过去十年里，收入的主要来源是否以『体制外的项目、投资或兼职』为主，而不是固定级别的工资？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "dc1 的施力财是年干戊(正财)、dc2 是时干己(偏财)。『正财↔固定收入、偏财↔外部项目』是十神通则，本包未找到逐字原文，因此只作区分假设，不写成断语；题目问的是收入结构这一已发生事实，据此决定哪一个财在命主身上是活的。",
+     "rule_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27，docs/specs/fact-evidence-pack-v1.md:L60-L62",
+     "source_mentions_answer": false,
+     "proxy_strength": "medium",
+     "if_yes": {
+      "keep": [
+       "dc2"
+      ],
+      "eliminate": [
+       "dc1"
+      ],
+      "downgrade": []
+     },
+     "if_no": {
+      "keep": [
+       "dc1"
+      ],
+      "eliminate": [
+       "dc2"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "dc1",
+       "dc2"
+      ]
+     },
+     "qid": "AQ1",
+     "discriminates": [
+      "dc1",
+      "dc2"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [
+        "dc1"
+       ],
+       "keeps": [
+        "dc2"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "dc2"
+       ],
+       "keeps": [
+        "dc1"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "dc1",
+        "dc2"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "2015-01..2025-12",
+     "fact_domain": "career"
+    }
+   ],
+   "gaps": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "muku_open_close",
+    "suiyun_ten_god",
+    "binzhu_direction"
+   ],
+   "non_claims": [
+    "不判官职高低、升迁年份、吉凶",
+    "不把『财制印』写成必然结论；engine 候选不等于做功成功",
+    "不判救应（G5）；不判岁运引动"
+   ],
+   "snapshot": {
+    "chart_id": "cf-1627557db9bf35baf387",
+    "dayun_index": null,
+    "liunian_year": null
+   },
+   "source_quote_validation": [
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L17",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L19",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.outcome_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25",
+     "detail": "逐字命中该行",
+     "role": "outcome_background"
+    },
+    {
+     "where": "palaces.M.s.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.Y.s.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.M.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    }
+   ],
+   "engine_validation": {
+    "aggregate": {
+     "address": {
+      "total": 6,
+      "pass": 6
+     },
+     "edge": {
+      "total": 3,
+      "pass": 3
+     },
+     "ten_god": {
+      "total": 6,
+      "pass": 6
+     },
+     "quote": {
+      "total": 6,
+      "pass": 6
+     }
+    },
+    "source_and_palace_quotes": {
+     "total": 6,
+     "pass": 6,
+     "items": [
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L17",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L19",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.outcome_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25",
+       "detail": "逐字命中该行",
+       "role": "outcome_background"
+      },
+      {
+       "where": "palaces.M.s.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.Y.s.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.M.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      }
+     ]
+    },
+    "seeded_error": {
+     "tested": 4,
+     "caught": 4,
+     "pass": true,
+     "items": [
+      {
+       "seeded": "fake_address:Q.b",
+       "caught": true,
+       "detail": "engine 未输出该地址"
+      },
+      {
+       "seeded": "fake_edge:e999",
+       "caught": true,
+       "detail": "engine relations 无此 edge_id"
+      },
+      {
+       "seeded": "wrong_ten_god:D.b=正印",
+       "caught": true,
+       "detail": "十神不符"
+      },
+      {
+       "seeded": "tampered_quote:HY:L15",
+       "caught": true,
+       "detail": "该行未找到逐字文本"
+      }
+     ]
+    },
+    "invalid_items": [],
+    "all_pass": true,
+    "v2": {
+     "snapshot": {
+      "chart_id": "cf-1627557db9bf35baf387",
+      "dayun_index": null,
+      "liunian_year": null
+     },
+     "address": {
+      "status": "pass",
+      "checked": 6,
+      "failures": []
+     },
+     "edge": {
+      "status": "pass",
+      "checked": 3,
+      "failures": [],
+      "reason": null
+     },
+     "ten_god": {
+      "status": "pass",
+      "checked": 6,
+      "failures": []
+     },
+     "quote": {
+      "status": "pass",
+      "checked": 12,
+      "failures": []
+     },
+     "seeded_error": {
+      "status": "pass",
+      "mode": "card_scan",
+      "checked": [
+       "fake_address:Q.b",
+       "fake_edge:e999",
+       "wrong_ten_god:D.b=正印",
+       "tampered_quote:HY:L15"
+      ],
+      "failures": []
+     },
+     "overall": "pass"
+    }
+   },
+   "expert_decision": null,
+   "direction_tier": "B1",
+   "state_tier": "not_claimed",
+   "rescue_tier": "C",
+   "state_scope": "not_claimed",
+   "rescue_scope": "candidate_only",
+   "card_status": "valid",
+   "pending": "anchor_q",
+   "tier": "B1",
+   "decision_by": "anchor_fact",
+   "tier_reason": [
+    "direction:anchor_conflict",
+    "state:not_claimed",
+    "rescue:candidate_only"
+   ],
+   "anchor_a": [],
+   "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+   "selected_option": null,
+   "selection_source": "needs_anchor",
+   "not_auto_selected": true,
+   "facts": {
+    "chart_id": "cf-1627557db9bf35baf387",
+    "day_master": "乙",
+    "gender": "乾",
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "four_pillars": "戊戌 癸亥 乙巳 己卯",
+    "pillars": [
+     {
+      "palace": "year",
+      "ganzhi": "戊戌",
+      "stem": {
+       "addr": "Y.s",
+       "char": "戊",
+       "ten_god": "正财"
+      },
+      "branch": {
+       "addr": "Y.b",
+       "char": "戌",
+       "main_ten_god": "正财",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "正财"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "七杀"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "食神"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "month",
+      "ganzhi": "癸亥",
+      "stem": {
+       "addr": "M.s",
+       "char": "癸",
+       "ten_god": "偏印"
+      },
+      "branch": {
+       "addr": "M.b",
+       "char": "亥",
+       "main_ten_god": "正印",
+       "hidden": [
+        {
+         "c": "壬",
+         "q": "本气",
+         "g": "正印"
+        },
+        {
+         "c": "甲",
+         "q": "中气",
+         "g": "劫财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "day",
+      "ganzhi": "乙巳",
+      "stem": {
+       "addr": "D.s",
+       "char": "乙",
+       "ten_god": "日主"
+      },
+      "branch": {
+       "addr": "D.b",
+       "char": "巳",
+       "main_ten_god": "伤官",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "伤官"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "正官"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "正财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "hour",
+      "ganzhi": "己卯",
+      "stem": {
+       "addr": "H.s",
+       "char": "己",
+       "ten_god": "偏财"
+      },
+      "branch": {
+       "addr": "H.b",
+       "char": "卯",
+       "main_ten_god": "比肩",
+       "hidden": [
+        {
+         "c": "乙",
+         "q": "本气",
+         "g": "比肩"
+        }
+       ]
+      }
+     }
+    ],
+    "kong_wang": {
+     "by_day_xun": [
+      "寅",
+      "卯"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "D.b",
+       "year"
+      ],
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "tiyong": {
+     "Y.s": "用",
+     "Y.b": "用",
+     "M.s": "体",
+     "M.b": "体",
+     "D.s": "体",
+     "D.b": "双属",
+     "H.s": "用",
+     "H.b": "体"
+    },
+    "muku": [
+     {
+      "addr": "Y.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ],
+      "openers": [],
+      "chuan_po": [],
+      "binders": [
+       "e008"
+      ],
+      "candidates": [
+       {
+        "addr": "D.b",
+        "char": "巳",
+        "effect": "入墓",
+        "excluded": false,
+        "requires_judgment": []
+       },
+       {
+        "addr": "Y.s",
+        "char": "戊",
+        "effect": "不论入墓",
+        "excluded": true,
+        "requires_judgment": []
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e001",
+      "layer": "stem",
+      "kind": "wuhe",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "chars": [
+       "戊",
+       "癸"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e002",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "chars": [
+       "戊",
+       "癸"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e003",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "chars": [
+       "乙",
+       "戊"
+      ],
+      "distance": 2,
+      "between": [
+       "M.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e004",
+      "layer": "stem",
+      "kind": "same_qi",
+      "members": [
+       "Y.s",
+       "H.s"
+      ],
+      "chars": [
+       "戊",
+       "己"
+      ],
+      "distance": 3,
+      "between": [
+       "M.s",
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e005",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "chars": [
+       "癸",
+       "乙"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e006",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "H.s",
+       "M.s"
+      ],
+      "chars": [
+       "己",
+       "癸"
+      ],
+      "distance": 2,
+      "between": [
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e007",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "chars": [
+       "乙",
+       "己"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e008",
+      "layer": "branch",
+      "kind": "liuhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": [
+       "戌",
+       "卯"
+      ],
+      "distance": 3,
+      "between": [
+       "M.b",
+       "D.b"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e009",
+      "layer": "branch",
+      "kind": "chong",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": [
+       "亥",
+       "巳"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e010",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": [
+       "亥",
+       "卯"
+      ],
+      "distance": 2,
+      "between": [
+       "D.b"
+      ],
+      "group": "亥卯未",
+      "completeness": "half_sheng",
+      "scope": "natal"
+     }
+    ],
+    "duan_candidates": [
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "actor": "Y.s",
+      "edge_id": "e002"
+     },
+     {
+      "mode": "合用",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "actor": null,
+      "edge_id": "e001"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e003"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e005"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "M.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e006"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e007"
+     },
+     {
+      "mode": "合用",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "actor": null,
+      "edge_id": "e008"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e009"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "D.b",
+       "Y.b"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "H.b",
+       "D.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "D.s",
+       "D.b"
+      ],
+      "actor": "D.s",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e005"
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "M.b",
+       "D.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.s",
+       "D.b"
+      ],
+      "actor": "D.s",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.b",
+       "H.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "H.b",
+       "D.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "Y.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "H.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.b",
+       "M.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "Y.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "Y.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "M.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "D.b"
+      ],
+      "actor": "M.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "Y.b"
+      ],
+      "actor": "D.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "M.b"
+      ],
+      "actor": "H.s",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     }
+    ],
+    "structures": [
+     {
+      "structure_id": "ziping_zhengguan",
+      "items": [
+       {
+        "id": "aux_cai_sheng_guan",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "aux_yin_hu_guan",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_cai",
+      "items": [
+       {
+        "id": "str_cai_vs_shen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yin",
+      "items": [
+       {
+        "id": "req_month_yin",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "brk_cai_po_yin",
+        "kind": "breaker",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shishen",
+      "items": [
+       {
+        "id": "aux_shishen_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "rsc_cai_zhi_xiao",
+        "kind": "rescuer",
+        "status": "met"
+       },
+       {
+        "id": "str_shen_wang_you_gen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_qisha",
+      "items": [
+       {
+        "id": "xs_yin_hua_sha",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "rsc_cai_zhi_xiao",
+        "kind": "rescuer",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shangguan",
+      "items": [
+       {
+        "id": "xs_pei_yin",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "xs_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "rsc_yin_or_cai",
+        "kind": "rescuer",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yangren",
+      "items": [
+       {
+        "id": "xs_guansha_zhi_ren",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_jianlu",
+      "items": [
+       {
+        "id": "xs_caiguan_tou",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     }
+    ],
+    "camp_counts": {
+     "印比": {
+      "stems": 1,
+      "main_qi": 2,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": true
+     },
+     "食伤": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 1,
+      "month_main_qi": false
+     },
+     "财": {
+      "stems": 2,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 1,
+      "month_main_qi": false
+     },
+     "官杀": {
+      "stems": 0,
+      "main_qi": 0,
+      "mid_qi": 2,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "比劫": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "印": {
+      "stems": 1,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 0,
+      "month_main_qi": true
+     }
+    },
+    "variants": [
+     {
+      "axis": "yin_changsheng",
+      "alt_value": "yin_same_as_yang",
+      "diffs": [
+       [
+        "/pillars/1/self_sit/stem_changsheng",
+        "临官"
+       ],
+       [
+        "/pillars/2/self_sit/stem_changsheng",
+        "病"
+       ],
+       [
+        "/pillars/3/self_sit/stem_changsheng",
+        "沐浴"
+       ]
+      ]
+     }
+    ],
+    "input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    }
+   },
+   "provenance": {
+    "engine_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"戊戌 癸亥 乙巳 己卯\" --gender 乾 --json",
+    "engine_relations_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli relations --pillars \"戊戌 癸亥 乙巳 己卯\" --gender 乾 --json",
+    "engine_chart_id": "cf-1627557db9bf35baf387",
+    "engine_profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "engine_input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    },
+    "theory_cmd": null,
+    "quote_source": "直接回原文核对：每条 quote 用 path:Ln 定位并做逐字子串校验（不经过检索器摘要）",
+    "source_paths": [
+     "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md"
+    ],
+    "built_by": "T-197 P0 agent（子代理会话）",
+    "built_at": "2026-10-30T08:26:26+08:00"
+   }
+  },
+  {
+   "card_id": "P0-03",
+   "case_key": "C3",
+   "domain": "health",
+   "gender": "坤",
+   "four_pillars": "壬寅 庚戌 己丑 庚午",
+   "question": {
+    "text": "我这些年身体一直出问题，最担心妇科和大病，想知道根子在哪。",
+    "domain": "health",
+    "prereg_id": null,
+    "asked_by": "命主"
+   },
+   "source": {
+    "path": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md",
+    "locator": "L135-L141（案例）；L9、L17、L27、L123（同章象法与病性）",
+    "pillar_quote": [
+     {
+      "src": "JB",
+      "line": 135,
+      "text": "壬  庚   己   庚",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L135"
+     },
+     {
+      "src": "JB",
+      "line": 137,
+      "text": "寅  戌   丑   午",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L137"
+     }
+    ],
+    "outcome_quote": {
+     "src": "JB",
+     "line": 139,
+     "text": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+     "role": "outcome_background",
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139"
+    },
+    "outcome_note": "原文后续事实：子宫癌、午运手术，后经中医治疗未转移（P0 仅备查，不作预测依据）。"
+   },
+   "palaces": [
+    {
+     "addr": "D.b",
+     "role": "日支（夫妻宫/自身坐支）丑：阴土、伤食之墓",
+     "ten_god": "比肩",
+     "mapping_rule": "M-01",
+     "basis_quote": {
+      "src": "AL",
+      "line": 41,
+      "text": "日——一自己、配偶",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L41"
+     }
+    },
+    {
+     "addr": "H.b",
+     "role": "时支午：己土之禄、女体",
+     "ten_god": "偏印",
+     "mapping_rule": "M-05",
+     "basis_quote": {
+      "src": "JB",
+      "line": 139,
+      "text": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139"
+     }
+    },
+    {
+     "addr": "M.b",
+     "role": "月支戌：火土库、劫财",
+     "ten_god": "劫财",
+     "mapping_rule": "M-03",
+     "basis_quote": {
+      "src": "AL",
+      "line": 39,
+      "text": "月——一父母、兄弟",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39"
+     }
+    }
+   ],
+   "material_edges": [
+    "e012",
+    "e010"
+   ],
+   "material_edge_reasons": {
+    "e012": "丑午穿：原文指定的病源",
+    "e010": "丑戌刑：原文用作救应(戌坏丑)"
+   },
+   "direction_candidates": [
+    {
+     "layer": "direction",
+     "kind": "chuan",
+     "class": "穿",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "actor_target",
+     "actor": "D.b",
+     "actor_char": "丑",
+     "target": "H.b",
+     "target_char": "午",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e012",
+      "kind": "chuan",
+      "members": [
+       "D.b",
+       "H.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L104-L110",
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 139,
+       "text": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139"
+      },
+      {
+       "src": "JB",
+       "line": 9,
+       "text": "三：关注八字的穿、刑、破，被坏了的字要看代表什么，是不是身体的一部分。",
+       "role": "method_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc2"
+     ],
+     "evidence_gap": "same_page",
+     "addrs": [
+      "D.b",
+      "H.b"
+     ],
+     "ten_god_claims": {
+      "D.b": "比肩",
+      "H.b": "偏印"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "H.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e012",
+         "kind": "chuan",
+         "members": [
+          "D.b",
+          "H.b"
+         ]
+        },
+        "edge_id": "e012",
+        "kind": "chuan",
+        "members": [
+         "D.b",
+         "H.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "比肩",
+          "engine": "比肩",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "H.b",
+          "claimed": "偏印",
+          "engine": "偏印",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9",
+          "detail": "逐字命中该行",
+          "role": "method_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc1",
+     "basis_text": "『丑午穿，伤了时上禄』先把受方定在时支午（己土之禄、女体），穿的另一端丑（日支/夫妻宫）即施力方。engine e012 chuan actor=null，方向由本候选补出。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e012",
+       "note": "chuan['D.b', 'H.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+       "note": "direction_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9",
+       "note": "method_support"
+      }
+     ],
+     "claim": {
+      "relation": "chuan",
+      "direction": "actor_to_target",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "actor": "D.b",
+      "target": "H.b"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+     "quote": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "chuan",
+     "class": "穿",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "mutual",
+     "actor": null,
+     "target": null,
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e012",
+      "kind": "chuan",
+      "members": [
+       "D.b",
+       "H.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L104-L110",
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 139,
+       "text": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139"
+      }
+     ],
+     "decisive": false,
+     "conflict_with": [
+      "dc1"
+     ],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "D.b",
+      "H.b"
+     ],
+     "ten_god_claims": {
+      "D.b": "比肩",
+      "H.b": "偏印"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "H.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e012",
+         "kind": "chuan",
+         "members": [
+          "D.b",
+          "H.b"
+         ]
+        },
+        "edge_id": "e012",
+        "kind": "chuan",
+        "members": [
+         "D.b",
+         "H.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "比肩",
+          "engine": "比肩",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "H.b",
+          "claimed": "偏印",
+          "engine": "偏印",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc2",
+     "basis_text": "『丑午穿』是并列列举（原文另有『酉戌穿,丑午穿』式并列），对称不赋向；『伤了时上禄』是结果句，只说明受损方，没有给出施动主语。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e012",
+       "note": "chuan['D.b', 'H.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "chuan",
+      "direction": "mutual",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "actor": null,
+      "target": null
+     },
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+     "quote": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "xing",
+     "class": "刑",
+     "class_tier": "B_class",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "direction_type": "actor_target",
+     "actor": "M.b",
+     "actor_char": "戌",
+     "target": "D.b",
+     "target_char": "丑",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e010",
+      "kind": "xing",
+      "members": [
+       "M.b",
+       "D.b"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L95-L102",
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 141,
+       "text": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141"
+      }
+     ],
+     "decisive": true,
+     "conflict_with": [
+      "dc1",
+      "dc2"
+     ],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "M.b",
+      "D.b"
+     ],
+     "ten_god_claims": {
+      "M.b": "劫财",
+      "D.b": "比肩"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e010",
+         "kind": "xing",
+         "members": [
+          "M.b",
+          "D.b"
+         ]
+        },
+        "edge_id": "e010",
+        "kind": "xing",
+        "members": [
+         "M.b",
+         "D.b"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "劫财",
+          "engine": "劫财",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "比肩",
+          "engine": "比肩",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc3",
+     "basis_text": "原文『命中因有戌坏丑』是主谓宾句：戌为施动主语、丑为受事；engine e010 为 xing(丑戌未 partial)、actor=null。原文用『坏』字，本卡按 engine 既有边 kind=xing 记录，不另造边。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e010",
+       "note": "xing['M.b', 'D.b']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "xing",
+      "direction": "actor_to_target",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": "M.b",
+      "target": "D.b"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+     "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "state_candidates": [
+    {
+     "layer": "state",
+     "result": "病",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ2"
+     ],
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 139,
+       "text": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139"
+      },
+      {
+       "src": "JB",
+       "line": 17,
+       "text": "丑：生殖器、妇科、肛门",
+       "role": "symbol_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L17"
+      }
+     ],
+     "conflict_with": [
+      "st2"
+     ],
+     "decisive": true,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L17",
+          "detail": "逐字命中该行",
+          "role": "symbol_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st1",
+     "state_label": "妇科（子宫癌）：丑＝阴、伤食之墓，午＝女体/禄",
+     "state": null,
+     "basis_text": "原文以丑午穿＋丑为阴/伤食之墓＋午为女体，直指妇科；并记子宫癌、午运手术。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L17",
+       "note": "symbol_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+     "quote": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "病",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ2"
+     ],
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 123,
+       "text": "丑午穿--------心是被伤，心慌惊悸。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123"
+      },
+      {
+       "src": "JB",
+       "line": 27,
+       "text": "午：心脏、阳亢、血压、神经",
+       "role": "symbol_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27"
+      },
+      {
+       "src": "JB",
+       "line": 131,
+       "text": "原局的毛病是丑午穿，午得寅生，旺，所以不得心脏病。",
+       "role": "counter_reading",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131"
+      }
+     ],
+     "conflict_with": [
+      "st1"
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27",
+          "detail": "逐字命中该行",
+          "role": "symbol_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131",
+          "detail": "逐字命中该行",
+          "role": "counter_reading"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st2",
+     "state_label": "心脏/心慌（同章病性：丑午穿主心被伤）",
+     "state": null,
+     "basis_text": "同章病性条把丑午穿读作心脏：『丑午穿--------心是被伤，心慌惊悸』；该读法与本造『午得寅生，旺，所以不得心脏病』的判据互斥，须以事实定夺。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27",
+       "note": "symbol_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131",
+       "note": "counter_reading"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123",
+     "quote": "丑午穿--------心是被伤，心慌惊悸。",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "rescue_candidates": [
+    {
+     "layer": "rescue",
+     "label": "戌坏丑 → 病源被制，未转移、治好",
+     "result": "救",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "AQ1"
+     ],
+     "quotes": [
+      {
+       "src": "JB",
+       "line": 141,
+       "text": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+       "role": "rescue_support",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141"
+      }
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+          "detail": "逐字命中该行",
+          "role": "rescue_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "rs1",
+     "rescuer": null,
+     "rescued": null,
+     "status": "not_evaluable",
+     "rescue_primitive": null,
+     "external_audit_id": null,
+     "basis_text": "原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应），与 dc3 同源但用途相反：dc3 是方向，rs1 是救应效果。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+       "note": "rescue_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+     "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。"
+    }
+   ],
+   "anchor_q": [
+    {
+     "layer": "direction",
+     "text": "你的妇科病（或相关手术）确诊之前，是否先发生过『婚姻或家庭重大变故』（分居、离婚、丧偶、家人重病）？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "dc1 把施力方定在日支丑（夫妻宫）→ 家庭侧先动、病随后；dc2 说两侧同损、无先后。若确有『变故在前、发病在后』的时间顺序，单侧施力读法保留；否则对称读法保留。",
+     "rule_ref": "docs/specs/actor-rules-v1.md:L104-L110",
+     "source_mentions_answer": false,
+     "proxy_strength": "medium",
+     "if_yes": {
+      "keep": [
+       "dc1"
+      ],
+      "eliminate": [
+       "dc2"
+      ],
+      "downgrade": []
+     },
+     "if_no": {
+      "keep": [
+       "dc2"
+      ],
+      "eliminate": [
+       "dc1"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "dc1",
+       "dc2"
+      ]
+     },
+     "qid": "AQ1",
+     "discriminates": [
+      "dc1",
+      "dc2"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [
+        "dc2"
+       ],
+       "keeps": [
+        "dc1"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "dc1"
+       ],
+       "keeps": [
+        "dc2"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "dc1",
+        "dc2"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "1995-01..2025-12",
+     "fact_domain": "health"
+    },
+    {
+     "layer": "state",
+     "text": "在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。两者在原文中互斥（『午得寅生，旺，所以不得心脏病』），只能由事实定夺。",
+     "rule_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9",
+     "source_mentions_answer": false,
+     "proxy_strength": "high",
+     "if_yes": {
+      "keep": [
+       "st2"
+      ],
+      "eliminate": [],
+      "downgrade": [
+       "st1"
+      ]
+     },
+     "if_no": {
+      "keep": [
+       "st1"
+      ],
+      "eliminate": [
+       "st2"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "st1",
+       "st2"
+      ]
+     },
+     "qid": "AQ2",
+     "discriminates": [
+      "st1",
+      "st2"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [],
+       "keeps": [
+        "st2"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "st2"
+       ],
+       "keeps": [
+        "st1"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "st1",
+        "st2"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "1995-01..2025-12",
+     "fact_domain": "health"
+    }
+   ],
+   "gaps": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "muku_open_close",
+    "suiyun_ten_god",
+    "disease_severity_not_scored"
+   ],
+   "non_claims": [
+    "不判疾病名称、严重程度、生死、应期",
+    "不把『丑午穿』直接写成断语；象法条目只是检索依据",
+    "不判救应成立（rs1 仅候选）；不判岁运（午运）引动"
+   ],
+   "snapshot": {
+    "chart_id": "cf-0075a9941ae6f079f4b9",
+    "dayun_index": null,
+    "liunian_year": null
+   },
+   "source_quote_validation": [
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L135",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L137",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.outcome_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+     "detail": "逐字命中该行",
+     "role": "outcome_background"
+    },
+    {
+     "where": "palaces.D.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L41",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.H.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.M.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    }
+   ],
+   "engine_validation": {
+    "aggregate": {
+     "address": {
+      "total": 6,
+      "pass": 6
+     },
+     "edge": {
+      "total": 3,
+      "pass": 3
+     },
+     "ten_god": {
+      "total": 6,
+      "pass": 6
+     },
+     "quote": {
+      "total": 6,
+      "pass": 6
+     }
+    },
+    "source_and_palace_quotes": {
+     "total": 6,
+     "pass": 6,
+     "items": [
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L135",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L137",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.outcome_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+       "detail": "逐字命中该行",
+       "role": "outcome_background"
+      },
+      {
+       "where": "palaces.D.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L41",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.H.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.M.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      }
+     ]
+    },
+    "seeded_error": {
+     "tested": 4,
+     "caught": 4,
+     "pass": true,
+     "items": [
+      {
+       "seeded": "fake_address:Q.b",
+       "caught": true,
+       "detail": "engine 未输出该地址"
+      },
+      {
+       "seeded": "fake_edge:e999",
+       "caught": true,
+       "detail": "engine relations 无此 edge_id"
+      },
+      {
+       "seeded": "wrong_ten_god:D.b=正印",
+       "caught": true,
+       "detail": "十神不符"
+      },
+      {
+       "seeded": "tampered_quote:HY:L15",
+       "caught": true,
+       "detail": "该行未找到逐字文本"
+      }
+     ]
+    },
+    "invalid_items": [],
+    "all_pass": true,
+    "v2": {
+     "snapshot": {
+      "chart_id": "cf-0075a9941ae6f079f4b9",
+      "dayun_index": null,
+      "liunian_year": null
+     },
+     "address": {
+      "status": "pass",
+      "checked": 6,
+      "failures": []
+     },
+     "edge": {
+      "status": "pass",
+      "checked": 3,
+      "failures": [],
+      "reason": null
+     },
+     "ten_god": {
+      "status": "pass",
+      "checked": 6,
+      "failures": []
+     },
+     "quote": {
+      "status": "pass",
+      "checked": 12,
+      "failures": []
+     },
+     "seeded_error": {
+      "status": "pass",
+      "mode": "card_scan",
+      "checked": [
+       "fake_address:Q.b",
+       "fake_edge:e999",
+       "wrong_ten_god:D.b=正印",
+       "tampered_quote:HY:L15"
+      ],
+      "failures": []
+     },
+     "overall": "pass"
+    }
+   },
+   "expert_decision": null,
+   "direction_tier": "B1",
+   "state_tier": "B1",
+   "rescue_tier": "not_claimed",
+   "state_scope": "not_claimed",
+   "rescue_scope": "candidate_only",
+   "card_status": "valid",
+   "pending": "anchor_q",
+   "tier": "B1",
+   "decision_by": "anchor_fact",
+   "tier_reason": [
+    "direction:anchor_conflict",
+    "state:conflict",
+    "rescue:candidate_only"
+   ],
+   "anchor_a": [],
+   "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+   "selected_option": null,
+   "selection_source": "needs_anchor",
+   "not_auto_selected": true,
+   "facts": {
+    "chart_id": "cf-0075a9941ae6f079f4b9",
+    "day_master": "己",
+    "gender": "坤",
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "four_pillars": "壬寅 庚戌 己丑 庚午",
+    "pillars": [
+     {
+      "palace": "year",
+      "ganzhi": "壬寅",
+      "stem": {
+       "addr": "Y.s",
+       "char": "壬",
+       "ten_god": "正财"
+      },
+      "branch": {
+       "addr": "Y.b",
+       "char": "寅",
+       "main_ten_god": "正官",
+       "hidden": [
+        {
+         "c": "甲",
+         "q": "本气",
+         "g": "正官"
+        },
+        {
+         "c": "丙",
+         "q": "中气",
+         "g": "正印"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "劫财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "month",
+      "ganzhi": "庚戌",
+      "stem": {
+       "addr": "M.s",
+       "char": "庚",
+       "ten_god": "伤官"
+      },
+      "branch": {
+       "addr": "M.b",
+       "char": "戌",
+       "main_ten_god": "劫财",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "劫财"
+        },
+        {
+         "c": "辛",
+         "q": "中气",
+         "g": "食神"
+        },
+        {
+         "c": "丁",
+         "q": "余气",
+         "g": "偏印"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "day",
+      "ganzhi": "己丑",
+      "stem": {
+       "addr": "D.s",
+       "char": "己",
+       "ten_god": "日主"
+      },
+      "branch": {
+       "addr": "D.b",
+       "char": "丑",
+       "main_ten_god": "比肩",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "比肩"
+        },
+        {
+         "c": "癸",
+         "q": "中气",
+         "g": "偏财"
+        },
+        {
+         "c": "辛",
+         "q": "余气",
+         "g": "食神"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "hour",
+      "ganzhi": "庚午",
+      "stem": {
+       "addr": "H.s",
+       "char": "庚",
+       "ten_god": "伤官"
+      },
+      "branch": {
+       "addr": "H.b",
+       "char": "午",
+       "main_ten_god": "偏印",
+       "hidden": [
+        {
+         "c": "丁",
+         "q": "本气",
+         "g": "偏印"
+        },
+        {
+         "c": "己",
+         "q": "中气",
+         "g": "比肩"
+        }
+       ]
+      }
+     }
+    ],
+    "kong_wang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "辰",
+      "巳"
+     ],
+     "hits": [
+      [
+       "H.b",
+       "day"
+      ]
+     ]
+    },
+    "tiyong": {
+     "Y.s": "用",
+     "Y.b": "用",
+     "M.s": "双属",
+     "M.b": "体",
+     "D.s": "体",
+     "D.b": "体",
+     "H.s": "双属",
+     "H.b": "体"
+    },
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "戌",
+      "ku_of": [
+       "火",
+       "土"
+      ],
+      "openers": [
+       "e010"
+      ],
+      "chuan_po": [],
+      "binders": [
+       "e013"
+      ],
+      "candidates": [
+       {
+        "addr": "H.b",
+        "char": "午",
+        "effect": "一般作拱局",
+        "excluded": false,
+        "requires_judgment": [
+         "四正支见墓一般作拱局，极弱（被制受伤）才入墓，需判断（:63、:71）"
+        ]
+       }
+      ]
+     },
+     {
+      "addr": "D.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ],
+      "openers": [
+       "e010"
+      ],
+      "chuan_po": [
+       "e012"
+      ],
+      "binders": [
+       "e008"
+      ],
+      "candidates": [
+       {
+        "addr": "M.s",
+        "char": "庚",
+        "effect": "入墓",
+        "excluded": false,
+        "requires_judgment": []
+       },
+       {
+        "addr": "H.s",
+        "char": "庚",
+        "effect": "入墓",
+        "excluded": false,
+        "requires_judgment": []
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e001",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "M.s",
+       "Y.s"
+      ],
+      "chars": [
+       "庚",
+       "壬"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e002",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "chars": [
+       "己",
+       "壬"
+      ],
+      "distance": 2,
+      "between": [
+       "M.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e003",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "H.s",
+       "Y.s"
+      ],
+      "chars": [
+       "庚",
+       "壬"
+      ],
+      "distance": 3,
+      "between": [
+       "M.s",
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e004",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "D.s",
+       "M.s"
+      ],
+      "chars": [
+       "己",
+       "庚"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e005",
+      "layer": "stem",
+      "kind": "same_qi",
+      "members": [
+       "M.s",
+       "H.s"
+      ],
+      "chars": [
+       "庚",
+       "庚"
+      ],
+      "distance": 2,
+      "between": [
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e006",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "chars": [
+       "己",
+       "庚"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e007",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": [
+       "寅",
+       "戌"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": "寅午戌",
+      "completeness": "gong",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e008",
+      "layer": "branch",
+      "kind": "zhi_anhe",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "chars": [
+       "寅",
+       "丑"
+      ],
+      "distance": 2,
+      "between": [
+       "M.b"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e009",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": [
+       "寅",
+       "午"
+      ],
+      "distance": 3,
+      "between": [
+       "M.b",
+       "D.b"
+      ],
+      "group": "寅午戌",
+      "completeness": "half_sheng",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e010",
+      "layer": "branch",
+      "kind": "xing",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": [
+       "戌",
+       "丑"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": "丑戌未",
+      "completeness": "partial",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e011",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "chars": [
+       "戌",
+       "午"
+      ],
+      "distance": 2,
+      "between": [
+       "D.b"
+      ],
+      "group": "寅午戌",
+      "completeness": "half_mu",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e012",
+      "layer": "branch",
+      "kind": "chuan",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": [
+       "丑",
+       "午"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e013",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "H.b",
+       "M.b"
+      ],
+      "chars": [
+       "寅",
+       "午",
+       "戌"
+      ],
+      "distance": 3,
+      "between": [
+       "D.b"
+      ],
+      "group": "寅午戌",
+      "completeness": "full",
+      "scope": "natal"
+     }
+    ],
+    "duan_candidates": [
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.s",
+       "Y.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e001"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e002"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "H.s",
+       "Y.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e003"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "D.s",
+       "M.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e004"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e006"
+     },
+     {
+      "mode": "合用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e008"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "actor": null,
+      "edge_id": "e010"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "actor": null,
+      "edge_id": "e012"
+     },
+     {
+      "mode": "化用",
+      "members": [
+       "H.b",
+       "Y.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "H.b",
+       "M.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "H.b",
+       "D.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "M.b",
+       "M.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "M.s",
+       "Y.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e001"
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "M.b",
+       "M.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.s",
+       "M.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e004"
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.b",
+       "M.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.s",
+       "H.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e006"
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "H.b",
+       "D.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.b",
+       "H.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "H.b",
+       "D.b"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "H.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "Y.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "H.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.b",
+       "Y.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "M.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "Y.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "H.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "Y.b"
+      ],
+      "actor": "M.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "Y.b"
+      ],
+      "actor": "H.s",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "M.b",
+       "H.b"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "D.b",
+       "M.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "D.b",
+       "H.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     }
+    ],
+    "structures": [
+     {
+      "structure_id": "ziping_zhengguan",
+      "items": [
+       {
+        "id": "aux_cai_sheng_guan",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "brk_shangguan_jian_guan",
+        "kind": "breaker",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_cai",
+      "items": [
+       {
+        "id": "aux_shishang_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "str_cai_vs_shen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yin",
+      "items": [
+       {
+        "id": "aux_shishang_tuxiu",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shishen",
+      "items": [
+       {
+        "id": "aux_shishen_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "str_shen_wang_you_gen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shangguan",
+      "items": [
+       {
+        "id": "xs_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "rsc_yin_or_cai",
+        "kind": "rescuer",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yangren",
+      "items": [
+       {
+        "id": "xs_guansha_zhi_ren",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_jianlu",
+      "items": [
+       {
+        "id": "req_month_lu",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "xs_caiguan_tou",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     }
+    ],
+    "camp_counts": {
+     "印比": {
+      "stems": 0,
+      "main_qi": 3,
+      "mid_qi": 2,
+      "residual_qi": 2,
+      "month_main_qi": true
+     },
+     "食伤": {
+      "stems": 2,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 1,
+      "month_main_qi": false
+     },
+     "财": {
+      "stems": 1,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "官杀": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "比劫": {
+      "stems": 0,
+      "main_qi": 2,
+      "mid_qi": 1,
+      "residual_qi": 1,
+      "month_main_qi": true
+     },
+     "印": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 1,
+      "residual_qi": 1,
+      "month_main_qi": false
+     }
+    },
+    "variants": [
+     {
+      "axis": "yin_changsheng",
+      "alt_value": "yin_same_as_yang",
+      "diffs": [
+       [
+        "/pillars/2/self_sit/marks",
+        []
+       ],
+       [
+        "/pillars/2/self_sit/stem_changsheng",
+        "养"
+       ]
+      ]
+     }
+    ],
+    "input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    }
+   },
+   "provenance": {
+    "engine_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"壬寅 庚戌 己丑 庚午\" --gender 坤 --json",
+    "engine_relations_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli relations --pillars \"壬寅 庚戌 己丑 庚午\" --gender 坤 --json",
+    "engine_chart_id": "cf-0075a9941ae6f079f4b9",
+    "engine_profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "engine_input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    },
+    "theory_cmd": null,
+    "quote_source": "直接回原文核对：每条 quote 用 path:Ln 定位并做逐字子串校验（不经过检索器摘要）",
+    "source_paths": [
+     "sources/duan/MinerU_markdown_疾病_2056043976378220544.md"
+    ],
+    "built_by": "T-197 P0 agent（子代理会话）",
+    "built_at": "2026-10-30T08:26:26+08:00"
+   }
+  },
+  {
+   "card_id": "P0-04",
+   "case_key": "C4",
+   "domain": "wealth",
+   "gender": "乾",
+   "four_pillars": "乙巳 己丑 壬辰 辛丑",
+   "question": {
+    "text": "我的生意和资产做得不小，最担心守不住；我的财到底是从哪来的、能不能守住？",
+    "domain": "wealth",
+    "prereg_id": null,
+    "asked_by": "命主"
+   },
+   "source": {
+    "path": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md",
+    "locator": "L384-L398（案例）",
+    "pillar_quote": [
+     {
+      "src": "CG",
+      "line": 384,
+      "text": "乙己壬辛",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L384"
+     },
+     {
+      "src": "CG",
+      "line": 386,
+      "text": "巳丑辰丑",
+      "role": "case_pillars",
+      "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L386"
+     }
+    ],
+    "outcome_quote": {
+     "src": "CG",
+     "line": 394,
+     "text": "行戌运，财库冲入自己发财五年，资产4亿。",
+     "role": "outcome_background",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394"
+    },
+    "outcome_note": "原文后续事实：戌运发财五年、资产4亿；乙运坐牢、没收财产、判刑十年（P0 仅备查，不作预测依据）。"
+   },
+   "palaces": [
+    {
+     "addr": "M.b",
+     "role": "月支丑：官星（正官）—财生官、官当财看",
+     "ten_god": "正官",
+     "mapping_rule": "M-06",
+     "basis_quote": {
+      "src": "CG",
+      "line": 392,
+      "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+     }
+    },
+    {
+     "addr": "D.b",
+     "role": "日支辰：水库/土库，本造『主要功神』",
+     "ten_god": "七杀",
+     "mapping_rule": "M-07",
+     "basis_quote": {
+      "src": "CG",
+      "line": 392,
+      "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+     }
+    },
+    {
+     "addr": "Y.b",
+     "role": "年支巳：偏财（财源）",
+     "ten_god": "偏财",
+     "mapping_rule": "M-02",
+     "basis_quote": {
+      "src": "CG",
+      "line": 392,
+      "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+      "role": "mapping",
+      "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+     }
+    }
+   ],
+   "material_edges": [
+    "e008",
+    "e004",
+    "e010"
+   ],
+   "material_edge_reasons": {
+    "e008": "巳丑三合拱(财生官的载体)",
+    "e004": "辛克乙：破坏辰(功神)的克向",
+    "e010": "丑辰破：库被动摇"
+   },
+   "direction_candidates": [
+    {
+     "layer": "direction",
+     "kind": "muku",
+     "class": "墓",
+     "class_tier": "A_class",
+     "tier": "A",
+     "decision_by": "agent_auto",
+     "direction_type": "actor_target",
+     "actor": "D.b",
+     "actor_char": "辰",
+     "target": "M.b",
+     "target_char": "丑",
+     "edge_ref": {
+      "type": "duan_candidate",
+      "mode": "墓用",
+      "members": [
+       "D.b",
+       "M.b"
+      ],
+      "actor": "D.b"
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L150-L166",
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 392,
+       "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+      }
+     ],
+     "decisive": true,
+     "conflict_with": [],
+     "evidence_gap": "doctrine_only",
+     "addrs": [
+      "D.b",
+      "M.b"
+     ],
+     "ten_god_claims": {
+      "D.b": "七杀",
+      "M.b": "正官"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "duan_candidate",
+         "mode": "墓用",
+         "members": [
+          "D.b",
+          "M.b"
+         ],
+         "actor": "D.b"
+        },
+        "candidate_mode": "墓用",
+        "members": [
+         "D.b",
+         "M.b"
+        ],
+        "engine_actor": "D.b",
+        "detail": "engine 做功候选命中（固定类）"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "D.b",
+          "claimed": "七杀",
+          "engine": "七杀",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "正官",
+          "engine": "正官",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc1",
+     "basis_text": "engine 墓用候选 (D.b,M.b)、actor=D.b（库收，符合 actor-rules §4.9）。原文『月时丑官都入辰墓』是位移句（按 §4.9 只给位移不给向），但紧接『辰是主要功神』把辰标为主功方；两据合并取库→入库方。",
+     "basis": [
+      {
+       "kind": "engine_candidate",
+       "ref": "duan_zuogong.candidates",
+       "note": "墓用['D.b', 'M.b'] actor=D.b"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "muku",
+      "direction": "actor_to_target",
+      "members": [
+       "D.b",
+       "M.b"
+      ],
+      "actor": "D.b",
+      "target": "M.b"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+     "conflict_class": null,
+     "engine_note": "engine_candidate_no_edge"
+    },
+    {
+     "layer": "direction",
+     "kind": "ke",
+     "class": "克",
+     "class_tier": "A_class",
+     "tier": "A",
+     "decision_by": "agent_auto",
+     "direction_type": "actor_target",
+     "actor": "H.s",
+     "actor_char": "辛",
+     "target": "Y.s",
+     "target_char": "乙",
+     "edge_ref": {
+      "type": "edge",
+      "edge_id": "e004",
+      "kind": "ke",
+      "members": [
+       "H.s",
+       "Y.s"
+      ]
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L120-L127",
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 396,
+       "text": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396"
+      }
+     ],
+     "decisive": true,
+     "conflict_with": [],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "H.s",
+      "Y.s"
+     ],
+     "ten_god_claims": {
+      "H.s": "正印",
+      "Y.s": "伤官"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "H.s",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "Y.s",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "edge",
+         "edge_id": "e004",
+         "kind": "ke",
+         "members": [
+          "H.s",
+          "Y.s"
+         ]
+        },
+        "edge_id": "e004",
+        "kind": "ke",
+        "members": [
+         "H.s",
+         "Y.s"
+        ],
+        "engine_actor": null,
+        "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "H.s",
+          "claimed": "正印",
+          "engine": "正印",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "Y.s",
+          "claimed": "伤官",
+          "engine": "伤官",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc2",
+     "basis_text": "原文『辛克乙等于破坏了辰』是主动句，辛为句法主语；engine e004 ke(辛,乙)、actor=H.s 与之一致。此向用于『守不住』一侧（印克伤官、破坏功神辰）。",
+     "basis": [
+      {
+       "kind": "engine_edge",
+       "ref": "e004",
+       "note": "ke['H.s', 'Y.s']"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "ke",
+      "direction": "actor_to_target",
+      "members": [
+       "H.s",
+       "Y.s"
+      ],
+      "actor": "H.s",
+      "target": "Y.s"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+     "quote": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "direction",
+     "kind": "sheng",
+     "class": "生",
+     "class_tier": "A_class",
+     "tier": "A",
+     "decision_by": "agent_auto",
+     "direction_type": "actor_target",
+     "actor": "Y.b",
+     "actor_char": "巳",
+     "target": "M.b",
+     "target_char": "丑",
+     "edge_ref": {
+      "type": "duan_candidate",
+      "mode": "生泄用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b"
+     },
+     "rule_ref": "docs/specs/actor-rules-v1.md:L129-L137",
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 392,
+       "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+       "role": "direction_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+      }
+     ],
+     "decisive": true,
+     "conflict_with": [],
+     "evidence_gap": "same_line",
+     "addrs": [
+      "Y.b",
+      "M.b"
+     ],
+     "ten_god_claims": {
+      "Y.b": "偏财",
+      "M.b": "正官"
+     },
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.b",
+          "detail": "engine 物理地址存在"
+         },
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "detail": "engine 物理地址存在"
+         }
+        ]
+       },
+       "edge": {
+        "status": "pass",
+        "ref": {
+         "type": "duan_candidate",
+         "mode": "生泄用",
+         "members": [
+          "Y.b",
+          "M.b"
+         ],
+         "actor": "Y.b"
+        },
+        "candidate_mode": "生泄用",
+        "members": [
+         "Y.b",
+         "M.b"
+        ],
+        "engine_actor": "Y.b",
+        "detail": "engine 做功候选命中（固定类）"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "addr": "Y.b",
+          "claimed": "偏财",
+          "engine": "偏财",
+          "via": "干支本气/透干"
+         },
+         {
+          "status": "pass",
+          "addr": "M.b",
+          "claimed": "正官",
+          "engine": "正官",
+          "via": "干支本气/透干"
+         }
+        ]
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+          "detail": "逐字命中该行",
+          "role": "direction_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "dc3",
+     "basis_text": "原文『年上巳生合丑官，财生官』：巳为句法主语、生合为谓语；engine 生泄用候选 (Y.b,M.b)、actor=Y.b 一致。财源=年支巳(偏财)生月支丑(官)。",
+     "basis": [
+      {
+       "kind": "engine_candidate",
+       "ref": "duan_zuogong.candidates",
+       "note": "生泄用['Y.b', 'M.b'] actor=Y.b"
+      },
+      {
+       "kind": "source_directive",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "note": "direction_support"
+      }
+     ],
+     "claim": {
+      "relation": "sheng",
+      "direction": "actor_to_target",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b",
+      "target": "M.b"
+     },
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+     "conflict_class": null,
+     "engine_note": "engine_candidate_no_edge"
+    }
+   ],
+   "state_candidates": [
+    {
+     "layer": "state",
+     "result": "成",
+     "tier": "B1",
+     "decision_by": "human_anchor",
+     "anchored_by": [
+      "ED1"
+     ],
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 392,
+       "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+      },
+      {
+       "src": "CG",
+       "line": 394,
+       "text": "行戌运，财库冲入自己发财五年，资产4亿。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394"
+      }
+     ],
+     "conflict_with": [
+      "st2"
+     ],
+     "decisive": true,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st1",
+     "state_label": "官入辰墓＋财库冲入 → 富命",
+     "state": "成局",
+     "basis_text": "原局：月时丑官入辰墓、巳生丑官，官当财看，故断富命；岁运戌运冲开财库，五年发财、资产4亿。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+       "note": "state_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "败",
+     "tier": "B1",
+     "decision_by": "expert_single_choice",
+     "anchored_by": [
+      "ED1"
+     ],
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 396,
+       "text": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396"
+      },
+      {
+       "src": "CG",
+       "line": 398,
+       "text": "癸未年刚入乙运坐牢，因非法集资而没收产财。判刑十年。现已出狱。",
+       "role": "state_support",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398"
+      }
+     ],
+     "conflict_with": [
+      "st1"
+     ],
+     "decisive": true,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         },
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398",
+          "detail": "逐字命中该行",
+          "role": "state_support"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st2",
+     "state_label": "辛克乙破坏辰 → 主凶；乙运坐牢、没收财产",
+     "state": "破局",
+     "basis_text": "岁运乙透（代表辰）被辛克、辰被破坏，原文判『主凶』；同运癸未年坐牢、没收财产、判刑十年。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+       "note": "state_support"
+      },
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398",
+       "note": "state_support"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+     "quote": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
+     "conflict_class": null,
+     "engine_note": null
+    },
+    {
+     "layer": "state",
+     "result": "needs_anchor",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "anchored_by": [],
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 392,
+       "text": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+       "role": "definition_reference",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392"
+      }
+     ],
+     "conflict_with": [],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+          "detail": "逐字命中该行",
+          "role": "definition_reference"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "st3",
+     "state_label": "财弱官旺、官当财看（财的定义口径）",
+     "state": null,
+     "basis_text": "『官当财看』是本造把官星当财的口径说明；它决定『财』指什么，不回答能否守住，故不单独成断。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "note": "definition_reference"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
+     "conflict_class": null,
+     "engine_note": null
+    }
+   ],
+   "rescue_candidates": [
+    {
+     "layer": "rescue",
+     "label": "行戌运，财库冲入自己 → 岁运层面的『开库得财』",
+     "result": "应",
+     "tier": "C",
+     "decision_by": "needs_anchor",
+     "quotes": [
+      {
+       "src": "CG",
+       "line": 394,
+       "text": "行戌运，财库冲入自己发财五年，资产4亿。",
+       "role": "suiyun_reference",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394"
+      }
+     ],
+     "decisive": false,
+     "is_conclusion": false,
+     "engine_validation": {
+      "checks": {
+       "address": {
+        "status": "pass",
+        "items": []
+       },
+       "edge": {
+        "status": "n/a",
+        "detail": "本项不含边引用"
+       },
+       "ten_god": {
+        "status": "pass",
+        "items": []
+       },
+       "quote": {
+        "status": "pass",
+        "items": [
+         {
+          "status": "pass",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+          "detail": "逐字命中该行",
+          "role": "suiyun_reference"
+         }
+        ]
+       }
+      },
+      "status": "valid"
+     },
+     "option_id": "rs1",
+     "rescuer": null,
+     "rescued": null,
+     "status": "not_evaluable",
+     "rescue_primitive": null,
+     "external_audit_id": null,
+     "basis_text": "『财库冲入自己』是岁运引动（戌运）而非原局救应；本卡快照 dayun_index=null，按规格 §4.1 不跨快照引用，故只记录为岁运候选、不判。",
+     "basis": [
+      {
+       "kind": "source_rule",
+       "ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+       "note": "suiyun_reference"
+      }
+     ],
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+     "quote": "行戌运，财库冲入自己发财五年，资产4亿。"
+    }
+   ],
+   "anchor_q": [
+    {
+     "layer": "state",
+     "text": "你过去是否经历过资产被一次性清空（罚没、没收、强制清算或巨额赔付）？",
+     "answer_type": "yes_no",
+     "discriminator_basis": "st2 的破局读法要求『资产被一次性打掉』这一已发生事实；st1 的富命读法只要求财富曾经形成。若确已清空，破局读法优先；若从未清空，保留富命读法。",
+     "rule_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396-L398",
+     "source_mentions_answer": true,
+     "proxy_strength": "high",
+     "if_yes": {
+      "keep": [
+       "st2"
+      ],
+      "eliminate": [
+       "st1"
+      ],
+      "downgrade": []
+     },
+     "if_no": {
+      "keep": [
+       "st1"
+      ],
+      "eliminate": [
+       "st2"
+      ],
+      "downgrade": []
+     },
+     "if_unknown": {
+      "action": "needs_anchor",
+      "affected": [
+       "st1",
+       "st2"
+      ]
+     },
+     "qid": "AQ1",
+     "discriminates": [
+      "st1",
+      "st2"
+     ],
+     "elimination": [
+      {
+       "answer": "yes",
+       "eliminates": [
+        "st1"
+       ],
+       "keeps": [
+        "st2"
+       ]
+      },
+      {
+       "answer": "no",
+       "eliminates": [
+        "st2"
+       ],
+       "keeps": [
+        "st1"
+       ]
+      },
+      {
+       "answer": "unknown",
+       "eliminates": [
+        "st1",
+        "st2"
+       ],
+       "keeps": []
+      }
+     ],
+     "fact_window": "2010-01..2025-12",
+     "fact_domain": "wealth"
+    }
+   ],
+   "expert_decision": null,
+   "gaps": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "muku_open_close",
+    "suiyun_ten_god",
+    "snapshot_dayun_null"
+   ],
+   "non_claims": [
+    "不判财运高低、破财年份、牢狱、生死",
+    "不把『富命』或『主凶』择一写成结论（本条交 ED1 专家裁决）",
+    "不判岁运引动；不跨快照引用 edge_id"
+   ],
+   "snapshot": {
+    "chart_id": "cf-4d8fe4fe1b354d973a7b",
+    "dayun_index": null,
+    "liunian_year": null
+   },
+   "source_quote_validation": [
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L384",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.pillar_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L386",
+     "detail": "逐字命中该行",
+     "role": "case_pillars"
+    },
+    {
+     "where": "source.outcome_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+     "detail": "逐字命中该行",
+     "role": "outcome_background"
+    },
+    {
+     "where": "palaces.M.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.D.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    },
+    {
+     "where": "palaces.Y.b.basis_quote",
+     "status": "pass",
+     "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+     "detail": "逐字命中该行",
+     "role": "mapping"
+    }
+   ],
+   "engine_validation": {
+    "aggregate": {
+     "address": {
+      "total": 7,
+      "pass": 7
+     },
+     "edge": {
+      "total": 3,
+      "pass": 3
+     },
+     "ten_god": {
+      "total": 7,
+      "pass": 7
+     },
+     "quote": {
+      "total": 7,
+      "pass": 7
+     }
+    },
+    "source_and_palace_quotes": {
+     "total": 6,
+     "pass": 6,
+     "items": [
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L384",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.pillar_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L386",
+       "detail": "逐字命中该行",
+       "role": "case_pillars"
+      },
+      {
+       "where": "source.outcome_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+       "detail": "逐字命中该行",
+       "role": "outcome_background"
+      },
+      {
+       "where": "palaces.M.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.D.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      },
+      {
+       "where": "palaces.Y.b.basis_quote",
+       "status": "pass",
+       "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+       "detail": "逐字命中该行",
+       "role": "mapping"
+      }
+     ]
+    },
+    "seeded_error": {
+     "tested": 4,
+     "caught": 4,
+     "pass": true,
+     "items": [
+      {
+       "seeded": "fake_address:Q.b",
+       "caught": true,
+       "detail": "engine 未输出该地址"
+      },
+      {
+       "seeded": "fake_edge:e999",
+       "caught": true,
+       "detail": "engine relations 无此 edge_id"
+      },
+      {
+       "seeded": "wrong_ten_god:D.b=正印",
+       "caught": true,
+       "detail": "十神不符"
+      },
+      {
+       "seeded": "tampered_quote:HY:L15",
+       "caught": true,
+       "detail": "该行未找到逐字文本"
+      }
+     ]
+    },
+    "invalid_items": [],
+    "all_pass": true,
+    "v2": {
+     "snapshot": {
+      "chart_id": "cf-4d8fe4fe1b354d973a7b",
+      "dayun_index": null,
+      "liunian_year": null
+     },
+     "address": {
+      "status": "pass",
+      "checked": 7,
+      "failures": []
+     },
+     "edge": {
+      "status": "pass",
+      "checked": 3,
+      "failures": [],
+      "reason": null
+     },
+     "ten_god": {
+      "status": "pass",
+      "checked": 7,
+      "failures": []
+     },
+     "quote": {
+      "status": "pass",
+      "checked": 13,
+      "failures": []
+     },
+     "seeded_error": {
+      "status": "pass",
+      "mode": "card_scan",
+      "checked": [
+       "fake_address:Q.b",
+       "fake_edge:e999",
+       "wrong_ten_god:D.b=正印",
+       "tampered_quote:HY:L15"
+      ],
+      "failures": []
+     },
+     "overall": "pass"
+    }
+   },
+   "state_anchor_note": {
+    "converted_from": "expert_decision(ED1)",
+    "reason": "analysis-card-v2 §5.3 的 B2 只用于方向候选之间『无可观测事实可分』；原局富/岁运破属成败层，改按 state 锚点题处理（state_tier=B1）。",
+    "previous_options": [
+     "原局富命为主，破局只作应期（先富后破）",
+     "岁运破局为主，原局富命只说明曾经（破多富少）",
+     "两不可判，保持 needs_anchor"
+    ]
+   },
+   "direction_tier": "A",
+   "state_tier": "B1",
+   "rescue_tier": "C",
+   "state_scope": "not_claimed",
+   "rescue_scope": "candidate_only",
+   "card_status": "valid",
+   "pending": "anchor_q",
+   "tier": "B1",
+   "decision_by": "anchor_fact",
+   "tier_reason": [
+    "direction:engine_fixed",
+    "state:conflict",
+    "rescue:candidate_only",
+    "pending:state_anchor"
+   ],
+   "anchor_a": [],
+   "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+   "selected_option": null,
+   "selection_source": "needs_anchor",
+   "not_auto_selected": true,
+   "facts": {
+    "chart_id": "cf-4d8fe4fe1b354d973a7b",
+    "day_master": "壬",
+    "gender": "乾",
+    "profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "four_pillars": "乙巳 己丑 壬辰 辛丑",
+    "pillars": [
+     {
+      "palace": "year",
+      "ganzhi": "乙巳",
+      "stem": {
+       "addr": "Y.s",
+       "char": "乙",
+       "ten_god": "伤官"
+      },
+      "branch": {
+       "addr": "Y.b",
+       "char": "巳",
+       "main_ten_god": "偏财",
+       "hidden": [
+        {
+         "c": "丙",
+         "q": "本气",
+         "g": "偏财"
+        },
+        {
+         "c": "庚",
+         "q": "中气",
+         "g": "偏印"
+        },
+        {
+         "c": "戊",
+         "q": "余气",
+         "g": "七杀"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "month",
+      "ganzhi": "己丑",
+      "stem": {
+       "addr": "M.s",
+       "char": "己",
+       "ten_god": "正官"
+      },
+      "branch": {
+       "addr": "M.b",
+       "char": "丑",
+       "main_ten_god": "正官",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "正官"
+        },
+        {
+         "c": "癸",
+         "q": "中气",
+         "g": "劫财"
+        },
+        {
+         "c": "辛",
+         "q": "余气",
+         "g": "正印"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "day",
+      "ganzhi": "壬辰",
+      "stem": {
+       "addr": "D.s",
+       "char": "壬",
+       "ten_god": "日主"
+      },
+      "branch": {
+       "addr": "D.b",
+       "char": "辰",
+       "main_ten_god": "七杀",
+       "hidden": [
+        {
+         "c": "戊",
+         "q": "本气",
+         "g": "七杀"
+        },
+        {
+         "c": "乙",
+         "q": "中气",
+         "g": "伤官"
+        },
+        {
+         "c": "癸",
+         "q": "余气",
+         "g": "劫财"
+        }
+       ]
+      }
+     },
+     {
+      "palace": "hour",
+      "ganzhi": "辛丑",
+      "stem": {
+       "addr": "H.s",
+       "char": "辛",
+       "ten_god": "正印"
+      },
+      "branch": {
+       "addr": "H.b",
+       "char": "丑",
+       "main_ten_god": "正官",
+       "hidden": [
+        {
+         "c": "己",
+         "q": "本气",
+         "g": "正官"
+        },
+        {
+         "c": "癸",
+         "q": "中气",
+         "g": "劫财"
+        },
+        {
+         "c": "辛",
+         "q": "余气",
+         "g": "正印"
+        }
+       ]
+      }
+     }
+    ],
+    "kong_wang": {
+     "by_day_xun": [
+      "午",
+      "未"
+     ],
+     "by_year_xun": [
+      "寅",
+      "卯"
+     ]
+    },
+    "tiyong": {
+     "Y.s": "双属",
+     "Y.b": "用",
+     "M.s": "用",
+     "M.b": "用",
+     "D.s": "体",
+     "D.b": "用",
+     "H.s": "体",
+     "H.b": "用"
+    },
+    "muku": [
+     {
+      "addr": "M.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ],
+      "openers": [],
+      "chuan_po": [
+       "e010"
+      ],
+      "binders": [],
+      "candidates": []
+     },
+     {
+      "addr": "D.b",
+      "branch": "辰",
+      "ku_of": [
+       "水",
+       "土"
+      ],
+      "openers": [],
+      "chuan_po": [
+       "e010",
+       "e011"
+      ],
+      "binders": [],
+      "candidates": [
+       {
+        "addr": "D.s",
+        "char": "壬",
+        "effect": "不论入墓",
+        "excluded": true,
+        "requires_judgment": []
+       },
+       {
+        "addr": "M.b",
+        "char": "丑",
+        "effect": "入墓",
+        "excluded": false,
+        "requires_judgment": []
+       },
+       {
+        "addr": "H.b",
+        "char": "丑",
+        "effect": "入墓",
+        "excluded": false,
+        "requires_judgment": []
+       }
+      ]
+     },
+     {
+      "addr": "H.b",
+      "branch": "丑",
+      "ku_of": [
+       "金"
+      ],
+      "openers": [],
+      "chuan_po": [
+       "e011"
+      ],
+      "binders": [],
+      "candidates": [
+       {
+        "addr": "H.s",
+        "char": "辛",
+        "effect": "不论入墓",
+        "excluded": true,
+        "requires_judgment": []
+       }
+      ]
+     }
+    ],
+    "edges": [
+     {
+      "edge_id": "e001",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "chars": [
+       "乙",
+       "己"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e002",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "chars": [
+       "壬",
+       "乙"
+      ],
+      "distance": 2,
+      "between": [
+       "M.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e003",
+      "layer": "stem",
+      "kind": "stem_chong",
+      "members": [
+       "Y.s",
+       "H.s"
+      ],
+      "chars": [
+       "乙",
+       "辛"
+      ],
+      "distance": 3,
+      "between": [
+       "M.s",
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e004",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "H.s",
+       "Y.s"
+      ],
+      "chars": [
+       "辛",
+       "乙"
+      ],
+      "distance": 3,
+      "between": [
+       "M.s",
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e005",
+      "layer": "stem",
+      "kind": "ke",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "chars": [
+       "己",
+       "壬"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e006",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "M.s",
+       "H.s"
+      ],
+      "chars": [
+       "己",
+       "辛"
+      ],
+      "distance": 2,
+      "between": [
+       "D.s"
+      ],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e007",
+      "layer": "stem",
+      "kind": "sheng",
+      "members": [
+       "H.s",
+       "D.s"
+      ],
+      "chars": [
+       "辛",
+       "壬"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e008",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "chars": [
+       "巳",
+       "丑"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": "巳酉丑",
+      "completeness": "gong",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e009",
+      "layer": "branch",
+      "kind": "sanhe",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "chars": [
+       "巳",
+       "丑"
+      ],
+      "distance": 3,
+      "between": [
+       "M.b",
+       "D.b"
+      ],
+      "group": "巳酉丑",
+      "completeness": "gong",
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e010",
+      "layer": "branch",
+      "kind": "po",
+      "members": [
+       "M.b",
+       "D.b"
+      ],
+      "chars": [
+       "丑",
+       "辰"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     },
+     {
+      "edge_id": "e011",
+      "layer": "branch",
+      "kind": "po",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "chars": [
+       "辰",
+       "丑"
+      ],
+      "distance": 1,
+      "between": [],
+      "group": null,
+      "completeness": null,
+      "scope": "natal"
+     }
+    ],
+    "duan_candidates": [
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "M.s"
+      ],
+      "actor": "Y.s",
+      "edge_id": "e001"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "D.s",
+       "Y.s"
+      ],
+      "actor": "D.s",
+      "edge_id": "e002"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "H.s"
+      ],
+      "actor": null,
+      "edge_id": "e003"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.s",
+       "Y.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e004"
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.s",
+       "D.s"
+      ],
+      "actor": "M.s",
+      "edge_id": "e005"
+     },
+     {
+      "mode": "化用",
+      "members": [
+       "H.s",
+       "M.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e006"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "H.s",
+       "D.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e007"
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "Y.b",
+       "D.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "Y.b",
+       "H.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "生泄用",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "化用",
+      "members": [
+       "H.s",
+       "H.b"
+      ],
+      "actor": "H.s",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "Y.s",
+       "Y.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "Y.b",
+       "M.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "Y.b",
+       "M.b"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "H.s",
+       "D.s"
+      ],
+      "actor": "H.s",
+      "edge_id": "e007"
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "D.b",
+       "H.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "sheng",
+      "members": [
+       "H.b",
+       "H.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "H.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.b",
+       "D.s"
+      ],
+      "actor": "Y.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "D.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "M.b",
+       "Y.s"
+      ],
+      "actor": "M.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.b",
+       "M.s"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "D.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "H.b",
+       "Y.s"
+      ],
+      "actor": "H.b",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "M.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "D.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "Y.s",
+       "H.b"
+      ],
+      "actor": "Y.s",
+      "edge_id": null
+     },
+     {
+      "mode": "制用",
+      "members": [
+       "D.s",
+       "Y.b"
+      ],
+      "actor": "D.s",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "D.b",
+       "M.b"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     },
+     {
+      "mode": "墓用",
+      "members": [
+       "D.b",
+       "H.b"
+      ],
+      "actor": "D.b",
+      "edge_id": null
+     }
+    ],
+    "structures": [
+     {
+      "structure_id": "ziping_zhengguan",
+      "items": [
+       {
+        "id": "req_month_guan",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "aux_yin_hu_guan",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "brk_shangguan_jian_guan",
+        "kind": "breaker",
+        "status": "met"
+       },
+       {
+        "id": "rsc_yin_zhi_shang",
+        "kind": "rescuer",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_cai",
+      "items": [
+       {
+        "id": "aux_shishang_sheng_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "aux_guan_hu_cai",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "str_cai_vs_shen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yin",
+      "items": [
+       {
+        "id": "req_month_yin",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "aux_guansha_sheng_yin",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "aux_shishang_tuxiu",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shishen",
+      "items": [
+       {
+        "id": "str_shen_wang_you_gen",
+        "kind": "requirement",
+        "status": "needs_judgment"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_qisha",
+      "items": [
+       {
+        "id": "xs_yin_hua_sha",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_shangguan",
+      "items": [
+       {
+        "id": "xs_pei_yin",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "brk_jian_guan",
+        "kind": "breaker",
+        "status": "met"
+       },
+       {
+        "id": "rsc_yin_or_cai",
+        "kind": "rescuer",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_yangren",
+      "items": [
+       {
+        "id": "xs_guansha_zhi_ren",
+        "kind": "requirement",
+        "status": "met"
+       }
+      ]
+     },
+     {
+      "structure_id": "ziping_jianlu",
+      "items": [
+       {
+        "id": "xs_caiguan_tou",
+        "kind": "requirement",
+        "status": "met"
+       },
+       {
+        "id": "brk_caiguan_bei_jie",
+        "kind": "breaker",
+        "status": "needs_judgment"
+       }
+      ]
+     }
+    ],
+    "camp_counts": {
+     "印比": {
+      "stems": 1,
+      "main_qi": 0,
+      "mid_qi": 3,
+      "residual_qi": 3,
+      "month_main_qi": false
+     },
+     "食伤": {
+      "stems": 1,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "财": {
+      "stems": 0,
+      "main_qi": 1,
+      "mid_qi": 0,
+      "residual_qi": 0,
+      "month_main_qi": false
+     },
+     "官杀": {
+      "stems": 1,
+      "main_qi": 3,
+      "mid_qi": 0,
+      "residual_qi": 1,
+      "month_main_qi": true
+     },
+     "比劫": {
+      "stems": 0,
+      "main_qi": 0,
+      "mid_qi": 2,
+      "residual_qi": 1,
+      "month_main_qi": false
+     },
+     "印": {
+      "stems": 1,
+      "main_qi": 0,
+      "mid_qi": 1,
+      "residual_qi": 2,
+      "month_main_qi": false
+     }
+    },
+    "variants": [
+     {
+      "axis": "yin_changsheng",
+      "alt_value": "yin_same_as_yang",
+      "diffs": [
+       [
+        "/pillars/0/self_sit/stem_changsheng",
+        "病"
+       ],
+       [
+        "/pillars/1/self_sit/marks",
+        []
+       ],
+       [
+        "/pillars/1/self_sit/stem_changsheng",
+        "养"
+       ],
+       [
+        "/pillars/3/self_sit/marks",
+        [
+         "坐墓"
+        ]
+       ],
+       [
+        "/pillars/3/self_sit/stem_changsheng",
+        "墓"
+       ]
+      ]
+     }
+    ],
+    "input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    }
+   },
+   "provenance": {
+    "engine_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"乙巳 己丑 壬辰 辛丑\" --gender 乾 --json",
+    "engine_relations_cmd": "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli relations --pillars \"乙巳 己丑 壬辰 辛丑\" --gender 乾 --json",
+    "engine_chart_id": "cf-4d8fe4fe1b354d973a7b",
+    "engine_profile": {
+     "zi_shi": "late_zi_split",
+     "yin_changsheng": "yin_reverse",
+     "tu_jigong": "duan_split_earth"
+    },
+    "engine_input_limitations": {
+     "mode": "pillars",
+     "unavailable": {
+      "qiyun": "仅四柱无法确定出生时刻与交节时差，不能计算起运年龄及日期。",
+      "dayun_calendar": "大运干支顺逆序列可确定，起止公历年份及年龄缺少起运依据。",
+      "siling": "缺少出生时刻及节后天数，不能确定人元司令。"
+     }
+    },
+    "theory_cmd": null,
+    "quote_source": "直接回原文核对：每条 quote 用 path:Ln 定位并做逐字子串校验（不经过检索器摘要）",
+    "source_paths": [
+     "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md"
+    ],
+    "built_by": "T-197 P0 agent（子代理会话）",
+    "built_at": "2026-10-30T08:26:26+08:00"
+   }
+  }
+ ],
+ "anchor_questions": [
+  {
+   "layer": "direction",
+   "text": "你的婚姻破裂过程中，是否出现过『你的父母、兄弟或原生家庭出面介入、施压或替你做主』的具体事实？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "dc1 把施力方定在月支寅＝父母兄弟宫（家人在前推）；dc2 说两侧同损、没有单一推手。若确有原生家庭反复介入，则单侧施力读法成立；若没有，则对称读法保留。",
+   "rule_ref": "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+   "source_mentions_answer": false,
+   "proxy_strength": "medium",
+   "if_yes": {
+    "keep": [
+     "dc1"
+    ],
+    "eliminate": [
+     "dc2"
+    ],
+    "downgrade": []
+   },
+   "if_no": {
+    "keep": [
+     "dc2"
+    ],
+    "eliminate": [
+     "dc1"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "dc1",
+     "dc2"
+    ]
+   },
+   "qid": "AQ1",
+   "discriminates": [
+    "dc1",
+    "dc2"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [
+      "dc2"
+     ],
+     "keeps": [
+      "dc1"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "dc1"
+     ],
+     "keeps": [
+      "dc2"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "dc1",
+      "dc2"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "2000-01..2025-12",
+   "fact_domain": "marriage",
+   "card_id": "P0-01",
+   "answer": null
+  },
+  {
+   "layer": "direction",
+   "text": "你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 认为是冲（推走、断离）。若分开后仍长期有联系/往来，合读法保留；若彻底断绝，冲读法保留。",
+   "rule_ref": "docs/specs/actor-rules-v1.md:L72-L84",
+   "source_mentions_answer": false,
+   "proxy_strength": "medium",
+   "if_yes": {
+    "keep": [
+     "dc3"
+    ],
+    "eliminate": [
+     "dc1",
+     "dc2"
+    ],
+    "downgrade": []
+   },
+   "if_no": {
+    "keep": [
+     "dc1",
+     "dc2"
+    ],
+    "eliminate": [
+     "dc3"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "dc1",
+     "dc2",
+     "dc3"
+    ]
+   },
+   "qid": "AQ2",
+   "discriminates": [
+    "dc1",
+    "dc3"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [
+      "dc1",
+      "dc2"
+     ],
+     "keeps": [
+      "dc3"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "dc3"
+     ],
+     "keeps": [
+      "dc1",
+      "dc2"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "dc1",
+      "dc2",
+      "dc3"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "2000-01..2025-12",
+   "fact_domain": "marriage",
+   "card_id": "P0-01",
+   "answer": null
+  },
+  {
+   "layer": "direction",
+   "text": "你过去十年里，收入的主要来源是否以『体制外的项目、投资或兼职』为主，而不是固定级别的工资？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "dc1 的施力财是年干戊(正财)、dc2 是时干己(偏财)。『正财↔固定收入、偏财↔外部项目』是十神通则，本包未找到逐字原文，因此只作区分假设，不写成断语；题目问的是收入结构这一已发生事实，据此决定哪一个财在命主身上是活的。",
+   "rule_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27，docs/specs/fact-evidence-pack-v1.md:L60-L62",
+   "source_mentions_answer": false,
+   "proxy_strength": "medium",
+   "if_yes": {
+    "keep": [
+     "dc2"
+    ],
+    "eliminate": [
+     "dc1"
+    ],
+    "downgrade": []
+   },
+   "if_no": {
+    "keep": [
+     "dc1"
+    ],
+    "eliminate": [
+     "dc2"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "dc1",
+     "dc2"
+    ]
+   },
+   "qid": "AQ1",
+   "discriminates": [
+    "dc1",
+    "dc2"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [
+      "dc1"
+     ],
+     "keeps": [
+      "dc2"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "dc2"
+     ],
+     "keeps": [
+      "dc1"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "dc1",
+      "dc2"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "2015-01..2025-12",
+   "fact_domain": "career",
+   "card_id": "P0-02",
+   "answer": null
+  },
+  {
+   "layer": "direction",
+   "text": "你的妇科病（或相关手术）确诊之前，是否先发生过『婚姻或家庭重大变故』（分居、离婚、丧偶、家人重病）？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "dc1 把施力方定在日支丑（夫妻宫）→ 家庭侧先动、病随后；dc2 说两侧同损、无先后。若确有『变故在前、发病在后』的时间顺序，单侧施力读法保留；否则对称读法保留。",
+   "rule_ref": "docs/specs/actor-rules-v1.md:L104-L110",
+   "source_mentions_answer": false,
+   "proxy_strength": "medium",
+   "if_yes": {
+    "keep": [
+     "dc1"
+    ],
+    "eliminate": [
+     "dc2"
+    ],
+    "downgrade": []
+   },
+   "if_no": {
+    "keep": [
+     "dc2"
+    ],
+    "eliminate": [
+     "dc1"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "dc1",
+     "dc2"
+    ]
+   },
+   "qid": "AQ1",
+   "discriminates": [
+    "dc1",
+    "dc2"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [
+      "dc2"
+     ],
+     "keeps": [
+      "dc1"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "dc1"
+     ],
+     "keeps": [
+      "dc2"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "dc1",
+      "dc2"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "1995-01..2025-12",
+   "fact_domain": "health",
+   "card_id": "P0-03",
+   "answer": null
+  },
+  {
+   "layer": "state",
+   "text": "在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。两者在原文中互斥（『午得寅生，旺，所以不得心脏病』），只能由事实定夺。",
+   "rule_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9",
+   "source_mentions_answer": false,
+   "proxy_strength": "high",
+   "if_yes": {
+    "keep": [
+     "st2"
+    ],
+    "eliminate": [],
+    "downgrade": [
+     "st1"
+    ]
+   },
+   "if_no": {
+    "keep": [
+     "st1"
+    ],
+    "eliminate": [
+     "st2"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "st1",
+     "st2"
+    ]
+   },
+   "qid": "AQ2",
+   "discriminates": [
+    "st1",
+    "st2"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [],
+     "keeps": [
+      "st2"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "st2"
+     ],
+     "keeps": [
+      "st1"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "st1",
+      "st2"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "1995-01..2025-12",
+   "fact_domain": "health",
+   "card_id": "P0-03",
+   "answer": null
+  },
+  {
+   "layer": "state",
+   "text": "你过去是否经历过资产被一次性清空（罚没、没收、强制清算或巨额赔付）？",
+   "answer_type": "yes_no",
+   "discriminator_basis": "st2 的破局读法要求『资产被一次性打掉』这一已发生事实；st1 的富命读法只要求财富曾经形成。若确已清空，破局读法优先；若从未清空，保留富命读法。",
+   "rule_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396-L398",
+   "source_mentions_answer": true,
+   "proxy_strength": "high",
+   "if_yes": {
+    "keep": [
+     "st2"
+    ],
+    "eliminate": [
+     "st1"
+    ],
+    "downgrade": []
+   },
+   "if_no": {
+    "keep": [
+     "st1"
+    ],
+    "eliminate": [
+     "st2"
+    ],
+    "downgrade": []
+   },
+   "if_unknown": {
+    "action": "needs_anchor",
+    "affected": [
+     "st1",
+     "st2"
+    ]
+   },
+   "qid": "AQ1",
+   "discriminates": [
+    "st1",
+    "st2"
+   ],
+   "elimination": [
+    {
+     "answer": "yes",
+     "eliminates": [
+      "st1"
+     ],
+     "keeps": [
+      "st2"
+     ]
+    },
+    {
+     "answer": "no",
+     "eliminates": [
+      "st2"
+     ],
+     "keeps": [
+      "st1"
+     ]
+    },
+    {
+     "answer": "unknown",
+     "eliminates": [
+      "st1",
+      "st2"
+     ],
+     "keeps": []
+    }
+   ],
+   "fact_window": "2010-01..2025-12",
+   "fact_domain": "wealth",
+   "card_id": "P0-04",
+   "answer": null
+  }
+ ],
+ "known_gaps": [
+  "T-196 三份规格在本卡生成途中落盘（analysis-card-v2 / agent-candidate-generator-v1 / first-principle-agent-first-v1）；本包已按 agent-candidate-set/v1 改名与补字段，但仍是 pending candidate set（pending=anchor_q），不是可交付的 analysis-card/v2（T-197 明令不选定）。",
+  "与 v2 的两处口径冲突：①v2 的 A 档要求 selected_option 已填、pending=none，而 T-197 禁止 Agent 代选 → 本包 direction_tier=A 的卡仍 selected_option=null；②v2 的 C 档要求 selected_option=null 且 selection_source=needs_anchor，与 A 未选状态同形，故本包用 tier/pending 区分『待自动确认的 A』与『无源的 C』。",
+  "四柱输入无出生时刻：engine input_limitations 明确不起运/不给大运公历年份；本包全部 dayun_index=null、liunian_year=null。",
+  "G5 救应未判：engine.structures 的 rescuer 命中只作要件，不作救应结论。",
+  "『寅申之冲，寅多作用一次』的『作用一次』是计数用语，本卡按 same_page 缺口记为方向依据，是否够格由中枢裁。",
+  "P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题（原文已写结局 → source_mentions_answer=true），expert_decision 置 null，本包 B2 = 0。"
+ ]
+}

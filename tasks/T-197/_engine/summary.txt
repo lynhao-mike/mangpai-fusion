@@ -1,0 +1,260 @@
+###### C1 chart_id=cf-daef938eab28eb49e1b8 day_master=甲 gender=乾
+pillars: 辛巳 庚寅 甲申 庚午
+ten_gods: {"Y.s": "正官", "M.s": "七杀", "D.s": "日主", "H.s": "七杀", "Y.b": "食神", "M.b": "比肩", "D.b": "七杀", "H.b": "伤官"}
+kongwang: {"by_day_xun": ["午", "未"], "by_year_xun": ["申", "酉"], "hits": [["D.b", "year"], ["H.b", "day"]]}
+variants: [{"axis": "yin_changsheng", "alt_value": "yin_same_as_yang", "diffs": [["/pillars/0/self_sit/marks", ["坐长生"]], ["/pillars/0/self_sit/stem_changsheng", "长生"]]}]
+tiyong: {"Y.s": "用", "Y.b": "双属", "M.s": "用", "M.b": "体", "D.s": "体", "D.b": "用", "H.s": "用", "H.b": "双属"}
+--- edges ---
+{"kind": "same_qi", "members": ["Y.s", "M.s"]}
+{"kind": "ke", "members": ["Y.s", "D.s"]}
+{"kind": "same_qi", "members": ["Y.s", "H.s"]}
+{"kind": "stem_chong", "members": ["M.s", "D.s"]}
+{"kind": "ke", "members": ["M.s", "D.s"]}
+{"kind": "same_qi", "members": ["M.s", "H.s"]}
+{"kind": "stem_chong", "members": ["D.s", "H.s"]}
+{"kind": "ke", "members": ["H.s", "D.s"]}
+{"kind": "chuan", "members": ["Y.b", "M.b"]}
+{"kind": "xing", "members": ["Y.b", "M.b"], "group": "寅巳申", "completeness": "partial"}
+{"kind": "liuhe", "members": ["Y.b", "D.b"]}
+{"kind": "po", "members": ["Y.b", "D.b"]}
+{"kind": "xing", "members": ["Y.b", "D.b"], "group": "寅巳申", "completeness": "partial"}
+{"kind": "sanhui", "members": ["Y.b", "H.b"], "group": "巳午未", "completeness": "partial"}
+{"kind": "chong", "members": ["M.b", "D.b"]}
+{"kind": "xing", "members": ["M.b", "D.b"], "group": "寅巳申", "completeness": "partial"}
+{"kind": "sanhe", "members": ["M.b", "H.b"], "group": "寅午戌", "completeness": "half_sheng"}
+{"kind": "xing", "members": ["M.b", "Y.b", "D.b"], "group": "寅巳申", "completeness": "full"}
+{"kind": "ganzhi_zihe", "members": ["Y.s", "Y.b"]}
+--- duan candidates --- n=29
+{"mode": "制用", "members": ["Y.s", "D.s"], "actor": "Y.s", "edge_id": "e002"}
+{"mode": "制用", "members": ["M.s", "D.s"], "actor": null, "edge_id": "e004"}
+{"mode": "制用", "members": ["M.s", "D.s"], "actor": "M.s", "edge_id": "e005"}
+{"mode": "制用", "members": ["D.s", "H.s"], "actor": null, "edge_id": "e007"}
+{"mode": "制用", "members": ["H.s", "D.s"], "actor": "H.s", "edge_id": "e008"}
+{"mode": "制用", "members": ["Y.b", "M.b"], "actor": null, "edge_id": "e009"}
+{"mode": "制用", "members": ["Y.b", "M.b"], "actor": null, "edge_id": "e010"}
+{"mode": "合用", "members": ["Y.b", "D.b"], "actor": null, "edge_id": "e011"}
+{"mode": "制用", "members": ["Y.b", "D.b"], "actor": null, "edge_id": "e013"}
+{"mode": "制用", "members": ["M.b", "D.b"], "actor": null, "edge_id": "e015"}
+{"mode": "制用", "members": ["M.b", "D.b"], "actor": null, "edge_id": "e016"}
+{"mode": "合用", "members": ["Y.s", "Y.b"], "actor": null, "edge_id": "e019"}
+{"mode": "生泄用", "members": ["M.b", "Y.b"], "actor": "M.b"}
+{"mode": "生泄用", "members": ["M.b", "H.b"], "actor": "M.b"}
+{"mode": "sheng", "members": ["M.b", "Y.b"], "actor": "M.b"}
+{"mode": "sheng", "members": ["D.s", "H.b"], "actor": "D.s"}
+{"mode": "制用", "members": ["Y.b", "M.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "H.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "D.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["M.b", "Y.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["M.b", "H.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["H.b", "Y.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["H.b", "M.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "D.b"], "actor": "Y.b"}
+{"mode": "制用", "members": ["D.b", "M.b"], "actor": "D.b"}
+{"mode": "制用", "members": ["H.b", "D.b"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.s", "M.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["M.s", "M.b"], "actor": "M.s"}
+{"mode": "制用", "members": ["H.s", "M.b"], "actor": "H.s"}
+--- structures ---
+{"structure_id": "ziping_zhengguan", "state": null, "items": [{"id": "brk_sha_hun_guan", "kind": "breaker", "status": "met"}]}
+{"structure_id": "ziping_cai", "state": null, "items": [{"id": "aux_guan_hu_cai", "kind": "requirement", "status": "met"}, {"id": "str_cai_vs_shen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_yin", "state": null, "items": [{"id": "aux_guansha_sheng_yin", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_shishen", "state": null, "items": [{"id": "str_shen_wang_you_gen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_qisha", "state": null, "items": [{"id": "req_month_sha", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_shangguan", "state": null, "items": [{"id": "brk_jian_guan", "kind": "breaker", "status": "met"}]}
+{"structure_id": "ziping_yangren", "state": null, "items": [{"id": "xs_guansha_zhi_ren", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_jianlu", "state": null, "items": [{"id": "req_month_lu", "kind": "requirement", "status": "met"}, {"id": "xs_caiguan_tou", "kind": "requirement", "status": "met"}]}
+--- strength camps ---
+{"印比": {"stems": 0, "main_qi": 1, "mid_qi": 1, "residual_qi": 0, "month_main_qi": true}, "食伤": {"stems": 0, "main_qi": 2, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}, "财": {"stems": 0, "main_qi": 0, "mid_qi": 1, "residual_qi": 3, "month_main_qi": false}, "官杀": {"stems": 3, "main_qi": 1, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}, "比劫": {"stems": 0, "main_qi": 1, "mid_qi": 0, "residual_qi": 0, "month_main_qi": true}, "印": {"stems": 0, "main_qi": 0, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}}
+
+###### C2 chart_id=cf-1627557db9bf35baf387 day_master=乙 gender=乾
+pillars: 戊戌 癸亥 乙巳 己卯
+ten_gods: {"Y.s": "正财", "M.s": "偏印", "D.s": "日主", "H.s": "偏财", "Y.b": "正财", "M.b": "正印", "D.b": "伤官", "H.b": "比肩"}
+kongwang: {"by_day_xun": ["寅", "卯"], "by_year_xun": ["辰", "巳"], "hits": [["D.b", "year"], ["H.b", "day"]]}
+variants: [{"axis": "yin_changsheng", "alt_value": "yin_same_as_yang", "diffs": [["/pillars/1/self_sit/stem_changsheng", "临官"], ["/pillars/2/self_sit/stem_changsheng", "病"], ["/pillars/3/self_sit/stem_changsheng", "沐浴"]]}]
+tiyong: {"Y.s": "用", "Y.b": "用", "M.s": "体", "M.b": "体", "D.s": "体", "D.b": "双属", "H.s": "用", "H.b": "体"}
+--- edges ---
+{"kind": "wuhe", "members": ["Y.s", "M.s"]}
+{"kind": "ke", "members": ["Y.s", "M.s"]}
+{"kind": "ke", "members": ["D.s", "Y.s"]}
+{"kind": "same_qi", "members": ["Y.s", "H.s"]}
+{"kind": "sheng", "members": ["M.s", "D.s"]}
+{"kind": "ke", "members": ["H.s", "M.s"]}
+{"kind": "ke", "members": ["D.s", "H.s"]}
+{"kind": "liuhe", "members": ["Y.b", "H.b"]}
+{"kind": "chong", "members": ["M.b", "D.b"]}
+{"kind": "sanhe", "members": ["M.b", "H.b"], "group": "亥卯未", "completeness": "half_sheng"}
+--- duan candidates --- n=31
+{"mode": "制用", "members": ["Y.s", "M.s"], "actor": "Y.s", "edge_id": "e002"}
+{"mode": "合用", "members": ["Y.s", "M.s"], "actor": null, "edge_id": "e001"}
+{"mode": "制用", "members": ["D.s", "Y.s"], "actor": "D.s", "edge_id": "e003"}
+{"mode": "生泄用", "members": ["M.s", "D.s"], "actor": "M.s", "edge_id": "e005"}
+{"mode": "制用", "members": ["H.s", "M.s"], "actor": "H.s", "edge_id": "e006"}
+{"mode": "制用", "members": ["D.s", "H.s"], "actor": "D.s", "edge_id": "e007"}
+{"mode": "合用", "members": ["Y.b", "H.b"], "actor": null, "edge_id": "e008"}
+{"mode": "制用", "members": ["M.b", "D.b"], "actor": null, "edge_id": "e009"}
+{"mode": "生泄用", "members": ["D.b", "Y.b"], "actor": "D.b"}
+{"mode": "生泄用", "members": ["M.b", "H.b"], "actor": "M.b"}
+{"mode": "生泄用", "members": ["H.b", "D.b"], "actor": "H.b"}
+{"mode": "生泄用", "members": ["D.s", "D.b"], "actor": "D.s"}
+{"mode": "sheng", "members": ["M.s", "D.s"], "actor": "M.s", "edge_id": "e005"}
+{"mode": "sheng", "members": ["M.b", "D.s"], "actor": "M.b"}
+{"mode": "sheng", "members": ["D.s", "D.b"], "actor": "D.s"}
+{"mode": "sheng", "members": ["D.b", "H.s"], "actor": "D.b"}
+{"mode": "sheng", "members": ["H.b", "D.b"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "M.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "D.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["M.b", "Y.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["M.b", "H.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["D.b", "M.s"], "actor": "D.b"}
+{"mode": "制用", "members": ["H.b", "Y.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "M.b"], "actor": "Y.b"}
+{"mode": "制用", "members": ["H.b", "Y.b"], "actor": "H.b"}
+{"mode": "制用", "members": ["M.b", "D.b"], "actor": "M.b"}
+{"mode": "制用", "members": ["Y.s", "M.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["M.s", "D.b"], "actor": "M.s"}
+{"mode": "制用", "members": ["D.s", "Y.b"], "actor": "D.s"}
+{"mode": "制用", "members": ["H.s", "M.b"], "actor": "H.s"}
+{"mode": "墓用", "members": ["Y.b", "D.b"], "actor": "Y.b"}
+--- structures ---
+{"structure_id": "ziping_zhengguan", "state": null, "items": [{"id": "aux_cai_sheng_guan", "kind": "requirement", "status": "met"}, {"id": "aux_yin_hu_guan", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_cai", "state": null, "items": [{"id": "str_cai_vs_shen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_yin", "state": null, "items": [{"id": "req_month_yin", "kind": "requirement", "status": "met"}, {"id": "brk_cai_po_yin", "kind": "breaker", "status": "met"}]}
+{"structure_id": "ziping_shishen", "state": null, "items": [{"id": "aux_shishen_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "rsc_cai_zhi_xiao", "kind": "rescuer", "status": "met"}, {"id": "str_shen_wang_you_gen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_qisha", "state": null, "items": [{"id": "xs_yin_hua_sha", "kind": "requirement", "status": "met"}, {"id": "rsc_cai_zhi_xiao", "kind": "rescuer", "status": "met"}]}
+{"structure_id": "ziping_shangguan", "state": null, "items": [{"id": "xs_pei_yin", "kind": "requirement", "status": "met"}, {"id": "xs_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "rsc_yin_or_cai", "kind": "rescuer", "status": "met"}]}
+{"structure_id": "ziping_yangren", "state": null, "items": [{"id": "xs_guansha_zhi_ren", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_jianlu", "state": null, "items": [{"id": "xs_caiguan_tou", "kind": "requirement", "status": "met"}]}
+--- strength camps ---
+{"印比": {"stems": 1, "main_qi": 2, "mid_qi": 1, "residual_qi": 0, "month_main_qi": true}, "食伤": {"stems": 0, "main_qi": 1, "mid_qi": 0, "residual_qi": 1, "month_main_qi": false}, "财": {"stems": 2, "main_qi": 1, "mid_qi": 0, "residual_qi": 1, "month_main_qi": false}, "官杀": {"stems": 0, "main_qi": 0, "mid_qi": 2, "residual_qi": 0, "month_main_qi": false}, "比劫": {"stems": 0, "main_qi": 1, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}, "印": {"stems": 1, "main_qi": 1, "mid_qi": 0, "residual_qi": 0, "month_main_qi": true}}
+
+###### C3 chart_id=cf-0075a9941ae6f079f4b9 day_master=己 gender=坤
+pillars: 壬寅 庚戌 己丑 庚午
+ten_gods: {"Y.s": "正财", "M.s": "伤官", "D.s": "日主", "H.s": "伤官", "Y.b": "正官", "M.b": "劫财", "D.b": "比肩", "H.b": "偏印"}
+kongwang: {"by_day_xun": ["午", "未"], "by_year_xun": ["辰", "巳"], "hits": [["H.b", "day"]]}
+variants: [{"axis": "yin_changsheng", "alt_value": "yin_same_as_yang", "diffs": [["/pillars/2/self_sit/marks", []], ["/pillars/2/self_sit/stem_changsheng", "养"]]}]
+tiyong: {"Y.s": "用", "Y.b": "用", "M.s": "双属", "M.b": "体", "D.s": "体", "D.b": "体", "H.s": "双属", "H.b": "体"}
+--- edges ---
+{"kind": "sheng", "members": ["M.s", "Y.s"]}
+{"kind": "ke", "members": ["D.s", "Y.s"]}
+{"kind": "sheng", "members": ["H.s", "Y.s"]}
+{"kind": "sheng", "members": ["D.s", "M.s"]}
+{"kind": "same_qi", "members": ["M.s", "H.s"]}
+{"kind": "sheng", "members": ["D.s", "H.s"]}
+{"kind": "sanhe", "members": ["Y.b", "M.b"], "group": "寅午戌", "completeness": "gong"}
+{"kind": "zhi_anhe", "members": ["Y.b", "D.b"]}
+{"kind": "sanhe", "members": ["Y.b", "H.b"], "group": "寅午戌", "completeness": "half_sheng"}
+{"kind": "xing", "members": ["M.b", "D.b"], "group": "丑戌未", "completeness": "partial"}
+{"kind": "sanhe", "members": ["M.b", "H.b"], "group": "寅午戌", "completeness": "half_mu"}
+{"kind": "chuan", "members": ["D.b", "H.b"]}
+{"kind": "sanhe", "members": ["Y.b", "H.b", "M.b"], "group": "寅午戌", "completeness": "full"}
+--- duan candidates --- n=38
+{"mode": "生泄用", "members": ["M.s", "Y.s"], "actor": "M.s", "edge_id": "e001"}
+{"mode": "制用", "members": ["D.s", "Y.s"], "actor": "D.s", "edge_id": "e002"}
+{"mode": "生泄用", "members": ["H.s", "Y.s"], "actor": "H.s", "edge_id": "e003"}
+{"mode": "生泄用", "members": ["D.s", "M.s"], "actor": "D.s", "edge_id": "e004"}
+{"mode": "生泄用", "members": ["D.s", "H.s"], "actor": "D.s", "edge_id": "e006"}
+{"mode": "合用", "members": ["Y.b", "D.b"], "actor": null, "edge_id": "e008"}
+{"mode": "制用", "members": ["M.b", "D.b"], "actor": null, "edge_id": "e010"}
+{"mode": "制用", "members": ["D.b", "H.b"], "actor": null, "edge_id": "e012"}
+{"mode": "化用", "members": ["H.b", "Y.b"], "actor": "H.b"}
+{"mode": "生泄用", "members": ["H.b", "M.b"], "actor": "H.b"}
+{"mode": "生泄用", "members": ["H.b", "D.b"], "actor": "H.b"}
+{"mode": "生泄用", "members": ["Y.s", "Y.b"], "actor": "Y.s"}
+{"mode": "生泄用", "members": ["M.b", "M.s"], "actor": "M.b"}
+{"mode": "sheng", "members": ["Y.s", "Y.b"], "actor": "Y.s"}
+{"mode": "sheng", "members": ["M.s", "Y.s"], "actor": "M.s", "edge_id": "e001"}
+{"mode": "sheng", "members": ["M.b", "M.s"], "actor": "M.b"}
+{"mode": "sheng", "members": ["D.s", "M.s"], "actor": "D.s", "edge_id": "e004"}
+{"mode": "sheng", "members": ["D.b", "M.s"], "actor": "D.b"}
+{"mode": "sheng", "members": ["D.s", "H.s"], "actor": "D.s", "edge_id": "e006"}
+{"mode": "sheng", "members": ["H.b", "D.s"], "actor": "H.b"}
+{"mode": "sheng", "members": ["D.b", "H.s"], "actor": "D.b"}
+{"mode": "sheng", "members": ["H.b", "D.b"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "D.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "M.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "H.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["M.b", "Y.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["M.b", "H.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["D.b", "Y.s"], "actor": "D.b"}
+{"mode": "制用", "members": ["H.b", "M.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["H.b", "Y.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "M.b"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "D.b"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.s", "H.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["M.s", "Y.b"], "actor": "M.s"}
+{"mode": "制用", "members": ["H.s", "Y.b"], "actor": "H.s"}
+{"mode": "墓用", "members": ["M.b", "H.b"], "actor": "M.b"}
+{"mode": "墓用", "members": ["D.b", "M.s"], "actor": "D.b"}
+{"mode": "墓用", "members": ["D.b", "H.s"], "actor": "D.b"}
+--- structures ---
+{"structure_id": "ziping_zhengguan", "state": null, "items": [{"id": "aux_cai_sheng_guan", "kind": "requirement", "status": "met"}, {"id": "brk_shangguan_jian_guan", "kind": "breaker", "status": "met"}]}
+{"structure_id": "ziping_cai", "state": null, "items": [{"id": "aux_shishang_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "str_cai_vs_shen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_yin", "state": null, "items": [{"id": "aux_shishang_tuxiu", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_shishen", "state": null, "items": [{"id": "aux_shishen_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "str_shen_wang_you_gen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_shangguan", "state": null, "items": [{"id": "xs_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "rsc_yin_or_cai", "kind": "rescuer", "status": "met"}]}
+{"structure_id": "ziping_yangren", "state": null, "items": [{"id": "xs_guansha_zhi_ren", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_jianlu", "state": null, "items": [{"id": "req_month_lu", "kind": "requirement", "status": "met"}, {"id": "xs_caiguan_tou", "kind": "requirement", "status": "met"}]}
+--- strength camps ---
+{"印比": {"stems": 0, "main_qi": 3, "mid_qi": 2, "residual_qi": 2, "month_main_qi": true}, "食伤": {"stems": 2, "main_qi": 0, "mid_qi": 1, "residual_qi": 1, "month_main_qi": false}, "财": {"stems": 1, "main_qi": 0, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}, "官杀": {"stems": 0, "main_qi": 1, "mid_qi": 0, "residual_qi": 0, "month_main_qi": false}, "比劫": {"stems": 0, "main_qi": 2, "mid_qi": 1, "residual_qi": 1, "month_main_qi": true}, "印": {"stems": 0, "main_qi": 1, "mid_qi": 1, "residual_qi": 1, "month_main_qi": false}}
+
+###### C4 chart_id=cf-4d8fe4fe1b354d973a7b day_master=壬 gender=乾
+pillars: 乙巳 己丑 壬辰 辛丑
+ten_gods: {"Y.s": "伤官", "M.s": "正官", "D.s": "日主", "H.s": "正印", "Y.b": "偏财", "M.b": "正官", "D.b": "七杀", "H.b": "正官"}
+kongwang: {"by_day_xun": ["午", "未"], "by_year_xun": ["寅", "卯"]}
+variants: [{"axis": "yin_changsheng", "alt_value": "yin_same_as_yang", "diffs": [["/pillars/0/self_sit/stem_changsheng", "病"], ["/pillars/1/self_sit/marks", []], ["/pillars/1/self_sit/stem_changsheng", "养"], ["/pillars/3/self_sit/marks", ["坐墓"]], ["/pillars/3/self_sit/stem_changsheng", "墓"]]}]
+tiyong: {"Y.s": "双属", "Y.b": "用", "M.s": "用", "M.b": "用", "D.s": "体", "D.b": "用", "H.s": "体", "H.b": "用"}
+--- edges ---
+{"kind": "ke", "members": ["Y.s", "M.s"]}
+{"kind": "sheng", "members": ["D.s", "Y.s"]}
+{"kind": "stem_chong", "members": ["Y.s", "H.s"]}
+{"kind": "ke", "members": ["H.s", "Y.s"]}
+{"kind": "ke", "members": ["M.s", "D.s"]}
+{"kind": "sheng", "members": ["M.s", "H.s"]}
+{"kind": "sheng", "members": ["H.s", "D.s"]}
+{"kind": "sanhe", "members": ["Y.b", "M.b"], "group": "巳酉丑", "completeness": "gong"}
+{"kind": "sanhe", "members": ["Y.b", "H.b"], "group": "巳酉丑", "completeness": "gong"}
+{"kind": "po", "members": ["M.b", "D.b"]}
+{"kind": "po", "members": ["D.b", "H.b"]}
+--- duan candidates --- n=31
+{"mode": "制用", "members": ["Y.s", "M.s"], "actor": "Y.s", "edge_id": "e001"}
+{"mode": "生泄用", "members": ["D.s", "Y.s"], "actor": "D.s", "edge_id": "e002"}
+{"mode": "制用", "members": ["Y.s", "H.s"], "actor": null, "edge_id": "e003"}
+{"mode": "制用", "members": ["H.s", "Y.s"], "actor": "H.s", "edge_id": "e004"}
+{"mode": "制用", "members": ["M.s", "D.s"], "actor": "M.s", "edge_id": "e005"}
+{"mode": "化用", "members": ["H.s", "M.s"], "actor": "H.s", "edge_id": "e006"}
+{"mode": "生泄用", "members": ["H.s", "D.s"], "actor": "H.s", "edge_id": "e007"}
+{"mode": "生泄用", "members": ["Y.b", "M.b"], "actor": "Y.b"}
+{"mode": "生泄用", "members": ["Y.b", "D.b"], "actor": "Y.b"}
+{"mode": "生泄用", "members": ["Y.b", "H.b"], "actor": "Y.b"}
+{"mode": "生泄用", "members": ["Y.s", "Y.b"], "actor": "Y.s"}
+{"mode": "化用", "members": ["H.s", "H.b"], "actor": "H.s"}
+{"mode": "sheng", "members": ["Y.s", "Y.b"], "actor": "Y.s"}
+{"mode": "sheng", "members": ["Y.b", "M.s"], "actor": "Y.b"}
+{"mode": "sheng", "members": ["Y.b", "M.b"], "actor": "Y.b"}
+{"mode": "sheng", "members": ["H.s", "D.s"], "actor": "H.s", "edge_id": "e007"}
+{"mode": "sheng", "members": ["D.b", "H.s"], "actor": "D.b"}
+{"mode": "sheng", "members": ["H.b", "H.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.b", "H.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["Y.b", "D.s"], "actor": "Y.b"}
+{"mode": "制用", "members": ["M.b", "D.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["M.b", "Y.s"], "actor": "M.b"}
+{"mode": "制用", "members": ["D.b", "M.s"], "actor": "D.b"}
+{"mode": "制用", "members": ["H.b", "D.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["H.b", "Y.s"], "actor": "H.b"}
+{"mode": "制用", "members": ["Y.s", "M.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["Y.s", "D.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["Y.s", "H.b"], "actor": "Y.s"}
+{"mode": "制用", "members": ["D.s", "Y.b"], "actor": "D.s"}
+{"mode": "墓用", "members": ["D.b", "M.b"], "actor": "D.b"}
+{"mode": "墓用", "members": ["D.b", "H.b"], "actor": "D.b"}
+--- structures ---
+{"structure_id": "ziping_zhengguan", "state": null, "items": [{"id": "req_month_guan", "kind": "requirement", "status": "met"}, {"id": "aux_yin_hu_guan", "kind": "requirement", "status": "met"}, {"id": "brk_shangguan_jian_guan", "kind": "breaker", "status": "met"}, {"id": "rsc_yin_zhi_shang", "kind": "rescuer", "status": "met"}]}
+{"structure_id": "ziping_cai", "state": null, "items": [{"id": "aux_shishang_sheng_cai", "kind": "requirement", "status": "met"}, {"id": "aux_guan_hu_cai", "kind": "requirement", "status": "met"}, {"id": "str_cai_vs_shen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_yin", "state": null, "items": [{"id": "req_month_yin", "kind": "requirement", "status": "met"}, {"id": "aux_guansha_sheng_yin", "kind": "requirement", "status": "met"}, {"id": "aux_shishang_tuxiu", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_shishen", "state": null, "items": [{"id": "str_shen_wang_you_gen", "kind": "requirement", "status": "needs_judgment"}]}
+{"structure_id": "ziping_qisha", "state": null, "items": [{"id": "xs_yin_hua_sha", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_shangguan", "state": null, "items": [{"id": "xs_pei_yin", "kind": "requirement", "status": "met"}, {"id": "brk_jian_guan", "kind": "breaker", "status": "met"}, {"id": "rsc_yin_or_cai", "kind": "rescuer", "status": "met"}]}
+{"structure_id": "ziping_yangren", "state": null, "items": [{"id": "xs_guansha_zhi_ren", "kind": "requirement", "status": "met"}]}
+{"structure_id": "ziping_jianlu", "state": null, "items": [{"id": "xs_caiguan_tou", "kind": "requirement", "status": "met"}, {"id": "brk_caiguan_bei_jie", "kind": "breaker", "status": "needs_judgment"}]}
+--- strength camps ---
+{"印比": {"stems": 1, "main_qi": 0, "mid_qi": 3, "residual_qi": 3, "month_main_qi": false}, "食伤": {"stems": 1, "main_qi": 0, "mid_qi": 1, "residual_qi": 0, "month_main_qi": false}, "财": {"stems": 0, "main_qi": 1, "mid_qi": 0, "residual_qi": 0, "month_main_qi": false}, "官杀": {"stems": 1, "main_qi": 3, "mid_qi": 0, "residual_qi": 1, "month_main_qi": true}, "比劫": {"stems": 0, "main_qi": 0, "mid_qi": 2, "residual_qi": 1, "month_main_qi": false}, "印": {"stems": 1, "main_qi": 0, "mid_qi": 1, "residual_qi": 2, "month_main_qi": false}}
