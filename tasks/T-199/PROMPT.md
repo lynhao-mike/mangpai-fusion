@@ -1,73 +1,72 @@
-# T-199 · 冲的胜负/方向 窄实验（段建业 263 例）
+# T-199 · 合化/合绊 窄实验（段建业 22；≤15 规则；40 例 15/25）
 
-- 状态：🔵 Ready
-- 依据：Opus 裁决（2026-10-30）；A+ kill；R-tool pass；P0 gate 过
-- 前置：main `d295ecd7`
+- 状态：🔵 Ready（重定向；冲/263 版作废）
+- 依据：WB/Gemini 裁决 + 中枢合成（2026-10-30）
+- 前置：main `a062b544`
 
 ## 0. 一句话
 
-只做一个决策：**原局单冲“谁去”**；只读段建业《盲派批命案例集》263 例；
-抽 30 例（训练 20 / 留出 10，留出先封），写 30–50 条**可执行规则**，用**规则引擎**跑；
-留出 ≥8/10 且覆盖率 ≥70% 才算形式化成立；两轮不到即停。
+只做一个决策：**五合/六合的形态判定**（合化 / 合绊 / 争合不化 / needs_anchor）；
+只读段建业《盲派初级命理学》（MinerU 22）理论段；用 **≤15 条纯 engine 布尔原子规则**；
+40 例（15 训练 / 25 留出，留出先封），留出 ≥80% 已决 + 覆盖率 ≥70% + 优于最高频基线 +20pp。
 
 ## 1. 范围（冻结）
 
-- 决策：冲的胜负/方向（谁去），不碰合化/旺衰/党势/宾主/取象；
-- 书：段建业《盲派批命案例集》263 例；不跨书；
-- 样本：30 例，训练 20 / 留出 10；留出先封、规则后写；
-- 通过：留出 ≥8/10 且覆盖率 ≥70%；
-- 停线：两轮不到 80% 即停，不调阈值、不删案例、不换留出；
-- 周期：4 周；P1 冻结在 R01，不并行；P2 不碰。
+- 决策：五合/六合形态，枚举 `化 | 合绊 | 争合不化 | needs_anchor`；
+- 不碰：冲的胜负、党势、旺衰、宾主、取象；
+- 书：《盲派初级命理学》（MinerU 22）；M1-D 规则条目；
+- 样本：40 例，15 训练 / 25 留出；留出先封、hash；规则作者只见训练/理论段；
+- 规则：≤15 条；纯 engine 可观测布尔原子；禁文本条件、禁浮点权重；
+- 通过：留出 25 例上，已决样本复现作者结论 ≥80%，已决覆盖率 ≥70%，优于“全猜最高频类”基线 +20pp；
+- 停：两轮不到即停；若显式结论案例 <15 条，换决策/换书一次；不调阈值、不删案例、不换留出。
 
-## 2. 抽取
-
-- 只抽作者**显式冲句**：“冲去/冲坏/冲不解/冲起/冲散”等；
-- 禁止由“离婚/发财/升职”反推冲的方向；反推即泄漏；
-- 双人独立抽取（人+Agent 或两次 Agent）+ 人工裁决；记 κ，<0.8 重抽；
-- 歧义（“或”、需岁运补足、原局无单冲）→ `excluded_ambiguous`，不入分母；歧义率 >20% 判书/决策错；
-- OCR 噪声（“官位”“末食”等）先校字；每例保留 `source_ref` + 逐字 quote；
-- 留出 10 例的四柱不得出现在规则举例/训练集中。
-
-## 3. 规则 schema
+## 2. Schema
 
 ```yaml
-id: C-001
-when:
-  pair: [子, 午]
-  positions: [Y.b, D.b]
-  adjacent: true
-  edge_id: e007
-  ten_gods: ...
-  month_order: ...
-  roots: ...
-  strength_version: "engine@<hash>"
+id: H-001
+when:            # 全 engine 可观测布尔原子
+  edge_kind: wuhe
+  pair: [丙, 辛]
+  month_branch_wuxing: ...
+  huashen_stem_tou: true|false
+  competing_stem: ...
+  adjacent: true|false
+  ke_po: ...
 then:
-  verdict: 子去 | 午去 | 两伤 | needs_anchor
+  verdict: 化 | 合绊 | 争合不化 | needs_anchor
   reason: ...
-except: []
-specificity: 3
-source_ref: sources/duan/...:L123
+source_ref: sources/duan/MinerU_markdown_22:...
 quote: "逐字原文"
+scope: ...
 ```
 
-- `when` 全部 engine 可观测；禁止“旺/有力/气势”等文本词；
-- 力量只用 engine 冻结分数/版本；
-- quote 必须能映射到一条 engine 边/地址；映射不上→规则不得触发，只产 `needs_anchor`；
-- 同一冲边两条规则相反→`conflict` + `conflict_with[]`；按预注册 `specificity` 消解；消不掉→`needs_anchor`。
+- 文本条件只作 provenance，不进 `when`；含不可操作化文本条件的规则标 `unoperationalized`，永不触发、只披露；
+- 同边两规则相反 → `needs_anchor(rule_a, rule_b)`；书本自带 quote 优先级才可解；
+- **needs_anchor 在已决案例上记 miss**，防弃权刷精度；另报“开火者精度”；
+- 覆盖率：`n_labeled / n_fired / n_conflict / n_unoperationalized` 四数逐跑公布。
+
+## 3. 标签
+
+- 只抽作者**明文**“合化/合绊/争合不合”句；沉默者排除并计数；
+- 双人独立抽取 + 第三人裁歧；κ≥0.85；
+- 歧义/两可 → `ambiguous_holdout` 单列，不进分母；
+- 留出 25 例在写规则前由第三人切分并 hash；训练 15 只用于规则复核，不用于“一例一规则”；
+- 禁为拟合训练案例临时造规则；规则只从理论段/M1-D 导出；
+- OCR 噪声先校字（“官位/末食”等）。
 
 ## 4. 产物
 
-- `META/t199-cases-train-v1.json`（20）
-- `META/t199-cases-holdout-v1.json`（10，先封，hash）
-- `META/t199-rules-v1.yaml`（30–50 条）
-- `tasks/T-199/run_rules.py`（规则引擎/冲突/覆盖）
-- `META/t199-report-v1.md`（留出 8/10、覆盖率、κ、歧义、conflict）
+- `META/t199-cases-train-v1.json`（15）
+- `META/t199-cases-holdout-v1.json`（25，sealed+hash）
+- `META/t199-rules-v1.yaml`（≤15）
+- `tasks/T-199/run_rules.py`（四数/conflict/needs_anchor）
+- `META/t199-report-v1.md`（留出精度、覆盖率、基线、κ、歧义）
 - `tasks/T-199/BRIEF.md` + `STATUS.md`
 
 ## 5. 验收
 
-- 留出 10 例只跑一次；≥8/10 且覆盖率 ≥70%；
-- 训练 20 例规则复现 ≥80%；
-- κ≥0.8；歧义率 ≤20%；
+- 25 留出只跑一次；≥80% 已决、覆盖率 ≥70%、优于基线 +20pp；
+- 训练 15 上规则复现 ≥80%；
+- κ≥0.85；歧义率 ≤20%；
 - 两轮不到即停；不改阈值/不删案例/不换留出；
-- 不碰 P1/P2/engine/保护区/旧卡/旧 timing。
+- P1 卡冻结 R01；P2 不碰；不改 engine/保护区/旧卡/旧 timing。
