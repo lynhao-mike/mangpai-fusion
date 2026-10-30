@@ -89,8 +89,8 @@ def main() -> int:
                 fail(f"{cid}/{a.get('qid')} 问题文本含方向词 {banned}")
         if c.get("anchor_a"):
             fail(f"{cid} anchor_a 非空（不得代答）")
-        if c.get("selected_option") is not None:
-            fail(f"{cid} selected_option 非空（自动选定）")
+        if c.get("selected_option") is not None and c.get("decision_by") != "engine_fixed":
+            fail(f"{cid} selected_option 非空（仅 A/engine_fixed 允许自动选定）")
 
         cands = c.get("direction_candidates") or []
         if not 2 <= len(cands) <= 3:
