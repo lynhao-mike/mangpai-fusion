@@ -30,8 +30,8 @@
 | 指标 | 值 |
 |---|---|
 | 例数 / 覆盖域 | 4 / 事业、健康、婚、财 |
-| 方向候选 | 12（A 3 · B1 8 · B2 0 · C 1） |
-| A 档占比 | 25.00%（P0 gate ≥50% → **未达**） |
+| 方向候选 | 11（A 3 · B1 7 · B2 0 · C 1） |
+| A 档占比 | 27.27%（P0 gate ≥50% → **未达**） |
 | 锚点题（B1） | 6 题 |
 | B2 专家单选 | 0 项（未触发）；B2 / 全部 B 单元 = 0.00% |
 | 状态候选 / 救应候选 | 10 / 4 |
@@ -48,14 +48,14 @@
 
 | 项 | 值 |
 |---|---|
-| 卡档位 | **B1** / `decision_by=anchor_fact` / `direction_tier=B1` / `pending=anchor_q` |
-| tier_reason | ['direction:anchor_conflict', 'state:not_claimed', 'rescue:candidate_only'] |
+| 卡档位 | **B1** / `decision_by=needs_anchor` / `direction_tier=B1` / `pending=None` |
+| tier_reason | ['direction:anchor_conflict', 'state:candidate_only', 'rescue:candidate_only'] |
 | chart_id / 日主 | `cf-daef938eab28eb49e1b8` / 甲 |
 | 快照 | dayun_index=null，liunian_year=null（原局；四柱输入不起运） |
 | 问题 | 我婚姻一直不顺，离过几次，现在一个人过；想知道这段命里的婚姻还能不能稳定下来。 |
 | 问题域 | marriage |
 | 原文出处 | `sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md` L21-L33（案例）；L15-L17、L44-L50（同章判据） |
-| 后续事实（备查，不作预测） | 原文后续事实：五次婚姻、配偶带子女离开、无子女留在身边（P0 仅备查，不作预测依据）。 |
+| 后续事实（备查，不作预测） | 原文后续事实：五次婚姻、配偶带子女离开、一个孩子也没落着（L33；P0 仅备查，不作预测依据）。 |
 
 ## 0.5) 宫位映射与 material edge
 
@@ -66,7 +66,7 @@
 | `H.b` | 配偶星（男命财星）藏己正财 | 伤官 | M-02 | `sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17`「配偶宫为日主的坐支，配偶星则男命以财星为妻，女命以官杀星当夫，如无则另看：男命再无遁藏，基本可能确定无婚，或克配偶。」 |
 
 - material edge（问题命中的边）：
-  - `e015`：夫妻宫(M.b寅↔D.b申)相冲——问题直接问婚姻稳定
+  - `e015`：月支寅(M.b)↔日支申(D.b)相冲：M.b 是月支（父母兄弟宫），夫妻宫/配偶宫是 D.b；e015=chong(M.b,D.b)，受方为日支配偶宫。本题直接问婚姻稳定。
   - `e011`：年支巳与夫妻宫申六合——配偶星来源侧，与冲争主线
 
 ## 1) engine 事实（`engine.cli all/relations`）
@@ -156,8 +156,8 @@
 
 | id | 层 | 档 | 结果 | 主张 | anchored_by |
 |---|---|---|---|---|---|
-| st1 | state | B1 | 败 | 夫宫被冲克 → 婚姻不稳、多婚 | ['AQ1'] |
-| st2 | state | B1 | 多现 | 副宫多现 → 有婚姻关系的女性多（配偶星伏于副宫之下） | ['AQ1'] |
+| st1 | state | B1 | 败 | 夫宫被冲克 → 婚姻不稳、多婚 | [] |
+| st2 | state | B1 | 多现 | 副宫多现 → 有婚姻关系的女性多（配偶星伏于副宫之下） | [] |
 | st3 | state | C | needs_anchor | 『夫妻宫为所忌之神，被夫星制之吉者婚姻较好』——本造不满足（反条件） | [] |
 | rs1 | rescue | C | needs_anchor | 夫妻宫安静条件：不能被刑坏、冲破、穿倒，或六合/暗合他星 | — |
 
@@ -184,11 +184,11 @@
 - 答不出：`needs_anchor`，影响 ['dc1', 'dc2']
 - **答案（留空，待人类/命主）**：`anchor_a: []`
 
-### AQ2 · direction · discriminates=['dc1', 'dc3']
+### AQ2 · direction · discriminates=['dc1', 'dc2', 'dc3']
 
 > 你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？
 
-- 能区分的原因：dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 认为是冲（推走、断离）。若分开后仍长期有联系/往来，合读法保留；若彻底断绝，冲读法保留。
+- 能区分的原因：dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 与 dc2 都落在冲（推走、断离），只是 dc1 赋单侧施力、dc2 保持对称不赋向。若分开后仍长期有联系/经济往来，则『冲而断离』的两种赋向口径都不成立，只剩合读法；若彻底断绝，合读法不成立。故 discriminates=[dc1,dc2,dc3]，与 elimination 的消去项完全一致。
 - 规则：`docs/specs/actor-rules-v1.md:L72-L84`；`source_mentions_answer=False`；proxy=medium
 - 答「是」：keep ['dc3']；eliminate ['dc1', 'dc2']
 - 答「否」：keep ['dc1', 'dc2']；eliminate ['dc3']
@@ -226,8 +226,8 @@
 
 | 项 | 值 |
 |---|---|
-| 卡档位 | **B1** / `decision_by=anchor_fact` / `direction_tier=B1` / `pending=anchor_q` |
-| tier_reason | ['direction:anchor_conflict', 'state:not_claimed', 'rescue:candidate_only'] |
+| 卡档位 | **B1** / `decision_by=needs_anchor` / `direction_tier=B1` / `pending=None` |
+| tier_reason | ['direction:anchor_conflict', 'state:candidate_only', 'rescue:candidate_only'] |
 | chart_id / 日主 | `cf-1627557db9bf35baf387` / 乙 |
 | 快照 | dayun_index=null，liunian_year=null（原局；四柱输入不起运） |
 | 问题 | 我在部队/单位里干了多年，想知道还能不能往上走、能走到哪一步。 |
@@ -326,8 +326,8 @@
 
 | id | 层 | 档 | 结果 | 主张 | anchored_by |
 |---|---|---|---|---|---|
-| st1 | state | B1 | 成 | 财制印得权 → 官命 | ['AQ1'] |
-| st2 | state | B1 | 疑 | 无伤官制官杀、无比劫羊刃做工 → 仅凭『戌为火药库』补象法才成军官 | ['AQ1'] |
+| st1 | state | B1 | 成 | 财制印得权 → 官命 | [] |
+| st2 | state | B1 | 疑 | 无伤官制官杀、无比劫羊刃做工 → 仅凭『戌为火药库』补象法才成军官 | [] |
 | rs1 | rescue | C | needs_anchor | 引擎 structures 救应要件命中：rsc_cai_zhi_xiao / rsc_yin_or_cai（met） | — |
 
 - **st1**（B1，成）：原文直断『八字是财制印得权的官命』，并以戊为工神；engine 亦有 e002 ke(戊,癸)。
@@ -380,8 +380,8 @@
 
 | 项 | 值 |
 |---|---|
-| 卡档位 | **B1** / `decision_by=anchor_fact` / `direction_tier=B1` / `pending=anchor_q` |
-| tier_reason | ['direction:anchor_conflict', 'state:conflict', 'rescue:candidate_only'] |
+| 卡档位 | **B1** / `decision_by=needs_anchor` / `direction_tier=B1` / `pending=None` |
+| tier_reason | ['direction:anchor_conflict', 'state:candidate_only', 'rescue:candidate_only'] |
 | chart_id / 日主 | `cf-0075a9941ae6f079f4b9` / 己 |
 | 快照 | dayun_index=null，liunian_year=null（原局；四柱输入不起运） |
 | 问题 | 我这些年身体一直出问题，最担心妇科和大病，想知道根子在哪。 |
@@ -436,7 +436,6 @@
 
 | mode | members | actor | edge_id |
 |---|---|---|---|
-| 制用 | ['M.b', 'D.b'] | None | e010 |
 | 制用 | ['D.b', 'H.b'] | None | e012 |
 
 ## 2) 原文锚点
@@ -451,7 +450,6 @@
 |---|---|---|---|---|---|---|---|
 | dc1 | B1 | 穿/chuan | actor→target D.b→H.b | `e012` | False | ['dc2'] | valid |
 | dc2 | B1 | 穿/chuan | mutual（对称，不赋向）  | `e012` | False | ['dc1'] | valid |
-| dc3 | B1 | 刑/xing | actor→target M.b→D.b | `e010` | True | ['dc1', 'dc2'] | valid |
 
 ### dc1（B1 / `human_anchor`）
 
@@ -470,21 +468,13 @@
 - 引文（direction_support）：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139`「丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。」
 - 校验：address=pass · edge=pass · ten_god=pass · quote=pass（边存在且 kind/members 一致；动态边 actor 由 engine 保持 null）
 
-### dc3（B1 / `human_anchor`）
-
-- 方向：actor→target，`M.b`(戌) → `D.b`(丑)，evidence_gap=same_line（同句）
-- 依据：原文『命中因有戌坏丑』是主谓宾句：戌为施动主语、丑为受事；engine e010 为 xing(丑戌未 partial)、actor=null。原文用『坏』字，本卡按 engine 既有边 kind=xing 记录，不另造边。
-- 规则：`docs/specs/actor-rules-v1.md:L95-L102`
-- 引文（direction_support）：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141`「后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。」
-- 校验：address=pass · edge=pass · ten_god=pass · quote=pass（边存在且 kind/members 一致；动态边 actor 由 engine 保持 null）
-
 ## 4) 状态候选 / 救应候选
 
 | id | 层 | 档 | 结果 | 主张 | anchored_by |
 |---|---|---|---|---|---|
 | st1 | state | B1 | 病 | 妇科（子宫癌）：丑＝阴、伤食之墓，午＝女体/禄 | ['AQ2'] |
 | st2 | state | B1 | 病 | 心脏/心慌（同章病性：丑午穿主心被伤） | ['AQ2'] |
-| rs1 | rescue | B1 | 救 | 戌坏丑 → 病源被制，未转移、治好 | ['AQ1'] |
+| rs1 | rescue | C | 救 | 戌坏丑 → 病源被制，未转移、治好 | — |
 
 - **st1**（B1，病）：原文以丑午穿＋丑为阴/伤食之墓＋午为女体，直指妇科；并记子宫癌、午运手术。
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139`「丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。」
@@ -493,7 +483,7 @@
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123`「丑午穿--------心是被伤，心慌惊悸。」
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27`「午：心脏、阳亢、血压、神经」
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131`「原局的毛病是丑午穿，午得寅生，旺，所以不得心脏病。」
-- **rs1**（B1，救）：原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应），与 dc3 同源但用途相反：dc3 是方向，rs1 是救应效果。
+- **rs1**（C，救）：原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应效果）。该关系原同时被登记为方向候选 dc3，T-197d 按同源去重并入本层（见 dedup[0]），此处只记救应一层。
   - 引文：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141`「后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。」
 
 ## 5) 锚点题（只问已发生事实）
@@ -513,9 +503,9 @@
 
 > 在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？
 
-- 能区分的原因：st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。两者在原文中互斥（『午得寅生，旺，所以不得心脏病』），只能由事实定夺。
+- 能区分的原因：st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。按原文互斥口径（同章『丑午穿→心是被伤，心慌惊悸』 vs 本造『午得寅生，旺，所以不得心脏病』），一组症状只能落在一个读法上：yes → 直接消 st1（不是降级），no → 消 st2；unknown → 两读法都无据，均不可选。
 - 规则：`sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9`；`source_mentions_answer=False`；proxy=high
-- 答「是」：keep ['st2']；eliminate []；downgrade ['st1']
+- 答「是」：keep ['st2']；eliminate ['st1']
 - 答「否」：keep ['st1']；eliminate ['st2']
 - 答不出：`needs_anchor`，影响 ['st1', 'st2']
 - **答案（留空，待人类/命主）**：`anchor_a: []`
@@ -550,8 +540,8 @@
 
 | 项 | 值 |
 |---|---|
-| 卡档位 | **B1** / `decision_by=anchor_fact` / `direction_tier=A` / `pending=anchor_q` |
-| tier_reason | ['direction:engine_fixed', 'state:conflict', 'rescue:candidate_only', 'pending:state_anchor'] |
+| 卡档位 | **B1** / `decision_by=anchor_fact` / `direction_tier=A` / `pending=None` |
+| tier_reason | ['direction:engine_fixed_multi', 'state:anchor_fact', 'rescue:candidate_only'] |
 | chart_id / 日主 | `cf-4d8fe4fe1b354d973a7b` / 壬 |
 | 快照 | dayun_index=null，liunian_year=null（原局；四柱输入不起运） |
 | 问题 | 我的生意和资产做得不小，最担心守不住；我的财到底是从哪来的、能不能守住？ |
@@ -651,8 +641,8 @@
 
 | id | 层 | 档 | 结果 | 主张 | anchored_by |
 |---|---|---|---|---|---|
-| st1 | state | B1 | 成 | 官入辰墓＋财库冲入 → 富命 | ['ED1'] |
-| st2 | state | B1 | 败 | 辛克乙破坏辰 → 主凶；乙运坐牢、没收财产 | ['ED1'] |
+| st1 | state | B1 | 成 | 官入辰墓＋财库冲入 → 富命 | ['AQ1'] |
+| st2 | state | B1 | 败 | 辛克乙破坏辰 → 主凶；乙运坐牢、没收财产 | ['AQ1'] |
 | st3 | state | C | needs_anchor | 财弱官旺、官当财看（财的定义口径） | [] |
 | rs1 | rescue | C | 应 | 行戌运，财库冲入自己 → 岁运层面的『开库得财』 | — |
 
@@ -700,9 +690,10 @@
 ## 7) 缺口与非断言
 
 - gaps：G2, G3, G4, G5, muku_open_close, suiyun_ten_god, snapshot_dayun_null
-- 非断言：不判财运高低、破财年份、牢狱、生死
-- 非断言：不把『富命』或『主凶』择一写成结论（本条交 ED1 专家裁决）
+- 非断言：不判财运高低、破财年份、牢狱应期
+- 非断言：不把『富命』(st1) 作为并列结论：AQ1=yes 已消 st1，state 层取 st2 破局；st1 的原文依据仍保留在 state_candidates 内备查
 - 非断言：不判岁运引动；不跨快照引用 edge_id
+- 非断言：方向层三条 A claim 互补（库收/克坏/财源），不折叠成单一方向结论
 
 ---
 
@@ -713,10 +704,10 @@
 | 序号 | 卡 | 题号 | 层 | 题目（是/否） | 区分候选 | 答「是」 | 答「否」 |
 |---|---|---|---|---|---|---|---|
 | 1 | P0-01 | AQ1 | direction | 你的婚姻破裂过程中，是否出现过『你的父母、兄弟或原生家庭出面介入、施压或替你做主』的具体事实？ | ['dc1', 'dc2'] | keep ['dc1'] / elim ['dc2'] | keep ['dc2'] / elim ['dc1'] |
-| 2 | P0-01 | AQ2 | direction | 你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？ | ['dc1', 'dc3'] | keep ['dc3'] / elim ['dc1', 'dc2'] | keep ['dc1', 'dc2'] / elim ['dc3'] |
+| 2 | P0-01 | AQ2 | direction | 你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？ | ['dc1', 'dc2', 'dc3'] | keep ['dc3'] / elim ['dc1', 'dc2'] | keep ['dc1', 'dc2'] / elim ['dc3'] |
 | 3 | P0-02 | AQ1 | direction | 你过去十年里，收入的主要来源是否以『体制外的项目、投资或兼职』为主，而不是固定级别的工资？ | ['dc1', 'dc2'] | keep ['dc2'] / elim ['dc1'] | keep ['dc1'] / elim ['dc2'] |
 | 4 | P0-03 | AQ1 | direction | 你的妇科病（或相关手术）确诊之前，是否先发生过『婚姻或家庭重大变故』（分居、离婚、丧偶、家人重病）？ | ['dc1', 'dc2'] | keep ['dc1'] / elim ['dc2'] | keep ['dc2'] / elim ['dc1'] |
-| 5 | P0-03 | AQ2 | state | 在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？ | ['st1', 'st2'] | keep ['st2'] / elim [] | keep ['st1'] / elim ['st2'] |
+| 5 | P0-03 | AQ2 | state | 在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？ | ['st1', 'st2'] | keep ['st2'] / elim ['st1'] | keep ['st1'] / elim ['st2'] |
 | 6 | P0-04 | AQ1 | state | 你过去是否经历过资产被一次性清空（罚没、没收、强制清算或巨额赔付）？ | ['st1', 'st2'] | keep ['st2'] / elim ['st1'] | keep ['st1'] / elim ['st2'] |
 
 ## 答案回收表（留空）
@@ -750,23 +741,31 @@
   - basis_text：中文依据散文（v2 的 basis 只允许结构项）
   - state_label：成败候选的原文词（成/败/疑/多现/病/救/应），state 三态另存
   - facts / palaces / material_edges / material_edge_reasons：证据包层（供第三方重推）
+  - claim_id / claim_selected / claim_scope：同一层可有多条互补 claim（A 档按 claim 计数）
+  - selected_claims / selected_options：非唯一时记全部幸存 claim，卡级 selected_option 保持 null
+  - selection{mode,unique,direction_survivors,state_survivors}：按 anchor_a 复算的幸存集，供第三方对照
+  - anchor_a[].answer_source / anchor_q[].anchor_a：答案是『原文结局明载』还是『原文未载』必须可区分
+  - state_candidates[].selectable / tier_note：C 档定义口径候选不参与成败选择
+  - dedup[]：同源关系只保留一层的登记记录（含被移除项的完整原记录）
+  - field_semantics / selection_rules：字段语义与选择规则，供 verify 与第三方按同一口径复算
 - 未实现（需选定后装配，或按 T-197 禁止代选）：
-  - `selected_option/selected_state/selected_rescue`：T-197 明令不自动选定；pending=anchor_q 前不得填
+  - `selected_option/selected_state/selected_rescue`：按 selection_rules 处理：卡级 selected_option 仅在该层唯一收敛时填；P0-04 三条 A claim 互补 → selected_option=null + 逐 claim 记账（claim_id/claim_selected）；selected_state 仅在 state 锚点收敛后填（P0-04 AQ1=yes → st2 唯一 → 败）。
   - `t1–t5 与 statement/statement_claims`：analysis-card/v2 在选定后才装配；本包是候选集不是成品卡
-  - `anchor_a 实体答案`：待人类/命主回答；Agent 不代答
+  - `anchor_a 实体答案`：T-197d 起 anchor_a 必须落盘：source-backed 答案（该题 source_mentions_answer=true）带 source_ref+quote 填入；原文未载的题记 unknown 留空待命主，不由 Agent 代答。见 field_semantics.anchor_a。
   - `agent_top1`：生成器 §8.2 的 B1 lift 基线，本包未冻结（避免锚定）
 - 已知口径冲突：
-  - v2 的 A 档要求 selected_option 已填且 pending=none；T-197 禁止代选 → direction_tier=A 的卡仍保持 selected_option=null
-  - v2 的 C 档也用 selected_option=null + selection_source=needs_anchor；因此『待自动确认的 A』与『无源 C』在本包只能靠 direction_tier/pending 区分
+  - v2 的 A 档要求单一 selected_option 已填且 pending=none；本包 A 按 claim 计（P0-04 三条 A claim），卡级 selected_option=null，以 selected_claims + claim_id 表达『多条 A 同时成立』，与 v2 的单值 selected_option 不同形。
+  - v2 的 C 档也用 selected_option=null + selection_source=needs_anchor；本包 C 候选按 selection_rules 恒不参与选择，故『待自动确认的多条 A claim』与『无源 C』用 direction_tier / selection.mode 区分，不再靠 pending 区分。
 
 # 未完成与风险
 
-- T-196 三份规格在本卡生成途中落盘（analysis-card-v2 / agent-candidate-generator-v1 / first-principle-agent-first-v1）；本包已按 agent-candidate-set/v1 改名与补字段，但仍是 pending candidate set（pending=anchor_q），不是可交付的 analysis-card/v2（T-197 明令不选定）。
-- 与 v2 的两处口径冲突：①v2 的 A 档要求 selected_option 已填、pending=none，而 T-197 禁止 Agent 代选 → 本包 direction_tier=A 的卡仍 selected_option=null；②v2 的 C 档要求 selected_option=null 且 selection_source=needs_anchor，与 A 未选状态同形，故本包用 tier/pending 区分『待自动确认的 A』与『无源的 C』。
+- T-196 三份规格在本卡生成途中落盘（analysis-card-v2 / agent-candidate-generator-v1 / first-principle-agent-first-v1）；本包按 agent-candidate-set/v1 改名与补字段，仍是 candidate set，不是成品 analysis-card/v2。
+- 与 v2 的两处口径冲突见 schema_compat.known_conflicts：A 档按 claim 计（非单一 selected_option）；C 档与『多条 A claim 未折叠』用 direction_tier / selection.mode 区分。
 - 四柱输入无出生时刻：engine input_limitations 明确不起运/不给大运公历年份；本包全部 dayun_index=null、liunian_year=null。
-- G5 救应未判：engine.structures 的 rescuer 命中只作要件，不作救应结论。
+- G5 救应未判：engine.structures 的 rescuer 命中只作要件，不作救应结论；P0-03 的 rs1 因此记 C/needs_anchor。
 - 『寅申之冲，寅多作用一次』的『作用一次』是计数用语，本卡按 same_page 缺口记为方向依据，是否够格由中枢裁。
-- P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题（原文已写结局 → source_mentions_answer=true），expert_decision 置 null，本包 B2 = 0。
+- P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题 AQ1，并已由原文 L398 落 yes（source_mentions_answer=true），expert_decision 保持 null、B2 = 0。
+- P0-03 的 dc3（戌坏丑当疾病方向）与 rs1 同源，按 T-197d §2 只保留救应一层；被移除项的完整记录见 cards[P0-03].dedup[0].original_record。
 - 本包 4 例的方向候选里，P0-01/P0-03 的『单侧施力』读法都依赖结果句/计数句（evidence_gap=same_page），是否够格作方向依据，需中枢裁。
 - 锚点题答案与原文后续事实存在部分可推测性（例：P0-01 原文已写五次婚姻）；本包题目刻意选原文**未写**的事实（原生家庭是否介入、分开后是否仍有往来、收入结构、发病前家庭变故、心脏症状）以降低泄漏。
 - P0-04 的『原局富 vs 岁运破』属**成败层**，按 analysis-card-v2 §5.3 不适用方向层 B2，已改为 state 锚点题（AQ1，`source_mentions_answer=true`）；本包 B2=0。

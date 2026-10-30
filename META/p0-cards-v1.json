@@ -1,6 +1,13 @@
 {
   "schema": "p0-cards/v1",
   "task": "T-197",
+  "revision": {
+    "rev": "r2",
+    "by": "T-197d",
+    "at": "2026-10-30T09:40:00+08:00",
+    "scope": "只修字段一致性与可复现性：P0-04 多 A claim 不折叠、P0-03 dc3/rs1 单层登记、P0-01/02 字段与 anchorb 指向、report 计数统一；不改候选取舍、不改 engine、不跑 P1。",
+    "patch_script": "tasks/T-197d/patch_p0_cards.py"
+  },
   "generated_at": "2026-10-30T08:26:26+08:00",
   "repo": "E:\\Git hub\\mangpai-fusion",
   "spec_refs": [
@@ -16,6 +23,38 @@
     "B1": "锚点消歧（默认）：2–3 个候选的分歧可由『命主已发生事实』的是非题区分；只问事实，不让人选方向。",
     "B2": "仅当没有任何可观测事实可区分候选时启用：专家单选或转 needs_anchor，必须带 source/quote；占比单列。",
     "C": "无源（原文未给该方向）、或与已冻结规则冲突 → needs_anchor，不写成断语。"
+  },
+  "field_semantics": {
+    "layer_tier": {
+      "A": "固定关系（克/生/化/墓），engine 与原文同向；可 agent_auto。A 不表示『多个 A 候选之间可折叠为一个』。",
+      "B1": "锚点消歧：候选分歧可由『命主已发生事实』的是非题区分。",
+      "B2": "仅当没有任何可观测事实可区分候选时：专家单选或 needs_anchor，必须带 source/quote。",
+      "C": "无源、或与已冻结规则冲突 → needs_anchor，不写成断语；C 档在本包等于『不参与选择』。",
+      "not_claimed": "该层不主张档位（没有可用的锚点题），不是 A/B1/B2/C 之外的另一个证据等级。"
+    },
+    "layer_scope": {
+      "claimed": "该层已由 anchor_a 唯一收敛，并写入该层 selected 字段。",
+      "candidate_only": "候选存在但未唯一收敛（可能已有锚点题、尚无答案）。",
+      "not_claimed": "该层无候选或不主张（P0-04 的 rescue 层）。"
+    },
+    "tier_vs_scope": "tier 是证据档位，scope 是当前主张状态，两者不是同一维度：state_tier=B1 + state_scope=candidate_only 表示『有 AQ2 可收敛，但尚无答案』，不构成矛盾。",
+    "not_auto_selected": "true = 卡级没有自动折叠出的单一 selected_option；不等于该卡没有任何自动结论（A claim 可以各自成立）。",
+    "anchor_a": "每题一条，answer ∈ {yes,no,unknown}，answer_source ∈ {source_outcome（原文结局明载）, testimony（命主口述）, not_in_source（原文未载，故记 unknown）}。answer≠unknown 时必须带 source_ref 与 quote，且 quote 为该行逐字子串。",
+    "c_tier_never_selected": "C 档本身就是 needs_anchor，不参与任何层的 selected 选择；因此 C 候选可以在无答案时『幸存』，而不会迫使 selected 非空。"
+  },
+  "selection_rules": {
+    "selectable_tiers": [
+      "A",
+      "B1",
+      "B2"
+    ],
+    "excluded_tiers": [
+      "C"
+    ],
+    "unknown_default": "anchor_q 无答案时按该题 elimination 的 unknown 行处理；某层没有任何 anchor_q 时，该层全部可参与选择的候选都幸存。",
+    "unique_rule": "某层仅当可参与选择的候选在 anchor_a（缺省 unknown）下恰好 1 个幸存时，才允许填该层 selected；否则该层 selected 必须为 null。",
+    "selected_must_equal_survivor": "selected_option / state_selected 非空时，必须等于唯一幸存候选；state_selected 必须等于该候选的 result 字段。",
+    "multi_claim_rule": "互补的多个 A claim 不折叠为单一 selected_option：卡级 selected_option=null，逐 claim 用 claim_id/claim_selected 记账，A 档按 claim 计数（不是按卡计数）。"
   },
   "isolation": {
     "read_answers": false,
@@ -66,17 +105,24 @@
       "claim.direction='undetermined'：v2 枚举只有 actor_to_target|mutual，本包为『合/冲但方向不可判』的候选保留第三值",
       "basis_text：中文依据散文（v2 的 basis 只允许结构项）",
       "state_label：成败候选的原文词（成/败/疑/多现/病/救/应），state 三态另存",
-      "facts / palaces / material_edges / material_edge_reasons：证据包层（供第三方重推）"
+      "facts / palaces / material_edges / material_edge_reasons：证据包层（供第三方重推）",
+      "claim_id / claim_selected / claim_scope：同一层可有多条互补 claim（A 档按 claim 计数）",
+      "selected_claims / selected_options：非唯一时记全部幸存 claim，卡级 selected_option 保持 null",
+      "selection{mode,unique,direction_survivors,state_survivors}：按 anchor_a 复算的幸存集，供第三方对照",
+      "anchor_a[].answer_source / anchor_q[].anchor_a：答案是『原文结局明载』还是『原文未载』必须可区分",
+      "state_candidates[].selectable / tier_note：C 档定义口径候选不参与成败选择",
+      "dedup[]：同源关系只保留一层的登记记录（含被移除项的完整原记录）",
+      "field_semantics / selection_rules：字段语义与选择规则，供 verify 与第三方按同一口径复算"
     ],
     "not_implemented": {
-      "selected_option/selected_state/selected_rescue": "T-197 明令不自动选定；pending=anchor_q 前不得填",
+      "selected_option/selected_state/selected_rescue": "按 selection_rules 处理：卡级 selected_option 仅在该层唯一收敛时填；P0-04 三条 A claim 互补 → selected_option=null + 逐 claim 记账（claim_id/claim_selected）；selected_state 仅在 state 锚点收敛后填（P0-04 AQ1=yes → st2 唯一 → 败）。",
       "t1–t5 与 statement/statement_claims": "analysis-card/v2 在选定后才装配；本包是候选集不是成品卡",
-      "anchor_a 实体答案": "待人类/命主回答；Agent 不代答",
+      "anchor_a 实体答案": "T-197d 起 anchor_a 必须落盘：source-backed 答案（该题 source_mentions_answer=true）带 source_ref+quote 填入；原文未载的题记 unknown 留空待命主，不由 Agent 代答。见 field_semantics.anchor_a。",
       "agent_top1": "生成器 §8.2 的 B1 lift 基线，本包未冻结（避免锚定）"
     },
     "known_conflicts": [
-      "v2 的 A 档要求 selected_option 已填且 pending=none；T-197 禁止代选 → direction_tier=A 的卡仍保持 selected_option=null",
-      "v2 的 C 档也用 selected_option=null + selection_source=needs_anchor；因此『待自动确认的 A』与『无源 C』在本包只能靠 direction_tier/pending 区分"
+      "v2 的 A 档要求单一 selected_option 已填且 pending=none；本包 A 按 claim 计（P0-04 三条 A claim），卡级 selected_option=null，以 selected_claims + claim_id 表达『多条 A 同时成立』，与 v2 的单值 selected_option 不同形。",
+      "v2 的 C 档也用 selected_option=null + selection_source=needs_anchor；本包 C 候选按 selection_rules 恒不参与选择，故『待自动确认的多条 A claim』与『无源 C』用 direction_tier / selection.mode 区分，不再靠 pending 区分。"
     ]
   },
   "seeded_error_self_test": {
@@ -106,7 +152,16 @@
     "failures": [],
     "detected": 20,
     "total": 20,
-    "status": "pass"
+    "status": "pass",
+    "scope": "pack 级 fixture self_test：addr 5 + edge 5 + ten_god 5 + quote 5 = 20（非第三方植入错误）",
+    "card_scan": {
+      "cards": 4,
+      "per_card": 4,
+      "detected": 16,
+      "total": 16,
+      "pass": true,
+      "note": "逐卡 engine_validation.seeded_error：fake_address / fake_edge / wrong_ten_god / tampered_quote 各 1"
+    }
   },
   "metrics": {
     "case_count": 4,
@@ -116,10 +171,10 @@
       "marriage",
       "wealth"
     ],
-    "direction_candidates": 12,
+    "direction_candidates": 11,
     "candidate_tiers": {
       "A": 3,
-      "B1": 8,
+      "B1": 7,
       "B2": 0,
       "C": 1
     },
@@ -134,22 +189,60 @@
     },
     "seeded_error_pass": true,
     "candidate_tier_share": {
-      "A": 0.25,
-      "B1": 0.6667,
+      "A": 0.2727,
+      "B1": 0.6364,
       "B2": 0.0,
-      "C": 0.0833
+      "C": 0.0909
     },
     "b2_share_of_B_units": 0.0,
     "a_share_vs_p0_gate": {
       "gate": "A 档自动占比 ≥50%（T-196 卡 §1.1 P0 gate）",
-      "actual": 0.25,
+      "actual": 0.2727,
+      "numerator": 3,
+      "denominator": 11,
       "verdict": "未达",
-      "note": "冲/合/穿/刑不得 A（中枢 2026-10-30 追加），真实婚/事业/健康/财问题的 material edge 多为对称关系或带竞争候选，固定克/生/化/墓仅 3/12。"
+      "note": "按 claim 计：3 个 A claim / 11 个方向 claim = 27.3%（去重前 3/12=25.0%）。冲/合/穿/刑不得 A（中枢 2026-10-30 追加），真实婚/事业/健康/财问题的 material edge 多为对称关系或带竞争候选。"
     },
     "self_test": {
       "detected": 20,
       "total": 20,
-      "pass": true
+      "pass": true,
+      "mode": "self_test",
+      "scope": "pack 级：addr/edge/ten_god/quote 共 20 项 fixture 的 self_test（不是第三方植入错误）",
+      "card_scan": {
+        "cards": 4,
+        "per_card": 4,
+        "detected": 16,
+        "total": 16,
+        "pass": true
+      },
+      "note": "report 曾写 16/16、卡写 20/20：两者都被保留但口径不同——16/16 是逐卡 4×4 card_scan，20/20 是包级 fixture self_test。"
+    },
+    "direction_candidates_before_dedup": 12,
+    "state_candidates_selectable": 9,
+    "anchor_a_answers": {
+      "unknown": 5,
+      "yes": 1,
+      "no": 0,
+      "total": 6
+    },
+    "a_claim_share": {
+      "numerator": 3,
+      "denominator": 11,
+      "value": 0.2727,
+      "basis": "按 claim（方向候选）计数，不按卡计数；去重前分母为 12（3/12=25.0%）",
+      "note": "P0-03 的 dc3 与 rs1 同源（L141『戌坏丑』+ e010），按 §2 只保留救应一层，方向分母 12→11。"
+    },
+    "a_precision": {
+      "evaluated": 3,
+      "met_tier_definition": 3,
+      "value": 1.0,
+      "criteria": [
+        "kind ∈ {ke,sheng,muku} 且 class ∈ {克,生,化,墓}",
+        "engine 边/候选与原文句法同向",
+        "与其他 A claim 互补而非竞争（P0-04 dc1 墓/库收、dc2 克/破坏功神、dc3 生/财源生官）"
+      ],
+      "note": "A 率（3/11）与 A 精度（3/3）是两个指标：率看占比，精度看 A 档自身是否满足三条件。"
     }
   },
   "cards": [
@@ -191,7 +284,7 @@
           "role": "outcome_background",
           "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25"
         },
-        "outcome_note": "原文后续事实：五次婚姻、配偶带子女离开、无子女留在身边（P0 仅备查，不作预测依据）。"
+        "outcome_note": "原文后续事实：五次婚姻、配偶带子女离开、一个孩子也没落着（L33；P0 仅备查，不作预测依据）。"
       },
       "palaces": [
         {
@@ -239,7 +332,7 @@
         "e011"
       ],
       "material_edge_reasons": {
-        "e015": "夫妻宫(M.b寅↔D.b申)相冲——问题直接问婚姻稳定",
+        "e015": "月支寅(M.b)↔日支申(D.b)相冲：M.b 是月支（父母兄弟宫），夫妻宫/配偶宫是 D.b；e015=chong(M.b,D.b)，受方为日支配偶宫。本题直接问婚姻稳定。",
         "e011": "年支巳与夫妻宫申六合——配偶星来源侧，与冲争主线"
       },
       "direction_candidates": [
@@ -699,9 +792,7 @@
           "result": "败",
           "tier": "B1",
           "decision_by": "human_anchor",
-          "anchored_by": [
-            "AQ1"
-          ],
+          "anchored_by": [],
           "quotes": [
             {
               "src": "HY",
@@ -776,16 +867,15 @@
           "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
           "quote": "为何偏偏要离婚，而不是二奶三奶呢？因夫宫被冲克，处于不稳定状态。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "本卡没有 state 层锚点题：AQ1/AQ2 均为 direction 层且只区分方向候选，不区分 st1/st2；故 anchored_by 留空，不改写成 AQ1。"
         },
         {
           "layer": "state",
           "result": "多现",
           "tier": "B1",
           "decision_by": "human_anchor",
-          "anchored_by": [
-            "AQ1"
-          ],
+          "anchored_by": [],
           "quotes": [
             {
               "src": "HY",
@@ -840,7 +930,8 @@
           "source_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27",
           "quote": "申是妻宫，透出庚辛副宫，而副宫下边压着是伤食及财星，都是配偶星，表示跟他有婚姻关系的女人多。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "本卡没有 state 层锚点题：AQ1/AQ2 均为 direction 层且只区分方向候选，不区分 st1/st2；故 anchored_by 留空，不改写成 AQ1。"
         },
         {
           "layer": "state",
@@ -1040,13 +1131,13 @@
           ],
           "fact_window": "2000-01..2025-12",
           "fact_domain": "marriage",
-          "anchor_a": null
+          "anchor_a": "unknown"
         },
         {
           "layer": "direction",
           "text": "你与已经分开的配偶，是否至今仍有联系或经济往来（即分开后并没有彻底断干净）？",
           "answer_type": "yes_no",
-          "discriminator_basis": "dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 认为是冲（推走、断离）。若分开后仍长期有联系/往来，合读法保留；若彻底断绝，冲读法保留。",
+          "discriminator_basis": "dc3 认为主线是年支巳与夫妻宫申『合』（合而未断）；dc1 与 dc2 都落在冲（推走、断离），只是 dc1 赋单侧施力、dc2 保持对称不赋向。若分开后仍长期有联系/经济往来，则『冲而断离』的两种赋向口径都不成立，只剩合读法；若彻底断绝，合读法不成立。故 discriminates=[dc1,dc2,dc3]，与 elimination 的消去项完全一致。",
           "rule_ref": "docs/specs/actor-rules-v1.md:L72-L84",
           "source_mentions_answer": false,
           "proxy_strength": "medium",
@@ -1081,6 +1172,7 @@
           "qid": "AQ2",
           "discriminates": [
             "dc1",
+            "dc2",
             "dc3"
           ],
           "elimination": [
@@ -1116,7 +1208,7 @@
           ],
           "fact_window": "2000-01..2025-12",
           "fact_domain": "marriage",
-          "anchor_a": null
+          "anchor_a": "unknown"
         }
       ],
       "gaps": [
@@ -1324,7 +1416,7 @@
       "direction_tier": "B1",
       "state_tier": "not_claimed",
       "rescue_tier": "C",
-      "state_scope": "not_claimed",
+      "state_scope": "candidate_only",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
       "pending": null,
@@ -1332,11 +1424,32 @@
       "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
-        "state:not_claimed",
+        "state:candidate_only",
         "rescue:candidate_only"
       ],
-      "anchor_a": [],
-      "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+      "anchor_a": [
+        {
+          "qid": "AQ1",
+          "layer": "direction",
+          "answer": "unknown",
+          "answer_source": "not_in_source",
+          "decision_by": "needs_anchor",
+          "source_ref": null,
+          "quote": null,
+          "note": "原文未载（source_mentions_answer=false）；待命主回答，Agent 不代答。"
+        },
+        {
+          "qid": "AQ2",
+          "layer": "direction",
+          "answer": "unknown",
+          "answer_source": "not_in_source",
+          "decision_by": "needs_anchor",
+          "source_ref": null,
+          "quote": null,
+          "note": "原文未载（source_mentions_answer=false）；待命主回答，Agent 不代答。"
+        }
+      ],
+      "anchor_a_note": "本卡 2 题均记 unknown：原文未载（AQ1/AQ2 的 source_mentions_answer=false），按 report §2 落 unknown 并交命主回答；Agent 不据原文后续事实代答（原文只写五次婚姻/孤家寡人，不是这两题的事实答案）。",
       "selected_option": null,
       "selection_source": "needs_anchor",
       "not_auto_selected": true,
@@ -2317,7 +2430,19 @@
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
       },
-      "state_selected": null
+      "state_selected": null,
+      "selection": {
+        "mode": "needs_anchor",
+        "unique": false,
+        "selected_option": null,
+        "selected_claims": [],
+        "direction_survivors": [],
+        "state_survivors": [
+          "st1",
+          "st2"
+        ],
+        "note": "anchor_a 全 unknown：AQ1 unknown 消 dc1/dc2、AQ2 unknown 消 dc1/dc2/dc3 → 方向层无幸存者；本卡无 state 锚点题，st1/st2 全部幸存（st3 为 C 档不参与选择）→ state 层不唯一。两层 selected 均 null。"
+      }
     },
     {
       "card_id": "P0-02",
@@ -2862,9 +2987,7 @@
           "result": "成",
           "tier": "B1",
           "decision_by": "human_anchor",
-          "anchored_by": [
-            "AQ1"
-          ],
+          "anchored_by": [],
           "quotes": [
             {
               "src": "JG",
@@ -2921,16 +3044,15 @@
           "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
           "quote": "解析：八字是财制印得权的官命",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "本卡只有 AQ1 且它是 direction 层（区分 dc1/dc2），不区分 st1/st2；故 anchored_by 留空，不改写成 AQ1。"
         },
         {
           "layer": "state",
           "result": "疑",
           "tier": "B1",
           "decision_by": "human_anchor",
-          "anchored_by": [
-            "AQ1"
-          ],
+          "anchored_by": [],
           "quotes": [
             {
               "src": "JG",
@@ -3005,7 +3127,8 @@
           "source_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27",
           "quote": "但很难理解是部队的军官，因为八字无伤官制官杀，也无比劫羊刃做工，但是八字见了戌土火库，又是伤官库做工了",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "本卡只有 AQ1 且它是 direction 层（区分 dc1/dc2），不区分 st1/st2；故 anchored_by 留空，不改写成 AQ1。"
         }
       ],
       "rescue_candidates": [
@@ -3127,7 +3250,7 @@
           ],
           "fact_window": "2015-01..2025-12",
           "fact_domain": "career",
-          "anchor_a": null
+          "anchor_a": "unknown"
         }
       ],
       "gaps": [
@@ -3334,7 +3457,7 @@
       "direction_tier": "B1",
       "state_tier": "not_claimed",
       "rescue_tier": "C",
-      "state_scope": "not_claimed",
+      "state_scope": "candidate_only",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
       "pending": null,
@@ -3342,11 +3465,22 @@
       "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
-        "state:not_claimed",
+        "state:candidate_only",
         "rescue:candidate_only"
       ],
-      "anchor_a": [],
-      "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+      "anchor_a": [
+        {
+          "qid": "AQ1",
+          "layer": "direction",
+          "answer": "unknown",
+          "answer_source": "not_in_source",
+          "decision_by": "needs_anchor",
+          "source_ref": null,
+          "quote": null,
+          "note": "原文未载（source_mentions_answer=false）；窗口 2015-2025 原文未覆盖收入结构；待命主回答。"
+        }
+      ],
+      "anchor_a_note": "本卡 1 题记 unknown：原文未载（source_mentions_answer=false），按 report §2 落 unknown 交命主回答；Agent 不据原文履历代答收入结构。",
       "selected_option": null,
       "selection_source": "needs_anchor",
       "not_auto_selected": true,
@@ -4222,7 +4356,19 @@
         "built_by": "T-197 P0 agent（子代理会话）",
         "built_at": "2026-10-30T08:26:26+08:00"
       },
-      "state_selected": null
+      "state_selected": null,
+      "selection": {
+        "mode": "needs_anchor",
+        "unique": false,
+        "selected_option": null,
+        "selected_claims": [],
+        "direction_survivors": [],
+        "state_survivors": [
+          "st1",
+          "st2"
+        ],
+        "note": "AQ1 unknown 消 dc1/dc2；dc3 为 C 档（不参与选择）→ 方向层无幸存者。无 state 锚点题 → st1/st2 全部幸存，state 不唯一。"
+      }
     },
     {
       "card_id": "P0-03",
@@ -4617,151 +4763,6 @@
           "quote": "丑午穿，伤了时上禄，午代表女人的身体，丑是伤食的墓，又是阴的象，表示妇科方面的疾病了。实际得了子宫癌，午运丑午穿的应期，得病手术。",
           "conflict_class": null,
           "engine_note": null
-        },
-        {
-          "layer": "direction",
-          "kind": "xing",
-          "class": "刑",
-          "class_tier": "B_class",
-          "tier": "B1",
-          "decision_by": "human_anchor",
-          "direction_type": "actor_target",
-          "actor": "M.b",
-          "actor_char": "戌",
-          "target": "D.b",
-          "target_char": "丑",
-          "edge_ref": {
-            "type": "edge",
-            "edge_id": "e010",
-            "kind": "xing",
-            "members": [
-              "M.b",
-              "D.b"
-            ]
-          },
-          "rule_ref": "docs/specs/actor-rules-v1.md:L95-L102",
-          "quotes": [
-            {
-              "src": "JB",
-              "line": 141,
-              "text": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
-              "role": "direction_support",
-              "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141"
-            }
-          ],
-          "decisive": true,
-          "conflict_with": [
-            "dc1",
-            "dc2"
-          ],
-          "evidence_gap": "same_line",
-          "addrs": [
-            "M.b",
-            "D.b"
-          ],
-          "ten_god_claims": {
-            "M.b": "劫财",
-            "D.b": "比肩"
-          },
-          "is_conclusion": false,
-          "engine_validation": {
-            "checks": {
-              "address": {
-                "status": "pass",
-                "items": [
-                  {
-                    "status": "pass",
-                    "addr": "M.b",
-                    "detail": "engine 物理地址存在"
-                  },
-                  {
-                    "status": "pass",
-                    "addr": "D.b",
-                    "detail": "engine 物理地址存在"
-                  }
-                ]
-              },
-              "edge": {
-                "status": "pass",
-                "ref": {
-                  "type": "edge",
-                  "edge_id": "e010",
-                  "kind": "xing",
-                  "members": [
-                    "M.b",
-                    "D.b"
-                  ]
-                },
-                "edge_id": "e010",
-                "kind": "xing",
-                "members": [
-                  "M.b",
-                  "D.b"
-                ],
-                "engine_actor": null,
-                "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
-              },
-              "ten_god": {
-                "status": "pass",
-                "items": [
-                  {
-                    "status": "pass",
-                    "addr": "M.b",
-                    "claimed": "劫财",
-                    "engine": "劫财",
-                    "via": "干支本气/透干"
-                  },
-                  {
-                    "status": "pass",
-                    "addr": "D.b",
-                    "claimed": "比肩",
-                    "engine": "比肩",
-                    "via": "干支本气/透干"
-                  }
-                ]
-              },
-              "quote": {
-                "status": "pass",
-                "items": [
-                  {
-                    "status": "pass",
-                    "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
-                    "detail": "逐字命中该行",
-                    "role": "direction_support"
-                  }
-                ]
-              }
-            },
-            "status": "valid"
-          },
-          "option_id": "dc3",
-          "basis_text": "原文『命中因有戌坏丑』是主谓宾句：戌为施动主语、丑为受事；engine e010 为 xing(丑戌未 partial)、actor=null。原文用『坏』字，本卡按 engine 既有边 kind=xing 记录，不另造边。",
-          "basis": [
-            {
-              "kind": "engine_edge",
-              "ref": "e010",
-              "note": "xing['M.b', 'D.b']"
-            },
-            {
-              "kind": "source_directive",
-              "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
-              "note": "direction_support"
-            }
-          ],
-          "claim": {
-            "relation": "xing",
-            "direction": "actor_to_target",
-            "members": [
-              "M.b",
-              "D.b"
-            ],
-            "actor": "M.b",
-            "target": "D.b"
-          },
-          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
-          "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
-          "conflict_class": null,
-          "engine_note": null
         }
       ],
       "state_candidates": [
@@ -4957,11 +4958,9 @@
           "layer": "rescue",
           "label": "戌坏丑 → 病源被制，未转移、治好",
           "result": "救",
-          "tier": "B1",
-          "decision_by": "human_anchor",
-          "anchored_by": [
-            "AQ1"
-          ],
+          "tier": "C",
+          "decision_by": "needs_anchor",
+          "anchored_by": [],
           "quotes": [
             {
               "src": "JB",
@@ -5007,7 +5006,7 @@
           "status": "not_evaluable",
           "rescue_primitive": null,
           "external_audit_id": null,
-          "basis_text": "原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应），与 dc3 同源但用途相反：dc3 是方向，rs1 是救应效果。",
+          "basis_text": "原文『命中因有戌坏丑，否则将过不去午运』——戌坏丑被当作能过关的原因（救应效果）。该关系原同时被登记为方向候选 dc3，T-197d 按同源去重并入本层（见 dedup[0]），此处只记救应一层。",
           "basis": [
             {
               "kind": "source_rule",
@@ -5016,7 +5015,9 @@
             }
           ],
           "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
-          "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。"
+          "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+          "tier_note": "原文确实记了『戌坏丑』为过关之因，但救应结构（rescue_primitive/rescuer/rescued）未判（G5），本卡也没有救应锚点题 → 按 C 档 needs_anchor 记录，不写成断语、不写成 B1。",
+          "anchored_by_note": "本卡没有救应锚点题：AQ1/AQ2 分别只区分 dc1/dc2 与 st1/st2，不区分救应层；故 anchored_by 留空，不改写成 AQ1（此前写 AQ1 是错误指向）。"
         }
       ],
       "anchor_q": [
@@ -5088,13 +5089,13 @@
           ],
           "fact_window": "1995-01..2025-12",
           "fact_domain": "health",
-          "anchor_a": null
+          "anchor_a": "unknown"
         },
         {
           "layer": "state",
           "text": "在那次发病期间，你是否同时出现过心脏、血压或心慌惊悸方面的症状（并被医生记录）？",
           "answer_type": "yes_no",
-          "discriminator_basis": "st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。两者在原文中互斥（『午得寅生，旺，所以不得心脏病』），只能由事实定夺。",
+          "discriminator_basis": "st2 的读法要求心脏侧确有受病记录；st1 的读法要求妇科侧为主。按原文互斥口径（同章『丑午穿→心是被伤，心慌惊悸』 vs 本造『午得寅生，旺，所以不得心脏病』），一组症状只能落在一个读法上：yes → 直接消 st1（不是降级），no → 消 st2；unknown → 两读法都无据，均不可选。",
           "rule_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9",
           "source_mentions_answer": false,
           "proxy_strength": "high",
@@ -5102,10 +5103,10 @@
             "keep": [
               "st2"
             ],
-            "eliminate": [],
-            "downgrade": [
+            "eliminate": [
               "st1"
-            ]
+            ],
+            "downgrade": []
           },
           "if_no": {
             "keep": [
@@ -5131,7 +5132,9 @@
           "elimination": [
             {
               "answer": "yes",
-              "eliminates": [],
+              "eliminates": [
+                "st1"
+              ],
               "keeps": [
                 "st2"
               ]
@@ -5156,7 +5159,7 @@
           ],
           "fact_window": "1995-01..2025-12",
           "fact_domain": "health",
-          "anchor_a": null
+          "anchor_a": "unknown"
         }
       ],
       "gaps": [
@@ -5362,8 +5365,8 @@
       "expert_decision": null,
       "direction_tier": "B1",
       "state_tier": "B1",
-      "rescue_tier": "not_claimed",
-      "state_scope": "not_claimed",
+      "rescue_tier": "C",
+      "state_scope": "candidate_only",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
       "pending": null,
@@ -5371,11 +5374,32 @@
       "decision_by": "needs_anchor",
       "tier_reason": [
         "direction:anchor_conflict",
-        "state:conflict",
+        "state:candidate_only",
         "rescue:candidate_only"
       ],
-      "anchor_a": [],
-      "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
+      "anchor_a": [
+        {
+          "qid": "AQ1",
+          "layer": "direction",
+          "answer": "unknown",
+          "answer_source": "not_in_source",
+          "decision_by": "needs_anchor",
+          "source_ref": null,
+          "quote": null,
+          "note": "原文未载（source_mentions_answer=false）；待命主回答。"
+        },
+        {
+          "qid": "AQ2",
+          "layer": "state",
+          "answer": "unknown",
+          "answer_source": "not_in_source",
+          "decision_by": "needs_anchor",
+          "source_ref": null,
+          "quote": null,
+          "note": "原文只写子宫癌/手术/中医治好，未写心脏血压症状（source_mentions_answer=false）；待命主回答。"
+        }
+      ],
+      "anchor_a_note": "本卡 2 题均记 unknown：原文未载（AQ1/AQ2 的 source_mentions_answer=false），按 report §2 落 unknown 交命主回答；Agent 不据原文结局代答（原文写的是最后治好，不是这两题的事实答案）。",
       "selected_option": null,
       "selection_source": "needs_anchor",
       "not_auto_selected": true,
@@ -6387,7 +6411,173 @@
       },
       "state_selected": null,
       "state_decision": "needs_anchor",
-      "state_note": "AQ2 unknown：原文只写子宫癌/手术/中医治好，未写心脏血压症状"
+      "state_note": "AQ2 unknown：原文只写子宫癌/手术/中医治好，未写心脏血压症状",
+      "dedup": [
+        {
+          "removed_id": "dc3",
+          "removed_layer": "direction",
+          "merged_into": "rs1",
+          "kept_layer": "rescue",
+          "engine_edge": "e010",
+          "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+          "reason": "dc3（xing M.b→D.b『戌坏丑』当疾病方向）与 rs1（戌坏丑→病源被制、过关）同引 L141 同一句、同一条 e010，属同一关系的两次登记。原文的用法是『否则将过不去午运』＝救应效果，故只保留救应层 rs1，方向层不再计入 dc3，避免双计。",
+          "effect": "方向候选 12→11；dc1/dc2 由 AQ1 完整覆盖，unknown 下两层均无幸存者 → selected 保持 null。",
+          "original_record": {
+            "layer": "direction",
+            "kind": "xing",
+            "class": "刑",
+            "class_tier": "B_class",
+            "tier": "B1",
+            "decision_by": "human_anchor",
+            "direction_type": "actor_target",
+            "actor": "M.b",
+            "actor_char": "戌",
+            "target": "D.b",
+            "target_char": "丑",
+            "edge_ref": {
+              "type": "edge",
+              "edge_id": "e010",
+              "kind": "xing",
+              "members": [
+                "M.b",
+                "D.b"
+              ]
+            },
+            "rule_ref": "docs/specs/actor-rules-v1.md:L95-L102",
+            "quotes": [
+              {
+                "src": "JB",
+                "line": 141,
+                "text": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+                "role": "direction_support",
+                "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141"
+              }
+            ],
+            "decisive": true,
+            "conflict_with": [
+              "dc1",
+              "dc2"
+            ],
+            "evidence_gap": "same_line",
+            "addrs": [
+              "M.b",
+              "D.b"
+            ],
+            "ten_god_claims": {
+              "M.b": "劫财",
+              "D.b": "比肩"
+            },
+            "is_conclusion": false,
+            "engine_validation": {
+              "checks": {
+                "address": {
+                  "status": "pass",
+                  "items": [
+                    {
+                      "status": "pass",
+                      "addr": "M.b",
+                      "detail": "engine 物理地址存在"
+                    },
+                    {
+                      "status": "pass",
+                      "addr": "D.b",
+                      "detail": "engine 物理地址存在"
+                    }
+                  ]
+                },
+                "edge": {
+                  "status": "pass",
+                  "ref": {
+                    "type": "edge",
+                    "edge_id": "e010",
+                    "kind": "xing",
+                    "members": [
+                      "M.b",
+                      "D.b"
+                    ]
+                  },
+                  "edge_id": "e010",
+                  "kind": "xing",
+                  "members": [
+                    "M.b",
+                    "D.b"
+                  ],
+                  "engine_actor": null,
+                  "detail": "边存在且 kind/members 一致；动态边 actor 由 engine 保持 null"
+                },
+                "ten_god": {
+                  "status": "pass",
+                  "items": [
+                    {
+                      "status": "pass",
+                      "addr": "M.b",
+                      "claimed": "劫财",
+                      "engine": "劫财",
+                      "via": "干支本气/透干"
+                    },
+                    {
+                      "status": "pass",
+                      "addr": "D.b",
+                      "claimed": "比肩",
+                      "engine": "比肩",
+                      "via": "干支本气/透干"
+                    }
+                  ]
+                },
+                "quote": {
+                  "status": "pass",
+                  "items": [
+                    {
+                      "status": "pass",
+                      "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+                      "detail": "逐字命中该行",
+                      "role": "direction_support"
+                    }
+                  ]
+                }
+              },
+              "status": "valid"
+            },
+            "option_id": "dc3",
+            "basis_text": "原文『命中因有戌坏丑』是主谓宾句：戌为施动主语、丑为受事；engine e010 为 xing(丑戌未 partial)、actor=null。原文用『坏』字，本卡按 engine 既有边 kind=xing 记录，不另造边。",
+            "basis": [
+              {
+                "kind": "engine_edge",
+                "ref": "e010",
+                "note": "xing['M.b', 'D.b']"
+              },
+              {
+                "kind": "source_directive",
+                "ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+                "note": "direction_support"
+              }
+            ],
+            "claim": {
+              "relation": "xing",
+              "direction": "actor_to_target",
+              "members": [
+                "M.b",
+                "D.b"
+              ],
+              "actor": "M.b",
+              "target": "D.b"
+            },
+            "source_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+            "quote": "后经中医治疗，没有转移，治好了，命中因有戌坏丑，否则将过不去午运。",
+            "conflict_class": null,
+            "engine_note": null
+          }
+        }
+      ],
+      "selection": {
+        "mode": "needs_anchor",
+        "unique": false,
+        "selected_option": null,
+        "selected_claims": [],
+        "direction_survivors": [],
+        "state_survivors": [],
+        "note": "dc3 已按同源去重并入 rs1（方向候选 2 条）；AQ1 unknown 消 dc1/dc2 → 方向层无幸存者。AQ2 unknown 消 st1/st2 → state 层无幸存者。两层 selected 均 null。"
+      }
     },
     {
       "card_id": "P0-04",
@@ -6620,7 +6810,11 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
           "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
           "conflict_class": null,
-          "engine_note": "engine_candidate_no_edge"
+          "engine_note": "engine_candidate_no_edge",
+          "claim_id": "CLM-C4-01",
+          "claim_selected": true,
+          "claim_scope": "complementary",
+          "claim_note": "墓用：辰库收丑官（库收）——回答『财在哪里/官当财看』。"
         },
         {
           "layer": "direction",
@@ -6762,7 +6956,11 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
           "quote": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "claim_id": "CLM-C4-02",
+          "claim_selected": true,
+          "claim_scope": "complementary",
+          "claim_note": "克：辛克乙破坏功神辰——回答『为何守不住』。"
         },
         {
           "layer": "direction",
@@ -6903,7 +7101,11 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
           "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
           "conflict_class": null,
-          "engine_note": "engine_candidate_no_edge"
+          "engine_note": "engine_candidate_no_edge",
+          "claim_id": "CLM-C4-03",
+          "claim_selected": true,
+          "claim_scope": "complementary",
+          "claim_note": "生：年支巳生月支丑，财生官——回答『财从哪来』。"
         }
       ],
       "state_candidates": [
@@ -6913,7 +7115,7 @@
           "tier": "B1",
           "decision_by": "human_anchor",
           "anchored_by": [
-            "ED1"
+            "AQ1"
           ],
           "quotes": [
             {
@@ -6989,7 +7191,8 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
           "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "AQ1 是 state 层题（discriminates=[st1,st2]）：yes 消 st1、no 消 st2。"
         },
         {
           "layer": "state",
@@ -6997,7 +7200,7 @@
           "tier": "B1",
           "decision_by": "expert_single_choice",
           "anchored_by": [
-            "ED1"
+            "AQ1"
           ],
           "quotes": [
             {
@@ -7073,7 +7276,8 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
           "quote": "乙酉运之乙运，这里的乙不仅代表年上的乙，也代表辰，乙透干有克无生，辛克乙等于破坏了辰。主凶。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "anchored_by_note": "AQ1 是 state 层题（discriminates=[st1,st2]）：yes 消 st1、no 消 st2。"
         },
         {
           "layer": "state",
@@ -7135,7 +7339,9 @@
           "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
           "quote": "原局：月时丑官都入辰墓，为官入辰墓，年上巳生合丑官，财生官，财弱官旺，官当财看。所以是个富命，辰是主要功神。",
           "conflict_class": null,
-          "engine_note": null
+          "engine_note": null,
+          "selectable": false,
+          "tier_note": "『财弱官旺、官当财看』是财的定义口径（state=null、result=needs_anchor、tier=C），不是成败状态；按 selection_rules 的 C 档永不参与选择，故不影响 st1/st2 的唯一性判定。"
         }
       ],
       "rescue_candidates": [
@@ -7271,7 +7477,8 @@
           ],
           "fact_window": "2010-01..2025-12",
           "fact_domain": "wealth",
-          "anchor_a": null
+          "anchor_a": "yes",
+          "fact_window_note": "fact_window 约束的是『若改问命主』的自述范围；本卡该题答案是 source_outcome（原文 L398 结局），原文事件早于窗口下界，故不以窗口过滤原文答案，也不据窗口反推年份。"
         }
       ],
       "expert_decision": null,
@@ -7285,9 +7492,10 @@
         "snapshot_dayun_null"
       ],
       "non_claims": [
-        "不判财运高低、破财年份、牢狱、生死",
-        "不把『富命』或『主凶』择一写成结论（本条交 ED1 专家裁决）",
-        "不判岁运引动；不跨快照引用 edge_id"
+        "不判财运高低、破财年份、牢狱应期",
+        "不把『富命』(st1) 作为并列结论：AQ1=yes 已消 st1，state 层取 st2 破局；st1 的原文依据仍保留在 state_candidates 内备查",
+        "不判岁运引动；不跨快照引用 edge_id",
+        "方向层三条 A claim 互补（库收/克坏/财源），不折叠成单一方向结论"
       ],
       "snapshot": {
         "chart_id": "cf-4d8fe4fe1b354d973a7b",
@@ -7476,8 +7684,9 @@
         }
       },
       "state_anchor_note": {
-        "converted_from": "expert_decision(ED1)",
-        "reason": "analysis-card-v2 §5.3 的 B2 只用于方向候选之间『无可观测事实可分』；原局富/岁运破属成败层，改按 state 锚点题处理（state_tier=B1）。",
+        "converted_from": null,
+        "resolved_by": "AQ1",
+        "reason": "T-197 曾把『原局富/岁运破』设为 B2 专家单选（ED1）。按 analysis-card-v2 §5.3，B2 只用于方向候选之间『无可观测事实可分』；原文 L396-L398 已写结局，故改为 state 锚点题并登记为 AQ1（source_mentions_answer=true）。ED1 不再存在，st1/st2 的 anchored_by 改为 AQ1（此前写 ED1 是悬空引用），expert_decision 保持 null。",
         "previous_options": [
           "原局富命为主，破局只作应期（先富后破）",
           "岁运破局为主，原局富命只说明曾经（破多富少）",
@@ -7487,22 +7696,32 @@
       "direction_tier": "A",
       "state_tier": "B1",
       "rescue_tier": "C",
-      "state_scope": "not_claimed",
+      "state_scope": "claimed",
       "rescue_scope": "candidate_only",
       "card_status": "valid",
       "pending": null,
       "tier": "B1",
-      "decision_by": "engine_fixed",
+      "decision_by": "anchor_fact",
       "tier_reason": [
-        "direction:engine_fixed",
-        "state:conflict",
-        "rescue:candidate_only",
-        "pending:state_anchor"
+        "direction:engine_fixed_multi",
+        "state:anchor_fact",
+        "rescue:candidate_only"
       ],
-      "anchor_a": [],
-      "anchor_a_note": "留空交人类/命主回答；Agent 不代答、不据原文后续事实填写。",
-      "selected_option": "dc3",
-      "selection_source": "agent_auto",
+      "anchor_a": [
+        {
+          "qid": "AQ1",
+          "layer": "state",
+          "answer": "yes",
+          "answer_source": "source_outcome",
+          "decision_by": "source_fact",
+          "source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398",
+          "quote": "癸未年刚入乙运坐牢，因非法集资而没收产财。判刑十年。现已出狱。",
+          "note": "题目问『资产是否被一次性清空（罚没/没收/强制清算/巨额赔付）』；原文 L398 明载因非法集资没收财产（该题 source_mentions_answer=true），按原文结局记 yes 并带逐字引文。这是 source-backed 锚点，不是 Agent 代答。"
+        }
+      ],
+      "anchor_a_note": "本卡唯一答案 AQ1=yes 取自原文结局（L398 明载没收财产，该题 source_mentions_answer=true），带 source_ref+quote 落盘；原文未载的题才留空交命主。原『留空、不据原文代答』的写法已废止，改为『有源才填、无源记 unknown』，与 state_note 不再冲突。",
+      "selected_option": null,
+      "selection_source": "engine_fixed_multi",
       "not_auto_selected": true,
       "facts": {
         "chart_id": "cf-4d8fe4fe1b354d973a7b",
@@ -8469,7 +8688,42 @@
       },
       "state_selected": "败",
       "state_decision": "anchor_fact",
-      "state_note": "AQ1 yes：原文L398 癸未年坐牢、非法集资没收财产、判刑十年"
+      "state_note": "AQ1 yes：原文L398 癸未年坐牢、非法集资没收财产、判刑十年",
+      "selected_options": [
+        "dc1",
+        "dc2",
+        "dc3"
+      ],
+      "selected_claims": [
+        "dc1",
+        "dc2",
+        "dc3"
+      ],
+      "decision_by_layer": {
+        "direction": "engine_fixed_multi",
+        "state": "anchor_fact",
+        "rescue": "needs_anchor"
+      },
+      "selection": {
+        "mode": "multi_claim",
+        "unique": false,
+        "selected_option": null,
+        "selected_claims": [
+          "dc1",
+          "dc2",
+          "dc3"
+        ],
+        "direction_survivors": [
+          "dc1",
+          "dc2",
+          "dc3"
+        ],
+        "state_survivors": [
+          "st2"
+        ],
+        "state_survivor_result": "败",
+        "note": "方向层无锚点题，三条 A claim 全存活且互补（库收/克坏/财源），不是三选一 → 卡级 selected_option=null，按 claim 记账（A 3/11）。state 层 AQ1=yes 消 st1，仅 st2 幸存 → state_selected=败（=st2.result）。"
+      }
     }
   ],
   "anchor_questions": [
@@ -8542,7 +8796,10 @@
       "fact_window": "2000-01..2025-12",
       "fact_domain": "marriage",
       "card_id": "P0-01",
-      "answer": null
+      "answer": "unknown",
+      "answer_source": "not_in_source",
+      "answer_source_ref": null,
+      "answer_quote": null
     },
     {
       "layer": "direction",
@@ -8619,7 +8876,10 @@
       "fact_window": "2000-01..2025-12",
       "fact_domain": "marriage",
       "card_id": "P0-01",
-      "answer": null
+      "answer": "unknown",
+      "answer_source": "not_in_source",
+      "answer_source_ref": null,
+      "answer_quote": null
     },
     {
       "layer": "direction",
@@ -8690,7 +8950,10 @@
       "fact_window": "2015-01..2025-12",
       "fact_domain": "career",
       "card_id": "P0-02",
-      "answer": null
+      "answer": "unknown",
+      "answer_source": "not_in_source",
+      "answer_source_ref": null,
+      "answer_quote": null
     },
     {
       "layer": "direction",
@@ -8761,7 +9024,10 @@
       "fact_window": "1995-01..2025-12",
       "fact_domain": "health",
       "card_id": "P0-03",
-      "answer": null
+      "answer": "unknown",
+      "answer_source": "not_in_source",
+      "answer_source_ref": null,
+      "answer_quote": null
     },
     {
       "layer": "state",
@@ -8830,7 +9096,10 @@
       "fact_window": "1995-01..2025-12",
       "fact_domain": "health",
       "card_id": "P0-03",
-      "answer": null
+      "answer": "unknown",
+      "answer_source": "not_in_source",
+      "answer_source_ref": null,
+      "answer_quote": null
     },
     {
       "layer": "state",
@@ -8901,15 +9170,19 @@
       "fact_window": "2010-01..2025-12",
       "fact_domain": "wealth",
       "card_id": "P0-04",
-      "answer": null
+      "answer": "yes",
+      "answer_source": "source_outcome",
+      "answer_source_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398",
+      "answer_quote": "癸未年刚入乙运坐牢，因非法集资而没收产财。判刑十年。现已出狱。"
     }
   ],
   "known_gaps": [
-    "T-196 三份规格在本卡生成途中落盘（analysis-card-v2 / agent-candidate-generator-v1 / first-principle-agent-first-v1）；本包已按 agent-candidate-set/v1 改名与补字段，但仍是 pending candidate set（pending=anchor_q），不是可交付的 analysis-card/v2（T-197 明令不选定）。",
-    "与 v2 的两处口径冲突：①v2 的 A 档要求 selected_option 已填、pending=none，而 T-197 禁止 Agent 代选 → 本包 direction_tier=A 的卡仍 selected_option=null；②v2 的 C 档要求 selected_option=null 且 selection_source=needs_anchor，与 A 未选状态同形，故本包用 tier/pending 区分『待自动确认的 A』与『无源的 C』。",
+    "T-196 三份规格在本卡生成途中落盘（analysis-card-v2 / agent-candidate-generator-v1 / first-principle-agent-first-v1）；本包按 agent-candidate-set/v1 改名与补字段，仍是 candidate set，不是成品 analysis-card/v2。",
+    "与 v2 的两处口径冲突见 schema_compat.known_conflicts：A 档按 claim 计（非单一 selected_option）；C 档与『多条 A claim 未折叠』用 direction_tier / selection.mode 区分。",
     "四柱输入无出生时刻：engine input_limitations 明确不起运/不给大运公历年份；本包全部 dayun_index=null、liunian_year=null。",
-    "G5 救应未判：engine.structures 的 rescuer 命中只作要件，不作救应结论。",
+    "G5 救应未判：engine.structures 的 rescuer 命中只作要件，不作救应结论；P0-03 的 rs1 因此记 C/needs_anchor。",
     "『寅申之冲，寅多作用一次』的『作用一次』是计数用语，本卡按 same_page 缺口记为方向依据，是否够格由中枢裁。",
-    "P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题（原文已写结局 → source_mentions_answer=true），expert_decision 置 null，本包 B2 = 0。"
+    "P0-04 的原局富/岁运破属成败层，按 analysis-card-v2 §5.3 不适用方向层 B2；已改为 state 锚点题 AQ1，并已由原文 L398 落 yes（source_mentions_answer=true），expert_decision 保持 null、B2 = 0。",
+    "P0-03 的 dc3（戌坏丑当疾病方向）与 rs1 同源，按 T-197d §2 只保留救应一层；被移除项的完整记录见 cards[P0-03].dedup[0].original_record。"
   ]
 }
