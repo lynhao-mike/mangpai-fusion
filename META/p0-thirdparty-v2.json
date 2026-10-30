@@ -1,0 +1,1095 @@
+{
+  "schema": "p0-thirdparty/v2",
+  "task": "T-197c",
+  "round": "r2",
+  "reviewer": "third-party re-derivation agent (r2)",
+  "reviewed_at": "2026-10-30T09:35:24+08:00",
+  "repo": "E:\\Git hub\\mangpai-fusion",
+  "scope": {
+    "read": [
+      "tasks/T-197c/PROMPT.md",
+      "META/p0-cards-v1.json (rev r2, by T-197d)",
+      "META/p0-report-v1.md",
+      "sources/duan/ 4 段原文（婚姻 L21-L33、如何看军官 L17-L27、疾病 L135-L141、财官班 L384-L398）",
+      "engine.cli 输出（4 盘 all/relations/duan_zuogong）"
+    ],
+    "not_read": [
+      "answers/*、golden/*、anchor-answers/*",
+      "scoring/*、评分器输出",
+      "其他模型结论（r1 BRIEF/p0-thirdparty-v1 未用于本卡结论）"
+    ],
+    "not_done": [
+      "不评分",
+      "不改卡",
+      "不做 git 写",
+      "不改 engine/保护区",
+      "不跑评分器"
+    ]
+  },
+  "method": {
+    "selection_rederivation": "按每卡 anchor_a + anchor_q.elimination + selection_rules 独立重算：C 档/selectable=false 不参与；无 anchor_q 的层全部 eligible 候选幸存；仅当恰好 1 个幸存才填 selected，state_selected 必须等于该候选 result。",
+    "fact_checks": "CLI chart/relations/duan_zuogong 对照卡内 address/edge/ten_god；逐条 quote 用 path:Ln 做逐字子串校验；4 盘 CLI 退出码均为 0。",
+    "not_used": "未运行评分器；未读取 answers/golden/anchor-answers；未把 r1 产物用于结论。"
+  },
+  "summary": {
+    "cards_reviewed": 4,
+    "cards_selected_reproduced": 4,
+    "selection_reproduction_rate": 1.0,
+    "gate_threshold": 0.9,
+    "gate_recommendation": "pass（按 selected 复现口径 4/4=100%）",
+    "zero_difference_cards": 0,
+    "checks": {
+      "cli_runs_ok": "4/4",
+      "chart_id_match": "4/4",
+      "four_pillars_gender_match": "4/4",
+      "ten_god_claims_match": "34/34",
+      "material_edges_match": "9/9",
+      "direction_edge_refs_match": "11/11",
+      "quotes_verbatim": "83/83",
+      "anchor_answers_consistent": "6/6",
+      "layer_selections_reproduced": "8/8"
+    },
+    "residual_differences": 12,
+    "missing_evidence_items": 6,
+    "blockers": [],
+    "gate_note": "若把『任一非选择性差异』也算该卡不一致，则 zero_difference_cards=0/4；但这些差异均不改变 selected，且 D04 是 report §5 已承认的 known issue。建议 gate 按 selected 复现计，差异列入 P1 前清理。"
+  },
+  "p0_04_st3_judgment": {
+    "question": "卡把 st3 定为 state=null/tier=C/selectable=false，从而 AQ1=yes 消 st1 后 st2 唯一=败。这个语义是否成立？",
+    "verdict": "valid",
+    "state_falls_back": false,
+    "fallback_if_rejected": "state_selected=null; state_scope=candidate_only（不建议把 state_tier 记成 C：AQ1 仍是 B1 锚点，且 C 的基准定义是无源/冲突，与本卡有源不符）",
+    "reason": [
+      "st3 自身 state=null、result=needs_anchor：它不主张成/败，不能成为 state 层的唯一 selected 值。",
+      "其内容『财弱官旺、官当财看』是 L392 的定义句；同句结尾『所以是个富命』才是 st1 的成局主张。定义句回答『财指什么』，不回答『守不守得住』。",
+      "包内已有明文规则：selection_rules.excluded_tiers=[C]、c_tier_never_selected；field_semantics.layer_tier.C『C 档在本包等于不参与选择』；schema_compat.extensions『state_candidates[].selectable / tier_note：C 档定义口径候选不参与成败选择』。st3.tier_note 与 selectable=false 与这三条一致。",
+      "机械重算：state eligible={st1,st2}（st3 排除）；AQ1=yes 只消 st1；survivors={st2}；st2.result=败；state_selected=败，满足 selected_must_equal_survivor。",
+      "因此 st3 不可选不构成『为了凑唯一而删候选』：st3 本来就不携带成/败值；若把它计入，会制造一个没有 outcome 的伪竞争者，反而违反 unique_rule 的语义。"
+    ],
+    "mechanical_recompute": {
+      "state_candidates": [
+        "st1",
+        "st2",
+        "st3"
+      ],
+      "eligible_excluding_C_and_selectable_false": [
+        "st1",
+        "st2"
+      ],
+      "anchor_a": {
+        "AQ1": "yes"
+      },
+      "eliminated": [
+        "st1"
+      ],
+      "survivors": [
+        "st2"
+      ],
+      "survivor_result": "败",
+      "card_state_selected": "败",
+      "match": true
+    },
+    "caveats": [
+      "C 标签借用：基准 C=无源/冲突，st3 有源；schema_compat.extensions 已把它扩展为『定义口径候选』。建议未来 schema 改为 kind=definition/non_outcome + selectable=false，不改当前 selected。",
+      "若中枢不承认该扩展、把 st3 当真实 state 读法：AQ1=yes 不消 st3 → survivors={st2,st3} → state_selected=null，state_scope=candidate_only；此时不是退回 C 档结论，而是『无唯一幸存』。",
+      "st1/st2 的时间序列问题（D-R2-12）：按卡的『最终成败』口径，败成立；按『一生轨迹』口径，富与破可并存。"
+    ],
+    "evidence": [
+      "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392（定义句+富命）",
+      "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394（发财五年/4亿）",
+      "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396（辛克乙/主凶）",
+      "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398（坐牢/没收/判刑）"
+    ]
+  },
+  "cards": [
+    {
+      "card_id": "P0-01",
+      "case_key": "C1",
+      "domain": "marriage",
+      "gender": "乾",
+      "four_pillars": "辛巳 庚寅 甲申 庚午",
+      "chart_id": "cf-daef938eab28eb49e1b8",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md",
+        "locator": "L21-L33（案例）；L15-L17、L44-L50（同章判据）",
+        "outcome_quote_ref": "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+        "outcome_quote_domain_match": true,
+        "outcome_quote_note": "逐字命中且与域一致"
+      },
+      "fact_checks": {
+        "chart_id": {
+          "card": "cf-daef938eab28eb49e1b8",
+          "cli": "cf-daef938eab28eb49e1b8",
+          "match": true
+        },
+        "four_pillars": {
+          "card": "辛巳 庚寅 甲申 庚午",
+          "cli": "辛巳 庚寅 甲申 庚午",
+          "match": true
+        },
+        "gender": {
+          "card": "乾",
+          "cli": "乾",
+          "match": true
+        },
+        "ten_god": {
+          "checked": 9,
+          "failures": []
+        },
+        "material_edges": {
+          "checked": 2,
+          "failures": []
+        },
+        "direction_edge_refs": {
+          "checked": 3,
+          "failures": []
+        },
+        "quotes": {
+          "checked": 22,
+          "pass": 22,
+          "failures": [],
+          "unique_refs": [
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L15",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L17",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L21",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L23",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L25",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L27",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L29",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L31",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L48",
+            "sources/duan/MinerU_markdown_婚姻专辑_2056044010230448128.md:L50"
+          ],
+          "note": "全部非空引文逐字命中"
+        },
+        "anchor_a": [
+          {
+            "qid": "AQ1",
+            "layer": "direction",
+            "answer": "unknown",
+            "answer_source": "not_in_source"
+          },
+          {
+            "qid": "AQ2",
+            "layer": "direction",
+            "answer": "unknown",
+            "answer_source": "not_in_source"
+          }
+        ]
+      },
+      "recompute": {
+        "direction": {
+          "candidates": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "eligible": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "excluded": [],
+          "eliminated_by": {
+            "AQ1=unknown": [
+              "dc1",
+              "dc2"
+            ],
+            "AQ2=unknown": [
+              "dc1",
+              "dc2",
+              "dc3"
+            ]
+          },
+          "survivors": [],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [],
+          "selection_record_match": true
+        },
+        "state": {
+          "candidates": [
+            "st1",
+            "st2",
+            "st3"
+          ],
+          "eligible": [
+            "st1",
+            "st2"
+          ],
+          "excluded": [
+            "st3"
+          ],
+          "eliminated_by": {},
+          "survivors": [
+            "st1",
+            "st2"
+          ],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [
+            "st1",
+            "st2"
+          ],
+          "selection_record_match": true
+        }
+      },
+      "reproduction": {
+        "selected_option": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "state_selected": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "selected_claims": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "direction_survivors": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "state_survivors": {
+          "card": [
+            "st1",
+            "st2"
+          ],
+          "rederived": [
+            "st1",
+            "st2"
+          ],
+          "match": true
+        }
+      },
+      "layer_tiers": {
+        "direction": "B1",
+        "state": "not_claimed",
+        "rescue": "C",
+        "state_scope": "candidate_only"
+      },
+      "verdict": "reproducible_with_metadata_drift",
+      "differences": [
+        "D-R2-01"
+      ],
+      "missing_evidence": [],
+      "notes": [
+        "selected_option=null / state_selected=null 可由 anchor_a（AQ1/AQ2 均 unknown）+ elimination 复现：direction 0 幸存、state 2 幸存（无 state 锚点）。",
+        "dc1 用『寅多作用一次』赋 actor=寅，dc2 说同句只是计数、不能赋向；两读并存是 B1 设计，由 AQ1 定夺，不是静默矛盾。"
+      ]
+    },
+    {
+      "card_id": "P0-02",
+      "case_key": "C2",
+      "domain": "career",
+      "gender": "乾",
+      "four_pillars": "戊戌 癸亥 乙巳 己卯",
+      "chart_id": "cf-1627557db9bf35baf387",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md",
+        "locator": "L17-L27（案例）；L1-L3（军官判据）",
+        "outcome_quote_ref": "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25",
+        "outcome_quote_domain_match": false,
+        "outcome_quote_note": "P0-02 outcome_quote 是 L25 婚姻句，与 career 域错配（D04 已知未修）"
+      },
+      "fact_checks": {
+        "chart_id": {
+          "card": "cf-1627557db9bf35baf387",
+          "cli": "cf-1627557db9bf35baf387",
+          "match": true
+        },
+        "four_pillars": {
+          "card": "戊戌 癸亥 乙巳 己卯",
+          "cli": "戊戌 癸亥 乙巳 己卯",
+          "match": true
+        },
+        "gender": {
+          "card": "乾",
+          "cli": "乾",
+          "match": true
+        },
+        "ten_god": {
+          "checked": 9,
+          "failures": []
+        },
+        "material_edges": {
+          "checked": 2,
+          "failures": []
+        },
+        "direction_edge_refs": {
+          "checked": 3,
+          "failures": []
+        },
+        "quotes": {
+          "checked": 19,
+          "pass": 18,
+          "failures": [
+            {
+              "where": "rescue.rs1.quote",
+              "ref": null,
+              "status": "no_ref"
+            }
+          ],
+          "unique_refs": [
+            "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+            "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L17",
+            "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L19",
+            "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L25",
+            "sources/duan/MinerU_markdown_如何看军官_2056043755153842176.md:L27"
+          ],
+          "note": "1 项为 rescue.rs1 无引文（quote=null/source_ref=null），不是逐字校验失败"
+        },
+        "anchor_a": [
+          {
+            "qid": "AQ1",
+            "layer": "direction",
+            "answer": "unknown",
+            "answer_source": "not_in_source"
+          }
+        ]
+      },
+      "recompute": {
+        "direction": {
+          "candidates": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "eligible": [
+            "dc1",
+            "dc2"
+          ],
+          "excluded": [
+            "dc3"
+          ],
+          "eliminated_by": {
+            "AQ1=unknown": [
+              "dc1",
+              "dc2"
+            ]
+          },
+          "survivors": [],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [],
+          "selection_record_match": true
+        },
+        "state": {
+          "candidates": [
+            "st1",
+            "st2"
+          ],
+          "eligible": [
+            "st1",
+            "st2"
+          ],
+          "excluded": [],
+          "eliminated_by": {},
+          "survivors": [
+            "st1",
+            "st2"
+          ],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [
+            "st1",
+            "st2"
+          ],
+          "selection_record_match": true
+        }
+      },
+      "reproduction": {
+        "selected_option": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "state_selected": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "selected_claims": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "direction_survivors": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "state_survivors": {
+          "card": [
+            "st1",
+            "st2"
+          ],
+          "rederived": [
+            "st1",
+            "st2"
+          ],
+          "match": true
+        }
+      },
+      "layer_tiers": {
+        "direction": "B1",
+        "state": "not_claimed",
+        "rescue": "C",
+        "state_scope": "candidate_only"
+      },
+      "verdict": "reproducible_with_known_quote_defect",
+      "differences": [
+        "D-R2-03",
+        "D-R2-04"
+      ],
+      "missing_evidence": [
+        "M-01",
+        "M-02"
+      ],
+      "notes": [
+        "selected_option=null / state_selected=null 可由 AQ1=unknown（消 dc1/dc2；dc3 为 C 不参与）+ 无 state 锚点复现。",
+        "dc1/dc2 是同一受印癸的两组财制印；原文 L27 末句点名戊为工神，dc2 的『未点名』说法与同卡 dc1 引文冲突。"
+      ]
+    },
+    {
+      "card_id": "P0-03",
+      "case_key": "C3",
+      "domain": "health",
+      "gender": "坤",
+      "four_pillars": "壬寅 庚戌 己丑 庚午",
+      "chart_id": "cf-0075a9941ae6f079f4b9",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md",
+        "locator": "L135-L141（案例）；L9、L17、L27、L123（同章象法与病性）",
+        "outcome_quote_ref": "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+        "outcome_quote_domain_match": true,
+        "outcome_quote_note": "逐字命中且与域一致"
+      },
+      "fact_checks": {
+        "chart_id": {
+          "card": "cf-0075a9941ae6f079f4b9",
+          "cli": "cf-0075a9941ae6f079f4b9",
+          "match": true
+        },
+        "four_pillars": {
+          "card": "壬寅 庚戌 己丑 庚午",
+          "cli": "壬寅 庚戌 己丑 庚午",
+          "match": true
+        },
+        "gender": {
+          "card": "坤",
+          "cli": "坤",
+          "match": true
+        },
+        "ten_god": {
+          "checked": 7,
+          "failures": []
+        },
+        "material_edges": {
+          "checked": 2,
+          "failures": []
+        },
+        "direction_edge_refs": {
+          "checked": 2,
+          "failures": []
+        },
+        "quotes": {
+          "checked": 20,
+          "pass": 20,
+          "failures": [],
+          "unique_refs": [
+            "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L39",
+            "sources/duan/MinerU_markdown_16.《盲派批命案例集》（263例，74页）段建业_2056045601255776256.md:L41",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L123",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L131",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L135",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L137",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L139",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L141",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L17",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L27",
+            "sources/duan/MinerU_markdown_疾病_2056043976378220544.md:L9"
+          ],
+          "note": "全部非空引文逐字命中"
+        },
+        "anchor_a": [
+          {
+            "qid": "AQ1",
+            "layer": "direction",
+            "answer": "unknown",
+            "answer_source": "not_in_source"
+          },
+          {
+            "qid": "AQ2",
+            "layer": "state",
+            "answer": "unknown",
+            "answer_source": "not_in_source"
+          }
+        ]
+      },
+      "recompute": {
+        "direction": {
+          "candidates": [
+            "dc1",
+            "dc2"
+          ],
+          "eligible": [
+            "dc1",
+            "dc2"
+          ],
+          "excluded": [],
+          "eliminated_by": {
+            "AQ1=unknown": [
+              "dc1",
+              "dc2"
+            ]
+          },
+          "survivors": [],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [],
+          "selection_record_match": true
+        },
+        "state": {
+          "candidates": [
+            "st1",
+            "st2"
+          ],
+          "eligible": [
+            "st1",
+            "st2"
+          ],
+          "excluded": [],
+          "eliminated_by": {
+            "AQ2=unknown": [
+              "st1",
+              "st2"
+            ]
+          },
+          "survivors": [],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [],
+          "selection_record_match": true
+        }
+      },
+      "reproduction": {
+        "selected_option": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "state_selected": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "selected_claims": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "direction_survivors": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        },
+        "state_survivors": {
+          "card": [],
+          "rederived": [],
+          "match": true
+        }
+      },
+      "layer_tiers": {
+        "direction": "B1",
+        "state": "B1",
+        "rescue": "C",
+        "state_scope": "candidate_only"
+      },
+      "verdict": "reproducible_with_metadata_drift",
+      "differences": [
+        "D-R2-02",
+        "D-R2-07",
+        "D-R2-11"
+      ],
+      "missing_evidence": [
+        "M-04"
+      ],
+      "notes": [
+        "dc3（戌坏丑方向）已并入 rs1 并在 dedup 保留原记录；direction 只剩 dc1/dc2，AQ1=unknown 全消 → 0 幸存 → null。",
+        "AQ2=unknown 消 st1/st2 → state 0 幸存 → null；st1/st2 的 result 都是『病』，该层实际区分病位而非病/不病。"
+      ]
+    },
+    {
+      "card_id": "P0-04",
+      "case_key": "C4",
+      "domain": "wealth",
+      "gender": "乾",
+      "four_pillars": "乙巳 己丑 壬辰 辛丑",
+      "chart_id": "cf-4d8fe4fe1b354d973a7b",
+      "source": {
+        "path": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md",
+        "locator": "L384-L398（案例）",
+        "outcome_quote_ref": "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+        "outcome_quote_domain_match": true,
+        "outcome_quote_note": "逐字命中且与域一致"
+      },
+      "fact_checks": {
+        "chart_id": {
+          "card": "cf-4d8fe4fe1b354d973a7b",
+          "cli": "cf-4d8fe4fe1b354d973a7b",
+          "match": true
+        },
+        "four_pillars": {
+          "card": "乙巳 己丑 壬辰 辛丑",
+          "cli": "乙巳 己丑 壬辰 辛丑",
+          "match": true
+        },
+        "gender": {
+          "card": "乾",
+          "cli": "乾",
+          "match": true
+        },
+        "ten_god": {
+          "checked": 9,
+          "failures": []
+        },
+        "material_edges": {
+          "checked": 3,
+          "failures": []
+        },
+        "direction_edge_refs": {
+          "checked": 3,
+          "failures": []
+        },
+        "quotes": {
+          "checked": 23,
+          "pass": 23,
+          "failures": [],
+          "unique_refs": [
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L384",
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L386",
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L392",
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L394",
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L396",
+            "sources/duan/MinerU_markdown_段建业2011杭州财官班教材_2056046552687501312.md:L398"
+          ],
+          "note": "全部非空引文逐字命中"
+        },
+        "anchor_a": [
+          {
+            "qid": "AQ1",
+            "layer": "state",
+            "answer": "yes",
+            "answer_source": "source_outcome"
+          }
+        ]
+      },
+      "recompute": {
+        "direction": {
+          "candidates": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "eligible": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "excluded": [],
+          "eliminated_by": {},
+          "survivors": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "expected_selected": null,
+          "card_selected": null,
+          "match": true,
+          "selection_record_survivors": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "selection_record_match": true
+        },
+        "state": {
+          "candidates": [
+            "st1",
+            "st2",
+            "st3"
+          ],
+          "eligible": [
+            "st1",
+            "st2"
+          ],
+          "excluded": [
+            "st3"
+          ],
+          "eliminated_by": {
+            "AQ1=yes": [
+              "st1"
+            ]
+          },
+          "survivors": [
+            "st2"
+          ],
+          "expected_selected": "败",
+          "card_selected": "败",
+          "match": true,
+          "selection_record_survivors": [
+            "st2"
+          ],
+          "selection_record_match": true
+        }
+      },
+      "reproduction": {
+        "selected_option": {
+          "card": null,
+          "rederived": null,
+          "match": true
+        },
+        "state_selected": {
+          "card": "败",
+          "rederived": "败",
+          "match": true
+        },
+        "selected_claims": {
+          "card": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "rederived": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "match": true
+        },
+        "direction_survivors": {
+          "card": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "rederived": [
+            "dc1",
+            "dc2",
+            "dc3"
+          ],
+          "match": true
+        },
+        "state_survivors": {
+          "card": [
+            "st2"
+          ],
+          "rederived": [
+            "st2"
+          ],
+          "match": true
+        }
+      },
+      "layer_tiers": {
+        "direction": "A",
+        "state": "B1",
+        "rescue": "C",
+        "state_scope": "claimed"
+      },
+      "verdict": "reproducible_with_semantic_caveats",
+      "differences": [
+        "D-R2-05",
+        "D-R2-06",
+        "D-R2-08",
+        "D-R2-09",
+        "D-R2-10",
+        "D-R2-12"
+      ],
+      "missing_evidence": [
+        "M-03",
+        "M-05",
+        "M-06"
+      ],
+      "notes": [
+        "direction 无锚点，三条 A claim 全存活 → selected_option=null、selected_claims=[dc1,dc2,dc3]（multi_claim）。",
+        "state eligible={st1,st2}（st3 为 C/selectable=false）；AQ1=yes 消 st1 → 唯一 st2 → 败；与卡一致。",
+        "st3 语义判断见 p0_04_st3_judgment：成立（定义口径不参与成/败），但 tier=C 属扩展借用标签。"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "id": "D-R2-01",
+      "card_id": "P0-01",
+      "severity": "low",
+      "category": "metadata_drift",
+      "field": "anchor_questions[P0-01/AQ2].discriminates",
+      "card_value": [
+        "dc1",
+        "dc2",
+        "dc3"
+      ],
+      "root_value": [
+        "dc1",
+        "dc3"
+      ],
+      "evidence": "cards[P0-01].anchor_q[1].discriminates 已含 dc2；同文件 root anchor_questions 仍是 [dc1,dc3]。report §4 D02 声称已修，实际只修了卡内副本。",
+      "impact": "当前 AQ2=unknown 的 elimination 两边一致（都消 dc1/dc2/dc3），selected 不变；若下游按 root 校验『discriminates 覆盖被消项』会报 D02 未修。",
+      "affects_selected": false,
+      "owner": "T-197d / hub（同步 root anchor_questions）"
+    },
+    {
+      "id": "D-R2-02",
+      "card_id": "P0-03",
+      "severity": "medium",
+      "category": "metadata_drift",
+      "field": "anchor_questions[P0-03/AQ2].elimination[yes]",
+      "card_value": {
+        "eliminates": [
+          "st1"
+        ],
+        "keeps": [
+          "st2"
+        ]
+      },
+      "root_value": {
+        "eliminates": [],
+        "keeps": [
+          "st2"
+        ]
+      },
+      "evidence": "卡内 anchor_q AQ2 的 yes 已从 downgrade 改为 eliminate=[st1]；root 仍是旧口径 eliminates=[]。report §4 D09 声称已修，实际只修了卡内副本。",
+      "impact": "当前 answer=unknown，两边都消 st1/st2，state_selected=null 不变；若 AQ2 未来答 yes，卡内会唯一 st2（病/心脏），root 会保留 st1（降级）→ 复现分叉。",
+      "affects_selected": false,
+      "latent_selected_risk": true,
+      "owner": "T-197d / hub（同步 root anchor_questions）"
+    },
+    {
+      "id": "D-R2-03",
+      "card_id": "P0-02",
+      "severity": "medium",
+      "category": "evidence_quote_domain",
+      "field": "source.outcome_quote (L25)",
+      "card_value": "此人婚姻非常好，一生2个孩子，一儿一女。",
+      "root_value": null,
+      "evidence": "逐字命中 L25，但该句是婚姻/子女句；本卡 domain=career，outcome_note 写的是正师级/副军长。report §5 已承认 D04 未修。",
+      "impact": "不影响 selected（state 无锚点、null）；但事业卡的事业结局引文缺失，属证据层缺陷，P1 前应补 career outcome_quote 或明确降级为 background。",
+      "affects_selected": false,
+      "owner": "T-197d 内容层 / hub 定夺"
+    },
+    {
+      "id": "D-R2-04",
+      "card_id": "P0-02",
+      "severity": "medium",
+      "category": "argument_evidence",
+      "field": "direction_candidates[dc2].basis_text",
+      "card_value": "原文只说『财制印』未点名哪一个财",
+      "root_value": null,
+      "evidence": "dc1 同卡引用 L27『戊就是做工的重要的字』；同段还写『见到戊…或印被制』。原文实际点名戊(正财)。",
+      "impact": "dc2(己制癸) 的竞争地位被高估；当前 AQ1=unknown 仍消 dc1/dc2 → selected null 不变；若按原文点名戊读，方向层可能应收敛为 dc1，B1 锚点是否必要存疑。",
+      "affects_selected": false,
+      "potential_selected_impact": true,
+      "owner": "T-197d / hub（补原文或降 dc2 权重）"
+    },
+    {
+      "id": "D-R2-05",
+      "card_id": "P0-04",
+      "severity": "low",
+      "category": "metadata_drift",
+      "field": "state_candidates[st2].decision_by",
+      "card_value": "expert_single_choice",
+      "root_value": null,
+      "evidence": "st2.anchored_by=[AQ1]；card.state_decision=anchor_fact；expert_decision=null。该值像 ED1 时代残留。",
+      "impact": "不影响 selected=败；字段语义矛盾（锚点事实 vs 专家单选），会让下游误以为 st2 是专家拍板。",
+      "affects_selected": false,
+      "owner": "T-197d（改为 human_anchor/source_fact 或删 expert_single_choice）"
+    },
+    {
+      "id": "D-R2-06",
+      "card_id": "P0-04",
+      "severity": "low",
+      "category": "metrics_inconsistency",
+      "field": "metrics.state_candidates_selectable",
+      "card_value": 9,
+      "root_value": 8,
+      "evidence": "state_candidates 共 10；tier=C 有 2（P0-01 st3、P0-04 st3）；按 selection_rules.excluded_tiers=[C] 可参与=8。metrics 只减了显式 selectable=false 的 1 个（P0-04 st3）。",
+      "impact": "当前 selected 不变（P0-01 st3 是否计入都得到 null）；指标口径与『C 档不参与选择』不一致，易误读。",
+      "affects_selected": false,
+      "owner": "T-197d / hub（改口径或改名）"
+    },
+    {
+      "id": "D-R2-07",
+      "card_id": "P0-03",
+      "severity": "low",
+      "category": "evidence_attribution",
+      "field": "state_candidates[st2].basis_text",
+      "card_value": "该读法与本造『午得寅生，旺，所以不得心脏病』的判据互斥",
+      "root_value": null,
+      "evidence": "L131 是另一造（乾 乙戊丙己 / 卯寅午丑，L127-L133）的判词；本造为 壬寅 庚戌 己丑 庚午（坤）。寅午半合可迁移该理，但『本造』表述不准确。",
+      "impact": "不影响 selected（AQ2=unknown → st1/st2 全消 → null）；证据归属应改为『同章他造判据/可迁移规则』。",
+      "affects_selected": false,
+      "owner": "T-197d（改 basis_text 归属）"
+    },
+    {
+      "id": "D-R2-08",
+      "card_id": "P0-04",
+      "severity": "medium",
+      "category": "coverage_gap",
+      "field": "direction_candidates[dc1].claim.members / palaces / material_edges",
+      "card_value": {
+        "claim_members": [
+          "D.b",
+          "M.b"
+        ],
+        "palaces": [
+          "M.b",
+          "D.b",
+          "Y.b"
+        ],
+        "material_edges": [
+          "e008",
+          "e004",
+          "e010"
+        ]
+      },
+      "root_value": null,
+      "evidence": "原文 L392『月时丑官都入辰墓』含月支丑与时支丑；engine 同时给 墓用[D.b,M.b] 与 墓用[D.b,H.b]；H.b 丑 未入 palaces、未入 material_edges(e011 辰丑破)、未入 dc1。",
+      "impact": "不改 selected（方向层多 claim；state 由 AQ1 定）；A claim 计数 3/11 可能少计一条同源『官入辰墓』claim，或 dc1 members 不完整。",
+      "affects_selected": false,
+      "owner": "T-197d（补 H.b 或说明为何只取月丑）"
+    },
+    {
+      "id": "D-R2-09",
+      "card_id": "P0-04",
+      "severity": "medium",
+      "category": "semantics_label",
+      "field": "state_candidates[st3].tier",
+      "card_value": "C",
+      "root_value": null,
+      "evidence": "st3 有源（L392）、无冻结规则冲突，按 field_semantics.layer_tier.C 的基准定义（无源/冲突）不应是 C；schema_compat.extensions 明确把 C 借给『定义口径候选』，selection_rules 又把 C 全部排除。",
+      "impact": "这是本次重点复核的语义点：作为定义口径，st3 不参与成/败选择是成立的（详见 p0_04_st3_judgment）；但 C 标签属扩展借用，严格 schema 下应改 kind=definition/non_outcome。",
+      "affects_selected": false,
+      "owner": "T-197d / schema 层（建议改 definition/non_outcome）"
+    },
+    {
+      "id": "D-R2-10",
+      "card_id": "P0-04",
+      "severity": "low",
+      "category": "methodology_caveat",
+      "field": "anchor_q[AQ1].fact_window vs answer",
+      "card_value": {
+        "fact_window": "2010-01..2025-12",
+        "answer": "yes",
+        "answer_source": "source_outcome",
+        "event": "癸未年(L398)"
+      },
+      "root_value": null,
+      "evidence": "card 有 fact_window_note 说明 source_outcome 不受窗口过滤；原文事件（癸未）早于窗口下界。",
+      "impact": "不改 selected；但唯一非 unknown 的锚点不是窗口内命主事实，而是 2003 原文结局；P0 允许 source_outcome，方法上应标注。",
+      "affects_selected": false,
+      "owner": "hub（记录口径）"
+    },
+    {
+      "id": "D-R2-11",
+      "card_id": "P0-03",
+      "severity": "low",
+      "category": "semantics_note",
+      "field": "state_candidates[st1/st2].result",
+      "card_value": {
+        "st1": "病",
+        "st2": "病"
+      },
+      "root_value": null,
+      "evidence": "st1 妇科、st2 心脏，result 都是『病』；AQ2 只区分病位，不区分病/不病。",
+      "impact": "当前 unknown → null；若答 yes/no，state_selected 仍是『病』，state 层的 outcome 值不变。语义上是『病位归属层』而非『病/不病层』。",
+      "affects_selected": false,
+      "owner": "hub（记录口径）"
+    },
+    {
+      "id": "D-R2-12",
+      "card_id": "P0-04",
+      "severity": "medium",
+      "category": "semantics_frame",
+      "field": "state_candidates[st1/st2] framing",
+      "card_value": {
+        "st1": "成局/富命",
+        "st2": "破局/败"
+      },
+      "root_value": null,
+      "evidence": "原文 L392 富命 → L394 发财五年/资产4亿 → L396 主凶 → L398 坐牢/没收；是『先富后破』的时间序列，不是同一时点的互斥二值。card.non_claims 声明取『最终成败』、不把富命并列。",
+      "impact": "按卡声明的最终成败口径，AQ1=yes 消 st1 → 败 成立；若按『一生轨迹』口径，st1 与 st2 可同时成立，state 应为多 claim 或 null。属口径风险，不改当前 selected。",
+      "affects_selected": false,
+      "owner": "hub（确认 P0-04 state 层的口径）"
+    }
+  ],
+  "missing_evidence": [
+    {
+      "id": "M-01",
+      "card_id": "P0-02",
+      "item": "事业结局引文",
+      "detail": "source.outcome_quote 用 L25『此人婚姻非常好…』，outcome_note 的正师/副军叙述没有对应的逐字 outcome_quote。",
+      "linked_difference": "D-R2-03",
+      "impact": "不影响 selected；事业域结局证据缺失。"
+    },
+    {
+      "id": "M-02",
+      "card_id": "P0-02",
+      "item": "dc2(己制癸) 的原文/事实依据",
+      "detail": "L27 点名『戊就是做工的重要的字』；dc2 的『原文未点名哪一个财』与本卡 dc1 引文冲突。缺『己也是活财』的原文或命主事实。",
+      "linked_difference": "D-R2-04",
+      "impact": "不影响当前 selected；影响 B1 竞争设计的必要性。"
+    },
+    {
+      "id": "M-03",
+      "card_id": "P0-04",
+      "item": "时支丑(H.b) 的入墓/破库证据",
+      "detail": "L392 明含『月时丑官都入辰墓』；engine 有 墓用[D.b,H.b] 与 e011 辰丑破；卡只取月丑 M.b。",
+      "linked_difference": "D-R2-08",
+      "impact": "不影响 selected；方向 claim 覆盖不完整。"
+    },
+    {
+      "id": "M-04",
+      "card_id": "P0-03",
+      "item": "本造专属的心脏/血压判据",
+      "detail": "st2 引 L123（同章病性）与 L131（他造判词），本造原文只写子宫癌/手术/中医治好；AQ2 正是为此设，但原文未载。",
+      "linked_difference": "D-R2-07",
+      "impact": "不影响 selected；st2 只能作待锚点的竞争读法。"
+    },
+    {
+      "id": "M-05",
+      "card_id": "P0-04",
+      "item": "窗口内命主事实",
+      "detail": "AQ1 唯一非 unknown 答案是 source_outcome（L398 癸未年/2003），fact_window=2010-01..2025-12；card 有 fact_window_note，但没有窗口内命主自述。",
+      "linked_difference": "D-R2-10",
+      "impact": "不影响 selected；P0 允许 source_outcome，P1 需补命主事实。"
+    },
+    {
+      "id": "M-06",
+      "card_id": "all",
+      "item": "逐卡独立的 seeded 注入项",
+      "detail": "4 卡 seeded_error 项复用同一组 fixture；tampered_quote:HY:L15 只在 P0-01 的源内，P0-02/03/04 的『未找到逐字文本』是平凡真。",
+      "linked_difference": null,
+      "impact": "不影响 selected；16/16 card_scan 是 smoke check，不是逐卡独立验证。"
+    }
+  ],
+  "blockers": [],
+  "commands": [
+    "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"辛巳 庚寅 甲申 庚午\" --gender 乾 --json",
+    "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"戊戌 癸亥 乙巳 己卯\" --gender 乾 --json",
+    "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"壬寅 庚戌 己丑 庚午\" --gender 坤 --json",
+    "E:\\Git hub\\mangpai-fusion\\.venv\\Scripts\\python.exe -m engine.cli all --pillars \"乙巳 己丑 壬辰 辛丑\" --gender 乾 --json",
+    "只读校验脚本（temp）：quote verbatim / edge ref / ten_god / selection rederivation；未落仓。"
+  ]
+}
