@@ -1,4 +1,4 @@
-# Agent 工具调用手册与五步推演 SOP
+# Agent 工具调用手册与六步推演 SOP
 
 WP-7 工具行为补充：
 
@@ -122,7 +122,7 @@ python bridges/ziwei/verify.py --require-data --require-l1
 
 拿到对账结果后，每个 `divergent` 必须在 Step 4 明确站队并写理由；**「两套盘各有道理 / 尚难定论」等同任务未完成**。素材若含倪海厦《天纪》原文（CC BY-NC-SA 4.0、非商用），只落 `cases/_private/ziwei-*/`（已忽略），不入库。
 
-## 标准五步推演 SOP
+## 标准六步推演 SOP
 
 ### Step 1：排盘与边界核验
 

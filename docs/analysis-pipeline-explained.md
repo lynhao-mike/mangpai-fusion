@@ -134,7 +134,7 @@ flowchart TD
 
 `engine/api/facade.py` 把引擎的完整事实裁剪成 Agent 可见的包。
 
-> ⚠️ **这里目前有一处正在修的缺陷**（ADR-007 D5）：`facade.py:93` 的 `keep` 白名单把 `tiyong` / `binzhu` / `distance` 三个字段删掉了，而 `condition_ir` 里的 `zuogong` 原子正好要读 `tiyong`。结果是「谁制谁」的 target 判定静默失效。这是 P0。
+> ✅ **此处缺陷已修**（原记：ADR-007 D5 时 `facade.py` 的 `keep` 白名单漏掉 `tiyong` / `binzhu` / `distance`，导致「谁制谁」的 target 判定静默失效）。当前 `facade.py:101-102` 的 `keep` 已含 `tiyong`、`actor`、`binzhu`、`distance`，`tests/api/test_facade_zuogong_fields.py` 6 项通过（2026-11-11 实测）。
 
 ### L1 · 局面画像 + 流派路由
 
@@ -371,11 +371,11 @@ invalidators:                        # 成败：冲的是不是忌神
 | L0 排盘 | ✅ 通 | 481 盘 0 错（`tools/engine_audit.py`） |
 | L0 关系图 | ✅ 通 | 481 盘无缺边/假边/重复边（`tools/relations_audit.py`） |
 | L0 做功候选 | ✅ 通 | 宫制星 477/481 盘（`tools/zuogong_probe.py`） |
-| L0.5 事实出口 | ❌ **断** | `facade.py:93` 删 `tiyong`，`zuogong` 原子的 target 恒错 |
-| L2 断语求值器 | ✅ 通 | 42 原子、三值、未知不折叠 |
+| L0.5 事实出口 | ✅ 通 | `facade.py:101-102` 的 `keep` 含 `tiyong`/`actor`/`binzhu`/`distance`；`tests/api/test_facade_zuogong_fields.py` 6 passed |
+| L2 断语求值器 | ✅ 通 | 46 原子、三值、未知不折叠 |
 | L2 断语库 | ⚠️ 半通 | 20 条试点：compiled 8 / partial 4 / needs_human 5 / uncompilable 2 / reference_only 1 |
 | L2 成败（invalidators） | ❌ **空** | 20/20 全为空 |
-| L2 岁运原子 | ❌ **空壳** | `atoms.py:558/562/566` 直接返回未知 |
+| L2 岁运原子 | ✅ 通（v1.2） | `dayun_present` / `liunian_present` / `suiyun_edge` / `sanhe_with_suiyun` / `suiyun_arrives` 均已实现；缺岁运上下文时按设计返回 unknown（→ `needs_fact`，由 Agent 追问年份），不是空壳 |
 | L2 力量比较原子 | ❌ **没有** | 段派「制得住」无法表达 |
 | L1 流派路由 | ⚠️ 存在未接 | `l1_school_router.py` 364 行，未接 L2 |
 | L3 框架依赖 | ✅ 通 | `standalone` / `requires_school_frame` / `requires_pair` 三态已实现 |
@@ -398,7 +398,7 @@ invalidators:                        # 成败：冲的是不是忌神
 | Agent 可见的事实包 | `engine/api/facade.py` |
 | 命令行入口 | `engine/cli.py` |
 | 断语求值器 | `engine/claims/condition_ir/ir.py` |
-| 42 个原子 | `engine/claims/condition_ir/atoms.py` |
+| 46 个原子 | `engine/claims/condition_ir/atoms.py` |
 | 断语 YAML | `theory/claims/conditions-v2/pilot-20.yaml` |
 | 理论原文检索 | `tools/query_theory.py`（`sources/` + `theory/`） |
 | 断语试点报告 | `tools/claim_condition_report.py` → `META/claim-condition-pilot-v1.md` |

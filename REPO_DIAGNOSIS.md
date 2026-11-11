@@ -4,6 +4,16 @@
 范围：只读。未改生产代码。临时扫描脚本已删除。  
 安全约束：大于 500KB 的文件只取体积、键结构和前若干行样本，没有全文读入。
 
+> ⚠️ **本文是 2026-10-14 的只读快照，已不全部反映当前代码。** 引用前先看这张失效项对照（2026-11-11 复核，数字为现场实测）：
+>
+> | 本文原说法 | 当前实际 |
+> |---|---|
+> | 仓库约 633.77 MB / 6589 个文件；`cases` 496.32 MB / 4707 | 工作区约 199 MB / 受控文件 7913 个；`cases` 约 41 MB / 5186（体积下降源于旧引擎运行产物已清理，文件数上升源于新增任务与文档） |
+> | `theory/_ir/unified_rule_ir.yaml`（7.75 MB，约 2955 条） | **该文件已不存在**；`theory/_ir/` 现存 `rule_graph.yaml`、`graph_metrics.yaml`、`ziping_rule_ir.yaml` 与两份 alignment report |
+> | 未知 trigger 在 `evaluate_trigger()` 里「保守返回 `True`」 | 现返回 **`False`**，状态由 `trigger_evidence_status()` 标为 `insufficient_evidence`（`engine/predicates/condition_evaluator.py`） |
+>
+> 未经本节复核的结论，请当作**历史判断**阅读，不要当作现行事实引用。
+
 ## 总判断
 
 这不是「确定性排盘 + 向量 RAG + LLM 融合」系统。当前是 **纯规则引擎**，而且有两套并行主链：

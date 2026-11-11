@@ -3,9 +3,8 @@
 | 文件 | 用途 | 阶段 |
 |---|---|---|
 | [input-from-wenzhen.md](input-from-wenzhen.md) | 问真八字 APP 信息提取规范 | M6 产出 |
-| [report-v6.md](report-v6.md) | 《命理师内容报告（统一版）》当前稳定模板；归档置顶可跳转、全中文结构字段、受限概率基础线与结构先验、待反馈关键流年独立模块 | 当前稳定标准 |
-| [report-v5.md](report-v5.md) | v5 文件名兼容入口；内容暂与 v7.6 展示规范保持一致，旧调用会由渲染器收敛到 v6 模板 | v5 兼容别名 |
-| [report-v1.3.md](report-v1.3.md) | 历史《命理师内容报告（统一版）》渲染入口基线；不再作为新案默认模板 | 历史参考 |
+| [report-v7-human.md](report-v7-human.md) | 人话报告标准模板（单报告架构，**默认产物**）；结构见 `AGENTS.md` §2 与 `docs/analysis_human_touch.md` | 当前默认 |
+| [report-v6.md](report-v6.md) | 《命理师内容报告（统一版）》；归档置顶可跳转、全中文结构字段、受限概率基础线与结构先验、待反馈关键流年独立模块 | 命理师内部版稳定标准 |
 | [feedback.md](feedback.md) | 命主反馈采集模板 | M7 产出 |
 | [analysis-template-options.md](analysis-template-options.md) | 历史 analysis 输出规范候选方案；V2 后仅作架构回溯，不作为新案入口 | 历史参考 |
 | [theory-extraction-template.md](theory-extraction-template.md) | 子平格局派、滴天髓调候派等原始教案到候选规则的理论提取模板 | 多专家体系预留入口 |

@@ -79,11 +79,19 @@ python -m tools.human_touch_linter <file.md>
 
 若任务产出无法用上述命令判定，为该任务写一个只依赖标准库的 `verify.py`，以退出码表达验收结果；**不得为了让命令通过而修改测试或断言**。
 
-### 已知红灯：默认 pytest 门禁（2026-10-26 记录）
+### 已知红灯：默认 pytest 门禁
 
-`tests/tools/test_bundle_pii.py` 在**导入阶段**加载 `.workbuddy-ai/make_bundle_v2.py`。该目录被 `.gitignore` 忽略，且脚本已不存在，因此 `python -m pytest -q` 会在**收集阶段**失败（不是断言失败）。
+**2026-11-11 实测更正（取代 2026-10-26 记录；旧记录两处事实已失效）**
 
-判定除该文件之外的回归是否通过，用显式路径覆盖 addopts：
+| 项 | 2026-10-26 记录 | 2026-11-11 实测 |
+|---|---|---|
+| `.workbuddy-ai/make_bundle_v2.py` | 「脚本已不存在」 | **存在**（14,086 B）；`tests/tools/test_bundle_pii.py` 单跑 **9 passed**，`skip` 分支永不触发 |
+| 门禁失败原因 | 该脚本缺失导致收集失败 | 仍失败，但**根因不同**：5 个 collection error 全为 `ModuleNotFoundError: No module named 'sxtwl'`（`engine/chart_validation.py:29`） |
+| 基线数字 | `220 passed, 1 skipped` | **不可直接比较**：testpaths 已扩至 26 条、约 225 个测试文件，原「1 skipped」那个文件现产出 9 passed |
+
+`sxtwl==2.0.7` 已在 `requirements-dev.txt:11` 声明，属**环境未装配**，不是测试缺陷。本机 Python 3.13 无该版本预编译 wheel（`pip install --only-binary :all: sxtwl==2.0.7` → No matching distribution），源码构建需 MSVC 且被沙箱策略拦截，故当前解释器装不上。
+
+处置顺序：① 用有 wheel 的解释器（3.11 / 3.12）建 venv 装齐 `requirements-dev.txt`，再跑默认门禁；② 或装 MSVC Build Tools 后源码编译；③ 在修好之前判定回归，用显式路径覆盖 addopts：
 
 ```bash
 python -m pytest -q -o addopts="-ra --tb=short" tests/facts tests/api tests/predicates \
@@ -92,10 +100,7 @@ python -m pytest -q -o addopts="-ra --tb=short" tests/facts tests/api tests/pred
   tests/tools/test_blind_toolchain.py tests/tools/test_gao_split.py tests/test_project_metadata.py
 ```
 
-修复方向（已授权）：把脱敏逻辑**生产化**为 `tools/bundle_sanitize.py`（跟踪任务 `tasks/T-114/PROMPT.md`），测试改为导入生产模块。
-
-2026-10-26 过渡措施：该测试在脚本缺失时显式 `pytest.skip(..., allow_module_level=True)`，reason 带任务号，默认门禁恢复为 `220 passed, 1 skipped`。**skip 只让门禁可用，不等于已修**：禁止改成永久 skip，也禁止把该测试移出 `testpaths`。
-另：`tools/blind_candidate_pick.py` 仍打印 `python .workbuddy-ai/make_bundle_v2.py …`，生产化后需同步改为新入口。
+历史条目（保留追溯，勿据此判断当前状态）：T-114 计划把脱敏逻辑**生产化**为 `tools/bundle_sanitize.py`（`tasks/T-114/PROMPT.md`），测试改为导入生产模块；`tools/blind_candidate_pick.py:243` 仍打印旧入口 `python .workbuddy-ai/make_bundle_v2.py …`，生产化后需同步。**禁止**为了门禁变绿而把测试改成永久 skip，或把测试移出 `testpaths`。
 
 ### 保护区（不得修改，除非任务卡明确授权）
 

@@ -5,7 +5,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, fields, is_dataclass, replace
 from enum import Enum
 from pathlib import Path
-from typing import Literal, TypeAlias, Union
+from typing import TYPE_CHECKING, Literal, TypeAlias, Union
 
 from engine.f09.canonical_json import JcsValue, bounded_jcs_sha256
 from engine.f09.contracts import (
@@ -31,6 +31,11 @@ from engine.f09.decision import (
 )
 from engine.f09.errors import F09ContractError, F09IntegrityError, F09SourceError
 from engine.f09.evidence import NormalizedEvidencePackage, validate_for_pi220
+
+
+if TYPE_CHECKING:  # 仅类型解析期导入：运行期由 `from __future__ import annotations` 延迟求值
+    from engine.f09.artifacts import ArtifactRecord
+    from engine.f09.feedback import FeedbackBinding
 
 
 @dataclass(frozen=True)

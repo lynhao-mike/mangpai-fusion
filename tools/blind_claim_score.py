@@ -14,7 +14,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(r"F:\综合盲派\mangpai-fusion")
+ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / ".workbuddy-ai" / "blind-bundle-v2"
 CASES = ROOT / "cases"
 OUT = ROOT / "META" / "blind_scoring"

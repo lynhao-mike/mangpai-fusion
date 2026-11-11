@@ -43,13 +43,19 @@ _sandbox_shims/
 config/ziwei.local.toml
 
 # 紫微单盘原文与对账中间产物（含 CC BY-NC-SA 4.0 引文，不入库）
-cases/_private/ziwei-*/
+# 父规则 cases/_private/ 已覆盖 cases/_private/ziwei-*，此处只补桥接内部临时目录
 bridges/ziwei/_tmp/
 
 # SDD local evidence and progress ledger
 .superpowers/sdd/
 
-# Test-only scratch workspace for admitted-root fixtures (not durable state)
+# 盲测临时产物（cache/detail/原始抽取，可重建，不是仓库内容）
+.tmp_blind/
+
+# 盲测答案与评分密钥：入库即泄题
+tasks/M-01/tiekoulu/answers.jsonl
+tasks/M-01/tiekoulu/questions.jsonl
+tasks/M-01/tiekoulu/_scoring_key*.dat
 
 # Graft local graph cache — regenerable, not committed (run `graft build`).
 /graft/
@@ -93,7 +99,6 @@ theory/ziping/_extracted_rules.json
 theory/tiaohou_ditiansui/_extracted_rules.json
 
 # P0 任务本地回滚备份，不是仓库内容
-.p0_backup/
 .p0_backup/
 .p0_probe*.py
 
