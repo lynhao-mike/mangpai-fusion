@@ -81,6 +81,47 @@ python -m tools.query_theory --query "夫妻宫 穿" --schools yang duan ren zip
 
 逐条检查 `school`、`classic_name`、`title`、`statement` 及 `source_ref.path` / `source_ref.anchor`；引用时保留来源与定位，并回到对应原文核对上下文、触发条件和适用边界。检索未命中或来源不足时应说明证据缺口，不得补造引文。
 
+## 工具 3：外部体系旁证层（紫微斗数，可选）
+
+入口：`tools.ziwei_chart`（L1 结构化盘面）、`tools.ziwei_lookup`（L2 解读文本）、`tools.cross_check`（三态对账）、`tools.ziwei_appendix`（独立旁证附录）、`tools.ziwei_fetch`（按年懒加载）。设计、契约与合规见 [`ziwei-corroboration-bridge.md`](ziwei-corroboration-bridge.md)。
+
+**铁律：旁证既不是盘面事实，也不是理论出处。** 所有产物都是 `evidence-envelope/v1` 信封，强制带 `not_usable_as: ["engine_fact", "theory_source_ref"]`。紫微只用来回答「另一套独立体系是否指向同一结论」，不替代 `engine.cli` 的事实地位，也不替代 `tools.query_theory` 的 `source_ref`。
+
+| 工具 | 层级 | 允许用途 | 禁止用途 |
+|---|---|---|---|
+| `tools.ziwei_chart` | L1 紫微盘面 | 在**紫微体系内**核对宫位、星曜、四化等断言 | 当作八字事实；并入 v7 主报告 |
+| `tools.ziwei_lookup` | L2 解读文本 | 结论层对账 | 当作理论出处；批量导出原文 |
+| `tools.cross_check` | 裁决层 | 三态落定（`converged` / `divergent` / `unverifiable`） | 喂 L1 信封（会被拒绝）；输出骑墙措辞 |
+| `tools.ziwei_appendix` | 产出层 | 生成**独立**旁证附录 | 并入主报告、参与其 Linter 门禁 |
+
+### 调用方式
+
+```bash
+# 同参并列：八字事实 + 紫微旁证（--dim 不填只给元数据与字数）
+python -m engine.cli chart --birth "2001-12-31 06:00" --gender 坤 --json > bazi.json
+python -m tools.ziwei_lookup --birth "2001-12-31 06:00" --gender 坤 --json > l2_meta.json
+python -m tools.ziwei_lookup --birth "2001-12-31 06:00" --gender 坤 --dim career,wealth --json > l2_text.json
+
+# L1 盘面（需紫微项目已 npm install；不联网、不起 Next.js 服务）
+python -m tools.ziwei_chart --birth "2001-12-31 06:00" --gender 坤 --json > l1.json
+
+# 三态对账：缺 --claims/--verdicts 时输出全 unverifiable 骨架
+python -m tools.cross_check --bazi bazi.json --ziwei l2_meta.json --out 对账.md
+python -m tools.cross_check --bazi bazi.json --ziwei l2_meta.json \
+    --claims claims.json --verdicts verdicts.json --json > cross.json
+
+# 独立附录（消费三份信封，不改 v7 模板）
+python -m tools.ziwei_appendix --l1 l1.json --l2 l2_meta.json --cross cross.json --out 旁证附录.md
+
+# 按年懒加载与验收（缺省 dry-run，--download 才联网）
+python -m tools.ziwei_fetch --year 2001 --verify-only
+python bridges/ziwei/verify.py --require-data --require-l1
+```
+
+本机路径走 `config/ziwei.local.toml`（已忽略）或环境变量 `ZIWEI_ANALYSIS_DIR` / `ZIWEI_PROJECT_DIR`；仓库只留 `config/ziwei.local.example.toml`，clone 后用 `config/dataset-manifest.json` 按年拉取。缺数据或缺 L1 依赖时 `verify.py` 跳过对应断言，用 `--require-data` / `--require-l1` 强制要求。
+
+拿到对账结果后，每个 `divergent` 必须在 Step 4 明确站队并写理由；**「两套盘各有道理 / 尚难定论」等同任务未完成**。素材若含倪海厦《天纪》原文（CC BY-NC-SA 4.0、非商用），只落 `cases/_private/ziwei-*/`（已忽略），不入库。
+
 ## 标准五步推演 SOP
 
 ### Step 1：排盘与边界核验
@@ -100,11 +141,11 @@ python -m tools.query_theory --query "夫妻宫 穿" --schools yang duan ren zip
 
 ### Step 4：冲突裁决与多维推理
 
-分别比较子平格局要件与成败、滴天髓/穷通的气候与源流、盲派宾主体用及做功路径。明确证据在哪些点一致、哪些点因流派规则或口径不同而分歧；结合用户所问事项、原局事实和岁运引动解释取舍。区分工具确定事实、理论规则、推理假设和最终判断；证据不足或口径会改变结论时，保留分歧并说明影响，不用单一流派抹除其他有效证据。
+分别比较子平格局要件与成败、滴天髓/穷通的气候与源流、盲派宾主体用及做功路径。明确证据在哪些点一致、哪些点因流派规则或口径不同而分歧；结合用户所问事项、原局事实和岁运引动解释取舍。区分工具确定事实、理论规则、推理假设和最终判断；证据不足或口径会改变结论时，保留分歧并说明影响，不用单一流派抹除其他有效证据。若启用了外部体系旁证（工具 3），先跑 `tools.cross_check` 拿到三态对账；旁证只调整裁决权重、不改写 `engine.cli` 事实，`divergent` 项必须逐条站队并写理由。
 
 ### Step 5：结构化输出与可追溯引用
 
-报告中对关键事实引用盘面地址（如 `M.b`、`DY3.b`）及关系边 ID（如 `e003`），并对理论判断引用流派/典籍与 `source_ref`。说明规则触发条件、适用边界、推理路径、岁运语境及不确定性；将事实、候选、理论依据和 Agent 裁决分开表述。未由工具返回或来源未核实的内容，明确标记不确定，不以心算补齐。
+报告中对关键事实引用盘面地址（如 `M.b`、`DY3.b`）及关系边 ID（如 `e003`），并对理论判断引用流派/典籍与 `source_ref`。说明规则触发条件、适用边界、推理路径、岁运语境及不确定性；将事实、候选、理论依据和 Agent 裁决分开表述。未由工具返回或来源未核实的内容，明确标记不确定，不以心算补齐。旁证附录为独立文件，不并入主报告、不参与其 Linter 门禁。
 
 ### Step 6：裁决显式化与人话报告生成（强制执行）
 

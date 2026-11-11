@@ -1,6 +1,6 @@
 # 紫微斗数旁证接入设计 · evidence-envelope/v1
 
-> 状态：**阶段 1–4 全部落地并验收通过**｜ 2026-11-10 提案 · 同日实施
+> 状态：**阶段 1–4 全部落地、验收通过，2026-11-11 已入库**（commit `87fc5a29`，19 文件 / +3182 行）｜ 2026-11-10 提案 · 同日实施
 > 关联约束：`AGENTS.md` §1 铁律、`docs/analysis_human_touch.md`、`templates/report-v7-human.md`、`pyproject.toml`、`requirements.txt`、`tests/` 均为保护区，**本方案不改动其中任何文件**。
 > 数据侧始终只读：`F:\ziwei-data` 与 `ziwei-doushu` 项目目录**未写入任何文件**；查表与建索引都在内存/系统临时目录完成，写入只发生在本仓库的 `bridges/`、`config/`、`tools/`、`docs/`、`README.md` 与项目日志。
 
@@ -176,7 +176,7 @@ for await (const ch of dec) { /* 累加字节位置，命中区间就切片并�
 | ✅ 3 · 报告层与 L1 | `bridges/ziwei/ziwei_chart_l1.mts`（`node --import tsx`）、`chart_l1.py`、`tools/ziwei_chart.py`、`build_l1_envelope`、`tools/ziwei_appendix.py` | L1 十四条断言 14/14 成立、指纹可复现；附录每条带 locator；主报告 Linter 仍零 ERROR；**已通过** |
 | ✅ 4 · 可复现 | `config/dataset-manifest.json`（77 年 × 字节数 / sha256 / URL / 镜像）、`tools/ziwei_fetch.py`、`ziwei_reader.mjs --build-index` | 清单 29 KB 可入库；77 年全量哈希 `ALL OK`；合成样本明文 / zst 两条建索引路径结果一致；**已通过** |
 
-验收沿用 `AGENTS.md` §5：`python -m pytest -q`、`engine.cli` 冒烟、`human_touch_linter`；新增能力用只依赖标准库的 `verify.py` 表达退出码。**不修改测试或断言使其通过**；版本提交由人工负责。
+验收沿用 `AGENTS.md` §5：`python -m pytest -q`、`engine.cli` 冒烟、`human_touch_linter`；新增能力用只依赖标准库的 `verify.py` 表达退出码。**不修改测试或断言使其通过**；版本提交由人工执行（本次已于 2026-11-11 以 `87fc5a29` 入库）。
 
 ---
 
@@ -245,6 +245,29 @@ python -m tools.human_touch_linter reports/2001-12-31-坤-辛巳庚子戊辰乙�
 
 **上游小缺陷已绕开**：见第 1 条。
 
-**仍未做 / 边界**：没有把紫微盘面写进 `engine.cli`、没有改 `templates/` 与 Linter 契约、没有把 5.7 GB 或单盘 3 万字原文库、没有执行任何 git 版本操作（提交由人工负责）。L1 需要紫微项目已 `npm install`（`tsx` / `iztro` / `lunar-javascript`），L2 只需 Node ≥ 22；两者缺一时 `verify.py` 自动跳过对应断言，可用 `--require-data` / `--require-l1` 强制要求。附录若含数据集原文片段，入库前须人工确认不含倪师《天纪》引文，否则放 `cases/_private/ziwei-*/`。
+**仍未做 / 边界**：没有把紫微盘面写进 `engine.cli`、没有改 `templates/` 与 Linter 契约、没有把 5.7 GB 或单盘 3 万字原文库入仓。入库提交为 `87fc5a29`（2026-11-11，人工授权执行），只新增文件与 `README.md` / `.gitignore` 尾部，未改写历史。L1 需要紫微项目已 `npm install`（`tsx` / `iztro` / `lunar-javascript`），L2 只需 Node ≥ 22；两者缺一时 `verify.py` 自动跳过对应断言，可用 `--require-data` / `--require-l1` 强制要求。附录若含数据集原文片段，入库前须人工确认不含倪师《天纪》引文，否则放 `cases/_private/ziwei-*/`。
 
 **一句话**：不搬 5.7 GB、不并引擎、不改模板——用「同一出生主键 + 证据信封」把紫微挂成可插拔旁证；L1 在紫微体系内核盘面、L2 只做结论对账，GitHub 只留指针与校验和，本地留数据，Agent 留裁决权。
+
+---
+
+## 9. 接入点复核与已知缺口（2026-11-11）
+
+代码落地不等于「可被发现」。本节逐个核对本方案在各入口上的可见性，避免下一个人（或下一个 Agent）不知道这条路存在。
+
+| 入口 | 状态 | 说明 |
+|---|---|---|
+| `docs/agent_tools.md` 工具 3 | ✅ 已补 | Agent 的实际调用手册：四工具用途/禁用边界表、可粘贴命令、`--dim` 语义、缺数据降级 |
+| `README.md`「外部体系旁证（可选）」 | ✅ 已补 | 面向人：一段定位 + 全链路命令 + CC BY 4.0 署名与引文边界 |
+| 本文档 §3 契约 vs `envelope.py` | ✅ 一致 | 实际字段与 §3 示例逐项对照无出入；实装多出 `verified_within`（L1）与 `alignment_warnings` 实值枚举 |
+| 本文档 §7 阶段表 | ✅ 一致 | 五个阶段产出文件与验收判据均可在仓库内对应到实际路径 |
+| `AGENTS.md` §2 导航图 / §1 铁律 | ⚠️ **未收录** | 该文件属保护区，需任务卡明确授权。**后果**：新 Agent 只读 `AGENTS.md` 时不知道旁证层与五个工具的存在，必须由人指向 `docs/agent_tools.md` 工具 3 |
+| `META/project-state.json` | ⚠️ 未收录 | 保护区（由维护流程更新），不在本方案范围 |
+| `reports/` 内命盘报告 | ⚠️ 未入库 | 按隐私口径留在本地；本文档 §8 命令中的报告路径仅示例 |
+
+**待授权的最小补丁**（两处，均改保护区 `AGENTS.md`）：
+
+1. §2 导航图加一行：`bridges/ziwei/ + tools/ziwei_*.py  外部体系旁证层：evidence-envelope/v1（见 docs/agent_tools.md 工具 3）`
+2. §1 铁律补一句：`外部体系（紫微等）一律走 evidence-envelope/v1 旁证层，不作 engine_fact、不作 theory_source_ref；分歧由 Agent 站队。`
+
+除此之外，本设计在文档侧无未闭合项。

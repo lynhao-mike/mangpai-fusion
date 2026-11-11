@@ -42,7 +42,7 @@ pytest
 
 ## 外部体系旁证（可选）
 
-紫微斗数等外部体系以 `evidence-envelope/v1` 挂在**旁证层**，不进入 `engine.cli` 事实层，也不作 `tools.query_theory` 的理论出处；分歧由 Agent 站队。分两级：**L1** 由紫微项目排盘引擎生成结构化盘面（在紫微体系内核验宫位星曜四化），**L2** 是 v4.0 解读文本（只做结论层对账）。设计与合规见 [`docs/ziwei-corroboration-bridge.md`](docs/ziwei-corroboration-bridge.md)。
+紫微斗数等外部体系以 `evidence-envelope/v1` 挂在**旁证层**，不进入 `engine.cli` 事实层，也不作 `tools.query_theory` 的理论出处；分歧由 Agent 站队。分两级：**L1** 由紫微项目排盘引擎生成结构化盘面（在紫微体系内核验宫位星曜四化），**L2** 是 v4.0 解读文本（只做结论层对账）。Agent 调用手册见 [`docs/agent_tools.md`](docs/agent_tools.md) 的「工具 3」，设计与合规见 [`docs/ziwei-corroboration-bridge.md`](docs/ziwei-corroboration-bridge.md)。
 
 ```bash
 # 本机先复制 config/ziwei.local.example.toml 为 config/ziwei.local.toml（已被忽略）
