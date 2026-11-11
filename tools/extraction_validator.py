@@ -197,8 +197,9 @@ def cmd_migrate(school: str) -> int:
             for r in (data.get("rules") or []):
                 if isinstance(r, dict) and r.get("id"):
                     in_yaml.add(r["id"])
-        except Exception:
-            pass
+        except Exception as exc:  # 解析失败时 in_yaml 为空 → 全量误判为 orphan，必须失败退出
+            print(f"ERROR: 无法解析 {index_yaml}：{exc}", file=sys.stderr)
+            return 2
 
     # 只在缓存里、不在 index.yaml 里 → 需要回填
     orphan = [

@@ -166,6 +166,8 @@ rule_stat_revision:
 - 新建 [`plans/dual-core-blind-validation-design-2026-10-14.md`](plans/dual-core-blind-validation-design-2026-10-14.md)，记录全部已确认的阶段性边界。
 - 修改 [`AGENTS.md`](AGENTS.md) 第 6 节，取消核验后默认继续 as-of 推演的优先地位。
 - 修改 [`AGENTS.md`](AGENTS.md) 第 8.1 节，加入检索路由、候选定位、定向取证、盲态排除和证据不足停止规则。
+
+  > 注（2026-11-11）：`AGENTS.md` 此后已重构为 §1–§5，当时这两处修改现已并入 §4「多流派与多口径争议处理原则」与 §5「Agent 协作约定」；上述节号只反映当时的文件结构。
 - 新建 [`engine/contracts/22-dual-core-blind-validation-v1.md`](engine/contracts/22-dual-core-blind-validation-v1.md)，定义多轮记录、分组、去重、错杀率和纠偏率。
 - 修改 [`engine/predicates/condition_evaluator.py`](engine/predicates/condition_evaluator.py)：未知 trigger 由 `evaluate_trigger()` 返回 `False`，`trigger_evidence_status()` 返回 `insufficient_evidence`。[`tests/test_condition_evaluator_trigger_status.py`](tests/test_condition_evaluator_trigger_status.py) 的 2 项测试已通过。
 - 新建 [`plans/ai-retrieval-routing-contract-v1.md`](plans/ai-retrieval-routing-contract-v1.md)，定义两阶段检索预算和证据包；30% token 节省目标尚未测量。
