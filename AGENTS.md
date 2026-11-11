@@ -7,6 +7,7 @@
 - **确定性盘面事实**只从 `python -m engine.cli` 获取；**经典与流派理论**通过 `python -m tools.query_theory` 检索；**综合推理、证据权衡与最终裁决**由 Agent 完成。
 - 严禁心算排盘或编造干支关系、长生、空亡、神煞、起运等事实。输入不完整、口径不明或工具未返回时，明确标示不确定，不补造结果。
 - 引用结论时保留盘面地址 / 关系边 ID、理论出处 `source_ref` 与适用边界；工具列出的事实或候选不等于自动成立的命理结论。
+- **外部体系（紫微斗数等）一律走 `evidence-envelope/v1` 旁证层**：信封强制 `not_usable_as: ["engine_fact", "theory_source_ref"]`，既不作盘面事实、也不作理论出处；只用于「另一套独立体系是否指向同一结论」，分歧由 Agent 站队。设计见 [`docs/ziwei-corroboration-bridge.md`](docs/ziwei-corroboration-bridge.md)，调用见 [`docs/agent_tools.md`](docs/agent_tools.md) 工具 3。
 
 ## 2. 1 分钟快速导航图
 
@@ -16,6 +17,7 @@ engine/api/         无状态事实 API
 engine/cli.py       Agent JSON 入口：python -m engine.cli
  tools/query_theory.py  六源理论原子检索：python -m tools.query_theory
 theory/ + sources/  四派盲派与传统经典的结构化索引、原文及提取语料
+bridges/ziwei/ + tools/ziwei_*.py  外部体系旁证层：evidence-envelope/v1（紫微 L1 盘面 / L2 解读，见 docs/agent_tools.md 工具 3）
  docs/agent_tools.md 工具调用细节、地址编码、返回字段与六步推演 SOP
  docs/analysis_human_touch.md   人话写作与翻译规范（Linter 配套，含引擎契约清单）
  templates/report-v7-human.md   人话报告标准模板（单报告架构，默认产物）

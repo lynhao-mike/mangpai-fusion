@@ -261,13 +261,8 @@ python -m tools.human_touch_linter reports/2001-12-31-坤-辛巳庚子戊辰乙�
 | `README.md`「外部体系旁证（可选）」 | ✅ 已补 | 面向人：一段定位 + 全链路命令 + CC BY 4.0 署名与引文边界 |
 | 本文档 §3 契约 vs `envelope.py` | ✅ 一致 | 实际字段与 §3 示例逐项对照无出入；实装多出 `verified_within`（L1）与 `alignment_warnings` 实值枚举 |
 | 本文档 §7 阶段表 | ✅ 一致 | 五个阶段产出文件与验收判据均可在仓库内对应到实际路径 |
-| `AGENTS.md` §2 导航图 / §1 铁律 | ⚠️ **未收录** | 该文件属保护区，需任务卡明确授权。**后果**：新 Agent 只读 `AGENTS.md` 时不知道旁证层与五个工具的存在，必须由人指向 `docs/agent_tools.md` 工具 3 |
+| `AGENTS.md` §2 导航图 / §1 铁律 | ✅ 已补（2026-11-11 授权） | §1 加「外部体系一律走旁证层」铁律条，§2 导航图加 `bridges/ziwei/ + tools/ziwei_*.py` 一行。至此新 Agent 只读 `AGENTS.md` 也能发现这条路 |
 | `META/project-state.json` | ⚠️ 未收录 | 保护区（由维护流程更新），不在本方案范围 |
 | `reports/` 内命盘报告 | ⚠️ 未入库 | 按隐私口径留在本地；本文档 §8 命令中的报告路径仅示例 |
 
-**待授权的最小补丁**（两处，均改保护区 `AGENTS.md`）：
-
-1. §2 导航图加一行：`bridges/ziwei/ + tools/ziwei_*.py  外部体系旁证层：evidence-envelope/v1（见 docs/agent_tools.md 工具 3）`
-2. §1 铁律补一句：`外部体系（紫微等）一律走 evidence-envelope/v1 旁证层，不作 engine_fact、不作 theory_source_ref；分歧由 Agent 站队。`
-
-除此之外，本设计在文档侧无未闭合项。
+除此之外，本设计在文档侧无未闭合项；`AGENTS.md` 的两行补丁原文见本文件 git 历史（commit `4b3995db` 之后的文档提交）。
