@@ -1,0 +1,23 @@
+# 紫微旁证桥接 · 本机配置模板
+# 复制为 config/ziwei.local.toml 后填写（该文件已在 .gitignore 中）。
+# 环境变量优先级高于本文件：ZIWEI_ANALYSIS_DIR / ZIWEI_PROJECT_DIR / ZIWEI_NODE_BIN
+#
+# 数据本体不入库：单个年份分片约 2 MB，按需从上游 Release 拉取（缺省 dry-run）：
+#   python -m tools.ziwei_fetch --year 2001 --verify-only
+#   python -m tools.ziwei_fetch --year 2001 --download
+# 清单 config/dataset-manifest.json 记录 77 年的字节数与 sha256；已存在且校验和匹配一律跳过。
+# Release: https://github.com/Renhuai123/ziwei-doushu/releases/tag/v4.0-13d
+
+[ziwei]
+# 指向包含 year-YYYY.jsonl.zst 与 year-YYYY.idx.json 的目录
+dataset_dir = "/absolute/path/to/ziwei-data/analysis"
+# 紫微排盘引擎所在仓库（L1 结构化盘面使用；需已 npm install，含 tsx / iztro）
+project_dir = "/absolute/path/to/ziwei-doushu"
+node_bin = "node"
+
+dataset_version = "v4.0-13d"
+content_version = "ca268829f7a9"
+release_repo = "Renhuai123/ziwei-doushu"
+release_tag = "v4.0-13d"
+license = "CC BY 4.0"
+attribution = "紫微斗数开源解读数据集 v4.0（674,976 张命盘 × 13 维） / https://github.com/Renhuai123/ziwei-doushu / 王多鱼AI"

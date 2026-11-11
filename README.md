@@ -39,3 +39,27 @@ pytest
 - [`theory/`](theory/) 与 [`sources/`](sources/)：六源理论索引与原文语料
 - [`docs/agent_tools.md`](docs/agent_tools.md)：工具调用手册与五步推演 SOP
 - [`tests/`](tests/)：回归与验收测试
+
+## 外部体系旁证（可选）
+
+紫微斗数等外部体系以 `evidence-envelope/v1` 挂在**旁证层**，不进入 `engine.cli` 事实层，也不作 `tools.query_theory` 的理论出处；分歧由 Agent 站队。分两级：**L1** 由紫微项目排盘引擎生成结构化盘面（在紫微体系内核验宫位星曜四化），**L2** 是 v4.0 解读文本（只做结论层对账）。设计与合规见 [`docs/ziwei-corroboration-bridge.md`](docs/ziwei-corroboration-bridge.md)。
+
+```bash
+# 本机先复制 config/ziwei.local.example.toml 为 config/ziwei.local.toml（已被忽略）
+mkdir -p cases/_private/ziwei-demo
+D=cases/_private/ziwei-demo
+python -m engine.cli chart --birth "2001-12-31 06:00" --gender 坤 --json > "$D/bazi_chart.json"
+python -m tools.ziwei_lookup --birth "2001-12-31 06:00" --gender 坤 --dim career,wealth --json > "$D/ziwei_l2.json"
+python -m tools.cross_check --bazi "$D/bazi_chart.json" --ziwei "$D/ziwei_l2.json" --out "$D/对账.md"
+python -m tools.ziwei_chart --birth "2001-12-31 06:00" --gender 坤 --json > "$D/ziwei_l1.json"
+python -m tools.cross_check --bazi "$D/bazi_chart.json" --ziwei "$D/ziwei_l2.json" --json > "$D/cross.json"
+python -m tools.ziwei_appendix --l1 "$D/ziwei_l1.json" --l2 "$D/ziwei_l2.json" --cross "$D/cross.json" --out "$D/旁证附录.md"
+
+# 数据按年懒加载（缺省 dry-run；--download 才联网），清单见 config/dataset-manifest.json
+python -m tools.ziwei_fetch --year 2001 --verify-only
+python bridges/ziwei/verify.py --require-data --require-l1
+```
+
+`旁证附录.md` 是**独立文件**，不并入 v7 主报告、不参与其门禁；每行带 locator。上面不带 `--claims` / `--verdicts` 时，对账表是「待 Agent 裁决」的骨架（全部 `unverifiable`）；要让三态落定，需补八字侧结论（带 `source_ref` 与盘面地址）和裁决理由，格式见设计文档 §5 / §8。L1 需要紫微项目已 `npm install`（`tsx` / `iztro`），L2 只需 Node ≥ 22。附录若含解读原文片段，入库前须确认不含倪师《天纪》引文，否则放 `cases/_private/ziwei-*/`。
+
+数据来源（CC BY 4.0）：本项目使用 **紫微斗数开源解读数据集 v4.0**（674,976 张命盘 × 13 维），来源 https://github.com/Renhuai123/ziwei-doushu ，作者 王多鱼AI。解读中引用的倪海厦《天纪》原话不在该授权范围内（CC BY-NC-SA 4.0、非商用），原文只留本地私有目录、不入库。

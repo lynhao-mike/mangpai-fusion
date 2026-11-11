@@ -39,6 +39,13 @@ _sandbox_shims/
 # Local isolated git worktrees
 .worktrees/
 
+# 紫微旁证桥接：本机绝对路径配置（不入库）
+config/ziwei.local.toml
+
+# 紫微单盘原文与对账中间产物（含 CC BY-NC-SA 4.0 引文，不入库）
+cases/_private/ziwei-*/
+bridges/ziwei/_tmp/
+
 # SDD local evidence and progress ledger
 .superpowers/sdd/
 

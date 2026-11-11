@@ -1,0 +1,803 @@
+{
+  "manifest": "ziwei-dataset-manifest/v1",
+  "generated_at": "2026-11-10T22:10:24+08:00",
+  "dataset": {
+    "version": "v4.0-13d",
+    "content_version": "ca268829f7a9",
+    "release_repo": "Renhuai123/ziwei-doushu",
+    "release_tag": "v4.0-13d",
+    "license": "CC BY 4.0",
+    "attribution": "紫微斗数开源解读数据集 v4.0（674,976 张命盘 × 13 维） / https://github.com/Renhuai123/ziwei-doushu / 王多鱼AI",
+    "license_note": "解读中引用的倪海厦《天纪》原话不在 CC BY 4.0 授权内，不入库"
+  },
+  "release_url_template": "https://github.com/{repo}/releases/download/{tag}/year-{year}.jsonl.zst",
+  "mirrors": [
+    "{}",
+    "https://ghproxy.net/{}",
+    "https://gh-proxy.com/{}"
+  ],
+  "checksum": "sha256",
+  "index_policy": {
+    "generated_locally": true,
+    "builder": "bridges/ziwei/ziwei_reader.mjs --build-index",
+    "note": "Release 只提供 .jsonl.zst；idx 由流式解压逐行扫描生成，不落 700 MB 明文"
+  },
+  "years": {
+    "start": 1950,
+    "end": 2026,
+    "count": 77
+  },
+  "total_bytes": 161407000,
+  "shards": [
+    {
+      "year": 1950,
+      "shard": "year-1950.jsonl.zst",
+      "index": "year-1950.idx.json",
+      "bytes": 2076328,
+      "sha256": "c33c25e04b0352afcaf49d6c25772aab1e9965b31c5fcfb3e10f35434d2ec7be",
+      "index_bytes": 341742,
+      "index_sha256": "eadd7768a8fb19d0f87b2b7942a6f5f02f38596216a3be685e28c3f83aea459a",
+      "index_keys": 8760
+    },
+    {
+      "year": 1951,
+      "shard": "year-1951.jsonl.zst",
+      "index": "year-1951.idx.json",
+      "bytes": 2144530,
+      "sha256": "cdc8fac7c313d5c773ea3942b08af6600751bdc7530c027ca8ce8fe9d19c4cb4",
+      "index_bytes": 341780,
+      "index_sha256": "359e2bf727a9f0c7479484e79632ada5cd730e740bc538a36d917261e4b5a356",
+      "index_keys": 8760
+    },
+    {
+      "year": 1952,
+      "shard": "year-1952.jsonl.zst",
+      "index": "year-1952.idx.json",
+      "bytes": 2076820,
+      "sha256": "6fb74896c3304fcec564360d407409dc431e0b26212113208649b781334e6334",
+      "index_bytes": 342697,
+      "index_sha256": "81aee4fed359a48f650f2c75bb6452684111fcc25eabdba9e5a6b00835fc1a8b",
+      "index_keys": 8784
+    },
+    {
+      "year": 1953,
+      "shard": "year-1953.jsonl.zst",
+      "index": "year-1953.idx.json",
+      "bytes": 2107560,
+      "sha256": "9d4a53eb009a4373f01ef50c72d074a247a4bc4ebe7048489271dde6702572e8",
+      "index_bytes": 341772,
+      "index_sha256": "21900e00d1a6d2108db54afb60714eaf28598d2302d429fd6e4310d32bf8892a",
+      "index_keys": 8760
+    },
+    {
+      "year": 1954,
+      "shard": "year-1954.jsonl.zst",
+      "index": "year-1954.idx.json",
+      "bytes": 2082372,
+      "sha256": "0a2a3115f2b8d6bc548b8c5a51b8c1e465e8c980cb84eb9e885e326738c3a386",
+      "index_bytes": 341767,
+      "index_sha256": "adb6567758406c5fbce2ce710fd37bc14f4f4ed2b98c8732e649f70e4cd09da6",
+      "index_keys": 8760
+    },
+    {
+      "year": 1955,
+      "shard": "year-1955.jsonl.zst",
+      "index": "year-1955.idx.json",
+      "bytes": 2050795,
+      "sha256": "91034239e63bc953b2f7453b17521f49af01a79a1c1e3470f996e69a370a74dc",
+      "index_bytes": 341795,
+      "index_sha256": "6540230cac56cb6dd6754f6d4c6d28463bb8b50288ccc5a262aca1a198a3d8c0",
+      "index_keys": 8760
+    },
+    {
+      "year": 1956,
+      "shard": "year-1956.jsonl.zst",
+      "index": "year-1956.idx.json",
+      "bytes": 2145189,
+      "sha256": "fa610bb64b3999398ea77605f2503575b8afbfeec495696ce31ebf29a7459928",
+      "index_bytes": 342735,
+      "index_sha256": "4ea7e08252e0f9d005558bc62baae64d8f533f73b0001186c9208b35d26264dc",
+      "index_keys": 8784
+    },
+    {
+      "year": 1957,
+      "shard": "year-1957.jsonl.zst",
+      "index": "year-1957.idx.json",
+      "bytes": 1997180,
+      "sha256": "04ab2568bca937265b6e6c1120801e7b30c5cb44e7ca4f7542e97b2166c52272",
+      "index_bytes": 341778,
+      "index_sha256": "19e105eea3da23b93f2c83e62189b76cf1e7835fde614503752f0ea3da2fe9fc",
+      "index_keys": 8760
+    },
+    {
+      "year": 1958,
+      "shard": "year-1958.jsonl.zst",
+      "index": "year-1958.idx.json",
+      "bytes": 2174351,
+      "sha256": "bd19f1eba5fbf64ed32f9c80c5a93f57105b2072f92f416b46cc82b49b836336",
+      "index_bytes": 341814,
+      "index_sha256": "d501f90db9cd3c133f46da90f2dfeb300b10695aa491fdb774114e1712285fff",
+      "index_keys": 8760
+    },
+    {
+      "year": 1959,
+      "shard": "year-1959.jsonl.zst",
+      "index": "year-1959.idx.json",
+      "bytes": 2116153,
+      "sha256": "1f204eb3f4c3a8fbb72e113bde93b78e82876554d7afc8bd734895e0657a0a79",
+      "index_bytes": 341756,
+      "index_sha256": "a0f50f0e9a03a827e9436ea903fb87aa353d2f467388ebd9c7607f249ae8a50d",
+      "index_keys": 8760
+    },
+    {
+      "year": 1960,
+      "shard": "year-1960.jsonl.zst",
+      "index": "year-1960.idx.json",
+      "bytes": 1919875,
+      "sha256": "a3d98a20e63dd170a3b0c5d2ef3b3c59af2fbcf80e14c78d7f254c718801e332",
+      "index_bytes": 342697,
+      "index_sha256": "210db8f2754f39d24185173b324c53024e01ea02b4fbc1b803cfe8f050c83967",
+      "index_keys": 8784
+    },
+    {
+      "year": 1961,
+      "shard": "year-1961.jsonl.zst",
+      "index": "year-1961.idx.json",
+      "bytes": 2126826,
+      "sha256": "6d4d125f2ed6d13d377fcb848d6caee6a0d28f4129ab87ab717fe3912d3687b0",
+      "index_bytes": 341772,
+      "index_sha256": "5ffd29a7de80f4acf013080ba35f07bc767a0970a684d3599be297ce9d35c051",
+      "index_keys": 8760
+    },
+    {
+      "year": 1962,
+      "shard": "year-1962.jsonl.zst",
+      "index": "year-1962.idx.json",
+      "bytes": 2177958,
+      "sha256": "9dc8c95561a0f50b39e9387d76c9e1d5786660124a09f3122b1eb1dc10f9edc6",
+      "index_bytes": 341741,
+      "index_sha256": "cf9212eb74b6165a92bd61777c466eaa951045fd31c24c402fa44ee57845131a",
+      "index_keys": 8760
+    },
+    {
+      "year": 1963,
+      "shard": "year-1963.jsonl.zst",
+      "index": "year-1963.idx.json",
+      "bytes": 1979031,
+      "sha256": "f1f8cc6738659bbb743fc8e78acad5ddc67708ad2b8b8999d4f71e17d50b8e63",
+      "index_bytes": 341771,
+      "index_sha256": "bca566a2bd1582eeb7d5e21a4a49557a802dd2105c2744ec7f71d94f8e74f945",
+      "index_keys": 8760
+    },
+    {
+      "year": 1964,
+      "shard": "year-1964.jsonl.zst",
+      "index": "year-1964.idx.json",
+      "bytes": 2073242,
+      "sha256": "7b2c9e91c88bcb4801a9246951fa02f5221b9f1d845a60e140c193396e93f4b2",
+      "index_bytes": 342710,
+      "index_sha256": "b8ab8687691d0e784d511381a3a35123e74bb529f579dcf67ab50fb7b03a146d",
+      "index_keys": 8784
+    },
+    {
+      "year": 1965,
+      "shard": "year-1965.jsonl.zst",
+      "index": "year-1965.idx.json",
+      "bytes": 2183980,
+      "sha256": "5e4c56bedf5bd03ecec0c75ff694fef4ae4b5774ac10f167a417a737abdee4b4",
+      "index_bytes": 341797,
+      "index_sha256": "c1327d510bf7c470c6a82babbe1c56b28d343c3ac36061611bdbd160a2881444",
+      "index_keys": 8760
+    },
+    {
+      "year": 1966,
+      "shard": "year-1966.jsonl.zst",
+      "index": "year-1966.idx.json",
+      "bytes": 2084768,
+      "sha256": "ac55f43abe6838b66e5cdc2061a7fcb0295b60116ccd0645a67a48fe90a8abb2",
+      "index_bytes": 341776,
+      "index_sha256": "1a8f0b11da68874d9062c08637b9c7eabab4a31fb61cbd5386c2cb53f06ce689",
+      "index_keys": 8760
+    },
+    {
+      "year": 1967,
+      "shard": "year-1967.jsonl.zst",
+      "index": "year-1967.idx.json",
+      "bytes": 2118338,
+      "sha256": "b5ac3c74465d0b6e0881576461adaec71ba153861f5e7f6861a87e780aa63cb1",
+      "index_bytes": 341775,
+      "index_sha256": "b92510d2ca25dc2ae56e22fd6a856f9e64cd0022d1671a5801ca9414e1d30c94",
+      "index_keys": 8760
+    },
+    {
+      "year": 1968,
+      "shard": "year-1968.jsonl.zst",
+      "index": "year-1968.idx.json",
+      "bytes": 2067146,
+      "sha256": "cd1ddcbd5290da492d67578065b5c7404be1add2051c792275fdedf68ad791de",
+      "index_bytes": 342732,
+      "index_sha256": "6ac3ef1556c926ccdbd32fcd2f80622baf39db099ce2553e189da255009dc864",
+      "index_keys": 8784
+    },
+    {
+      "year": 1969,
+      "shard": "year-1969.jsonl.zst",
+      "index": "year-1969.idx.json",
+      "bytes": 2180094,
+      "sha256": "a72909fe69316077bacd3b6984abf1afb63f0f8371b625b5e6a3aa15698dd096",
+      "index_bytes": 341754,
+      "index_sha256": "e8780b93a114d2b7fbeaa8a4341a3ebde5cc73bddbd649090ce45eda96352c41",
+      "index_keys": 8760
+    },
+    {
+      "year": 1970,
+      "shard": "year-1970.jsonl.zst",
+      "index": "year-1970.idx.json",
+      "bytes": 2077013,
+      "sha256": "0d0f96727e3fb8cd9ab2c1d6b7456e139b1b2b7136777c138e0356fa9fe4b735",
+      "index_bytes": 341753,
+      "index_sha256": "b42418aaab99ac1250ca290d137ff4f812b3a02d8a3dc3d25f5e0a67e0cac80f",
+      "index_keys": 8760
+    },
+    {
+      "year": 1971,
+      "shard": "year-1971.jsonl.zst",
+      "index": "year-1971.idx.json",
+      "bytes": 2048782,
+      "sha256": "1e217dcfb58247c18d07eb5b0e8712ad00ca7cd30703dc1b42a61efbc00e4691",
+      "index_bytes": 341769,
+      "index_sha256": "a64c6b4a75eb1e14b194fde622413353671f951ee71ce70ccbe76c30ecbf9927",
+      "index_keys": 8760
+    },
+    {
+      "year": 1972,
+      "shard": "year-1972.jsonl.zst",
+      "index": "year-1972.idx.json",
+      "bytes": 2197870,
+      "sha256": "4433438e0143c782e896cbbd3b9ca931d668eebb4e7d55263449b432e6f7871d",
+      "index_bytes": 342682,
+      "index_sha256": "67db305b69b05af2cbdc0d3a221280c6ecd33e428ba4cacf6bce561bdfbd6dd9",
+      "index_keys": 8784
+    },
+    {
+      "year": 1973,
+      "shard": "year-1973.jsonl.zst",
+      "index": "year-1973.idx.json",
+      "bytes": 2111111,
+      "sha256": "e41c66b00cc4427edf34747cabeb026831107dfd56b5890cc8515d49f25c2303",
+      "index_bytes": 341767,
+      "index_sha256": "452a511cc3fc46ed375354d3447aed8344a0aee99d22829c2a2fc8ca5853a019",
+      "index_keys": 8760
+    },
+    {
+      "year": 1974,
+      "shard": "year-1974.jsonl.zst",
+      "index": "year-1974.idx.json",
+      "bytes": 1999387,
+      "sha256": "7bcd60e2e0e3053c7f88da1e8f60a33297e70acf04ddd97cb21f8b9b5ce9410b",
+      "index_bytes": 341768,
+      "index_sha256": "0ca3ee4016b51a0ede9aaff60bc36e93caa5b43b58c29048df840c71f2b1ece3",
+      "index_keys": 8760
+    },
+    {
+      "year": 1975,
+      "shard": "year-1975.jsonl.zst",
+      "index": "year-1975.idx.json",
+      "bytes": 2152912,
+      "sha256": "b6d2d14819777106ced175b318f95eebfe689dc3d28ef043a93a711a919fdc65",
+      "index_bytes": 341786,
+      "index_sha256": "6cb9c41d3fdffb5d1e40525d48481e20fa69137d8cacce5e26f4f19b51ded8b3",
+      "index_keys": 8760
+    },
+    {
+      "year": 1976,
+      "shard": "year-1976.jsonl.zst",
+      "index": "year-1976.idx.json",
+      "bytes": 2045397,
+      "sha256": "0dbc184083fe7f4f217a9f4e2690c24fbf2e3c429a495c8b05157869fa31644c",
+      "index_bytes": 342724,
+      "index_sha256": "8c2c8d0dcd747d3c7f993f6e749955240274eaba7eb0f769bcb9a72046c6bfed",
+      "index_keys": 8784
+    },
+    {
+      "year": 1977,
+      "shard": "year-1977.jsonl.zst",
+      "index": "year-1977.idx.json",
+      "bytes": 2133660,
+      "sha256": "63437c18401e72a3bb9efe69f2ea9d2e7987a4044dd6f21a9172895a3fa1ccb6",
+      "index_bytes": 341767,
+      "index_sha256": "bcd77708afeb0cd6864bc83916c06e21e72c0acc943e7fef57fb50cefa325160",
+      "index_keys": 8760
+    },
+    {
+      "year": 1978,
+      "shard": "year-1978.jsonl.zst",
+      "index": "year-1978.idx.json",
+      "bytes": 2183545,
+      "sha256": "b81c5816f97e3baabfe4c2f0e2dd53683c38ca4544cae0dda0e62adc1a8de1f6",
+      "index_bytes": 341802,
+      "index_sha256": "3c35a45abb99e0fce338229dfa4d628dde0e1f18ca998b47a41adb4d384fbfd3",
+      "index_keys": 8760
+    },
+    {
+      "year": 1979,
+      "shard": "year-1979.jsonl.zst",
+      "index": "year-1979.idx.json",
+      "bytes": 2047309,
+      "sha256": "6e82887edd42482893345173b39b16e60acc7c71956ce1f7537ae8b6c9088af9",
+      "index_bytes": 341753,
+      "index_sha256": "542558de39b7d92ba2633073fb824a35956f337356b3d1153d88a5b75d5f45fb",
+      "index_keys": 8760
+    },
+    {
+      "year": 1980,
+      "shard": "year-1980.jsonl.zst",
+      "index": "year-1980.idx.json",
+      "bytes": 2052499,
+      "sha256": "cf66f42292d0680d9295ffb8ddf8aa9d0491ca4c5b770c7df675dee71ca7cc02",
+      "index_bytes": 342681,
+      "index_sha256": "9421e3f46f7802dec4cc3ca2864dbe18b1c73c5b3879c88759c976dfa9d7ed8d",
+      "index_keys": 8784
+    },
+    {
+      "year": 1981,
+      "shard": "year-1981.jsonl.zst",
+      "index": "year-1981.idx.json",
+      "bytes": 2151243,
+      "sha256": "a0f56562ef19d18370e21d520f4488991b1cfc471270539b1265d2c3d806b99c",
+      "index_bytes": 341757,
+      "index_sha256": "042f16208dac740168483ed482bbdeeab625e75cae1ab8eeaba67fa553df4bc9",
+      "index_keys": 8760
+    },
+    {
+      "year": 1982,
+      "shard": "year-1982.jsonl.zst",
+      "index": "year-1982.idx.json",
+      "bytes": 2098029,
+      "sha256": "f85db85c94e7ceccec511def05f62c09a3884b517853e7ae23f0cbf9150c6baa",
+      "index_bytes": 341746,
+      "index_sha256": "452159be0e3585311589b3afac5f06af32cde99444694ada80b8f8e8b534a06d",
+      "index_keys": 8760
+    },
+    {
+      "year": 1983,
+      "shard": "year-1983.jsonl.zst",
+      "index": "year-1983.idx.json",
+      "bytes": 2104454,
+      "sha256": "6035df7a9cd26e9e5740b5a1195cc27e58674476f87889829bff7c7c38aadb1f",
+      "index_bytes": 341772,
+      "index_sha256": "d275c579c022b1214661e0e1a38e6c8b5b4b2f386d8d941c809dd0f5c61ccb2e",
+      "index_keys": 8760
+    },
+    {
+      "year": 1984,
+      "shard": "year-1984.jsonl.zst",
+      "index": "year-1984.idx.json",
+      "bytes": 2003914,
+      "sha256": "e320deeff027db6f1e80c73efbd69cb3691ab4438c002678d9ab91d3a8ef0fbb",
+      "index_bytes": 342713,
+      "index_sha256": "4bdc6c667c62dfc412f30d7e466cccdbdee958f98cdabe066c2a7c08f68c9943",
+      "index_keys": 8784
+    },
+    {
+      "year": 1985,
+      "shard": "year-1985.jsonl.zst",
+      "index": "year-1985.idx.json",
+      "bytes": 2182855,
+      "sha256": "db262ed012b2812a93d1a904893d7ce75ddf4ea7db7a42232ee1ec757ce2996b",
+      "index_bytes": 341787,
+      "index_sha256": "b690d9390ed7e345406792c90007e1e5e45802527da8f99a0d481c7dc717f1bd",
+      "index_keys": 8760
+    },
+    {
+      "year": 1986,
+      "shard": "year-1986.jsonl.zst",
+      "index": "year-1986.idx.json",
+      "bytes": 2173899,
+      "sha256": "8bdced9d06d1e75a4e0e6df114698e3568e52ccb90c0d6a4a1d12d0eebb93bac",
+      "index_bytes": 341791,
+      "index_sha256": "d34ee23c0c5913c57ebee6100f13d4763e760fd50ac3319e7ecdcf72e8850d45",
+      "index_keys": 8760
+    },
+    {
+      "year": 1987,
+      "shard": "year-1987.jsonl.zst",
+      "index": "year-1987.idx.json",
+      "bytes": 2000764,
+      "sha256": "d6747dfc54c93301c0acd539449b9416a76018462ca4d79075164e439bd80d62",
+      "index_bytes": 341785,
+      "index_sha256": "c67e3824d7bd763c63de1ff48bf37a6317898452537a33c16c5a32c25f25464c",
+      "index_keys": 8760
+    },
+    {
+      "year": 1988,
+      "shard": "year-1988.jsonl.zst",
+      "index": "year-1988.idx.json",
+      "bytes": 2184339,
+      "sha256": "a96bc73066a6132439a70315d106445b1f56d482f254fcd38c1b74d9ffdd3012",
+      "index_bytes": 342753,
+      "index_sha256": "d9e79adbea49bfe6b7de5b6e68e0d75edd60688c2763745d3cc89400ba9517ee",
+      "index_keys": 8784
+    },
+    {
+      "year": 1989,
+      "shard": "year-1989.jsonl.zst",
+      "index": "year-1989.idx.json",
+      "bytes": 2164848,
+      "sha256": "70bd426d4d98ef63bd4234c4951864c044be1c0ddce02be51da87b9a2c602ea6",
+      "index_bytes": 341753,
+      "index_sha256": "790f57bfd984b7b7dbf20e4c70ace6015e1c261ecb5961f78785591151a48f34",
+      "index_keys": 8760
+    },
+    {
+      "year": 1990,
+      "shard": "year-1990.jsonl.zst",
+      "index": "year-1990.idx.json",
+      "bytes": 1957581,
+      "sha256": "d89f446543a2f542c03b8df2e81cfc48cf422b7968bf833d6ceeebfd3f94f4da",
+      "index_bytes": 341762,
+      "index_sha256": "87abee1a59211ae1cb35f5dd3ec0eb75e923dd047cb17e28b2c3ac310a630a50",
+      "index_keys": 8760
+    },
+    {
+      "year": 1991,
+      "shard": "year-1991.jsonl.zst",
+      "index": "year-1991.idx.json",
+      "bytes": 2140370,
+      "sha256": "f9be380cd5e82d053bd031d3cca5bd708b9702a6dd5da967a5b10e0433f68384",
+      "index_bytes": 341788,
+      "index_sha256": "0f7becc3aa88f38f8668b13708efd35404598c7c144ed08e9396a5b4d4b1d28d",
+      "index_keys": 8760
+    },
+    {
+      "year": 1992,
+      "shard": "year-1992.jsonl.zst",
+      "index": "year-1992.idx.json",
+      "bytes": 2202026,
+      "sha256": "407779caf94e053dfcb4f02edb21f0f22c07264334b59bb0173fde82fb59d660",
+      "index_bytes": 342690,
+      "index_sha256": "c98827780c77087423f9814277d979733b5cc264eb8f28083ba04040a5507b3c",
+      "index_keys": 8784
+    },
+    {
+      "year": 1993,
+      "shard": "year-1993.jsonl.zst",
+      "index": "year-1993.idx.json",
+      "bytes": 2011547,
+      "sha256": "b6c7a2403cc75a89914f16f2e85b114f5db43fc9e854fabe67d34fcd33da671b",
+      "index_bytes": 341769,
+      "index_sha256": "349eae45f69777078e425777447392b2e81bb070739cddda731b320384fe2bc3",
+      "index_keys": 8760
+    },
+    {
+      "year": 1994,
+      "shard": "year-1994.jsonl.zst",
+      "index": "year-1994.idx.json",
+      "bytes": 2092835,
+      "sha256": "e25e9cfd89403feefdd89f5a9f161981230bc8cf985572d12c6d9910d22ad75c",
+      "index_bytes": 341772,
+      "index_sha256": "e80fa4f9f31f171a040e49c17bbe346ee320f18691b8efbafaaf68d9215a6df6",
+      "index_keys": 8760
+    },
+    {
+      "year": 1995,
+      "shard": "year-1995.jsonl.zst",
+      "index": "year-1995.idx.json",
+      "bytes": 2059372,
+      "sha256": "8fd36e437b64151435311073671377ee121555295513950b55790de24e6b28a7",
+      "index_bytes": 341791,
+      "index_sha256": "3fff1a282df55a7575f6577fd61bb52ab6af5be688a16e59abb9f45c50d0d630",
+      "index_keys": 8760
+    },
+    {
+      "year": 1996,
+      "shard": "year-1996.jsonl.zst",
+      "index": "year-1996.idx.json",
+      "bytes": 2170672,
+      "sha256": "3be71ed62ae1c033b122b64b014a09bc9b324bcc9efe19212212f1a68599d47a",
+      "index_bytes": 342732,
+      "index_sha256": "461f3dac6bbb5d2f3267c44e31fd207adda6cbf90ef2243fab3d6a36a53a4290",
+      "index_keys": 8784
+    },
+    {
+      "year": 1997,
+      "shard": "year-1997.jsonl.zst",
+      "index": "year-1997.idx.json",
+      "bytes": 2125571,
+      "sha256": "e39e16f5004129eedb851a2f8062f92021a0d2c9131888b854caa0c7d9d85011",
+      "index_bytes": 341778,
+      "index_sha256": "bd80e5220d47a4a660352f4fce2968eae3c02b28c2de83eafbe2fbc7a856cc2e",
+      "index_keys": 8760
+    },
+    {
+      "year": 1998,
+      "shard": "year-1998.jsonl.zst",
+      "index": "year-1998.idx.json",
+      "bytes": 2081142,
+      "sha256": "76d3b395f4c6b3add8098725e5c8f7292b7957b33085705af44d1eb7a0706387",
+      "index_bytes": 341788,
+      "index_sha256": "c9a08f948ca09d5101149641e55ed71c376df64b4d43984991484009c48544ea",
+      "index_keys": 8760
+    },
+    {
+      "year": 1999,
+      "shard": "year-1999.jsonl.zst",
+      "index": "year-1999.idx.json",
+      "bytes": 2165000,
+      "sha256": "ccce05baaeda2bf861074b761e7337f2bd9c1d1bc84f22cc4f32294c5ef60993",
+      "index_bytes": 341758,
+      "index_sha256": "6552de5deddc4f636d675c1d75086822ae45a02cc838d2f8185209f4e90d3474",
+      "index_keys": 8760
+    },
+    {
+      "year": 2000,
+      "shard": "year-2000.jsonl.zst",
+      "index": "year-2000.idx.json",
+      "bytes": 2066613,
+      "sha256": "abecd1a0e2b4c8470707b0824d1782ea32dde21650c9c9f9f589e0b9be6a9a40",
+      "index_bytes": 342688,
+      "index_sha256": "ba9771274c0d4e7f35dbecd3071760c6c54b139b38f7f2871cb322bce8ad15e8",
+      "index_keys": 8784
+    },
+    {
+      "year": 2001,
+      "shard": "year-2001.jsonl.zst",
+      "index": "year-2001.idx.json",
+      "bytes": 2054526,
+      "sha256": "5a0d767cd9790690e4ec6bd95fb946eeb5bd43ace523efd909f8a8eb930330a0",
+      "index_bytes": 341747,
+      "index_sha256": "521cb535eb9e1f6776e7b01a2b1360c2bad8c172859566e4df193eddc3fa8082",
+      "index_keys": 8760
+    },
+    {
+      "year": 2002,
+      "shard": "year-2002.jsonl.zst",
+      "index": "year-2002.idx.json",
+      "bytes": 2196047,
+      "sha256": "265fc50f771cc904e4934af6a944d28ece3060cf320440d37065079258142ede",
+      "index_bytes": 341735,
+      "index_sha256": "63c8f37a1f7c0c1ade01157d9cbb4c310346a1ba864878be102075632524fa69",
+      "index_keys": 8760
+    },
+    {
+      "year": 2003,
+      "shard": "year-2003.jsonl.zst",
+      "index": "year-2003.idx.json",
+      "bytes": 2095376,
+      "sha256": "b446d332b0363e23c48b745f35efdf751beb37c29cc5ed2cef145a9d36c343cc",
+      "index_bytes": 341774,
+      "index_sha256": "f374f1a3817fa8aa383522dab66cbcb3e08c2cc3823de14c373192ed553ad3b2",
+      "index_keys": 8760
+    },
+    {
+      "year": 2004,
+      "shard": "year-2004.jsonl.zst",
+      "index": "year-2004.idx.json",
+      "bytes": 1978629,
+      "sha256": "f50fdf46cff9460e4e9b2e04124ab95a34c1b28fc2344034efd634303176c3d6",
+      "index_bytes": 342716,
+      "index_sha256": "1daf618643e0f9fbe562a22bf95890fb31ba3ad083e423ac454aa30044100a9e",
+      "index_keys": 8784
+    },
+    {
+      "year": 2005,
+      "shard": "year-2005.jsonl.zst",
+      "index": "year-2005.idx.json",
+      "bytes": 2172155,
+      "sha256": "ae7ff103fb20e4d5f5c45cd182dfdc99fa70d18b15fa831d01f5efd4567469ba",
+      "index_bytes": 341795,
+      "index_sha256": "96adf3c464ef5a0317097cbe1f1be94066211d733e95c524f0e2f09c119fce3e",
+      "index_keys": 8760
+    },
+    {
+      "year": 2006,
+      "shard": "year-2006.jsonl.zst",
+      "index": "year-2006.idx.json",
+      "bytes": 2072316,
+      "sha256": "616298b3b6d69b5720bd3177c27f6be3d1b2bca1e017d12688ead2bc3ad2ec8b",
+      "index_bytes": 341784,
+      "index_sha256": "0150818aefc1314cda602b5b34c2661a7b89aaf1056d2027cc5a299bc993651b",
+      "index_keys": 8760
+    },
+    {
+      "year": 2007,
+      "shard": "year-2007.jsonl.zst",
+      "index": "year-2007.idx.json",
+      "bytes": 2131774,
+      "sha256": "a33f3842c6e7e7e3cfd0ebc994ab48f34c9caa7fd46f39c9420328aa1981a419",
+      "index_bytes": 341768,
+      "index_sha256": "6cf75d591999a4cd03740e496903f9a826738fe3979c52475c9003232a5ecc01",
+      "index_keys": 8760
+    },
+    {
+      "year": 2008,
+      "shard": "year-2008.jsonl.zst",
+      "index": "year-2008.idx.json",
+      "bytes": 2180648,
+      "sha256": "c116f721477ff9f8a38c285c0c92c961e6f9cf69ee78fc10a4d3c90317cb0a28",
+      "index_bytes": 342741,
+      "index_sha256": "9fb4435a0733da951fbacb45bd49e01f420158da2c977c40451db5a1e801b203",
+      "index_keys": 8784
+    },
+    {
+      "year": 2009,
+      "shard": "year-2009.jsonl.zst",
+      "index": "year-2009.idx.json",
+      "bytes": 2069451,
+      "sha256": "6ad810315ba057bcc0c004b1c24eccc6ece7c239a1908a1efdbb0a8b9b1652be",
+      "index_bytes": 341748,
+      "index_sha256": "e417b820c23efba1723290e1f1924165ba49583908670dd9c3c0e07e5a57d8e1",
+      "index_keys": 8760
+    },
+    {
+      "year": 2010,
+      "shard": "year-2010.jsonl.zst",
+      "index": "year-2010.idx.json",
+      "bytes": 2070786,
+      "sha256": "cc09a9c35285192df6522c99a5790e3b029e60f7fd50544e1bffd1d48be0248d",
+      "index_bytes": 341743,
+      "index_sha256": "bfa6fc9cacd680ad374b4de0eeccfea46078a1f3435df9920623763b8bd5c877",
+      "index_keys": 8760
+    },
+    {
+      "year": 2011,
+      "shard": "year-2011.jsonl.zst",
+      "index": "year-2011.idx.json",
+      "bytes": 2139735,
+      "sha256": "7db889dd90a04e462dfaea8befeeeb42975bbad80955ef0abb06e9372b5b20c8",
+      "index_bytes": 341776,
+      "index_sha256": "f41b74e94aca5a31c637a9c7b6e4adf7b25d7083675bab1f7bf7b183f170abef",
+      "index_keys": 8760
+    },
+    {
+      "year": 2012,
+      "shard": "year-2012.jsonl.zst",
+      "index": "year-2012.idx.json",
+      "bytes": 2084183,
+      "sha256": "98b06c60e70e94b6ff8eb72f93862013d5d6cc6bf01b5d0875516c3890e96b6b",
+      "index_bytes": 342699,
+      "index_sha256": "15bbd37f4f542738f7e6a2ec025249bdfc83c600e4ddbc5afa574fdef9331742",
+      "index_keys": 8784
+    },
+    {
+      "year": 2013,
+      "shard": "year-2013.jsonl.zst",
+      "index": "year-2013.idx.json",
+      "bytes": 2098888,
+      "sha256": "ef99755bf32f190f3fbcae64204f916dd15433fcbb4981b8877d59111ca96a5e",
+      "index_bytes": 341774,
+      "index_sha256": "12b4ad4d8d0db35e7952042c049431cde4cb9af7f05645d6cba8bb5e52688bd5",
+      "index_keys": 8760
+    },
+    {
+      "year": 2014,
+      "shard": "year-2014.jsonl.zst",
+      "index": "year-2014.idx.json",
+      "bytes": 1965895,
+      "sha256": "eb1d6ff904d64df151b9f026c3ca2c36fd24ada2c061de11d3bab51ff80ac0a0",
+      "index_bytes": 341770,
+      "index_sha256": "08f4536ea5a1da15016caf016139236f83246f8cc00fbd46fd57f67434b52af4",
+      "index_keys": 8760
+    },
+    {
+      "year": 2015,
+      "shard": "year-2015.jsonl.zst",
+      "index": "year-2015.idx.json",
+      "bytes": 2150345,
+      "sha256": "8e36c556dc9b298bba596373fa4b39f984d1dddeb377c2f10ced85237c0d7743",
+      "index_bytes": 341785,
+      "index_sha256": "f47e9648e10aab2d5263a4bc497f3d0341ecfc28bd3838b2f114c2cc4ae88fa5",
+      "index_keys": 8760
+    },
+    {
+      "year": 2016,
+      "shard": "year-2016.jsonl.zst",
+      "index": "year-2016.idx.json",
+      "bytes": 2155055,
+      "sha256": "91e0c3efbb0368f594e95b07068d91c843e68bb6665dae7863e9f949e8a3421d",
+      "index_bytes": 342734,
+      "index_sha256": "3ca808b6e4b0e28df57bccdd1d85e3982ee6d024c3d8023bb8f3447ba60ab320",
+      "index_keys": 8784
+    },
+    {
+      "year": 2017,
+      "shard": "year-2017.jsonl.zst",
+      "index": "year-2017.idx.json",
+      "bytes": 2001232,
+      "sha256": "76755c0fbc3b41597073b42ae0bd513319074860352de795d64caba5ae48f498",
+      "index_bytes": 341791,
+      "index_sha256": "67f33c4c3b3fcf6bf6915a290da90f2c37a98ffce9dbb82ca39791e7ed319f2c",
+      "index_keys": 8760
+    },
+    {
+      "year": 2018,
+      "shard": "year-2018.jsonl.zst",
+      "index": "year-2018.idx.json",
+      "bytes": 2174779,
+      "sha256": "1cb3a34b642a1ebe70e831b88e08804ed47ac16dbb73c4e8d47481cfa9edcc6d",
+      "index_bytes": 341811,
+      "index_sha256": "9a6d1dfdc7655544854e55194d020a233b83e5b5aaf35ac0fb1f56a36ea6323a",
+      "index_keys": 8760
+    },
+    {
+      "year": 2019,
+      "shard": "year-2019.jsonl.zst",
+      "index": "year-2019.idx.json",
+      "bytes": 2133016,
+      "sha256": "bb93249d42b88173485faac52d822cbaafab893331dc0518166cd30185f6360b",
+      "index_bytes": 341756,
+      "index_sha256": "02c87c3e186b51aef82d3102cfb6be37625e92d1ba1891c040fe6960d4b6ef74",
+      "index_keys": 8760
+    },
+    {
+      "year": 2020,
+      "shard": "year-2020.jsonl.zst",
+      "index": "year-2020.idx.json",
+      "bytes": 1924168,
+      "sha256": "725b0c5b3407022ee95e53fd708c62c3ef358f98bb6d25e65cb8a63f482b99c0",
+      "index_bytes": 342701,
+      "index_sha256": "99b36ed1985a47cbf62ef5df44a7b9f1ebfbaeece0f970720923aa8431bf3302",
+      "index_keys": 8784
+    },
+    {
+      "year": 2021,
+      "shard": "year-2021.jsonl.zst",
+      "index": "year-2021.idx.json",
+      "bytes": 2116174,
+      "sha256": "41ca04b814f6139c5b4fc3a6edc80e739a746ccbb829b267bc7a08802c60fd89",
+      "index_bytes": 341772,
+      "index_sha256": "b259ee0ffd48fa28e68e4e96b32324bca7cf457e48454ca6296ca73c0cc8f145",
+      "index_keys": 8760
+    },
+    {
+      "year": 2022,
+      "shard": "year-2022.jsonl.zst",
+      "index": "year-2022.idx.json",
+      "bytes": 2173547,
+      "sha256": "d394ca2bc06d34ad49c8a40b0c5789c65f27946c8a13a22c21627cfacd6e5f0c",
+      "index_bytes": 341744,
+      "index_sha256": "b12e46f2717601d7416f87af43a0ba06de8e6dbc00c62d3ac314018a19486edc",
+      "index_keys": 8760
+    },
+    {
+      "year": 2023,
+      "shard": "year-2023.jsonl.zst",
+      "index": "year-2023.idx.json",
+      "bytes": 1963960,
+      "sha256": "2e6c8cafca0667711ead3626524eb7553d1c0ec408ffedb12fb6109bf87cd125",
+      "index_bytes": 341769,
+      "index_sha256": "aa6434a661554acf5d77f7a53ecac04408e88967cf22cebb2c37254002a9417c",
+      "index_keys": 8760
+    },
+    {
+      "year": 2024,
+      "shard": "year-2024.jsonl.zst",
+      "index": "year-2024.idx.json",
+      "bytes": 2040419,
+      "sha256": "2f9a9900e8e59b4f74d64f8f3f0de07043efb533bc25612c2e5d22baa70955dc",
+      "index_bytes": 342710,
+      "index_sha256": "1e2d2c932f7688bba9dff8f457161e77e3e1ad3857267b0514b3622a2f683b48",
+      "index_keys": 8784
+    },
+    {
+      "year": 2025,
+      "shard": "year-2025.jsonl.zst",
+      "index": "year-2025.idx.json",
+      "bytes": 2032796,
+      "sha256": "e7f1e98130bfc9401c097f94e562ca66ce0967411832fd4ebeee1ab55854172d",
+      "index_bytes": 341786,
+      "index_sha256": "ed0255dd6b31ff596a24e2ca94d4ac4a713a480214b6f797b1eeae7a9fb39759",
+      "index_keys": 8760
+    },
+    {
+      "year": 2026,
+      "shard": "year-2026.jsonl.zst",
+      "index": "year-2026.idx.json",
+      "bytes": 2162005,
+      "sha256": "4386d962a7438036048d2770ee712a78bcb4d2429ae220b16a22e24c8a4c7294",
+      "index_bytes": 341786,
+      "index_sha256": "9cbdd80a785ff1f791c494817eb0c044d30aa53a7bed80c9d17aef160d7dc8f8",
+      "index_keys": 8760
+    }
+  ]
+}
